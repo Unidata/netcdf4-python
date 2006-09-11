@@ -1,0 +1,136 @@
+20060828 - version 0.5
+======================
+* Compound type support! (members must be fixed data primitive types -
+  no user-defined types or NC_STRING variables allowed).  Attributes
+  are still restricted to primitive data types (no vlen or compound
+  type attributes).
+
+* Assigning single values to a slice now does the Right Thing, i.e.
+  >>> data[:] = 1
+  fills all the elements with 1 (instead of raising an IndexError).
+
+* Support for numpy 1.0, netcdf-4.0-alpha18, HDF5 1.8.0 alpha.
+
+* Added renameDimension and renameVariable methods to Dataset and Group classes.
+
+* netCDF attributes can be deleted using python del (i.e. 'del dset.foo').
+
+* Moved examples from test and test_classic to examples and 
+  examples_classic directories.
+
+* Added proper unit tests (in test and test_classic directories).
+
+* NULL characters are removed from text attributes.
+
+* Variable _FillValue can be set using new keyword argument 'fill_value' 
+  to createVariable Dataset and Group method.
+
+* docstrings now formatted with epydoc (http://epydoc.sf.net).
+
+* subversion repository hosted on Google projects
+  (http://code.google.com/p/netcdf4-python/).
+
+20060710 - version 0.4.5
+========================
+* fixed to work with recent svn versions of numpy
+
+* Now requires at least numpy 0.9.8.
+
+* Raise a AttributeError if user tries to rebind a private attribute
+  (like 'variables', 'dimensions' or 'dtype').
+
+20060629 - version 0.4.4
+========================
+* fixed to work with netcdf-4.0-alpha14.
+
+* automatically cast _FillValue attribute to variable type, to
+  avoid surprising error message.
+
+20060320 - version 0.4.3
+========================
+updated netcdftime module yet again
+added 'all_leap'/'366_day' and '360_day' calendars.
+netCDFTime class renamed utime, fwd and inv methods
+renamed date2num and num2date. These methods can now handle
+numpy arrays as well as scalars.
+a 'real' python datetime instance is returned if calendar
+is gregorian, otherwise a 'datetime-like' instance is returned
+(python datetime can't handle funky dates in 'all_leap' and '360_day'
+calendars).
+
+20060316 - version 0.4.2
+========================
+udunits module replaced by pure python version, renamed 'netcdftime'
+No longer requires udunits library. Includes 4 calendars
+('julian','standard'/'gregorian','proleptic_gregorian','noleap'/'365_day').
+Calendar names and their interpretations follow the CF metadata convention.
+
+20060310 - version 0.4.1
+========================
+udunits module included for doing time conversions.
+
+20060306 - version 0.4
+======================
+
+netCDF4_classic module can now write NETCDF3_CLASSIC, NETCDF4_64BIT
+as well as NETCDF4_CLASSIC files.  The file format is given as
+an optional keyword to the Dataset constructor ('NETCDF4_CLASSIC'
+is the default).  Preliminary work on compound types done - but
+awaiting the next alpha of the netCDF 4 library to complete (bugs
+in alpha12 prevent it from working properly if the compound type
+has fields which are arrays).
+
+20060217 - version 0.3.1
+========================
+refactored user-defined data type support - user-defined
+data types are now described by an instance of the class
+UserType.  usertype and usertype_name keyword args
+eliminated from createVariable.
+
+20060214 - version 0.3
+======================
+support for variable length strengths (typecode = 'S') and
+variable-length, or 'ragged' arrays (vlen user-defined datatype).
+Arrays of python objects can be saved as pickled strings with
+datatype = 'S'.
+
+20050128 - version 0.2.5
+========================
+added support for scalar variables (and assignValue, getValue
+Variable methods for Scientific.IO.NetCDF compatibility).
+
+20051123 - version 0.2.4
+========================
+numpy 0.9.4 compatibility
+Changed data type codes from ('d', 'f', 'i', 'h', ...) to
+('f8', 'f4', 'i4', 'i2', ...).
+
+20050110 - version 0.2.3
+========================
+added ellipsis slicing capability
+
+20050106 - version 0.2.2
+========================
+changed scipy_core to numpy.
+
+20051228 - version 0.2.1
+========================
+bugfixes, added 'nc3tonc4' utility to convert netCDF version 3 files
+to NETCDF4_CLASSIC files (with compression).  The converted files
+can be read from netCDF 3 clients that have been re-linked to the netCDF 4
+library. 'chunking' keyword added to createVariable in netCDF4 module.
+
+20051224 - version 0.2
+======================
+Added netCDF4_classic module - which creates files in NETCDF4_CLASSIC
+format.  These files are compatible with netCDF 3 clients which have
+been linked against the netCDF 4 lib.  This module does not use any
+new features of the netCDF 4 API except zlib compression.  Unlike
+any other netCDF 3 python client, it can transparently compress data
+with zlib compression and the HDF5 shuffle filter.
+
+20051222 - version 0.1
+======================
+First release.  Supports groups, multiple unlimited dimensions, zlib
+compression (plus shuffle filter and fletcher32 checksum) and all new
+primitive data types.  No support for user-defined data types yet.
