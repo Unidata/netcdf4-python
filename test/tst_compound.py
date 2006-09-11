@@ -5,7 +5,7 @@ import tempfile
 import numpy as NP
 from numpy.random.mtrand import uniform 
 from numpy.testing import assert_array_equal, assert_array_almost_equal
-import netCDF4 as netCDF4
+import netCDF4
 
 def stringtoarr(string,NUMCHARS):
     """function to convert a string to a array of NUMCHARS characters"""
