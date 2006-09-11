@@ -31,10 +31,9 @@ although you can save any record array containing fields with any of the
 Download 
 ========
 
-U{http://www.cdc.noaa.gov/people/jeffrey.s.whitaker/python/netCDF4-0.5.tar.gz}
-
-U{Changelog 
-<http://www.cdc.noaa.gov/people/jeffrey.s.whitaker/python/Changelog.netCDF4>}
+ - U{Project page <http://code.google.com/p/netcdf4-python/>}.
+ - U{Subversion repository <http://code.google.com/p/netcdf4-python/source>}.
+ - U{Source tarball <http://cheeseshop.python.org/pypi/netCDF4/>}.
 
 Requires 
 ======== 
@@ -69,7 +68,7 @@ constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (C{w, r+} or C{a}), you may
 write any type of data including new dimensions, groups, variables and
 attributes.  netCDF files come in several flavors
-(C{NETCDF3_CLASSIC,NETCDF3_64BIT, NETCDF4_CLASSIC}, and C{NETCDF4}). The
+(C{NETCDF3_CLASSIC, NETCDF3_64BIT, NETCDF4_CLASSIC}, and C{NETCDF4}). The
 first two of formats are supported by version 3 of the netCDF library. 
 C{NETCDF4_CLASSIC} files use the version 4 disk format (HDF5), but do
 not use any features not found in the version 3 API. They can be read by
@@ -209,7 +208,7 @@ the dtype.str attribute of a numpy array, and can be one of C{'f4'}
 (32-bit signed integer), C{'i2'} (16-bit signed integer), C{'i8'}
 (64-bit singed integer), C{'i1'} (8-bit signed integer), C{'u1'} (8-bit
 unsigned integer), C{'u2'} (16-bit unsigned integer), C{'u4'} (32-bit
-unsigned integer), C{'u8'} (64-bit unsigned integer), C{'S1'}
+unsigned integer), C{'u8'} (64-bit unsigned integer), or C{'S1'}
 (single-character string). There is also a C{'S'} datatype for variable
 length strings, which have no corresponding numpy data type (they are
 stored in numpy object arrays). Variables of datatype C{'S'} can be used

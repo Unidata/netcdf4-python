@@ -17,10 +17,9 @@ familiar to users of that module.
 Download 
 ========
 
-U{http://www.cdc.noaa.gov/people/jeffrey.s.whitaker/python/netCDF4-0.5.tar.gz}
-
-U{Changelog 
-<http://www.cdc.noaa.gov/people/jeffrey.s.whitaker/python/Changelog.netCDF4>}
+ - U{Project page <http://code.google.com/p/netcdf4-python/>}.
+ - U{Subversion repository <http://code.google.com/p/netcdf4-python/source>}.
+ - U{Source tarball <http://cheeseshop.python.org/pypi/netCDF4/>}.
 
 Requires 
 ======== 
