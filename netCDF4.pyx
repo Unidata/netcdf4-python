@@ -63,24 +63,24 @@ Tutorial
 1) Creating/Opening/Closing a netCDF file
 -----------------------------------------
 
-To create a netCDF file from python, you simply call the L{Dataset}
-constructor. This is also the method used to open an existing netCDF
-file.  If the file is open for write access (C{w, r+} or C{a}), you may
-write any type of data including new dimensions, groups, variables and
-attributes.  netCDF files come in several flavors
-(C{NETCDF3_CLASSIC, NETCDF3_64BIT, NETCDF4_CLASSIC}, and C{NETCDF4}). The
-first two of formats are supported by version 3 of the netCDF library. 
-C{NETCDF4_CLASSIC} files use the version 4 disk format (HDF5), but do
-not use any features not found in the version 3 API. They can be read by
-netCDF 3 clients only if they have been relinked against the netCDF 4
-library. C{NETCDF4} files use the version 4 format and use the new
-features of the version 4 API.  The C{netCDF4} module can read and write
-files with any of these formats, but only writes C{NETCDF4} formatted
-files. To write C{NETCDF4_CLASSIC}, C{NETCDF3_CLASSIC} or
-C{NETCDF3_64BIT} formatted files, use the L{netCDF4_classic} module. To
-see what how a given file is formatted, you can examine the
-C{file_format} L{Dataset} attribute. Closing the netCDF file is
-accomplished via the C{close} method of the L{Dataset} instance.
+To create a netCDF file from python, you simply call the L{Dataset} 
+constructor. This is also the method used to open an existing netCDF file.  
+If the file is open for write access (C{w, r+} or C{a}), you may write any 
+type of data including new dimensions, groups, variables and attributes.  
+netCDF files come in several flavors (C{NETCDF3_CLASSIC, NETCDF3_64BIT, 
+NETCDF4_CLASSIC}, and C{NETCDF4}). The first two flavors are supported by 
+version 3 of the netCDF library. C{NETCDF4_CLASSIC} files use the version 
+4 disk format (HDF5), but do not use any features not found in the version 
+3 API. They can be read by netCDF 3 clients only if they have been 
+relinked against the netCDF 4 library. They can also be read by HDF5 
+clients. C{NETCDF4} files use the version 4 disk format (HDF5) and use the 
+new features of the version 4 API.  The C{netCDF4} module can read files 
+with any of these formats, but only writes C{NETCDF4} formatted files. To 
+write C{NETCDF4_CLASSIC}, C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT} formatted 
+files, use the L{netCDF4_classic} module. To see what how a given file is 
+formatted, you can examine the C{file_format} L{Dataset} attribute. 
+Closing the netCDF file is accomplished via the C{close} method of the 
+L{Dataset} instance.
 
 Here's an example:
 
