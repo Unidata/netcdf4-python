@@ -1628,7 +1628,8 @@ instance. If C{None}, the data is not truncated. """
             else:
                 ncvaropt.fletcher32 = 0
             # HDF5 shuffle filter?
-            if shuffle:
+            # only enable shuffle if zlib is True and complevel != 0:
+            if shuffle and zlib and complevel:
                 ncvaropt.shuffle = 1
             else:
                 ncvaropt.shuffle = 0

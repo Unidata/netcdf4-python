@@ -709,7 +709,7 @@ C{renameDimension(oldname, newname)}"""
         # Variable.dimensions is determined by a method that
         # looks in the file, so no need to manually update.
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, fill_value=None):
+    def createVariable(self, varname, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, fill_value=None, chunking='seq'):
         """
 Creates a new variable with the given C{varname}, C{datatype}, and
 C{dimensions}. If dimensions are not given, the variable is assumed to
@@ -784,7 +784,7 @@ decimal place when it is assigned to the L{Variable} instance. If
 C{None}, the data is not truncated.
 
 """
-        self.variables[varname] = Variable(self, varname, datatype, dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, least_significant_digit=least_significant_digit, fill_value=fill_value)
+        self.variables[varname] = Variable(self, varname, datatype, dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, least_significant_digit=least_significant_digit, chunking=chunking, fill_value=fill_value)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -1015,7 +1015,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
     cdef object _dset
     cdef public dtype
 
-    def __init__(self, dset, name, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, fill_value=None, **kwargs):
+    def __init__(self, dset, name, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, chunking='seq', fill_value=None, **kwargs):
         cdef int ierr, ndims
         cdef char *varname
         cdef nc_type xtype
@@ -1049,16 +1049,21 @@ L{Variable} instance. If C{None}, the data is not truncated. """
             else:
                 ncvaropt.deflate = 0
                 ncvaropt.deflate_level = 0
-            # these are set to netCDF defaults.
-            # Could be added as keyword args to createVariable.
-            ncvaropt.chunkalg = NC_CHUNK_SEQ
+            # set chunking algorithm.
+            if chunking == 'seq':
+                ncvaropt.chunkalg = NC_CHUNK_SEQ
+            elif chunking == 'sub':
+                ncvaropt.chunkalg = NC_CHUNK_SUB
+            else:
+                raise ValueError("chunking keyword must be 'seq' or 'sub', got %s" % chunking)
             ncvaropt.chunksizes = NULL
             ncvaropt.extend_increments = NULL
             if fletcher32:
                 ncvaropt.fletcher32 = 1
             else:
                 ncvaropt.fletcher32 = 0
-            if shuffle:
+            # only enable shuffle if zlib is True and complevel != 0:
+            if shuffle and zlib and complevel:
                 ncvaropt.shuffle = 1
             else:
                 ncvaropt.shuffle = 0
