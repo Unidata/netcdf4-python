@@ -46,9 +46,9 @@ def read_netcdf4(filename):
     file.close()
 
 # test writing.
-t = Timer("write_pynetcdf('test_pynetcdf.nc')","from __main__ import write_pynetcdf, array, n1dim, n2dim, n3dim, n4dim")
+t = Timer("write_pynetcdf('test_pynetcdf.nc')","from __main__ import write_pynetcdf")
 print 'writing with pynetcdf took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
-t = Timer("write_netcdf4('test_netcdf4.nc')","from __main__ import write_netcdf4, array, n1dim, n2dim, n3dim, n4dim")
+t = Timer("write_netcdf4('test_netcdf4.nc')","from __main__ import write_netcdf4")
 print 'writing with netCDF4_classic took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
 # test reading.
 t = Timer("read_pynetcdf('test_pynetcdf.nc')","from __main__ import read_pynetcdf")
