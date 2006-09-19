@@ -230,12 +230,14 @@ level 0 False</span>
       <code>'f8'</code> (64-bit floating point), <code>'i4'</code> (32-bit 
       signed integer), <code>'i2'</code> (16-bit signed integer), 
       <code>'i1'</code> (8-bit signed integer), integer), <code>'S1'</code>
-      (single-character string).  The dimensions themselves are usually 
-      also defined as variables, called coordinate variables. The 
-      <code>createVariable</code> method returns an instance of the <a 
-      href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
-      class whose methods can be used later to access and set variable data
-      and attributes.
+      (single-character string).  The old single character Numeric 
+      typecodes (<code>'f','d','i','h','b','c'</code>) are also accepted 
+      for compatibility with Scientific.IO.NetCDF. The dimensions 
+      themselves are usually also defined as variables, called coordinate 
+      variables. The <code>createVariable</code> method returns an instance
+      of the <a href="netCDF4_classic.Variable-class.html" 
+      class="link">Variable</a> class whose methods can be used later to 
+      access and set variable data and attributes.
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">8</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
 </span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">i</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
@@ -696,7 +698,7 @@ Global attr source = netCDF4_classic python module tutorial</span>
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <a href="netCDF4_classic-module.html#_nptonctype">_nptonctype</a> = <code title="{'f4': 5, 'i1': 1, 'S1': 2, 'i2': 3, 'i4': 4, 'f8': 6}">{'f4': 5, 'i1': 1, 'S1': 2, 'i2': 3, 'i4': 4, 'f8': 6}</code>
+    <a href="netCDF4_classic-module.html#_nptonctype">_nptonctype</a> = <code title="{'S': 2, 'c': 2, 'b': 1, 'f4': 5, 'd': 6, 'f': 5, 'i1': 1, 'i': 4, 'S1': 2, 'i2': 3, 'i4': 4, 'l': 4, 'f8': 6, 's': 3, 'B': 1, 'h': 3}">{'S': 2, 'c': 2, 'b': 1, 'f4': 5, 'd': 6, 'f': 5, 'i...</code>
   </td>
 </tr>
 <tr class="private">
@@ -977,7 +979,15 @@ Global attr source = netCDF4_classic python module tutorial</span>
   <dl><dt></dt><dd>
     <dl><dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-{'f4': 5, 'i1': 1, 'S1': 2, 'i2': 3, 'i4': 4, 'f8': 6}                 
+{'B': 1,
+ 'S': 2,
+ 'S1': 2,
+ 'b': 1,
+ 'c': 2,
+ 'd': 6,
+ 'f': 5,
+ 'f4': 5,
+<span class="variable-ellipsis">...</span>                                                                    
       </pre></td></tr></table></dd>
     </dl>
   </dd></dl>
@@ -1061,7 +1071,7 @@ Global attr source = netCDF4_classic python module tutorial</span>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Mon Sep 18 15:57:30 2006</td>
+        3.0alpha3 on Tue Sep 19 17:48:00 2006</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>
