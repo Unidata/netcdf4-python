@@ -131,24 +131,23 @@ a L{Dataset} instance.
 3) Variables in a netCDF file
 -----------------------------
 
-netCDF variables behave much like python multidimensional array objects
-supplied by the U{numpy module <http://numpy.scipy.org>}. However,
-unlike numpy arrays, netCDF variables can be appended to along the
-'unlimited' dimension. To create a netCDF variable, use the
-C{createVariable} method of a L{Dataset} instance. The C{createVariable}
-method has two mandatory arguments, the variable name (a Python string),
-and the variable datatype. The variable's dimensions are given by a
-tuple containing the dimension names (defined previously with
-C{createDimension}). To create a scalar variable, simply leave out the
-dimensions keyword. The variable primitive datatypes correspond to the
-dtype.str attribute of a numpy array, and can be one of C{'f4'} (32-bit
-floating point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed
-integer), C{'i2'} (16-bit signed integer), C{'i1'} (8-bit signed
-integer), integer), C{'S1'} (single-character string).  The dimensions
-themselves are usually also defined as variables, called coordinate
-variables. The C{createVariable} method returns an instance of the
-L{Variable} class whose methods can be used later to access and set
-variable data and attributes. 
+netCDF variables behave much like python multidimensional array objects supplied by 
+the U{numpy module <http://numpy.scipy.org>}. However, unlike numpy arrays, netCDF 
+variables can be appended to along the 'unlimited' dimension. To create a netCDF 
+variable, use the C{createVariable} method of a L{Dataset} instance. The 
+C{createVariable} method has two mandatory arguments, the variable name (a Python 
+string), and the variable datatype. The variable's dimensions are given by a tuple 
+containing the dimension names (defined previously with C{createDimension}). To 
+create a scalar variable, simply leave out the dimensions keyword. The variable 
+primitive datatypes correspond to the dtype.str attribute of a numpy array, and can 
+be one of C{'f4'} (32-bit floating point), C{'f8'} (64-bit floating point), C{'i4'} 
+(32-bit signed integer), C{'i2'} (16-bit signed integer), C{'i1'} (8-bit signed 
+integer), integer), C{'S1'} (single-character string).  The old single character 
+Numeric typecodes (C{'f','d','i','h','b','c'}) are also accepted for compatibility 
+with Scientific.IO.NetCDF. The dimensions themselves are usually also defined as 
+variables, called coordinate variables. The C{createVariable} method returns an 
+instance of the L{Variable} class whose methods can be used later to access and set 
+variable data and attributes.
 
 >>> times = dataset.createVariable('time','f8',('time',))
 >>> levels = dataset.createVariable('level','i4',('level',))
@@ -429,6 +428,18 @@ _nptonctype  = {'S1' : NC_CHAR,
 _nctonptype = {}
 for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
+
+# also allow old Numeric single character typecodes.
+_nptonctype['d'] = NC_DOUBLE
+_nptonctype['f'] = NC_FLOAT
+_nptonctype['i'] = NC_INT
+_nptonctype['l'] = NC_INT
+_nptonctype['s'] = NC_SHORT
+_nptonctype['h'] = NC_SHORT
+_nptonctype['c'] = NC_CHAR
+_nptonctype['S'] = NC_CHAR
+_nptonctype['b'] = NC_BYTE
+_nptonctype['B'] = NC_BYTE
 
 # Python wrappers.
 
@@ -720,7 +731,8 @@ C{createVariable(varname, datatype, dimensions=(), zlib=True, complevel=6, shuff
 The C{datatype} is a string with the same meaning as the C{dtype.str}
 attribute of arrays in module nump. Supported data types are: C{'S1'
 (NC_CHAR), 'i1' (NC_BYTE), 'i2' (NC_SHORT), 'i4' (NC_INT), 'f4'
-(NC_FLOAT)} and C{'f8' (NC_DOUBLE)}.
+(NC_FLOAT)} and C{'f8' (NC_DOUBLE)}. The old single character 
+Numeric typecodes (C{'f','d','c','i','h','b'}) are also accepted.
 
 Data from netCDF variables are presented to python as numpy arrays with
 the corresponding data type. 
@@ -945,7 +957,8 @@ B{C{datatype}} - L{Variable} data type, one of C{'f4'} (32-bit floating
 point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed
 integer), C{'i2'} (16-bit signed integer), C{'i4'} (8-bit singed
 integer), C{'i1'} (8-bit signed integer) or C{'S1'} (single-character
-string). 
+string). The old single character Numeric typecodes 
+(C{'f','d','c','i','h','b'}) are also accepted
 
 B{Keywords:}
 
