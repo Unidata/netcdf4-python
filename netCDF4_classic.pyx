@@ -521,7 +521,7 @@ def _get_vars(dataset):
 # these are class attributes that 
 # only exist at the python level (not in the netCDF file).
 
-_private_atts = ['_dsetid','_dset','_varid','dimensions','variables','dtype','file_format']
+_private_atts = ['_dsetid','_dset','_varid','dimensions','variables','dtype','file_format','__dict__']
 
 cdef class Dataset:
     """
@@ -612,6 +612,7 @@ L{netCDF4} module.
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
+        # file format attribute.
         self.file_format = _get_format(dsetid)
         if self.file_format == 'NETCDF4':
             raise IOError('use the netCDF4 module to read/write NETCDF4 format data files (files that use new features of the netCDF 4 API)')
@@ -818,13 +819,6 @@ C{renameVariable(oldname, newname)}"""
         # add new key.
         self.variables[newname] = var
 
-    def ncattrs(self):
-        """
-return netCDF global attribute names for this L{Dataset} in a list.
-
-C{ncattrs()}""" 
-        return _get_att_names(self._dsetid, NC_GLOBAL)
-
     def __delattr__(self,name):
         cdef char *attname
         # if it's a netCDF attribute, remove it
@@ -851,11 +845,26 @@ C{ncattrs()}"""
             else:
                 self.__dict__[name]=value
 
+    def ncattrs(self):
+        """
+return names of netCDF attribute for this L{Dataset} in a list
+
+C{ncattrs()}""" 
+        return _get_att_names(self._dsetid, NC_GLOBAL)
+
     def __getattr__(self,name):
         # if name in _private_atts, it is stored at the python
         # level and not in the netCDF file.
         if name.startswith('__') and name.endswith('__'):
-            raise AttributeError
+            # if __dict__ requested, return a dict with netCDF attributes.
+            if name == '__dict__': 
+                names = self.ncattrs()
+                values = []
+                for name in names:
+                    values.append(_get_att(self._dsetid, NC_GLOBAL, name))
+                return dict(zip(names,values))
+            else:
+                raise AttributeError
         elif name in _private_atts:
             return self.__dict__[name]
         else:
@@ -1141,7 +1150,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
 
     def ncattrs(self):
         """
-return netCDF attribute names for this L{Variable} in a list
+return names of netCDF attribute for this L{Variable} in a list
 
 C{ncattrs()}"""
 
@@ -1185,7 +1194,15 @@ C{ncattrs()}"""
         # if name in _private_atts, it is stored at the python
         # level and not in the netCDF file.
         if name.startswith('__') and name.endswith('__'):
-            raise AttributeError
+            # if __dict__ requested, return a dict with netCDF attributes.
+            if name == '__dict__': 
+                names = self.ncattrs()
+                values = []
+                for name in names:
+                    values.append(_get_att(self._dsetid, self._varid, name))
+                return dict(zip(names,values))
+            else:
+                raise AttributeError
         elif name in _private_atts:
             return self.__dict__[name]
         else:

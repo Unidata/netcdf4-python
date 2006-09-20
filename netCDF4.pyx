@@ -1293,7 +1293,15 @@ C{ncattrs()}"""
         # if name in _private_atts, it is stored at the python
         # level and not in the netCDF file.
         if name.startswith('__') and name.endswith('__'):
-            raise AttributeError
+            # if __dict__ requested, return a dict with netCDF attributes.
+            if name == '__dict__': 
+                names = self.ncattrs()
+                values = []
+                for name in names:
+                    values.append(_get_att(self._grpid, NC_GLOBAL, name))
+                return dict(zip(names,values))
+            else:
+                raise AttributeError
         elif name in _private_atts:
             return self.__dict__[name]
         else:
@@ -1737,7 +1745,15 @@ C{ncattrs()}"""
         # if name in _private_atts, it is stored at the python
         # level and not in the netCDF file.
         if name.startswith('__') and name.endswith('__'):
-            raise AttributeError
+            # if __dict__ requested, return a dict with netCDF attributes.
+            if name == '__dict__': 
+                names = self.ncattrs()
+                values = []
+                for name in names:
+                    values.append(_get_att(self._grpid, self._varid, name))
+                return dict(zip(names,values))
+            else:
+                raise AttributeError
         elif name in _private_atts:
             return self.__dict__[name]
         else:
