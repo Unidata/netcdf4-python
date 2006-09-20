@@ -284,6 +284,14 @@ Global attr description = bogus example script
 Global attr history = Created Mon Nov  7 10.30:56 2005
 Global attr source = netCDF4 python module tutorial
 
+The C{__dict__} attribute of a L{Dataset} or L{Variable} instance provides
+all the netCDF attribute name/value pairs in a python dictionary:
+
+>>> print rootgrp.__dict__
+{'source': 'netCDF4 python module tutorial',
+'description': 'bogus example script',
+'history': 'Created Mon Nov  7 10.30:56 2005'}
+
 Attributes can be deleted from a netCDF L{Dataset}, L{Group} or
 L{Variable} using the python C{del} statement (i.e. C{del grp.foo}
 removes the attribute C{foo} the the group C{grp}).
@@ -921,6 +929,8 @@ Dataset are accomplised via L{Dataset} instance methods.
 A list of attribute names corresponding to global netCDF attributes 
 defined for the L{Dataset} can be obtained with the L{ncattrs()} method. 
 These attributes can be created by assigning to an attribute of the 
+L{Dataset} instance. A dictionary containing all the netCDF attribute
+name/value pairs is provided by the C{__dict__} attribute of a
 L{Dataset} instance.
 
 The instance variables C{dimensions, variables, groups, 
@@ -1160,7 +1170,9 @@ The return value is the L{Variable} class instance describing the new
 variable.
 
 A list of names corresponding to netCDF variable attributes can be 
-obtained with the L{Variable} method C{ncattrs()}.
+obtained with the L{Variable} method C{ncattrs()}. A dictionary
+containing all the netCDF attribute name/value pairs is provided by
+the C{__dict__} attribute of a L{Variable} instance.
 
 L{Variable} instances behave much like array objects. Data can be
 assigned to or retrieved from a variable with indexing and slicing
@@ -1537,7 +1549,9 @@ accomplised via L{Variable} instance methods.
 A list of attribute names corresponding to netCDF attributes defined for 
 the variable can be obtained with the C{ncattrs()} method. These 
 attributes can be created by assigning to an attribute of the L{Variable} 
-instance.
+instance. A dictionary containing all the netCDF attribute
+name/value pairs is provided by the C{__dict__} attribute of a
+L{Variable} instance.
 
 The instance variables C{dimensions, dtype, usertype, usertype_name, 
 dtype_base, shape} and C{least_significant_digits} are read-only (and 

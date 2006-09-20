@@ -43,6 +43,8 @@ times.calendar = 'proleptic_gregorian'
 for name in dataset.ncattrs():
     print 'Global attr', name, '=', getattr(dataset,name)
 
+print dataset.__dict__
+
 from datetime import datetime
 dataset.timestamp = datetime.now()
 print 'Global attr timestamp =',dataset.timestamp

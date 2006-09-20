@@ -63,6 +63,8 @@ times.calendar = 'proleptic_gregorian'
 for name in rootgrp.ncattrs():
     print 'Global attr', name, '=', getattr(rootgrp,name)
 
+print rootgrp.__dict__
+
 print rootgrp.variables
 
 import numpy as NP

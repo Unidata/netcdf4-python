@@ -206,6 +206,14 @@ Global attr description = bogus example script
 Global attr history = Created Mon Nov  7 10.30:56 2005
 Global attr source = netCDF4_classic python module tutorial
 
+The C{__dict__} attribute of a L{Dataset} or L{Variable} instance provides 
+all the netCDF attribute name/value pairs in a python dictionary:
+
+>>> print dataset.__dict__
+{'source': 'netCDF4_classic python module tutorial',
+'description': 'bogus example script', 
+'history': 'Created Mon Nov  7 10.30:56 2005'}
+
 Attributes can also be python objects. netCDF4_classic tries to convert
 attributes to numpy arrays before saving them to the netCDF file.  If
 the attribute is cast to an object array by numpy, it is pickled and
@@ -521,7 +529,7 @@ def _get_vars(dataset):
 # these are class attributes that 
 # only exist at the python level (not in the netCDF file).
 
-_private_atts = ['_dsetid','_dset','_varid','dimensions','variables','dtype','file_format','__dict__']
+_private_atts = ['_dsetid','_dset','_varid','dimensions','variables','dtype','file_format']
 
 cdef class Dataset:
     """
@@ -569,6 +577,8 @@ accomplised via L{Dataset} instance methods.
 A list of attribute names corresponding to global netCDF attributes
 defined for the L{Dataset} can be obtained with the L{ncattrs()} method. 
 These attributes can be created by assigning to an attribute of the
+L{Dataset} instance. A dictionary containing all the netCDF attribute
+name/value pairs is provided by the C{__dict__} attribute of a
 L{Dataset} instance.
 
 The instance variables C{dimensions, variables} amd C{file_format} are
@@ -779,7 +789,9 @@ The return value is the L{Variable} class instance describing the new
 variable.
 
 A list of names corresponding to netCDF variable attributes can be
-obtained with the L{Variable} method C{ncattrs()}.
+obtained with the L{Variable} method C{ncattrs()}. A dictionary
+containing all the netCDF attribute name/value pairs is provided by
+the C{__dict__} attribute of a L{Variable} instance.
 
 L{Variable} instances behave much like array objects. Data can be
 assigned to or retrieved from a variable with indexing and slicing
@@ -1013,6 +1025,8 @@ accomplised via L{Variable} instance methods.
 A list of attribute names corresponding to netCDF attributes defined for
 the variable can be obtained with the C{ncattrs()} method. These
 attributes can be created by assigning to an attribute of the
+L{Variable} instance. A dictionary containing all the netCDF attribute
+name/value pairs is provided by the C{__dict__} attribute of a
 L{Variable} instance.
 
 The instance variables C{dimensions, dtype, shape} and
