@@ -1038,7 +1038,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
         self._dset = dset
         if datatype not in _nptonctype.keys():
             raise TypeError('illegal data type, must be one of %s, got %s' % (_nptonctype.keys(),datatype))
-        self.dtype = datatype
+        self.dtype = _nctonptype[_nptonctype[datatype]]
         if kwargs.has_key('id'):
             self._varid = kwargs['id']
         else:
@@ -1103,6 +1103,10 @@ L{Variable} instance. If C{None}, the data is not truncated. """
             dset._enddef()
             if least_significant_digit is not None:
                 self.least_significant_digit = least_significant_digit
+
+    def typecode(self):
+        """return dtype attribute, provided for compatibility with Scientific.IO.NetCDF"""
+        return self.dtype
 
     def _getDimensions(self):
         """Private method to get variables's dimension names"""
