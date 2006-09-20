@@ -284,7 +284,7 @@ Global attr description = bogus example script
 Global attr history = Created Mon Nov  7 10.30:56 2005
 Global attr source = netCDF4 python module tutorial
 
-The C{__dict__} attribute of a L{Dataset} or L{Variable} instance provides
+The C{__dict__} attribute of a L{Dataset}, L{Group} or L{Variable} instance provides
 all the netCDF attribute name/value pairs in a python dictionary:
 
 >>> print rootgrp.__dict__
