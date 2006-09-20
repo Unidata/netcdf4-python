@@ -1,4 +1,4 @@
-20060828 - version 0.5
+20060920 - version 0.5
 ======================
 * Compound type support! (members must be fixed data primitive types -
   no user-defined types or NC_STRING variables allowed).  Attributes
@@ -9,7 +9,7 @@
   >>> data[:] = 1
   fills all the elements with 1 (instead of raising an IndexError).
 
-* Support for numpy 1.0, netcdf-4.0-alpha18, HDF5 1.8.0 alpha.
+* Tested with numpy 1.0b5, netcdf-4.0-alpha16, HDF5 1.7.52 alpha.
 
 * Added renameDimension and renameVariable methods to Dataset and Group classes.
 
@@ -27,8 +27,16 @@
 
 * docstrings now formatted with epydoc (http://epydoc.sf.net).
 
+* improved Scientific.IO.NetCDF compatibility for netCDF4_classic
+  (typecode method, ability to use old Numeric typecodes).
+
+* zlib=False or complevel=0 disables shuffle filter in createVariable.
+
 * subversion repository hosted on Google projects
   (http://code.google.com/p/netcdf4-python/).
+
+* examples_classic/bench2.py is a performance comparison with
+  Scientific.IO.NetCDF (the numpy version provided by pynetcdf).
 
 20060710 - version 0.4.5
 ========================
