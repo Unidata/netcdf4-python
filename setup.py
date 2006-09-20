@@ -4,7 +4,7 @@ from numpy.distutils.core  import setup, Extension
 HDF5_dir = os.environ.get('HDF5_DIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
 if HDF5_dir is None or netCDF4_dir is None:
-    raise KeyError, 'please specify the locations of netCDF4 and HDF5 with the netCDF4_DIR and HDF5_DIR environment variables'
+    raise KeyError, 'please specify the locations of netCDF4 and HDF5 with the NETCDF4_DIR and HDF5_DIR environment variables'
 
 libs = ['netcdf','hdf5','hdf5_hl']
 lib_dirs = [os.path.join(netCDF4_dir,'lib'),os.path.join(HDF5_dir,'lib')]
