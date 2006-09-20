@@ -28,10 +28,10 @@ Requires
  - netCDF version 4.  netCDF4 is now in alpha,
  and is a bit of a moving target.  This release is has only
  been tested with netcdf-4.0-alpha16, available from
- U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- - A pre-release version of HDF5 1.8 is required.  I've only
- tested version 1.7.52, which is available at
- U{ftp://hdf.ncsa.uiuc.edu/pub/outgoing/hdf5/snapshots/}.
+ U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
+ - A pre-release version of HDF5 1.8 is required.  Version
+ 1.7.52 is required for netcdf-4.0-alpha16. It is also 
+ available at U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
 
 
 Install
