@@ -38,6 +38,10 @@
 * examples_classic/bench2.py is a performance comparison with
   Scientific.IO.NetCDF (the numpy version provided by pynetcdf).
 
+* __dict__ attribute of Dataset, Group or Variable provides a python
+  dictionary with all netCDF attribute name/value pairs (just like
+  Scientific.IO.NetCDF).
+
 20060710 - version 0.4.5
 ========================
 * fixed to work with recent svn versions of numpy
