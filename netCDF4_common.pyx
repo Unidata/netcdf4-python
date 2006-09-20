@@ -49,7 +49,14 @@ def _get_att(int grpid, int varid, name):
             raise RuntimeError(nc_strerror(ierr))
         pstring = value_arr.tostring()
         if pstring[0] == '\x80': # a pickle string
-            return cPickle.loads(pstring)
+            attout = cPickle.loads(pstring)
+            # attout should always be an object array.
+            # if result is a scalar array, just return scalar.
+            if attout.shape == (): 
+                return attout.item()
+            # if result is an object array with multiple elements, return a list.
+            else:
+                return attout.tolist()
         else:
             # remove NULL characters from python string
             return pstring.replace('\x00','')
@@ -62,8 +69,11 @@ def _get_att(int grpid, int varid, name):
         ierr = nc_get_att(grpid, varid, attname, value_arr.data)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
-        if att_len == 1:
-            # return a scalar
+        if value_arr.shape == ():
+            # return a scalar for a scalar array
+            return value_arr.item()
+        elif att_len == 1:
+            # return a scalar for a single element array
             return value_arr[0]
         else:
             return value_arr
