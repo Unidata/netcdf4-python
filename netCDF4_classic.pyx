@@ -433,6 +433,7 @@ _nptonctype  = {'S1' : NC_CHAR,
                 'i4' : NC_INT,   
                 'f4' : NC_FLOAT,
                 'f8' : NC_DOUBLE}
+_supportedtypes = _nptonctype.keys()
 _nctonptype = {}
 for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
@@ -1059,8 +1060,8 @@ L{Variable} instance. If C{None}, the data is not truncated. """
         cdef nc_var_options ncvaropt
         self._dsetid = dset._dsetid
         self._dset = dset
-        if datatype not in _nptonctype.keys():
-            raise TypeError('illegal data type, must be one of %s, got %s' % (_nptonctype.keys(),datatype))
+        if datatype not in _supportedtypes:
+            raise TypeError('illegal data type, must be one of %s, got %s' % (_supportedtypes,datatype))
         self.dtype = _nctonptype[_nptonctype[datatype]]
         if kwargs.has_key('id'):
             self._varid = kwargs['id']

@@ -702,6 +702,7 @@ _nptonctype  = {'S1' : NC_CHAR,
                 'u8' : NC_UINT64,
                 'f4' : NC_FLOAT,
                 'f8' : NC_DOUBLE}
+_supportedtypes = _nptonctype.keys()
 _nctonptype = {}
 for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
@@ -1598,8 +1599,8 @@ instance. If C{None}, the data is not truncated. """
         cdef nc_var_options ncvaropt
         self._grpid = grp._grpid
         self._grp = grp
-        if not isinstance(datatype, UserType) and datatype not in _nptonctype.keys():
-            raise TypeError('illegal primitive data type, must be one of %s, got %s' % (_nptonctype.keys(),datatype))
+        if not isinstance(datatype, UserType) and datatype not in _supportedtypes:
+            raise TypeError('illegal primitive data type, must be one of %s, got %s' % (_supportedtypes,datatype))
         self.dtype = datatype
         if isinstance(datatype, UserType):
             self.dtype_base = datatype.base_datatype

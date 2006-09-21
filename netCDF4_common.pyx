@@ -63,7 +63,7 @@ def _get_att(int grpid, int varid, name):
     else:
         if att_type == NC_LONG:
             att_type = NC_INT
-        if att_type not in _nctonptype.keys():
+        if att_type not in _supportedtypes:
             raise ValueError, 'unsupported attribute type'
         value_arr = NP.empty(att_len,_nctonptype[att_type])
         ierr = nc_get_att(grpid, varid, attname, value_arr.data)
@@ -122,6 +122,10 @@ def _set_att(int grpid, int varid, name, value):
     attname = PyString_AsString(name)
     # create array in Python. Let multiarray module do typecasting.
     value_arr = NP.array(value)
+    # if array is 64-bit integer, and 64 bit integers are not a
+    # supported data type (netCDF4_classic), downcast to 32 bit.
+    if value_arr.dtype.str[1:] == 'i8' and 'i8' not in _supportedtypes:
+       value_arr = value_arr.astype('i4')
     if value_arr.dtype.char == 'S':
         dats = value_arr.tostring()
         datstring = dats
@@ -136,8 +140,8 @@ def _set_att(int grpid, int varid, name, value):
         strdata = PyString_AsString(pstring)
         ierr = nc_put_att_text(grpid, varid, attname, lenarr, strdata)
     else:
-        if value_arr.dtype.str[1:] not in _nptonctype.keys():
-            raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_nptonctype.keys(), value_arr.dtype.str[1:])
+        if value_arr.dtype.str[1:] not in _supportedtypes:
+            raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
         xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
         ierr = nc_put_att(grpid, varid, attname, xtype, lenarr, value_arr.data)
