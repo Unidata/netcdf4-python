@@ -1,3 +1,6 @@
+* on 64-bit systems integer attributes in netCDF4_classic failed, since there
+  is no 64-bit integer data type. Fixed by downcasting to 32-bit integer.
+
 20060920 - version 0.5
 ======================
 * Compound type support! (members must be fixed data primitive types -
