@@ -6,7 +6,7 @@ netCDF4_dir = os.environ.get('NETCDF4_DIR')
 if HDF5_dir is None or netCDF4_dir is None:
     raise KeyError, 'please specify the locations of netCDF4 and HDF5 with the NETCDF4_DIR and HDF5_DIR environment variables'
 
-libs = ['netcdf','hdf5','hdf5_hl']
+libs = ['netcdf','z','hdf5_hl','hdf5']
 lib_dirs = [os.path.join(netCDF4_dir,'lib'),os.path.join(HDF5_dir,'lib')]
 inc_dirs = [os.path.join(netCDF4_dir,'include'),os.path.join(HDF5_dir,'include')]
 extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
