@@ -63,7 +63,7 @@ def _get_att(int grpid, int varid, name):
     else:
         if att_type == NC_LONG:
             att_type = NC_INT
-        if att_type not in _supportedtypes:
+        if att_type not in _nctonptype.keys():
             raise ValueError, 'unsupported attribute type'
         value_arr = NP.empty(att_len,_nctonptype[att_type])
         ierr = nc_get_att(grpid, varid, attname, value_arr.data)
