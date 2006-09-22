@@ -42,6 +42,7 @@ def _get_att(int grpid, int varid, name):
     ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
+    # attribute is a character or string ...
     if att_type == NC_CHAR or att_type == NC_STRING:
         value_arr = NP.empty(att_len,'S1')
         ierr = nc_get_att_text(grpid, varid, attname, <char *>value_arr.data)
@@ -60,6 +61,7 @@ def _get_att(int grpid, int varid, name):
         else:
             # remove NULL characters from python string
             return pstring.replace('\x00','')
+    # a regular numeric type.
     else:
         if att_type == NC_LONG:
             att_type = NC_INT
@@ -122,7 +124,7 @@ def _set_att(int grpid, int varid, name, value):
     attname = PyString_AsString(name)
     # put attribute value into a numpy array.
     # if value is a python int and 64-bit integer datatype 
-    # not supported, put it into an i4 array.
+    # not supported, put it into an 32-bit integer array.
     # (on 64-bit systems a python int will turn into a 64-bit array
     # which is not a supported datatype in netCDF4_classic).
     if isinstance(value,int) and 'i8' not in _supportedtypes:
@@ -130,6 +132,7 @@ def _set_att(int grpid, int varid, name, value):
     # Let multiarray module do typecasting.
     else:
         value_arr = NP.array(value)
+    # if array contains strings, write a text attribute.
     if value_arr.dtype.char == 'S':
         dats = value_arr.tostring()
         datstring = dats
@@ -137,12 +140,14 @@ def _set_att(int grpid, int varid, name, value):
         ierr = nc_put_att_text(grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
-    # an object array, saved as pickled string.
+    # an object array, save as pickled string in a text attribute.
+    # will be unpickled when attribute is accessed..
     elif value_arr.dtype.char == 'O':
         pstring = cPickle.dumps(value_arr,2)
         lenarr = len(pstring)
         strdata = PyString_AsString(pstring)
         ierr = nc_put_att_text(grpid, varid, attname, lenarr, strdata)
+    # a 'regular' array type ('f4','i4','f8' etc)
     else:
         if value_arr.dtype.str[1:] not in _supportedtypes:
             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
