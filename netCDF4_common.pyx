@@ -120,9 +120,11 @@ def _set_att(int grpid, int varid, name, value):
     cdef char *attname, *datstring, *strdata
     cdef ndarray value_arr 
     attname = PyString_AsString(name)
-    # if value is a python int and i8 datatype not supported,
-    # put it into an i4 array
-    # (on 64-bit systems it would be put into an i8 array)
+    # put attribute value into a numpy array.
+    # if value is a python int and 64-bit integer datatype 
+    # not supported, put it into an i4 array.
+    # (on 64-bit systems a python int will turn into a 64-bit array
+    # which is not a supported datatype in netCDF4_classic).
     if isinstance(value,int) and 'i8' not in _supportedtypes:
         value_arr = NP.array(value,'i4')
     # Let multiarray module do typecasting.
