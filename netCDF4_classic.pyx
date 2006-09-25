@@ -1060,7 +1060,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
         cdef nc_var_options ncvaropt
         self._dsetid = dset._dsetid
         self._dset = dset
-        if datatype not in _supportedtypes:
+        if datatype not in _nptonctype.keys():
             raise TypeError('illegal data type, must be one of %s, got %s' % (_supportedtypes,datatype))
         self.dtype = _nctonptype[_nptonctype[datatype]]
         if kwargs.has_key('id'):
