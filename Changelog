@@ -1,3 +1,6 @@
+* implement negative strides in variable slicing
+  (feature missing from Scientific.IO.NetCDF).
+
 20060925 - version 0.5.1
 ========================
 * on 64-bit systems integer attributes in netCDF4_classic failed, since there
