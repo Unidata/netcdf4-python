@@ -1316,7 +1316,7 @@ C{getValue()}"""
 
         # if there is a negative stride, reverse the data, then use put_vars.
         if negstride:
-            # reverse along axes with negative strides.
+            # reverse data along axes with negative strides.
             data = data[sl].copy() # make sure a copy is made.
             ierr = nc_put_vars(self._dsetid, self._varid,
                                startp, countp, stridep, data.data)
@@ -1371,7 +1371,7 @@ C{getValue()}"""
         if negstride:
             ierr = nc_get_vars(self._dsetid, self._varid,
                                startp, countp, stridep, data.data)
-            # reverse along axes with negative strides.
+            # reverse data along axes with negative strides.
             data = data[sl]
         # strides all 1 or scalar variable, use get_vara (faster)
         elif sum(stride) == ndims or ndims ==  0: 
