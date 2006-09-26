@@ -1780,7 +1780,7 @@ C{ncattrs()}"""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
-        start, count, stride = self.__buildStartCountStride(elem)
+        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp.dimensions)
         # Get elements.
         if not self.usertype and self.dtype != 'S':
             return self._get(start, count, stride)
@@ -1797,7 +1797,7 @@ C{ncattrs()}"""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
-        start, count, stride = self.__buildStartCountStride(elem)
+        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp.dimensions)
         # quantize data if least_significant_digit attribute set.
         if 'least_significant_digit' in self.ncattrs():
             data = _quantize(data,self.least_significant_digit)
@@ -1855,136 +1855,6 @@ C{getValue()}"""
             raise IndexError('to retrieve values from a non-scalar variable, use slicing')
         return self[:]
 
-    def __buildStartCountStride(self, elem):
-
-        # Create the 'start', 'count', 'slice' and 'stride' tuples that
-        # will be passed to 'nc_get_var_0'/'nc_put_var_0'.
-        #   start     starting indices along each dimension
-        #   count     count of values along each dimension; a value of -1
-        #             indicates that and index, not a slice, was applied to
-        #             the dimension; in that case, the dimension should be
-        #             dropped from the output array.
-        #   stride    strides along each dimension
-
-        # Borrowed from pycdf (http://pysclint.sourceforge.net/pycdf)
-        # by Andre Gosselin.
-
-        # Handle a scalar variable as a 1-dimensional array of length 1.
-        shape = self.shape
-        nDims = len(self.dimensions)
-        if nDims == 0:
-            nDims = 1
-            shape = (1,)
-
-        # Make sure the indexing expression does not exceed the variable
-        # number of dimensions.
-        if type(elem) == types.TupleType:
-            if len(elem) > nDims:
-                raise ValueError("slicing expression exceeds the number of dimensions of the variable")
-        else:   # Convert single index to sequence
-            elem = [elem]
-            
-        # 'elem' is a tuple whose element types can be one of:
-        #    IntType      for standard indexing
-        #    SliceType    for extended slicing (using 'start', 'stop' and 'step' attributes)
-        #    EllipsisType for an ellipsis (...); at most one ellipsis can occur in the
-        #                 slicing expression, otherwise the expressionis ambiguous
-        # Recreate the 'elem' tuple, replacing a possible ellipsis with empty slices.
-        hasEllipsis = 0
-        newElem = []
-        for e in elem:
-            if type(e) == types.EllipsisType:
-                if hasEllipsis:
-                    raise IndexError("at most one ellipsis allowed in a slicing expression")
-                # The ellipsis stands for the missing dimensions.
-                newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
-            else:
-                newElem.append(e)
-        elem = newElem
-
-        # Build arguments to "nc_get_var/nc_put_var".
-        start = []
-        count = []
-        stride = []
-        n = -1
-        for e in elem:
-            n = n+1
-
-            if len(self.dimensions):
-                dimname = self.dimensions[n]
-                # is this dimension unlimited?
-                unlim = self._grp.dimensions[dimname].isunlimited()
-            else:
-                unlim = False
-            
-            # Simple index
-            if type(e) == types.IntType:
-                isSlice = 0       # we do not deal with a slice
-                # Respect standard python sequence indexing behavior.
-                # Count from the dimension end if index is negative.
-                # Consider as illegal an out of bound index, except for the
-                # unlimited dimension.
-                if e < 0 :
-                    e = e+shape[n]
-                if e < 0 or (not unlim and e >= shape[n]):
-                    raise IndexError("index out of range")
-                beg = e
-                end = e + 1
-                inc = 1
-                
-            # Slice index. Respect Python syntax for slice upper bounds,
-            # which are not included in the resulting slice. Also, if the
-            # upper bound exceed the dimension size, truncate it.
-            elif type(e) == types.SliceType:
-                isSlice = 1     # we deal with a slice
-                # None or 0 means not specified
-                if e.start:
-                    beg = e.start
-                    if beg < 0:
-                        beg = beg+shape[n]
-                else:
-                    beg = 0
-                # None or maxint means not specified
-                if e.stop and e.stop != sys.maxint:
-                    end = e.stop
-                    if end < 0:
-                        end = end+shape[n]
-                else:
-                    end = shape[n]
-                # None means not specified
-                if e.step:
-                    inc = e.step
-                else:
-                    inc = 1
-                    
-            # Bug
-            else:
-                raise ValueError("Bug: unexpected element type to __getitem__")
-
-            # Clip end index (except if unlimited dimension)
-            # and compute number of elements to get.
-            if not unlim and end > shape[n]:
-                end = shape[n]
-            if isSlice:       # we deal with a slice
-                cnt = (end - beg) / inc
-                if cnt * inc < end - beg:
-                    cnt = cnt+1
-            else:
-                cnt = -1
-            start.append(beg)
-            count.append(cnt)
-            stride.append(inc)
-
-        # Complete missing dimensions
-        while n < nDims - 1:
-            n = n+1
-            start.append(0)
-            count.append(shape[n])
-            stride.append(1)
-
-        # Done
-        return start, count, stride
-
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
         cdef int ierr, ndims, totelem
@@ -1998,10 +1868,12 @@ C{getValue()}"""
             data = data.copy()
         # fill up startp,countp,stridep.
         totelem = 1
+        negstride = 0
         for n from 0 <= n < ndims:
             startp[n] = start[n]
             countp[n] = abs(count[n])
             stridep[n] = stride[n]
+            if stride[n] < 0: negstride=1
             totelem = totelem*countp[n]
         # check to see that size of data array is what is expected
         # for slice given. 
@@ -2022,8 +1894,10 @@ C{getValue()}"""
                 raise TypeError('data to put in compound must be a record array')
         elif self.dtype != data.dtype.str[1:]:
             data = data.astype(self.dtype_base) # cast data, if necessary.
+        if negstride:
+            raise IndexError('negative strides not yet supported in __setitem__')
         # strides all 1 or scalar variable, use put_vara (faster)
-        if sum(stride) == ndims or ndims == 0:
+        elif sum(stride) == ndims or ndims == 0:
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, data.data)
         else:  
@@ -2049,10 +1923,12 @@ C{getValue()}"""
             data = data.copy()
         # fill up startp,countp,stridep.
         totelem = 1
+        negstride = 0
         for n from 0 <= n < ndims:
             startp[n] = start[n]
             countp[n] = abs(count[n])
             stridep[n] = stride[n]
+            if strid[n] < 0: negstride=1
             totelem = totelem*countp[n]
         # check to see that size of data array is what is expected
         # for slice given. 
@@ -2083,8 +1959,10 @@ C{getValue()}"""
             vldata[i].len = PyArray_SIZE(dataarr)
             vldata[i].p = dataarr.data
             databuff = databuff + data.strides[0]
+        if negstride:
+            raise IndexError('negative strides not yet supported in __setitem__')
         # strides all 1 or scalar variable, use put_vara (faster)
-        if sum(stride) == ndims or ndims == 0: 
+        elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, vldata)
         else:  
@@ -2111,10 +1989,12 @@ C{getValue()}"""
             data = data.copy()
         # fill up startp,countp,stridep.
         totelem = 1
+        negstride = 0
         for n from 0 <= n < ndims:
             startp[n] = start[n]
             countp[n] = abs(count[n])
             stridep[n] = stride[n]
+            if stride[n] < 0: negstride=1
             totelem = totelem*countp[n]
         # check to see that size of data array is what is expected
         # for slice given. 
@@ -2147,8 +2027,10 @@ C{getValue()}"""
                 # raise an exception.
                 #raise TypeError('data to put in string variable must be an object array containing Python strings')
             strdata[i] = PyString_AsString(pystring)
+        if negstride:
+            raise IndexError('negative strides not yet supported in __setitem__')
         # strides all 1 or scalar variable, use put_vara (faster)
-        if sum(stride) == ndims or ndims == 0: 
+        elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, strdata)
         else:  
@@ -2162,7 +2044,7 @@ C{getValue()}"""
         """Private method to retrieve data from a netCDF variable"""
         cdef int ierr, ndims
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS], imapp[NC_MAX_DIMS]
         cdef ndarray data
         # if one of the counts is negative, then it is an index
         # and not a slice so the resulting array
@@ -2178,13 +2060,20 @@ C{getValue()}"""
         # rank of variable.
         ndims = len(self.dimensions)
         # fill up startp,countp,stridep.
+        negstride = 0
         for n from 0 <= n < ndims:
             startp[n] = start[n]
             countp[n] = abs(count[n]) # make -1 into +1.
             stridep[n] = stride[n]
+            if stride[n] < 0: negstride=1
         data = NP.empty(shapeout, self.dtype)
+        # if there is a negative stride, use put_varm.
+        if negstride:
+            raise IndexError('negative strides not yet supported in __getitem__')
+            #ierr = nc_get_varm(self._dsetid, self._varid,
+            #                   startp, countp, imapp, data.data)
         # strides all 1 or scalar variable, use get_vara (faster)
-        if sum(stride) == ndims or ndims == 0: 
+        elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, data.data)
         else:
@@ -2203,7 +2092,7 @@ C{getValue()}"""
         """Private method to retrieve data from a netCDF variable with usertype='compound'"""
         cdef int ierr, ndims, nfields, i, n, k, n1, n2, size, offset
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS], imapp[NC_MAX_DIMS]
         cdef ndarray data, data2
         cdef char *databuf, *databuf2
         cdef int *field_sizes, *field_offsets
@@ -2221,17 +2110,24 @@ C{getValue()}"""
         # rank of variable.
         ndims = len(self.dimensions)
         # fill up startp,countp,stridep.
+        negstride = 0
         for n from 0 <= n < ndims:
             startp[n] = start[n]
             countp[n] = abs(count[n]) # make -1 into +1.
             stridep[n] = stride[n]
+            if stride[n] < 0: negstride=1
         # allocate data array as a void type.
         data = NP.empty(shapeout, self.dtype_base)
         itemsize = data.itemsize
         if self.dtype._base_type_size != itemsize:
             data = NP.empty(shapeout, 'V'+str(self.dtype._base_type_size))
+        # if there is a negative stride, use put_varm.
+        if negstride:
+            raise IndexError('negative strides not yet supported in __getitem__')
+            #ierr = nc_get_varm(self._dsetid, self._varid,
+            #                   startp, countp, imapp, data.data)
         # strides all 1 or scalar variable, use get_vara (faster)
-        if sum(stride) == ndims or ndims == 0: 
+        elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, data.data)
         else:
@@ -2278,7 +2174,7 @@ C{getValue()}"""
         """Private method to retrieve data from a netCDF variable with usertype='vlen'"""
         cdef int i,ierr, ndims, totelem, arrlen
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS], imapp[NC_MAX_DIMS]
         cdef ndarray data
         cdef void* elptr
         cdef char* databuff, arrbuff
@@ -2298,10 +2194,12 @@ C{getValue()}"""
         # rank of variable.
         ndims = len(self.dimensions)
         # fill up startp,countp,stridep.
+        negstride = 0
         for n from 0 <= n < ndims:
             startp[n] = start[n]
             countp[n] = abs(count[n]) # make -1 into +1.
             stridep[n] = stride[n]
+            if stride[n] < 0: negstride=1
         # allocate array of correct primitive type.
         data = NP.empty(shapeout, 'O')
         # flatten data array.
@@ -2309,8 +2207,13 @@ C{getValue()}"""
         totelem = PyArray_SIZE(data)
         # allocate struct array to hold vlen data.
         vldata = <nc_vlen_t *>malloc(totelem*sizeof(nc_vlen_t))
+        # if there is a negative stride, use put_varm.
+        if negstride:
+            raise IndexError('negative strides not yet supported in __getitem__')
+            #ierr = nc_get_varm(self._dsetid, self._varid,
+            #                   startp, countp, imapp, data.data)
         # strides all 1 or scalar variable, use get_vara (faster)
-        if sum(stride) == ndims or ndims == 0: 
+        elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, vldata)
         else:
@@ -2339,7 +2242,7 @@ C{getValue()}"""
         """Private method to retrieve data from a netCDF variable with dtype='S'"""
         cdef int i,ierr, ndims, totelem, arrlen
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS], imapp[NC_MAX_DIMS]
         cdef ndarray data
         cdef void *elptr
         cdef char *strbuf
@@ -2359,10 +2262,12 @@ C{getValue()}"""
         # rank of variable.
         ndims = len(self.dimensions)
         # fill up startp,countp,stridep.
+        negstride = 0
         for n from 0 <= n < ndims:
             startp[n] = start[n]
             countp[n] = abs(count[n]) # make -1 into +1.
             stridep[n] = stride[n]
+            if stride[n] < 0: negstride=1
         # allocate array of correct primitive type.
         data = NP.empty(shapeout, 'O')
         # flatten data array.
@@ -2370,8 +2275,13 @@ C{getValue()}"""
         totelem = PyArray_SIZE(data)
         # allocate pointer array to hold string data.
         strdata = <char **>malloc(sizeof(char *) * totelem)
+        # if there is a negative stride, use put_varm.
+        if negstride:
+            raise IndexError('negative strides not yet supported in __getitem__')
+            #ierr = nc_get_varm(self._dsetid, self._varid,
+            #                   startp, countp, imapp, data.data)
         # strides all 1 or scalar variable, use get_vara (faster)
-        if sum(stride) == ndims or ndims == 0: 
+        elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, strdata)
         else:
