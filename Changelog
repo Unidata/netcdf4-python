@@ -1,5 +1,6 @@
 * implement negative strides in variable slicing
-  (feature missing from Scientific.IO.NetCDF).
+  (feature missing from Scientific.IO.NetCDF). Now variables support
+  full python extended slicing syntax.
 
 20060925 - version 0.5.1
 ========================
