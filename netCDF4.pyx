@@ -1966,6 +1966,9 @@ C{getValue()}"""
                 raise IndexError('size of data array does not conform to slice')
         if data.dtype.char !='O':
             raise TypeError('data to put in vlen must be an object array')
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl].copy() # make sure a copy is made.
         # flatten data array.
         data = data.flatten()
         # loop over elements of object array, put data buffer for
@@ -1983,10 +1986,8 @@ C{getValue()}"""
             databuff = databuff + data.strides[0]
         # if there is a negative stride, reverse the data, then use put_vars.
         if negstride:
-            # reverse data along axes with negative strides.
-            data = data[sl].copy() # make sure a copy is made.
             ierr = nc_put_vars(self._grpid, self._varid,
-                               startp, countp, stridep, data.data)
+                               startp, countp, stridep, vldata)
         # strides all 1 or scalar variable, use put_vara (faster)
         elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_put_vara(self._grpid, self._varid,
@@ -2045,6 +2046,9 @@ C{getValue()}"""
                 raise IndexError('size of data array does not conform to slice')
         if data.dtype.char !='O':
             raise TypeError('data to put in string variable must be an object array containing Python strings')
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl].copy() # make sure a copy is made.
         # flatten data array.
         data = data.flatten()
         # loop over elements of object array, put data buffer for
@@ -2057,17 +2061,11 @@ C{getValue()}"""
                 # if not a python string, pickle it into a string
                 # (use protocol 2)
                 pystring = cPickle.dumps(pystring,2)
-                # use repr to convert to ascii string.
-                #pystring = str(pystring)
-                # raise an exception.
-                #raise TypeError('data to put in string variable must be an object array containing Python strings')
             strdata[i] = PyString_AsString(pystring)
         # if there is a negative stride, reverse the data, then use put_vars.
         if negstride:
-            # reverse data along axes with negative strides.
-            data = data[sl].copy() # make sure a copy is made.
             ierr = nc_put_vars(self._grpid, self._varid,
-                               startp, countp, stridep, data.data)
+                               startp, countp, stridep, strdata)
         # strides all 1 or scalar variable, use put_vara (faster)
         elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_put_vara(self._grpid, self._varid,
@@ -2278,9 +2276,7 @@ C{getValue()}"""
         # if there is a negative stride, use put_vars, then reverse data.
         if negstride:
             ierr = nc_get_vars(self._grpid, self._varid,
-                               startp, countp, stridep, data.data)
-            # reverse data along axes with negative strides.
-            data = data[sl]
+                               startp, countp, stridep, vldata)
         # strides all 1 or scalar variable, use get_vara (faster)
         elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
@@ -2300,6 +2296,9 @@ C{getValue()}"""
         # reshape the output array
         data = NP.reshape(data, shapeout)
         free(vldata)
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl]
         if not self.dimensions: 
             return data[0] # a scalar 
         elif squeeze_out:
@@ -2356,9 +2355,7 @@ C{getValue()}"""
         # if there is a negative stride, use put_vars, then reverse data.
         if negstride:
             ierr = nc_get_vars(self._grpid, self._varid,
-                               startp, countp, stridep, data.data)
-            # reverse data along axes with negative strides.
-            data = data[sl]
+                               startp, countp, stridep, strdata)
         # strides all 1 or scalar variable, use get_vara (faster)
         elif sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
@@ -2379,6 +2376,9 @@ C{getValue()}"""
                 data[i] = cPickle.loads(data[i])
         # reshape the output array
         data = NP.reshape(data, shapeout)
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl]
         free(strdata)
         if not self.dimensions: 
             return data[0] # a scalar 
