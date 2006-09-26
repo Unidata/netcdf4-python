@@ -1,6 +1,6 @@
 import glob, os, sys
 test_files = glob.glob('tst_*.py')
-test_files = test_files + ['tutorial.py', 'tutorial_nc3.py', 'bench.py']
+test_files = test_files + ['tutorial.py', 'tutorial_nc3.py', 'bench.py', 'bench2.py']
 py_path = os.environ.get('PYTHONPATH')
 if py_path is None:
     py_path = '.'
