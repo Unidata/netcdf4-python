@@ -2119,7 +2119,7 @@ C{getValue()}"""
                                startp, countp, stridep, data.data)
         if negstride:
             # reverse data along axes with negative strides.
-            data = data[sl].copy # make a copy so data is contiguous.
+            data = data[sl].copy() # make a copy so data is contiguous.
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         if not self.dimensions: 
