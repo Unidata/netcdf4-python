@@ -2116,7 +2116,7 @@ C{getValue()}"""
                                startp, countp, stridep, data.data)
         if negstride:
             # reverse data along axes with negative strides.
-            data = data[sl]
+            data = data[sl].copy # make a copy so data is contiguous.
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         if not self.dimensions: 
@@ -2178,7 +2178,7 @@ C{getValue()}"""
                                startp, countp, stridep, data.data)
         if negstride:
             # reverse data along axes with negative strides.
-            data = data[sl]
+            data = data[sl].copy() # make sure a copy is made.
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         # if buffer has holes in it (from c-struct padding)
@@ -2284,7 +2284,7 @@ C{getValue()}"""
         data = NP.reshape(data, shapeout)
         if negstride:
             # reverse data along axes with negative strides.
-            data = data[sl].copy()
+            data = data[sl].copy() # make a copy so data is contiguous.
         free(vldata)
         if not self.dimensions: 
             return data[0] # a scalar 
@@ -2364,7 +2364,7 @@ C{getValue()}"""
         data = NP.reshape(data, shapeout)
         if negstride:
             # reverse data along axes with negative strides.
-            data = data[sl].copy()
+            data = data[sl].copy() # make a copy so data is contiguous.
         free(strdata)
         if not self.dimensions: 
             return data[0] # a scalar 
