@@ -1913,8 +1913,9 @@ C{getValue()}"""
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, data.data)
         else:  
-            ierr = nc_put_vars(self._grpid, self._varid,
-                               startp, countp, stridep, data.data)
+            raise IndexError('strides must all be 1 for compound variables')
+            #ierr = nc_put_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, data.data)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
 
@@ -1989,8 +1990,9 @@ C{getValue()}"""
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, vldata)
         else:  
-            ierr = nc_put_vars(self._grpid, self._varid,
-                               startp, countp, stridep, vldata)
+            raise IndexError('strides must all be 1 for vlen variables')
+            #ierr = nc_put_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, vldata)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         free(vldata)
@@ -2064,8 +2066,9 @@ C{getValue()}"""
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, strdata)
         else:  
-            ierr = nc_put_vars(self._grpid, self._varid,
-                               startp, countp, stridep, strdata)
+            raise IndexError('strides must all be 1 for string variables')
+            #ierr = nc_put_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, strdata)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         free(strdata)
@@ -2174,8 +2177,9 @@ C{getValue()}"""
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, data.data)
         else:
-            ierr = nc_get_vars(self._grpid, self._varid,
-                               startp, countp, stridep, data.data)
+            raise IndexError('strides must all be 1 for compound variables')
+            #ierr = nc_get_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, data.data)
         if negstride:
             # reverse data along axes with negative strides.
             data = data[sl].copy() # make sure a copy is made.
@@ -2269,8 +2273,8 @@ C{getValue()}"""
                                startp, countp, vldata)
         else:
             raise IndexError('strides must all be 1 for vlen variables')
-            ierr = nc_get_vars(self._grpid, self._varid,
-                               startp, countp, stridep, vldata)
+            #ierr = nc_get_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, vldata)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         # loop over elements of object array, fill array with
@@ -2347,8 +2351,8 @@ C{getValue()}"""
         else:
             # FIXME: is this a bug in netCDF4?
             raise IndexError('strides must all be 1 for string variables')
-            ierr = nc_get_vars(self._grpid, self._varid,
-                               startp, countp, stridep, strdata)
+            #ierr = nc_get_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, strdata)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         # loop over elements of object array, fill array with
