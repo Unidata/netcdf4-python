@@ -1314,14 +1314,11 @@ C{getValue()}"""
         if self.dtype != data.dtype.str[1:]:
             data = data.astype(self.dtype) # cast data, if necessary.
 
-        # if there is a negative stride, reverse the data, then use put_vars.
         if negstride:
             # reverse data along axes with negative strides.
             data = data[sl].copy() # make sure a copy is made.
-            ierr = nc_put_vars(self._dsetid, self._varid,
-                               startp, countp, stridep, data.data)
         # strides all 1 or scalar variable, use put_vara (faster)
-        elif sum(stride) == ndims or ndims == 0:
+        if sum(stride) == ndims or ndims == 0:
             ierr = nc_put_vara(self._dsetid, self._varid,
                                startp, countp, data.data)
         else:  
@@ -1367,19 +1364,16 @@ C{getValue()}"""
                 sl.append(slice(None,None, 1))
         # allocate array of correct primitive type.
         data = NP.empty(shapeout, self.dtype)
-        # if there is a negative stride, use put_vars, then reverse data.
-        if negstride:
-            ierr = nc_get_vars(self._dsetid, self._varid,
-                               startp, countp, stridep, data.data)
-            # reverse data along axes with negative strides.
-            data = data[sl]
         # strides all 1 or scalar variable, use get_vara (faster)
-        elif sum(stride) == ndims or ndims ==  0: 
+        if sum(stride) == ndims or ndims ==  0: 
             ierr = nc_get_vara(self._dsetid, self._varid,
                                startp, countp, data.data)
         else:
             ierr = nc_get_vars(self._dsetid, self._varid,
                                startp, countp, stridep, data.data)
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl].copy() # make copy so data is contiguous.
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         if not self.dimensions: 

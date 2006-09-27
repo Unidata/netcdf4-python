@@ -1878,6 +1878,7 @@ C{getValue()}"""
                 negstride = 1
                 stridep[n] = -stride[n]
                 startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
                 sl.append(slice(None, None, -1)) # this slice will reverse the data
             else:
                 startp[n] = start[n]
@@ -1907,10 +1908,8 @@ C{getValue()}"""
         if negstride:
             # reverse data along axes with negative strides.
             data = data[sl].copy() # make sure a copy is made.
-            ierr = nc_put_vars(self._grpid, self._varid,
-                               startp, countp, stridep, data.data)
         # strides all 1 or scalar variable, use put_vara (faster)
-        elif sum(stride) == ndims or ndims == 0:
+        if sum(stride) == ndims or ndims == 0:
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, data.data)
         else:  
@@ -1946,6 +1945,7 @@ C{getValue()}"""
                 negstride = 1
                 stridep[n] = -stride[n]
                 startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
                 sl.append(slice(None, None, -1)) # this slice will reverse the data
             else:
                 startp[n] = start[n]
@@ -1984,12 +1984,8 @@ C{getValue()}"""
             vldata[i].len = PyArray_SIZE(dataarr)
             vldata[i].p = dataarr.data
             databuff = databuff + data.strides[0]
-        # if there is a negative stride, reverse the data, then use put_vars.
-        if negstride:
-            ierr = nc_put_vars(self._grpid, self._varid,
-                               startp, countp, stridep, vldata)
         # strides all 1 or scalar variable, use put_vara (faster)
-        elif sum(stride) == ndims or ndims == 0: 
+        if sum(stride) == ndims or ndims == 0: 
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, vldata)
         else:  
@@ -2026,6 +2022,7 @@ C{getValue()}"""
                 negstride = 1
                 stridep[n] = -stride[n]
                 startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
                 sl.append(slice(None, None, -1)) # this slice will reverse the data
             else:
                 startp[n] = start[n]
@@ -2062,12 +2059,8 @@ C{getValue()}"""
                 # (use protocol 2)
                 pystring = cPickle.dumps(pystring,2)
             strdata[i] = PyString_AsString(pystring)
-        # if there is a negative stride, reverse the data, then use put_vars.
-        if negstride:
-            ierr = nc_put_vars(self._grpid, self._varid,
-                               startp, countp, stridep, strdata)
         # strides all 1 or scalar variable, use put_vara (faster)
-        elif sum(stride) == ndims or ndims == 0: 
+        if sum(stride) == ndims or ndims == 0: 
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, strdata)
         else:  
@@ -2107,25 +2100,23 @@ C{getValue()}"""
                 negstride = 1
                 stridep[n] = -stride[n]
                 startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
                 sl.append(slice(None, None, -1)) # this slice will reverse the data
             else:
                 startp[n] = start[n]
                 stridep[n] = stride[n]
                 sl.append(slice(None,None, 1))
         data = NP.empty(shapeout, self.dtype)
-        # if there is a negative stride, use put_vars, then reverse data.
-        if negstride:
-            ierr = nc_get_vars(self._grpid, self._varid,
-                               startp, countp, stridep, data.data)
-            # reverse data along axes with negative strides.
-            data = data[sl]
         # strides all 1 or scalar variable, use get_vara (faster)
-        elif sum(stride) == ndims or ndims == 0: 
+        if sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, data.data)
         else:
             ierr = nc_get_vars(self._grpid, self._varid,
                                startp, countp, stridep, data.data)
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl]
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         if not self.dimensions: 
@@ -2167,6 +2158,7 @@ C{getValue()}"""
                 negstride = 1
                 stridep[n] = -stride[n]
                 startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
                 sl.append(slice(None, None, -1)) # this slice will reverse the data
             else:
                 startp[n] = start[n]
@@ -2177,19 +2169,16 @@ C{getValue()}"""
         itemsize = data.itemsize
         if self.dtype._base_type_size != itemsize:
             data = NP.empty(shapeout, 'V'+str(self.dtype._base_type_size))
-        # if there is a negative stride, use put_vars, then reverse data.
-        if negstride:
-            ierr = nc_get_vars(self._grpid, self._varid,
-                               startp, countp, stridep, data.data)
-            # reverse data along axes with negative strides.
-            data = data[sl]
         # strides all 1 or scalar variable, use get_vara (faster)
-        elif sum(stride) == ndims or ndims == 0: 
+        if sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, data.data)
         else:
             ierr = nc_get_vars(self._grpid, self._varid,
                                startp, countp, stridep, data.data)
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl]
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         # if buffer has holes in it (from c-struct padding)
@@ -2261,6 +2250,7 @@ C{getValue()}"""
                 negstride = 1
                 stridep[n] = -stride[n]
                 startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
                 sl.append(slice(None, None, -1)) # this slice will reverse the data
             else:
                 startp[n] = start[n]
@@ -2273,15 +2263,12 @@ C{getValue()}"""
         totelem = PyArray_SIZE(data)
         # allocate struct array to hold vlen data.
         vldata = <nc_vlen_t *>malloc(totelem*sizeof(nc_vlen_t))
-        # if there is a negative stride, use put_vars, then reverse data.
-        if negstride:
-            ierr = nc_get_vars(self._grpid, self._varid,
-                               startp, countp, stridep, vldata)
         # strides all 1 or scalar variable, use get_vara (faster)
-        elif sum(stride) == ndims or ndims == 0: 
+        if sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, vldata)
         else:
+            raise IndexError('strides must all be 1 for vlen variables')
             ierr = nc_get_vars(self._grpid, self._varid,
                                startp, countp, stridep, vldata)
         if ierr != NC_NOERR:
@@ -2295,10 +2282,10 @@ C{getValue()}"""
             data[i] = dataarr
         # reshape the output array
         data = NP.reshape(data, shapeout)
-        free(vldata)
         if negstride:
             # reverse data along axes with negative strides.
-            data = data[sl]
+            data = data[sl].copy()
+        free(vldata)
         if not self.dimensions: 
             return data[0] # a scalar 
         elif squeeze_out:
@@ -2340,6 +2327,7 @@ C{getValue()}"""
                 negstride = 1
                 stridep[n] = -stride[n]
                 startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
                 sl.append(slice(None, None, -1)) # this slice will reverse the data
             else:
                 startp[n] = start[n]
@@ -2352,15 +2340,13 @@ C{getValue()}"""
         totelem = PyArray_SIZE(data)
         # allocate pointer array to hold string data.
         strdata = <char **>malloc(sizeof(char *) * totelem)
-        # if there is a negative stride, use put_vars, then reverse data.
-        if negstride:
-            ierr = nc_get_vars(self._grpid, self._varid,
-                               startp, countp, stridep, strdata)
         # strides all 1 or scalar variable, use get_vara (faster)
-        elif sum(stride) == ndims or ndims == 0: 
+        if sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, strdata)
         else:
+            # FIXME: is this a bug in netCDF4?
+            raise IndexError('strides must all be 1 for string variables')
             ierr = nc_get_vars(self._grpid, self._varid,
                                startp, countp, stridep, strdata)
         if ierr != NC_NOERR:
@@ -2378,7 +2364,7 @@ C{getValue()}"""
         data = NP.reshape(data, shapeout)
         if negstride:
             # reverse data along axes with negative strides.
-            data = data[sl]
+            data = data[sl].copy()
         free(strdata)
         if not self.dimensions: 
             return data[0] # a scalar 

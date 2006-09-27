@@ -5,7 +5,7 @@ import tempfile, unittest, os
 
 file_name = tempfile.mktemp(".nc")
 xdim=9; ydim=10; zdim=11
-seed(9) # fix seed
+#seed(9) # fix seed
 data = randint(0,10,size=(xdim,ydim,zdim))
 datarev = data[:,::-1,:]
 
