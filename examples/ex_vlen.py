@@ -29,7 +29,7 @@ v[:] = data
 v[-1,-1] = [-99,-98,-97]
 #v[-1,-1] = NP.array([-99,-98,-97])
 print v.usertype
-print v.dtype.basetype
+print v.dtype.base_datatype
 print v[:]
 f.close()
 
@@ -39,10 +39,10 @@ v = f.variables[VAR_NAME]
 v2 = f.variables[VAR_NAME2]
 print v.shape
 print v.usertype
-print v.dtype.basetype
+print v.dtype.base_datatype
 print v.dtype.usertype_name
 print v2.usertype
-print v2.dtype.basetype
+print v2.dtype.base_datatype
 print v2.dtype.usertype_name
 datout = v[:]
 print datout.dtype.char
