@@ -1,35 +1,51 @@
 import netCDF4_classic
 import numpy
-"""
-classes that allow handling a multi-file dataset.
-"""
 
 __version__ = "0.5"
 
 class Dataset(netCDF4_classic.Dataset): 
+    """
+    
+class for reading a multi-file netCDF dataset.
+
+Example usage:
+
+>>> import MFDataset, netCDF4_classic, glob, numpy
+>>> nx = 100
+>>> # create a series of netCDF files with a variable sharing
+>>> # the same unlimited dimension.
+>>> for nfile in range(10):
+>>>     f = netCDF4_classic.Dataset('mftest'+repr(nfile)+'.nc','w')
+>>>     f.createDimension('x',None)
+>>>     x = f.createVariable('x','i',('x',))
+>>>     nx1 = nfile*10; nx2 = 10*(nfile+1)
+>>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+>>>     f.close()
+>>> # now read all those files in at once, in one Dataset.
+>>> files = glob.glob('mftest*.nc')
+>>> f = MFDataset.Dataset(files)
+>>> print f.variables['x'][:]
+[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
+ 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
+    """
 
     def __init__(self, files):
         """
-
 Open a Dataset spanning multiple files, making it look as if it was a 
 single file. Variables in the list of files that share the same unlimited 
 dimension are aggregated. 
 
-Arguments:
-
-files      sequence of netCDF files; the first one will become the
-           "master" file, defining all the record variables (variables
-           with an unlimited dimension) which may span subsequent files.
-           Attribute access returns attributes only from "master" file.
-
-Returns:
-
-None
-
 Adapted from pycdf (http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 
-The files are always opened in read-only mode.
-        """
+@param files: sequence of netCDF files; the first one will become the
+"master" file, defining all the record variables (variables with an 
+unlimited dimension) which may span subsequent files. Attribute access
+returns attributes only from "master" file. The files are always opened
+in read-only mode.
+
+       """
 
         # Open the master file in the base class, so that the CDFMF instance
         # can be used like a CDF instance.
@@ -49,7 +65,7 @@ The files are always opened in read-only mode.
                 unlimDimId = dim
                 unlimDimName = dimname
         if unlimDimId is None:
-            raise MFDatasetError("master dataset %s does not have an unlimited dimension" % master)
+            raise IOError("master dataset %s does not have an unlimited dimension" % master)
 
         # Get info on all record variables defined in the master.
         # Make sure the master defines at least one record variable.
@@ -63,7 +79,7 @@ The files are always opened in read-only mode.
             if (len(dims) > 0 and unlimDimName == dims[0]):
                 masterRecVar[vName] = (dims, shape, type)
         if len(masterRecVar) == 0:
-            raise MFDatasetError("master dataset %s does not have any record variable" % master)
+            raise IOError("master dataset %s does not have any record variable" % master)
 
         # Create the following:
         #   cdf       list of Dataset instances
@@ -87,7 +103,7 @@ The files are always opened in read-only mode.
             for v in masterRecVar.keys():
                 # Make sure master rec var is also defined here.
                 if v not in varInfo.keys():
-                    raise MFDatasetError("record variable %s not defined in %s" % (v, f))
+                    raise IOError("record variable %s not defined in %s" % (v, f))
 
                 # Make sure it is a record var.
                 vInst = part.variables[v]
@@ -101,7 +117,7 @@ The files are always opened in read-only mode.
                 extType = varInfo[v].dtype
                 # Check that dimension names are identical.
                 if masterDims != extDims:
-                    raise MFDatasetError("variable %s : dimensions mismatch between "
+                    raise IOError("variable %s : dimensions mismatch between "
                                    "master %s (%s) and extension %s (%s)" %
                                    (v, master, masterDims, f, extDims))
 
@@ -109,17 +125,17 @@ The files are always opened in read-only mode.
                 # identical (except for that of the unlimited dimension, which of
                 # course may vary.
                 if len(masterShape) != len(extShape):
-                    raise MFDatasetError("variable %s : rank mismatch between "
+                    raise IOError("variable %s : rank mismatch between "
                                    "master %s (%s) and extension %s (%s)" %
                                    (v, master, len(masterShape), f, len(extShape)))
                 if masterShape[1:] != extShape[1:]:
-                    raise MFDatasetError("variable %s : shape mismatch between "
+                    raise IOError("variable %s : shape mismatch between "
                                    "master %s (%s) and extension %s (%s)" %
                                    (v, master, masterShape, f, extShape))
 
                 # Check that the data types are identical.
                 if masterType != extType:
-                    raise MFDatasetError("variable %s : data type mismatch between "
+                    raise IOError("variable %s : data type mismatch between "
                                    "master %s (%s) and extension %s (%s)" %
                                    (v, master, masterType, f, extType))
 
