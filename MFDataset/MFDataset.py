@@ -1,9 +1,10 @@
 import netCDF4_classic
 import numpy
+"""
+classes that allow handling a multi-file dataset.
+"""
 
 __version__ = "0.5"
-
-# Classes Dataset, Dimension and Variable allow handling a multi-file dataset.
 
 class Dataset(netCDF4_classic.Dataset): 
 
@@ -130,11 +131,11 @@ class Dataset(netCDF4_classic.Dataset):
         self._dims = cdfm.dimensions
         for dimname, dim in self._dims.items():
             if dim.isunlimited():
-                self._dims[dimname] = Dimension(dimname, dim, self._cdfVLen, self._cdfTLen)
+                self._dims[dimname] = _Dimension(dimname, dim, self._cdfVLen, self._cdfTLen)
         self._vars = cdfm.variables
         for varname,var in self._vars.items():
             if varname in self._cdfRecVar.keys():
-                self._vars[varname] = Variable(self, varname, var, unlimDimName)
+                self._vars[varname] = _Variable(self, varname, var, unlimDimName)
         self._file_format = []
         for dset in self._cdf:
             self._file_format.append(dset.file_format)
@@ -155,7 +156,7 @@ class Dataset(netCDF4_classic.Dataset):
         return self._cdf[0].__dict__.keys()
 
 
-class Dimension(object):
+class _Dimension(object):
     def __init__(self, dimname, dim, dimlens, dimtotlen):
         self.dimlens = dimlens
         self.dimtotlen = dimtotlen
@@ -164,7 +165,7 @@ class Dimension(object):
     def isunlimited(self):
         return True
 
-class Variable(object):
+class _Variable(object):
     def __init__(self, dset, varname, var, recdimname):
         self.dimensions = var.dimensions 
         self._dset = dset
