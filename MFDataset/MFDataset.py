@@ -8,24 +8,32 @@ __version__ = "0.5"
 
 class Dataset(netCDF4_classic.Dataset): 
 
-    def __init__(self, cdfFiles):
-        """Open a Dataset spanning multiple files,
-        making it look as if it was a single file.
+    def __init__(self, files):
+        """
 
-        Arguments:
-          cdfFiles      sequence of CDF files; the first one will become the
-                        "master" file, defining all the record variables which may
-                        span subsequent files
+Open a Dataset spanning multiple files, making it look as if it was a 
+single file. Variables in the list of files that share the same unlimited 
+dimension are aggregated. 
 
-        Returns:
-          None
+Arguments:
 
-        The files are always opened in read-only mode.
-                                                        """
+files      sequence of netCDF files; the first one will become the
+           "master" file, defining all the record variables (variables
+           with an unlimited dimension) which may span subsequent files.
+           Attribute access returns attributes only from "master" file.
+
+Returns:
+
+None
+
+Adapted from pycdf (http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
+
+The files are always opened in read-only mode.
+        """
 
         # Open the master file in the base class, so that the CDFMF instance
         # can be used like a CDF instance.
-        master = cdfFiles[0]
+        master = files[0]
 
         # Open the master again, this time as a classic CDF instance. This will avoid
         # calling methods of the CDFMF subclass when querying the master file.
@@ -73,7 +81,7 @@ class Dataset(netCDF4_classic.Dataset):
         # Open each remaining file in read-only mode.
         # Make sure each file defines the same record variables as the master
         # and that the variables are defined in the same way (name, shape and type)
-        for f in cdfFiles[1:]:
+        for f in files[1:]:
             part = netCDF4_classic.Dataset(f)
             varInfo = part.variables
             for v in masterRecVar.keys():
@@ -123,7 +131,7 @@ class Dataset(netCDF4_classic.Dataset):
 
         # Attach attributes to the MFDataset.Dataset instance.
         # A local __setattr__() method is required for them.
-        self._cdfFiles = cdfFiles            # list of cdf file names in the set
+        self._files = files            # list of cdf file names in the set
         self._cdfVLen = cdfVLen              # list of unlimited lengths
         self._cdfTLen = reduce(lambda x, y: x + y, cdfVLen) # total length
         self._cdfRecVar = cdfRecVar          # dictionary of Variable instances for all
