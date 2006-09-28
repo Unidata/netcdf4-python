@@ -1,3 +1,8 @@
+"""
+Module for reading multi-file netCDF Datasets, making variables
+spanning multiple files appear as if they were in one file.
+"""
+
 import netCDF4_classic
 import numpy
 
