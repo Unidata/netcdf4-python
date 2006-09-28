@@ -244,19 +244,39 @@ class Variable(object):
         return lstArr
 
 if __name__ == '__main__':
-    from netcdftime import utime
-    import glob
-    files = glob.glob('/Datasets/ncep.reanalysis/surface_gauss/prate.sfc.gauss.200*.nc')
+    from numpy.random import randint
+    from numpy.testing import assert_array_equal
+    import glob, datetime
+
+    nx = 100
+    ydim=5; zdim=10
+    data = randint(0,10,size=(nx,ydim,zdim))
+    for nfile in range(10):
+        f = netCDF4_classic.Dataset('test'+repr(nfile)+'.nc','w')
+        f.createDimension('x',None)
+        f.createDimension('y',ydim)
+        f.createDimension('z',zdim)
+        f.history = 'created '+str(datetime.datetime.now())
+        x = f.createVariable('x','i',('x',))
+        x.units = 'zlotnys'
+        dat = f.createVariable('data','i',('x','y','z',))
+        dat.name = 'phony data' 
+        nx1 = nfile*10; nx2 = 10*(nfile+1)
+        x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+        dat[0:10] = data[nx1:nx2]
+        f.close()
+
+    files = glob.glob('test*.nc')
+    print files
     f = Dataset(files)
     print f.variables
     print f.dimensions
     print f.ncattrs()
-    print f.variables['prate'].shape
+    print f.history
     print f.file_format
-    time = f.variables['time']
-    print time.dtype
-    print time.ncattrs()
-    cdftime = utime('hours since 0001-01-01 00:00:00')
-    dates = cdftime.num2date(time[::120])
-    for date in dates:
-        print date
+    print f.variables['data'].shape
+    print f.variables['x'].shape
+    print f.variables['x'][:]
+    assert_array_equal(numpy.arange(0,nx),f.variables['x'][:])
+    datin = f.variables['data'][4:-4:4,3:5,2:8]
+    assert_array_equal(datin,data[4:-4:4,3:5,2:8])
