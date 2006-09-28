@@ -252,7 +252,10 @@ if __name__ == '__main__':
     ydim=5; zdim=10
     data = randint(0,10,size=(nx,ydim,zdim))
     for nfile in range(10):
-        f = netCDF4_classic.Dataset('test'+repr(nfile)+'.nc','w')
+        if nfile == 0:
+            f = netCDF4_classic.Dataset('test'+repr(nfile)+'.nc','w',format='NETCDF3_CLASSIC')
+        else:
+            f = netCDF4_classic.Dataset('test'+repr(nfile)+'.nc','w')
         f.createDimension('x',None)
         f.createDimension('y',ydim)
         f.createDimension('z',zdim)
@@ -277,6 +280,8 @@ if __name__ == '__main__':
     print f.variables['data'].shape
     print f.variables['x'].shape
     print f.variables['x'][:]
+    print f.variables['x'].ncattrs()
+    print f.variables['x'].units
     assert_array_equal(numpy.arange(0,nx),f.variables['x'][:])
     datin = f.variables['data'][4:-4:4,3:5,2:8]
     assert_array_equal(datin,data[4:-4:4,3:5,2:8])
