@@ -2,7 +2,7 @@ from MFDataset import Dataset
 import netCDF4_classic, numpy
 from numpy.random import seed, randint
 from numpy.testing import assert_array_equal
-import tempfile, unittest, os, datetime
+import tempfile, unittest, os
 
 nx=100; ydim=5; zdim=10
 nfiles = 10
@@ -22,7 +22,7 @@ class VariablesTestCase(unittest.TestCase):
             f.createDimension('x',None)
             f.createDimension('y',ydim)
             f.createDimension('z',zdim)
-            f.history = 'created '+str(datetime.datetime.now())
+            f.history = 'created today'
             x = f.createVariable('x','i',('x',))
             x.units = 'zlotnys'
             dat = f.createVariable('data','i',('x','y','z',))
