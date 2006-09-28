@@ -33,7 +33,7 @@ class VariablesTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing variables"""
+        """testing variable slicing"""
         f  = Dataset(self.file, 'r')
         v = f.variables['data']
         vu = f.variables['datau']
