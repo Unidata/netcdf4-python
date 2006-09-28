@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>MFDataset.MFDataset.Dataset</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;MFDataset ::
+        <a href="MFDataset.MFDataset-module.html">Module&nbsp;MFDataset</a> ::
+        Class&nbsp;Dataset
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript: void(0);" class="privatelink"
+    onclick="toggle_private();">hide private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="MFDataset.MFDataset.Dataset-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Dataset</h1><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#Dataset">source&nbsp;code</a></span><br /><br />
+<pre class="base-tree">
+             object --+    
+                      |    
+netCDF4_classic.Dataset --+
+                          |
+                         <strong class="uidshort">Dataset</strong>
+</pre>
+
+<hr />
+<p>class for reading a multi-file netCDF dataset.</p>
+  Example usage:
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other">M</span><span class="py-other">F</span><span class="py-other">D</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">C</span><span class="py-other">D</span><span class="py-other">F</span><span class="py-other">4</span><span class="py-other">_</span><span class="py-other">c</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">g</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">b</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">y</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">n</span><span class="py-other">x</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">1</span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># create a series of netCDF files with a variable sharing</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># the same unlimited dimension.</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-keyword">in</span><span class="py-other"> </span><span class="py-other">r</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">1</span><span class="py-other">0</span><span class="py-other">)</span><span class="py-other">:</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other">f</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">C</span><span class="py-other">D</span><span class="py-other">F</span><span class="py-other">4</span><span class="py-other">_</span><span class="py-other">c</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other">.</span><span class="py-other">D</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">m</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">+</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">p</span><span class="py-other">r</span><span class="py-other">(</span><span class="py-other">n</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">)</span><span class="py-other">+</span><span class="py-other">'</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">w</span><span class="py-other">'</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other">f</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">D</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">x</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">N</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other">x</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">f</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">x</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">i</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">x</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">x</span><span class="py-other">1</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">*</span><span class="py-other">1</span><span class="py-other">0</span><span class="py-other">;</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">x</span><span class="py-other">2</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">1</span><span class="py-other">0</span><span class="py-other">*</span><span class="py-other">(</span><span class="py-other">n</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">+</span><span class="py-other">1</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other">x</span><span class="py-other">[</span><span class="py-other">0</span><span class="py-other">:</span><span class="py-other">1</span><span class="py-other">0</span><span class="py-other">]</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">y</span><span class="py-other">.</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">n</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">*</span><span class="py-other">1</span><span class="py-other">0</span><span class="py-other">,</span><span class="py-other">1</span><span class="py-other">0</span><span class="py-other">*</span><span class="py-other">(</span><span class="py-other">n</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">+</span><span class="py-other">1</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other">f</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># now read all those files in at once, in one Dataset.</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">g</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">b</span><span class="py-other">.</span><span class="py-other">g</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">b</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">m</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">*</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">'</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">f</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">M</span><span class="py-other">F</span><span class="py-other">D</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">D</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">(</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">f</span><span class="py-other">.</span><span class="py-other">v</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">[</span><span class="py-other">'</span><span class="py-other">x</span><span class="py-other">'</span><span class="py-other">]</span><span class="py-other">[</span><span class="py-other">:</span><span class="py-other">]</span>
+<span class="py-output">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
+ 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]</span>
+</pre><br /><br />
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="MFDataset.MFDataset.Dataset-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">files</span>)</span><br />
+      Open a Dataset spanning multiple files, making it look as if it 
+      was a single file.
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="MFDataset.MFDataset.Dataset-class.html#__setattr__" class="summary-sig-name">__setattr__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      override base class attribute creation
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="MFDataset.MFDataset.Dataset-class.html#__getattribute__" class="summary-sig-name">__getattribute__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      x.__getattribute__('name') &lt;==&gt; x.name
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="MFDataset.MFDataset.Dataset-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      return names of netCDF attribute for this <a 
+      href="MFDataset.MFDataset.Dataset-class.html" 
+      class="link">Dataset</a> in a list
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>netCDF4_classic.Dataset</code></b>:
+      <code>__delattr__</code>,
+      <code>__new__</code>,
+      <code>close</code>,
+      <code>createDimension</code>,
+      <code>createVariable</code>,
+      <code>renameDimension</code>,
+      <code>renameVariable</code>,
+      <code>set_fill_off</code>,
+      <code>set_fill_on</code>,
+      <code>sync</code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>netCDF4_classic.Dataset</code></b> (private):
+      <code>_enddef</code>,
+      <code>_redef</code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__str__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+
+<br />
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>netCDF4_classic.Dataset</code></b> (private):
+      <code>_dsetid</code>
+      </p></div>
+    </td>
+  </tr>
+</table>
+
+<br />
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>netCDF4_classic.Dataset</code></b>:
+      <code>dimensions</code>,
+      <code>file_format</code>,
+      <code>variables</code>
+      </p>
+    </td>
+  </tr>
+</table>
+
+<br />
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+
+<br />
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">files</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#Dataset.__init__">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  <p>Open a Dataset spanning multiple files, making it look as if it was a 
+  single file. Variables in the list of files that share the same unlimited
+  dimension are aggregated.</p>
+  Adapted from pycdf (http://pysclint.sourceforge.net/pycdf) by Andre 
+  Gosselin.
+  <dl><dt></dt><dd>
+    <dl><dt>Parameters:</dt></dl>
+    <ul class="nomargin">
+        <li><strong class="pname"><code>files</code></strong> - sequence of netCDF files; the first one will become the 
+          &quot;master&quot; file, defining all the record variables 
+          (variables with an unlimited dimension) which may span subsequent
+          files. Attribute access returns attributes only from 
+          &quot;master&quot; file. The files are always opened in read-only
+          mode.</li>
+    </ul>
+    <dl><dt>Overrides:
+      netCDF4_classic.Dataset.__init__
+    </dt></dl>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="__setattr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__setattr__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#Dataset.__setattr__">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  override base class attribute creation
+  <dl><dt></dt><dd>
+    <dl><dt>Overrides:
+      netCDF4_classic.Dataset.__setattr__
+    </dt></dl>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="__getattribute__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getattribute__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#Dataset.__getattribute__">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  x.__getattribute__('name') &lt;==&gt; x.name
+  <dl><dt></dt><dd>
+    <dl><dt>Overrides:
+      netCDF4_classic.Dataset.__getattribute__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt></dl>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="ncattrs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ncattrs</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#Dataset.ncattrs">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  <p>return names of netCDF attribute for this <a 
+  href="MFDataset.MFDataset.Dataset-class.html" class="link">Dataset</a> in
+  a list</p>
+  <code>ncattrs()</code>
+  <dl><dt></dt><dd>
+    <dl><dt>Overrides:
+      netCDF4_classic.Dataset.ncattrs
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt></dl>
+  </dd></dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">Generated by Epydoc
+        3.0alpha3 on Thu Sep 28 16:59:21 2006</td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>
