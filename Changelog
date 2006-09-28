@@ -1,3 +1,6 @@
+* added new module for multi-file access of NETCDF3 and NETCDF4_CLASSIC
+  files (MFDataset). Based on CDFMF from pycdf.
+
 * implement negative strides in variable slicing
   (feature missing from Scientific.IO.NetCDF). Now variables support
   full python extended slicing syntax.
