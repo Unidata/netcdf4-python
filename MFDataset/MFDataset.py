@@ -184,6 +184,9 @@ in read-only mode.
     def ncattrs(self):
         return self._cdf[0].__dict__.keys()
 
+    def close(self):
+        for dset in self._cdf:
+            dset.close()
 
 class _Dimension(object):
     def __init__(self, dimname, dim, dimlens, dimtotlen):
