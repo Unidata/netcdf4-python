@@ -1,6 +1,7 @@
 recursive-include docs *
 include MANIFEST.in
 include README
+include setup-netcdftime.py
 include Changelog
 include netCDF4.pyx
 include netCDF4_classic.pyx
