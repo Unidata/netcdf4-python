@@ -1,7 +1,11 @@
 """
 Performs conversions of netCDF time coordinate data to/from datetime objects.
 """
-import math, numpy
+import math
+try:
+    import numpy
+except ImportError:
+    import  Numeric as numpy
 from datetime import datetime as real_datetime
 from strptime import strptime
 from strftime import strftime
@@ -9,7 +13,7 @@ from strftime import strftime
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
 
-__version__ = '0.5'
+__version__ = '0.5.1'
 
 class datetime:
     """
