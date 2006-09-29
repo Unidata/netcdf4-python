@@ -43,6 +43,7 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(numpy.arange(0,nx),f.variables['x'][:])
         datin = f.variables['data'][4:-4:4,3:5,2:8]
         assert_array_equal(datin,data[4:-4:4,3:5,2:8])
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
