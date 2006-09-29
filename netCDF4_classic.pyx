@@ -457,6 +457,9 @@ _nptonctype['B'] = NC_BYTE
 # pull in code from netCDF4_common.pyx.
 include 'netCDF4_common.pyx'
 
+# pure python utilities
+from netCDF4_utils import _buildStartCountStride, _quantize
+
 def _get_dims(dataset):
     """Private function to create Dimension instances for all the
     dimensions in a Dataset"""

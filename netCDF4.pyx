@@ -712,6 +712,9 @@ for _key,_value in _nptonctype.iteritems():
 # pull in code from netCDF4_common.pyx.
 include 'netCDF4_common.pyx'
 
+# pure python utilities
+from netCDF4_utils import _buildStartCountStride, _quantize
+
 def _get_dims(group):
     """Private function to create L{Dimension} instances for all the
     dimensions in a L{Group} or Dataset"""
