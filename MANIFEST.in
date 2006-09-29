@@ -6,6 +6,7 @@ include Changelog
 include netCDF4.pyx
 include netCDF4_classic.pyx
 include netCDF4_common.pyx
+include netCDF4_utils.py
 include netCDF4.pxi
 include examples/tst_classic.nc
 include examples_classic/tst_classic.nc
