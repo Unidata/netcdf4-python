@@ -1,3 +1,7 @@
+* regenerate source files with a version of pyrex
+  (from http://codespeak.net/svn/lxml/pyrex/) that produces
+  extensions compatible with python 2.5.
+
 * added new module for multi-file access of NETCDF3 and NETCDF4_CLASSIC
   files (MFDataset). Based on CDFMF from pycdf.
 
