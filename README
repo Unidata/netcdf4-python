@@ -1,3 +1,6 @@
 Python/numpy interface to the netCDF version 4 library.
 
 see docs/index.html
+
+To install just the pure-python netcdftime module, just run
+'python setup-netcdftime.py install'.
