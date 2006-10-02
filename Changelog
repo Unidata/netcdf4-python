@@ -1,3 +1,6 @@
+* updated to be compatible with 'new' netcdf-4.0-alpha16 (there
+  were two source releases with the same name from unitdata).
+
 * regenerate source files with a version of pyrex
   (from http://codespeak.net/svn/lxml/pyrex/) that produces
   extensions compatible with python 2.5.
