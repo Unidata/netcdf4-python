@@ -5,6 +5,9 @@
   is done for that variable.
 
 * updated to be compatible with netcdf-4.0-alpha17.
+  Can now install pure-python netcdftime separately with setup-netcdftime.py.
+  netcdftime will try to use numpy, but fall back to Numeric if numpy 
+  not installed.
 
 * generated source files with a version of pyrex
   (from http://codespeak.net/svn/lxml/pyrex/) that produces
