@@ -28,12 +28,12 @@ Requires
  - A pre-release version of HDF5 1.8 is required.  Version
  1.7.52 is currently required. It is 
  available at U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
- Be sure to build with '--enable-hl'.
+ Be sure to build with 'C{--enable-hl}'.
  - netCDF version 4.  netCDF4 is now in alpha,
  and is a bit of a moving target.  This release is has only
  been tested with netcdf-4.0-alpha16, available from
  U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
- Be sure to build with '--enable-hl' and '--with-hdf5=C{$HD5_DIR}',
+ Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HD5_DIR}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
 
 
