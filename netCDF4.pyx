@@ -39,20 +39,24 @@ Requires
 ======== 
 
  - numpy array module U{http://numpy.scipy.org}.
+ - A pre-release version of HDF5 1.8 is required.  Version
+ 1.7.52 is currently required. It is 
+ available at U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
+ Be sure to build with '--enable-hl'.
  - netCDF version 4.  netCDF4 is now in alpha,
  and is a bit of a moving target.  This release is has only
  been tested with netcdf-4.0-alpha16, available from
  U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
- - A pre-release version of HDF5 1.8 is required.  Version
- 1.7.52 is required for netcdf-4.0-alpha16. It is also 
- available at U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
+ Be sure to build with '--enable-hl' and '--with-hdf5=C{$HD5_DIR}',
+ where C{$HDF5_DIR} is the directory where HDF5 was installed.
+
 
 Install
 =======
 
- - set the HDF5_DIR environment variable to point to where HDF5 is installed.
- (the libs in $HDF5_DIR/lib, the headers in $HDF5_DIR/include).
- - set the NETCDF4_DIR environment variable to point to where netCDF version
+ - set the C{HDF5_DIR} environment variable to point to where HDF5 is installed.
+ (the libs in C{$HDF5_DIR/lib}, the headers in C{$HDF5_DIR/include}).
+ - set the C{NETCDF4_DIR} environment variable to point to where netCDF version
  4 is installed.
  - run 'python setup.py install'
  - run some of the tests in the 'test' directory.

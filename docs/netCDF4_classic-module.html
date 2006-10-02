@@ -89,29 +89,33 @@
         target="_top">http://numpy.scipy.org</a>.
       </li>
       <li>
+        A pre-release version of HDF5 1.8 is required.  Version 1.7.52 
+        is currently required. It is available at <a 
+        href="ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4" 
+        target="_top">ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4</a>. 
+        Be sure to build with '--enable-hl'.
+      </li>
+      <li>
         netCDF version 4.  netCDF4 is now in alpha, and is a bit of a 
         moving target.  This release is has only been tested with 
         netcdf-4.0-alpha16, available from <a 
         href="ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4" 
-        target="_top">ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4</a>.
-      </li>
-      <li>
-        A pre-release version of HDF5 1.8 is required.  Version 1.7.52 
-        is required for netcdf-4.0-alpha16. It is also available at <a 
-        href="ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4" 
-        target="_top">ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4</a>.
+        target="_top">ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4</a>. 
+        Be sure to build with '--enable-hl' and 
+        '--with-hdf5=<code>$HD5_DIR</code>', where <code>$HDF5_DIR</code> 
+        is the directory where HDF5 was installed.
       </li>
     </ul>
   <h1 class="heading">Install</h1>
     <ul>
       <li>
-        set the HDF5_DIR environment variable to point to where HDF5 is 
-        installed. (the libs in $HDF5_DIR/lib, the headers in 
-        $HDF5_DIR/include).
+        set the <code>HDF5_DIR</code> environment variable to point to 
+        where HDF5 is installed. (the libs in <code>$HDF5_DIR/lib</code>, 
+        the headers in <code>$HDF5_DIR/include</code>).
       </li>
       <li>
-        set the NETCDF4_DIR environment variable to point to where 
-        netCDF version 4 is installed.
+        set the <code>NETCDF4_DIR</code> environment variable to point 
+        to where netCDF version 4 is installed.
       </li>
       <li>
         run 'python setup.py install'
@@ -578,13 +582,6 @@ Global attr source = netCDF4_classic python module tutorial</span>
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4_classic-module.html#_buildStartCountStride" class="summary-sig-name">_buildStartCountStride</a>(<span class="summary-sig-arg">...</span>)</span>
-  </td>
-</tr>
-<tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
     <span class="summary-sig"><a href="netCDF4_classic-module.html#_get_att" class="summary-sig-name">_get_att</a>(<span class="summary-sig-arg">...</span>)</span><br />
       Private function to get an attribute value given its name
   </td>
@@ -621,14 +618,6 @@ Global attr source = netCDF4_classic python module tutorial</span>
     <span class="summary-sig"><a href="netCDF4_classic-module.html#_get_vars" class="summary-sig-name">_get_vars</a>(<span class="summary-sig-arg">...</span>)</span><br />
       Private function to create Variable instances for all the 
       variables in a Dataset
-  </td>
-</tr>
-<tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4_classic-module.html#_quantize" class="summary-sig-name">_quantize</a>(<span class="summary-sig-arg">...</span>)</span><br />
-      quantize data to improve compression.
   </td>
 </tr>
 <tr class="private">
@@ -699,7 +688,7 @@ Global attr source = netCDF4_classic python module tutorial</span>
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <a href="netCDF4_classic-module.html#_npversion">_npversion</a> = <code title="'1.0b5'">'1.0b5'</code>
+    <a href="netCDF4_classic-module.html#_npversion">_npversion</a> = <code title="'1.0rc1'">'1.0rc1'</code>
   </td>
 </tr>
 <tr class="private">
@@ -744,25 +733,6 @@ Global attr source = netCDF4_classic python module tutorial</span>
   </td>
 </tr>
 </table>
-<a name="_buildStartCountStride"></a>
-<div class="private">
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_buildStartCountStride</span>(<span class="sig-arg">...</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
-  </table>
-  
-  None
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
 <a name="_get_att"></a>
 <div class="private">
 <table class="details" border="1" cellpadding="3"
@@ -856,29 +826,6 @@ Global attr source = netCDF4_classic python module tutorial</span>
   
   Private function to create Variable instances for all the variables in
   a Dataset
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="_quantize"></a>
-<div class="private">
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_quantize</span>(<span class="sig-arg">...</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
-  </table>
-  
-  <p>quantize data to improve compression. data is quantized using 
-  around(scale*data)/scale, where scale is 2**bits, and bits is determined 
-  from the least_significant_digit. For example, if 
-  least_significant_digit=1, bits will be 4.</p>
-  This function is pure python.
   <dl><dt></dt><dd>
   </dd></dl>
 </td></tr></table>
@@ -1022,7 +969,7 @@ Global attr source = netCDF4_classic python module tutorial</span>
   <dl><dt></dt><dd>
     <dl><dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-<span class="variable-quote">'</span>1.0b5<span class="variable-quote">'</span>                                                                
+<span class="variable-quote">'</span>1.0rc1<span class="variable-quote">'</span>                                                               
       </pre></td></tr></table></dd>
     </dl>
   </dd></dl>
@@ -1106,7 +1053,7 @@ Global attr source = netCDF4_classic python module tutorial</span>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Fri Sep 29 05:22:38 2006</td>
+        3.0alpha3 on Mon Oct  2 05:39:23 2006</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>
