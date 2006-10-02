@@ -296,10 +296,14 @@ cdef extern from "netcdf.h":
     int nc_def_var_fletcher32(int ncid, int varid, int fletcher32)
     int nc_def_var_chunking(int ncid, int varid, int *chunkalgp, 
 		    int *chunksizesp, int *extend_incrementsp)
+    int nc_def_var_fill(int ncid, int varid, int no_fill, void *fill_value)
+    int nc_def_var_endian(int ncid, int varid, int endian)
     int nc_inq_var_chunking(int ncid, int varid, int *chunkalgp, 
 		    int *chunksizesp, int *extend_incrementsp)
     int nc_inq_var_deflate(int ncid, int varid, int *shufflep, 
       		   int *deflatep, int *deflate_levelp)
+    int nc_inq_var_fill(int ncid, int varid, int *no_fill, void *fill_value)
+    int nc_inq_var_endian(int ncid, int varid, int *endianp)
     int nc_set_fill(int ncid, int fillmode, int *old_modep)
     int nc_set_default_format(int format, int *old_formatp)
     int nc_redef(int ncid)

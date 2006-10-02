@@ -45,7 +45,7 @@ Requires
  Be sure to build with 'C{--enable-hl}'.
  - netCDF version 4.  netCDF4 is now in alpha,
  and is a bit of a moving target.  This release is has only
- been tested with netcdf-4.0-alpha16, available from
+ been tested with netcdf-4.0-alpha17, available from
  U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
  Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HD5_DIR}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
@@ -1160,7 +1160,8 @@ set to favor subsetting equally in all dimensions.
 
 The optional keyword C{fill_value} can be used to override the default 
 netCDF C{_FillValue} (the value that the variable gets filled with before 
-any data is written to it).
+any data is written to it).  If fill_value is set to C{False}, then
+there the variable is not pre-filled.
 
 If the optional keyword parameter C{least_significant_digit} is
 specified, variable data will be truncated (quantized). This produces
@@ -1547,7 +1548,8 @@ case bits=4). Default is C{None}, or no quantization.
 
 B{C{fill_value}} - If specified, the default netCDF C{_FillValue} (the 
 value that the variable gets filled with before any data is written to it) 
-is replaced with this value.
+is replaced with this value.  If fill_value is set to C{False}, then
+there the variable is not pre-filled.
  
 B{Returns:}
 
@@ -1673,9 +1675,18 @@ instance. If C{None}, the data is not truncated. """
             # given.  This avoids the HDF5 overhead of deleting and 
             # recreating the dataset if it is set later (after the enddef).
             if fill_value is not None:
-                # cast fill_value to type of variable.
-                fill_value = NP.array(fill_value, self.dtype)
-                _set_att(self._grpid, self._varid, '_FillValue', fill_value)
+                if not fill_value and isinstance(fill_value,bool):
+                    # no filling for this variable if fill_value==False.
+                    ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
+                    if ierr != NC_NOERR:
+                        raise RuntimeError(nc_strerror(ierr))
+                else:
+                    # cast fill_value to type of variable.
+                    fillval = NP.array(fill_value, self.dtype)
+                    _set_att(self._grpid, self._varid, '_FillValue', fillval)
+                    #ierr = nc_def_var_fill(self._grpid, self._varid, 0, fillval.data)
+                    #if ierr != NC_NOERR:
+                    #    raise RuntimeError(nc_strerror(ierr))
             if least_significant_digit is not None:
                 self.least_significant_digit = least_significant_digit
         # count how many unlimited dimensions there are.
