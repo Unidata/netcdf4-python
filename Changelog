@@ -1,7 +1,12 @@
-* updated to be compatible with 'new' netcdf-4.0-alpha16 (there
-  were two source releases with the same name from unitdata).
+20061003 - version 0.6
+======================
+* if fill_value keyword to createVariable is set to the Boolean
+  False (not an integer that evaluates to False), no pre-filling
+  is done for that variable.
 
-* regenerate source files with a version of pyrex
+* updated to be compatible with netcdf-4.0-alpha17.
+
+* generated source files with a version of pyrex
   (from http://codespeak.net/svn/lxml/pyrex/) that produces
   extensions compatible with python 2.5.
 
