@@ -7,14 +7,12 @@ Adapted from pycdf (http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 Example usage:
 
 >>> import MFDataset, netCDF4_classic, glob, numpy
->>> nx = 100
 >>> # create a series of netCDF files with a variable sharing
 >>> # the same unlimited dimension.
 >>> for nfile in range(10):
 >>>     f = netCDF4_classic.Dataset('mftest'+repr(nfile)+'.nc','w')
 >>>     f.createDimension('x',None)
 >>>     x = f.createVariable('x','i',('x',))
->>>     nx1 = nfile*10; nx2 = 10*(nfile+1)
 >>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
 >>>     f.close()
 >>> # now read all those files in at once, in one Dataset.
