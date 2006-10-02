@@ -1601,9 +1601,9 @@ instance. If C{None}, the data is not truncated. """
     def __init__(self, grp, name, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None,  **kwargs):
         cdef int ierr, ndims
         cdef char *varname
+        cdef int *ichunkalgp
         cdef nc_type xtype, vltypeid
         cdef int dimids[NC_MAX_DIMS]
-        cdef nc_var_options ncvaropt
         self._grpid = grp._grpid
         self._grp = grp
         if not isinstance(datatype, UserType) and datatype not in _supportedtypes:
@@ -1620,6 +1620,7 @@ instance. If C{None}, the data is not truncated. """
         if kwargs.has_key('id'):
             self._varid = kwargs['id']
         else:
+            varname = name
             ndims = len(dimensions)
             # find netCDF primitive data type corresponding to 
             # specified numpy data type.
@@ -1635,46 +1636,42 @@ instance. If C{None}, the data is not truncated. """
                         dimids[n] = grp.dimensions[dimname]._dimid
                     except:
                         raise KeyError('dimension %s not defined in group %s' % (dimname, grp.path))
-            # set HDF5 filter parameters (in nc_var_options struct).
-            # zlib compression?
-            if zlib:
-                ncvaropt.deflate = 1
-                ncvaropt.deflate_level = complevel
-            else:
-                ncvaropt.deflate = 0
-                ncvaropt.deflate_level = 0
-            # set chunking algorithm.
-            if chunking == 'seq':
-                ncvaropt.chunkalg = NC_CHUNK_SEQ
-            elif chunking == 'sub':
-                ncvaropt.chunkalg = NC_CHUNK_SUB
-            else:
-                raise ValueError("chunking keyword must be 'seq' or 'sub', got %s" % chunking)
-            ncvaropt.chunksizes = NULL
-            ncvaropt.extend_increments = NULL
-            # fletcher32 checksum?
-            if fletcher32:
-                ncvaropt.fletcher32 = 1
-            else:
-                ncvaropt.fletcher32 = 0
-            # HDF5 shuffle filter?
-            # only enable shuffle if zlib is True and complevel != 0:
-            if shuffle and zlib and complevel:
-                ncvaropt.shuffle = 1
-            else:
-                ncvaropt.shuffle = 0
-            varname = name
+            # define variable.
             if ndims:
-                ierr = nc_def_var_full(self._grpid, varname, xtype, ndims,
-                                       dimids, &self._varid, &ncvaropt)
-            else:
+                ierr = nc_def_var(self._grpid, varname, xtype, ndims,
+                                  dimids, &self._varid)
+            else: # a scalar variable.
                 ierr = nc_def_var(self._grpid, varname, xtype, ndims,
                                   NULL, &self._varid)
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
+            # set zlib, shuffle, chunking and fletcher32 variable settings.
+            # don't bother for scalar variables.
+            if ndims:
+                if zlib:
+                    ideflate_level = complevel
+                    if shuffle:
+                        ierr = nc_def_var_deflate(self._grpid, self._varid, 1, 1, ideflate_level)
+                    else:
+                        ierr = nc_def_var_deflate(self._grpid, self._varid, 1, 0, ideflate_level)
+                    if ierr != NC_NOERR:
+                        raise RuntimeError(nc_strerror(ierr))
+                if fletcher32:
+                    ierr = nc_def_var_fletcher32(self._grpid, self._varid, ifletcher32)
+                    if ierr != NC_NOERR:
+                        raise RuntimeError(nc_strerror(ierr))
+                if chunking == 'sub':
+                    ichunkalgp = <int *>NC_CHUNK_SUB
+                elif chunking == 'seq':
+                    ichunkalgp = <int *>NC_CHUNK_SEQ
+                else:
+                    raise ValueError("chunking keyword must be 'seq' or 'sub', got %s" % chunking)
+                ierr = nc_def_var_chunking(self._grpid, self._varid, ichunkalgp, NULL, NULL)
+                if ierr != NC_NOERR:
+                    raise RuntimeError(nc_strerror(ierr))
             # set a fill value for this variable if fill_value keyword
             # given.  This avoids the HDF5 overhead of deleting and 
-            # recreating the dataset if it is set later.
+            # recreating the dataset if it is set later (after the enddef).
             if fill_value is not None:
                 # cast fill_value to type of variable.
                 fill_value = NP.array(fill_value, self.dtype)
