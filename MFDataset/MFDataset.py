@@ -2,7 +2,7 @@
 Module for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
 
-Adapted from pycdf (http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
+Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
 Example usage:
 
@@ -41,7 +41,7 @@ Open a Dataset spanning multiple files, making it look as if it was a
 single file. Variables in the list of files that share the same unlimited 
 dimension are aggregated. 
 
-Adapted from pycdf (http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
+Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
 @param files: sequence of netCDF files; the first one will become the
 "master" file, defining all the record variables (variables with an 
