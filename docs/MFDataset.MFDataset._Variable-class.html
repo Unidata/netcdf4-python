@@ -82,6 +82,23 @@ object --+
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
+    <span class="summary-sig"><a href="MFDataset.MFDataset._Variable-class.html#__getattr__" class="summary-sig-name">__getattr__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span>
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="MFDataset.MFDataset._Variable-class.html#__getitem__" class="summary-sig-name">__getitem__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">elem</span>)</span><br />
+      Get records from a concatenated set of variables.
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
     <span class="summary-sig"><a href="MFDataset.MFDataset._Variable-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">dset</span>,
         <span class="summary-sig-arg">varname</span>,
@@ -89,28 +106,6 @@ object --+
         <span class="summary-sig-arg">recdimname</span>)</span><br />
       x.__init__(...) initializes x; see x.__class__.__doc__ for 
       signature
-  </td>
-</tr>
-<tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="MFDataset.MFDataset._Variable-class.html#typecode" class="summary-sig-name">typecode</a>(<span class="summary-sig-arg">self</span>)</span>
-  </td>
-</tr>
-<tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="MFDataset.MFDataset._Variable-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">self</span>)</span>
-  </td>
-</tr>
-<tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="MFDataset.MFDataset._Variable-class.html#__getattr__" class="summary-sig-name">__getattr__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">name</span>)</span>
   </td>
 </tr>
 <tr class="private">
@@ -124,9 +119,14 @@ object --+
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <span class="summary-sig"><a href="MFDataset.MFDataset._Variable-class.html#__getitem__" class="summary-sig-name">__getitem__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">elem</span>)</span><br />
-      Get records from a concatenated set of variables.
+    <span class="summary-sig"><a href="MFDataset.MFDataset._Variable-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">self</span>)</span>
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="MFDataset.MFDataset._Variable-class.html#typecode" class="summary-sig-name">typecode</a>(<span class="summary-sig-arg">self</span>)</span>
   </td>
 </tr>
   <tr>
@@ -192,73 +192,6 @@ object --+
   </td>
 </tr>
 </table>
-<a name="__init__"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">dset</span>,
-        <span class="sig-arg">varname</span>,
-        <span class="sig-arg">var</span>,
-        <span class="sig-arg">recdimname</span>)</span>
-    <br /><em class="fname">(Constructor)</em>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#_Variable.__init__">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  x.__init__(...) initializes x; see x.__class__.__doc__ for 
-  signature
-  <dl><dt></dt><dd>
-    <dl><dt>Overrides:
-      object.__init__
-        <dd><em class="note">(inherited documentation)</em></dd>
-    </dt></dl>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="typecode"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">typecode</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#_Variable.typecode">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  None
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="ncattrs"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">ncattrs</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#_Variable.ncattrs">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  None
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
 <a name="__getattr__"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -272,25 +205,6 @@ object --+
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#_Variable.__getattr__">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  None
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="_shape"></a>
-<div class="private">
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_shape</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#_Variable._shape">source&nbsp;code</a></span>&nbsp;</span
     ></td>
   </table>
   
@@ -320,6 +234,92 @@ object --+
   </dd></dl>
 </td></tr></table>
 </div>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dset</span>,
+        <span class="sig-arg">varname</span>,
+        <span class="sig-arg">var</span>,
+        <span class="sig-arg">recdimname</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#_Variable.__init__">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  x.__init__(...) initializes x; see x.__class__.__doc__ for 
+  signature
+  <dl><dt></dt><dd>
+    <dl><dt>Overrides:
+      object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt></dl>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="_shape"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_shape</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#_Variable._shape">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  None
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="ncattrs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ncattrs</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#_Variable.ncattrs">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  None
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="typecode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">typecode</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#_Variable.typecode">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  None
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
@@ -344,7 +344,7 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Tue Oct  3 10:23:30 2006</td>
+        3.0alpha3 on Tue Oct  3 10:32:10 2006</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>

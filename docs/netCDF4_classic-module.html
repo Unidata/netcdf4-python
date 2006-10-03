@@ -126,7 +126,8 @@
     </ul>
   <h1 class="heading">Tutorial</h1>
     <h2 class="heading">1) Creating/Opening/Closing a netCDF file</h2>
-      <p>To create a netCDF file from python, you simply call the Dataset 
+      <p>To create a netCDF file from python, you simply call the <a 
+      href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> 
       constructor. This is also the method used to open an existing netCDF 
       file. If the file is open for write access (<code>w, r+</code> or 
       <code>a</code>), you may write any type of data including new 
@@ -145,8 +146,11 @@
       <code>NETCDF4_CLASSIC</code> files. To write <code>NETCDF4</code> 
       files, use the <a href="netCDF4-module.html" class="link">netCDF4</a>
       module. To see what how a given file is formatted, you can examine 
-      the <code>file_format</code> Dataset attribute. Closing the netCDF 
-      file is accomplished via the <code>close</code> method of the Dataset
+      the <code>file_format</code> <a 
+      href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> 
+      attribute. Closing the netCDF file is accomplished via the 
+      <code>close</code> method of the <a 
+      href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> 
       instance.</p>
       Here's an example:
 <pre class="py-doctest">
@@ -162,9 +166,10 @@
       so before any variables can be created the dimensions they use must 
       be created first. A special case, not often used in practice, is that
       of a scalar variable, which has no dimensions. A dimension is created
-      using the <code>createDimension</code> method of a Dataset instance. 
-      A Python string is used to set the name of the dimension, and an 
-      integer value is used to set the size. To create an unlimited 
+      using the <code>createDimension</code> method of a <a 
+      href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> 
+      instance. A Python string is used to set the name of the dimension, 
+      and an integer value is used to set the size. To create an unlimited 
       dimension (a dimension that can be appended to), the size value is 
       set to <code>None</code>. In this example, the <code>time</code> is 
       unlimited.  Only one unlimited dimension per file is allowed in 
@@ -208,32 +213,35 @@ level 0 False</span>
 </pre>
       <a href="netCDF4_classic.Dimension-class.html" 
       class="link">Dimension</a> names can be changed using the 
-      <code>renameDimension</code> method of a Dataset instance.
+      <code>renameDimension</code> method of a <a 
+      href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> 
+      instance.
     <h2 class="heading">3) Variables in a netCDF file</h2>
       netCDF variables behave much like python multidimensional array 
       objects supplied by the <a href="http://numpy.scipy.org" 
       target="_top">numpy module</a>. However, unlike numpy arrays, netCDF 
       variables can be appended to along the 'unlimited' dimension. To 
       create a netCDF variable, use the <code>createVariable</code> method 
-      of a Dataset instance. The <code>createVariable</code> method has two
-      mandatory arguments, the variable name (a Python string), and the 
-      variable datatype. The variable's dimensions are given by a tuple 
-      containing the dimension names (defined previously with 
-      <code>createDimension</code>). To create a scalar variable, simply 
-      leave out the dimensions keyword. The variable primitive datatypes 
-      correspond to the dtype.str attribute of a numpy array, and can be 
-      one of <code>'f4'</code> (32-bit floating point), <code>'f8'</code> 
-      (64-bit floating point), <code>'i4'</code> (32-bit signed integer), 
-      <code>'i2'</code> (16-bit signed integer), <code>'i1'</code> (8-bit 
-      signed integer), integer), <code>'S1'</code> (single-character 
-      string).  The old single character Numeric typecodes 
-      (<code>'f','d','i','h','b','c'</code>) are also accepted for 
-      compatibility with Scientific.IO.NetCDF. The dimensions themselves 
-      are usually also defined as variables, called coordinate variables. 
-      The <code>createVariable</code> method returns an instance of the <a 
-      href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
-      class whose methods can be used later to access and set variable data
-      and attributes.
+      of a <a href="netCDF4_classic.Dataset-class.html" 
+      class="link">Dataset</a> instance. The <code>createVariable</code> 
+      method has two mandatory arguments, the variable name (a Python 
+      string), and the variable datatype. The variable's dimensions are 
+      given by a tuple containing the dimension names (defined previously 
+      with <code>createDimension</code>). To create a scalar variable, 
+      simply leave out the dimensions keyword. The variable primitive 
+      datatypes correspond to the dtype.str attribute of a numpy array, and
+      can be one of <code>'f4'</code> (32-bit floating point), 
+      <code>'f8'</code> (64-bit floating point), <code>'i4'</code> (32-bit 
+      signed integer), <code>'i2'</code> (16-bit signed integer), 
+      <code>'i1'</code> (8-bit signed integer), integer), <code>'S1'</code>
+      (single-character string).  The old single character Numeric 
+      typecodes (<code>'f','d','i','h','b','c'</code>) are also accepted 
+      for compatibility with Scientific.IO.NetCDF. The dimensions 
+      themselves are usually also defined as variables, called coordinate 
+      variables. The <code>createVariable</code> method returns an instance
+      of the <a href="netCDF4_classic.Variable-class.html" 
+      class="link">Variable</a> class whose methods can be used later to 
+      access and set variable data and attributes.
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">8</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
 </span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">i</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
@@ -255,14 +263,17 @@ level 0 False</span>
 </pre>
       <a href="netCDF4_classic.Variable-class.html" 
       class="link">Variable</a> names can be changed using the 
-      <code>renameVariable</code> method of a Dataset instance.
+      <code>renameVariable</code> method of a <a 
+      href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> 
+      instance.
     <h2 class="heading">4) Attributes in a netCDF file</h2>
       There are two types of attributes in a netCDF file, global and 
       variable. Global attributes provide information about an entire 
       dataset as a whole. <a href="netCDF4_classic.Variable-class.html" 
       class="link">Variable</a> attributes provide information about one of
       the variables in a group. Global attributes are set by assigning 
-      values to Dataset instance variables. <a 
+      values to <a href="netCDF4_classic.Dataset-class.html" 
+      class="link">Dataset</a> instance variables. <a 
       href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
       attributes are set by assigning values to <a 
       href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
@@ -280,13 +291,14 @@ level 0 False</span>
 </span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">y</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">J</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">y</span><span class="py-other"> </span><span class="py-other">1</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">1</span><span class="py-other">'</span><span class="py-other">
 </span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">p</span><span class="py-other">r</span><span class="py-other">o</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">p</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other">_</span><span class="py-other">g</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">g</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">'</span>
 </pre>
-      The <code>ncattrs()</code> method of a Dataset or <a 
-      href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
-      instance can be used to retrieve the names of all the netCDF 
-      attributes. This method is provided as a convenience, since using the
-      built-in <code>dir</code> Python function will return a bunch of 
-      private methods and attributes that cannot (or should not) be 
-      modified by the user.
+      The <code>ncattrs()</code> method of a <a 
+      href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> or
+      <a href="netCDF4_classic.Variable-class.html" 
+      class="link">Variable</a> instance can be used to retrieve the names 
+      of all the netCDF attributes. This method is provided as a 
+      convenience, since using the built-in <code>dir</code> Python 
+      function will return a bunch of private methods and attributes that 
+      cannot (or should not) be modified by the user.
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-keyword">in</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">t</span><span class="py-other">r</span><span class="py-other">s</span><span class="py-other">(</span><span class="py-other">)</span><span class="py-other">:</span><span class="py-other">
 </span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">G</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">b</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">t</span><span class="py-other">r</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">=</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">g</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">t</span><span class="py-other">r</span><span class="py-other">(</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">,</span><span class="py-other">n</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">)</span>
@@ -294,10 +306,11 @@ level 0 False</span>
 Global attr history = Created Mon Nov  7 10.30:56 2005
 Global attr source = netCDF4_classic python module tutorial</span>
 </pre>
-      The <code>__dict__</code> attribute of a Dataset or <a 
-      href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
-      instance provides all the netCDF attribute name/value pairs in a 
-      python dictionary:
+      The <code>__dict__</code> attribute of a <a 
+      href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> or
+      <a href="netCDF4_classic.Variable-class.html" 
+      class="link">Variable</a> instance provides all the netCDF attribute 
+      name/value pairs in a python dictionary:
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">_</span><span class="py-other">_</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other">t</span><span class="py-other">_</span><span class="py-other">_</span>
 <span class="py-output">{'source': 'netCDF4_classic python module tutorial',
@@ -322,11 +335,12 @@ Global attr source = netCDF4_classic python module tutorial</span>
       <p>Note that data saved as pickled strings will not be very useful if
       the data is to be read by a non-python client (the data will appear 
       to the client as an ugly looking binary string).</p>
-      Attributes can be deleted from a netCDF Dataset or <a 
-      href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
-      using the python <code>del</code> statement (i.e. <code>del 
-      dset.foo</code> removes the attribute <code>foo</code> the the 
-      dataset <code>dset</code>).
+      Attributes can be deleted from a netCDF <a 
+      href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> or
+      <a href="netCDF4_classic.Variable-class.html" 
+      class="link">Variable</a> using the python <code>del</code> statement
+      (i.e. <code>del dset.foo</code> removes the attribute 
+      <code>foo</code> the the dataset <code>dset</code>).
     <h2 class="heading">5) Writing data to and retrieving data from a netCDF variable</h2>
       Now that you have a netCDF <a 
       href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
@@ -535,6 +549,16 @@ Global attr source = netCDF4_classic python module tutorial</span>
          >hide private</a>]</span></td>
       </tr>
     </table>
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <a href="netCDF4_classic.Dataset-class.html">Dataset</a><br />
+      A netCDF <a href="netCDF4_classic.Dataset-class.html" 
+        class="link">Dataset</a> is a collection of dimensions, variables 
+        and attributes.
   </td>
 </tr>
 <tr>
@@ -1053,7 +1077,7 @@ Global attr source = netCDF4_classic python module tutorial</span>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Tue Oct  3 10:23:30 2006</td>
+        3.0alpha3 on Tue Oct  3 10:32:10 2006</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>

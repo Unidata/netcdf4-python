@@ -57,7 +57,7 @@
 <pre class="base-tree">
              object --+    
                       |    
-netCDF4_classic.Dataset --+
+<a href="netCDF4_classic.Dataset-class.html">netCDF4_classic.Dataset</a> --+
                           |
                          <strong class="uidshort">Dataset</strong>
 </pre>
@@ -86,6 +86,15 @@ class for reading a multi-file netCDF dataset.<br /><br />
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
+    <span class="summary-sig"><a href="MFDataset.MFDataset.Dataset-class.html#__getattribute__" class="summary-sig-name">__getattribute__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      x.__getattribute__('name') &lt;==&gt; x.name
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
     <span class="summary-sig"><a href="MFDataset.MFDataset.Dataset-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">files</span>)</span><br />
       Open a Dataset spanning multiple files, making it look as if it 
@@ -106,9 +115,8 @@ class for reading a multi-file netCDF dataset.<br /><br />
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <span class="summary-sig"><a href="MFDataset.MFDataset.Dataset-class.html#__getattribute__" class="summary-sig-name">__getattribute__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">name</span>)</span><br />
-      x.__getattribute__('name') &lt;==&gt; x.name
+    <span class="summary-sig"><a href="MFDataset.MFDataset.Dataset-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Close the Dataset.
   </td>
 </tr>
 <tr>
@@ -121,30 +129,22 @@ class for reading a multi-file netCDF dataset.<br /><br />
       class="link">Dataset</a> in a list
   </td>
 </tr>
-<tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="MFDataset.MFDataset.Dataset-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">self</span>)</span><br />
-      Close the Dataset.
-  </td>
-</tr>
   <tr>
     <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code>netCDF4_classic.Dataset</code></b>:
-      <code>__delattr__</code>,
-      <code>__new__</code>,
-      <code>createDimension</code>,
-      <code>createVariable</code>,
-      <code>renameDimension</code>,
-      <code>renameVariable</code>,
-      <code>set_fill_off</code>,
-      <code>set_fill_on</code>,
-      <code>sync</code>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF4_classic.Dataset-class.html">netCDF4_classic.Dataset</a></code></b>:
+      <code><a href="netCDF4_classic.Dataset-class.html#__delattr__">__delattr__</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#__new__">__new__</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#createDimension">createDimension</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#createVariable">createVariable</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#renameDimension">renameDimension</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#renameVariable">renameVariable</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#set_fill_off">set_fill_off</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#set_fill_on">set_fill_on</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#sync">sync</a></code>
       </p>
-    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>netCDF4_classic.Dataset</code></b> (private):
-      <code>_enddef</code>,
-      <code>_redef</code>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF4_classic.Dataset-class.html">netCDF4_classic.Dataset</a></code></b> (private):
+      <code><a href="netCDF4_classic.Dataset-class.html#_enddef">_enddef</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#_redef">_redef</a></code>
       </p></div>
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
       <code>__hash__</code>,
@@ -177,8 +177,8 @@ class for reading a multi-file netCDF dataset.<br /><br />
 </tr>
   <tr>
     <td colspan="2" class="summary">
-    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code>netCDF4_classic.Dataset</code></b> (private):
-      <code>_dsetid</code>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF4_classic.Dataset-class.html">netCDF4_classic.Dataset</a></code></b> (private):
+      <code><a href="netCDF4_classic.Dataset-class.html#_dsetid">_dsetid</a></code>
       </p></div>
     </td>
   </tr>
@@ -204,10 +204,10 @@ class for reading a multi-file netCDF dataset.<br /><br />
 </tr>
   <tr>
     <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code>netCDF4_classic.Dataset</code></b>:
-      <code>dimensions</code>,
-      <code>file_format</code>,
-      <code>variables</code>
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF4_classic.Dataset-class.html">netCDF4_classic.Dataset</a></code></b>:
+      <code><a href="netCDF4_classic.Dataset-class.html#dimensions">dimensions</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#file_format">file_format</a></code>,
+      <code><a href="netCDF4_classic.Dataset-class.html#variables">variables</a></code>
       </p>
     </td>
   </tr>
@@ -259,6 +259,30 @@ class for reading a multi-file netCDF dataset.<br /><br />
   </td>
 </tr>
 </table>
+<a name="__getattribute__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getattribute__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#Dataset.__getattribute__">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  x.__getattribute__('name') &lt;==&gt; x.name
+  <dl><dt></dt><dd>
+    <dl><dt>Overrides:
+      <a href="netCDF4_classic.Dataset-class.html#__getattribute__">netCDF4_classic.Dataset.__getattribute__</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt></dl>
+  </dd></dl>
+</td></tr></table>
+</div>
 <a name="__init__"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -291,7 +315,7 @@ class for reading a multi-file netCDF dataset.<br /><br />
           mode.</li>
     </ul>
     <dl><dt>Overrides:
-      netCDF4_classic.Dataset.__init__
+      <a href="netCDF4_classic.Dataset-class.html#__init__">netCDF4_classic.Dataset.__init__</a>
     </dt></dl>
   </dd></dl>
 </td></tr></table>
@@ -315,30 +339,30 @@ class for reading a multi-file netCDF dataset.<br /><br />
   override base class attribute creation
   <dl><dt></dt><dd>
     <dl><dt>Overrides:
-      netCDF4_classic.Dataset.__setattr__
+      <a href="netCDF4_classic.Dataset-class.html#__setattr__">netCDF4_classic.Dataset.__setattr__</a>
     </dt></dl>
   </dd></dl>
 </td></tr></table>
 </div>
-<a name="__getattribute__"></a>
+<a name="close"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getattribute__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">name</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#Dataset.__getattribute__">source&nbsp;code</a></span>&nbsp;</span
+    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#Dataset.close">source&nbsp;code</a></span>&nbsp;</span
     ></td>
   </table>
   
-  x.__getattribute__('name') &lt;==&gt; x.name
+  <p>Close the Dataset.</p>
+  <code>close()</code>
   <dl><dt></dt><dd>
     <dl><dt>Overrides:
-      netCDF4_classic.Dataset.__getattribute__
+      <a href="netCDF4_classic.Dataset-class.html#close">netCDF4_classic.Dataset.close</a>
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt></dl>
   </dd></dl>
@@ -364,31 +388,7 @@ class for reading a multi-file netCDF dataset.<br /><br />
   <code>ncattrs()</code>
   <dl><dt></dt><dd>
     <dl><dt>Overrides:
-      netCDF4_classic.Dataset.ncattrs
-        <dd><em class="note">(inherited documentation)</em></dd>
-    </dt></dl>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="close"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">self</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="MFDataset.MFDataset-pysrc.html#Dataset.close">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  <p>Close the Dataset.</p>
-  <code>close()</code>
-  <dl><dt></dt><dd>
-    <dl><dt>Overrides:
-      netCDF4_classic.Dataset.close
+      <a href="netCDF4_classic.Dataset-class.html#ncattrs">netCDF4_classic.Dataset.ncattrs</a>
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt></dl>
   </dd></dl>
@@ -418,7 +418,7 @@ class for reading a multi-file netCDF dataset.<br /><br />
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Tue Oct  3 10:23:30 2006</td>
+        3.0alpha3 on Tue Oct  3 10:32:10 2006</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>

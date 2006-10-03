@@ -116,6 +116,15 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
+    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#DateFromJulianDay" class="summary-sig-name">DateFromJulianDay</a>(<span class="summary-sig-arg">JD</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
+      returns a 'datetime-like' object given Julian Day.
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
     <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#JulianDayFromDate" class="summary-sig-name">JulianDayFromDate</a>(<span class="summary-sig-arg">date</span>,
         <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
       creates a Julian Day from a 'datetime-like' object.
@@ -125,9 +134,9 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_NoLeapDayFromDate" class="summary-sig-name">_NoLeapDayFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
-      creates a Julian Day for a calendar with no leap years from a 
-      datetime instance.
+    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_360DayFromDate" class="summary-sig-name">_360DayFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
+      creates a Julian Day for a calendar where all months have 30 
+      daysfrom a 'datetime-like' object.
   </td>
 </tr>
 <tr class="private">
@@ -143,27 +152,9 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_360DayFromDate" class="summary-sig-name">_360DayFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
-      creates a Julian Day for a calendar where all months have 30 
-      daysfrom a 'datetime-like' object.
-  </td>
-</tr>
-<tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#DateFromJulianDay" class="summary-sig-name">DateFromJulianDay</a>(<span class="summary-sig-arg">JD</span>,
-        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
-      returns a 'datetime-like' object given Julian Day.
-  </td>
-</tr>
-<tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFromNoLeapDay" class="summary-sig-name">_DateFromNoLeapDay</a>(<span class="summary-sig-arg">JD</span>)</span><br />
+    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFrom360Day" class="summary-sig-name">_DateFrom360Day</a>(<span class="summary-sig-arg">JD</span>)</span><br />
       returns a 'datetime-like' object given Julian Day for a calendar 
-      with no leap days.
+      where all months have 30 days.
   </td>
 </tr>
 <tr class="private">
@@ -179,9 +170,18 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFrom360Day" class="summary-sig-name">_DateFrom360Day</a>(<span class="summary-sig-arg">JD</span>)</span><br />
+    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFromNoLeapDay" class="summary-sig-name">_DateFromNoLeapDay</a>(<span class="summary-sig-arg">JD</span>)</span><br />
       returns a 'datetime-like' object given Julian Day for a calendar 
-      where all months have 30 days.
+      with no leap days.
+  </td>
+</tr>
+<tr class="private">
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_NoLeapDayFromDate" class="summary-sig-name">_NoLeapDayFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
+      creates a Julian Day for a calendar with no leap years from a 
+      datetime instance.
   </td>
 </tr>
 <tr class="private">
@@ -214,11 +214,11 @@ Performs conversions of netCDF time coordinate data to/from datetime
     </table>
   </td>
 </tr>
-<tr class="private">
+<tr>
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <a href="netcdftime.netcdftime-module.html#_units">_units</a> = <code title="['days', 'hours', 'minutes', 'seconds', 'day', 'hour', 'minute', 'second']">['days', 'hours', 'minutes', 'seconds', 'day', 'hour...</code>
+    <a href="netcdftime.netcdftime-module.html#__version__">__version__</a> = <code title="'0.5.1'">'0.5.1'</code>
   </td>
 </tr>
 <tr class="private">
@@ -228,11 +228,11 @@ Performs conversions of netCDF time coordinate data to/from datetime
     <a href="netcdftime.netcdftime-module.html#_calendars">_calendars</a> = <code title="['standard', 'gregorian', 'proleptic_gregorian', 'noleap', 'julian', 'all_leap', '365_day', '366_day', '360_day']">['standard', 'gregorian', 'proleptic_gregorian', 'no...</code>
   </td>
 </tr>
-<tr>
+<tr class="private">
   <td width="15%" align="right" valign="top" class="summary">
     <code class="summary-type">&nbsp;</code>
   </td><td class="summary">
-    <a href="netcdftime.netcdftime-module.html#__version__">__version__</a> = <code title="'0.5.1'">'0.5.1'</code>
+    <a href="netcdftime.netcdftime-module.html#_units">_units</a> = <code title="['days', 'hours', 'minutes', 'seconds', 'day', 'hour', 'minute', 'second']">['days', 'hours', 'minutes', 'seconds', 'day', 'hour...</code>
   </td>
 </tr>
 </table>
@@ -256,98 +256,6 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </td>
 </tr>
 </table>
-<a name="JulianDayFromDate"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">JulianDayFromDate</span>(<span class="sig-arg">date</span>,
-        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#JulianDayFromDate">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  <p>creates a Julian Day from a 'datetime-like' object.  Returns the 
-  fractional Julian Day (resolution 1 second).</p>
-  <p>if calendar='standard' or 'gregorian' (default), Julian day follows 
-  Julian Calendar on and before 1582-10-5, Gregorian calendar after 
-  1582-10-15.</p>
-  <p>if calendar='proleptic_gregorian', Julian Day follows gregorian 
-  calendar.</p>
-  <p>if calendar='julian', Julian Day follows julian calendar.</p>
-  <p>Algorithm:</p>
-  Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
-  Willmann-Bell, Virginia. p. 63
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="_NoLeapDayFromDate"></a>
-<div class="private">
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_NoLeapDayFromDate</span>(<span class="sig-arg">date</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_NoLeapDayFromDate">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  creates a Julian Day for a calendar with no leap years from a datetime
-  instance.  Returns the fractional Julian Day (resolution 1 second).
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="_AllLeapFromDate"></a>
-<div class="private">
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_AllLeapFromDate</span>(<span class="sig-arg">date</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_AllLeapFromDate">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  creates a Julian Day for a calendar where all years have 366 days from
-  a 'datetime-like' object. Returns the fractional Julian Day (resolution 1
-  second).
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="_360DayFromDate"></a>
-<div class="private">
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_360DayFromDate</span>(<span class="sig-arg">date</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_360DayFromDate">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  creates a Julian Day for a calendar where all months have 30 daysfrom 
-  a 'datetime-like' object. Returns the fractional Julian Day (resolution 1
-  second).
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
 <a name="DateFromJulianDay"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -383,23 +291,95 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </dd></dl>
 </td></tr></table>
 </div>
-<a name="_DateFromNoLeapDay"></a>
+<a name="JulianDayFromDate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">JulianDayFromDate</span>(<span class="sig-arg">date</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#JulianDayFromDate">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  <p>creates a Julian Day from a 'datetime-like' object.  Returns the 
+  fractional Julian Day (resolution 1 second).</p>
+  <p>if calendar='standard' or 'gregorian' (default), Julian day follows 
+  Julian Calendar on and before 1582-10-5, Gregorian calendar after 
+  1582-10-15.</p>
+  <p>if calendar='proleptic_gregorian', Julian Day follows gregorian 
+  calendar.</p>
+  <p>if calendar='julian', Julian Day follows julian calendar.</p>
+  <p>Algorithm:</p>
+  Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
+  Willmann-Bell, Virginia. p. 63
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="_360DayFromDate"></a>
 <div class="private">
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_DateFromNoLeapDay</span>(<span class="sig-arg">JD</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_360DayFromDate</span>(<span class="sig-arg">date</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFromNoLeapDay">source&nbsp;code</a></span>&nbsp;</span
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_360DayFromDate">source&nbsp;code</a></span>&nbsp;</span
     ></td>
   </table>
   
-  returns a 'datetime-like' object given Julian Day for a calendar with 
-  no leap days. Julian Day is a fractional day with a resolution of 1 
-  second.
+  creates a Julian Day for a calendar where all months have 30 daysfrom 
+  a 'datetime-like' object. Returns the fractional Julian Day (resolution 1
+  second).
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="_AllLeapFromDate"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_AllLeapFromDate</span>(<span class="sig-arg">date</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_AllLeapFromDate">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  creates a Julian Day for a calendar where all years have 366 days from
+  a 'datetime-like' object. Returns the fractional Julian Day (resolution 1
+  second).
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="_DateFrom360Day"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_DateFrom360Day</span>(<span class="sig-arg">JD</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFrom360Day">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  returns a 'datetime-like' object given Julian Day for a calendar where
+  all months have 30 days. Julian Day is a fractional day with a resolution
+  of 1 second.
   <dl><dt></dt><dd>
   </dd></dl>
 </td></tr></table>
@@ -425,23 +405,43 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </dd></dl>
 </td></tr></table>
 </div>
-<a name="_DateFrom360Day"></a>
+<a name="_DateFromNoLeapDay"></a>
 <div class="private">
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_DateFrom360Day</span>(<span class="sig-arg">JD</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_DateFromNoLeapDay</span>(<span class="sig-arg">JD</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFrom360Day">source&nbsp;code</a></span>&nbsp;</span
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFromNoLeapDay">source&nbsp;code</a></span>&nbsp;</span
     ></td>
   </table>
   
-  returns a 'datetime-like' object given Julian Day for a calendar where
-  all months have 30 days. Julian Day is a fractional day with a resolution
-  of 1 second.
+  returns a 'datetime-like' object given Julian Day for a calendar with 
+  no leap days. Julian Day is a fractional day with a resolution of 1 
+  second.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="_NoLeapDayFromDate"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_NoLeapDayFromDate</span>(<span class="sig-arg">date</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_NoLeapDayFromDate">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
+  </table>
+  
+  creates a Julian Day for a calendar with no leap years from a datetime
+  instance.  Returns the fractional Julian Day (resolution 1 second).
   <dl><dt></dt><dd>
   </dd></dl>
 </td></tr></table>
@@ -486,18 +486,17 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </td>
 </tr>
 </table>
-<a name="_units"></a>
-<div class="private">
+<a name="__version__"></a>
+<div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">_units</h3>
+  <h3 class="epydoc">__version__</h3>
   None
   <dl><dt></dt><dd>
     <dl><dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-['days', 'hours', 'minutes', 'seconds', 'day', 'hour', 'minute', 'seco<span class="variable-linewrap"><img src="crarr.png" alt="" /></span>
-nd']                                                                   
+<span class="variable-quote">'</span>0.5.1<span class="variable-quote">'</span>                                                                
       </pre></td></tr></table></dd>
     </dl>
   </dd></dl>
@@ -527,17 +526,18 @@ nd']
   </dd></dl>
 </td></tr></table>
 </div>
-<a name="__version__"></a>
-<div>
+<a name="_units"></a>
+<div class="private">
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">__version__</h3>
+  <h3 class="epydoc">_units</h3>
   None
   <dl><dt></dt><dd>
     <dl><dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-<span class="variable-quote">'</span>0.5.1<span class="variable-quote">'</span>                                                                
+['days', 'hours', 'minutes', 'seconds', 'day', 'hour', 'minute', 'seco<span class="variable-linewrap"><img src="crarr.png" alt="" /></span>
+nd']                                                                   
       </pre></td></tr></table></dd>
     </dl>
   </dd></dl>
@@ -567,7 +567,7 @@ nd']
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Tue Oct  3 10:23:30 2006</td>
+        3.0alpha3 on Tue Oct  3 10:32:10 2006</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>
