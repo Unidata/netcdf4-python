@@ -1161,7 +1161,7 @@ set to favor subsetting equally in all dimensions.
 The optional keyword C{fill_value} can be used to override the default 
 netCDF C{_FillValue} (the value that the variable gets filled with before 
 any data is written to it).  If fill_value is set to C{False}, then
-then the variable is not pre-filled.
+the variable is not pre-filled.
 
 If the optional keyword parameter C{least_significant_digit} is
 specified, variable data will be truncated (quantized). This produces
@@ -1549,7 +1549,7 @@ case bits=4). Default is C{None}, or no quantization.
 B{C{fill_value}} - If specified, the default netCDF C{_FillValue} (the 
 value that the variable gets filled with before any data is written to it) 
 is replaced with this value.  If fill_value is set to C{False}, then
-then the variable is not pre-filled.
+the variable is not pre-filled.
  
 B{Returns:}
 
