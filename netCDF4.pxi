@@ -200,14 +200,9 @@ cdef extern from "netcdf.h":
         NC_EBADFIELD    
         NC_EBADCLASS    
         NC4_LAST_ERROR  
-    #cdef struct nc_var_options:
-    #    int chunkalg
-    #    int *chunksizes
-    #    int *extend_increments
-    #    int deflate         # If true, turn on deflation.  
-    #    int deflate_level   # Deflate level (between 0 and 9). 
-    #    int fletcher32      # Fletcher32 checksum filter.  
-    #    int shuffle         # Turn on shuffle filter.  
+        NC_ENDIAN_NATIVE 
+        NC_ENDIAN_LITTLE 
+        NC_ENDIAN_BIG 
     char *nc_inq_libvers()
     char *nc_strerror(int ncerr)
     int nc_create(char *path, int cmode, int *ncidp)
@@ -288,9 +283,6 @@ cdef extern from "netcdf.h":
                 ptrdiff_t *imapp, void *ip)
     int nc_put_var(int ncid, int varid,  void *op)
     int nc_get_var(int ncid, int varid,  void *ip)
-    #int nc_def_var_full(int ncid, char *name, nc_type xtype, 
-    #                int ndims, int *dimidsp, int *varidp, 
-    #                nc_var_options *vo)
     int nc_def_var_deflate(int ncid, int varid, int shuffle, int deflate, 
 	           	   int deflate_level)
     int nc_def_var_fletcher32(int ncid, int varid, int fletcher32)
