@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name = "netcdftime",
-  version = "0.5",
+  version = "0.5.1",
   author_email      = "jeffrey.s.whitaker@noaa.gov",
   url               = "http://netcdf4-python.googlecode.com/svn/trunk/docs/netCDF4-module.html",
   download_url      = "http://cheeseshop.python.org/pypi/netCDF4/",
