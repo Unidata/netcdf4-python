@@ -1492,7 +1492,7 @@ analagous to numpy array objects.
 
 C{Variable(group, name, datatype, dimensions=(), zlib=True, complevel=6, 
 shuffle=True, fletcher32=False, chunking='seq', 
-least_significant_digit=None)}
+least_significant_digit=None,fill_value=None)}
    
 L{Variable} instances should be created using the C{createVariable} method 
 of a L{Dataset} or L{Group} instance, not using this class directly.
