@@ -2,6 +2,9 @@
 Module for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
 
+Datasets must be in C{NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT}
+format (C{NETCDF4} Datasets won't work).
+
 Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
 Example usage:
