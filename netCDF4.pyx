@@ -38,7 +38,7 @@ Download
 Requires 
 ======== 
 
- - numpy array module U{http://numpy.scipy.org}.
+ - numpy array module U{http://numpy.scipy.org}, version 1.0rc1 or later.
  - A pre-release version of HDF5 1.8 is required.  Version
  1.7.52 is currently required. It is 
  available at U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
