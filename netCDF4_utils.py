@@ -3,7 +3,19 @@ import types
 
 __version__ = "0.5.1"
 
-def _buildStartCountStride(elem, shape, dimensions, grpdims):
+def _find_dim(grp, dimname):
+    # look in current group, and parents for dim.
+    group = grp
+    dim = None
+    while 1:
+        try:
+            dim = group.dimensions[dimname]
+            break
+        except:
+            group = group.parent
+    return dim
+
+def _buildStartCountStride(elem, shape, dimensions, grp):
 
     # Create the 'start', 'count', 'slice' and 'stride' tuples that
     # will be passed to 'nc_get_var_0'/'nc_put_var_0'.
@@ -63,7 +75,9 @@ def _buildStartCountStride(elem, shape, dimensions, grpdims):
         if len(dimensions):
             dimname = dimensions[n]
             # is this dimension unlimited?
-            unlim = grpdims[dimname].isunlimited()
+            # look in current group, and parents for dim.
+            dim = _find_dim(grp, dimname)
+            unlim = dim.isunlimited()
         else:
             unlim = False
         

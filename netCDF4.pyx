@@ -717,7 +717,7 @@ for _key,_value in _nptonctype.iteritems():
 include 'netCDF4_common.pyx'
 
 # pure python utilities
-from netCDF4_utils import _buildStartCountStride, _quantize
+from netCDF4_utils import _buildStartCountStride, _quantize, _find_dim
 
 def _get_dims(group):
     """Private function to create L{Dimension} instances for all the
@@ -740,11 +740,11 @@ def _get_dims(group):
             for n from 0 <= n < numdims:
                 dimids[n] = n
         for n from 0 <= n < numdims:
-             ierr = nc_inq_dimname(group._grpid, dimids[n], namstring)
-             if ierr != NC_NOERR:
-                 raise RuntimeError(nc_strerror(ierr))
-             name = namstring
-             dimensions[name] = Dimension(group, name, id=dimids[n])
+            ierr = nc_inq_dimname(group._grpid, dimids[n], namstring)
+            if ierr != NC_NOERR:
+                raise RuntimeError(nc_strerror(ierr))
+            name = namstring
+            dimensions[name] = Dimension(group, name, id=dimids[n])
     return dimensions
 
 def _get_grps(group):
@@ -903,7 +903,7 @@ def _get_vars(group):
 # these are class attributes that 
 # only exist at the python level (not in the netCDF file).
 
-_private_atts = ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format', '_nunlimdim','path','usertype','usertype_name','dtype_base']
+_private_atts = ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format', '_nunlimdim','path','usertype','usertype_name','dtype_base','parent']
 
 
 cdef class Dataset:
@@ -971,7 +971,7 @@ group, so the path is simply C{'/'}.
 
 """
     cdef public int _grpid
-    cdef public groups, dimensions, variables, file_format, path
+    cdef public groups, dimensions, variables, file_format, path, parent
 
     def __init__(self, filename, mode='r', clobber=True, **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
@@ -999,15 +999,16 @@ group, so the path is simply C{'/'}.
         self.file_format = _get_format(grpid)
         self._grpid = grpid
         self.path = '/'
+        self.parent = None
+        # get dimensions in the root group.
+        self.dimensions = _get_dims(self)
+        # get variables in the root Group.
+        self.variables = _get_vars(self)
         # get groups in the root Group.
         if self.file_format == 'NETCDF4':
             self.groups = _get_grps(self)
         else:
             self.groups = {}
-        # get dimensions in the root group.
-        self.dimensions = _get_dims(self)
-        # get variables in the root Group.
-        self.variables = _get_vars(self)
 
     def close(self):
         """
@@ -1375,12 +1376,14 @@ method)."""
             raise RuntimeError(nc_strerror(ierr))
         # full path to Group.
         self.path = os.path.join(parent.path, name)
-        # get groups in this Group.
-        self.groups = _get_grps(self)
+        # parent group.
+        self.parent = parent
         # get dimensions in this Group.
         self.dimensions = _get_dims(self)
         # get variables in this Group.
         self.variables = _get_vars(self)
+        # get groups in this Group.
+        self.groups = _get_grps(self)
 
     def close(self):
         """
@@ -1634,10 +1637,18 @@ instance. If C{None}, the data is not truncated. """
             if ndims:
                 for n from 0 <= n < ndims:
                     dimname = dimensions[n]
-                    try:
-                        dimids[n] = grp.dimensions[dimname]._dimid
-                    except:
-                        raise KeyError('dimension %s not defined in group %s' % (dimname, grp.path))
+                    #try:
+                    #    dimids[n] = grp.dimensions[dimname]._dimid
+                    #except:
+                    #    raise KeyError('dimension %s not defined in group %s' % (dimname, grp.path))
+                    # look for dimension in this group, and if not
+                    # found there, look in parent (and it's parent, etc, back to root).
+                    dim = _find_dim(grp, dimname)
+                    if dim is None:
+                        raise KeyError("dimension %s not defined in group %s or any group in it's family tree" % (dimname, grp.path))
+                    dimids[n] = dim._dimid
+                    #if dimname not in self._grp.dimensions.keys():
+                    #    self._grp.dimensions[dimname] = dim
             # define variable.
             if ndims:
                 ierr = nc_def_var(self._grpid, varname, xtype, ndims,
@@ -1692,7 +1703,8 @@ instance. If C{None}, the data is not truncated. """
         # count how many unlimited dimensions there are.
         self._nunlimdim = 0
         for dimname in self.dimensions:
-            dim = self._grp.dimensions[dimname]
+            # look in current group, and parents for dim.
+            dim = _find_dim(self._grp, dimname)
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
 
     def _getDimensions(self):
@@ -1722,7 +1734,8 @@ instance. If C{None}, the data is not truncated. """
         """Private method to find current sizes of all variable dimensions"""
         varshape = ()
         for dimname in self.dimensions:
-            dim = self._grp.dimensions[dimname]
+            # look in current group, and parents for dim.
+            dim = _find_dim(self._grp,dimname)
             varshape = varshape + (len(dim),)
         return varshape
 
@@ -1795,7 +1808,7 @@ C{ncattrs()}"""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
-        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp.dimensions)
+        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
         # Get elements.
         if not self.usertype and self.dtype != 'S':
             return self._get(start, count, stride)
@@ -1812,7 +1825,7 @@ C{ncattrs()}"""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
-        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp.dimensions)
+        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
         # quantize data if least_significant_digit attribute set.
         if 'least_significant_digit' in self.ncattrs():
             data = _quantize(data,self.least_significant_digit)
