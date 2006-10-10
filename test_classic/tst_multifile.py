@@ -40,8 +40,10 @@ class VariablesTestCase(unittest.TestCase):
     def runTest(self):
         """testing multi-file dataset access"""
         f = Dataset(self.files)
+        assert f.history == 'created today'
         assert_array_equal(numpy.arange(0,nx),f.variables['x'][:])
         datin = f.variables['data'][4:-4:4,3:5,2:8]
+        assert f.variables['data'].name == 'phony data'
         assert_array_equal(datin,data[4:-4:4,3:5,2:8])
         f.close()
 
