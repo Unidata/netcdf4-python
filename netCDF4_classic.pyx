@@ -1136,6 +1136,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
                     # cast fill_value to type of variable.
                     fillval = NP.array(fill_value, self.dtype)
                     _set_att(self._dsetid, self._varid, '_FillValue', fillval)
+                    # don't use this, cause it doesn't set _FillValue attribute.
                     #ierr = nc_def_var_fill(self._dsetid, self._varid, 0, fillval.data)
                     #if ierr != NC_NOERR:
                     #    raise RuntimeError(nc_strerror(ierr))
@@ -1245,7 +1246,7 @@ C{ncattrs()}"""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
-        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._dset.dimensions)
+        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._dset)
         # Get elements.
         return self._get(start, count, stride)
 
@@ -1255,7 +1256,7 @@ C{ncattrs()}"""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
-        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._dset.dimensions)
+        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._dset)
         # quantize data if least_significant_digit attribute set.
         if 'least_significant_digit' in self.ncattrs():
             data = _quantize(data,self.least_significant_digit)
