@@ -890,11 +890,18 @@ def _get_vars(group):
              if ierr != NC_NOERR:
                  raise RuntimeError(nc_strerror(ierr))
              # loop over dimensions, retrieve names.
+             # if not found in current group, look in parents.
              dimensions = []
              for nn from 0 <= nn < numdims:
-                 for key, value in group.dimensions.iteritems():
-                     if value._dimid == dimids[nn]:
-                         dimensions.append(key)
+                 grp = group
+                 found = False
+                 while not found:
+                     for key, value in grp.dimensions.iteritems():
+                         if value._dimid == dimids[nn]:
+                             dimensions.append(key)
+                             found = True
+                             break
+                     grp = grp.parent 
              # create new variable instance.
              variables[name] = Variable(group, name, datatype, dimensions, id=varid)
         free(varids) # free pointer holding variable ids.
