@@ -1,8 +1,6 @@
 import numpy
 import types
 
-__version__ = "0.5.1"
-
 def _find_dim(grp, dimname):
     # look in current group, and parents for dim.
     group = grp
