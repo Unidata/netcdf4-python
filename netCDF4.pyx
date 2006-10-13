@@ -2112,7 +2112,7 @@ C{getValue()}"""
         """Private method to retrieve data from a netCDF variable"""
         cdef int ierr, ndims
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS], imapp[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS]
         cdef ndarray data
         # if one of the counts is negative, then it is an index
         # and not a slice so the resulting array
@@ -2168,7 +2168,7 @@ C{getValue()}"""
         """Private method to retrieve data from a netCDF variable with usertype='compound'"""
         cdef int ierr, ndims, nfields, i, n, k, n1, n2, size, offset
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS], imapp[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS]
         cdef ndarray data, data2
         cdef char *databuf, *databuf2
         cdef int *field_sizes, *field_offsets
@@ -2259,7 +2259,7 @@ C{getValue()}"""
         """Private method to retrieve data from a netCDF variable with usertype='vlen'"""
         cdef int i,ierr, ndims, totelem, arrlen
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS], imapp[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS]
         cdef ndarray data
         cdef void* elptr
         cdef char* databuff, arrbuff
@@ -2336,7 +2336,7 @@ C{getValue()}"""
         """Private method to retrieve data from a netCDF variable with dtype='S'"""
         cdef int i,ierr, ndims, totelem, arrlen
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS], imapp[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS]
         cdef ndarray data
         cdef void *elptr
         cdef char *strbuf
