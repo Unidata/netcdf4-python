@@ -891,6 +891,9 @@ def _get_vars(group):
                  raise RuntimeError(nc_strerror(ierr))
              # loop over dimensions, retrieve names.
              # if not found in current group, look in parents.
+             # QUESTION:  what if grp1 has a dimension named 'foo'
+             # and so does it's parent - can a variable in grp1
+             # use the 'foo' dimensoin from the parent?  
              dimensions = []
              for nn from 0 <= nn < numdims:
                  grp = group
@@ -1644,18 +1647,12 @@ instance. If C{None}, the data is not truncated. """
             if ndims:
                 for n from 0 <= n < ndims:
                     dimname = dimensions[n]
-                    #try:
-                    #    dimids[n] = grp.dimensions[dimname]._dimid
-                    #except:
-                    #    raise KeyError('dimension %s not defined in group %s' % (dimname, grp.path))
                     # look for dimension in this group, and if not
                     # found there, look in parent (and it's parent, etc, back to root).
                     dim = _find_dim(grp, dimname)
                     if dim is None:
                         raise KeyError("dimension %s not defined in group %s or any group in it's family tree" % (dimname, grp.path))
                     dimids[n] = dim._dimid
-                    #if dimname not in self._grp.dimensions.keys():
-                    #    self._grp.dimensions[dimname] = dim
             # define variable.
             if ndims:
                 ierr = nc_def_var(self._grpid, varname, xtype, ndims,
