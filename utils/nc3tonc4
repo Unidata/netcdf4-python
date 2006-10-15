@@ -118,7 +118,7 @@ if __name__ == '__main__':
 \n""" % os.path.basename(sys.argv[0])
 
     try:
-	opts, pargs = getopt.getopt(sys.argv[1:], 'ho',
+        opts, pargs = getopt.getopt(sys.argv[1:], 'ho',
                                     ['zlib=',
                                      'complevel=',
                                      'shuffle=',
@@ -127,10 +127,10 @@ if __name__ == '__main__':
                                      'quantize='
                                      ])
     except:
-	(type, value, traceback) = sys.exc_info()
-	print "Error parsing the options. The error was:", value
-	sys.stderr.write(usage)
-	sys.exit(0)
+        (type, value, traceback) = sys.exc_info()
+        print "Error parsing the options. The error was:", value
+        sys.stderr.write(usage)
+        sys.exit(0)
 
     # default options
     overwritefile = 0
@@ -143,33 +143,33 @@ if __name__ == '__main__':
 
     # Get the options
     for option in opts:
-	if option[0] == '-h':
+        if option[0] == '-h':
             sys.stderr.write(usage)
             sys.exit(0)
-	elif option[0] == '-o':
+        elif option[0] == '-o':
             overwritefile = 1
-	elif option[0] == '--zlib':
+        elif option[0] == '--zlib':
             zlib = int(option[1])
-	elif option[0] == '--complevel':
+        elif option[0] == '--complevel':
             complevel = option[1]
-	elif option[0] == '--shuffle':
+        elif option[0] == '--shuffle':
             shuffle = int(option[1])
-	elif option[0] == '--fletcher32':
+        elif option[0] == '--fletcher32':
             fletcher32 = int(option[1])
-	elif option[0] == '--unpackshort':
+        elif option[0] == '--unpackshort':
             unpackshort = int(option[1])
-	elif option[0] == '--quantize':
+        elif option[0] == '--quantize':
             quantize = option[1]
-	else:
+        else:
             print option[0], ": Unrecognized option"
             sys.stderr.write(usage)
             sys.exit(0)
 
     # if we pass a number of files different from 2, abort
     if len(pargs) <> 2:
-	print "You need to pass both source and destination!."
-	sys.stderr.write(usage)
-	sys.exit(0)
+        print "You need to pass both source and destination!."
+        sys.stderr.write(usage)
+        sys.exit(0)
 
     # Catch the files passed as the last arguments
     filename3 = pargs[0]
