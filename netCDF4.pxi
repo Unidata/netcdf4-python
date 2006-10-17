@@ -1,15 +1,17 @@
-# Type size_t is defined in stdlib.h
+# size_t, ptrdiff_t are defined in stdlib.h
 cdef extern from "stdlib.h":
     ctypedef long size_t
     ctypedef long ptrdiff_t
     void *malloc(size_t size)
     void free(void *ptr)
 
+# need some python C API functions for strings.
 cdef extern from "Python.h":
     int PyString_Check(object)
     char * PyString_AsString(object)
     object PyString_FromString(char *)
 
+# netcdf functions.
 cdef extern from "netcdf.h":
     ctypedef int nclong
     ctypedef int nc_type
