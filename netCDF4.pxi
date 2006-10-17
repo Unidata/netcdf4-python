@@ -650,66 +650,17 @@ cdef extern from "netcdf.h":
     void nc_set_log_level(int new_level)
     int nc_show_metadata(int ncid)
 
+# taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
-
-    cdef enum:
-        CONTIGUOUS 
-        FORTRAN 
-        OWNDATA 
-        FORCECAST
-        ENSURECOPY
-        ENSUREARRAY
-        ALIGNED
-        NOTSWAPPED
-        WRITEABLE
-        UPDATEIFCOPY
-
-    ctypedef enum PyArray_TYPES:
-        PyArray_BOOL
-        PyArray_BYTE
-        PyArray_UBYTE
-        PyArray_SHORT
-        PyArray_USHORT 
-        PyArray_INT
-        PyArray_UINT 
-        PyArray_LONG
-        PyArray_ULONG
-        PyArray_FLOAT
-        PyArray_DOUBLE 
-        PyArray_LONGDOUBLE
-        PyArray_CFLOAT
-        PyArray_CDOUBLE
-        PyArray_CLONGDOUBLE
-        PyArray_OBJECT
-        PyArray_STRING
-        PyArray_UNICODE
-        PyArray_VOID
-        PyArray_NTYPES
-        PyArray_NOTYPE
-
-    ctypedef Py_intptr_t intp 
-
-    struct PyArray_Descr:
-        int type_num, elsize
-        char type
-
+    ctypedef int npy_intp 
     ctypedef extern class numpy.ndarray [object PyArrayObject]:
         cdef char *data
         cdef int nd
-        cdef intp *dimensions
-        cdef intp *strides
+        cdef npy_intp *dimensions
+        cdef npy_intp *strides
         cdef object base
-        cdef PyArray_Descr *descr
+#       cdef dtype descr
         cdef int flags
-
-    ndarray PyArray_FromAny(object obj, PyArray_TYPES type, int min_depth, 
-                int max_depth, int requires) 
-    ndarray PyArray_SimpleNew(int ndims, intp* dims, int item_type)
-    int PyArray_Check(object obj)
-    ndarray PyArray_ContiguousFromObject(object obj, PyArray_TYPES type, 
-        int mindim, int maxdim)
-    intp PyArray_SIZE(ndarray arr)
-    void *PyArray_DATA(ndarray arr)
-    int PyArray_ISCONTIGUOUS(object)
-
+    npy_intp PyArray_SIZE(ndarray arr)
+    npy_intp PyArray_ISCONTIGUOUS(ndarray arr)
     void import_array()
