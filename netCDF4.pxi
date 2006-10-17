@@ -6,7 +6,6 @@ cdef extern from "stdlib.h":
     void free(void *ptr)
 
 cdef extern from "Python.h":
-    ctypedef int Py_intptr_t
     int PyString_Check(object)
     char * PyString_AsString(object)
     object PyString_FromString(char *)
