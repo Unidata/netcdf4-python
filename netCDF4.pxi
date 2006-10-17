@@ -2,17 +2,11 @@
 cdef extern from "stdlib.h":
     ctypedef long size_t
     ctypedef long ptrdiff_t
-    char *strdup(char *)
     void *malloc(size_t size)
-    void *calloc(size_t, size_t size)
     void free(void *ptr)
-    void *memcpy(void *dst, void *src, size_t len)
 
 cdef extern from "Python.h":
     ctypedef int Py_intptr_t
-    int PyObject_AsWriteBuffer(object, void **rbuf, int *len)
-    int PyObject_AsReadBuffer(object, void **rbuf, int *len)
-    int PyObject_CheckReadBuffer(object)
     int PyString_Check(object)
     char * PyString_AsString(object)
     object PyString_FromString(char *)
