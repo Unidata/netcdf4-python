@@ -47,7 +47,7 @@ def _get_att(int grpid, int varid, name):
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         pstring = value_arr.tostring()
-        if pstring[0] == '\x80': # a pickle string
+        if pstring and pstring[0] == '\x80': # a pickle string
             attout = cPickle.loads(pstring)
             # attout should always be an object array.
             # if result is a scalar array, just return scalar.
