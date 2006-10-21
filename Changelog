@@ -1,7 +1,8 @@
 2006???? - version 0.6.1
 ========================
-
 * bugfixes for negative strides.
+
+* bugfix for empty string attributes.
 
 * support for shared dimensions (variables can use dimensions defined 
   only in a parent group).  This doesn't actually work yet, because of
