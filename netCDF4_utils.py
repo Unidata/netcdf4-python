@@ -2,7 +2,8 @@ import numpy
 import types
 
 def _find_dim(grp, dimname):
-    # look in current group, and parents for dim.
+    # find Dimension instance given group and name.
+    # look in current group, and parents.
     group = grp
     dim = None
     while 1:
@@ -105,7 +106,10 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
             else:
                 inc = 1
             if shape[n]: 
-                beg, end, inc = e.indices(shape[n])
+                if unlim and e.stop > shape[n]:
+                    beg, end, inc = e.indices(e.stop)
+                else:
+                    beg, end, inc = e.indices(shape[n])
             else:
                 if inc > 0:
                     if e.stop is None:
