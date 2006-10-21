@@ -2,6 +2,8 @@
 import netCDF4_classic as netCDF4
 import numpy as NP
 
+nchunk = 50000
+
 def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=True,fletcher32=False,clobber=False,lsd_dict=None):
     """convert a netcdf 3 file (filename3) to a netcdf 4 file
     (in NETCDF4_CLASSIC format).
@@ -64,18 +66,23 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
             else:
                 setattr(var,attname,getattr(ncvar,attname))
         # fill variables with data.
-        if hasunlimdim: # has an unlimited dim, loop over unlim dim index.
-            for n in range(len(unlimdim)):
-                idata = ncvar[n]
+        if hasunlimdim: # has an unlim dim, loop over unlim dim index.
+            # range to copy
+            start = 0; stop = len(unlimdim); step = nchunk
+            if step < 1: step = 1
+            for n in range(start, stop, step):
+                nmax = n+nchunk
+                if nmax > len(unlimdim): nmax=len(unlimdim)
+                idata = ncvar[n:nmax]
                 if dounpackshort:
                     tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
                     if hasattr(ncvar,'missing_value'):
                         tmpdata = NP.where(idata == ncvar.missing_value, mval, tmpdata)
                 else:
                     tmpdata = idata
-                var[n] = tmpdata 
+                var[n:nmax] = tmpdata
                 ncfile4.sync() # flush data to disk.
-        else: # no unlim dim, just copy all data at once.
+        else: # no unlim dim or 1-d variable, just copy all data at once.
             idata = ncvar[:]
             if dounpackshort:
                 tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
@@ -83,7 +90,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
                     tmpdata = NP.where(idata == ncvar.missing_value, mval, tmpdata)
             else:
                 tmpdata = idata
-            var[:] = tmpdata 
+            var[:] = tmpdata
         ncfile4.sync()
     # close files.
     ncfile3.close()
