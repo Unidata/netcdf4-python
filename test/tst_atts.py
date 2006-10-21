@@ -18,6 +18,7 @@ DIM2_LEN=3
 DIM3_NAME="z"
 DIM3_LEN=25
 STRATT = 'string attribute'
+EMPTYSTRATT = ''
 INTATT = 1
 FLOATATT = math.pi
 SEQATT = NP.arange(10)
@@ -30,6 +31,7 @@ class VariablesTestCase(unittest.TestCase):
         self.file = FILE_NAME
         f = netCDF4.Dataset(self.file,'w')
         f.stratt = STRATT
+        f.emptystratt = EMPTYSTRATT
         f.intatt = INTATT
         f.floatatt = FLOATATT
         f.seqatt = SEQATT
@@ -46,6 +48,7 @@ class VariablesTestCase(unittest.TestCase):
         g.createDimension(DIM2_NAME, DIM2_LEN)
         g.createDimension(DIM3_NAME, DIM3_LEN)
         g.stratt = STRATT
+        g.emptystratt = EMPTYSTRATT
         g.intatt = INTATT
         g.floatatt = FLOATATT
         g.seqatt = SEQATT
@@ -53,6 +56,7 @@ class VariablesTestCase(unittest.TestCase):
         g.objatt = OBJATT
         v = f.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         v.stratt = STRATT
+        v.emptystratt = EMPTYSTRATT
         v.intatt = INTATT
         v.floatatt = FLOATATT
         v.seqatt = SEQATT
@@ -60,6 +64,7 @@ class VariablesTestCase(unittest.TestCase):
         v.objatt = OBJATT
         v1 = g.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         v1.stratt = STRATT
+        v1.emptystratt = EMPTYSTRATT
         v1.intatt = INTATT
         v1.floatatt = FLOATATT
         v1.seqatt = SEQATT
@@ -81,6 +86,7 @@ class VariablesTestCase(unittest.TestCase):
         assert f.intatt == INTATT
         assert f.floatatt == FLOATATT
         assert f.stratt == STRATT
+        assert f.emptystratt == EMPTYSTRATT
         assert f.seqatt.tolist() == SEQATT.tolist()
         assert f.stringseqatt == ''.join(STRINGSEQATT)
         assert f.objatt == OBJATT
@@ -94,12 +100,14 @@ class VariablesTestCase(unittest.TestCase):
         assert g.intatt == INTATT
         assert g.floatatt == FLOATATT
         assert g.stratt == STRATT
+        assert g.emptystratt == EMPTYSTRATT
         assert g.seqatt.tolist() == SEQATT.tolist()
         assert g.stringseqatt == ''.join(STRINGSEQATT)
         assert g.objatt == OBJATT
         assert v1.intatt == INTATT
         assert v1.floatatt == FLOATATT
         assert v1.stratt == STRATT
+        assert v1.emptystratt == EMPTYSTRATT
         assert v1.seqatt.tolist() == SEQATT.tolist()
         assert v1.stringseqatt == ''.join(STRINGSEQATT)
         assert v1.objatt == OBJATT
