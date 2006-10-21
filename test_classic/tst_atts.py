@@ -18,6 +18,7 @@ DIM2_LEN=3
 DIM3_NAME="z"
 DIM3_LEN=25
 STRATT = 'string attribute'
+EMPTYSTRATT = ''
 INTATT = 1
 FLOATATT = math.pi
 SEQATT = NP.arange(10)
@@ -30,6 +31,7 @@ class VariablesTestCase(unittest.TestCase):
         self.file = FILE_NAME
         f = netCDF4.Dataset(self.file,'w')
         f.stratt = STRATT
+        f.emptystratt = EMPTYSTRATT
         f.intatt = INTATT
         f.floatatt = FLOATATT
         f.seqatt = SEQATT
@@ -43,6 +45,7 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension(DIM3_NAME, DIM3_LEN)
         v = f.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         v.stratt = STRATT
+        v.emptystratt = EMPTYSTRATT
         v.intatt = INTATT
         v.floatatt = FLOATATT
         v.seqatt = SEQATT
@@ -62,12 +65,14 @@ class VariablesTestCase(unittest.TestCase):
         assert f.intatt == INTATT
         assert f.floatatt == FLOATATT
         assert f.stratt == STRATT
+        assert f.emptystratt == EMPTYSTRATT
         assert f.seqatt.tolist() == SEQATT.tolist()
         assert f.stringseqatt == ''.join(STRINGSEQATT)
         assert f.objatt == OBJATT
         assert v.intatt == INTATT
         assert v.floatatt == FLOATATT
         assert v.stratt == STRATT
+        assert v.emptystratt == EMPTYSTRATT
         assert v.seqatt.tolist() == SEQATT.tolist()
         assert v.stringseqatt == ''.join(STRINGSEQATT)
         assert v.objatt == OBJATT
