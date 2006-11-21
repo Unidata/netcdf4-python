@@ -14,8 +14,6 @@ include examples/*py
 include examples_classic/*py
 include test/*py
 include test_classic/*py
-include netCDF4.c
-include netCDF4_classic.c
 include utils/nc3tonc4
 include netcdftime/__init__.py
 include netcdftime/netcdftime.py
