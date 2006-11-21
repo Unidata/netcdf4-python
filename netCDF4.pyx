@@ -38,6 +38,10 @@ Download
 Requires 
 ======== 
 
+ - Pyrex module (U{http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/}).
+ If you're using python 2.5, you'll need the unofficial version of Pyrex from
+ U{http://codespeak.net/svn/lxml/pyrex}, since the official version does
+ not yet support python 2.5.
  - numpy array module U{http://numpy.scipy.org}, version 1.0rc1 or later.
  - A pre-release version of HDF5 1.8 is required.  Version
  1.7.52 is currently required. It is 
