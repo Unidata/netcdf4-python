@@ -1,5 +1,6 @@
 import os
 from numpy.distutils.core  import setup, Extension
+import Pyrex.Distutils
 
 HDF5_dir = os.environ.get('HDF5_DIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
@@ -9,8 +10,8 @@ if HDF5_dir is None or netCDF4_dir is None:
 libs = ['netcdf','z','hdf5_hl','hdf5']
 lib_dirs = [os.path.join(netCDF4_dir,'lib'),os.path.join(HDF5_dir,'lib')]
 inc_dirs = [os.path.join(netCDF4_dir,'include'),os.path.join(HDF5_dir,'include')]
-extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
-extensions.append(Extension("netCDF4_classic",["netCDF4_classic.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs))
+extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
+extensions.append(Extension("netCDF4_classic",["netCDF4_classic.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs))
 
 setup(name = "netCDF4",
   version = "0.6.1",
