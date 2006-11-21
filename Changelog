@@ -1,4 +1,4 @@
-2006???? - version 0.6.1
+20061121 - version 0.6.1
 ========================
 * bugfixes for negative strides.
 
@@ -7,6 +7,9 @@
 * support for shared dimensions (variables can use dimensions defined 
   only in a parent group).  This doesn't actually work yet, because of
   a bug in netcdf-4.0-alpha17.
+
+* now requires Pyrex (C source files generated on the fly when setup.py
+  is run).
 
 20061003 - version 0.6
 ======================
