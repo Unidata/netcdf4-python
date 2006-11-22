@@ -29,25 +29,24 @@ Requires
  U{http://codespeak.net/svn/lxml/pyrex}, since the official version does
  not yet support python 2.5.
  - numpy array module U{http://numpy.scipy.org}, version 1.0rc1 or later.
- - A pre-release version of HDF5 1.8 is required.  Version
- 1.7.52 is currently required. It is 
+ - The HDF5 C library (version 1.7.52),  
  available at U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
  Be sure to build with 'C{--enable-hl}'.
- - netCDF version 4.  netCDF4 is now in alpha,
+ - THe netCDF-4 C library.  netCDF4 is now in alpha,
  and is a bit of a moving target.  This release is has only
  been tested with netcdf-4.0-alpha17, available from
  U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
- Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HD5_DIR}',
+ Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HDF5_DIR}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
-
 
 Install
 =======
 
+ - install the requisite python modules and C libraries (see above).
  - set the C{HDF5_DIR} environment variable to point to where HDF5 is installed.
  (the libs in C{$HDF5_DIR/lib}, the headers in C{$HDF5_DIR/include}).
- - set the C{NETCDF4_DIR} environment variable to point to where netCDF version
- 4 is installed.
+ - set the C{NETCDF4_DIR} environment variable to point to where the 
+ netCDF version 4 library and headers are installed.
  - run 'python setup.py install'
  - run some of the tests in the 'test_classic' directory.
 
