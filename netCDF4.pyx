@@ -1949,9 +1949,11 @@ C{getValue()}"""
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, data.data)
         else:  
-            raise IndexError('strides must all be 1 for compound variables')
-            #ierr = nc_put_vars(self._grpid, self._varid,
-            #                   startp, countp, stridep, data.data)
+            if self.usertype == 'compound':
+               raise IndexError('strides must all be 1 for compound variables')
+            else:
+               ierr = nc_put_vars(self._grpid, self._varid,
+                                  startp, countp, stridep, data.data)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
 
