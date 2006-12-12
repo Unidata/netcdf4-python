@@ -1785,10 +1785,7 @@ C{getValue()}"""
             ierr = nc_get_vara(self._grpid, self._varid,
                                startp, countp, strdata)
         else:
-            # FIXME: is this a bug in netCDF4?
             raise IndexError('strides must all be 1 for string variables')
-            #ierr = nc_get_vars(self._grpid, self._varid,
-            #                   startp, countp, stridep, strdata)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         # loop over elements of object array, fill array with
