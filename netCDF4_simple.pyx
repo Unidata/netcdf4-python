@@ -83,7 +83,7 @@ L{Dataset} instance.
 
 Here's an example:
 
->>> import netCDF4
+>>> import netCDF4_simple as netCDF4
 >>> rootgrp = netCDF4.Dataset('test.nc', 'w')
 >>> print rootgrp.file_format
 NETCDF4
@@ -650,7 +650,7 @@ def _get_vars(group):
              try:
                  datatype = _nctonptype[xtype]
              except:
-                 raise KeyError('unsupported primitive data type')
+                 raise KeyError('unsupported data type')
              # get number of dimensions.
              ierr = nc_inq_varndims(group._grpid, varid, &numdims)
              if ierr != NC_NOERR:
@@ -890,9 +890,8 @@ a scalar.
 C{createVariable(varname, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None)}
 
 The C{datatype} must be a string with the
-same meaning as the C{dtype.str} attribute of arrays in module numpy (if
-the L{Variable} is to have one of the primitive data types). Supported
-primitive data data types are: C{'S1' (NC_CHAR), 'i1' (NC_BYTE), 'u1'
+same meaning as the C{dtype.str} attribute of arrays in module numpy.
+Supported data types are: C{'S1' (NC_CHAR), 'i1' (NC_BYTE), 'u1'
 (NC_UBYTE), 'i2' (NC_SHORT), 'u2' (NC_USHORT), 'i4' (NC_INT), 'u4'
 (NC_UINT), 'i8' (NC_INT64), 'u8' (NC_UINT64), 'f4' (NC_FLOAT), 'f8'
 (NC_DOUBLE)} and C{'S' (NC_STRING)}.
@@ -1226,9 +1225,9 @@ B{C{group}} - L{Group} or L{Dataset} instance to associate with variable.
 
 B{C{name}}  - Name of the variable.
 
-B{C{datatype}} - L{Variable} data type.  If the L{Variable} has one of
-the primitive data types, datatype is one of C{'f4'} (32-bit floating
-point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed
+B{C{datatype}} - L{Variable} data type, one of
+C{'f4'} (32-bit floating point),
+C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed
 integer), C{'i2'} (16-bit signed integer), C{'i8'} (64-bit singed
 integer), C{'i4'} (8-bit singed integer), C{'i1'} (8-bit signed
 integer), C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit unsigned
@@ -1291,9 +1290,8 @@ should not be modified by the user).
 @ivar dimensions: A tuple containing the names of the dimensions 
 associated with this variable.
 
-@ivar dtype: A description of the variable's data type, a string
-describing one of the primitive data types (C{'i4','f8','S1'}, 
-etc).
+@ivar dtype: A string describing the variable's data type, 
+(C{'i4','f8','S1'}, etc).
 
 @ivar shape: a tuple describing the current size of all the variable's 
 dimensions.
@@ -1316,7 +1314,7 @@ instance. If C{None}, the data is not truncated. """
         self._grpid = grp._grpid
         self._grp = grp
         if datatype not in _supportedtypes:
-            raise TypeError('illegal primitive data type, must be one of %s, got %s' % (_supportedtypes,datatype))
+            raise TypeError('illegal data type, must be one of %s, got %s' % (_supportedtypes,datatype))
         self.dtype = datatype
         if kwargs.has_key('id'):
             self._varid = kwargs['id']
