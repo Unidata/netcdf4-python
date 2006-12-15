@@ -461,6 +461,7 @@ They are represented in python as numpy object arrays containing python
 strings. Below an object array is filled with random python strings with
 random lengths between 2 and 12 characters.
 
+>>> import random
 >>> chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 >>> data = NP.empty(10,'O')
 >>> for n in range(10):
