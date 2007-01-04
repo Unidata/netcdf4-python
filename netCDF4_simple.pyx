@@ -2,15 +2,16 @@
 Introduction
 ============
 
-Python interface to the netCDF version 4 library.  U{netCDF version 4
-<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many
-features not found in earlier versions of the library and is implemented
-on top of U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module can read
-files created with netCDF versions 2 and 3, but writes files which are
-only compatible with netCDF version 4. To create files which are
-compatible with netCDF 3 clients use the companion L{netCDF4_classic}
-module. The API modelled after U{Scientific.IO.NetCDF
-<http://starship.python.net/~hinsen/ScientificPython>}, and should be
+Python interface to the netCDF version 4 library.  U{netCDF version 4 
+<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many features 
+not found in earlier versions of the library and is implemented on top of 
+U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module can read files 
+created with netCDF versions 2 and 3, but writes files which are only 
+compatible with netCDF version 4. To read and write netCDF 3 files, and 
+netCDF 4 files that are compatible with netCDF 3 clients, use the 
+companion L{netCDF4_classic} module. The API is modelled after 
+U{Scientific.IO.NetCDF 
+<http://starship.python.net/~hinsen/ScientificPython>}, and should be 
 familiar to users of that module.
 
 Many new features of netCDF 4 are implemented, such as multiple
@@ -615,7 +616,7 @@ def _get_vars(group):
     cdef size_t sizein, nfields, offset
     cdef int *varids
     cdef int dim_sizes[NC_MAX_DIMS], dimids[NC_MAX_DIMS]
-    cdef nc_type xtype, base_datatype, field_typeid
+    cdef nc_type xtype, field_typeid
     cdef char namstring[NC_MAX_NAME+1]
     # get number of variables in this Group.
     ierr = nc_inq_nvars(group._grpid, &numvars)
