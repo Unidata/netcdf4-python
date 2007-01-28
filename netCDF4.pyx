@@ -2343,7 +2343,6 @@ C{getValue()}"""
         cdef ndarray data
         cdef void *elptr
         cdef char *strbuf
-        cdef ndarray dataarr
         cdef char **strdata
         # if one of the counts is negative, then it is an index
         # and not a slice so the resulting array
