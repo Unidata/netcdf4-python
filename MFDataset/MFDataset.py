@@ -294,4 +294,4 @@ class _Variable(object):
         # Return the extracted records as a unified array.
         if lstArr:
             lstArr = numpy.concatenate(lstArr)
-        return lstArr
+        return numpy.squeeze(lstArr)
