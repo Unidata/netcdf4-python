@@ -30,6 +30,7 @@ Example usage:
 
 import netCDF4_classic
 import numpy
+from glob import glob
 
 __version__ = "0.5"
 
@@ -38,7 +39,7 @@ class Dataset(netCDF4_classic.Dataset):
 class for reading a multi-file netCDF dataset.
     """
 
-    def __init__(self, files):
+    def __init__(self, files, check=False):
         """
 Open a Dataset spanning multiple files, making it look as if it was a 
 single file. Variables in the list of files that share the same unlimited 
@@ -46,15 +47,27 @@ dimension are aggregated.
 
 Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
-@param files: sequence of netCDF files; the first one will become the
-"master" file, defining all the record variables (variables with an 
-unlimited dimension) which may span subsequent files. Attribute access
-returns attributes only from "master" file. The files are always opened
-in read-only mode.
-       """
+Usage:
+
+nc = MFDataset.Dataset(files, check=False)
+
+Where,
+ files = either a sequence of netCDF files or a string with a wildcard (converted
+         to a sorted list of files using glob)  The first file in the list will 
+         become the "master" file, defining all the record variables (variables with
+         an unlimited dimension) which may span subsequent files. Attribute access
+         returns attributes only from "master" file. The files are always opened
+         in read-only mode.
+ check = True if you want to do consistency checking to ensure the correct variables
+         structure for all of the netcdf files.  Checking makes the initialization of
+         the MFDataset instance much slower.
+       """ok
 
         # Open the master file in the base class, so that the CDFMF instance
         # can be used like a CDF instance.
+        if isinstance(files, str):
+            files = sorted(glob(files))
+        
         master = files[0]
 
         # Open the master again, this time as a classic CDF instance. This will avoid
@@ -107,46 +120,51 @@ in read-only mode.
             part = netCDF4_classic.Dataset(f)
             varInfo = part.variables
             for v in masterRecVar.keys():
-                # Make sure master rec var is also defined here.
-                if v not in varInfo.keys():
-                    raise IOError("record variable %s not defined in %s" % (v, f))
+                if check:
+                    # Make sure master rec var is also defined here.
+                    if v not in varInfo.keys():
+                        raise IOError("record variable %s not defined in %s" % (v, f))
 
-                # Make sure it is a record var.
-                vInst = part.variables[v]
-                if not part.dimensions[vInst.dimensions[0]].isunlimited():
-                    raise MFDataset("variable %s is not a record var inside %s" % (v, f))
+                    # Make sure it is a record var.
+                    vInst = part.variables[v]
+                    if not part.dimensions[vInst.dimensions[0]].isunlimited():
+                        raise MFDataset("variable %s is not a record var inside %s" % (v, f))
 
-                masterDims, masterShape, masterType = masterRecVar[v][:3]
-                extDims, extShape, extType = varInfo[v][:3]
-                extDims = varInfo[v].dimensions
-                extShape = varInfo[v].shape
-                extType = varInfo[v].dtype
-                # Check that dimension names are identical.
-                if masterDims != extDims:
-                    raise IOError("variable %s : dimensions mismatch between "
-                                   "master %s (%s) and extension %s (%s)" %
-                                   (v, master, masterDims, f, extDims))
+                    masterDims, masterShape, masterType = masterRecVar[v][:3]
+                    extDims, extShape, extType = varInfo[v][:3]
+                    extDims = varInfo[v].dimensions
+                    extShape = varInfo[v].shape
+                    extType = varInfo[v].dtype
+                    # Check that dimension names are identical.
+                    if masterDims != extDims:
+                        raise IOError("variable %s : dimensions mismatch between "
+                                       "master %s (%s) and extension %s (%s)" %
+                                       (v, master, masterDims, f, extDims))
 
-                # Check that the ranks are identical, and the dimension lengths are
-                # identical (except for that of the unlimited dimension, which of
-                # course may vary.
-                if len(masterShape) != len(extShape):
-                    raise IOError("variable %s : rank mismatch between "
-                                   "master %s (%s) and extension %s (%s)" %
-                                   (v, master, len(masterShape), f, len(extShape)))
-                if masterShape[1:] != extShape[1:]:
-                    raise IOError("variable %s : shape mismatch between "
-                                   "master %s (%s) and extension %s (%s)" %
-                                   (v, master, masterShape, f, extShape))
+                    # Check that the ranks are identical, and the dimension lengths are
+                    # identical (except for that of the unlimited dimension, which of
+                    # course may vary.
+                    if len(masterShape) != len(extShape):
+                        raise IOError("variable %s : rank mismatch between "
+                                       "master %s (%s) and extension %s (%s)" %
+                                       (v, master, len(masterShape), f, len(extShape)))
+                    if masterShape[1:] != extShape[1:]:
+                        raise IOError("variable %s : shape mismatch between "
+                                       "master %s (%s) and extension %s (%s)" %
+                                       (v, master, masterShape, f, extShape))
 
-                # Check that the data types are identical.
-                if masterType != extType:
-                    raise IOError("variable %s : data type mismatch between "
-                                   "master %s (%s) and extension %s (%s)" %
-                                   (v, master, masterType, f, extType))
+                    # Check that the data types are identical.
+                    if masterType != extType:
+                        raise IOError("variable %s : data type mismatch between "
+                                       "master %s (%s) and extension %s (%s)" %
+                                       (v, master, masterType, f, extType))
 
-                # Everythig ok.
-                cdfRecVar[v].append(vInst)
+                    # Everythig ok.
+                    cdfRecVar[v].append(vInst)
+                else:
+                    # No making sure of anything -- assume this is ok..
+                    vInst = part.variables[v]
+                    cdfRecVar[v].append(vInst)
 
             cdf.append(part)
             cdfVLen.append(len(part.dimensions[unlimDimName]))
