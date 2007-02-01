@@ -51,17 +51,18 @@ Usage:
 
 nc = MFDataset.Dataset(files, check=False)
 
-Where,
- files = either a sequence of netCDF files or a string with a wildcard (converted
-         to a sorted list of files using glob)  The first file in the list will 
-         become the "master" file, defining all the record variables (variables with
-         an unlimited dimension) which may span subsequent files. Attribute access
-         returns attributes only from "master" file. The files are always opened
-         in read-only mode.
- check = True if you want to do consistency checking to ensure the correct variables
-         structure for all of the netcdf files.  Checking makes the initialization of
-         the MFDataset instance much slower.
-       """ok
+@param files: either a sequence of netCDF files or a string with a 
+wildcard (converted to a sorted list of files using glob)  The first file 
+in the list will become the "master" file, defining all the record 
+variables (variables with an unlimited dimension) which may span 
+subsequent files. Attribute access returns attributes only from "master" 
+file. The files are always opened in read-only mode.
+
+@param check: True if you want to do consistency checking to ensure the 
+correct variables structure for all of the netcdf files.  Checking makes 
+the initialization of the MFDataset instance much slower. Default is 
+False.
+       """
 
         # Open the master file in the base class, so that the CDFMF instance
         # can be used like a CDF instance.
