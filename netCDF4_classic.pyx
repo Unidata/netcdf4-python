@@ -25,9 +25,7 @@ Requires
 ======== 
 
  - Pyrex module (U{http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/}).
- If you're using python 2.5, you'll need the unofficial version of Pyrex from
- U{http://codespeak.net/svn/lxml/pyrex}, since the official version does
- not yet support python 2.5.
+ If you're using python 2.5, you'll need at least version 0.9.5.
  - numpy array module U{http://numpy.scipy.org}, version 1.0rc1 or later.
  - The HDF5 C library (version 1.7.52),  
  available at U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
