@@ -450,7 +450,6 @@ _nptonctype['l'] = NC_INT
 _nptonctype['s'] = NC_SHORT
 _nptonctype['h'] = NC_SHORT
 _nptonctype['c'] = NC_CHAR
-_nptonctype['S'] = NC_CHAR
 _nptonctype['b'] = NC_BYTE
 _nptonctype['B'] = NC_BYTE
 
