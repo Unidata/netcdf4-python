@@ -32,7 +32,7 @@ import netCDF4_classic
 import numpy
 from glob import glob
 
-__version__ = "0.5"
+__version__ = "0.6"
 
 class Dataset(netCDF4_classic.Dataset): 
     """
