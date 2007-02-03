@@ -28,7 +28,7 @@ class DimensionsTestCase(unittest.TestCase):
         f.createDimension(LON_NAME,LON_LEN)
         f.createDimension(LEVEL_NAME,LEVEL_LEN)
         f.createDimension(TIME_NAME,TIME_LEN)
-        f.createVariable(VAR_NAME,VAR_TYPE,(LEVEL_NAME, LAT_NAME, LON_NAME, TIME_NAME))
+        f.createVariable(VAR_NAME,VAR_TYPE,(TIME_NAME, LEVEL_NAME, LAT_NAME, LON_NAME))
         f.close()
 
     def tearDown(self):
@@ -62,7 +62,7 @@ class DimensionsTestCase(unittest.TestCase):
         # add some data to variable along unlimited dim,
         # make sure length of dimensions change correctly.
         nadd = 2
-        v[:,:,:,0:nadd] = uniform(size=(LEVEL_LEN,LAT_LEN,LON_LEN,nadd))
+        v[0:nadd,:,:,:] = uniform(size=(LEVEL_LEN,LAT_LEN,LON_LEN,nadd))
         lensdict[TIME_NAME]=nadd
         for name,dim in f.dimensions.iteritems():
             self.assert_(len(dim) == lensdict[name])
