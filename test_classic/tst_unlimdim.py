@@ -23,12 +23,12 @@ class UnlimdimTestCase(unittest.TestCase):
         self.file = FILE_NAME
         f  = netCDF4.Dataset(self.file, 'w')
         # foo has a single unlimited dimension
-        f.createDimension('n1', n1dim)
-        f.createDimension('n2', None)
+        f.createDimension('n1', None)
+        f.createDimension('n2', n2dim)
         f.createDimension('n3', n3dim)
         foo = f.createVariable('data1', ranarr.dtype.str[1:], ('n1','n2','n3'))
         # write some data to it.
-        foo[:,0:n2dim,:] = ranarr
+        foo[0:n1dim,:,:] = ranarr
         f.close()
 
     def tearDown(self):
