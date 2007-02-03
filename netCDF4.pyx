@@ -712,6 +712,16 @@ _supportedtypes = _nptonctype.keys()
 _nctonptype = {}
 for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
+# also allow old Numeric single character typecodes.
+_nptonctype['d'] = NC_DOUBLE
+_nptonctype['f'] = NC_FLOAT
+_nptonctype['i'] = NC_INT
+_nptonctype['l'] = NC_INT
+_nptonctype['s'] = NC_SHORT
+_nptonctype['h'] = NC_SHORT
+_nptonctype['c'] = NC_CHAR
+_nptonctype['b'] = NC_BYTE
+_nptonctype['B'] = NC_BYTE
 
 # utility functions (internal)
 
