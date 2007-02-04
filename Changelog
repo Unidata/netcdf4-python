@@ -1,3 +1,8 @@
+* netCDF4.createVariable can now use old single character Numeric typecodes
+  for datatype specification.
+
+* Improvements to MFDataset (now called MFnetCDF4_classic) by Rob Hetland.
+ 
 20061121 - version 0.6.1
 ========================
 * bugfixes for negative strides.
