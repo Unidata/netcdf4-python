@@ -1,4 +1,4 @@
-from MFDataset import Dataset
+from MFnetCDF4_classic import Dataset
 import netCDF4_classic, numpy
 from numpy.random import seed, randint
 from numpy.testing import assert_array_equal

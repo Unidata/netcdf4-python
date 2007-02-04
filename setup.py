@@ -12,6 +12,7 @@ lib_dirs = [os.path.join(netCDF4_dir,'lib'),os.path.join(HDF5_dir,'lib')]
 inc_dirs = [os.path.join(netCDF4_dir,'include'),os.path.join(HDF5_dir,'include')]
 extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
 extensions.append(Extension("netCDF4_classic",["netCDF4_classic.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs))
+extensions.append(Extension("netCDF4x",["netCDF4x.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs))
 
 setup(name = "netCDF4",
   version = "0.6.2",
@@ -31,6 +32,6 @@ setup(name = "netCDF4",
 		         "Topic :: Software Development :: Libraries :: Python Modules",
                  "Topic :: System :: Archiving :: Compression",
 		         "Operating System :: OS Independent"],
-  packages = ["netcdftime","MFDataset"],
+  packages = ["netcdftime","MFnetCDF4_classic"],
   py_modules = ["netCDF4_utils"],
   ext_modules = extensions)
