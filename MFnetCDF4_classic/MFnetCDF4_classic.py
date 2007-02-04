@@ -9,7 +9,7 @@ Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
 Example usage:
 
->>> import MFnetCDF4_classic, netCDF4_classic, glob, numpy
+>>> import MFnetCDF4_classic, netCDF4_classic, numpy
 >>> # create a series of netCDF files with a variable sharing
 >>> # the same unlimited dimension.
 >>> for nfile in range(10):
@@ -19,8 +19,7 @@ Example usage:
 >>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
 >>>     f.close()
 >>> # now read all those files in at once, in one Dataset.
->>> files = glob.glob('mftest*.nc')
->>> f = MFnetCDF4_classic.Dataset(files)
+>>> f = MFnetCDF4_classic.Dataset('mftest*nc')
 >>> print f.variables['x'][:]
 [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
  25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
