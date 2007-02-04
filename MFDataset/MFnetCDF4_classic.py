@@ -9,7 +9,7 @@ Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
 Example usage:
 
->>> import MFDataset, netCDF4_classic, glob, numpy
+>>> import MFnetCDF4_classic, netCDF4_classic, glob, numpy
 >>> # create a series of netCDF files with a variable sharing
 >>> # the same unlimited dimension.
 >>> for nfile in range(10):
@@ -20,7 +20,7 @@ Example usage:
 >>>     f.close()
 >>> # now read all those files in at once, in one Dataset.
 >>> files = glob.glob('mftest*.nc')
->>> f = MFDataset.Dataset(files)
+>>> f = MFnetCDF4_classic.Dataset(files)
 >>> print f.variables['x'][:]
 [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
  25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
@@ -49,7 +49,7 @@ Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
 Usage:
 
-nc = MFDataset.Dataset(files, check=False)
+nc = MFnetCDF4_classic.Dataset(files, check=False)
 
 @param files: either a sequence of netCDF files or a string with a 
 wildcard (converted to a sorted list of files using glob)  The first file 
@@ -60,7 +60,7 @@ file. The files are always opened in read-only mode.
 
 @param check: True if you want to do consistency checking to ensure the 
 correct variables structure for all of the netcdf files.  Checking makes 
-the initialization of the MFDataset instance much slower. Default is 
+the initialization of the MFnetCDF4_classic instance much slower. Default is 
 False.
        """
 
@@ -129,7 +129,7 @@ False.
                     # Make sure it is a record var.
                     vInst = part.variables[v]
                     if not part.dimensions[vInst.dimensions[0]].isunlimited():
-                        raise MFDataset("variable %s is not a record var inside %s" % (v, f))
+                        raise MFnetCDF4_classic("variable %s is not a record var inside %s" % (v, f))
 
                     masterDims, masterShape, masterType = masterRecVar[v][:3]
                     extDims, extShape, extType = varInfo[v][:3]
@@ -170,7 +170,7 @@ False.
             cdf.append(part)
             cdfVLen.append(len(part.dimensions[unlimDimName]))
 
-        # Attach attributes to the MFDataset.Dataset instance.
+        # Attach attributes to the MFnetCDF4_classic.Dataset instance.
         # A local __setattr__() method is required for them.
         self._files = files            # list of cdf file names in the set
         self._cdfVLen = cdfVLen              # list of unlimited lengths
