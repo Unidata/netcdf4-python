@@ -19,5 +19,5 @@ include netcdftime/__init__.py
 include netcdftime/netcdftime.py
 include netcdftime/strptime.py
 include netcdftime/strftime.py
-include MFDataset/__init__.py
-include MFDataset/MFDataset.py
+include MFnetCDF4_classic/__init__.py
+include MFnetCDF4_classic/MFnetCDF4_classic.py
