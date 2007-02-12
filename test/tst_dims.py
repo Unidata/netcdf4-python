@@ -37,8 +37,10 @@ class DimensionsTestCase(unittest.TestCase):
         g = f.createGroup(GROUP_NAME)
         g.createDimension(LAT_NAME,LAT_LENG)
         g.createDimension(LON_NAME,LON_LENG)
-        g.createDimension(LEVEL_NAME,LEVEL_LENG)
-        g.createDimension(TIME_NAME,TIME_LENG)
+        # should get dimensions from parent group.
+        # (did not work prior to alpha 18)
+        #g.createDimension(LEVEL_NAME,LEVEL_LENG)
+        #g.createDimension(TIME_NAME,TIME_LENG)
         g.createVariable(VAR_NAME,VAR_TYPE,(LEVEL_NAME, LAT_NAME, LON_NAME, TIME_NAME))
         f.close()
 
