@@ -2,16 +2,18 @@
 Introduction
 ============
 
-Python interface to the netCDF version 4 library that maintains backward
-compatibility with netCDF version 3 clients.  U{netCDF version 4
-<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many
-features not found in earlier versions of the library and is implemented
-on top of U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module does not
-implement any of the new features of netCDF 4, except zlib compression.
-To use the other new features of netCDF 4, use the companion L{netCDF4}
-module (which produces netCDF 4 files that can only be read by netCDF 4
-clients).  The API modelled after U{Scientific.IO.NetCDF
-<http://starship.python.net/~hinsen/ScientificPython>}, and should be
+Python interface to the netCDF version 4 library that maintains backward 
+compatibility with netCDF version 3 clients.  It can read and write netCDF 
+3 files, as well as netCDF 4 files that are backward compatible with 
+netCDF 3 clients. U{netCDF version 4 
+<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many features 
+not found in earlier versions of the library and is implemented on top of 
+U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module does not implement 
+any of the new features of netCDF 4, except zlib compression. To use the 
+other new features of netCDF 4, use the companion L{netCDF4} module (which 
+produces netCDF 4 files that can only be read by netCDF 4 clients).  The 
+API modelled after U{Scientific.IO.NetCDF 
+<http://starship.python.net/~hinsen/ScientificPython>}, and should be 
 familiar to users of that module.
 
 Download 
@@ -26,13 +28,13 @@ Requires
 
  - Pyrex module (U{http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/}).
  If you're using python 2.5, you'll need at least version 0.9.5.
- - numpy array module U{http://numpy.scipy.org}, version 1.0rc1 or later.
- - The HDF5 C library (version 1.7.52),  
- available at U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
+ - numpy array module U{http://numpy.scipy.org}, version 1.0.1 or later.
+ - The HDF5 C library (version 1.8.0alpha5),  
+ available at U{ftp://ftp.ncsa.uiuc.edu/HDF/pub/outgoing/hdf5/hdf5-1.8.0-pre/}.
  Be sure to build with 'C{--enable-hl}'.
  - THe netCDF-4 C library.  netCDF4 is now in alpha,
  and is a bit of a moving target.  This release is has only
- been tested with netcdf-4.0-alpha17, available from
+ been tested with netcdf-4.0-alpha18, available from
  U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
  Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HDF5_DIR}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
