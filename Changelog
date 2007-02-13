@@ -1,3 +1,6 @@
+* updated for compatibility with netcdf-4.0-alpha18 and hdf5 1.8.0alpha5
+  (shared dimensions actually work now).
+
 * netCDF4.createVariable can now use old single character Numeric typecodes
   for datatype specification.
 
