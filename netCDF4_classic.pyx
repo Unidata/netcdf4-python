@@ -29,12 +29,10 @@ Requires
  - Pyrex module (U{http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/}).
  If you're using python 2.5, you'll need at least version 0.9.5.
  - numpy array module U{http://numpy.scipy.org}, version 1.0.1 or later.
- - The HDF5 C library (version 1.8.0alpha5),  
+ - The HDF5 C library (version 1.8.0-alpha5),  
  available at U{ftp://ftp.ncsa.uiuc.edu/HDF/pub/outgoing/hdf5/hdf5-1.8.0-pre/}.
  Be sure to build with 'C{--enable-hl}'.
- - THe netCDF-4 C library.  netCDF4 is now in alpha,
- and is a bit of a moving target.  This release is has only
- been tested with netcdf-4.0-alpha18, available from
+ - The netCDF-4 C library (version 4.0-alpha18), available at
  U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
  Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HDF5_DIR}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
@@ -460,6 +458,7 @@ _nptonctype['B'] = NC_BYTE
 # utility functions (internal)
 
 # pull in code from netCDF4_common.pyx.
+include 'netCDF4.pxi'
 include 'netCDF4_common.pyx'
 
 # pure python utilities
@@ -730,7 +729,9 @@ C{renameDimension(oldname, newname)}"""
         cdef char *namstring
         dim = self.dimensions[oldname]
         namstring = PyString_AsString(newname)
+        self._redef()
         ierr = nc_rename_dim(self._dsetid, dim._dimid, namstring)
+        self._enddef()
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         # remove old key from dimensions dict.
