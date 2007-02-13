@@ -43,7 +43,7 @@ for name in dataset.ncattrs():
     print 'Global attr', name, '=', getattr(dataset,name)
 
 from datetime import datetime
-dataset.timestamp = datetime.now()
+dataset.timestamp = str(datetime.now())
 print 'Global attr timestamp =',dataset.timestamp
 
 print dataset.variables
