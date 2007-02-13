@@ -458,7 +458,6 @@ _nptonctype['B'] = NC_BYTE
 # utility functions (internal)
 
 # pull in code from netCDF4_common.pyx.
-include 'netCDF4.pxi'
 include 'netCDF4_common.pyx'
 
 # pure python utilities
