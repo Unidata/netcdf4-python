@@ -1063,11 +1063,10 @@ L{Variable} instance. If C{None}, the data is not truncated. """
     cdef public dtype
 
     def __init__(self, dset, name, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, chunking='seq', fill_value=None, **kwargs):
-        cdef int ierr, ndims, ideflate_level
+        cdef int ierr, ndims, ideflate_level, ichunkalg
         cdef char *varname
         cdef nc_type xtype
         cdef int dimids[NC_MAX_DIMS]
-        cdef int *ichunkalgp
         cdef ndarray fillval
         self._dsetid = dset._dsetid
         self._dset = dset
@@ -1117,12 +1116,12 @@ L{Variable} instance. If C{None}, the data is not truncated. """
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
                 if chunking == 'sub':
-                    ichunkalgp = <int *>NC_CHUNK_SUB
+                    ichunkalg = NC_CHUNK_SUB
                 elif chunking == 'seq':
-                    ichunkalgp = <int *>NC_CHUNK_SEQ
+                    ichunkalg = NC_CHUNK_SEQ
                 else:
                     raise ValueError("chunking keyword must be 'seq' or 'sub', got %s" % chunking)
-                ierr = nc_def_var_chunking(self._dsetid, self._varid, ichunkalgp, NULL, NULL)
+                ierr = nc_def_var_chunking(self._dsetid, self._varid, &ichunkalg, NULL, NULL)
                 if ierr != NC_NOERR:
                     raise RuntimeError(nc_strerror(ierr))
             # set a fill value for this variable if fill_value keyword

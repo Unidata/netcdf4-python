@@ -1624,9 +1624,8 @@ instance. If C{None}, the data is not truncated. """
     cdef public dtype, dtype_base, usertype, usertype_name
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None,  **kwargs):
-        cdef int ierr, ndims
+        cdef int ierr, ndims, ichunkalg, ideflate_level
         cdef char *varname
-        cdef int *ichunkalgp
         cdef nc_type xtype, vltypeid
         cdef int dimids[NC_MAX_DIMS]
         self._grpid = grp._grpid
@@ -1688,12 +1687,12 @@ instance. If C{None}, the data is not truncated. """
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
                 if chunking == 'sub':
-                    ichunkalgp = <int *>NC_CHUNK_SUB
+                    ichunkalg = NC_CHUNK_SUB
                 elif chunking == 'seq':
-                    ichunkalgp = <int *>NC_CHUNK_SEQ
+                    ichunkalg = NC_CHUNK_SEQ
                 else:
                     raise ValueError("chunking keyword must be 'seq' or 'sub', got %s" % chunking)
-                ierr = nc_def_var_chunking(self._grpid, self._varid, ichunkalgp, NULL, NULL)
+                ierr = nc_def_var_chunking(self._grpid, self._varid, &ichunkalg, NULL, NULL)
                 if ierr != NC_NOERR:
                     raise RuntimeError(nc_strerror(ierr))
             # set a fill value for this variable if fill_value keyword
