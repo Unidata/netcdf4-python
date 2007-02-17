@@ -1,3 +1,6 @@
+* Setting 'shuffle=0' keyword in createVariable was turning off
+  zlib compression filter instead of shuffle filter.  Fixed.
+
 20070213 - version 0.6.2
 ========================
 * updated for compatibility with netcdf-4.0-alpha18 and hdf5 1.8.0alpha5
