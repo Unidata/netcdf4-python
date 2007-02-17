@@ -5,10 +5,10 @@ import os
 ndim = 100000
 array = uniform(size=(ndim,))
 
-def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,chunking='seq'):
+def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,chunking='seq',complevel=6):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
-    foo = file.createVariable('data', dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,shuffle=shuffle,chunking=chunking)
+    foo = file.createVariable('data', dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,shuffle=shuffle,chunking=chunking,complevel=complevel)
     foo[:] = data
     file.close()
     file = Dataset(filename)
