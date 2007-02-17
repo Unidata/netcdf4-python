@@ -1,3 +1,6 @@
+* fixed bug when 'chunking' keyword in createVariable was set to 'sub' 
+  (caused Bus Error on MacOS X).
+
 * Setting 'shuffle=0' keyword in createVariable was turning off
   zlib compression filter instead of shuffle filter.  Fixed.
 
