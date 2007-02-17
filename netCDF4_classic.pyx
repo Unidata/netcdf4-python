@@ -1109,7 +1109,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
                     if shuffle:
                         ierr = nc_def_var_deflate(self._dsetid, self._varid, 1, 1, ideflate_level)
                     else:
-                        ierr = nc_def_var_deflate(self._dsetid, self._varid, 1, 0, ideflate_level)
+                        ierr = nc_def_var_deflate(self._dsetid, self._varid, 0, 1, ideflate_level)
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
                 if fletcher32:
