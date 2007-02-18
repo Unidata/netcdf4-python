@@ -1,3 +1,6 @@
+* reimplemented 'shape' and 'dimensions' variable attributes as
+  properties.
+
 * fixed bug when 'chunking' keyword in createVariable was set to 'sub' 
   (caused Bus Error on MacOS X).
 

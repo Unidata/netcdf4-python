@@ -1720,37 +1720,45 @@ instance. If C{None}, the data is not truncated. """
             dim = _find_dim(self._grp, dimname)
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
 
-    def _getDimensions(self):
-        """Private method to get variables's dimension names"""
-        cdef int ierr, numdims, n, nn
-        cdef char namstring[NC_MAX_NAME+1]
-        cdef int dimids[NC_MAX_DIMS]
-        # get number of dimensions for this variable.
-        ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
-        if ierr != NC_NOERR:
-            raise RuntimeError(nc_strerror(ierr))
-        # get dimension ids.
-        ierr = nc_inq_vardimid(self._grpid, self._varid, dimids)
-        if ierr != NC_NOERR:
-            raise RuntimeError(nc_strerror(ierr))
-        # loop over dimensions, retrieve names.
-        dimensions = ()
-        for nn from 0 <= nn < numdims:
-            ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
+    property shape:
+        """find current sizes of all variable dimensions"""
+        def __get__(self):
+            shape = ()
+            for dimname in self.dimensions:
+                # look in current group, and parents for dim.
+                dim = _find_dim(self._grp,dimname)
+                shape = shape + (len(dim),)
+            return shape
+        def __set__(self,value):
+            raise AttributeError("shape cannot be altered")
+
+    property dimensions:
+        """get variables's dimension names"""
+        def __get__(self):
+            """Private method to get variables's dimension names"""
+            cdef int ierr, numdims, n, nn
+            cdef char namstring[NC_MAX_NAME+1]
+            cdef int dimids[NC_MAX_DIMS]
+            # get number of dimensions for this variable.
+            ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
-            name = namstring
-            dimensions = dimensions + (name,)
-        return dimensions
+            # get dimension ids.
+            ierr = nc_inq_vardimid(self._grpid, self._varid, dimids)
+            if ierr != NC_NOERR:
+                raise RuntimeError(nc_strerror(ierr))
+            # loop over dimensions, retrieve names.
+            dimensions = ()
+            for nn from 0 <= nn < numdims:
+                ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
+                if ierr != NC_NOERR:
+                    raise RuntimeError(nc_strerror(ierr))
+                name = namstring
+                dimensions = dimensions + (name,)
+            return dimensions
+        def __set__(self,value):
+            raise AttributeError("dimensions cannot be altered")
 
-    def _shape(self):
-        """Private method to find current sizes of all variable dimensions"""
-        varshape = ()
-        for dimname in self.dimensions:
-            # look in current group, and parents for dim.
-            dim = _find_dim(self._grp,dimname)
-            varshape = varshape + (len(dim),)
-        return varshape
 
     def group(self):
         """
@@ -1794,10 +1802,6 @@ C{ncattrs()}"""
                 self.__dict__[name]=value
 
     def __getattr__(self,name):
-        # special treatment for 'shape' - pass to _shape method.
-        if name == 'shape': return self._shape()
-        # special treatment for 'dimensions' - pass to _getDimensions method.
-        if name == 'dimensions': return self._getDimensions()
         # if name in _private_atts, it is stored at the python
         # level and not in the netCDF file.
         if name.startswith('__') and name.endswith('__'):
