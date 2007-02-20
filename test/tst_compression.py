@@ -45,19 +45,21 @@ class CompressionTestCase(unittest.TestCase):
         f = Dataset(self.files[1])
         size = os.stat(self.files[1]).st_size
         assert_almost_equal(array,f.variables['data'][:])
+        assert f.variables['data'].compression() == {'zlib':True,'shuffle':False,'complevel':6}
         assert(size < 0.95*uncompressed_size)
         f.close()
         # check compression with shuffle
         f = Dataset(self.files[2])
         size = os.stat(self.files[2]).st_size
         assert_almost_equal(array,f.variables['data'][:])
+        assert f.variables['data'].compression() == {'zlib':True,'shuffle':True,'complevel':6}
         assert(size < 0.85*uncompressed_size)
         # check lossy compression without shuffle
         f = Dataset(self.files[3])
         size = os.stat(self.files[3]).st_size
         checkarray = _quantize(array,lsd)
         assert_almost_equal(checkarray,f.variables['data'][:])
-        assert(size < 0.26*uncompressed_size)
+        assert(size < 0.27*uncompressed_size)
         # check lossy compression with shuffle
         f = Dataset(self.files[4])
         size = os.stat(self.files[4]).st_size

@@ -1775,6 +1775,20 @@ C{ncattrs()}"""
 
         return _get_att_names(self._grpid, self._varid)
 
+    def compression(self):
+        """return dictionary containing compression filter parameters"""
+        cdef int ierr,ideflate,ishuffle,ideflate_level
+        cdict = {'zlib':False,'shuffle':False,'complevel':0}
+        ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &ideflate_level)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        if ideflate:
+            cdict['zlib']=True
+            cdict['complevel']=ideflate_level
+        if ishuffle:
+            cdict['shuffle']=True
+        return cdict
+
     def __delattr__(self,name):
         cdef char *attname
         # if it's a netCDF attribute, remove it

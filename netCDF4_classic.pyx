@@ -1150,6 +1150,23 @@ L{Variable} instance. If C{None}, the data is not truncated. """
         """return dtype attribute, provided for compatibility with Scientific.IO.NetCDF"""
         return self.dtype
 
+    def compression(self):
+        """return dictionary containing compression filter parameters"""
+        cdef int ierr,ideflate,ishuffle,ideflate_level
+        cdict = {'zlib':False,'shuffle':False,'complevel':0}
+        if self._dset.file_format != 'NETCDF4_CLASSIC':
+            return cdict
+        else:
+            ierr = nc_inq_var_deflate(self._dsetid, self._varid, &ishuffle, &ideflate, &ideflate_level)
+            if ierr != NC_NOERR:
+                raise RuntimeError(nc_strerror(ierr))
+            if ideflate:
+                cdict['zlib']=True
+                cdict['complevel']=ideflate_level
+            if ishuffle:
+                cdict['shuffle']=True
+            return cdict
+
     property shape:
         """find current sizes of all variable dimensions"""
         def __get__(self):
