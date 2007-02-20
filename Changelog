@@ -1,3 +1,6 @@
+* added 'compression()' variable method that returns a dict with
+  compression filter parameter settings for that variable. (rev 237)
+
 * reimplemented 'shape' and 'dimensions' variable attributes as
   properties.
 
