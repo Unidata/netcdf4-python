@@ -24,6 +24,9 @@ FLOATATT = math.pi
 SEQATT = NP.arange(10)
 STRINGSEQATT = ['mary ','had ','a ','little ','lamb']
 OBJATT = {'spam':1,'eggs':2}
+ATTDICT = {'stratt':STRATT,'floatatt':FLOATATT,'seqatt':SEQATT,
+           'stringseqatt':''.join(STRINGSEQATT),'objatt':OBJATT,
+           'emptystratt':EMPTYSTRATT,'intatt':INTATT}
 
 class VariablesTestCase(unittest.TestCase):
 
@@ -62,6 +65,14 @@ class VariablesTestCase(unittest.TestCase):
         f  = netCDF4.Dataset(self.file, 'r')
         v = f.variables[VAR_NAME]
         # check attributes in root group.
+        # global attributes.
+        # check __dict__ method for accessing all netCDF attributes.
+        for key,val in ATTDICT.iteritems():
+            if type(val) == NP.ndarray:
+                assert f.__dict__[key].tolist() == val.tolist()
+            else:
+                assert f.__dict__[key] == val
+        # check accessing individual attributes.
         assert f.intatt == INTATT
         assert f.floatatt == FLOATATT
         assert f.stratt == STRATT
@@ -69,10 +80,17 @@ class VariablesTestCase(unittest.TestCase):
         assert f.seqatt.tolist() == SEQATT.tolist()
         assert f.stringseqatt == ''.join(STRINGSEQATT)
         assert f.objatt == OBJATT
+        # variable attributes.
+        # check __dict__ method for accessing all netCDF attributes.
+        for key,val in ATTDICT.iteritems():
+            if type(val) == NP.ndarray:
+                assert v.__dict__[key].tolist() == val.tolist()
+            else:
+                assert v.__dict__[key] == val
+        # check accessing individual attributes.
         assert v.intatt == INTATT
         assert v.floatatt == FLOATATT
         assert v.stratt == STRATT
-        assert v.emptystratt == EMPTYSTRATT
         assert v.seqatt.tolist() == SEQATT.tolist()
         assert v.stringseqatt == ''.join(STRINGSEQATT)
         assert v.objatt == OBJATT
