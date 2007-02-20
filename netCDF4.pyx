@@ -706,7 +706,6 @@ _nptonctype  = {'S1' : NC_CHAR,
                 'u8' : NC_UINT64,
                 'f4' : NC_FLOAT,
                 'f8' : NC_DOUBLE}
-_supportedtypes = _nptonctype.keys()
 _nctonptype = {}
 for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
@@ -720,6 +719,7 @@ _nptonctype['h'] = NC_SHORT
 _nptonctype['c'] = NC_CHAR
 _nptonctype['b'] = NC_BYTE
 _nptonctype['B'] = NC_BYTE
+_supportedtypes = _nptonctype.keys()
 
 # utility functions (internal)
 

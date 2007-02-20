@@ -437,11 +437,9 @@ _nptonctype  = {'S1' : NC_CHAR,
                 'i4' : NC_INT,   
                 'f4' : NC_FLOAT,
                 'f8' : NC_DOUBLE}
-_supportedtypes = _nptonctype.keys()
 _nctonptype = {}
 for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
-
 # also allow old Numeric single character typecodes.
 _nptonctype['d'] = NC_DOUBLE
 _nptonctype['f'] = NC_FLOAT
@@ -452,6 +450,7 @@ _nptonctype['h'] = NC_SHORT
 _nptonctype['c'] = NC_CHAR
 _nptonctype['b'] = NC_BYTE
 _nptonctype['B'] = NC_BYTE
+_supportedtypes = _nptonctype.keys()
 
 # Python wrappers.
 
@@ -1070,7 +1069,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
         cdef ndarray fillval
         self._dsetid = dset._dsetid
         self._dset = dset
-        if datatype not in _nptonctype.keys():
+        if datatype not in _supportedtypes:
             raise TypeError('illegal data type, must be one of %s, got %s' % (_supportedtypes,datatype))
         self.dtype = _nctonptype[_nptonctype[datatype]]
         if kwargs.has_key('id'):
