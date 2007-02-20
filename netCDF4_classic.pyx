@@ -1151,7 +1151,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
         return self.dtype
 
     def compression(self):
-        """return dictionary containing compression filter parameters"""
+        """return dictionary containing compression filter parameters."""
         cdef int ierr,ideflate,ishuffle,ideflate_level
         cdict = {'zlib':False,'shuffle':False,'complevel':0}
         if self._dset.file_format != 'NETCDF4_CLASSIC':

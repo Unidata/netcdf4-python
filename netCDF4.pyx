@@ -1776,7 +1776,7 @@ C{ncattrs()}"""
         return _get_att_names(self._grpid, self._varid)
 
     def compression(self):
-        """return dictionary containing compression filter parameters"""
+        """return dictionary containing compression filter parameters."""
         cdef int ierr,ideflate,ishuffle,ideflate_level
         cdict = {'zlib':False,'shuffle':False,'complevel':0}
         ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &ideflate_level)
