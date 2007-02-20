@@ -42,8 +42,11 @@ class VariablesTestCase(unittest.TestCase):
         f = Dataset(self.files,check=True)
         assert f.history == 'created today'
         assert_array_equal(numpy.arange(0,nx),f.variables['x'][:])
-        datin = f.variables['data'][4:-4:4,3:5,2:8]
-        assert f.variables['data'].name == 'phony data'
+        varin = f.variables['data']
+        datin = varin[4:-4:4,3:5,2:8]
+        assert varin.name == 'phony data'
+        assert varin.shape == (nx,ydim,zdim)
+        assert varin.dimensions == ('x','y','z')
         assert_array_equal(datin,data[4:-4:4,3:5,2:8])
         f.close()
 
