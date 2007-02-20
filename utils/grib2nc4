@@ -58,3 +58,5 @@ for varname,var in f.variables.items():
     for name, att in var.__dict__.items():
         setattr(varo,name,att)
     varo[:] = gribdata[:]
+f.close()
+nc.close()
