@@ -84,7 +84,7 @@ class CompoundTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing variables"""
+        """testing compound variables"""
         f  = netCDF4.Dataset(self.file, 'r')
         v = f.variables['station_obs']
         vs = f.variables['station_obs1']

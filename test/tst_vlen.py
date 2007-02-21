@@ -41,7 +41,7 @@ class VlenTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing variables"""
+        """testing vlen variables"""
         f  = netCDF4.Dataset(self.file, 'r')
         v = f.variables[VAR_NAME]
         self.assert_(v.usertype == 'vlen')
