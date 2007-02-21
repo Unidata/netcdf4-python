@@ -5,14 +5,17 @@ import os
 ndim = 100000
 array = uniform(size=(ndim,))
 
-def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,chunking='seq',complevel=6):
+def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,chunking='seq',complevel=6,fletcher32=False):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
-    foo = file.createVariable('data', dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,shuffle=shuffle,chunking=chunking,complevel=complevel)
+    foo = file.createVariable('data', dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,shuffle=shuffle,chunking=chunking,complevel=complevel,fletcher32=fletcher32)
     foo[:] = data
     file.close()
     file = Dataset(filename)
-    data = file.variables['data'][:]
+    var = file.variables['data']
+    data = var[:]
+    print var.filters()
+    print var.__dict__
     print data[0:4]
 
 # uncompressed.
@@ -49,3 +52,10 @@ least_significant_digit = 3
 zlib = True
 write_netcdf(filename,zlib,least_significant_digit,array,shuffle=True)
 print 'size of lossy3s.nc (lossy compression, 3 digits, shuffle) = ',os.stat('lossy3s.nc').st_size
+
+# compressed (lossy, 3 digits, with shuffle and fletcher32 checksum).
+filename = 'lossy3sf.nc'
+least_significant_digit = 3
+zlib = True
+write_netcdf(filename,zlib,least_significant_digit,array,shuffle=True,fletcher32=True)
+print 'size of lossy3sf.nc (lossy compression, 3 digits, shuffle, checksum) = ',os.stat('lossy3s.nc').st_size

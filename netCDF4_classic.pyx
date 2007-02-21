@@ -1111,7 +1111,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
                 if fletcher32:
-                    ierr = nc_def_var_fletcher32(self._dsetid, self._varid, ifletcher32)
+                    ierr = nc_def_var_fletcher32(self._dsetid, self._varid, 1)
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
                 if chunking == 'sub':
@@ -1149,22 +1149,27 @@ L{Variable} instance. If C{None}, the data is not truncated. """
         """return dtype attribute, provided for compatibility with Scientific.IO.NetCDF"""
         return self.dtype
 
-    def compression(self):
+    def filters(self):
         """return dictionary containing compression filter parameters."""
-        cdef int ierr,ideflate,ishuffle,ideflate_level
-        cdict = {'zlib':False,'shuffle':False,'complevel':0}
+        cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
+        filtdict = {'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._dset.file_format != 'NETCDF4_CLASSIC':
-            return cdict
+            return filtdict
         else:
             ierr = nc_inq_var_deflate(self._dsetid, self._varid, &ishuffle, &ideflate, &ideflate_level)
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
+            ierr = nc_inq_var_fletcher32(self._dsetid, self._varid, &ifletcher32)
+            if ierr != NC_NOERR:
+                raise RuntimeError(nc_strerror(ierr))
             if ideflate:
-                cdict['zlib']=True
-                cdict['complevel']=ideflate_level
+                filtdict['zlib']=True
+                filtdict['complevel']=ideflate_level
             if ishuffle:
-                cdict['shuffle']=True
-            return cdict
+                filtdict['shuffle']=True
+            if ifletcher32:
+                filtdict['fletcher32']=True
+            return filtdict
 
     property shape:
         """find current sizes of all variable dimensions"""

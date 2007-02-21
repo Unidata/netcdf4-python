@@ -1,3 +1,6 @@
+* Fixed bug in fletcher32 checksum activation call.  Renamed compression()
+  variable method to filters(), include fletcher32 checksum flag in output.
+
 * added utility for converting GRIB1 files to compressed
   NETCDF4_CLASSIC files (requires PyNIO).
 

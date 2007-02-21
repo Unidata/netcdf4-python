@@ -4,15 +4,15 @@ from numpy.testing import assert_almost_equal
 import os, tempfile, unittest
 
 ndim = 100000
-nfiles = 5
+nfiles = 6
 files = [tempfile.mktemp(".nc") for nfile in range(nfiles)]
 array = uniform(size=(ndim,))
 lsd = 3
 
-def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,chunking='seq',complevel=6):
+def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,chunking='seq',complevel=6,fletcher32=False):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
-    foo = file.createVariable('data', dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,shuffle=shuffle,chunking=chunking,complevel=complevel)
+    foo = file.createVariable('data', dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,shuffle=shuffle,chunking=chunking,complevel=complevel,fletcher32=fletcher32)
     foo[:] = data
     file.close()
     file = Dataset(filename)
@@ -32,6 +32,8 @@ class CompressionTestCase(unittest.TestCase):
         write_netcdf(self.files[3],True,lsd,array)
         # compressed, lossy, with shuffle.
         write_netcdf(self.files[4],True,lsd,array,shuffle=True)
+        # compressed, lossy, with shuffle and fletcher32 checksum.
+        write_netcdf(self.files[5],True,lsd,array,shuffle=True,fletcher32=True)
 
     def tearDown(self):
         # Remove the temporary files
@@ -45,14 +47,14 @@ class CompressionTestCase(unittest.TestCase):
         f = Dataset(self.files[1])
         size = os.stat(self.files[1]).st_size
         assert_almost_equal(array,f.variables['data'][:])
-        assert f.variables['data'].compression() == {'zlib':True,'shuffle':False,'complevel':6}
+        assert f.variables['data'].filters() == {'zlib':True,'shuffle':False,'complevel':6,'fletcher32':False}
         assert(size < 0.95*uncompressed_size)
         f.close()
         # check compression with shuffle
         f = Dataset(self.files[2])
         size = os.stat(self.files[2]).st_size
         assert_almost_equal(array,f.variables['data'][:])
-        assert f.variables['data'].compression() == {'zlib':True,'shuffle':True,'complevel':6}
+        assert f.variables['data'].filters() == {'zlib':True,'shuffle':True,'complevel':6,'fletcher32':False}
         assert(size < 0.85*uncompressed_size)
         # check lossy compression without shuffle
         f = Dataset(self.files[3])
@@ -64,6 +66,12 @@ class CompressionTestCase(unittest.TestCase):
         f = Dataset(self.files[4])
         size = os.stat(self.files[4]).st_size
         assert_almost_equal(checkarray,f.variables['data'][:])
+        assert(size < 0.20*uncompressed_size)
+        # check lossy compression with shuffle and fletcher32 checksum.
+        f = Dataset(self.files[5])
+        size = os.stat(self.files[5]).st_size
+        assert_almost_equal(checkarray,f.variables['data'][:])
+        assert f.variables['data'].filters() == {'zlib':True,'shuffle':True,'complevel':6,'fletcher32':True}
         assert(size < 0.20*uncompressed_size)
 
 if __name__ == '__main__':

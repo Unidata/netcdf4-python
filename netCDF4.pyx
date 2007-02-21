@@ -1683,7 +1683,7 @@ instance. If C{None}, the data is not truncated. """
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
                 if fletcher32:
-                    ierr = nc_def_var_fletcher32(self._grpid, self._varid, ifletcher32)
+                    ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
                 if chunking == 'sub':
@@ -1775,19 +1775,24 @@ C{ncattrs()}"""
 
         return _get_att_names(self._grpid, self._varid)
 
-    def compression(self):
-        """return dictionary containing compression filter parameters."""
-        cdef int ierr,ideflate,ishuffle,ideflate_level
-        cdict = {'zlib':False,'shuffle':False,'complevel':0}
+    def filters(self):
+        """return dictionary containing HDF5 filter parameters."""
+        cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
+        filtdict = {'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
         ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &ideflate_level)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
+        ierr = nc_inq_var_fletcher32(self._grpid, self._varid, &ifletcher32)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
         if ideflate:
-            cdict['zlib']=True
-            cdict['complevel']=ideflate_level
+            filtdict['zlib']=True
+            filtdict['complevel']=ideflate_level
         if ishuffle:
-            cdict['shuffle']=True
-        return cdict
+            filtdict['shuffle']=True
+        if ifletcher32:
+            filtdict['fletcher32']=True
+        return filtdict
 
     def __delattr__(self,name):
         cdef char *attname
