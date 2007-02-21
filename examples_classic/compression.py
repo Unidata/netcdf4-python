@@ -17,6 +17,7 @@ def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=F
     print var.filters()
     print var.__dict__
     print data[0:4]
+    file.close()
 
 # uncompressed.
 filename = 'uncompressed.nc'
@@ -58,4 +59,23 @@ filename = 'lossy3sf.nc'
 least_significant_digit = 3
 zlib = True
 write_netcdf(filename,zlib,least_significant_digit,array,shuffle=True,fletcher32=True)
-print 'size of lossy3sf.nc (lossy compression, 3 digits, shuffle, checksum) = ',os.stat('lossy3s.nc').st_size
+print 'size of lossy3sf.nc (lossy compression, 3 digits, shuffle, checksum) = ',os.stat('lossy3sf.nc').st_size
+
+# to check that checksum worked, split 'lossy3sf.nc' into pieces using
+# fsplit (http://www.fpx.de/fp/Software/fsplit), 
+# change one of the pieces, cat the pieces back together and
+# then try to read the data.
+# fsplit lossy3sf.nc 50 (creates xx00,xx01,xx02,xx03)
+# dd if=xx01 of=xx01b conv=ucase
+# cat xx00 xx01b xx02 xx03 > ! lossy3sf_corrupt.nc
+# now, ncdump -h gives:
+# netcdf lossy3sf_corrupt {
+# dimensions:
+#         n = 100000 ;
+# variables:
+#         double data(n) ;
+#                 data:least_significant_digit = 3 ;
+# }
+# but remove the '-h' and you get
+# ncdump: HDF error
+# when it tries to actually read the data.
