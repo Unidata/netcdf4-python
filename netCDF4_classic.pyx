@@ -1150,7 +1150,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
         return self.dtype
 
     def filters(self):
-        """return dictionary containing compression filter parameters."""
+        """return dictionary containing HDF5 filter parameters."""
         cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
         filtdict = {'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._dset.file_format != 'NETCDF4_CLASSIC':
