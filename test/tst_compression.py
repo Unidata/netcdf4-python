@@ -67,12 +67,15 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[4]).st_size
         assert_almost_equal(checkarray,f.variables['data'][:])
         assert(size < 0.20*uncompressed_size)
+        size_save = size
         # check lossy compression with shuffle and fletcher32 checksum.
         f = Dataset(self.files[5])
         size = os.stat(self.files[5]).st_size
         assert_almost_equal(checkarray,f.variables['data'][:])
         assert f.variables['data'].filters() == {'zlib':True,'shuffle':True,'complevel':6,'fletcher32':True}
         assert(size < 0.20*uncompressed_size)
+        # should be slightly larger than without fletcher32
+        assert(size > size_save)
 
 if __name__ == '__main__':
     unittest.main()
