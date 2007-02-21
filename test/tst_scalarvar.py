@@ -35,7 +35,7 @@ class ScalarVariableTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing dimensions"""
+        """testing scalar variables"""
         # check dimensions in root group.
         f  = netCDF4.Dataset(self.file, 'r+')
         v = f.variables[VAR_NAME]

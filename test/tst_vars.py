@@ -51,7 +51,7 @@ class VariablesTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing variables"""
+        """testing primitive variables"""
         f  = netCDF4.Dataset(self.file, 'r')
         # check variables in root group.
         varnames = f.variables.keys()
