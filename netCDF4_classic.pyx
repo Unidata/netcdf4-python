@@ -507,9 +507,6 @@ def _get_vars(dataset):
              ierr = nc_inq_vartype(dataset._dsetid, n, &xtype)
              if ierr != NC_NOERR:
                  raise RuntimeError(nc_strerror(ierr))
-             # NC_LONG is the same as NC_INT anyway.
-             if xtype == NC_LONG:
-                 xtype == NC_INT
              try:
                  type = _nctonptype[xtype]
              except:

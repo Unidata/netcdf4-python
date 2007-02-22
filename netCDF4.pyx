@@ -884,9 +884,6 @@ def _get_vars(group):
                  else: # other user-defined types not supported yet
                      raise TypeError('unsupported user-defined data type')
              else:
-                 # NC_LONG is the same as NC_INT anyway.
-                 if xtype == NC_LONG:
-                     xtype == NC_INT
                  try:
                      datatype = _nctonptype[xtype]
                  except:
