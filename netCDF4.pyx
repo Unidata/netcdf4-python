@@ -379,25 +379,23 @@ documentation for more details.
 --------------------------------------------
 
 Data stored in netCDF L{Variable} objects can be compressed and 
-decompressed on the fly if the file format is C{NETCDF4_CLASSIC}. This a 
-new feature of netCDF 4, but the resulting files can still be read by 
-netCDF 3 clients that have been linked against the netCDF 4 library. The 
-parameters for the compression are determined by the C{zlib}, C{complevel} 
-and C{shuffle} keyword arguments to the C{createVariable} method. To turn 
-on compression, set C{zlib=True}.  C{complevel} regulates the speed and 
-efficiency of the compression (1 being fastest, but lowest compression 
-ratio, 9 being slowest but best compression ratio). The default value of 
-C{complevel} is 6. C{shuffle=False} will turn off the HDF5 shuffle filter, 
-which de-interlaces a block of data before compression by reordering the 
-bytes.  The shuffle filter can significantly improve compression ratios, 
-and is on by default.  Setting C{fletcher32} keyword argument to 
-C{createVariable} to C{True} (it's C{False} by default) enables the 
-Fletcher32 checksum algorithm for error detection.
+decompressed on the fly. The parameters for the compression are determined 
+by the C{zlib}, C{complevel} and C{shuffle} keyword arguments to the 
+C{createVariable} method. To turn on compression, set C{zlib=True}.  The 
+C{complevel} keyword regulates the speed and efficiency of the compression 
+(1 being fastest, but lowest compression ratio, 9 being slowest but best 
+compression ratio). The default value of C{complevel} is 6. Setting 
+C{shuffle=False} will turn off the HDF5 shuffle filter, which 
+de-interlaces a block of data before compression by reordering the bytes.  
+The shuffle filter can significantly improve compression ratios, and is on 
+by default.  Setting C{fletcher32} keyword argument to C{createVariable} 
+to C{True} (it's C{False} by default) enables the Fletcher32 checksum 
+algorithm for error detection.
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
-0.1 degrees), you can dramatically improve compression by quantizing (or
-truncating) the data using the C{least_significant_digit} keyword
+0.1 degrees), you can dramatically improve zlib compression by quantizing
+(or truncating) the data using the C{least_significant_digit} keyword
 argument to C{createVariable}. The least significant digit is the power
 of ten of the smallest decimal place in the data that is a reliable
 value. For example if the data has a precision of 0.1, then setting
@@ -414,13 +412,11 @@ In our example, try replacing the line
 
 with
 
->>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),
-                                  zlib=True)
+>>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),zlib=True)
 
 and then
 
->>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),
-                                  zlib=True,least_significant_digit=3)
+>>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),zlib=True,least_significant_digit=3)
 
 and see how much smaller the resulting files are.
 
@@ -1168,7 +1164,7 @@ If the optional keyword C{zlib} is C{True}, the data will be compressed in
 the netCDF file using gzip compression (default C{False}).
 
 The optional keyword C{complevel} is an integer between 1 and 9 describing 
-the level of compression desired (default 6).
+the level of compression desired (default 6). Ignored if C{zlib=False}.
 
 If the optional keyword C{shuffle} is C{True}, the HDF5 shuffle filter 
 will be applied before compressing the data (default C{True}).  This 
@@ -1186,16 +1182,16 @@ netCDF C{_FillValue} (the value that the variable gets filled with before
 any data is written to it).  If fill_value is set to C{False}, then
 the variable is not pre-filled.
 
-If the optional keyword parameter C{least_significant_digit} is
-specified, variable data will be truncated (quantized). This produces
-'lossy', but significantly more efficient compression. For example, if
-C{least_significant_digit=1}, data will be quantized using
-C{numpy.around(scale*data)/scale}, where scale = 2**bits, and bits is
-determined so that a precision of 0.1 is retained (in this case bits=4). 
-From
-U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}:
-"least_significant_digit -- power of ten of the smallest decimal place
-in unpacked data that is a reliable value." Default is C{None}, or no
+If the optional keyword parameter C{least_significant_digit} is specified, 
+variable data will be truncated (quantized). In conjunction with 
+C{zlib=True} this produces 'lossy', but significantly more efficient 
+compression. For example, if C{least_significant_digit=1}, data will be 
+quantized using C{numpy.around(scale*data)/scale}, where scale = 2**bits, 
+and bits is determined so that a precision of 0.1 is retained (in this 
+case bits=4). From 
+U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}: 
+"least_significant_digit -- power of ten of the smallest decimal place in 
+unpacked data that is a reliable value." Default is C{None}, or no 
 quantization, or 'lossless' compression.
 
 The return value is the L{Variable} class instance describing the new 
@@ -1551,9 +1547,10 @@ instance is compressed on disk. Defalut C{False}.
 
 B{C{complevel}} - the level of zlib compression to use (1 is the fastest, 
 but poorest compression, 9 is the slowest but best compression). Default 6.
+Ignored if C{zlib=False}. 
 
 B{C{shuffle}} - if C{True}, the HDF5 shuffle filter is applied 
-to improve compression. Default C{False}. Ignored is C{zlib=False}.
+to improve compression. Default C{False}. Ignored if C{zlib=False}.
 
 B{C{fletcher32}} - if C{True} (default C{False}), the Fletcher32 checksum 
 algorithm is used for error detection.
@@ -1565,11 +1562,12 @@ sizes are set to favor sequential access. Setting C{chunking = 'sub'} will
 cause chunk sizes to be set to favor subsetting equally in any dimension.
 
 B{C{least_significant_digit}} - If specified, variable data will be 
-truncated (quantized). This produces 'lossy', but significantly more 
-efficient compression. For example, if C{least_significant_digit=1}, data 
-will be quantized using around(scale*data)/scale, where scale = 2**bits, 
-and bits is determined so that a precision of 0.1 is retained (in this 
-case bits=4). Default is C{None}, or no quantization.
+truncated (quantized). In conjunction with C{zlib=True} this produces 
+'lossy', but significantly more efficient compression. For example, if 
+C{least_significant_digit=1}, data will be quantized using 
+around(scale*data)/scale, where scale = 2**bits, and bits is determined so 
+that a precision of 0.1 is retained (in this case bits=4). Default is 
+C{None}, or no quantization.
 
 B{C{fill_value}} - If specified, the default netCDF C{_FillValue} (the 
 value that the variable gets filled with before any data is written to it) 
