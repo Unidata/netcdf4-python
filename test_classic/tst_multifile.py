@@ -15,13 +15,13 @@ class VariablesTestCase(unittest.TestCase):
     def setUp(self):
         self.files = files
         for nfile,file in enumerate(self.files):
-            f = netCDF4_classic.Dataset(file,'w',format='NETCDF3_64BIT')
+            f = netCDF4_classic.Dataset(file,'w',format='NETCDF3_CLASSIC')
             f.createDimension('x',None)
             f.createDimension('y',ydim)
             f.createDimension('z',zdim)
             f.history = 'created today'
             x = f.createVariable('x','i',('x',))
-            x.units = 'zlotnys'
+            x.units = 'zlotys'
             dat = f.createVariable('data','i',('x','y','z',))
             dat.name = 'phony data' 
             nx1 = nfile*ninc; nx2 = ninc*(nfile+1)
