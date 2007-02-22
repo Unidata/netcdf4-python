@@ -38,7 +38,7 @@ filename = 'lossless_s.nc'
 least_significant_digit = None
 zlib = True
 write_netcdf(filename,zlib,least_significant_digit,array,shuffle=True)
-print 'size of lossless_s.nc (lossless compression, with shuffle) = ',os.stat('lossless.nc').st_size
+print 'size of lossless_s.nc (lossless compression, with shuffle) = ',os.stat('lossless_s.nc').st_size
 
 # compressed (lossy, 3 digits, no shuffle).
 filename = 'lossy3.nc'
