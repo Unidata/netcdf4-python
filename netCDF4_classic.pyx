@@ -135,23 +135,25 @@ a L{Dataset} instance.
 3) Variables in a netCDF file
 -----------------------------
 
-netCDF variables behave much like python multidimensional array objects supplied by 
-the U{numpy module <http://numpy.scipy.org>}. However, unlike numpy arrays, netCDF 
-variables can be appended to along the 'unlimited' dimension. To create a netCDF 
-variable, use the C{createVariable} method of a L{Dataset} instance. The 
-C{createVariable} method has two mandatory arguments, the variable name (a Python 
-string), and the variable datatype. The variable's dimensions are given by a tuple 
-containing the dimension names (defined previously with C{createDimension}). To 
-create a scalar variable, simply leave out the dimensions keyword. The variable 
-primitive datatypes correspond to the dtype.str attribute of a numpy array, and can 
-be one of C{'f4'} (32-bit floating point), C{'f8'} (64-bit floating point), C{'i4'} 
-(32-bit signed integer), C{'i2'} (16-bit signed integer), C{'i1'} (8-bit signed 
-integer), integer), C{'S1'} (single-character string).  The old single character 
-Numeric typecodes (C{'f','d','i','h','b','c'}) are also accepted for compatibility 
-with Scientific.IO.NetCDF. The dimensions themselves are usually also defined as 
-variables, called coordinate variables. The C{createVariable} method returns an 
-instance of the L{Variable} class whose methods can be used later to access and set 
-variable data and attributes.
+netCDF variables behave much like python multidimensional array objects 
+supplied by the U{numpy module <http://numpy.scipy.org>}. However, unlike 
+numpy arrays, netCDF variables can be appended to along the 'unlimited' 
+dimension. To create a netCDF variable, use the C{createVariable} method 
+of a L{Dataset} instance. The C{createVariable} method has two mandatory 
+arguments, the variable name (a Python string), and the variable datatype. 
+The variable's dimensions are given by a tuple containing the dimension 
+names (defined previously with C{createDimension}). To create a scalar 
+variable, simply leave out the dimensions keyword. The variable primitive 
+datatypes correspond to the dtype.str attribute of a numpy array, and can 
+be one of C{'f4'} (32-bit floating point), C{'f8'} (64-bit floating 
+point), C{'i4'} (32-bit signed integer), C{'i2'} (16-bit signed integer), 
+C{'i1'} (8-bit signed integer), integer), C{'S1'} (single-character 
+string).  The old single character Numeric typecodes 
+(C{'f','d','i','h','b','c'}) are also accepted for compatibility with 
+Scientific.IO.NetCDF. The dimensions themselves are usually also defined 
+as variables, called coordinate variables. The C{createVariable} method 
+returns an instance of the L{Variable} class whose methods can be used 
+later to access and set variable data and attributes.
 
 >>> times = dataset.createVariable('time','f8',('time',))
 >>> levels = dataset.createVariable('level','i4',('level',))
@@ -318,22 +320,21 @@ documentation for more details.
 6) Efficient compression of netCDF variables
 --------------------------------------------
 
-Data stored in netCDF L{Variable} objects is compressed on disk by
-default, if the file format is C{NETCDF4_CLASSIC}. This a new feature of
-netCDF 4, but the resulting files can still be read by netCDF 3 clients
-that have been linked against the netCDF 4 library. The parameters for
-the compression are determined by the C{zlib} and C{complevel} and
-C{shuffle} keyword arguments to the C{createVariable} method.  The
-default values are C{zlib=True}, C{complevel=6} and C{shuffle=True}.  To
-turn off compression, set C{zlib=False}.  C{complevel} regulates the
-speed and efficiency of the compression (1 being fastest, but lowest
-compression ratio, 9 being slowest but best compression ratio). 
-C{shuffle=False} will turn off the HDF5 shuffle filter, which
-de-interlaces a block of data by reordering the bytes.  The shuffle
-filter can significantly improve compression ratios.  Setting
-C{fletcher32} keyword argument to C{createVariable} to C{True} (it's
-C{False} by default) enables the Fletcher32 checksum algorithm for error
-detection.
+Data stored in netCDF L{Variable} objects can be compressed and 
+decompressed on the fly if the file format is C{NETCDF4_CLASSIC}. This a 
+new feature of netCDF 4, but the resulting files can still be read by 
+netCDF 3 clients that have been linked against the netCDF 4 library. The 
+parameters for the compression are determined by the C{zlib}, C{complevel} 
+and C{shuffle} keyword arguments to the C{createVariable} method. To turn 
+on compression, set C{zlib=True}.  C{complevel} regulates the speed and 
+efficiency of the compression (1 being fastest, but lowest compression 
+ratio, 9 being slowest but best compression ratio). The default value of 
+C{complevel} is 6. C{shuffle=False} will turn off the HDF5 shuffle filter, 
+which de-interlaces a block of data before compression by reordering the 
+bytes.  The shuffle filter can significantly improve compression ratios, 
+and is on by default.  Setting C{fletcher32} keyword argument to 
+C{createVariable} to C{True} (it's C{False} by default) enables the 
+Fletcher32 checksum algorithm for error detection.
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
@@ -356,10 +357,15 @@ In our example, try replacing the line
 with
 
 >>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),
-                                  least_significant_digit=3)
+                                  zlib=True)
+
+and then
+
+>>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),
+                                  zlib=True,least_significant_digit=3)
 	    
 
-and see how much smaller the resulting file is.  If the file format is
+and see how much smaller the resulting files are.  If the file format is
 not C{NETCDF4_CLASSIC}, using the least_significant_digit keyword will
 not result in a smaller file, since on-the-fly zlib compression will not
 be done.  However, the resulting file will still be smaller when
@@ -734,13 +740,13 @@ C{renameDimension(oldname, newname)}"""
         # Variable.dimensions is determined by a method that
         # looks in the file, so no need to manually update.
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, fill_value=None, chunking='seq'):
+    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, fill_value=None, chunking='seq'):
         """
 Creates a new variable with the given C{varname}, C{datatype}, and
 C{dimensions}. If dimensions are not given, the variable is assumed to
 be a scalar.
 
-C{createVariable(varname, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None)}
+C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None)}
 
 The C{datatype} is a string with the same meaning as the C{dtype.str}
 attribute of arrays in module nump. Supported data types are: C{'S1'
@@ -756,14 +762,15 @@ have been defined previously using C{createDimension}. The default value
 is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword C{zlib} is C{True}, the data will be compressed
-in the netCDF file using gzip compression (default C{True}).
+in the netCDF file using gzip compression (default C{False}).
 
 The optional keyword C{complevel} is an integer between 1 and 9
 describing the level of compression desired (default 6).
 
 If the optional keyword C{shuffle} is C{True}, the HDF5 shuffle filter
 will be applied before compressing the data (default C{True}).  This
-significantly improves compression.
+significantly improves compression. If C{zlib} is C{False}, the C{shuffle}
+keyword is ignored.
 
 If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5
 checksum algorithm is activated to detect errors. Default C{False}.
@@ -965,7 +972,7 @@ cdef class Variable:
 A netCDF L{Variable} is used to read and write netCDF data.  They are 
 analagous to numpy array objects.
 
-C{Variable(dataset, name, datatype, dimensions=(), zlib=True, complevel=6, 
+C{Variable(dataset, name, datatype, dimensions=(), zlib=False, complevel=6, 
 shuffle=True, fletcher32=False, chunking='seq', 
 least_significant_digit=None, fill_value=None)}
    
@@ -992,13 +999,13 @@ B{C{dimensions}} - a tuple containing the variable's dimension names
 which means the variable is a scalar (and therefore has no dimensions).
 
 B{C{zlib}} - if C{True} (default), data assigned to the L{Variable} 
-instance is compressed on disk.
+instance is compressed on disk. Default C{False}.
 
 B{C{complevel}} - the level of zlib compression to use (1 is the fastest, 
 but poorest compression, 9 is the slowest but best compression). Default 6.
 
 B{C{shuffle}} - if C{True} (default), the HDF5 shuffle filter is applied 
-to improve compression.
+to improve compression. Ignored if C{zlib} is {False}. 
 
 B{C{fletcher32}} - if C{True} (default C{False}), the Fletcher32 checksum 
 algorithm is used for error detection.
@@ -1056,7 +1063,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
     cdef object _dset
     cdef public dtype
 
-    def __init__(self, dset, name, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, chunking='seq', fill_value=None, **kwargs):
+    def __init__(self, dset, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, chunking='seq', fill_value=None, **kwargs):
         cdef int ierr, ndims, ideflate_level, ichunkalg
         cdef char *varname
         cdef nc_type xtype

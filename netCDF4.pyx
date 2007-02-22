@@ -288,8 +288,9 @@ Global attr description = bogus example script
 Global attr history = Created Mon Nov  7 10.30:56 2005
 Global attr source = netCDF4 python module tutorial
 
-The C{__dict__} attribute of a L{Dataset}, L{Group} or L{Variable} instance provides
-all the netCDF attribute name/value pairs in a python dictionary:
+The C{__dict__} attribute of a L{Dataset}, L{Group} or L{Variable} 
+instance provides all the netCDF attribute name/value pairs in a python 
+dictionary:
 
 >>> print rootgrp.__dict__
 {'source': 'netCDF4 python module tutorial',
@@ -377,19 +378,21 @@ documentation for more details.
 7) Efficient compression of netCDF variables
 --------------------------------------------
 
-Data stored in netCDF L{Variable} objects is compressed on disk by
-default. The parameters for the compression are determined by the
-C{zlib} and C{complevel} and C{shuffle} keyword arguments to the
-C{createVariable} method.  The default values are C{zlib=True},
-C{complevel=6} and C{shuffle=True}.  To turn off compression, set
-C{zlib=False}.  C{complevel} regulates the speed and efficiency of the
-compression (1 being fastest, but lowest compression ratio, 9 being
-slowest but best compression ratio).  C{shuffle=False} will turn off the
-HDF5 shuffle filter, which de-interlaces a block of data by reordering
-the bytes.  The shuffle filter can significantly improve compression
-ratios.  Setting C{fletcher32} keyword argument to C{createVariable} to
-C{True} (it's C{False} by default) enables the Fletcher32 checksum
-algorithm for error detection.
+Data stored in netCDF L{Variable} objects can be compressed and 
+decompressed on the fly if the file format is C{NETCDF4_CLASSIC}. This a 
+new feature of netCDF 4, but the resulting files can still be read by 
+netCDF 3 clients that have been linked against the netCDF 4 library. The 
+parameters for the compression are determined by the C{zlib}, C{complevel} 
+and C{shuffle} keyword arguments to the C{createVariable} method. To turn 
+on compression, set C{zlib=True}.  C{complevel} regulates the speed and 
+efficiency of the compression (1 being fastest, but lowest compression 
+ratio, 9 being slowest but best compression ratio). The default value of 
+C{complevel} is 6. C{shuffle=False} will turn off the HDF5 shuffle filter, 
+which de-interlaces a block of data before compression by reordering the 
+bytes.  The shuffle filter can significantly improve compression ratios, 
+and is on by default.  Setting C{fletcher32} keyword argument to 
+C{createVariable} to C{True} (it's C{False} by default) enables the 
+Fletcher32 checksum algorithm for error detection.
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
@@ -411,11 +414,15 @@ In our example, try replacing the line
 
 with
 
->>> temp = rootgrp.createVariable('temp','f4',('time','level','lat','lon',),
-                                  least_significant_digit=3)
-            
+>>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),
+                                  zlib=True)
 
-and see how much smaller the resulting file is.
+and then
+
+>>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),
+                                  zlib=True,least_significant_digit=3)
+
+and see how much smaller the resulting files are.
 
 8) Converting netCDF 3 files to netCDF 4 files (with compression)
 -----------------------------------------------------------------
@@ -1116,13 +1123,13 @@ C{renameDimension(oldname, newname)}"""
         # looks in the file, so no need to manually update.
 
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None):
+    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None):
         """
 Creates a new variable with the given C{varname}, C{datatype}, and 
 C{dimensions}. If dimensions are not given, the variable is assumed to be 
 a scalar.
 
-C{createVariable(varname, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None)}
+C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None)}
 
 The C{datatype} can either be an instance of L{UserType} (if the
 L{Variable} is to have a user-defined data type) or a string with the
@@ -1158,14 +1165,14 @@ have been defined previously using C{createDimension}. The default value
 is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword C{zlib} is C{True}, the data will be compressed in 
-the netCDF file using gzip compression (default C{True}).
+the netCDF file using gzip compression (default C{False}).
 
 The optional keyword C{complevel} is an integer between 1 and 9 describing 
 the level of compression desired (default 6).
 
 If the optional keyword C{shuffle} is C{True}, the HDF5 shuffle filter 
 will be applied before compressing the data (default C{True}).  This 
-significantly improves compression.
+significantly improves compression. Ignored if C{zlib=False}.
 
 If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5 
 checksum algorithm is activated to detect errors. Default C{False}.
@@ -1508,7 +1515,7 @@ cdef class Variable:
 A netCDF L{Variable} is used to read and write netCDF data.  They are 
 analagous to numpy array objects.
 
-C{Variable(group, name, datatype, dimensions=(), zlib=True, complevel=6, 
+C{Variable(group, name, datatype, dimensions=(), zlib=False, complevel=6, 
 shuffle=True, fletcher32=False, chunking='seq', 
 least_significant_digit=None,fill_value=None)}
    
@@ -1539,14 +1546,14 @@ B{C{dimensions}} - a tuple containing the variable's dimension names
 (defined previously with C{createDimension}). Default is an empty tuple 
 which means the variable is a scalar (and therefore has no dimensions).
 
-B{C{zlib}} - if C{True} (default), data assigned to the L{Variable} 
-instance is compressed on disk.
+B{C{zlib}} - if C{True}, data assigned to the L{Variable}  
+instance is compressed on disk. Defalut C{False}.
 
 B{C{complevel}} - the level of zlib compression to use (1 is the fastest, 
 but poorest compression, 9 is the slowest but best compression). Default 6.
 
-B{C{shuffle}} - if C{True} (default), the HDF5 shuffle filter is applied 
-to improve compression.
+B{C{shuffle}} - if C{True}, the HDF5 shuffle filter is applied 
+to improve compression. Default C{False}. Ignored is C{zlib=False}.
 
 B{C{fletcher32}} - if C{True} (default C{False}), the Fletcher32 checksum 
 algorithm is used for error detection.
@@ -1618,7 +1625,7 @@ instance. If C{None}, the data is not truncated. """
     cdef object _grp
     cdef public dtype, dtype_base, usertype, usertype_name
 
-    def __init__(self, grp, name, datatype, dimensions=(), zlib=True, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None,  **kwargs):
+    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None,  **kwargs):
         cdef int ierr, ndims, ichunkalg, ideflate_level
         cdef char *varname
         cdef nc_type xtype, vltypeid

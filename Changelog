@@ -1,3 +1,7 @@
+* Turned off zlib compression by default so as not to violate the
+  'principle of least surprise'.  Shuffle filter still activated 
+  by default when zlib compression turned on.
+
 * Fixed bug in fletcher32 checksum activation call.  Renamed compression()
   variable method to filters(), include fletcher32 checksum flag in output.
 
