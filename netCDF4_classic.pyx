@@ -615,15 +615,13 @@ L{netCDF4} module.
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
-                ierr = nc__create(path, NC_CLOBBER, <size_t>0,
-                                 <size_t *>NC_SIZEHINT_DEFAULT, &dsetid)
+                ierr = nc_create(path, NC_CLOBBER, &dsetid)
             else:
-                ierr = nc__create(path, NC_NOCLOBBER, <size_t>0,
-                                  <size_t *>NC_SIZEHINT_DEFAULT, &dsetid)
+                ierr = nc_create(path, NC_NOCLOBBER, &dsetid)
         elif mode == 'r':
-            ierr = nc__open(path, NC_NOWRITE, <size_t *>NC_SIZEHINT_DEFAULT, &dsetid)
+            ierr = nc_open(path, NC_NOWRITE, &dsetid)
         elif mode == 'r+' or mode == 'a':
-            ierr = nc__open(path, NC_WRITE, <size_t *>NC_SIZEHINT_DEFAULT, &dsetid)
+            ierr = nc_open(path, NC_WRITE, &dsetid)
         else:
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
         if ierr != NC_NOERR:

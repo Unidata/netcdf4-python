@@ -1002,16 +1002,14 @@ group, so the path is simply C{'/'}.
         if mode == 'w':
             _set_default_format(format='NETCDF4') # set default format to NETCDF4
             if clobber:
-                ierr = nc__create(path, NC_CLOBBER, <size_t>0,
-                                 <size_t *>NC_SIZEHINT_DEFAULT, &grpid)
+                ierr = nc_create(path, NC_CLOBBER, &grpid)
             else:
-                ierr = nc__create(path, NC_NOCLOBBER, <size_t>0,
-                                  <size_t *>NC_SIZEHINT_DEFAULT, &grpid)
+                ierr = nc_create(path, NC_NOCLOBBER, &grpid)
             # initialize group dict.
         elif mode == 'r':
-            ierr = nc__open(path, NC_NOWRITE, <size_t *>NC_SIZEHINT_DEFAULT, &grpid)
+            ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
-            ierr = nc__open(path, NC_WRITE, <size_t *>NC_SIZEHINT_DEFAULT, &grpid)
+            ierr = nc_open(path, NC_WRITE, &grpid)
         else:
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
         if ierr != NC_NOERR:
