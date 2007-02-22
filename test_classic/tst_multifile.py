@@ -15,10 +15,7 @@ class VariablesTestCase(unittest.TestCase):
     def setUp(self):
         self.files = files
         for nfile,file in enumerate(self.files):
-            if nfile == 0:
-                f = netCDF4_classic.Dataset(file,'w',format='NETCDF3_CLASSIC')
-            else:
-                f = netCDF4_classic.Dataset(file,'w')
+            f = netCDF4_classic.Dataset(file,'w',format='NETCDF3_64BIT')
             f.createDimension('x',None)
             f.createDimension('y',ydim)
             f.createDimension('z',zdim)
