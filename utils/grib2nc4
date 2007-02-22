@@ -54,9 +54,10 @@ for varname,var in f.variables.items():
         if NP.fabs(truncdata-fact*tmpdata).max() < eps or lsd == 7: break
         lsd = lsd + 1
     print varname,var.typecode(),var.dimensions,var.units,lsd,minval,maxval,eps
-    varo = nc.createVariable(varname,var.typecode(),var.dimensions,least_significant_digit=lsd)
+    varo = nc.createVariable(varname,var.typecode(),var.dimensions,zlib=True,least_significant_digit=lsd)
     for name, att in var.__dict__.items():
         setattr(varo,name,att)
     varo[:] = gribdata[:]
+
 f.close()
 nc.close()
