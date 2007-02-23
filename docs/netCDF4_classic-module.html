@@ -436,29 +436,28 @@ Global attr source = netCDF4_classic python module tutorial</span>
     <h2 class="heading">6) Efficient compression of netCDF variables</h2>
       <p>Data stored in netCDF <a 
       href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
-      objects is compressed on disk by default, if the file format is 
-      <code>NETCDF4_CLASSIC</code>. This a new feature of netCDF 4, but the
-      resulting files can still be read by netCDF 3 clients that have been 
-      linked against the netCDF 4 library. The parameters for the 
-      compression are determined by the <code>zlib</code> and 
+      objects can be compressed and decompressed on the fly if the file 
+      format is <code>NETCDF4_CLASSIC</code>. This a new feature of netCDF 
+      4, but the resulting files can still be read by netCDF 3 clients that
+      have been linked against the netCDF 4 library. The parameters for the
+      compression are determined by the <code>zlib</code>, 
       <code>complevel</code> and <code>shuffle</code> keyword arguments to 
-      the <code>createVariable</code> method.  The default values are 
-      <code>zlib=True</code>, <code>complevel=6</code> and 
-      <code>shuffle=True</code>.  To turn off compression, set 
-      <code>zlib=False</code>.  <code>complevel</code> regulates the speed 
-      and efficiency of the compression (1 being fastest, but lowest 
-      compression ratio, 9 being slowest but best compression ratio). 
+      the <code>createVariable</code> method. To turn on compression, set 
+      <code>zlib=True</code>.  The <code>complevel</code> keyword regulates
+      the speed and efficiency of the compression (1 being fastest, but 
+      lowest compression ratio, 9 being slowest but best compression 
+      ratio). The default value of <code>complevel</code> is 6. Setting 
       <code>shuffle=False</code> will turn off the HDF5 shuffle filter, 
-      which de-interlaces a block of data by reordering the bytes.  The 
-      shuffle filter can significantly improve compression ratios.  Setting
-      <code>fletcher32</code> keyword argument to 
-      <code>createVariable</code> to <code>True</code> (it's 
-      <code>False</code> by default) enables the Fletcher32 checksum 
+      which de-interlaces a block of data before compression by reordering 
+      the bytes.  The shuffle filter can significantly improve compression 
+      ratios, and is on by default.  Setting <code>fletcher32</code> 
+      keyword argument to <code>createVariable</code> to <code>True</code> 
+      (it's <code>False</code> by default) enables the Fletcher32 checksum 
       algorithm for error detection.</p>
       <p>If your data only has a certain number of digits of precision (say
       for example, it is temperature data that was measured with a 
-      precision of 0.1 degrees), you can dramatically improve compression 
-      by quantizing (or truncating) the data using the 
+      precision of 0.1 degrees), you can dramatically improve zlib 
+      compression by quantizing (or truncating) the data using the 
       <code>least_significant_digit</code> keyword argument to 
       <code>createVariable</code>. The least significant digit is the power
       of ten of the smallest decimal place in the data that is a reliable 
@@ -475,10 +474,13 @@ Global attr source = netCDF4_classic python module tutorial</span>
 </pre>
       with
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">,</span>
-<span class="py-output">least_significant_digit=3)</span>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">,</span><span class="py-other">z</span><span class="py-other">l</span><span class="py-other">i</span><span class="py-other">b</span><span class="py-other">=</span><span class="py-other">T</span><span class="py-other">r</span><span class="py-other">u</span><span class="py-other">e</span><span class="py-other">)</span>
 </pre>
-      and see how much smaller the resulting file is.  If the file 
+      and then
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">,</span><span class="py-other">z</span><span class="py-other">l</span><span class="py-other">i</span><span class="py-other">b</span><span class="py-other">=</span><span class="py-other">T</span><span class="py-other">r</span><span class="py-other">u</span><span class="py-other">e</span><span class="py-other">,</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">_</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">g</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">t</span><span class="py-other">_</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">g</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">=</span><span class="py-other">3</span><span class="py-other">)</span>
+</pre>
+      and see how much smaller the resulting files are.  If the file 
       format is not <code>NETCDF4_CLASSIC</code>, using the 
       least_significant_digit keyword will not result in a smaller file, 
       since on-the-fly zlib compression will not be done.  However, the 
@@ -1090,7 +1092,7 @@ Global attr source = netCDF4_classic python module tutorial</span>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Wed Feb 21 11:44:00 2007</td>
+        3.0alpha3 on Fri Feb 23 15:00:14 2007</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>
