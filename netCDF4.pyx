@@ -649,7 +649,7 @@ string variable with embedded python objects:
 [{'eggs': 2, 'ham': False, 'spam': 1} QnXTY8B nbt4zisk pMHIn1F wl3suHW0OquZ
  wn5kxEzgE nk AGBL pe kay81]
 
-Attributes can also be python objects, although the rules for whetherr
+Attributes can also be python objects, although the rules for whether
 they are saved as pickled strings are different.  Attributes are
 converted to numpy arrays before being saved to the netCDF file.  If the
 attribute is cast to an object array by numpy, it is pickled and saved
