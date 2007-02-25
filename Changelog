@@ -1,5 +1,7 @@
 version 0.6.3 (not yet released)
 ================================
+* added --quiet and --chunk options to nc3tonc4.
+
 * Turned off zlib compression by default so as not to violate the
   'principle of least surprise'.  Shuffle filter still activated 
   by default when zlib compression turned on.
