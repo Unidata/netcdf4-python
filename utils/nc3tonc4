@@ -1,10 +1,8 @@
 #!/usr/bin/env python
-import netCDF4_classic as netCDF4
+from netCDF4_classic import Dataset
 import numpy as NP
 
-nchunk = 50000
-
-def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=True,fletcher32=False,clobber=False,lsd_dict=None):
+def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=True,fletcher32=False,clobber=False,lsd_dict=None,nchunk=1000,quiet=False):
     """convert a netcdf 3 file (filename3) to a netcdf 4 file
     (in NETCDF4_CLASSIC format).
     If unpackshort=True, variables stored as short
@@ -16,13 +14,17 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
     The zlib, complevel and shuffle keywords control
     how the compression is done."""
 
-    ncfile3 = netCDF4.Dataset(filename3,'r')
-    ncfile4 = netCDF4.Dataset(filename4,'w',clobber=clobber)
+    ncfile3 = Dataset(filename3,'r')
+    ncfile4 = Dataset(filename4,'w',clobber=clobber)
     mval = 1.e30 # missing value if unpackshort=True
     # create dimensions. Check for unlimited dim.
     unlimdimname = False
     unlimdim = None
-    print 'copying dimensions ..'
+    # create global attributes.
+    if not quiet: print 'copying global attributes ..'
+    for attname in ncfile3.ncattrs():
+        setattr(ncfile4,attname,getattr(ncfile3,attname))
+    if not quiet: print 'copying dimensions ..'
     for dimname,dim in ncfile3.dimensions.iteritems():
         if dim.isunlimited():
             unlimdimname = dimname
@@ -30,17 +32,13 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
             ncfile4.createDimension(dimname,None)
         else:
             ncfile4.createDimension(dimname,len(dim))
-    # create global attributes.
-    print 'copying global attributes ..'
-    for attname in ncfile3.ncattrs():
-        setattr(ncfile4,attname,getattr(ncfile3,attname))
     # create variables.
     for varname,ncvar in ncfile3.variables.iteritems():
-        print 'copying variable',varname
+        if not quiet: print 'copying variable',varname
         # quantize data?
         if lsd_dict is not None and lsd_dict.has_key(varname):
             lsd = lsd_dict[varname]
-            print 'truncating to least_significant_digit =',lsd
+            if not quiet: print 'truncating to least_significant_digit =',lsd
         else:
             lsd = None # no quantization.
         # unpack short integers to floats?
@@ -56,7 +54,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
         else:
             hasunlimdim = False
         if dounpackshort:
-            print 'unpacking short integers to floats ...'
+            if not quiet: print 'unpacking short integers to floats ...'
         var = ncfile4.createVariable(varname,datatype,ncvar.dimensions,least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
         # fill variable attributes.
         for attname in ncvar.ncattrs():
@@ -68,20 +66,29 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
         # fill variables with data.
         if hasunlimdim: # has an unlim dim, loop over unlim dim index.
             # range to copy
-            start = 0; stop = len(unlimdim); step = nchunk
-            if step < 1: step = 1
-            for n in range(start, stop, step):
-                nmax = n+nchunk
-                if nmax > len(unlimdim): nmax=len(unlimdim)
-                idata = ncvar[n:nmax]
+            if nchunk:
+                start = 0; stop = len(unlimdim); step = nchunk
+                if step < 1: step = 1
+                for n in range(start, stop, step):
+                    nmax = n+nchunk
+                    if nmax > len(unlimdim): nmax=len(unlimdim)
+                    idata = ncvar[n:nmax]
+                    if dounpackshort:
+                        tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
+                        if hasattr(ncvar,'missing_value'):
+                            tmpdata = NP.where(idata == ncvar.missing_value, mval, tmpdata)
+                    else:
+                        tmpdata = idata
+                    var[n:nmax] = tmpdata
+            else:
+                idata = ncvar[:]
                 if dounpackshort:
                     tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
                     if hasattr(ncvar,'missing_value'):
                         tmpdata = NP.where(idata == ncvar.missing_value, mval, tmpdata)
                 else:
                     tmpdata = idata
-                var[n:nmax] = tmpdata
-                ncfile4.sync() # flush data to disk.
+                var[0:len(unlimdim)] = tmpdata
         else: # no unlim dim or 1-d variable, just copy all data at once.
             idata = ncvar[:]
             if dounpackshort:
@@ -91,7 +98,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
             else:
                 tmpdata = idata
             var[:] = tmpdata
-        ncfile4.sync()
+        ncfile4.sync() # flush data to disk
     # close files.
     ncfile3.close()
     ncfile4.close()
@@ -122,16 +129,22 @@ if __name__ == '__main__':
      'speed' to be truncated to a precision of 0.01, 'height' to a precision of 100
      and 'temp' to 1. This can significantly improve compression. The default
      is not to quantize any of the variables.
+ --quiet=(0|1)  -- if 1, don't print diagnostic information.
+ --chunk=(integer) -- number of records along unlimited dimension to 
+     write at once.  Default 1000.  Ignored if there is no unlimited 
+     dimension.  chunk=0 means write all the data at once.
 \n""" % os.path.basename(sys.argv[0])
 
     try:
         opts, pargs = getopt.getopt(sys.argv[1:], 'ho',
                                     ['zlib=',
+                                     'quiet=',
                                      'complevel=',
                                      'shuffle=',
                                      'fletcher32=',
                                      'unpackshort=',
-                                     'quantize='
+                                     'quantize=',
+                                     'chunk='
                                      ])
     except:
         (type, value, traceback) = sys.exc_info()
@@ -147,6 +160,8 @@ if __name__ == '__main__':
     fletcher32 = 0
     unpackshort = 1
     quantize = None
+    quiet = 0
+    chunk = 1000
 
     # Get the options
     for option in opts:
@@ -157,6 +172,8 @@ if __name__ == '__main__':
             overwritefile = 1
         elif option[0] == '--zlib':
             zlib = int(option[1])
+        elif option[0] == '--quiet':
+            quiet = int(option[1])
         elif option[0] == '--complevel':
             complevel = option[1]
         elif option[0] == '--shuffle':
@@ -165,6 +182,8 @@ if __name__ == '__main__':
             fletcher32 = int(option[1])
         elif option[0] == '--unpackshort':
             unpackshort = int(option[1])
+        elif option[0] == '--chunk':
+            chunk = int(option[1])
         elif option[0] == '--quantize':
             quantize = option[1]
         else:
@@ -192,4 +211,4 @@ if __name__ == '__main__':
         lsd_dict=None
 
     # copy the data from filename3 to filename4.
-    nc3tonc4(filename3,filename4,unpackshort=unpackshort,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32,clobber=overwritefile,lsd_dict=lsd_dict)
+    nc3tonc4(filename3,filename4,unpackshort=unpackshort,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32,clobber=overwritefile,lsd_dict=lsd_dict,nchunk=chunk,quiet=quiet)
