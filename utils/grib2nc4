@@ -17,7 +17,8 @@ usage:  python grib2nc4.py <grib file name>
 a netCDF file called <grib file name>.nc will be created.
 
 The output netCDF file will be in NETCDF4_CLASSIC format,
-with zlib compression.
+with zlib compression. The resulting netCDF file should
+be as small or smaller than the original GRIB file.
 
 requires PyNIO to read GRIB files.
 
