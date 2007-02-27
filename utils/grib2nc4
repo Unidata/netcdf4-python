@@ -13,10 +13,15 @@ import numpy as NP
 if len(sys.argv) < 2:
     print """
 usage:  python grib2nc4.py <grib file name>
-a netCDF file (in NETCDF4_CLASSIC format, with zlib compression)
-called <grib file name>.nc will be created
 
-requires PyNIO to read GRIB1 files.
+a netCDF file called <grib file name>.nc will be created.
+
+The output netCDF file will be in NETCDF4_CLASSIC format,
+with zlib compression.
+
+requires PyNIO to read GRIB files.
+
+doesn't work with GRIB2 files (since they are not yet supported in PyNIO).
 """
     sys.exit(1)
 
