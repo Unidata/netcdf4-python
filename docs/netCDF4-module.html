@@ -326,15 +326,15 @@ level 0 True</span>
       stored in numpy object arrays). Variables of datatype 
       <code>'S'</code> can be used to store arbitrary python objects, since
       each element will be pickled into a string (if it is not already a 
-      string) before being saved in the netCDF file (see section 10 for 
-      more on storing arrays of python objects). Pickle strings will be 
+      string) before being saved in the netCDF file (see section 9 for more
+      on storing arrays of python objects). Pickle strings will be 
       automatically un-pickled back into python objects when they are read 
       back in. There is also support for netCDF user-defined datatypes, 
       such as compound data types and variable length arrays.  To create a 
       <a href="netCDF4.Variable-class.html" class="link">Variable</a> with 
       a user-defined datatype, set the datatype argument to an instance of 
       the class <a href="netCDF4.UserType-class.html" 
-      class="link">UserType</a>. See section 9 for more on user-defined 
+      class="link">UserType</a>. See section 8 for more on user-defined 
       data types. The dimensions themselves are usually also defined as 
       variables, called coordinate variables. The 
       <code>createVariable</code> method returns an instance of the <a 
@@ -550,46 +550,7 @@ Global attr source = netCDF4 python module tutorial</span>
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">,</span><span class="py-other">z</span><span class="py-other">l</span><span class="py-other">i</span><span class="py-other">b</span><span class="py-other">=</span><span class="py-other">T</span><span class="py-other">r</span><span class="py-other">u</span><span class="py-other">e</span><span class="py-other">,</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">_</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">g</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">t</span><span class="py-other">_</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">g</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">=</span><span class="py-other">3</span><span class="py-other">)</span>
 </pre>
       and see how much smaller the resulting files are.
-    <h2 class="heading">8) Converting netCDF 3 files to netCDF 4 files (with compression)</h2>
-      A command line utility (<code>nc3tonc4</code>) is provided which 
-      can convert a netCDF 3 file (in <code>NETCDF3_CLASSIC</code> or 
-      <code>NETCDF3_64BIT</code> format) to a <code>NETCDF4_CLASSIC</code> 
-      file, optionally unpacking variables packed as short integers (with 
-      scale_factor and add_offset) to floats, and adding zlib compression 
-      (with the HDF5 shuffle filter and fletcher32 checksum). Data may also
-      be quantized (truncated) to a specified precision to improve 
-      compression.
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">o</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">s</span><span class="py-other">y</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">3</span><span class="py-other">t</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">4</span><span class="py-other"> </span><span class="py-other">-</span><span class="py-other">h</span><span class="py-other">'</span><span class="py-other">)</span>
-<span class="py-output">nc3tonc4 [-h] [-o] [--zlib=(0|1)] [--complevel=(1-9)] [--shuffle=(0|1)]
-         [--fletcher32=(0|1)] [--unpackshort=(0|1)]
-         [--quantize=var1=n1,var2=n2,..] netcdf3filename netcdf4filename
--h -- Print usage message.
--o -- Overwite destination file
-      (default is to raise an error if output file already exists).
---zlib=(0|1) -- Activate (or disable) zlib compression (default is activate).
---complevel=(1-9) -- Set zlib compression level (6 is default).
---shuffle=(0|1) -- Activate (or disable) the shuffle filter
-                   (active by default).
---fletcher32=(0|1) -- Activate (or disable) the fletcher32 checksum
-                      (not active by default).
---unpackshort=(0|1) -- Unpack short integer variables to float variables
-                       using scale_factor and add_offset netCDF 
-                       variable attributes (active by default).
---quantize=(comma separated list of &quot;variable name=integer&quot; pairs) --
-  Truncate the data in the specified variables to a given decimal precision.
-  For example, 'speed=2, height=-2, temp=0' will cause the variable
-  'speed' to be truncated to a precision of 0.01, 
-  'height' to a precision of 100 and 'temp' to 1.
-  This can significantly improve compression. The default
-  is not to quantize any of the variables.</span>
-</pre>
-      If <code>--zlib=1</code>, the resulting 
-      <code>NETCDF4_CLASSIC</code> file will take up less disk space than 
-      the original netCDF 3 file (especially if the <code>--quantize</code>
-      option is used), and will be readable by netCDF 3 clients as long as 
-      they have been linked against the netCDF 4 library.
-    <h2 class="heading">9) Beyond homogenous arrays of a fixed type - User-defined datatypes</h2>
+    <h2 class="heading">8) Beyond homogenous arrays of a fixed type - User-defined datatypes</h2>
       <p>User-defined data types make it easier to store data in a netCDF 4
       that does not fit well into regular arrays of data with a homogenous 
       type. NetCDF 4 supports compound types, variable length types, opaque
@@ -753,7 +714,7 @@ press_sounding : value = [900 850 800 750 700 650 600 550 500 450] units = Pasca
 location_name : value = New York, New York, USA units = None
 ----</span>
 </pre>
-    <h2 class="heading">10) Storing arrays of arbitrary python objects using the 'S' datatype</h2>
+    <h2 class="heading">9) Storing arrays of arbitrary python objects using the 'S' datatype</h2>
       Variables with datatype <code>'S'</code> can be used to store 
       variable-length strings, or python objects.  Here's an example.
 <pre class="py-doctest">
@@ -792,7 +753,7 @@ location_name : value = New York, New York, USA units = None
  wn5kxEzgE nk AGBL pe kay81]</span>
 </pre>
       Attributes can also be python objects, although the rules for 
-      whetherr they are saved as pickled strings are different.  Attributes
+      whether they are saved as pickled strings are different.  Attributes 
       are converted to numpy arrays before being saved to the netCDF file.
       If the attribute is cast to an object array by numpy, it is pickled 
       and saved as a text attribute (and then automatically unpickled when 
@@ -814,7 +775,7 @@ location_name : value = New York, New York, USA units = None
       human-readable cross-language interchange format such as <a 
       href="http://json.org" target="_top">JSON</a> or <a 
       href="http://yaml.org" target="_top">YAML</a>.  An example of this is
-      given in the discussion of compound data types in section 9.</p>
+      given in the discussion of compound data types in section 8.</p>
       All of the code in this tutorial is available in 
       examples/tutorial.py, along with several other examples. Unit tests 
       are in the test directory.<br /><br />
@@ -1446,7 +1407,7 @@ location_name : value = New York, New York, USA units = None
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Fri Feb 23 15:09:32 2007</td>
+        3.0alpha3 on Wed Feb 28 09:40:52 2007</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>
