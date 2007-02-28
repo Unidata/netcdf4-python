@@ -397,12 +397,17 @@ nc3tonc4 [-h] [-o] [--zlib=(0|1)] [--complevel=(1-9)] [--shuffle=(0|1)]
                        using scale_factor and add_offset netCDF 
                        variable attributes (active by default).
 --quantize=(comma separated list of "variable name=integer" pairs) --
-  Truncate the data in the specified variables to a given decimal precision.
-  For example, 'speed=2, height=-2, temp=0' will cause the variable
-  'speed' to be truncated to a precision of 0.01, 
-  'height' to a precision of 100 and 'temp' to 1.
-  This can significantly improve compression. The default
-  is not to quantize any of the variables.
+    Truncate the data in the specified variables to a given decimal precision.
+    For example, 'speed=2, height=-2, temp=0' will cause the variable
+    'speed' to be truncated to a precision of 0.01, 
+    'height' to a precision of 100 and 'temp' to 1.
+    This can significantly improve compression. The default
+    is not to quantize any of the variables.
+--quiet=(0|1)  -- if 1, don't print diagnostic information.
+--chunk=(integer) -- number of records along unlimited dimension to 
+    write at once.  Default 1000.  Ignored if there is no unlimited 
+    dimension.  chunk=0 means write all the data at once.
+
 
 If C{--zlib=1}, the resulting C{NETCDF4_CLASSIC} file will take up less
 disk space than the original netCDF 3 file (especially if the

@@ -218,13 +218,13 @@ length strings, which have no corresponding numpy data type (they are
 stored in numpy object arrays). Variables of datatype C{'S'} can be used
 to store arbitrary python objects, since each element will be pickled
 into a string (if it is not already a string) before being saved in the
-netCDF file (see section 10 for more on storing arrays of python
+netCDF file (see section 9 for more on storing arrays of python
 objects). Pickle strings will be automatically un-pickled back into
 python objects when they are read back in. There is also support for
 netCDF user-defined datatypes, such as compound data types and variable
 length arrays.  To create a L{Variable} with a user-defined datatype,
 set the datatype argument to an instance of the class L{UserType}. See
-section 9 for more on user-defined data types. The dimensions themselves
+section 8 for more on user-defined data types. The dimensions themselves
 are usually also defined as variables, called coordinate variables. The
 C{createVariable} method returns an instance of the L{Variable} class
 whose methods can be used later to access and set variable data and
@@ -420,47 +420,7 @@ and then
 
 and see how much smaller the resulting files are.
 
-8) Converting netCDF 3 files to netCDF 4 files (with compression)
------------------------------------------------------------------
-
-A command line utility (C{nc3tonc4}) is provided which can convert a
-netCDF 3 file (in C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT} format) to a
-C{NETCDF4_CLASSIC} file, optionally unpacking variables packed as short
-integers (with scale_factor and add_offset) to floats, and adding zlib
-compression (with the HDF5 shuffle filter and fletcher32 checksum). Data
-may also be quantized (truncated) to a specified precision to improve
-compression.
-
->>> os.system('nc3tonc4 -h')
-nc3tonc4 [-h] [-o] [--zlib=(0|1)] [--complevel=(1-9)] [--shuffle=(0|1)]
-         [--fletcher32=(0|1)] [--unpackshort=(0|1)]
-         [--quantize=var1=n1,var2=n2,..] netcdf3filename netcdf4filename
--h -- Print usage message.
--o -- Overwite destination file
-      (default is to raise an error if output file already exists).
---zlib=(0|1) -- Activate (or disable) zlib compression (default is activate).
---complevel=(1-9) -- Set zlib compression level (6 is default).
---shuffle=(0|1) -- Activate (or disable) the shuffle filter
-                   (active by default).
---fletcher32=(0|1) -- Activate (or disable) the fletcher32 checksum
-                      (not active by default).
---unpackshort=(0|1) -- Unpack short integer variables to float variables
-                       using scale_factor and add_offset netCDF 
-                       variable attributes (active by default).
---quantize=(comma separated list of "variable name=integer" pairs) --
-  Truncate the data in the specified variables to a given decimal precision.
-  For example, 'speed=2, height=-2, temp=0' will cause the variable
-  'speed' to be truncated to a precision of 0.01, 
-  'height' to a precision of 100 and 'temp' to 1.
-  This can significantly improve compression. The default
-  is not to quantize any of the variables.
-
-If C{--zlib=1}, the resulting C{NETCDF4_CLASSIC} file will take up less
-disk space than the original netCDF 3 file (especially if the
-C{--quantize} option is used), and will be readable by netCDF 3 clients
-as long as they have been linked against the netCDF 4 library.
-
-9) Beyond homogenous arrays of a fixed type - User-defined datatypes
+8) Beyond homogenous arrays of a fixed type - User-defined datatypes
 --------------------------------------------------------------------
 
 User-defined data types make it easier to store data in a netCDF 4 that
@@ -611,9 +571,8 @@ press_sounding : value = [900 850 800 750 700 650 600 550 500 450] units = Pasca
 location_name : value = New York, New York, USA units = None
 ----
 
-
-10) Storing arrays of arbitrary python objects using the 'S' datatype
----------------------------------------------------------------------
+9) Storing arrays of arbitrary python objects using the 'S' datatype
+--------------------------------------------------------------------
 
 Variables with datatype C{'S'} can be used to store variable-length
 strings, or python objects.  Here's an example.
@@ -671,7 +630,7 @@ human-readable) way of saving simple data structures like dictionaries
 and lists is to serialize them into strings using a human-readable
 cross-language interchange format such as U{JSON <http://json.org>} or
 U{YAML <http://yaml.org>}.  An example of this is given in the
-discussion of compound data types in section 9.
+discussion of compound data types in section 8.
 
 All of the code in this tutorial is available in examples/tutorial.py,
 along with several other examples. Unit tests are in the test directory.
