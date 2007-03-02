@@ -1,5 +1,8 @@
 version 0.6.3 (not yet released)
 ================================
+* added instructions for using the netCDF4_classic module to serve
+  data over http with the DAP using pydap (http://pydap.org).
+
 * added --quiet and --chunk options to nc3tonc4.
 
 * Turned off zlib compression by default so as not to violate the
