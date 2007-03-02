@@ -1,6 +1,9 @@
-To serve netcdf version 3 and NETCDF4_CLASSIC files over http using
+To serve netCDF-3 or netCDF-4 'classic' files over http
 the pydap DAP server (http://pydap.org), just make these small changes
 to the pydap netCDF plugin (http://pydap.org/plugins/netcdf.html).
+
+A pydap plugin that supports all the features of netCDF-4 files
+(groups, compound and vlen data types) is on the TO-DO list.
 
 
 --- dap/plugins/netcdf4_classic/__init__.py.orig	2007-03-01 17:51:43.000000000 -0700
