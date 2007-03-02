@@ -9,5 +9,11 @@ pure-python netcdftime module, just run 'python setup-netcdftime.py install'
 The environment variables HDF5_DIR and NETCDF4_DIR must be 
 set to point to the locations of the HDF5 and netCDF4 libraries and
 headers before setup.py is run. The prerequiste libraries (numpy and pyrex)
-must be installed first.  For more details, see docs/index.html.
+must be installed first.
 
+Unit tests for netCDF4 and netCDF4_classic are in the test and test_classic
+directories.  To run, execute the 'run_all.py' scripts in each of those
+directories.
+
+More detailed documentation is available at docs/index.html, or
+http://netcdf4-python.googlecode.com/svn/trunk/docs/index.html.
