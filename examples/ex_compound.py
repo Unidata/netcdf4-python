@@ -74,8 +74,8 @@ statdata_units = eval(statdata.units)
 for data in statdata[:]:
     for item in statdata.dtype_base:
         name = item[0]
-        type = item[1]
-        if type == 'S1': # if array of chars, convert value to string.
+        typ = item[1]
+        if typ == 'S1': # if array of chars, convert value to string.
             print name,': value =',data[name].tostring(),'units =',statdata_units[name]
         else:
             print name,': value =',data[name],'units =',statdata_units[name]
