@@ -2244,10 +2244,10 @@ C{getValue()}"""
             free(field_sizes)
         if not self.dimensions: 
             return data[0] # a scalar 
-        #elif data.shape == (1,):
-        #    # if a single item, just return a python scalar
-        #    # (instead of a scalar array).
-        #    return data.item()
+        elif data.shape == (1,):
+            # if a single item, just return a python tuple.
+            #return data.item() # this returns a python tuple
+            return data # keep it as a record array so it can be accessed by field.
         elif squeeze_out:
             return NP.squeeze(data)
         else:
@@ -2326,8 +2326,8 @@ C{getValue()}"""
         if not self.dimensions: 
             return data[0] # a scalar 
         elif data.shape == (1,):
-            # if a single item, just return a python scalar
-            # (instead of a scalar array).
+            # if a single item, just return a python array (not an
+            # object array containing a single array).
             return data.item()
         elif squeeze_out:
             return NP.squeeze(data)
@@ -2409,8 +2409,7 @@ C{getValue()}"""
         if not self.dimensions: 
             return data[0] # a scalar 
         elif data.shape == (1,):
-            # if a single item, just return a python scalar
-            # (instead of a scalar array).
+            # if a single item, just return a python string.
             return data.item()
         elif squeeze_out:
             return NP.squeeze(data)
