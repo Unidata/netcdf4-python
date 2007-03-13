@@ -2149,6 +2149,10 @@ C{getValue()}"""
             raise RuntimeError(nc_strerror(ierr))
         if not self.dimensions: 
             return data[0] # a scalar 
+        elif data.shape == (1,):
+            # if a single item, just return a python scalar
+            # (instead of a scalar array).
+            return data.item()
         elif squeeze_out:
             return NP.squeeze(data)
         else:
@@ -2240,6 +2244,10 @@ C{getValue()}"""
             free(field_sizes)
         if not self.dimensions: 
             return data[0] # a scalar 
+        elif data.shape == (1,):
+            # if a single item, just return a python scalar
+            # (instead of a scalar array).
+            return data.item()
         elif squeeze_out:
             return NP.squeeze(data)
         else:
@@ -2317,6 +2325,10 @@ C{getValue()}"""
         free(vldata)
         if not self.dimensions: 
             return data[0] # a scalar 
+        elif data.shape == (1,):
+            # if a single item, just return a python scalar
+            # (instead of a scalar array).
+            return data.item()
         elif squeeze_out:
             return NP.squeeze(data)
         else:
@@ -2396,6 +2408,10 @@ C{getValue()}"""
         free(strdata)
         if not self.dimensions: 
             return data[0] # a scalar 
+        elif data.shape == (1,):
+            # if a single item, just return a python scalar
+            # (instead of a scalar array).
+            return data.item()
         elif squeeze_out:
             return NP.squeeze(data)
         else:
