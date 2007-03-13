@@ -1,7 +1,7 @@
 version 0.6.3 (not yet released)
 ================================
 * if slicing a variable results in a array with shape (1,), just return 
-  a scalar.
+  a scalar (except for compound types).
 
 * added instructions for using the netCDF4_classic module to serve
   data over http with the DAP using pydap (http://pydap.org).
