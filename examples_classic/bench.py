@@ -4,7 +4,7 @@ import netCDF4_classic as netCDF4
 from timeit import Timer
 import os
 
-# create an n1dim by n2dim by n3dim random array.
+# create an n1dim by n2dim by n3dim by n4dim random array.
 n1dim = 30   
 n2dim = 15
 n3dim = 73
