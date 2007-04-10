@@ -852,9 +852,9 @@ C{renameVariable(oldname, newname)}"""
             self._redef()
             attname = PyString_AsString(name)
             ierr = nc_del_att(self._dsetid, NC_GLOBAL, attname)
+            self._enddef()
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
-            self._enddef()
         else:
             raise AttributeError("'%s' is one of the reserved attributes %s, cannot delete" % (name, tuple(_private_atts)))
 
@@ -1105,6 +1105,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
                 ierr = nc_def_var(self._dsetid, varname, xtype, ndims,
                                   NULL, &self._varid)
             if ierr != NC_NOERR:
+                dset._enddef()
                 raise RuntimeError(nc_strerror(ierr))
             # set zlib, shuffle, chunking and fletcher32 variable settings.
             # don't bother for scalar variables.
@@ -1116,19 +1117,23 @@ L{Variable} instance. If C{None}, the data is not truncated. """
                     else:
                         ierr = nc_def_var_deflate(self._dsetid, self._varid, 0, 1, ideflate_level)
                     if ierr != NC_NOERR:
+                        dset._enddef()
                         raise RuntimeError(nc_strerror(ierr))
                 if fletcher32:
                     ierr = nc_def_var_fletcher32(self._dsetid, self._varid, 1)
                     if ierr != NC_NOERR:
+                        dset._enddef()
                         raise RuntimeError(nc_strerror(ierr))
                 if chunking == 'sub':
                     ichunkalg = NC_CHUNK_SUB
                 elif chunking == 'seq':
                     ichunkalg = NC_CHUNK_SEQ
                 else:
+                    dset._enddef()
                     raise ValueError("chunking keyword must be 'seq' or 'sub', got %s" % chunking)
                 ierr = nc_def_var_chunking(self._dsetid, self._varid, &ichunkalg, NULL, NULL)
                 if ierr != NC_NOERR:
+                    dset._enddef()
                     raise RuntimeError(nc_strerror(ierr))
             # set a fill value for this variable if fill_value keyword
             # given.  This avoids the HDF5 overhead of deleting and 
@@ -1138,6 +1143,7 @@ L{Variable} instance. If C{None}, the data is not truncated. """
                     # no filling for this variable.
                     ierr = nc_def_var_fill(self._dsetid, self._varid, 1, NULL)
                     if ierr != NC_NOERR:
+                        dset._enddef()
                         raise RuntimeError(nc_strerror(ierr))
                 else:
                     # cast fill_value to type of variable.
@@ -1230,9 +1236,9 @@ C{ncattrs()}"""
             self._dset._redef()
             attname = PyString_AsString(name)
             ierr = nc_del_att(self._dsetid, self._varid, attname)
+            self._dset._enddef()
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
-            self._dset._enddef()
         else:
             raise AttributeError("'%s' is one of the reserved attributes %s, cannot delete" % (name, tuple(_private_atts)))
 
