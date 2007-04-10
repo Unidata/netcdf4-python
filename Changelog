@@ -1,5 +1,12 @@
 version 0.6.3 (not yet released)
 ================================
+* if slice index is not a slice object, assume it's an integer (and
+  try to convert to one if it is not).  This allows numpy scalar arrays
+  to work as slice indices.
+
+* (netCDF4_classic only) try to make sure file is not left in 'define mode' 
+  when execption is raised.
+
 * if slicing a variable results in a array with shape (1,), just return 
   a scalar (except for compound types).
 
