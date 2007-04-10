@@ -80,25 +80,10 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
         else:
             unlim = False
         
-        # Simple index
-        if type(e) == types.IntType:
-            isSlice = 0       # we do not deal with a slice
-            # Respect standard python sequence indexing behavior.
-            # Count from the dimension end if index is negative.
-            # Consider as illegal an out of bound index, except for the
-            # unlimited dimension.
-            if e < 0 :
-                e = e+shape[n]
-            if e < 0 or (not unlim and e >= shape[n]):
-                raise IndexError("index out of range")
-            beg = e
-            end = e + 1
-            inc = 1
-            
         # Slice index. Respect Python syntax for slice upper bounds,
         # which are not included in the resulting slice. Also, if the
         # upper bound exceed the dimension size, truncate it.
-        elif type(e) == types.SliceType:
+        if type(e) == types.SliceType:
             isSlice = 1     # we deal with a slice
             # None means not specified
             if e.step is not None:
@@ -122,10 +107,23 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
                     else:
                         length = e.start+1
                 beg, end, inc = e.indices(length)
-                
-        # Bug
-        else:
-            raise ValueError("Bug: unexpected element type to __getitem__")
+        # assume it's a simple index
+        else: 
+            # if it's not an integer, try to convert it to one.
+            if type(e) != types.IntType:
+                e = int(e)
+            isSlice = 0       # not a slice
+            # Respect standard python sequence indexing behavior.
+            # Count from the dimension end if index is negative.
+            # Consider as illegal an out of bound index, except for the
+            # unlimited dimension.
+            if e < 0 :
+                e = e+shape[n]
+            if e < 0 or (not unlim and e >= shape[n]):
+                raise IndexError("index out of range")
+            beg = e
+            end = e + 1
+            inc = 1
 
         # Clip end index (except if unlimited dimension)
         # and compute number of elements to get.
