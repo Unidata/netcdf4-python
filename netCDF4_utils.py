@@ -16,8 +16,8 @@ def _find_dim(grp, dimname):
 
 def _buildStartCountStride(elem, shape, dimensions, grp):
 
-    # Create the 'start', 'count', 'slice' and 'stride' tuples that
-    # will be passed to 'nc_get_var_0'/'nc_put_var_0'.
+    # Create the 'start', 'count', and 'stride' tuples that
+    # will be passed to 'nc_get_var'/'nc_put_var'.
     #   start     starting indices along each dimension
     #   count     count of values along each dimension; a value of -1
     #             indicates that and index, not a slice, was applied to
@@ -29,8 +29,6 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
     # by Andre Gosselin.
 
     # Handle a scalar variable as a 1-dimensional array of length 1.
-
-    # this function is pure python.
 
     nDims = len(dimensions)
     if nDims == 0:
@@ -63,7 +61,7 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
             newElem.append(e)
     elem = newElem
 
-    # Build arguments to "nc_get_var/nc_put_var".
+    # Build start, count, stride tuples.
     start = []
     count = []
     stride = []
@@ -129,10 +127,10 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
         # and compute number of elements to get.
         if not unlim and end > shape[n]:
             end = shape[n]
-        if isSlice:       # we deal with a slice
+        if isSlice:   
             cnt = len(xrange(beg,end,inc))
         else: 
-            cnt = -1
+            cnt = -1 # -1 means a single element.
         start.append(beg)
         count.append(cnt)
         stride.append(inc)
