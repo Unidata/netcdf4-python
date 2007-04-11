@@ -117,6 +117,11 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(vus[:,::-1,:],datas)
         for d1,d2 in zip(vv[:,::-1,:].flat,datao.flat):
             assert_array_equal(d1,d2)
+        # index using an array scalar
+        i = NP.ones(1)[0]
+        assert_array_equal(v[i],datarev[1])
+        # index using a float.
+        assert_array_equal(v[1.0],datarev[1])
 
 if __name__ == '__main__':
     unittest.main()
