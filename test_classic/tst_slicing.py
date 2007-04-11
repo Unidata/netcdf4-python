@@ -2,6 +2,7 @@ from netCDF4_classic import Dataset
 from numpy.random import seed, randint
 from numpy.testing import assert_array_equal
 import tempfile, unittest, os
+import numpy as NP
 
 file_name = tempfile.mktemp(".nc")
 xdim=9; ydim=10; zdim=11
@@ -55,6 +56,11 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(vu[:], data[:,::-1,:])
         # read data in reverse order
         assert_array_equal(vu[:,::-1,:],data)
+        # index using an array scalar
+        i = NP.ones(1)[0]
+        assert_array_equal(v[i],datarev[1])
+        # index using a float.
+        assert_array_equal(v[1.0],datarev[1])
 
 if __name__ == '__main__':
     unittest.main()
