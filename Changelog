@@ -1,5 +1,5 @@
-20070424 - version 0.6.3
-========================
+20070424 - version 0.6.3 (svn revision 302)
+===========================================
 * passes all tests with netcdf-4.0-beta1/hdf5-1.8.0-beta1.
 
 * if slice index is not a slice object, assume it's an integer (and
