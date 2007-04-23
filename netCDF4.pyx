@@ -41,10 +41,10 @@ Requires
  - Pyrex module (U{http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/}).
  If you're using python 2.5, you'll need at least version 0.9.5.
  - numpy array module U{http://numpy.scipy.org}, version 1.0 or later.
- - The HDF5 C library (version 1.8.0-alpha5 recommended),  
- available at U{ftp://ftp.ncsa.uiuc.edu/HDF/pub/outgoing/hdf5/hdf5-1.8.0-pre/}.
+ - The HDF5 C library (version 1.8.0-beta1 recommended),  
+ available at U{ftp://ftp.hdfgroup.uiuc.edu/pub/outgoing/hdf5/hdf5-1.8.0-pre/}.
  Be sure to build with 'C{--enable-hl}'.
- - The netCDF-4 C library (version 4.0-alpha18 recommended), available at
+ - The netCDF-4 C library (version 4.0-beta1 recommended), available at
  U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
  Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HDF5_DIR}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.

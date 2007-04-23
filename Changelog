@@ -1,5 +1,7 @@
 version 0.6.3 (not yet released)
 ================================
+* passes all tests with netcdf-4.0-beta1/hdf5-1.8.0-beta1.
+
 * if slice index is not a slice object, assume it's an integer (and
   try to convert to one if it is not).  This allows numpy scalar arrays
   to work as slice indices.
