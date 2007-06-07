@@ -10,7 +10,7 @@ if _npversion.split('.')[0] < '1':
 import_array()
 include "netCDF4.pxi"
 
-def _get_att_names(int grpid, int varid):
+cdef _get_att_names(int grpid, int varid):
     """Private function to get all the attribute names in a group"""
     cdef int ierr, numatts, n
     cdef char namstring[NC_MAX_NAME+1]
@@ -28,7 +28,7 @@ def _get_att_names(int grpid, int varid):
         attslist.append(namstring)
     return attslist
 
-def _get_att(int grpid, int varid, name):
+cdef _get_att(int grpid, int varid, name):
     """Private function to get an attribute value given its name"""
     cdef int ierr, n
     cdef size_t att_len
@@ -99,7 +99,7 @@ def _set_default_format(object format='NETCDF4',object verbose=False):
     else:
         raise ValueError, "format must be 'NETCDF4', 'NETCDF4_CLASSIC', 'NETCDF3_64BIT', or 'NETCDF3_CLASSIC', got '%s'" % format
 
-def _get_format(int grpid):
+cdef _get_format(int grpid):
     """Private function to get the netCDF file format"""
     cdef int ierr, formatp
     ierr = nc_inq_format(grpid, &formatp)
@@ -114,7 +114,7 @@ def _get_format(int grpid):
     elif formatp == NC_FORMAT_CLASSIC:
         return 'NETCDF3_CLASSIC'
 
-def _set_att(int grpid, int varid, name, value):
+cdef _set_att(int grpid, int varid, name, value):
     """Private function to set an attribute name/value pair"""
     cdef int i, ierr, lenarr, n
     cdef char *attname, *datstring, *strdata

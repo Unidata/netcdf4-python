@@ -691,7 +691,7 @@ include 'netCDF4_common.pyx'
 # pure python utilities
 from netCDF4_utils import _buildStartCountStride, _quantize, _find_dim
 
-def _get_dims(group):
+cdef _get_dims(group):
     """Private function to create L{Dimension} instances for all the
     dimensions in a L{Group} or Dataset"""
     cdef int ierr, numdims, n
@@ -719,7 +719,7 @@ def _get_dims(group):
             dimensions[name] = Dimension(group, name, id=dimids[n])
     return dimensions
 
-def _get_grps(group):
+cdef _get_grps(group):
     """Private function to create L{Group} instances for all the
     groups in a L{Group} or Dataset"""
     cdef int ierr, numgrps, n
@@ -745,7 +745,7 @@ def _get_grps(group):
         free(grpids)
     return groups
 
-def _get_vars(group):
+cdef _get_vars(group):
     """Private function to create L{Variable} instances for all the
     variables in a L{Group} or Dataset"""
     cdef int ierr, numvars, n, nn, numdims, varid, classp, nf, ndim

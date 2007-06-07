@@ -471,7 +471,7 @@ include 'netCDF4_common.pyx'
 # pure python utilities
 from netCDF4_utils import _buildStartCountStride, _quantize
 
-def _get_dims(dataset):
+cdef _get_dims(dataset):
     """Private function to create Dimension instances for all the
     dimensions in a Dataset"""
     cdef int ierr, numdims, n
@@ -491,7 +491,7 @@ def _get_dims(dataset):
              dimensions[name] = Dimension(dataset, name, id=n)
     return dimensions
 
-def _get_vars(dataset):
+cdef _get_vars(dataset):
     """Private function to create Variable instances for all the
     variables in a Dataset"""
     cdef int ierr, numvars, n, nn, numdims
