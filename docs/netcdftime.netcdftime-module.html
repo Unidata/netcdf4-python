@@ -41,12 +41,8 @@
     <td>
       <table cellpadding="0" cellspacing="0">
         <!-- hide/show private -->
-        <tr><td align="right"><span class="options">[<a href="javascript: void(0);" class="privatelink"
-    onclick="toggle_private();">hide private</a>]</span></td></tr>
-        <tr><td align="right"><span class="options"
-            >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="netcdftime.netcdftime-module.html"
-            target="_top">no&nbsp;frames</a>]</span></td></tr>
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
       </table>
     </td>
   </tr>
@@ -56,7 +52,11 @@
 Performs conversions of netCDF time coordinate data to/from datetime 
   objects.<br /><br />
 
-<!-- ==================== CLASSES ==================== -->
+<hr />
+<div class="fields">      <p><strong>Version:</strong>
+        0.5.1
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
@@ -74,27 +74,25 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </td>
 </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netcdftime.netcdftime.datetime-class.html">datetime</a><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netcdftime.netcdftime.datetime-class.html" class="summary-name">datetime</a><br />
       Phony datetime object which mimics the python datetime object, 
         but allows for dates that don't exist in the proleptic gregorian 
         calendar.
-  </td>
-</tr>
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netcdftime.netcdftime.utime-class.html">utime</a><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netcdftime.netcdftime.utime-class.html" class="summary-name">utime</a><br />
       Performs conversions of netCDF time coordinate data to/from 
         datetime objects.
-  </td>
-</tr>
+    </td>
+  </tr>
 </table>
-
-<br />
 <!-- ==================== FUNCTIONS ==================== -->
 <a name="section-Functions"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -113,90 +111,169 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </td>
 </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#DateFromJulianDay" class="summary-sig-name">DateFromJulianDay</a>(<span class="summary-sig-arg">JD</span>,
-        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
-      returns a 'datetime-like' object given Julian Day.
-  </td>
-</tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#DateFromJulianDay" class="summary-sig-name">DateFromJulianDay</a>(<span class="summary-sig-arg">JD</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span><br />
+      returns a 'datetime-like' object given Julian Day.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#DateFromJulianDay">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#JulianDayFromDate" class="summary-sig-name">JulianDayFromDate</a>(<span class="summary-sig-arg">date</span>,
-        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
-      creates a Julian Day from a 'datetime-like' object.
-  </td>
-</tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#JulianDayFromDate" class="summary-sig-name">JulianDayFromDate</a>(<span class="summary-sig-arg">date</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span><br />
+      creates a Julian Day from a 'datetime-like' object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#JulianDayFromDate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_360DayFromDate" class="summary-sig-name">_360DayFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_360DayFromDate" class="summary-sig-name">_360DayFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
       creates a Julian Day for a calendar where all months have 30 
-      daysfrom a 'datetime-like' object.
-  </td>
-</tr>
+      daysfrom a 'datetime-like' object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_360DayFromDate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_AllLeapFromDate" class="summary-sig-name">_AllLeapFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_AllLeapFromDate" class="summary-sig-name">_AllLeapFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
       creates a Julian Day for a calendar where all years have 366 days 
-      from a 'datetime-like' object.
-  </td>
-</tr>
+      from a 'datetime-like' object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_AllLeapFromDate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFrom360Day" class="summary-sig-name">_DateFrom360Day</a>(<span class="summary-sig-arg">JD</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFrom360Day" class="summary-sig-name">_DateFrom360Day</a>(<span class="summary-sig-arg">JD</span>)</span><br />
       returns a 'datetime-like' object given Julian Day for a calendar 
-      where all months have 30 days.
-  </td>
-</tr>
+      where all months have 30 days.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFrom360Day">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFromAllLeap" class="summary-sig-name">_DateFromAllLeap</a>(<span class="summary-sig-arg">JD</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFromAllLeap" class="summary-sig-name">_DateFromAllLeap</a>(<span class="summary-sig-arg">JD</span>)</span><br />
       returns a 'datetime-like' object given Julian Day for a calendar 
-      where all years have 366 days.
-  </td>
-</tr>
+      where all years have 366 days.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFromAllLeap">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFromNoLeapDay" class="summary-sig-name">_DateFromNoLeapDay</a>(<span class="summary-sig-arg">JD</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_DateFromNoLeapDay" class="summary-sig-name">_DateFromNoLeapDay</a>(<span class="summary-sig-arg">JD</span>)</span><br />
       returns a 'datetime-like' object given Julian Day for a calendar 
-      with no leap days.
-  </td>
-</tr>
+      with no leap days.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFromNoLeapDay">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_NoLeapDayFromDate" class="summary-sig-name">_NoLeapDayFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_NoLeapDayFromDate" class="summary-sig-name">_NoLeapDayFromDate</a>(<span class="summary-sig-arg">date</span>)</span><br />
       creates a Julian Day for a calendar with no leap years from a 
-      datetime instance.
-  </td>
-</tr>
+      datetime instance.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_NoLeapDayFromDate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netcdftime.netcdftime-module.html#_dateparse" class="summary-sig-name">_dateparse</a>(<span class="summary-sig-arg">timestr</span>,
-        <span class="summary-sig-arg">format</span>=<span class="summary-sig-default">'%Y-%m-%d %H:%M:%S'</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_dateparse"></a><span class="summary-sig-name">_dateparse</span>(<span class="summary-sig-arg">timestr</span>,
+        <span class="summary-sig-arg">format</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">%Y-%m-%d %H:%M:%S</code><code class="variable-quote">'</code></span>)</span><br />
       parse a string of the form time-units since yyyy-mm-dd hh:mm:ss 
-      return a tuple (units, datetimeinstance)
-  </td>
-</tr>
+      return a tuple (units, datetimeinstance)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_dateparse">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 </table>
-
-<br />
 <!-- ==================== VARIABLES ==================== -->
 <a name="section-Variables"></a>
 <table class="summary" border="1" cellpadding="3"
@@ -214,33 +291,39 @@ Performs conversions of netCDF time coordinate data to/from datetime
     </table>
   </td>
 </tr>
-<tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netcdftime.netcdftime-module.html#__version__">__version__</a> = <code title="'0.5.1'">'0.5.1'</code>
-  </td>
-</tr>
 <tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netcdftime.netcdftime-module.html#_calendars">_calendars</a> = <code title="['standard', 'gregorian', 'proleptic_gregorian', 'noleap', 'julian', 'all_leap', '365_day', '366_day', '360_day']">['standard', 'gregorian', 'proleptic_gregorian', 'no...</code>
-  </td>
-</tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netcdftime.netcdftime-module.html#_calendars" class="summary-name">_calendars</a> = <code title="['standard',
+ 'gregorian',
+ 'proleptic_gregorian',
+ 'noleap',
+ 'julian',
+ 'all_leap',
+ '365_day',
+ '366_day',
+..."><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">gregorian</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">proleptic_gregorian</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
 <tr class="private">
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netcdftime.netcdftime-module.html#_units">_units</a> = <code title="['days', 'hours', 'minutes', 'seconds', 'day', 'hour', 'minute', 'second']">['days', 'hours', 'minutes', 'seconds', 'day', 'hour...</code>
-  </td>
-</tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netcdftime.netcdftime-module.html#_units" class="summary-name">_units</a> = <code title="['days',
+ 'hours',
+ 'minutes',
+ 'seconds',
+ 'day',
+ 'hour',
+ 'minute',
+ 'second']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">days</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">hours</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">minutes</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">seconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">day</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">hour</code><code class="variable-quote">'</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
 </table>
-
-<br />
 <!-- ==================== FUNCTION DETAILS ==================== -->
 <a name="section-FunctionDetails"></a>
-<table class="summary" border="1" cellpadding="3"
+<table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
   <td colspan="2" class="table-header">
@@ -264,11 +347,11 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">DateFromJulianDay</span>(<span class="sig-arg">JD</span>,
-        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
+        <span class="sig-arg">calendar</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#DateFromJulianDay">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#DateFromJulianDay">source&nbsp;code</a></span>&nbsp;
+    </td>
   </table>
   
   <p>returns a 'datetime-like' object given Julian Day. Julian Day is a 
@@ -287,8 +370,8 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <p>Algorithm:</p>
   Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
   Willmann-Bell, Virginia. p. 63
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="JulianDayFromDate"></a>
@@ -299,11 +382,11 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">JulianDayFromDate</span>(<span class="sig-arg">date</span>,
-        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
+        <span class="sig-arg">calendar</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#JulianDayFromDate">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#JulianDayFromDate">source&nbsp;code</a></span>&nbsp;
+    </td>
   </table>
   
   <p>creates a Julian Day from a 'datetime-like' object.  Returns the 
@@ -317,8 +400,8 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <p>Algorithm:</p>
   Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
   Willmann-Bell, Virginia. p. 63
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="_360DayFromDate"></a>
@@ -331,15 +414,15 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <h3 class="epydoc"><span class="sig"><span class="sig-name">_360DayFromDate</span>(<span class="sig-arg">date</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_360DayFromDate">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_360DayFromDate">source&nbsp;code</a></span>&nbsp;
+    </td>
   </table>
   
   creates a Julian Day for a calendar where all months have 30 daysfrom 
   a 'datetime-like' object. Returns the fractional Julian Day (resolution 1
   second).
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="_AllLeapFromDate"></a>
@@ -352,15 +435,15 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <h3 class="epydoc"><span class="sig"><span class="sig-name">_AllLeapFromDate</span>(<span class="sig-arg">date</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_AllLeapFromDate">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_AllLeapFromDate">source&nbsp;code</a></span>&nbsp;
+    </td>
   </table>
   
   creates a Julian Day for a calendar where all years have 366 days from
   a 'datetime-like' object. Returns the fractional Julian Day (resolution 1
   second).
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="_DateFrom360Day"></a>
@@ -373,15 +456,15 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <h3 class="epydoc"><span class="sig"><span class="sig-name">_DateFrom360Day</span>(<span class="sig-arg">JD</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFrom360Day">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFrom360Day">source&nbsp;code</a></span>&nbsp;
+    </td>
   </table>
   
   returns a 'datetime-like' object given Julian Day for a calendar where
   all months have 30 days. Julian Day is a fractional day with a resolution
   of 1 second.
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="_DateFromAllLeap"></a>
@@ -394,15 +477,15 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <h3 class="epydoc"><span class="sig"><span class="sig-name">_DateFromAllLeap</span>(<span class="sig-arg">JD</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFromAllLeap">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFromAllLeap">source&nbsp;code</a></span>&nbsp;
+    </td>
   </table>
   
   returns a 'datetime-like' object given Julian Day for a calendar where
   all years have 366 days. Julian Day is a fractional day with a resolution
   of 1 second.
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="_DateFromNoLeapDay"></a>
@@ -415,15 +498,15 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <h3 class="epydoc"><span class="sig"><span class="sig-name">_DateFromNoLeapDay</span>(<span class="sig-arg">JD</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFromNoLeapDay">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_DateFromNoLeapDay">source&nbsp;code</a></span>&nbsp;
+    </td>
   </table>
   
   returns a 'datetime-like' object given Julian Day for a calendar with 
   no leap days. Julian Day is a fractional day with a resolution of 1 
   second.
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="_NoLeapDayFromDate"></a>
@@ -436,41 +519,20 @@ Performs conversions of netCDF time coordinate data to/from datetime
   <h3 class="epydoc"><span class="sig"><span class="sig-name">_NoLeapDayFromDate</span>(<span class="sig-arg">date</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_NoLeapDayFromDate">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_NoLeapDayFromDate">source&nbsp;code</a></span>&nbsp;
+    </td>
   </table>
   
   creates a Julian Day for a calendar with no leap years from a datetime
   instance.  Returns the fractional Julian Day (resolution 1 second).
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="_dateparse"></a>
-<div class="private">
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">_dateparse</span>(<span class="sig-arg">timestr</span>,
-        <span class="sig-arg">format</span>=<span class="sig-default">'%Y-%m-%d %H:%M:%S'</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#_dateparse">source&nbsp;code</a></span>&nbsp;</span
-    ></td>
-  </table>
-  
-  parse a string of the form time-units since yyyy-mm-dd hh:mm:ss return
-  a tuple (units, datetimeinstance)
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <br />
 <!-- ==================== VARIABLES DETAILS ==================== -->
 <a name="section-VariablesDetails"></a>
-<table class="summary" border="1" cellpadding="3"
+<table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
   <td colspan="2" class="table-header">
@@ -486,44 +548,30 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </td>
 </tr>
 </table>
-<a name="__version__"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">__version__</h3>
-  None
-  <dl><dt></dt><dd>
-    <dl><dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-<span class="variable-quote">'</span>0.5.1<span class="variable-quote">'</span>                                                                
-      </pre></td></tr></table></dd>
-    </dl>
-  </dd></dl>
-</td></tr></table>
-</div>
 <a name="_calendars"></a>
 <div class="private">
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">_calendars</h3>
-  None
-  <dl><dt></dt><dd>
-    <dl><dt>Value:</dt>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-['standard',
- 'gregorian',
- 'proleptic_gregorian',
- 'noleap',
- 'julian',
- 'all_leap',
- '365_day',
- '366_day',
-<span class="variable-ellipsis">...</span>                                                                    
-      </pre></td></tr></table></dd>
-    </dl>
-  </dd></dl>
+<code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">gregorian</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">proleptic_gregorian</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">noleap</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">julian</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">all_leap</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">365_day</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">366_day</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+<code class="variable-ellipsis">...</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
 </td></tr></table>
 </div>
 <a name="_units"></a>
@@ -532,15 +580,23 @@ Performs conversions of netCDF time coordinate data to/from datetime
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
   <h3 class="epydoc">_units</h3>
-  None
-  <dl><dt></dt><dd>
-    <dl><dt>Value:</dt>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-['days', 'hours', 'minutes', 'seconds', 'day', 'hour', 'minute', 'seco<span class="variable-linewrap"><img src="crarr.png" alt="" /></span>
-nd']                                                                   
-      </pre></td></tr></table></dd>
-    </dl>
-  </dd></dl>
+<code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">days</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">hours</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">minutes</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">seconds</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">day</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">hour</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">minute</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">second</code><code class="variable-quote">'</code><code class="variable-group">]</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
 </td></tr></table>
 </div>
 <br />
@@ -566,8 +622,9 @@ nd']
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
-    <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Mon Apr 23 12:44:31 2007</td>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Mon Jul  2 13:08:56 2007
+    </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>
