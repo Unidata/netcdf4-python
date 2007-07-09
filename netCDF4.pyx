@@ -1546,7 +1546,7 @@ name/value pairs is provided by the C{__dict__} attribute of a
 L{Variable} instance.
 
 The instance variables C{dimensions, dtype, usertype, usertype_name, 
-dtype_base, shape} and C{least_significant_digits} are read-only (and 
+dtype_base, shape, ndim} and C{least_significant_digits} are read-only (and 
 should not be modified by the user).
 
 @ivar dimensions: A tuple containing the names of the dimensions 
@@ -1573,6 +1573,8 @@ array (see the documentation for L{UserType} for details).
 @ivar shape: a tuple describing the current size of all the variable's 
 dimensions.
 
+@ivar ndim: the number of variable dimensions.
+
 @ivar least_significant_digit: Describes the power of ten of the smallest 
 decimal place in the data the contains a reliable value.  Data is 
 truncated to this decimal place when it is assigned to the L{Variable} 
@@ -1580,10 +1582,10 @@ instance. If C{None}, the data is not truncated. """
 
     cdef public int _varid, _grpid, _nunlimdim
     cdef object _grp
-    cdef public dtype, dtype_base, usertype, usertype_name
+    cdef public dtype, dtype_base, usertype, usertype_name, ndim
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None,  **kwargs):
-        cdef int ierr, ndims, ichunkalg, ideflate_level
+        cdef int ierr, ndims, ichunkalg, ideflate_level, numdims
         cdef char *varname
         cdef nc_type xtype, vltypeid
         cdef int dimids[NC_MAX_DIMS]
@@ -1678,6 +1680,11 @@ instance. If C{None}, the data is not truncated. """
             # look in current group, and parents for dim.
             dim = _find_dim(self._grp, dimname)
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
+        # set ndim attribute (number of dimensions).
+        ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        self.ndim = numdims
 
     property shape:
         """find current sizes of all variable dimensions"""

@@ -1046,7 +1046,7 @@ L{Variable} instance. A dictionary containing all the netCDF attribute
 name/value pairs is provided by the C{__dict__} attribute of a
 L{Variable} instance.
 
-The instance variables C{dimensions, dtype, shape} and
+The instance variables C{dimensions, dtype, shape, ndim} and
 C{least_significant_digits} are read-only (and should not be modified by
 the user).
 
@@ -1059,6 +1059,8 @@ etc).
 @ivar shape: a tuple describing the current size of all the variable's 
 dimensions.
 
+@ivar ndim: the number of variable dimensions.
+
 @ivar least_significant_digit: Describes the power of ten of the
 smallest decimal place in the data the contains a reliable value.  Data
 is truncated to this decimal place when it is assigned to the
@@ -1066,10 +1068,10 @@ L{Variable} instance. If C{None}, the data is not truncated. """
 
     cdef public int _varid, _dsetid
     cdef object _dset
-    cdef public dtype
+    cdef public dtype, ndim
 
     def __init__(self, dset, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, least_significant_digit=None, chunking='seq', fill_value=None, **kwargs):
-        cdef int ierr, ndims, ideflate_level, ichunkalg
+        cdef int ierr, ndims, ideflate_level, ichunkalg, numdims
         cdef char *varname
         cdef nc_type xtype
         cdef int dimids[NC_MAX_DIMS]
@@ -1157,6 +1159,11 @@ L{Variable} instance. If C{None}, the data is not truncated. """
             dset._enddef()
             if least_significant_digit is not None:
                 self.least_significant_digit = least_significant_digit
+        # set ndim attribute (number of dimensions).
+        ierr = nc_inq_varndims(self._dsetid, self._varid, &numdims)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        self.ndim = numdims
 
     def typecode(self):
         """return dtype attribute, provided for compatibility with Scientific.IO.NetCDF"""

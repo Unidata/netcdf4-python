@@ -1,3 +1,5 @@
+* added 'ndim' variable attribute (number of variable dimensions).
+
 20070424 - version 0.6.3 (svn revision 302)
 ===========================================
 * passes all tests with netcdf-4.0-beta1/hdf5-1.8.0-beta1.
