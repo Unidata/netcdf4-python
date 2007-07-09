@@ -234,6 +234,7 @@ class _Variable(object):
         return self._mastervar.__dict__.keys()
     def __getattr__(self,name):
         if name == 'shape': return self._shape()
+        if name == 'ndim': return len(self._shape())
         return self.__dict__[name]
     def _shape(self):
         recdimlen = len(self._dset.dimensions[self._recdimname])
