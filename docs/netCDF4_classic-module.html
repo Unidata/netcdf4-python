@@ -40,6 +40,10 @@
     <td>
       <table cellpadding="0" cellspacing="0">
         <!-- hide/show private -->
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="netCDF4_classic-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
@@ -161,12 +165,13 @@
       instance.</p>
       Here's an example:
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> netCDF4_classic <span class="py-keyword">as</span> netCDF
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset = netCDF.Dataset(<span class="py-string">'test.nc'</span>, <span class="py-string">'w'</span>)
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> dataset.file_format
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">C</span><span class="py-other">D</span><span class="py-other">F</span><span class="py-other">4</span><span class="py-other">_</span><span class="py-other">c</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">C</span><span class="py-other">D</span><span class="py-other">F</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">C</span><span class="py-other">D</span><span class="py-other">F</span><span class="py-other">.</span><span class="py-other">D</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">w</span><span class="py-other">'</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">_</span><span class="py-other">f</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">m</span><span class="py-other">a</span><span class="py-other">t</span>
 <span class="py-output">NETCDF4_CLASSIC</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset.close()</pre>
+<span class="py-prompt">&gt;&gt;&gt;
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">)</span>
+</pre>
     <h2 class="heading">2) Dimensions in a netCDF file</h2>
       netCDF defines the sizes of all variables in terms of dimensions, 
       so before any variables can be created the dimensions they use must 
@@ -184,21 +189,23 @@
       dimensions (see the <a href="netCDF4-module.html" 
       class="link">netCDF4</a> documentation).
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset = netCDF.Dataset(<span class="py-string">'test.nc'</span>, <span class="py-string">'a'</span>)
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset.createDimension(<span class="py-string">'time'</span>, None)
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset.createDimension(<span class="py-string">'level'</span>, 10)
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset.createDimension(<span class="py-string">'lat'</span>, 73)
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset.createDimension(<span class="py-string">'lon'</span>, 144)</pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">C</span><span class="py-other">D</span><span class="py-other">F</span><span class="py-other">.</span><span class="py-other">D</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">a</span><span class="py-other">'</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">D</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">N</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">D</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">1</span><span class="py-other">0</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">D</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">7</span><span class="py-other">3</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">D</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">1</span><span class="py-other">4</span><span class="py-other">4</span><span class="py-other">)</span>
+</pre>
       All of the <a href="netCDF4_classic.Dimension-class.html" 
       class="link">Dimension</a> instances are stored in a python 
       dictionary.
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> dataset.dimensions
-<span class="py-output">{'lat': &lt;netCDF4_classic.Dimension object at 0x24a5f7b0&gt;, </span>
-<span class="py-output"> 'time': &lt;netCDF4_classic.Dimension object at 0x24a5f788&gt;, </span>
-<span class="py-output"> 'lon': &lt;netCDF4_classic.Dimension object at 0x24a5f7d8&gt;, </span>
-<span class="py-output"> 'level': &lt;netCDF4_classic.Dimension object at 0x24a5f760&gt;}</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">s</span>
+<span class="py-output">{'lat': &lt;netCDF4_classic.Dimension object at 0x24a5f7b0&gt;, 
+ 'time': &lt;netCDF4_classic.Dimension object at 0x24a5f788&gt;, 
+ 'lon': &lt;netCDF4_classic.Dimension object at 0x24a5f7d8&gt;, 
+ 'level': &lt;netCDF4_classic.Dimension object at 0x24a5f760&gt;}</span>
+<span class="py-prompt">&gt;&gt;&gt;</span>
+</pre>
       Calling the python <code>len</code> function with a <a 
       href="netCDF4_classic.Dimension-class.html" 
       class="link">Dimension</a> instance returns the current size of that 
@@ -207,13 +214,14 @@
       class="link">Dimension</a> instance can be used to determine if the 
       dimensions is unlimited, or appendable.
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> dimname, dimobj <span class="py-keyword">in</span> dataset.dimensions.iteritems():
-<span class="py-prompt">&gt;&gt;&gt; </span>   <span class="py-keyword">print</span> dimname, len(dimobj), dimobj.isunlimited()
-<span class="py-output">lat 73 False</span>
-<span class="py-output">time 0 True</span>
-<span class="py-output">lon 144 False</span>
-<span class="py-output">level 0 False</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">n</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">o</span><span class="py-other">b</span><span class="py-other">j</span><span class="py-other"> </span><span class="py-keyword">in</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">s</span><span class="py-other">(</span><span class="py-other">)</span><span class="py-other">:</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">n</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">(</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">o</span><span class="py-other">b</span><span class="py-other">j</span><span class="py-other">)</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">o</span><span class="py-other">b</span><span class="py-other">j</span><span class="py-other">.</span><span class="py-other">i</span><span class="py-other">s</span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">l</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">d</span><span class="py-other">(</span><span class="py-other">)</span>
+<span class="py-output">lat 73 False
+time 0 True
+lon 144 False
+level 0 False</span>
+<span class="py-prompt">&gt;&gt;&gt;</span>
+</pre>
       <a href="netCDF4_classic.Dimension-class.html" 
       class="link">Dimension</a> names can be changed using the 
       <code>renameDimension</code> method of a <a 
@@ -246,22 +254,24 @@
       class="link">Variable</a> class whose methods can be used later to 
       access and set variable data and attributes.
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>times = dataset.createVariable(<span class="py-string">'time'</span>,<span class="py-string">'f8'</span>,(<span class="py-string">'time'</span>,))
-<span class="py-prompt">&gt;&gt;&gt; </span>levels = dataset.createVariable(<span class="py-string">'level'</span>,<span class="py-string">'i4'</span>,(<span class="py-string">'level'</span>,))
-<span class="py-prompt">&gt;&gt;&gt; </span>latitudes = dataset.createVariable(<span class="py-string">'latitude'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'lat'</span>,))
-<span class="py-prompt">&gt;&gt;&gt; </span>longitudes = dataset.createVariable(<span class="py-string">'longitude'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'lon'</span>,))
-<span class="py-prompt">&gt;&gt;&gt; </span>temp = dataset.createVariable(<span class="py-string">'temp'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'time'</span>,<span class="py-string">'level'</span>,<span class="py-string">'lat'</span>,<span class="py-string">'lon'</span>,))</pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">8</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">i</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span>
+</pre>
       All of the variables in the file are stored in a Python 
       dictionary, in the same way as the dimensions:
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> dataset.variables
-<span class="py-output">{'temp': &lt;netCDF4_classic.Variable object at 0x24a61068&gt;,</span>
-<span class="py-output"> 'level': &lt;netCDF4_classic.Variable object at 0.3f0f80&gt;, </span>
-<span class="py-output"> 'longitude': &lt;netCDF4_classic.Variable object at 0x24a61030&gt;,</span>
-<span class="py-output"> 'pressure': &lt;netCDF4_classic.Variable object at 0x24a610a0&gt;, </span>
-<span class="py-output"> 'time': &lt;netCDF4_classic.Variable object at 0.3f0.4.58&gt;, </span>
-<span class="py-output"> 'latitude': &lt;netCDF4_classic.Variable object at 0.3f0fb8&gt;}</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">v</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">s</span>
+<span class="py-output">{'temp': &lt;netCDF4_classic.Variable object at 0x24a61068&gt;,
+ 'level': &lt;netCDF4_classic.Variable object at 0.3f0f80&gt;, 
+ 'longitude': &lt;netCDF4_classic.Variable object at 0x24a61030&gt;,
+ 'pressure': &lt;netCDF4_classic.Variable object at 0x24a610a0&gt;, 
+ 'time': &lt;netCDF4_classic.Variable object at 0.3f0.4.58&gt;, 
+ 'latitude': &lt;netCDF4_classic.Variable object at 0.3f0fb8&gt;}</span>
+<span class="py-prompt">&gt;&gt;&gt;</span>
+</pre>
       <a href="netCDF4_classic.Variable-class.html" 
       class="link">Variable</a> names can be changed using the 
       <code>renameVariable</code> method of a <a 
@@ -281,16 +291,17 @@
       instances variables. Attributes can be strings, numbers or sequences.
       Returning to our example,
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> time
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset.description = <span class="py-string">'bogus example script'</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset.history = <span class="py-string">'Created '</span> + time.ctime(time.time())
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset.source = <span class="py-string">'netCDF4 python module tutorial'</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>latitudes.units = <span class="py-string">'degrees north'</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>longitudes.units = <span class="py-string">'degrees east'</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>pressure.units = <span class="py-string">'hPa'</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>temp.units = <span class="py-string">'K'</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>times.units = <span class="py-string">'days since January 1, 0001'</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>times.calendar = <span class="py-string">'proleptic_gregorian'</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">p</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">b</span><span class="py-other">o</span><span class="py-other">g</span><span class="py-other">u</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">e</span><span class="py-other">x</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">s</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">p</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">h</span><span class="py-other">i</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">y</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">C</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">d</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other"> </span><span class="py-other">+</span><span class="py-other"> </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">.</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">s</span><span class="py-other">o</span><span class="py-other">u</span><span class="py-other">r</span><span class="py-other">c</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">C</span><span class="py-other">D</span><span class="py-other">F</span><span class="py-other">4</span><span class="py-other"> </span><span class="py-other">p</span><span class="py-other">y</span><span class="py-other">t</span><span class="py-other">h</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other"> </span><span class="py-other">m</span><span class="py-other">o</span><span class="py-other">d</span><span class="py-other">u</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">t</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">g</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">t</span><span class="py-other">h</span><span class="py-other">'</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">g</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">p</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">s</span><span class="py-other">u</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">.</span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">h</span><span class="py-other">P</span><span class="py-other">a</span><span class="py-other">'</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">.</span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">K</span><span class="py-other">'</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">y</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">J</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">y</span><span class="py-other"> </span><span class="py-other">1</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">1</span><span class="py-other">'</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">p</span><span class="py-other">r</span><span class="py-other">o</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">p</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other">_</span><span class="py-other">g</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">g</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">'</span>
+</pre>
       The <code>ncattrs()</code> method of a <a 
       href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> or
       <a href="netCDF4_classic.Variable-class.html" 
@@ -300,21 +311,23 @@
       function will return a bunch of private methods and attributes that 
       cannot (or should not) be modified by the user.
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> name <span class="py-keyword">in</span> dataset.ncattrs():
-<span class="py-prompt">&gt;&gt;&gt; </span>    <span class="py-keyword">print</span> <span class="py-string">'Global attr'</span>, name, <span class="py-string">'='</span>, getattr(dataset,name)
-<span class="py-output">Global attr description = bogus example script</span>
-<span class="py-output">Global attr history = Created Mon Nov  7 10.30:56 2005</span>
-<span class="py-output">Global attr source = netCDF4_classic python module tutorial</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-keyword">in</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">t</span><span class="py-other">r</span><span class="py-other">s</span><span class="py-other">(</span><span class="py-other">)</span><span class="py-other">:</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other"> </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">G</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">b</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">t</span><span class="py-other">r</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">=</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">g</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">t</span><span class="py-other">r</span><span class="py-other">(</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">,</span><span class="py-other">n</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">)</span>
+<span class="py-output">Global attr description = bogus example script
+Global attr history = Created Mon Nov  7 10.30:56 2005
+Global attr source = netCDF4_classic python module tutorial</span>
+</pre>
       The <code>__dict__</code> attribute of a <a 
       href="netCDF4_classic.Dataset-class.html" class="link">Dataset</a> or
       <a href="netCDF4_classic.Variable-class.html" 
       class="link">Variable</a> instance provides all the netCDF attribute 
       name/value pairs in a python dictionary:
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> dataset.__dict__
-<span class="py-output">{'source': 'netCDF4_classic python module tutorial',</span>
-<span class="py-output">'description': 'bogus example script', </span>
-<span class="py-output">'history': 'Created Mon Nov  7 10.30:56 2005'}</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">_</span><span class="py-other">_</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other">t</span><span class="py-other">_</span><span class="py-other">_</span>
+<span class="py-output">{'source': 'netCDF4_classic python module tutorial',
+'description': 'bogus example script', 
+'history': 'Created Mon Nov  7 10.30:56 2005'}</span>
+</pre>
       Attributes can also be python objects. netCDF4_classic tries to 
       convert attributes to numpy arrays before saving them to the netCDF 
       file.  If the attribute is cast to an object array by numpy, it is 
@@ -325,10 +338,11 @@
       string, then unpickled automatically when it is retrieved. For 
       example,
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> datetime <span class="py-keyword">import</span> datetime
-<span class="py-prompt">&gt;&gt;&gt; </span>dataset.timestamp = datetime.now()
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'Global attr timestamp ='</span>,dataset.timestamp
-<span class="py-output">Global attr timestamp = 2006-03-06 09:20:21.520926</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">o</span><span class="py-other">w</span><span class="py-other">(</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">G</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">b</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">t</span><span class="py-other">r</span><span class="py-other"> </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">m</span><span class="py-other">p</span>
+<span class="py-output">Global attr timestamp = 2006-03-06 09:20:21.520926</span>
+</pre>
       <p>Note that data saved as pickled strings will not be very useful if
       the data is to be read by a non-python client (the data will appear 
       to the client as an ugly looking binary string).</p>
@@ -344,39 +358,41 @@
       instance, how do you put data into it? You can just treat it like an 
       array and assign data to a slice.
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy <span class="py-keyword">as</span> NP
-<span class="py-prompt">&gt;&gt;&gt; </span>latitudes[:] = NP.arange(-90,91,2.5)
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'latitudes =\n'</span>,latitudes[:]
-<span class="py-output">latitudes =</span>
-<span class="py-output">[-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5</span>
-<span class="py-output"> -60.  -57.5 -55.  -52.5 -50.  -47.5 -45.  -42.5 -40.  -37.5 -35.  -32.5</span>
-<span class="py-output"> -30.  -27.5 -25.  -22.5 -20.  -17.5 -15.  -12.5 -10.   -7.5  -5.   -2.5</span>
-<span class="py-output">   0.    2.5   5.    7.5  10.   12.5  15.   17.5  20.   22.5  25.   27.5</span>
-<span class="py-output">  30.   32.5  35.   37.5  40.   42.5  45.   47.5  50.   52.5  55.   57.5</span>
-<span class="py-output">  60.   62.5  65.   67.5  70.   72.5  75.   77.5  80.   82.5  85.   87.5</span>
-<span class="py-output">  90. ]</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">y</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">N</span><span class="py-other">P</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">[</span><span class="py-other">:</span><span class="py-other">]</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">N</span><span class="py-other">P</span><span class="py-other">.</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">-</span><span class="py-other">9</span><span class="py-other">0</span><span class="py-other">,</span><span class="py-other">9</span><span class="py-other">1</span><span class="py-other">,</span><span class="py-other">2</span><span class="py-other">.</span><span class="py-other">5</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other">\</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">u</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">[</span><span class="py-other">:</span><span class="py-other">]</span>
+<span class="py-output">latitudes =
+[-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5
+ -60.  -57.5 -55.  -52.5 -50.  -47.5 -45.  -42.5 -40.  -37.5 -35.  -32.5
+ -30.  -27.5 -25.  -22.5 -20.  -17.5 -15.  -12.5 -10.   -7.5  -5.   -2.5
+   0.    2.5   5.    7.5  10.   12.5  15.   17.5  20.   22.5  25.   27.5
+  30.   32.5  35.   37.5  40.   42.5  45.   47.5  50.   52.5  55.   57.5
+  60.   62.5  65.   67.5  70.   72.5  75.   77.5  80.   82.5  85.   87.5
+  90. ]</span>
+<span class="py-prompt">&gt;&gt;&gt;</span>
+</pre>
       Unlike numpy array objects, netCDF <a 
       href="netCDF4_classic.Variable-class.html" class="link">Variable</a> 
       objects with an unlimited dimension will grow along that dimension if
       you assign data outside the currently defined range of indices.
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># append along two unlimited dimensions by assigning to slice.</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>nlats = len(dataset.dimensions[<span class="py-string">'lat'</span>])
-<span class="py-prompt">&gt;&gt;&gt; </span>nlons = len(dataset.dimensions[<span class="py-string">'lon'</span>])
-<span class="py-prompt">&gt;&gt;&gt; </span>nlevs = len(dataset.dimensions[<span class="py-string">'level'</span>])
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'temp shape before adding data = '</span>,temp.shape
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># append along two unlimited dimensions by assigning to slice.</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">n</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">(</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">[</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">]</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">n</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">(</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">[</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">]</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">n</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">(</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">[</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">]</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">s</span><span class="py-other">h</span><span class="py-other">a</span><span class="py-other">p</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">b</span><span class="py-other">e</span><span class="py-other">f</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">d</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">.</span><span class="py-other">s</span><span class="py-other">h</span><span class="py-other">a</span><span class="py-other">p</span><span class="py-other">e</span>
 <span class="py-output">temp shape before adding data =  (0, 10, 73, 144)</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> numpy.random.mtrand <span class="py-keyword">import</span> uniform
-<span class="py-prompt">&gt;&gt;&gt; </span>temp[0:5,:,:,:] = uniform(size=(5,10,nlats,nlons))
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'temp shape after adding data = '</span>,temp.shape
+<span class="py-prompt">&gt;&gt;&gt;
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">y</span><span class="py-other">.</span><span class="py-other">r</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">d</span><span class="py-other">o</span><span class="py-other">m</span><span class="py-other">.</span><span class="py-other">m</span><span class="py-other">t</span><span class="py-other">r</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">d</span><span class="py-other"> </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">f</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">m</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">[</span><span class="py-other">0</span><span class="py-other">:</span><span class="py-other">5</span><span class="py-other">,</span><span class="py-other">:</span><span class="py-other">,</span><span class="py-other">:</span><span class="py-other">,</span><span class="py-other">:</span><span class="py-other">]</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">f</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">m</span><span class="py-other">(</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">z</span><span class="py-other">e</span><span class="py-other">=</span><span class="py-other">(</span><span class="py-other">5</span><span class="py-other">,</span><span class="py-other">1</span><span class="py-other">0</span><span class="py-other">,</span><span class="py-other">n</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other">,</span><span class="py-other">n</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">s</span><span class="py-other">)</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">s</span><span class="py-other">h</span><span class="py-other">a</span><span class="py-other">p</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">r</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">d</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">.</span><span class="py-other">s</span><span class="py-other">h</span><span class="py-other">a</span><span class="py-other">p</span><span class="py-other">e</span>
 <span class="py-output">temp shape after adding data =  (5, 10, 73, 144)</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># times have grown, but no values yet assigned.</span>
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'times shape after adding pressure data = '</span>,times.shape
+<span class="py-prompt">&gt;&gt;&gt;
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># times have grown, but no values yet assigned.</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">s</span><span class="py-other">h</span><span class="py-other">a</span><span class="py-other">p</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">r</span><span class="py-other"> </span><span class="py-other">a</span><span class="py-other">d</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other"> </span><span class="py-other">p</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">s</span><span class="py-other">u</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">s</span><span class="py-other">h</span><span class="py-other">a</span><span class="py-other">p</span><span class="py-other">e</span>
 <span class="py-output">times shape after adding pressure data =  (5,)</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+<span class="py-prompt">&gt;&gt;&gt;</span>
+</pre>
       <p>Note that the size of the times variable grows when data is 
       appended along the <code>time</code> dimension of the variable 
       <code>temp</code>, even though no data has yet been assigned to the 
@@ -391,22 +407,23 @@
       class="link">netcdftime.netcdftime</a> is provided with this package 
       to do just that.  Here's an example of how it can be used:
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># fill in times.</span>
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> datetime <span class="py-keyword">import</span> timedelta
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> netcdftime <span class="py-keyword">import</span> utime
-<span class="py-prompt">&gt;&gt;&gt; </span>cdftime = utime(times.units,calendar=times.calendar,format=<span class="py-string">'%B %d, %Y'</span>) 
-<span class="py-prompt">&gt;&gt;&gt; </span>dates = [datetime(2001,3,1)+n*timedelta(hours=12) <span class="py-keyword">for</span> n <span class="py-keyword">in</span> range(temp.shape[0])]
-<span class="py-prompt">&gt;&gt;&gt; </span>times[:] = cdftime.date2num(dates)
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'time values (in units %s): '</span> % times.units+<span class="py-string">'\n'</span>,times[:]
-<span class="py-output">time values (in units hours since January 1, 0001): </span>
-<span class="py-output">[ 17533056.  17533068.  17533080.  17533092.  17533104.]</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>dates = cdftime.num2date(times[:])
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'dates corresponding to time values:\n'</span>,dates
-<span class="py-output">dates corresponding to time values:</span>
-<span class="py-output">[2001-03-01 00:00:00 2001-03-01 12:00:00 2001-03-02 00:00:00</span>
-<span class="py-output"> 2001-03-02 12:00:00 2001-03-03 00:00:00]</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># fill in times.</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">c</span><span class="py-other">d</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other">u</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">c</span><span class="py-other">d</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">u</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other">,</span><span class="py-other">c</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">=</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">n</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">,</span><span class="py-other">f</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">m</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">=</span><span class="py-other">'</span><span class="py-other">%</span><span class="py-other">B</span><span class="py-other"> </span><span class="py-other">%</span><span class="py-other">d</span><span class="py-other">,</span><span class="py-other"> </span><span class="py-other">%</span><span class="py-other">Y</span><span class="py-other">'</span><span class="py-other">)</span><span class="py-other"> </span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">[</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">2</span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">1</span><span class="py-other">,</span><span class="py-other">3</span><span class="py-other">,</span><span class="py-other">1</span><span class="py-other">)</span><span class="py-other">+</span><span class="py-other">n</span><span class="py-other">*</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">d</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">(</span><span class="py-other">h</span><span class="py-other">o</span><span class="py-other">u</span><span class="py-other">r</span><span class="py-other">s</span><span class="py-other">=</span><span class="py-other">1</span><span class="py-other">2</span><span class="py-other">)</span><span class="py-other"> </span><span class="py-keyword">for</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other"> </span><span class="py-keyword">in</span><span class="py-other"> </span><span class="py-other">r</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">.</span><span class="py-other">s</span><span class="py-other">h</span><span class="py-other">a</span><span class="py-other">p</span><span class="py-other">e</span><span class="py-other">[</span><span class="py-other">0</span><span class="py-other">]</span><span class="py-other">)</span><span class="py-other">]</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">[</span><span class="py-other">:</span><span class="py-other">]</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">c</span><span class="py-other">d</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">.</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">2</span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">m</span><span class="py-other">(</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">v</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other">u</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">(</span><span class="py-keyword">in</span><span class="py-other"> </span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">%</span><span class="py-other">s</span><span class="py-other">)</span><span class="py-other">:</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other"> </span><span class="py-other">%</span><span class="py-other"> </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">u</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">s</span><span class="py-other">+</span><span class="py-other">'</span><span class="py-other">\</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">[</span><span class="py-other">:</span><span class="py-other">]</span>
+<span class="py-output">time values (in units hours since January 1, 0001): 
+[ 17533056.  17533068.  17533080.  17533092.  17533104.]</span>
+<span class="py-prompt">&gt;&gt;&gt;
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">c</span><span class="py-other">d</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">m</span><span class="py-other">2</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">[</span><span class="py-other">:</span><span class="py-other">]</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">'</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">c</span><span class="py-other">o</span><span class="py-other">r</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">p</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">n</span><span class="py-other">g</span><span class="py-other"> </span><span class="py-other">t</span><span class="py-other">o</span><span class="py-other"> </span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">v</span><span class="py-other">a</span><span class="py-other">l</span><span class="py-other">u</span><span class="py-other">e</span><span class="py-other">s</span><span class="py-other">:</span><span class="py-other">\</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">s</span>
+<span class="py-output">dates corresponding to time values:
+[2001-03-01 00:00:00 2001-03-01 12:00:00 2001-03-02 00:00:00
+ 2001-03-02 12:00:00 2001-03-03 00:00:00]</span>
+<span class="py-prompt">&gt;&gt;&gt;</span>
+</pre>
       Values of time in the specified units and calendar are converted 
       to and from python <code>datetime</code> instances using the 
       <code>num2date</code> and <code>date2num</code> methods of the 
@@ -451,13 +468,16 @@
       sacrificed for the sake of disk space.</p>
       In our example, try replacing the line
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>temp = dataset.createVariable(<span class="py-string">'temp'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'time'</span>,<span class="py-string">'level'</span>,<span class="py-string">'lat'</span>,<span class="py-string">'lon'</span>,))</pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">)</span>
+</pre>
       with
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>temp = dataset.createVariable(<span class="py-string">'temp'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'time'</span>,<span class="py-string">'level'</span>,<span class="py-string">'lat'</span>,<span class="py-string">'lon'</span>,),zlib=True)</pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">,</span><span class="py-other">z</span><span class="py-other">l</span><span class="py-other">i</span><span class="py-other">b</span><span class="py-other">=</span><span class="py-other">T</span><span class="py-other">r</span><span class="py-other">u</span><span class="py-other">e</span><span class="py-other">)</span>
+</pre>
       and then
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>temp = dataset.createVariable(<span class="py-string">'temp'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'time'</span>,<span class="py-string">'level'</span>,<span class="py-string">'lat'</span>,<span class="py-string">'lon'</span>,),zlib=True,least_significant_digit=3)</pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">.</span><span class="py-other">c</span><span class="py-other">r</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">V</span><span class="py-other">a</span><span class="py-other">r</span><span class="py-other">i</span><span class="py-other">a</span><span class="py-other">b</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">p</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">f</span><span class="py-other">4</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">v</span><span class="py-other">e</span><span class="py-other">l</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">'</span><span class="py-other">l</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">'</span><span class="py-other">,</span><span class="py-other">)</span><span class="py-other">,</span><span class="py-other">z</span><span class="py-other">l</span><span class="py-other">i</span><span class="py-other">b</span><span class="py-other">=</span><span class="py-other">T</span><span class="py-other">r</span><span class="py-other">u</span><span class="py-other">e</span><span class="py-other">,</span><span class="py-other">l</span><span class="py-other">e</span><span class="py-other">a</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">_</span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">g</span><span class="py-other">n</span><span class="py-other">i</span><span class="py-other">f</span><span class="py-other">i</span><span class="py-other">c</span><span class="py-other">a</span><span class="py-other">n</span><span class="py-other">t</span><span class="py-other">_</span><span class="py-other">d</span><span class="py-other">i</span><span class="py-other">g</span><span class="py-other">i</span><span class="py-other">t</span><span class="py-other">=</span><span class="py-other">3</span><span class="py-other">)</span>
+</pre>
       and see how much smaller the resulting files are.  If the file 
       format is not <code>NETCDF4_CLASSIC</code>, using the 
       least_significant_digit keyword will not result in a smaller file, 
@@ -473,33 +493,34 @@
       be quantized (truncated) to a specified precision to improve 
       compression.
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>os.system(<span class="py-string">'nc3tonc4 -h'</span>)
-<span class="py-output">nc3tonc4 [-h] [-o] [--zlib=(0|1)] [--complevel=(1-9)] [--shuffle=(0|1)]</span>
-<span class="py-output">         [--fletcher32=(0|1)] [--unpackshort=(0|1)]</span>
-<span class="py-output">         [--quantize=var1=n1,var2=n2,..] netcdf3filename netcdf4filename</span>
-<span class="py-output">-h -- Print usage message.</span>
-<span class="py-output">-o -- Overwite destination file</span>
-<span class="py-output">      (default is to raise an error if output file already exists).</span>
-<span class="py-output">--zlib=(0|1) -- Activate (or disable) zlib compression (default is activate).</span>
-<span class="py-output">--complevel=(1-9) -- Set zlib compression level (6 is default).</span>
-<span class="py-output">--shuffle=(0|1) -- Activate (or disable) the shuffle filter</span>
-<span class="py-output">                   (active by default).</span>
-<span class="py-output">--fletcher32=(0|1) -- Activate (or disable) the fletcher32 checksum</span>
-<span class="py-output">                      (not active by default).</span>
-<span class="py-output">--unpackshort=(0|1) -- Unpack short integer variables to float variables</span>
-<span class="py-output">                       using scale_factor and add_offset netCDF </span>
-<span class="py-output">                       variable attributes (active by default).</span>
-<span class="py-output">--quantize=(comma separated list of &quot;variable name=integer&quot; pairs) --</span>
-<span class="py-output">    Truncate the data in the specified variables to a given decimal precision.</span>
-<span class="py-output">    For example, 'speed=2, height=-2, temp=0' will cause the variable</span>
-<span class="py-output">    'speed' to be truncated to a precision of 0.01, </span>
-<span class="py-output">    'height' to a precision of 100 and 'temp' to 1.</span>
-<span class="py-output">    This can significantly improve compression. The default</span>
-<span class="py-output">    is not to quantize any of the variables.</span>
-<span class="py-output">--quiet=(0|1)  -- if 1, don't print diagnostic information.</span>
-<span class="py-output">--chunk=(integer) -- number of records along unlimited dimension to </span>
-<span class="py-output">    write at once.  Default 1000.  Ignored if there is no unlimited </span>
-<span class="py-output">    dimension.  chunk=0 means write all the data at once.</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">o</span><span class="py-other">s</span><span class="py-other">.</span><span class="py-other">s</span><span class="py-other">y</span><span class="py-other">s</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">m</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">3</span><span class="py-other">t</span><span class="py-other">o</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">4</span><span class="py-other"> </span><span class="py-other">-</span><span class="py-other">h</span><span class="py-other">'</span><span class="py-other">)</span>
+<span class="py-output">nc3tonc4 [-h] [-o] [--zlib=(0|1)] [--complevel=(1-9)] [--shuffle=(0|1)]
+         [--fletcher32=(0|1)] [--unpackshort=(0|1)]
+         [--quantize=var1=n1,var2=n2,..] netcdf3filename netcdf4filename
+-h -- Print usage message.
+-o -- Overwite destination file
+      (default is to raise an error if output file already exists).
+--zlib=(0|1) -- Activate (or disable) zlib compression (default is activate).
+--complevel=(1-9) -- Set zlib compression level (6 is default).
+--shuffle=(0|1) -- Activate (or disable) the shuffle filter
+                   (active by default).
+--fletcher32=(0|1) -- Activate (or disable) the fletcher32 checksum
+                      (not active by default).
+--unpackshort=(0|1) -- Unpack short integer variables to float variables
+                       using scale_factor and add_offset netCDF 
+                       variable attributes (active by default).
+--quantize=(comma separated list of &quot;variable name=integer&quot; pairs) --
+    Truncate the data in the specified variables to a given decimal precision.
+    For example, 'speed=2, height=-2, temp=0' will cause the variable
+    'speed' to be truncated to a precision of 0.01, 
+    'height' to a precision of 100 and 'temp' to 1.
+    This can significantly improve compression. The default
+    is not to quantize any of the variables.
+--quiet=(0|1)  -- if 1, don't print diagnostic information.
+--chunk=(integer) -- number of records along unlimited dimension to 
+    write at once.  Default 1000.  Ignored if there is no unlimited 
+    dimension.  chunk=0 means write all the data at once.</span>
+</pre>
       <p>If <code>--zlib=1</code>, the resulting 
       <code>NETCDF4_CLASSIC</code> file will take up less disk space than 
       the original netCDF 3 file (especially if the <code>--quantize</code>
@@ -510,7 +531,7 @@
       tests are in the test_classic directory.<br /><br />
 
 <hr />
-<div class="fields">      <p><strong>Contact:</strong>
+      <p><strong>Contact:</strong>
         Jeffrey Whitaker &lt;jeffrey.s.whitaker@noaa.gov&gt;
       </p>
       <p><strong>Copyright:</strong>
@@ -530,49 +551,119 @@
         TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR 
         PERFORMANCE OF THIS SOFTWARE.
       </p>
-      <p><strong>Version:</strong>
-        0.6.3
-      </p>
-</div><!-- ==================== CLASSES ==================== -->
+<!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td align="left" colspan="2" class="table-header">
-    <span class="table-header">Classes</span></td>
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Classes"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
 </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4_classic.Dataset-class.html" class="summary-name">Dataset</a><br />
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <a href="netCDF4_classic.Dataset-class.html">Dataset</a><br />
       A netCDF <a href="netCDF4_classic.Dataset-class.html" 
         class="link">Dataset</a> is a collection of dimensions, variables 
         and attributes.
-    </td>
-  </tr>
+  </td>
+</tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4_classic.Dimension-class.html" class="summary-name">Dimension</a><br />
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <a href="netCDF4_classic.Dimension-class.html">Dimension</a><br />
       A netCDF <a href="netCDF4_classic.Dimension-class.html" 
         class="link">Dimension</a> is used to describe the coordinates of a
         <a href="netCDF4_classic.Variable-class.html" 
         class="link">Variable</a>.
-    </td>
-  </tr>
+  </td>
+</tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4_classic.Variable-class.html" class="summary-name">Variable</a><br />
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <a href="netCDF4_classic.Variable-class.html">Variable</a><br />
       A netCDF <a href="netCDF4_classic.Variable-class.html" 
         class="link">Variable</a> is used to read and write netCDF 
         data.
-    </td>
-  </tr>
+  </td>
+</tr>
 </table>
+
+<br />
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Variables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <a href="netCDF4_classic-module.html#__version__">__version__</a> = <code title="'0.6.3'">'0.6.3'</code>
+  </td>
+</tr>
+</table>
+
+<br />
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Variables Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-VariablesDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__version__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">__version__</h3>
+  None
+  <dl><dt></dt><dd>
+    <dl><dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<span class="variable-quote">'</span>0.6.3<span class="variable-quote">'</span>                                                                
+      </pre></td></tr></table></dd>
+    </dl>
+  </dd></dl>
+</td></tr></table>
+</div>
+<br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
@@ -595,9 +686,8 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
-    <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Mon Jul  2 14:16:31 2007
-    </td>
+    <td align="left" class="footer">Generated by Epydoc
+        3.0alpha3 on Wed Jul 11 07:44:59 2007</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>

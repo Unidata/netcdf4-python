@@ -42,6 +42,10 @@
     <td>
       <table cellpadding="0" cellspacing="0">
         <!-- hide/show private -->
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="netcdftime.netcdftime.utime-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
@@ -103,21 +107,22 @@
   any real world calendar.</p>
   Example usage:
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> netcdftime <span class="py-keyword">import</span> utime
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> datetime <span class="py-keyword">import</span>  datetime
-<span class="py-prompt">&gt;&gt;&gt; </span>cdftime = utime(<span class="py-string">'hours since 0001-01-01 00:00:00'</span>)
-<span class="py-prompt">&gt;&gt;&gt; </span>date = datetime.now()
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> date
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span><span class="py-other"> </span><span class="py-other">n</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">c</span><span class="py-other">d</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other">u</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-keyword">import</span><span class="py-other"> </span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">c</span><span class="py-other">d</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">u</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">'</span><span class="py-other">h</span><span class="py-other">o</span><span class="py-other">u</span><span class="py-other">r</span><span class="py-other">s</span><span class="py-other"> </span><span class="py-other">s</span><span class="py-other">i</span><span class="py-other">n</span><span class="py-other">c</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">1</span><span class="py-other">-</span><span class="py-other">0</span><span class="py-other">1</span><span class="py-other">-</span><span class="py-other">0</span><span class="py-other">1</span><span class="py-other"> </span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">:</span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">:</span><span class="py-other">0</span><span class="py-other">0</span><span class="py-other">'</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">o</span><span class="py-other">w</span><span class="py-other">(</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span>
 <span class="py-output">2006-03-17 16:04:02.561678</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>t = cdftime.date2num(date)
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> t
+<span class="py-prompt">&gt;&gt;&gt;
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">t</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">c</span><span class="py-other">d</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">.</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">2</span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">m</span><span class="py-other">(</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">t</span>
 <span class="py-output">17577328.0672</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>date = cdftime.num2date(t)
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> date
+<span class="py-prompt">&gt;&gt;&gt;
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other"> </span><span class="py-other">=</span><span class="py-other"> </span><span class="py-other">c</span><span class="py-other">d</span><span class="py-other">f</span><span class="py-other">t</span><span class="py-other">i</span><span class="py-other">m</span><span class="py-other">e</span><span class="py-other">.</span><span class="py-other">n</span><span class="py-other">u</span><span class="py-other">m</span><span class="py-other">2</span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span><span class="py-other">(</span><span class="py-other">t</span><span class="py-other">)</span><span class="py-other">
+</span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span><span class="py-other"> </span><span class="py-other">d</span><span class="py-other">a</span><span class="py-other">t</span><span class="py-other">e</span>
 <span class="py-output">2006-03-17 16:04:02</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+<span class="py-prompt">&gt;&gt;&gt;</span>
+</pre>
   <p>The resolution of the transformation operation is 1 second.</p>
   <p>Warning:  Dates between 1582-10-5 and 1582-10-15 do not exist in the 
   <code>'standard'</code> or <code>'gregorian'</code> calendars.  An 
@@ -143,127 +148,128 @@
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td align="left" colspan="2" class="table-header">
-    <span class="table-header">Instance Methods</span></td>
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
 </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="netcdftime.netcdftime.utime-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="netcdftime.netcdftime.utime-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">unit_string</span>,
-        <span class="summary-sig-arg">format</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">%Y-%m-%d %H:%M:%S</code><code class="variable-quote">'</code></span>,
-        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span><br />
-      Returns:
-      A class instance which may be used for converting times from 
-      netCDF units to datetime objects.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.__init__">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
+        <span class="summary-sig-arg">format</span>=<span class="summary-sig-default">'%Y-%m-%d %H:%M:%S'</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span>
+  </td>
+</tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="netcdftime.netcdftime.utime-class.html#date2num" class="summary-sig-name">date2num</a>(<span class="summary-sig-arg">self</span>,
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="netcdftime.netcdftime.utime-class.html#date2num" class="summary-sig-name">date2num</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">date</span>)</span><br />
       Returns <code>time_value</code> in units described by <a 
       href="netcdftime.netcdftime.utime-class.html#unit_string" 
       class="link">unit_string</a>, using the specified <a 
       href="netcdftime.netcdftime.utime-class.html#calendar" 
-      class="link">calendar</a>, given a 'datetime-like' object.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.date2num">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
+      class="link">calendar</a>, given a 'datetime-like' object.
+  </td>
+</tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="netcdftime.netcdftime.utime-class.html#num2date" class="summary-sig-name">num2date</a>(<span class="summary-sig-arg">self</span>,
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <span class="summary-sig"><a href="netcdftime.netcdftime.utime-class.html#num2date" class="summary-sig-name">num2date</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">time_value</span>)</span><br />
       Return a 'datetime-like' object given a <code>time_value</code> in
       units described by <a 
       href="netcdftime.netcdftime.utime-class.html#unit_string" 
       class="link">unit_string</a>, using <a 
       href="netcdftime.netcdftime.utime-class.html#calendar" 
-      class="link">calendar</a>.</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.num2date">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
+      class="link">calendar</a>.
+  </td>
+</tr>
 </table>
+
+<br />
 <!-- ==================== INSTANCE VARIABLES ==================== -->
 <a name="section-InstanceVariables"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td align="left" colspan="2" class="table-header">
-    <span class="table-header">Instance Variables</span></td>
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
 </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a name="calendar"></a><span class="summary-name">calendar</span><br />
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <a href="netcdftime.netcdftime.utime-class.html#calendar">calendar</a><br />
       the calendar used (as specified by the <code>calendar</code> 
       keyword).
-    </td>
-  </tr>
+  </td>
+</tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a name="origin"></a><span class="summary-name">origin</span><br />
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <a href="netcdftime.netcdftime.utime-class.html#origin">origin</a><br />
       datetime instance defining the origin of the netCDF time 
       variable.
-    </td>
-  </tr>
+  </td>
+</tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a name="unit_string"></a><span class="summary-name">unit_string</span><br />
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <a href="netcdftime.netcdftime.utime-class.html#unit_string">unit_string</a><br />
       a string defining the the netCDF time variable.
-    </td>
-  </tr>
+  </td>
+</tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netcdftime.netcdftime.utime-class.html#units" class="summary-name">units</a><br />
+  <td width="15%" align="right" valign="top" class="summary">
+    <code class="summary-type">&nbsp;</code>
+  </td><td class="summary">
+    <a href="netcdftime.netcdftime.utime-class.html#units">units</a><br />
       the units part of <code>unit_string</code> (i.e.
-    </td>
-  </tr>
+  </td>
+</tr>
 </table>
+
+<br />
 <!-- ==================== METHOD DETAILS ==================== -->
 <a name="section-MethodDetails"></a>
-<table class="details" border="1" cellpadding="3"
+<table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td align="left" colspan="2" class="table-header">
-    <span class="table-header">Method Details</span></td>
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
 </tr>
 </table>
 <a name="__init__"></a>
@@ -275,19 +281,19 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">unit_string</span>,
-        <span class="sig-arg">format</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">%Y-%m-%d %H:%M:%S</code><code class="variable-quote">'</code></span>,
-        <span class="sig-arg">calendar</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span>
+        <span class="sig-arg">format</span>=<span class="sig-default">'%Y-%m-%d %H:%M:%S'</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.__init__">source&nbsp;code</a></span>&nbsp;
-    </td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.__init__">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
   </table>
   
   
-  <dl class="fields">
-    <dt>Parameters:</dt>
-    <dd><ul class="nomargin-top">
+  <dl><dt></dt><dd>
+    <dl><dt>Parameters:</dt></dl>
+    <ul class="nomargin">
         <li><strong class="pname"><code>unit_string</code></strong> - a string of the form <code>'time-units since 
           &lt;format&gt;'</code> defining the time units.</li>
         <li><strong class="pname"><code>format</code></strong> - a string describing a reference time. This string is converted
@@ -327,11 +333,11 @@
               year if it is divisible by 4.
             </li>
           </ul></li>
-    </ul></dd>
-    <dt>Returns:</dt>
+    </ul>
+    <dl><dt>Returns:</dt>
         <dd>A class instance which may be used for converting times from 
-          netCDF units to datetime objects.</dd>
-  </dl>
+          netCDF units to datetime objects.</dd></dl>
+  </dd></dl>
 </td></tr></table>
 </div>
 <a name="date2num"></a>
@@ -345,8 +351,8 @@
         <span class="sig-arg">date</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.date2num">source&nbsp;code</a></span>&nbsp;
-    </td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.date2num">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
   </table>
   
   <p>Returns <code>time_value</code> in units described by <a 
@@ -361,8 +367,8 @@
   between 1582-10-5 and 1582-10-15.</p>
   Works for scalars, sequences and numpy arrays. Returns a scalar if 
   input is a scalar, else returns a numpy array.
-  <dl class="fields">
-  </dl>
+  <dl><dt></dt><dd>
+  </dd></dl>
 </td></tr></table>
 </div>
 <a name="num2date"></a>
@@ -376,8 +382,8 @@
         <span class="sig-arg">time_value</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.num2date">source&nbsp;code</a></span>&nbsp;
-    </td>
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.num2date">source&nbsp;code</a></span>&nbsp;</span
+    ></td>
   </table>
   
   <p>Return a 'datetime-like' object given a <code>time_value</code> in 
@@ -398,20 +404,63 @@
   cannot handle the weird dates in some calendars (such as 
   <code>'360_day'</code> and <code>'all_leap'</code>) which don't exist in 
   any real world calendar.
-  <dl class="fields">
-  </dl>
+  <dl><dt></dt><dd>
+  </dd></dl>
 </td></tr></table>
 </div>
 <br />
 <!-- ==================== INSTANCE VARIABLE DETAILS ==================== -->
 <a name="section-InstanceVariableDetails"></a>
-<table class="details" border="1" cellpadding="3"
+<table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td align="left" colspan="2" class="table-header">
-    <span class="table-header">Instance Variable Details</span></td>
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Variable Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceVariableDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
 </tr>
 </table>
+<a name="calendar"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">calendar</h3>
+  the calendar used (as specified by the <code>calendar</code> 
+  keyword).
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="origin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">origin</h3>
+  datetime instance defining the origin of the netCDF time variable.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
+<a name="unit_string"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">unit_string</h3>
+  a string defining the the netCDF time variable.
+  <dl><dt></dt><dd>
+  </dd></dl>
+</td></tr></table>
+</div>
 <a name="units"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -420,8 +469,8 @@
   <h3 class="epydoc">units</h3>
   the units part of <code>unit_string</code> (i.e. 'days', 'hours', 
   'seconds').
-  <dl class="fields">
-  </dl>
+  <dl><dt></dt><dd>
+  </dd></dl>
 </td></tr></table>
 </div>
 <br />
@@ -447,9 +496,8 @@
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
-    <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Mon Jul  2 14:16:31 2007
-    </td>
+    <td align="left" class="footer">Generated by Epydoc
+        3.0alpha3 on Wed Jul 11 07:44:59 2007</td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>
