@@ -7,15 +7,15 @@ function toggle_private() {
         for(var i=0; i<elts.length; i++) {
           if (elts[i].className == "privatelink") {
             cmd = elts[i].innerHTML;
-            elts[i].innerHTML = ((cmd=="show private")?"hide private":
-                                                       "show private");
+            elts[i].innerHTML = ((cmd && cmd.substr(0,4)=="show")?
+                                    "hide&nbsp;private":"show&nbsp;private");
           }
         }
         // Update all DIVs containing private objects.
         var elts = document.getElementsByTagName("div");
         for(var i=0; i<elts.length; i++) {
           if (elts[i].className == "private") {
-            elts[i].style.display = ((cmd=="hide private")?"none":"block");
+            elts[i].style.display = ((cmd && cmd.substr(0,4)=="hide")?"none":"block");
           }
         }
         // Update all table rowss containing private objects.  Note, we
@@ -25,21 +25,22 @@ function toggle_private() {
         var elts = document.getElementsByTagName("tr");
         for(var i=0; i<elts.length; i++) {
           if (elts[i].className == "private") {
-            elts[i].style.display = ((cmd=="hide private")?"none":"");
+            elts[i].style.display = ((cmd && cmd.substr(0,4)=="hide")?"none":"");
           }
         }
         // Update all list items containing private objects.
         var elts = document.getElementsByTagName("li");
         for(var i=0; i<elts.length; i++) {
           if (elts[i].className == "private") {
-            elts[i].style.display = ((cmd=="hide private")?"none":"list-item");
+            elts[i].style.display = ((cmd && cmd.substr(0,4)=="hide")?
+                                        "none":"list-item");
           }
         }
         // Update all list items containing private objects.
         var elts = document.getElementsByTagName("ul");
         for(var i=0; i<elts.length; i++) {
           if (elts[i].className == "private") {
-            elts[i].style.display = ((cmd=="hide private")?"none":"block");
+            elts[i].style.display = ((cmd && cmd.substr(0,4)=="hide")?"none":"block");
           }
         }
         // Set a cookie to remember the current option.
@@ -65,7 +66,7 @@ function setFrame(url1, url2) {
       }
 function checkCookie() {
         var cmd=getCookie("EpydocPrivate");
-        if (cmd!="show private" && location.href.indexOf("#_") < 0)
+        if (cmd && cmd.substr(0,4)!="show" && location.href.indexOf("#_") < 0)
             toggle_private();
       }
 function toggleCallGraph(id) {
@@ -103,13 +104,13 @@ function collapse(id) {
     
     var indent = elt.getAttribute("indent");
     var pad = elt.getAttribute("pad");
-    var s = "<span class='py-lineno'>";
+    var s = "<tt class='py-lineno'>";
     for (var i=0; i<pad.length; i++) { s += "&nbsp;" }
-    s += "</span>";
-    s += "&nbsp;&nbsp;<span class='py-line'>";
+    s += "</tt>";
+    s += "&nbsp;&nbsp;<tt class='py-line'>";
     for (var i=0; i<indent.length; i++) { s += "&nbsp;" }
     s += "<a href='#' onclick='expand(\"" + id;
-    s += "\");return false'>...</a></span><br />";
+    s += "\");return false'>...</a></tt><br />";
     elt.innerHTML = s;
   }
 }
@@ -120,7 +121,9 @@ function toggle(id) {
       collapse(id); 
   else
       expand(id);
+  return false;
 }
+
 function highlight(id) {
   var elt = document.getElementById(id+"-def");
   if (elt) elt.className = "py-highlight-hdr";
@@ -172,17 +175,18 @@ function expandto(href) {
 }
 
 function kill_doclink(id) {
-  if (id) {
-    var parent = document.getElementById(id);
-    parent.removeChild(parent.childNodes.item(0));
-  }
-  else if (!this.contains(event.toElement)) {
+  var parent = document.getElementById(id);
+  parent.removeChild(parent.childNodes.item(0));
+}
+function auto_kill_doclink(ev) {
+  if (!ev) var ev = window.event;
+  if (!this.contains(ev.toElement)) {
     var parent = document.getElementById(this.parentID);
     parent.removeChild(parent.childNodes.item(0));
   }
 }
 
-function doclink(id, name, targets) {
+function doclink(id, name, targets_id) {
   var elt = document.getElementById(id);
 
   // If we already opened the box, then destroy it.
@@ -214,9 +218,12 @@ function doclink(id, name, targets) {
     box2.style.background = "white";
     box2.style.padding = ".3em .4em .3em .4em";
     box2.style.fontStyle = "normal";
-    box2.onmouseout=kill_doclink;
+    box2.onmouseout=auto_kill_doclink;
     box2.parentID = id;
 
+    // Get the targets
+    var targets_elt = document.getElementById(targets_id);
+    var targets = targets_elt.getAttribute("targets");
     var links = "";
     target_list = targets.split(",");
     for (var i=0; i<target_list.length; i++) {
@@ -239,5 +246,35 @@ function doclink(id, name, targets) {
         "onclick='kill_doclink(\""+id+"\");return false;'>"+
         "<i>None of the above</i></a></li></ul>";
   }
+  return false;
 }
 
+function get_anchor() {
+          var href = location.href;
+          var start = href.indexOf("#")+1;
+          if ((start != 0) && (start != href.length))
+              return href.substring(start, href.length);
+      }
+function redirect_url(dottedName) {
+          // Scan through each element of the "pages" list, and check
+          // if "name" matches with any of them.
+          for (var i=0; i<pages.length; i++) {
+
+              // Each page has the form "<pagename>-m" or "<pagename>-c";
+              // extract the <pagename> portion & compare it to dottedName.
+              var pagename = pages[i].substring(0, pages[i].length-2);
+              if (pagename == dottedName.substring(0,pagename.length)) {
+
+                  // We've found a page that matches `dottedName`;
+                  // construct its URL, using leftover `dottedName`
+                  // content to form an anchor.
+                  var pagetype = pages[i].charAt(pages[i].length-1);
+                  var url = pagename + ((pagetype=="m")?"-module.html":
+                                                        "-class.html");
+                  if (dottedName.length > pagename.length)
+                      url += "#" + dottedName.substring(pagename.length+1,
+                                                        dottedName.length);
+                  return url;
+              }
+          }
+      }
