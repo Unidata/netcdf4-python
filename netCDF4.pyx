@@ -1163,12 +1163,14 @@ the C{__dict__} attribute of a L{Variable} instance.
 
 L{Variable} instances behave much like array objects. Data can be
 assigned to or retrieved from a variable with indexing and slicing
-operations on the L{Variable} instance. A L{Variable} instance has seven
-standard attributes: C{dimensions, dtype, dtype_base, shape,
+operations on the L{Variable} instance. A L{Variable} instance has eight
+standard attributes: C{dimensions, dtype, dtype_base, shape, ndim,
 least_significant_digit, usertype} and C{usertype_name}. Application
 programs should never modify these attributes. The C{dimensions}
 attribute is a tuple containing the names of the dimensions associated
-with this variable. The C{dtype} attribute is a string describing the
+with this variable. The C{ndim} attribute is simply the number of
+dimensions associated with the variable. 
+The C{dtype} attribute is a string describing the
 variable's data type.  It can either be a string describing one of the
 primitive data types (C{i4, f8, S1,} etc), or an instance of the class
 L{UserType}. The C{dtype_base} attribute (only relevant if dtype is an
