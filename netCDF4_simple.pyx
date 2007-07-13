@@ -1203,7 +1203,7 @@ instance. If C{None}, the data is not truncated. """
     cdef public dtype
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None,  **kwargs):
-        cdef int ierr, ndims, ichunkalg, ideflate_level
+        cdef int ierr, ndims, ichunkalg, ideflate_level, numdims
         cdef char *varname
         cdef nc_type xtype, vltypeid
         cdef int dimids[NC_MAX_DIMS]
