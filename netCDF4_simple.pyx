@@ -964,7 +964,7 @@ B{C{name}} - Name of the group.
 B{Returns:}
 
 a L{Group} instance.  All further operations on the netCDF
-Group are accomplised via L{Group} instance methods.
+Group are accomplished via L{Group} instance methods.
 
 L{Group} inherits from L{Dataset}, so all the L{Dataset} class methods and 
 variables are available to a L{Group} instance (except the C{close} 

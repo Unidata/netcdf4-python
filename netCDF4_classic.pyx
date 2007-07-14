@@ -585,7 +585,7 @@ or later.
 B{Returns:}
 
 a L{Dataset} instance.  All further operations on the netCDF Dataset are
-accomplised via L{Dataset} instance methods.
+accomplished via L{Dataset} instance methods.
 
 A list of attribute names corresponding to global netCDF attributes
 defined for the L{Dataset} can be obtained with the L{ncattrs()} method. 

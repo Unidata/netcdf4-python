@@ -911,7 +911,7 @@ exception will be raised if a file with the same name already exists.
 B{Returns:}
 
 a L{Dataset} instance.  All further operations on the netCDF
-Dataset are accomplised via L{Dataset} instance methods.
+Dataset are accomplished via L{Dataset} instance methods.
 
 A list of attribute names corresponding to global netCDF attributes 
 defined for the L{Dataset} can be obtained with the L{ncattrs()} method. 
