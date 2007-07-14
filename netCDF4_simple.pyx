@@ -791,15 +791,14 @@ a scalar.
 
 C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None)}
 
-The C{datatype} must be a string with the
-same meaning as the C{dtype.str} attribute of arrays in module numpy.
-Supported types are: C{'S1' (NC_CHAR), 'i1' (NC_BYTE), 'u1'
-(NC_UBYTE), 'i2' (NC_SHORT), 'u2' (NC_USHORT), 'i4' (NC_INT), 'u4'
-(NC_UINT), 'i8' (NC_INT64), 'u8' (NC_UINT64), 'f4' (NC_FLOAT), 'f8'
-(NC_DOUBLE)}.
+The C{datatype} must be a string with the same meaning as the
+C{dtype.str} attribute of arrays in module numpy. Supported types are:
+C{'S1' (NC_CHAR), 'i1' (NC_BYTE), 'u1' (NC_UBYTE), 'i2' (NC_SHORT), 'u2'
+(NC_USHORT), 'i4' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64), 'u8'
+(NC_UINT64), 'f4' (NC_FLOAT), 'f8' (NC_DOUBLE)}.
 
-Data from netCDF variables is presented to
-python as numpy arrays with the corresponding data type. 
+Data from netCDF variables is presented to python as numpy arrays with
+the corresponding data type. 
 
 C{dimensions} must be a tuple containing dimension names (strings) that 
 have been defined previously using C{createDimension}. The default value 
@@ -827,16 +826,16 @@ netCDF C{_FillValue} (the value that the variable gets filled with before
 any data is written to it).  If fill_value is set to C{False}, then
 the variable is not pre-filled.
 
-If the optional keyword parameter C{least_significant_digit} is specified, 
-variable data will be truncated (quantized). In conjunction with 
-C{zlib=True} this produces 'lossy', but significantly more efficient 
-compression. For example, if C{least_significant_digit=1}, data will be 
-quantized using C{numpy.around(scale*data)/scale}, where scale = 2**bits, 
-and bits is determined so that a precision of 0.1 is retained (in this 
-case bits=4). From 
-U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}: 
-"least_significant_digit -- power of ten of the smallest decimal place in 
-unpacked data that is a reliable value." Default is C{None}, or no 
+If the optional keyword parameter C{least_significant_digit} is
+specified, variable data will be truncated (quantized). In conjunction
+with C{zlib=True} this produces 'lossy', but significantly more
+efficient compression. For example, if C{least_significant_digit=1},
+data will be quantized using C{numpy.around(scale*data)/scale}, where
+scale = 2**bits, and bits is determined so that a precision of 0.1 is
+retained (in this case bits=4). From
+U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}:
+"least_significant_digit -- power of ten of the smallest decimal place
+in unpacked data that is a reliable value." Default is C{None}, or no
 quantization, or 'lossless' compression.
 
 The return value is the L{Variable} class instance describing the new 
@@ -851,18 +850,16 @@ L{Variable} instances behave much like array objects. Data can be
 assigned to or retrieved from a variable with indexing and slicing
 operations on the L{Variable} instance. A L{Variable} instance has five
 standard attributes: C{dimensions, dtype, shape, ndim} and
-C{least_significant_digit}. Application
-programs should never modify these attributes. The C{dimensions}
-attribute is a tuple containing the names of the dimensions associated
-with this variable. The C{dtype} attribute is a string describing the
-variable's data type (C{i4, f8, S1,} etc).
-The C{shape} attribute
-is a tuple describing the current sizes of all the variable's
-dimensions. The C{least_significant_digit} attributes describes the
-power of ten of the smallest decimal place in the data the contains a
-reliable value. 
-assigned to the L{Variable} instance. If C{None}, the data is not
-truncated. The C{ndim} attribute is the number of variable dimensions."""
+C{least_significant_digit}. Application programs should never modify
+these attributes. The C{dimensions} attribute is a tuple containing the
+names of the dimensions associated with this variable. The C{dtype}
+attribute is a string describing the variable's data type (C{i4, f8,
+S1,} etc). The C{shape} attribute is a tuple describing the current
+sizes of all the variable's dimensions. The C{least_significant_digit}
+attributes describes the power of ten of the smallest decimal place in
+the data the contains a reliable value.  assigned to the L{Variable}
+instance. If C{None}, the data is not truncated. The C{ndim} attribute
+is the number of variable dimensions."""
 
         self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, chunking=chunking, least_significant_digit=least_significant_digit, fill_value=fill_value)
         return self.variables[varname]
@@ -1173,10 +1170,10 @@ B{Returns:}
 a L{Variable} instance.  All further operations on the netCDF Variable are 
 accomplised via L{Variable} instance methods.
 
-A list of attribute names corresponding to netCDF attributes defined for 
-the variable can be obtained with the C{ncattrs()} method. These 
-attributes can be created by assigning to an attribute of the L{Variable} 
-instance. A dictionary containing all the netCDF attribute
+A list of attribute names corresponding to netCDF attributes defined for
+the variable can be obtained with the C{ncattrs()} method. These
+attributes can be created by assigning to an attribute of the
+L{Variable} instance. A dictionary containing all the netCDF attribute
 name/value pairs is provided by the C{__dict__} attribute of a
 L{Variable} instance.
 
