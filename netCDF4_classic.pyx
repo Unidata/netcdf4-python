@@ -2,18 +2,19 @@
 Introduction
 ============
 
-Python interface to the netCDF version 4 library that maintains backward 
-compatibility with netCDF version 3 clients.  It can read and write netCDF 
-3 files, as well as netCDF 4 files that are backward compatible with 
-netCDF 3 clients. U{netCDF version 4 
-<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many features 
-not found in earlier versions of the library and is implemented on top of 
-U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module does not implement 
-any of the new features of netCDF 4, except zlib compression. To use the 
-other new features of netCDF 4, use the companion L{netCDF4} module (which 
-produces netCDF 4 files that can only be read by netCDF 4 clients).  The 
-API modelled after U{Scientific.IO.NetCDF 
-<http://starship.python.net/~hinsen/ScientificPython>}, and should be 
+Python interface to the netCDF version 4 library that maintains backward
+compatibility with netCDF version 3 clients.  It can read and write
+netCDF 3 files, as well as netCDF 4 files that are backward compatible
+with netCDF 3 clients. It also produces files that can be read by HDF5
+clients. U{netCDF version 4
+<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many
+features not found in earlier versions of the library and is implemented
+on top of U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module does not
+implement any of the new features of netCDF 4, except zlib compression.
+To use the other new features of netCDF 4, use the companion L{netCDF4}
+module (which produces netCDF 4 files that can only be read by netCDF 4
+and HDF5 clients).  The API modelled after U{Scientific.IO.NetCDF
+<http://starship.python.net/~hinsen/ScientificPython>}, and should be
 familiar to users of that module.
 
 Download 

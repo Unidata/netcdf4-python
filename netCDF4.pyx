@@ -7,9 +7,9 @@ Python interface to the netCDF version 4 library.  U{netCDF version 4
 features not found in earlier versions of the library and is implemented
 on top of U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module can read
 files created with netCDF versions 2 and 3, but writes files which are
-only compatible with netCDF version 4. To create files which are
-compatible with netCDF 3 clients use the companion L{netCDF4_classic}
-module. The API modelled after U{Scientific.IO.NetCDF
+only compatible with netCDF version 4 and HDF5 clients. To create files
+which are compatible with netCDF 3 and HDF5 clients use the companion
+L{netCDF4_classic} module. The API modelled after U{Scientific.IO.NetCDF
 <http://starship.python.net/~hinsen/ScientificPython>}, and should be
 familiar to users of that module.
 
