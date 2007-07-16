@@ -542,7 +542,7 @@ cdef _get_vars(dataset):
 # these are class attributes that 
 # only exist at the python level (not in the netCDF file).
 
-_private_atts = ['_dsetid','_dset','_varid','dimensions','variables','dtype','file_format']
+_private_atts = ['_dsetid','_dset','_varid','dimensions','variables','dtype','file_format','ndim']
 
 cdef class Dataset:
     """

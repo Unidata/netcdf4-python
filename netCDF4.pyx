@@ -882,7 +882,7 @@ cdef _get_vars(group):
 # these are class attributes that 
 # only exist at the python level (not in the netCDF file).
 
-_private_atts = ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format', '_nunlimdim','path','usertype','usertype_name','dtype_base','parent']
+_private_atts = ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format', '_nunlimdim','path','usertype','usertype_name','dtype_base','parent','ndim']
 
 
 cdef class Dataset:
