@@ -584,7 +584,8 @@ cdef _set_att(int grpid, int varid, name, value):
     attname = PyString_AsString(name)
     # put attribute value into a numpy array.
     value_arr = NP.array(value)
-    # if array is 64 bit integers, cast to 32 bit integers.
+    # if array is 64 bit integers, cast to 32 bit integers
+    # if 64-bit datatype not supported.
     if value_arr.dtype.str[1:] == 'i8' and 'i8' not in _supportedtypes:
         value_arr = value_arr.astype('i4')
     # if array contains strings, write a text attribute.
@@ -1161,9 +1162,8 @@ method)."""
             ierr = nc_def_grp(parent._grpid, groupname, &self._grpid)
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
+        # set file_format attribute.
         self.file_format = _get_format(self._grpid)
-        if self.file_format != 'NETCDF4':
-            raise ValueError('Groups only allowed in NETCDF4 format files')
         # get number of groups in this group.
         ierr = nc_inq_grps(self._grpid, &numgrps, NULL)
         if ierr != NC_NOERR:
@@ -1543,6 +1543,7 @@ C{ncattrs()}"""
         """return dictionary containing HDF5 filter parameters."""
         cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
         filtdict = {'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
+        if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return
         ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &ideflate_level)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
