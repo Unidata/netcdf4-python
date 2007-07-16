@@ -2,15 +2,14 @@
 Introduction
 ============
 
-Python interface to the netCDF version 4 library.  U{netCDF version 4
-<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many
-features not found in earlier versions of the library and is implemented
-on top of U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module can read
-files created with netCDF versions 2 and 3, but writes files which are
-only compatible with netCDF version 4 and HDF5 clients. To create files
-which are compatible with netCDF 3 and HDF5 clients use the companion
-L{netCDF4_classic} module. The API modelled after U{Scientific.IO.NetCDF
-<http://starship.python.net/~hinsen/ScientificPython>}, and should be
+Python interface to the netCDF version 4 library.  U{netCDF version 4 
+<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many features 
+not found in earlier versions of the library and is implemented on top of 
+U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module can read and write 
+files created with netCDF versions 2, 3 and 4, and can create files that 
+are readable by HDF5 clients. The API modelled after 
+U{Scientific.IO.NetCDF 
+<http://starship.python.net/~hinsen/ScientificPython>}, and should be 
 familiar to users of that module.
 
 Many new features of netCDF 4 are implemented, such as multiple
@@ -69,10 +68,10 @@ version 3 of the netCDF library. C{NETCDF4_CLASSIC} files use the version
 3 API. They can be read by netCDF 3 clients only if they have been 
 relinked against the netCDF 4 library. They can also be read by HDF5 
 clients. C{NETCDF4} files use the version 4 disk format (HDF5) and use the 
-new features of the version 4 API.  The C{netCDF4} module can read files 
-with any of these formats, but only writes C{NETCDF4} formatted files. To 
-write C{NETCDF4_CLASSIC}, C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT} formatted 
-files, use the L{netCDF4_classic} module. To see what how a given file is 
+new features of the version 4 API.  The C{netCDF4} module can read and 
+write files in any of these formats. When creating a new file, the format 
+may be specified using the C{format} keyword in the C{Dataset} 
+constructor.  The default format is C{NETCDF4}. To see how a given file is 
 formatted, you can examine the C{file_format} L{Dataset} attribute. 
 Closing the netCDF file is accomplished via the C{close} method of the 
 L{Dataset} instance.
@@ -80,7 +79,7 @@ L{Dataset} instance.
 Here's an example:
 
 >>> import netCDF4
->>> rootgrp = netCDF4.Dataset('test.nc', 'w')
+>>> rootgrp = netCDF4.Dataset('test.nc', 'w', format='NETCDF4')
 >>> print rootgrp.file_format
 NETCDF4
 >>>
@@ -90,17 +89,18 @@ NETCDF4
 2) Groups in a netCDF file
 --------------------------
 
-netCDF version 4 added support for organizing data in hierarchical
-groups, which are analagous to directories in a filesystem. Groups serve
-as containers for variables, dimensions and attributes, as well as other
-groups.  A C{netCDF4.Dataset} defines creates a special group, called
-the 'root group', which is similar to the root directory in a unix
-filesystem.  To create L{Group} instances, use the C{createGroup} method
-of a L{Dataset} or L{Group} instance. C{createGroup} takes a single
-argument, a python string containing the name of the new group. The new
-L{Group} instances contained within the root group can be accessed by
-name using the C{groups} dictionary attribute of the L{Dataset}
-instance.
+netCDF version 4 added support for organizing data in hierarchical groups, 
+which are analagous to directories in a filesystem. Groups serve as 
+containers for variables, dimensions and attributes, as well as other 
+groups.  A C{netCDF4.Dataset} defines creates a special group, called the 
+'root group', which is similar to the root directory in a unix filesystem.  
+To create L{Group} instances, use the C{createGroup} method of a 
+L{Dataset} or L{Group} instance. C{createGroup} takes a single argument, a 
+python string containing the name of the new group. The new L{Group} 
+instances contained within the root group can be accessed by name using 
+the C{groups} dictionary attribute of the L{Dataset} instance.  Only 
+C{NETCDF4} formatted files support Groups, if you try to create a Group in 
+a netCDF 3 file you will get an error message.
 
 >>> rootgrp = netCDF4.Dataset('test.nc', 'a')
 >>> fcstgrp = rootgrp.createGroup('forecasts')
@@ -152,7 +152,9 @@ Python string is used to set the name of the dimension, and an integer
 value is used to set the size. To create an unlimited dimension (a
 dimension that can be appended to), the size value is set to C{None}. In
 this example, there both the C{time} and C{level} dimensions are
-unlimited.
+unlimited.  Having more than one unlimited dimension is a new netCDF 4
+feature, in netCDF 3 files there may be only one, and it must be the
+first (leftmost) dimension of the variable.
 
 >>> rootgrp.createDimension('level', None)
 >>> rootgrp.createDimension('time', None)
@@ -188,29 +190,29 @@ of a L{Dataset} or L{Group} instance.
 4) Variables in a netCDF file
 -----------------------------
 
-netCDF variables behave much like python multidimensional array objects
-supplied by the U{numpy module <http://numpy.scipy.org>}. However,
-unlike numpy arrays, netCDF4 variables can be appended to along one or
-more 'unlimited' dimensions. To create a netCDF variable, use the
-C{createVariable} method of a L{Dataset} or L{Group} instance. The
-C{createVariable} method has two mandatory arguments, the variable name
-(a Python string), and the variable datatype. The variable's dimensions
-are given by a tuple containing the dimension names (defined previously
-with C{createDimension}). To create a scalar variable, simply leave out
-the dimensions keyword. The variable primitive datatypes correspond to
-the dtype.str attribute of a numpy array, and can be one of C{'f4'}
-(32-bit floating point), C{'f8'} (64-bit floating point), C{'i4'}
-(32-bit signed integer), C{'i2'} (16-bit signed integer), C{'i8'}
-(64-bit singed integer), C{'i1'} (8-bit signed integer), C{'u1'} (8-bit
-unsigned integer), C{'u2'} (16-bit unsigned integer), C{'u4'} (32-bit
-unsigned integer), C{'u8'} (64-bit unsigned integer), or C{'S1'}
-(single-character string). 
+netCDF variables behave much like python multidimensional array objects 
+supplied by the U{numpy module <http://numpy.scipy.org>}. However, unlike 
+numpy arrays, netCDF4 variables can be appended to along one or more 
+'unlimited' dimensions. To create a netCDF variable, use the 
+C{createVariable} method of a L{Dataset} or L{Group} instance. The 
+C{createVariable} method has two mandatory arguments, the variable name (a 
+Python string), and the variable datatype. The variable's dimensions are 
+given by a tuple containing the dimension names (defined previously with 
+C{createDimension}). To create a scalar variable, simply leave out the 
+dimensions keyword. The variable primitive datatypes correspond to the 
+dtype.str attribute of a numpy array, and can be one of C{'f4'} (32-bit 
+floating point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed 
+integer), C{'i2'} (16-bit signed integer), C{'i8'} (64-bit singed 
+integer), C{'i1'} (8-bit signed integer), C{'u1'} (8-bit unsigned 
+integer), C{'u2'} (16-bit unsigned integer), C{'u4'} (32-bit unsigned 
+integer), C{'u8'} (64-bit unsigned integer), or C{'S1'} (single-character 
+string).  netCDF version 3 files do not support any of the unsigned 
+integer types or the 64-bit integer type.
 
-The dimensions themselves
-are usually also defined as variables, called coordinate variables. The
-C{createVariable} method returns an instance of the L{Variable} class
-whose methods can be used later to access and set variable data and
-attributes.
+The dimensions themselves are usually also defined as variables, called 
+coordinate variables. The C{createVariable} method returns an instance of 
+the L{Variable} class whose methods can be used later to access and set 
+variable data and attributes.
 
 >>> times = rootgrp.createVariable('time','f8',('time',))
 >>> levels = rootgrp.createVariable('level','i4',('level',))
@@ -239,13 +241,12 @@ L{Dataset} instance.
 ------------------------------
 
 There are two types of attributes in a netCDF file, global and variable. 
-Global attributes provide information about a group, or the entire
-dataset, as a whole. L{Variable} attributes provide information about
-one of the variables in a group. Global attributes are set by assigning
-values to L{Dataset} or L{Group} instance variables. L{Variable}
-attributes are set by assigning values to L{Variable} instances
-variables. Attributes can be strings, numbers or sequences. Returning to
-our example,
+Global attributes provide information about a group, or the entire 
+dataset, as a whole. L{Variable} attributes provide information about one 
+of the variables in a group. Global attributes are set by assigning values 
+to L{Dataset} or L{Group} instance variables. L{Variable} attributes are 
+set by assigning values to L{Variable} instances variables. Attributes can 
+be strings, numbers or sequences. Returning to our example,
 
 >>> import time
 >>> rootgrp.description = 'bogus example script'
@@ -360,7 +361,7 @@ documentation for more details.
 7) Efficient compression of netCDF variables
 --------------------------------------------
 
-Data stored in netCDF L{Variable} objects can be compressed and 
+Data stored in netCDF 4 L{Variable} objects can be compressed and 
 decompressed on the fly. The parameters for the compression are determined 
 by the C{zlib}, C{complevel} and C{shuffle} keyword arguments to the 
 C{createVariable} method. To turn on compression, set C{zlib=True}.  The 
@@ -372,7 +373,9 @@ de-interlaces a block of data before compression by reordering the bytes.
 The shuffle filter can significantly improve compression ratios, and is on 
 by default.  Setting C{fletcher32} keyword argument to C{createVariable} 
 to C{True} (it's C{False} by default) enables the Fletcher32 checksum 
-algorithm for error detection.
+algorithm for error detection. These keyword arguments will be silently 
+ignored if the file format is C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT}, 
+although they will work with C{NETCDF4_CLASSIC} files.
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
@@ -407,7 +410,7 @@ along with several other examples. Unit tests are in the test directory.
 
 @contact: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
 
-@copyright: 2006 by Jeffrey Whitaker.
+@copyright: 2007 by Jeffrey Whitaker.
 
 @license: Permission to use, copy, modify, and distribute this software and
 its documentation for any purpose and without fee is hereby granted,
