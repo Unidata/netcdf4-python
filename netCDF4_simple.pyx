@@ -465,7 +465,6 @@ __version__ = "0.6.4"
 # Initialize numpy
 import os
 import numpy as NP
-import cPickle
 from numpy import __version__ as _npversion
 if _npversion.split('.')[0] < '1':
     raise ImportError('requires numpy version 1.0rc1 or later')
@@ -509,18 +508,8 @@ cdef _get_att(int grpid, int varid, name):
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         pstring = value_arr.tostring()
-        if pstring and pstring[0] == '\x80': # a pickle string
-            attout = cPickle.loads(pstring)
-            # attout should always be an object array.
-            # if result is a scalar array, just return scalar.
-            if attout.shape == (): 
-                return attout.item()
-            # if result is an object array with multiple elements, return a list.
-            else:
-                return attout.tolist()
-        else:
-            # remove NULL characters from python string
-            return pstring.replace('\x00','')
+        # remove NULL characters from python string
+        return pstring.replace('\x00','')
     # a regular numeric type.
     else:
         if att_type == NC_LONG:
@@ -596,13 +585,6 @@ cdef _set_att(int grpid, int varid, name, value):
         ierr = nc_put_att_text(grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
-    # an object array, save as pickled string in a text attribute.
-    # will be unpickled when attribute is accessed..
-    elif value_arr.dtype.char == 'O':
-        pstring = cPickle.dumps(value_arr,2)
-        lenarr = len(pstring)
-        strdata = PyString_AsString(pstring)
-        ierr = nc_put_att_text(grpid, varid, attname, lenarr, strdata)
     # a 'regular' array type ('f4','i4','f8' etc)
     else:
         if value_arr.dtype.str[1:] not in _supportedtypes:
