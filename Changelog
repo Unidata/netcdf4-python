@@ -1,3 +1,14 @@
+version 0.7 (not yet released)
+
+* renamed MFnetCDF4_classic --> MFnetCDF4.
+
+* eliminated netCDF4_classic module (all file formats handled by
+  netCDF4 module now).
+
+* removed all user-defined data type stuff (it was hacky and made 
+  the code too complex - wait till there is a real use case to 
+  refactor and put back in).
+
 * added 'ndim' variable attribute (number of variable dimensions).
 
 20070424 - version 0.6.3 (svn revision 302)

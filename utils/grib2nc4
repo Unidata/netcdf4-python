@@ -3,7 +3,7 @@ try:
     from PyNGL import nio
 except ImportError:
     raise ImportError('need PyNGL/PyNIO to read GRIB files')
-import netCDF4_classic as netCDF4
+import netCDF4
 import sys
 import numpy as NP
 
@@ -28,7 +28,7 @@ doesn't work with GRIB2 files (since they are not yet supported in PyNIO).
 
 grbfile = sys.argv[1]
 f = nio.open_file(grbfile+'.grb')
-nc = netCDF4.Dataset(grbfile+'.nc','w')
+nc = netCDF4.Dataset(grbfile+'.nc','w',format='NETCDF4_CLASSIC')
 
 for name,att in f.__dict__.items():
     setattr(nc,name,att)

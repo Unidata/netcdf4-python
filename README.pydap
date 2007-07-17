@@ -2,12 +2,8 @@ To serve netCDF-3 or netCDF-4 'classic' files over http
 the pydap DAP server (http://pydap.org), just make these small changes
 to the pydap netCDF plugin (http://pydap.org/plugins/netcdf.html).
 
-A pydap plugin that supports all the features of netCDF-4 files
-(groups, compound and vlen data types) is on the TO-DO list.
-
-
---- dap/plugins/netcdf4_classic/__init__.py.orig	2007-03-01 17:51:43.000000000 -0700
-+++ dap/plugins/netcdf4_classic/__init__.py	2007-03-01 17:54:00.000000000 -0700
+--- dap/plugins/netcdf4/__init__.py.orig	2007-03-01 17:51:43.000000000 -0700
++++ dap/plugins/netcdf4/__init__.py	2007-03-01 17:54:00.000000000 -0700
 @@ -10,10 +10,7 @@
  
  import os.path
@@ -16,7 +12,7 @@ A pydap plugin that supports all the features of netCDF-4 files
 -    from pynetcdf import NetCDFFile
 -except ImportError:
 -    from pupynere import NetCDFFile
-+from netCDF4_classic import Dataset as NetCDFFile
++from netCDF4 import Dataset as NetCDFFile
  
  from arrayterator import arrayterator
  

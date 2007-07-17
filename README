@@ -13,9 +13,8 @@ must be installed first.
 To install just the pure-python netcdftime module, 
 run 'python setup-netcdftime.py install'
 
-Unit tests for netCDF4 and netCDF4_classic are in the test and test_classic
-directories.  To run, execute the 'run_all.py' scripts in each of those
-directories.
+Unit tests are in the 'test' directory.
+To run all the tests, executre 'cd test; python run_all.py'.
 
 More detailed documentation is available at docs/index.html, or
 http://netcdf4-python.googlecode.com/svn/trunk/docs/index.html.

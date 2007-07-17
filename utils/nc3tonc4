@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from netCDF4_classic import Dataset
+from netCDF4 import Dataset
 import numpy as NP
 
 def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=True,fletcher32=False,clobber=False,lsd_dict=None,nchunk=1000,quiet=False):
@@ -15,7 +15,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
     how the compression is done."""
 
     ncfile3 = Dataset(filename3,'r')
-    ncfile4 = Dataset(filename4,'w',clobber=clobber)
+    ncfile4 = Dataset(filename4,'w',clobber=clobber,format='NETCDF4_CLASSIC')
     mval = 1.e30 # missing value if unpackshort=True
     # create dimensions. Check for unlimited dim.
     unlimdimname = False
