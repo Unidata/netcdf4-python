@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 try:
-    from PyNGL import nio
+    from PyNGL_numpy import nio
 except ImportError:
     raise ImportError('need PyNGL/PyNIO to read GRIB files')
 import netCDF4
