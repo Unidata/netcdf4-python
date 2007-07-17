@@ -405,8 +405,8 @@ and then
 
 and see how much smaller the resulting files are.
 
-All of the code in this tutorial is available in examples/tutorial.py,
-along with several other examples. Unit tests are in the test directory.
+All of the code in this tutorial is available in C{examples/tutorial.py},
+Unit tests are in the C{test} directory.
 
 @contact: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
 
