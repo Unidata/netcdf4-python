@@ -23,9 +23,8 @@ INTATT = 1
 FLOATATT = math.pi
 SEQATT = NP.arange(10)
 STRINGSEQATT = ['mary ','had ','a ','little ','lamb']
-OBJATT = {'spam':1,'eggs':2}
 ATTDICT = {'stratt':STRATT,'floatatt':FLOATATT,'seqatt':SEQATT,
-           'stringseqatt':''.join(STRINGSEQATT),'objatt':OBJATT,
+           'stringseqatt':''.join(STRINGSEQATT),
            'emptystratt':EMPTYSTRATT,'intatt':INTATT}
 
 class VariablesTestCase(unittest.TestCase):
@@ -40,9 +39,6 @@ class VariablesTestCase(unittest.TestCase):
         f.seqatt = SEQATT
         # sequences of strings converted to a single string.
         f.stringseqatt = STRINGSEQATT
-        # python objects that cannot be cast to numpy arrays are stored
-        # as pickled strings (and unpickled when accessed).
-        f.objatt = OBJATT
         g = f.createGroup(GROUP_NAME)
         f.createDimension(DIM1_NAME, DIM1_LEN)
         f.createDimension(DIM2_NAME, DIM2_LEN)
@@ -56,7 +52,6 @@ class VariablesTestCase(unittest.TestCase):
         g.floatatt = FLOATATT
         g.seqatt = SEQATT
         g.stringseqatt = STRINGSEQATT
-        g.objatt = OBJATT
         v = f.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         v.stratt = STRATT
         v.emptystratt = EMPTYSTRATT
@@ -64,7 +59,6 @@ class VariablesTestCase(unittest.TestCase):
         v.floatatt = FLOATATT
         v.seqatt = SEQATT
         v.stringseqatt = STRINGSEQATT
-        v.objatt = OBJATT
         v1 = g.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         v1.stratt = STRATT
         v1.emptystratt = EMPTYSTRATT
@@ -72,7 +66,6 @@ class VariablesTestCase(unittest.TestCase):
         v1.floatatt = FLOATATT
         v1.seqatt = SEQATT
         v1.stringseqatt = STRINGSEQATT
-        v1.objatt = OBJATT
         f.close()
 
     def tearDown(self):
@@ -100,7 +93,6 @@ class VariablesTestCase(unittest.TestCase):
         assert f.emptystratt == EMPTYSTRATT
         assert f.seqatt.tolist() == SEQATT.tolist()
         assert f.stringseqatt == ''.join(STRINGSEQATT)
-        assert f.objatt == OBJATT
         # variable attributes.
         # check __dict__ method for accessing all netCDF attributes.
         for key,val in ATTDICT.iteritems():
@@ -114,7 +106,6 @@ class VariablesTestCase(unittest.TestCase):
         assert v.stratt == STRATT
         assert v.seqatt.tolist() == SEQATT.tolist()
         assert v.stringseqatt == ''.join(STRINGSEQATT)
-        assert v.objatt == OBJATT
         # check attributes in subgroup.
         # global attributes.
         for key,val in ATTDICT.iteritems():
@@ -128,7 +119,6 @@ class VariablesTestCase(unittest.TestCase):
         assert g.emptystratt == EMPTYSTRATT
         assert g.seqatt.tolist() == SEQATT.tolist()
         assert g.stringseqatt == ''.join(STRINGSEQATT)
-        assert g.objatt == OBJATT
         for key,val in ATTDICT.iteritems():
             if type(val) == NP.ndarray:
                 assert v1.__dict__[key].tolist() == val.tolist()
@@ -140,7 +130,6 @@ class VariablesTestCase(unittest.TestCase):
         assert v1.emptystratt == EMPTYSTRATT
         assert v1.seqatt.tolist() == SEQATT.tolist()
         assert v1.stringseqatt == ''.join(STRINGSEQATT)
-        assert v1.objatt == OBJATT
         f.close()
 
 if __name__ == '__main__':
