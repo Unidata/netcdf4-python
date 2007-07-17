@@ -1300,7 +1300,7 @@ B{C{dimensions}} - a tuple containing the variable's dimension names
 which means the variable is a scalar (and therefore has no dimensions).
 
 B{C{zlib}} - if C{True}, data assigned to the L{Variable}  
-instance is compressed on disk. Defalut C{False}.
+instance is compressed on disk. Default C{False}.
 
 B{C{complevel}} - the level of zlib compression to use (1 is the fastest, 
 but poorest compression, 9 is the slowest but best compression). Default 6.
