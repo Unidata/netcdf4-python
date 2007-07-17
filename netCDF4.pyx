@@ -980,6 +980,10 @@ If the optional keyword C{chunking} is C{'seq'} (Default) HDF5 chunk sizes
 are set to favor sequential access.  If C{chunking='sub'}, chunk sizes are 
 set to favor subsetting equally in all dimensions.
 
+The C{zlib, complevel, shuffle, fletcher32} and C{chunking} keywords
+are silently ignored for netCDF 3 files that do not support 
+HDF5 compression and checksum features.
+
 The optional keyword C{fill_value} can be used to override the default 
 netCDF C{_FillValue} (the value that the variable gets filled with before 
 any data is written to it).  If fill_value is set to C{False}, then
@@ -1317,6 +1321,10 @@ unlimited dimension in HDF5. NetCDF-4 supports setting the chunking
 algorithm at variable creation.  If C{chunking = 'seq'} (default) chunk 
 sizes are set to favor sequential access. Setting C{chunking = 'sub'} will 
 cause chunk sizes to be set to favor subsetting equally in any dimension.
+
+The C{zlib, complevel, shuffle, fletcher32} and C{chunking} keywords
+are silently ignored for netCDF 3 files that do not support 
+HDF5 compression and checksum features.
 
 B{C{least_significant_digit}} - If specified, variable data will be 
 truncated (quantized). In conjunction with C{zlib=True} this produces 
