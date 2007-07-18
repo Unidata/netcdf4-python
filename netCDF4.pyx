@@ -476,7 +476,7 @@ import_array()
 include "netCDF4.pxi"
 
 cdef _get_att_names(int grpid, int varid):
-    """Private function to get all the attribute names in a group"""
+    # Private function to get all the attribute names in a group
     cdef int ierr, numatts, n
     cdef char namstring[NC_MAX_NAME+1]
     if varid == NC_GLOBAL:
@@ -494,7 +494,7 @@ cdef _get_att_names(int grpid, int varid):
     return attslist
 
 cdef _get_att(int grpid, int varid, name):
-    """Private function to get an attribute value given its name"""
+    # Private function to get an attribute value given its name
     cdef int ierr, n
     cdef size_t att_len
     cdef char *attname
@@ -534,7 +534,7 @@ cdef _get_att(int grpid, int varid, name):
             return value_arr
 
 def _set_default_format(object format='NETCDF4',object verbose=False):
-    """Private function to set the netCDF file format"""
+    # Private function to set the netCDF file format
     if format == 'NETCDF4':
         if verbose:
             print "Switching to netCDF-4 format"
@@ -555,7 +555,7 @@ def _set_default_format(object format='NETCDF4',object verbose=False):
         raise ValueError, "format must be 'NETCDF4', 'NETCDF4_CLASSIC', 'NETCDF3_64BIT', or 'NETCDF3_CLASSIC', got '%s'" % format
 
 cdef _get_format(int grpid):
-    """Private function to get the netCDF file format"""
+    # Private function to get the netCDF file format
     cdef int ierr, formatp
     ierr = nc_inq_format(grpid, &formatp)
     if ierr != NC_NOERR:
@@ -570,7 +570,7 @@ cdef _get_format(int grpid):
         return 'NETCDF3_CLASSIC'
 
 cdef _set_att(int grpid, int varid, name, value):
-    """Private function to set an attribute name/value pair"""
+    # Private function to set an attribute name/value pair
     cdef int i, ierr, lenarr, n
     cdef char *attname, *datstring, *strdata
     cdef ndarray value_arr 
@@ -600,8 +600,8 @@ cdef _set_att(int grpid, int varid, name, value):
             raise RuntimeError(nc_strerror(ierr))
 
 cdef _get_dims(group):
-    """Private function to create L{Dimension} instances for all the
-    dimensions in a L{Group} or Dataset"""
+    # Private function to create L{Dimension} instances for all the
+    # dimensions in a L{Group} or Dataset
     cdef int ierr, numdims, n
     cdef int dimids[NC_MAX_DIMS]
     cdef char namstring[NC_MAX_NAME+1]
@@ -628,8 +628,8 @@ cdef _get_dims(group):
     return dimensions
 
 cdef _get_grps(group):
-    """Private function to create L{Group} instances for all the
-    groups in a L{Group} or Dataset"""
+    # Private function to create L{Group} instances for all the
+    # groups in a L{Group} or Dataset
     cdef int ierr, numgrps, n
     cdef int *grpids
     cdef char namstring[NC_MAX_NAME+1]
@@ -654,8 +654,8 @@ cdef _get_grps(group):
     return groups
 
 cdef _get_vars(group):
-    """Private function to create L{Variable} instances for all the
-    variables in a L{Group} or Dataset"""
+    # Private function to create L{Variable} instances for all the
+    # variables in a L{Group} or Dataset
     cdef int ierr, numvars, n, nn, numdims, varid
     cdef size_t sizein
     cdef int *varids
@@ -1233,8 +1233,7 @@ determine if the dimension is unlimited"""
                 raise RuntimeError(nc_strerror(ierr))
 
     def __len__(self):
-        """
-len(L{Dimension} instance) returns current size of dimension"""
+        # len(L{Dimension} instance) returns current size of dimension
         cdef int ierr
         cdef size_t lengthp
         ierr = nc_inq_dimlen(self._grpid, self._dimid, &lengthp)
@@ -1497,7 +1496,7 @@ instance. If C{None}, the data is not truncated. """
     property dimensions:
         """get variables's dimension names"""
         def __get__(self):
-            """Private method to get variables's dimension names"""
+            # Private method to get variables's dimension names
             cdef int ierr, numdims, n, nn
             cdef char namstring[NC_MAX_NAME+1]
             cdef int dimids[NC_MAX_DIMS]
@@ -1687,9 +1686,10 @@ C{getValue()}"""
             # If just one element given, make a new array of desired
             # size and fill it with that data.
             if dataelem == 1:
-                datanew = NP.empty(totelem,self.dtype)
-                datanew[:] = data
-                data = datanew
+                #datanew = NP.empty(totelem,self.dtype)
+                #datanew[:] = data
+                #data = datanew
+                data = data*NP.ones(totelem,self.dtype)
             else:
                 raise IndexError('size of data array does not conform to slice')
         # if data type of array doesn't match variable, 
