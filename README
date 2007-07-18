@@ -3,8 +3,7 @@ Python/numpy interface to the netCDF version 4 library.
 Quick Start
 -----------
 
-'python setup.py install' installs the netCDF4, netCDF4_classic
-MFnetCDF4_classic and netcdftime modules.
+'python setup.py install' installs the netCDF4 and netcdftime modules.
 The environment variables HDF5_DIR and NETCDF4_DIR must be 
 set to point to the locations of the HDF5 and netCDF4 libraries and
 headers before setup.py is run. The prerequiste libraries (numpy and pyrex)
