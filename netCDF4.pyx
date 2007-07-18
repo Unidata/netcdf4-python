@@ -6,8 +6,8 @@ Python interface to the netCDF version 4 library.  U{netCDF version 4
 <http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many features 
 not found in earlier versions of the library and is implemented on top of 
 U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module can read and write 
-files created with netCDF versions 2, 3 and 4, and can create files that 
-are readable by HDF5 clients. The API modelled after 
+files in both the new netCDF 4 and the old netCDF 3 format, and can create 
+files that are readable by HDF5 clients. The API modelled after 
 U{Scientific.IO.NetCDF 
 <http://starship.python.net/~hinsen/ScientificPython>}, and should be 
 familiar to users of that module.
@@ -206,8 +206,12 @@ integer), C{'i2'} (16-bit signed integer), C{'i8'} (64-bit singed
 integer), C{'i1'} (8-bit signed integer), C{'u1'} (8-bit unsigned 
 integer), C{'u2'} (16-bit unsigned integer), C{'u4'} (32-bit unsigned 
 integer), C{'u8'} (64-bit unsigned integer), or C{'S1'} (single-character 
-string).  netCDF version 3 files do not support any of the unsigned 
-integer types or the 64-bit integer type.
+string).  The old Numeric single-character typecodes 
+(C{'f'},C{'d'},C{'h'}, C{'s'},C{'b'},C{'B'},C{'c'},C{'i'},C{'l'}), 
+corresponding to 
+(C{'f4'},C{'f8'},C{'i2'},C{'i2'},C{'i1'},C{'i1'},C{'S1'},C{'i4'},C{'i4'}), 
+are also supported. The unsigned integer types and the 64-bit integer
+type can only be used if the file format is C{NETCDF4}.
 
 The dimensions themselves are usually also defined as variables, called 
 coordinate variables. The C{createVariable} method returns an instance of 
@@ -748,19 +752,19 @@ B{C{clobber}} - if C{True} (default), opening a file with C{mode='w'}
 will clobber an existing file with the same name.  if C{False}, an
 exception will be raised if a file with the same name already exists.
 
-B{C{format}} - underlying file format (one of C{'NETCDF4', 'NETCDF4_CLASSIC',
-'NETCDF3_CLASSIC'} or C{'NETCDF3_64BIT'}.  Only relevant if C{mode =
-'w'} (if C{mode = 'r','a'} or C{'r+'} the file format is automatically
-detected). Default C{'NETCDF4'}, which means the data is stored in an HDF5
-file, using netCDF 4 API features.  Setting C{format='NETCDF4_CLASSIC'}
-will create an HDF5 file, using only netCDF 3 compatibile API features.
-netCDF 3 clients must be recompiled and linked against the netCDF 4
-library to read files in C{NETCDF4_CLASSIC} format. 
-C{'NETCDF3_CLASSIC'} is the classic netCDF 3 file format that does not
-handle 2+ Gb files very well. C{'NETCDF3_64BIT'} is the 64-bit offset
-version of the netCDF 3 file format, which fully supports 2+ GB files,
-but is only compatible with clients linked against netCDF version 3.6.0
-or later.
+B{C{format}} - underlying file format (one of C{'NETCDF4', 
+'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'} or C{'NETCDF3_64BIT'}.  Only 
+relevant if C{mode = 'w'} (if C{mode = 'r','a'} or C{'r+'} the file format 
+is automatically detected). Default C{'NETCDF4'}, which means the data is 
+stored in an HDF5 file, using netCDF 4 API features.  Setting 
+C{format='NETCDF4_CLASSIC'} will create an HDF5 file, using only netCDF 3 
+compatibile API features. netCDF 3 clients must be recompiled and linked 
+against the netCDF 4 library to read files in C{NETCDF4_CLASSIC} format. 
+C{'NETCDF3_CLASSIC'} is the classic netCDF 3 file format that does not 
+handle 2+ Gb files very well. C{'NETCDF3_64BIT'} is the 64-bit offset 
+version of the netCDF 3 file format, which fully supports 2+ GB files, but 
+is only compatible with clients linked against netCDF version 3.6.0 or 
+later.
 
 B{Returns:}
 
@@ -950,11 +954,12 @@ a scalar.
 
 C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None)}
 
-The C{datatype} must be a string with the same meaning as the
-C{dtype.str} attribute of arrays in module numpy. Supported types are:
-C{'S1' (NC_CHAR), 'i1' (NC_BYTE), 'u1' (NC_UBYTE), 'i2' (NC_SHORT), 'u2'
-(NC_USHORT), 'i4' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64), 'u8'
-(NC_UINT64), 'f4' (NC_FLOAT), 'f8' (NC_DOUBLE)}.
+The C{datatype} must be a string with the same meaning as the C{dtype.str} 
+attribute of arrays in module numpy. Supported types are: C{'S1' or 'c' 
+(NC_CHAR), 'i1' or 'b' or 'B' (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 
+'s' (NC_SHORT), 'u2' (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' 
+(NC_UINT), 'i8' (NC_INT64), 'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' 
+or 'd' (NC_DOUBLE)}.
 
 Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type. 
@@ -1288,14 +1293,17 @@ B{C{group}} - L{Group} or L{Dataset} instance to associate with variable.
 
 B{C{name}}  - Name of the variable.
 
-B{C{datatype}} - L{Variable} data type.  If the L{Variable} has one of
-the primitive data types, datatype is one of C{'f4'} (32-bit floating
-point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed
-integer), C{'i2'} (16-bit signed integer), C{'i8'} (64-bit singed
-integer), C{'i4'} (8-bit singed integer), C{'i1'} (8-bit signed
-integer), C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit unsigned
-integer), C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit unsigned
-integer), or C{'S1'} (single-character string),
+B{C{datatype}} - L{Variable} data type, can be one of C{'f4'} (32-bit 
+floating point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed 
+integer), C{'i2'} (16-bit signed integer), C{'i8'} (64-bit singed 
+integer), C{'i4'} (8-bit singed integer), C{'i1'} (8-bit signed integer), 
+C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit unsigned integer), 
+C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit unsigned integer), or 
+C{'S1'} (single-character string).  From compatibility with 
+Scientific.IO.NetCDF, the old Numeric single character typecodes can also 
+be used (C{'f'} instead of C{'f4'}, C{'d'} instead of C{'f8'}, C{'h'} or 
+C{'s'} instead of C{'i2'}, C{'b'} or C{'B'} instead of C{'i1'}, C{'c'} 
+instead of C{'S1'}, and C{'i'} or C{'l'} instead of C{'i4'}).
 
 B{Keywords:}
 
