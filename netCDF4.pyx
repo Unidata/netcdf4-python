@@ -974,7 +974,8 @@ the level of compression desired (default 6). Ignored if C{zlib=False}.
 
 If the optional keyword C{shuffle} is C{True}, the HDF5 shuffle filter 
 will be applied before compressing the data (default C{True}).  This 
-significantly improves compression. Ignored if C{zlib=False}.
+significantly improves compression. Default is C{True}. Ignored if
+C{zlib=False}.
 
 If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5 
 checksum algorithm is activated to detect errors. Default C{False}.
@@ -1316,7 +1317,7 @@ but poorest compression, 9 is the slowest but best compression). Default 6.
 Ignored if C{zlib=False}. 
 
 B{C{shuffle}} - if C{True}, the HDF5 shuffle filter is applied 
-to improve compression. Default C{False}. Ignored if C{zlib=False}.
+to improve compression. Default C{True}. Ignored if C{zlib=False}.
 
 B{C{fletcher32}} - if C{True} (default C{False}), the Fletcher32 checksum 
 algorithm is used for error detection.
@@ -1357,7 +1358,7 @@ name/value pairs is provided by the C{__dict__} attribute of a
 L{Variable} instance.
 
 The instance variables C{dimensions, dtype, ndim, shape}
-and C{least_significant_digits} are read-only (and 
+and C{least_significant_digit} are read-only (and 
 should not be modified by the user).
 
 @ivar dimensions: A tuple containing the names of the dimensions 
@@ -1365,6 +1366,8 @@ associated with this variable.
 
 @ivar dtype: A description of the variable's data type, one of
 C{'i4','f8','S1'} etc, 
+
+@ivar ndim: The number of variable dimensions.
 
 @ivar shape: a tuple describing the current size of all the variable's 
 dimensions.
