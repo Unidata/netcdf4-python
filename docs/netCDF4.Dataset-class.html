@@ -41,10 +41,6 @@
     <td>
       <table cellpadding="0" cellspacing="0">
         <!-- hide/show private -->
-        <tr><td align="right"><span class="options"
-            >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="netCDF4.Dataset-class.html"
-            target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
@@ -59,7 +55,8 @@ object --+
 
 <dl><dt>Known Subclasses:</dt>
 <dd>
-    <a href="netCDF4.Group-class.html">Group</a>
+    <a href="netCDF4.Group-class.html">Group</a>,
+    <a href="MFnetCDF4.MFnetCDF4.Dataset-class.html">MFnetCDF4.MFnetCDF4.Dataset</a>
 </dd></dl>
 
 <hr />
@@ -67,8 +64,8 @@ object --+
   is a collection of dimensions, groups, variables and attributes. Together
   they describe the meaning of data and relations among data fields stored 
   in a netCDF file.</p>
-  <p>Constructor: <code>Dataset(filename, mode=&quot;r&quot;, 
-  clobber=True)</code></p>
+  <p>Constructor: <code>Dataset(filename, mode=&quot;r&quot;, clobber=True,
+  format='NETCDF4')</code></p>
   <p><b>Parameters:</b></p>
   <p><b><code>filename</code></b> - Name of netCDF file to hold 
   dataset.</p>
@@ -82,9 +79,23 @@ object --+
   a file with <code>mode='w'</code> will clobber an existing file with the 
   same name.  if <code>False</code>, an exception will be raised if a file 
   with the same name already exists.</p>
+  <p><b><code>format</code></b> - underlying file format (one of 
+  <code>'NETCDF4', 'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'</code> or 
+  <code>'NETCDF3_64BIT'</code>.  Only relevant if <code>mode = 'w'</code> 
+  (if <code>mode = 'r','a'</code> or <code>'r+'</code> the file format is 
+  automatically detected). Default <code>'NETCDF4'</code>, which means the 
+  data is stored in an HDF5 file, using netCDF 4 API features.  Setting 
+  <code>format='NETCDF4_CLASSIC'</code> will create an HDF5 file, using 
+  only netCDF 3 compatibile API features. netCDF 3 clients must be 
+  recompiled and linked against the netCDF 4 library to read files in 
+  <code>NETCDF4_CLASSIC</code> format. <code>'NETCDF3_CLASSIC'</code> is 
+  the classic netCDF 3 file format that does not handle 2+ Gb files very 
+  well. <code>'NETCDF3_64BIT'</code> is the 64-bit offset version of the 
+  netCDF 3 file format, which fully supports 2+ GB files, but is only 
+  compatible with clients linked against netCDF version 3.6.0 or later.</p>
   <p><b>Returns:</b></p>
   <p>a <a href="netCDF4.Dataset-class.html" class="link">Dataset</a> 
-  instance.  All further operations on the netCDF Dataset are accomplished 
+  instance.  All further operations on the netCDF Dataset are accomplised 
   via <a href="netCDF4.Dataset-class.html" class="link">Dataset</a> 
   instance methods.</p>
   <p>A list of attribute names corresponding to global netCDF attributes 
@@ -105,163 +116,282 @@ object --+
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Instance Methods</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-InstanceMethods"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
 </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#__delattr__" class="summary-sig-name">__delattr__</a>(<span class="summary-sig-arg">...</span>)</span><br />
-      x.__delattr__('name') &lt;==&gt; del x.name
-  </td>
-</tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#__delattr__" class="summary-sig-name">__delattr__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      x.__delattr__('name') &lt;==&gt; del x.name</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#__getattribute__" class="summary-sig-name">__getattribute__</a>(<span class="summary-sig-arg">...</span>)</span><br />
-      x.__getattribute__('name') &lt;==&gt; x.name
-  </td>
-</tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#__getattribute__" class="summary-sig-name">__getattribute__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      x.__getattribute__('name') &lt;==&gt; x.name</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">...</span>)</span><br />
       x.__init__(...) initializes x; see x.__class__.__doc__ for 
-      signature
-  </td>
-</tr>
+      signature</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#__new__" class="summary-sig-name">__new__</a>(<span class="summary-sig-arg">T</span>,
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#__new__" class="summary-sig-name">__new__</a>(<span class="summary-sig-arg">T</span>,
         <span class="summary-sig-arg">S</span>,
-        <span class="summary-sig-arg">...</span>)</span>
-  </td>
-</tr>
+        <span class="summary-sig-arg">...</span>)</span><br />
+      Returns:
+a new object with type S, a subtype of T</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#__setattr__" class="summary-sig-name">__setattr__</a>(<span class="summary-sig-arg">...</span>)</span><br />
-      x.__setattr__('name', value) &lt;==&gt; x.name = value
-  </td>
-</tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#__setattr__" class="summary-sig-name">__setattr__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      x.__setattr__('name', value) &lt;==&gt; x.name = value</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">...</span>)</span><br />
-      Close the Dataset.
-  </td>
-</tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      Close the Dataset.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#createDimension" class="summary-sig-name">createDimension</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#createDimension" class="summary-sig-name">createDimension</a>(<span class="summary-sig-arg">...</span>)</span><br />
       Creates a new dimension with the given <code>dimname</code> and 
-      <code>size</code>.
-  </td>
-</tr>
+      <code>size</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#createGroup" class="summary-sig-name">createGroup</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#createGroup" class="summary-sig-name">createGroup</a>(<span class="summary-sig-arg">...</span>)</span><br />
       Creates a new <a href="netCDF4.Group-class.html" 
-      class="link">Group</a> with the given <code>groupname</code>.
-  </td>
-</tr>
+      class="link">Group</a> with the given <code>groupname</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#createUserType" class="summary-sig-name">createUserType</a>(<span class="summary-sig-arg">...</span>)</span><br />
-      Creates a new user-defined data type of type 
-      <code>usertype</code>, with a base data type of 
-      <code>base_datatype</code> and a name <code>usertype_name</code>.
-  </td>
-</tr>
-<tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#createVariable" class="summary-sig-name">createVariable</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#createVariable" class="summary-sig-name">createVariable</a>(<span class="summary-sig-arg">...</span>)</span><br />
       Creates a new variable with the given <code>varname</code>, 
-      <code>datatype</code>, and <code>dimensions</code>.
-  </td>
-</tr>
+      <code>datatype</code>, and <code>dimensions</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">...</span>)</span><br />
       return netCDF global attribute names for this <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> in a list.
-  </td>
-</tr>
+      href="MFnetCDF4.MFnetCDF4.Dataset-class.html" 
+      class="link">Dataset</a> or <a href="netCDF4.Group-class.html" 
+      class="link">Group</a> in a list.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#renameDimension" class="summary-sig-name">renameDimension</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#renameDimension" class="summary-sig-name">renameDimension</a>(<span class="summary-sig-arg">...</span>)</span><br />
       rename a <a href="netCDF4.Dimension-class.html" 
       class="link">Dimension</a> named <code>oldname</code> to 
-      <code>newname</code>.
-  </td>
-</tr>
+      <code>newname</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#renameVariable" class="summary-sig-name">renameVariable</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#renameVariable" class="summary-sig-name">renameVariable</a>(<span class="summary-sig-arg">...</span>)</span><br />
       rename a <a href="netCDF4.Variable-class.html" 
       class="link">Variable</a> named <code>oldname</code> to 
-      <code>newname</code>
-  </td>
-</tr>
+      <code>newname</code></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#set_fill_off" class="summary-sig-name">set_fill_off</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#set_fill_off" class="summary-sig-name">set_fill_off</a>(<span class="summary-sig-arg">...</span>)</span><br />
       Sets the fill mode for a <a href="netCDF4.Dataset-class.html" 
-      class="link">Dataset</a> open for writing to <code>off</code>.
-  </td>
-</tr>
+      class="link">Dataset</a> open for writing to <code>off</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#set_fill_on" class="summary-sig-name">set_fill_on</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#set_fill_on" class="summary-sig-name">set_fill_on</a>(<span class="summary-sig-arg">...</span>)</span><br />
       Sets the fill mode for a <a href="netCDF4.Dataset-class.html" 
-      class="link">Dataset</a> open for writing to <code>on</code>.
-  </td>
-</tr>
+      class="link">Dataset</a> open for writing to <code>on</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <span class="summary-sig"><a href="netCDF4.Dataset-class.html#sync" class="summary-sig-name">sync</a>(<span class="summary-sig-arg">...</span>)</span><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#sync" class="summary-sig-name">sync</a>(<span class="summary-sig-arg">...</span>)</span><br />
       Writes all buffered data in the <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a> to the 
-      disk file.
-  </td>
-</tr>
+      disk file.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -274,81 +404,43 @@ object --+
     </td>
   </tr>
 </table>
-
-<br />
-<!-- ==================== CLASS VARIABLES ==================== -->
-<a name="section-ClassVariables"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Class Variables</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-ClassVariables"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-<tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netCDF4.Dataset-class.html#parent">parent</a> = <code title="&lt;member 'parent' of 'netCDF4.Dataset' objects&gt;">&lt;member 'parent' of 'netCDF4.Dataset' objects&gt;</code>
-  </td>
-</tr>
-</table>
-
-<br />
 <!-- ==================== INSTANCE VARIABLES ==================== -->
 <a name="section-InstanceVariables"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Instance Variables</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-InstanceVariables"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Variables</span></td>
 </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netCDF4.Dataset-class.html#dimensions">dimensions</a> = <code title="&lt;member 'dimensions' of 'netCDF4.Dataset' objects&gt;">&lt;member 'dimensions' of 'netCDF4.Dataset' objects&gt;</code><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="dimensions"></a><span class="summary-name">dimensions</span><br />
       The <code>dimensions</code> dictionary maps the names of 
       dimensions defined for the <a href="netCDF4.Group-class.html" 
       class="link">Group</a> or <a href="netCDF4.Dataset-class.html" 
       class="link">Dataset</a> to instances of the <a 
       href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
       class.
-  </td>
-</tr>
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netCDF4.Dataset-class.html#file_format">file_format</a> = <code title="&lt;member 'file_format' of 'netCDF4.Dataset' objects&gt;">&lt;member 'file_format' of 'netCDF4.Dataset' objects&gt;</code><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netCDF4.Dataset-class.html#file_format" class="summary-name">file_format</a><br />
       The <code>file_format</code> attribute describes the netCDF file 
       format version, one of <code>NETCDF3_CLASSIC</code>, 
       <code>NETCDF4</code>, <code>NETCDF4_CLASSIC</code> or 
       <code>NETCDF3_64BIT</code>.
-  </td>
-</tr>
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netCDF4.Dataset-class.html#groups">groups</a> = <code title="&lt;member 'groups' of 'netCDF4.Dataset' objects&gt;">&lt;member 'groups' of 'netCDF4.Dataset' objects&gt;</code><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="groups"></a><span class="summary-name">groups</span><br />
       The groups dictionary maps the names of groups created for this <a
       href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
       href="netCDF4.Group-class.html" class="link">Group</a> to instances 
@@ -357,53 +449,49 @@ object --+
       class="link">Dataset</a> class is simply a special case of the <a 
       href="netCDF4.Group-class.html" class="link">Group</a> class which 
       describes the root group in the netCDF file).
-  </td>
-</tr>
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netCDF4.Dataset-class.html#path">path</a> = <code title="&lt;member 'path' of 'netCDF4.Dataset' objects&gt;">&lt;member 'path' of 'netCDF4.Dataset' objects&gt;</code><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netCDF4.Dataset-class.html#path" class="summary-name">path</a><br />
       The <code>path</code> attribute shows the location of the <a 
       href="netCDF4.Group-class.html" class="link">Group</a> in the <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a> in a unix 
       directory format (the names of groups in the hierarchy separated by 
       backslashes).
-  </td>
-</tr>
+    </td>
+  </tr>
 <tr>
-  <td width="15%" align="right" valign="top" class="summary">
-    <code class="summary-type">&nbsp;</code>
-  </td><td class="summary">
-    <a href="netCDF4.Dataset-class.html#variables">variables</a> = <code title="&lt;member 'variables' of 'netCDF4.Dataset' objects&gt;">&lt;member 'variables' of 'netCDF4.Dataset' objects&gt;</code><br />
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="variables"></a><span class="summary-name">variables</span><br />
       The <code>variables</code> dictionary maps the names of variables 
       defined for this <a href="netCDF4.Dataset-class.html" 
       class="link">Dataset</a> or <a href="netCDF4.Group-class.html" 
       class="link">Group</a> to instances of the <a 
       href="netCDF4.Variable-class.html" class="link">Variable</a> 
       class.
-  </td>
-</tr>
+    </td>
+  </tr>
 </table>
-
-<br />
 <!-- ==================== PROPERTIES ==================== -->
 <a name="section-Properties"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Properties</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-Properties"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
 </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="parent"></a><span class="summary-name">parent</span>
+    </td>
+  </tr>
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -412,24 +500,13 @@ object --+
     </td>
   </tr>
 </table>
-
-<br />
 <!-- ==================== METHOD DETAILS ==================== -->
 <a name="section-MethodDetails"></a>
-<table class="summary" border="1" cellpadding="3"
+<table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Method Details</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-MethodDetails"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
 </tr>
 </table>
 <a name="__delattr__"></a>
@@ -442,16 +519,16 @@ object --+
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__delattr__</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   x.__delattr__('name') &lt;==&gt; del x.name
-  <dl><dt></dt><dd>
-    <dl><dt>Overrides:
+  <dl class="fields">
+    <dt>Overrides:
       object.__delattr__
-    </dt></dl>
-  </dd></dl>
+    </dt>
+  </dl>
 </td></tr></table>
 </div>
 <a name="__getattribute__"></a>
@@ -464,16 +541,16 @@ object --+
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__getattribute__</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   x.__getattribute__('name') &lt;==&gt; x.name
-  <dl><dt></dt><dd>
-    <dl><dt>Overrides:
+  <dl class="fields">
+    <dt>Overrides:
       object.__getattribute__
-    </dt></dl>
-  </dd></dl>
+    </dt>
+  </dl>
 </td></tr></table>
 </div>
 <a name="__init__"></a>
@@ -487,17 +564,17 @@ object --+
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   x.__init__(...) initializes x; see x.__class__.__doc__ for 
   signature
-  <dl><dt></dt><dd>
-    <dl><dt>Overrides:
+  <dl class="fields">
+    <dt>Overrides:
       object.__init__
-    </dt></dl>
-  </dd></dl>
+    </dt>
+  </dl>
 </td></tr></table>
 </div>
 <a name="__new__"></a>
@@ -512,21 +589,21 @@ object --+
         <span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   
-  <dl><dt></dt><dd>
-    <dl><dt>Returns:</dt>
+  <dl class="fields">
+    <dt>Returns:</dt>
         <dd><pre class="literalblock">
 a new object with type S, a subtype of T
 
-</pre></dd></dl>
-    <dl><dt>Overrides:
+</pre></dd>
+    <dt>Overrides:
       object.__new__
-    </dt></dl>
-  </dd></dl>
+    </dt>
+  </dl>
 </td></tr></table>
 </div>
 <a name="__setattr__"></a>
@@ -539,16 +616,16 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__setattr__</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   x.__setattr__('name', value) &lt;==&gt; x.name = value
-  <dl><dt></dt><dd>
-    <dl><dt>Overrides:
+  <dl class="fields">
+    <dt>Overrides:
       object.__setattr__
-    </dt></dl>
-  </dd></dl>
+    </dt>
+  </dl>
 </td></tr></table>
 </div>
 <a name="close"></a>
@@ -561,14 +638,14 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>Close the Dataset.</p>
   <code>close()</code>
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="createDimension"></a>
@@ -581,8 +658,8 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">createDimension</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>Creates a new dimension with the given <code>dimname</code> and 
@@ -598,8 +675,8 @@ a new object with type S, a subtype of T
   'unlimited', use the <code>isunlimited()</code> method of the <a 
   href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
   instance.
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="createGroup"></a>
@@ -612,8 +689,8 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">createGroup</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>Creates a new <a href="netCDF4.Group-class.html" 
@@ -621,65 +698,8 @@ a new object with type S, a subtype of T
   <p><code>createGroup(groupname)</code></p>
   The return value is a <a href="netCDF4.Group-class.html" 
   class="link">Group</a> class instance describing the new group.
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="createUserType"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">createUserType</span>(<span class="sig-arg">...</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
-  </table>
-  
-  <p>Creates a new user-defined data type of type <code>usertype</code>, 
-  with a base data type of <code>base_datatype</code> and a name 
-  <code>usertype_name</code>.</p>
-  <p><code>createUserType(base_datatype, usertype, 
-  usertype_name)</code></p>
-  <p>The new datatype may be passed to the <code>createVariable</code> 
-  method to create new variables with this datatype in this <a 
-  href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-  href="netCDF4.Group-class.html" class="link">Group</a>.  The return value
-  is a <a href="netCDF4.UserType-class.html" class="link">UserType</a> 
-  class instance.</p>
-  <p><b>Parameters:</b></p>
-  <p><b><code>base_datatype</code></b> - Base data type (data type that 
-  user-defined data type is composed of). For <code>usertype='vlen'</code>,
-  can be one of <code>'f4'</code> (32-bit floating point), 
-  <code>'f8'</code> (64-bit floating point), <code>'i4'</code> (32-bit 
-  signed integer), <code>'i2'</code> (16-bit signed integer), 
-  <code>'i8'</code> (64-bit singed integer), <code>'i1'</code> (8-bit 
-  signed integer), <code>'u1'</code> (8-bit unsigned integer), 
-  <code>'u2'</code> (16-bit unsigned integer), <code>'u4'</code> (32-bit 
-  unsigned integer), <code>'u8'</code> (64-bit unsigned integer), or 
-  <code>'S1']</code> (single-character string). For 
-  <code>usertype='compound'</code>, the base_datatype argument must be a 
-  list of 3-element tuples describing the type of each member of the 
-  compound type.  Each 3-tuple must contain a string giving the name of the
-  member, a string describing the primitive data-type of the member 
-  (<code>'i4','f8'</code>, etc. - <code>'S'</code> not allowed) and a tuple
-  describing the member's shape. The same format can be used to create a 
-  dtype descriptor for a numpy record array.</p>
-  <p><b><code>usertype</code></b> - The type of user-defined data type (can
-  be either <code>'vlen'</code> or <code>'compound'</code>, 
-  <code>'opaque'</code> and <code>'enum'</code> not yet supported).  In 
-  netCDF 4 it is possible to have nested user-defined data types (e.g.  
-  compound types composed of vlens), but this is not yet supported. All 
-  user-defined data types must consist of collections of fixed-size 
-  primitive data types (as specified by the <code>base_datatype</code> 
-  argument).</p>
-  <b><code>usertype_name</code></b> - a Python string containing a 
-  description of the user-defined data type.
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="createVariable"></a>
@@ -692,8 +712,8 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">createVariable</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>Creates a new variable with the given <code>varname</code>, 
@@ -702,35 +722,14 @@ a new object with type S, a subtype of T
   <p><code>createVariable(varname, datatype, dimensions=(), zlib=False, 
   complevel=6, shuffle=True, fletcher32=False, chunking='seq', 
   least_significant_digit=None, fill_value=None)</code></p>
-  <p>The <code>datatype</code> can either be an instance of <a 
-  href="netCDF4.UserType-class.html" class="link">UserType</a> (if the <a 
-  href="netCDF4.Variable-class.html" class="link">Variable</a> is to have a
-  user-defined data type) or a string with the same meaning as the 
-  <code>dtype.str</code> attribute of arrays in module numpy (if the <a 
-  href="netCDF4.Variable-class.html" class="link">Variable</a> is to have 
-  one of the primitive data types). Supported primitive data data types 
-  are: <code>'S1' (NC_CHAR), 'i1' (NC_BYTE), 'u1' (NC_UBYTE), 'i2' 
-  (NC_SHORT), 'u2' (NC_USHORT), 'i4' (NC_INT), 'u4' (NC_UINT), 'i8' 
-  (NC_INT64), 'u8' (NC_UINT64), 'f4' (NC_FLOAT), 'f8' (NC_DOUBLE)</code> 
-  and <code>'S' (NC_STRING)</code>.</p>
-  <p>Data from netCDF variables of a primitive data type are presented to 
-  python as numpy arrays with the corresponding data type, except for 
-  variables with <code>datatype=S</code> (variable-length strings).  
-  Variables containing variable-length strings are presented to python as 
-  numpy object arrays. Numpy arrays of arbitrary python objects can be 
-  stored in variables with <code>datatype=S</code>, if the object is not a 
-  python string it is converted to one using the python cPickle module. 
-  Pickle strings are automatically converted back into python objects when 
-  they are read back in from the netCDF file.</p>
-  <p>Data from netCDF variables with a user-defined data type are presented
-  to python as numpy object (for <code>'vlen'</code>) or record (for 
-  <code>'compound'</code>) arrays. See the docstrings for 
-  <code>UserType</code> for more information on user-defined data 
-  types.</p>
-  <p>In netCDF 4 it is possible to have nested user-defined data types 
-  (e.g. compound types composed of vlens), but this is not yet supported. 
-  All user-defined data types must consist of collections of fixed-size 
-  primitive data types (no <code>'S'</code> allowed).</p>
+  <p>The <code>datatype</code> must be a string with the same meaning as 
+  the <code>dtype.str</code> attribute of arrays in module numpy. Supported
+  types are: <code>'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B' (NC_BYTE), 
+  'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2' (NC_USHORT), 'i4' or
+  'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64), 'u8' (NC_UINT64), 
+  'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)</code>.</p>
+  <p>Data from netCDF variables is presented to python as numpy arrays with
+  the corresponding data type.</p>
   <p><code>dimensions</code> must be a tuple containing dimension names 
   (strings) that have been defined previously using 
   <code>createDimension</code>. The default value is an empty tuple, which 
@@ -743,8 +742,8 @@ a new object with type S, a subtype of T
   <code>zlib=False</code>.</p>
   <p>If the optional keyword <code>shuffle</code> is <code>True</code>, the
   HDF5 shuffle filter will be applied before compressing the data (default 
-  <code>True</code>).  This significantly improves compression. Ignored if 
-  <code>zlib=False</code>.</p>
+  <code>True</code>).  This significantly improves compression. Default is 
+  <code>True</code>. Ignored if <code>zlib=False</code>.</p>
   <p>If the optional keyword <code>fletcher32</code> is <code>True</code>, 
   the Fletcher32 HDF5 checksum algorithm is activated to detect errors. 
   Default <code>False</code>.</p>
@@ -752,6 +751,9 @@ a new object with type S, a subtype of T
   (Default) HDF5 chunk sizes are set to favor sequential access.  If 
   <code>chunking='sub'</code>, chunk sizes are set to favor subsetting 
   equally in all dimensions.</p>
+  <p>The <code>zlib, complevel, shuffle, fletcher32</code> and 
+  <code>chunking</code> keywords are silently ignored for netCDF 3 files 
+  that do not support HDF5 compression and checksum features.</p>
   <p>The optional keyword <code>fill_value</code> can be used to override 
   the default netCDF <code>_FillValue</code> (the value that the variable 
   gets filled with before any data is written to it).  If fill_value is set
@@ -783,36 +785,21 @@ a new object with type S, a subtype of T
   retrieved from a variable with indexing and slicing operations on the <a 
   href="netCDF4.Variable-class.html" class="link">Variable</a> instance. A 
   <a href="netCDF4.Variable-class.html" class="link">Variable</a> instance 
-  has eight standard attributes: <code>dimensions, dtype, dtype_base, 
-  shape, ndim, least_significant_digit, usertype</code> and 
-  <code>usertype_name</code>. Application programs should never modify 
-  these attributes. The <code>dimensions</code> attribute is a tuple 
-  containing the names of the dimensions associated with this variable. The
-  <code>ndim</code> attribute is simply the number of dimensions associated
-  with the variable. The <code>dtype</code> attribute is a string 
-  describing the variable's data type.  It can either be a string 
-  describing one of the primitive data types (<code>i4, f8, S1,</code> 
-  etc), or an instance of the class <a href="netCDF4.UserType-class.html" 
-  class="link">UserType</a>. The <code>dtype_base</code> attribute (only 
-  relevant if dtype is an instance of <a href="netCDF4.UserType-class.html"
-  class="link">UserType</a>) is a string describing the primitive data type
-  of which the user-defined data type is composed. The <code>shape</code> 
-  attribute is a tuple describing the current sizes of all the variable's 
-  dimensions. The <code>least_significant_digit</code> attributes describes
-  the power of ten of the smallest decimal place in the data the contains a
-  reliable value.  Data is truncated to this decimal place when it is 
-  assigned to the <a href="netCDF4.Variable-class.html" 
-  class="link">Variable</a> instance. If <code>None</code>, the data is not
-  truncated. The <code>usertype</code> attribute is a string describing the
-  type of user-defined data type the <a href="netCDF4.Variable-class.html" 
-  class="link">Variable</a> belongs to (<code>False</code> for a primitive 
-  data type, <code>'vlen'</code> for a variable-length array, 
-  <code>'compound'</code> for compound data type). The 
-  <code>usertype_name</code> attribute is a Python string describing the 
-  user-defined data type (<code>None</code> if <code>usertype</code> is 
-  <code>False</code>).
-  <dl><dt></dt><dd>
-  </dd></dl>
+  has five standard attributes: <code>dimensions, dtype, shape, ndim</code>
+  and <code>least_significant_digit</code>. Application programs should 
+  never modify these attributes. The <code>dimensions</code> attribute is a
+  tuple containing the names of the dimensions associated with this 
+  variable. The <code>dtype</code> attribute is a string describing the 
+  variable's data type (<code>i4, f8, S1,</code> etc). The 
+  <code>shape</code> attribute is a tuple describing the current sizes of 
+  all the variable's dimensions. The <code>least_significant_digit</code> 
+  attributes describes the power of ten of the smallest decimal place in 
+  the data the contains a reliable value.  assigned to the <a 
+  href="netCDF4.Variable-class.html" class="link">Variable</a> instance. If
+  <code>None</code>, the data is not truncated. The <code>ndim</code> 
+  attribute is the number of variable dimensions.
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="ncattrs"></a>
@@ -825,16 +812,16 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">ncattrs</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>return netCDF global attribute names for this <a 
-  href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-  href="netCDF4.Group-class.html" class="link">Group</a> in a list.</p>
+  href="MFnetCDF4.MFnetCDF4.Dataset-class.html" class="link">Dataset</a> or
+  <a href="netCDF4.Group-class.html" class="link">Group</a> in a list.</p>
   <code>ncattrs()</code>
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="renameDimension"></a>
@@ -847,16 +834,16 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">renameDimension</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>rename a <a href="netCDF4.Dimension-class.html" 
   class="link">Dimension</a> named <code>oldname</code> to 
   <code>newname</code>.</p>
   <code>renameDimension(oldname, newname)</code>
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="renameVariable"></a>
@@ -869,16 +856,16 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">renameVariable</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>rename a <a href="netCDF4.Variable-class.html" 
   class="link">Variable</a> named <code>oldname</code> to 
   <code>newname</code></p>
   <code>renameVariable(oldname, newname)</code>
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="set_fill_off"></a>
@@ -891,8 +878,8 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">set_fill_off</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>Sets the fill mode for a <a href="netCDF4.Dataset-class.html" 
@@ -901,8 +888,8 @@ a new object with type S, a subtype of T
   This will prevent the data from being pre-filled with fill values, 
   which may result in some performance improvements. However, you must then
   make sure the data is actually written before being read.
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="set_fill_on"></a>
@@ -915,8 +902,8 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">set_fill_on</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>Sets the fill mode for a <a href="netCDF4.Dataset-class.html" 
@@ -930,8 +917,8 @@ a new object with type S, a subtype of T
   <code>set_fill_on</code>.  Data which are equal to the 
   <code>_Fill_Value</code> indicate that the variable was created, but 
   never written to.
-  <dl><dt></dt><dd>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="sync"></a>
@@ -944,91 +931,27 @@ a new object with type S, a subtype of T
   <h3 class="epydoc"><span class="sig"><span class="sig-name">sync</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;</span
-    ></td>
+    >&nbsp;
+    </td>
   </table>
   
   <p>Writes all buffered data in the <a href="netCDF4.Dataset-class.html" 
   class="link">Dataset</a> to the disk file.</p>
   <code>sync()</code>
-  <dl><dt></dt><dd>
-  </dd></dl>
-</td></tr></table>
-</div>
-<br />
-<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
-<a name="section-ClassVariableDetails"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Class Variable Details</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-ClassVariableDetails"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-</table>
-<a name="parent"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">parent</h3>
-  None
-  <dl><dt></dt><dd>
-    <dl><dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-&lt;member 'parent' of 'netCDF4.Dataset' objects&gt;                         
-      </pre></td></tr></table></dd>
-    </dl>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <br />
 <!-- ==================== INSTANCE VARIABLE DETAILS ==================== -->
 <a name="section-InstanceVariableDetails"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Instance Variable Details</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-InstanceVariableDetails"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-</table>
-<a name="dimensions"></a>
-<div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">dimensions</h3>
-  The <code>dimensions</code> dictionary maps the names of dimensions 
-  defined for the <a href="netCDF4.Group-class.html" class="link">Group</a>
-  or <a href="netCDF4.Dataset-class.html" class="link">Dataset</a> to 
-  instances of the <a href="netCDF4.Dimension-class.html" 
-  class="link">Dimension</a> class.
-  <dl><dt></dt><dd>
-    <dl><dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-&lt;member 'dimensions' of 'netCDF4.Dataset' objects&gt;                     
-      </pre></td></tr></table></dd>
-    </dl>
-  </dd></dl>
-</td></tr></table>
-</div>
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Variable Details</span></td>
+</tr>
+</table>
 <a name="file_format"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1038,40 +961,10 @@ a new object with type S, a subtype of T
   The <code>file_format</code> attribute describes the netCDF file 
   format version, one of <code>NETCDF3_CLASSIC</code>, 
   <code>NETCDF4</code>, <code>NETCDF4_CLASSIC</code> or 
-  <code>NETCDF3_64BIT</code>.  This module can read all formats, but only 
-  writes <code>NETCDF4</code>. To write files in the other formats, use the
-  <a href="netCDF4_classic-module.html" class="link">netCDF4_classic</a> 
-  module.
-  <dl><dt></dt><dd>
-    <dl><dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-&lt;member 'file_format' of 'netCDF4.Dataset' objects&gt;                    
-      </pre></td></tr></table></dd>
-    </dl>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="groups"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">groups</h3>
-  The groups dictionary maps the names of groups created for this <a 
-  href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-  href="netCDF4.Group-class.html" class="link">Group</a> to instances of 
-  the <a href="netCDF4.Group-class.html" class="link">Group</a> class (the 
-  <a href="netCDF4.Dataset-class.html" class="link">Dataset</a> class is 
-  simply a special case of the <a href="netCDF4.Group-class.html" 
-  class="link">Group</a> class which describes the root group in the netCDF
-  file).
-  <dl><dt></dt><dd>
-    <dl><dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-&lt;member 'groups' of 'netCDF4.Dataset' objects&gt;                         
-      </pre></td></tr></table></dd>
-    </dl>
-  </dd></dl>
+  <code>NETCDF3_64BIT</code>.  This module can read and write all 
+  formats.
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <a name="path"></a>
@@ -1087,33 +980,8 @@ a new object with type S, a subtype of T
   backslashes). A <a href="netCDF4.Dataset-class.html" 
   class="link">Dataset</a>, instance is the root group, so the path is 
   simply <code>'/'</code>.
-  <dl><dt></dt><dd>
-    <dl><dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-&lt;member 'path' of 'netCDF4.Dataset' objects&gt;                           
-      </pre></td></tr></table></dd>
-    </dl>
-  </dd></dl>
-</td></tr></table>
-</div>
-<a name="variables"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">variables</h3>
-  The <code>variables</code> dictionary maps the names of variables 
-  defined for this <a href="netCDF4.Dataset-class.html" 
-  class="link">Dataset</a> or <a href="netCDF4.Group-class.html" 
-  class="link">Group</a> to instances of the <a 
-  href="netCDF4.Variable-class.html" class="link">Variable</a> class.
-  <dl><dt></dt><dd>
-    <dl><dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-&lt;member 'variables' of 'netCDF4.Dataset' objects&gt;                      
-      </pre></td></tr></table></dd>
-    </dl>
-  </dd></dl>
+  <dl class="fields">
+  </dl>
 </td></tr></table>
 </div>
 <br />
@@ -1139,8 +1007,9 @@ a new object with type S, a subtype of T
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
-    <td align="left" class="footer">Generated by Epydoc
-        3.0alpha3 on Sat Jul 14 07:30:37 2007</td>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Sun Jul 22 20:18:29 2007
+    </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
     </td>
