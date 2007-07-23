@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>MFnetCDF4.MFnetCDF4</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;MFnetCDF4 ::
+        Module&nbsp;MFnetCDF4
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module MFnetCDF4</h1><span class="codelink"><a href="MFnetCDF4.MFnetCDF4-pysrc.html">source&nbsp;code</a></span><br /><br />
+<p>Module for reading multi-file netCDF Datasets, making variables 
+  spanning multiple files appear as if they were in one file.</p>
+  <p>Datasets must be in <code>NETCDF4_CLASSIC, NETCDF3_CLASSIC or 
+  NETCDF3_64BIT</code> format (<code>NETCDF4</code> Datasets won't 
+  work).</p>
+  <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf" 
+  target="_top">pycdf</a> by Andre Gosselin.</p>
+  Example usage:
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> MFnetCDF4, netCDF4, numpy
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># create a series of netCDF files with a variable sharing</span>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># the same unlimited dimension.</span>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> nfile <span class="py-keyword">in</span> range(10):
+<span class="py-prompt">&gt;&gt;&gt; </span>    f = netCDF4.Dataset(<span class="py-string">'mftest'</span>+repr(nfile)+<span class="py-string">'.nc'</span>,<span class="py-string">'w'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>    f.createDimension(<span class="py-string">'x'</span>,None)
+<span class="py-prompt">&gt;&gt;&gt; </span>    x = f.createVariable(<span class="py-string">'x'</span>,<span class="py-string">'i'</span>,(<span class="py-string">'x'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span>    x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+<span class="py-prompt">&gt;&gt;&gt; </span>    f.close()
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># now read all those files in at once, in one Dataset.</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>f = MFnetCDF4.Dataset(<span class="py-string">'mftest*nc'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.variables[<span class="py-string">'x'</span>][:]
+<span class="py-output">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24</span>
+<span class="py-output"> 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49</span>
+<span class="py-output"> 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74</span>
+<span class="py-output"> 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]</span></pre><br /><br />
+
+<hr />
+<div class="fields">      <p><strong>Version:</strong>
+        0.7
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Classes</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="MFnetCDF4.MFnetCDF4.Dataset-class.html" class="summary-name">Dataset</a><br />
+      class for reading a multi-file netCDF dataset.
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0beta1 on Sun Jul 22 20:18:29 2007
+    </td>
+    <td align="right" class="footer">
+      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie()
+  // -->
+</script>
+  
+</body>
+</html>
