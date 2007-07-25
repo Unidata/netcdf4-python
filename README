@@ -6,14 +6,14 @@ Quick Start
 make sure numpy is installed.
 'python setup.py install' installs the netCDF4 and netcdftime modules.
 The environment variables HDF5_DIR and NETCDF4_DIR must be 
-set to point to the locations of the HDF5 and netCDF4 libraries and
+set to point to the locations of the HDF5 and netcdf-4 libraries and
 headers before setup.py is run.
 
 To install just the pure-python netcdftime module, 
 run 'python setup-netcdftime.py install'
 
 Unit tests are in the 'test' directory.
-To run all the tests, executre 'cd test; python run_all.py'.
+To run all the tests, execute 'cd test; python run_all.py'.
 
 More detailed documentation is available at docs/index.html, or
 http://netcdf4-python.googlecode.com/svn/trunk/docs/index.html.
