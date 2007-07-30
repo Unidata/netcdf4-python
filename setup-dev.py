@@ -1,6 +1,6 @@
 import os
 from numpy.distutils.core  import setup, Extension
-import Pyrex.Distutils
+import Cython.Distutils
 
 HDF5_dir = os.environ.get('HDF5_DIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
