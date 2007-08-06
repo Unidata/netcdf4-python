@@ -445,16 +445,6 @@ _nptonctype  = {'S1' : NC_CHAR,
 _nctonptype = {}
 for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
-# also allow old Numeric single character typecodes.
-_nptonctype['d'] = NC_DOUBLE
-_nptonctype['f'] = NC_FLOAT
-_nptonctype['i'] = NC_INT
-_nptonctype['l'] = NC_INT
-_nptonctype['s'] = NC_SHORT
-_nptonctype['h'] = NC_SHORT
-_nptonctype['c'] = NC_CHAR
-_nptonctype['b'] = NC_BYTE
-_nptonctype['B'] = NC_BYTE
 _supportedtypes = _nptonctype.keys()
 
 # utility functions (internal)
@@ -1388,8 +1378,13 @@ instance. If C{None}, the data is not truncated. """
         cdef int dimids[NC_MAX_DIMS]
         self._grpid = grp._grpid
         self._grp = grp
-        if datatype not in _supportedtypes:
+        # convert to a real numpy datatype object if necessary.
+        if type(datatype) != NP.dtype:
+            datatype = NP.dtype(datatype)
+        # check validity of datatype.
+        if datatype.str[1:] not in _supportedtypes:
             raise TypeError('illegal data type, must be one of %s, got %s' % (_supportedtypes,datatype))
+        # dtype variable attribute is a numpy datatype object.
         self.dtype = datatype
         if kwargs.has_key('id'):
             self._varid = kwargs['id']
@@ -1398,7 +1393,7 @@ instance. If C{None}, the data is not truncated. """
             ndims = len(dimensions)
             # find netCDF primitive data type corresponding to 
             # specified numpy data type.
-            xtype = _nptonctype[datatype]
+            xtype = _nptonctype[datatype.str[1:]]
             # find dimension ids.
             if ndims:
                 for n from 0 <= n < ndims:
@@ -1695,7 +1690,7 @@ C{getValue()}"""
                 raise IndexError('size of data array does not conform to slice')
         # if data type of array doesn't match variable, 
         # try to cast the data.
-        if self.dtype != data.dtype.str[1:]:
+        if self.dtype != data.dtype:
             data = data.astype(self.dtype) # cast data, if necessary.
         # if there is a negative stride, reverse the data, then use put_vars.
         if negstride:

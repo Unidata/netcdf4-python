@@ -1,3 +1,6 @@
+* createVariable accepts numpy dtype object as datatype.  dtype variable
+  attribute is now a numpy dtype object.
+
 20070723 - version 0.7 (svn revision 361)
 =========================================
 
