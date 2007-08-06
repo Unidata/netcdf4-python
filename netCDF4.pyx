@@ -198,20 +198,19 @@ Python string), and the variable datatype. The variable's dimensions are
 given by a tuple containing the dimension names (defined previously with 
 C{createDimension}). To create a scalar variable, simply leave out the 
 dimensions keyword. The variable primitive datatypes correspond to the 
-dtype attribute of a numpy array.  You can specify the datatype as
-a numpy dtype object, or anything that can be converted to a numpy
-dtype object. Valid datatype specifiers include: C{'f4'} (32-bit 
-floating point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed 
-integer), C{'i2'} (16-bit signed integer), C{'i8'} (64-bit singed 
-integer), C{'i1'} (8-bit signed integer), C{'u1'} (8-bit unsigned 
-integer), C{'u2'} (16-bit unsigned integer), C{'u4'} (32-bit unsigned 
-integer), C{'u8'} (64-bit unsigned integer), or C{'S1'} (single-character 
-string).  The old Numeric single-character typecodes 
-(C{'f'},C{'d'},C{'h'}, C{'s'},C{'b'},C{'B'},C{'c'},C{'i'},C{'l'}), 
-corresponding to 
+dtype attribute of a numpy array.  You can specify the datatype as a numpy 
+dtype object, or anything that can be converted to a numpy dtype object. 
+Valid datatype specifiers include: C{'f4'} (32-bit floating point), 
+C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed integer), C{'i2'} 
+(16-bit signed integer), C{'i8'} (64-bit singed integer), C{'i1'} (8-bit 
+signed integer), C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit 
+unsigned integer), C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit 
+unsigned integer), or C{'S1'} (single-character string).  The old Numeric 
+single-character typecodes (C{'f'},C{'d'},C{'h'}, 
+C{'s'},C{'b'},C{'B'},C{'c'},C{'i'},C{'l'}), corresponding to 
 (C{'f4'},C{'f8'},C{'i2'},C{'i2'},C{'i1'},C{'i1'},C{'S1'},C{'i4'},C{'i4'}), 
-will also work. The unsigned integer types and the 64-bit integer
-type can only be used if the file format is C{NETCDF4}.
+will also work. The unsigned integer types and the 64-bit integer type can 
+only be used if the file format is C{NETCDF4}.
 
 The dimensions themselves are usually also defined as variables, called 
 coordinate variables. The C{createVariable} method returns an instance of 
@@ -944,13 +943,12 @@ a scalar.
 
 C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None)}
 
-The C{datatype} can be a numpy datatype object, or a string that describes
-a numpy dtype object (like the C{dtype.str} attribue of a numpy array).
-Supported types are: C{'S1' or 'c' 
-(NC_CHAR), 'i1' or 'b' or 'B' (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 
-'s' (NC_SHORT), 'u2' (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' 
-(NC_UINT), 'i8' (NC_INT64), 'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' 
-or 'd' (NC_DOUBLE)}.
+The C{datatype} can be a numpy datatype object, or a string that describes 
+a numpy dtype object (like the C{dtype.str} attribue of a numpy array). 
+Supported types are: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B' 
+(NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2' 
+(NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64), 
+'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)}.
 
 Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type. 
@@ -1284,20 +1282,20 @@ B{C{group}} - L{Group} or L{Dataset} instance to associate with variable.
 
 B{C{name}}  - Name of the variable.
 
-B{C{datatype}} - L{Variable} data type. Can be specified by providing
-a numpy dtype object, or a string that describes a numpy dtype object.
-Supported values, corresponding to C{str} attribute of numpy dtype objects,
-include C{'f4'} (32-bit 
-floating point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed 
-integer), C{'i2'} (16-bit signed integer), C{'i8'} (64-bit singed 
-integer), C{'i4'} (8-bit singed integer), C{'i1'} (8-bit signed integer), 
-C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit unsigned integer), 
-C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit unsigned integer), or 
-C{'S1'} (single-character string).  From compatibility with 
-Scientific.IO.NetCDF, the old Numeric single character typecodes can also 
-be used (C{'f'} instead of C{'f4'}, C{'d'} instead of C{'f8'}, C{'h'} or 
-C{'s'} instead of C{'i2'}, C{'b'} or C{'B'} instead of C{'i1'}, C{'c'} 
-instead of C{'S1'}, and C{'i'} or C{'l'} instead of C{'i4'}).
+B{C{datatype}} - L{Variable} data type. Can be specified by providing a 
+numpy dtype object, or a string that describes a numpy dtype object. 
+Supported values, corresponding to C{str} attribute of numpy dtype 
+objects, include C{'f4'} (32-bit floating point), C{'f8'} (64-bit floating 
+point), C{'i4'} (32-bit signed integer), C{'i2'} (16-bit signed integer), 
+C{'i8'} (64-bit singed integer), C{'i4'} (8-bit singed integer), C{'i1'} 
+(8-bit signed integer), C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit 
+unsigned integer), C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit 
+unsigned integer), or C{'S1'} (single-character string).  From 
+compatibility with Scientific.IO.NetCDF, the old Numeric single character 
+typecodes can also be used (C{'f'} instead of C{'f4'}, C{'d'} instead of 
+C{'f8'}, C{'h'} or C{'s'} instead of C{'i2'}, C{'b'} or C{'B'} instead of 
+C{'i1'}, C{'c'} instead of C{'S1'}, and C{'i'} or C{'l'} instead of 
+C{'i4'}).
 
 B{Keywords:}
 
@@ -1360,8 +1358,7 @@ should not be modified by the user).
 @ivar dimensions: A tuple containing the names of the dimensions 
 associated with this variable.
 
-@ivar dtype: A description of the variable's data type, one of
-C{'i4','f8','S1'} etc, 
+@ivar dtype: A numpy dtype object describing the variable's data type.
 
 @ivar ndim: The number of variable dimensions.
 
