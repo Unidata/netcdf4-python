@@ -945,7 +945,7 @@ C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuf
 
 The C{datatype} can be a numpy datatype object, or a string that describes 
 a numpy dtype object (like the C{dtype.str} attribue of a numpy array). 
-Supported types are: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B' 
+Supported specifiers include: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B' 
 (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2' 
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64), 
 'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)}.
