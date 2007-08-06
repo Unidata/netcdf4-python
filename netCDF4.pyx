@@ -198,7 +198,9 @@ Python string), and the variable datatype. The variable's dimensions are
 given by a tuple containing the dimension names (defined previously with 
 C{createDimension}). To create a scalar variable, simply leave out the 
 dimensions keyword. The variable primitive datatypes correspond to the 
-dtype.str attribute of a numpy array, and can be one of C{'f4'} (32-bit 
+dtype attribute of a numpy array.  You can specify the datatype as
+a numpy dtype object, or anything that can be converted to a numpy
+dtype object. Valid datatype specifiers include: C{'f4'} (32-bit 
 floating point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed 
 integer), C{'i2'} (16-bit signed integer), C{'i8'} (64-bit singed 
 integer), C{'i1'} (8-bit signed integer), C{'u1'} (8-bit unsigned 
@@ -208,7 +210,7 @@ string).  The old Numeric single-character typecodes
 (C{'f'},C{'d'},C{'h'}, C{'s'},C{'b'},C{'B'},C{'c'},C{'i'},C{'l'}), 
 corresponding to 
 (C{'f4'},C{'f8'},C{'i2'},C{'i2'},C{'i1'},C{'i1'},C{'S1'},C{'i4'},C{'i4'}), 
-are also supported. The unsigned integer types and the 64-bit integer
+will also work. The unsigned integer types and the 64-bit integer
 type can only be used if the file format is C{NETCDF4}.
 
 The dimensions themselves are usually also defined as variables, called 
@@ -942,8 +944,9 @@ a scalar.
 
 C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', least_significant_digit=None, fill_value=None)}
 
-The C{datatype} must be a string with the same meaning as the C{dtype.str} 
-attribute of arrays in module numpy. Supported types are: C{'S1' or 'c' 
+The C{datatype} can be a numpy datatype object, or a string that describes
+a numpy dtype object (like the C{dtype.str} attribue of a numpy array).
+Supported types are: C{'S1' or 'c' 
 (NC_CHAR), 'i1' or 'b' or 'B' (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 
 's' (NC_SHORT), 'u2' (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' 
 (NC_UINT), 'i8' (NC_INT64), 'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' 
@@ -1281,7 +1284,10 @@ B{C{group}} - L{Group} or L{Dataset} instance to associate with variable.
 
 B{C{name}}  - Name of the variable.
 
-B{C{datatype}} - L{Variable} data type, can be one of C{'f4'} (32-bit 
+B{C{datatype}} - L{Variable} data type. Can be specified by providing
+a numpy dtype object, or a string that describes a numpy dtype object.
+Supported values, corresponding to C{str} attribute of numpy dtype objects,
+include C{'f4'} (32-bit 
 floating point), C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed 
 integer), C{'i2'} (16-bit signed integer), C{'i8'} (64-bit singed 
 integer), C{'i4'} (8-bit singed integer), C{'i1'} (8-bit signed integer), 
