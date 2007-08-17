@@ -11,7 +11,10 @@ def _find_dim(grp, dimname):
             dim = group.dimensions[dimname]
             break
         except:
-            group = group.parent
+            try:
+                group = group.parent
+            except:
+                raise ValueError("cannot find dimension %s in this group or parent groups" % dimname)
     return dim
 
 def _buildStartCountStride(elem, shape, dimensions, grp):
