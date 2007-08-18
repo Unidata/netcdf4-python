@@ -687,7 +687,7 @@ cdef _get_vars(group):
                  datatype = _nctonptype[xtype]
              except:
                  #raise KeyError('variable %s has unsupported data type' % name)
-                 print 'variable %s has unsupported datatype, skipping ..' % name
+                 print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
                  continue
              # get number of dimensions.
              ierr = nc_inq_varndims(group._grpid, varid, &numdims)
