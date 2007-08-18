@@ -1379,14 +1379,11 @@ instance. If C{None}, the data is not truncated. """
         cdef char *varname
         cdef nc_type xtype, vltypeid
         cdef int dimids[NC_MAX_DIMS]
-        # check to make sure dimensions is a tuple
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
         # dimensions = ('lat') instead of ('lat',)
         if type(dimensions) == type(''):
             dimensions = dimensions,
-        elif type(dimensions) != type(()):
-            raise TypeError('dimensions must be a tuple')
         self._grpid = grp._grpid
         self._grp = grp
         # convert to a real numpy datatype object if necessary.
