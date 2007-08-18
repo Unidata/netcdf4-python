@@ -509,7 +509,11 @@ cdef _get_att(int grpid, int varid, name):
             att_type = NC_INT
         if att_type not in _nctonptype.keys():
             raise ValueError, 'unsupported attribute type'
-        value_arr = NP.empty(att_len,_nctonptype[att_type])
+        try:
+            type_att = _nctonptype[att_type]
+        except:
+            raise KeyError('attribute %s has unsupported datatype' % attname)
+        value_arr = NP.empty(att_len,type_att)
         ierr = nc_get_att(grpid, varid, attname, value_arr.data)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
@@ -682,7 +686,9 @@ cdef _get_vars(group):
              try:
                  datatype = _nctonptype[xtype]
              except:
-                 raise KeyError('unsupported data type')
+                 #raise KeyError('variable %s has unsupported data type' % name)
+                 print 'variable %s has unsupported datatype, skipping ..' % name
+                 continue
              # get number of dimensions.
              ierr = nc_inq_varndims(group._grpid, varid, &numdims)
              if ierr != NC_NOERR:

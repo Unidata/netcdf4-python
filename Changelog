@@ -1,3 +1,8 @@
+* if a variable has an unsupported datatype (such as 'compound', or
+  'vlen'), then instead of raising an exception, just skip it. 
+  Print a useful error message when an attribute with an unsupported
+  datatype is accessed.
+
 * if variable dimension is specified as 'dimname' or ('dimname')
   in createVariable, it is automatically converted to a tuple ('dimname',).
   Better error messages when specified dimension can't be found.
