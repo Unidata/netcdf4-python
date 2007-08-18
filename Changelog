@@ -1,3 +1,7 @@
+* if variable dimension is specified as 'dimname' or ('dimname')
+  in createVariable, it is automatically converted to a tuple ('dimname',).
+  Better error messages when specified dimension can't be found.
+
 * createVariable accepts numpy dtype object as datatype.  dtype variable
   attribute is now a numpy dtype object.
 
