@@ -1,3 +1,6 @@
+version 0.7.1 (not yet released)
+===============================
+
 * if a variable has an unsupported datatype (such as 'compound', or
   'vlen'), then instead of raising an exception, just skip it. 
   Print a useful error message when an attribute with an unsupported
