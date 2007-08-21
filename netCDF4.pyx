@@ -994,7 +994,7 @@ set to favor subsetting equally in all dimensions.
 The optional keyword C{chunksizes} can be used to specify the HDF5 
 chunksizes for each dimension of the variable. A detailed discussion of 
 HDF chunking and I/O performance is available U{here 
-<http://hdf.ncsa.uiuc.edu/UG41r3_html/Perform.fm2.html#149138>}. Note that 
+<http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}. Note that 
 chunking is a tricky business, and you should only try to specify chunking 
 parameters if you really know what you are doing. You can dramatically 
 degrade I/O peformance if you do it wrong.
@@ -1354,7 +1354,7 @@ cause chunk sizes to be set to favor subsetting equally in any dimension.
 B{C{chunksizes}} - Can be used to specify the HDF5 chunksizes for each 
 dimension of the variable. A detailed discussion of HDF chunking and I/O 
 performance is available U{here 
-<http://hdf.ncsa.uiuc.edu/UG41r3_html/Perform.fm2.html#149138>}. Note that 
+<http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}. Note that
 chunking is a tricky business, and you should only try to specify chunking 
 parameters if you really know what you are doing. You can dramatically 
 degrade I/O peformance if you do it wrong.
