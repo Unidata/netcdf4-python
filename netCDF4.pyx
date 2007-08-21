@@ -464,6 +464,15 @@ if _npversion.split('.')[0] < '1':
 import_array()
 include "netCDF4.pxi"
 
+def getlibversion():
+    """
+ returns a string describing the version of the netcdf-4 library
+ used to build the module, and when it was built.
+    """
+    cdef char *libstring
+    libstring = nc_inq_libvers()
+    return PyString_FromString(libstring)
+
 cdef _get_att_names(int grpid, int varid):
     # Private function to get all the attribute names in a group
     cdef int ierr, numatts, n
