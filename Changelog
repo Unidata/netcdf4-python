@@ -1,6 +1,10 @@
 version 0.7.1 (not yet released)
 ===============================
 
+* added ability to specify chunksizes and increments to extend along
+  unlimited dimensions (kwargs 'chunksizes' and 'extend_increments'
+  to createVariable).
+
 * added "getlibversion()" function to get info about version
   of netcdf-4 library used to build module.
 
