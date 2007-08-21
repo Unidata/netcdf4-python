@@ -950,14 +950,14 @@ C{renameDimension(oldname, newname)}"""
         # looks in the file, so no need to manually update.
 
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, extend_increments=None, least_significant_digit=None, fill_value=None):
+    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, least_significant_digit=None, fill_value=None):
         """
 Creates a new variable with the given C{varname}, C{datatype}, and 
 C{dimensions}. If dimensions are not given, the variable is assumed to be 
 a scalar.
 
 C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, 
-extend_increments=None, least_significant_digit=None, fill_value=None)}
+least_significant_digit=None, fill_value=None)}
 
 The C{datatype} can be a numpy datatype object, or a string that describes 
 a numpy dtype object (like the C{dtype.str} attribue of a numpy array). 
@@ -990,22 +990,18 @@ checksum algorithm is activated to detect errors. Default C{False}.
 If the optional keyword C{chunking} is C{'seq'} (Default) HDF5 chunk sizes 
 are set to favor sequential access.  If C{chunking='sub'}, chunk sizes are 
 set to favor subsetting equally in all dimensions.
+The sequential chunking algorithm sets a chunksize of 1 all
+unlimited dimensions, and all other chunksizes to the size of that
+dimension. The subsetting chunking algorithm sets the chunksize in each
+dimension to the nth root of (desired chunksize/product of n dimsizes).
 
-The optional keyword C{chunksizes} can be used to specify the HDF5 
+The optional keyword C{chunksizes} can be used to manually specify the HDF5 
 chunksizes for each dimension of the variable. A detailed discussion of 
 HDF chunking and I/O performance is available U{here 
-<http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}. Note that 
-chunking is a tricky business, and you should only try to specify chunking 
-parameters if you really know what you are doing. You can dramatically 
-degrade I/O peformance if you do it wrong.
+<http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}. 
 
-The optional keyword C{extend_increments} can be used to specify the 
-increments to extend the variable along each unlimited dimension. Values 
-must be specified for each dimension, if a dimension is not unlimited the 
-value is ignored.
-
-The C{zlib, complevel, shuffle, fletcher32, chunking, chunksizes} and 
-C{extend_increments} keywords are silently ignored for netCDF 3 files that 
+The C{zlib, complevel, shuffle, fletcher32, chunking} and 
+C{chunksizes} keywords are silently ignored for netCDF 3 files that 
 do not support HDF5 compression and checksum features.
 
 The optional keyword C{fill_value} can be used to override the default 
@@ -1048,7 +1044,7 @@ the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
 
-        self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, chunking=chunking, chunksizes=chunksizes, extend_increments=extend_increments, least_significant_digit=least_significant_digit, fill_value=fill_value)
+        self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, chunking=chunking, chunksizes=chunksizes, least_significant_digit=least_significant_digit, fill_value=fill_value)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -1300,7 +1296,7 @@ analagous to numpy array objects.
 
 C{Variable(group, name, datatype, dimensions=(), zlib=False, complevel=6, 
 shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, 
-extend_increments=None, least_significant_digit=None,fill_value=None)}
+least_significant_digit=None,fill_value=None)}
    
 L{Variable} instances should be created using the C{createVariable} method 
 of a L{Dataset} or L{Group} instance, not using this class directly.
@@ -1345,26 +1341,23 @@ to improve compression. Default C{True}. Ignored if C{zlib=False}.
 B{C{fletcher32}} - if C{True} (default C{False}), the Fletcher32 checksum 
 algorithm is used for error detection.
 
-B{C{chunking}} - Chunking is required in any dataset with one or more 
+B{C{chunking}} =  Chunking is required in any dataset with one or more
 unlimited dimension in HDF5. NetCDF-4 supports setting the chunking 
-algorithm at variable creation.  If C{chunking = 'seq'} (default) chunk 
-sizes are set to favor sequential access. Setting C{chunking = 'sub'} will 
-cause chunk sizes to be set to favor subsetting equally in any dimension.
+algorithm at variable creation.  If C{chunking = 'seq'} (default) chunk sizes
+are set to favor sequential access.  If C{chunking='sub'}, chunk sizes are 
+set to favor subsetting equally in all dimensions.
+The sequential chunking algorithm sets a chunksize of 1 all
+unlimited dimensions, and all other chunksizes to the size of that
+dimension. The subsetting chunking algorithm sets the chunksize in each
+dimension to the nth root of (desired chunksize/product of n dimsizes).
 
 B{C{chunksizes}} - Can be used to specify the HDF5 chunksizes for each 
 dimension of the variable. A detailed discussion of HDF chunking and I/O 
 performance is available U{here 
-<http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}. Note that
-chunking is a tricky business, and you should only try to specify chunking 
-parameters if you really know what you are doing. You can dramatically 
-degrade I/O peformance if you do it wrong.
+<http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}.
 
-B{C{extend_increments}} - Can be used to specify the increments to extend 
-the variable along each unlimited dimension. Values must be specified for 
-each dimension, if a dimension is not unlimited the value is ignored.
-
-The C{zlib, complevel, shuffle, fletcher32, chunking, chunksizes} and 
-C{extend_increments} keywords are silently ignored for netCDF 3 files that 
+The C{zlib, complevel, shuffle, fletcher32, chunking} and 
+C{chunksizes} keywords are silently ignored for netCDF 3 files that 
 do not support HDF5 compression and checksum features.
 
 B{C{least_significant_digit}} - If specified, variable data will be 
@@ -1415,12 +1408,12 @@ instance. If C{None}, the data is not truncated. """
     cdef object _grp
     cdef public dtype
 
-    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, extend_increments=None, least_significant_digit=None, fill_value=None,  **kwargs):
+    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, least_significant_digit=None, fill_value=None,  **kwargs):
         cdef int ierr, ndims, ichunkalg, ideflate_level, numdims
         cdef char *varname
         cdef nc_type xtype, vltypeid
         cdef int dimids[NC_MAX_DIMS]
-        cdef int *chunksizesp, *extend_incrementsp
+        cdef int *chunksizesp
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
         # dimensions = ('lat') instead of ('lat',)
@@ -1500,15 +1493,8 @@ instance. If C{None}, the data is not truncated. """
                     chunksizesp = <int *>malloc(sizeof(int) * ndims)
                     for n from 0 <= n < ndims:
                         chunksizesp[n] = chunksizes[n]
-                if extend_increments is None:
-                    extend_incrementsp = NULL
-                else:
-                    extend_incrementsp = <int *>malloc(sizeof(int) * ndims)
-                    for n from 0 <= n < ndims:
-                        extend_incrementsp[n] = extend_increments[n]
-                ierr = nc_def_var_chunking(self._grpid, self._varid, &ichunkalg, chunksizesp, extend_incrementsp)
+                ierr = nc_def_var_chunking(self._grpid, self._varid, &ichunkalg, chunksizesp, NULL)
                 free(chunksizesp)
-                free(extend_incrementsp)
                 if ierr != NC_NOERR:
                     if grp.file_format != 'NETCDF4': grp._enddef()
                     raise RuntimeError(nc_strerror(ierr))
