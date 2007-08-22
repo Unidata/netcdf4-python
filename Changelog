@@ -1,6 +1,9 @@
 version 0.7.1 (not yet released)
 ===============================
 
+* added 'endian' kwarg to createVariable (to set the endian-ness
+  used in the HDF5 file).
+
 * can now manually set HDF5 chunksizes for each dimension at
   variable creation, using 'chunksizes' kwarg to createVariable.
 

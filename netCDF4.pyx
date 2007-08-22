@@ -950,14 +950,14 @@ C{renameDimension(oldname, newname)}"""
         # looks in the file, so no need to manually update.
 
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, least_significant_digit=None, fill_value=None):
+    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
 Creates a new variable with the given C{varname}, C{datatype}, and 
 C{dimensions}. If dimensions are not given, the variable is assumed to be 
 a scalar.
 
 C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, 
-least_significant_digit=None, fill_value=None)}
+endian='native', least_significant_digit=None, fill_value=None)}
 
 The C{datatype} can be a numpy datatype object, or a string that describes 
 a numpy dtype object (like the C{dtype.str} attribue of a numpy array). 
@@ -1000,7 +1000,15 @@ HDF5 chunksizes for each dimension of the variable. A detailed
 discussion of HDF chunking and I/O performance is available U{here
 <http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}. 
 
-The C{zlib, complevel, shuffle, fletcher32, chunking} and C{chunksizes}
+The optional keyword C{endian} can be used to control whether the
+data is stored in little or big endian format on disk. Possible
+values are C{little, big} or C{native} (default). The library
+will automatically handle endian conversions when the data is read,
+but if the data is always going to be read on a computer with the
+opposite format as the one used to create the file, there may be
+some performance advantage to be gained by setting the endian-ness.
+
+The C{zlib, complevel, shuffle, fletcher32, chunking, chunksizes} and C{endian}
 keywords are silently ignored for netCDF 3 files that do not support
 HDF5 compression and checksum features.
 
@@ -1044,7 +1052,7 @@ the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
 
-        self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, chunking=chunking, chunksizes=chunksizes, least_significant_digit=least_significant_digit, fill_value=fill_value)
+        self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, chunking=chunking, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -1296,7 +1304,7 @@ analagous to numpy array objects.
 
 C{Variable(group, name, datatype, dimensions=(), zlib=False, complevel=6, 
 shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, 
-least_significant_digit=None,fill_value=None)}
+endian='native', least_significant_digit=None,fill_value=None)}
    
 L{Variable} instances should be created using the C{createVariable} method 
 of a L{Dataset} or L{Group} instance, not using this class directly.
@@ -1356,7 +1364,15 @@ dimension of the variable. A detailed discussion of HDF chunking and I/O
 performance is available U{here
 <http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}.
 
-The C{zlib, complevel, shuffle, fletcher32, chunking} and C{chunksizes}
+B{C{endian}} - Can be used to control whether the
+data is stored in little or big endian format on disk. Possible
+values are C{little, big} or C{native} (default). The library
+will automatically handle endian conversions when the data is read,
+but if the data is always going to be read on a computer with the
+opposite format as the one used to create the file, there may be
+some performance advantage to be gained by setting the endian-ness.
+
+The C{zlib, complevel, shuffle, fletcher32, chunking, chunksizes} and C{endian}
 keywords are silently ignored for netCDF 3 files that do not support
 HDF5 compression and checksum features.
 
@@ -1408,7 +1424,7 @@ instance. If C{None}, the data is not truncated. """
     cdef object _grp
     cdef public dtype
 
-    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, least_significant_digit=None, fill_value=None,  **kwargs):
+    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None,  **kwargs):
         cdef int ierr, ndims, ichunkalg, ideflate_level, numdims
         cdef char *varname
         cdef nc_type xtype, vltypeid
@@ -1461,12 +1477,14 @@ instance. If C{None}, the data is not truncated. """
             if ierr != NC_NOERR:
                 if grp.file_format != 'NETCDF4': grp._enddef()
                 raise RuntimeError(nc_strerror(ierr))
-            # set zlib, shuffle, chunking and fletcher32 variable settings.
-            # don't bother for scalar variables or for NETCDF3* formats.
-            # for NETCDF3* formats, the zlib,shuffle,chunking and fletcher32
-            # keywords are silently ignored.
-            if grp.file_format in ['NETCDF4','NETCDF4_CLASSIC'] and ndims:
-                if zlib:
+            # set zlib, shuffle, chunking, fletcher32 and endian
+            # variable settings.
+            # don't bother for NETCDF3* formats.
+            # for NETCDF3* formats, the zlib,shuffle,chunking,endian
+            # and fletcher32 are silently ignored.
+            if grp.file_format in ['NETCDF4','NETCDF4_CLASSIC']:
+                # set zlib and shuffle parameters.
+                if zlib and ndims: # don't bother for scalar variable
                     ideflate_level = complevel
                     if shuffle:
                         ierr = nc_def_var_deflate(self._grpid, self._varid, 1, 1, ideflate_level)
@@ -1475,26 +1493,40 @@ instance. If C{None}, the data is not truncated. """
                     if ierr != NC_NOERR:
                         if grp.file_format != 'NETCDF4': grp._enddef()
                         raise RuntimeError(nc_strerror(ierr))
+                # set checksum.
                 if fletcher32:
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
                     if ierr != NC_NOERR:
                         if grp.file_format != 'NETCDF4': grp._enddef()
                         raise RuntimeError(nc_strerror(ierr))
-                if chunking == 'sub':
-                    ichunkalg = NC_CHUNK_SUB
-                elif chunking == 'seq':
-                    ichunkalg = NC_CHUNK_SEQ
+                # set chunking stuff.
+                if ndims: # don't bother for scalar variable.
+                    if chunking == 'sub':
+                        ichunkalg = NC_CHUNK_SUB
+                    elif chunking == 'seq':
+                        ichunkalg = NC_CHUNK_SEQ
+                    else:
+                        raise ValueError("chunking keyword must be 'seq' or 'sub', got %s" % chunking)
+                    if chunksizes is None:
+                        chunksizesp = NULL
+                    else:
+                        chunksizesp = <int *>malloc(sizeof(int) * ndims)
+                        for n from 0 <= n < ndims:
+                            chunksizesp[n] = chunksizes[n]
+                    ierr = nc_def_var_chunking(self._grpid, self._varid, &ichunkalg, chunksizesp, NULL)
+                    free(chunksizesp)
+                    if ierr != NC_NOERR:
+                        if grp.file_format != 'NETCDF4': grp._enddef()
+                        raise RuntimeError(nc_strerror(ierr))
+                # set endian-ness of variable
+                if endian == 'little':
+                    ierr = nc_def_var_endian(self._grpid, self._varid, NC_ENDIAN_LITTLE)
+                elif endian == 'big':
+                    ierr = nc_def_var_endian(self._grpid, self._varid, NC_ENDIAN_BIG)
+                elif endian == 'native':
+                    pass # this is the default format.
                 else:
-                    raise ValueError("chunking keyword must be 'seq' or 'sub', got %s" % chunking)
-                #ierr = nc_def_var_chunking(self._grpid, self._varid, &ichunkalg, NULL, NULL)
-                if chunksizes is None:
-                    chunksizesp = NULL
-                else:
-                    chunksizesp = <int *>malloc(sizeof(int) * ndims)
-                    for n from 0 <= n < ndims:
-                        chunksizesp[n] = chunksizes[n]
-                ierr = nc_def_var_chunking(self._grpid, self._varid, &ichunkalg, chunksizesp, NULL)
-                free(chunksizesp)
+                    raise ValueError("'endian' keyword argument must be 'little','big' or 'native', got '%s'" % endian)
                 if ierr != NC_NOERR:
                     if grp.file_format != 'NETCDF4': grp._enddef()
                     raise RuntimeError(nc_strerror(ierr))
