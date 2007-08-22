@@ -987,22 +987,22 @@ C{zlib=False}.
 If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5 
 checksum algorithm is activated to detect errors. Default C{False}.
 
-If the optional keyword C{chunking} is C{'seq'} (Default) HDF5 chunk sizes 
-are set to favor sequential access.  If C{chunking='sub'}, chunk sizes are 
-set to favor subsetting equally in all dimensions.
-The sequential chunking algorithm sets a chunksize of 1 all
-unlimited dimensions, and all other chunksizes to the size of that
-dimension. The subsetting chunking algorithm sets the chunksize in each
-dimension to the nth root of (desired chunksize/product of n dimsizes).
+If the optional keyword C{chunking} is C{'seq'} (default) HDF5 chunk
+sizes are set to favor sequential access.  If C{chunking='sub'}, chunk
+sizes are set to favor subsetting equally in all dimensions. The
+sequential chunking algorithm sets a chunksize of 1 all unlimited
+dimensions, and all other chunksizes to the size of that dimension. The
+subsetting chunking algorithm sets the chunksize in each dimension to
+the nth root of (desired chunksize/product of n dimsizes).
 
-The optional keyword C{chunksizes} can be used to manually specify the HDF5 
-chunksizes for each dimension of the variable. A detailed discussion of 
-HDF chunking and I/O performance is available U{here 
+The optional keyword C{chunksizes} can be used to manually specify the
+HDF5 chunksizes for each dimension of the variable. A detailed
+discussion of HDF chunking and I/O performance is available U{here
 <http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}. 
 
-The C{zlib, complevel, shuffle, fletcher32, chunking} and 
-C{chunksizes} keywords are silently ignored for netCDF 3 files that 
-do not support HDF5 compression and checksum features.
+The C{zlib, complevel, shuffle, fletcher32, chunking} and C{chunksizes}
+keywords are silently ignored for netCDF 3 files that do not support
+HDF5 compression and checksum features.
 
 The optional keyword C{fill_value} can be used to override the default 
 netCDF C{_FillValue} (the value that the variable gets filled with before 
@@ -1341,31 +1341,31 @@ to improve compression. Default C{True}. Ignored if C{zlib=False}.
 B{C{fletcher32}} - if C{True} (default C{False}), the Fletcher32 checksum 
 algorithm is used for error detection.
 
-B{C{chunking}} =  Chunking is required in any dataset with one or more
-unlimited dimension in HDF5. NetCDF-4 supports setting the chunking 
-algorithm at variable creation.  If C{chunking = 'seq'} (default) chunk sizes
-are set to favor sequential access.  If C{chunking='sub'}, chunk sizes are 
-set to favor subsetting equally in all dimensions.
-The sequential chunking algorithm sets a chunksize of 1 all
-unlimited dimensions, and all other chunksizes to the size of that
-dimension. The subsetting chunking algorithm sets the chunksize in each
-dimension to the nth root of (desired chunksize/product of n dimsizes).
+B{C{chunking}} - Chunking is required in any dataset with one or more
+unlimited dimension in HDF5. NetCDF-4 supports setting the chunking
+algorithm at variable creation.  If C{chunking = 'seq'} (default) chunk
+sizes are set to favor sequential access.  If C{chunking='sub'}, chunk
+sizes are set to favor subsetting equally in all dimensions. The
+sequential chunking algorithm sets a chunksize of 1 all unlimited
+dimensions, and all other chunksizes to the size of that dimension. The
+subsetting chunking algorithm sets the chunksize in each dimension to
+the nth root of (desired chunksize/product of n dimsizes).
 
-B{C{chunksizes}} - Can be used to specify the HDF5 chunksizes for each 
-dimension of the variable. A detailed discussion of HDF chunking and I/O 
-performance is available U{here 
+B{C{chunksizes}} - Can be used to specify the HDF5 chunksizes for each
+dimension of the variable. A detailed discussion of HDF chunking and I/O
+performance is available U{here
 <http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}.
 
-The C{zlib, complevel, shuffle, fletcher32, chunking} and 
-C{chunksizes} keywords are silently ignored for netCDF 3 files that 
-do not support HDF5 compression and checksum features.
+The C{zlib, complevel, shuffle, fletcher32, chunking} and C{chunksizes}
+keywords are silently ignored for netCDF 3 files that do not support
+HDF5 compression and checksum features.
 
-B{C{least_significant_digit}} - If specified, variable data will be 
-truncated (quantized). In conjunction with C{zlib=True} this produces 
-'lossy', but significantly more efficient compression. For example, if 
-C{least_significant_digit=1}, data will be quantized using 
-around(scale*data)/scale, where scale = 2**bits, and bits is determined so 
-that a precision of 0.1 is retained (in this case bits=4). Default is 
+B{C{least_significant_digit}} - If specified, variable data will be
+truncated (quantized). In conjunction with C{zlib=True} this produces
+'lossy', but significantly more efficient compression. For example, if
+C{least_significant_digit=1}, data will be quantized using
+around(scale*data)/scale, where scale = 2**bits, and bits is determined
+so that a precision of 0.1 is retained (in this case bits=4). Default is
 C{None}, or no quantization.
 
 B{C{fill_value}} - If specified, the default netCDF C{_FillValue} (the 
