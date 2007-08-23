@@ -1,6 +1,12 @@
 version 0.7.1 (not yet released)
 ===============================
 
+* added 'endian()' and 'chunking()' Variable methods (to inquire about
+  endian and chunking variable settings).
+
+* 'ndim' attribute was not public (so it couldn't be accessed from python).
+  Fixed.
+
 * added 'endian' kwarg to createVariable (to set the endian-ness
   used in the HDF5 file).
 

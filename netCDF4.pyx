@@ -1422,7 +1422,7 @@ instance. If C{None}, the data is not truncated. """
 
     cdef public int _varid, _grpid, _nunlimdim
     cdef object _grp
-    cdef public dtype
+    cdef public ndim, dtype
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None,  **kwargs):
         cdef int ierr, ndims, ichunkalg, ideflate_level, numdims
@@ -1510,6 +1510,9 @@ instance. If C{None}, the data is not truncated. """
                     if chunksizes is None:
                         chunksizesp = NULL
                     else:
+                        if len(chunksizes) != len(dimensions):
+                            if grp.file_format != 'NETCDF4': grp._enddef()
+                            raise ValueError('chunksizes must be a sequence with the same length as dimensions')
                         chunksizesp = <int *>malloc(sizeof(int) * ndims)
                         for n from 0 <= n < ndims:
                             chunksizesp[n] = chunksizes[n]
@@ -1634,6 +1637,49 @@ C{ncattrs()}"""
         if ifletcher32:
             filtdict['fletcher32']=True
         return filtdict
+
+    def endian(self):
+        """return endian-ness (little,big,native) of variable (as stored in HDF5 file)"""
+        cdef int ierr, iendian
+        if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return None
+        ierr = nc_inq_var_endian(self._grpid, self._varid, &iendian)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        if iendian == NC_ENDIAN_LITTLE:
+            return 'little'
+        elif iendian == NC_ENDIAN_BIG:
+            return 'big'
+        else:
+            return 'native'
+
+    def chunking(self):
+        """
+return variable chunking information.  If chunking is set to one
+of the heuristic algorithms a string describing that algorithm ('sub'
+or 'seq') is returned.  Otherwise, a sequence with the chunksize for
+each dimension is returned."""
+        cdef int ierr, ichunkalg, ndims
+        cdef int *chunksizesp, *extend_incrementsp
+        if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return None
+        chunksizesp = <int *>malloc(sizeof(int) * ndims)
+        extend_incrementsp = <int *>malloc(sizeof(int) * ndims)
+        ierr = nc_inq_var_chunking(self._grpid, self._varid, &ichunkalg, chunksizesp, extend_incrementsp)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        ndims = self.ndim
+        chunksizes=[]
+        for n from 0 <= n < ndims:
+            chunksizes.append(chunksizesp[n])
+        free(chunksizesp)
+        free(extend_incrementsp)
+        if ichunkalg == NC_CHUNK_SEQ:
+            return 'seq'
+        elif ichunkalg == NC_CHUNK_SUB:
+            return 'sub'
+        elif ichunkalg == NC_CHUNK_SIZES:
+            return chunksizes
+        else:
+            raise ValueError('unknown chunking algorithm')
 
     def __delattr__(self,name):
         cdef char *attname
