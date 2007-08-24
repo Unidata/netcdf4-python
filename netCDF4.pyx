@@ -55,24 +55,25 @@ Tutorial
 1) Creating/Opening/Closing a netCDF file
 -----------------------------------------
 
-To create a netCDF file from python, you simply call the L{Dataset} 
-constructor. This is also the method used to open an existing netCDF file.  
-If the file is open for write access (C{w, r+} or C{a}), you may write any 
-type of data including new dimensions, groups, variables and attributes.  
-netCDF files come in several flavors (C{NETCDF3_CLASSIC, NETCDF3_64BIT, 
-NETCDF4_CLASSIC}, and C{NETCDF4}). The first two flavors are supported by 
-version 3 of the netCDF library. C{NETCDF4_CLASSIC} files use the version 
-4 disk format (HDF5), but do not use any features not found in the version 
-3 API. They can be read by netCDF 3 clients only if they have been 
-relinked against the netCDF 4 library. They can also be read by HDF5 
-clients. C{NETCDF4} files use the version 4 disk format (HDF5) and use the 
-new features of the version 4 API.  The C{netCDF4} module can read and 
-write files in any of these formats. When creating a new file, the format 
-may be specified using the C{format} keyword in the C{Dataset} 
-constructor.  The default format is C{NETCDF4}. To see how a given file is 
-formatted, you can examine the C{file_format} L{Dataset} attribute. 
-Closing the netCDF file is accomplished via the C{close} method of the 
-L{Dataset} instance.
+To create a netCDF file from python, you simply call the L{Dataset}
+constructor. This is also the method used to open an existing netCDF
+file.  If the file is open for write access (C{w, r+} or C{a}), you may
+write any type of data including new dimensions, groups, variables and
+attributes.  netCDF files come in several flavors (C{NETCDF3_CLASSIC,
+NETCDF3_64BIT, NETCDF4_CLASSIC}, and C{NETCDF4}). The first two flavors
+are supported by version 3 of the netCDF library. C{NETCDF4_CLASSIC}
+files use the version 4 disk format (HDF5), but do not use any features
+not found in the version 3 API. They can be read by netCDF 3 clients
+only if they have been relinked against the netCDF 4 library. They can
+also be read by HDF5 clients. C{NETCDF4} files use the version 4 disk
+format (HDF5) and use the new features of the version 4 API.  The
+C{netCDF4} module can read and write files in any of these formats. When
+creating a new file, the format may be specified using the C{format}
+keyword in the C{Dataset} constructor.  The default format is
+C{NETCDF4}. To see how a given file is formatted, you can examine the
+C{file_format} L{Dataset} attribute.  Closing the netCDF file is
+accomplished via the L{close<Dataset.close>} method of the L{Dataset}
+instance.
 
 Here's an example:
 
@@ -87,18 +88,19 @@ NETCDF4
 2) Groups in a netCDF file
 --------------------------
 
-netCDF version 4 added support for organizing data in hierarchical groups, 
-which are analagous to directories in a filesystem. Groups serve as 
-containers for variables, dimensions and attributes, as well as other 
-groups.  A C{netCDF4.Dataset} defines creates a special group, called the 
-'root group', which is similar to the root directory in a unix filesystem.  
-To create L{Group} instances, use the C{createGroup} method of a 
-L{Dataset} or L{Group} instance. C{createGroup} takes a single argument, a 
-python string containing the name of the new group. The new L{Group} 
-instances contained within the root group can be accessed by name using 
-the C{groups} dictionary attribute of the L{Dataset} instance.  Only 
-C{NETCDF4} formatted files support Groups, if you try to create a Group in 
-a netCDF 3 file you will get an error message.
+netCDF version 4 added support for organizing data in hierarchical
+groups, which are analagous to directories in a filesystem. Groups serve
+as containers for variables, dimensions and attributes, as well as other
+groups.  A C{netCDF4.Dataset} defines creates a special group, called
+the 'root group', which is similar to the root directory in a unix
+filesystem.  To create L{Group} instances, use the
+L{createGroup<Dataset.createGroup>} method of a L{Dataset} or L{Group}
+instance. C{createGroup<Dataset.createGroup>} takes a single argument, a
+python string containing the name of the new group. The new L{Group}
+instances contained within the root group can be accessed by name using
+the C{groups} dictionary attribute of the L{Dataset} instance.  Only
+C{NETCDF4} formatted files support Groups, if you try to create a Group
+in a netCDF 3 file you will get an error message.
 
 >>> rootgrp = netCDF4.Dataset('test.nc', 'a')
 >>> fcstgrp = rootgrp.createGroup('forecasts')
@@ -145,14 +147,14 @@ netCDF defines the sizes of all variables in terms of dimensions, so
 before any variables can be created the dimensions they use must be
 created first. A special case, not often used in practice, is that of a
 scalar variable, which has no dimensions. A dimension is created using
-the C{createDimension} method of a L{Dataset} or L{Group} instance. A
-Python string is used to set the name of the dimension, and an integer
-value is used to set the size. To create an unlimited dimension (a
-dimension that can be appended to), the size value is set to C{None}. In
-this example, there both the C{time} and C{level} dimensions are
-unlimited.  Having more than one unlimited dimension is a new netCDF 4
-feature, in netCDF 3 files there may be only one, and it must be the
-first (leftmost) dimension of the variable.
+the L{createDimension<Dataset.createDimension>} method of a L{Dataset}
+or L{Group} instance. A Python string is used to set the name of the
+dimension, and an integer value is used to set the size. To create an
+unlimited dimension (a dimension that can be appended to), the size
+value is set to C{None}. In this example, there both the C{time} and
+C{level} dimensions are unlimited.  Having more than one unlimited
+dimension is a new netCDF 4 feature, in netCDF 3 files there may be only
+one, and it must be the first (leftmost) dimension of the variable.
 
 >>> rootgrp.createDimension('level', None)
 >>> rootgrp.createDimension('time', None)
@@ -170,9 +172,9 @@ All of the L{Dimension} instances are stored in a python dictionary.
 >>>
 
 Calling the python C{len} function with a L{Dimension} instance returns
-the current size of that dimension. The C{isunlimited()} method of a
-L{Dimension} instance can be used to determine if the dimensions is
-unlimited, or appendable.
+the current size of that dimension. The
+L{isunlimited<Dimension.isunlimited>} method of a L{Dimension} instance
+can be used to determine if the dimensions is unlimited, or appendable.
 
 >>> for dimname, dimobj in rootgrp.dimensions.iteritems():
 >>>    print dimname, len(dimobj), dimobj.isunlimited()
@@ -182,40 +184,43 @@ lon 144 False
 level 0 True
 >>>
 
-L{Dimension} names can be changed using the C{renameDimension} method
-of a L{Dataset} or L{Group} instance.
+L{Dimension} names can be changed using the
+L{renameDimension<Dataset.renameDimension>} method of a L{Dataset} or
+L{Group} instance.
             
 4) Variables in a netCDF file
 -----------------------------
 
-netCDF variables behave much like python multidimensional array objects 
-supplied by the U{numpy module <http://numpy.scipy.org>}. However, unlike 
-numpy arrays, netCDF4 variables can be appended to along one or more 
-'unlimited' dimensions. To create a netCDF variable, use the 
-C{createVariable} method of a L{Dataset} or L{Group} instance. The 
-C{createVariable} method has two mandatory arguments, the variable name (a 
-Python string), and the variable datatype. The variable's dimensions are 
-given by a tuple containing the dimension names (defined previously with 
-C{createDimension}). To create a scalar variable, simply leave out the 
-dimensions keyword. The variable primitive datatypes correspond to the 
-dtype attribute of a numpy array.  You can specify the datatype as a numpy 
-dtype object, or anything that can be converted to a numpy dtype object. 
-Valid datatype specifiers include: C{'f4'} (32-bit floating point), 
-C{'f8'} (64-bit floating point), C{'i4'} (32-bit signed integer), C{'i2'} 
-(16-bit signed integer), C{'i8'} (64-bit singed integer), C{'i1'} (8-bit 
-signed integer), C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit 
-unsigned integer), C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit 
-unsigned integer), or C{'S1'} (single-character string).  The old Numeric 
-single-character typecodes (C{'f'},C{'d'},C{'h'}, 
-C{'s'},C{'b'},C{'B'},C{'c'},C{'i'},C{'l'}), corresponding to 
-(C{'f4'},C{'f8'},C{'i2'},C{'i2'},C{'i1'},C{'i1'},C{'S1'},C{'i4'},C{'i4'}), 
-will also work. The unsigned integer types and the 64-bit integer type can 
-only be used if the file format is C{NETCDF4}.
+netCDF variables behave much like python multidimensional array objects
+supplied by the U{numpy module <http://numpy.scipy.org>}. However,
+unlike numpy arrays, netCDF4 variables can be appended to along one or
+more 'unlimited' dimensions. To create a netCDF variable, use the
+L{createVariable<Dataset.createVariable>} method of a L{Dataset} or
+L{Group} instance. The L{createVariable<Dataset.createVariable>} method
+has two mandatory arguments, the variable name (a Python string), and
+the variable datatype. The variable's dimensions are given by a tuple
+containing the dimension names (defined previously with
+L{createDimension<Dataset.createDimension>}). To create a scalar
+variable, simply leave out the dimensions keyword. The variable
+primitive datatypes correspond to the dtype attribute of a numpy array. 
+You can specify the datatype as a numpy dtype object, or anything that
+can be converted to a numpy dtype object.  Valid datatype specifiers
+include: C{'f4'} (32-bit floating point), C{'f8'} (64-bit floating
+point), C{'i4'} (32-bit signed integer), C{'i2'} (16-bit signed
+integer), C{'i8'} (64-bit singed integer), C{'i1'} (8-bit signed
+integer), C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit unsigned
+integer), C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit unsigned
+integer), or C{'S1'} (single-character string).  The old Numeric
+single-character typecodes (C{'f'},C{'d'},C{'h'},
+C{'s'},C{'b'},C{'B'},C{'c'},C{'i'},C{'l'}), corresponding to
+(C{'f4'},C{'f8'},C{'i2'},C{'i2'},C{'i1'},C{'i1'},C{'S1'},C{'i4'},C{'i4'}),
+will also work. The unsigned integer types and the 64-bit integer type
+can only be used if the file format is C{NETCDF4}.
 
-The dimensions themselves are usually also defined as variables, called 
-coordinate variables. The C{createVariable} method returns an instance of 
-the L{Variable} class whose methods can be used later to access and set 
-variable data and attributes.
+The dimensions themselves are usually also defined as variables, called
+coordinate variables. The L{createVariable<Dataset.createVariable>}
+method returns an instance of the L{Variable} class whose methods can be
+used later to access and set variable data and attributes.
 
 >>> times = rootgrp.createVariable('time','f8',('time',))
 >>> levels = rootgrp.createVariable('level','i4',('level',))
@@ -236,20 +241,22 @@ Python dictionary, in the same way as the dimensions:
  'latitude': <netCDF4.Variable object at 0.3f0fb8>}
 >>>
 
-L{Variable} names can be changed using the C{renameVariable} method of a
-L{Dataset} instance.
+L{Variable} names can be changed using the
+L{renameVariable<Dataset.renameVariable>} method of a L{Dataset}
+instance.
             
 
 5) Attributes in a netCDF file
 ------------------------------
 
 There are two types of attributes in a netCDF file, global and variable. 
-Global attributes provide information about a group, or the entire 
-dataset, as a whole. L{Variable} attributes provide information about one 
-of the variables in a group. Global attributes are set by assigning values 
-to L{Dataset} or L{Group} instance variables. L{Variable} attributes are 
-set by assigning values to L{Variable} instances variables. Attributes can 
-be strings, numbers or sequences. Returning to our example,
+Global attributes provide information about a group, or the entire
+dataset, as a whole. L{Variable} attributes provide information about
+one of the variables in a group. Global attributes are set by assigning
+values to L{Dataset} or L{Group} instance variables. L{Variable}
+attributes are set by assigning values to L{Variable} instances
+variables. Attributes can be strings, numbers or sequences. Returning to
+our example,
 
 >>> import time
 >>> rootgrp.description = 'bogus example script'
@@ -262,11 +269,11 @@ be strings, numbers or sequences. Returning to our example,
 >>> times.units = 'days since January 1, 0001'
 >>> times.calendar = 'proleptic_gregorian'
 
-The C{ncattrs()} method of a L{Dataset}, L{Group} or L{Variable}
-instance can be used to retrieve the names of all the netCDF attributes.
-This method is provided as a convenience, since using the built-in
-C{dir} Python function will return a bunch of private methods and
-attributes that cannot (or should not) be modified by the user.
+The L{ncattrs<Dataset.ncattrs>} method of a L{Dataset}, L{Group} or
+L{Variable} instance can be used to retrieve the names of all the netCDF
+attributes. This method is provided as a convenience, since using the
+built-in C{dir} Python function will return a bunch of private methods
+and attributes that cannot (or should not) be modified by the user.
 
 >>> for name in rootgrp.ncattrs():
 >>>     print 'Global attr', name, '=', getattr(rootgrp,name)
@@ -364,39 +371,41 @@ documentation for more details.
 7) Efficient compression of netCDF variables
 --------------------------------------------
 
-Data stored in netCDF 4 L{Variable} objects can be compressed and 
-decompressed on the fly. The parameters for the compression are determined 
-by the C{zlib}, C{complevel} and C{shuffle} keyword arguments to the 
-C{createVariable} method. To turn on compression, set C{zlib=True}.  The 
-C{complevel} keyword regulates the speed and efficiency of the compression 
-(1 being fastest, but lowest compression ratio, 9 being slowest but best 
-compression ratio). The default value of C{complevel} is 6. Setting 
-C{shuffle=False} will turn off the HDF5 shuffle filter, which 
-de-interlaces a block of data before compression by reordering the bytes.  
-The shuffle filter can significantly improve compression ratios, and is on 
-by default.  Setting C{fletcher32} keyword argument to C{createVariable} 
-to C{True} (it's C{False} by default) enables the Fletcher32 checksum 
-algorithm for error detection. It's also possible to set the HDF5
-chunking parameters and endian-ness of the binary data stored in the
-HDF5 file with the C{chunking, chunksizes} and C{endian} keyword
-arguments to C{createVariable}.  These keyword arguments only
-are relevant for C{NETCDF4} and C{NETCDF4_CLASSIC} files (where
-the underlying file format is HDF5) and are silently ignored
-if the file format is C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT}, 
+Data stored in netCDF 4 L{Variable} objects can be compressed and
+decompressed on the fly. The parameters for the compression are
+determined by the C{zlib}, C{complevel} and C{shuffle} keyword arguments
+to the L{createVariable<Dataset.createVariable>} method. To turn on
+compression, set C{zlib=True}.  The C{complevel} keyword regulates the
+speed and efficiency of the compression (1 being fastest, but lowest
+compression ratio, 9 being slowest but best compression ratio). The
+default value of C{complevel} is 6. Setting C{shuffle=False} will turn
+off the HDF5 shuffle filter, which de-interlaces a block of data before
+compression by reordering the bytes.  The shuffle filter can
+significantly improve compression ratios, and is on by default.  Setting
+C{fletcher32} keyword argument to
+L{createVariable<Dataset.createVariable>} to C{True} (it's C{False} by
+default) enables the Fletcher32 checksum algorithm for error detection.
+It's also possible to set the HDF5 chunking parameters and endian-ness
+of the binary data stored in the HDF5 file with the C{chunking,
+chunksizes} and C{endian} keyword arguments to
+L{createVariable<Dataset.createVariable>}.  These keyword arguments only
+are relevant for C{NETCDF4} and C{NETCDF4_CLASSIC} files (where the
+underlying file format is HDF5) and are silently ignored if the file
+format is C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT},
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
-0.1 degrees), you can dramatically improve zlib compression by quantizing
-(or truncating) the data using the C{least_significant_digit} keyword
-argument to C{createVariable}. The least significant digit is the power
-of ten of the smallest decimal place in the data that is a reliable
-value. For example if the data has a precision of 0.1, then setting
-C{least_significant_digit=1} will cause data the data to be quantized
-using {NP.around(scale*data)/scale}, where scale = 2**bits, and bits is
-determined so that a precision of 0.1 is retained (in this case bits=4). 
-Effectively, this makes the compression 'lossy' instead of 'lossless',
-that is some precision in the data is sacrificed for the sake of disk
-space.
+0.1 degrees), you can dramatically improve zlib compression by
+quantizing (or truncating) the data using the C{least_significant_digit}
+keyword argument to L{createVariable<Dataset.createVariable>}. The least
+significant digit is the power of ten of the smallest decimal place in
+the data that is a reliable value. For example if the data has a
+precision of 0.1, then setting C{least_significant_digit=1} will cause
+data the data to be quantized using {NP.around(scale*data)/scale}, where
+scale = 2**bits, and bits is determined so that a precision of 0.1 is
+retained (in this case bits=4).  Effectively, this makes the compression
+'lossy' instead of 'lossless', that is some precision in the data is
+sacrificed for the sake of disk space.
 
 In our example, try replacing the line
 
