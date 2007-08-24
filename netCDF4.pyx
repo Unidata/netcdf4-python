@@ -95,7 +95,7 @@ groups.  A C{netCDF4.Dataset} defines creates a special group, called
 the 'root group', which is similar to the root directory in a unix
 filesystem.  To create L{Group} instances, use the
 L{createGroup<Dataset.createGroup>} method of a L{Dataset} or L{Group}
-instance. C{createGroup<Dataset.createGroup>} takes a single argument, a
+instance. L{createGroup<Dataset.createGroup>} takes a single argument, a
 python string containing the name of the new group. The new L{Group}
 instances contained within the root group can be accessed by name using
 the C{groups} dictionary attribute of the L{Dataset} instance.  Only
