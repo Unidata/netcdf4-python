@@ -1157,9 +1157,9 @@ dimensions and attributes (and other Groups).
 
 Constructor: C{Group(parent, name)} 
 
-L{Group} instances should be created using the C{createGroup} method of a 
-L{Dataset} instance, or another L{Group} instance, not using this class 
-directly.
+L{Group} instances should be created using the
+L{createGroup<Dataset.createGroup>} method of a L{Dataset} instance, or
+another L{Group} instance, not using this class directly.
 
 B{Parameters:}
 
@@ -1220,9 +1220,9 @@ A netCDF L{Dimension} is used to describe the coordinates of a L{Variable}.
 
 Constructor: C{Dimension(group, name, size=None)}
 
-L{Dimension} instances should be created using the C{createDimension} 
-method of a L{Group} or L{Dataset} instance, not using this class 
-directly.
+L{Dimension} instances should be created using the
+L{createDimension<Dataset.createDimension>} method of a L{Group} or
+L{Dataset} instance, not using this class directly.
 
 B{Parameters:}
 
