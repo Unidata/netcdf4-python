@@ -376,9 +376,13 @@ de-interlaces a block of data before compression by reordering the bytes.
 The shuffle filter can significantly improve compression ratios, and is on 
 by default.  Setting C{fletcher32} keyword argument to C{createVariable} 
 to C{True} (it's C{False} by default) enables the Fletcher32 checksum 
-algorithm for error detection. These keyword arguments will be silently 
-ignored if the file format is C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT}, 
-although they will work with C{NETCDF4_CLASSIC} files.
+algorithm for error detection. It's also possible to set the HDF5
+chunking parameters and endian-ness of the binary data stored in the
+HDF5 file with the C{chunking, chunksizes} and C{endian} keyword
+arguments to C{createVariable}.  These keyword arguments only
+are relevant for C{NETCDF4} and C{NETCDF4_CLASSIC} files (where
+the underlying file format is HDF5) and are silently ignored
+if the file format is C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT}, 
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
@@ -1009,8 +1013,7 @@ opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 
 The C{zlib, complevel, shuffle, fletcher32, chunking, chunksizes} and C{endian}
-keywords are silently ignored for netCDF 3 files that do not support
-HDF5 compression and checksum features.
+keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword C{fill_value} can be used to override the default 
 netCDF C{_FillValue} (the value that the variable gets filled with before 
@@ -1373,8 +1376,7 @@ opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 
 The C{zlib, complevel, shuffle, fletcher32, chunking, chunksizes} and C{endian}
-keywords are silently ignored for netCDF 3 files that do not support
-HDF5 compression and checksum features.
+keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 B{C{least_significant_digit}} - If specified, variable data will be
 truncated (quantized). In conjunction with C{zlib=True} this produces
