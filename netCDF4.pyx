@@ -1318,8 +1318,9 @@ C{Variable(group, name, datatype, dimensions=(), zlib=False, complevel=6,
 shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, 
 endian='native', least_significant_digit=None,fill_value=None)}
    
-L{Variable} instances should be created using the C{createVariable} method 
-of a L{Dataset} or L{Group} instance, not using this class directly.
+L{Variable} instances should be created using the
+L{createVariable<Dataset.createVariable>} method of a L{Dataset} or
+L{Group} instance, not using this class directly.
 
 B{Parameters:}
 
