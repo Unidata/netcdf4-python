@@ -1,4 +1,4 @@
-20070826 - version 0.7.1 (svn revision 389)
+20070826 - version 0.7.1 (svn revision 400)
 ===========================================
 * added 'endian()' and 'chunking()' Variable methods (to inquire about
   endian and chunking variable settings).
