@@ -748,11 +748,11 @@ _private_atts = ['_grpid','_grp','_varid','groups','dimensions','variables','dty
 
 cdef class Dataset:
     """
+Dataset(filename, mode="r", clobber=True, format='NETCDF4')
+
 A netCDF L{Dataset} is a collection of dimensions, groups, variables and 
 attributes. Together they describe the meaning of data and relations among 
 data fields stored in a netCDF file.
-
-Constructor: C{Dataset(filename, mode="r", clobber=True, format='NETCDF4')}
 
 B{Parameters:}
 
@@ -820,9 +820,7 @@ write all formats.
 @ivar path: The C{path} attribute shows the location of the L{Group} in
 the L{Dataset} in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A L{Dataset}, instance is the root
-group, so the path is simply C{'/'}.
-
-"""
+group, so the path is simply C{'/'}."""
     cdef public int _grpid
     cdef public groups, dimensions, variables, file_format, path, parent
 
@@ -864,9 +862,9 @@ group, so the path is simply C{'/'}.
 
     def close(self):
         """
-Close the Dataset.
+close()
 
-C{close()}"""
+Close the Dataset."""
         cdef int ierr 
         ierr = nc_close(self._grpid)
         if ierr != NC_NOERR:
@@ -874,9 +872,9 @@ C{close()}"""
 
     def sync(self):
         """
-Writes all buffered data in the L{Dataset} to the disk file.
+sync()
 
-C{sync()}""" 
+Writes all buffered data in the L{Dataset} to the disk file."""
         cdef int ierr
         ierr = nc_sync(self._grpid)
         if ierr != NC_NOERR:
@@ -892,9 +890,9 @@ C{sync()}"""
 
     def set_fill_on(self):
         """
-Sets the fill mode for a L{Dataset} open for writing to C{on}.
+set_fill_on()
 
-C{set_fill_on()}
+Sets the fill mode for a L{Dataset} open for writing to C{on}.
 
 This causes data to be pre-filled with fill values. The fill values can be 
 controlled by the variable's C{_Fill_Value} attribute, but is usually 
@@ -902,9 +900,7 @@ sufficient to the use the netCDF default C{_Fill_Value} (defined
 separately for each variable type). The default behavior of the netCDF 
 library correspongs to C{set_fill_on}.  Data which are equal to the 
 C{_Fill_Value} indicate that the variable was created, but never written 
-to.
-
-"""
+to."""
         cdef int ierr, oldmode
         ierr = nc_set_fill (self._grpid, NC_FILL, &oldmode)
         if ierr != NC_NOERR:
@@ -912,15 +908,13 @@ to.
 
     def set_fill_off(self):
         """
-Sets the fill mode for a L{Dataset} open for writing to C{off}. 
+set_fill_off()
 
-C{set_fill_off()}
+Sets the fill mode for a L{Dataset} open for writing to C{off}. 
 
 This will prevent the data from being pre-filled with fill values, which 
 may result in some performance improvements. However, you must then make 
-sure the data is actually written before being read.
-
-"""
+sure the data is actually written before being read."""
         cdef int ierr, oldmode
         ierr = nc_set_fill (self._grpid, NC_NOFILL, &oldmode)
         if ierr != NC_NOERR:
@@ -928,25 +922,23 @@ sure the data is actually written before being read.
 
     def createDimension(self, dimname, size=None):
         """
-Creates a new dimension with the given C{dimname} and C{size}. 
+createDimension(dimname, size=None)
 
-C{createDimension(dimname, size=None)}
+Creates a new dimension with the given C{dimname} and C{size}. 
 
 C{size} must be a positive integer or C{None}, which stands for 
 "unlimited" (default is C{None}). The return value is the L{Dimension} 
 class instance describing the new dimension.  To determine the current 
 maximum size of the dimension, use the C{len} function on the L{Dimension} 
 instance. To determine if a dimension is 'unlimited', use the 
-C{isunlimited()} method of the L{Dimension} instance.
-
-"""
+C{isunlimited()} method of the L{Dimension} instance."""
         self.dimensions[dimname] = Dimension(self, dimname, size=size)
 
     def renameDimension(self, oldname, newname):
         """
-rename a L{Dimension} named C{oldname} to C{newname}.
+renameDimension(oldname, newname)
 
-C{renameDimension(oldname, newname)}"""
+rename a L{Dimension} named C{oldname} to C{newname}."""
         cdef char *namstring
         dim = self.dimensions[oldname]
         namstring = PyString_AsString(newname)
@@ -965,6 +957,8 @@ C{renameDimension(oldname, newname)}"""
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
+createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
+
 Creates a new variable with the given C{varname}, C{datatype}, and 
 C{dimensions}. If dimensions are not given, the variable is assumed to be 
 a scalar.
@@ -1012,6 +1006,9 @@ The optional keyword C{chunksizes} can be used to manually specify the
 HDF5 chunksizes for each dimension of the variable. A detailed
 discussion of HDF chunking and I/O performance is available U{here
 <http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}. 
+Basically, you want the chunk size for each dimension to match as
+closely as possible the size of the data block that users will read
+from the file.
 
 The optional keyword C{endian} can be used to control whether the
 data is stored in little or big endian format on disk. Possible
@@ -1063,15 +1060,14 @@ attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
-
         self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, chunking=chunking, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
         """
-rename a L{Variable} named C{oldname} to C{newname}
+renameVariable(oldname, newname)
 
-C{renameVariable(oldname, newname)}"""
+rename a L{Variable} named C{oldname} to C{newname}"""
         cdef char *namstring
         try:
             var = self.variables[oldname]
@@ -1088,20 +1084,19 @@ C{renameVariable(oldname, newname)}"""
 
     def createGroup(self, groupname):
         """
+createGroup(groupname)
+
 Creates a new L{Group} with the given C{groupname}.
 
-C{createGroup(groupname)}
-
 The return value is a L{Group} class instance describing the new group."""
-
         self.groups[groupname] = Group(self, groupname)
         return self.groups[groupname]
      
     def ncattrs(self):
         """
-return netCDF global attribute names for this L{Dataset} or L{Group} in a list.
+ncattrs()
 
-C{ncattrs()}""" 
+return netCDF global attribute names for this L{Dataset} or L{Group} in a list."""
         return _get_att_names(self._grpid, NC_GLOBAL)
 
     def __delattr__(self,name):
@@ -1150,12 +1145,12 @@ C{ncattrs()}"""
 
 cdef class Group(Dataset):
     """
+Group(parent, name) 
+
 Groups define a hierarchical namespace within a netCDF file. They are 
 analagous to directories in a unix filesystem. Each L{Group} behaves like 
 a L{Dataset} within a Dataset, and can contain it's own variables, 
 dimensions and attributes (and other Groups).
-
-Constructor: C{Group(parent, name)} 
 
 L{Group} instances should be created using the
 L{createGroup<Dataset.createGroup>} method of a L{Dataset} instance, or
@@ -1207,18 +1202,18 @@ method)."""
 
     def close(self):
         """
-overrides L{Dataset} close method which does not apply to L{Group} 
-instances, raises IOError.
+close()
 
-C{close()}"""
+overrides L{Dataset} close method which does not apply to L{Group} 
+instances, raises IOError."""
         raise IOError('cannot close a L{Group} (only applies to Dataset)')
 
 
 cdef class Dimension:
     """
-A netCDF L{Dimension} is used to describe the coordinates of a L{Variable}.
+Dimension(group, name, size=None)
 
-Constructor: C{Dimension(group, name, size=None)}
+A netCDF L{Dimension} is used to describe the coordinates of a L{Variable}.
 
 L{Dimension} instances should be created using the
 L{createDimension<Dataset.createDimension>} method of a L{Group} or
@@ -1243,7 +1238,6 @@ The current maximum size of a L{Dimension} instance can be obtained by
 calling the python C{len} function on the L{Dimension} instance. The
 C{isunlimited()} method of a L{Dimension} instance can be used to
 determine if the dimension is unlimited"""
-
     cdef public int _dimid, _grpid
     cdef public _file_format
 
@@ -1278,9 +1272,9 @@ determine if the dimension is unlimited"""
 
     def isunlimited(self):
         """
-returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.
+isunlimited()
 
-C{isunlimited()}"""
+returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise."""
         cdef int ierr, n, numunlimdims, ndims, nvars, ngatts, xdimid
         cdef int unlimdimids[NC_MAX_DIMS]
         if self._file_format == 'NETCDF4':
@@ -1311,13 +1305,11 @@ C{isunlimited()}"""
 
 cdef class Variable:
     """
+Variable(group, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
+
 A netCDF L{Variable} is used to read and write netCDF data.  They are 
 analagous to numpy array objects.
 
-C{Variable(group, name, datatype, dimensions=(), zlib=False, complevel=6, 
-shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, 
-endian='native', least_significant_digit=None,fill_value=None)}
-   
 L{Variable} instances should be created using the
 L{createVariable<Dataset.createVariable>} method of a L{Dataset} or
 L{Group} instance, not using this class directly.
@@ -1376,6 +1368,9 @@ B{C{chunksizes}} - Can be used to specify the HDF5 chunksizes for each
 dimension of the variable. A detailed discussion of HDF chunking and I/O
 performance is available U{here
 <http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}.
+Basically, you want the chunk size for each dimension to match as
+closely as possible the size of the data block that users will read
+from the file.
 
 B{C{endian}} - Can be used to control whether the
 data is stored in little or big endian format on disk. Possible
@@ -1431,7 +1426,6 @@ dimensions.
 decimal place in the data the contains a reliable value.  Data is 
 truncated to this decimal place when it is assigned to the L{Variable} 
 instance. If C{None}, the data is not truncated. """
-
     cdef public int _varid, _grpid, _nunlimdim
     cdef object _grp
     cdef public ndim, dtype
@@ -1617,21 +1611,23 @@ instance. If C{None}, the data is not truncated. """
 
     def group(self):
         """
-return the group that this L{Variable} is a member of.
+group()
 
-C{group()}"""
+return the group that this L{Variable} is a member of."""
         return self._grp
 
     def ncattrs(self):
         """
-return netCDF attribute names for this L{Variable} in a list
+ncattrs()
 
-C{ncattrs()}"""
-
+return netCDF attribute names for this L{Variable} in a list."""
         return _get_att_names(self._grpid, self._varid)
 
     def filters(self):
-        """return dictionary containing HDF5 filter parameters."""
+        """
+filters()
+
+return dictionary containing HDF5 filter parameters."""
         cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
         filtdict = {'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return
@@ -1651,7 +1647,10 @@ C{ncattrs()}"""
         return filtdict
 
     def endian(self):
-        """return endian-ness (little,big,native) of variable (as stored in HDF5 file)"""
+        """
+endian()
+
+return endian-ness (little,big,native) of variable (as stored in HDF5 file)."""
         cdef int ierr, iendian
         if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return None
         ierr = nc_inq_var_endian(self._grpid, self._varid, &iendian)
@@ -1666,6 +1665,8 @@ C{ncattrs()}"""
 
     def chunking(self):
         """
+chunking()
+
 return variable chunking information.  If chunking is set to one
 of the heuristic algorithms a string describing that algorithm ('sub'
 or 'seq') is returned.  Otherwise, a sequence with the chunksize for
@@ -1768,20 +1769,20 @@ each dimension is returned."""
 
     def assignValue(self,val):
         """
-assign a value to a scalar variable.  Provided for compatibility with 
-Scientific.IO.NetCDF, can also be done by assigning to a slice ([:]).
+assignValue(val)
 
-C{assignValue(val)}"""
+assign a value to a scalar variable.  Provided for compatibility with 
+Scientific.IO.NetCDF, can also be done by assigning to a slice ([:])."""
         if len(self.dimensions):
             raise IndexError('to assign values to a non-scalar variable, use a slice')
         self[:]=val
 
     def getValue(self):
         """
-get the value of a scalar variable.  Provided for compatibility with 
-Scientific.IO.NetCDF, can also be done by slicing ([:]).
+getValue()
 
-C{getValue()}"""
+get the value of a scalar variable.  Provided for compatibility with 
+Scientific.IO.NetCDF, can also be done by slicing ([:])."""
         if len(self.dimensions):
             raise IndexError('to retrieve values from a non-scalar variable, use slicing')
         return self[:]
