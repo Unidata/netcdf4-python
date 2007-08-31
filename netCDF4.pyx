@@ -963,9 +963,6 @@ Creates a new variable with the given C{varname}, C{datatype}, and
 C{dimensions}. If dimensions are not given, the variable is assumed to be 
 a scalar.
 
-C{createVariable(varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, 
-endian='native', least_significant_digit=None, fill_value=None)}
-
 The C{datatype} can be a numpy datatype object, or a string that describes 
 a numpy dtype object (like the C{dtype.str} attribue of a numpy array). 
 Supported specifiers include: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B' 
