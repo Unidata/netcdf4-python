@@ -54,7 +54,7 @@ object --+
 </pre>
 
 <hr />
-<p>Variable(group, name, datatype, dimensions=(), zlib=False, 
+<p>Variable(self, group, name, datatype, dimensions=(), zlib=False, 
   complevel=6, shuffle=True, fletcher32=False, chunking='seq', 
   chunksizes=None, endian='native', 
   least_significant_digit=None,fill_value=None)</p>
@@ -264,7 +264,8 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">group</span>,
+          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">group</span>,
         <span class="summary-sig-arg">name</span>,
         <span class="summary-sig-arg">datatype</span>,
         <span class="summary-sig-arg">dimensions</span>=<span class="summary-sig-default">()</span>,
@@ -350,7 +351,8 @@ a new object with type S, a subtype of T</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#assignValue" class="summary-sig-name">assignValue</a>(<span class="summary-sig-arg">val</span>)</span><br />
+          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#assignValue" class="summary-sig-name">assignValue</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">val</span>)</span><br />
       assign a value to a scalar variable.</td>
           <td align="right" valign="top">
             
@@ -367,7 +369,7 @@ a new object with type S, a subtype of T</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#chunking" class="summary-sig-name">chunking</a>()</span><br />
+          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#chunking" class="summary-sig-name">chunking</a>(<span class="summary-sig-arg">self</span>)</span><br />
       return variable chunking information.</td>
           <td align="right" valign="top">
             
@@ -384,7 +386,7 @@ a new object with type S, a subtype of T</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="endian"></a><span class="summary-sig-name">endian</span>()</span><br />
+          <td><span class="summary-sig"><a name="endian"></a><span class="summary-sig-name">endian</span>(<span class="summary-sig-arg">self</span>)</span><br />
       return endian-ness (little,big,native) of variable (as stored in 
       HDF5 file).</td>
           <td align="right" valign="top">
@@ -402,7 +404,7 @@ a new object with type S, a subtype of T</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="filters"></a><span class="summary-sig-name">filters</span>()</span><br />
+          <td><span class="summary-sig"><a name="filters"></a><span class="summary-sig-name">filters</span>(<span class="summary-sig-arg">self</span>)</span><br />
       return dictionary containing HDF5 filter parameters.</td>
           <td align="right" valign="top">
             
@@ -419,7 +421,7 @@ a new object with type S, a subtype of T</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#getValue" class="summary-sig-name">getValue</a>()</span><br />
+          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#getValue" class="summary-sig-name">getValue</a>(<span class="summary-sig-arg">self</span>)</span><br />
       get the value of a scalar variable.</td>
           <td align="right" valign="top">
             
@@ -436,7 +438,7 @@ a new object with type S, a subtype of T</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="group"></a><span class="summary-sig-name">group</span>()</span><br />
+          <td><span class="summary-sig"><a name="group"></a><span class="summary-sig-name">group</span>(<span class="summary-sig-arg">self</span>)</span><br />
       return the group that this <a href="netCDF4.Variable-class.html" 
       class="link">Variable</a> is a member of.</td>
           <td align="right" valign="top">
@@ -454,7 +456,7 @@ a new object with type S, a subtype of T</td>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="ncattrs"></a><span class="summary-sig-name">ncattrs</span>()</span><br />
+          <td><span class="summary-sig"><a name="ncattrs"></a><span class="summary-sig-name">ncattrs</span>(<span class="summary-sig-arg">self</span>)</span><br />
       return netCDF attribute names for this <a 
       href="netCDF4.Variable-class.html" class="link">Variable</a> in a 
       list.</td>
@@ -607,7 +609,8 @@ a new object with type S, a subtype of T</td>
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">group</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">group</span>,
         <span class="sig-arg">name</span>,
         <span class="sig-arg">datatype</span>,
         <span class="sig-arg">dimensions</span>=<span class="sig-default">()</span>,
@@ -694,7 +697,8 @@ a new object with type S, a subtype of T
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">assignValue</span>(<span class="sig-arg">val</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">assignValue</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">val</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -714,7 +718,7 @@ a new object with type S, a subtype of T
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">chunking</span>()</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">chunking</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -736,7 +740,7 @@ a new object with type S, a subtype of T
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">getValue</span>()</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getValue</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -798,7 +802,7 @@ a new object with type S, a subtype of T
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Fri Aug 31 13:40:07 2007
+    Generated by Epydoc 3.0beta1 on Fri Aug 31 13:58:03 2007
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
