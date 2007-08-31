@@ -479,10 +479,10 @@ include "netCDF4.pxi"
 
 def getlibversion():
     """
- getlibversion()
+getlibversion()
 
- returns a string describing the version of the netcdf-4 library
- used to build the module, and when it was built.
+returns a string describing the version of the netcdf-4 library
+used to build the module, and when it was built.
     """
     cdef char *libstring
     libstring = nc_inq_libvers()
