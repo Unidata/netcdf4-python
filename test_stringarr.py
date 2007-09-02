@@ -19,7 +19,7 @@ for nrec in range(nrecs):
     data = []
     data = numpy.empty((n2,),'S'+repr(nchar))
     for n in range(n2):
-        data[n] = ''.join([random.choice(chars) for i in range(12)])
+        data[n] = ''.join([random.choice(chars) for i in range(nchar)])
     print nrec,data
     datac = stringtochar(data)
     v[nrec] = datac
