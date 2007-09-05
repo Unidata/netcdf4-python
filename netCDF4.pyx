@@ -465,7 +465,6 @@ _supportedtypes = _nptonctype.keys()
 
 # pure python utilities
 from netCDF4_utils import _buildStartCountStride, _quantize, _find_dim
-from netCDF4_utils import stringtochar, chartostring
 
 __version__ = "0.7.2"
 
@@ -477,6 +476,40 @@ if _npversion.split('.')[0] < '1':
     raise ImportError('requires numpy version 1.0rc1 or later')
 import_array()
 include "netCDF4.pxi"
+
+def stringtochar(a):
+    """
+stringtochar(a)
+
+convert a string array to a character array with one extra dimension
+
+@param a:  Input numpy string array with numpy datatype 'SN', where N
+is the number of characters in each string.  Will be converted to
+an array of characters (datatype 'S1') of shape a.shape + (N,).
+
+@return: A numpy character array with datatype 'S1' and shape 
+a.shape + (N,), where N is the length of each string in a."""
+    b = NP.array(tuple(a.tostring()),'S1')
+    b.shape = a.shape + (a.itemsize,)
+    return b
+
+def chartostring(b):
+    """
+chartostring(b)
+
+convert a character array to a string array with one less dimension.
+
+@param b:  Input character array (numpy datatype 'S1').
+Will be converted to a array of strings, where each string has a fixed
+length of b.shape[-1] characters.
+
+@return: A numpy string array with datatype 'SN' and shape b.shape[:-1],
+where N=b.shape[-1]."""
+    bs = b.tostring()
+    slen = b.shape[-1]
+    a = NP.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'S'+repr(slen))
+    a.shape = b.shape[:-1]
+    return a
 
 def getlibversion():
     """

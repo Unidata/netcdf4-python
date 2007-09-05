@@ -168,17 +168,3 @@ This function is pure python.
     bits = numpy.ceil(numpy.log2(pow(10.,-exp)))
     scale = pow(2.,bits)
     return numpy.around(scale*data)/scale
-
-def stringtochar(a):
-    """convert a string array to a character array with one extra dimension"""
-    b = numpy.array(tuple(a.tostring()),'S1')
-    b.shape = a.shape + (a.itemsize,)
-    return b
-
-def chartostring(b):
-    """convert a character array to a string array with one less dimension"""
-    bs = b.tostring()
-    slen = b.shape[-1]
-    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'S'+repr(slen))
-    a.shape = b.shape[:-1]
-    return a
