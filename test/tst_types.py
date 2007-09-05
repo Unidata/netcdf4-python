@@ -45,9 +45,9 @@ class PrimitiveTypesTestCase(unittest.TestCase):
             datarr = data[1:n1dim]
             datfilled = data[0]
             # check to see that data type is correct
-            self.assert_(data.dtype == type)
+            self.assert_(data.dtype.str[1:] == type)
             # check data in variable.
-            if data.dtype != 'S1':
+            if data.dtype.str[1:] != 'S1':
                 #assert NP.allclose(datarr, ranarr[1:n1dim].astype(data.dtype))
                 assert_array_almost_equal(datarr,ranarr[1:n1dim].astype(data.dtype))
             else:
