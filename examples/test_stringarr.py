@@ -1,5 +1,4 @@
-from netCDF4 import Dataset
-from netCDF4_utils import stringtochar, chartostring
+from netCDF4 import Dataset, stringtochar, chartostring
 import random, numpy
 
 # test utilities for converting arrays of fixed-length strings

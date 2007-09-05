@@ -1,6 +1,6 @@
 version 0.7.2
 =============
-* added utilities stringtochar and chartostring (in netCDF4_utils) for
+* added convenience functions stringtochar and chartostring for
   converting character arrays to arrays of fixed-length strings and
   vice-versa.   Example usage in examples/test_stringarr.py.
 
