@@ -37,8 +37,10 @@ class StringArrayTestCase(unittest.TestCase):
     def runTest(self):
         """testing functions for converting arrays of chars to fixed-len strings"""
         nc = Dataset(FILE_NAME)
+        assert nc.dimensions['n1'].isunlimited() == True
         v = nc.variables['strings']
         assert v.dtype.str[1:] == 'S1'
+        assert v.shape == (nrecs,n2,nchar)
         for nrec in range(nrecs):
             data2 = chartostring(v[nrec])
             assert_array_equal(data2,data[nrec])
