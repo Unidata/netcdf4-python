@@ -59,8 +59,8 @@ class VariablesTestCase(unittest.TestCase):
         v1 = f.variables[VAR_DOUBLE_NAME]
         v2 = f.variables[VAR_SHORT_NAME]
         assert varnames == VARNAMES
-        assert v1.dtype == 'f8'
-        assert v2.dtype == 'i2'
+        assert v1.dtype.str[1:] == 'f8'
+        assert v2.dtype.str[1:] == 'i2'
         assert v1.long_name == 'dummy data root'
         assert v1.dimensions == (DIM1_NAME,DIM2_NAME,DIM3_NAME)
         assert v2.dimensions == (DIM2_NAME,DIM3_NAME)
@@ -75,8 +75,8 @@ class VariablesTestCase(unittest.TestCase):
         v1 = g.variables[VAR_DOUBLE_NAME]
         v2 = g.variables[VAR_SHORT_NAME]
         assert varnames == VARNAMES
-        assert v1.dtype == 'f8'
-        assert v2.dtype == 'i2'
+        assert v1.dtype.str[1:] == 'f8'
+        assert v2.dtype.str[1:] == 'i2'
         assert v1.long_name == 'dummy data subgroup'
         assert v1.dimensions == (DIM1_NAME,DIM2_NAME,DIM3_NAME)
         assert v2.dimensions == (DIM2_NAME,DIM3_NAME)
