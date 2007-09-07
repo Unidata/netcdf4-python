@@ -169,7 +169,7 @@ This function is pure python.
     scale = pow(2.,bits)
     return numpy.around(scale*data)/scale
 
-def _parsedtype(d):
+def _parsedtype(d,parent=None):
     """
 returns a nested dictionary containing information about a numpy
 datatype.  The dict values are tuples with (dtype,shape,offset)."""
@@ -182,10 +182,10 @@ datatype.  The dict values are tuples with (dtype,shape,offset)."""
             shape = (1,)
         offset = v[1]
         if v[0].type == numpy.void and v[0].subdtype is None:
-            o[f] = _parsedtype(v[0]),shape,offset
+            o[f] = _parsedtype(v[0],parent=f),shape,offset
         else:
             if v[0].subdtype is not None:
-                o[f] = v[0].subdtype[0].str[1:],shape,offset
+                o[f] = v[0].subdtype[0].str[1:],shape,offset,parent
             else:
-                o[f] = v[0].str[1:],shape,offset
+                o[f] = v[0].str[1:],shape,offset,parent
     return o
