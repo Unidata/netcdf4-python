@@ -172,19 +172,20 @@ This function is pure python.
 def _parsedtype(d):
     """
 returns a nested dictionary containing information about a numpy
-datatype.  The dict values are tuples with (dtype.str[1:],offset,shape)."""
+datatype.  The dict values are tuples with (dtype,shape,offset)."""
     if d.fields is None:
         return d.str[1:]
     o = {}
     for f,v in d.fields.iteritems():
+        shape = v[0].shape
+        if not shape:
+            shape = (1,)
+        offset = v[1]
         if v[0].type == numpy.void and v[0].subdtype is None:
-            o[f] = _parsedtype(v[0])
+            o[f] = _parsedtype(v[0]),shape,offset
         else:
-            shape = v[0].shape
-            if not shape:
-                shape = (1,)
             if v[0].subdtype is not None:
-                o[f] = v[0].subdtype[0].str[1:],v[1],shape
+                o[f] = v[0].subdtype[0].str[1:],shape,offset
             else:
-                o[f] = v[0].str[1:],v[1],shape
+                o[f] = v[0].str[1:],shape,offset
     return o
