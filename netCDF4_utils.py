@@ -178,7 +178,7 @@ datatype.  The dict values are tuples with (dtype.str[1:],offset,shape)."""
     o = {}
     for f,v in d.fields.iteritems():
         if v[0].type == numpy.void and v[0].subdtype is None:
-            o[f] = parsedtype(v[0])
+            o[f] = _parsedtype(v[0])
         else:
             shape = v[0].shape
             if not shape:
