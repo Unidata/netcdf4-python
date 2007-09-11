@@ -182,7 +182,7 @@ datatype.  The dict values are tuples with (dtype,shape,offset)."""
             shape = (1,)
         offset = v[1]
         if v[0].type == numpy.void and v[0].subdtype is None:
-            o[f] = _parsedtype(v[0],parent=f),shape,offset
+            o[f] = _parsedtype(v[0],parent=f),shape,offset,parent
         else:
             if v[0].subdtype is not None:
                 o[f] = v[0].subdtype[0].str[1:],shape,offset,parent
