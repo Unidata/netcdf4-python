@@ -83,12 +83,14 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
         else:
             unlim = False
 
+        # is this element of the tuple a sequence? (but not a string)
         try:
             e[:]
-            isSequenceType = True
+            if type(e) != types.StringType:
+                isSequenceType = True
+            else:
+                isSequenceType = False
         except:
-            isSequenceType = False
-        if isSequenceType and type(e) == types.StringType:
             isSequenceType = False
         
         # Slice index. Respect Python syntax for slice upper bounds,
