@@ -68,6 +68,8 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
     start = []
     count = []
     stride = []
+    sliceout = []
+    hasfancyindex = False
     n = -1
     for e in elem:
         n = n+1
@@ -80,6 +82,14 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
             unlim = dim.isunlimited()
         else:
             unlim = False
+
+        try:
+            e[:]
+            isSequenceType = True
+        except:
+            isSequenceType = False
+        if isSequenceType and type(e) == types.StringType:
+            isSequenceType = False
         
         # Slice index. Respect Python syntax for slice upper bounds,
         # which are not included in the resulting slice. Also, if the
@@ -108,6 +118,14 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
                     else:
                         length = e.start+1
                 beg, end, inc = e.indices(length)
+            sliceout.append(slice(None,None,None))
+        elif isSequenceType: # a sequence for 'fancy indexing'
+        # just grab all the data along this dimension
+        # then slice the resulting numpy array with the sequence
+            isSlice = 1
+            hasfancyindex = 1
+            beg, end, inc = 0, shape[n], 1
+            sliceout.append(e)
         # assume it's a simple index
         else: 
             # if it's not an integer, try to convert it to one.
@@ -144,9 +162,13 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
         start.append(0)
         count.append(shape[n])
         stride.append(1)
+        sliceout.append(slice(None,None,None))
+
+    # if no fancy indexing requested, just set sliceout to None.
+    if not hasfancyindex: sliceout = None
 
     # Done
-    return start, count, stride
+    return start, count, stride, sliceout
 
 def _quantize(data,least_significant_digit):
     """

@@ -969,6 +969,7 @@ maximum size of the dimension, use the C{len} function on the L{Dimension}
 instance. To determine if a dimension is 'unlimited', use the 
 C{isunlimited()} method of the L{Dimension} instance."""
         self.dimensions[dimname] = Dimension(self, dimname, size=size)
+        return self.dimensions[dimname]
 
     def renameDimension(self, oldname, newname):
         """
@@ -1781,9 +1782,13 @@ each dimension is returned."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
-        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
+        start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
+        data =  self._get(start, count, stride)
         # Get elements.
-        return self._get(start, count, stride)
+        if sliceout is None:
+            return data # no 'fancy' indexing requested
+        else:
+            return NP.squeeze(data[sliceout]) # slice resulting array with 'fancy' indices
  
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable
@@ -1791,7 +1796,7 @@ each dimension is returned."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
-        start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
+        start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
         # quantize data if least_significant_digit attribute set.
         if 'least_significant_digit' in self.ncattrs():
             data = _quantize(data,self.least_significant_digit)

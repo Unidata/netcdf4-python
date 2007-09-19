@@ -247,7 +247,7 @@ class _Variable(object):
         nv = len(self._recLen)
         # Parse the slicing expression, needed to properly handle
         # a possible ellipsis.
-        start, count, stride = netCDF4._buildStartCountStride(elem, self.shape, self.dimensions, self._dset)
+        start, count, stride, sliceout = netCDF4._buildStartCountStride(elem, self.shape, self.dimensions, self._dset)
         # make sure count=-1 becomes count=1
         count = [abs(cnt) for cnt in count]
         if (numpy.array(stride) < 0).any():

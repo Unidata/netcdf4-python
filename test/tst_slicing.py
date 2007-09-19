@@ -62,7 +62,7 @@ class VariablesTestCase(unittest.TestCase):
         i = NP.ones(1)[0]
         assert_array_equal(v[i],datarev[1])
         # index using an length one array.
-        i = NP.ones(1)
+        i = NP.ones(1,'i')
         assert_array_equal(v[i],datarev[1])
         # index using a float.
         assert_array_equal(v[1.0],datarev[1])
