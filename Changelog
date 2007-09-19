@@ -1,3 +1,6 @@
+* added capability to use 'fancy indexing' with variable objects 
+  (i.e. using sequences of indices instead of slices).
+
 version 0.7.2
 =============
 * added convenience functions stringtochar and chartostring for
