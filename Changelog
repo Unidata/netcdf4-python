@@ -1,5 +1,11 @@
 * added capability to use 'fancy indexing' with variable objects 
-  (i.e. using sequences of indices instead of slices).
+  (i.e. using sequences of integers or booleans in slices). WARNING:
+  if a sequence of integers or booleans is used to slice a netCDF4
+  variable, all of the data in that dimension is read into a numpy
+  array, and then the sequence is used to slice the numpy array,
+  returning just the requested elements to the user.  This can
+  potentially gobble a lot of memory and degrade performance 
+  (especially if 'fancy indexing' is done on the left-most dimension).
 
 version 0.7.2
 =============
