@@ -158,7 +158,7 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
             end = e + 1
             inc = 1
         else:
-            raise IndexError('slice must be an integer, a slice object or an integer rank-0 array')
+            raise IndexError('slice must be an integer, a sequence of integers, a slice object, or an integer array scalar')
 
         # Clip end index (except if unlimited dimension)
         # and compute number of elements to get.
