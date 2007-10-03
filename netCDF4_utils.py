@@ -128,11 +128,8 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
             hasfancyindex = 1
             beg, end, inc = 0, shape[n], 1
             sliceout.append(e)
-        # assume it's a simple index
-        else: 
-            # if it's not an integer, try to convert it to one.
-            if type(e) != types.IntType:
-                e = int(e)
+        # it's a simple integer index
+        elif type(e) == types.IntType:
             isSlice = 0       # not a slice
             # Respect standard python sequence indexing behavior.
             # Count from the dimension end if index is negative.
@@ -145,6 +142,23 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
             beg = e
             end = e + 1
             inc = 1
+        # a rank-0 numpy integer array.
+        elif hasattr(e,'dtype') and e.dtype.kind in ['i','u']:
+            e = int(e)
+            isSlice = 0       # not a slice
+            # Respect standard python sequence indexing behavior.
+            # Count from the dimension end if index is negative.
+            # Consider as illegal an out of bound index, except for the
+            # unlimited dimension.
+            if e < 0 :
+                e = e+shape[n]
+            if e < 0 or (not unlim and e >= shape[n]):
+                raise IndexError("index out of range")
+            beg = e
+            end = e + 1
+            inc = 1
+        else:
+            raise IndexError('slice must be an integer, a slice object or an integer rank-0 array')
 
         # Clip end index (except if unlimited dimension)
         # and compute number of elements to get.
