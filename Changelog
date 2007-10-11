@@ -1,3 +1,5 @@
+version 0.7.2 (not yet released)
+================================
 * added capability to use 'fancy indexing' with variable objects 
   (i.e. using sequences of integers or booleans in slices). WARNING:
   if a sequence of integers or booleans is used to slice a netCDF4
@@ -7,8 +9,6 @@
   potentially gobble a lot of memory and degrade performance 
   (especially if 'fancy indexing' is done on the left-most dimension).
 
-version 0.7.2
-=============
 * added convenience functions stringtochar and chartostring for
   converting character arrays to arrays of fixed-length strings and
   vice-versa.   Example usage in examples/test_stringarr.py.
