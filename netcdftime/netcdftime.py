@@ -2,10 +2,7 @@
 Performs conversions of netCDF time coordinate data to/from datetime objects.
 """
 import math
-try:
-    import numpy
-except ImportError:
-    import  Numeric as numpy
+import numpy
 from datetime import datetime as real_datetime
 from strptime import strptime
 from strftime import strftime
