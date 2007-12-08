@@ -1,16 +1,13 @@
 """
 Performs conversions of netCDF time coordinate data to/from datetime objects.
 """
-import math
-import numpy
+import math, numpy, re, time
 from datetime import datetime as real_datetime
-from strptime import strptime
-from strftime import strftime
 
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
 
-__version__ = '0.5.1'
+__version__ = '0.6'
 
 class datetime:
     """
@@ -39,7 +36,7 @@ and format.
     def strftime(self,format=None):
         if format is None:
             format = self.format
-        return strftime(self,format)
+        return _strftime(self,format)
     def timetuple(self):
         return (self.year,self.month,self.day,self.hour,self.minute,self.second,self.dayofwk,self.dayofyr,-1)
     def __repr__(self):
@@ -437,7 +434,7 @@ Julian Day is a fractional day with a resolution of 1 second.
     
     return datetime(year,month,int(days),int(hours),int(minutes),int(seconds),-1, int(dayofyr))
 
-def _dateparse(timestr,format='%Y-%m-%d %H:%M:%S'):
+def _dateparse(timestr):
     """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss
     return a tuple (units, datetimeinstance)"""
     timestr_split = timestr.split()
@@ -446,28 +443,22 @@ def _dateparse(timestr,format='%Y-%m-%d %H:%M:%S'):
         raise ValueError,"units must be one of 'seconds', 'minutes', 'hours' or 'days' (or singular version of these), got '%s'" % units
     if timestr_split[1].lower() != 'since':
         raise ValueError,"no 'since' in unit_string"
-    # use strptime to parse the date string.
+    # parse the date string.
     n = timestr.find('since')+6
-    year,month,day,hour,minute,second,daywk,dayyr,tz = strptime(timestr[n:],format)
-    if dayyr == -1: dayyr=1 # must have valid day of year for strftime to work
-    return units, datetime(year, month, day, hour, minute, second, daywk, dayyr)
+    year,month,day,hour,minute,second,utc_offset = _parse_date(timestr[n:])
+    return units, utc_offset, datetime(year, month, day, hour, minute, second)
 
 class utime:
     """
 Performs conversions of netCDF time coordinate
 data to/from datetime objects.
 
-To initialize: C{t = utime(unit_string,format='%Y-%m-%d %H:%M:%S',calendar='standard')}
+To initialize: C{t = utime(unit_string,calendar='standard')}
 
 where 
 
 B{C{unit_string}} is a string of the form
-C{'time-units since <format>'} defining the time units.
-
-B{C{format}} is a string describing a reference time. This string is converted 
-to a year,month,day,hour,minute,second tuple by strptime. The default 
-format is C{'%Y-%m-%d %H:%M:%S'}. See the C{time.strptime} docstring for other 
-valid formats.
+C{'time-units since <time-origin>'} defining the time units.
 
 Valid time-units are days, hours, minutes and seconds (the singular forms 
 are also accepted). An example unit_string would be C{'hours 
@@ -557,15 +548,11 @@ it should be noted that udunits treats 0 AD as identical to 1 AD."
 @ivar unit_string:  a string defining the the netCDF time variable.
 @ivar units:  the units part of C{unit_string} (i.e. 'days', 'hours', 'seconds').
     """
-    def __init__(self,unit_string,format='%Y-%m-%d %H:%M:%S',calendar='standard'):
+    def __init__(self,unit_string,calendar='standard'):
         """
 @param unit_string: a string of the form
-C{'time-units since <format>'} defining the time units.
+C{'time-units since <time-origin>'} defining the time units.
 
-@keyword format: a string describing a reference time. This string is converted 
-to a year,month,day,hour,minute,second tuple by strptime. The default 
-format is C{'%Y-%m-%d %H:%M:%S'}. See the C{time.strptime} docstring for other 
-valid formats.
 Valid time-units are days, hours, minutes and seconds (the singular forms 
 are also accepted). An example unit_string would be C{'hours 
 since 0001-01-01 00:00:00'}.
@@ -584,8 +571,9 @@ are:
  it is divisible by 400.
  - C{'noleap'} or C{'365_day'}:
  Gregorian calendar without leap years, i.e., all years are 365 days long. 
- all_leap or 366_day Gregorian calendar with every year being a leap year, 
- i.e., all years are 366 days long.
+ - C{'all_leap'} or C{'366_day'}:  
+ Gregorian calendar with every year being a leap year, i.e.,
+ all years are 366 days long.
  -C{'360_day'}:
  All years are 360 days divided into 30 day months. 
  -C{'julian'}:
@@ -599,7 +587,8 @@ units to datetime objects.
             self.calendar = calendar
         else:
             raise ValueError, "calendar must be one of %s, got '%s'" % (str(_calendars),calendar)
-        units, self.origin = _dateparse(unit_string,format=format)
+        units, tzoffset, self.origin = _dateparse(unit_string)
+        self.tzoffset = tzoffset # time zone offset in minutes
         self.units = units
         self.unit_string = unit_string
         if self.calendar in ['noleap','365_day'] and self.origin.month == 2 and self.origin.day == 29:
@@ -619,6 +608,10 @@ units to datetime objects.
         """
 Returns C{time_value} in units described by L{unit_string}, using
 the specified L{calendar}, given a 'datetime-like' object.
+
+The datetime object must represent UTC with no time-zone offset.
+If there is a time-zone offset implied by L{unit_string}, it will
+be applied to the returned numeric values.
 
 Resolution is 1 second.
 
@@ -664,12 +657,15 @@ Returns a scalar if input is a scalar, else returns a numpy array.
                 jdelta = [_360DayFromDate(d)-self._jd0 for d in date.flat]
         if not isscalar:
             jdelta = numpy.array(jdelta)
+        # convert to desired units, add time zone offset.
         if self.units in ['second','seconds']:
-            jdelta = jdelta*86400.
+            jdelta = jdelta*86400. + self.tzoffset*60.
         elif self.units in ['minute','minutes']:
-            jdelta = jdelta*1440.
-        elif self.units in ['hours','hours']:
-            jdelta = jdelta*24.
+            jdelta = jdelta*1440. + self.tzoffset
+        elif self.units in ['hour','hours']:
+            jdelta = jdelta*24. + self.tzoffset/60.
+        elif self.units in ['day','days']:
+            jdelta = jdelta + self.tzoffset/1440.
         if isscalar:
             return jdelta
         else:
@@ -679,6 +675,9 @@ Returns a scalar if input is a scalar, else returns a numpy array.
         """
 Return a 'datetime-like' object given a C{time_value} in units
 described by L{unit_string}, using L{calendar}.
+
+dates are in UTC with no offset, even if L{unit_string} contains
+a time zone offset from UTC.
 
 Resolution is 1 second.
 
@@ -691,8 +690,8 @@ C{calendar='proleptic_gregorian'}, or C{calendar = 'standard'/'gregorian'} and
 the date is after 1582-10-15). Otherwise, they are 'phony' datetime 
 objects which are actually instances of netcdftime.datetime.  This is 
 because the python datetime module cannot handle the weird dates in some 
-calendars (such as C{'360_day'} and C{'all_leap'}) which don't exist in any real 
-world calendar.
+calendars (such as C{'360_day'} and C{'all_leap'}) which 
+do not exist in any real world calendar.
         """
         isscalar = False
         try:
@@ -702,14 +701,15 @@ world calendar.
         if not isscalar:
             time_value = numpy.array(time_value)
             shape = time_value.shape
+        # convert to desired units, remove time zone offset.
         if self.units in ['second','seconds']:
-            jdelta = time_value/86400.
+            jdelta = time_value/86400. - self.tzoffset/1440.
         elif self.units in ['minute','minutes']:
-            jdelta = time_value/1440.
+            jdelta = time_value/1440. - self.tzoffset/1440.
         elif self.units in ['hours','hours']:
-            jdelta = time_value/24.
+            jdelta = time_value/24. - self.tzoffset/1440.
         elif self.units in ['day','days']:
-            jdelta = time_value
+            jdelta = time_value - self.tzoffset/1440.
         jd = self._jd0 + jdelta
         if self.calendar in ['julian','standard','gregorian','proleptic_gregorian']:
             if not isscalar:
@@ -735,3 +735,117 @@ world calendar.
             return date
         else:
             return numpy.reshape(numpy.array(date),shape)
+
+def _parse_date(origin):
+    """Parses a date string and returns a tuple
+    (year,month,day,hour,minute,second,utc_offset).
+    utc_offset is in minutes.
+
+    This function parses the 'origin' part of the time unit. It should be
+    something like::
+
+        2004-11-03 14:42:27.0 +2:00
+
+    Lots of things are optional; just the date is mandatory.
+
+    by Roberto De Almeida
+
+    excerpted from coards.py - http://cheeseshop.python.org/pypi/coards/
+    """
+    # yyyy-mm-dd [hh:mm:ss[.s][ [+-]hh[:][mm]]]
+    p = re.compile( r'''(?P<year>\d{1,4})           # yyyy
+                        -                           #
+                        (?P<month>\d{1,2})          # mm or m
+                        -                           #
+                        (?P<day>\d{1,2})            # dd or d
+                                                    #
+                        (?:                         # [optional time and timezone]
+                            \s                      #
+                            (?P<hour>\d{1,2})       #   hh or h
+                            :                       #
+                            (?P<min>\d{1,2})        #   mm or m
+                            :                       #
+                            (?P<sec>\d{1,2})        #   ss or s
+                                                    #
+                            (?:                     #   [optional decisecond]
+                                \.                  #       .
+                                (?P<dsec>\d)        #       s
+                            )?                      #
+                            (?:                     #   [optional timezone]
+                                \s                  #
+                                (?P<ho>[+-]?        #       [+ or -]
+                                \d{1,2})            #       hh or h
+                                :?                  #       [:]
+                                (?P<mo>\d{2})?      #       [mm]
+                            )?                      #
+                        )?                          #
+                        $                           # EOL
+                    ''', re.VERBOSE)
+
+    m = p.match(origin.strip())
+    if m:
+        c = m.groupdict(0)
+        # UTC offset.
+        offset = int(c['ho'])*60 + int(c['mo'])
+        return int(c['year']),int(c['month']),int(c['day']),int(c['hour']),int(c['min']),int(c['sec']),offset
+    
+    raise Exception('Invalid date origin: %s' % origin)
+
+# remove the unsupposed "%s" command.  But don't
+# do it if there's an even number of %s before the s
+# because those are all escaped.  Can't simply
+# remove the s because the result of
+#  %sY
+# should be %Y if %s isn't supported, not the
+# 4 digit year.
+_illegal_s = re.compile(r"((^|[^%])(%%)*%s)")
+
+def _findall(text, substr):
+     # Also finds overlaps
+     sites = []
+     i = 0
+     while 1:
+         j = text.find(substr, i)
+         if j == -1:
+             break
+         sites.append(j)
+         i=j+1
+     return sites
+
+# Every 28 years the calendar repeats, except through century leap
+# years where it's 6 years.  But only if you're using the Gregorian
+# calendar.  ;)
+
+def _strftime(dt, fmt):
+    if _illegal_s.search(fmt):
+        raise TypeError("This strftime implementation does not handle %s")
+    # don't use strftime method at all.
+    #if dt.year > 1900:
+    #    return dt.strftime(fmt)
+
+    year = dt.year
+    # For every non-leap year century, advance by
+    # 6 years to get into the 28-year repeat cycle
+    delta = 2000 - year
+    off = 6*(delta // 100 + delta // 400)
+    year = year + off
+
+    # Move to around the year 2000
+    year = year + ((2000 - year)//28)*28
+    timetuple = dt.timetuple()
+    s1 = time.strftime(fmt, (year,) + timetuple[1:])
+    sites1 = _findall(s1, str(year))
+    
+    s2 = time.strftime(fmt, (year+28,) + timetuple[1:])
+    sites2 = _findall(s2, str(year+28))
+
+    sites = []
+    for site in sites1:
+        if site in sites2:
+            sites.append(site)
+            
+    s = s1
+    syear = "%4d" % (dt.year,)
+    for site in sites:
+        s = s[:site] + syear + s[site+4:]
+    return s
