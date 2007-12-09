@@ -57,8 +57,8 @@ rootgrp.source = 'netCDF4 python module tutorial'
 latitudes.units = 'degrees north'
 longitudes.units = 'degrees east'
 temp.units = 'K'
-times.units = 'hours since January 1, 0001'
-times.calendar = 'proleptic_gregorian'
+times.units = 'hours since 0001-01-01 00:00:00.0'
+times.calendar = 'gregorian'
 
 for name in rootgrp.ncattrs():
     print 'Global attr', name, '=', getattr(rootgrp,name)
@@ -84,12 +84,11 @@ print 'levels shape after adding pressure data = ',levels.shape
 
 # fill in times.
 from datetime import datetime, timedelta
-from netcdftime import utime
-cdftime = utime(times.units,calendar=times.calendar,format='%B %d, %Y') 
+from netCDF4 import num2date, date2num
 dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
-times[:] = cdftime.date2num(dates)
-print 'time values (in units %s): ' % times.units+'\n',times[:]
-dates = cdftime.num2date(times[:])
-print 'dates corresponding to time values:\n',dates
+times[:] = date2num(dates,units=times.units,calendar=times.calendar)
+print 'time values (in units %s): ' % times.units+'\\n',times[:]
+dates = num2date(times[:],units=times.units,calendar=times.calendar)
+print 'dates corresponding to time values:\\n',dates
 
 rootgrp.close()
