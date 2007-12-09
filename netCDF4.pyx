@@ -266,8 +266,8 @@ our example,
 >>> longitudes.units = 'degrees east'
 >>> pressure.units = 'hPa'
 >>> temp.units = 'K'
->>> times.units = 'days since January 1, 0001'
->>> times.calendar = 'proleptic_gregorian'
+>>> times.units = 'hours since 0001-01-01 00:00:00.0'
+>>> times.calendar = 'gregorian'
 
 The L{ncattrs<Dataset.ncattrs>} method of a L{Dataset}, L{Group} or
 L{Variable} instance can be used to retrieve the names of all the netCDF
@@ -342,31 +342,30 @@ metadata standards (such as CF and COARDS) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
 specified like C{hours since YY:MM:DD hh-mm-ss}.  These units can be
 awkward to deal with, without a utility to convert the values to and
-from calendar dates.  A module called L{netcdftime.netcdftime} is
-provided with this package to do just that.  Here's an example of how it
+from calendar dates.  The functione called L{num2date} and L{date2num} are
+provided with this package to do just that.  Here's an example of how they
 can be used:
 
 >>> # fill in times.
 >>> from datetime import datetime, timedelta
->>> from netcdftime import utime
->>> cdftime = utime(times.units,calendar=times.calendar,format='%B %d, %Y') 
+>>> from netCDF4 import num2date, date2num
 >>> dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
->>> times[:] = cdftime.date2num(dates)
+>>> times[:] = date2num(dates,units=times.units,calendar=times.calendar)
 >>> print 'time values (in units %s): ' % times.units+'\\n',times[:]
 time values (in units hours since January 1, 0001): 
 [ 17533056.  17533068.  17533080.  17533092.  17533104.]
 >>>
->>> dates = cdftime.num2date(times[:])
+>>> dates = num2date(times[:],units=times.units,calendar=times.calendar)
 >>> print 'dates corresponding to time values:\\n',dates
 dates corresponding to time values:
 [2001-03-01 00:00:00 2001-03-01 12:00:00 2001-03-02 00:00:00
  2001-03-02 12:00:00 2001-03-03 00:00:00]
 >>>
 
-Values of time in the specified units and calendar are converted to and
-from python C{datetime} instances using the C{num2date} and C{date2num}
-methods of the C{utime} class. See the L{netcdftime.netcdftime}
-documentation for more details.
+L{num2date} converts numeric values of time in the specified C{units}
+and C{calendar} to datetime objectecs, and L{date2num} does the reverse.
+All the calendars currently defined in the U{CF metadata convention 
+<http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
             
 7) Efficient compression of netCDF variables
 --------------------------------------------
@@ -511,6 +510,89 @@ where N=b.shape[-1]."""
     a = NP.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'S'+repr(slen))
     a.shape = b.shape[:-1]
     return a
+
+def date2num(dates,units,calendar='standard'):
+    """
+date2num(dates,units,calendar='standard')
+
+Return numeric time values given datetime objects. The units
+of the numeric time values are described by the L{units} argument
+and the L{calendar} keyword. The datetime objects must
+be in UTC with no time-zone offset.  If there is a 
+time-zone offset in C{units}, it will be applied to the
+returned numeric values.
+
+Like the matplotlib C{date2num} function, except that it allows
+for different units and calendars.  Behaves the same if
+C{units = 'days since 0001-01-01 00:00:00'} and 
+C{calendar = 'proleptic_gregorian'}.
+
+@param dates: A datetime object or a sequence of datetime objects.
+ The datetime objects should not include a time-zone offset.
+
+@param units: a string of the form C{'B{time units} since B{reference time}}'
+ describing the time units. B{C{time units}} can be days, hours, minutes
+ or seconds.  B{C{reference time}} is the time origin. A valid choice
+ would be units=C{'hours since 1800-01-01 00:00:00 -6:00'}.
+
+@param calendar: describes the calendar used in the time calculations. 
+ All the values currently defined in the U{CF metadata convention 
+ <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
+ Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
+ 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
+ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
+
+@return: a numeric time value, or an array of numeric time values.
+
+The maximum resolution of the numeric time values is 1 second.
+    """
+    cdftime = netcdftime.utime(units,calendar=calendar)
+    return cdftime.date2num(dates)
+
+def num2date(times,units,calendar='standard'):
+    """
+num2date(times,units,calendar='standard')
+
+Return datetime objects given numeric time values. The units
+of the numeric time values are described by the C{units} argument
+and the C{calendar} keyword. The returned datetime objects represent 
+UTC with no time-zone offset, even if the specified 
+C{units} contain a time-zone offset.
+
+Like the matplotlib C{num2date} function, except that it allows
+for different units and calendars.  Behaves the same if
+C{units = 'days since 001-01-01 00:00:00'} and 
+C{calendar = 'proleptic_gregorian'}.
+
+@param times: numeric time values. Maximum resolution is 1 second.
+
+@param units: a string of the form C{'B{time units} since B{reference time}}'
+describing the time units. B{C{time units}} can be days, hours, minutes
+or seconds.  B{C{reference time}} is the time origin. A valid choice
+would be units=C{'hours since 1800-01-01 00:00:00 -6:00'}.
+
+@param calendar: describes the calendar used in the time calculations. 
+All the values currently defined in the U{CF metadata convention 
+<http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
+Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
+'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
+Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
+
+@return: a datetime instance, or an array of datetime instances.
+
+The datetime instances returned are 'real' python datetime 
+objects if the date falls in the Gregorian calendar (i.e. 
+C{calendar='proleptic_gregorian'}, or C{calendar = 'standard'} or C{'gregorian'}
+and the date is after 1582-10-15). Otherwise, they are 'phony' datetime 
+objects which support some but not all the methods of 'real' python
+datetime objects.  This is because the python datetime module cannot
+the uses the C{'proleptic_gregorian'} calendar, even before the switch
+occured from the Julian calendar in 1582. The datetime instances
+do not contain a time-zone offset, even if the specified C{units}
+contains one.
+    """
+    cdftime = netcdftime.utime(units,calendar=calendar)
+    return cdftime.num2date(times)
 
 def getlibversion():
     """
@@ -1946,90 +2028,3 @@ Scientific.IO.NetCDF, can also be done by slicing ([:])."""
             return NP.squeeze(data)
         else:
             return data
-
-def num2date(times,units,calendar='standard'):
-    """
-num2date(times,units,calendar='standard')
-
-Return datetime objects given numeric time values. The units
-of the numeric time values are described by the units argument
-and the calendar keyword. The returned datetime objects represent 
-UTC with no time-zone offset, even if the specified 
-units contain a time-zone offset.
-
-Like the matplotlib num2date function, except that it allows
-for different units and calendars.  Behaves the same if
-units = 'days since 001-01-01 00:00:00' and 
-calendar = 'proleptic_gregorian'.
-
-Arguments:
-
-times - numeric time values. Maximum resolution is 1 second.
-
-units - a string of the form '<time-units> since <reference time>'
- describing the time units. <time-units> can be days, hours, minutes
- or seconds.  <reference-time> is the time origin. A valid choice
- would be units='hours since 1800-01-01 00:00:00 -6:00'.
-
-calendar - describes the calendar used in the time calculations. 
- All the values currently defined in the CF metadata convention 
- (http://cf-pcmdi.llnl.gov/documents/cf-conventions/) are supported.
- Valid calendars 'standard', 'gregorian', 'proleptic_gregorian'
- 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'.
- Default is 'standard', which is a mixed Julian/Gregorian calendar.
-
-Returns a datetime instance, or an array of datetime instances.
-
-The datetime instances returned are 'real' python datetime 
-objects if the date falls in the Gregorian calendar (i.e. 
-calendar='proleptic_gregorian', or calendar = 'standard' or 'gregorian'
-and the date is after 1582-10-15). Otherwise, they are 'phony' datetime 
-objects which support some but not all the methods of 'real' python
-datetime objects.  This is because the python datetime module cannot
-the weird dates in some calendars (such as '360_day' and 'all_leap'
-which don't exist in any real world calendar. The datetime instances
-do not contain a time-zone offset, even if the specified units
-contains one.
-    """
-    cdftime = netcdftime.utime(units,calendar=calendar)
-    return cdftime.num2date(times)
-
-def date2num(dates,units,calendar='standard'):
-    """
-date2num(dates,units,calendar='standard'):
-
-Return numeric time values given datetime objects. The units
-of the numeric time values are described by the units argument
-and the calendar keyword. The datetime objects must
-be in UTC with no time-zone offset.  If there is a 
-time-zone offset in units, it will be applied to the
-returned numeric values.
-
-Like the matplotlib date2num function, except that it allows
-for different units and calendars.  Behaves the same if
-units = 'days since 0001-01-01 00:00:00' and 
-calendar = 'proleptic_gregorian'.
-
-Arguments:
-
-dates - A datetime object or a sequence of datetime objects.
- The datetime objects should not include a time-zone offset.
-
-units - a string of the form '<time-units> since <reference time>'
- describing the time units. <time-units> can be days, hours, minutes
- or seconds.  <reference-time> is the time origin. A valid choice
- would be units='hours since 1800-01-01 00:00:00 -6:00'.
-
-calendar - describes the calendar used in the time calculations. 
- All the values currently defined in the CF metadata convention 
- (http://cf-pcmdi.llnl.gov/documents/cf-conventions/) are supported.
- Valid calendars 'standard', 'gregorian', 'proleptic_gregorian'
- 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'.
- Default is 'standard', which is a mixed Julian/Gregorian calendar.
-
-Returns a numeric time value, or an array of numeric time values.
-
-The maximum resolution of the numeric time values is 1 second.
-    """
-    cdftime = netcdftime.utime(units,calendar=calendar)
-    return cdftime.date2num(dates)
