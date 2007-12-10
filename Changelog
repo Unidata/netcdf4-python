@@ -1,5 +1,6 @@
 version 0.7.2 (not yet released)
 ================================
+* added date2num and num2date functions.
 * added capability to use 'fancy indexing' with variable objects 
   (i.e. using sequences of integers or booleans in slices). WARNING:
   if a sequence of integers or booleans is used to slice a netCDF4
