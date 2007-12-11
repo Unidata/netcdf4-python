@@ -43,6 +43,10 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         for type in datatypes:
             data = file.variables['data_'+type]
             datarr = data[1:n1dim]
+            # fill missing data with _FillValue
+            # ('S1' array will have some missing values)
+            if hasattr(datarr, 'mask'):
+                datarr = datarr.filled(data._FillValue)
             datfilled = data[0]
             # check to see that data type is correct
             self.assert_(data.dtype.str[1:] == type)

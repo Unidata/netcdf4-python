@@ -471,6 +471,7 @@ __version__ = "0.7.3"
 import os
 import netcdftime
 import numpy as NP
+from numpy import ma
 from numpy import __version__ as _npversion
 if _npversion.split('.')[0] < '1':
     raise ImportError('requires numpy version 1.0rc1 or later')
@@ -1867,11 +1868,21 @@ each dimension is returned."""
         # to use.
         start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
         data =  self._get(start, count, stride)
-        # Get elements.
-        if sliceout is None:
-            return data # no 'fancy' indexing requested
-        else:
-            return NP.squeeze(data[sliceout]) # slice resulting array with 'fancy' indices
+        if sliceout is not None:
+            data = NP.squeeze(data[sliceout]) # slice resulting array with 'fancy' indices
+        # if variable has missing_value or _FillValue attribute,
+        # and any data values equal that value, create and
+        # return a masked array with those values masked.
+        if hasattr(self, 'missing_value') and (data == self.missing_value).any():
+            data = ma.masked_array(data, mask = data == self.missing_value)
+        elif hasattr(self, '_FillValue') and (data == self._FillValue).any():
+            data = ma.masked_array(data, mask = data == self._FillValue)
+        # if variable has scale_factor and add_offset attributes,
+        # and is a 16-bit integer type, rescale as 32-bit floats.
+        if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset')\
+           and data.dtype == NP.int16:
+            data = (self.scale_factor*data + self.add_offset).astype(NP.float32)
+        return data
  
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable
@@ -1883,6 +1894,19 @@ each dimension is returned."""
         # quantize data if least_significant_digit attribute set.
         if 'least_significant_digit' in self.ncattrs():
             data = _quantize(data,self.least_significant_digit)
+        # if variable has missing_value attribute,
+        # and data is a masked array, create a regular numpy
+        # array with mask replaced by missing_value.
+        if hasattr(self, 'missing_value') and hasattr(data,'mask'):
+            data = data.filled(fill_value=self.missing_value)
+        if hasattr(self, '_FillValue') and hasattr(data,'mask'):
+            data = data.filled(fill_value=self._FillValue)
+        # if variable has scale_factor and add_offset attributes,
+        # and doesn't fit in a 16-bit integer, 
+        # pack using scale_factor and add_offset.
+        #if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset')\
+        #    and (data.min() < -32767 or data.max() > 32767):
+        #    data = (data - self.add_offset)/self.scale_factor
         # A numpy array is needed. Convert if necessary.
         if not type(data) == NP.ndarray:
             data = NP.array(data,self.dtype)

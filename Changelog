@@ -1,5 +1,13 @@
-version 0.7.2 (not yet released)
+version 0.7.3 (not yet released)
 ================================
+* automatically unpack short integer variables to float32 arrays
+  if scale_factor and add_offset variable attributes are set.
+* added support for masked arrays.  If you try to write a masked
+  array to a variable with the missing_value or _FillValue attributes
+  set, the masked array is filled with that value before being written
+  to the file.  If you read data from a variable with the missing_value
+  or _FillValue attribute set, a masked array is returned with the
+  appropriate values masked.
 * added date2num and num2date functions.
 * added capability to use 'fancy indexing' with variable objects 
   (i.e. using sequences of integers or booleans in slices). WARNING:
