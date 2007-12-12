@@ -1874,9 +1874,9 @@ each dimension is returned."""
         # and any data values equal that value, create and
         # return a masked array with those values masked.
         if hasattr(self, 'missing_value') and (data == self.missing_value).any():
-            data = ma.masked_array(data, mask = data == self.missing_value)
+            data = ma.masked_array(data, mask = data == self.missing_value, fill_value=self.missing_value)
         elif hasattr(self, '_FillValue') and (data == self._FillValue).any():
-            data = ma.masked_array(data, mask = data == self._FillValue)
+            data = ma.masked_array(data, mask = data == self._FillValue, fill_value=self.missing_value)
         # if variable has scale_factor and add_offset attributes,
         # and is a 16-bit integer type, rescale as 32-bit floats.
         if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset')\
