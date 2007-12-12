@@ -46,7 +46,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
             # fill missing data with _FillValue
             # ('S1' array will have some missing values)
             if hasattr(datarr, 'mask'):
-                datarr = datarr.filled(data._FillValue)
+                datarr = datarr.filled()
             datfilled = data[0]
             # check to see that data type is correct
             self.assert_(data.dtype.str[1:] == type)
