@@ -25,10 +25,11 @@ def check_ifnetcdf4(netcdf4_dir):
 
 HDF5_dir = os.environ.get('HDF5_DIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
+dirstosearch =  ['/usr/local','/sw','/opt','/opt/local',os.path.expanduser('~')]
 if HDF5_dir is None:
     print """
 HDF5_DIR environment variable not set, checking some standard locations ..,"""
-    for direc in ['/usr/local','/sw','/opt',os.path.expanduser('~')]:
+    for direc in dirstosearch:
         print 'checking %s ...' % direc
         hdf5_version = check_hdf5version(direc)
         if hdf5_version is None or hdf5_version[1:6] < '1.8.0':
@@ -49,7 +50,7 @@ else:
 if netCDF4_dir is None:
     print """
 NETCDF4_DIR environment variable not set, checking some standard locations ..,"""
-    for direc in ['/usr/local','/sw','/opt',os.path.expanduser('~')]:
+    for direc in dirstosearch:
         print 'checking %s ...' % direc
         isnetcdf4 = check_ifnetcdf4(direc)
         if not isnetcdf4:
