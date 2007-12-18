@@ -1935,6 +1935,20 @@ Scientific.IO.NetCDF, can also be done by slicing ([:])."""
         return self[:]
 
     def set_auto_maskandscale(self,maskandscale):
+        """
+set_auto_maskandscale(self,True|False)
+
+turn on or off automatic conversion of variable data to and
+from masked arrays (if missing_value or _FillValue attributes are set)
+and automatic packing/unpacking of variable data (if scale_factor
+and add_offset attributes are set).
+
+For more information on how scale_factor and add_offset can be 
+used to provide simple compression, see
+http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml.
+
+The default is False (no automatic conversions are performed).
+        """
         if maskandscale:
             self.maskandscale = True
         else:
