@@ -863,7 +863,7 @@ cdef _get_vars(group):
 # these are class attributes that 
 # only exist at the python level (not in the netCDF file).
 
-_private_atts = ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format', '_nunlimdim','path','parent','ndim']
+_private_atts = ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format', '_nunlimdim','path','parent','ndim','maskandscale']
 
 
 cdef class Dataset:
@@ -942,7 +942,7 @@ the L{Dataset} in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
     cdef public int _grpid
-    cdef public groups, dimensions, variables, file_format, path, parent
+    cdef public groups, dimensions, variables, file_format, path, parent, maskanscale
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4', **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
@@ -1546,7 +1546,7 @@ truncated to this decimal place when it is assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. """
     cdef public int _varid, _grpid, _nunlimdim
     cdef object _grp
-    cdef public ndim, dtype
+    cdef public ndim, dtype, maskandscale
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None,  **kwargs):
         cdef int ierr, ndims, ichunkalg, ideflate_level, numdims
@@ -1686,6 +1686,9 @@ instance. If C{None}, the data is not truncated. """
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         self.ndim = numdims
+        # default for automatically applying scale_factor and
+        # add_offset, and converting to/from masked arrays is False.
+        self.maskandscale = False
 
     property shape:
         """find current sizes of all variable dimensions"""
@@ -1873,15 +1876,14 @@ each dimension is returned."""
         # if variable has missing_value or _FillValue attribute,
         # and any data values equal that value, create and
         # return a masked array with those values masked.
-        if hasattr(self, 'missing_value') and (data == self.missing_value).any():
-            data = ma.masked_array(data,mask=data==self.missing_value,fill_value=self.missing_value)
-        elif hasattr(self, '_FillValue') and (data == self._FillValue).any():
-            data = ma.masked_array(data,mask=data==self._FillValue,fill_value=self._FillValue)
-        # if variable has scale_factor and add_offset attributes,
-        # and is a 16-bit integer type, rescale as 32-bit floats.
-        if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset')\
-           and data.dtype == NP.int16:
-            data = (self.scale_factor*data + self.add_offset).astype(NP.float32)
+        if self.maskandscale:
+            if hasattr(self, 'missing_value') and (data == self.missing_value).any():
+                data = ma.masked_array(data,mask=data==self.missing_value,fill_value=self.missing_value)
+            elif hasattr(self, '_FillValue') and (data == self._FillValue).any():
+                data = ma.masked_array(data,mask=data==self._FillValue,fill_value=self._FillValue)
+            # if variable has scale_factor and add_offset attributes, rescale.
+            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+                data = self.scale_factor*data + self.add_offset
         return data
  
     def __setitem__(self, elem, data):
@@ -1897,16 +1899,16 @@ each dimension is returned."""
         # if variable has missing_value attribute,
         # and data is a masked array, create a regular numpy
         # array with mask replaced by missing_value.
-        if hasattr(self, 'missing_value') and hasattr(data,'mask'):
-            data = data.filled(fill_value=self.missing_value)
-        if hasattr(self, '_FillValue') and hasattr(data,'mask'):
-            data = data.filled(fill_value=self._FillValue)
-        # if variable has scale_factor and add_offset attributes,
-        # and doesn't fit in a 16-bit integer, 
-        # pack using scale_factor and add_offset.
-        #if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset')\
-        #    and (data.min() < -32767 or data.max() > 32767):
-        #    data = (data - self.add_offset)/self.scale_factor
+        if self.maskandscale:
+            if hasattr(self, 'missing_value') and hasattr(data,'mask'):
+                data = data.filled(fill_value=self.missing_value)
+            if hasattr(self, '_FillValue') and hasattr(data,'mask'):
+                data = data.filled(fill_value=self._FillValue)
+            # pack using scale_factor and add_offset.
+            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+            # only pack if data is a floating type and variable is integer type?
+            #   and self.dtype.kind == 'i' and data.dtype.kind == 'f':
+                data = (data - self.add_offset)/self.scale_factor
         # A numpy array is needed. Convert if necessary.
         if not type(data) == NP.ndarray:
             data = NP.array(data,self.dtype)
@@ -1931,6 +1933,12 @@ Scientific.IO.NetCDF, can also be done by slicing ([:])."""
         if len(self.dimensions):
             raise IndexError('to retrieve values from a non-scalar variable, use slicing')
         return self[:]
+
+    def set_auto_maskandscale(self,maskandscale):
+        if maskandscale:
+            self.maskandscale = True
+        else:
+            self.maskandscale = False
 
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
