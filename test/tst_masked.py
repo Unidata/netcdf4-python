@@ -8,7 +8,8 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 from numpy.random.mtrand import uniform 
 import netCDF4
 
-# test primitive data types.
+# test automatic conversion of masked arrays, and
+# packing/unpacking of short ints.
 
 # create an n1dim by n2dim random ranarr.
 FILE_NAME = tempfile.mktemp(".nc")
@@ -20,6 +21,7 @@ ranarr[::2] = missing_value
 maskedarr = ma.masked_values(ranarr,-9999.)
 scale_factor = (packeddata.max()-packeddata.min())/(2.*32766.)
 add_offset = 0.5*(packeddata.max()+packeddata.min())
+packeddata2 = ((packeddata-add_offset)/scale_factor).astype('i2')
 
 class PrimitiveTypesTestCase(unittest.TestCase):
 
@@ -29,11 +31,13 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         file.createDimension('n', ndim)
         foo = file.createVariable('maskeddata', 'f8', ('n',))
         foo.missing_value = missing_value
+        foo.set_auto_maskandscale(True)
         bar = file.createVariable('packeddata', 'i2', ('n',))
-        foo[:] = maskedarr
-        bar[:] = (packeddata - add_offset)/scale_factor
+        bar.set_auto_maskandscale(True)
         bar.scale_factor = scale_factor
         bar.add_offset = add_offset
+        foo[:] = maskedarr
+        bar[:] = packeddata
         file.close()
 
     def tearDown(self):
@@ -44,12 +48,16 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         """testing primitive data type """ 
         file = netCDF4.Dataset(self.file)
         datamasked = file.variables['maskeddata']
+        datamasked.set_auto_maskandscale(True)
         datapacked = file.variables['packeddata']
+        datapacked.set_auto_maskandscale(True)
         assert datamasked.missing_value == missing_value
         assert datapacked.scale_factor == scale_factor
         assert datapacked.add_offset == add_offset
         assert_array_almost_equal(datamasked[:].filled(),ranarr)
         assert_array_almost_equal(datapacked[:],packeddata,decimal=4)
+        datapacked.set_auto_maskandscale(False)
+        assert_array_equal(datapacked[:],packeddata2)
         file.close()
 
 if __name__ == '__main__':
