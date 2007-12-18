@@ -48,16 +48,19 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         """testing primitive data type """ 
         file = netCDF4.Dataset(self.file)
         datamasked = file.variables['maskeddata']
-        datamasked.set_auto_maskandscale(True)
         datapacked = file.variables['packeddata']
-        datapacked.set_auto_maskandscale(True)
+        # check missing_value, scale_factor and add_offset attributes.
         assert datamasked.missing_value == missing_value
         assert datapacked.scale_factor == scale_factor
         assert datapacked.add_offset == add_offset
+        # default is no auto-conversion.
+        assert_array_equal(datapacked[:],packeddata2)
+        assert_array_almost_equal(datamasked[:],ranarr)
+        # test auto-conversion
+        datamasked.set_auto_maskandscale(True)
+        datapacked.set_auto_maskandscale(True)
         assert_array_almost_equal(datamasked[:].filled(),ranarr)
         assert_array_almost_equal(datapacked[:],packeddata,decimal=4)
-        datapacked.set_auto_maskandscale(False)
-        assert_array_equal(datapacked[:],packeddata2)
         file.close()
 
 if __name__ == '__main__':
