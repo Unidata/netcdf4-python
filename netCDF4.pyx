@@ -1873,9 +1873,11 @@ each dimension is returned."""
         data =  self._get(start, count, stride)
         if sliceout is not None:
             data = data[sliceout].squeeze() # slice resulting array with 'fancy' indices
-        # if variable has missing_value or _FillValue attribute,
-        # and any data values equal that value, create and
-        # return a masked array with those values masked.
+        # if auto_maskandscale mode set to True, (through
+        # a call to set_auto_maskandscale), perform
+        # automatic unpacking using scale_factor/add_offset
+        # and automatic conversion to masked array using
+        # missing_value/_Fill_Value.
         if self.maskandscale:
             if hasattr(self, 'missing_value') and (data == self.missing_value).any():
                 data = ma.masked_array(data,mask=data==self.missing_value,fill_value=self.missing_value)
@@ -1896,13 +1898,15 @@ each dimension is returned."""
         # quantize data if least_significant_digit attribute set.
         if 'least_significant_digit' in self.ncattrs():
             data = _quantize(data,self.least_significant_digit)
-        # if variable has missing_value attribute,
-        # and data is a masked array, create a regular numpy
-        # array with mask replaced by missing_value.
+        # if auto_maskandscale mode set to True, (through
+        # a call to set_auto_maskandscale), perform
+        # automatic packing using scale_factor/add_offset
+        # and automatic filling of masked arrays using
+        # missing_value/_Fill_Value.
         if self.maskandscale:
             if hasattr(self, 'missing_value') and hasattr(data,'mask'):
                 data = data.filled(fill_value=self.missing_value)
-            if hasattr(self, '_FillValue') and hasattr(data,'mask'):
+            elif hasattr(self, '_FillValue') and hasattr(data,'mask'):
                 data = data.filled(fill_value=self._FillValue)
             # pack using scale_factor and add_offset.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
