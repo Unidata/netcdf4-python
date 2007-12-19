@@ -1972,7 +1972,7 @@ back to a regular numpy array::
 
     if hasattr(self, 'missing_value') and hasattr(data,'mask'):
         data = data.filled(fill_value=self.missing_value)
-    if hasattr(self, '_FillValue') and hasattr(data,'mask'):
+    elif hasattr(self, '_FillValue') and hasattr(data,'mask'):
         data = data.filled(fill_value=self._FillValue)
 
 and the following code is used to pack the data using the C{scale_factor}
