@@ -1939,13 +1939,48 @@ Scientific.IO.NetCDF, can also be done by slicing ([:])."""
 set_auto_maskandscale(self,True|False)
 
 turn on or off automatic conversion of variable data to and
-from masked arrays (if missing_value or _FillValue attributes are set)
-and automatic packing/unpacking of variable data (if scale_factor
-and add_offset attributes are set).
+from masked arrays (if C{missing_value} or C{_FillValue} attributes are set)
+and automatic packing/unpacking of variable data (if C{scale_factor}
+and C{add_offset} attributes are set).
 
-For more information on how scale_factor and add_offset can be 
+If auto-conversion mode is set to True, when data is read from a variable
+then the following code is used to convert the returned data
+to a masked array::
+    
+    if hasattr(self, 'missing_value') and (data == self.missing_value).any():
+        data = ma.masked_array(data,
+                               mask=data==self.missing_value,
+                               fill_value=self.missing_value)
+    elif hasattr(self, '_FillValue') and (data == self._FillValue).any():
+        data = ma.masked_array(data,
+                               mask=data==self._FillValue,
+                               fill_value=self._FillValue)
+
+and the following code is used to unpack the data using the
+C{scale_factor} and C{add_offset} attributes::
+
+    if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+        data = self.scale_factor*data + self.add_offset
+            
+When data is written to a variable and auto-conversion mode is set
+to True, then the following code is used to convert a masked array
+back to a regular numpy array::
+
+    if hasattr(self, 'missing_value') and hasattr(data,'mask'):
+        data = data.filled(fill_value=self.missing_value)
+    if hasattr(self, '_FillValue') and hasattr(data,'mask'):
+        data = data.filled(fill_value=self._FillValue)
+
+and the following code is used to pack the data using the C{scale_factor}
+and C{add_offset} attributes::
+
+    if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+        data = (data - self.add_offset)/self.scale_factor
+
+For more information on how C{scale_factor} and C{add_offset} can be 
 used to provide simple compression, see
-http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml.
+U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
+<http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>}.
 
 The default is False (no automatic conversions are performed).
         """
