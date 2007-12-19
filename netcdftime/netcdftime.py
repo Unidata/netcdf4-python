@@ -764,8 +764,10 @@ def _parse_date(origin):
                             (?P<hour>\d{1,2})       #   hh or h
                             :                       #
                             (?P<min>\d{1,2})        #   mm or m
-                            :                       #
-                            (?P<sec>\d{1,2})        #   ss or s
+                            (?:
+                            \:
+                            (?P<sec>\d{1,2})        #   ss or s (optional)
+                            )?
                                                     #
                             (?:                     #   [optional decisecond]
                                 \.                  #       .
