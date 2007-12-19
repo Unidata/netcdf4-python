@@ -53,10 +53,12 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         assert datamasked.missing_value == missing_value
         assert datapacked.scale_factor == scale_factor
         assert datapacked.add_offset == add_offset
-        # default is no auto-conversion.
+        # no auto-conversion.
+        datamasked.set_auto_maskandscale(False)
+        datapacked.set_auto_maskandscale(False)
         assert_array_equal(datapacked[:],packeddata2)
         assert_array_almost_equal(datamasked[:],ranarr)
-        # test auto-conversion
+        # auto-conversion
         datamasked.set_auto_maskandscale(True)
         datapacked.set_auto_maskandscale(True)
         assert_array_almost_equal(datamasked[:].filled(),ranarr)
