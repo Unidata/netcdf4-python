@@ -1,6 +1,13 @@
 version 0.7.3 (not yet released)
 ================================
-* automatically unpack short integer variables to float32 arrays
+* added set_auto_maskandscale Variable method to enable automatic
+  packing and unpacking of short integers (using scale_factor
+  and add_offset attributes) and automatic conversion to/from
+  masked arrays (using missing_value or _FillValue attribute)
+  on a per-variable basis.
+  var.set_auto_maskandscale(True) turns automatic
+  conversion on (it is off by default).
+* automatically pack/unpack short integer variables 
   if scale_factor and add_offset variable attributes are set.
 * added support for masked arrays.  If you try to write a masked
   array to a variable with the missing_value or _FillValue attributes
