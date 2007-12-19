@@ -1872,7 +1872,7 @@ each dimension is returned."""
         start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
         data =  self._get(start, count, stride)
         if sliceout is not None:
-            data = NP.squeeze(data[sliceout]) # slice resulting array with 'fancy' indices
+            data = data[sliceout].squeeze() # slice resulting array with 'fancy' indices
         # if variable has missing_value or _FillValue attribute,
         # and any data values equal that value, create and
         # return a masked array with those values masked.
@@ -2106,6 +2106,6 @@ The default is False (no automatic conversions are performed).
             # (instead of a scalar array).
             return data.item()
         elif squeeze_out:
-            return NP.squeeze(data)
+            return data.squeeze()
         else:
             return data
