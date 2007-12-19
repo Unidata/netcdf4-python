@@ -94,10 +94,10 @@
         Be sure to build with '<code>--enable-hl</code>'.
       </li>
       <li>
-        The netCDF-4 C library (the latest version of 4.0-beta 
+        The netCDF-4 C library (the latest version 4 snapshot 
         recommended), available at <a 
-        href="ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4" 
-        target="_top">ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4</a>. 
+        href="ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot" 
+        target="_top">ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot</a>. 
         Be sure to build with '<code>--enable-netcdf-4</code>' and 
         '<code>--with-hdf5=$HDF5_DIR</code>', where <code>$HDF5_DIR</code> 
         is the directory where HDF5 was installed.
@@ -368,8 +368,8 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>longitudes.units = <span class="py-string">'degrees east'</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>pressure.units = <span class="py-string">'hPa'</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>temp.units = <span class="py-string">'K'</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>times.units = <span class="py-string">'days since January 1, 0001'</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>times.calendar = <span class="py-string">'proleptic_gregorian'</span></pre>
+<span class="py-prompt">&gt;&gt;&gt; </span>times.units = <span class="py-string">'hours since 0001-01-01 00:00:00.0'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>times.calendar = <span class="py-string">'gregorian'</span></pre>
       The <a href="netCDF4.Dataset-class.html#ncattrs" 
       class="link">ncattrs</a> method of a <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a>, <a 
@@ -450,34 +450,34 @@
       should be measure relative to a fixed date using a certain calendar, 
       with units specified like <code>hours since YY:MM:DD hh-mm-ss</code>.
       These units can be awkward to deal with, without a utility to convert
-      the values to and from calendar dates.  A module called <a 
-      href="netcdftime.netcdftime-module.html" 
-      class="link">netcdftime.netcdftime</a> is provided with this package 
-      to do just that.  Here's an example of how it can be used:
+      the values to and from calendar dates.  The functione called <a 
+      href="netCDF4-module.html#num2date" class="link">num2date</a> and <a 
+      href="netCDF4-module.html#date2num" class="link">date2num</a> are 
+      provided with this package to do just that.  Here's an example of how
+      they can be used:
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># fill in times.</span>
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> datetime <span class="py-keyword">import</span> datetime, timedelta
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> netcdftime <span class="py-keyword">import</span> utime
-<span class="py-prompt">&gt;&gt;&gt; </span>cdftime = utime(times.units,calendar=times.calendar,format=<span class="py-string">'%B %d, %Y'</span>) 
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> netCDF4 <span class="py-keyword">import</span> num2date, date2num
 <span class="py-prompt">&gt;&gt;&gt; </span>dates = [datetime(2001,3,1)+n*timedelta(hours=12) <span class="py-keyword">for</span> n <span class="py-keyword">in</span> range(temp.shape[0])]
-<span class="py-prompt">&gt;&gt;&gt; </span>times[:] = cdftime.date2num(dates)
+<span class="py-prompt">&gt;&gt;&gt; </span>times[:] = date2num(dates,units=times.units,calendar=times.calendar)
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'time values (in units %s): '</span> % times.units+<span class="py-string">'\n'</span>,times[:]
 <span class="py-output">time values (in units hours since January 1, 0001): </span>
 <span class="py-output">[ 17533056.  17533068.  17533080.  17533092.  17533104.]</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
-<span class="py-prompt">&gt;&gt;&gt; </span>dates = cdftime.num2date(times[:])
+<span class="py-prompt">&gt;&gt;&gt; </span>dates = num2date(times[:],units=times.units,calendar=times.calendar)
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'dates corresponding to time values:\n'</span>,dates
 <span class="py-output">dates corresponding to time values:</span>
 <span class="py-output">[2001-03-01 00:00:00 2001-03-01 12:00:00 2001-03-02 00:00:00</span>
 <span class="py-output"> 2001-03-02 12:00:00 2001-03-03 00:00:00]</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
-      Values of time in the specified units and calendar are converted 
-      to and from python <code>datetime</code> instances using the 
-      <code>num2date</code> and <code>date2num</code> methods of the 
-      <code>utime</code> class. See the <a 
-      href="netcdftime.netcdftime-module.html" 
-      class="link">netcdftime.netcdftime</a> documentation for more 
-      details.
+      <a href="netCDF4-module.html#num2date" class="link">num2date</a> 
+      converts numeric values of time in the specified <code>units</code> 
+      and <code>calendar</code> to datetime objectecs, and <a 
+      href="netCDF4-module.html#date2num" class="link">date2num</a> does 
+      the reverse. All the calendars currently defined in the <a 
+      href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
+      target="_top">CF metadata convention</a> are supported.
     <h2 class="heading">7) Efficient compression of netCDF variables</h2>
       <p>Data stored in netCDF 4 <a href="netCDF4.Variable-class.html" 
       class="link">Variable</a> objects can be compressed and decompressed 
@@ -559,7 +559,7 @@
         PERFORMANCE OF THIS SOFTWARE.
       </p>
       <p><strong>Version:</strong>
-        0.7.2
+        0.7.3
       </p>
 </div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
@@ -638,9 +638,47 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="netCDF4-module.html#date2num" class="summary-sig-name">date2num</a>(<span class="summary-sig-arg">dates</span>,
+        <span class="summary-sig-arg">units</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
+      Return numeric time values given datetime objects.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="getlibversion"></a><span class="summary-sig-name">getlibversion</span>()</span><br />
       returns a string describing the version of the netcdf-4 library 
       used to build the module, and when it was built.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4-module.html#num2date" class="summary-sig-name">num2date</a>(<span class="summary-sig-arg">times</span>,
+        <span class="summary-sig-arg">units</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
+      Return datetime objects given numeric time values.</td>
           <td align="right" valign="top">
             
             
@@ -707,6 +745,119 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="date2num"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">date2num</span>(<span class="sig-arg">dates</span>,
+        <span class="sig-arg">units</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </table>
+  
+  <p>Return numeric time values given datetime objects. The units of the 
+  numeric time values are described by the <code class="link">units</code> 
+  argument and the <code class="link">calendar</code> keyword. The datetime
+  objects must be in UTC with no time-zone offset.  If there is a time-zone
+  offset in <code>units</code>, it will be applied to the returned numeric 
+  values.</p>
+  Like the matplotlib <code>date2num</code> function, except that it 
+  allows for different units and calendars.  Behaves the same if 
+  <code>units = 'days since 0001-01-01 00:00:00'</code> and <code>calendar 
+  = 'proleptic_gregorian'</code>.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dates</code></strong> - A datetime object or a sequence of datetime objects. The 
+          datetime objects should not include a time-zone offset.</li>
+        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since 
+          <b>reference time</b></code>' describing the time units. 
+          <b><code>time units</code></b> can be days, hours, minutes or 
+          seconds.  <b><code>reference time</code></b> is the time origin. 
+          A valid choice would be units=<code>'hours since 1800-01-01 
+          00:00:00 -6:00'</code>.</li>
+        <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
+          values currently defined in the <a 
+          href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
+          target="_top">CF metadata convention</a> are supported. Valid 
+          calendars <code>'standard', 'gregorian', 'proleptic_gregorian' 
+          'noleap', '365_day', '360_day', 'julian', 'all_leap', 
+          '366_day'</code>. Default is <code>'standard'</code>, which is a 
+          mixed Julian/Gregorian calendar.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd><p>a numeric time value, or an array of numeric time values.</p>
+          The maximum resolution of the numeric time values is 1 
+          second.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="num2date"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">num2date</span>(<span class="sig-arg">times</span>,
+        <span class="sig-arg">units</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </table>
+  
+  <p>Return datetime objects given numeric time values. The units of the 
+  numeric time values are described by the <code>units</code> argument and 
+  the <code>calendar</code> keyword. The returned datetime objects 
+  represent UTC with no time-zone offset, even if the specified 
+  <code>units</code> contain a time-zone offset.</p>
+  Like the matplotlib <code>num2date</code> function, except that it 
+  allows for different units and calendars.  Behaves the same if 
+  <code>units = 'days since 001-01-01 00:00:00'</code> and <code>calendar =
+  'proleptic_gregorian'</code>.
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>times</code></strong> - numeric time values. Maximum resolution is 1 second.</li>
+        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since 
+          <b>reference time</b></code>' describing the time units. 
+          <b><code>time units</code></b> can be days, hours, minutes or 
+          seconds.  <b><code>reference time</code></b> is the time origin. 
+          A valid choice would be units=<code>'hours since 1800-01-01 
+          00:00:00 -6:00'</code>.</li>
+        <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
+          values currently defined in the <a 
+          href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
+          target="_top">CF metadata convention</a> are supported. Valid 
+          calendars <code>'standard', 'gregorian', 'proleptic_gregorian' 
+          'noleap', '365_day', '360_day', 'julian', 'all_leap', 
+          '366_day'</code>. Default is <code>'standard'</code>, which is a 
+          mixed Julian/Gregorian calendar.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd><p>a datetime instance, or an array of datetime instances.</p>
+          The datetime instances returned are 'real' python datetime 
+          objects if the date falls in the Gregorian calendar (i.e. 
+          <code>calendar='proleptic_gregorian'</code>, or <code>calendar = 
+          'standard'</code> or <code>'gregorian'</code> and the date is 
+          after 1582-10-15). Otherwise, they are 'phony' datetime objects 
+          which support some but not all the methods of 'real' python 
+          datetime objects.  This is because the python datetime module 
+          cannot the uses the <code>'proleptic_gregorian'</code> calendar, 
+          even before the switch occured from the Julian calendar in 1582. 
+          The datetime instances do not contain a time-zone offset, even if
+          the specified <code>units</code> contains one.</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="stringtochar"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -760,7 +911,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Wed Sep  5 12:00:08 2007
+    Generated by Epydoc 3.0beta1 on Wed Dec 19 06:14:51 2007
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>

@@ -32,8 +32,8 @@ Requires
  - The HDF5 C library (the latest version of version 1.8.0-beta recommended),  
  available at U{ftp://ftp.hdfgroup.uiuc.edu/pub/outgoing/hdf5/hdf5-1.8.0-pre}.
  Be sure to build with 'C{--enable-hl}'.
- - The netCDF-4 C library (the latest version of 4.0-beta recommended), available at
- U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
+ - The netCDF-4 C library (the latest version 4 snapshot recommended), available at
+ U{ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot}.
  Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HDF5_DIR}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
 
