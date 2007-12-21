@@ -45,7 +45,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing primitive data type """ 
+        """testing auto-conversion of masked arrays and packed integers""" 
         file = netCDF4.Dataset(self.file)
         datamasked = file.variables['maskeddata']
         datapacked = file.variables['packeddata']

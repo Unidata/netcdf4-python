@@ -442,26 +442,6 @@ PERFORMANCE OF THIS SOFTWARE."""
 
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
-# numpy data type <--> netCDF 4 data type mapping.
-
-_nptonctype  = {'S1' : NC_CHAR,
-                'i1' : NC_BYTE,
-                'u1' : NC_UBYTE,
-                'i2' : NC_SHORT,
-                'u2' : NC_USHORT,
-                'i4' : NC_INT,   
-                'u4' : NC_UINT,           
-                'i8' : NC_INT64,
-                'u8' : NC_UINT64,
-                'f4' : NC_FLOAT,
-                'f8' : NC_DOUBLE}
-_nctonptype = {}
-for _key,_value in _nptonctype.iteritems():
-    _nctonptype[_value] = _key
-_supportedtypes = _nptonctype.keys()
-
-# utility functions (internal)
-
 # pure python utilities
 from netCDF4_utils import _buildStartCountStride, _quantize, _find_dim
 
@@ -477,6 +457,39 @@ if _npversion.split('.')[0] < '1':
     raise ImportError('requires numpy version 1.0rc1 or later')
 import_array()
 include "netCDF4.pxi"
+
+# numpy data type <--> netCDF 4 data type mapping.
+
+_nptonctype  = {'S1' : NC_CHAR,
+                'i1' : NC_BYTE,
+                'u1' : NC_UBYTE,
+                'i2' : NC_SHORT,
+                'u2' : NC_USHORT,
+                'i4' : NC_INT,   
+                'u4' : NC_UINT,           
+                'i8' : NC_INT64,
+                'u8' : NC_UINT64,
+                'f4' : NC_FLOAT,
+                'f8' : NC_DOUBLE}
+
+_default_fillvals = {'S1':NC_FILL_CHAR,
+                     'i1':NC_FILL_BYTE,
+                     'u1':NC_FILL_UBYTE,
+                     'i2':NC_FILL_SHORT,
+                     'u2':NC_FILL_USHORT,
+                     'i4':NC_FILL_INT,
+                     'u4':4294967295L,
+                     'i8':-9223372036854775806L,
+                     'u8':18446744073709551614L,
+                     'f4':9.9692099683868690e+36,
+                     'f8':9.9692099683868690e+36}
+
+_nctonptype = {}
+for _key,_value in _nptonctype.iteritems():
+    _nctonptype[_value] = _key
+_supportedtypes = _nptonctype.keys()
+
+# utility functions (visible from python).
 
 def stringtochar(a):
     """
@@ -605,6 +618,8 @@ used to build the module, and when it was built.
     cdef char *libstring
     libstring = nc_inq_libvers()
     return PyString_FromString(libstring)
+
+# internal C functions.
 
 cdef _get_att_names(int grpid, int varid):
     # Private function to get all the attribute names in a group
@@ -1879,10 +1894,29 @@ each dimension is returned."""
         # and automatic conversion to masked array using
         # missing_value/_Fill_Value.
         if self.maskandscale:
+            totalmask = NP.zeros(data.shape, NP.bool)
+            fill_value = None
             if hasattr(self, 'missing_value') and (data == self.missing_value).any():
-                data = ma.masked_array(data,mask=data==self.missing_value,fill_value=self.missing_value)
-            elif hasattr(self, '_FillValue') and (data == self._FillValue).any():
-                data = ma.masked_array(data,mask=data==self._FillValue,fill_value=self._FillValue)
+                mask=data==self.missing_value
+                fill_value = self.missing_value
+                totalmask = totalmask + mask
+            if hasattr(self, '_FillValue') and (data == self._FillValue).any():
+                mask=data==self._FillValue
+                if fill_value is None:
+                    fill_value = self._FillValue
+                totalmask = totalmask + mask
+            else:
+                fillval = _default_fillvals[self.dtype.str[1:]]
+                if (data == fillval).any():
+                    mask=data==fillval
+                    if fill_value is None:
+                        fill_value = fillval
+                    totalmask = totalmask + mask
+            # all values where data == missing_value or _FillValue are
+            # masked.  fill_value set to missing_value if it exists,
+            # otherwise _FillValue.
+            if fill_value is not None:
+                data = ma.masked_array(data,mask=totalmask,fill_value=fill_value)
             # if variable has scale_factor and add_offset attributes, rescale.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = self.scale_factor*data + self.add_offset
@@ -1904,14 +1938,18 @@ each dimension is returned."""
         # and automatic filling of masked arrays using
         # missing_value/_Fill_Value.
         if self.maskandscale:
-            if hasattr(self, 'missing_value') and hasattr(data,'mask'):
-                data = data.filled(fill_value=self.missing_value)
-            elif hasattr(self, '_FillValue') and hasattr(data,'mask'):
-                data = data.filled(fill_value=self._FillValue)
+            # use missing_value as fill value.
+            # if no missing value set, use _FillValue.
+            if hasattr(data,'mask'):
+                if hasattr(self, 'missing_value'):
+                    fillval = self.missing_value
+                elif hasattr(self, '_FillValue'):
+                    fillval = self._FillValue
+                else:
+                    fillval = _default_fillvals[self.dtype.str[1:]]
+                data = data.filled(fill_value=fillval)
             # pack using scale_factor and add_offset.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
-            # only pack if data is a floating type and variable is integer type?
-            #   and self.dtype.kind == 'i' and data.dtype.kind == 'f':
                 data = (data - self.add_offset)/self.scale_factor
         # A numpy array is needed. Convert if necessary.
         if not type(data) == NP.ndarray:
@@ -1943,43 +1981,28 @@ Scientific.IO.NetCDF, can also be done by slicing ([:])."""
 set_auto_maskandscale(self,maskandscale)
 
 turn on or off automatic conversion of variable data to and
-from masked arrays (if C{missing_value} or C{_FillValue} attributes are set)
-and automatic packing/unpacking of variable data (if C{scale_factor}
-and C{add_offset} attributes are set).
+from masked arrays and automatic packing/unpacking of variable
+data using C{scale_factor} and C{add_offset} attributes.
 
 If C{maskandscale} is set to C{True}, when data is read from a variable
-then the following code is used to convert the returned data
-to a masked array::
-    
-    if hasattr(self, 'missing_value') and (data == self.missing_value).any():
-        data = ma.masked_array(data,
-                               mask=data==self.missing_value,
-                               fill_value=self.missing_value)
-    elif hasattr(self, '_FillValue') and (data == self._FillValue).any():
-        data = ma.masked_array(data,
-                               mask=data==self._FillValue,
-                               fill_value=self._FillValue)
+it is converted to a masked array if any of the values are exactly
+equal to the either the netCDF _FillValue or the value specified by the 
+missing_value variable attribute. The fill_value of the masked array
+is set to the missing_value attribute (if it exists), otherwise
+the netCDF _FillValue attribute (which has a default value
+for each data type).  When data is written to a variable, the masked
+array is converted back to a regular numpy array by replacing all the
+masked values by the fill_value of the masked array.
 
-and the following code is used to unpack the data using the
-C{scale_factor} and C{add_offset} attributes::
+If C{maskandscale} is set to C{True}, and the variable has a
+C{scale_factor} and an C{add_offset} attribute, then data read
+from that variable is unpacked using::
 
-    if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
-        data = self.scale_factor*data + self.add_offset
+    data = self.scale_factor*data + self.add_offset
             
-When data is written to a variable and C{maskandscale} is set
-to C{True}, then the following code is used to convert a masked array
-back to a regular numpy array::
+When data is written to a variable it is packed using::
 
-    if hasattr(self, 'missing_value') and hasattr(data,'mask'):
-        data = data.filled(fill_value=self.missing_value)
-    elif hasattr(self, '_FillValue') and hasattr(data,'mask'):
-        data = data.filled(fill_value=self._FillValue)
-
-and the following code is used to pack the data using the C{scale_factor}
-and C{add_offset} attributes::
-
-    if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
-        data = (data - self.add_offset)/self.scale_factor
+    data = (data - self.add_offset)/self.scale_factor
 
 For more information on how C{scale_factor} and C{add_offset} can be 
 used to provide simple compression, see
