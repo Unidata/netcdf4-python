@@ -472,7 +472,7 @@ _nptonctype  = {'S1' : NC_CHAR,
                 'f4' : NC_FLOAT,
                 'f8' : NC_DOUBLE}
 
-_default_fillvals = {'S1':NC_FILL_CHAR,
+_default_fillvals = {'S1':'\0',
                      'i1':NC_FILL_BYTE,
                      'u1':NC_FILL_UBYTE,
                      'i2':NC_FILL_SHORT,
