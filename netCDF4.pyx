@@ -472,17 +472,18 @@ _nptonctype  = {'S1' : NC_CHAR,
                 'f4' : NC_FLOAT,
                 'f8' : NC_DOUBLE}
 
-_default_fillvals = {'S1':'\0',
+_default_fillvals = {#'S1':NC_FILL_CHAR, 
+                     'S1':'\0',
                      'i1':NC_FILL_BYTE,
                      'u1':NC_FILL_UBYTE,
                      'i2':NC_FILL_SHORT,
                      'u2':NC_FILL_USHORT,
                      'i4':NC_FILL_INT,
-                     'u4':4294967295L,
-                     'i8':-9223372036854775806L,
-                     'u8':18446744073709551614L,
-                     'f4':9.9692099683868690e+36,
-                     'f8':9.9692099683868690e+36}
+                     'u4':NC_FILL_UINT,
+                     'i8':NC_FILL_INT64,
+                     'u8':NC_FILL_UINT64,
+                     'f4':NC_FILL_FLOAT,
+                     'f8':NC_FILL_DOUBLE}
 
 _nctonptype = {}
 for _key,_value in _nptonctype.iteritems():

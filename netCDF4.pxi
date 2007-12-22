@@ -18,6 +18,27 @@ cdef extern from "netcdf.h":
     ctypedef struct nc_vlen_t:
         size_t len                 # Length of VL data (in base type units) 
         void *p                    # Pointer to VL data 
+# default fill values.
+# could define these in the anonymous enum, but then they
+# would be assumed to be integers.
+#define NC_FILL_BYTE	((signed char)-127)
+#define NC_FILL_CHAR	((char)0)
+#define NC_FILL_SHORT	((short)-32767)
+#define NC_FILL_INT	(-2147483647L)
+#define NC_FILL_FLOAT	(9.9692099683868690e+36f) /* near 15 * 2^119 */
+#define NC_FILL_DOUBLE	(9.9692099683868690e+36)
+#define NC_FILL_UBYTE   (255)
+#define NC_FILL_USHORT  (65535)
+#define NC_FILL_UINT    (4294967295U)
+#define NC_FILL_INT64   ((long long)-9223372036854775806)
+#define NC_FILL_UINT64  ((unsigned long long)18446744073709551614)
+    float NC_FILL_FLOAT
+    long NC_FILL_INT
+    double NC_FILL_DOUBLE
+    char NC_FILL_CHAR
+    long long NC_FILL_INT64
+    unsigned long NC_FILL_UINT
+    unsigned long long NC_FILL_UINT64
     cdef enum:
         NC_NAT # NAT = 'Not A Type' (c.f. NaN) 
         NC_BYTE # signed 1 byte integer 
@@ -58,16 +79,16 @@ cdef extern from "netcdf.h":
         # The hope is that one might use these to notice that a particular datum
         # has not been set.
         NC_FILL_BYTE    
-        NC_FILL_CHAR    
+        #NC_FILL_CHAR    
         NC_FILL_SHORT   
-        NC_FILL_INT     
-        NC_FILL_FLOAT   
-        NC_FILL_DOUBLE  
+        #NC_FILL_INT     
+        #NC_FILL_FLOAT   
+        #NC_FILL_DOUBLE  
         NC_FILL_UBYTE  
         NC_FILL_USHORT 
-        NC_FILL_UINT   
-        NC_FILL_INT64  
-        NC_FILL_UINT64 
+        #NC_FILL_UINT   
+        #NC_FILL_INT64  
+        #NC_FILL_UINT64 
         # These represent the max and min values that can be stored in a
         # netCDF file for their associated types. Recall that a C compiler
         # may define int to be any length it wants, but a NC_INT is *always*
