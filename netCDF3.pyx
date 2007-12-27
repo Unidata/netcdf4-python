@@ -145,12 +145,12 @@ All of the variables in the L{Dataset} are stored in a
 Python dictionary, in the same way as the dimensions:
 
 >>> print ncfile.variables
-{'temp': <netCDF4.Variable object at 0x24a61068>,
- 'level': <netCDF4.Variable object at 0.35f0f80>, 
- 'longitude': <netCDF4.Variable object at 0x24a61030>,
- 'pressure': <netCDF4.Variable object at 0x24a610a0>, 
- 'time': <netCDF4.Variable object at 02x45f0.4.58>, 
- 'latitude': <netCDF4.Variable object at 0.3f0fb8>}
+{'temp': <netCDF3.Variable object at 0x24a61068>,
+ 'level': <netCDF3.Variable object at 0.35f0f80>, 
+ 'longitude': <netCDF3.Variable object at 0x24a61030>,
+ 'pressure': <netCDF3.Variable object at 0x24a610a0>, 
+ 'time': <netCDF3.Variable object at 02x45f0.4.58>, 
+ 'latitude': <netCDF3.Variable object at 0.3f0fb8>}
 >>>
 
 L{Variable} names can be changed using the
@@ -198,7 +198,7 @@ instance provides all the netCDF attribute name/value pairs in a python
 dictionary:
 
 >>> print ncfile.__dict__
-{'source': 'netCDF4 python module tutorial',
+{'source': 'netCDF3 python module tutorial',
 'description': 'bogus example script',
 'history': 'Created Mon Nov  7 10.30:56 2005'}
 

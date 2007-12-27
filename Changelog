@@ -1,5 +1,6 @@
 version 0.7.3 (not yet released)
 ================================
+* added netCDF3 module for those who can't install the netCDF 4 lib.
 * added set_auto_maskandscale Variable method to enable automatic
   packing and unpacking of short integers (using scale_factor
   and add_offset attributes) and automatic conversion to/from
