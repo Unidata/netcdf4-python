@@ -340,7 +340,7 @@ _supportedtypes = _nptonctype.keys()
 # include pure python utility functions.
 # (use include instead of importing them so docstrings
 #  get included in C extension code).
-include "utils.py"
+include "utils.pyx"
 
 # internal C functions.
 
