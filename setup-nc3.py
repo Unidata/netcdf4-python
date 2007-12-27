@@ -55,4 +55,6 @@ setup(name = "netCDF3",
 		         "Topic :: Software Development :: Libraries :: Python Modules",
                  "Topic :: System :: Archiving :: Compression",
 		         "Operating System :: OS Independent"],
+  packages = ["netcdftime"],
+  py_modules = ["netCDF4_utils"],
   ext_modules = extensions)
