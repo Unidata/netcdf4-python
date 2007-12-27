@@ -8,6 +8,8 @@ U{Scientific.IO.NetCDF
 familiar to users of that module. Some new features not found in
 Scientific.IO.NetCDF:
 
+ - ability to read multi-file netCDF Datasets, making variables
+ spanning multiple files appear as if they were in one file.
  - support for masked arrays, automatic packing and unpacking of
  packed integer data (see L{Variable.set_auto_maskandscale} for details).
  - supports more complicated slicing (including numpy 'fancy indexing').
@@ -224,9 +226,9 @@ removes the attribute C{foo} the the variable C{var}).
 Now that you have a netCDF L{Variable} instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.
 
->>> import numpy as NP
->>> latitudes[:] = NP.arange(-90,91,2.5)
->>> pressure[:] = NP.arange(1000,90,-100)
+>>> import numpy 
+>>> latitudes[:] = numpy.arange(-90,91,2.5)
+>>> pressure[:] = numpy.arange(1000,90,-100)
 >>> print 'latitudes =\\n',latitudes[:]
 latitudes =
 [-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5
@@ -318,7 +320,7 @@ __version__ = "0.7.3"
 # Initialize numpy
 import os
 import netcdftime
-import numpy as NP
+import numpy
 from glob import glob
 from numpy import ma
 from numpy import __version__ as _npversion
@@ -388,7 +390,7 @@ cdef _get_att(int grpid, int varid, name):
         raise RuntimeError(nc_strerror(ierr))
     # attribute is a character or string ...
     if att_type == NC_CHAR:
-        value_arr = NP.empty(att_len,'S1')
+        value_arr = numpy.empty(att_len,'S1')
         ierr = nc_get_att_text(grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
@@ -405,7 +407,7 @@ cdef _get_att(int grpid, int varid, name):
             type_att = _nctonptype[att_type]
         except:
             raise KeyError('attribute %s has unsupported datatype' % attname)
-        value_arr = NP.empty(att_len,type_att)
+        value_arr = numpy.empty(att_len,type_att)
         ierr = nc_get_att(grpid, varid, attname, value_arr.data)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
@@ -453,7 +455,7 @@ cdef _set_att(int grpid, int varid, name, value):
     cdef ndarray value_arr 
     attname = PyString_AsString(name)
     # put attribute value into a numpy array.
-    value_arr = NP.array(value)
+    value_arr = numpy.array(value)
     # if array is 64 bit integers, cast to 32 bit integers
     # if 64-bit datatype not supported.
     if value_arr.dtype.str[1:] == 'i8' and 'i8' not in _supportedtypes:
@@ -1014,8 +1016,8 @@ dimensions."""
         self._grpid = grp._grpid
         self._grp = grp
         # convert to a real numpy datatype object if necessary.
-        if type(datatype) != NP.dtype:
-            datatype = NP.dtype(datatype)
+        if type(datatype) != numpy.dtype:
+            datatype = numpy.dtype(datatype)
         # check validity of datatype.
         if datatype.str[1:] not in _supportedtypes:
             raise TypeError('illegal data type, must be one of %s, got %s' % (_supportedtypes,datatype))
@@ -1055,7 +1057,7 @@ dimensions."""
             # given.
             if fill_value is not None:
                 # cast fill_value to type of variable.
-                fillval = NP.array(fill_value, self.dtype)
+                fillval = numpy.array(fill_value, self.dtype)
                 _set_att(self._grpid, self._varid, '_FillValue', fillval)
             # leave define mode.
             grp._enddef()
@@ -1139,7 +1141,7 @@ return netCDF attribute names for this L{Variable} in a list."""
             # if setting _FillValue, make sure value
             # has same type as variable.
             if name == '_FillValue':
-                value = NP.array(value, self.dtype)
+                value = numpy.array(value, self.dtype)
             self._grp._redef()
             _set_att(self._grpid, self._varid, name, value)
             self._grp._enddef()
@@ -1183,7 +1185,7 @@ return netCDF attribute names for this L{Variable} in a list."""
         # and automatic conversion to masked array using
         # missing_value/_Fill_Value.
         if self.maskandscale:
-            totalmask = NP.zeros(data.shape, NP.bool)
+            totalmask = numpy.zeros(data.shape, numpy.bool)
             fill_value = None
             if hasattr(self, 'missing_value') and (data == self.missing_value).any():
                 mask=data==self.missing_value
@@ -1238,8 +1240,8 @@ return netCDF attribute names for this L{Variable} in a list."""
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = (data - self.add_offset)/self.scale_factor
         # A numpy array is needed. Convert if necessary.
-        if not type(data) == NP.ndarray:
-            data = NP.array(data,self.dtype)
+        if not type(data) == numpy.ndarray:
+            data = numpy.array(data,self.dtype)
         self._put(data, start, count, stride)
 
     def assignValue(self,val):
@@ -1340,10 +1342,10 @@ The default value of C{maskandscale} is C{False}
             # If just one element given, make a new array of desired
             # size and fill it with that data.
             if dataelem == 1:
-                #datanew = NP.empty(totelem,self.dtype)
+                #datanew = numpy.empty(totelem,self.dtype)
                 #datanew[:] = data
                 #data = datanew
-                data = data*NP.ones(totelem,self.dtype)
+                data = data*numpy.ones(totelem,self.dtype)
             else:
                 raise IndexError('size of data array does not conform to slice')
         # if data type of array doesn't match variable, 
@@ -1400,7 +1402,7 @@ The default value of C{maskandscale} is C{False}
                 startp[n] = start[n]
                 stridep[n] = stride[n]
                 sl.append(slice(None,None, 1))
-        data = NP.empty(shapeout, self.dtype)
+        data = numpy.empty(shapeout, self.dtype)
         # strides all 1 or scalar variable, use get_vara (faster)
         if sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
@@ -1433,17 +1435,18 @@ Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
 Example usage:
 
->>> import MFnetCDF4, netCDF4, numpy
+>>> from netCDF3 import Dataset, MFDataset
+>>> import numpy
 >>> # create a series of netCDF files with a variable sharing
 >>> # the same unlimited dimension.
 >>> for nfile in range(10):
->>>     f = netCDF4.Dataset('mftest'+repr(nfile)+'.nc','w')
+>>>     f = Dataset('mftest'+repr(nfile)+'.nc','w')
 >>>     f.createDimension('x',None)
 >>>     x = f.createVariable('x','i',('x',))
 >>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
 >>>     f.close()
 >>> # now read all those files in at once, in one Dataset.
->>> f = MFnetCDF4.Dataset('mftest*nc')
+>>> f = MFDataset('mftest*nc')
 >>> print f.variables['x'][:]
 [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
  25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
@@ -1664,7 +1667,7 @@ class _Variable(object):
         start, count, stride, sliceout = _buildStartCountStride(elem, self.shape, self.dimensions, self._dset)
         # make sure count=-1 becomes count=1
         count = [abs(cnt) for cnt in count]
-        if (NP.array(stride) < 0).any():
+        if (numpy.array(stride) < 0).any():
             raise IndexError('negative strides not allowed when slicing MFVariable Variable instance')
         # Start, stop and step along 1st dimension, eg the unlimited
         # dimension.
@@ -1710,5 +1713,5 @@ class _Variable(object):
         
         # Return the extracted records as a unified array.
         if lstArr:
-            lstArr = NP.concatenate(lstArr)
+            lstArr = numpy.concatenate(lstArr)
         return lstArr.squeeze()

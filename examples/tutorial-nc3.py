@@ -45,9 +45,9 @@ print ncfile.__dict__
 
 print ncfile.variables
 
-import numpy as NP
+import numpy
 # no unlimited dimension, just assign to slice.
-latitudes[:] = NP.arange(-90,91,2.5)
+latitudes[:] = numpy.arange(-90,91,2.5)
 print 'latitudes =\n',latitudes[:]
 pressure[:] = range(1000,99,-100)
 print 'pressure levels =\n',pressure[:]
@@ -71,3 +71,15 @@ dates = num2date(times[:],units=times.units,calendar=times.calendar)
 print 'dates corresponding to time values:\\n',dates
 
 ncfile.close()
+
+# create a series of netCDF files with a variable sharing
+# the same unlimited dimension.
+for nfile in range(10):
+    f = netCDF3.Dataset('mftest'+repr(nfile)+'.nc','w')
+    f.createDimension('x',None)
+    x = f.createVariable('x','i',('x',))
+    x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+    f.close()
+# now read all those files in at once, in one Dataset.
+f = netCDF3.MFDataset('mftest*nc')
+print f.variables['x'][:]
