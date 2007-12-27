@@ -1,5 +1,5 @@
-from MFnetCDF4 import Dataset
-import netCDF4, numpy
+from netCDF4 import Dataset, MFDataset
+import numpy
 from numpy.random import seed, randint
 from numpy.testing import assert_array_equal
 import tempfile, unittest, os
@@ -15,7 +15,7 @@ class VariablesTestCase(unittest.TestCase):
     def setUp(self):
         self.files = files
         for nfile,file in enumerate(self.files):
-            f = netCDF4.Dataset(file,'w',format='NETCDF4_CLASSIC')
+            f = Dataset(file,'w',format='NETCDF4_CLASSIC')
             f.createDimension('x',None)
             f.createDimension('y',ydim)
             f.createDimension('z',zdim)
@@ -36,7 +36,7 @@ class VariablesTestCase(unittest.TestCase):
 
     def runTest(self):
         """testing multi-file dataset access"""
-        f = Dataset(self.files,check=True)
+        f = MFDataset(self.files,check=True)
         assert f.history == 'created today'
         assert_array_equal(numpy.arange(0,nx),f.variables['x'][:])
         varin = f.variables['data']

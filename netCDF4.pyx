@@ -300,8 +300,8 @@ removes the attribute C{foo} the the group C{grp}).
 Now that you have a netCDF L{Variable} instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.
 
->>> import numpy as NP
->>> latitudes[:] = NP.arange(-90,91,2.5)
+>>> import numpy 
+>>> latitudes[:] = numpy.arange(-90,91,2.5)
 >>> print 'latitudes =\\n',latitudes[:]
 latitudes =
 [-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5
@@ -400,7 +400,7 @@ keyword argument to L{createVariable<Dataset.createVariable>}. The least
 significant digit is the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
 precision of 0.1, then setting C{least_significant_digit=1} will cause
-data the data to be quantized using {NP.around(scale*data)/scale}, where
+data the data to be quantized using {numpy.around(scale*data)/scale}, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
 retained (in this case bits=4).  Effectively, this makes the compression
 'lossy' instead of 'lossless', that is some precision in the data is
@@ -450,7 +450,8 @@ __version__ = "0.7.3"
 # Initialize numpy
 import os
 import netcdftime
-import numpy as NP
+import numpy
+from glob import glob
 from numpy import ma
 from numpy import __version__ as _npversion
 if _npversion.split('.')[0] < '1':
@@ -490,11 +491,6 @@ for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
 _supportedtypes = _nptonctype.keys()
 
-# include pure python utility functions.
-# (use include instead of importing them so docstrings
-#  get included in C extension code).
-include "utils.pyx"
-
 # internal C functions.
 
 cdef _get_att_names(int grpid, int varid):
@@ -529,7 +525,7 @@ cdef _get_att(int grpid, int varid, name):
         raise RuntimeError(nc_strerror(ierr))
     # attribute is a character or string ...
     if att_type == NC_CHAR or att_type == NC_STRING:
-        value_arr = NP.empty(att_len,'S1')
+        value_arr = numpy.empty(att_len,'S1')
         ierr = nc_get_att_text(grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
@@ -546,7 +542,7 @@ cdef _get_att(int grpid, int varid, name):
             type_att = _nctonptype[att_type]
         except:
             raise KeyError('attribute %s has unsupported datatype' % attname)
-        value_arr = NP.empty(att_len,type_att)
+        value_arr = numpy.empty(att_len,type_att)
         ierr = nc_get_att(grpid, varid, attname, value_arr.data)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
@@ -602,7 +598,7 @@ cdef _set_att(int grpid, int varid, name, value):
     cdef ndarray value_arr 
     attname = PyString_AsString(name)
     # put attribute value into a numpy array.
-    value_arr = NP.array(value)
+    value_arr = numpy.array(value)
     # if array is 64 bit integers, cast to 32 bit integers
     # if 64-bit datatype not supported.
     if value_arr.dtype.str[1:] == 'i8' and 'i8' not in _supportedtypes:
@@ -1453,8 +1449,8 @@ instance. If C{None}, the data is not truncated. """
         self._grpid = grp._grpid
         self._grp = grp
         # convert to a real numpy datatype object if necessary.
-        if type(datatype) != NP.dtype:
-            datatype = NP.dtype(datatype)
+        if type(datatype) != numpy.dtype:
+            datatype = numpy.dtype(datatype)
         # check validity of datatype.
         if datatype.str[1:] not in _supportedtypes:
             raise TypeError('illegal data type, must be one of %s, got %s' % (_supportedtypes,datatype))
@@ -1560,7 +1556,7 @@ instance. If C{None}, the data is not truncated. """
                         raise RuntimeError(nc_strerror(ierr))
                 else:
                     # cast fill_value to type of variable.
-                    fillval = NP.array(fill_value, self.dtype)
+                    fillval = numpy.array(fill_value, self.dtype)
                     _set_att(self._grpid, self._varid, '_FillValue', fillval)
             if least_significant_digit is not None:
                 self.least_significant_digit = least_significant_digit
@@ -1726,7 +1722,7 @@ each dimension is returned."""
             # if setting _FillValue, make sure value
             # has same type as variable.
             if name == '_FillValue':
-                value = NP.array(value, self.dtype)
+                value = numpy.array(value, self.dtype)
             if self._grp.file_format != 'NETCDF4': self._grp._redef()
             _set_att(self._grpid, self._varid, name, value)
             if self._grp.file_format != 'NETCDF4': self._grp._enddef()
@@ -1770,7 +1766,7 @@ each dimension is returned."""
         # and automatic conversion to masked array using
         # missing_value/_Fill_Value.
         if self.maskandscale:
-            totalmask = NP.zeros(data.shape, NP.bool)
+            totalmask = numpy.zeros(data.shape, numpy.bool)
             fill_value = None
             if hasattr(self, 'missing_value') and (data == self.missing_value).any():
                 mask=data==self.missing_value
@@ -1828,8 +1824,8 @@ each dimension is returned."""
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = (data - self.add_offset)/self.scale_factor
         # A numpy array is needed. Convert if necessary.
-        if not type(data) == NP.ndarray:
-            data = NP.array(data,self.dtype)
+        if not type(data) == numpy.ndarray:
+            data = numpy.array(data,self.dtype)
         self._put(data, start, count, stride)
 
     def assignValue(self,val):
@@ -1930,10 +1926,10 @@ The default value of C{maskandscale} is C{False}
             # If just one element given, make a new array of desired
             # size and fill it with that data.
             if dataelem == 1:
-                #datanew = NP.empty(totelem,self.dtype)
+                #datanew = numpy.empty(totelem,self.dtype)
                 #datanew[:] = data
                 #data = datanew
-                data = data*NP.ones(totelem,self.dtype)
+                data = data*numpy.ones(totelem,self.dtype)
             else:
                 raise IndexError('size of data array does not conform to slice')
         # if data type of array doesn't match variable, 
@@ -1990,7 +1986,7 @@ The default value of C{maskandscale} is C{False}
                 startp[n] = start[n]
                 stridep[n] = stride[n]
                 sl.append(slice(None,None, 1))
-        data = NP.empty(shapeout, self.dtype)
+        data = numpy.empty(shapeout, self.dtype)
         # strides all 1 or scalar variable, use get_vara (faster)
         if sum(stride) == ndims or ndims == 0: 
             ierr = nc_get_vara(self._grpid, self._varid,
@@ -2013,3 +2009,8 @@ The default value of C{maskandscale} is C{False}
             return data.squeeze()
         else:
             return data
+
+# include pure python utility functions and MFDataset class.
+# (use include instead of importing them so docstrings
+#  get included in C extension code).
+include "utils.pyx"
