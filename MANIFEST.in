@@ -8,8 +8,12 @@ include netCDF4.pyx
 include netCDF4_utils.py
 include netCDF4.pxi
 include netCDF4.c
+include netCDF3.pxi
+include netCDF3.pyx
+include netCDF3.c
 include examples/*py
 include test/*py
+include test3/*py
 include utils/nc3tonc4
 include utils/grib2nc4
 include netcdftime/__init__.py
