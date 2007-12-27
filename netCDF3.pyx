@@ -19,13 +19,14 @@ Requires
 
  - numpy array module U{http://numpy.scipy.org}, version 1.0 or later.
  - The netCDF-3 C library (version 3.6 or later), available at
- U{ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot}.
+ U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
 
 
 Install
 =======
 
  - install the requisite python modules and C libraries (see above).
+ Set the C{NETCDF3_DIR} environment variable to point to where the
  netCDF version 3 library and headers are installed.
  - run 'python setup-nc3.py install'
  - run some of the tests in the 'test3' directory.
@@ -73,7 +74,7 @@ unlimited dimension (a dimension that can be appended to), the size
 value is set to C{None}. netCDF 3 files can only have one unlimited
 dimension, and it must be the first (leftmost) dimension of the variable.
 
->>> ncfile.createDimension('level', 16)
+>>> ncfile.createDimension('press', 10)
 >>> ncfile.createDimension('time', None)
 >>> ncfile.createDimension('lat', 73)
 >>> ncfile.createDimension('lon', 144)
@@ -85,7 +86,7 @@ All of the L{Dimension} instances are stored in a python dictionary.
 {'lat': <netCDF3.Dimension object at 0x24a5f7b0>, 
  'time': <netCDF3.Dimension object at 0x24a5f788>, 
  'lon': <netCDF3.Dimension object at 0x24a5f7d8>, 
- 'level': <netCDF3.Dimension object at 0x24a5f760>}
+ 'press': <netCDF3.Dimension object at 0x24a5f760>}
 >>>
 
 Calling the python C{len} function with a L{Dimension} instance returns
@@ -98,7 +99,7 @@ can be used to determine if the dimensions is unlimited, or appendable.
 lat 73 False
 time 0 True
 lon 144 False
-level 16 False
+press 10 False
 >>>
 
 L{Dimension} names can be changed using the
@@ -135,18 +136,18 @@ method returns an instance of the L{Variable} class whose methods can be
 used later to access and set variable data and attributes.
 
 >>> times = ncfile.createVariable('time','f8',('time',))
->>> levels = ncfile.createVariable('level','i4',('level',))
+>>> pressure = ncfile.createVariable('press','i4',('press',))
 >>> latitudes = ncfile.createVariable('latitude','f4',('lat',))
 >>> longitudes = ncfile.createVariable('longitude','f4',('lon',))
 >>> # two dimensions unlimited.
->>> temp = ncfile.createVariable('temp','f4',('time','level','lat','lon',))
+>>> temp = ncfile.createVariable('temp','f4',('time','press','lat','lon',))
 
 All of the variables in the L{Dataset} are stored in a
 Python dictionary, in the same way as the dimensions:
 
 >>> print ncfile.variables
 {'temp': <netCDF3.Variable object at 0x24a61068>,
- 'level': <netCDF3.Variable object at 0.35f0f80>, 
+ 'pressure': <netCDF3.Variable object at 0.35f0f80>, 
  'longitude': <netCDF3.Variable object at 0x24a61030>,
  'pressure': <netCDF3.Variable object at 0x24a610a0>, 
  'time': <netCDF3.Variable object at 02x45f0.4.58>, 
@@ -214,7 +215,7 @@ into it? You can just treat it like an array and assign data to a slice.
 
 >>> import numpy as NP
 >>> latitudes[:] = NP.arange(-90,91,2.5)
->>> levels[:] = NP.arange(arange(1,17,1))
+>>> pressure[:] = NP.arange(1000,90,-100)
 >>> print 'latitudes =\\n',latitudes[:]
 latitudes =
 [-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5
@@ -225,6 +226,9 @@ latitudes =
   60.   62.5  65.   67.5  70.   72.5  75.   77.5  80.   82.5  85.   87.5
   90. ]
 >>>
+>>> print 'pressure levels =\\n',pressure[:]
+[1000  900  800  700  600  500  400  300  200  100]
+>>>
 
 Unlike numpy array objects, netCDF L{Variable} objects with unlimited
 dimensions will grow along those dimensions if you assign data outside
@@ -233,11 +237,12 @@ the currently defined range of indices.
 >>> # append along two unlimited dimensions by assigning to slice.
 >>> nlats = len(ncfile.dimensions['lat'])
 >>> nlons = len(ncfile.dimensions['lon'])
+>>> nlevs = len(ncfile.dimensions['press'])
 >>> print 'temp shape before adding data = ',temp.shape
-temp shape before adding data =  (0, 16, 73, 144)
+temp shape before adding data =  (0, 10, 73, 144)
 >>>
 >>> from numpy.random.mtrand import uniform
->>> temp[0:5,:,:,:] = uniform(size=(5,16,nlats,nlons))
+>>> temp[0:5,:,:,:] = uniform(size=(5,nlevs,nlats,nlons))
 >>> print 'temp shape after adding data = ',temp.shape
 temp shape after adding data =  (5, 16, 73, 144)
 >>>
