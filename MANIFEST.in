@@ -12,6 +12,7 @@ include netCDF4.c
 include netCDF3.pxi
 include netCDF3.pyx
 include netCDF3.c
+include utils.pyx
 include examples/*py
 include test/*py
 include test3/*py
