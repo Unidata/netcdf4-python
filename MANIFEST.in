@@ -22,5 +22,3 @@ include netcdftime/__init__.py
 include netcdftime/netcdftime.py
 include netcdftime/strptime.py
 include netcdftime/strftime.py
-include MFnetCDF4/__init__.py
-include MFnetCDF4/MFnetCDF4.py
