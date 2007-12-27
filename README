@@ -9,6 +9,11 @@ The environment variables HDF5_DIR and NETCDF4_DIR must be
 set to point to the locations of the HDF5 and netcdf-4 libraries and
 headers before setup.py is run.
 
+If you can't install the HDF5 and netcdf-4 libs on your system,
+but have netcdf-3 installed, set NETCDF3_DIR to point to the
+location of the netcdf-3 library and headers, and then run
+'python setup-nc3.py install'. This will install the netCDF3 module.
+
 To install just the pure-python netcdftime module, 
 run 'python setup-netcdftime.py install'
 
