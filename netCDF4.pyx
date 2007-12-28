@@ -366,8 +366,44 @@ L{num2date} converts numeric values of time in the specified C{units}
 and C{calendar} to datetime objectecs, and L{date2num} does the reverse.
 All the calendars currently defined in the U{CF metadata convention 
 <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
+
+7) Reading data from a multi-file netCDF dataset.
+-------------------------------------------------
+
+If you want to read data from a variable that spans multiple netCDF files,
+you can use the L{MFDataset} class to read the data as if it were 
+contained in a single file. Instead of using a single filename to create
+a L{Dataset} instance, create a L{MFDataset} instance with either a list
+of filenames, or a string with a wildcard (which is then converted to
+a sorted list of files using the python glob module).
+Variables in the list of files that share the same unlimited 
+dimension are aggregated together, and can be sliced across multiple
+files.  To illustrate this, let's first create a bunch of netCDF files with
+the same variable (with the same unlimited dimension).
+
+>>> for nfile in range(10):
+>>>     f = Dataset('mftest'+repr(nfile)+'.nc','w')
+>>>     f.createDimension('x',None)
+>>>     x = f.createVariable('x','i',('x',))
+>>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+>>>     f.close()
+
+Now read all the files back in at once with L{MFDataset}
+
+>>> f = MFDataset('mftest*nc')
+>>> print f.variables['x'][:]
+[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
+ 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
+>>>
+
+Note that MFDataset can only be used to read, not write, multi-file
+datasets. It only works for C{NETCDF3_CLASSIC},
+C{NETCDF3_64BIT} or C{NETCDF4_CLASSIC} formatted files, not C{NETCDF4}
+files.
             
-7) Efficient compression of netCDF variables
+8) Efficient compression of netCDF variables
 --------------------------------------------
 
 Data stored in netCDF 4 L{Variable} objects can be compressed and
