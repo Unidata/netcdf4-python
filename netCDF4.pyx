@@ -379,10 +379,13 @@ a sorted list of files using the python glob module).
 Variables in the list of files that share the same unlimited 
 dimension are aggregated together, and can be sliced across multiple
 files.  To illustrate this, let's first create a bunch of netCDF files with
-the same variable (with the same unlimited dimension).
+the same variable (with the same unlimited dimension).  The files
+must in be in C{NETCDF3_64BIT}, C{NETCDF3_CLASSIC} or 
+C{NETCDF4_CLASSIC format} (C{NETCDF4} formatted files multi-file
+datasets are not supported).
 
 >>> for nfile in range(10):
->>>     f = Dataset('mftest'+repr(nfile)+'.nc','w')
+>>>     f = Dataset('mftest'+repr(nfile)+'.nc','w',format='NETCDF4_CLASSIC')
 >>>     f.createDimension('x',None)
 >>>     x = f.createVariable('x','i',('x',))
 >>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
@@ -399,9 +402,7 @@ Now read all the files back in at once with L{MFDataset}
 >>>
 
 Note that MFDataset can only be used to read, not write, multi-file
-datasets. It only works for C{NETCDF3_CLASSIC},
-C{NETCDF3_64BIT} or C{NETCDF4_CLASSIC} formatted files, not C{NETCDF4}
-files.
+datasets. 
             
 8) Efficient compression of netCDF variables
 --------------------------------------------
