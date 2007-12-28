@@ -1,5 +1,7 @@
 version 0.7.3 (not yet released)
 ================================
+* MFnetCDF4 module merged into netCDF4 and netCDF3 (now
+  called MFDataset).
 * added netCDF3 module for those who can't install the netCDF 4 lib.
 * added set_auto_maskandscale Variable method to enable automatic
   packing and unpacking of short integers (using scale_factor
@@ -25,7 +27,6 @@ version 0.7.3 (not yet released)
   returning just the requested elements to the user.  This can
   potentially gobble a lot of memory and degrade performance 
   (especially if 'fancy indexing' is done on the left-most dimension).
-
 * added convenience functions stringtochar and chartostring for
   converting character arrays to arrays of fixed-length strings and
   vice-versa.   Example usage in examples/test_stringarr.py.
