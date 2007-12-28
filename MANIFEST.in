@@ -20,5 +20,3 @@ include utils/nc3tonc4
 include utils/grib2nc4
 include netcdftime/__init__.py
 include netcdftime/netcdftime.py
-include netcdftime/strptime.py
-include netcdftime/strftime.py
