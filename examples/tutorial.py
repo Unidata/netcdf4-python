@@ -67,9 +67,9 @@ print rootgrp.__dict__
 
 print rootgrp.variables
 
-import numpy as NP
+import numpy
 # no unlimited dimension, just assign to slice.
-latitudes[:] = NP.arange(-90,91,2.5)
+latitudes[:] = numpy.arange(-90,91,2.5)
 print 'latitudes =\n',latitudes[:]
 
 # append along two unlimited dimensions by assigning to slice.
@@ -92,3 +92,15 @@ dates = num2date(times[:],units=times.units,calendar=times.calendar)
 print 'dates corresponding to time values:\\n',dates
 
 rootgrp.close()
+
+# create a series of netCDF files with a variable sharing
+# the same unlimited dimension.
+for nfile in range(10):
+    f = netCDF4.Dataset('mftest'+repr(nfile)+'.nc','w',format='NETCDF4_CLASSIC')
+    f.createDimension('x',None)
+    x = f.createVariable('x','i',('x',))
+    x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+    f.close()
+# now read all those files in at once, in one Dataset.
+f = netCDF4.MFDataset('mftest*nc')
+print f.variables['x'][:]
