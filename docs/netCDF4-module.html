@@ -409,8 +409,8 @@
       class="link">Variable</a> instance, how do you put data into it? You 
       can just treat it like an array and assign data to a slice.
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy <span class="py-keyword">as</span> NP
-<span class="py-prompt">&gt;&gt;&gt; </span>latitudes[:] = NP.arange(-90,91,2.5)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy 
+<span class="py-prompt">&gt;&gt;&gt; </span>latitudes[:] = numpy.arange(-90,91,2.5)
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'latitudes =\n'</span>,latitudes[:]
 <span class="py-output">latitudes =</span>
 <span class="py-output">[-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5</span>
@@ -478,7 +478,44 @@
       the reverse. All the calendars currently defined in the <a 
       href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
       target="_top">CF metadata convention</a> are supported.
-    <h2 class="heading">7) Efficient compression of netCDF variables</h2>
+    <h2 class="heading">7) Reading data from a multi-file netCDF dataset.</h2>
+      If you want to read data from a variable that spans multiple 
+      netCDF files, you can use the <a href="netCDF4.MFDataset-class.html" 
+      class="link">MFDataset</a> class to read the data as if it were 
+      contained in a single file. Instead of using a single filename to 
+      create a <a href="netCDF4.Dataset-class.html" 
+      class="link">Dataset</a> instance, create a <a 
+      href="netCDF4.MFDataset-class.html" class="link">MFDataset</a> 
+      instance with either a list of filenames, or a string with a wildcard
+      (which is then converted to a sorted list of files using the python 
+      glob module). Variables in the list of files that share the same 
+      unlimited dimension are aggregated together, and can be sliced across
+      multiple files.  To illustrate this, let's first create a bunch of 
+      netCDF files with the same variable (with the same unlimited 
+      dimension).  The files must in be in <code>NETCDF3_64BIT</code>, 
+      <code>NETCDF3_CLASSIC</code> or <code>NETCDF4_CLASSIC format</code> 
+      (<code>NETCDF4</code> formatted files multi-file datasets are not 
+      supported).
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> nfile <span class="py-keyword">in</span> range(10):
+<span class="py-prompt">&gt;&gt;&gt; </span>    f = Dataset(<span class="py-string">'mftest'</span>+repr(nfile)+<span class="py-string">'.nc'</span>,<span class="py-string">'w'</span>,format=<span class="py-string">'NETCDF4_CLASSIC'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>    f.createDimension(<span class="py-string">'x'</span>,None)
+<span class="py-prompt">&gt;&gt;&gt; </span>    x = f.createVariable(<span class="py-string">'x'</span>,<span class="py-string">'i'</span>,(<span class="py-string">'x'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span>    x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+<span class="py-prompt">&gt;&gt;&gt; </span>    f.close()</pre>
+      Now read all the files back in at once with <a 
+      href="netCDF4.MFDataset-class.html" class="link">MFDataset</a>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>f = MFDataset(<span class="py-string">'mftest*nc'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.variables[<span class="py-string">'x'</span>][:]
+<span class="py-output">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24</span>
+<span class="py-output"> 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49</span>
+<span class="py-output"> 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74</span>
+<span class="py-output"> 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      Note that MFDataset can only be used to read, not write, 
+      multi-file datasets.
+    <h2 class="heading">8) Efficient compression of netCDF variables</h2>
       <p>Data stored in netCDF 4 <a href="netCDF4.Variable-class.html" 
       class="link">Variable</a> objects can be compressed and decompressed 
       on the fly. The parameters for the compression are determined by the 
@@ -518,8 +555,8 @@
       power of ten of the smallest decimal place in the data that is a 
       reliable value. For example if the data has a precision of 0.1, then 
       setting <code>least_significant_digit=1</code> will cause data the 
-      data to be quantized using {NP.around(scale*data)/scale}, where scale
-      = 2**bits, and bits is determined so that a precision of 0.1 is 
+      data to be quantized using {numpy.around(scale*data)/scale}, where 
+      scale = 2**bits, and bits is determined so that a precision of 0.1 is
       retained (in this case bits=4).  Effectively, this makes the 
       compression 'lossy' instead of 'lossless', that is some precision in 
       the data is sacrificed for the sake of disk space.</p>
@@ -592,6 +629,14 @@
     </td><td class="summary">
         <a href="netCDF4.Group-class.html" class="summary-name">Group</a><br />
       Group(self, parent, name)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netCDF4.MFDataset-class.html" class="summary-name">MFDataset</a><br />
+      MFDataset(self, files, check=False)
     </td>
   </tr>
 <tr>
@@ -911,7 +956,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Fri Dec 21 10:27:14 2007
+    Generated by Epydoc 3.0beta1 on Mon Dec 31 06:34:41 2007
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
