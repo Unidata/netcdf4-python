@@ -1,4 +1,4 @@
-version 0.7.3 (not yet released)
+version 0.7.3 (svn revision 501)
 ================================
 * MFnetCDF4 module merged into netCDF4 and netCDF3 (now
   called MFDataset).
