@@ -1,4 +1,5 @@
 import numpy
+from numpy import ma
 import types
 
 def _find_dim(grp, dimname):
@@ -205,25 +206,9 @@ This function is pure python.
         exp = int(numpy.ceil(exp))
     bits = numpy.ceil(numpy.log2(pow(10.,-exp)))
     scale = pow(2.,bits)
-    return numpy.around(scale*data)/scale
-
-def _parsedtype(d,parent=None):
-    """
-returns a nested dictionary containing information about a numpy
-datatype.  The dict values are tuples with (dtype,shape,offset)."""
-    if d.fields is None:
-        return d.str[1:]
-    o = {}
-    for f,v in d.fields.iteritems():
-        shape = v[0].shape
-        if not shape:
-            shape = (1,)
-        offset = v[1]
-        if v[0].type == numpy.void and v[0].subdtype is None:
-            o[f] = _parsedtype(v[0],parent=f),shape,offset,parent
-        else:
-            if v[0].subdtype is not None:
-                o[f] = v[0].subdtype[0].str[1:],shape,offset,parent
-            else:
-                o[f] = v[0].str[1:],shape,offset,parent
-    return o
+    datout = numpy.around(scale*data)/scale
+    if hasattr(datout,'mask'):
+        datout.set_fill_value(data.fill_value())
+        return datout
+    else:
+        return datout
