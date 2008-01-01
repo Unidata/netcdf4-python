@@ -19,6 +19,8 @@ run 'python setup-netcdftime.py install'
 
 Unit tests are in the 'test' directory.
 To run all the tests, execute 'cd test; python run_all.py'.
+Tests for the netCDF3 module are in the 'test3' directory.
+Additional examples are in the 'examples' directory.
 
 More detailed documentation is available at docs/index.html, or
 http://netcdf4-python.googlecode.com/svn/trunk/docs/index.html.
