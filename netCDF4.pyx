@@ -1102,7 +1102,7 @@ attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
-        self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, contiguous=False, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
+        self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -1472,7 +1472,7 @@ instance. If C{None}, the data is not truncated. """
     cdef object _grp
     cdef public ndim, dtype, maskandscale
 
-    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=True, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None,  **kwargs):
+    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None,  **kwargs):
         cdef int ierr, ndims, icontiguous, ideflate_level, numdims
         cdef char *varname
         cdef nc_type xtype, vltypeid
@@ -1713,9 +1713,9 @@ return endian-ness (little,big,native) of variable (as stored in HDF5 file)."""
         """
 chunking(self)
 
-return variable chunking information.  If chunking is set to one
-of the heuristic algorithms a string describing that algorithm ('sub'
-or 'seq') is returned.  Otherwise, a sequence with the chunksize for
+return variable chunking information.  If the dataset is 
+defined to be contiguous (and hence there is no chunking) the word 'contiguous'
+is returned.  Otherwise, a sequence with the chunksize for
 each dimension is returned."""
         cdef int ierr, icontiguous, ndims
         cdef int *chunksizesp
