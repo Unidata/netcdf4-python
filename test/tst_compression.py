@@ -9,10 +9,10 @@ files = [tempfile.mktemp(".nc") for nfile in range(nfiles)]
 array = uniform(size=(ndim,))
 lsd = 3
 
-def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,chunking='seq',complevel=6,fletcher32=False):
+def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,contiguous=False,complevel=6,fletcher32=False):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
-    foo = file.createVariable('data', dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,shuffle=shuffle,chunking=chunking,complevel=complevel,fletcher32=fletcher32)
+    foo = file.createVariable('data', dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,shuffle=shuffle,contiguous=contiguous,complevel=complevel,fletcher32=fletcher32)
     foo[:] = data
     file.close()
     file = Dataset(filename)
