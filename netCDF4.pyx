@@ -1000,7 +1000,7 @@ rename a L{Dimension} named C{oldname} to C{newname}."""
         # looks in the file, so no need to manually update.
 
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
+    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
 createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
 
@@ -1102,7 +1102,7 @@ attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
-        self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, chunking=chunking, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
+        self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, contiguous=False, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -1472,8 +1472,8 @@ instance. If C{None}, the data is not truncated. """
     cdef object _grp
     cdef public ndim, dtype, maskandscale
 
-    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None,  **kwargs):
-        cdef int ierr, ndims, ichunkalg, ideflate_level, numdims
+    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=True, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None,  **kwargs):
+        cdef int ierr, ndims, icontiguous, ideflate_level, numdims
         cdef char *varname
         cdef nc_type xtype, vltypeid
         cdef int dimids[NC_MAX_DIMS]
@@ -1549,12 +1549,12 @@ instance. If C{None}, the data is not truncated. """
                         raise RuntimeError(nc_strerror(ierr))
                 # set chunking stuff.
                 if ndims: # don't bother for scalar variable.
-                    if chunking == 'sub':
-                        ichunkalg = NC_CHUNK_SUB
-                    elif chunking == 'seq':
-                        ichunkalg = NC_CHUNK_SEQ
+                    if contiguous:
+                        icontiguous = 1
+                        if chunksizes is not None:
+                            raise ValueError('cannot specify chunksizes for a contiguous dataset')
                     else:
-                        raise ValueError("chunking keyword must be 'seq' or 'sub', got %s" % chunking)
+                        icontiguous = 0
                     if chunksizes is None:
                         chunksizesp = NULL
                     else:
@@ -1564,11 +1564,12 @@ instance. If C{None}, the data is not truncated. """
                         chunksizesp = <int *>malloc(sizeof(int) * ndims)
                         for n from 0 <= n < ndims:
                             chunksizesp[n] = chunksizes[n]
-                    ierr = nc_def_var_chunking(self._grpid, self._varid, &ichunkalg, chunksizesp, NULL)
-                    free(chunksizesp)
-                    if ierr != NC_NOERR:
-                        if grp.file_format != 'NETCDF4': grp._enddef()
-                        raise RuntimeError(nc_strerror(ierr))
+                    if chunksizes is not None or contiguous:
+                        ierr = nc_def_var_chunking(self._grpid, self._varid, icontiguous, chunksizesp)
+                        free(chunksizesp)
+                        if ierr != NC_NOERR:
+                            if grp.file_format != 'NETCDF4': grp._enddef()
+                            raise RuntimeError(nc_strerror(ierr))
                 # set endian-ness of variable
                 if endian == 'little':
                     ierr = nc_def_var_endian(self._grpid, self._varid, NC_ENDIAN_LITTLE)
@@ -1716,12 +1717,11 @@ return variable chunking information.  If chunking is set to one
 of the heuristic algorithms a string describing that algorithm ('sub'
 or 'seq') is returned.  Otherwise, a sequence with the chunksize for
 each dimension is returned."""
-        cdef int ierr, ichunkalg, ndims
-        cdef int *chunksizesp, *extend_incrementsp
+        cdef int ierr, icontiguous, ndims
+        cdef int *chunksizesp
         if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return None
         chunksizesp = <int *>malloc(sizeof(int) * ndims)
-        extend_incrementsp = <int *>malloc(sizeof(int) * ndims)
-        ierr = nc_inq_var_chunking(self._grpid, self._varid, &ichunkalg, chunksizesp, extend_incrementsp)
+        ierr = nc_inq_var_chunking(self._grpid, self._varid, &icontiguous, chunksizesp)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         ndims = self.ndim
@@ -1729,15 +1729,10 @@ each dimension is returned."""
         for n from 0 <= n < ndims:
             chunksizes.append(chunksizesp[n])
         free(chunksizesp)
-        free(extend_incrementsp)
-        if ichunkalg == NC_CHUNK_SEQ:
-            return 'seq'
-        elif ichunkalg == NC_CHUNK_SUB:
-            return 'sub'
-        elif ichunkalg == NC_CHUNK_SIZES:
-            return chunksizes
+        if icontiguous:
+            return 'contiguous'
         else:
-            raise ValueError('unknown chunking algorithm')
+            return chunksizes
 
     def __delattr__(self,name):
         cdef char *attname

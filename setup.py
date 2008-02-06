@@ -25,7 +25,7 @@ def check_ifnetcdf4(netcdf4_dir):
 
 HDF5_dir = os.environ.get('HDF5_DIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
-dirstosearch =  ['/usr/local','/sw','/opt','/opt/local',os.path.expanduser('~')]
+dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local']
 if HDF5_dir is None:
     print """
 HDF5_DIR environment variable not set, checking some standard locations ..,"""
