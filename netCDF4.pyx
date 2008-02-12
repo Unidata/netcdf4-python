@@ -422,8 +422,8 @@ C{fletcher32} keyword argument to
 L{createVariable<Dataset.createVariable>} to C{True} (it's C{False} by
 default) enables the Fletcher32 checksum algorithm for error detection.
 It's also possible to set the HDF5 chunking parameters and endian-ness
-of the binary data stored in the HDF5 file with the C{chunking,
-chunksizes} and C{endian} keyword arguments to
+of the binary data stored in the HDF5 file with the C{chunksizes}
+and C{endian} keyword arguments to
 L{createVariable<Dataset.createVariable>}.  These keyword arguments only
 are relevant for C{NETCDF4} and C{NETCDF4_CLASSIC} files (where the
 underlying file format is HDF5) and are silently ignored if the file
@@ -1002,7 +1002,7 @@ rename a L{Dimension} named C{oldname} to C{newname}."""
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
-createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
+createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
 
 Creates a new variable with the given C{varname}, C{datatype}, and 
 C{dimensions}. If dimensions are not given, the variable is assumed to be 
@@ -1036,13 +1036,8 @@ C{zlib=False}.
 If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5 
 checksum algorithm is activated to detect errors. Default C{False}.
 
-If the optional keyword C{chunking} is C{'seq'} (default) HDF5 chunk
-sizes are set to favor sequential access.  If C{chunking='sub'}, chunk
-sizes are set to favor subsetting equally in all dimensions. The
-sequential chunking algorithm sets a chunksize of 1 all unlimited
-dimensions, and all other chunksizes to the size of that dimension. The
-subsetting chunking algorithm sets the chunksize in each dimension to
-the nth root of (desired chunksize/product of n dimsizes).
+If the optional keyword C{contiguous} is C{True}, the variable data is 
+stored contiguously on disk.  Default C{False}.
 
 The optional keyword C{chunksizes} can be used to manually specify the
 HDF5 chunksizes for each dimension of the variable. A detailed
@@ -1050,7 +1045,7 @@ discussion of HDF chunking and I/O performance is available U{here
 <http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}. 
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
-from the file.
+from the file.  C{chunksizes} cannot be set if C{contiguous=True}.
 
 The optional keyword C{endian} can be used to control whether the
 data is stored in little or big endian format on disk. Possible
@@ -1060,7 +1055,7 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 
-The C{zlib, complevel, shuffle, fletcher32, chunking, chunksizes} and C{endian}
+The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
 keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword C{fill_value} can be used to override the default 
@@ -1347,7 +1342,7 @@ returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.""
 
 cdef class Variable:
     """
-Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, chunking='seq', chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
+Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
 
 A netCDF L{Variable} is used to read and write netCDF data.  They are 
 analagous to numpy array objects.
@@ -1396,15 +1391,8 @@ to improve compression. Default C{True}. Ignored if C{zlib=False}.
 B{C{fletcher32}} - if C{True} (default C{False}), the Fletcher32 checksum 
 algorithm is used for error detection.
 
-B{C{chunking}} - Chunking is required in any dataset with one or more
-unlimited dimension in HDF5. NetCDF-4 supports setting the chunking
-algorithm at variable creation.  If C{chunking = 'seq'} (default) chunk
-sizes are set to favor sequential access.  If C{chunking='sub'}, chunk
-sizes are set to favor subsetting equally in all dimensions. The
-sequential chunking algorithm sets a chunksize of 1 all unlimited
-dimensions, and all other chunksizes to the size of that dimension. The
-subsetting chunking algorithm sets the chunksize in each dimension to
-the nth root of (desired chunksize/product of n dimsizes).
+B{C{contiguous}} - if C{True} (default C{False}), the variable data is
+stored contiguously on disk.
 
 B{C{chunksizes}} - Can be used to specify the HDF5 chunksizes for each
 dimension of the variable. A detailed discussion of HDF chunking and I/O
@@ -1412,7 +1400,7 @@ performance is available U{here
 <http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html>}.
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
-from the file.
+from the file. C{chunksizes} cannot be set if C{contiguous=True}.
 
 B{C{endian}} - Can be used to control whether the
 data is stored in little or big endian format on disk. Possible
@@ -1422,7 +1410,7 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 
-The C{zlib, complevel, shuffle, fletcher32, chunking, chunksizes} and C{endian}
+The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
 keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 B{C{least_significant_digit}} - If specified, variable data will be

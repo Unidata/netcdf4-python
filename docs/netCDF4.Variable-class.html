@@ -55,7 +55,7 @@ object --+
 
 <hr />
 <p>Variable(self, group, name, datatype, dimensions=(), zlib=False, 
-  complevel=6, shuffle=True, fletcher32=False, chunking='seq', 
+  complevel=6, shuffle=True, fletcher32=False, contiguous=False, 
   chunksizes=None, endian='native', 
   least_significant_digit=None,fill_value=None)</p>
   <p>A netCDF <a href="netCDF4.Variable-class.html" 
@@ -109,23 +109,17 @@ object --+
   <p><b><code>fletcher32</code></b> - if <code>True</code> (default 
   <code>False</code>), the Fletcher32 checksum algorithm is used for error 
   detection.</p>
-  <p><b><code>chunking</code></b> - Chunking is required in any dataset 
-  with one or more unlimited dimension in HDF5. NetCDF-4 supports setting 
-  the chunking algorithm at variable creation.  If <code>chunking = 
-  'seq'</code> (default) chunk sizes are set to favor sequential access.  
-  If <code>chunking='sub'</code>, chunk sizes are set to favor subsetting 
-  equally in all dimensions. The sequential chunking algorithm sets a 
-  chunksize of 1 all unlimited dimensions, and all other chunksizes to the 
-  size of that dimension. The subsetting chunking algorithm sets the 
-  chunksize in each dimension to the nth root of (desired chunksize/product
-  of n dimsizes).</p>
+  <p><b><code>contiguous</code></b> - if <code>True</code> (default 
+  <code>False</code>), the variable data is stored contiguously on 
+  disk.</p>
   <p><b><code>chunksizes</code></b> - Can be used to specify the HDF5 
   chunksizes for each dimension of the variable. A detailed discussion of 
   HDF chunking and I/O performance is available <a 
   href="http://hdf.ncsa.uiuc.edu/HDF5/doc/Chunking.html" 
   target="_top">here</a>. Basically, you want the chunk size for each 
   dimension to match as closely as possible the size of the data block that
-  users will read from the file.</p>
+  users will read from the file. <code>chunksizes</code> cannot be set if 
+  <code>contiguous=True</code>.</p>
   <p><b><code>endian</code></b> - Can be used to control whether the data 
   is stored in little or big endian format on disk. Possible values are 
   <code>little, big</code> or <code>native</code> (default). The library 
@@ -133,7 +127,7 @@ object --+
   if the data is always going to be read on a computer with the opposite 
   format as the one used to create the file, there may be some performance 
   advantage to be gained by setting the endian-ness.</p>
-  <p>The <code>zlib, complevel, shuffle, fletcher32, chunking, 
+  <p>The <code>zlib, complevel, shuffle, fletcher32, contiguous, 
   chunksizes</code> and <code>endian</code> keywords are silently ignored 
   for netCDF 3 files that do not use HDF5.</p>
   <p><b><code>least_significant_digit</code></b> - If specified, variable 
@@ -273,7 +267,7 @@ object --+
         <span class="summary-sig-arg">complevel</span>=<span class="summary-sig-default">6</span>,
         <span class="summary-sig-arg">shuffle</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">fletcher32</span>=<span class="summary-sig-default">False</span>,
-        <span class="summary-sig-arg">chunking</span>=<span class="summary-sig-default">'seq'</span>,
+        <span class="summary-sig-arg">contiguous</span>=<span class="summary-sig-default">False</span>,
         <span class="summary-sig-arg">chunksizes</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">endian</span>=<span class="summary-sig-default">'native'</span>,
         <span class="summary-sig-arg">least_significant_digit</span>=<span class="summary-sig-default">None</span>,
@@ -645,7 +639,7 @@ a new object with type S, a subtype of T</td>
         <span class="sig-arg">complevel</span>=<span class="sig-default">6</span>,
         <span class="sig-arg">shuffle</span>=<span class="sig-default">True</span>,
         <span class="sig-arg">fletcher32</span>=<span class="sig-default">False</span>,
-        <span class="sig-arg">chunking</span>=<span class="sig-default">'seq'</span>,
+        <span class="sig-arg">contiguous</span>=<span class="sig-default">False</span>,
         <span class="sig-arg">chunksizes</span>=<span class="sig-default">None</span>,
         <span class="sig-arg">endian</span>=<span class="sig-default">'native'</span>,
         <span class="sig-arg">least_significant_digit</span>=<span class="sig-default">None</span>,
@@ -752,10 +746,10 @@ a new object with type S, a subtype of T
     </td>
   </table>
   
-  return variable chunking information.  If chunking is set to one of 
-  the heuristic algorithms a string describing that algorithm ('sub' or 
-  'seq') is returned.  Otherwise, a sequence with the chunksize for each 
-  dimension is returned.
+  return variable chunking information.  If the dataset is defined to be
+  contiguous (and hence there is no chunking) the word 'contiguous' is 
+  returned.  Otherwise, a sequence with the chunksize for each dimension is
+  returned.
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -876,7 +870,7 @@ a new object with type S, a subtype of T
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Tue Jan  1 07:04:03 2008
+    Generated by Epydoc 3.0beta1 on Tue Feb 12 13:35:26 2008
     </td>
     <td align="right" class="footer">
       <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
