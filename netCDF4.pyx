@@ -1037,7 +1037,8 @@ If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5
 checksum algorithm is activated to detect errors. Default C{False}.
 
 If the optional keyword C{contiguous} is C{True}, the variable data is 
-stored contiguously on disk.  Default C{False}.
+stored contiguously on disk.  Default C{False}. Setting to C{True} for
+a variable with an unlimited dimension will trigger an error.
 
 The optional keyword C{chunksizes} can be used to manually specify the
 HDF5 chunksizes for each dimension of the variable. A detailed
@@ -1392,7 +1393,8 @@ B{C{fletcher32}} - if C{True} (default C{False}), the Fletcher32 checksum
 algorithm is used for error detection.
 
 B{C{contiguous}} - if C{True} (default C{False}), the variable data is
-stored contiguously on disk.
+stored contiguously on disk.  Default C{False}. Setting to C{True} for
+a variable with an unlimited dimension will trigger an error.
 
 B{C{chunksizes}} - Can be used to specify the HDF5 chunksizes for each
 dimension of the variable. A detailed discussion of HDF chunking and I/O
