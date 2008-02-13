@@ -2,7 +2,7 @@ version 0.7.4 (not yet released)
 ===============================
 * fixes for latest netcdf-4 snapshots ('chunking' keyword to createVariable
   replaced by 'contiguous').  Now works with latest netcdf-4 snapshots and
-  hdf5-1.8,0rc2.
+  hdf5-1.8.0rc2.
 
 version 0.7.3.1 (svn revision 507)
 ==================================
