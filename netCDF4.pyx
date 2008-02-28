@@ -29,11 +29,9 @@ Requires
 ======== 
 
  - numpy array module U{http://numpy.scipy.org}, version 1.0 or later.
- - The HDF5 C library (the latest version of version 1.8.0-beta recommended),  
- available at U{ftp://ftp.hdfgroup.uiuc.edu/pub/outgoing/hdf5/hdf5-1.8.0-pre}.
+ - The HDF5 C library version 1.8.0 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl}'.
- - The netCDF-4 C library (the latest version 4 snapshot recommended), available at
- U{ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot}.
+ - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
  Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HDF5_DIR}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
 
