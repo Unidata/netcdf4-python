@@ -42,7 +42,7 @@ print 'variables (name, type, dimensions, units):'
 for varname,var in f.variables.items():
     gribdata = var[:]
     # skip character variables (coming from decoded time values probably)
-    if gribdata.dtype.char.startswith('S'): continue
+    if gribdata.dtype.kind == 'S': continue
     tmpdata = gribdata.flatten()
     # values > 1.e10 are probably bitmask
     tmpdata = tmpdata.compress(tmpdata < 1.e10)
