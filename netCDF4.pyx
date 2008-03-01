@@ -31,7 +31,7 @@ Requires
  - numpy array module U{http://numpy.scipy.org}, version 1.0 or later.
  - The HDF5 C library version 1.8.0 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl}'.
- - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4}.
+ - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot}.
  Be sure to build with 'C{--enable-netcdf-4}' and 'C{--with-hdf5=$HDF5_DIR}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
 
