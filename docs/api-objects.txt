@@ -28,7 +28,6 @@ netCDF4._nctonptype	netCDF4-module.html#_nctonptype
 netCDF4._npversion	netCDF4-module.html#_npversion
 netCDF4._nptonctype	netCDF4-module.html#_nptonctype
 netCDF4._default_fillvals	netCDF4-module.html#_default_fillvals
-netcdftime	netcdftime-module.html
 netcdftime.netcdftime	netcdftime.netcdftime-module.html
 netcdftime.netcdftime._strftime	netcdftime.netcdftime-module.html#_strftime
 netcdftime.netcdftime._DateFromNoLeapDay	netcdftime.netcdftime-module.html#_DateFromNoLeapDay
