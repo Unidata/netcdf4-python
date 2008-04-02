@@ -698,7 +698,7 @@ do not exist in any real world calendar.
         except:
             isscalar = True
         if not isscalar:
-            time_value = numpy.array(time_value)
+            time_value = numpy.array(time_value, dtype='d')
             shape = time_value.shape
         # convert to desired units, remove time zone offset.
         if self.units in ['second','seconds']:
