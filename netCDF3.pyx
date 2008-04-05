@@ -40,8 +40,9 @@ Install
 =======
 
  - install the requisite python modules and C libraries (see above).
- Set the C{NETCDF3_DIR} environment variable to point to where the
- netCDF version 3 library and headers are installed.
+ Optionally, set the C{NETCDF3_DIR} environment variable to point to where the
+ netCDF version 3 library and headers are installed. If C{NETCDF3_DIR} is
+ not set, some standard locations will be searched.
  - run 'python setup-nc3.py install'
  - run some of the tests in the 'test3' directory.
 
