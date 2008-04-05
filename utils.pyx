@@ -121,7 +121,7 @@ def getlibversion():
     """
 getlibversion()
 
-returns a string describing the version of the netcdf-4 library
+returns a string describing the version of the netcdf library
 used to build the module, and when it was built.
     """
     cdef char *libstring
