@@ -1792,19 +1792,19 @@ each dimension is returned."""
             if hasattr(self, 'missing_value') and (data == self.missing_value).any():
                 mask=data==self.missing_value
                 fill_value = self.missing_value
-                totalmask = totalmask + mask
+                totalmask += mask
             if hasattr(self, '_FillValue') and (data == self._FillValue).any():
                 mask=data==self._FillValue
                 if fill_value is None:
                     fill_value = self._FillValue
-                totalmask = totalmask + mask
+                totalmask += mask
             else:
                 fillval = _default_fillvals[self.dtype.str[1:]]
                 if (data == fillval).any():
                     mask=data==fillval
                     if fill_value is None:
                         fill_value = fillval
-                    totalmask = totalmask + mask
+                    totalmask += mask
             # all values where data == missing_value or _FillValue are
             # masked.  fill_value set to missing_value if it exists,
             # otherwise _FillValue.
