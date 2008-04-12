@@ -40,11 +40,17 @@ Install
 =======
 
  - install the requisite python modules and C libraries (see above).
- - optionally, set the C{HDF5_DIR} environment variable to point to where HDF5 is installed.
- (the libs in C{$HDF5_DIR/lib}, the headers in C{$HDF5_DIR/include}).
- - optionally, set the C{NETCDF4_DIR} environment variable to point to where the 
- netCDF version 4 library and headers are installed. If C{HDF5_DIR} and
- C{NETCDF4_DIR} are not set, some standard locations will be searched.
+ - optionally, set the C{HDF5_DIR} environment variable to point to where HDF5
+ is installed. (the libs in C{$HDF5_DIR/lib}, the headers in
+ C{$HDF5_DIR/include}).
+ - optionally, set the C{NETCDF4_DIR} environment variable to point to
+ where the netCDF version 4 library and headers are installed.
+ If C{HDF5_DIR} and C{NETCDF4_DIR} are not set, some standard
+ locations will be searched.
+ - if HDF5 was build with U{szip <http://hdf.ncsa.uiuc.edu/doc_resource/SZIP/>},
+ you may also need to set the C{SZIP_DIR} 
+ environment variable to point to where szip is installed. Note that
+ netCDF 4.0 does not yet support szip compression.
  - run 'python setup.py install'
  - run some of the tests in the 'test' directory.
 
