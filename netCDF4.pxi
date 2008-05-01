@@ -228,6 +228,7 @@ cdef extern from "netcdf.h":
     int nc_inq_ncid(int ncid, char *name, int *grp_ncid)
     int nc_inq_grps(int ncid, int *numgrps, int *ncids)
     int nc_inq_grpname(int ncid, char *name)
+    int nc_inq_grp_parent(int ncid, int *parent_ncid)
     int nc_inq_varids(int ncid, int *nvars, int *varids)
     int nc_inq_dimids(int ncid, int *ndims, int *dimids, int include_parents)
     int nc_def_grp(int parent_ncid, char *name, int *new_ncid)
