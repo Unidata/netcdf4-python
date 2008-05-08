@@ -1,9 +1,9 @@
-version 0.7.4 (not yet released)
-===============================
+version 0.7.4 (svn revision 540)
+================================
 * ensure all arithmetic is done with float64 in netcdftime (Rob Hetland).
-* fixes for latest netcdf-4 snapshots ('chunking' keyword to createVariable
-  replaced by 'contiguous').  Now works with latest netcdf-4 snapshots and
-  hdf5-1.8.0 final.
+* fixes for netcdf-4.0-beta2 ('chunking' keyword to createVariable
+  replaced by 'contiguous').  Now works with netcdf-4.0-beta2 and hdf5-1.8.0
+  final, but is incompatible with netcdf-4.0-beta1.
 
 version 0.7.3.1 (svn revision 507)
 ==================================
