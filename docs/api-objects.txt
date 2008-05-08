@@ -5,7 +5,6 @@ netCDF3.num2date	netCDF3-module.html#num2date
 netCDF3._private_atts	netCDF3-module.html#_private_atts
 netCDF3.chartostring	netCDF3-module.html#chartostring
 netCDF3.stringtochar	netCDF3-module.html#stringtochar
-netCDF3.__pyx_capi__	netCDF3-module.html#__pyx_capi__
 netCDF3.getlibversion	netCDF3-module.html#getlibversion
 netCDF3.date2num	netCDF3-module.html#date2num
 netCDF3._value	netCDF3-module.html#_value
@@ -20,7 +19,6 @@ netCDF4.num2date	netCDF4-module.html#num2date
 netCDF4._private_atts	netCDF4-module.html#_private_atts
 netCDF4.chartostring	netCDF4-module.html#chartostring
 netCDF4.stringtochar	netCDF4-module.html#stringtochar
-netCDF4.__pyx_capi__	netCDF4-module.html#__pyx_capi__
 netCDF4.getlibversion	netCDF4-module.html#getlibversion
 netCDF4.date2num	netCDF4-module.html#date2num
 netCDF4._value	netCDF4-module.html#_value
