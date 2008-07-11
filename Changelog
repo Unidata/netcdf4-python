@@ -1,3 +1,4 @@
+* added 'exclude' parameter to MFDataset.__init__
 * added set_auto_maskandscale method to MFDataset variables.
 
 version 0.7.4 (svn revision 540)
