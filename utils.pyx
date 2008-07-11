@@ -363,6 +363,9 @@ class _Variable(object):
     def _shape(self):
         recdimlen = len(self._dset.dimensions[self._recdimname])
         return (recdimlen,) + self._mastervar.shape[1:]
+    def set_auto_maskandscale(self,val):
+        for v in self._recVar:
+            v.set_auto_maskandscale(val)
     def __getitem__(self, elem):
         """Get records from a concatenated set of variables."""
         # Number of variables making up the MFVariable.Variable.
