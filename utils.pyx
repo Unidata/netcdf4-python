@@ -160,7 +160,7 @@ Example usage:
  75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
     """
 
-    def __init__(self, files, check=False):
+    def __init__(self, files, check=False, exclude=None):
         """
 Open a Dataset spanning multiple files, making it look as if it was a 
 single file. Variables in the list of files that share the same unlimited 
@@ -183,6 +183,8 @@ file. The files are always opened in read-only mode.
 correct variables structure for all of the netcdf files.  Checking makes 
 the initialization of the MFDataset instance much slower. Default is 
 False.
+
+@param exclude: A list of variable names to exclude from aggregation. Default None
        """
 
         # Open the master file in the base class, so that the CDFMF instance
@@ -212,6 +214,8 @@ False.
         # Make sure the master defines at least one record variable.
         masterRecVar = {}
         for vName,v in cdfm.variables.items():
+            # skip variables specified in exclude list.
+            if vName in exclude: continue
             dims = v.dimensions
             shape = v.shape
             type = v.dtype
