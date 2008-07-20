@@ -5,7 +5,10 @@ def check_hdf5version(hdf5_dir):
     try:
         f = open(os.path.join(hdf5_dir,'include/H5pubconf.h'))
     except IOError:
-        return None
+        try:
+            f = open(os.path.join(hdf5_dir,'include/H5pubconf-64.h'))
+        except IOError:
+            return None
     hdf5_version = None
     for line in f:
         if line.startswith('#define H5_VERSION'):
@@ -25,7 +28,7 @@ def check_ifnetcdf4(netcdf4_dir):
 
 HDF5_dir = os.environ.get('HDF5_DIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
-dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local']
+dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local','/usr']
 if HDF5_dir is None:
     print """
 HDF5_DIR environment variable not set, checking some standard locations ..,"""
