@@ -1,4 +1,4 @@
-version 0.7.5 (not yet released)
+version 0.7.5 (svn revision 548)
 ================================
 * return a scalar array, not a python scalar, when a slice returns a single
   number. This is more consistent with numpy behavior, and fixes a bug
