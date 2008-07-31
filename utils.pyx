@@ -160,7 +160,7 @@ Example usage:
  75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
     """
 
-    def __init__(self, files, check=False, exclude=None):
+    def __init__(self, files, check=False, exclude=[]):
         """
 Open a Dataset spanning multiple files, making it look as if it was a 
 single file. Variables in the list of files that share the same unlimited 
@@ -184,7 +184,7 @@ correct variables structure for all of the netcdf files.  Checking makes
 the initialization of the MFDataset instance much slower. Default is 
 False.
 
-@param exclude: A list of variable names to exclude from aggregation. Default None
+@param exclude: A list of variable names to exclude from aggregation. Default empty list.
        """
 
         # Open the master file in the base class, so that the CDFMF instance

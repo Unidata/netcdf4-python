@@ -1,3 +1,8 @@
+version 0.7.5 (not yet released)
+================================
+* return a scalar array, not a python scalar, when a slice returns a single
+  number. This is more consistent with numpy behavior, and fixes a bug
+  in MFDataset slicing.
 * added 'exclude' parameter to MFDataset.__init__
 * added set_auto_maskandscale method to MFDataset variables.
 
