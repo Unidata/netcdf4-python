@@ -130,7 +130,7 @@ used to build the module, and when it was built.
 
 class MFDataset(Dataset): 
     """
-MFDataset(self, files, check=False)
+MFDataset(self, files, check=False, exclude=[])
 
 class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
@@ -170,7 +170,7 @@ Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
 Usage:
 
-nc = MFDataset(files, check=False)
+nc = MFDataset(files, check=False, exclude=[])
 
 @param files: either a sequence of netCDF files or a string with a 
 wildcard (converted to a sorted list of files using glob)  The first file 
@@ -184,7 +184,8 @@ correct variables structure for all of the netcdf files.  Checking makes
 the initialization of the MFDataset instance much slower. Default is 
 False.
 
-@param exclude: A list of variable names to exclude from aggregation. Default empty list.
+@param exclude: A list of variable names to exclude from aggregation. 
+Default is an empty list.
        """
 
         # Open the master file in the base class, so that the CDFMF instance
