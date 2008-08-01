@@ -46,7 +46,7 @@
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class Variable</h1><br /><br />
+<h1 class="epydoc">Class Variable</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
 object --+
          |
@@ -105,8 +105,8 @@ object --+
   provided by the <code>__dict__</code> attribute of a <a 
   href="netCDF3.Variable-class.html" class="link">Variable</a> 
   instance.</p>
-  The instance variables <code>dimensions, dtype, ndim, shape</code> are
-  read-only (and should not be modified by the user).<br /><br />
+  <p>The instance variables <code>dimensions, dtype, ndim, shape</code> are
+  read-only (and should not be modified by the user).</p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -212,8 +212,7 @@ object --+
         <span class="summary-sig-arg">datatype</span>,
         <span class="summary-sig-arg">dimensions</span>=<span class="summary-sig-default">()</span>,
         <span class="summary-sig-arg">fill_value</span>=<span class="summary-sig-default">None</span>)</span><br />
-      x.__init__(...) initializes x; see x.__class__.__doc__ for 
-      signature</td>
+      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
           <td align="right" valign="top">
             
             
@@ -225,15 +224,13 @@ object --+
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type">a new object with type S, a subtype of T</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="netCDF3.Variable-class.html#__new__" class="summary-sig-name">__new__</a>(<span class="summary-sig-arg">T</span>,
         <span class="summary-sig-arg">S</span>,
-        <span class="summary-sig-arg">...</span>)</span><br />
-      Returns:
-a new object with type S, a subtype of T</td>
+        <span class="summary-sig-arg">...</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -378,8 +375,8 @@ a new object with type S, a subtype of T</td>
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="dimensions"></a><span class="summary-name">dimensions</span><br />
-      A tuple containing the names of the dimensions associated with 
-      this variable.
+      A tuple containing the names of the dimensions associated with this 
+      variable.
     </td>
   </tr>
 <tr>
@@ -403,8 +400,7 @@ a new object with type S, a subtype of T</td>
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="shape"></a><span class="summary-name">shape</span><br />
-      a tuple describing the current size of all the variable's 
-      dimensions.
+      a tuple describing the current size of all the variable's dimensions.
     </td>
   </tr>
 </table>
@@ -452,12 +448,12 @@ a new object with type S, a subtype of T</td>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  x.__delattr__('name') &lt;==&gt; del x.name
+  <p>x.__delattr__('name') &lt;==&gt; del x.name</p>
   <dl class="fields">
     <dt>Overrides:
-      object.__delattr__
+        object.__delattr__
     </dt>
   </dl>
 </td></tr></table>
@@ -474,12 +470,12 @@ a new object with type S, a subtype of T</td>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  x.__getattribute__('name') &lt;==&gt; x.name
+  <p>x.__getattribute__('name') &lt;==&gt; x.name</p>
   <dl class="fields">
     <dt>Overrides:
-      object.__getattribute__
+        object.__getattribute__
     </dt>
   </dl>
 </td></tr></table>
@@ -502,13 +498,13 @@ a new object with type S, a subtype of T</td>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  x.__init__(...) initializes x; see x.__class__.__doc__ for 
-  signature
+  <p>x.__init__(...) initializes x; see x.__class__.__doc__ for 
+  signature</p>
   <dl class="fields">
     <dt>Overrides:
-      object.__init__
+        object.__init__
     </dt>
   </dl>
 </td></tr></table>
@@ -527,17 +523,13 @@ a new object with type S, a subtype of T</td>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   
   <dl class="fields">
-    <dt>Returns:</dt>
-        <dd><pre class="literalblock">
-a new object with type S, a subtype of T
-
-</pre></dd>
+    <dt>Returns: a new object with type S, a subtype of T</dt>
     <dt>Overrides:
-      object.__new__
+        object.__new__
     </dt>
   </dl>
 </td></tr></table>
@@ -554,12 +546,12 @@ a new object with type S, a subtype of T
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  x.__setattr__('name', value) &lt;==&gt; x.name = value
+  <p>x.__setattr__('name', value) &lt;==&gt; x.name = value</p>
   <dl class="fields">
     <dt>Overrides:
-      object.__setattr__
+        object.__setattr__
     </dt>
   </dl>
 </td></tr></table>
@@ -577,10 +569,10 @@ a new object with type S, a subtype of T
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  assign a value to a scalar variable.  Provided for compatibility with 
-  Scientific.IO.NetCDF, can also be done by assigning to a slice ([:]).
+  <p>assign a value to a scalar variable.  Provided for compatibility with 
+  Scientific.IO.NetCDF, can also be done by assigning to a slice ([:]).</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -597,10 +589,10 @@ a new object with type S, a subtype of T
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  get the value of a scalar variable.  Provided for compatibility with 
-  Scientific.IO.NetCDF, can also be done by slicing ([:]).
+  <p>get the value of a scalar variable.  Provided for compatibility with 
+  Scientific.IO.NetCDF, can also be done by slicing ([:]).</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -618,7 +610,7 @@ a new object with type S, a subtype of T
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   <p>turn on or off automatic conversion of variable data to and from 
   masked arrays and automatic packing/unpacking of variable data using 
@@ -632,13 +624,13 @@ a new object with type S, a subtype of T
   each data type).  When data is written to a variable, the masked array is
   converted back to a regular numpy array by replacing all the masked 
   values by the fill_value of the masked array.</p>
-  If <code>maskandscale</code> is set to <code>True</code>, and the 
+  <p>If <code>maskandscale</code> is set to <code>True</code>, and the 
   variable has a <code>scale_factor</code> and an <code>add_offset</code> 
-  attribute, then data read from that variable is unpacked using:
+  attribute, then data read from that variable is unpacked using:</p>
 <pre class="literalblock">
    data = self.scale_factor*data + self.add_offset
 </pre>
-  When data is written to a variable it is packed using:
+  <p>When data is written to a variable it is packed using:</p>
 <pre class="literalblock">
    data = (data - self.add_offset)/self.scale_factor
 </pre>
@@ -646,8 +638,8 @@ a new object with type S, a subtype of T
   <code>add_offset</code> can be used to provide simple compression, see <a
   href="http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml" 
   target="_top">http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml</a>.</p>
-  The default value of <code>maskandscale</code> is <code>False</code> 
-  (no automatic conversions are performed).
+  <p>The default value of <code>maskandscale</code> is <code>False</code> 
+  (no automatic conversions are performed).</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -676,10 +668,11 @@ a new object with type S, a subtype of T
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu May  8 10:48:48 2008
+    Generated by Epydoc 3.0.1 on Fri Aug  1 10:17:37 2008
     </td>
     <td align="right" class="footer">
-      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
     </td>
   </tr>
 </table>
@@ -690,9 +683,8 @@ a new object with type S, a subtype of T
   // javascript is turned off then we want them to be
   // visible); but by default, we want to hide them.  So hide
   // them unless we have a cookie that says to show them.
-  checkCookie()
+  checkCookie();
   // -->
 </script>
-  
 </body>
 </html>

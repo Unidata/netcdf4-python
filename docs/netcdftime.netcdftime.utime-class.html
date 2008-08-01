@@ -47,7 +47,7 @@
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class utime</h1><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime">source&nbsp;code</a></span><br /><br />
+<h1 class="epydoc">Class utime</h1><p class="nomargin-top"><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime">source&nbsp;code</a></span></p>
 <p>Performs conversions of netCDF time coordinate data to/from datetime 
   objects.</p>
   <p>To initialize: <code>t = 
@@ -97,7 +97,7 @@
   datetime module cannot handle the weird dates in some calendars (such as 
   <code>'360_day'</code> and <code>'all_leap'</code>) which don't exist in 
   any real world calendar.</p>
-  Example usage:
+  <p>Example usage:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> netcdftime <span class="py-keyword">import</span> utime
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> datetime <span class="py-keyword">import</span>  datetime
@@ -123,13 +123,13 @@
   class="link">date2num</a></code> class method.</p>
   <p>Words of Wisdom from the British MetOffice concerning reference 
   dates:</p>
-  &quot;udunits implements the mixed Gregorian/Julian calendar system, 
+  <p>&quot;udunits implements the mixed Gregorian/Julian calendar system, 
   as followed in England, in which dates prior to 1582-10-15 are assumed to
   use the Julian calendar. Other software cannot be relied upon to handle 
   the change of calendar in the same way, so for robustness it is 
   recommended that the reference date be later than 1582. If earlier dates 
   must be used, it should be noted that udunits treats 0 AD as identical to
-  1 AD.&quot;<br /><br />
+  1 AD.&quot;</p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -149,8 +149,8 @@
         <span class="summary-sig-arg">unit_string</span>,
         <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span><br />
       Returns:
-      A class instance which may be used for converting times from 
-      netCDF units to datetime objects.</td>
+      A class instance which may be used for converting times from netCDF 
+      units to datetime objects.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.__init__">source&nbsp;code</a></span>
             
@@ -190,7 +190,7 @@
         <tr>
           <td><span class="summary-sig"><a href="netcdftime.netcdftime.utime-class.html#num2date" class="summary-sig-name">num2date</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">time_value</span>)</span><br />
-      Return a 'datetime-like' object given a <code>time_value</code> in
+      Return a 'datetime-like' object given a <code>time_value</code> in 
       units described by <a 
       href="netcdftime.netcdftime.utime-class.html#unit_string" 
       class="link">unit_string</a>, using <a 
@@ -228,8 +228,7 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="origin"></a><span class="summary-name">origin</span><br />
-      datetime instance defining the origin of the netCDF time 
-      variable.
+      datetime instance defining the origin of the netCDF time variable.
     </td>
   </tr>
 <tr>
@@ -273,17 +272,17 @@
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.__init__">source&nbsp;code</a></span>&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><p><strong class="pname"><code>unit_string</code></strong> - a string of the form <code>'time-units since 
-          &lt;time-origin&gt;'</code> defining the time units.</p>
-          Valid time-units are days, hours, minutes and seconds (the 
+        <li><strong class="pname"><code>unit_string</code></strong> - a string of the form <code>'time-units since 
+          &lt;time-origin&gt;'</code> defining the time units.
+          <p>Valid time-units are days, hours, minutes and seconds (the 
           singular forms are also accepted). An example unit_string would 
-          be <code>'hours since 0001-01-01 00:00:00'</code>.</li>
+          be <code>'hours since 0001-01-01 00:00:00'</code>.</p></li>
         <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
           values currently defined in the <a 
           href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/1.1/cf-conventions.html#time-coordinate"
@@ -304,18 +303,17 @@
               or (ii) it is divisible by 400.
             </li>
             <li>
-              <code>'noleap'</code> or <code>'365_day'</code>: Gregorian
+              <code>'noleap'</code> or <code>'365_day'</code>: Gregorian 
               calendar without leap years, i.e., all years are 365 days 
               long.
             </li>
             <li>
-              <code>'all_leap'</code> or <code>'366_day'</code>: 
-              Gregorian calendar with every year being a leap year, i.e., 
-              all years are 366 days long. -<code>'360_day'</code>: All 
-              years are 360 days divided into 30 day months. 
-              -<code>'julian'</code>: Proleptic Julian calendar, extended 
-              to dates after 1582-10-5. A year is a leap year if it is 
-              divisible by 4.
+              <code>'all_leap'</code> or <code>'366_day'</code>: Gregorian 
+              calendar with every year being a leap year, i.e., all years 
+              are 366 days long. -<code>'360_day'</code>: All years are 360
+              days divided into 30 day months. -<code>'julian'</code>: 
+              Proleptic Julian calendar, extended to dates after 1582-10-5.
+              A year is a leap year if it is divisible by 4.
             </li>
           </ul></li>
     </ul></dd>
@@ -338,7 +336,7 @@
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.date2num">source&nbsp;code</a></span>&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   <p>Returns <code>time_value</code> in units described by <a 
   href="netcdftime.netcdftime.utime-class.html#unit_string" 
@@ -355,8 +353,8 @@
   (indicating that the mixed Julian/Gregorian calendar is to be used), an 
   exception will be raised if the 'datetime-like' object describes a date 
   between 1582-10-5 and 1582-10-15.</p>
-  Works for scalars, sequences and numpy arrays. Returns a scalar if 
-  input is a scalar, else returns a numpy array.
+  <p>Works for scalars, sequences and numpy arrays. Returns a scalar if 
+  input is a scalar, else returns a numpy array.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -374,7 +372,7 @@
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#utime.num2date">source&nbsp;code</a></span>&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   <p>Return a 'datetime-like' object given a <code>time_value</code> in 
   units described by <a 
@@ -388,7 +386,7 @@
   <p>Resolution is 1 second.</p>
   <p>Works for scalars, sequences and numpy arrays. Returns a scalar if 
   input is a scalar, else returns a numpy array.</p>
-  The datetime instances returned by <code>num2date</code> are 'real' 
+  <p>The datetime instances returned by <code>num2date</code> are 'real' 
   python datetime objects if the date falls in the Gregorian calendar (i.e.
   <code>calendar='proleptic_gregorian'</code>, or <code>calendar = 
   'standard'/'gregorian'</code> and the date is after 1582-10-15). 
@@ -396,7 +394,7 @@
   of netcdftime.datetime.  This is because the python datetime module 
   cannot handle the weird dates in some calendars (such as 
   <code>'360_day'</code> and <code>'all_leap'</code>) which do not exist in
-  any real world calendar.
+  any real world calendar.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -447,10 +445,11 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu May  8 10:48:49 2008
+    Generated by Epydoc 3.0.1 on Fri Aug  1 10:17:38 2008
     </td>
     <td align="right" class="footer">
-      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
     </td>
   </tr>
 </table>
@@ -461,9 +460,8 @@
   // javascript is turned off then we want them to be
   // visible); but by default, we want to hide them.  So hide
   // them unless we have a cookie that says to show them.
-  checkCookie()
+  checkCookie();
   // -->
 </script>
-  
 </body>
 </html>

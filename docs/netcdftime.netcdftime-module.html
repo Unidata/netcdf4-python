@@ -46,9 +46,9 @@
   </tr>
 </table>
 <!-- ==================== MODULE DESCRIPTION ==================== -->
-<h1 class="epydoc">Module netcdftime</h1><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html">source&nbsp;code</a></span><br /><br />
-Performs conversions of netCDF time coordinate data to/from datetime 
-  objects.<br /><br />
+<h1 class="epydoc">Module netcdftime</h1><p class="nomargin-top"><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html">source&nbsp;code</a></span></p>
+<p>Performs conversions of netCDF time coordinate data to/from datetime 
+  objects.</p>
 
 <hr />
 <div class="fields">      <p><strong>Version:</strong>
@@ -67,8 +67,8 @@ Performs conversions of netCDF time coordinate data to/from datetime
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="netcdftime.netcdftime.datetime-class.html" class="summary-name">datetime</a><br />
-      Phony datetime object which mimics the python datetime object, 
-        but allows for dates that don't exist in the proleptic gregorian 
+      Phony datetime object which mimics the python datetime object, but 
+        allows for dates that don't exist in the proleptic gregorian 
         calendar.
     </td>
   </tr>
@@ -187,7 +187,7 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#DateFromJulianDay">source&nbsp;code</a></span>&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   <p>returns a 'datetime-like' object given Julian Day. Julian Day is a 
   fractional day with a resolution of 1 second.</p>
@@ -203,8 +203,8 @@ Performs conversions of netCDF time coordinate data to/from datetime
   it's a 'phony' datetime object which is actually an instance of 
   netcdftime.datetime.</p>
   <p>Algorithm:</p>
-  Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
-  Willmann-Bell, Virginia. p. 63
+  <p>Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
+  Willmann-Bell, Virginia. p. 63</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -222,7 +222,7 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#JulianDayFromDate">source&nbsp;code</a></span>&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   <p>creates a Julian Day from a 'datetime-like' object.  Returns the 
   fractional Julian Day (resolution 1 second).</p>
@@ -233,8 +233,8 @@ Performs conversions of netCDF time coordinate data to/from datetime
   calendar.</p>
   <p>if calendar='julian', Julian Day follows julian calendar.</p>
   <p>Algorithm:</p>
-  Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
-  Willmann-Bell, Virginia. p. 63
+  <p>Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
+  Willmann-Bell, Virginia. p. 63</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -253,7 +253,7 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#date2num">source&nbsp;code</a></span>&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   <p>Return numeric time values given datetime objects. The units of the 
   numeric time values are described by the <code class="link">units</code> 
@@ -261,21 +261,21 @@ Performs conversions of netCDF time coordinate data to/from datetime
   objects must be in UTC with no time-zone offset.  If there is a time-zone
   offset in <code>units</code>, it will be applied to the returned numeric 
   values.</p>
-  Like the matplotlib <code>date2num</code> function, except that it 
+  <p>Like the matplotlib <code>date2num</code> function, except that it 
   allows for different units and calendars.  Behaves the same if 
   <code>units = 'days since 0001-01-01 00:00:00'</code> and <code>calendar 
-  = 'proleptic_gregorian'</code>.
+  = 'proleptic_gregorian'</code>.</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>dates</code></strong> - A datetime object or a sequence of datetime objects. The 
-          datetime objects should not include a time-zone offset.</li>
-        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since 
-          <b>reference time</b></code>' describing the time units. 
-          <b><code>time units</code></b> can be days, hours, minutes or 
-          seconds.  <b><code>reference time</code></b> is the time origin. 
-          A valid choice would be units=<code>'hours since 1800-01-01 
-          00:00:00 -6:00'</code>.</li>
+        <li><strong class="pname"><code>dates</code></strong> - A datetime object or a sequence of datetime objects. The datetime
+          objects should not include a time-zone offset.</li>
+        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since <b>reference 
+          time</b></code>' describing the time units. <b><code>time 
+          units</code></b> can be days, hours, minutes or seconds.  
+          <b><code>reference time</code></b> is the time origin. A valid 
+          choice would be units=<code>'hours since 1800-01-01 00:00:00 
+          -6:00'</code>.</li>
         <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
           values currently defined in the <a 
           href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
@@ -286,9 +286,9 @@ Performs conversions of netCDF time coordinate data to/from datetime
           mixed Julian/Gregorian calendar.</li>
     </ul></dd>
     <dt>Returns:</dt>
-        <dd><p>a numeric time value, or an array of numeric time values.</p>
-          The maximum resolution of the numeric time values is 1 
-          second.</dd>
+        <dd>a numeric time value, or an array of numeric time values.
+          <p>The maximum resolution of the numeric time values is 1 
+          second.</p></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -306,27 +306,27 @@ Performs conversions of netCDF time coordinate data to/from datetime
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#num2date">source&nbsp;code</a></span>&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   <p>Return datetime objects given numeric time values. The units of the 
   numeric time values are described by the <code>units</code> argument and 
   the <code>calendar</code> keyword. The returned datetime objects 
   represent UTC with no time-zone offset, even if the specified 
   <code>units</code> contain a time-zone offset.</p>
-  Like the matplotlib <code>num2date</code> function, except that it 
+  <p>Like the matplotlib <code>num2date</code> function, except that it 
   allows for different units and calendars.  Behaves the same if 
   <code>units = 'days since 001-01-01 00:00:00'</code> and <code>calendar =
-  'proleptic_gregorian'</code>.
+  'proleptic_gregorian'</code>.</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>times</code></strong> - numeric time values. Maximum resolution is 1 second.</li>
-        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since 
-          <b>reference time</b></code>' describing the time units. 
-          <b><code>time units</code></b> can be days, hours, minutes or 
-          seconds.  <b><code>reference time</code></b> is the time origin. 
-          A valid choice would be units=<code>'hours since 1800-01-01 
-          00:00:00 -6:00'</code>.</li>
+        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since <b>reference 
+          time</b></code>' describing the time units. <b><code>time 
+          units</code></b> can be days, hours, minutes or seconds.  
+          <b><code>reference time</code></b> is the time origin. A valid 
+          choice would be units=<code>'hours since 1800-01-01 00:00:00 
+          -6:00'</code>.</li>
         <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
           values currently defined in the <a 
           href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
@@ -337,8 +337,8 @@ Performs conversions of netCDF time coordinate data to/from datetime
           mixed Julian/Gregorian calendar.</li>
     </ul></dd>
     <dt>Returns:</dt>
-        <dd><p>a datetime instance, or an array of datetime instances.</p>
-          The datetime instances returned are 'real' python datetime 
+        <dd>a datetime instance, or an array of datetime instances.
+          <p>The datetime instances returned are 'real' python datetime 
           objects if the date falls in the Gregorian calendar (i.e. 
           <code>calendar='proleptic_gregorian'</code>, or <code>calendar = 
           'standard'</code> or <code>'gregorian'</code> and the date is 
@@ -348,7 +348,7 @@ Performs conversions of netCDF time coordinate data to/from datetime
           cannot the uses the <code>'proleptic_gregorian'</code> calendar, 
           even before the switch occured from the Julian calendar in 1582. 
           The datetime instances do not contain a time-zone offset, even if
-          the specified <code>units</code> contains one.</dd>
+          the specified <code>units</code> contains one.</p></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -376,10 +376,11 @@ Performs conversions of netCDF time coordinate data to/from datetime
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu May  8 10:48:48 2008
+    Generated by Epydoc 3.0.1 on Fri Aug  1 10:17:37 2008
     </td>
     <td align="right" class="footer">
-      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
     </td>
   </tr>
 </table>
@@ -390,9 +391,8 @@ Performs conversions of netCDF time coordinate data to/from datetime
   // javascript is turned off then we want them to be
   // visible); but by default, we want to hide them.  So hide
   // them unless we have a cookie that says to show them.
-  checkCookie()
+  checkCookie();
   // -->
 </script>
-  
 </body>
 </html>

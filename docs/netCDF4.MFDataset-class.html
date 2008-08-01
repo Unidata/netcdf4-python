@@ -46,7 +46,7 @@
   </tr>
 </table>
 <!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class MFDataset</h1><br /><br />
+<h1 class="epydoc">Class MFDataset</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
 object --+    
          |    
@@ -56,7 +56,7 @@ object --+
 </pre>
 
 <hr />
-<p>MFDataset(self, files, check=False)</p>
+<p>MFDataset(self, files, check=False, exclude=[])</p>
   <p>class for reading multi-file netCDF Datasets, making variables 
   spanning multiple files appear as if they were in one file.</p>
   <p>Datasets must be in <code>NETCDF4_CLASSIC, NETCDF3_CLASSIC or 
@@ -64,7 +64,7 @@ object --+
   work).</p>
   <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf" 
   target="_top">pycdf</a> by Andre Gosselin.</p>
-  Example usage:
+  <p>Example usage:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># create a series of netCDF files with a variable sharing</span>
@@ -81,7 +81,7 @@ object --+
 <span class="py-output">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24</span>
 <span class="py-output"> 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49</span>
 <span class="py-output"> 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74</span>
-<span class="py-output"> 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]</span></pre><br /><br />
+<span class="py-output"> 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]</span></pre>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -114,11 +114,9 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">files</span>,
-        <span class="summary-sig-arg">check</span>=<span class="summary-sig-default">False</span>)</span><br />
-      Open a Dataset spanning multiple files, making it look as if it 
-      was a single file.</td>
+          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#__init__" class="summary-sig-name">__init__</a>()</span><br />
+      Open a Dataset spanning multiple files, making it look as if it was a
+      single file.</td>
           <td align="right" valign="top">
             
             
@@ -267,12 +265,12 @@ object --+
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  x.__getattribute__('name') &lt;==&gt; x.name
+  <p>x.__getattribute__('name') &lt;==&gt; x.name</p>
   <dl class="fields">
     <dt>Overrides:
-      <a href="netCDF4.Dataset-class.html#__getattribute__">Dataset.__getattribute__</a>
+        object.__getattribute__
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
@@ -285,15 +283,13 @@ object --+
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">files</span>,
-        <span class="sig-arg">check</span>=<span class="sig-default">False</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>()</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
   <p>Open a Dataset spanning multiple files, making it look as if it was a 
   single file. Variables in the list of files that share the same unlimited
@@ -301,7 +297,7 @@ object --+
   <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf" 
   target="_top">pycdf</a> by Andre Gosselin.</p>
   <p>Usage:</p>
-  nc = MFDataset(files, check=False)
+  <p>nc = MFDataset(files, check=False, exclude=[])</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
@@ -312,13 +308,15 @@ object --+
           which may span subsequent files. Attribute access returns 
           attributes only from &quot;master&quot; file. The files are 
           always opened in read-only mode.</li>
-        <li><strong class="pname"><code>check</code></strong> - True if you want to do consistency checking to ensure the 
-          correct variables structure for all of the netcdf files.  
-          Checking makes the initialization of the MFDataset instance much 
-          slower. Default is False.</li>
+        <li><strong class="pname"><code>check</code></strong> - True if you want to do consistency checking to ensure the correct
+          variables structure for all of the netcdf files.  Checking makes 
+          the initialization of the MFDataset instance much slower. Default
+          is False.</li>
+        <li><strong class="pname"><code>exclude</code></strong> - A list of variable names to exclude from aggregation. Default is 
+          an empty list.</li>
     </ul></dd>
     <dt>Overrides:
-      <a href="netCDF4.Dataset-class.html#__init__">Dataset.__init__</a>
+        object.__init__
     </dt>
   </dl>
 </td></tr></table>
@@ -335,12 +333,12 @@ object --+
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  override base class attribute creation
+  <p>override base class attribute creation</p>
   <dl class="fields">
     <dt>Overrides:
-      <a href="netCDF4.Dataset-class.html#__setattr__">Dataset.__setattr__</a>
+        object.__setattr__
     </dt>
   </dl>
 </td></tr></table>
@@ -357,12 +355,12 @@ object --+
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  Close the Dataset.
+  <p>Close the Dataset.</p>
   <dl class="fields">
     <dt>Overrides:
-      <a href="netCDF4.Dataset-class.html#close">Dataset.close</a>
+        <a href="netCDF4.Dataset-class.html#close">Dataset.close</a>
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
@@ -380,14 +378,14 @@ object --+
   </td><td align="right" valign="top"
     >&nbsp;
     </td>
-  </table>
+  </tr></table>
   
-  return netCDF global attribute names for this <a 
+  <p>return netCDF global attribute names for this <a 
   href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-  href="netCDF4.Group-class.html" class="link">Group</a> in a list.
+  href="netCDF4.Group-class.html" class="link">Group</a> in a list.</p>
   <dl class="fields">
     <dt>Overrides:
-      <a href="netCDF4.Dataset-class.html#ncattrs">Dataset.ncattrs</a>
+        <a href="netCDF4.Dataset-class.html#ncattrs">Dataset.ncattrs</a>
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
@@ -417,10 +415,11 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0beta1 on Thu May  8 10:48:49 2008
+    Generated by Epydoc 3.0.1 on Fri Aug  1 10:17:37 2008
     </td>
     <td align="right" class="footer">
-      <a href="http://epydoc.sourceforge.net">http://epydoc.sourceforge.net</a>
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
     </td>
   </tr>
 </table>
@@ -431,9 +430,8 @@ object --+
   // javascript is turned off then we want them to be
   // visible); but by default, we want to hide them.  So hide
   // them unless we have a cookie that says to show them.
-  checkCookie()
+  checkCookie();
   // -->
 </script>
-  
 </body>
 </html>
