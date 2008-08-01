@@ -288,7 +288,7 @@ dates corresponding to time values:
 >>>
 
 L{num2date} converts numeric values of time in the specified C{units}
-and C{calendar} to datetime objectecs, and L{date2num} does the reverse.
+and C{calendar} to datetime objects, and L{date2num} does the reverse.
 All the calendars currently defined in the U{CF metadata convention 
 <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
             
