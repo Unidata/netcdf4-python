@@ -30,7 +30,8 @@ class UnlimdimTestCase(unittest.TestCase):
         # write some data to it.
         #foo[:,0:n2dim,:] = ranarr # this works
         #foo[:] = ranarr # this doesn't?
-        foo[:,:,:] = ranarr # this works
+        foo[:,...] = ranarr # this works
+        #foo[:,:,:] = ranarr # this works
         # bar has 2 unlimited dimensions
         f.createDimension('n4', None)
         f.createDimension('n5', n2dim)
