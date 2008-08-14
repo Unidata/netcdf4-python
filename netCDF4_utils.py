@@ -51,7 +51,7 @@ def _buildStartCountStride(elem, shape, dimensions, grp, datashape=None):
     #    IntType      for standard indexing
     #    SliceType    for extended slicing (using 'start', 'stop' and 'step' attributes)
     #    EllipsisType for an ellipsis (...); at most one ellipsis can occur in the
-    #                 slicing expression, otherwise the expressionis ambiguous
+    #                 slicing expression, otherwise the expression is ambiguous
     # Recreate the 'elem' tuple, replacing a possible ellipsis with empty slices.
     hasEllipsis = 0
     newElem = []
@@ -64,6 +64,11 @@ def _buildStartCountStride(elem, shape, dimensions, grp, datashape=None):
         else:
             newElem.append(e)
     elem = newElem
+
+    # if slice doesn't cover all dims, assume ellipsis for rest of dims.
+    if len(elem) < len(shape):
+        for n in range(len(elem)+1,len(shape)+1):
+            elem.append(slice(None,None,None))
 
     # Build start, count, stride tuples.
     start = []
