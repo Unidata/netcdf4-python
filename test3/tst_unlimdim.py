@@ -28,7 +28,8 @@ class UnlimdimTestCase(unittest.TestCase):
         f.createDimension('n3', n3dim)
         foo = f.createVariable('data1', ranarr.dtype.str[1:], ('n1','n2','n3'))
         # write some data to it.
-        foo[0:n1dim,:,:] = ranarr
+        #foo[0:n1dim,:,:] = ranarr
+        foo[:] = ranarr
         f.close()
 
     def tearDown(self):

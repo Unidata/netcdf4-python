@@ -25,8 +25,10 @@ class VariablesTestCase(unittest.TestCase):
             dat = f.createVariable('data','i',('x','y','z',))
             dat.name = 'phony data' 
             nx1 = nfile*ninc; nx2 = ninc*(nfile+1)
-            x[0:ninc] = numpy.arange(nfile*ninc,ninc*(nfile+1))
-            dat[0:ninc] = data[nx1:nx2]
+            #x[0:ninc] = numpy.arange(nfile*ninc,ninc*(nfile+1))
+            #dat[0:ninc] = data[nx1:nx2]
+            x[:] = numpy.arange(nfile*ninc,ninc*(nfile+1))
+            dat[:] = data[nx1:nx2]
             f.close()
 
     def tearDown(self):
