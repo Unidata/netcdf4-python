@@ -26,7 +26,7 @@ class VariablesTestCase(unittest.TestCase):
         v[:,::-1,:] = data
         # variable with an unlimited dimension.
         # write slice in reverse order
-        vu[0:xdim,::-1,:] = data
+        vu[:,::-1,:] = data
         f.close()
 
     def tearDown(self):

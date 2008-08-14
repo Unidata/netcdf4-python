@@ -18,7 +18,6 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension('x',xdim)
         f.createDimension('xu',None)
         f.createDimension('y',ydim)
-        f.createDimension('yu',None)
         f.createDimension('z',zdim)
         f.createDimension('zu',None)
         v = f.createVariable('data','u1',('x','y','z'))
@@ -28,7 +27,8 @@ class VariablesTestCase(unittest.TestCase):
         v[:,::-1,:] = data
         # variable with an unlimited dimension.
         # write slice in reverse order
-        vu[0:xdim,::-1,0:zdim] = data
+        #vu[0:xdim,::-1,0:zdim] = data
+        vu[:,::-1,:] = data
         f.close()
 
     def tearDown(self):
