@@ -18,7 +18,7 @@ def _find_dim(grp, dimname):
                 raise ValueError("cannot find dimension %s in this group or parent groups" % dimname)
     return dim
 
-def _buildStartCountStride(elem, shape, dimensions, grp):
+def _buildStartCountStride(elem, shape, dimensions, grp, datashape=None):
 
     # Create the 'start', 'count', and 'stride' tuples that
     # will be passed to 'nc_get_var'/'nc_put_var'.
@@ -112,7 +112,10 @@ def _buildStartCountStride(elem, shape, dimensions, grp):
             else:
                 if inc > 0:
                     if e.stop is None:
-                        raise IndexError('illegal slice')
+                        if unlim and datashape is not None:
+                            length = datashape[n]
+                        else:
+                            raise IndexError('illegal slice')
                     else:
                         length = e.stop
                 else:

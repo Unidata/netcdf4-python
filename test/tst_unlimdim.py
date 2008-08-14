@@ -28,7 +28,9 @@ class UnlimdimTestCase(unittest.TestCase):
         f.createDimension('n3', n3dim)
         foo = f.createVariable('data1', ranarr.dtype.str[1:], ('n1','n2','n3'))
         # write some data to it.
-        foo[:,0:n2dim,:] = ranarr
+        #foo[:,0:n2dim,:] = ranarr # this works
+        #foo[:] = ranarr # this doesn't?
+        foo[:,:,:] = ranarr # this works
         # bar has 2 unlimited dimensions
         f.createDimension('n4', None)
         f.createDimension('n5', n2dim)
