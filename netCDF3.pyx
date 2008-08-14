@@ -351,7 +351,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # pure python utilities
 from netCDF4_utils import _buildStartCountStride
 
-__version__ = "0.7.5"
+__version__ = "0.7.6"
 
 # Initialize numpy
 import os
@@ -1250,7 +1250,10 @@ return netCDF attribute names for this L{Variable} in a list."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
-        start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
+        if hasattr(data,"shape"):
+            start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
+        else:
+            start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
         # if auto_maskandscale mode set to True, (through
         # a call to set_auto_maskandscale), perform
         # automatic packing using scale_factor/add_offset

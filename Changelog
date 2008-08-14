@@ -1,3 +1,15 @@
+version 0.7.6 (not yet released)
+================================
+* v[:] = data now works along unlim dim, i.e. you can do this:
+
+  file = Dataset('test.nc', "w")
+  file.createDimension("time", None)     # unlimited dimension
+  var = file.createVariable("var", 'd', ("time",))
+  # you used to have to do this
+  #var[0:10] = numpy.arange(10)
+  # but now you can simply do this
+  var[:] = numpy.arange(10)  
+
 version 0.7.5 (svn revision 549)
 ================================
 * return a scalar array, not a python scalar, when a slice returns a single
