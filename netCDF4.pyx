@@ -1049,7 +1049,7 @@ a variable with an unlimited dimension will trigger an error.
 The optional keyword C{chunksizes} can be used to manually specify the
 HDF5 chunksizes for each dimension of the variable. A detailed
 discussion of HDF chunking and I/O performance is available U{here
-<http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.htmll>}. 
+<http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>}. 
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
 from the file.  C{chunksizes} cannot be set if C{contiguous=True}.
@@ -1405,7 +1405,7 @@ a variable with an unlimited dimension will trigger an error.
 B{C{chunksizes}} - Can be used to specify the HDF5 chunksizes for each
 dimension of the variable. A detailed discussion of HDF chunking and I/O
 performance is available U{here
-<http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.htmll>}. 
+<http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>}. 
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
 from the file. C{chunksizes} cannot be set if C{contiguous=True}.
