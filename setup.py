@@ -69,7 +69,7 @@ else:
     if not isnetcdf4:
         raise ValueError('did not find netCDF version 4 headers and libs in %s' % netCDF4_dir)
 
-libs = ['netcdf','z','hdf5_hl','hdf5']
+libs = ['netcdf','hdf5','hdf5_hl','z']
 lib_dirs = [os.path.join(netCDF4_dir,'lib'),os.path.join(HDF5_dir,'lib')]
 inc_dirs = [os.path.join(netCDF4_dir,'include'),os.path.join(HDF5_dir,'include')]
 # add szip to link if desired.
