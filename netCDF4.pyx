@@ -29,10 +29,10 @@ Requires
 ======== 
 
  - numpy array module U{http://numpy.scipy.org}, version 1.0 or later.
- - The HDF5 C library version 1.8.0 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
+ - The HDF5 C library version 1.8.1 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl --enable-shared}'.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.0-beta2 or higher is required (beta1 will not work).
+ Version 4.0 or higher is required.
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR --enable-shared}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
 
