@@ -468,7 +468,7 @@ Unit tests are in the C{test} directory.
 
 @contact: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
 
-@copyright: 2007 by Jeffrey Whitaker.
+@copyright: 2008 by Jeffrey Whitaker.
 
 @license: Permission to use, copy, modify, and distribute this software and
 its documentation for any purpose and without fee is hereby granted,
