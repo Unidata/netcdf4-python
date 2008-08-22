@@ -8,7 +8,7 @@ import numpy as NP
 
 if len(sys.argv) < 2:
     print """
-usage:  python grib2nc4.py <grib file name>
+usage:  grib2nc4 <grib file name>
 
 a netCDF file called <grib file name>.nc will be created.
 
@@ -17,8 +17,6 @@ with zlib compression. The resulting netCDF file should
 be as small or smaller than the original GRIB file.
 
 requires PyNIO to read GRIB files.
-
-doesn't work with GRIB2 files (since they are not yet supported in PyNIO).
 """
     sys.exit(1)
 
@@ -40,7 +38,7 @@ for dimname,dim in f.dimensions.items():
     nc.createDimension(dimname,dim)
     print dimname, dim
 
-print 'variables (name, type, dimensions, units):'
+print 'variables (name, type, dimensions, units, minval, maxval, least sig. digit):'
 for varname,var in f.variables.items():
     gribdata = var[:]
     # skip character variables (coming from decoded time values probably)
@@ -63,7 +61,10 @@ for varname,var in f.variables.items():
         truncdata = NP.around(fact*tmpdata)
         if NP.fabs(truncdata-fact*tmpdata).max() < eps or lsd == 7: break
         lsd = lsd + 1
-    print varname,var.typecode(),var.dimensions,var.units,lsd,minval,maxval,eps
+    # netcdf variables can't start with a number.
+    if varname[0].isdigit():
+        varname = '_'+varname
+    print varname,var.typecode(),var.dimensions,var.units,minval,maxval,lsd
     varo = nc.createVariable(varname,var.typecode(),var.dimensions,zlib=True,least_significant_digit=lsd)
     for name, att in var.__dict__.items():
         setattr(varo,name,att)
