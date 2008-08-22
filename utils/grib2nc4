@@ -1,8 +1,4 @@
 #!/usr/bin/env python
-try:
-    from PyNGL import nio
-except ImportError:
-    raise ImportError('need PyNGL/PyNIO to read GRIB files')
 import netCDF4
 import sys
 import numpy as NP
@@ -27,8 +23,14 @@ doesn't work with GRIB2 files (since they are not yet supported in PyNIO).
     sys.exit(1)
 
 grbfile = sys.argv[1]
-f = nio.open_file(grbfile+'.grb')
 nc = netCDF4.Dataset(grbfile+'.nc','w',format='NETCDF4_CLASSIC')
+# import nio after using netCDF4, otherwise errors result if PyNGL uses
+# a different version of HDF5 than netCDF4.
+try:
+    from PyNGL import nio
+except ImportError:
+    raise ImportError('need PyNGL/PyNIO to read GRIB files')
+f = nio.open_file(grbfile+'.grb')
 
 for name,att in f.__dict__.items():
     setattr(nc,name,att)
