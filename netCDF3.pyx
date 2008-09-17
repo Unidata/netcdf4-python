@@ -418,13 +418,13 @@ cdef _get_att(int grpid, int varid, name):
     attname = PyString_AsString(name)
     ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
     if ierr != NC_NOERR:
-        raise RuntimeError(nc_strerror(ierr))
+        raise AttributeError(nc_strerror(ierr))
     # attribute is a character or string ...
     if att_type == NC_CHAR:
         value_arr = numpy.empty(att_len,'S1')
         ierr = nc_get_att_text(grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
-            raise RuntimeError(nc_strerror(ierr))
+            raise AttributeError(nc_strerror(ierr))
         pstring = value_arr.tostring()
         # remove NULL characters from python string
         return pstring.replace('\x00','')
@@ -441,7 +441,7 @@ cdef _get_att(int grpid, int varid, name):
         value_arr = numpy.empty(att_len,type_att)
         ierr = nc_get_att(grpid, varid, attname, value_arr.data)
         if ierr != NC_NOERR:
-            raise RuntimeError(nc_strerror(ierr))
+            raise AttributeError(nc_strerror(ierr))
         if value_arr.shape == ():
             # return a scalar for a scalar array
             return value_arr.item()
@@ -498,7 +498,7 @@ cdef _set_att(int grpid, int varid, name, value):
         lenarr = len(dats)
         ierr = nc_put_att_text(grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
-            raise RuntimeError(nc_strerror(ierr))
+            raise AttributeError(nc_strerror(ierr))
     # a 'regular' array type ('f4','i4','f8' etc)
     else:
         if value_arr.dtype.str[1:] not in _supportedtypes:
@@ -507,7 +507,7 @@ cdef _set_att(int grpid, int varid, name, value):
         lenarr = PyArray_SIZE(value_arr)
         ierr = nc_put_att(grpid, varid, attname, xtype, lenarr, value_arr.data)
         if ierr != NC_NOERR:
-            raise RuntimeError(nc_strerror(ierr))
+            raise AttributeError(nc_strerror(ierr))
 
 cdef _get_dims(group):
     # Private function to create L{Dimension} instances for all the

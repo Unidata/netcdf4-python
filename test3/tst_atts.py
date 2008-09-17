@@ -86,6 +86,7 @@ class VariablesTestCase(unittest.TestCase):
         assert v.stratt == STRATT
         assert v.seqatt.tolist() == SEQATT.tolist()
         assert v.stringseqatt == ''.join(STRINGSEQATT)
+        assert getattr(v,'nonexistantatt',None) == None
         f.close()
 
 if __name__ == '__main__':

@@ -1,5 +1,8 @@
 version 0.7.6 (not yet released)
 ================================
+* make _get_att/_set_att raise AttributeError instead of RuntimeError, so that
+  getattr(object, 'nonexistantattribute', None) works.  (thanks David Huard)
+
 * v[:] = data now works along unlim dim, i.e. you can do this:
 
   file = Dataset('test.nc', "w")
