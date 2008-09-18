@@ -1,5 +1,8 @@
 version 0.7.6 (not yet released)
 ================================
+* added date2index function, courtesy of David Huard, which finds the indices
+  in a netCDF time variable corresponding to a sequence of datetime instances.
+
 * make _get_att/_set_att raise AttributeError instead of RuntimeError, so that
   getattr(object, 'nonexistantattribute', None) works.  (thanks David Huard)
 

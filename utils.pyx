@@ -117,6 +117,32 @@ contains one.
     cdftime = netcdftime.utime(units,calendar=calendar)
     return cdftime.num2date(times)
 
+def date2index(dates, nctime, calendar=None):
+    """
+date2index(dates, nctime, calendar=None)
+
+Return indices of a netCDF time variable corresponding to the given dates.
+
+@param dates: A datetime object or a sequence of datetime objects.
+The datetime objects should not include a time-zone offset.
+
+@param nctime: A netCDF time variable object. The nctime object must have a
+C{units} attribute.
+
+@param calendar: Describes the calendar used in the time calculation.
+Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
+'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
+Default is C{'standard'}, which is a mixed Julian/Gregorian calendar
+If C{calendar} is None, its value is given by C{nctime.calendar} or
+C{standard} if no such attribute exists.
+    """
+    return netcdftime.date2index(dates, nctime, calendar=None)
+
+def _check_index(indices, dates, nctime, calendar):
+    """Assert that the time indices given correspond to the given dates."""
+    t = nctime[indices]
+    assert numpy.all( num2date(t, nctime.units, calendar) == dates)
+
 def getlibversion():
     """
 getlibversion()
@@ -132,7 +158,7 @@ class MFDataset(Dataset):
     """
 MFDataset(self, files, check=False, exclude=[])
 
-class for reading multi-file netCDF Datasets, making variables
+Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
 
 Datasets must be in C{NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT}

@@ -46,6 +46,7 @@ class VariablesTestCase(unittest.TestCase):
         assert varin.shape == (nx,ydim,zdim)
         assert varin.dimensions == ('x','y','z')
         assert_array_equal(varin[4:-4:4,3:5,2:8],data[4:-4:4,3:5,2:8])
+        assert varin[0,0,0] == data[0,0,0]
         f.close()
 
 if __name__ == '__main__':

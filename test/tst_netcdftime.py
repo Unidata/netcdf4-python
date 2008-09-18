@@ -1,12 +1,12 @@
-from netcdftime import utime, JulianDayFromDate,DateFromJulianDay
-from netcdftime import datetime as datetimex
+from netcdftime import utime, JulianDayFromDate,DateFromJulianDay, date2index
+from netcdftime import datetime as datetimex, date2num
 import numpy
 import random
 import sys
 import unittest
 import os
 from datetime import datetime
-from numpy.testing import assert_almost_equal
+from numpy.testing import assert_almost_equal, assert_equal
 
 # test netcdftime module for netCDF time <--> python datetime conversions.
 
@@ -158,6 +158,59 @@ class netcdftimeTestCase(unittest.TestCase):
         assert_almost_equal(mjd,2400000.5)
         date = DateFromJulianDay(mjd)
         self.assert_(str(date) == str(d))
+
+
+class TestDate2index(unittest.TestCase):
+
+    class TestTime:
+        """Fake a netCDF time variable."""
+        def __init__(self, start, n, step, units, calendar='standard'):
+            """Create an object that fakes a netCDF time variable.
+
+            Internally, this object has a _data array attribute whose values
+            corresponds to dates in the given units and calendar. `start`, `n`
+            and `step` define the starting date, the length of the array and
+            the distance between each date (in units).
+           
+            :Example:
+            >>> t = TestTime(datetime(1989, 2, 18), 45, 6, 'hours since 1979-01-01')
+            >>> print num2date(t[1], t.units)
+            1989-02-18 06:00:00
+            """
+            self.units = units
+            self.calendar = calendar
+            t0 = date2num(start, units, calendar)
+            self._data = (t0 + numpy.arange(n)*step).astype('float')
+
+        def __getitem__(self, item):
+            return self._data[item]
+
+    def setUp(self):
+        self.standardtime = self.TestTime(datetime(1950, 1, 1), 366, 24,
+          'hours since 1900-01-01', 'standard')
+
+    def test_simple(self):
+        t = date2index(datetime(1950,2,1), self.standardtime)
+        assert_equal(t, 31)
+   
+    def test_list(self):
+        t = date2index([datetime(1950,2,1), datetime(1950,2,3)], self.standardtime)
+        assert_equal(t, [31, 33])
+
+    def test_nonuniform(self):
+        """Check that the fallback mechanism works. """
+        nutime = self.TestTime(datetime(1950, 1, 1), 366, 24,
+          'hours since 1900-01-01', 'standard')
+        # Let's remove the second entry, so that the computed stride is not
+        # representative and the brute force method is needed.
+        nutime._data = nutime._data[numpy.r_[0,slice(2,200)]]
+       
+        t = date2index(datetime(1950,2,1), nutime)
+        assert_equal(t, 30)       
+
+       
+        t = date2index([datetime(1950,2,1), datetime(1950,2,3)], nutime)
+        assert_equal(t, [30, 32])       
 
 if __name__ == '__main__':
     unittest.main()

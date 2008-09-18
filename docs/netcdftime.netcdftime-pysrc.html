@@ -995,7 +995,65 @@ netcdftime.netcdftime.utime.date2num" class="py-name" href="#" onclick="return d
 netCDF4.num2date
 netcdftime.netcdftime.num2date
 netcdftime.netcdftime.utime.num2date" class="py-name" href="#" onclick="return doclink('link-36', 'num2date', 'link-36');">num2date</a></tt><tt class="py-op">(</tt><tt class="py-name">times</tt><tt class="py-op">)</tt> </tt>
-</div><a name="L936"></a><tt class="py-lineno">936</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+</div><a name="L936"></a><tt class="py-lineno">936</tt>  <tt class="py-line"> </tt>
+<a name="L937"></a><tt class="py-lineno">937</tt>  <tt class="py-line"> </tt>
+<a name="_check_index"></a><div id="_check_index-def"><a name="L938"></a><tt class="py-lineno">938</tt> <a class="py-toggle" href="#" id="_check_index-toggle" onclick="return toggle('_check_index');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="netcdftime.netcdftime-module.html#_check_index">_check_index</a><tt class="py-op">(</tt><tt class="py-param">indices</tt><tt class="py-op">,</tt> <tt class="py-param">dates</tt><tt class="py-op">,</tt> <tt class="py-param">nctime</tt><tt class="py-op">,</tt> <tt class="py-param">calendar</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_check_index-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_check_index-expanded"><a name="L939"></a><tt class="py-lineno">939</tt>  <tt class="py-line">    <tt class="py-docstring">"""Assert that the time indices given correspond to the given dates."""</tt> </tt>
+<a name="L940"></a><tt class="py-lineno">940</tt>  <tt class="py-line">    <tt class="py-name">t</tt> <tt class="py-op">=</tt> <tt class="py-name">nctime</tt><tt class="py-op">[</tt><tt class="py-name">indices</tt><tt class="py-op">]</tt> </tt>
+<a name="L941"></a><tt class="py-lineno">941</tt>  <tt class="py-line">    <tt class="py-keyword">assert</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt> <tt id="link-37" class="py-name"><a title="netCDF3.num2date
+netCDF4.num2date
+netcdftime.netcdftime.num2date
+netcdftime.netcdftime.utime.num2date" class="py-name" href="#" onclick="return doclink('link-37', 'num2date', 'link-36');">num2date</a></tt><tt class="py-op">(</tt><tt class="py-name">t</tt><tt class="py-op">,</tt> <tt class="py-name">nctime</tt><tt class="py-op">.</tt><tt class="py-name">units</tt><tt class="py-op">,</tt> <tt class="py-name">calendar</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">dates</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L942"></a><tt class="py-lineno">942</tt>  <tt class="py-line"> </tt>
+<a name="L943"></a><tt class="py-lineno">943</tt>  <tt class="py-line"> </tt>
+<a name="date2index"></a><div id="date2index-def"><a name="L944"></a><tt class="py-lineno">944</tt> <a class="py-toggle" href="#" id="date2index-toggle" onclick="return toggle('date2index');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="netcdftime.netcdftime-module.html#date2index">date2index</a><tt class="py-op">(</tt><tt class="py-param">dates</tt><tt class="py-op">,</tt> <tt class="py-param">nctime</tt><tt class="py-op">,</tt> <tt class="py-param">calendar</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="date2index-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="date2index-expanded"><a name="L945"></a><tt class="py-lineno">945</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L946"></a><tt class="py-lineno">946</tt>  <tt class="py-line"><tt class="py-docstring">    date2index(dates, nctime, calendar=None)</tt> </tt>
+<a name="L947"></a><tt class="py-lineno">947</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L948"></a><tt class="py-lineno">948</tt>  <tt class="py-line"><tt class="py-docstring">    Return indices of a netCDF time variable corresponding to the given dates.</tt> </tt>
+<a name="L949"></a><tt class="py-lineno">949</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L950"></a><tt class="py-lineno">950</tt>  <tt class="py-line"><tt class="py-docstring">    @param dates: A datetime object or a sequence of datetime objects.</tt> </tt>
+<a name="L951"></a><tt class="py-lineno">951</tt>  <tt class="py-line"><tt class="py-docstring">    The datetime objects should not include a time-zone offset.</tt> </tt>
+<a name="L952"></a><tt class="py-lineno">952</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L953"></a><tt class="py-lineno">953</tt>  <tt class="py-line"><tt class="py-docstring">    @param nctime: A netCDF time variable object. The nctime object must have a</tt> </tt>
+<a name="L954"></a><tt class="py-lineno">954</tt>  <tt class="py-line"><tt class="py-docstring">    C{units} attribute.</tt> </tt>
+<a name="L955"></a><tt class="py-lineno">955</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L956"></a><tt class="py-lineno">956</tt>  <tt class="py-line"><tt class="py-docstring">    @param calendar: Describes the calendar used in the time calculation.</tt> </tt>
+<a name="L957"></a><tt class="py-lineno">957</tt>  <tt class="py-line"><tt class="py-docstring">    Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'</tt> </tt>
+<a name="L958"></a><tt class="py-lineno">958</tt>  <tt class="py-line"><tt class="py-docstring">    'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.</tt> </tt>
+<a name="L959"></a><tt class="py-lineno">959</tt>  <tt class="py-line"><tt class="py-docstring">    Default is C{'standard'}, which is a mixed Julian/Gregorian calendar</tt> </tt>
+<a name="L960"></a><tt class="py-lineno">960</tt>  <tt class="py-line"><tt class="py-docstring">    If C{calendar} is None, its value is given by C{nctime.calendar} or</tt> </tt>
+<a name="L961"></a><tt class="py-lineno">961</tt>  <tt class="py-line"><tt class="py-docstring">    C{standard} if no such attribute exists.</tt> </tt>
+<a name="L962"></a><tt class="py-lineno">962</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L963"></a><tt class="py-lineno">963</tt>  <tt class="py-line">    <tt class="py-comment"># Setting the calendar.</tt> </tt>
+<a name="L964"></a><tt class="py-lineno">964</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">if</tt> <tt class="py-name">calendar</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L965"></a><tt class="py-lineno">965</tt>  <tt class="py-line">        <tt class="py-name">calendar</tt> <tt class="py-op">=</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">nctime</tt><tt class="py-op">,</tt> <tt class="py-string">'calendar'</tt><tt class="py-op">,</tt> <tt class="py-string">'standard'</tt><tt class="py-op">)</tt> </tt>
+<a name="L966"></a><tt class="py-lineno">966</tt>  <tt class="py-line"> </tt>
+<a name="L967"></a><tt class="py-lineno">967</tt>  <tt class="py-line">    <tt class="py-name">num</tt> <tt class="py-op">=</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">atleast_1d</tt><tt class="py-op">(</tt><tt id="link-38" class="py-name"><a title="netCDF3.date2num
+netCDF4.date2num
+netcdftime.netcdftime.date2num
+netcdftime.netcdftime.utime.date2num" class="py-name" href="#" onclick="return doclink('link-38', 'date2num', 'link-34');">date2num</a></tt><tt class="py-op">(</tt><tt class="py-name">dates</tt><tt class="py-op">,</tt> <tt class="py-name">nctime</tt><tt class="py-op">.</tt><tt class="py-name">units</tt><tt class="py-op">,</tt> <tt class="py-name">calendar</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L968"></a><tt class="py-lineno">968</tt>  <tt class="py-line"> </tt>
+<a name="L969"></a><tt class="py-lineno">969</tt>  <tt class="py-line">    <tt class="py-name">index</tt> <tt class="py-op">=</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">empty</tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">alen</tt><tt class="py-op">(</tt><tt class="py-name">dates</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">int</tt><tt class="py-op">)</tt> </tt>
+<a name="L970"></a><tt class="py-lineno">970</tt>  <tt class="py-line"> </tt>
+<a name="L971"></a><tt class="py-lineno">971</tt>  <tt class="py-line">    <tt class="py-comment"># Trying to infer the correct index from the starting time and the stride.</tt> </tt>
+<a name="L972"></a><tt class="py-lineno">972</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L973"></a><tt class="py-lineno">973</tt>  <tt class="py-line">        <tt class="py-name">t0</tt><tt class="py-op">,</tt> <tt class="py-name">t1</tt> <tt class="py-op">=</tt> <tt class="py-name">nctime</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L974"></a><tt class="py-lineno">974</tt>  <tt class="py-line">        <tt class="py-name">dt</tt> <tt class="py-op">=</tt> <tt class="py-name">t1</tt> <tt class="py-op">-</tt> <tt class="py-name">t0</tt> </tt>
+<a name="L975"></a><tt class="py-lineno">975</tt>  <tt class="py-line">        <tt class="py-name">index</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">num</tt><tt class="py-op">-</tt><tt class="py-name">t0</tt><tt class="py-op">)</tt><tt class="py-op">/</tt><tt class="py-name">dt</tt> </tt>
+<a name="L976"></a><tt class="py-lineno">976</tt>  <tt class="py-line"> </tt>
+<a name="L977"></a><tt class="py-lineno">977</tt>  <tt class="py-line">        <tt class="py-comment"># Checking that the index really corresponds to the given date.</tt> </tt>
+<a name="L978"></a><tt class="py-lineno">978</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">_check_index</tt><tt class="py-op">(</tt><tt class="py-name">index</tt><tt class="py-op">,</tt> <tt class="py-name">dates</tt><tt class="py-op">,</tt> <tt class="py-name">nctime</tt><tt class="py-op">,</tt> <tt class="py-name">calendar</tt><tt class="py-op">)</tt> </tt>
+<a name="L979"></a><tt class="py-lineno">979</tt>  <tt class="py-line"> </tt>
+<a name="L980"></a><tt class="py-lineno">980</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">AssertionError</tt><tt class="py-op">:</tt> </tt>
+<a name="L981"></a><tt class="py-lineno">981</tt>  <tt class="py-line">        <tt class="py-comment"># If check fails, use brute force method.</tt> </tt>
+<a name="L982"></a><tt class="py-lineno">982</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">index</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">digitize</tt><tt class="py-op">(</tt><tt class="py-name">num</tt><tt class="py-op">,</tt> <tt class="py-name">nctime</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-number">1</tt> </tt>
+<a name="L983"></a><tt class="py-lineno">983</tt>  <tt class="py-line"> </tt>
+<a name="L984"></a><tt class="py-lineno">984</tt>  <tt class="py-line">        <tt class="py-comment"># Perform check.</tt> </tt>
+<a name="L985"></a><tt class="py-lineno">985</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">_check_index</tt><tt class="py-op">(</tt><tt class="py-name">index</tt><tt class="py-op">,</tt> <tt class="py-name">dates</tt><tt class="py-op">,</tt> <tt class="py-name">nctime</tt><tt class="py-op">,</tt> <tt class="py-name">calendar</tt><tt class="py-op">)</tt> </tt>
+<a name="L986"></a><tt class="py-lineno">986</tt>  <tt class="py-line"> </tt>
+<a name="L987"></a><tt class="py-lineno">987</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">index</tt> </tt>
+</div><a name="L988"></a><tt class="py-lineno">988</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
 expandto(location.href);
 // -->
@@ -1025,7 +1083,7 @@ expandto(location.href);
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Aug 21 05:28:30 2008
+    Generated by Epydoc 3.0.1 on Thu Sep 18 10:40:40 2008
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

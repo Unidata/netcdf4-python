@@ -372,6 +372,8 @@ L{num2date} converts numeric values of time in the specified C{units}
 and C{calendar} to datetime objects, and L{date2num} does the reverse.
 All the calendars currently defined in the U{CF metadata convention 
 <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
+A function called L{date2index} is also provided which returns the indices
+of a netCDF time variable corresponding to a sequence of datetime instances.
 
 7) Reading data from a multi-file netCDF dataset.
 -------------------------------------------------

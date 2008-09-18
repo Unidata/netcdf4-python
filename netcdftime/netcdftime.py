@@ -933,3 +933,56 @@ contains one.
     """
     cdftime = utime(units,calendar=calendar)
     return cdftime.num2date(times)
+
+
+def _check_index(indices, dates, nctime, calendar):
+    """Assert that the time indices given correspond to the given dates."""
+    t = nctime[indices]
+    assert numpy.all( num2date(t, nctime.units, calendar) == dates)
+
+
+def date2index(dates, nctime, calendar=None):
+    """
+    date2index(dates, nctime, calendar=None)
+    
+    Return indices of a netCDF time variable corresponding to the given dates.
+    
+    @param dates: A datetime object or a sequence of datetime objects.
+    The datetime objects should not include a time-zone offset.
+    
+    @param nctime: A netCDF time variable object. The nctime object must have a
+    C{units} attribute.
+    
+    @param calendar: Describes the calendar used in the time calculation.
+    Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
+    'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
+    Default is C{'standard'}, which is a mixed Julian/Gregorian calendar
+    If C{calendar} is None, its value is given by C{nctime.calendar} or
+    C{standard} if no such attribute exists.
+    """
+    # Setting the calendar.
+    if calendar is None:
+        calendar = getattr(nctime, 'calendar', 'standard')
+
+    num = numpy.atleast_1d(date2num(dates, nctime.units, calendar))
+
+    index = numpy.empty(numpy.alen(dates), int)
+
+    # Trying to infer the correct index from the starting time and the stride.
+    try:
+        t0, t1 = nctime[:2]
+        dt = t1 - t0
+        index[:] = (num-t0)/dt
+
+        # Checking that the index really corresponds to the given date.
+        _check_index(index, dates, nctime, calendar)
+
+    except AssertionError:
+        # If check fails, use brute force method.
+        index[:] = numpy.digitize(num, nctime[:]) - 1
+
+        # Perform check.
+        _check_index(index, dates, nctime, calendar)
+
+    return index
+
