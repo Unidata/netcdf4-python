@@ -1,4 +1,4 @@
-version 0.7.6 (not yet released)
+version 0.7.6 (svn revision 573)
 ================================
 * added date2index function, courtesy of David Huard, which finds the indices
   in a netCDF time variable corresponding to a sequence of datetime instances.
