@@ -7,7 +7,7 @@ from datetime import datetime as real_datetime
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
 
-__version__ = '0.6'
+__version__ = '0.7'
 
 class datetime:
     """
