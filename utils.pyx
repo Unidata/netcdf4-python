@@ -390,7 +390,10 @@ class _Variable(object):
     def __getattr__(self,name):
         if name == 'shape': return self._shape()
         if name == 'ndim': return len(self._shape())
-        return self.__dict__[name]
+        try:
+            return self.__dict__[name]
+        except:
+            raise AttributeError(name)
     def _shape(self):
         recdimlen = len(self._dset.dimensions[self._recdimname])
         return (recdimlen,) + self._mastervar.shape[1:]
