@@ -490,7 +490,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # pure python utilities
 from netCDF4_utils import _buildStartCountStride, _quantize, _find_dim
 
-__version__ = "0.7.6"
+__version__ = "0.7.7"
 
 # Initialize numpy
 import os
