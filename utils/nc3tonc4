@@ -184,7 +184,7 @@ if __name__ == '__main__':
         elif option[0] == '--quiet':
             quiet = int(option[1])
         elif option[0] == '--complevel':
-            complevel = option[1]
+            complevel = int(option[1])
         elif option[0] == '--shuffle':
             shuffle = int(option[1])
         elif option[0] == '--fletcher32':
