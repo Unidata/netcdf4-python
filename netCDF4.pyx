@@ -35,6 +35,7 @@ Requires
  Version 4.0 or higher is required.
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR --enable-shared}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
+ To enable U{OPeNDAP<http://opendap.org>} support, build with 'C{--enable-dap}'.
 
 
 Install
@@ -89,6 +90,12 @@ Here's an example:
 NETCDF4
 >>>
 >>> rootgrp.close()
+
+Remote U{OPeNDAP<http://opendap.org>}-hosted datasets can be accessed for
+reading over http if a URL is provided to the L{Dataset} constructor instead of a 
+filename.  However, this requires that the netCDF library be built with
+OPenDAP support, via the C{--enable-dap} configure option (added in
+version 4.0.1).
             
 
 2) Groups in a netCDF file
