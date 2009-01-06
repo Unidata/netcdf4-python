@@ -8,7 +8,7 @@ def check_ifnetcdf3(netcdf3_dir):
         return False
     isnetcdf3 = False
     for line in f:
-        if line.startswith('#define NC_GEOX'):
+        if line.startswith('#define _NETCDF'):
             isnetcdf3 = True
     return isnetcdf3
 
