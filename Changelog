@@ -1,5 +1,7 @@
 version 0.7.7 (not yet released)
 ================================
+* added opendap test (tst_dap.py).
+
 * bugfix for nc3tonc4 utility.
 
 * fix MFDataset.Variable. __getattr__ to raise AttributeError instead of
