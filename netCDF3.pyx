@@ -4,7 +4,7 @@ Introduction
 
 Python interface to the netCDF version 3 library. The API modelled after 
 U{Scientific.IO.NetCDF 
-<http://starship.python.net/~hinsen/ScientificPython>}, and should be 
+<http://dirac.cnrs-orleans.fr/plone/software/scientificpython/>}, and should be 
 familiar to users of that module. Some new features not found in
 Scientific.IO.NetCDF:
 

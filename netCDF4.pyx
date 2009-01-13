@@ -9,7 +9,7 @@ U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module can read and write
 files in both the new netCDF 4 and the old netCDF 3 format, and can create 
 files that are readable by HDF5 clients. The API modelled after 
 U{Scientific.IO.NetCDF 
-<http://starship.python.net/~hinsen/ScientificPython>}, and should be 
+<http://dirac.cnrs-orleans.fr/plone/software/scientificpython/>}, and should be 
 familiar to users of that module.
 
 Many new features of netCDF 4 are implemented, such as multiple
