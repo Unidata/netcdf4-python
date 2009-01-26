@@ -974,6 +974,10 @@ def date2index(dates, nctime, calendar=None):
         dt = t1 - t0
         index[:] = (num-t0)/dt
 
+        # convert numpy scalars or single element arrays to python ints.
+        if not len(index.shape) or index.shape == (1,):
+            index = index.item()
+
         # Checking that the index really corresponds to the given date.
         _check_index(index, dates, nctime, calendar)
 
@@ -981,7 +985,11 @@ def date2index(dates, nctime, calendar=None):
         # If check fails, use brute force method.
         index[:] = numpy.digitize(num, nctime[:]) - 1
 
-        # Perform check.
+        # convert numpy scalars or single element arrays to python ints.
+        if not len(index.shape) or index.shape == (1,):
+            index = index.item()
+
+        # Perform check again.
         _check_index(index, dates, nctime, calendar)
 
     return index
