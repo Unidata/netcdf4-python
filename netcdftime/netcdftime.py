@@ -7,7 +7,7 @@ from datetime import datetime as real_datetime
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
 
-__version__ = '0.7'
+__version__ = '0.7.1'
 
 class datetime:
     """
@@ -975,22 +975,29 @@ def date2index(dates, nctime, calendar=None):
         index[:] = (num-t0)/dt
 
         # convert numpy scalars or single element arrays to python ints.
-        if not len(index.shape) or index.shape == (1,):
-            index = index.item()
+        index = _toscalar(index)
 
         # Checking that the index really corresponds to the given date.
         _check_index(index, dates, nctime, calendar)
 
     except AssertionError:
+
+        index = numpy.empty(numpy.alen(dates), int)
+
         # If check fails, use brute force method.
         index[:] = numpy.digitize(num, nctime[:]) - 1
 
         # convert numpy scalars or single element arrays to python ints.
-        if not len(index.shape) or index.shape == (1,):
-            index = index.item()
+        index = _toscalar(index)
 
         # Perform check again.
         _check_index(index, dates, nctime, calendar)
 
     return index
 
+
+def _toscalar(a):
+    if a.shape in [(),(1,)]:
+        return a.item()
+    else:
+        return a
