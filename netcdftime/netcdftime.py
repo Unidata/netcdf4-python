@@ -937,7 +937,9 @@ contains one.
 
 def _check_index(indices, dates, nctime, calendar):
     """Assert that the time indices given correspond to the given dates."""
-    t = nctime[indices]
+    t = numpy.empty(len(indices), nctime.dtype)
+    for n,i in enumerate(indices):
+        t[n] = nctime[i]
     assert numpy.all( num2date(t, nctime.units, calendar) == dates)
 
 
@@ -974,24 +976,19 @@ def date2index(dates, nctime, calendar=None):
         dt = t1 - t0
         index[:] = (num-t0)/dt
 
-        # convert numpy scalars or single element arrays to python ints.
-        index = _toscalar(index)
-
         # Checking that the index really corresponds to the given date.
         _check_index(index, dates, nctime, calendar)
 
     except AssertionError:
 
-        index = numpy.empty(numpy.alen(dates), int)
-
         # If check fails, use brute force method.
         index[:] = numpy.digitize(num, nctime[:]) - 1
 
-        # convert numpy scalars or single element arrays to python ints.
-        index = _toscalar(index)
-
         # Perform check again.
         _check_index(index, dates, nctime, calendar)
+
+    # convert numpy scalars or single element arrays to python ints.
+    index = _toscalar(index)
 
     return index
 
