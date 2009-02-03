@@ -3,7 +3,7 @@ from numpy.distutils.core  import setup, Extension
 
 def check_hdf5version(hdf5_dir):
     try:
-        f = open(os.path.join(hdf5_dir,'include/H5pubconf-64.h'))
+        f = open(os.path.join(hdf5_dir,'include/H5pubconf.h'))
     except IOError:
         try:
             f = open(os.path.join(hdf5_dir,'include/H5pubconf-64.h'))
@@ -29,7 +29,7 @@ def check_ifnetcdf4(netcdf4_dir):
 HDF5_dir = os.environ.get('HDF5_DIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
 
-dirstosearch =  [os.path.expanduser('~'),'/usr/local/netcdf4','/sw','/opt','/opt/local', '/usr']
+dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
 
 if HDF5_dir is None:
     print """
