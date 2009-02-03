@@ -351,7 +351,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
 # pure python utilities
-from netCDF4_utils import _buildStartCountStride
+from netCDF4_utils import _buildStartCountStride, _getStartCountStride, _out_array_shape
 
 __version__ = "0.7.7"
 
@@ -1208,10 +1208,32 @@ return netCDF attribute names for this L{Variable} in a list."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
-        start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
-        data =  self._get(start, count, stride)
-        if sliceout is not None:
-            data = data[sliceout].squeeze() # slice resulting array with 'fancy' indices
+        start, count, stride, put_ind = _getStartCountStride(elem,self.shape)
+        datashape = _out_array_shape(count)
+        data = numpy.empty(datashape, dtype=self.dtype)
+        
+        # Determine which dimensions need to be squeezed
+        # (those for which elem is an integer scalar).
+        # The convention used is that for those cases, 
+        # put_ind for this dimension is set to -1 by _getStartCountStride.
+        squeeze = data.ndim * [slice(None),]
+        for i,n in enumerate(put_ind.shape[:-1]):
+            if n == 1 and put_ind[...,i].ravel()[0] == -1:
+                squeeze[i] = 0
+
+        # Reshape the arrays so we can iterate over them. 
+        start = start.reshape((-1, self.ndim or 1))
+        count = count.reshape((-1, self.ndim or 1))
+        stride = stride.reshape((-1, self.ndim or 1))
+        put_ind = put_ind.reshape((-1, self.ndim or 1))
+
+        # Fill output array with data chunks. 
+        for (a,b,c,i) in zip(start, count, stride, put_ind):
+            data[tuple(i)] = numpy.squeeze(self._get(a,b,c))
+    
+        # Remove extra dimensions. 
+        data = data[tuple(squeeze)]
+                
         # if auto_maskandscale mode set to True, (through
         # a call to set_auto_maskandscale), perform
         # automatic unpacking using scale_factor/add_offset
@@ -1245,7 +1267,7 @@ return netCDF attribute names for this L{Variable} in a list."""
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = self.scale_factor*data + self.add_offset
         return data
- 
+
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable
         # using "extended slice syntax". The extended slice syntax
@@ -1253,9 +1275,9 @@ return netCDF attribute names for this L{Variable} in a list."""
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
         if hasattr(data,"shape"):
-            start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
+            start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
         else:
-            start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
+            start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
         # if auto_maskandscale mode set to True, (through
         # a call to set_auto_maskandscale), perform
         # automatic packing using scale_factor/add_offset

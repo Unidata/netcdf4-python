@@ -1,5 +1,8 @@
 version 0.7.7 (not yet released)
 ================================
+* David Huard reworked fancy indexing - it is now much more efficient and less
+  of a memory hog.
+
 * added opendap test (tst_dap.py).
 
 * bugfix for nc3tonc4 utility.

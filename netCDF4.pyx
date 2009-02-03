@@ -1860,9 +1860,9 @@ each dimension is returned."""
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
         if hasattr(data,"shape"):
-            start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
+            start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
         else:
-            start, count, stride, sliceout = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
+            start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
         # quantize data if least_significant_digit attribute set.
         if 'least_significant_digit' in self.ncattrs():
             data = _quantize(data,self.least_significant_digit)

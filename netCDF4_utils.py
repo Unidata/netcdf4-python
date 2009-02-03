@@ -75,8 +75,6 @@ def _buildStartCountStride(elem, shape, dimensions, grp, datashape=None):
     start = []
     count = []
     stride = []
-    sliceout = []
-    hasfancyindex = False
     n = -1
     for e in elem:
         n = n+1
@@ -90,16 +88,6 @@ def _buildStartCountStride(elem, shape, dimensions, grp, datashape=None):
         else:
             unlim = False
 
-        # is this element of the tuple a sequence? (but not a string)
-        try:
-            e[:]
-            if type(e) != types.StringType:
-                isSequenceType = True
-            else:
-                isSequenceType = False
-        except:
-            isSequenceType = False
-        
         # Slice index. Respect Python syntax for slice upper bounds,
         # which are not included in the resulting slice. Also, if the
         # upper bound exceed the dimension size, truncate it.
@@ -130,14 +118,6 @@ def _buildStartCountStride(elem, shape, dimensions, grp, datashape=None):
                     else:
                         length = e.start+1
                 beg, end, inc = e.indices(length)
-            sliceout.append(slice(None,None,None))
-        elif isSequenceType: # a sequence for 'fancy indexing'
-        # just grab all the data along this dimension
-        # then slice the resulting numpy array with the sequence
-            isSlice = 1
-            hasfancyindex = 1
-            beg, end, inc = 0, shape[n], 1
-            sliceout.append(e)
         # it's a simple integer index
         elif type(e) == types.IntType:
             isSlice = 0       # not a slice
@@ -168,7 +148,7 @@ def _buildStartCountStride(elem, shape, dimensions, grp, datashape=None):
             end = e + 1
             inc = 1
         else:
-            raise IndexError('slice must be an integer, a sequence of integers, a slice object, or an integer array scalar')
+            raise IndexError('slice must be an integer, a slice object, or an integer array scalar')
 
         # Clip end index (except if unlimited dimension)
         # and compute number of elements to get.
@@ -188,13 +168,9 @@ def _buildStartCountStride(elem, shape, dimensions, grp, datashape=None):
         start.append(0)
         count.append(shape[n])
         stride.append(1)
-        sliceout.append(slice(None,None,None))
-
-    # if no fancy indexing requested, just set sliceout to None.
-    if not hasfancyindex: sliceout = None
 
     # Done
-    return start, count, stride, sliceout
+    return start, count, stride
 
 def _quantize(data,least_significant_digit):
     """
