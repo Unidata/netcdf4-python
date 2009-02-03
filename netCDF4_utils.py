@@ -1,4 +1,5 @@
 import numpy
+import numpy as np
 from numpy import ma
 import types
 
@@ -216,3 +217,209 @@ least_significant_digit=1, bits will be 4.
         return datout
     else:
         return datout
+
+def _getStartCountStride(elem, shape):
+    """Return start, count, stride and put_indices that store the information 
+    needed to extract chunks of data from a netCDF variable and put those
+    chunks in the output array. 
+    
+    This function is used to convert a NumPy index into a form that is 
+    compatible with the nc_get_vars function. Specifically, it needs
+    to interpret slices, ellipses, sequences of integers as well as
+    sequences of booleans. Note that all the fancy indexing tricks
+    implemented in NumPy are not supported. In particular, multidimensional
+    indexing is not supported and will raise an IndexError. 
+
+    Parameters
+    ----------
+    elem : tuple of integer, slice, ellipsis or sequence of integers. 
+      The indexing information.
+    shape : tuple
+      The shape of the netCDF variable.
+      
+    Returns
+    -------
+    start : ndarray (..., n)
+      A starting indices array of dimension n+1. The first n 
+      dimensions identify different independent data chunks. The last dimension 
+      can be read as the starting indices.
+    count : ndarray (..., n)
+      An array of dimension (n+1) storing the number of elements to get. 
+    stride : ndarray (..., n)
+      An array of dimension (n+1) storing the steps between each datum. 
+    put_indices : ndarray (..., n)
+      An array storing the indices describing the location of the 
+      data chunk in the target array. 
+      
+    Notes:
+    
+    netCDF data is accessed via the function: 
+       nc_get_vars(grpid, varid, start, count, stride, data)
+       
+    Assume that the variable has dimension n, then 
+    
+    start is a n-tuple that contains the indices at the beginning of data chunk.
+    count is a n-tuple that contains the number of elements to be accessed. 
+    stride is a n-tuple that contains the step length between each element. 
+        
+    Note that this function will only work when getting data out, not 
+    setting it. 
+    
+    """
+    # Adapted from pycdf (http://pysclint.sourceforge.net/pycdf)
+    # by Andre Gosselin..
+    # Modified by David Huard to handle efficiently fancy indexing with
+    # sequences of integers. 
+    
+    nDims = len(shape)
+    if nDims == 0:
+        ndims = 1
+        shape = (1,)
+    
+    # Make sure the indexing expression does not exceed the variable
+    # number of dimensions.
+    if np.iterable(elem):
+        if len(elem) > nDims:
+            raise ValueError("slicing expression exceeds the number of dimensions of the variable")
+    else:   # Convert single index to sequence
+        elem = [elem]
+        
+    # Replace ellipsis with slices.
+    hasEllipsis = 0
+    newElem = []
+    for e in elem:
+        if type(e) == types.EllipsisType:
+            if hasEllipsis:
+                raise IndexError("At most one ellipsis allowed in a slicing expression")
+            # The ellipsis stands for the missing dimensions.
+            newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
+        else:
+            newElem.append(e)
+    elem = newElem
+
+    # If slice doesn't cover all dims, assume ellipsis for rest of dims.
+    if len(elem) < len(shape):
+        for n in range(len(elem)+1,len(shape)+1):
+            elem.append(slice(None,None,None))  
+
+    # Compute the dimensions of the start, count, stride and put_indices arrays.
+    # The number of elements in the first n dimensions corresponds to the 
+    # number of times the _get method will be called. 
+    sdim = []
+    ind_dim = None
+    for i, e in enumerate(elem):
+        # Raise error if multidimensional indexing is used. 
+        if np.ndim(e) > 1:
+            raise IndexError("Index cannot be multidimensional.")
+        
+        # Slices
+        if type(e) is types.SliceType:
+            sdim.append(1)
+            
+        # Booleans --- Same shape as data along corresponding dimension
+        elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
+            if shape[i] != len(e):
+                raise IndexError, 'Boolean array must have the same shape as the data along this dimension.'
+            elif ind_dim is None:
+                sdim.append(e.sum())
+                ind_dim = i
+            elif e.sum() == 1 or e.sum() == sdim[ind_dim]:
+                sdim.append(1)
+            else:
+                raise IndexError, "Boolean arrays must have the same number of True elements."
+            
+        # Sequence of indices
+        # If multiple sequences are used, they must have the same length. 
+        elif np.iterable(e):
+            if ind_dim is None:
+                sdim.append(np.alen(e))
+                ind_dim = i
+            elif np.alen(e) == 1 or np.alen(e) == sdim[ind_dim]:
+                sdim.append(1)
+            else:
+                raise IndexError, "Indice mismatch. Indices must have the same length."
+        # Scalar
+        else:
+            sdim.append(1)
+        
+    # Create the start, count, stride and put_indices arrays. 
+    
+    sdim.append(max(nDims, 1))
+    start = np.empty(sdim, dtype=int)
+    count = np.empty(sdim, dtype=int)
+    stride = np.empty(sdim, dtype=int)
+    put_indices = np.empty(sdim, dtype=object)
+    
+    for i, e in enumerate(elem):
+        #    SLICE    #
+        if type(e) is types.SliceType:
+            beg, end, inc = e.indices(shape[i])
+            n = len(xrange(beg,end,inc))
+            
+            start[...,i] = beg
+            count[...,i] = n
+            stride[...,i] = inc
+            put_indices[...,i] = slice(None)
+            
+            
+        #    STRING    #
+        elif type(e) is str:
+            raise IndexError("Index cannot be a string.")
+
+        #    ITERABLE    #
+        elif np.iterable(e) and np.array(e).dtype.kind in 'ib':  # Sequence of integers or booleans
+        
+            #    BOOLEAN ARRAY   #
+            if type(e) == np.ndarray and e.dtype.kind == 'b':
+                e = np.arange(len(e))[e]
+                
+                # Originally, I thought boolean indexing worked differently than 
+                # integer indexing, namely that we could select the rows and columns 
+                # independently. 
+                #start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
+                #put_indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
+                
+                
+            # Sequence of INTEGER INDICES
+            
+            start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, ind_dim, np.ones(sdim[:-1]))
+            if i == ind_dim:
+                put_indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, ind_dim, np.ones(sdim[:-1], int))
+            else:
+                put_indices[...,i] = -1
+
+            count[...,i] = 1
+            stride[...,i] = 1
+            
+            
+        #    SCALAR INTEGER    #
+        elif np.alen(e)==1 and np.dtype(type(e)).kind is 'i': 
+            if e >= 0: 
+                start[...,i] = e
+            elif e < 0 and (-e < shape[i]) :
+                start[...,i] = e+shape[n]
+            else:
+                raise IndexError("Index out of range")
+            
+            count[...,i] = 1
+            stride[...,i] = 1
+            put_indices[...,i] = -1    # Use -1 instead of 0 to indicate that 
+                                       # this dimension shall be squeezed. 
+            
+            
+    return start, count, stride, put_indices#, out_shape
+
+def _out_array_shape(count):
+    """Return the output array shape given the count array created by getStartCountStride"""
+    
+    s = list(count.shape[:-1])
+    out = []
+    
+    for i, n in enumerate(s):
+        if n == 1:
+            c = count[..., i].ravel()[0] # All elements should be identical.
+            out.append(c)
+        else:
+            out.append(n)
+    return out
+

@@ -36,6 +36,27 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(v[0:-1:2,i,:],data[0:-1:2,i,:])
         # slice with an array of booleans.
         assert_array_equal(v[0:-1:2,ib,:],data[0:-1:2,ib,:])
+        # Two slices
+        assert_array_equal(v[1:2,1:3,:], data[1:2,1:3,:])
+        # Three sequences
+        assert_array_equal(v[i,i,i], data[i,i,i])
+        # Two booleans and one slice. 
+        assert_array_equal(v[ib[:-1],ib,:], data[ib[:-1],ib,:])
+        # Three booleans
+        try:
+            assert_array_equal(v[ib[:-1],ib,NP.array(11*[True,])], data[ib[:-1],ib,NP.array(11*[True,])])
+        except IndexError:
+            pass
+        ibz = NP.array(zdim*[False])
+        ibz[3:6] = True
+        assert_array_equal(v[ib[:-1],ib,ibz], data[ib[:-1],ib,ibz])
+        
+        # Ellipse
+        assert_array_equal(v[...,::2],data[..., ::2])
+        assert_array_equal(v[...,::-2],data[..., ::-2])
+        assert_array_equal(v[[1,2],...],data[[1,2],...])
+        
+        assert_array_equal(v[0], data[0])
 
 if __name__ == '__main__':
     unittest.main()
