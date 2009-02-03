@@ -35,6 +35,11 @@ def _buildStartCountStride(elem, shape, dimensions, grp, datashape=None):
 
     # Handle a scalar variable as a 1-dimensional array of length 1.
 
+    # this function does not support 'fancy' indexing, and is
+    # only used for assigning data to a netCDF variable through
+    # the __setitem__ method.  _getStartCountStride is used for retrieving
+    # data using __getitem__ (which does support 'fancy' indexing'.
+
     nDims = len(dimensions)
     if nDims == 0:
         nDims = 1
@@ -238,8 +243,9 @@ def _getStartCountStride(elem, shape):
     count is a n-tuple that contains the number of elements to be accessed. 
     stride is a n-tuple that contains the step length between each element. 
         
-    Note that this function will only work when getting data out, not 
-    setting it. 
+    this function only used for retrieving data to a netCDF variable through
+    the __getitem__ method.  _buildStartCountStride is used for assigning
+    data with __setitem__, but does not support 'fancy' indexing.
     
     """
     # Adapted from pycdf (http://pysclint.sourceforge.net/pycdf)
