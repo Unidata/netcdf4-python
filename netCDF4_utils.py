@@ -378,7 +378,7 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
 
         # if dimensions and grp are given, set unlim flag for this dimension.
         if (dimensions is not None and grp is not None) and len(dimensions):
-            dimname = dimensions[n]
+            dimname = dimensions[i]
             # is this dimension unlimited?
             # look in current group, and parents for dim.
             dim = _find_dim(grp, dimname)
@@ -389,10 +389,36 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
         #    SLICE    #
         if type(e) is types.SliceType:
 
-            # if dimension is unlimited, we may be appending.
-            length = shape[i]
-            if unlim and e.stop > shape[i]:
-                length = e.stop
+            # determine length parameter for slice.indices.
+
+            # None means not specified
+            if e.step is not None:
+                inc = e.step
+            else:
+                inc = 1
+            # shape[i] can be zero for unlim dim that hasn't been written to
+            # yet.
+            if shape[i]: 
+                # length of slice may be longer than current shape
+                # of dimension is unlimited.
+                if unlim and e.stop > shape[i]:
+                    length = e.stop
+                else:
+                    length = shape[i]
+            else: # shape[i] == 0
+                if inc > 0:
+                    if e.stop is None:
+                        if unlim and datashape is not None:
+                            length = datashape[i]
+                        else:
+                            raise IndexError('illegal slice')
+                    else:
+                        length = e.stop
+                else:
+                    if e.start is None:
+                        raise IndexError('illegal slice')
+                    else:
+                        length = e.start+1
 
             beg, end, inc = e.indices(length)
             n = len(xrange(beg,end,inc))
