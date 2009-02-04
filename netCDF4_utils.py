@@ -341,9 +341,6 @@ def _getStartCountStride(elem, shape):
     sdim = []
     ind_dim = None
     for i, e in enumerate(elem):
-        # Raise error if multidimensional indexing is used. 
-        if np.ndim(e) > 1:
-            raise IndexError("Index cannot be multidimensional.")
         
         # Slices
         if type(e) is types.SliceType:
