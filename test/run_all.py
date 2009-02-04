@@ -1,5 +1,6 @@
 import glob, os, sys, unittest
 
+__all__ = ['test']
 # Find all test files.
 test_files = glob.glob('tst_*.py')
 py_path = os.environ.get('PYTHONPATH')
@@ -18,4 +19,9 @@ for f in test_files:
 
 # Run the test suite. 
 runner = unittest.TextTestRunner()
-runner.run(testsuite)
+
+def test():
+    runner.run(testsuite)
+
+if __name__ == '__main__':
+    test()
