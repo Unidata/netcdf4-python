@@ -199,7 +199,7 @@ least_significant_digit=1, bits will be 4.
     else:
         return datout
 
-def _getStartCountStride(elem, shape):
+def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
     """Return start, count, stride and put_indices that store the information 
     needed to extract chunks of data from a netCDF variable and put those
     chunks in the output array. 
@@ -375,17 +375,33 @@ def _getStartCountStride(elem, shape):
     put_indices = np.empty(sdim, dtype=object)
     
     for i, e in enumerate(elem):
+
+        # if dimensions and grp are given, set unlim flag for this dimension.
+        if (dimensions is not None and grp is not None) and len(dimensions):
+            dimname = dimensions[n]
+            # is this dimension unlimited?
+            # look in current group, and parents for dim.
+            dim = _find_dim(grp, dimname)
+            unlim = dim.isunlimited()
+        else:
+            unlim = False
+
         #    SLICE    #
         if type(e) is types.SliceType:
-            beg, end, inc = e.indices(shape[i])
+
+            # if dimension is unlimited, we may be appending.
+            length = shape[i]
+            if unlim and e.stop > shape[i]:
+                length = e.stop
+
+            beg, end, inc = e.indices(length)
             n = len(xrange(beg,end,inc))
             
             start[...,i] = beg
             count[...,i] = n
             stride[...,i] = inc
             put_indices[...,i] = slice(None)
-            
-            
+
         #    STRING    #
         elif type(e) is str:
             raise IndexError("Index cannot be a string.")
