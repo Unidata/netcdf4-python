@@ -811,9 +811,9 @@ the C{__dict__} attribute of a L{Variable} instance.
 
 L{Variable} instances behave much like array objects. Data can be
 assigned to or retrieved from a variable with indexing and slicing
-operations on the L{Variable} instance. A L{Variable} instance has five
-standard attributes: C{dimensions, dtype, shape, ndim} and
-C{least_significant_digit}. Application programs should never modify
+operations on the L{Variable} instance. A L{Variable} instance has four
+standard attributes: C{dimensions, dtype, shape, ndim}.
+Application programs should never modify
 these attributes. The C{dimensions} attribute is a tuple containing the
 names of the dimensions associated with this variable. The C{dtype}
 attribute is a string describing the variable's data type (C{i4, f8,
@@ -1274,10 +1274,30 @@ return netCDF attribute names for this L{Variable} in a list."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
-        if hasattr(data,"shape"):
-            start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
-        else:
-            start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
+
+        # A numpy array is needed. Convert if necessary.
+        if not type(data) == numpy.ndarray:
+            data = numpy.array(data,self.dtype)
+
+        start, count, stride, put_ind =\
+        _getStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
+        datashape = _out_array_shape(count)
+
+        # if a numpy scalar, create an array of the right size
+        # and fill with scalar values.
+        if data.shape == ():
+            data = numpy.tile(data,datashape)
+        # reshape data array by adding extra singleton dimensions
+        # if needed to conform with start,count,stride.
+        if len(data.shape) != len(datashape):
+            data.shape = tuple(datashape)
+        
+        # Reshape these arrays so we can iterate over them. 
+        start = start.reshape((-1, self.ndim or 1))
+        count = count.reshape((-1, self.ndim or 1))
+        stride = stride.reshape((-1, self.ndim or 1))
+        put_ind = put_ind.reshape((-1, self.ndim or 1))
+
         # if auto_maskandscale mode set to True, (through
         # a call to set_auto_maskandscale), perform
         # automatic packing using scale_factor/add_offset
@@ -1297,10 +1317,44 @@ return netCDF attribute names for this L{Variable} in a list."""
             # pack using scale_factor and add_offset.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = (data - self.add_offset)/self.scale_factor
-        # A numpy array is needed. Convert if necessary.
-        if not type(data) == numpy.ndarray:
-            data = numpy.array(data,self.dtype)
-        self._put(data, start, count, stride)
+
+        # Fill output array with data chunks. 
+        for (a,b,c,i) in zip(start, count, stride, put_ind):
+            self._put(data[tuple(i)],a,b,c)
+
+#   def __setitem__(self, elem, data):
+#       # This special method is used to assign to the netCDF variable
+#       # using "extended slice syntax". The extended slice syntax
+#       # is a perfect match for the "start", "count" and "stride"
+#       # arguments to the nc_put_var() function, and is much more easy
+#       # to use.
+#       if hasattr(data,"shape"):
+#           start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
+#       else:
+#           start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
+#       # if auto_maskandscale mode set to True, (through
+#       # a call to set_auto_maskandscale), perform
+#       # automatic packing using scale_factor/add_offset
+#       # and automatic filling of masked arrays using
+#       # missing_value/_Fill_Value.
+#       if self.maskandscale:
+#           # use missing_value as fill value.
+#           # if no missing value set, use _FillValue.
+#           if hasattr(data,'mask'):
+#               if hasattr(self, 'missing_value'):
+#                   fillval = self.missing_value
+#               elif hasattr(self, '_FillValue'):
+#                   fillval = self._FillValue
+#               else:
+#                   fillval = _default_fillvals[self.dtype.str[1:]]
+#               data = data.filled(fill_value=fillval)
+#           # pack using scale_factor and add_offset.
+#           if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+#               data = (data - self.add_offset)/self.scale_factor
+#       # A numpy array is needed. Convert if necessary.
+#       if not type(data) == numpy.ndarray:
+#           data = numpy.array(data,self.dtype)
+#       self._put(data, start, count, stride)
 
     def assignValue(self,val):
         """
@@ -1397,15 +1451,7 @@ The default value of C{maskandscale} is C{False}
         # for slice given. 
         dataelem = PyArray_SIZE(data)
         if totelem != dataelem:
-            # If just one element given, make a new array of desired
-            # size and fill it with that data.
-            if dataelem == 1:
-                #datanew = numpy.empty(totelem,self.dtype)
-                #datanew[:] = data
-                #data = datanew
-                data = data*numpy.ones(totelem,self.dtype)
-            else:
-                raise IndexError('size of data array does not conform to slice')
+            raise IndexError('size of data array does not conform to slice')
         # if data type of array doesn't match variable, 
         # try to cast the data.
         if self.dtype != data.dtype:
