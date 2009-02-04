@@ -266,7 +266,16 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
     if nDims == 0:
         ndims = 1
         shape = (1,)
-    
+
+    # special check for 1d variables.
+    # if elem is an iterable and it's either a numpy array or
+    # a sequence of integers, put it inside a list.
+    # otherwise, it will fail the next test (len(elem) > nDims).
+    if nDims == 1 and np.iterable(elem):
+        if type(elem) == np.ndarray or np.array([type(e) in [types.IntType, \
+            types.LongType] for e in elem]).all():
+            elem = [elem]
+
     # Make sure the indexing expression does not exceed the variable
     # number of dimensions.
     if np.iterable(elem):

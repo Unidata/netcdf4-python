@@ -402,58 +402,82 @@ class _Variable(object):
             v.set_auto_maskandscale(val)
     def __getitem__(self, elem):
         """Get records from a concatenated set of variables."""
+
+        # This special method is used to index the netCDF variable
+        # using the "extended slice syntax". The extended slice syntax
+        # is a perfect match for the "start", "count" and "stride"
+        # arguments to the nc_get_var() function, and is much more easy
+        # to use.
+        start, count, stride, put_ind =\
+        _getStartCountStride(elem, self.shape)
+        datashape = _out_array_shape(count)
+        data = numpy.empty(datashape, dtype=self.dtype)
+        
+        # Determine which dimensions need to be squeezed
+        # (those for which elem is an integer scalar).
+        # The convention used is that for those cases, 
+        # put_ind for this dimension is set to -1 by _getStartCountStride.
+        squeeze = data.ndim * [slice(None),]
+        for i,n in enumerate(put_ind.shape[:-1]):
+            if n == 1 and put_ind[...,i].ravel()[0] == -1:
+                squeeze[i] = 0
+
+        # Reshape the arrays so we can iterate over them. 
+        strt = start.reshape((-1, self.ndim or 1))
+        cnt = count.reshape((-1, self.ndim or 1))
+        strd = stride.reshape((-1, self.ndim or 1))
+        put_ind = put_ind.reshape((-1, self.ndim or 1))
+
+        # Fill output array with data chunks. 
         # Number of variables making up the MFVariable.Variable.
         nv = len(self._recLen)
-        # Parse the slicing expression, needed to properly handle
-        # a possible ellipsis.
-        start, count, stride = _buildStartCountStride(elem, self.shape, self.dimensions, self._dset)
-        # make sure count=-1 becomes count=1
-        count = [abs(cnt) for cnt in count]
-        if (numpy.array(stride) < 0).any():
-            raise IndexError('negative strides not allowed when slicing MFVariable Variable instance')
-        # Start, stop and step along 1st dimension, eg the unlimited
-        # dimension.
-        sta = start[0]
-        step = stride[0]
-        stop = sta + count[0] * step
-        
-        # Build a list representing the concatenated list of all records in
-        # the MFVariable variable set. The list is composed of 2-elem lists
-        # each holding:
-        #  the record index inside the variables, from 0 to n
-        #  the index of the Variable instance to which each record belongs
-        idx = []    # list of record indices
-        vid = []    # list of Variable indices
-        for n in range(nv):
-            k = self._recLen[n]     # number of records in this variable
-            idx.extend(range(k))
-            vid.extend([n] * k)
-
-        # Merge the two lists to get a list of 2-elem lists.
-        # Slice this list along the first dimension.
-        lst = zip(idx, vid).__getitem__(slice(sta, stop, step))
-
-        # Rebuild the slicing expression for dimensions 1 and ssq.
-        newSlice = [slice(None, None, None)]
-        for n in range(1, len(start)):   # skip dimension 0
-            newSlice.append(slice(start[n],
-                                  start[n] + count[n] * stride[n], stride[n]))
+        for (start,count,stride,ind) in zip(strt, cnt, strd, put_ind):
+            # make sure count=-1 becomes count=1
+            count = [abs(cnt) for cnt in count]
+            if (numpy.array(stride) < 0).any():
+                raise IndexError('negative strides not allowed when slicing MFVariable Variable instance')
+            # Start, stop and step along 1st dimension, eg the unlimited
+            # dimension.
+            sta = start[0]
+            step = stride[0]
+            stop = sta + count[0] * step
             
-        # Apply the slicing expression to each var in turn, extracting records
-        # in a list of arrays.
-        lstArr = []
-        for n in range(nv):
-            # Get the list of indices for variable 'n'.
-            idx = [i for i,numv in lst if numv == n]
-            if idx:
-                # Rebuild slicing expression for dimension 0.
-                newSlice[0] = slice(idx[0], idx[-1] + 1, step)
-                # Extract records from the var, and append them to a list
-                # of arrays.
-                data = Variable.__getitem__(self._recVar[n], tuple(newSlice))
-                lstArr.append(data)
-        
-        # Return the extracted records as a unified array.
-        if lstArr:
+            # Build a list representing the concatenated list of all records in
+            # the MFVariable variable set. The list is composed of 2-elem lists
+            # each holding:
+            #  the record index inside the variables, from 0 to n
+            #  the index of the Variable instance to which each record belongs
+            idx = []    # list of record indices
+            vid = []    # list of Variable indices
+            for n in range(nv):
+                k = self._recLen[n]     # number of records in this variable
+                idx.extend(range(k))
+                vid.extend([n] * k)
+
+            # Merge the two lists to get a list of 2-elem lists.
+            # Slice this list along the first dimension.
+            lst = zip(idx, vid).__getitem__(slice(sta, stop, step))
+
+            # Rebuild the slicing expression for dimensions 1 and ssq.
+            newSlice = [slice(None, None, None)]
+            for n in range(1, len(start)):   # skip dimension 0
+                newSlice.append(slice(start[n],
+                                      start[n] + count[n] * stride[n], stride[n]))
+                
+            # Apply the slicing expression to each var in turn, extracting records
+            # in a list of arrays.
+            lstArr = []
+            for n in range(nv):
+                # Get the list of indices for variable 'n'.
+                idx = [i for i,numv in lst if numv == n]
+                if idx:
+                    # Rebuild slicing expression for dimension 0.
+                    newSlice[0] = slice(idx[0], idx[-1] + 1, step)
+                    # Extract records from the var, and append them to a list
+                    # of arrays.
+                    dat = Variable.__getitem__(self._recVar[n],tuple(newSlice))
+                    lstArr.append(dat)
             lstArr = numpy.concatenate(lstArr)
-        return lstArr.squeeze()
+            data[tuple(ind)] = lstArr.squeeze()
+        
+        return data
