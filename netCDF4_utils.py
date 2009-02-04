@@ -272,8 +272,9 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
     # a sequence of integers, put it inside a list.
     # otherwise, it will fail the next test (len(elem) > nDims).
     if nDims == 1 and np.iterable(elem):
-        if type(elem) == np.ndarray or np.array([type(e) in [types.IntType, \
-            types.LongType] for e in elem]).all():
+        if type(elem) == np.ndarray or (type(elem) != types.TupleType and \
+            np.array([type(e) in [types.IntType, \
+            types.LongType] for e in elem]).all()):
             elem = [elem]
 
     # Make sure the indexing expression does not exceed the variable
