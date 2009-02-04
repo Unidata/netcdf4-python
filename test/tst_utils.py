@@ -35,10 +35,10 @@ class TestgetStartCountStride(unittest.TestCase):
 
     def test_fancy(self):
         # Fancy indexing
-        elem = [slice(None), [1,2,3], 8]
+        elem = [slice(None), [1,3,4], 8]
         start, count, stride, put_ind = nc._getStartCountStride(elem, (50, 4, 10))
         assert_equal(start[..., 0], 0)
-        assert_equal(start[..., 1].squeeze(), [1,2,3])
+        assert_equal(start[..., 1].squeeze(), [1,3,4])
         assert_equal(start[..., 2], 8)
         assert_equal(count[...,0], 50)
         assert_equal(count[...,1], 1)       
@@ -57,22 +57,27 @@ class TestgetStartCountStride(unittest.TestCase):
             start, count, stride, put_ind = nc._getStartCountStride(elem, (3,4,5))
         except IndexError:
             pass
+
+        # this one should be converted to a slice
+        elem = [slice(None), [1,3,5], 8]
+        start, count, stride, put_ind = nc._getStartCountStride(elem, (50, 4, 10))
+        assert_equal(put_ind[...,1].squeeze(), slice(None,None,None))
     
     
     def test_multiple_sequences(self):
-        elem = [[4,5,6], [1,2, 3], slice(None)]
+        elem = [[4,6,7], [1,3, 4], slice(None)]
         start, count, stride, put_ind = nc._getStartCountStride(elem, (50, 4, 10))
         
         assert_equal(nc._out_array_shape(count), (3, 1, 10))
         
-        assert_equal(start[..., 0].squeeze(), [4,5,6])
-        assert_equal(start[..., 1].squeeze(),  [1,2, 3])
+        assert_equal(start[..., 0].squeeze(), [4,6,7])
+        assert_equal(start[..., 1].squeeze(),  [1,3, 4])
         assert_equal(start[..., 2], 0)
         assert_equal(count[...,0], 1)
         assert_equal(count[...,1], 1)       
         assert_equal(count[...,2], 10)        
         
-        i = [1,2,3]
+        i = [1,3,4]
         elem = (i, i, i)
         start, count, stride, put_ind = nc._getStartCountStride(elem, (50, 4, 10))
         assert_equal(nc._out_array_shape(count), (3,1,1))

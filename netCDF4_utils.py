@@ -278,6 +278,9 @@ def _getStartCountStride(elem, shape):
     hasEllipsis = 0
     newElem = []
     for e in elem:
+        # Raise error if multidimensional indexing is used. 
+        if np.ndim(e) > 1:
+            raise IndexError("Index cannot be multidimensional.")
         # Replace ellipsis with slices.
         if type(e) == types.EllipsisType:
             if hasEllipsis:
@@ -310,6 +313,16 @@ def _getStartCountStride(elem, shape):
                     else:
                         if not e[i]: step = False
             if step: # it step False, can't convert to slice.
+                newElem.append(slice(start,stop,step))
+            else:
+                newElem.append(e)
+        # Replace sequence of indices with slice object if possible.
+        elif np.iterable(e):
+            start = e[0]
+            stop = e[-1]+1
+            step = e[1]-e[0]
+            ee = np.arange(start,stop,step)
+            if len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
                 newElem.append(slice(start,stop,step))
             else:
                 newElem.append(e)
