@@ -326,9 +326,35 @@ latitudes =
   90. ]
 >>>
 
-Unlike numpy array objects, netCDF L{Variable} objects with unlimited
-dimensions will grow along those dimensions if you assign data outside
-the currently defined range of indices.
+Naturally, more complex slicing rules can be used, using slices, scalar 
+integers, booleans arrays and sequences of integers. 
+
+>>> temp[10:20:2, 0, lat>60, [34,35,36]]
+
+Note however, that there are some differences between NumPy and netCDF 
+variables slicing rules. Slices behave as usual, being specified as a 
+C{start:stop:step} triplet. Using a scalar integer index C{i} takes the ith 
+element and reduces the rank of the output array by one. Integers sequence 
+indices behave as in NumPy, except that only one dimensional index arrays
+are allowed. So for instance, 
+
+>>> temp[0, 0, [0,1,2,3], [0,1,2,3]]
+
+would return an array of shape C{(4,)}. The main difference beetween netCDF 
+and NumPy slicing lies with boolean arrays. While in NumPy boolean indexing 
+is just a fancy way to do integer indexing, in netCDF we gave it a different 
+meaning. With netCDF variables, boolean indices work independently along
+each dimension. This means that a variable of shape C{(2,3,4,5)} indexed
+with C{[0, array([True, False, True]), array([False, True, True, True]), :]}
+would return a C{(2, 3, 5)} array. In NumPy, this would raise an error since
+it would be equivalent to C{[0, [0,1], [1,2,3], :]}. While this behaviour can
+cause some confusion to new users expecting NumPy's rules to hold, it
+provides a very powerful way to extract relevant data from a multidimensional
+array. 
+
+Another difference with NumPy's array objects is that netCDF L{Variable} 
+objects with unlimited dimensions will grow along those dimensions if you 
+assign data outside the currently defined range of indices.
 
 >>> # append along two unlimited dimensions by assigning to slice.
 >>> nlats = len(rootgrp.dimensions['lat'])
@@ -381,6 +407,7 @@ All the calendars currently defined in the U{CF metadata convention
 <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
 A function called L{date2index} is also provided which returns the indices
 of a netCDF time variable corresponding to a sequence of datetime instances.
+
 
 7) Reading data from a multi-file netCDF dataset.
 -------------------------------------------------

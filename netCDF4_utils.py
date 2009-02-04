@@ -207,9 +207,18 @@ def _getStartCountStride(elem, shape):
     This function is used to convert a NumPy index into a form that is 
     compatible with the nc_get_vars function. Specifically, it needs
     to interpret slices, ellipses, sequences of integers as well as
-    sequences of booleans. Note that all the fancy indexing tricks
+    sequences of booleans. 
+    
+    Note that all the fancy indexing tricks
     implemented in NumPy are not supported. In particular, multidimensional
-    indexing is not supported and will raise an IndexError. 
+    indexing is not supported and will raise an IndexError. Note also that
+    boolean indexing does not work as in NumPy. In NumPy, booleans arrays 
+    behave identically to integer indices. For netCDF variables, we thought
+    it would be useful to use a different logic, namely dimension independence. 
+    What this means is that you can do:
+    >>> v[lat>60, lon<180, :]
+    to fetch the elements of v obeying conditions on latitude and longitude. 
+  
 
     Parameters
     ----------
@@ -251,7 +260,7 @@ def _getStartCountStride(elem, shape):
     # Adapted from pycdf (http://pysclint.sourceforge.net/pycdf)
     # by Andre Gosselin..
     # Modified by David Huard to handle efficiently fancy indexing with
-    # sequences of integers. 
+    # sequences of integers or booleans. 
     
     nDims = len(shape)
     if nDims == 0:
@@ -302,13 +311,7 @@ def _getStartCountStride(elem, shape):
         elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
             if shape[i] != len(e):
                 raise IndexError, 'Boolean array must have the same shape as the data along this dimension.'
-            elif ind_dim is None:
-                sdim.append(e.sum())
-                ind_dim = i
-            elif e.sum() == 1 or e.sum() == sdim[ind_dim]:
-                sdim.append(1)
-            else:
-                raise IndexError, "Boolean arrays must have the same number of True elements."
+            sdim.append(e.sum())
             
         # Sequence of indices
         # If multiple sequences are used, they must have the same length. 
@@ -358,17 +361,17 @@ def _getStartCountStride(elem, shape):
                 # Originally, I thought boolean indexing worked differently than 
                 # integer indexing, namely that we could select the rows and columns 
                 # independently. 
-                #start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
-                #put_indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
+                start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
+                put_indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
                 
                 
             # Sequence of INTEGER INDICES
-            
-            start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, ind_dim, np.ones(sdim[:-1]))
-            if i == ind_dim:
-                put_indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, ind_dim, np.ones(sdim[:-1], int))
             else:
-                put_indices[...,i] = -1
+                start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, ind_dim, np.ones(sdim[:-1]))
+                if i == ind_dim:
+                    put_indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, ind_dim, np.ones(sdim[:-1], int))
+                else:
+                    put_indices[...,i] = -1
 
             count[...,i] = 1
             stride[...,i] = 1

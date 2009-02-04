@@ -51,6 +51,14 @@ class TestgetStartCountStride(unittest.TestCase):
         elem = [slice(None, -1,2),i,slice(None)]
         start, count, stride, put_ind = nc._getStartCountStride(elem, (9,10,11))
     
+    
+        try:
+            elem = ( np.arange(6).reshape((3,2)), slice(None), slice(None) )
+            start, count, stride, put_ind = nc._getStartCountStride(elem, (3,4,5))
+        except IndexError:
+            pass
+    
+    
     def test_multiple_sequences(self):
         elem = [[4,5,6], [1,2, 3], slice(None)]
         start, count, stride, put_ind = nc._getStartCountStride(elem, (50, 4, 10))
@@ -85,22 +93,17 @@ class TestgetStartCountStride(unittest.TestCase):
         
         assert_equal(nc._out_array_shape(count), (1, 4, 3))
     
-        elem = (np.array([True, True, False]), np.array([True, True, False, False]), slice(None))
+        # Multiple booleans --- The behavior is different from NumPy in this case. 
+        elem = (np.array([True, True, False]), np.array([True, True, False, True]), slice(None))
         start, count, stride, put_ind = nc._getStartCountStride(elem, (3,4,5))
-        assert_equal(nc._out_array_shape(count), (2,1,5))
+        assert_equal(nc._out_array_shape(count), (2,3,5))
     
         try:
             elem = (np.array([True, True, False]), np.array([True, True, True, False]), slice(None))
         except IndexError:
             pass
     
-        try:
-            elem = ( np.arange(6).reshape((3,2)), slice(None), slice(None) )
-            start, count, stride, put_ind = nc._getStartCountStride(elem, (3,4,5))
-        except IndexError:
-            pass
-    
-    
+
         
 if __name__=='__main__':
     unittest.main()
