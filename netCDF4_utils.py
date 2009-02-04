@@ -275,15 +275,44 @@ def _getStartCountStride(elem, shape):
     else:   # Convert single index to sequence
         elem = [elem]
         
-    # Replace ellipsis with slices.
     hasEllipsis = 0
     newElem = []
     for e in elem:
+        # Replace ellipsis with slices.
         if type(e) == types.EllipsisType:
             if hasEllipsis:
                 raise IndexError("At most one ellipsis allowed in a slicing expression")
             # The ellipsis stands for the missing dimensions.
             newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
+        # Replace boolean array with slice object if possible.
+        elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
+            el = e.tolist()
+            start = el.index(True)
+            el.reverse()
+            stop = len(el)-el.index(True)
+            step = False
+            if e[start:stop].all():
+                step = 1
+            else:
+                n1 = start+1
+                ee = e[n1]
+                estart = e[start]
+                while ee != estart:
+                    n1 = n1 + 1
+                    ee = e[n1]
+                step = n1-start
+                # check to make sure e[start:stop:step] are all True,
+                # and other elements in e[start:stop] are all False.
+                ii = range(start,stop,step)
+                for i in range(start,stop):
+                    if i not in ii:
+                        if e[i]: step = False
+                    else:
+                        if not e[i]: step = False
+            if step: # it step False, can't convert to slice.
+                newElem.append(slice(start,stop,step))
+            else:
+                newElem.append(e)
         else:
             newElem.append(e)
     elem = newElem
