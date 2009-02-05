@@ -478,6 +478,7 @@ class _Variable(object):
                     dat = Variable.__getitem__(self._recVar[n],tuple(newSlice))
                     lstArr.append(dat)
             lstArr = numpy.concatenate(lstArr)
+            if dat.dtype != data.dtype: data = data.astype(dat.dtype)
             data[tuple(ind)] = lstArr.squeeze()
 
         # Remove extra singleton dimensions. 
