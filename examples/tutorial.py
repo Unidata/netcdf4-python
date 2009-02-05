@@ -69,22 +69,33 @@ print rootgrp.variables
 
 import numpy
 # no unlimited dimension, just assign to slice.
-latitudes[:] = numpy.arange(-90,91,2.5)
+lats =  numpy.arange(-90,91,2.5)
+lons =  numpy.arange(-180,180,2.5)
+latitudes[:] = lats
+longitudes[:] = lons
 print 'latitudes =\n',latitudes[:]
+print 'longitudes =\n',longitudes[:]
 
 # append along two unlimited dimensions by assigning to slice.
 nlats = len(rootgrp.dimensions['lat'])
 nlons = len(rootgrp.dimensions['lon'])
 print 'temp shape before adding data = ',temp.shape
 from numpy.random.mtrand import uniform # random number generator.
-temp[0:5,0:10,:,:] = uniform(size=(5,10,nlats,nlons))
+temp[0:20,0:10,:,:] = uniform(size=(20,10,nlats,nlons))
 print 'temp shape after adding data = ',temp.shape
 # levels have grown, but no values yet assigned.
 print 'levels shape after adding pressure data = ',levels.shape
 
+# assign values to levels dimension variable.
+levels[:] =  [1000.,850.,700.,500.,300.,250.,200.,150.,100.,50.]
+# fancy slicing
+tempdat = temp[10:20:2, [1,3,6], lats>0, lons>0]
+print 'shape of fancy temp slice = ',tempdat.shape
+print temp[0, 0, [0,1,2,3], [0,1,2,3]].shape
+
 # fill in times.
 from datetime import datetime, timedelta
-from netCDF4 import num2date, date2num
+from netCDF4 import num2date, date2num, date2index
 dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
 times[:] = date2num(dates,units=times.units,calendar=times.calendar)
 print 'time values (in units %s): ' % times.units+'\\n',times[:]

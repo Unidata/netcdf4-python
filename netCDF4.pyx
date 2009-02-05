@@ -314,7 +314,10 @@ Now that you have a netCDF L{Variable} instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.
 
 >>> import numpy 
->>> latitudes[:] = numpy.arange(-90,91,2.5)
+>>> lats =  numpy.arange(-90,91,2.5)
+>>> lons =  numpy.arange(-180,180,2.5)
+>>> latitudes[:] = lats
+>>> longitudes[:] = lons
 >>> print 'latitudes =\\n',latitudes[:]
 latitudes =
 [-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5
@@ -326,33 +329,7 @@ latitudes =
   90. ]
 >>>
 
-Naturally, more complex slicing rules can be used, using slices, scalar 
-integers, booleans arrays and sequences of integers. 
-
->>> temp[10:20:2, 0, lat>60, [34,35,36]]
-
-Note however, that there are some differences between NumPy and netCDF 
-variables slicing rules. Slices behave as usual, being specified as a 
-C{start:stop:step} triplet. Using a scalar integer index C{i} takes the ith 
-element and reduces the rank of the output array by one. Integers sequence 
-indices behave as in NumPy, except that only one dimensional index arrays
-are allowed. So for instance, 
-
->>> temp[0, 0, [0,1,2,3], [0,1,2,3]]
-
-would return an array of shape C{(4,)}. The main difference beetween netCDF 
-and NumPy slicing lies with boolean arrays. While in NumPy boolean indexing 
-is just a fancy way to do integer indexing, in netCDF we gave it a different 
-meaning. With netCDF variables, boolean indices work independently along
-each dimension. This means that a variable of shape C{(2,3,4,5)} indexed
-with C{[0, array([True, False, True]), array([False, True, True, True]), :]}
-would return a C{(2, 3, 5)} array. In NumPy, this would raise an error since
-it would be equivalent to C{[0, [0,1], [1,2,3], :]}. While this behaviour can
-cause some confusion to new users expecting NumPy's rules to hold, it
-provides a very powerful way to extract relevant data from a multidimensional
-array. 
-
-Another difference with NumPy's array objects is that netCDF L{Variable} 
+Unlike NumPy's array objects, netCDF L{Variable} 
 objects with unlimited dimensions will grow along those dimensions if you 
 assign data outside the currently defined range of indices.
 
@@ -375,6 +352,42 @@ levels shape after adding pressure data =  (10,)
 Note that the size of the levels variable grows when data is appended
 along the C{level} dimension of the variable C{temp}, even though no
 data has yet been assigned to levels.
+
+>>> # now, assign data to levels dimension variable.
+>>> levels[:] =  [1000.,850.,700.,500.,300.,250.,200.,150.,100.,50.]
+
+However, that there are some differences between NumPy and netCDF 
+variable slicing rules. Slices behave as usual, being specified as a 
+C{start:stop:step} triplet. Using a scalar integer index C{i} takes the ith 
+element and reduces the rank of the output array by one. Boolean array and
+integer sequence indexing behaves differently for netCDF variables
+than for numpy arrays.  Only 1-d boolean arrays and integer sequences are
+allowed, and these indices work independently along each dimension.  This
+means that
+
+>>> temp[0, 0, [0,1,2,3], [0,1,2,3]]
+
+returns an array of shape (4,4) when slicing a netCDF variable, but for a
+numpy array it returns an array of shape (4,).  
+Similarly, a netCDF variable of shape C{(2,3,4,5)} indexed
+with C{[0, array([True, False, True]), array([False, True, True, True]), :]}
+would return a C{(2, 3, 5)} array. In NumPy, this would raise an error since
+it would be equivalent to C{[0, [0,1], [1,2,3], :]}. While this behaviour can
+cause some confusion for those used to NumPy's 'fancy indexing' rules, it
+provides a very powerful way to extract data from multidimensional netCDF
+variables by using logical operations on the dimension arrays to create slices.
+
+For example, 
+
+>>> tempdat = temp[10:20:2, [1,3,6], lats>0, lons>0]
+
+will extract time indices 10,12,14,16 and 18, pressure levels
+850, 500 and 200 hPa, all Northern Hemisphere latitudes and Eastern
+Hemisphere longitudes, resulting in a numpy array of shape  (5, 3, 36, 71).
+
+>>> print 'shape of fancy temp slice = ',tempdat.shape
+shape of fancy temp slice =  (5, 3, 36, 71)
+>>>
 
 Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF and COARDS) specify that time should be
