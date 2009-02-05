@@ -1229,7 +1229,13 @@ return netCDF attribute names for this L{Variable} in a list."""
 
         # Fill output array with data chunks. 
         for (a,b,c,i) in zip(start, count, stride, put_ind):
-            data[tuple(i)] = numpy.squeeze(self._get(a,b,c))
+            # FIXME:
+            # this is a workaround so MFDataset slicing works
+            # with singleton dimensions.
+            try:
+                data[tuple(i)] = numpy.squeeze(self._get(a,b,c))
+            except ValueError:
+                data[tuple(i)] = self._get(a,b,c)
     
         # Remove extra dimensions. 
         data = data[tuple(squeeze)]

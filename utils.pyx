@@ -461,8 +461,8 @@ class _Variable(object):
             # Rebuild the slicing expression for dimensions 1 and ssq.
             newSlice = [slice(None, None, None)]
             for n in range(1, len(start)):   # skip dimension 0
-                newSlice.append(slice(start[n],
-                                      start[n] + count[n] * stride[n], stride[n]))
+                s = slice(start[n],start[n] + count[n] * stride[n], stride[n])
+                newSlice.append(s)
                 
             # Apply the slicing expression to each var in turn, extracting records
             # in a list of arrays.
@@ -479,5 +479,8 @@ class _Variable(object):
                     lstArr.append(dat)
             lstArr = numpy.concatenate(lstArr)
             data[tuple(ind)] = lstArr.squeeze()
+
+        # Remove extra singleton dimensions. 
+        data = data[tuple(squeeze)]
         
         return data
