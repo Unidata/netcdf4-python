@@ -20,15 +20,15 @@ netCDF4._set_default_format	netCDF4-module.html#_set_default_format
 netCDF4.num2date	netCDF4-module.html#num2date
 netCDF4._private_atts	netCDF4-module.html#_private_atts
 netCDF4._check_index	netCDF4-module.html#_check_index
-netCDF4.chartostring	netCDF4-module.html#chartostring
+netCDF4._nctonptype	netCDF4-module.html#_nctonptype
 netCDF4.stringtochar	netCDF4-module.html#stringtochar
+netCDF4.chartostring	netCDF4-module.html#chartostring
 netCDF4.getlibversion	netCDF4-module.html#getlibversion
 netCDF4.date2num	netCDF4-module.html#date2num
 netCDF4._value	netCDF4-module.html#_value
 netCDF4.date2index	netCDF4-module.html#date2index
 netCDF4._supportedtypes	netCDF4-module.html#_supportedtypes
 netCDF4._key	netCDF4-module.html#_key
-netCDF4._nctonptype	netCDF4-module.html#_nctonptype
 netCDF4._npversion	netCDF4-module.html#_npversion
 netCDF4._nptonctype	netCDF4-module.html#_nptonctype
 netCDF4._default_fillvals	netCDF4-module.html#_default_fillvals
@@ -51,6 +51,7 @@ netcdftime.netcdftime.date2num	netcdftime.netcdftime-module.html#date2num
 netcdftime.netcdftime._dateparse	netcdftime.netcdftime-module.html#_dateparse
 netcdftime.netcdftime._findall	netcdftime.netcdftime-module.html#_findall
 netcdftime.netcdftime.DateFromJulianDay	netcdftime.netcdftime-module.html#DateFromJulianDay
+netcdftime.netcdftime._toscalar	netcdftime.netcdftime-module.html#_toscalar
 netcdftime.netcdftime.date2index	netcdftime.netcdftime-module.html#date2index
 netCDF3.Dataset	netCDF3.Dataset-class.html
 netCDF3.Dataset._enddef	netCDF3.Dataset-class.html#_enddef
