@@ -1,6 +1,6 @@
 from netCDF4 import Dataset
 from numpy.random import seed, randint
-from numpy.testing import assert_array_equal
+from numpy.testing import assert_array_equal, assert_equal
 import tempfile, unittest, os, random
 import numpy as NP
 
@@ -22,6 +22,7 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension('zu',None)
         v = f.createVariable('data','u1',('x','y','z'))
         vu = f.createVariable('datau','u1',('xu','y','zu'))
+        v1 = f.createVariable('data1d', 'u1', ('x',))
         # variable with no unlimited dim.
         # write slice in reverse order
         v[:,::-1,:] = data
@@ -29,17 +30,20 @@ class VariablesTestCase(unittest.TestCase):
         # write slice in reverse order
         #vu[0:xdim,::-1,0:zdim] = data
         vu[:,::-1,:] = data
+        
+        v1[:] = data[:, 0, 0]
         f.close()
 
     def tearDown(self):
         # Remove the temporary files
         os.remove(self.file)
 
-    def runTest(self):
+    def test_3d(self):
         """testing variable slicing"""
         f  = Dataset(self.file, 'r')
         v = f.variables['data']
         vu = f.variables['datau']
+        
         assert_array_equal(v[:], datarev)
         # test reading of slices.
         # negative value means count back from end.
@@ -61,6 +65,22 @@ class VariablesTestCase(unittest.TestCase):
         # index using an integer array scalar
         i = NP.ones(1,'i4')[0]
         assert_array_equal(v[i],datarev[1])
+        
+        f.close()
+
+    def test_1d(self):
+        f  = Dataset(self.file, 'r')
+        v1 = f.variables['data1d']
+        d = data[:,0,0]
+        assert_equal(v1[:], d)
+        assert_equal(v1[4:], d[4:])
+        i1 = NP.array([2,3,4])
+        assert_equal(v1[i1], d[i1])
+        i2 = NP.array([2,3,5])
+        assert_equal(v1[i2], d[i2])
+        assert_equal(v1[d<5], d[d<5])
+        assert_equal(v1[5], d[5])
+
 
 if __name__ == '__main__':
     unittest.main()

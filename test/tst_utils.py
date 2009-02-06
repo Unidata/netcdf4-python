@@ -108,6 +108,54 @@ class TestgetStartCountStride(unittest.TestCase):
         except IndexError:
             pass
     
+    def test_1d(self):
+        # Scalar
+        elem = (0)
+        start, count, stride, put_ind = nc._getStartCountStride(elem, (10,))
+        assert_equal(start, 0)
+        assert_equal(count, 1)
+        assert_equal(stride, 1)
+        assert_equal(put_ind, -1)
+        
+        # Slice
+        elem = (slice(2,5,2))
+        start, count, stride, put_ind = nc._getStartCountStride(elem, (10,))
+        assert_equal(start, 2)
+        assert_equal(count, 2)
+        assert_equal(stride, 2)
+        assert_equal(put_ind, slice(None))
+        
+        # Integer sequence
+        elem = ([2,4,7])
+        start, count, stride, put_ind = nc._getStartCountStride(elem, (10,))
+        assert_equal(start.squeeze(), [2,4,7])
+        assert_equal(count, 1)
+        assert_equal(stride, 1)
+        assert_equal(put_ind[:,0], [0,1,2])
+
+        # Boolean slicing
+        elem = (np.array([True, True, False, True, False]),)
+        start, count, stride, put_ind = nc._getStartCountStride(elem, (5,))
+        assert_equal(start.squeeze(), [0,1,3])
+        assert_equal(count, 1)
+        assert_equal(stride, 1)
+        assert_equal(put_ind[:,0], [0,1,2])
+
+        # Integer sequence simplification
+        elem = ([2,3,4])
+        start, count, stride, put_ind = nc._getStartCountStride(elem, (10,))
+        assert_equal(start, 2)
+        assert_equal(count, 3)
+        assert_equal(stride, 1)
+        assert_equal(put_ind, slice(None))
+
+        # Boolean indices simplification
+        elem = (np.array([False, True, True, True, False]))
+        start, count, stride, put_ind = nc._getStartCountStride(elem, (5,))
+        assert_equal(start, 1)
+        assert_equal(count, 3)
+        assert_equal(stride, 1)
+        assert_equal(put_ind, slice(None))
 
         
 if __name__=='__main__':
