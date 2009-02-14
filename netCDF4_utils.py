@@ -226,6 +226,13 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
       The indexing information.
     shape : tuple
       The shape of the netCDF variable.
+    dimensions : sequence 
+      The name of the dimensions. This is only useful to find out 
+      whether or not some dimensions are unlimited. 
+    grp  : netCDF Group
+      The netCDF group to which the variable being set belongs to. 
+    datashape : sequence
+      The shape of the data that is being stored. 
       
     Returns
     -------
@@ -410,7 +417,7 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
             # yet.
             if shape[i]: 
                 # length of slice may be longer than current shape
-                # of dimension is unlimited.
+                # if dimension is unlimited.
                 if unlim and e.stop > shape[i]:
                     length = e.stop
                 else:

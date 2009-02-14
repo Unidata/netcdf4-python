@@ -158,5 +158,40 @@ class TestgetStartCountStride(unittest.TestCase):
         assert_equal(put_ind, slice(None))
 
         
+class TestsetStartCountStride(unittest.TestCase):
+    
+    def test_basic(self):
+        grp = FakeGroup({'x':False, 'y':False, 'time':True})
+        elem=(slice(None), slice(None), 1)
+        start, count, stride, put_ind = nc._getStartCountStride(elem, (22, 25, 1), ['x', 'y', 'time'], grp, (22,25))
+    
+        assert_equal(start[0][0][0], [0, 0, 1])
+        assert_equal(count[0][0][0], (22, 25, 1))
+        assert_equal(put_ind[0][0][0], (slice(None), slice(None), -1))
+    
+        elem=(slice(None), slice(None), slice(1, 4))
+        start, count, stride, put_ind = nc._getStartCountStride(elem, (22, 25, 1), ['x', 'y', 'time'], grp, (22,25, 3))
+    
+        assert_equal(start[0][0][0], [0, 0, 1])
+        assert_equal(count[0][0][0], (22, 25, 3))
+        assert_equal(put_ind[0][0][0], (slice(None), slice(None), slice(1, 4)))
+    
+    
+    
+class FakeGroup():
+    """Create a fake group instance by passing a dictionary of booleans
+    keyed by dimension name."""
+    def __init__(self, dimensions):
+        self.dimensions = {}
+        for k,v in dimensions.iteritems():
+            self.dimensions[k] = FakeDimension(v)
+    
+class FakeDimension():
+    def __init__(self, unlimited=False):
+        self.unlimited = unlimited
+    
+    def isunlimited(self):
+        return self.unlimited
+
 if __name__=='__main__':
     unittest.main()
