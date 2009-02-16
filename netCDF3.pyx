@@ -1328,7 +1328,7 @@ return netCDF attribute names for this L{Variable} in a list."""
         for (a,b,c,i) in zip(start, count, stride, put_ind):
             dataput = data[tuple(i)]
             # convert array scalar to regular array with one element.
-            if dataput.shape == (): dataput=numpy.array([dataput],dataput.dtype)
+            if dataput.shape == (): dataput=numpy.array(dataput,dataput.dtype)
             self._put(dataput,a,b,c)
 
 #   def __setitem__(self, elem, data):
