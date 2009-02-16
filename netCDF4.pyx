@@ -1953,7 +1953,10 @@ each dimension is returned."""
 
         # Fill output array with data chunks. 
         for (a,b,c,i) in zip(start, count, stride, put_ind):
-            self._put(data[tuple(i)],a,b,c)
+            dataput = data[tuple(i)]
+            # convert array scalar to regular array with one element.
+            if dataput.shape == (): dataput=numpy.array([dataput],dataput.dtype)
+            self._put(dataput,a,b,c)
  
 #   def __setitem__(self, elem, data):
 #        # This special method is used to assign to the netCDF variable
