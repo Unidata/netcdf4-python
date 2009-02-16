@@ -1,6 +1,6 @@
 from netCDF4 import Dataset
 from numpy.random import seed, randint
-from numpy.testing import assert_array_equal
+from numpy.testing import assert_array_equal, assert_equal
 import tempfile, unittest, os, random
 import numpy as np
 
@@ -26,7 +26,13 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension('x',None)
         f.createDimension('y',ydim)
         f.createDimension('z',zdim)
+        f.createDimension('time', None)
         v = f.createVariable('data','i2',('x','y','z'))
+
+        vu = f.createVariable('datau', 'i2', ('x', 'y', 'time'))
+        
+        v[:] = data
+
         v1 = f.createVariable('data1','i2','x')
         self.data1 = data1
         self.data = data
@@ -48,13 +54,14 @@ class VariablesTestCase(unittest.TestCase):
         self.data1[ib2] = -200
         v1[ib3] = -300
         self.data1[ib3] = -300
+
         f.close()
 
     def tearDown(self):
         # Remove the temporary files
         os.remove(self.file)
 
-    def runTest(self):
+    def test_get(self):
         """testing 'fancy indexing'"""
         f  = Dataset(self.file, 'r')
         v = f.variables['data']
@@ -66,7 +73,8 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(v[1:2,1:3,:], self.data[1:2,1:3,:])
         # Three sequences
         assert_array_equal(v[i,i,i], self.data[i,i,i])
-    
+        assert_equal(v[i,i,i].shape, (3,))
+        
         # Two booleans and one slice.  Different from NumPy
         # ibx,ibz should be converted to slice, iby not.
         ibx = np.array([True, False, True, False, True, False, True, False, True])
@@ -88,6 +96,24 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(v[[1,2],...],self.data[[1,2],...])
         
         assert_array_equal(v[0], self.data[0])
+        
+        f.close()
+
+    def test_set(self):
+        f  = Dataset(self.file, 'a')
+        data = np.arange(180).reshape((9,10,2))
+        vu = f.variables['datau']
+        
+        vu[:,:,0] = data[:,:,0]
+        assert_array_equal(vu[:,:,:], data[:,:,:1])
+        
+        vu[:,:,1:] = data
+        assert_array_equal(vu[:, :, 1:], data)
+        
+        vu[:,:,0] = 0.0
+        assert_array_equal(vu[:, :, 0], 0.)
+        f.close()
+        
 
 if __name__ == '__main__':
     unittest.main()

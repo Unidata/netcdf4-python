@@ -82,5 +82,6 @@ class VariablesTestCase(unittest.TestCase):
         assert_equal(v1[5], d[5])
 
 
+
 if __name__ == '__main__':
     unittest.main()
