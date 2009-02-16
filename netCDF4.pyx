@@ -535,7 +535,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
 # pure python utilities
-from netCDF4_utils import _StartCountStride, _buildStartCountStride, _quantize, _find_dim, _out_array_shape
+from netCDF4_utils import _StartCountStride, _quantize, _find_dim, _out_array_shape
 
 __version__ = "0.7.7"
 
@@ -1957,43 +1957,6 @@ each dimension is returned."""
             # convert array scalar to regular array with one element.
             if dataput.shape == (): dataput=numpy.array(dataput,dataput.dtype)
             self._put(dataput,a,b,c)
- 
-#   def __setitem__(self, elem, data):
-#        # This special method is used to assign to the netCDF variable
-#        # using "extended slice syntax". The extended slice syntax
-#        # is a perfect match for the "start", "count" and "stride"
-#        # arguments to the nc_put_var() function, and is much more easy
-#        # to use.
-#        if hasattr(data,"shape"):
-#            start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
-#        else:
-#            start, count, stride = _buildStartCountStride(elem,self.shape,self.dimensions,self._grp)
-#        # quantize data if least_significant_digit attribute set.
-#        if 'least_significant_digit' in self.ncattrs():
-#            data = _quantize(data,self.least_significant_digit)
-#        # if auto_maskandscale mode set to True, (through
-#        # a call to set_auto_maskandscale), perform
-#        # automatic packing using scale_factor/add_offset
-#        # and automatic filling of masked arrays using
-#        # missing_value/_Fill_Value.
-#        if self.maskandscale:
-#            # use missing_value as fill value.
-#            # if no missing value set, use _FillValue.
-#            if hasattr(data,'mask'):
-#                if hasattr(self, 'missing_value'):
-#                    fillval = self.missing_value
-#                elif hasattr(self, '_FillValue'):
-#                    fillval = self._FillValue
-#                else:
-#                    fillval = _default_fillvals[self.dtype.str[1:]]
-#                data = data.filled(fill_value=fillval)
-#            # pack using scale_factor and add_offset.
-#            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
-#                data = (data - self.add_offset)/self.scale_factor
-#        # A numpy array is needed. Convert if necessary.
-#        if not type(data) == numpy.ndarray:
-#            data = numpy.array(data,self.dtype)
-#        self._put(data, start, count, stride)
 
     def assignValue(self,val):
         """
