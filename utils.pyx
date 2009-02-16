@@ -409,14 +409,14 @@ class _Variable(object):
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
         start, count, stride, put_ind =\
-        _getStartCountStride(elem, self.shape)
+        _StartCountStride(elem, self.shape)
         datashape = _out_array_shape(count)
         data = numpy.empty(datashape, dtype=self.dtype)
         
         # Determine which dimensions need to be squeezed
         # (those for which elem is an integer scalar).
         # The convention used is that for those cases, 
-        # put_ind for this dimension is set to -1 by _getStartCountStride.
+        # put_ind for this dimension is set to -1 by _StartCountStride.
         squeeze = data.ndim * [slice(None),]
         for i,n in enumerate(put_ind.shape[:-1]):
             if n == 1 and put_ind[...,i].ravel()[0] == -1:

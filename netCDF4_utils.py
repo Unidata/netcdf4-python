@@ -199,16 +199,15 @@ least_significant_digit=1, bits will be 4.
     else:
         return datout
 
-def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
-    """Return start, count, stride and put_indices that store the information 
-    needed to extract chunks of data from a netCDF variable and put those
-    chunks in the output array. 
-    
+def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
+    """Return start, count, stride and indices needed to store/extract data
+    into/from a netCDF variable. 
+        
     This function is used to convert a NumPy index into a form that is 
     compatible with the nc_get_vars function. Specifically, it needs
     to interpret slices, ellipses, sequences of integers as well as
     sequences of booleans. 
-    
+
     Note that all the fancy indexing tricks
     implemented in NumPy are not supported. In particular, multidimensional
     indexing is not supported and will raise an IndexError. Note also that
@@ -218,21 +217,27 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
     What this means is that you can do:
     >>> v[lat>60, lon<180, :]
     to fetch the elements of v obeying conditions on latitude and longitude. 
-  
-
+    
+    This function is used both by the __setitem__ and __getitem__ method of 
+    the Variable class. Although the behavior is similar in both cases, there 
+    are some differences to be noted. 
+    
     Parameters
     ----------
     elem : tuple of integer, slice, ellipsis or sequence of integers. 
-      The indexing information.
+      The indexing information for the netCDF Variable: Variable[elem]
     shape : tuple
-      The shape of the netCDF variable.
+      The current shape of the netCDF variable. 
     dimensions : sequence 
       The name of the dimensions. This is only useful to find out 
-      whether or not some dimensions are unlimited. 
+      whether or not some dimensions are unlimited. Only needed within
+      __setitem__.
     grp  : netCDF Group
       The netCDF group to which the variable being set belongs to. 
+      Only needed within __setitem__.
     datashape : sequence
-      The shape of the data that is being stored. 
+      The shape of the data that is being stored. Only needed within
+      __setitem__.
       
     Returns
     -------
@@ -244,9 +249,9 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
       An array of dimension (n+1) storing the number of elements to get. 
     stride : ndarray (..., n)
       An array of dimension (n+1) storing the steps between each datum. 
-    put_indices : ndarray (..., n)
+    indices : ndarray (..., n)
       An array storing the indices describing the location of the 
-      data chunk in the target array. 
+      data chunk in the target/source array (__getitem__/__setitem__). 
       
     Notes:
     
@@ -352,7 +357,7 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
         for n in range(len(elem)+1,len(shape)+1):
             elem.append(slice(None,None,None))  
 
-    # Compute the dimensions of the start, count, stride and put_indices arrays.
+    # Compute the dimensions of the start, count, stride and indices arrays.
     # The number of elements in the first n dimensions corresponds to the 
     # number of times the _get method will be called. 
     sdim = []
@@ -383,13 +388,13 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
         else:
             sdim.append(1)
         
-    # Create the start, count, stride and put_indices arrays. 
+    # Create the start, count, stride and indices arrays. 
     
     sdim.append(max(nDims, 1))
     start = np.empty(sdim, dtype=int)
     count = np.empty(sdim, dtype=int)
     stride = np.empty(sdim, dtype=int)
-    put_indices = np.empty(sdim, dtype=object)
+    indices = np.empty(sdim, dtype=object)
     
     for i, e in enumerate(elem):
 
@@ -443,7 +448,7 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
             start[...,i] = beg
             count[...,i] = n
             stride[...,i] = inc
-            put_indices[...,i] = slice(None)
+            indices[...,i] = slice(None)
 
         #    STRING    #
         elif type(e) is str:
@@ -460,16 +465,16 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
                 # integer indexing, namely that we could select the rows and columns 
                 # independently. 
                 start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
-                put_indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
+                indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
                 
                 
             # Sequence of INTEGER INDICES
             else:
                 start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, ind_dim, np.ones(sdim[:-1]))
                 if i == ind_dim:
-                    put_indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, ind_dim, np.ones(sdim[:-1], int))
+                    indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, ind_dim, np.ones(sdim[:-1], int))
                 else:
-                    put_indices[...,i] = -1
+                    indices[...,i] = -1
 
             count[...,i] = 1
             stride[...,i] = 1
@@ -486,11 +491,11 @@ def _getStartCountStride(elem, shape, dimensions=None, grp=None, datashape=None)
             
             count[...,i] = 1
             stride[...,i] = 1
-            put_indices[...,i] = -1    # Use -1 instead of 0 to indicate that 
+            indices[...,i] = -1    # Use -1 instead of 0 to indicate that 
                                        # this dimension shall be squeezed. 
             
             
-    return start, count, stride, put_indices#, out_shape
+    return start, count, stride, indices#, out_shape
 
 def _out_array_shape(count):
     """Return the output array shape given the count array created by getStartCountStride"""

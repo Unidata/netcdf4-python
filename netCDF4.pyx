@@ -535,7 +535,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
 # pure python utilities
-from netCDF4_utils import _getStartCountStride, _buildStartCountStride, _quantize, _find_dim, _out_array_shape
+from netCDF4_utils import _StartCountStride, _buildStartCountStride, _quantize, _find_dim, _out_array_shape
 
 __version__ = "0.7.7"
 
@@ -1833,14 +1833,14 @@ each dimension is returned."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
-        start, count, stride, put_ind = _getStartCountStride(elem,self.shape)
+        start, count, stride, put_ind = _StartCountStride(elem,self.shape)
         datashape = _out_array_shape(count)
         data = numpy.empty(datashape, dtype=self.dtype)
         
         # Determine which dimensions need to be squeezed
         # (those for which elem is an integer scalar).
         # The convention used is that for those cases, 
-        # put_ind for this dimension is set to -1 by _getStartCountStride.
+        # put_ind for this dimension is set to -1 by _StartCountStride.
         squeeze = data.ndim * [slice(None),]
         for i,n in enumerate(put_ind.shape[:-1]):
             if n == 1 and put_ind[...,i].ravel()[0] == -1:
@@ -1911,7 +1911,7 @@ each dimension is returned."""
             data = numpy.array(data,self.dtype)
 
         start, count, stride, put_ind =\
-        _getStartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
+        _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
         datashape = _out_array_shape(count)
 
         # if a numpy scalar, create an array of the right size
