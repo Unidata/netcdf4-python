@@ -276,26 +276,8 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
     
     nDims = len(shape)
     if nDims == 0:
-        ndims = 1
+        nDims = 1
         shape = (1,)
-
-    # special check for 1d variables.
-    # if elem is an iterable and it's either a numpy array or
-    # a sequence of integers, put it inside a list.
-    # otherwise, it will fail the next test (len(elem) > nDims).
-    #if nDims == 1 and np.iterable(elem):
-    #    if type(elem) == np.ndarray or (type(elem) != types.TupleType and \
-    #        np.array([type(e) in [types.IntType, \
-    #        types.LongType] for e in elem]).all()):
-    #        elem = [elem]
-
-    ## Make sure the indexing expression does not exceed the variable
-    ## number of dimensions.
-    #if np.iterable(elem):
-    #    if len(elem) > nDims:
-    #        raise ValueError("slicing expression exceeds the number of dimensions of the variable")
-    #else:   # Convert single index to sequence
-    #    elem = [elem]
 
     # When a single array or (non-tuple) sequence of integers is given
     # as a slice, assume it applies to the first dimension,
@@ -366,9 +348,13 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
     elem = newElem
 
     # If slice doesn't cover all dims, assume ellipsis for rest of dims.
-    if len(elem) < len(shape):
-        for n in range(len(elem)+1,len(shape)+1):
+    if len(elem) < nDims:
+        for n in range(len(elem)+1,nDims+1):
             elem.append(slice(None,None,None))  
+
+    # make sure there are not too many dimensions in slice.
+    if len(elem) > nDims:
+        raise ValueError("slicing expression exceeds the number of dimensions of the variable")
 
     # Compute the dimensions of the start, count, stride and indices arrays.
     # The number of elements in the first n dimensions corresponds to the 
