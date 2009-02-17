@@ -257,27 +257,17 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
                 inc = 1
             # shape[i] can be zero for unlim dim that hasn't been written to
             # yet.
-            if shape[i]: 
-                # length of slice may be longer than current shape
-                # if dimension is unlimited.
-                if unlim and e.stop > shape[i]:
-                    length = e.stop
+            # length of slice may be longer than current shape
+            # if dimension is unlimited.
+            if unlim and e.stop > shape[i]:
+                length = e.stop
+            elif unlim and e.stop is None and datashape != ():
+                if e.start is None:
+                    length = datashape[i]
                 else:
-                    length = shape[i]
-            else: # shape[i] == 0
-                if inc > 0:
-                    if e.stop is None:
-                        if unlim and datashape is not None:
-                            length = datashape[i]
-                        else:
-                            raise IndexError('illegal slice')
-                    else:
-                        length = e.stop
-                else:
-                    if e.start is None:
-                        raise IndexError('illegal slice')
-                    else:
-                        length = e.start+1
+                    length = e.start+datashape[i]
+            else:
+                length = shape[i]
 
             beg, end, inc = e.indices(length)
             n = len(xrange(beg,end,inc))
