@@ -250,11 +250,6 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
 
             # determine length parameter for slice.indices.
 
-            # None means not specified
-            if e.step is not None:
-                inc = e.step
-            else:
-                inc = 1
             # shape[i] can be zero for unlim dim that hasn't been written to
             # yet.
             # length of slice may be longer than current shape
