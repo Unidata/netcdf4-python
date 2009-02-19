@@ -4,6 +4,20 @@ from numpy.testing import assert_array_equal, assert_equal
 import tempfile, unittest, os, random
 import numpy as np
 
+"""
+Bug note
+
+There seems to be a bug when two unlimited dimensions are used, 
+ie ('x', 'y', 'time'), where x and time are unlimited dimensions. 
+Specifically, the x dimension is set to a random length after setting
+it from an array. No data is lost, but the shape is wrong, and this
+can hog down the computer when taking all data along x. 
+This bug appeared on Huard's box with netCDF4.0 and HDF5 1.8.1, and 
+seems to be absent in later versions of those libraries (this needs 
+to be checked.)
+See revision 626 of this file for an example of the bug.
+"""
+
 file_name = tempfile.mktemp(".nc")
 xdim=9; ydim=10; zdim=11
 i = np.array([2,5,7],'i4')
@@ -26,10 +40,8 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension('x',None)
         f.createDimension('y',ydim)
         f.createDimension('z',zdim)
-        f.createDimension('time', None)
         v = f.createVariable('data','i2',('x','y','z'))
 
-        vu = f.createVariable('datau', 'i2', ('x', 'y', 'time'))
         
         v[:] = data
 
@@ -101,22 +113,15 @@ class VariablesTestCase(unittest.TestCase):
 
     def test_set(self):
         f  = Dataset(self.file, 'a')
-        data = np.arange(180).reshape((9,10,2))
-        vu = f.variables['datau']
+        data = np.arange(xdim*ydim*zdim).reshape((xdim,ydim,zdim)).astype('i4')
+        vu = f.variables['data']
         
-        vu[:,:,0] = data[:,:,0]
-        print vu.shape   # This is OK
-        #assert_array_equal(vu[:,:,:], data[:,:,:1])
+        vu[0,:,:] = data[0,:,:]
+        assert_array_equal(vu[0,:,:], data[0,:,:])
         
+        vu[1:,:,:] = data[:]
+        assert_array_equal(vu[1:, :, :], data)
         
-        vu[:,:,1:] = data[:]
-        print data[:].shape, vu.shape  # This is not OK
-                
-        #print vu[:,:,0]
-        #assert_array_equal(vu[:, :, 1:], data)
-        
-        #vu[:,:,0] = 0.0
-        #assert_array_equal(vu[:, :, 0], 0.)
         f.close()
         
 
