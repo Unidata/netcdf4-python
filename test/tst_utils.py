@@ -226,7 +226,7 @@ class TestsetStartCountStride(unittest.TestCase):
         assert_equal(take_ind[0][0][0], 3*(slice(None),))
 
 
-class FakeGroup():
+class FakeGroup(object):
     """Create a fake group instance by passing a dictionary of booleans
     keyed by dimension name."""
     def __init__(self, dimensions):
@@ -234,7 +234,7 @@ class FakeGroup():
         for k,v in dimensions.iteritems():
             self.dimensions[k] = FakeDimension(v)
     
-class FakeDimension():
+class FakeDimension(object):
     def __init__(self, unlimited=False):
         self.unlimited = unlimited
     
