@@ -15,7 +15,8 @@ can hog down the computer when taking all data along x.
 This bug appeared on Huard's box with netCDF4.0 and HDF5 1.8.1, and 
 seems to be absent in later versions of those libraries (this needs 
 to be checked.)
-See revision 626 of this file for an example of the bug.
+
+See test2unlim below for an example. 
 """
 
 file_name = tempfile.mktemp(".nc")
@@ -124,6 +125,30 @@ class VariablesTestCase(unittest.TestCase):
         
         f.close()
         
-
+    def test2unlim(self):
+        """Test with a variable that has two unlimited dimensions."""
+        f  = Dataset(self.file, 'a')
+        f.createDimension('time',None)
+        
+        v = f.createVariable('u2data', 'i2', ('time', 'x', 'y'))
+        xdim = len(f.dimensions['x'])
+        data = np.arange(3*xdim*ydim).reshape((3, xdim, ydim))
+        
+        v[:] = data
+        assert_equal(v.shape, data.shape)
+        
+        v[3:6, 0:xdim, 0:ydim] = data
+        try:
+            assert_equal(v.shape, (6, xdim, ydim))              
+        except AssertionError:
+            import warnings
+            warnings.warn("""
+            There seems to be a bug in the netCDF4 or HDF5 library that is 
+            installed on your computer. Please upgrade to the latest version 
+            to avoid being affected. This only matters if you use more than 
+            1 unlimited dimension.""")
+            raise AssertionError
+        f.close()
+        
 if __name__ == '__main__':
     unittest.main()
