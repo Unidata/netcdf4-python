@@ -31,7 +31,7 @@ Download
 Requires 
 ======== 
 
- - numpy array module U{http://numpy.scipy.org}, version 1.0 or later.
+ - numpy array module U{http://numpy.scipy.org}, version 1.2.1 or later.
  - The netCDF-3 C library (version 3.6 or later), available at
  U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
 

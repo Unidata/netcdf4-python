@@ -28,11 +28,11 @@ Download
 Requires 
 ======== 
 
- - numpy array module U{http://numpy.scipy.org}, version 1.0 or later.
- - The HDF5 C library version 1.8.1 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
+ - numpy array module U{http://numpy.scipy.org}, version 1.2.1 or later.
+ - The HDF5 C library version 1.8.2 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl --enable-shared}'.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.0 or higher is required.
+ Version 4.0.1 or higher is required.
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR --enable-shared}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
  To enable U{OPeNDAP<http://opendap.org>} support, build with 'C{--enable-dap}'.
@@ -436,7 +436,7 @@ dimension are aggregated together, and can be sliced across multiple
 files.  To illustrate this, let's first create a bunch of netCDF files with
 the same variable (with the same unlimited dimension).  The files
 must in be in C{NETCDF3_64BIT}, C{NETCDF3_CLASSIC} or 
-C{NETCDF4_CLASSIC format} (C{NETCDF4} formatted files multi-file
+C{NETCDF4_CLASSIC format} (C{NETCDF4} formatted multi-file
 datasets are not supported).
 
 >>> for nfile in range(10):
