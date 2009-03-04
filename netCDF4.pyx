@@ -362,8 +362,8 @@ C{start:stop:step} triplet. Using a scalar integer index C{i} takes the ith
 element and reduces the rank of the output array by one. Boolean array and
 integer sequence indexing behaves differently for netCDF variables
 than for numpy arrays.  Only 1-d boolean arrays and integer sequences are
-allowed, and these indices work independently along each dimension.  This
-means that
+allowed, and these indices work independently along each dimension (similar
+to the way vector subscripts work in fortran).  This means that
 
 >>> temp[0, 0, [0,1,2,3], [0,1,2,3]]
 
