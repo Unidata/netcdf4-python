@@ -31,7 +31,7 @@ def nc3tonc4(filename4,filename3,clobber=False,nchunk=1000,quiet=False):
             hasunlimdim = True
         else:
             hasunlimdim = False
-        var = ncfile3.createVariable(varname,datatype,ncvar.dimensions)
+        var = ncfile3.createVariable(varname,ncvar.dtype,ncvar.dimensions)
         # fill variable attributes.
         for attname in ncvar.ncattrs():
             setattr(var,attname,getattr(ncvar,attname))
@@ -82,6 +82,7 @@ if __name__ == '__main__':
     # default options
     quiet = 0
     chunk = 1000
+    overwritefile = 0
 
     # Get the options
     for option in opts:

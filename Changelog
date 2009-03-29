@@ -1,3 +1,10 @@
+version 0.7.7 (not yet released)
+================================
+
+ * added nc4tonc3 utility for converted NETCDF4_CLASSIC files to NETCDF3_64BIT
+   files (useful for sharing data with colleagues that don't have netcdf-4
+   capable clients).
+
 version 0.7.7 (svn revision 626)
 ================================
  * David Huard reworked fancy indexing - it is now much more efficient and
