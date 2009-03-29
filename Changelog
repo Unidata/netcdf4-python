@@ -1,4 +1,4 @@
-version 0.7.7 (not yet released)
+version 0.7.8 (not yet released)
 ================================
 
  * added nc4tonc3 utility for converted NETCDF4_CLASSIC files to NETCDF3_64BIT
