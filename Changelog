@@ -1,5 +1,7 @@
 version 0.7.8 (not yet released)
 ================================
+ * make sure 64-bit integer attributes converted to 32 bits when writing to
+   a NETCDF3 formatted file.
 
  * added nc4tonc3 utility for converted NETCDF4_CLASSIC files to NETCDF3_64BIT
    files (useful for sharing data with colleagues that don't have netcdf-4

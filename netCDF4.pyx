@@ -692,8 +692,9 @@ cdef _set_att(int grpid, int varid, name, value):
     # put attribute value into a numpy array.
     value_arr = numpy.array(value)
     # if array is 64 bit integers, cast to 32 bit integers
-    # if 64-bit datatype not supported.
-    if value_arr.dtype.str[1:] == 'i8' and 'i8' not in _supportedtypes:
+    # if 64-bit datatype not supported or .
+    if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
+       _get_format(grpid).startswith('NETCDF3')):
         value_arr = value_arr.astype('i4')
     # if array contains strings, write a text attribute.
     if value_arr.dtype.char == 'S':
