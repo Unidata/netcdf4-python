@@ -922,7 +922,8 @@ the L{Dataset} in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
     cdef public int _grpid
-    cdef public groups, dimensions, variables, file_format, path, parent, maskanscale
+    cdef public groups, dimensions, variables, file_format, path, parent,\
+    maskanscale, _cmptypes
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4', **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
@@ -959,6 +960,7 @@ group, so the path is simply C{'/'}."""
             self.groups = _get_grps(self)
         else:
             self.groups = {}
+        self._cmptypes = []
 
     def close(self):
         """
@@ -1294,6 +1296,7 @@ method)."""
         self.variables = _get_vars(self)
         # get groups in this Group.
         self.groups = _get_grps(self)
+        self._cmptypes = []
 
     def close(self):
         """
@@ -2150,20 +2153,21 @@ cdef class CompoundType:
     cdef public dtype, name
     def __init__(self, grp, object dt, object dtype_name):
         cdef nc_type xtype
-        xtype = _def_compound(grp._grpid, dt, dtype_name)
+        xtype = _def_compound(grp, dt, dtype_name)
         self._nc_type = xtype
         self.dtype = dt
         self.name = dtype_name
+        grp._cmptypes.append((dtype_name, dt, xtype))
 
-cdef _def_compound(int grpid,object dt, object dtype_name):
+cdef _def_compound(grp, object dt, object dtype_name):
     cdef nc_type xtype, xtype_tmp
     cdef int ierr, ndims, offset
     cdef size_t size
-    cdef char *namstring
+    cdef char *namstring, *nested_namstring
     cdef int dim_sizes[NC_MAX_DIMS]
     namstring = PyString_AsString(dtype_name)
     size = dt.itemsize
-    ierr = nc_def_compound(grpid, size, namstring, &xtype)
+    ierr = nc_def_compound(grp._grpid, size, namstring, &xtype)
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
     #print 'define compound var name,size,xtype = ',namstring,size,xtype
@@ -2177,22 +2181,25 @@ cdef _def_compound(int grpid,object dt, object dtype_name):
                 raise ValueError('Unsupported compound type element')
             #print 'insert compound name,offset,xtype =',\
             #namstring,offset,xtype_tmp
-            ierr = nc_insert_compound(grpid, xtype, namstring,
+            ierr = nc_insert_compound(grp._grpid, xtype, namstring,
                                       offset, xtype_tmp)
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
         else:
             if value[0].shape ==  (): # nested compound type
-                #print 'insert nested compound name,offset =',\
-                #       name,offset
-                # this should work, but causes 'HDF error' ??
-                #cmp_name = var_name+'_'+value[0].name
-                #xtype_tmp = _def_compound(grpid,value[0],var_name,cmp_name)
-                #ierr = nc_insert_compound(grpid, xtype, namstring,
-                #                         offset, xtype_tmp)
-                #if ierr != NC_NOERR:
-                #    raise RuntimeError(nc_strerror(ierr))
-                raise NotImplementedError('nested compound types not implemented yet')
+                match = False
+                for cmpname, cmpdt, xtype_tmp in grp._cmptypes:
+                    if value[0] == cmpdt:
+                        nested_namstring = PyString_AsString(name)
+                        #print 'match',cmpname, value[0] , xtype_tmp
+                        ierr = nc_insert_compound(grp._grpid, xtype,\
+                                                  nested_namstring,
+                                                  offset, xtype_tmp)
+                        if ierr != NC_NOERR:
+                            raise RuntimeError(nc_strerror(ierr))
+                        match = True
+                if not match:
+                    raise KeyError('no matching CompoundType instance found')
             else: # array compound element
                 if value[0].subdtype != 'V':
                     try:
@@ -2204,7 +2211,7 @@ cdef _def_compound(int grpid,object dt, object dtype_name):
                         dim_sizes[n] = value[0].shape[n]
                     #print 'insert compound array name,offset,xtype,dims =',\
                     #namstring,offset,xtype_tmp,ndims,value[0].shape
-                    ierr = nc_insert_array_compound(grpid,xtype,namstring,
+                    ierr = nc_insert_array_compound(grp._grpid,xtype,namstring,
                            offset,xtype_tmp,ndims,dim_sizes)
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
