@@ -691,8 +691,8 @@ cdef _set_att(int grpid, int varid, name, value):
     attname = PyString_AsString(name)
     # put attribute value into a numpy array.
     value_arr = numpy.array(value)
-    # if array is 64 bit integers, cast to 32 bit integers
-    # if 64-bit datatype not supported or .
+    # if array is 64 bit integers or
+    # if 64-bit datatype not supported, cast to 32 bit integers.
     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
        _get_format(grpid).startswith('NETCDF3')):
         value_arr = value_arr.astype('i4')
@@ -1154,7 +1154,8 @@ attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
-        self.variables[varname] = Variable(self, varname, datatype, dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
+        self.variables[varname] = Variable(self, varname, datatype,
+        dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -1518,10 +1519,13 @@ instance. If C{None}, the data is not truncated. """
     cdef object _grp
     cdef public ndim, dtype, maskandscale
 
-    def __init__(self, grp, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None,  **kwargs):
+    def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
+            complevel=6, shuffle=True, fletcher32=False, contiguous=False,
+            chunksizes=None, endian='native', least_significant_digit=None,
+            fill_value=None, **kwargs):
         cdef int ierr, ndims, icontiguous, ideflate_level, numdims
         cdef char *varname
-        cdef nc_type xtype, vltypeid
+        cdef nc_type xtype
         cdef int dimids[NC_MAX_DIMS]
         cdef int *chunksizesp
         # if dimensions is a string, convert to a tuple
@@ -1532,21 +1536,27 @@ instance. If C{None}, the data is not truncated. """
         self._grpid = grp._grpid
         self._grp = grp
         # convert to a real numpy datatype object if necessary.
-        if type(datatype) != numpy.dtype:
+        if not isinstance(datatype, CompoundType) and \
+                type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
         # check validity of datatype.
-        if datatype.str[1:] not in _supportedtypes:
-            raise TypeError('illegal data type, must be one of %s, got %s' % (_supportedtypes,datatype))
-        # dtype variable attribute is a numpy datatype object.
-        self.dtype = datatype
+        if isinstance(datatype, CompoundType):
+            xtype = datatype._nc_type
+            # dtype variable attribute is a numpy datatype object.
+            self.dtype = datatype.dtype
+        elif datatype.str[1:] in _supportedtypes:
+            # find netCDF primitive data type corresponding to 
+            # specified numpy data type.
+            xtype = _nptonctype[datatype.str[1:]]
+            # dtype variable attribute is a numpy datatype object.
+            self.dtype = datatype
+        else:
+            raise TypeError('illegal primitive data type, must be one of %s, got %s' % (_supportedtypes,datatype))
         if kwargs.has_key('id'):
             self._varid = kwargs['id']
         else:
             varname = name
             ndims = len(dimensions)
-            # find netCDF primitive data type corresponding to 
-            # specified numpy data type.
-            xtype = _nptonctype[datatype.str[1:]]
             # find dimension ids.
             if ndims:
                 for n from 0 <= n < ndims:
@@ -2132,6 +2142,75 @@ The default value of C{maskandscale} is C{False}
             return data.squeeze()
         else:
             return data
+
+# Compound datatype support.
+
+cdef class CompoundType:
+    cdef public nc_type _nc_type
+    cdef public dtype, name
+    def __init__(self, grp, object dt, object dtype_name):
+        cdef nc_type xtype
+        xtype = _def_compound(grp._grpid, dt, dtype_name)
+        self._nc_type = xtype
+        self.dtype = dt
+        self.name = dtype_name
+
+cdef _def_compound(int grpid,object dt, object dtype_name):
+    cdef nc_type xtype, xtype_tmp
+    cdef int ierr, ndims, offset
+    cdef size_t size
+    cdef char *namstring
+    cdef int dim_sizes[NC_MAX_DIMS]
+    namstring = PyString_AsString(dtype_name)
+    size = dt.itemsize
+    ierr = nc_def_compound(grpid, size, namstring, &xtype)
+    if ierr != NC_NOERR:
+        raise RuntimeError(nc_strerror(ierr))
+    #print 'define compound var name,size,xtype = ',namstring,size,xtype
+    for name, value in dt.fields.iteritems():
+        namstring = PyString_AsString(name)
+        offset = value[1]
+        if value[0].kind != 'V': # scalar primitive type
+            try:
+                xtype_tmp = _nptonctype[value[0].str[1:]]
+            except KeyError:
+                raise ValueError('Unsupported compound type element')
+            #print 'insert compound name,offset,xtype =',\
+            #namstring,offset,xtype_tmp
+            ierr = nc_insert_compound(grpid, xtype, namstring,
+                                      offset, xtype_tmp)
+            if ierr != NC_NOERR:
+                raise RuntimeError(nc_strerror(ierr))
+        else:
+            if value[0].shape ==  (): # nested compound type
+                #print 'insert nested compound name,offset =',\
+                #       name,offset
+                # this should work, but causes 'HDF error' ??
+                #cmp_name = var_name+'_'+value[0].name
+                #xtype_tmp = _def_compound(grpid,value[0],var_name,cmp_name)
+                #ierr = nc_insert_compound(grpid, xtype, namstring,
+                #                         offset, xtype_tmp)
+                #if ierr != NC_NOERR:
+                #    raise RuntimeError(nc_strerror(ierr))
+                raise NotImplementedError('nested compound types not implemented yet')
+            else: # array compound element
+                if value[0].subdtype != 'V':
+                    try:
+                        xtype_tmp = _nptonctype[value[0].subdtype[0].str[1:]]
+                    except KeyError:
+                        raise ValueError('Unsupported compound type element')
+                    ndims = len(value[0].shape)
+                    for n from 0 <= n < ndims:
+                        dim_sizes[n] = value[0].shape[n]
+                    #print 'insert compound array name,offset,xtype,dims =',\
+                    #namstring,offset,xtype_tmp,ndims,value[0].shape
+                    ierr = nc_insert_array_compound(grpid,xtype,namstring,
+                           offset,xtype_tmp,ndims,dim_sizes)
+                    if ierr != NC_NOERR:
+                        raise RuntimeError(nc_strerror(ierr))
+                else:
+                    raise KeyError('Unsupported compound type element')
+    return xtype
 
 # include pure python utility functions and MFDataset class.
 # (use include instead of importing them so docstrings
