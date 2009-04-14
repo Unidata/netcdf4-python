@@ -2188,14 +2188,14 @@ cdef _def_compound(grp, object dt, object dtype_name):
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
         else:
-            if value[0].shape ==  (): # nested compound type
+            if value[0].shape ==  (): # nested scalar compound type
                 match = False
                 for cmpname, cmpdt, xtype_tmp in grp._cmptypes:
                     if value[0] == cmpdt:
                         nested_namstring = PyString_AsString(name)
                         #print 'match',cmpname, value[0] , xtype_tmp
                         ierr = nc_insert_compound(grp._grpid, xtype,\
-                                                  nested_namstring,
+                                                  nested_namstring,\
                                                   offset, xtype_tmp)
                         if ierr != NC_NOERR:
                             raise RuntimeError(nc_strerror(ierr))
@@ -2203,22 +2203,35 @@ cdef _def_compound(grp, object dt, object dtype_name):
                 if not match:
                     raise KeyError('no matching CompoundType instance found')
             else: # array compound element
-                if value[0].subdtype != 'V':
+                ndims = len(value[0].shape)
+                for n from 0 <= n < ndims:
+                    dim_sizes[n] = value[0].shape[n]
+                if value[0].subdtype[0].str[1] != 'V': # primitive type.
                     try:
                         xtype_tmp = _nptonctype[value[0].subdtype[0].str[1:]]
                     except KeyError:
                         raise ValueError('Unsupported compound type element')
-                    ndims = len(value[0].shape)
-                    for n from 0 <= n < ndims:
-                        dim_sizes[n] = value[0].shape[n]
                     #print 'insert compound array name,offset,xtype,dims =',\
                     #namstring,offset,xtype_tmp,ndims,value[0].shape
                     ierr = nc_insert_array_compound(grp._grpid,xtype,namstring,
                            offset,xtype_tmp,ndims,dim_sizes)
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
-                else:
-                    raise KeyError('Unsupported compound type element')
+                else: # nested array compound type.
+                    match = False
+                    for cmpname, cmpdt, xtype_tmp in grp._cmptypes:
+                        if value[0].subdtype[0] == cmpdt:
+                            nested_namstring = PyString_AsString(name)
+                            #print 'match',cmpname, value[0] , xtype_tmp
+                            ierr = nc_insert_array_compound(grp._grpid,xtype,\
+                                                            nested_namstring,\
+                                                            offset,xtype_tmp,\
+                                                            ndims,dim_sizes)
+                            if ierr != NC_NOERR:
+                                raise RuntimeError(nc_strerror(ierr))
+                            match = True
+                    if not match:
+                        raise KeyError('no matching CompoundType instance found')
     return xtype
 
 # include pure python utility functions and MFDataset class.
