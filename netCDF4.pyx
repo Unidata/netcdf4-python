@@ -811,13 +811,16 @@ cdef _get_vars(group):
              ierr = nc_inq_user_type(group._grpid, xtype, namstring_cmp,
                                      &sizein, &base_datatype,
                                      NULL, &classp)
-             #if classp == NC_COMPOUND: # a compound
-             try:
-                 datatype = _nctonptype[xtype]
-             except:
-                 #raise KeyError('variable %s has unsupported data type' % name)
-                 print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
-                 continue
+             if classp == NC_COMPOUND: # a compound type
+                 # create CompoundType instance describing this compound type.
+                 raise NotImplementedError('cannot read compound types yet')
+             else:
+                 try:
+                     datatype = _nctonptype[xtype]
+                 except:
+                     #raise KeyError('variable %s has unsupported data type' % name)
+                     print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
+                     continue
              # get number of dimensions.
              ierr = nc_inq_varndims(group._grpid, varid, &numdims)
              if ierr != NC_NOERR:
@@ -958,6 +961,7 @@ group, so the path is simply C{'/'}."""
         self._grpid = grpid
         self.path = '/'
         self.parent = None
+        self._cmptypes = [] # initialize list to hold compound type info
         # get dimensions in the root group.
         self.dimensions = _get_dims(self)
         # get variables in the root Group.
@@ -967,7 +971,6 @@ group, so the path is simply C{'/'}."""
             self.groups = _get_grps(self)
         else:
             self.groups = {}
-        self._cmptypes = []
 
     def close(self):
         """
@@ -1299,13 +1302,13 @@ method)."""
         self.path = os.path.join(parent.path, name)
         # parent group.
         self.parent = parent
+        self._cmptypes = [] # initialize list to hold compound type info
         # get dimensions in this Group.
         self.dimensions = _get_dims(self)
         # get variables in this Group.
         self.variables = _get_vars(self)
         # get groups in this Group.
         self.groups = _get_grps(self)
-        self._cmptypes = []
 
     def close(self):
         """
