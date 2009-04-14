@@ -771,12 +771,12 @@ cdef _get_grps(group):
 cdef _get_vars(group):
     # Private function to create L{Variable} instances for all the
     # variables in a L{Group} or Dataset
-    cdef int ierr, numvars, n, nn, numdims, varid
-    cdef size_t sizein
+    cdef int ierr, numvars, n, nn, numdims, varid, classp
     cdef int *varids
     cdef int dim_sizes[NC_MAX_DIMS], dimids[NC_MAX_DIMS]
-    cdef nc_type xtype
-    cdef char namstring[NC_MAX_NAME+1]
+    cdef nc_type xtype, base_datatype, field_typeid
+    cdef size_t sizein, nfields, offset
+    cdef char namstring[NC_MAX_NAME+1], namstring_cmp[NC_MAX_NAME+1]
     # get number of variables in this Group.
     ierr = nc_inq_nvars(group._grpid, &numvars)
     if ierr != NC_NOERR:
@@ -801,10 +801,17 @@ cdef _get_vars(group):
              if ierr != NC_NOERR:
                  raise RuntimeError(nc_strerror(ierr))
              name = namstring
+             if ierr != NC_NOERR:
+                 raise RuntimeError(nc_strerror(ierr))
              # get variable type.
              ierr = nc_inq_vartype(group._grpid, varid, &xtype)
              if ierr != NC_NOERR:
                  raise RuntimeError(nc_strerror(ierr))
+             # check to see if it is a supported user-defined type.
+             ierr = nc_inq_user_type(group._grpid, xtype, namstring_cmp,
+                                     &sizein, &base_datatype,
+                                     NULL, &classp)
+             #if classp == NC_COMPOUND: # a compound
              try:
                  datatype = _nctonptype[xtype]
              except:
@@ -2172,7 +2179,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
     ierr = nc_def_compound(grp._grpid, size, namstring, &xtype)
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
-    #print 'define compound var name,size,xtype = ',namstring,size,xtype
     for name, value in dt.fields.iteritems():
         namstring = PyString_AsString(name)
         offset = value[1]
@@ -2181,8 +2187,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
                 xtype_tmp = _nptonctype[value[0].str[1:]]
             except KeyError:
                 raise ValueError('Unsupported compound type element')
-            #print 'insert compound name,offset,xtype =',\
-            #namstring,offset,xtype_tmp
             ierr = nc_insert_compound(grp._grpid, xtype, namstring,
                                       offset, xtype_tmp)
             if ierr != NC_NOERR:
@@ -2193,7 +2197,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
                 for cmpname, cmpdt, xtype_tmp in grp._cmptypes:
                     if value[0] == cmpdt:
                         nested_namstring = PyString_AsString(name)
-                        #print 'match',cmpname, value[0] , xtype_tmp
                         ierr = nc_insert_compound(grp._grpid, xtype,\
                                                   nested_namstring,\
                                                   offset, xtype_tmp)
@@ -2211,8 +2214,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
                         xtype_tmp = _nptonctype[value[0].subdtype[0].str[1:]]
                     except KeyError:
                         raise ValueError('Unsupported compound type element')
-                    #print 'insert compound array name,offset,xtype,dims =',\
-                    #namstring,offset,xtype_tmp,ndims,value[0].shape
                     ierr = nc_insert_array_compound(grp._grpid,xtype,namstring,
                            offset,xtype_tmp,ndims,dim_sizes)
                     if ierr != NC_NOERR:
@@ -2222,7 +2223,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
                     for cmpname, cmpdt, xtype_tmp in grp._cmptypes:
                         if value[0].subdtype[0] == cmpdt:
                             nested_namstring = PyString_AsString(name)
-                            #print 'match',cmpname, value[0] , xtype_tmp
                             ierr = nc_insert_array_compound(grp._grpid,xtype,\
                                                             nested_namstring,\
                                                             offset,xtype_tmp,\
