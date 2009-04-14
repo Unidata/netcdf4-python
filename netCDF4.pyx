@@ -1057,6 +1057,8 @@ rename a L{Dimension} named C{oldname} to C{newname}."""
         # Variable.dimensions is determined by a method that
         # looks in the file, so no need to manually update.
 
+    def createCompoundType(self, datatype, datatype_name):
+        return CompoundType(self, datatype, datatype_name)
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
