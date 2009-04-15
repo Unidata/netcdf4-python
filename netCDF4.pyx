@@ -775,8 +775,7 @@ cdef _get_vars(group):
     cdef int ierr, numvars, n, nn, numdims, varid, classp
     cdef int *varids
     cdef int dim_sizes[NC_MAX_DIMS], dimids[NC_MAX_DIMS]
-    cdef nc_type xtype, base_datatype, field_typeid
-    cdef size_t sizein, nfields, offset
+    cdef nc_type xtype
     cdef char namstring[NC_MAX_NAME+1], namstring_cmp[NC_MAX_NAME+1]
     # get number of variables in this Group.
     ierr = nc_inq_nvars(group._grpid, &numvars)
@@ -810,8 +809,7 @@ cdef _get_vars(group):
                  raise RuntimeError(nc_strerror(ierr))
              # check to see if it is a supported user-defined type.
              ierr = nc_inq_user_type(group._grpid, xtype, namstring_cmp,
-                                     &sizein, &base_datatype,
-                                     NULL, &classp)
+                                     NULL, NULL, NULL, &classp)
              if classp == NC_COMPOUND: # a compound type
                  # create CompoundType instance describing this compound type.
                  name_cmp = PyString_FromString(namstring_cmp)
