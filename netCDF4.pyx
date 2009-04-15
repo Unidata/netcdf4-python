@@ -632,8 +632,9 @@ cdef _get_att(grp, int varid, name):
         try:
             type_att = _nctonptype[att_type] # see if it is a primitive type
         except KeyError:
+            # check if it's a compound
             try:
-                type_att = _find_cmpdtype(grp, att_type) # see if it is a compound
+                type_att = _read_compound(grp, att_type)
             except:
                 raise KeyError('attribute %s has unsupported datatype' % attname)
         value_arr = numpy.empty(att_len,type_att)
@@ -816,8 +817,7 @@ cdef _get_vars(group):
                                      NULL, NULL, NULL, &classp)
              if classp == NC_COMPOUND: # a compound type
                  # create CompoundType instance describing this compound type.
-                 name_cmp = PyString_FromString(namstring_cmp)
-                 datatype = _read_compound(group, xtype, name_cmp)
+                 datatype = _read_compound(group, xtype)
              else:
                  try:
                      datatype = _nctonptype[xtype]
@@ -2277,16 +2277,18 @@ cdef _find_cmpdtype(grp, nc_type xtype):
             cmpdt = _find_cmpdtype(parent_grp,xtype)
     return cmpdt
 
-cdef _read_compound(group, nc_type xtype, name):
+cdef _read_compound(group, nc_type xtype):
     cdef int ierr, nf, numdims, ndim, classp
     cdef size_t nfields, offset
     cdef nc_type field_typeid
     cdef int dim_sizes[NC_MAX_DIMS]
     cdef char field_namstring[NC_MAX_NAME+1]
-    # get number of fields.
-    ierr = nc_inq_compound_nfields(group._grpid, xtype, &nfields)
+    cdef char cmp_namstring[NC_MAX_NAME+1]
+    # get name and number of fields.
+    ierr = nc_inq_compound(group._grpid, xtype, cmp_namstring, NULL, &nfields)
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
+    name = PyString_FromString(cmp_namstring)
     # loop over fields.
     names = []
     formats = []
@@ -2315,7 +2317,7 @@ cdef _read_compound(group, nc_type xtype, name):
                field_typeid,NULL,NULL,NULL,NULL,&classp)
         if classp == NC_COMPOUND: # a compound type
             # recursively call this function?
-            field_type = _read_compound(group, field_typeid, field_name)
+            field_type = _read_compound(group, field_typeid)
         else:
             try:
                 field_type = _nctonptype[field_typeid]
