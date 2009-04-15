@@ -1,5 +1,21 @@
 # utility functions (visible from python).
 
+def stringtoarr(string,NUMCHARS):
+    """
+stringtoarr(a, NUMCHARS)
+
+convert a string to a character array of length NUMCHARS
+
+@param a:  Input python string.
+
+@param NUMCHARS:  number of characters used to represent string 
+(if len(a) < NUMCHARS, it will be padded on the right with blanks).
+
+@return: A rank 1 numpy character array of length NUMCHARS with datatype 'S1'"""
+    arr = numpy.zeros(NUMCHARS,'S1')
+    arr[0:len(string)] = tuple(string)
+    return arr
+
 def stringtochar(a):
     """
 stringtochar(a)

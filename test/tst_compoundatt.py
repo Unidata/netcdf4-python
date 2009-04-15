@@ -2,7 +2,7 @@ import sys
 import unittest
 import os
 import tempfile
-from netCDF4 import Dataset, CompoundType, chartostring
+from netCDF4 import Dataset, CompoundType, chartostring, stringtoarr
 import numpy as np
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 
@@ -20,8 +20,8 @@ dtypec=np.dtype([('eastward', 'c',(8,)), ('northward', 'c',(8,))])
 missvals = np.zeros(1,dtype)
 missvals['eastward']=9999.
 missvals['northward']=-9999.
-chararr = np.array(list('%-08s'%'m/s'))
 windunits = np.zeros(1,dtypec)
+chararr = stringtoarr('m/s', dtypec.fields['eastward'][0].itemsize)
 windunits['eastward'] = chararr
 windunits['northward'] = chararr
 
