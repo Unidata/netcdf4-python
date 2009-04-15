@@ -115,3 +115,52 @@ for nfile in range(10):
 # now read all those files in at once, in one Dataset.
 f = netCDF4.MFDataset('mftest*nc')
 print f.variables['x'][:]
+
+from netCDF4 import chartostring, stringtoarr
+rootgrp = netCDF4.Dataset('compound_example.nc','w')
+# create an unlimited  dimension call 'station'
+rootgrp.createDimension('station',None)
+# define a compound data type (a list of 3-tuples containing
+# the name of each member, it's primitive data type, and it's size).
+# Only fixed-size primitive data types allowed (no 'S').
+# Members can be multi-dimensional arrays (in which case the third
+# element is a shape tuple instead of a scalar).
+datatype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),\
+            ('sfc_press','i4'),\
+            ('temp_sounding','f4',10),('press_sounding','i4',10),
+            ('location_name','S1',80)])
+# use this data type definition to create a user-defined data type
+# called 'station_data'
+station_data_t = rootgrp.createCompoundType(datatype,'station_data')
+# create a variable of of type 'station_data'
+statdat = rootgrp.createVariable('station_obs', station_data_t, ('station',))
+# create a numpy structured array, assign data to it.
+ra = numpy.empty(1,station_data_t)
+ra['latitude'] = 40.
+ra['longitude'] = -105.
+ra['sfc_press'] = 818
+ra['temp_sounding'] = (280.3,272.,270.,269.,266.,258.,254.1,250.,245.5,240.)
+ra['press_sounding'] = range(800,300,-50)
+# variable-length string datatypes are not supported, so
+# to store strings in a compound data type, each string must be 
+# stored as fixed-size (in this case 80) array of characters.
+NUMCHARS = datatype.fields['location_name'][0].itemsize
+ra['location_name'] = stringtoarr('Boulder, Colorado, USA',NUMCHARS)
+# assign structured array to variable slice.
+statdat[0] = ra
+# or just assign a tuple of values to variable slice
+# (will automatically be converted to a structured array).
+statdat[1] = (40.78,-73.99,1002,\
+            (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),\
+            range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
+# print out data in variable.
+print 'data in a variable of compound type:\\n----'
+for data in statdat[:]:
+    for name in statdat.dtype.names:
+        try:
+            # convert array of characters back to a string for display.
+            print name,': value =',chartostring(data[name])
+        except:
+            print name,': value =',data[name]
+    print '----'
+rootgrp.close()
