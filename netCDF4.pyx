@@ -535,7 +535,8 @@ PERFORMANCE OF THIS SOFTWARE."""
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
 # pure python utilities
-from netCDF4_utils import _StartCountStride, _quantize, _find_dim, _out_array_shape
+from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
+                          _out_array_shape, _sortbylist
 
 __version__ = "0.7.8"
 
@@ -813,7 +814,8 @@ cdef _get_vars(group):
                                      NULL, &classp)
              if classp == NC_COMPOUND: # a compound type
                  # create CompoundType instance describing this compound type.
-                 raise NotImplementedError('cannot read compound types yet')
+                 name_cmp = PyString_FromString(namstring_cmp)
+                 datatype = _read_compound(group, xtype, name_cmp)
              else:
                  try:
                      datatype = _nctonptype[xtype]
@@ -2163,9 +2165,13 @@ The default value of C{maskandscale} is C{False}
 cdef class CompoundType:
     cdef public nc_type _nc_type
     cdef public dtype, name
-    def __init__(self, grp, object dt, object dtype_name):
+    def __init__(self, grp, object dt, object dtype_name, **kwargs):
         cdef nc_type xtype
-        xtype = _def_compound(grp, dt, dtype_name)
+        dt = numpy.dtype(dt)
+        if kwargs.has_key('typeid'):
+            xtype = kwargs['typeid']
+        else:
+            xtype = _def_compound(grp, dt, dtype_name)
         self._nc_type = xtype
         self.dtype = dt
         self.name = dtype_name
@@ -2236,6 +2242,62 @@ cdef _def_compound(grp, object dt, object dtype_name):
                     if not match:
                         raise KeyError('no matching CompoundType instance found')
     return xtype
+
+cdef _read_compound(group, nc_type xtype, name):
+    cdef int ierr, nf, numdims, ndim, classp
+    cdef size_t nfields, offset
+    cdef nc_type field_typeid
+    cdef int dim_sizes[NC_MAX_DIMS]
+    cdef char field_namstring[NC_MAX_NAME+1]
+    # get number of fields.
+    ierr = nc_inq_compound_nfields(group._grpid, xtype, &nfields)
+    if ierr != NC_NOERR:
+        raise RuntimeError(nc_strerror(ierr))
+    # loop over fields.
+    names = []
+    formats = []
+    offsets = []
+    for nf from 0 <= nf < nfields:
+        ierr = nc_inq_compound_field(group._grpid,
+                                     xtype,
+                                     nf,
+                                     field_namstring,
+                                     &offset,
+                                     &field_typeid,
+                                     &numdims,
+                                     dim_sizes)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        field_name = PyString_FromString(field_namstring)
+        names.append(field_name)
+        offsets.append(offset)
+        # if numdims=0, not an array.
+        field_shape = ()
+        if numdims != 0:
+            for ndim from 0 <= ndim < numdims:
+                field_shape = field_shape + (dim_sizes[ndim],)
+        # check to see if this field is a nested compound type.
+        ierr = nc_inq_user_type(group._grpid,
+               field_typeid,NULL,NULL,NULL,NULL,&classp)
+        if classp == NC_COMPOUND: # a compound type
+            # recursively call this function?
+            field_type = _read_compound(group, field_typeid, field_name)
+        else:
+            try:
+                field_type = _nctonptype[field_typeid]
+            except:
+                raise KeyError('compound field of an unsupported data type')
+        if field_shape != ():
+            formats.append((field_type,field_shape))
+        else:
+            formats.append(field_type)
+    # make sure entries in lists sorted by offset.
+    names = _sortbylist(names, offsets)
+    formats = _sortbylist(formats, offsets)
+    offsets.sort()
+    # create a dict that can be converted into a numpy dtype.
+    dtype_dict = {'names':names,'formats':formats,'offsets':offsets}
+    return CompoundType(group, dtype_dict, name, typeid=xtype)
 
 # include pure python utility functions and MFDataset class.
 # (use include instead of importing them so docstrings

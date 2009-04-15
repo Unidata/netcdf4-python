@@ -3,6 +3,10 @@ import numpy as np
 from numpy import ma
 import types
 
+def _sortbylist(A,B):
+    # sort one list (A) using the values from another list (B)
+    return [A[i] for i in sorted(range(len(A)), key=B.__getitem__)]
+
 def _find_dim(grp, dimname):
     # find Dimension instance given group and name.
     # look in current group, and parents.
@@ -332,4 +336,3 @@ def _out_array_shape(count):
         else:
             out.append(n)
     return out
-
