@@ -604,7 +604,7 @@ cdef _get_att_names(int grpid, int varid):
         attslist.append(namstring)
     return attslist
 
-cdef _get_att(int grpid, int varid, name):
+cdef _get_att(grp, int varid, name):
     # Private function to get an attribute value given its name
     cdef int ierr, n
     cdef size_t att_len
@@ -613,30 +613,31 @@ cdef _get_att(int grpid, int varid, name):
     cdef ndarray value_arr
     cdef char *strdata 
     attname = PyString_AsString(name)
-    ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
+    ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
     if ierr != NC_NOERR:
         raise AttributeError(nc_strerror(ierr))
     # attribute is a character or string ...
     if att_type == NC_CHAR or att_type == NC_STRING:
         value_arr = numpy.empty(att_len,'S1')
-        ierr = nc_get_att_text(grpid, varid, attname, <char *>value_arr.data)
+        ierr = nc_get_att_text(grp._grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr))
         pstring = value_arr.tostring()
         # remove NULL characters from python string
         return pstring.replace('\x00','')
-    # a regular numeric type.
     else:
+    # a regular numeric or compound type.
         if att_type == NC_LONG:
             att_type = NC_INT
-        if att_type not in _nctonptype.keys():
-            raise ValueError, 'unsupported attribute type'
         try:
-            type_att = _nctonptype[att_type]
-        except:
-            raise KeyError('attribute %s has unsupported datatype' % attname)
+            type_att = _nctonptype[att_type] # see if it is a primitive type
+        except KeyError:
+            try:
+                type_att = _find_cmpdtype(grp, att_type) # see if it is a compound
+            except:
+                raise KeyError('attribute %s has unsupported datatype' % attname)
         value_arr = numpy.empty(att_len,type_att)
-        ierr = nc_get_att(grpid, varid, attname, value_arr.data)
+        ierr = nc_get_att(grp._grpid, varid, attname, value_arr.data)
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr))
         if value_arr.shape == ():
@@ -684,7 +685,7 @@ cdef _get_format(int grpid):
     elif formatp == NC_FORMAT_CLASSIC:
         return 'NETCDF3_CLASSIC'
 
-cdef _set_att(int grpid, int varid, name, value):
+cdef _set_att(grp, int varid, name, value):
     # Private function to set an attribute name/value pair
     cdef int i, ierr, lenarr, n
     cdef char *attname, *datstring, *strdata
@@ -695,23 +696,26 @@ cdef _set_att(int grpid, int varid, name, value):
     # if array is 64 bit integers or
     # if 64-bit datatype not supported, cast to 32 bit integers.
     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
-       _get_format(grpid).startswith('NETCDF3')):
+       _get_format(grp._grpid).startswith('NETCDF3')):
         value_arr = value_arr.astype('i4')
     # if array contains strings, write a text attribute.
     if value_arr.dtype.char == 'S':
         dats = value_arr.tostring()
         datstring = dats
         lenarr = len(dats)
-        ierr = nc_put_att_text(grpid, varid, attname, lenarr, datstring)
+        ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr))
     # a 'regular' array type ('f4','i4','f8' etc)
     else:
-        if value_arr.dtype.str[1:] not in _supportedtypes:
+        if value_arr.dtype.kind == 'V': # compound attribute.
+            xtype = _find_cmptype(grp,value_arr.dtype)
+        elif value_arr.dtype.str[1:] not in _supportedtypes:
             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
-        xtype = _nptonctype[value_arr.dtype.str[1:]]
+        else:
+            xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
-        ierr = nc_put_att(grpid, varid, attname, xtype, lenarr, value_arr.data)
+        ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr))
 
@@ -1226,7 +1230,7 @@ return netCDF global attribute names for this L{Dataset} or L{Group} in a list."
         # level and not in the netCDF file.
         if name not in _private_atts:
             if self.file_format != 'NETCDF4': self._redef()
-            _set_att(self._grpid, NC_GLOBAL, name, value)
+            _set_att(self, NC_GLOBAL, name, value)
             if self.file_format != 'NETCDF4': self._enddef()
         elif not name.endswith('__'):
             if hasattr(self,name):
@@ -1243,14 +1247,14 @@ return netCDF global attribute names for this L{Dataset} or L{Group} in a list."
                 names = self.ncattrs()
                 values = []
                 for name in names:
-                    values.append(_get_att(self._grpid, NC_GLOBAL, name))
+                    values.append(_get_att(self, NC_GLOBAL, name))
                 return dict(zip(names,values))
             else:
                 raise AttributeError
         elif name in _private_atts:
             return self.__dict__[name]
         else:
-            return _get_att(self._grpid, NC_GLOBAL, name)
+            return _get_att(self, NC_GLOBAL, name)
 
 cdef class Group(Dataset):
     """
@@ -1666,7 +1670,7 @@ instance. If C{None}, the data is not truncated. """
                 else:
                     # cast fill_value to type of variable.
                     fillval = numpy.array(fill_value, self.dtype)
-                    _set_att(self._grpid, self._varid, '_FillValue', fillval)
+                    _set_att(self._grp, self._varid, '_FillValue', fillval)
             if least_significant_digit is not None:
                 self.least_significant_digit = least_significant_digit
             # leave define mode if not a NETCDF4 format file.
@@ -1827,7 +1831,7 @@ each dimension is returned."""
             if name == '_FillValue':
                 value = numpy.array(value, self.dtype)
             if self._grp.file_format != 'NETCDF4': self._grp._redef()
-            _set_att(self._grpid, self._varid, name, value)
+            _set_att(self._grp, self._varid, name, value)
             if self._grp.file_format != 'NETCDF4': self._grp._enddef()
         elif not name.endswith('__'):
             if hasattr(self,name):
@@ -1844,14 +1848,14 @@ each dimension is returned."""
                 names = self.ncattrs()
                 values = []
                 for name in names:
-                    values.append(_get_att(self._grpid, self._varid, name))
+                    values.append(_get_att(self._grp, self._varid, name))
                 return dict(zip(names,values))
             else:
                 raise AttributeError
         elif name in _private_atts:
             return self.__dict__[name]
         else:
-            return _get_att(self._grpid, self._varid, name)
+            return _get_att(self._grp, self._varid, name)
 
     def __getitem__(self, elem):
         # This special method is used to index the netCDF variable
@@ -2252,6 +2256,26 @@ cdef _find_cmptype(grp, dtype):
         else:
             xtype = _find_cmptype(parent_grp,dtype)
     return xtype
+
+cdef _find_cmpdtype(grp, nc_type xtype):
+    cdef nc_type xtype_tmp
+    # look for type id in this group and it's parents.
+    # return numpy datatype when found, if not found, raise exception.
+    match = False
+    for cmpname, cmpdt, xtype_tmp in grp._cmptypes:
+        if xtype_tmp == xtype:
+            match = True
+            break
+    if not match: 
+        try:
+            parent_grp = grp.parent
+        except:
+            raise ValueError("cannot find compound type in this group or parent groups")
+        if parent_grp is None:
+            raise ValueError("cannot find compound type in this group or parent groups")
+        else:
+            cmpdt = _find_cmpdtype(parent_grp,xtype)
+    return cmpdt
 
 cdef _read_compound(group, nc_type xtype, name):
     cdef int ierr, nf, numdims, ndim, classp
