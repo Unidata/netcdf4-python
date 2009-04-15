@@ -2202,18 +2202,14 @@ cdef _def_compound(grp, object dt, object dtype_name):
                 raise RuntimeError(nc_strerror(ierr))
         else:
             if value[0].shape ==  (): # nested scalar compound type
-                match = False
-                for cmpname, cmpdt, xtype_tmp in grp._cmptypes:
-                    if value[0] == cmpdt:
-                        nested_namstring = PyString_AsString(name)
-                        ierr = nc_insert_compound(grp._grpid, xtype,\
-                                                  nested_namstring,\
-                                                  offset, xtype_tmp)
-                        if ierr != NC_NOERR:
-                            raise RuntimeError(nc_strerror(ierr))
-                        match = True
-                if not match:
-                    raise KeyError('no matching CompoundType instance found')
+                # find this compound type in this group or it's parents.
+                xtype_tmp = _find_cmptype(grp, value[0]) 
+                nested_namstring = PyString_AsString(name)
+                ierr = nc_insert_compound(grp._grpid, xtype,\
+                                          nested_namstring,\
+                                          offset, xtype_tmp)
+                if ierr != NC_NOERR:
+                    raise RuntimeError(nc_strerror(ierr))
             else: # array compound element
                 ndims = len(value[0].shape)
                 for n from 0 <= n < ndims:
@@ -2228,19 +2224,35 @@ cdef _def_compound(grp, object dt, object dtype_name):
                     if ierr != NC_NOERR:
                         raise RuntimeError(nc_strerror(ierr))
                 else: # nested array compound type.
-                    match = False
-                    for cmpname, cmpdt, xtype_tmp in grp._cmptypes:
-                        if value[0].subdtype[0] == cmpdt:
-                            nested_namstring = PyString_AsString(name)
-                            ierr = nc_insert_array_compound(grp._grpid,xtype,\
-                                                            nested_namstring,\
-                                                            offset,xtype_tmp,\
-                                                            ndims,dim_sizes)
-                            if ierr != NC_NOERR:
-                                raise RuntimeError(nc_strerror(ierr))
-                            match = True
-                    if not match:
-                        raise KeyError('no matching CompoundType instance found')
+                    # find this compound type in this group or it's parents.
+                    xtype_tmp = _find_cmptype(grp, value[0].subdtype[0]) 
+                    nested_namstring = PyString_AsString(name)
+                    ierr = nc_insert_array_compound(grp._grpid,xtype,\
+                                                    nested_namstring,\
+                                                    offset,xtype_tmp,\
+                                                    ndims,dim_sizes)
+                    if ierr != NC_NOERR:
+                        raise RuntimeError(nc_strerror(ierr))
+    return xtype
+
+cdef _find_cmptype(grp, dtype):
+    cdef nc_type xtype
+    # look for data type in this group and it's parents.
+    # return datatype id when found, if not found, raise exception.
+    match = False
+    for cmpname, cmpdt, xtype in grp._cmptypes:
+        if dtype == cmpdt: 
+            match = True
+            break
+    if not match: 
+        try:
+            parent_grp = grp.parent
+        except:
+            raise ValueError("cannot find compound type in this group or parent groups")
+        if parent_grp is None:
+            raise ValueError("cannot find compound type in this group or parent groups")
+        else:
+            xtype = _find_cmptype(parent_grp,dtype)
     return xtype
 
 cdef _read_compound(group, nc_type xtype, name):

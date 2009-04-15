@@ -1,5 +1,9 @@
 version 0.7.8 (not yet released)
 ================================
+ * initial supported for compound data types (which are mapped to structured
+   numpy arrays). Compound data types are created with createCompoundTYpe
+   Dataset or Group method.
+
  * make sure 64-bit integer attributes converted to 32 bits when writing to
    a NETCDF3 formatted file.
 
