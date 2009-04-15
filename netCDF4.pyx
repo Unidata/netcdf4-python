@@ -2257,26 +2257,6 @@ cdef _find_cmptype(grp, dtype):
             xtype = _find_cmptype(parent_grp,dtype)
     return xtype
 
-cdef _find_cmpdtype(grp, nc_type xtype):
-    cdef nc_type xtype_tmp
-    # look for type id in this group and it's parents.
-    # return numpy datatype when found, if not found, raise exception.
-    match = False
-    for cmpname, cmpdt, xtype_tmp in grp._cmptypes:
-        if xtype_tmp == xtype:
-            match = True
-            break
-    if not match: 
-        try:
-            parent_grp = grp.parent
-        except:
-            raise ValueError("cannot find compound type in this group or parent groups")
-        if parent_grp is None:
-            raise ValueError("cannot find compound type in this group or parent groups")
-        else:
-            cmpdt = _find_cmpdtype(parent_grp,xtype)
-    return cmpdt
-
 cdef _read_compound(group, nc_type xtype):
     cdef int ierr, nf, numdims, ndim, classp
     cdef size_t nfields, offset
