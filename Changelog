@@ -1,7 +1,7 @@
 version 0.7.8 (not yet released)
 ================================
  * initial supported for compound data types (which are mapped to structured
-   numpy arrays). Compound data types are created with createCompoundTYpe
+   numpy arrays). Compound data types are created with the createCompoundTYpe
    Dataset or Group method. Both attributes and variables can be compound
    types.
 
