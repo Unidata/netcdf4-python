@@ -2300,15 +2300,15 @@ cdef _read_compound(group, nc_type xtype):
             for ndim from 0 <= ndim < numdims:
                 field_shape = field_shape + (dim_sizes[ndim],)
         # check to see if this field is a nested compound type.
-        ierr = nc_inq_user_type(group._grpid,
-               field_typeid,NULL,NULL,NULL,NULL,&classp)
-        if classp == NC_COMPOUND: # a compound type
-            # recursively call this function?
-            field_type = _read_compound(group, field_typeid)
-        else:
-            try:
-                field_type = _nctonptype[field_typeid]
-            except:
+        try: 
+            field_type =  _nctonptype[field_typeid]
+        except KeyError:
+            ierr = nc_inq_user_type(group._grpid,
+                   field_typeid,NULL,NULL,NULL,NULL,&classp)
+            if classp == NC_COMPOUND: # a compound type
+                # recursively call this function?
+                field_type = _read_compound(group, field_typeid)
+            else:
                 raise KeyError('compound field of an unsupported data type')
         if field_shape != ():
             formats.append((field_type,field_shape))
