@@ -2190,12 +2190,19 @@ cdef _def_compound(grp, object dt, object dtype_name):
     ierr = nc_def_compound(grp._grpid, size, namstring, &xtype)
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
-    for name, value in dt.fields.iteritems():
+    names = dt.fields.keys()
+    formats = [v[0] for v in dt.fields.values()]
+    offsets = [v[1] for v in dt.fields.values()]
+    # make sure entries in lists sorted by offset.
+    # (don't know why this is necessary, but it is for version 4.0.1)
+    names = _sortbylist(names, offsets)
+    formats = _sortbylist(formats, offsets)
+    offsets.sort()
+    for name, format, offset in zip(names, formats, offsets):
         namstring = PyString_AsString(name)
-        offset = value[1]
-        if value[0].kind != 'V': # scalar primitive type
+        if format.kind != 'V': # scalar primitive type
             try:
-                xtype_tmp = _nptonctype[value[0].str[1:]]
+                xtype_tmp = _nptonctype[format.str[1:]]
             except KeyError:
                 raise ValueError('Unsupported compound type element')
             ierr = nc_insert_compound(grp._grpid, xtype, namstring,
@@ -2203,9 +2210,9 @@ cdef _def_compound(grp, object dt, object dtype_name):
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
         else:
-            if value[0].shape ==  (): # nested scalar compound type
+            if format.shape ==  (): # nested scalar compound type
                 # find this compound type in this group or it's parents.
-                xtype_tmp = _find_cmptype(grp, value[0]) 
+                xtype_tmp = _find_cmptype(grp, format) 
                 nested_namstring = PyString_AsString(name)
                 ierr = nc_insert_compound(grp._grpid, xtype,\
                                           nested_namstring,\
@@ -2213,12 +2220,12 @@ cdef _def_compound(grp, object dt, object dtype_name):
                 if ierr != NC_NOERR:
                     raise RuntimeError(nc_strerror(ierr))
             else: # array compound element
-                ndims = len(value[0].shape)
+                ndims = len(format.shape)
                 for n from 0 <= n < ndims:
-                    dim_sizes[n] = value[0].shape[n]
-                if value[0].subdtype[0].str[1] != 'V': # primitive type.
+                    dim_sizes[n] = format.shape[n]
+                if format.subdtype[0].str[1] != 'V': # primitive type.
                     try:
-                        xtype_tmp = _nptonctype[value[0].subdtype[0].str[1:]]
+                        xtype_tmp = _nptonctype[format.subdtype[0].str[1:]]
                     except KeyError:
                         raise ValueError('Unsupported compound type element')
                     ierr = nc_insert_array_compound(grp._grpid,xtype,namstring,
@@ -2227,7 +2234,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
                         raise RuntimeError(nc_strerror(ierr))
                 else: # nested array compound type.
                     # find this compound type in this group or it's parents.
-                    xtype_tmp = _find_cmptype(grp, value[0].subdtype[0]) 
+                    xtype_tmp = _find_cmptype(grp, format.subdtype[0]) 
                     nested_namstring = PyString_AsString(name)
                     ierr = nc_insert_array_compound(grp._grpid,xtype,\
                                                     nested_namstring,\

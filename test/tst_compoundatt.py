@@ -9,13 +9,11 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 # test compound attributes.
 
 FILE_NAME = tempfile.mktemp(".nc")
-FILE_NAME = 'test.nc'
 DIM_NAME = 'time'
 VAR_NAME = 'wind'
 VAR_NAME2 = 'forecast_wind'
 GROUP_NAME = 'forecasts'
 dtype=np.dtype([('speed', 'f4'), ('direction', 'f4')])
-print dtype.fields
 TYPE_NAME = 'wind_vector_type'
 TYPE_NAMEC = 'wind_vectorunits_type'
 dtypec=np.dtype([('speed', 'c',(8,)), ('direction', 'c',(8,))])
@@ -41,15 +39,13 @@ class VariablesTestCase(unittest.TestCase):
         vv = g.createVariable(VAR_NAME2,wind_vector_type,DIM_NAME)
         v.missing_values = missvals
         v.units = windunits
-        print v.missing_values['speed']
         vv.missing_values = missvals
         vv.units = windunits
         f.close()
 
     def tearDown(self):
         # Remove the temporary files
-        pass
-        #os.remove(self.file)
+        os.remove(self.file)
 
     def runTest(self):
         """testing compound attributes"""
@@ -57,14 +53,22 @@ class VariablesTestCase(unittest.TestCase):
         v = f.variables[VAR_NAME]
         g = f.groups[GROUP_NAME]
         vv = g.variables[VAR_NAME2]
-        print v.missing_values['speed']
         assert_array_almost_equal(v.missing_values['speed'], missvals['speed'])
         assert_array_almost_equal(v.missing_values['direction'],\
                 missvals['direction'])
-        assert_array_equal(v.units, windunits)
-        assert_array_equal(vv.units, windunits)
+        assert_array_almost_equal(vv.missing_values['speed'], missvals['speed'])
+        assert_array_almost_equal(vv.missing_values['direction'],\
+                missvals['direction'])
+        assert_array_equal(v.units['speed'], windunits['speed'].squeeze())
+        assert_array_equal(v.units['direction'],\
+                windunits['direction'].squeeze())
+        assert_array_equal(vv.units['speed'], windunits['speed'].squeeze())
+        assert_array_equal(vv.units['direction'],\
+                windunits['direction'].squeeze())
         assert(chartostring(v.units['speed']).item().rstrip() == 'm/s')
         assert(chartostring(v.units['direction']).item().rstrip() == 'degrees')
+        assert(chartostring(vv.units['speed']).item().rstrip() == 'm/s')
+        assert(chartostring(vv.units['direction']).item().rstrip() == 'degrees')
         f.close()
 
 if __name__ == '__main__':
