@@ -121,21 +121,22 @@ rootgrp = netCDF4.Dataset('compound_example.nc','w')
 # create an unlimited  dimension call 'station'
 rootgrp.createDimension('station',None)
 # define a compound data type (can contain arrays, or nested compound types).
+NUMCHARS = 80 # number of characters to use in fixed-length strings.
 winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
 statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),\
             ('surface_wind',winddtype),\
             ('temp_sounding','f4',10),('press_sounding','i4',10),
-            ('location_name','S1',80)])
+            ('location_name','S1',NUMCHARS)])
 print statdtype
 # use this data type definition to create a compound data type
 # called 'station_data_t'
 wind_data_t = rootgrp.createCompoundType(winddtype,'wind_data')
 station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
 # create nested compound data types to hold units.
-winddtype_units = numpy.dtype([('speed','S1',(80,)),('direction','S1',(80,))])
-statdtype_units = numpy.dtype([('latitude', 'S1',(80,)), ('longitude', 'S1',(80,)),\
+winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
+statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),\
             ('surface_wind',winddtype_units),\
-            ('temp_sounding','S1',(80,)),('press_sounding','S1',(80,))])
+            ('temp_sounding','S1',NUMCHARS),('press_sounding','S1',NUMCHARS)])
 wind_data_units_t = rootgrp.createCompoundType(winddtype_units,'wind_data_units')
 station_data_units_t =\
 rootgrp.createCompoundType(statdtype_units,'station_data_units')
@@ -152,7 +153,6 @@ data['press_sounding'] = range(800,300,-50)
 # variable-length string datatypes are not supported, so
 # to store strings in a compound data type, each string must be 
 # stored as fixed-size (in this case 80) array of characters.
-NUMCHARS = statdtype.fields['location_name'][0].itemsize
 data['location_name'] = stringtoarr('Boulder, Colorado, USA',NUMCHARS)
 # assign structured array to variable slice.
 statdat[0] = data
@@ -163,13 +163,13 @@ statdat[1] = (40.78,-73.99,(-12.5,90),\
             range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
 windunits = numpy.empty(1,winddtype_units)
 stationobs_units = numpy.empty(1,statdtype_units)
-windunits['speed'] = stringtoarr('m/s',80)
-windunits['direction'] = stringtoarr('degrees',80)
-stationobs_units['latitude'] = stringtoarr('degrees north',80)
-stationobs_units['longitude'] = stringtoarr('degrees west',80)
+windunits['speed'] = stringtoarr('m/s',NUMCHARS)
+windunits['direction'] = stringtoarr('degrees',NUMCHARS)
+stationobs_units['latitude'] = stringtoarr('degrees north',NUMCHARS)
+stationobs_units['longitude'] = stringtoarr('degrees west',NUMCHARS)
 stationobs_units['surface_wind'] = windunits[:]
-stationobs_units['temp_sounding'] = stringtoarr('Kelvin',80)
-stationobs_units['press_sounding'] = stringtoarr('hPa',80)
+stationobs_units['temp_sounding'] = stringtoarr('Kelvin',NUMCHARS)
+stationobs_units['press_sounding'] = stringtoarr('hPa',NUMCHARS)
 statdat.units = stationobs_units
 # close and reopen the file.
 rootgrp.close(); rootgrp = netCDF4.Dataset('compound_example.nc')
