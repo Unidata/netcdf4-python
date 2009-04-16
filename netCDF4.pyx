@@ -813,16 +813,15 @@ cdef _get_vars(group):
              if ierr != NC_NOERR:
                  raise RuntimeError(nc_strerror(ierr))
              # check to see if it is a supported user-defined type.
-             ierr = nc_inq_user_type(group._grpid, xtype, namstring_cmp,
-                                     NULL, NULL, NULL, &classp)
-             if classp == NC_COMPOUND: # a compound type
-                 # create CompoundType instance describing this compound type.
-                 datatype = _read_compound(group, xtype)
-             else:
-                 try:
-                     datatype = _nctonptype[xtype]
-                 except:
-                     #raise KeyError('variable %s has unsupported data type' % name)
+             try:
+                  datatype = _nctonptype[xtype]
+             except KeyError:
+                 ierr = nc_inq_user_type(group._grpid, xtype, namstring_cmp,
+                                         NULL, NULL, NULL, &classp)
+                 if classp == NC_COMPOUND: # a compound type
+                     # create CompoundType instance describing this compound type.
+                     datatype = _read_compound(group, xtype)
+                 else:
                      print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
                      continue
              # get number of dimensions.
@@ -1184,7 +1183,7 @@ rename a L{Variable} named C{oldname} to C{newname}"""
         cdef char *namstring
         try:
             var = self.variables[oldname]
-        except:
+        except KeyError:
             raise KeyError('%s not a valid variable name' % oldname)
         namstring = PyString_AsString(newname)
         ierr = nc_rename_var(self._grpid, var._varid, namstring)
@@ -2256,7 +2255,7 @@ cdef _find_cmptype(grp, dtype):
     if not match: 
         try:
             parent_grp = grp.parent
-        except:
+        except AttributeError:
             raise ValueError("cannot find compound type in this group or parent groups")
         if parent_grp is None:
             raise ValueError("cannot find compound type in this group or parent groups")
