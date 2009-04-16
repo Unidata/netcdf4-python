@@ -120,39 +120,60 @@ from netCDF4 import chartostring, stringtoarr
 rootgrp = netCDF4.Dataset('compound_example.nc','w')
 # create an unlimited  dimension call 'station'
 rootgrp.createDimension('station',None)
-# define a compound data type (a list of 3-tuples containing
-# the name of each member, it's primitive data type, and it's size).
-# Only fixed-size primitive data types allowed (no 'S').
-# Members can be multi-dimensional arrays (in which case the third
-# element is a shape tuple instead of a scalar).
-datatype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),\
-            ('sfc_press','i4'),\
+# define a compound data type (can contain arrays, or nested compound types).
+winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
+statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),\
+            ('surface_wind',winddtype),\
             ('temp_sounding','f4',10),('press_sounding','i4',10),
             ('location_name','S1',80)])
-# use this data type definition to create a user-defined data type
-# called 'station_data'
-station_data_t = rootgrp.createCompoundType(datatype,'station_data')
-# create a variable of of type 'station_data'
+print statdtype
+# use this data type definition to create a compound data type
+# called 'station_data_t'
+wind_data_t = rootgrp.createCompoundType(winddtype,'wind_data')
+station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
+# create nested compound data types to hold units.
+winddtype_units = numpy.dtype([('speed','S1',(80,)),('direction','S1',(80,))])
+statdtype_units = numpy.dtype([('latitude', 'S1',(80,)), ('longitude', 'S1',(80,)),\
+            ('surface_wind',winddtype_units),\
+            ('temp_sounding','S1',(80,)),('press_sounding','S1',(80,))])
+wind_data_units_t = rootgrp.createCompoundType(winddtype_units,'wind_data_units')
+station_data_units_t =\
+rootgrp.createCompoundType(statdtype_units,'station_data_units')
+# create a variable of of type 'station_data_t'
 statdat = rootgrp.createVariable('station_obs', station_data_t, ('station',))
 # create a numpy structured array, assign data to it.
-ra = numpy.empty(1,station_data_t)
-ra['latitude'] = 40.
-ra['longitude'] = -105.
-ra['sfc_press'] = 818
-ra['temp_sounding'] = (280.3,272.,270.,269.,266.,258.,254.1,250.,245.5,240.)
-ra['press_sounding'] = range(800,300,-50)
+data = numpy.empty(1,station_data_t)
+data['latitude'] = 40.
+data['longitude'] = -105.
+data['surface_wind']['speed'] = 12.5
+data['surface_wind']['direction'] = 270
+data['temp_sounding'] = (280.3,272.,270.,269.,266.,258.,254.1,250.,245.5,240.)
+data['press_sounding'] = range(800,300,-50)
 # variable-length string datatypes are not supported, so
 # to store strings in a compound data type, each string must be 
 # stored as fixed-size (in this case 80) array of characters.
-NUMCHARS = datatype.fields['location_name'][0].itemsize
-ra['location_name'] = stringtoarr('Boulder, Colorado, USA',NUMCHARS)
+NUMCHARS = statdtype.fields['location_name'][0].itemsize
+data['location_name'] = stringtoarr('Boulder, Colorado, USA',NUMCHARS)
 # assign structured array to variable slice.
-statdat[0] = ra
+statdat[0] = data
 # or just assign a tuple of values to variable slice
 # (will automatically be converted to a structured array).
-statdat[1] = (40.78,-73.99,1002,\
+statdat[1] = (40.78,-73.99,(-12.5,90),\
             (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),\
             range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
+windunits = numpy.empty(1,winddtype_units)
+stationobs_units = numpy.empty(1,statdtype_units)
+windunits['speed'] = stringtoarr('m/s',80)
+windunits['direction'] = stringtoarr('degrees',80)
+stationobs_units['latitude'] = stringtoarr('degrees north',80)
+stationobs_units['longitude'] = stringtoarr('degrees west',80)
+stationobs_units['surface_wind'] = windunits[:]
+stationobs_units['temp_sounding'] = stringtoarr('Kelvin',80)
+stationobs_units['press_sounding'] = stringtoarr('hPa',80)
+statdat.units = stationobs_units
+# close and reopen the file.
+rootgrp.close(); rootgrp = netCDF4.Dataset('compound_example.nc')
+statdat = rootgrp.variables['station_obs']
 # print out data in variable.
 print 'data in a variable of compound type:\\n----'
 for data in statdat[:]:
