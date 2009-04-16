@@ -9,21 +9,24 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 # test compound attributes.
 
 FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = 'test.nc'
 DIM_NAME = 'time'
 VAR_NAME = 'wind'
 VAR_NAME2 = 'forecast_wind'
 GROUP_NAME = 'forecasts'
-dtype=np.dtype([('eastward', 'f4'), ('northward', 'f4')])
+dtype=np.dtype([('speed', 'f4'), ('direction', 'f4')])
+print dtype.fields
 TYPE_NAME = 'wind_vector_type'
 TYPE_NAMEC = 'wind_vectorunits_type'
-dtypec=np.dtype([('eastward', 'c',(8,)), ('northward', 'c',(8,))])
-missvals = np.zeros(1,dtype)
-missvals['eastward']=9999.
-missvals['northward']=-9999.
+dtypec=np.dtype([('speed', 'c',(8,)), ('direction', 'c',(8,))])
+missvals = np.empty(1,dtype)
+missvals['direction']=1.e20
+missvals['speed']=-999.
 windunits = np.zeros(1,dtypec)
-chararr = stringtoarr('m/s', dtypec.fields['eastward'][0].itemsize)
-windunits['eastward'] = chararr
-windunits['northward'] = chararr
+windunits['speed'] = stringtoarr('m/s',\
+        dtypec.fields['speed'][0].itemsize)
+windunits['direction'] = stringtoarr('degrees',\
+        dtypec.fields['direction'][0].itemsize)
 
 class VariablesTestCase(unittest.TestCase):
 
@@ -38,13 +41,15 @@ class VariablesTestCase(unittest.TestCase):
         vv = g.createVariable(VAR_NAME2,wind_vector_type,DIM_NAME)
         v.missing_values = missvals
         v.units = windunits
+        print v.missing_values['speed']
         vv.missing_values = missvals
         vv.units = windunits
         f.close()
 
     def tearDown(self):
         # Remove the temporary files
-        os.remove(self.file)
+        pass
+        #os.remove(self.file)
 
     def runTest(self):
         """testing compound attributes"""
@@ -52,11 +57,14 @@ class VariablesTestCase(unittest.TestCase):
         v = f.variables[VAR_NAME]
         g = f.groups[GROUP_NAME]
         vv = g.variables[VAR_NAME2]
-        assert_array_almost_equal(v.missing_values.item(), missvals.item())
-        assert_array_almost_equal(vv.missing_values.item(), missvals.item())
+        print v.missing_values['speed']
+        assert_array_almost_equal(v.missing_values['speed'], missvals['speed'])
+        assert_array_almost_equal(v.missing_values['direction'],\
+                missvals['direction'])
         assert_array_equal(v.units, windunits)
         assert_array_equal(vv.units, windunits)
-        assert(chartostring(v.units['eastward']).item().rstrip() == 'm/s')
+        assert(chartostring(v.units['speed']).item().rstrip() == 'm/s')
+        assert(chartostring(v.units['direction']).item().rstrip() == 'degrees')
         f.close()
 
 if __name__ == '__main__':
