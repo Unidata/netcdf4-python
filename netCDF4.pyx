@@ -1071,6 +1071,19 @@ rename a L{Dimension} named C{oldname} to C{newname}."""
         # looks in the file, so no need to manually update.
 
     def createCompoundType(self, datatype, datatype_name):
+        """
+createCompoundType(self, datatype, datatype_name)
+
+Creates a new compound data type named C{datatype_name} from the numpy
+dtype object C{datatype}.
+
+If the new compound data type contains other compound data types (i.e
+it is a 'nested' compound type, where all the elements are not
+homogenous data types), then the 'inner' compound types *must* be
+created first.
+
+The return value is the L{CompoundType} class instance describing the new
+datatype."""
         return CompoundType(self, datatype, datatype_name)
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
