@@ -16,7 +16,7 @@ Most new features of netCDF 4 are implemented, such as multiple
 unlimited dimensions, groups and zlib data compression.  All the new
 numeric data types (such as 64 bit and unsigned integer types) are
 implemented. Compound data types are supported, but variable length
-data types (vlen, strings) are not, nor or the enum and opaque data
+data types (vlen, strings) are not, nor are the enum and opaque data
 types, mainly because they do not map easily onto any numpy data type. 
 
 Download 
@@ -545,7 +545,7 @@ stations:
 >>> # called 'station_data_t' using the createCompoundType method.
 >>> station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
 >>> # create a compound type for vector wind which will be nested inside
->>> # the station dadta type.
+>>> # the station data type.
 >>> wind_data_t = rootgrp.createCompoundType(winddtype,'wind_data')
 >>> # create nested compound data types to hold the units variable attribute.
 >>> winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
