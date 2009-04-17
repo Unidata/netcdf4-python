@@ -525,9 +525,12 @@ compound types. Compound types might be useful for representing multiple
 parameter values at each point on a grid, or at each time and space
 location for scattered (point) data. You can then access all the
 information for a point by reading one variable, instead of reading
-different parameters from different variables.  Here's a simple example
-using a compound type to represent meteorological observations at
-stations:
+different parameters from different variables.  Compound data types
+are created from the corresponding numpy data type using the 
+L{createCompoundType} method of a L{Dataset} or L{Group} instance.
+To create nested compound data types, you must create the 'inner'
+ones first. Here's a simple example using a nested compound type to
+represent meteorological observations at stations:
 
 >>> # compound type example.
 >>> from netCDF4 import chartostring, stringtoarr
@@ -541,18 +544,21 @@ stations:
 ...                          ('surface_wind',winddtype),
 ...                          ('temp_sounding','f4',10),('press_sounding','i4',10),
 ...                          ('location_name','S1',NUMCHARS)])
->>> # use this data type definition to create a compound data type
->>> # called 'station_data_t' using the createCompoundType method.
->>> station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
+>>> # use this data type definitions to create a compound data types
+>>> # called using the createCompoundType Dataset method.
 >>> # create a compound type for vector wind which will be nested inside
->>> # the station data type.
+>>> # the station data type. This must be done first!
 >>> wind_data_t = rootgrp.createCompoundType(winddtype,'wind_data')
+>>> # now that wind_data_t is defined, create the station data type.
+>>> station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
 >>> # create nested compound data types to hold the units variable attribute.
 >>> winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
 >>> statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),
 ...                                ('surface_wind',winddtype_units),
 ...                                ('temp_sounding','S1',NUMCHARS),
 ...                                ('press_sounding','S1',NUMCHARS)])
+>>> # create the wind_data_units type first, since it will nested inside
+>>> # the station_data_units data type.
 >>> wind_data_units_t = rootgrp.createCompoundType(winddtype_units,'wind_data_units')
 >>> station_data_units_t =
 ... rootgrp.createCompoundType(statdtype_units,'station_data_units')
