@@ -119,25 +119,32 @@ print f.variables['x'][:]
 
 # compound type example.
 from netCDF4 import chartostring, stringtoarr
-rootgrp = Dataset('compound_example.nc','w')
+rootgrp = Dataset('compound_example.nc','w') # create a new dataset.
 # create an unlimited  dimension call 'station'
 rootgrp.createDimension('station',None)
 # define a compound data type (can contain arrays, or nested compound types).
 NUMCHARS = 80 # number of characters to use in fixed-length strings.
 winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
-statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),\
-            ('surface_wind',winddtype),\
-            ('temp_sounding','f4',10),('press_sounding','i4',10),
-            ('location_name','S1',NUMCHARS)])
-# use this data type definition to create a compound data type
-# called 'station_data_t'
+statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),
+                         ('surface_wind',winddtype),
+                         ('temp_sounding','f4',10),('press_sounding','i4',10),
+                         ('location_name','S1',NUMCHARS)])
+# use this data type definitions to create a compound data types
+# called using the createCompoundType Dataset method.
+# create a compound type for vector wind which will be nested inside
+# the station data type. This must be done first!
 wind_data_t = rootgrp.createCompoundType(winddtype,'wind_data')
+# now that wind_data_t is defined, create the station data type.
 station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
-# create nested compound data types to hold units.
+# create nested compound data types to hold the units variable attribute.
 winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
-statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),\
-            ('surface_wind',winddtype_units),('location_name','S1',NUMCHARS),\
-            ('temp_sounding','S1',NUMCHARS),('press_sounding','S1',NUMCHARS)])
+statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),
+                               ('surface_wind',winddtype_units),
+                               ('temp_sounding','S1',NUMCHARS),
+                               ('location_name','S1',NUMCHARS),
+                               ('press_sounding','S1',NUMCHARS)])
+# create the wind_data_units type first, since it will nested inside
+# the station_data_units data type.
 wind_data_units_t = rootgrp.createCompoundType(winddtype_units,'wind_data_units')
 station_data_units_t =\
 rootgrp.createCompoundType(statdtype_units,'station_data_units')
@@ -159,9 +166,9 @@ data['location_name'] = stringtoarr('Boulder, Colorado, USA',NUMCHARS)
 statdat[0] = data
 # or just assign a tuple of values to variable slice
 # (will automatically be converted to a structured array).
-statdat[1] = (40.78,-73.99,(-12.5,90),\
-            (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),\
-            range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
+statdat[1] = (40.78,-73.99,(-12.5,90),
+             (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),
+             range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
 windunits = numpy.empty(1,winddtype_units)
 stationobs_units = numpy.empty(1,statdtype_units)
 windunits['speed'] = stringtoarr('m/s',NUMCHARS)
@@ -185,10 +192,10 @@ for data in statdat[:]:
     for name in statdat.dtype.names:
         if data[name].dtype.kind == 'S': # a string
             # convert array of characters back to a string for display.
-            print name,': value =',chartostring(data[name]),\
-                    ': units=',chartostring(statdat.units[name])
+            print name,': value =',chartostring(data[name]),
+            ': units=',chartostring(statdat.units[name])
         elif data[name].dtype.kind == 'V': # a nested compound type
-            print name,data[name].dtype.names,': value=',data[name],': units=',\
+            print name,data[name].dtype.names,': value=',data[name],': units=',
             tuple([''.join(u.tolist()) for u in statdat.units[name]])
         else: # a numeric type.
             print name,': value=',data[name],': units=',chartostring(statdat.units[name])

@@ -527,7 +527,7 @@ location for scattered (point) data. You can then access all the
 information for a point by reading one variable, instead of reading
 different parameters from different variables.  Compound data types
 are created from the corresponding numpy data type using the 
-L{createCompoundType} method of a L{Dataset} or L{Group} instance.
+L{createCompoundType<Dataset.createCompoundType>} method of a L{Dataset} or L{Group} instance.
 To create nested compound data types, you must create the 'inner'
 ones first. Here's a simple example using a nested compound type to
 represent meteorological observations at stations:
@@ -556,6 +556,7 @@ represent meteorological observations at stations:
 >>> statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),
 ...                                ('surface_wind',winddtype_units),
 ...                                ('temp_sounding','S1',NUMCHARS),
+...                                ('location_name','S1',NUMCHARS),
 ...                                ('press_sounding','S1',NUMCHARS)])
 >>> # create the wind_data_units type first, since it will nested inside
 >>> # the station_data_units data type.
@@ -623,7 +624,7 @@ quick look at the contents of the file.
 >>>         if data[name].dtype.kind == 'S': # a string
 >>>             # convert array of characters back to a string for display.
 >>>             print name,': value =',chartostring(data[name]),
-...                        ': units=',chartostring(statdat.units[name])
+...             ': units=',chartostring(statdat.units[name])
 >>>         elif data[name].dtype.kind == 'V': # a nested compound type
 >>>             print name,data[name].dtype.names,': value=',data[name],': units=',
 ...             tuple([''.join(u.tolist()) for u in statdat.units[name]])
