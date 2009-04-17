@@ -192,10 +192,10 @@ for data in statdat[:]:
     for name in statdat.dtype.names:
         if data[name].dtype.kind == 'S': # a string
             # convert array of characters back to a string for display.
-            print name,': value =',chartostring(data[name]),
+            print name,': value =',chartostring(data[name]),\
             ': units=',chartostring(statdat.units[name])
         elif data[name].dtype.kind == 'V': # a nested compound type
-            print name,data[name].dtype.names,': value=',data[name],': units=',
+            print name,data[name].dtype.names,': value=',data[name],': units=',\
             tuple([''.join(u.tolist()) for u in statdat.units[name]])
         else: # a numeric type.
             print name,': value=',data[name],': units=',chartostring(statdat.units[name])
