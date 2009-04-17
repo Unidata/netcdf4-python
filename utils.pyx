@@ -152,7 +152,7 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar
 If C{calendar} is None, its value is given by C{nctime.calendar} or
 C{standard} if no such attribute exists.
 
-@return: a index (indices) of the netCDF time variable corresponding
+@return: an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
     """
     return netcdftime.date2index(dates, nctime, calendar=None)
