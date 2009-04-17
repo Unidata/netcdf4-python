@@ -1,14 +1,14 @@
-import netCDF4
+from netCDF4 import Dataset
 
 # code from tutorial.
 
 # create a file (Dataset object, also the root group).
-rootgrp = netCDF4.Dataset('test.nc', 'w', format='NETCDF4')
+rootgrp = Dataset('test.nc', 'w', format='NETCDF4')
 print rootgrp.file_format
 rootgrp.close()
 
 # create some groups.
-rootgrp = netCDF4.Dataset('test.nc', 'a')
+rootgrp = Dataset('test.nc', 'a')
 fcstgrp = rootgrp.createGroup('forecasts')
 analgrp = rootgrp.createGroup('analyses')
 print rootgrp.groups
@@ -107,17 +107,19 @@ rootgrp.close()
 # create a series of netCDF files with a variable sharing
 # the same unlimited dimension.
 for nfile in range(10):
-    f = netCDF4.Dataset('mftest'+repr(nfile)+'.nc','w',format='NETCDF4_CLASSIC')
+    f = Dataset('mftest'+repr(nfile)+'.nc','w',format='NETCDF4_CLASSIC')
     f.createDimension('x',None)
     x = f.createVariable('x','i',('x',))
     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
     f.close()
 # now read all those files in at once, in one Dataset.
-f = netCDF4.MFDataset('mftest*nc')
+from netCDF4 import MFDataset
+f = MFDataset('mftest*nc')
 print f.variables['x'][:]
 
+# compound type example.
 from netCDF4 import chartostring, stringtoarr
-rootgrp = netCDF4.Dataset('compound_example.nc','w')
+rootgrp = Dataset('compound_example.nc','w')
 # create an unlimited  dimension call 'station'
 rootgrp.createDimension('station',None)
 # define a compound data type (can contain arrays, or nested compound types).
@@ -127,7 +129,6 @@ statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),\
             ('surface_wind',winddtype),\
             ('temp_sounding','f4',10),('press_sounding','i4',10),
             ('location_name','S1',NUMCHARS)])
-print statdtype
 # use this data type definition to create a compound data type
 # called 'station_data_t'
 wind_data_t = rootgrp.createCompoundType(winddtype,'wind_data')
@@ -135,7 +136,7 @@ station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
 # create nested compound data types to hold units.
 winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
 statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),\
-            ('surface_wind',winddtype_units),\
+            ('surface_wind',winddtype_units),('location_name','S1',NUMCHARS),\
             ('temp_sounding','S1',NUMCHARS),('press_sounding','S1',NUMCHARS)])
 wind_data_units_t = rootgrp.createCompoundType(winddtype_units,'wind_data_units')
 station_data_units_t =\
@@ -167,21 +168,29 @@ windunits['speed'] = stringtoarr('m/s',NUMCHARS)
 windunits['direction'] = stringtoarr('degrees',NUMCHARS)
 stationobs_units['latitude'] = stringtoarr('degrees north',NUMCHARS)
 stationobs_units['longitude'] = stringtoarr('degrees west',NUMCHARS)
-stationobs_units['surface_wind'] = windunits[:]
+stationobs_units['surface_wind'] = windunits
+stationobs_units['location_name'] = stringtoarr('None', NUMCHARS)
 stationobs_units['temp_sounding'] = stringtoarr('Kelvin',NUMCHARS)
 stationobs_units['press_sounding'] = stringtoarr('hPa',NUMCHARS)
 statdat.units = stationobs_units
 # close and reopen the file.
-rootgrp.close(); rootgrp = netCDF4.Dataset('compound_example.nc')
+rootgrp.close(); rootgrp = Dataset('compound_example.nc')
 statdat = rootgrp.variables['station_obs']
 # print out data in variable.
-print 'data in a variable of compound type:\\n----'
+# (also, try 'ncdump compound_example.nc' on the command line
+#  to see what's in the file)
+print 'data in a variable of compound type:'
+print '----'
 for data in statdat[:]:
     for name in statdat.dtype.names:
-        try:
+        if data[name].dtype.kind == 'S': # a string
             # convert array of characters back to a string for display.
-            print name,': value =',chartostring(data[name])
-        except:
-            print name,': value =',data[name]
+            print name,': value =',chartostring(data[name]),\
+                    ': units=',chartostring(statdat.units[name])
+        elif data[name].dtype.kind == 'V': # a nested compound type
+            print name,data[name].dtype.names,': value=',data[name],': units=',\
+            tuple([''.join(u.tolist()) for u in statdat.units[name]])
+        else: # a numeric type.
+            print name,': value=',data[name],': units=',chartostring(statdat.units[name])
     print '----'
 rootgrp.close()

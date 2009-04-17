@@ -84,8 +84,8 @@ instance.
 
 Here's an example:
 
->>> import netCDF4
->>> rootgrp = netCDF4.Dataset('test.nc', 'w', format='NETCDF4')
+>>> from netCDF4 import Dataset
+>>> rootgrp = Dataset('test.nc', 'w', format='NETCDF4')
 >>> print rootgrp.file_format
 NETCDF4
 >>>
@@ -115,7 +115,7 @@ the C{groups} dictionary attribute of the L{Dataset} instance.  Only
 C{NETCDF4} formatted files support Groups, if you try to create a Group
 in a netCDF 3 file you will get an error message.
 
->>> rootgrp = netCDF4.Dataset('test.nc', 'a')
+>>> rootgrp = Dataset('test.nc', 'a')
 >>> fcstgrp = rootgrp.createGroup('forecasts')
 >>> analgrp = rootgrp.createGroup('analyses')
 >>> print rootgrp.groups
@@ -448,6 +448,7 @@ datasets are not supported).
 
 Now read all the files back in at once with L{MFDataset}
 
+>>> from netCDF4 import MFDataset
 >>> f = MFDataset('mftest*nc')
 >>> print f.variables['x'][:]
 [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
@@ -458,7 +459,7 @@ Now read all the files back in at once with L{MFDataset}
 
 Note that MFDataset can only be used to read, not write, multi-file
 datasets. 
-            
+
 8) Efficient compression of netCDF variables
 --------------------------------------------
 
@@ -511,6 +512,136 @@ and then
 >>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),zlib=True,least_significant_digit=3)
 
 and see how much smaller the resulting files are.
+
+9) Beyond homogenous arrays of a fixed type - compound data types
+-----------------------------------------------------------------
+
+Compound data types map directly to numpy structured (a.k.a 'record'
+arrays).  Structured arrays are akin to C structs, or derived types
+in Fortran. They allow for the construction of table-like structures
+composed of combinations of other data types, including other 
+compound types. Compound types might be useful for representing multiple
+parameter values at each point on a grid, or at each time and space
+location for scattered (point) data. You can then access all the
+information for a point by reading one variable, instead of reading
+different parameters from different variables.  Here's a simple example
+using a compound type to represent meteorological observations at
+stations:
+
+>>> # compound type example.
+>>> from netCDF4 import chartostring, stringtoarr
+>>> rootgrp = Dataset('compound_example.nc','w') # create a new dataset.
+>>> # create an unlimited  dimension call 'station'
+>>> rootgrp.createDimension('station',None)
+>>> # define a compound data type (can contain arrays, or nested compound types).
+>>> NUMCHARS = 80 # number of characters to use in fixed-length strings.
+>>> winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
+>>> statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),
+...                          ('surface_wind',winddtype),
+...                          ('temp_sounding','f4',10),('press_sounding','i4',10),
+...                          ('location_name','S1',NUMCHARS)])
+>>> # use this data type definition to create a compound data type
+>>> # called 'station_data_t' using the createCompoundType method.
+>>> station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
+>>> # create a compound type for vector wind which will be nested inside
+>>> # the station dadta type.
+>>> wind_data_t = rootgrp.createCompoundType(winddtype,'wind_data')
+>>> # create nested compound data types to hold the units variable attribute.
+>>> winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
+>>> statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),
+...                                ('surface_wind',winddtype_units),
+...                                ('temp_sounding','S1',NUMCHARS),
+...                                ('press_sounding','S1',NUMCHARS)])
+>>> wind_data_units_t = rootgrp.createCompoundType(winddtype_units,'wind_data_units')
+>>> station_data_units_t =
+... rootgrp.createCompoundType(statdtype_units,'station_data_units')
+>>> # create a variable of of type 'station_data_t'
+>>> statdat = rootgrp.createVariable('station_obs', station_data_t, ('station',))
+>>> # create a numpy structured array, assign data to it.
+>>> data = numpy.empty(1,station_data_t)
+>>> data['latitude'] = 40.
+>>> data['longitude'] = -105.
+>>> data['surface_wind']['speed'] = 12.5
+>>> data['surface_wind']['direction'] = 270
+>>> data['temp_sounding'] = (280.3,272.,270.,269.,266.,258.,254.1,250.,245.5,240.)
+>>> data['press_sounding'] = range(800,300,-50)
+>>> # variable-length string datatypes are not supported, so
+>>> # to store strings in a compound data type, each string must be 
+>>> # stored as fixed-size (in this case 80) array of characters.
+>>> data['location_name'] = stringtoarr('Boulder, Colorado, USA',NUMCHARS)
+>>> # assign structured array to variable slice.
+>>> statdat[0] = data
+>>> # or just assign a tuple of values to variable slice
+>>> # (will automatically be converted to a structured array).
+>>> statdat[1] = (40.78,-73.99,(-12.5,90),
+...              (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),
+...              range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
+
+Attributes cannot be assigned directly to compound type members,
+However, a compound data type can be created to hold an attribute for
+each member. In this example we have created the compound types
+C{wind_data_units_t} and C{station_data_units_t} to hold the units 
+attribute for each member of the nested compound type C{station_data_t}.
+Now we can fill a numpy array with strings describing the units, then
+assign that array to the C{units} attribute of the station data variable.
+Note again that since there is no fixed-length string type in netCDF,
+we have to use arrays of characters to represent strings.
+
+>>> windunits = numpy.empty(1,winddtype_units)
+>>> stationobs_units = numpy.empty(1,statdtype_units)
+>>> windunits['speed'] = stringtoarr('m/s',NUMCHARS)
+>>> windunits['direction'] = stringtoarr('degrees',NUMCHARS)
+>>> stationobs_units['latitude'] = stringtoarr('degrees north',NUMCHARS)
+>>> stationobs_units['longitude'] = stringtoarr('degrees west',NUMCHARS)
+>>> stationobs_units['surface_wind'] = windunits
+>>> stationobs_units['location_name'] = stringtoarr('None', NUMCHARS)
+>>> stationobs_units['temp_sounding'] = stringtoarr('Kelvin',NUMCHARS)
+>>> stationobs_units['press_sounding'] = stringtoarr('hPa',NUMCHARS)
+>>> statdat.units = stationobs_units
+
+Now let's close the file, reopen it, and see what's in there.
+The command line utility C{ncdump} can also be used to get a 
+quick look at the contents of the file.
+
+>>> # close and reopen the file.
+>>> rootgrp.close(); rootgrp = Dataset('compound_example.nc')
+>>> statdat = rootgrp.variables['station_obs']
+>>> # print out data in variable.
+>>> # (also, try 'ncdump compound_example.nc' on the command line
+>>> #  to see what's in the file)
+>>> print 'data in a variable of compound type:'
+>>> print '----'
+>>> for data in statdat[:]:
+>>>     for name in statdat.dtype.names:
+>>>         if data[name].dtype.kind == 'S': # a string
+>>>             # convert array of characters back to a string for display.
+>>>             print name,': value =',chartostring(data[name]),
+...                        ': units=',chartostring(statdat.units[name])
+>>>         elif data[name].dtype.kind == 'V': # a nested compound type
+>>>             print name,data[name].dtype.names,': value=',data[name],': units=',
+...             tuple([''.join(u.tolist()) for u in statdat.units[name]])
+>>>         else: # a numeric type.
+>>>             print name,': value=',data[name],': units=',chartostring(statdat.units[name])
+>>>     print '----'
+data in a variable of compound type:
+----
+latitude : value= 40.0 : units= degrees north
+longitude : value= -105.0 : units= degrees west
+surface_wind ('speed', 'direction') : value= (12.5, 270) : units= ('m/s', 'degrees')
+temp_sounding : value= [280.3 272. 270. 269. 266. 258. 254.1 250.245.5 240.] : units= Kelvin
+press_sounding : value= [800 750 700 650 600 550 500 450 400 350] : units= hPa
+location_name : value = Boulder, Colorado, USA : units= None
+----
+latitude : value= 40.78 : units= degrees north
+longitude : value= -73.99 : units= degrees west
+surface_wind ('speed', 'direction') : value= (-12.5, 90) : units= ('m/s','degrees')
+temp_sounding : value= [290.2 282.5 279. 277.9 276. 266. 264.1 260. 255.5 243.] : units= Kelvin
+press_sounding : value= [900 850 800 750 700 650 600 550 500 450] : units= hPa
+location_name : value = New York, New York, USA : units= None
+----
+>>>
+>>> rootgrp.close()
+
 
 All of the code in this tutorial is available in C{examples/tutorial.py},
 Unit tests are in the C{test} directory.
