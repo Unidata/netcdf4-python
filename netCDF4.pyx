@@ -12,11 +12,12 @@ U{Scientific.IO.NetCDF
 <http://dirac.cnrs-orleans.fr/plone/software/scientificpython/>}, and should be 
 familiar to users of that module.
 
-Many new features of netCDF 4 are implemented, such as multiple
+Most new features of netCDF 4 are implemented, such as multiple
 unlimited dimensions, groups and zlib data compression.  All the new
-primitive data types (such as 64 bit and unsigned integer types) are
-implemented, except variable-length strings (C{NC_STRING}). User
-defined data types (compound, vlen, enum etc.) are not supported.
+numeric data types (such as 64 bit and unsigned integer types) are
+implemented. Compound data types are supported, but variable length
+data types (vlen, strings) are not, nor or the enum and opaque data
+types, mainly because they do not map easily onto any numpy data type. 
 
 Download 
 ========
