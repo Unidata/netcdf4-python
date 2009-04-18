@@ -677,7 +677,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
                           _out_array_shape, _sortbylist
 
-__version__ = "0.7.8"
+__version__ = "0.8"
 
 # Initialize numpy
 import os
@@ -1216,9 +1216,9 @@ createCompoundType(self, datatype, datatype_name)
 Creates a new compound data type named C{datatype_name} from the numpy
 dtype object C{datatype}.
 
-If the new compound data type contains other compound data types (i.e
-it is a 'nested' compound type, where all the elements are not
-homogenous data types), then the 'inner' compound types *must* be
+@attention: If the new compound data type contains other compound data types
+(i.e. it is a 'nested' compound type, where not all of the elements
+are homogenous numeric data types), then the 'inner' compound types B{must} be
 created first.
 
 The return value is the L{CompoundType} class instance describing the new
@@ -2316,6 +2316,42 @@ The default value of C{maskandscale} is C{False}
 # Compound datatype support.
 
 cdef class CompoundType:
+    """
+A L{CompoundType} instance is used to describe a compound data type.
+
+Constructor: C{CompoundType(group, datatype, datatype_name)}
+
+@attention: When creating nested compound data types,
+the inner compound data types must already be associated with CompoundType
+instances (so create CompoundType instances for the innermost structures
+first).
+
+L{CompoundType} instances should be created using the C{createCompoundType method} 
+of a Dataset or L{Group} instance, not using this class directly.
+
+B{Parameters:}
+
+B{C{group}} - L{Group} instance to associate with the compound datatype.
+
+B{C{datatype}} - A numpy dtype object describing a structured (a.k.a record)
+array.  Can be composed of homogeneous numeric or character data types, or 
+other structured array data types. 
+
+B{C{datatype_name}} - a Python string containing a description of the 
+compound data type.
+
+B{Returns:}
+
+a L{CompoundType} instance, which can be passed to the C{createVariable} 
+method of a L{Dataset} or L{Group} instance.
+
+The instance variables C{dtype} and C{name} should not be modified by
+the user.
+
+@ivar dtype: A numpy dtype object describing the compound data type.
+
+@ivar name: A python string describing the compound type.
+"""
     cdef public nc_type _nc_type
     cdef public dtype, name
     def __init__(self, grp, object dt, object dtype_name, **kwargs):
@@ -2331,6 +2367,8 @@ cdef class CompoundType:
         grp._cmptypes.append((dtype_name, dt, xtype))
 
 cdef _def_compound(grp, object dt, object dtype_name):
+    # private method used to construct a netcdf compound data type
+    # from a numpy dtype object by CompoundType.__init__.
     cdef nc_type xtype, xtype_tmp
     cdef int ierr, ndims, offset
     cdef size_t size
@@ -2396,9 +2434,9 @@ cdef _def_compound(grp, object dt, object dtype_name):
     return xtype
 
 cdef _find_cmptype(grp, dtype):
-    cdef nc_type xtype
     # look for data type in this group and it's parents.
     # return datatype id when found, if not found, raise exception.
+    cdef nc_type xtype
     match = False
     for cmpname, cmpdt, xtype in grp._cmptypes:
         if dtype == cmpdt: 
@@ -2416,6 +2454,11 @@ cdef _find_cmptype(grp, dtype):
     return xtype
 
 cdef _read_compound(group, nc_type xtype):
+    # read a compound data type id from an existing file,
+    # construct a corresponding numpy dtype instance, 
+    # then use that to create a CompoundType instance.
+    # called by _get_vars and _get_att.
+    # Calls itself recursively for nested compound types.
     cdef int ierr, nf, numdims, ndim, classp
     cdef size_t nfields, offset
     cdef nc_type field_typeid

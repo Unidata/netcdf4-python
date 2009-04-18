@@ -1,5 +1,5 @@
-version 0.7.8 (not yet released)
-================================
+version 0.8 (not yet released)
+==============================
  * added 'stringtoarr' utility function for converting python strings
    to numpy character arrays of a specified size.
 
@@ -17,6 +17,7 @@ version 0.7.8 (not yet released)
 
 version 0.7.7 (svn revision 626)
 ================================
+
  * David Huard reworked fancy indexing - it is now much more efficient and
    less of a memory hog. Now works differently than numpy fancy indexing - 1d
    arrays of boolean or integer indices work independently on each dimension.
