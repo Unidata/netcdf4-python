@@ -117,11 +117,37 @@ from netCDF4 import MFDataset
 f = MFDataset('mftest*nc')
 print f.variables['x'][:]
 
-# compound type example.
+# example showing how to save numpy complex arrays using compound types.
+f = Dataset('complex.nc','w')
+size = 3 # length of 1-d complex array
+# create sample complex data.
+datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
+# create complex128 compound data type.
+complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])
+complex128_t = f.createCompoundType(complex128,'complex128')
+# create a variable with this data type, write some data to it.
+f.createDimension('phony_dim',None)
+v = f.createVariable('phony_var',complex128_t,'phony_dim')
+data = numpy.empty(size,complex128)
+data['real'] = datac.real; data['imag'] = datac.imag
+v[:] = data
+# close and reopen the file, check the contents.
+f.close()
+f = Dataset('complex.nc')
+v = f.variables['phony_var']
+datain = v[:] # read in all the data into a numpy structured array
+# create an empty numpy complex array
+datac2 = numpy.empty(datain.shape,numpy.complex128)
+# .. fill it with contents of structured array.
+datac2.real = datain['real']
+datac2.imag = datain['imag']
+print datac.dtype,datac
+print datac2.dtype,datac2
+# more complex compound type example.
 from netCDF4 import chartostring, stringtoarr
-rootgrp = Dataset('compound_example.nc','w') # create a new dataset.
+f = Dataset('compound_example.nc','w') # create a new dataset.
 # create an unlimited  dimension call 'station'
-rootgrp.createDimension('station',None)
+f.createDimension('station',None)
 # define a compound data type (can contain arrays, or nested compound types).
 NUMCHARS = 80 # number of characters to use in fixed-length strings.
 winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
@@ -133,9 +159,9 @@ statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),
 # called using the createCompoundType Dataset method.
 # create a compound type for vector wind which will be nested inside
 # the station data type. This must be done first!
-wind_data_t = rootgrp.createCompoundType(winddtype,'wind_data')
+wind_data_t = f.createCompoundType(winddtype,'wind_data')
 # now that wind_data_t is defined, create the station data type.
-station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
+station_data_t = f.createCompoundType(statdtype,'station_data')
 # create nested compound data types to hold the units variable attribute.
 winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
 statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),
@@ -145,11 +171,11 @@ statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',N
                                ('press_sounding','S1',NUMCHARS)])
 # create the wind_data_units type first, since it will nested inside
 # the station_data_units data type.
-wind_data_units_t = rootgrp.createCompoundType(winddtype_units,'wind_data_units')
+wind_data_units_t = f.createCompoundType(winddtype_units,'wind_data_units')
 station_data_units_t =\
-rootgrp.createCompoundType(statdtype_units,'station_data_units')
+f.createCompoundType(statdtype_units,'station_data_units')
 # create a variable of of type 'station_data_t'
-statdat = rootgrp.createVariable('station_obs', station_data_t, ('station',))
+statdat = f.createVariable('station_obs', station_data_t, ('station',))
 # create a numpy structured array, assign data to it.
 data = numpy.empty(1,station_data_t)
 data['latitude'] = 40.
@@ -181,8 +207,8 @@ stationobs_units['temp_sounding'] = stringtoarr('Kelvin',NUMCHARS)
 stationobs_units['press_sounding'] = stringtoarr('hPa',NUMCHARS)
 statdat.units = stationobs_units
 # close and reopen the file.
-rootgrp.close(); rootgrp = Dataset('compound_example.nc')
-statdat = rootgrp.variables['station_obs']
+f.close(); f = Dataset('compound_example.nc')
+statdat = f.variables['station_obs']
 # print out data in variable.
 # (also, try 'ncdump compound_example.nc' on the command line
 #  to see what's in the file)
@@ -200,30 +226,4 @@ for data in statdat[:]:
         else: # a numeric type.
             print name,': value=',data[name],': units=',chartostring(statdat.units[name])
     print '----'
-rootgrp.close()
-# example showing how to save numpy complex arrays using compound types.
-f = Dataset('complex.nc','w')
-size = 3 # length of 1-d complex array
-# create sample complex data.
-datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
-# create complex128 compound data type.
-complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])
-complex128_t = f.createCompoundType(complex128,'complex128')
-# create a variable with this data type, write some data to it.
-f.createDimension('phony_dim',None)
-v = f.createVariable('phony_var',complex128_t,'phony_dim')
-data = numpy.empty(size,complex128)
-data['real'] = datac.real; data['imag'] = datac.imag
-v[:] = data
-# close and reopen the file, check the contents.
 f.close()
-f = Dataset('complex.nc')
-v = f.variables['phony_var']
-datain = v[:] # read in all the data into a numpy structured array
-# create an empty numpy complex array
-datac2 = numpy.empty(datain.shape,numpy.complex128)
-# .. fill it with contents of structured array.
-datac2.real = datain['real']
-datac2.imag = datain['imag']
-print datac.dtype,datac
-print datac2.dtype,datac2

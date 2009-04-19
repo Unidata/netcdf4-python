@@ -528,15 +528,48 @@ information for a point by reading one variable, instead of reading
 different parameters from different variables.  Compound data types
 are created from the corresponding numpy data type using the 
 L{createCompoundType<Dataset.createCompoundType>} method of a L{Dataset} or L{Group} instance.
-To create nested compound data types, you must create the 'inner'
-ones first. Here's a simple example using a nested compound type to
+Since there is no native complex data type in netcdf, compound types are handy
+for storing numpy complex arrays.  Here's an example:
+
+>>> f = Dataset('complex.nc','w')
+>>> size = 3 # length of 1-d complex array
+>>> # create sample complex data.
+>>> datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
+>>> # create complex128 compound data type.
+>>> complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])
+>>> complex128_t = f.createCompoundType(complex128,'complex128')
+>>> # create a variable with this data type, write some data to it.
+>>> f.createDimension('phony_dim',None)
+>>> v = f.createVariable('phony_var',complex128_t,'phony_dim')
+>>> data = numpy.empty(size,complex128)
+>>> data['real'] = datac.real; data['imag'] = datac.imag
+>>> v[:] = data
+>>> # close and reopen the file, check the contents.
+>>> f.close()
+>>> f = Dataset('complex.nc')
+>>> v = f.variables['phony_var']
+>>> datain = v[:] # read in all the data into a numpy structured array
+>>> # create an empty numpy complex array
+>>> datac2 = numpy.empty(datain.shape,numpy.complex128)
+>>> # .. fill it with contents of structured array.
+>>> datac2.real = datain['real']
+>>> datac2.imag = datain['imag']
+>>> print datac.dtype,datac
+complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
+>>>
+>>> print datac2.dtype,datac2
+complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
+>>>
+
+Compound types can be nested, but you must create the 'inner'
+ones first. Here's a more complex example that usesa nested compound type to
 represent meteorological observations at stations:
 
 >>> # compound type example.
 >>> from netCDF4 import chartostring, stringtoarr
->>> rootgrp = Dataset('compound_example.nc','w') # create a new dataset.
+>>> f = Dataset('compound_example.nc','w') # create a new dataset.
 >>> # create an unlimited  dimension call 'station'
->>> rootgrp.createDimension('station',None)
+>>> f.createDimension('station',None)
 >>> # define a compound data type (can contain arrays, or nested compound types).
 >>> NUMCHARS = 80 # number of characters to use in fixed-length strings.
 >>> winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
@@ -548,9 +581,9 @@ represent meteorological observations at stations:
 >>> # called using the createCompoundType Dataset method.
 >>> # create a compound type for vector wind which will be nested inside
 >>> # the station data type. This must be done first!
->>> wind_data_t = rootgrp.createCompoundType(winddtype,'wind_data')
+>>> wind_data_t = f.createCompoundType(winddtype,'wind_data')
 >>> # now that wind_data_t is defined, create the station data type.
->>> station_data_t = rootgrp.createCompoundType(statdtype,'station_data')
+>>> station_data_t = f.createCompoundType(statdtype,'station_data')
 >>> # create nested compound data types to hold the units variable attribute.
 >>> winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
 >>> statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),
@@ -560,11 +593,11 @@ represent meteorological observations at stations:
 ...                                ('press_sounding','S1',NUMCHARS)])
 >>> # create the wind_data_units type first, since it will nested inside
 >>> # the station_data_units data type.
->>> wind_data_units_t = rootgrp.createCompoundType(winddtype_units,'wind_data_units')
+>>> wind_data_units_t = f.createCompoundType(winddtype_units,'wind_data_units')
 >>> station_data_units_t =
-... rootgrp.createCompoundType(statdtype_units,'station_data_units')
+... f.createCompoundType(statdtype_units,'station_data_units')
 >>> # create a variable of of type 'station_data_t'
->>> statdat = rootgrp.createVariable('station_obs', station_data_t, ('station',))
+>>> statdat = f.createVariable('station_obs', station_data_t, ('station',))
 >>> # create a numpy structured array, assign data to it.
 >>> data = numpy.empty(1,station_data_t)
 >>> data['latitude'] = 40.
@@ -612,8 +645,8 @@ The command line utility C{ncdump} can also be used to get a
 quick look at the contents of the file.
 
 >>> # close and reopen the file.
->>> rootgrp.close(); rootgrp = Dataset('compound_example.nc')
->>> statdat = rootgrp.variables['station_obs']
+>>> f.close(); f = Dataset('compound_example.nc')
+>>> statdat = f.variables['station_obs']
 >>> # print out data in variable.
 >>> # (also, try 'ncdump compound_example.nc' on the command line
 >>> #  to see what's in the file)
@@ -648,40 +681,7 @@ press_sounding : value= [900 850 800 750 700 650 600 550 500 450] : units= hPa
 location_name : value = New York, New York, USA : units= None
 ----
 >>>
->>> rootgrp.close()
-
-Since there is no native complex data type in netcdf, compound types are also handy
-for storing numpy complex arrays.  Here's an example:
-
->>> f = Dataset('complex.nc','w')
->>> size = 3 # length of 1-d complex array
->>> # create sample complex data.
->>> datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
->>> # create complex128 compound data type.
->>> complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])
->>> complex128_t = f.createCompoundType(complex128,'complex128')
->>> # create a variable with this data type, write some data to it.
->>> f.createDimension('phony_dim',None)
->>> v = f.createVariable('phony_var',complex128_t,'phony_dim')
->>> data = numpy.empty(size,complex128)
->>> data['real'] = datac.real; data['imag'] = datac.imag
->>> v[:] = data
->>> # close and reopen the file, check the contents.
 >>> f.close()
->>> f = Dataset('complex.nc')
->>> v = f.variables['phony_var']
->>> datain = v[:] # read in all the data into a numpy structured array
->>> # create an empty numpy complex array
->>> datac2 = numpy.empty(datain.shape,numpy.complex128)
->>> # .. fill it with contents of structured array.
->>> datac2.real = datain['real']
->>> datac2.imag = datain['imag']
->>> print datac.dtype,datac
-complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
->>>
->>> print datac2.dtype,datac2
-complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
->>>
 
 All of the code in this tutorial is available in C{examples/tutorial.py},
 Unit tests are in the C{test} directory.
