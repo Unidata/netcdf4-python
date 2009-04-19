@@ -201,3 +201,29 @@ for data in statdat[:]:
             print name,': value=',data[name],': units=',chartostring(statdat.units[name])
     print '----'
 rootgrp.close()
+# example showing how to save numpy complex arrays using compound types.
+f = Dataset('complex.nc','w')
+size = 3 # length of 1-d complex array
+# create sample complex data.
+datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
+# create complex128 compound data type.
+complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])
+complex128_t = f.createCompoundType(complex128,'complex128')
+# create a variable with this data type, write some data to it.
+f.createDimension('phony_dim',None)
+v = f.createVariable('phony_var',complex128_t,'phony_dim')
+data = numpy.empty(size,complex128)
+data['real'] = datac.real; data['imag'] = datac.imag
+v[:] = data
+# close and reopen the file, check the contents.
+f.close()
+f = Dataset('complex.nc')
+v = f.variables['phony_var']
+datain = v[:] # read in all the data into a numpy structured array
+# create an empty numpy complex array
+datac2 = numpy.empty(datain.shape,numpy.complex128)
+# .. fill it with contents of structured array.
+datac2.real = datain['real']
+datac2.imag = datain['imag']
+print datac.dtype,datac
+print datac2.dtype,datac2

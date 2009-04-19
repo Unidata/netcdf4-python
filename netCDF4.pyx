@@ -340,7 +340,7 @@ assign data outside the currently defined range of indices.
 >>> print 'temp shape before adding data = ',temp.shape
 temp shape before adding data =  (0, 0, 73, 144)
 >>>
->>> from numpy.random.mtrand import uniform
+>>> from numpy.random import uniform
 >>> temp[0:5,0:10,:,:] = uniform(size=(5,10,nlats,nlons))
 >>> print 'temp shape after adding data = ',temp.shape
 temp shape after adding data =  (5, 10, 73, 144)
@@ -650,6 +650,38 @@ location_name : value = New York, New York, USA : units= None
 >>>
 >>> rootgrp.close()
 
+Since there is no native complex data type in netcdf, compound types are also handy
+for storing numpy complex arrays.  Here's an example:
+
+>>> f = Dataset('complex.nc','w')
+>>> size = 3 # length of 1-d complex array
+>>> # create sample complex data.
+>>> datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
+>>> # create complex128 compound data type.
+>>> complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])
+>>> complex128_t = f.createCompoundType(complex128,'complex128')
+>>> # create a variable with this data type, write some data to it.
+>>> f.createDimension('phony_dim',None)
+>>> v = f.createVariable('phony_var',complex128_t,'phony_dim')
+>>> data = numpy.empty(size,complex128)
+>>> data['real'] = datac.real; data['imag'] = datac.imag
+>>> v[:] = data
+>>> # close and reopen the file, check the contents.
+>>> f.close()
+>>> f = Dataset('complex.nc')
+>>> v = f.variables['phony_var']
+>>> datain = v[:] # read in all the data into a numpy structured array
+>>> # create an empty numpy complex array
+>>> datac2 = numpy.empty(datain.shape,numpy.complex128)
+>>> # .. fill it with contents of structured array.
+>>> datac2.real = datain['real']
+>>> datac2.imag = datain['imag']
+>>> print datac.dtype,datac
+complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
+>>>
+>>> print datac2.dtype,datac2
+complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
+>>>
 
 All of the code in this tutorial is available in C{examples/tutorial.py},
 Unit tests are in the C{test} directory.
