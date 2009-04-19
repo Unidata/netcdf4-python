@@ -1,4 +1,4 @@
-version 0.8 (not yet released)
+version 0.8 (svn revision 685)
 ==============================
  * added 'stringtoarr' utility function for converting python strings
    to numpy character arrays of a specified size.
