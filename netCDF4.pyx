@@ -545,15 +545,13 @@ for storing numpy complex arrays.  Here's an example:
 >>> data['real'] = datac.real; data['imag'] = datac.imag
 >>> v[:] = data
 >>> # close and reopen the file, check the contents.
->>> f.close()
->>> f = Dataset('complex.nc')
+>>> f.close(); f = Dataset('complex.nc')
 >>> v = f.variables['phony_var']
 >>> datain = v[:] # read in all the data into a numpy structured array
 >>> # create an empty numpy complex array
 >>> datac2 = numpy.empty(datain.shape,numpy.complex128)
 >>> # .. fill it with contents of structured array.
->>> datac2.real = datain['real']
->>> datac2.imag = datain['imag']
+>>> datac2.real = datain['real']; datac2.imag = datain['imag']
 >>> print datac.dtype,datac
 complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
 >>>
@@ -782,7 +780,6 @@ cdef _get_att(grp, int varid, name):
     cdef char *attname
     cdef nc_type att_type
     cdef ndarray value_arr
-    cdef char *strdata 
     attname = PyString_AsString(name)
     ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
     if ierr != NC_NOERR:
@@ -860,7 +857,7 @@ cdef _get_format(int grpid):
 cdef _set_att(grp, int varid, name, value):
     # Private function to set an attribute name/value pair
     cdef int i, ierr, lenarr, n
-    cdef char *attname, *datstring, *strdata
+    cdef char *attname, *datstring
     cdef ndarray value_arr 
     attname = PyString_AsString(name)
     # put attribute value into a numpy array.
@@ -873,7 +870,7 @@ cdef _set_att(grp, int varid, name, value):
     # if array contains strings, write a text attribute.
     if value_arr.dtype.char == 'S':
         dats = value_arr.tostring()
-        datstring = dats
+        datstring = PyString_AsString(dats)
         lenarr = len(dats)
         ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
@@ -1112,9 +1109,8 @@ group, so the path is simply C{'/'}."""
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4', **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
-        cdef int *grpids, *dimids
         cdef char namstring[NC_MAX_NAME+1]
-        path = filename
+        path = PyString_AsString(filename)
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
@@ -1469,10 +1465,9 @@ variables are available to a L{Group} instance (except the C{close}
 method)."""
     def __init__(self, parent, name, **kwargs):
         cdef int ierr, n, numgrps, numdims, numvars
-        cdef int *grpids, *dimids
         cdef char *groupname
         cdef char namstring[NC_MAX_NAME+1]
-        groupname = name
+        groupname = PyString_AsString(name)
         if kwargs.has_key('id'):
             self._grpid = kwargs['id']
         else:
@@ -1547,7 +1542,7 @@ determine if the dimension is unlimited"""
         if kwargs.has_key('id'):
             self._dimid = kwargs['id']
         else:
-            dimname = name
+            dimname = PyString_AsString(name)
             if size is not None:
                 lendim = size
             else:
@@ -1757,7 +1752,7 @@ instance. If C{None}, the data is not truncated. """
         if kwargs.has_key('id'):
             self._varid = kwargs['id']
         else:
-            varname = name
+            varname = PyString_AsString(name)
             ndims = len(dimensions)
             # find dimension ids.
             if ndims:
@@ -2402,8 +2397,8 @@ cdef _def_compound(grp, object dt, object dtype_name):
     # private method used to construct a netcdf compound data type
     # from a numpy dtype object by CompoundType.__init__.
     cdef nc_type xtype, xtype_tmp
-    cdef int ierr, ndims, offset
-    cdef size_t size
+    cdef int ierr, ndims
+    cdef size_t offset, size
     cdef char *namstring, *nested_namstring
     cdef int dim_sizes[NC_MAX_DIMS]
     namstring = PyString_AsString(dtype_name)
