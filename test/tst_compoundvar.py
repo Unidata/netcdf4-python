@@ -19,6 +19,7 @@ TYPE_NAME3 = 'cmp3'
 TYPE_NAME4 = 'cmp4'
 TYPE_NAME5 = 'cmp5'
 DIM_SIZE=1 # FIXME: segfaults on linux if this set > 1
+# FIXME:  must use align=True or test fails. 
 dtype1=np.dtype([('i', 'i2'), ('j', 'i8')],align=True)
 dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))],align=True)
 dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)],align=True)
@@ -35,6 +36,7 @@ datag['x1']['i']=10
 datag['x1']['j']=20
 datag['y1']['x']=30
 datag['y1']['y']=40
+
 class VariablesTestCase(unittest.TestCase):
 
     def setUp(self):
