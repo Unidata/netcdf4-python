@@ -18,13 +18,13 @@ TYPE_NAME2 = 'cmp2'
 TYPE_NAME3 = 'cmp3'
 TYPE_NAME4 = 'cmp4'
 TYPE_NAME5 = 'cmp5'
-DIM_SIZE=3 # FIXME: segfaults on linux if this set > 1
-# FIXME:  must use align=True or test fails. 
-dtype1=np.dtype([('i', 'i2'), ('j', 'i8')],align=True)
-dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))],align=True)
-dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)],align=True)
-dtype4=np.dtype([('xxx',dtype3),('yyy','f8', (4,))],align=True)
-dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)],align=True)
+DIM_SIZE=3 
+# FIXME:  all items must be 4 or 8 bytes for this to work?
+dtype1=np.dtype([('i', 'i4'), ('j', 'i4')])
+dtype2=np.dtype([('x', 'f4',), ('y', 'f4',(3,2))])
+dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)])
+dtype4=np.dtype([('xxx',dtype3),('yyy','f4', (4,))])
+dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)])
 data = np.zeros(DIM_SIZE,dtype4)
 data['xxx']['xx']['i']=1
 data['xxx']['xx']['j']=2
@@ -52,13 +52,8 @@ class VariablesTestCase(unittest.TestCase):
         cmptype5 = f.createCompoundType(dtype5, TYPE_NAME5)
         v = f.createVariable(VAR_NAME,cmptype4, DIM_NAME)
         vv = g.createVariable(VAR_NAME,cmptype5, DIM_NAME)
-        # FIXME: this should work!
-        #v[:] = data
-        #vv[:] = datag
-        # temp workaround for above.
-        for n in range(DIM_SIZE):
-            v[n] = data[n]
-            vv[n] = datag[n]
+        v[:] = data
+        vv[:] = datag
         f.close()
 
     def tearDown(self):
@@ -72,15 +67,8 @@ class VariablesTestCase(unittest.TestCase):
         v = f.variables[VAR_NAME]
         g = f.groups[GROUP_NAME]
         vv = g.variables[VAR_NAME]
-        # FIXME: this should work!
-        #dataout = v[:]
-        #dataoutg = vv[:]
-        # temp workaround for above.
-        dataout = np.empty(v.shape, v.dtype)
-        dataoutg = np.empty(vv.shape, vv.dtype)
-        for n in range(DIM_SIZE):
-            dataout[n] = v[n]
-            dataoutg[n] = vv[n]
+        dataout = v[:]
+        dataoutg = vv[:]
         assert(v.dtype == dtype4)
         assert(vv.dtype == dtype5)
         assert_array_equal(dataout['xxx']['xx']['i'],data['xxx']['xx']['i'])
