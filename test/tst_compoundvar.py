@@ -9,7 +9,7 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 # test compound data types.
 
 FILE_NAME = tempfile.mktemp(".nc")
-FILE_NAME = 'test.nc'
+#FILE_NAME = 'test.nc'
 DIM_NAME = 'phony_dim'
 GROUP_NAME = 'phony_group'
 VAR_NAME = 'phony_compound_var'
@@ -18,18 +18,19 @@ TYPE_NAME2 = 'cmp2'
 TYPE_NAME3 = 'cmp3'
 TYPE_NAME4 = 'cmp4'
 TYPE_NAME5 = 'cmp5'
+DIM_SIZE=1 # FIXME: segfaults on linux if this set > 1
 dtype1=np.dtype([('i', 'i2'), ('j', 'i8')],align=True)
 dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))],align=True)
 dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)],align=True)
 dtype4=np.dtype([('xxx',dtype3),('yyy','f8', (4,))],align=True)
 dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)],align=True)
-data = np.zeros(1,dtype4)
+data = np.zeros(DIM_SIZE,dtype4)
 data['xxx']['xx']['i']=1
 data['xxx']['xx']['j']=2
 data['xxx']['yy']['x']=3
 data['xxx']['yy']['y']=4
 data['yyy'] = 5
-datag = np.zeros(1,dtype5)
+datag = np.zeros(DIM_SIZE,dtype5)
 datag['x1']['i']=10
 datag['x1']['j']=20
 datag['y1']['x']=30
@@ -39,7 +40,7 @@ class VariablesTestCase(unittest.TestCase):
     def setUp(self):
         self.file = FILE_NAME
         f  = Dataset(self.file, 'w')
-        d = f.createDimension(DIM_NAME,None)
+        d = f.createDimension(DIM_NAME,DIM_SIZE)
         g = f.createGroup(GROUP_NAME)
         # multiply nested compound types
         cmptype1 = f.createCompoundType(dtype1, TYPE_NAME1)
@@ -56,7 +57,7 @@ class VariablesTestCase(unittest.TestCase):
     def tearDown(self):
         # Remove the temporary files
         os.remove(self.file)
-        pass
+        #pass
 
     def runTest(self):
         """testing compound variables"""
