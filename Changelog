@@ -1,3 +1,8 @@
+version 0.8.1 (not yet released)
+================================
+ * fixed bug in renameVariable that caused failure when new name is longer
+   than old name, and file format is NETCDF3_64BIT or NETCDF3_CLASSIC.
+
 version 0.8 (svn revision 685)
 ==============================
  * added 'stringtoarr' utility function for converting python strings

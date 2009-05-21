@@ -15,7 +15,7 @@ LEVEL_NAME="level"
 TIME_NAME="time"
 VAR_NAME='temp'
 LON_NAME2 = "longitude"
-VAR_NAME2='wind'
+VAR_NAME2='winds'
 
 class VariablesTestCase(unittest.TestCase):
 
