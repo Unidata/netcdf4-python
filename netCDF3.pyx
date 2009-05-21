@@ -653,7 +653,6 @@ or C{NETCDF3_64BIT}."""
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF3_64BIT', **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
-        cdef int *grpids, *dimids
         cdef char namstring[NC_MAX_NAME+1]
         path = filename
         if mode == 'w':
@@ -667,8 +666,15 @@ or C{NETCDF3_64BIT}."""
             ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
             ierr = nc_open(path, NC_WRITE, &grpid)
+        elif mode == 'as' or mode == 'r+s':
+            ierr = nc_open(path, NC_SHARE, &grpid)
+        elif mode == 'ws':
+            if clobber:
+                ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)
+            else:
+                ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
         else:
-            raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
+            raise ValueError("mode must be 'w', 'r', 'a', 'r+', 'as', 'r+s' or 'ws', got '%s'" % mode)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         # file format attribute.
@@ -934,7 +940,7 @@ determine if the dimension is unlimited"""
         if kwargs.has_key('id'):
             self._dimid = kwargs['id']
         else:
-            dimname = name
+            dimname = PyString_AsString(name)
             if size is not None:
                 lendim = size
             else:
