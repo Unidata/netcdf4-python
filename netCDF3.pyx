@@ -840,7 +840,9 @@ rename a L{Variable} named C{oldname} to C{newname}"""
         except:
             raise KeyError('%s not a valid variable name' % oldname)
         namstring = PyString_AsString(newname)
+        self._redef()
         ierr = nc_rename_var(self._grpid, var._varid, namstring)
+        self._enddef()
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
         # remove old key from dimensions dict.
