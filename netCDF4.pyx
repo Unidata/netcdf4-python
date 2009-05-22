@@ -707,7 +707,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
                           _out_array_shape, _sortbylist
 
-__version__ = "0.8"
+__version__ = "0.8.1"
 
 # Initialize numpy
 import os
@@ -1045,6 +1045,12 @@ B{C{mode}} - access mode. C{r} means read-only; no data can be
 modified. C{w} means write; a new file is created, an existing file with
 the same name is deleted. C{a} and C{r+} mean append (in analogy with
 serial files); an existing file is opened for reading and writing.
+Appending C{s} to modes C{w}, C{r+} or C{a} will enable unbuffered shared
+access to C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT} formatted files.
+Unbuffered acesss may be useful even if you don't need shared 
+access, since it may be faster for programs that don't access data
+sequentially. This option is ignored for C{NETCDF4} and C{NETCDF4_CLASSIC}
+formatted files.
 
 B{C{clobber}} - if C{True} (default), opening a file with C{mode='w'}
 will clobber an existing file with the same name.  if C{False}, an
@@ -1122,6 +1128,13 @@ group, so the path is simply C{'/'}."""
             ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
             ierr = nc_open(path, NC_WRITE, &grpid)
+        elif mode == 'as' or mode == 'r+s':
+            ierr = nc_open(path, NC_SHARE, &grpid)
+        elif mode == 'ws':
+            if clobber:
+                ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)
+            else:
+                ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
         else:
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
         if ierr != NC_NOERR:
