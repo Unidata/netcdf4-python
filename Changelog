@@ -1,5 +1,9 @@
 version 0.8.1 (not yet released)
 ================================
+ * enabled 'shared access' mode for NETCDF3 formatted files (mode='ws',
+   'r+s' or 'as'). Writes in shared mode are unbuffered, which can 
+   improve performance for non-sequential access.
+
  * fixed bug in renameVariable that caused failure when new name is longer
    than old name, and file format is NETCDF3_64BIT or NETCDF3_CLASSIC.
 

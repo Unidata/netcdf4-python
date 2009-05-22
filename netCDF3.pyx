@@ -353,7 +353,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # pure python utilities
 from netCDF4_utils import _StartCountStride, _out_array_shape
 
-__version__ = "0.8"
+__version__ = "0.8.1"
 
 # Initialize numpy
 import os
@@ -607,6 +607,10 @@ B{C{mode}} - access mode. C{r} means read-only; no data can be
 modified. C{w} means write; a new file is created, an existing file with
 the same name is deleted. C{a} and C{r+} mean append (in analogy with
 serial files); an existing file is opened for reading and writing.
+Appending C{s} to modes C{w}, C{r+} or C{a} will enable unbuffered shared
+access.  Unbuffered acesss may be useful even if you don't need shared 
+access, since it may be faster for programs that don't access data
+sequentially.
 
 B{C{clobber}} - if C{True} (default), opening a file with C{mode='w'}
 will clobber an existing file with the same name.  if C{False}, an
