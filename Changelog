@@ -1,6 +1,6 @@
 version 0.8.1 (not yet released)
 ================================
- * implemented bisection method in date2index.
+ * replaced the brute force method by the bisection method in date2index.
 
  * fixed bug that occured when -1 was used as a variable index.
 
