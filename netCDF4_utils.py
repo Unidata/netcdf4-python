@@ -311,7 +311,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
             if e >= 0: 
                 start[...,i] = e
             elif e < 0 and (-e < shape[i]) :
-                start[...,i] = e+shape[n]
+                start[...,i] = e+shape[i]
             else:
                 raise IndexError("Index out of range")
             
