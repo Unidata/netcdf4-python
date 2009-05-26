@@ -936,11 +936,24 @@ contains one.
 
 
 def _check_index(indices, dates, nctime, calendar):
-    """Assert that the time indices given correspond to the given dates."""
+    """Return True if the time indices given correspond to the given dates, 
+    False otherwise.
+    
+    Parameters
+    ----------
+    indices : sequence of integers
+      Integers indexing the time variable.
+    dates : sequence of datetime objects
+      Reference dates.
+    nctime : netCDF Variable object
+      NetCDF time object.
+    calendar : string
+      Calendar of nctime.
+    """
     t = numpy.empty(len(indices), nctime.dtype)
     for n,i in enumerate(indices):
         t[n] = nctime[i]
-    assert numpy.all( num2date(t, nctime.units, calendar) == dates)
+    return numpy.all( num2date(t, nctime.units, calendar) == dates)
 
 
 def date2index(dates, nctime, calendar=None):
@@ -953,7 +966,8 @@ def date2index(dates, nctime, calendar=None):
     The datetime objects should not include a time-zone offset.
     
     @param nctime: A netCDF time variable object. The nctime object must have a
-    C{units} attribute.
+    C{units} attribute. The entries are assumed to be stored in increasing 
+    order.
     
     @param calendar: Describes the calendar used in the time calculation.
     Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
@@ -968,32 +982,24 @@ def date2index(dates, nctime, calendar=None):
 
     num = numpy.atleast_1d(date2num(dates, nctime.units, calendar))
 
-    index = numpy.empty(numpy.alen(dates), int)
-
     # Trying to infer the correct index from the starting time and the stride.
-    try:
-        t0, t1 = nctime[:2]
-        dt = t1 - t0
-        index[:] = (num-t0)/dt
+    # This assumes that the times are increasing uniformly. 
+    t0, t1 = nctime[:2]
+    dt = t1 - t0
+    index = numpy.array((num-t0)/dt)
 
-        # Checking that the index really corresponds to the given date.
-        _check_index(index, dates, nctime, calendar)
-
-    except AssertionError:
-        try:
-            # Use the bisection method. Assumes the dates are ordered.
-            import bisect
-            index = numpy.array([bisect.bisect_left(nctime, n) for n in num])
-            _check_index(index, dates, nctime, calendar)
-            
-        except AssertionError:
-            # If check fails, use brute force method. For large datasets, this 
-            # approach can be very slow.
-            index[:] = numpy.digitize(num, nctime[:]) - 1
+    # Checking that the index really corresponds to the given date.
+    # If the times do not correspond, then it means that the times
+    # are not increasing uniformly and we try the bisection method.
+    if not _check_index(index, dates, nctime, calendar):
     
-            # Perform check again.
-            _check_index(index, dates, nctime, calendar)
-
+        # Use the bisection method. Assumes the dates are ordered.
+        import bisect
+        index = numpy.array([bisect.bisect_left(nctime, n) for n in num], int)
+    
+        if not _check_index(index, dates, nctime, calendar):
+            raise ValueError, 'Dates not found.'
+    
     # convert numpy scalars or single element arrays to python ints.
     index = _toscalar(index)
 
