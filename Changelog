@@ -1,5 +1,9 @@
 version 0.8.1 (not yet released)
 ================================
+ * implemented bisection method in date2index.
+
+ * fixed bug that occured when -1 was used as a variable index.
+
  * enabled 'shared access' mode for NETCDF3 formatted files (mode='ws',
    'r+s' or 'as'). Writes in shared mode are unbuffered, which can 
    improve performance for non-sequential access.
