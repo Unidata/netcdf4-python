@@ -186,6 +186,10 @@ class TestDate2index(unittest.TestCase):
         def __getitem__(self, item):
             return self._data[item]
 
+        def __len__(self):
+            return len(self._data)
+
+
     def setUp(self):
         self.standardtime = self.TestTime(datetime(1950, 1, 1), 366, 24,
           'hours since 1900-01-01', 'standard')
@@ -203,7 +207,7 @@ class TestDate2index(unittest.TestCase):
         nutime = self.TestTime(datetime(1950, 1, 1), 366, 24,
           'hours since 1900-01-01', 'standard')
         # Let's remove the second entry, so that the computed stride is not
-        # representative and the brute force method is needed.
+        # representative and the bisection method is needed.
         nutime._data = nutime._data[numpy.r_[0,slice(2,200)]]
        
         t = date2index(datetime(1950,2,1), nutime)

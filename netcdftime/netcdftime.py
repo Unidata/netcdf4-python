@@ -980,12 +980,19 @@ def date2index(dates, nctime, calendar=None):
         _check_index(index, dates, nctime, calendar)
 
     except AssertionError:
-
-        # If check fails, use brute force method.
-        index[:] = numpy.digitize(num, nctime[:]) - 1
-
-        # Perform check again.
-        _check_index(index, dates, nctime, calendar)
+        try:
+            # Use the bisection method. Assumes the dates are ordered.
+            import bisect
+            index = numpy.array([bisect.bisect_left(nctime, n) for n in num])
+            _check_index(index, dates, nctime, calendar)
+            
+        except AssertionError:
+            # If check fails, use brute force method. For large datasets, this 
+            # approach can be very slow.
+            index[:] = numpy.digitize(num, nctime[:]) - 1
+    
+            # Perform check again.
+            _check_index(index, dates, nctime, calendar)
 
     # convert numpy scalars or single element arrays to python ints.
     index = _toscalar(index)
