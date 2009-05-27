@@ -124,6 +124,12 @@ class TestgetStartCountStride(unittest.TestCase):
         assert_equal(stride, 1)
         assert_equal(put_ind, -1)
         
+        elem = (np.array([0]))
+        start, count, stride, put_ind = nc._StartCountStride(elem, (10,))
+        assert_equal(start, 0)
+        assert_equal(count, 1)
+        assert_equal(stride, 1)
+        assert_equal(put_ind[:,0], [0])
         
         # Slice
         elem = (slice(2,5,2))

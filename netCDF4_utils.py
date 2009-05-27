@@ -175,8 +175,9 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
                 newElem.append(slice(start,stop,step))
             else:
                 newElem.append(e)
+                
         # Replace sequence of indices with slice object if possible.
-        elif np.iterable(e):
+        elif np.iterable(e) and len(e) > 1:
             start = e[0]
             stop = e[-1]+1
             step = e[1]-e[0]
