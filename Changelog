@@ -1,5 +1,6 @@
 version 0.8.1 (not yet released)
 ================================
+ * Added __len__ method and 'size' property to Variable class.
 
  * In date2index, replaced the brute force method by the bisection method and
    added a 'select' keyword to find the index of the date before, after or
