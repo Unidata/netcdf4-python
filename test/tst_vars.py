@@ -66,6 +66,9 @@ class VariablesTestCase(unittest.TestCase):
         assert v2.dimensions == (DIM2_NAME,DIM3_NAME)
         assert v1.shape == (DIM1_LEN,DIM2_LEN,DIM3_LEN)
         assert v2.shape == (DIM2_LEN,DIM3_LEN)
+        assert v1.size == DIM1_LEN * DIM2_LEN * DIM3_LEN
+        assert len(v1) == DIM1_LEN
+        
         #assert NP.allclose(v1[:],randomdata)
         assert_array_almost_equal(v1[:],randomdata)
         # check variables in sub group.

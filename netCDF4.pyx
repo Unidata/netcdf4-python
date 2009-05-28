@@ -1895,6 +1895,11 @@ instance. If C{None}, the data is not truncated. """
         def __set__(self,value):
             raise AttributeError("shape cannot be altered")
 
+    property size:
+        """Return the number of stored elements."""
+        def __get__(self):
+            return numpy.prod(self.shape)
+
     property dimensions:
         """get variables's dimension names"""
         def __get__(self):
