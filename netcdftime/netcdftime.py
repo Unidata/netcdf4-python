@@ -934,7 +934,6 @@ contains one.
     cdftime = utime(units,calendar=calendar)
     return cdftime.num2date(times)
 
-
 def _check_index(indices, dates, nctime, calendar):
     """Return True if the time indices given correspond to the given dates, 
     False otherwise.
@@ -942,21 +941,26 @@ def _check_index(indices, dates, nctime, calendar):
     Parameters
     ----------
     indices : sequence of integers
-      Integers indexing the time variable.
+      Positive integers indexing the time variable.
     dates : sequence of datetime objects
       Reference dates.
     nctime : netCDF Variable object
       NetCDF time object.
     calendar : string
       Calendar of nctime.
-    """
-    t = numpy.empty(len(indices), nctime.dtype)
-    for n,i in enumerate(indices):
-        t[n] = nctime[i]
+     """
+    if  (indices <0).any():
+       return False
+       
+    if (indices >= nctime.shape[0]).any():
+        return False
+        
+    t = nctime[indices] 
     return numpy.all( num2date(t, nctime.units, calendar) == dates)
 
 
-def date2index(dates, nctime, calendar=None):
+
+def date2index(dates, nctime, calendar=None, select='exact'):
     """
     date2index(dates, nctime, calendar=None)
     
@@ -975,18 +979,25 @@ def date2index(dates, nctime, calendar=None):
     Default is C{'standard'}, which is a mixed Julian/Gregorian calendar
     If C{calendar} is None, its value is given by C{nctime.calendar} or
     C{standard} if no such attribute exists.
+    
+    @param select: C{'exact', 'before', 'after', 'nearest'}
+      The index selection method. C{exact} will return the indices perfectly 
+      matching the dates given. C{before} and C{after} will return the indices 
+      corresponding to the dates just before or just after the given dates if 
+      an exact match cannot be found. C{nearest} will return the indices that 
+      correpond to the closest dates. 
     """
     # Setting the calendar.
     if calendar is None:
         calendar = getattr(nctime, 'calendar', 'standard')
 
     num = numpy.atleast_1d(date2num(dates, nctime.units, calendar))
-
+    
     # Trying to infer the correct index from the starting time and the stride.
     # This assumes that the times are increasing uniformly. 
     t0, t1 = nctime[:2]
     dt = t1 - t0
-    index = numpy.array((num-t0)/dt)
+    index = numpy.array((num-t0)/dt, int)
 
     # Checking that the index really corresponds to the given date.
     # If the times do not correspond, then it means that the times
@@ -995,10 +1006,26 @@ def date2index(dates, nctime, calendar=None):
     
         # Use the bisection method. Assumes the dates are ordered.
         import bisect
+        
         index = numpy.array([bisect.bisect_left(nctime, n) for n in num], int)
+        
+        nomatch = num2date(nctime[index], nctime.units) != dates
+        
+        if select == 'exact':
+            if not (num2date(nctime[index], nctime.units) == dates).all():
+                raise ValueError, 'Dates not found.'
     
-        if not _check_index(index, dates, nctime, calendar):
-            raise ValueError, 'Dates not found.'
+        elif select == 'before':
+            index[nomatch] -= 1
+        
+        elif select == 'after':
+            pass
+        
+        elif select == 'nearest':
+            index[nomatch] = index[nomatch] - 1 * ( num[nomatch] < (nctime[index[nomatch]-1] + nctime[index[nomatch]]) / 2. )
+        
+        else:
+            raise ValueError, select
     
     # convert numpy scalars or single element arrays to python ints.
     index = _toscalar(index)

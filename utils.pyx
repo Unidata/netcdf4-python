@@ -133,7 +133,7 @@ contains one.
     cdftime = netcdftime.utime(units,calendar=calendar)
     return cdftime.num2date(times)
 
-def date2index(dates, nctime, calendar=None):
+def date2index(dates, nctime, calendar=None, select='exact'):
     """
 date2index(dates, nctime, calendar=None)
 
@@ -152,15 +152,17 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar
 If C{calendar} is None, its value is given by C{nctime.calendar} or
 C{standard} if no such attribute exists.
 
+@param select: C{'exact', 'before', 'after', 'nearest'}
+The index selection method. C{exact} will return the indices perfectly 
+matching the dates given. C{before} and C{after} will return the indices 
+corresponding to the dates just before or just after the given dates if 
+an exact match cannot be found. C{nearest} will return the indices that 
+correpond to the closest dates. 
+      
 @return: an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
     """
-    return netcdftime.date2index(dates, nctime, calendar=None)
-
-def _check_index(indices, dates, nctime, calendar):
-    """Assert that the time indices given correspond to the given dates."""
-    t = nctime[indices]
-    assert numpy.all( num2date(t, nctime.units, calendar) == dates)
+    return netcdftime.date2index(dates, nctime, calendar, select)
 
 def getlibversion():
     """

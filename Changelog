@@ -1,10 +1,13 @@
 version 0.8.1 (not yet released)
 ================================
- * Fixed bug occurring when indexing a variable with an sequence of len 1.
 
- * replaced the brute force method by the bisection method in date2index.
+ * In date2index, replaced the brute force method by the bisection method and
+   added a 'select' keyword to find the index of the date before, after or
+   nearest the given date. 
 
- * fixed bug that occured when -1 was used as a variable index.
+ * Fixed bug occurring when indexing with a numpy array of length 1.
+   
+ * Fixed bug that occured when -1 was used as a variable index.
 
  * enabled 'shared access' mode for NETCDF3 formatted files (mode='ws',
    'r+s' or 'as'). Writes in shared mode are unbuffered, which can 

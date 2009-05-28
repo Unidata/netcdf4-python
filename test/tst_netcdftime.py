@@ -188,6 +188,13 @@ class TestDate2index(unittest.TestCase):
 
         def __len__(self):
             return len(self._data)
+        
+        def shape():
+            def fget(self):
+                return self._data.shape
+            return locals()
+            
+        shape = property(**shape())
 
 
     def setUp(self):
@@ -229,8 +236,22 @@ class TestDate2index(unittest.TestCase):
         else:
             raise ValueError, 'This test should have failed.'
                 
+    def test_select(self):
+        nutime = self.TestTime(datetime(1950, 1, 1), 366, 24,
+          'hours since 1900-01-01', 'standard')
         
-
+        dates = [datetime(1950,1,2,6), datetime(1950,1,3), datetime(1950,1,3,18)]
+        
+        t = date2index(dates, nutime, select='before')
+        assert_equal(t, [1, 2, 2])
+        
+        t = date2index(dates, nutime, select='after')
+        assert_equal(t, [2, 2, 3])
+        
+        t = date2index(dates, nutime, select='nearest')
+        assert_equal(t, [1,2,3])
+        
+        
 
 if __name__ == '__main__':
     unittest.main()
