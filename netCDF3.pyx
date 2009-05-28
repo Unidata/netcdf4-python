@@ -1342,6 +1342,9 @@ return netCDF attribute names for this L{Variable} in a list."""
             # convert array scalar to regular array with one element.
             if dataput.shape == (): dataput=numpy.array(dataput,dataput.dtype)
             self._put(dataput,a,b,c)
+            
+    def __len__(self):
+        return self.shape[0]
 
     def assignValue(self,val):
         """

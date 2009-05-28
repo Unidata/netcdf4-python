@@ -1,10 +1,11 @@
 from netcdftime import utime, JulianDayFromDate,DateFromJulianDay, date2index
 from netcdftime import datetime as datetimex, date2num
+from netCDF4 import Dataset
 import numpy
 import random
 import sys
 import unittest
-import os
+import os, tempfile
 from datetime import datetime
 from numpy.testing import assert_almost_equal, assert_equal
 
@@ -201,6 +202,17 @@ class TestDate2index(unittest.TestCase):
         self.standardtime = self.TestTime(datetime(1950, 1, 1), 366, 24,
           'hours since 1900-01-01', 'standard')
 
+        self.file = tempfile.mktemp(".nc")
+        f = Dataset(self.file,'w')
+        f.createDimension('time', None)
+        time = f.createVariable('time', float, ('time',))
+        time.units = 'hours since 1900-01-01'
+        time[:] = self.standardtime[:]
+        f.close()
+        
+    def tearDown(self):
+        os.remove(self.file)
+        
     def test_simple(self):
         t = date2index(datetime(1950,2,1), self.standardtime)
         assert_equal(t, 31)
@@ -236,7 +248,7 @@ class TestDate2index(unittest.TestCase):
         else:
             raise ValueError, 'This test should have failed.'
                 
-    def test_select(self):
+    def test_select_dummy(self):
         nutime = self.TestTime(datetime(1950, 1, 1), 366, 24,
           'hours since 1900-01-01', 'standard')
         
@@ -251,7 +263,23 @@ class TestDate2index(unittest.TestCase):
         t = date2index(dates, nutime, select='nearest')
         assert_equal(t, [1,2,3])
         
+    
+    def test_select_nc(self):
+        f = Dataset(self.file, 'r')
+        nutime = f.variables['time']
         
+        dates = [datetime(1950,1,2,6), datetime(1950,1,3), datetime(1950,1,3,18)]
+        
+        t = date2index(dates, nutime, select='before')
+        assert_equal(t, [1, 2, 2])
+        
+        t = date2index(dates, nutime, select='after')
+        assert_equal(t, [2, 2, 3])
+        
+        t = date2index(dates, nutime, select='nearest')
+        assert_equal(t, [1,2,3])
+    
+
 
 if __name__ == '__main__':
     unittest.main()

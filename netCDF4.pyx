@@ -2181,6 +2181,10 @@ each dimension is returned."""
             if dataput.shape == (): dataput=numpy.array(dataput,dataput.dtype)
             self._put(dataput,a,b,c)
 
+    def __len__(self):
+        return self.shape[0]
+
+
     def assignValue(self,val):
         """
 assignValue(self, val)
