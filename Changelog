@@ -1,5 +1,7 @@
 version 0.8.1 (not yet released)
 ================================
+ * Fixed bug occurring when indexing a variable with an sequence of len 1.
+
  * replaced the brute force method by the bisection method in date2index.
 
  * fixed bug that occured when -1 was used as a variable index.
