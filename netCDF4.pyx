@@ -1266,10 +1266,10 @@ The return value is the L{CompoundType} class instance describing the new
 datatype."""
         dt = numpy.dtype(datatype)
         # raise error if dtype not aligned
-        if dt.alignment == 1:
-            msg = """
-numpy dtype must be aligned (set align=True in dtype constructor)"""
-            raise TypeError(msg)
+        #if dt.alignment == 1:
+        #    msg = """
+#numpy dtype must be aligned (set align=True in dtype constructor)"""
+        #   raise TypeError(msg)
         return CompoundType(self, dt, datatype_name)
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
