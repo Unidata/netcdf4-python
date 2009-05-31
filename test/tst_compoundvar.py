@@ -19,19 +19,27 @@ TYPE_NAME3 = 'cmp3'
 TYPE_NAME4 = 'cmp4'
 TYPE_NAME5 = 'cmp5'
 DIM_SIZE=3 
-# FIXME:  all items must be 4 or 8 bytes for this to work?
-dtype1=np.dtype([('i', 'i4'), ('j', 'i4')])
-dtype2=np.dtype([('x', 'f4',), ('y', 'f4',(3,2))])
-dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)])
-dtype4=np.dtype([('xxx',dtype3),('yyy','f4', (4,))])
-dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)])
-data = np.zeros(DIM_SIZE,dtype4)
+# align must be set to True
+# for dtypes passed to createCompoundType,
+# otherwise, an error will be raised.
+dtype1=np.dtype([('i', 'i2'), ('j', 'i4')],align=True)
+dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))],align=True)
+dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)],align=True)
+dtype4=np.dtype([('xxx',dtype3),('yyy','f8', (4,))],align=True)
+dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)],align=True)
+# numpy arrays holding data don't need to have align=True
+dtype1p=np.dtype([('i', 'i2'), ('j', 'i4')])
+dtype2p=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))])
+dtype3p=np.dtype([('xx', dtype1), ('yy', dtype2)])
+dtype4p=np.dtype([('xxx',dtype3),('yyy','f8', (4,))])
+dtype5p=np.dtype([('x1', dtype1), ('y1', dtype2)])
+data = np.zeros(DIM_SIZE,dtype4p)
 data['xxx']['xx']['i']=1
 data['xxx']['xx']['j']=2
 data['xxx']['yy']['x']=3
 data['xxx']['yy']['y']=4
 data['yyy'] = 5
-datag = np.zeros(DIM_SIZE,dtype5)
+datag = np.zeros(DIM_SIZE,dtype5p)
 datag['x1']['i']=10
 datag['x1']['j']=20
 datag['y1']['x']=30
