@@ -181,8 +181,11 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
             start = e[0]
             stop = e[-1]+1
             step = e[1]-e[0]
-            ee = np.arange(start,stop,step)
-            if len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
+            try:
+                ee = range(start,stop,step)
+            except ValueError: # start, stop or step is not valid for a range
+                ee = False
+            if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
                 newElem.append(slice(start,stop,step))
             else:
                 newElem.append(e)
@@ -337,3 +340,7 @@ def _out_array_shape(count):
         else:
             out.append(n)
     return out
+
+def dtype_aligned(obj,copy=False):
+    """wrapper for numpy.dtype that ensures data is aligned by default"""
+    return np.dtype(obj,copy=copy,align=True) 
