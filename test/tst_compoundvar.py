@@ -23,8 +23,8 @@ TYPE_NAME5 = 'cmp5'
 DIM_SIZE=3 
 # data must be aligned (align must be set to True when dtype created).
 # the default in numpy.dtype is align=False, so one can explicitly
-# set align=True or use netCDF4.dtype wrapper function that 
-# forces align=True.
+# set align=True or use dtype_aligned wrapper function in 
+# netCDF4_utils that forces align=True.
 dtype1=dtype_aligned([('i', 'i2'), ('j', 'i4')])
 dtype2=dtype_aligned([('x', 'f4',), ('y', 'f8',(3,2))])
 dtype3=dtype_aligned([('xx', dtype1), ('yy', dtype2)])
