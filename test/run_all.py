@@ -3,6 +3,9 @@ import glob, os, sys, unittest
 __all__ = ['test']
 # Find all test files.
 test_files = glob.glob('tst_*.py')
+# disable tests for compound types until 4.1 is released.
+test_files.remove('tst_compoundvar.py')
+test_files.remove('tst_compoundatt.py')
 py_path = os.environ.get('PYTHONPATH')
 if py_path is None:
     py_path = '.'
