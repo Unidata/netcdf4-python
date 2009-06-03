@@ -3,7 +3,6 @@ import unittest
 import os
 import tempfile
 from netCDF4 import Dataset, CompoundType
-from netCDF4_utils import dtype_aligned
 import numpy as np
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 
@@ -21,28 +20,18 @@ TYPE_NAME3 = 'cmp3'
 TYPE_NAME4 = 'cmp4'
 TYPE_NAME5 = 'cmp5'
 DIM_SIZE=3 
-# data must be aligned (align must be set to True when dtype created).
-# the default in numpy.dtype is align=False, so one can explicitly
-# set align=True or use dtype_aligned wrapper function in 
-# netCDF4_utils that forces align=True.
-dtype1=dtype_aligned([('i', 'i2'), ('j', 'i4')])
-dtype2=dtype_aligned([('x', 'f4',), ('y', 'f8',(3,2))])
-dtype3=dtype_aligned([('xx', dtype1), ('yy', dtype2)])
-dtype4=dtype_aligned([('xxx',dtype3),('yyy','f8', (4,))])
-dtype5=dtype_aligned([('x1', dtype1), ('y1', dtype2)])
-# numpy arrays holding data don't need to have align=True
-dtype1p=np.dtype([('i', 'i2'), ('j', 'i4')])
-dtype2p=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))])
-dtype3p=np.dtype([('xx', dtype1), ('yy', dtype2)])
-dtype4p=np.dtype([('xxx',dtype3),('yyy','f8', (4,))])
-dtype5p=np.dtype([('x1', dtype1), ('y1', dtype2)])
-data = np.zeros(DIM_SIZE,dtype4p)
+dtype1=np.dtype([('i', 'i2'), ('j', 'i8')])
+dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))])
+dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)])
+dtype4=np.dtype([('xxx',dtype3),('yyy','f8', (4,))])
+dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)])
+data = np.zeros(DIM_SIZE,dtype4)
 data['xxx']['xx']['i']=1
 data['xxx']['xx']['j']=2
 data['xxx']['yy']['x']=3
 data['xxx']['yy']['y']=4
 data['yyy'] = 5
-datag = np.zeros(DIM_SIZE,dtype5p)
+datag = np.zeros(DIM_SIZE,dtype5)
 datag['x1']['i']=10
 datag['x1']['j']=20
 datag['y1']['x']=30
@@ -80,8 +69,6 @@ class VariablesTestCase(unittest.TestCase):
         vv = g.variables[VAR_NAME]
         dataout = v[:]
         dataoutg = vv[:]
-        assert(v.dtype == dtype4)
-        assert(vv.dtype == dtype5)
         assert_array_equal(dataout['xxx']['xx']['i'],data['xxx']['xx']['i'])
         assert_array_equal(dataout['xxx']['xx']['j'],data['xxx']['xx']['j'])
         assert_array_almost_equal(dataout['xxx']['yy']['x'],data['xxx']['yy']['x'])

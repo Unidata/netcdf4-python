@@ -340,7 +340,3 @@ def _out_array_shape(count):
         else:
             out.append(n)
     return out
-
-def dtype_aligned(obj,copy=False):
-    """wrapper for numpy.dtype that ensures data is aligned by default"""
-    return np.dtype(obj,copy=copy,align=True) 

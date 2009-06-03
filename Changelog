@@ -1,5 +1,8 @@
 version 0.8.1 (not yet released)
 ================================
+ * changes to accomodate compound types in netcdf-4.1-beta snapshots.
+   Compound types work correctly for snapshots >= 20090603.
+
  * added dtype_aligned helper function in netCDF4_utils for created
    aligned data types (which netcdf requires for compound data types).
 
