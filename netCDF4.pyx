@@ -1051,7 +1051,9 @@ cdef _get_vars(group):
 # these are class attributes that 
 # only exist at the python level (not in the netCDF file).
 
-_private_atts = ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format', '_nunlimdim','path','parent','ndim','maskandscale']
+_private_atts =\
+['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format',
+ '_nunlimdim','path','parent','ndim','maskandscale','cmptypes']
 
 
 cdef class Dataset:
@@ -1110,7 +1112,7 @@ name/value pairs is provided by the C{__dict__} attribute of a
 L{Dataset} instance.
 
 The instance variables C{dimensions, variables, groups, 
-file_format} and C{path} are read-only (and should not be modified by the 
+cmptypes, file_format} and C{path} are read-only (and should not be modified by the 
 user).
 
 @ivar dimensions: The C{dimensions} dictionary maps the names of 
@@ -1125,6 +1127,10 @@ class.
 this L{Dataset} or L{Group} to instances of the L{Group} class (the 
 L{Dataset} class is simply a special case of the L{Group} class which 
 describes the root group in the netCDF file).
+
+@ivar cmptypes: The C{cmptypes} dictionary maps the names of 
+compound types defined for the L{Group} or L{Dataset} to instances of the 
+L{CompoundType} class.
 
 @ivar file_format: The C{file_format} attribute describes the netCDF
 file format version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
