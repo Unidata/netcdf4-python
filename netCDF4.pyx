@@ -2490,7 +2490,12 @@ cdef _find_cmptype(grp, dtype):
     cdef nc_type xtype
     match = False
     for cmpname, cmpdt, xtype in grp._cmptypes:
-        if dtype == cmpdt: 
+        names1 = dtype.names; names2 = cmpdt.names
+        formats1 = [v[0] for v in dtype.fields.values()]
+        formats2 = [v[0] for v in cmpdt.fields.values()]
+        # match names, formats, but not offsets (they may be changed
+        # by netcdf lib).
+        if names1==names2 and formats1==formats2:
             match = True
             break
     if not match: 
