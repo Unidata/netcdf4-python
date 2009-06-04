@@ -7,9 +7,6 @@ version 0.8.1 (not yet released)
  * changes to accomodate compound types in netcdf-4.1-beta snapshots.
    Compound types now work correctly for snapshots >= 20090603.
 
- * added dtype_aligned helper function in netCDF4_utils for created
-   aligned data types (which netcdf requires for compound data types).
-
  * Added __len__ method and 'size' property to Variable class.
 
  * In date2index, replaced the brute force method by the bisection method and
