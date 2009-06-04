@@ -938,16 +938,19 @@ def _check_index(indices, dates, nctime, calendar):
     """Return True if the time indices given correspond to the given dates, 
     False otherwise.
     
-    Parameters
-    ----------
+    Parameters: 
+
     indices : sequence of integers
-      Positive integers indexing the time variable.
+    Positive integers indexing the time variable.
+
     dates : sequence of datetime objects
-      Reference dates.
+    Reference dates.
+
     nctime : netCDF Variable object
-      NetCDF time object.
+    NetCDF time object.
+
     calendar : string
-      Calendar of nctime.
+    Calendar of nctime.
      """
     if  (indices <0).any():
        return False
@@ -962,7 +965,7 @@ def _check_index(indices, dates, nctime, calendar):
 
 def date2index(dates, nctime, calendar=None, select='exact'):
     """
-    date2index(dates, nctime, calendar=None)
+    date2index(dates, nctime, calendar=None, select='exact')
     
     Return indices of a netCDF time variable corresponding to the given dates.
     

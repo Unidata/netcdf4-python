@@ -135,7 +135,7 @@ contains one.
 
 def date2index(dates, nctime, calendar=None, select='exact'):
     """
-date2index(dates, nctime, calendar=None)
+date2index(dates, nctime, calendar=None, select='exact')
 
 Return indices of a netCDF time variable corresponding to the given dates.
 
