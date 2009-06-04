@@ -888,6 +888,33 @@ cdef _set_att(grp, int varid, name, value):
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr))
 
+cdef _get_types(group):
+    # Private function to create L{CompoundType} instances for all the
+    # compound types in a L{Group} or Dataset
+    cdef int ierr, ntypes, classp, n
+    cdef nc_type xtype, typeids[NC_MAX_VARS]
+    cdef char namstring[NC_MAX_NAME+1]
+    # get the number of user defined types in this group.
+    ierr = nc_inq_typeids(group._grpid, &ntypes, typeids)
+    if ierr != NC_NOERR:
+        raise RuntimeError(nc_strerror(ierr))
+    # create empty dictionary for CompoundType instances.
+    cmptypes = {}
+    if ntypes > 0:
+        for n from 0 <= n < ntypes:
+            xtype = typeids[n]
+            ierr = nc_inq_user_type(group._grpid, xtype, namstring,
+                                    NULL,NULL,NULL,&classp)
+            if ierr != NC_NOERR:
+                raise RuntimeError(nc_strerror(ierr))
+            if classp == NC_COMPOUND: # a compound
+                name = namstring
+                # read the compound type info from the file,
+                # create a CompoundType instance from it.
+                cmptype = _read_compound(group, xtype)
+                cmptypes[name] = cmptype
+    return cmptypes
+
 cdef _get_dims(group):
     # Private function to create L{Dimension} instances for all the
     # dimensions in a L{Group} or Dataset
@@ -1110,7 +1137,7 @@ hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
     cdef public int _grpid
     cdef public groups, dimensions, variables, file_format, path, parent,\
-    maskanscale, _cmptypes
+    maskanscale, cmptypes
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4', **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
@@ -1144,7 +1171,8 @@ group, so the path is simply C{'/'}."""
         self._grpid = grpid
         self.path = '/'
         self.parent = None
-        self._cmptypes = [] # initialize list to hold compound type info
+        # get compound types in the root Group.
+        self.cmptypes = _get_types(self)
         # get dimensions in the root group.
         self.dimensions = _get_dims(self)
         # get variables in the root Group.
@@ -1264,7 +1292,8 @@ created first.
 
 The return value is the L{CompoundType} class instance describing the new
 datatype."""
-        return CompoundType(self, datatype, datatype_name)
+        self.cmptypes[datatype_name] = CompoundType(self, datatype, datatype_name)
+        return self.cmptypes[datatype_name]
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
@@ -1499,7 +1528,8 @@ method)."""
         self.path = os.path.join(parent.path, name)
         # parent group.
         self.parent = parent
-        self._cmptypes = [] # initialize list to hold compound type info
+        # get compound types in this Group.
+        self.cmptypes = _get_types(self)
         # get dimensions in this Group.
         self.dimensions = _get_dims(self)
         # get variables in this Group.
@@ -2415,7 +2445,6 @@ the user.
         self._nc_type = xtype
         self.dtype = dt
         self.name = dtype_name
-        grp._cmptypes.append((dtype_name, dt, xtype))
 
 cdef _def_compound(grp, object dt, object dtype_name):
     # private method used to construct a netcdf compound data type
@@ -2489,10 +2518,11 @@ cdef _find_cmptype(grp, dtype):
     # return datatype id when found, if not found, raise exception.
     cdef nc_type xtype
     match = False
-    for cmpname, cmpdt, xtype in grp._cmptypes:
-        names1 = dtype.names; names2 = cmpdt.names
+    for cmpname, cmpdt in grp.cmptypes.iteritems():
+        xtype = cmpdt._nc_type
+        names1 = dtype.names; names2 = cmpdt.dtype.names
         formats1 = [v[0] for v in dtype.fields.values()]
-        formats2 = [v[0] for v in cmpdt.fields.values()]
+        formats2 = [v[0] for v in cmpdt.dtype.fields.values()]
         # match names, formats, but not offsets (they may be changed
         # by netcdf lib).
         if names1==names2 and formats1==formats2:
