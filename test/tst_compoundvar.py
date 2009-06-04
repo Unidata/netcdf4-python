@@ -44,9 +44,15 @@ class VariablesTestCase(unittest.TestCase):
         f  = Dataset(self.file, 'w')
         d = f.createDimension(DIM_NAME,DIM_SIZE)
         g = f.createGroup(GROUP_NAME)
-        # multiply nested compound types
+        # simple compound types.
         cmptype1 = f.createCompoundType(dtype1, TYPE_NAME1)
         cmptype2 = f.createCompoundType(dtype2, TYPE_NAME2)
+        # close and reopen the file to make sure compound
+        # type info read back in correctly.
+        f.close()
+        f = Dataset(self.file,'r+')
+        g = f.groups[GROUP_NAME]
+        # multiply nested compound types
         cmptype3 = f.createCompoundType(dtype3, TYPE_NAME3)
         cmptype4 = f.createCompoundType(dtype4, TYPE_NAME4)
         cmptype5 = f.createCompoundType(dtype5, TYPE_NAME5)
