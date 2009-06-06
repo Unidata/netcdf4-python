@@ -37,6 +37,10 @@ Requires
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR --enable-shared}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
  To enable U{OPeNDAP<http://opendap.org>} support, build with 'C{--enable-dap}'.
+ The latest bleeding edge snapshot is available at
+ U{ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot}.  Use the latest 4.1-beta
+ snapshot and the latest svn version of this module if you want to try the
+ U{OPeNDAP<http://opendap.org>} or compound type support.
 
 
 Install
@@ -55,7 +59,7 @@ Install
  environment variable to point to where szip is installed. Note that
  netCDF 4.0 does not yet support szip compression.
  - run 'python setup.py install'
- - run some of the tests in the 'test' directory.
+ - run the tests in the 'test' directory by running C{python run_all.py}.
 
 Tutorial
 ========
@@ -616,6 +620,16 @@ represent meteorological observations at stations:
 ...              (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),
 ...              range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
 
+All of the compound types defined for a L{Dataset} or L{Group} are stored in a
+Python dictionary, just like variables and dimensions:
+
+>>> print f.cmptypes
+{'wind_data': <netCDF4.CompoundType object at 0x14dd698>,
+ 'station_data_units':<netCDF4.CompoundType object at 0x14dd620>,
+ 'wind_data_units':<netCDF4.CompoundType object at 0x14dd648>,
+ 'station_data':<netCDF4.CompoundType object at 0x14dd670>}
+>>>
+
 Attributes cannot be assigned directly to compound type members,
 However, a compound data type can be created to hold an attribute for
 each member. In this example we have created the compound types
@@ -624,7 +638,9 @@ attribute for each member of the nested compound type C{station_data_t}.
 Now we can fill a numpy array with strings describing the units, then
 assign that array to the C{units} attribute of the station data variable.
 Note again that since there is no fixed-length string type in netCDF,
-we have to use arrays of characters to represent strings.
+we have to use arrays of characters to represent strings. Variable length
+strings are supported by the library, but they have not been implemented
+in the python module yet.
 
 >>> windunits = numpy.empty(1,winddtype_units)
 >>> stationobs_units = numpy.empty(1,statdtype_units)
