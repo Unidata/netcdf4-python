@@ -729,6 +729,7 @@ __version__ = "0.8.1"
 import os
 import netcdftime
 import numpy
+import cPickle
 from glob import glob
 from numpy import ma
 from numpy import __version__ as _npversion
@@ -1096,7 +1097,8 @@ cdef _get_vars(group):
 
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format',
- '_nunlimdim','path','parent','ndim','maskandscale','cmptypes','vltypes']
+ '_nunlimdim','path','parent','ndim','maskandscale','cmptypes','vltypes','_isprimitive',
+ '_isvlen','_iscompound']
 
 
 cdef class Dataset:
@@ -1820,7 +1822,7 @@ truncated to this decimal place when it is assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. """
     cdef public int _varid, _grpid, _nunlimdim
     cdef object _grp
-    cdef public ndim, dtype, maskandscale
+    cdef public ndim, dtype, maskandscale, _isprimitive, _iscompound, _isvlen
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=6, shuffle=True, fletcher32=False, contiguous=False,
@@ -1839,15 +1841,22 @@ instance. If C{None}, the data is not truncated. """
         self._grpid = grp._grpid
         self._grp = grp
         # convert to a real numpy datatype object if necessary.
-        if not isinstance(datatype, CompoundType) and \
-                type(datatype) != numpy.dtype:
+        if (not isinstance(datatype, CompoundType) and \
+            not isinstance(datatype, VLType)) and \
+            type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
         # check validity of datatype.
-        if isinstance(datatype, CompoundType):
+        self._isprimitive = False
+        self._iscompound = False
+        self._isvlen = False
+        if isinstance(datatype, CompoundType) or isinstance(datatype, VLType):
+            if isinstance(datatype, CompoundType): self._iscompound = True 
+            if isinstance(datatype, VLType): self._isvlen = True 
             xtype = datatype._nc_type
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype.dtype
         elif datatype.str[1:] in _supportedtypes:
+            self._isprimitive = True
             # find netCDF primitive data type corresponding to 
             # specified numpy data type.
             xtype = _nptonctype[datatype.str[1:]]
@@ -1952,9 +1961,12 @@ instance. If C{None}, the data is not truncated. """
                         if grp.file_format != 'NETCDF4': grp._enddef()
                         raise RuntimeError(nc_strerror(ierr))
                 else:
-                    # cast fill_value to type of variable.
-                    fillval = numpy.array(fill_value, self.dtype)
-                    _set_att(self._grp, self._varid, '_FillValue', fillval)
+                    if self._isprimitive:
+                        # cast fill_value to type of variable.
+                        fillval = numpy.array(fill_value, self.dtype)
+                        _set_att(self._grp, self._varid, '_FillValue', fillval)
+                    else:
+                        raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
             if least_significant_digit is not None:
                 self.least_significant_digit = least_significant_digit
             # leave define mode if not a NETCDF4 format file.
@@ -2118,7 +2130,10 @@ each dimension is returned."""
             # if setting _FillValue, make sure value
             # has same type as variable.
             if name == '_FillValue':
-                value = numpy.array(value, self.dtype)
+                if self._isprimitive:
+                    value = numpy.array(value, self.dtype)
+                else:
+                    raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
             if self._grp.file_format != 'NETCDF4': self._grp._redef()
             _set_att(self._grp, self._varid, name, value)
             if self._grp.file_format != 'NETCDF4': self._grp._enddef()
@@ -2154,8 +2169,11 @@ each dimension is returned."""
         # to use.
         start, count, stride, put_ind = _StartCountStride(elem,self.shape)
         datashape = _out_array_shape(count)
-        data = numpy.empty(datashape, dtype=self.dtype)
-        
+        if self._isvlen:
+            data = numpy.empty(datashape, dtype='O')
+        else:
+            data = numpy.empty(datashape, dtype=self.dtype)
+
         # Determine which dimensions need to be squeezed
         # (those for which elem is an integer scalar).
         # The convention used is that for those cases, 
@@ -2173,13 +2191,19 @@ each dimension is returned."""
 
         # Fill output array with data chunks. 
         for (a,b,c,i) in zip(start, count, stride, put_ind):
-            # FIXME:
-            # this is a workaround so MFDataset slicing works
-            # with singleton dimensions.
-            try:
-                data[tuple(i)] = numpy.squeeze(self._get(a,b,c))
-            except ValueError:
-                data[tuple(i)] = self._get(a,b,c)
+            if self._isvlen:
+                if isinstance(self.dtype, str):
+                    data[tuple(i)] = self._get_string(a,b,c)
+                else:
+                    data[tuple(i)] = self._get_vlen(a,b,c)
+            else:
+                # FIXME:
+                # this is a workaround so MFDataset slicing works
+                # with singleton dimensions.
+                try:
+                    data[tuple(i)] = numpy.squeeze(self._get(a,b,c))
+                except ValueError:
+                    data[tuple(i)] = self._get(a,b,c)
     
         # Remove extra singleton dimensions. 
         data = data[tuple(squeeze)]
@@ -2189,7 +2213,8 @@ each dimension is returned."""
         # automatic unpacking using scale_factor/add_offset
         # and automatic conversion to masked array using
         # missing_value/_Fill_Value.
-        if self.maskandscale:
+        # ignore for compound and vlen datatypes.
+        if self.maskandscale and self._isprimitive:
             totalmask = numpy.zeros(data.shape, numpy.bool)
             fill_value = None
             if hasattr(self, 'missing_value') and (data == self.missing_value).any():
@@ -2226,6 +2251,9 @@ each dimension is returned."""
         # to use.
 
         # A numpy array is needed. Convert if necessary.
+        if self._isvlen: # if vlen, must be object array (don't try casting)
+            if not type(data) == numpy.ndarray or data.dtype.kind != 'O':
+                raise TypeError("data to put into VLEN must be in an object array")
         if not type(data) == numpy.ndarray:
             data = numpy.array(data,self.dtype)
 
@@ -2255,7 +2283,8 @@ each dimension is returned."""
         # automatic packing using scale_factor/add_offset
         # and automatic filling of masked arrays using
         # missing_value/_Fill_Value.
-        if self.maskandscale:
+        # ignore if not a primitive (not compound or vlen) datatype.
+        if self.maskandscale and self._isprimitive:
             # use missing_value as fill value.
             # if no missing value set, use _FillValue.
             if hasattr(data,'mask'):
@@ -2274,7 +2303,16 @@ each dimension is returned."""
         for (a,b,c,i) in zip(start, count, stride, put_ind):
             dataput = data[tuple(i)]
             # convert array scalar to regular array with one element.
-            if dataput.shape == (): dataput=numpy.array(dataput,dataput.dtype)
+            if dataput.shape == (): 
+                if self._isvlen:
+                    dataput=numpy.array(dataput,'O')
+                else:
+                    dataput=numpy.array(dataput,dataput.dtype)
+            if self._isvlen:
+                if isinstance(self.dtype, str):
+                    self._put_string(dataput,a,b,c)
+                else:
+                    self._put_vlen(dataput,a,b,c)
             self._put(dataput,a,b,c)
 
     def __len__(self):
@@ -2452,6 +2490,323 @@ The default value of C{maskandscale} is C{False}
         #    return data.item()
         elif squeeze_out:
             return data.squeeze()
+        else:
+            return data
+
+    def _put_vlen(self,ndarray data,start,count,stride):
+        """Private method to put data into a netCDF variable with usertype='vlen'"""
+        cdef int ierr, ndims, totelem, n
+        cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef void* elptr
+        cdef char* databuff
+        cdef ndarray dataarr
+        cdef nc_vlen_t *vldata
+        # rank of variable.
+        ndims = len(self.dimensions)
+        # make sure data is contiguous.
+        # if not, make a local copy.
+        if not PyArray_ISCONTIGUOUS(data):
+            data = data.copy()
+        # fill up startp,countp,stridep.
+        totelem = 1
+        negstride = 0
+        sl = []
+        for n from 0 <= n < ndims:
+            count[n] = abs(count[n]) # make -1 into +1
+            countp[n] = count[n] 
+            # for neg strides, reverse order (then flip that axis after data read in)
+            if stride[n] < 0: 
+                negstride = 1
+                stridep[n] = -stride[n]
+                startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
+                sl.append(slice(None, None, -1)) # this slice will reverse the data
+            else:
+                startp[n] = start[n]
+                stridep[n] = stride[n]
+                sl.append(slice(None,None, 1))
+            totelem = totelem*countp[n]
+        # check to see that size of data array is what is expected
+        # for slice given. 
+        dataelem = PyArray_SIZE(data)
+        if totelem != dataelem:
+            # If just one element given, make a new array of desired
+            # size and fill it with that data.
+            if dataelem == 1:
+                datanew = numpy.empty(totelem,'O')
+                datanew[:] = data
+                data = datanew
+            else:
+                raise IndexError('size of data array does not conform to slice')
+        if data.dtype.char !='O':
+            raise TypeError('data to put in vlen must be an object array')
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl].copy() # make sure a copy is made.
+        # flatten data array.
+        data = data.flatten()
+        # loop over elements of object array, put data buffer for
+        # each element in struct.
+        databuff = data.data
+        # allocate struct array to hold vlen data.
+        vldata = <nc_vlen_t *>malloc(<size_t>totelem*sizeof(nc_vlen_t))
+        for i from 0<=i<totelem:
+            elptr = (<void**>databuff)[0]
+            dataarr = <ndarray>elptr
+            if self.dtype_base != dataarr.dtype.str[1:]:
+                dataarr = dataarr.astype(self.dtype_base) # cast data, if necessary.
+            vldata[i].len = PyArray_SIZE(dataarr)
+            vldata[i].p = dataarr.data
+            databuff = databuff + data.strides[0]
+        # strides all 1 or scalar variable, use put_vara (faster)
+        if sum(stride) == ndims or ndims == 0: 
+            ierr = nc_put_vara(self._grpid, self._varid,
+                               startp, countp, vldata)
+        else:  
+            raise IndexError('strides must all be 1 for vlen variables')
+            #ierr = nc_put_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, vldata)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        free(vldata)
+
+
+    def _put_string(self,ndarray data,start,count,stride):
+        """Private method to put data into a netCDF variable with dtype='S'"""
+        cdef int ierr, ndims, totelem, n, buflen
+        cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef char **strdata
+        cdef void *bufdat
+        cdef char *strbuf
+        # rank of variable.
+        ndims = len(self.dimensions)
+        # make sure data is contiguous.
+        # if not, make a local copy.
+        if not PyArray_ISCONTIGUOUS(data):
+            data = data.copy()
+        # fill up startp,countp,stridep.
+        totelem = 1
+        negstride = 0
+        sl = []
+        for n from 0 <= n < ndims:
+            count[n] = abs(count[n]) # make -1 into +1
+            countp[n] = count[n] 
+            # for neg strides, reverse order (then flip that axis after data read in)
+            if stride[n] < 0: 
+                negstride = 1
+                stridep[n] = -stride[n]
+                startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
+                sl.append(slice(None, None, -1)) # this slice will reverse the data
+            else:
+                startp[n] = start[n]
+                stridep[n] = stride[n]
+                sl.append(slice(None,None, 1))
+            totelem = totelem*countp[n]
+        # check to see that size of data array is what is expected
+        # for slice given. 
+        dataelem = PyArray_SIZE(data)
+        if totelem != dataelem:
+            # If just one element given, make a new array of desired
+            # size and fill it with that data.
+            if dataelem == 1:
+                datanew = numpy.empty(totelem,'O')
+                datanew[:] = data
+                data = datanew
+            else:
+                raise IndexError('size of data array does not conform to slice')
+        if data.dtype.char !='O':
+            raise TypeError('data to put in string variable must be an object array containing Python strings')
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl].copy() # make sure a copy is made.
+        # flatten data array.
+        data = data.flatten()
+        # loop over elements of object array, put data buffer for
+        # each element in struct.
+        # allocate struct array to hold vlen data.
+        strdata = <char **>malloc(sizeof(char *)*totelem)
+        for i from 0<=i<totelem:
+            pystring = data[i]
+            if PyString_Check(pystring) != 1:
+                # if not a python string, pickle it into a string
+                # (use protocol 2)
+                pystring = cPickle.dumps(pystring,2)
+            strdata[i] = PyString_AsString(pystring)
+        # strides all 1 or scalar variable, use put_vara (faster)
+        if sum(stride) == ndims or ndims == 0: 
+            ierr = nc_put_vara(self._grpid, self._varid,
+                               startp, countp, strdata)
+        else:  
+            raise IndexError('strides must all be 1 for string variables')
+            #ierr = nc_put_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, strdata)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        free(strdata)
+
+    def _get_vlen(self,start,count,stride):
+        """Private method to retrieve data from a netCDF variable with usertype='vlen'"""
+        cdef int i,ierr, ndims, totelem, arrlen
+        cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef ndarray data
+        cdef void* elptr
+        cdef char* databuff, arrbuff
+        cdef ndarray dataarr
+        cdef nc_vlen_t *vldata
+        # if one of the counts is negative, then it is an index
+        # and not a slice so the resulting array
+        # should be 'squeezed' to remove the singleton dimension.
+        shapeout = ()
+        squeeze_out = False
+        for lendim in count:
+            if lendim == -1:
+                shapeout = shapeout + (1,)
+                squeeze_out = True
+            else:
+                shapeout = shapeout + (lendim,)
+        # rank of variable.
+        ndims = len(self.dimensions)
+        # fill up startp,countp,stridep.
+        negstride = 0
+        sl = []
+        for n from 0 <= n < ndims:
+            count[n] = abs(count[n]) # make -1 into +1
+            countp[n] = count[n] 
+            # for neg strides, reverse order (then flip that axis after data read in)
+            if stride[n] < 0: 
+                negstride = 1
+                stridep[n] = -stride[n]
+                startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
+                sl.append(slice(None, None, -1)) # this slice will reverse the data
+            else:
+                startp[n] = start[n]
+                stridep[n] = stride[n]
+                sl.append(slice(None,None, 1))
+        # allocate array of correct primitive type.
+        data = numpy.empty(shapeout, 'O')
+        # flatten data array.
+        data = data.flatten()
+        totelem = PyArray_SIZE(data)
+        # allocate struct array to hold vlen data.
+        vldata = <nc_vlen_t *>malloc(totelem*sizeof(nc_vlen_t))
+        # strides all 1 or scalar variable, use get_vara (faster)
+        if sum(stride) == ndims or ndims == 0: 
+            ierr = nc_get_vara(self._grpid, self._varid,
+                               startp, countp, vldata)
+        else:
+            raise IndexError('strides must all be 1 for vlen variables')
+            #ierr = nc_get_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, vldata)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        # loop over elements of object array, fill array with
+        # contents of vlarray struct, put array in object array.
+        for i from 0<=i<totelem:
+            arrlen  = vldata[i].len
+            dataarr = numpy.empty(arrlen, self.dtype_base)
+            dataarr.data = <char *>vldata[i].p
+            data[i] = dataarr
+        # reshape the output array
+        data = numpy.reshape(data, shapeout)
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl].copy() # make a copy so data is contiguous.
+        free(vldata)
+        if not self.dimensions: 
+            return data[0] # a scalar 
+        elif data.shape == (1,):
+            # if a single item, just return a python array (not an
+            # object array containing a single array).
+            return data.item()
+        elif squeeze_out:
+            return numpy.squeeze(data)
+        else:
+            return data
+
+    def _get_string(self,start,count,stride):
+        """Private method to retrieve data from a netCDF variable with dtype='S'"""
+        cdef int i,ierr, ndims, totelem, arrlen
+        cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
+        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef ndarray data
+        cdef void *elptr
+        cdef char *strbuf
+        cdef char **strdata
+        # if one of the counts is negative, then it is an index
+        # and not a slice so the resulting array
+        # should be 'squeezed' to remove the singleton dimension.
+        shapeout = ()
+        squeeze_out = False
+        for lendim in count:
+            if lendim == -1:
+                shapeout = shapeout + (1,)
+                squeeze_out = True
+            else:
+                shapeout = shapeout + (lendim,)
+        # rank of variable.
+        ndims = len(self.dimensions)
+        # fill up startp,countp,stridep.
+        negstride = 0
+        sl = []
+        for n from 0 <= n < ndims:
+            count[n] = abs(count[n]) # make -1 into +1
+            countp[n] = count[n] 
+            # for neg strides, reverse order (then flip that axis after data read in)
+            if stride[n] < 0: 
+                negstride = 1
+                stridep[n] = -stride[n]
+                startp[n] = start[n]+stride[n]*(count[n]-1)
+                stride[n] = -stride[n]
+                sl.append(slice(None, None, -1)) # this slice will reverse the data
+            else:
+                startp[n] = start[n]
+                stridep[n] = stride[n]
+                sl.append(slice(None,None, 1))
+        # allocate array of correct primitive type.
+        data = numpy.empty(shapeout, 'O')
+        # flatten data array.
+        data = data.flatten()
+        totelem = PyArray_SIZE(data)
+        # allocate pointer array to hold string data.
+        strdata = <char **>malloc(sizeof(char *) * totelem)
+        # strides all 1 or scalar variable, use get_vara (faster)
+        if sum(stride) == ndims or ndims == 0: 
+            ierr = nc_get_vara(self._grpid, self._varid,
+                               startp, countp, strdata)
+        else:
+            # FIXME: is this a bug in netCDF4?
+            raise IndexError('strides must all be 1 for string variables')
+            #ierr = nc_get_vars(self._grpid, self._varid,
+            #                   startp, countp, stridep, strdata)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        # loop over elements of object array, fill array with
+        # contents of strdata.
+        for i from 0<=i<totelem:
+            data[i] = PyString_FromString(strdata[i])
+            # if it's a pickle string, unpickle it.
+            # (see if first element is the pickle protocol 2
+            # identifier - '\x80')
+            if data[i][0] == '\x80': # use pickle.PROTO instead?
+                data[i] = cPickle.loads(data[i])
+        # reshape the output array
+        data = numpy.reshape(data, shapeout)
+        if negstride:
+            # reverse data along axes with negative strides.
+            data = data[sl].copy() # make a copy so data is contiguous.
+        free(strdata)
+        if not self.dimensions: 
+            return data[0] # a scalar 
+        elif data.shape == (1,):
+            # if a single item, just return a python string.
+            return data.item()
+        elif squeeze_out:
+            return numpy.squeeze(data)
         else:
             return data
 
