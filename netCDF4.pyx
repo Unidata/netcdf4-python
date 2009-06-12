@@ -905,8 +905,8 @@ cdef _set_att(grp, int varid, name, value):
             raise AttributeError(nc_strerror(ierr))
 
 cdef _get_types(group):
-    # Private function to create L{CompoundType} instances for all the
-    # compound types in a L{Group} or Dataset
+    # Private function to create L{CompoundType} or L{VLType} instances for all the
+    # compound or VLEN types in a L{Group} or L{Dataset}.
     cdef int ierr, ntypes, classp, n
     cdef nc_type xtype, typeids[NC_MAX_VARS]
     cdef char namstring[NC_MAX_NAME+1]
@@ -916,6 +916,7 @@ cdef _get_types(group):
         raise RuntimeError(nc_strerror(ierr))
     # create empty dictionary for CompoundType instances.
     cmptypes = {}
+    vltypes = {}
     if ntypes > 0:
         for n from 0 <= n < ntypes:
             xtype = typeids[n]
@@ -927,9 +928,24 @@ cdef _get_types(group):
                 name = namstring
                 # read the compound type info from the file,
                 # create a CompoundType instance from it.
-                cmptype = _read_compound(group, xtype)
+                try:
+                    cmptype = _read_compound(group, xtype)
+                except KeyError:
+                    print 'WARNING: unsupported compound type, skipping...'
+                    continue
                 cmptypes[name] = cmptype
-    return cmptypes
+            elif classp == NC_VLEN: # a vlen
+                name = namstring
+                # read the VLEN type info from the file,
+                # create a VLType instance from it.
+                try:
+                    vltype = _read_vlen(group, xtype)
+                except KeyError:
+                    print 'WARNING: unsupported VLEN type, skipping...'
+                    continue
+                vltypes[name] = vltype
+                pass
+    return cmptypes, vltypes
 
 cdef _get_dims(group):
     # Private function to create L{Dimension} instances for all the
@@ -1031,7 +1047,18 @@ cdef _get_vars(group):
                                          NULL, NULL, NULL, &classp)
                  if classp == NC_COMPOUND: # a compound type
                      # create CompoundType instance describing this compound type.
-                     datatype = _read_compound(group, xtype)
+                     try:
+                         datatype = _read_compound(group, xtype)
+                     except KeyError:
+                         print "WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
+                         continue
+                 elif classp == NC_VLEN: # a compound type
+                     # create VLType instance describing this compound type.
+                     try:
+                         datatype = _read_vlen(group, xtype)
+                     except KeyError:
+                         print "WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
+                         continue
                  else:
                      print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
                      continue
@@ -1069,7 +1096,7 @@ cdef _get_vars(group):
 
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format',
- '_nunlimdim','path','parent','ndim','maskandscale','cmptypes']
+ '_nunlimdim','path','parent','ndim','maskandscale','cmptypes','vltypes']
 
 
 cdef class Dataset:
@@ -1159,7 +1186,7 @@ hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
     cdef public int _grpid
     cdef public groups, dimensions, variables, file_format, path, parent,\
-    maskanscale, cmptypes
+    maskanscale, cmptypes, vltypes
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4', **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
@@ -1193,8 +1220,8 @@ group, so the path is simply C{'/'}."""
         self._grpid = grpid
         self.path = '/'
         self.parent = None
-        # get compound types in the root Group.
-        self.cmptypes = _get_types(self)
+        # get compound and vlen types in the root Group.
+        self.cmptypes, self.vltypes = _get_types(self)
         # get dimensions in the root group.
         self.dimensions = _get_dims(self)
         # get variables in the root Group.
@@ -1316,6 +1343,18 @@ The return value is the L{CompoundType} class instance describing the new
 datatype."""
         self.cmptypes[datatype_name] = CompoundType(self, datatype, datatype_name)
         return self.cmptypes[datatype_name]
+
+    def createVLType(self, datatype, datatype_name):
+        """
+createCompoundType(self, datatype, datatype_name)
+
+Creates a new VLEN data type named C{datatype_name} from the numpy
+dtype object C{datatype}, or a python str object.
+
+The return value is the L{VLType} class instance describing the new
+datatype."""
+        self.vltypes[datatype_name] = VLType(self, datatype, datatype_name)
+        return self.vltypes[datatype_name]
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
@@ -1550,8 +1589,8 @@ method)."""
         self.path = os.path.join(parent.path, name)
         # parent group.
         self.parent = parent
-        # get compound types in this Group.
-        self.cmptypes = _get_types(self)
+        # get compound and vlen types in this Group.
+        self.cmptypes, self.vltypes = _get_types(self)
         # get dimensions in this Group.
         self.dimensions = _get_dims(self)
         # get variables in this Group.
@@ -2429,8 +2468,8 @@ the inner compound data types must already be associated with CompoundType
 instances (so create CompoundType instances for the innermost structures
 first).
 
-L{CompoundType} instances should be created using the C{createCompoundType method} 
-of a Dataset or L{Group} instance, not using this class directly.
+L{CompoundType} instances should be created using the C{createCompoundType} 
+method of a Dataset or L{Group} instance, not using this class directly.
 
 B{Parameters:}
 
@@ -2565,7 +2604,7 @@ cdef _read_compound(group, nc_type xtype):
     # read a compound data type id from an existing file,
     # construct a corresponding numpy dtype instance, 
     # then use that to create a CompoundType instance.
-    # called by _get_vars and _get_att.
+    # called by _get_vars, _get_types and _get_att.
     # Calls itself recursively for nested compound types.
     cdef int ierr, nf, numdims, ndim, classp
     cdef size_t nfields, offset
@@ -2623,6 +2662,100 @@ cdef _read_compound(group, nc_type xtype):
     # create a dict that can be converted into a numpy dtype.
     dtype_dict = {'names':names,'formats':formats,'offsets':offsets}
     return CompoundType(group, dtype_dict, name, typeid=xtype)
+
+# VLEN datatype support.
+
+cdef class VLType:
+    """
+A L{VLType} instance is used to describe a variable length (VLEN) data type.
+
+Constructor: C{VLType(group, datatype, datatype_name)}
+
+L{VLType} instances should be created using the C{createVLType}
+method of a Dataset or L{Group} instance, not using this class directly.
+
+B{Parameters:}
+
+B{C{group}} - L{Group} instance to associate with the VLEN datatype.
+
+B{C{datatype}} - An object describing a the component type for the variable
+length array. Can be one of the fixed-length numpy data types if you want
+the VLEN to be composed of numpy arrays, or the python str object if you
+want the VLEN to be composed of variable-length strings.
+
+B{C{datatype_name}} - a Python string containing a description of the 
+VLEN data type.
+
+B{Returns:}
+
+a L{VLType} instance, which can be passed to the C{createVariable} 
+method of a L{Dataset} or L{Group} instance.
+
+The instance variables C{dtype} and C{name} should not be modified by
+the user.
+
+@ivar dtype: An object describing the VLEN type.
+
+@ivar name: A python string describing the VLEN type.
+"""
+    cdef public nc_type _nc_type
+    cdef public dtype, name
+    def __init__(self, grp, object dt, object dtype_name, **kwargs):
+        cdef nc_type xtype
+        if kwargs.has_key('typeid'):
+            xtype = kwargs['typeid']
+        else:
+            xtype, dt = _def_vlen(grp, dt, dtype_name)
+        self._nc_type = xtype
+        self.dtype = dt
+        if isinstance(dt, str):
+            self.name = None
+        else:
+            self.name = dtype_name
+
+cdef _def_vlen(grp, object dt, object dtype_name):
+    # private method used to construct a netcdf VLEN data type
+    # from a numpy dtype object or python str object by VLType.__init__.
+    cdef nc_type xtype, xtype_tmp
+    cdef int ierr, ndims
+    cdef size_t offset, size
+    cdef char *namstring, *nested_namstring
+    cdef int dim_sizes[NC_MAX_DIMS]
+    if isinstance(dt, str): # python string, use NC_STRING
+        xtype = NC_STRING
+        # dtype_name ignored
+    else: # numpy datatype
+        namstring = PyString_AsString(dtype_name)
+        dt = numpy.dtype(dt) # convert to numpy datatype.
+        if dt.str[1:] in _supportedtypes:
+            # find netCDF primitive data type corresponding to 
+            # specified numpy data type.
+            xtype = _nptonctype[dt.str[1:]]
+            ierr = nc_def_vlen(grp._grpid, namstring, xtype_tmp, &xtype);
+            if ierr != NC_NOERR:
+               raise RuntimeError(nc_strerror(ierr))
+        else:
+            raise KeyError("unsupported datatype specified for VLEN")
+    return xtype, dt
+
+cdef _read_vlen(group, nc_type xtype):
+    # read a VLEN data type id from an existing file,
+    # construct a corresponding numpy dtype instance, 
+    # then use that to create a VLType instance.
+    # called by _get_types, _get_vars.
+    cdef int ierr
+    cdef size_t vlsize
+    cdef nc_type base_xtype
+    cdef char vl_namstring[NC_MAX_NAME+1]
+    ierr = nc_inq_vlen(group._grpid, xtype, vl_namstring, &vlsize, &base_xtype)
+    if ierr != NC_NOERR:
+        raise RuntimeError(nc_strerror(ierr))
+    name = PyString_FromString(vl_namstring)
+    try:
+        dt = _nctonptype[base_xtype] # see if it is a primitive type
+    except KeyError:
+        raise KeyError("unsupported component type for VLEN")
+    return VLType(group, dt, name)
 
 # include pure python utility functions and MFDataset class.
 # (use include instead of importing them so docstrings
