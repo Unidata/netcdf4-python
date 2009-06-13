@@ -2466,8 +2466,8 @@ The default value of C{maskandscale} is C{False}
                 for i from 0<=i<totelem:
                     elptr = (<void**>databuff)[0]
                     dataarr = <ndarray>elptr
-                    if self.dtype_base != dataarr.dtype.str[1:]:
-                        dataarr = dataarr.astype(self.dtype_base) # cast data, if necessary.
+                    if self.dtype != dataarr.dtype.str[1:]:
+                        dataarr = dataarr.astype(self.dtype) # cast data, if necessary.
                     vldata[i].len = PyArray_SIZE(dataarr)
                     vldata[i].p = dataarr.data
                     databuff = databuff + data.strides[0]
@@ -2584,7 +2584,7 @@ The default value of C{maskandscale} is C{False}
                 # contents of vlarray struct, put array in object array.
                 for i from 0<=i<totelem:
                     arrlen  = vldata[i].len
-                    dataarr = numpy.empty(arrlen, self.dtype_base)
+                    dataarr = numpy.empty(arrlen, self.dtype)
                     dataarr.data = <char *>vldata[i].p
                     data[i] = dataarr
                 # reshape the output array
@@ -2875,7 +2875,7 @@ cdef _def_vlen(grp, object dt, object dtype_name):
         if dt.str[1:] in _supportedtypes:
             # find netCDF primitive data type corresponding to 
             # specified numpy data type.
-            xtype = _nptonctype[dt.str[1:]]
+            xtype_tmp = _nptonctype[dt.str[1:]]
             ierr = nc_def_vlen(grp._grpid, namstring, xtype_tmp, &xtype);
             if ierr != NC_NOERR:
                raise RuntimeError(nc_strerror(ierr))
@@ -2897,10 +2897,10 @@ cdef _read_vlen(group, nc_type xtype):
         raise RuntimeError(nc_strerror(ierr))
     name = PyString_FromString(vl_namstring)
     try:
-        dt = _nctonptype[base_xtype] # see if it is a primitive type
+        dt = numpy.dtype(_nctonptype[base_xtype]) # see if it is a primitive type
     except KeyError:
         raise KeyError("unsupported component type for VLEN")
-    return VLType(group, dt, name)
+    return VLType(group, dt, name, typeid=xtype)
 
 # include pure python utility functions and MFDataset class.
 # (use include instead of importing them so docstrings
