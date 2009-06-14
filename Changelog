@@ -1,5 +1,7 @@
 version 0.8.1 (not yet released)
 ================================
+ * Experimental VLEN support added.
+
  * added 'cmptypes' Group/Dataset attribute, which contains a
    dictionary that maps the names of compound types to 
    CompoundType instances.

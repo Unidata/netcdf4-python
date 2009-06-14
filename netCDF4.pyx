@@ -1843,15 +1843,18 @@ instance. If C{None}, the data is not truncated. """
         # convert to a real numpy datatype object if necessary.
         if (not isinstance(datatype, CompoundType) and \
             not isinstance(datatype, VLType)) and \
+            datatype != str and \
             type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
         # check validity of datatype.
         self._isprimitive = False
         self._iscompound = False
         self._isvlen = False
-        if isinstance(datatype, CompoundType) or isinstance(datatype, VLType):
+        if isinstance(datatype, CompoundType) or isinstance(datatype, VLType)\
+                      or datatype == str:
             if isinstance(datatype, CompoundType): self._iscompound = True 
-            if isinstance(datatype, VLType): self._isvlen = True 
+            if isinstance(datatype, VLType) or datatype==str: self._isvlen = True 
+            if datatype==str:  datatype = VLType(self._grp, str, None)
             xtype = datatype._nc_type
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype.dtype
@@ -2432,7 +2435,7 @@ The default value of C{maskandscale} is C{False}
                 raise TypeError('data to put in string variable must be an object array containing Python strings')
             # flatten data array.
             data = data.flatten()
-            if isinstance(self.dtype,str):
+            if self.dtype == str:
                 # vlen string (NC_STRING)
                 # loop over elements of object array, put data buffer for
                 # each element in struct.
@@ -2539,7 +2542,7 @@ The default value of C{maskandscale} is C{False}
             # flatten data array.
             data = data.flatten()
             totelem = PyArray_SIZE(data)
-            if isinstance(self.dtype,str):
+            if self.dtype == str:
                 # vlen string (NC_STRING)
                 # allocate pointer array to hold string data.
                 strdata = <char **>malloc(sizeof(char *) * totelem)
@@ -2853,7 +2856,7 @@ the user.
             xtype, dt = _def_vlen(grp, dt, dtype_name)
         self._nc_type = xtype
         self.dtype = dt
-        if isinstance(dt, str):
+        if dt == str:
             self.name = None
         else:
             self.name = dtype_name
@@ -2866,7 +2869,7 @@ cdef _def_vlen(grp, object dt, object dtype_name):
     cdef size_t offset, size
     cdef char *namstring, *nested_namstring
     cdef int dim_sizes[NC_MAX_DIMS]
-    if isinstance(dt, str): # python string, use NC_STRING
+    if dt == str: # python string, use NC_STRING
         xtype = NC_STRING
         # dtype_name ignored
     else: # numpy datatype
@@ -2892,14 +2895,18 @@ cdef _read_vlen(group, nc_type xtype):
     cdef size_t vlsize
     cdef nc_type base_xtype
     cdef char vl_namstring[NC_MAX_NAME+1]
-    ierr = nc_inq_vlen(group._grpid, xtype, vl_namstring, &vlsize, &base_xtype)
-    if ierr != NC_NOERR:
-        raise RuntimeError(nc_strerror(ierr))
-    name = PyString_FromString(vl_namstring)
-    try:
-        dt = numpy.dtype(_nctonptype[base_xtype]) # see if it is a primitive type
-    except KeyError:
-        raise KeyError("unsupported component type for VLEN")
+    if xtype == NC_STRING:
+        dt = str
+        name = None
+    else:
+        ierr = nc_inq_vlen(group._grpid, xtype, vl_namstring, &vlsize, &base_xtype)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        name = PyString_FromString(vl_namstring)
+        try:
+            dt = numpy.dtype(_nctonptype[base_xtype]) # see if it is a primitive type
+        except KeyError:
+            raise KeyError("unsupported component type for VLEN")
     return VLType(group, dt, name, typeid=xtype)
 
 # include pure python utility functions and MFDataset class.
