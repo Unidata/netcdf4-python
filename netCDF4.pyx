@@ -1348,10 +1348,10 @@ datatype."""
 
     def createVLType(self, datatype, datatype_name):
         """
-createCompoundType(self, datatype, datatype_name)
+createVLType(self, datatype, datatype_name)
 
-Creates a new VLEN data type named C{datatype_name} from the numpy
-dtype object C{datatype}, or a python str object.
+Creates a new VLEN data type named C{datatype_name} from a numpy
+dtype object C{datatype}.
 
 The return value is the L{VLType} class instance describing the new
 datatype."""
@@ -1372,6 +1372,10 @@ Supported specifiers include: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2' 
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64), 
 'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)}.
+C{datatype} can also be a L{CompoundType} instance
+(for a structured, or compound array), a L{VLType} instance
+(for a variable-length array), or the python C{str} builtin 
+(for a variable-length string array).
 
 Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type. 
@@ -1733,7 +1737,10 @@ compatibility with Scientific.IO.NetCDF, the old Numeric single character
 typecodes can also be used (C{'f'} instead of C{'f4'}, C{'d'} instead of 
 C{'f8'}, C{'h'} or C{'s'} instead of C{'i2'}, C{'b'} or C{'B'} instead of 
 C{'i1'}, C{'c'} instead of C{'S1'}, and C{'i'} or C{'l'} instead of 
-C{'i4'}).
+C{'i4'}). C{datatype} can also be a L{CompoundType} instance
+(for a structured, or compound array), a L{VLType} instance
+(for a variable-length array), or the python C{str} builtin 
+(for a variable-length string array).
 
 B{Keywords:}
 
@@ -2484,6 +2491,7 @@ The default value of C{maskandscale} is C{False}
                     #                   startp, countp, stridep, vldata)
                 if ierr != NC_NOERR:
                     raise RuntimeError(nc_strerror(ierr))
+                # free the pointer array.
                 free(vldata)
 
     def _get(self,start,count,stride):
@@ -2592,6 +2600,7 @@ The default value of C{maskandscale} is C{False}
                     data[i] = dataarr
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
+                # free the pointer array.
                 free(vldata)
         if negstride:
             # reverse data along axes with negative strides.
@@ -2616,7 +2625,8 @@ the inner compound data types must already be associated with CompoundType
 instances (so create CompoundType instances for the innermost structures
 first).
 
-L{CompoundType} instances should be created using the C{createCompoundType} 
+L{CompoundType} instances should be created using the
+L{createCompoundType<Dataset.createCompoundType>}
 method of a Dataset or L{Group} instance, not using this class directly.
 
 B{Parameters:}
@@ -2819,17 +2829,16 @@ A L{VLType} instance is used to describe a variable length (VLEN) data type.
 
 Constructor: C{VLType(group, datatype, datatype_name)}
 
-L{VLType} instances should be created using the C{createVLType}
+L{VLType} instances should be created using the 
+L{createVLType<Dataset.createVLType>}
 method of a Dataset or L{Group} instance, not using this class directly.
 
 B{Parameters:}
 
 B{C{group}} - L{Group} instance to associate with the VLEN datatype.
 
-B{C{datatype}} - An object describing a the component type for the variable
-length array. Can be one of the fixed-length numpy data types if you want
-the VLEN to be composed of numpy arrays, or the python str object if you
-want the VLEN to be composed of variable-length strings.
+B{C{datatype}} - An numpy dtype object describing a the component type for the
+variable length array.  
 
 B{C{datatype_name}} - a Python string containing a description of the 
 VLEN data type.
