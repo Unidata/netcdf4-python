@@ -1042,27 +1042,30 @@ cdef _get_vars(group):
                  raise RuntimeError(nc_strerror(ierr))
              # check to see if it is a supported user-defined type.
              try:
-                  datatype = _nctonptype[xtype]
+                 datatype = _nctonptype[xtype]
              except KeyError:
-                 ierr = nc_inq_user_type(group._grpid, xtype, namstring_cmp,
-                                         NULL, NULL, NULL, &classp)
-                 if classp == NC_COMPOUND: # a compound type
-                     # create CompoundType instance describing this compound type.
-                     try:
-                         datatype = _read_compound(group, xtype)
-                     except KeyError:
-                         print "WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
-                         continue
-                 elif classp == NC_VLEN: # a compound type
-                     # create VLType instance describing this compound type.
-                     try:
-                         datatype = _read_vlen(group, xtype)
-                     except KeyError:
-                         print "WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
-                         continue
+                 if xtype == NC_STRING:
+                     datatype = str
                  else:
-                     print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
-                     continue
+                     ierr = nc_inq_user_type(group._grpid, xtype, namstring_cmp,
+                                             NULL, NULL, NULL, &classp)
+                     if classp == NC_COMPOUND: # a compound type
+                         # create CompoundType instance describing this compound type.
+                         try:
+                             datatype = _read_compound(group, xtype)
+                         except KeyError:
+                             print "WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
+                             continue
+                     elif classp == NC_VLEN: # a compound type
+                         # create VLType instance describing this compound type.
+                         try:
+                             datatype = _read_vlen(group, xtype)
+                         except KeyError:
+                             print "WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
+                             continue
+                     else:
+                         print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
+                         continue
              # get number of dimensions.
              ierr = nc_inq_varndims(group._grpid, varid, &numdims)
              if ierr != NC_NOERR:
