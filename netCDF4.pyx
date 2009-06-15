@@ -808,8 +808,11 @@ cdef _get_att(grp, int varid, name):
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr))
         pstring = value_arr.tostring()
-        # remove NULL characters from python string
-        return pstring.replace('\x00','')
+        # if it's a pickle string, unpickle it.
+        if pstring[0] == '\x80': # use pickle.PROTO instead?
+            return cPickle.loads(pstring)
+        else:
+            return pstring.replace('\x00','')
     else:
     # a regular numeric or compound type.
         if att_type == NC_LONG:
@@ -885,10 +888,17 @@ cdef _set_att(grp, int varid, name, value):
        _get_format(grp._grpid).startswith('NETCDF3')):
         value_arr = value_arr.astype('i4')
     # if array contains strings, write a text attribute.
-    if value_arr.dtype.char == 'S':
-        dats = value_arr.tostring()
-        datstring = PyString_AsString(dats)
+    if value_arr.dtype.char == 'S' or value_arr.dtype.char == 'O':
+        # an object array, assume it contains a single python object.
+        # convert to a pickle string.
+        if value_arr.dtype.char == 'O':
+            if value_arr.shape != ():
+                raise ValueError('attribute cannot be an array of python objects')
+            dats = cPickle.dumps(value_arr.item(),2)
+        else:
+            dats = value_arr.tostring()
         lenarr = len(dats)
+        datstring = PyString_AsString(dats)
         ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr))
