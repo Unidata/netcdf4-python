@@ -38,6 +38,8 @@ class VariablesTestCase(unittest.TestCase):
         strings = f.createVariable(VAR2_NAME, str, (DIM2_NAME,DIM1_NAME))
         ragged[:] = data
         strings[:] = datas
+        ragged[nlats-1,nlons-1] = data[-1,-1]
+        strings[nlats-1,nlons-1] = datas[-1,-1]
         f.close()
 
     def tearDown(self):
