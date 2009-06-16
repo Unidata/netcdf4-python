@@ -697,6 +697,106 @@ location_name : value = New York, New York, USA : units= None
 >>>
 >>> f.close()
 
+9) Variable-length (VLEN) data types.
+-------------------------------------
+
+NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
+of variable length sequences having the same type. To create a variable-length 
+data type, use the L{createVLType<Dataset.createVLType>} method
+method of a L{Dataset} or L{Group} instance.
+
+>>> f = Dataset('tst_vlen.nc','w')
+>>> vlen_t = f.createVLType(numpy.int32, 'phony_vlen')
+
+The numpy datatype of the variable-length sequences and the name of the 
+new datatype must be specified. Any of the primitive datatypes can be 
+used (signed and unsigned integers, 32 and 64 bit floats, and characters)
+A new variable can then be created using this datatype.
+
+>>> x = f.createDimension('x',3)
+>>> y = f.createDimension('y',4)
+>>> vlvar = f.createVariable('phony_vlen_var', vlen_t, ('y','x'))
+
+Since there is no native vlen datatype in numpy, vlen arrays are represented
+in python as object arrays (arrays of dtype C{O}). These are arrays whose 
+elements are Python object pointers, and can contain any type of python object.
+For this application, they must contain 1-D numpy arrays all of the same type
+but of varying length.
+In this case, they contain 1-D numpy C{int32} arrays of random length betwee
+1 and 10.
+
+>>> import random
+>>> data = numpy.empty(len(y)*len(x),object)
+>>> for n in range(len(y)*len(x)):
+>>>    data[n] = numpy.arange(random.randint(1,10))+1
+>>> data = numpy.reshape(data,(len(y),len(x)))
+>>> vlvar[:] = data
+>>> print 'vlen variable =\\n',vlvar[:]
+vlen variable =
+[[[ 1  2  3  4  5  6  7  8  9 10] [1 2 3 4 5] [1 2 3 4 5 6 7 8]]
+ [[1 2 3 4 5 6 7] [1 2 3 4 5 6] [1 2 3 4 5]]
+ [[1 2 3 4 5] [1 2 3 4] [1]]
+ [[ 1  2  3  4  5  6  7  8  9 10] [ 1  2  3  4  5  6  7  8  9 10]
+  [1 2 3 4 5 6 7 8]]]
+
+Variables with datatype C{'S'} can be used to store variable-length
+strings, or python objects.  Here's an example.
+
+>>> strvar = rootgrp.createVariable('strvar','S',('level'))
+
+Typically, a string variable is used to hold variable-length strings.
+They are represented in python as numpy object arrays containing python
+strings. Below an object array is filled with random python strings with
+random lengths between 2 and 12 characters.
+
+>>> chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+>>> data = NP.empty(10,'O')
+>>> for n in range(10):
+>>>     stringlen = random.randint(2,12)
+>>>     data[n] = ''.join([random.choice(chars) for i in range(stringlen)])
+
+Now, we replace the first element of the object array with a python dictionary.
+
+>>> data[0] = {'spam':1,'eggs':2,'ham':False}
+
+When the data is assigned to the string variable, elements which are not
+python strings are converted to strings using the python C{cPickle}
+module.
+
+>>> strvar[:] = data
+
+When the data is read back in from the netCDF file, strings which are
+determined to be pickled python objects are unpickled back into objects.
+
+>>> print 'string variable with embedded python objects:\\n',strvar[:]
+string variable with embedded python objects:
+[{'eggs': 2, 'ham': False, 'spam': 1} QnXTY8B nbt4zisk pMHIn1F wl3suHW0OquZ
+ wn5kxEzgE nk AGBL pe kay81]
+
+Attributes can also be python objects, although the rules for whether
+they are saved as pickled strings are different.  Attributes are
+converted to numpy arrays before being saved to the netCDF file.  If the
+attribute is cast to an object array by numpy, it is pickled and saved
+as a text attribute (and then automatically unpickled when the attribute
+is accessed).  So, an attribute which is a list of integers will be
+saved as an array of integers, while an attribute that is a python
+dictionary will be saved as a pickled string, then unpickled
+automatically when it is retrieved. For example,
+
+>>> from datetime import datetime
+>>> strvar.timestamp = datetime.now()
+>>> print strvar.timestamp
+2006-02-11 13:26:27.238042
+
+Note that data saved as pickled strings will not be very useful if the
+data is to be read by a non-python client (the data will appear to the
+client as an ugly looking binary string). A more portable (and
+human-readable) way of saving simple data structures like dictionaries
+and lists is to serialize them into strings using a human-readable
+cross-language interchange format such as U{JSON <http://json.org>} or
+U{YAML <http://yaml.org>}.  An example of this is given in the
+discussion of compound data types in section 8.
+
 All of the code in this tutorial is available in C{examples/tutorial.py},
 Unit tests are in the C{test} directory.
 
@@ -2260,6 +2360,28 @@ each dimension is returned."""
                 data = self.scale_factor*data + self.add_offset
         return data
 
+    def _assign_vlen(self, elem, ndarray data):
+        cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
+        cdef int ndims, n
+        cdef nc_vlen_t *vldata
+        if not self._isvlen:
+            raise TypeError('assign method only for use with VLEN variables')
+        if data.dtype != self.dtype
+            raise TypeError("wrong data type: should be %s, got %s" % (self.dtype,data.dtype))
+        ndims = self.ndim
+        start = list(elem)
+        count = [1]*ndims
+        for n from 0 <= n < ndims:
+            startp[n] = start[n] 
+            countp[n] = count[n] 
+        vldata = <nc_vlen_t *>malloc(sizeof(nc_vlen_t))
+        vldata[0].len = PyArray_SIZE(data)
+        vldata[0].p = data.data
+        ierr = nc_put_vara(self._grpid, self._varid,
+                           startp, countp, vldata)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable
         # using "extended slice syntax". The extended slice syntax
@@ -2268,9 +2390,11 @@ each dimension is returned."""
         # to use.
 
         # A numpy array is needed. Convert if necessary.
+
         if self._isvlen: # if vlen, must be object array (don't try casting)
             if not type(data) == numpy.ndarray or data.dtype.kind != 'O':
                 raise TypeError("data to put into VLEN must be in an object array")
+
         if not type(data) == numpy.ndarray:
             data = numpy.array(data,self.dtype)
 
@@ -2490,7 +2614,9 @@ The default value of C{maskandscale} is C{False}
                     elptr = (<void**>databuff)[0]
                     dataarr = <ndarray>elptr
                     if self.dtype != dataarr.dtype.str[1:]:
-                        dataarr = dataarr.astype(self.dtype) # cast data, if necessary.
+                        #dataarr = dataarr.astype(self.dtype) # cast data, if necessary.
+                        # casting doesn't work ?? just raise TypeError
+                        raise TypeError("wrong data type in object array: should be %s, got %s" % (self.dtype,dataarr.dtype))
                     vldata[i].len = PyArray_SIZE(dataarr)
                     vldata[i].p = dataarr.data
                     databuff = databuff + data.strides[0]
