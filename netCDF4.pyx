@@ -2367,9 +2367,24 @@ each dimension is returned."""
         cdef char **strdata
         cdef ndarray data2
         if not self._isvlen:
-            raise TypeError('assign method only for use with VLEN variables')
+            raise TypeError('_assign_vlen method only for use with VLEN variables')
+        msg="single element VLEN slices must be specified by positive integers only"
+        if isinstance(elem, int):
+            if elem < 0:
+                raise IndexError(msg)
+        elif isinstance(elem, tuple):
+            for e in elem:
+                if not isinstance(e, int):
+                    raise IndexError(msg)
+                elif e < 0:
+                    raise IndexError(msg)
+        else:
+            raise IndexError(msg)
         ndims = self.ndim
-        start = list(elem)
+        if isinstance(elem, tuple):
+            start = list(elem)
+        else:
+            start = [elem]
         count = [1]*ndims
         for n from 0 <= n < ndims:
             startp[n] = start[n] 
@@ -2406,15 +2421,13 @@ each dimension is returned."""
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
 
-        # A numpy array is needed. Convert if necessary.
-
-        if self._isvlen: # if vlen, must be object array (don't try casting)
+        if self._isvlen: # if vlen, should be object array (don't try casting)
             if type(data) != numpy.ndarray or data.dtype.kind != 'O':
-                #raise TypeError("data to put into VLEN must be in an object array")
-                # assume it's a single element slice.
+                # if not, assume it's a single element slice.
                 self._assign_vlen(elem, data)
                 return
 
+        # A numpy array is needed. Convert if necessary.
         if not type(data) == numpy.ndarray:
             data = numpy.array(data,self.dtype)
 
