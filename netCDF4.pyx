@@ -2360,27 +2360,44 @@ each dimension is returned."""
                 data = self.scale_factor*data + self.add_offset
         return data
 
-    def _assign_vlen(self, elem, ndarray data):
+    def _assign_vlen(self, elem, data):
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
         cdef int ndims, n
         cdef nc_vlen_t *vldata
+        cdef char **strdata
+        cdef ndarray data2
         if not self._isvlen:
             raise TypeError('assign method only for use with VLEN variables')
-        if data.dtype != self.dtype
-            raise TypeError("wrong data type: should be %s, got %s" % (self.dtype,data.dtype))
         ndims = self.ndim
         start = list(elem)
         count = [1]*ndims
         for n from 0 <= n < ndims:
             startp[n] = start[n] 
             countp[n] = count[n] 
-        vldata = <nc_vlen_t *>malloc(sizeof(nc_vlen_t))
-        vldata[0].len = PyArray_SIZE(data)
-        vldata[0].p = data.data
-        ierr = nc_put_vara(self._grpid, self._varid,
-                           startp, countp, vldata)
-        if ierr != NC_NOERR:
-            raise RuntimeError(nc_strerror(ierr))
+        if self.dtype == str:
+            if PyString_Check(data) != 1:
+                # if not a python string, pickle it into a string
+                # (use protocol 2)
+                data = cPickle.dumps(data,2)
+            strdata = <char **>malloc(sizeof(char *))
+            strdata[0] = PyString_AsString(data)
+            ierr = nc_put_vara(self._grpid, self._varid,
+                               startp, countp, strdata)
+            if ierr != NC_NOERR:
+                raise RuntimeError(nc_strerror(ierr))
+            free(strdata)
+        else:
+            if data.dtype != self.dtype:
+                raise TypeError("wrong data type: should be %s, got %s" % (self.dtype,data.dtype))
+            data2 = data
+            vldata = <nc_vlen_t *>malloc(sizeof(nc_vlen_t))
+            vldata[0].len = PyArray_SIZE(data2)
+            vldata[0].p = data2.data
+            ierr = nc_put_vara(self._grpid, self._varid,
+                               startp, countp, vldata)
+            if ierr != NC_NOERR:
+                raise RuntimeError(nc_strerror(ierr))
+            free(vldata)
 
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable
@@ -2392,8 +2409,11 @@ each dimension is returned."""
         # A numpy array is needed. Convert if necessary.
 
         if self._isvlen: # if vlen, must be object array (don't try casting)
-            if not type(data) == numpy.ndarray or data.dtype.kind != 'O':
-                raise TypeError("data to put into VLEN must be in an object array")
+            if type(data) != numpy.ndarray or data.dtype.kind != 'O':
+                #raise TypeError("data to put into VLEN must be in an object array")
+                # assume it's a single element slice.
+                self._assign_vlen(elem, data)
+                return
 
         if not type(data) == numpy.ndarray:
             data = numpy.array(data,self.dtype)
