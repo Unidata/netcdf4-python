@@ -2361,6 +2361,7 @@ each dimension is returned."""
         return data
 
     def _assign_vlen(self, elem, data):
+        """private method to assign data to a single item in a VLEN variable"""
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
         cdef int ndims, n
         cdef nc_vlen_t *vldata
@@ -2368,11 +2369,16 @@ each dimension is returned."""
         cdef ndarray data2
         if not self._isvlen:
             raise TypeError('_assign_vlen method only for use with VLEN variables')
+        ndims = self.ndim
         msg="single element VLEN slices must be specified by positive integers only"
+        # check to see that elem is a tuple of positive integers, or a single
+        # integer.
         if isinstance(elem, int):
-            if elem < 0:
+            if elem < 0 or ndims != 1:
                 raise IndexError(msg)
         elif isinstance(elem, tuple):
+            if len(elem) != ndims:
+                raise IndexError(msg)
             for e in elem:
                 if not isinstance(e, int):
                     raise IndexError(msg)
@@ -2380,7 +2386,7 @@ each dimension is returned."""
                     raise IndexError(msg)
         else:
             raise IndexError(msg)
-        ndims = self.ndim
+        # set start, count
         if isinstance(elem, tuple):
             start = list(elem)
         else:
@@ -2389,7 +2395,7 @@ each dimension is returned."""
         for n from 0 <= n < ndims:
             startp[n] = start[n] 
             countp[n] = count[n] 
-        if self.dtype == str:
+        if self.dtype == str: # VLEN string
             if PyString_Check(data) != 1:
                 # if not a python string, pickle it into a string
                 # (use protocol 2)
@@ -2401,7 +2407,7 @@ each dimension is returned."""
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr))
             free(strdata)
-        else:
+        else: # regular VLEN
             if data.dtype != self.dtype:
                 raise TypeError("wrong data type: should be %s, got %s" % (self.dtype,data.dtype))
             data2 = data
