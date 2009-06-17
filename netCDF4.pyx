@@ -2370,20 +2370,33 @@ each dimension is returned."""
         if not self._isvlen:
             raise TypeError('_assign_vlen method only for use with VLEN variables')
         ndims = self.ndim
-        msg="single element VLEN slices must be specified by positive integers only"
-        # check to see that elem is a tuple of positive integers, or a single
-        # integer.
+        msg="single element VLEN slices must be specified by integers only"
+        # check to see that elem is a tuple of integers.
+        # handle negative integers.
         if isinstance(elem, int):
-            if elem < 0 or ndims != 1:
+            if ndims != 1:
                 raise IndexError(msg)
+            if elem < 0: 
+                if self.shape[0]+elem >= 0:
+                    elem = self.shape[0]+elem
+                else:
+                    raise IndexError("Illegal index")
         elif isinstance(elem, tuple):
             if len(elem) != ndims:
-                raise IndexError(msg)
-            for e in elem:
+                raise IndexError("Illegal index")
+            elemnew = []
+            for n,e in enumerate(elem):
                 if not isinstance(e, int):
                     raise IndexError(msg)
                 elif e < 0:
-                    raise IndexError(msg)
+                    enew = self.shape[n]+e
+                    if enew < 0:
+                        raise IndexError("Illegal index")
+                    else:
+                        elemnew.append(self.shape[n]+e)
+                else:
+                    elemnew.append(e)
+            elem = tuple(elemnew)
         else:
             raise IndexError(msg)
         # set start, count

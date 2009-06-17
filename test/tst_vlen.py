@@ -9,7 +9,7 @@ from datetime import datetime
 
 FILE_NAME = tempfile.mktemp(".nc")
 VL_NAME = 'vlen_type'
-VL_BASETYPE = np.int32
+VL_BASETYPE = np.int16
 DIM1_NAME = 'lon'
 DIM2_NAME = 'lat'
 nlons = 4; nlats = 3
@@ -20,7 +20,7 @@ datas = np.empty(nlats*nlons,object)
 nn = 0
 for n in range(nlats*nlons):
     nn = nn + 1
-    data[n] = np.arange(nn)
+    data[n] = np.arange(nn,dtype=VL_BASETYPE)
     datas[n] = ''.join([chr(i) for i in range(97,97+nn+1)])
 datas[0] = datetime.now() # should be converted to/from pickle string.
 data = np.reshape(data,(nlats,nlons))
@@ -37,9 +37,9 @@ class VariablesTestCase(unittest.TestCase):
         ragged = f.createVariable(VAR1_NAME, vlen_t, (DIM2_NAME,DIM1_NAME))
         strings = f.createVariable(VAR2_NAME, str, (DIM2_NAME,DIM1_NAME))
         ragged[:] = data
+        ragged[-1,-1] = data[-1,-1]
         strings[:] = datas
-        ragged[nlats-1,nlons-1] = data[-1,-1]
-        strings[nlats-1,nlons-1] = datas[-1,-1]
+        strings[-2,-2] = datas[-2,-2]
         f.close()
 
     def tearDown(self):
