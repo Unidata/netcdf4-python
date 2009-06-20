@@ -743,7 +743,8 @@ variables,  For vlen strings, you don't need to create a vlen data type.
 Instead, simply use the python C{str} builtin instead of a numpy datatype when
 calling the L{createVariable<Dataset.createVariable>} method.  
 
->>> strvar = rootgrp.createVariable('strvar', str,('level'))
+>>> z = f.createDimension('z',10)
+>>> strvar = rootgrp.createVariable('strvar', str, 'z')
 
 In this example, an object array is filled with random python strings with
 random lengths between 2 and 12 characters, and the data in the object 
@@ -781,7 +782,6 @@ saved as an array of integers, while an attribute that is a python
 dictionary will be saved as a pickled string, then unpickled
 automatically when it is retrieved. For example,
 
->>> from datetime import datetime
 >>> strvar.timestamp = datetime.now()
 >>> print strvar.timestamp
 2006-02-11 13:26:27.238042
