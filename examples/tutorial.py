@@ -195,6 +195,7 @@ statdat[0] = data
 statdat[1] = (40.78,-73.99,(-12.5,90),
              (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),
              range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
+print f.cmptypes
 windunits = numpy.empty(1,winddtype_units)
 stationobs_units = numpy.empty(1,statdtype_units)
 windunits['speed'] = stringtoarr('m/s',NUMCHARS)
@@ -226,4 +227,30 @@ for data in statdat[:]:
         else: # a numeric type.
             print name,': value=',data[name],': units=',chartostring(statdat.units[name])
     print '----'
+f.close()
+
+f = Dataset('tst_vlen.nc','w')
+vlen_t = f.createVLType(numpy.int32, 'phony_vlen')
+x = f.createDimension('x',3)
+y = f.createDimension('y',4)
+vlvar = f.createVariable('phony_vlen_var', vlen_t, ('y','x'))
+import random
+data = numpy.empty(len(y)*len(x),object)
+for n in range(len(y)*len(x)):
+    data[n] = numpy.arange(random.randint(1,10))+1
+data = numpy.reshape(data,(len(y),len(x)))
+vlvar[:] = data
+print 'vlen variable =\n',vlvar[:]
+z = f.createDimension('z', 10)
+strvar = f.createVariable('strvar',str,'z')
+chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+data = numpy.empty(10,object)
+for n in range(10):
+    stringlen = random.randint(2,12)
+    data[n] = ''.join([random.choice(chars) for i in range(stringlen)])
+data[0] = {'spam':1,'eggs':2,'ham':False}
+strvar[:] = data
+print 'string variable with embedded python objects:\n',strvar[:]
+strvar.timestamp = datetime.now()
+print strvar.timestamp
 f.close()
