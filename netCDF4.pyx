@@ -15,9 +15,8 @@ familiar to users of that module.
 Most new features of netCDF 4 are implemented, such as multiple
 unlimited dimensions, groups and zlib data compression.  All the new
 numeric data types (such as 64 bit and unsigned integer types) are
-implemented. Compound data types are supported, but variable length
-data types (vlen, strings) are not, nor are the enum and opaque data
-types, mainly because they do not map easily onto any numpy data type. 
+implemented. Compound and variable length data types are supported, 
+but the enum and opaque data types are not.
 
 Download 
 ========
@@ -697,8 +696,8 @@ location_name : value = New York, New York, USA : units= None
 >>>
 >>> f.close()
 
-9) Variable-length (VLEN) data types.
--------------------------------------
+10) Variable-length (VLEN) data types.
+--------------------------------------
 
 NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
 of variable length sequences having the same type. To create a variable-length 
@@ -718,7 +717,7 @@ A new variable can then be created using this datatype.
 >>> vlvar = f.createVariable('phony_vlen_var', vlen_t, ('y','x'))
 
 Since there is no native vlen datatype in numpy, vlen arrays are represented
-in python as object arrays (arrays of dtype C{O}). These are arrays whose 
+in python as object arrays (arrays of dtype C{object}). These are arrays whose 
 elements are Python object pointers, and can contain any type of python object.
 For this application, they must contain 1-D numpy arrays all of the same type
 but of varying length.
@@ -739,34 +738,33 @@ vlen variable =
  [[ 1  2  3  4  5  6  7  8  9 10] [ 1  2  3  4  5  6  7  8  9 10]
   [1 2 3 4 5 6 7 8]]]
 
-Variables with datatype C{'S'} can be used to store variable-length
-strings, or python objects.  Here's an example.
+Numpy object arrays containing python strings can also be written as vlen
+variables,  For vlen strings, you don't need to create a vlen data type. 
+Instead, simply use the python C{str} builtin instead of a numpy datatype when
+calling the L{createVariable<Dataset.createVariable>} method.  
 
->>> strvar = rootgrp.createVariable('strvar','S',('level'))
+>>> strvar = rootgrp.createVariable('strvar', str,('level'))
 
-Typically, a string variable is used to hold variable-length strings.
-They are represented in python as numpy object arrays containing python
-strings. Below an object array is filled with random python strings with
-random lengths between 2 and 12 characters.
+In this example, an object array is filled with random python strings with
+random lengths between 2 and 12 characters, and the data in the object 
+array is assigned to the vlen string variable.
 
 >>> chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 >>> data = NP.empty(10,'O')
 >>> for n in range(10):
 >>>     stringlen = random.randint(2,12)
 >>>     data[n] = ''.join([random.choice(chars) for i in range(stringlen)])
-
-Now, we replace the first element of the object array with a python dictionary.
-
->>> data[0] = {'spam':1,'eggs':2,'ham':False}
-
-When the data is assigned to the string variable, elements which are not
-python strings are converted to strings using the python C{cPickle}
-module.
-
 >>> strvar[:] = data
 
+If an object array assigned to a vlen string variable contains an arbitrary
+python object instead of a python string, that python object is converted to
+a string using the python C{cPickle} module.
+
+>>> data[0] = {'spam':1,'eggs':2,'ham':False}
+>>> strvar[0] = data[0]
+
 When the data is read back in from the netCDF file, strings which are
-determined to be pickled python objects are unpickled back into objects.
+determined to be pickled python objects are automatically unpickled.
 
 >>> print 'string variable with embedded python objects:\\n',strvar[:]
 string variable with embedded python objects:
@@ -790,12 +788,7 @@ automatically when it is retrieved. For example,
 
 Note that data saved as pickled strings will not be very useful if the
 data is to be read by a non-python client (the data will appear to the
-client as an ugly looking binary string). A more portable (and
-human-readable) way of saving simple data structures like dictionaries
-and lists is to serialize them into strings using a human-readable
-cross-language interchange format such as U{JSON <http://json.org>} or
-U{YAML <http://yaml.org>}.  An example of this is given in the
-discussion of compound data types in section 8.
+client as an ugly looking binary string).
 
 All of the code in this tutorial is available in C{examples/tutorial.py},
 Unit tests are in the C{test} directory.
