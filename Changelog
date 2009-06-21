@@ -1,10 +1,10 @@
 version 0.8.1 (svn revision 744)
 ================================
- * Experimental VLEN support added.
+ * added 'cmptypes' and 'vltypes' Group/Dataset attributes, which contai
+   dictionaries that map the names of compound and vlen types to 
+   CompoundType and VLType instances.
 
- * added 'cmptypes' Group/Dataset attribute, which contains a
-   dictionary that maps the names of compound types to 
-   CompoundType instances.
+ * Experimental variable-length (vlen) data type support added.
 
  * changes to accomodate compound types in netcdf-4.1-beta snapshots.
    Compound types now work correctly for snapshots >= 20090603.
