@@ -34,14 +34,13 @@ Requires
  - The HDF5 C library version 1.8.2 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl --enable-shared}'.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.0.1 or higher is required.
+ Version 4.0.1 or higher is required. A 4.1-beta snapshot from 
+ U{ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot} is needed to use compound
+ types, and is recommended if you are using the newer vlen and 
+ U{OPeNDAP<http://opendap.org>} features.
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR --enable-shared}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
  To enable U{OPeNDAP<http://opendap.org>} support, build with 'C{--enable-dap}'.
- The latest bleeding edge snapshot is available at
- U{ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot}.  Use the latest 4.1-beta
- snapshot and the latest svn version of this module if you want to try the
- U{OPeNDAP<http://opendap.org>} or compound type support.
 
 
 Install
