@@ -15,8 +15,10 @@ familiar to users of that module.
 Most new features of netCDF 4 are implemented, such as multiple
 unlimited dimensions, groups and zlib data compression.  All the new
 numeric data types (such as 64 bit and unsigned integer types) are
-implemented. Compound and variable length data types are supported, 
-but the enum and opaque data types are not.
+implemented. Compound and variable length (vlen) data types are supported, 
+but the enum and opaque data types are not. Mixtures of compound and vlen
+data types (compound types containing vlens, and vlens containing compound 
+types) are not supported.
 
 Download 
 ========
@@ -696,7 +698,7 @@ location_name : value = New York, New York, USA : units= None
 >>>
 >>> f.close()
 
-10) Variable-length (VLEN) data types.
+10) Variable-length (vlen) data types.
 --------------------------------------
 
 NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
@@ -709,7 +711,8 @@ method of a L{Dataset} or L{Group} instance.
 
 The numpy datatype of the variable-length sequences and the name of the 
 new datatype must be specified. Any of the primitive datatypes can be 
-used (signed and unsigned integers, 32 and 64 bit floats, and characters)
+used (signed and unsigned integers, 32 and 64 bit floats, and characters),
+but compound data types cannot.
 A new variable can then be created using this datatype.
 
 >>> x = f.createDimension('x',3)
