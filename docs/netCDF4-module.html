@@ -61,10 +61,8 @@
     <p>Most new features of netCDF 4 are implemented, such as multiple 
     unlimited dimensions, groups and zlib data compression.  All the new 
     numeric data types (such as 64 bit and unsigned integer types) are 
-    implemented. Compound data types are supported, but variable length 
-    data types (vlen, strings) are not, nor are the enum and opaque data 
-    types, mainly because they do not map easily onto any numpy data 
-    type.</p>
+    implemented. Compound and variable length data types are supported, but
+    the enum and opaque data types are not.</p>
   <h1 class="heading">Download</h1>
     <ul>
       <li>
@@ -818,6 +816,97 @@
 <span class="py-output">----</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>f.close()</pre>
+    <h2 class="heading">10) Variable-length (VLEN) data types.</h2>
+      <p>NetCDF 4 has support for variable-length or &quot;ragged&quot; 
+      arrays.  These are arrays of variable length sequences having the 
+      same type. To create a variable-length data type, use the <a 
+      href="netCDF4.Dataset-class.html#createVLType" 
+      class="link">createVLType</a> method method of a <a 
+      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
+      href="netCDF4.Group-class.html" class="link">Group</a> instance.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>f = Dataset(<span class="py-string">'tst_vlen.nc'</span>,<span class="py-string">'w'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>vlen_t = f.createVLType(numpy.int32, <span class="py-string">'phony_vlen'</span>)</pre>
+      <p>The numpy datatype of the variable-length sequences and the name 
+      of the new datatype must be specified. Any of the primitive datatypes
+      can be used (signed and unsigned integers, 32 and 64 bit floats, and 
+      characters) A new variable can then be created using this 
+      datatype.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>x = f.createDimension(<span class="py-string">'x'</span>,3)
+<span class="py-prompt">&gt;&gt;&gt; </span>y = f.createDimension(<span class="py-string">'y'</span>,4)
+<span class="py-prompt">&gt;&gt;&gt; </span>vlvar = f.createVariable(<span class="py-string">'phony_vlen_var'</span>, vlen_t, (<span class="py-string">'y'</span>,<span class="py-string">'x'</span>))</pre>
+      <p>Since there is no native vlen datatype in numpy, vlen arrays are 
+      represented in python as object arrays (arrays of dtype 
+      <code>object</code>). These are arrays whose elements are Python 
+      object pointers, and can contain any type of python object. For this 
+      application, they must contain 1-D numpy arrays all of the same type 
+      but of varying length. In this case, they contain 1-D numpy 
+      <code>int32</code> arrays of random length betwee 1 and 10.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> random
+<span class="py-prompt">&gt;&gt;&gt; </span>data = numpy.empty(len(y)*len(x),object)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> n <span class="py-keyword">in</span> range(len(y)*len(x)):
+<span class="py-prompt">&gt;&gt;&gt; </span>   data[n] = numpy.arange(random.randint(1,10))+1
+<span class="py-prompt">&gt;&gt;&gt; </span>data = numpy.reshape(data,(len(y),len(x)))
+<span class="py-prompt">&gt;&gt;&gt; </span>vlvar[:] = data
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'vlen variable =\n'</span>,vlvar[:]
+<span class="py-output">vlen variable =</span>
+<span class="py-output">[[[ 1  2  3  4  5  6  7  8  9 10] [1 2 3 4 5] [1 2 3 4 5 6 7 8]]</span>
+<span class="py-output"> [[1 2 3 4 5 6 7] [1 2 3 4 5 6] [1 2 3 4 5]]</span>
+<span class="py-output"> [[1 2 3 4 5] [1 2 3 4] [1]]</span>
+<span class="py-output"> [[ 1  2  3  4  5  6  7  8  9 10] [ 1  2  3  4  5  6  7  8  9 10]</span>
+<span class="py-output">  [1 2 3 4 5 6 7 8]]]</span></pre>
+      <p>Numpy object arrays containing python strings can also be written 
+      as vlen variables,  For vlen strings, you don't need to create a vlen
+      data type. Instead, simply use the python <code>str</code> builtin 
+      instead of a numpy datatype when calling the <a 
+      href="netCDF4.Dataset-class.html#createVariable" 
+      class="link">createVariable</a> method.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>z = f.createDimension(<span class="py-string">'z'</span>,10)
+<span class="py-prompt">&gt;&gt;&gt; </span>strvar = rootgrp.createVariable(<span class="py-string">'strvar'</span>, str, <span class="py-string">'z'</span>)</pre>
+      <p>In this example, an object array is filled with random python 
+      strings with random lengths between 2 and 12 characters, and the data
+      in the object array is assigned to the vlen string variable.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>chars = <span class="py-string">'1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>data = NP.empty(10,<span class="py-string">'O'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> n <span class="py-keyword">in</span> range(10):
+<span class="py-prompt">&gt;&gt;&gt; </span>    stringlen = random.randint(2,12)
+<span class="py-prompt">&gt;&gt;&gt; </span>    data[n] = <span class="py-string">''</span>.join([random.choice(chars) <span class="py-keyword">for</span> i <span class="py-keyword">in</span> range(stringlen)])
+<span class="py-prompt">&gt;&gt;&gt; </span>strvar[:] = data</pre>
+      <p>If an object array assigned to a vlen string variable contains an 
+      arbitrary python object instead of a python string, that python 
+      object is converted to a string using the python <code>cPickle</code>
+      module.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>data[0] = {<span class="py-string">'spam'</span>:1,<span class="py-string">'eggs'</span>:2,<span class="py-string">'ham'</span>:False}
+<span class="py-prompt">&gt;&gt;&gt; </span>strvar[0] = data[0]</pre>
+      <p>When the data is read back in from the netCDF file, strings which 
+      are determined to be pickled python objects are automatically 
+      unpickled.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'string variable with embedded python objects:\n'</span>,strvar[:]
+<span class="py-output">string variable with embedded python objects:</span>
+<span class="py-output">[{'eggs': 2, 'ham': False, 'spam': 1} QnXTY8B nbt4zisk pMHIn1F wl3suHW0OquZ</span>
+<span class="py-output"> wn5kxEzgE nk AGBL pe kay81]</span></pre>
+      <p>Attributes can also be python objects, although the rules for 
+      whether they are saved as pickled strings are different.  Attributes 
+      are converted to numpy arrays before being saved to the netCDF file.
+      If the attribute is cast to an object array by numpy, it is pickled 
+      and saved as a text attribute (and then automatically unpickled when 
+      the attribute is accessed).  So, an attribute which is a list of 
+      integers will be saved as an array of integers, while an attribute 
+      that is a python dictionary will be saved as a pickled string, then 
+      unpickled automatically when it is retrieved. For example,</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>strvar.timestamp = datetime.now()
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> strvar.timestamp
+<span class="py-output">2006-02-11 13:26:27.238042</span></pre>
+      <p>Note that data saved as pickled strings will not be very useful if
+      the data is to be read by a non-python client (the data will appear 
+      to the client as an ugly looking binary string).</p>
       <p>All of the code in this tutorial is available in 
       <code>examples/tutorial.py</code>, Unit tests are in the 
       <code>test</code> directory.</p>
@@ -885,6 +974,13 @@
     <td class="summary" colspan="2">
         <a href="netCDF4.MFDataset-class.html" class="summary-name">MFDataset</a><br />
       MFDataset(self, files, check=False, exclude=[])
+    </td>
+  </tr>
+<tr>
+    <td class="summary" colspan="2">
+        <a href="netCDF4.VLType-class.html" class="summary-name">VLType</a><br />
+      A <a href="netCDF4.VLType-class.html" class="link">VLType</a> 
+        instance is used to describe a variable length (VLEN) data type.
     </td>
   </tr>
 <tr>
@@ -1316,7 +1412,7 @@
   <tr>
     <td align="left" class="footer">
     Generated by Epydoc 3.0.1
-    on Sat Jun  6 07:09:40 2009
+    on Sun Jun 21 07:02:27 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
