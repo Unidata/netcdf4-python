@@ -865,6 +865,11 @@ for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
 _supportedtypes = _nptonctype.keys()
 
+# replace nul char ('\x00') with this in pickle strings.
+# does this string actually ever occur in a pickle?
+# (if so, this won't work).
+_nullreplace = '\\x00'
+
 # internal C functions.
 
 cdef _get_att_names(int grpid, int varid):
@@ -2408,6 +2413,10 @@ each dimension is returned."""
                 # if not a python string, pickle it into a string
                 # (use protocol 2)
                 data = cPickle.dumps(data,2)
+                # replace occurrences of nul char in pickle string
+                # (otherwise string will be truncated at first
+                # occurence of nul char).
+                data = data.replace('\x00',_nullreplace)
             strdata = <char **>malloc(sizeof(char *))
             strdata[0] = PyString_AsString(data)
             ierr = nc_put_vara(self._grpid, self._varid,
@@ -2638,6 +2647,10 @@ The default value of C{maskandscale} is C{False}
                         # if not a python string, pickle it into a string
                         # (use protocol 2)
                         pystring = cPickle.dumps(pystring,2)
+                        # replace occurrences of nul char in pickle string
+                        # (otherwise string will be truncated at first
+                        # occurence of nul char).
+                        pystring = pystring.replace('\x00',_nullreplace)
                     strdata[i] = PyString_AsString(pystring)
                 # strides all 1 or scalar variable, use put_vara (faster)
                 if sum(stride) == ndims or ndims == 0: 
@@ -2759,6 +2772,9 @@ The default value of C{maskandscale} is C{False}
                     # (see if first element is the pickle protocol 2
                     # identifier - '\x80')
                     if data[i][0] == '\x80': # use pickle.PROTO instead?
+                        # put nul chars back in so pickle can 
+                        # interpret string properly.
+                        data[i] = data[i].replace(_nullreplace,'\x00')
                         data[i] = cPickle.loads(data[i])
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
