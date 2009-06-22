@@ -5,7 +5,9 @@ Quick Start
 
 make sure numpy (at least version 1.2.1) is installed.
 make sure HDF5 (at least version 1.8.2) and netcdf-4 (at least version 4.0.1)
-are installed.  
+are installed.   A 4.1-beta snapshot from
+ftp://ftp.unidata.ucar.edu/pub/netcdf/snapshot}
+is needed to use compound types.
 'python setup.py install' installs the netCDF4 and netcdftime modules.
 The environment variables HDF5_DIR and NETCDF4_DIR can be 
 set to point to the locations of the HDF5 and netcdf-4 libraries and
