@@ -5,7 +5,7 @@ import tempfile
 from netCDF4 import Dataset
 import numpy as np
 from numpy.testing import assert_array_equal
-from datetime import datetime
+from datetime import date
 
 FILE_NAME = tempfile.mktemp(".nc")
 VL_NAME = 'vlen_type'
@@ -22,9 +22,10 @@ for n in range(nlats*nlons):
     nn = nn + 1
     data[n] = np.arange(nn,dtype=VL_BASETYPE)
     datas[n] = ''.join([chr(i) for i in range(97,97+nn+1)])
-datas[0] = datetime.now() # should be converted to/from pickle string.
+datas[0] = date(1962,10,27) # should be converted to/from pickle string.
 data = np.reshape(data,(nlats,nlons))
 datas = np.reshape(datas,(nlats,nlons))
+datestamp = date(1970,1,2)
 
 class VariablesTestCase(unittest.TestCase):
 
@@ -36,6 +37,7 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension(DIM2_NAME,nlats)
         ragged = f.createVariable(VAR1_NAME, vlen_t, (DIM2_NAME,DIM1_NAME))
         strings = f.createVariable(VAR2_NAME, str, (DIM2_NAME,DIM1_NAME))
+        ragged.datestamp = datestamp
         ragged[:] = data
         ragged[-1,-1] = data[-1,-1]
         strings[:] = datas
@@ -53,6 +55,7 @@ class VariablesTestCase(unittest.TestCase):
         vs = f.variables[VAR2_NAME]
         assert f.vltypes.keys() == [VL_NAME]
         assert f.vltypes[VL_NAME].dtype == VL_BASETYPE
+        assert v.datestamp == datestamp
         data2 = v[:]
         data2s = vs[:]
         for i in range(nlons):
