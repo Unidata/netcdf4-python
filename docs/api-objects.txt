@@ -3,7 +3,6 @@ netCDF3._set_default_format	netCDF3-module.html#_set_default_format
 netCDF3._nctonptype	netCDF3-module.html#_nctonptype
 netCDF3.num2date	netCDF3-module.html#num2date
 netCDF3._private_atts	netCDF3-module.html#_private_atts
-netCDF3._check_index	netCDF3-module.html#_check_index
 netCDF3.chartostring	netCDF3-module.html#chartostring
 netCDF3.stringtoarr	netCDF3-module.html#stringtoarr
 netCDF3.stringtochar	netCDF3-module.html#stringtochar
@@ -115,10 +114,12 @@ netCDF3.Variable.__getattribute__	netCDF3.Variable-class.html#__getattribute__
 netCDF3.Variable.shape	netCDF3.Variable-class.html#shape
 netCDF3.Variable.set_auto_maskandscale	netCDF3.Variable-class.html#set_auto_maskandscale
 netCDF3.Variable.__init__	netCDF3.Variable-class.html#__init__
+netCDF3.Variable.size	netCDF3.Variable-class.html#size
 netCDF3.Variable.assignValue	netCDF3.Variable-class.html#assignValue
 netCDF3.Variable.__setattr__	netCDF3.Variable-class.html#__setattr__
 netCDF3.Variable.__new__	netCDF3.Variable-class.html#__new__
 netCDF3.Variable.__getattr__	netCDF3.Variable-class.html#__getattr__
+netCDF3.Variable.__len__	netCDF3.Variable-class.html#__len__
 netCDF3.Variable._varid	netCDF3.Variable-class.html#_varid
 netCDF3.Variable.ncattrs	netCDF3.Variable-class.html#ncattrs
 netCDF3.Variable.__getitem__	netCDF3.Variable-class.html#__getitem__
