@@ -1,3 +1,8 @@
+version 0.8.2 (not yet released)
+================================
+ * fix for pickle strings containing nul characters stored in
+   variable length string arrays.
+
 version 0.8.1 (svn revision 744)
 ================================
  * added 'cmptypes' and 'vltypes' Group/Dataset attributes, which contain

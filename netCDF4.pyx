@@ -818,7 +818,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
                           _out_array_shape, _sortbylist
 
-__version__ = "0.8.1"
+__version__ = "0.8.2"
 
 # Initialize numpy
 import os

@@ -353,7 +353,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # pure python utilities
 from netCDF4_utils import _StartCountStride, _out_array_shape
 
-__version__ = "0.8.1"
+__version__ = "0.8.2"
 
 # Initialize numpy
 import os
