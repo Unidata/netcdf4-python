@@ -1,6 +1,6 @@
 version 0.8.1 (svn revision 744)
 ================================
- * added 'cmptypes' and 'vltypes' Group/Dataset attributes, which contai
+ * added 'cmptypes' and 'vltypes' Group/Dataset attributes, which contain
    dictionaries that map the names of compound and vlen types to 
    CompoundType and VLType instances.
 
