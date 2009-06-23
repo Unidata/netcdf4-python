@@ -23,7 +23,10 @@ for n in range(nlats*nlons):
     nn = nn + 1
     data[n] = np.arange(nn,dtype=VL_BASETYPE)
     datas[n] = ''.join([chr(i) for i in range(97,97+nn+1)])
-datas[0] = datestamp
+datas[0] = {'a': [1, 2.0, 3L, 4+6j],
+           'b': ("ascii", unicode("unicode","utf-8")),
+           'c': set([None, True, False]),'d': None}
+datas[1] = datestamp
 data = np.reshape(data,(nlats,nlons))
 datas = np.reshape(datas,(nlats,nlons))
 
@@ -35,8 +38,10 @@ class VariablesTestCase(unittest.TestCase):
         vlen_t = f.createVLType(VL_BASETYPE, VL_NAME)
         f.createDimension(DIM1_NAME,nlons)
         f.createDimension(DIM2_NAME,nlats)
-        ragged = f.createVariable(VAR1_NAME, vlen_t, (DIM2_NAME,DIM1_NAME))
-        strings = f.createVariable(VAR2_NAME, str, (DIM2_NAME,DIM1_NAME))
+        ragged = f.createVariable(VAR1_NAME, vlen_t,\
+                (DIM2_NAME,DIM1_NAME))
+        strings = f.createVariable(VAR2_NAME, str,\
+                (DIM2_NAME,DIM1_NAME))
         ragged.datestamp = datestamp
         ragged[:] = data
         ragged[-1,-1] = data[-1,-1]
