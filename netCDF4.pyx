@@ -868,7 +868,7 @@ _supportedtypes = _nptonctype.keys()
 # replace nul char ('\x00') with this in pickle strings.
 # does this string actually ever occur in a pickle?
 # (if so, this won't work).
-_nullreplace = '\\x00'
+_nullreplace = '<Nul>'
 
 # internal C functions.
 
@@ -909,7 +909,7 @@ cdef _get_att(grp, int varid, name):
             raise AttributeError(nc_strerror(ierr))
         pstring = value_arr.tostring()
         # if it's a pickle string, unpickle it.
-        if pstring[0] == '\x80': # use pickle.PROTO instead?
+        if len(pstring) and pstring[0] == '\x80': # use pickle.PROTO instead?
             return cPickle.loads(pstring)
         else:
             return pstring.replace('\x00','')
@@ -2084,8 +2084,8 @@ instance. If C{None}, the data is not truncated. """
                         if grp.file_format != 'NETCDF4': grp._enddef()
                         raise RuntimeError(nc_strerror(ierr))
                 else:
+                    # cast fill_value to type of variable.
                     if self._isprimitive:
-                        # cast fill_value to type of variable.
                         fillval = numpy.array(fill_value, self.dtype)
                         _set_att(self._grp, self._varid, '_FillValue', fillval)
                     else:
@@ -2416,7 +2416,14 @@ each dimension is returned."""
                 # replace occurrences of nul char in pickle string
                 # (otherwise string will be truncated at first
                 # occurence of nul char).
-                data = data.replace('\x00',_nullreplace)
+                if data.find('\x00'):
+                    if data.find(_nullreplace) >= 0:
+                        msg = """
+cannot save pickle string - contains substring %s used to replace nul chars"""\
+                        % _nullreplace
+                        raise IOError(msg)
+                    else:
+                        data = data.replace('\x00',_nullreplace)
             strdata = <char **>malloc(sizeof(char *))
             strdata[0] = PyString_AsString(data)
             ierr = nc_put_vara(self._grpid, self._varid,
@@ -2650,7 +2657,14 @@ The default value of C{maskandscale} is C{False}
                         # replace occurrences of nul char in pickle string
                         # (otherwise string will be truncated at first
                         # occurence of nul char).
-                        pystring = pystring.replace('\x00',_nullreplace)
+                        if pystring.find('\x00'):
+                            if pystring.find(_nullreplace) >= 0:
+                                msg = """
+cannot save pick        le string - contains substring %s used to replace nul chars"""\
+                                % _nullreplace
+                                raise IOError(msg)
+                            else:
+                                pystring = pystring.replace('\x00',_nullreplace)
                     strdata[i] = PyString_AsString(pystring)
                 # strides all 1 or scalar variable, use put_vara (faster)
                 if sum(stride) == ndims or ndims == 0: 
@@ -2771,7 +2785,7 @@ The default value of C{maskandscale} is C{False}
                     # if it's a pickle string, unpickle it.
                     # (see if first element is the pickle protocol 2
                     # identifier - '\x80')
-                    if data[i][0] == '\x80': # use pickle.PROTO instead?
+                    if len(data[i]) and data[i][0] == '\x80': # use pickle.PROTO instead?
                         # put nul chars back in so pickle can 
                         # interpret string properly.
                         data[i] = data[i].replace(_nullreplace,'\x00')
