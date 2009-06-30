@@ -248,9 +248,6 @@ data = numpy.empty(10,object)
 for n in range(10):
     stringlen = random.randint(2,12)
     data[n] = ''.join([random.choice(chars) for i in range(stringlen)])
-data[0] = {'spam':1,'eggs':2,'ham':False}
 strvar[:] = data
-print 'string variable with embedded python objects:\n',strvar[:]
-strvar.timestamp = datetime.now()
-print strvar.timestamp
+print 'variable-length string variable:\n',strvar[:]
 f.close()

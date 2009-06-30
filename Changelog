@@ -2,8 +2,8 @@ version 0.8.2 (not yet released)
 ================================
  * fix another slicing corner case.
 
- * fix for pickle strings containing nul characters stored in
-   variable length string arrays.
+ * remove auto pickling/unpickling into vlen strings (too cute, sometimes
+   produced surprising results).
 
 version 0.8.1 (svn revision 744)
 ================================

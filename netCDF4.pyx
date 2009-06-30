@@ -758,39 +758,10 @@ array is assigned to the vlen string variable.
 >>>     stringlen = random.randint(2,12)
 >>>     data[n] = ''.join([random.choice(chars) for i in range(stringlen)])
 >>> strvar[:] = data
-
-If an object array assigned to a vlen string variable contains an arbitrary
-python object instead of a python string, that python object is converted to
-a string using the python C{cPickle} module.
-
->>> data[0] = {'spam':1,'eggs':2,'ham':False}
->>> strvar[0] = data[0]
-
-When the data is read back in from the netCDF file, strings which are
-determined to be pickled python objects are automatically unpickled.
-
->>> print 'string variable with embedded python objects:\\n',strvar[:]
-string variable with embedded python objects:
-[{'eggs': 2, 'ham': False, 'spam': 1} QnXTY8B nbt4zisk pMHIn1F wl3suHW0OquZ
- wn5kxEzgE nk AGBL pe kay81]
-
-Attributes can also be python objects, although the rules for whether
-they are saved as pickled strings are different.  Attributes are
-converted to numpy arrays before being saved to the netCDF file.  If the
-attribute is cast to an object array by numpy, it is pickled and saved
-as a text attribute (and then automatically unpickled when the attribute
-is accessed).  So, an attribute which is a list of integers will be
-saved as an array of integers, while an attribute that is a python
-dictionary will be saved as a pickled string, then unpickled
-automatically when it is retrieved. For example,
-
->>> strvar.timestamp = datetime.now()
->>> print strvar.timestamp
-2006-02-11 13:26:27.238042
-
-Note that data saved as pickled strings will not be very useful if the
-data is to be read by a non-python client (the data will appear to the
-client as an ugly looking binary string).
+>>> print 'variable-length string variable:\\n',strvar[:]
+variable-length string variable:
+[aDy29jPt jd7aplD b8t4RM jHh8hq KtaPWF9cQj Q1hHN5WoXSiT MMxsVeq td LUzvVTzj
+ 5DS9X8S]
 
 All of the code in this tutorial is available in C{examples/tutorial.py},
 Unit tests are in the C{test} directory.
@@ -824,7 +795,6 @@ __version__ = "0.8.2"
 import os
 import netcdftime
 import numpy
-import cPickle
 from glob import glob
 from numpy import ma
 from numpy import __version__ as _npversion
@@ -865,11 +835,6 @@ for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
 _supportedtypes = _nptonctype.keys()
 
-# replace nul char ('\x00') with this in pickle strings.
-# does this string actually ever occur in a pickle?
-# (if so, this won't work).
-_nullreplace = '<Nul>'
-
 # internal C functions.
 
 cdef _get_att_names(int grpid, int varid):
@@ -908,11 +873,7 @@ cdef _get_att(grp, int varid, name):
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr))
         pstring = value_arr.tostring()
-        # if it's a pickle string, unpickle it.
-        if len(pstring) and pstring[0] == '\x80': # use pickle.PROTO instead?
-            return cPickle.loads(pstring)
-        else:
-            return pstring.replace('\x00','')
+        return pstring.replace('\x00','')
     else:
     # a regular numeric or compound type.
         if att_type == NC_LONG:
@@ -988,15 +949,8 @@ cdef _set_att(grp, int varid, name, value):
        _get_format(grp._grpid).startswith('NETCDF3')):
         value_arr = value_arr.astype('i4')
     # if array contains strings, write a text attribute.
-    if value_arr.dtype.char == 'S' or value_arr.dtype.char == 'O':
-        # an object array, assume it contains a single python object.
-        # convert to a pickle string.
-        if value_arr.dtype.char == 'O':
-            if value_arr.shape != ():
-                raise ValueError('attribute cannot be an array of python objects')
-            dats = cPickle.dumps(value_arr.item(),2)
-        else:
-            dats = value_arr.tostring()
+    if value_arr.dtype.char == 'S':
+        dats = value_arr.tostring()
         lenarr = len(dats)
         datstring = PyString_AsString(dats)
         ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
@@ -2407,21 +2361,6 @@ each dimension is returned."""
             startp[n] = start[n] 
             countp[n] = count[n] 
         if self.dtype == str: # VLEN string
-            if PyString_Check(data) != 1:
-                # if not a python string, pickle it into a string
-                # (use protocol 2)
-                data = cPickle.dumps(data,2)
-                # replace occurrences of nul char in pickle string
-                # (otherwise string will be truncated at first
-                # occurence of nul char).
-                if data.find('\x00'):
-                    if data.find(_nullreplace) >= 0:
-                        msg = """
-cannot save pickle string - contains substring %s used to replace nul chars"""\
-                        % _nullreplace
-                        raise IOError(msg)
-                    else:
-                        data = data.replace('\x00',_nullreplace)
             strdata = <char **>malloc(sizeof(char *))
             strdata[0] = PyString_AsString(data)
             ierr = nc_put_vara(self._grpid, self._varid,
@@ -2647,28 +2586,12 @@ The default value of C{maskandscale} is C{False}
                 # allocate struct array to hold vlen data.
                 strdata = <char **>malloc(sizeof(char *)*totelem)
                 for i from 0<=i<totelem:
-                    pystring = data[i]
-                    if PyString_Check(pystring) != 1:
-                        # if not a python string, pickle it into a string
-                        # (use protocol 2)
-                        pystring = cPickle.dumps(pystring,2)
-                        # replace occurrences of nul char in pickle string
-                        # (otherwise string will be truncated at first
-                        # occurence of nul char).
-                        if pystring.find('\x00'):
-                            if pystring.find(_nullreplace) >= 0:
-                                msg = """
-cannot save pick        le string - contains substring %s used to replace nul chars"""\
-                                % _nullreplace
-                                raise IOError(msg)
-                            else:
-                                pystring = pystring.replace('\x00',_nullreplace)
-                    strdata[i] = PyString_AsString(pystring)
+                    strdata[i] = PyString_AsString(data[i])
                 # strides all 1 or scalar variable, use put_vara (faster)
                 if sum(stride) == ndims or ndims == 0: 
                     ierr = nc_put_vara(self._grpid, self._varid,
                                        startp, countp, strdata)
-                else:  
+                else: 
                     raise IndexError('strides must all be 1 for string variables')
                     #ierr = nc_put_vars(self._grpid, self._varid,
                     #                   startp, countp, stridep, strdata)
@@ -2780,14 +2703,6 @@ cannot save pick        le string - contains substring %s used to replace nul ch
                 # contents of strdata.
                 for i from 0<=i<totelem:
                     data[i] = PyString_FromString(strdata[i])
-                    # if it's a pickle string, unpickle it.
-                    # (see if first element is the pickle protocol 2
-                    # identifier - '\x80')
-                    if len(data[i]) and data[i][0] == '\x80': # use pickle.PROTO instead?
-                        # put nul chars back in so pickle can 
-                        # interpret string properly.
-                        data[i] = data[i].replace(_nullreplace,'\x00')
-                        data[i] = cPickle.loads(data[i])
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
                 free(strdata)
