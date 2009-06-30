@@ -97,12 +97,19 @@ class VariablesTestCase(unittest.TestCase):
         datatmp = self.data[::2,:,:]
         datatmp = datatmp[:,iby,:]
         assert_array_equal(v[ibx, iby, :], datatmp)
-        
+
         # Three booleans
         datatmp = self.data[::2,:,:]
         datatmp = datatmp[:,iby,::2]
         assert_array_equal(v[ibx,iby,ibz], datatmp)
-        
+
+        # boolean slices, only single items returned.
+        iby = np.array([True, False, False, False, False, False, False, False,\
+            False, False])
+        ibz = np.array([False, True, False, False, False, False, False, False,\
+            False])
+        assert_array_equal(v[:,iby,ibz],self.data[:,0:1,1:2])
+
         # Ellipse
         assert_array_equal(v[...,::2],self.data[..., ::2])
         assert_array_equal(v[...,::-2],self.data[..., ::-2])

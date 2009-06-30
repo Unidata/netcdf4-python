@@ -2314,17 +2314,15 @@ each dimension is returned."""
 
         # Fill output array with data chunks. 
         for (a,b,c,i) in zip(start, count, stride, put_ind):
-            # FIXME:
-            # this is a workaround so MFDataset slicing works
-            # with singleton dimensions.
-            try:
-                data[tuple(i)] = numpy.squeeze(self._get(a,b,c))
-            except ValueError:
-                data[tuple(i)] = self._get(a,b,c)
-    
+            datout = self._get(a,b,c)
+            if data.shape == datout.shape:
+                data = datout
+            else:
+                data[tuple(i)] = numpy.squeeze(datout)
+
         # Remove extra singleton dimensions. 
         data = data[tuple(squeeze)]
-                
+
         # if auto_maskandscale mode set to True, (through
         # a call to set_auto_maskandscale), perform
         # automatic unpacking using scale_factor/add_offset
