@@ -866,7 +866,7 @@
       class="link">createVariable</a> method.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>z = f.createDimension(<span class="py-string">'z'</span>,10)
-<span class="py-prompt">&gt;&gt;&gt; </span>strvar = f.createVariable(<span class="py-string">'strvar'</span>, str, <span class="py-string">'z'</span>)</pre>
+<span class="py-prompt">&gt;&gt;&gt; </span>strvar = rootgrp.createVariable(<span class="py-string">'strvar'</span>, str, <span class="py-string">'z'</span>)</pre>
       <p>In this example, an object array is filled with random python 
       strings with random lengths between 2 and 12 characters, and the data
       in the object array is assigned to the vlen string variable.</p>
@@ -876,38 +876,11 @@
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> n <span class="py-keyword">in</span> range(10):
 <span class="py-prompt">&gt;&gt;&gt; </span>    stringlen = random.randint(2,12)
 <span class="py-prompt">&gt;&gt;&gt; </span>    data[n] = <span class="py-string">''</span>.join([random.choice(chars) <span class="py-keyword">for</span> i <span class="py-keyword">in</span> range(stringlen)])
-<span class="py-prompt">&gt;&gt;&gt; </span>strvar[:] = data</pre>
-      <p>If an object array assigned to a vlen string variable contains an 
-      arbitrary python object instead of a python string, that python 
-      object is converted to a string using the python <code>cPickle</code>
-      module.</p>
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>data[0] = {<span class="py-string">'spam'</span>:1,<span class="py-string">'eggs'</span>:2,<span class="py-string">'ham'</span>:False}
-<span class="py-prompt">&gt;&gt;&gt; </span>strvar[0] = data[0]</pre>
-      <p>When the data is read back in from the netCDF file, strings which 
-      are determined to be pickled python objects are automatically 
-      unpickled.</p>
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'string variable with embedded python objects:\n'</span>,strvar[:]
-<span class="py-output">string variable with embedded python objects:</span>
-<span class="py-output">[{'eggs': 2, 'ham': False, 'spam': 1} QnXTY8B nbt4zisk pMHIn1F wl3suHW0OquZ</span>
-<span class="py-output"> wn5kxEzgE nk AGBL pe kay81]</span></pre>
-      <p>Attributes can also be python objects, although the rules for 
-      whether they are saved as pickled strings are different.  Attributes 
-      are converted to numpy arrays before being saved to the netCDF file.
-      If the attribute is cast to an object array by numpy, it is pickled 
-      and saved as a text attribute (and then automatically unpickled when 
-      the attribute is accessed).  So, an attribute which is a list of 
-      integers will be saved as an array of integers, while an attribute 
-      that is a python dictionary will be saved as a pickled string, then 
-      unpickled automatically when it is retrieved. For example,</p>
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>strvar.timestamp = datetime.now()
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> strvar.timestamp
-<span class="py-output">2006-02-11 13:26:27.238042</span></pre>
-      <p>Note that data saved as pickled strings will not be very useful if
-      the data is to be read by a non-python client (the data will appear 
-      to the client as an ugly looking binary string).</p>
+<span class="py-prompt">&gt;&gt;&gt; </span>strvar[:] = data
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'variable-length string variable:\n'</span>,strvar[:]
+<span class="py-output">variable-length string variable:</span>
+<span class="py-output">[aDy29jPt jd7aplD b8t4RM jHh8hq KtaPWF9cQj Q1hHN5WoXSiT MMxsVeq td LUzvVTzj</span>
+<span class="py-output"> 5DS9X8S]</span></pre>
       <p>All of the code in this tutorial is available in 
       <code>examples/tutorial.py</code>, Unit tests are in the 
       <code>test</code> directory.</p>
@@ -934,7 +907,7 @@
         PERFORMANCE OF THIS SOFTWARE.
       </p>
       <p><strong>Version:</strong>
-        0.8.1
+        0.8.2
       </p>
 </div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
@@ -945,7 +918,9 @@
     <span class="table-header">Classes</span></td>
 </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.CompoundType-class.html" class="summary-name">CompoundType</a><br />
       A <a href="netCDF4.CompoundType-class.html" 
         class="link">CompoundType</a> instance is used to describe a 
@@ -953,39 +928,51 @@
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.Dataset-class.html" class="summary-name">Dataset</a><br />
       Dataset(self, filename, mode=&quot;r&quot;, clobber=True, 
         format='NETCDF4')
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.Dimension-class.html" class="summary-name">Dimension</a><br />
       Dimension(self, group, name, size=None)
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.Group-class.html" class="summary-name">Group</a><br />
       Group(self, parent, name)
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.MFDataset-class.html" class="summary-name">MFDataset</a><br />
       MFDataset(self, files, check=False, exclude=[])
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.VLType-class.html" class="summary-name">VLType</a><br />
       A <a href="netCDF4.VLType-class.html" class="link">VLType</a> 
         instance is used to describe a variable length (VLEN) data type.
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.Variable-class.html" class="summary-name">Variable</a><br />
       Variable(self, group, name, datatype, dimensions=(), zlib=False, 
         complevel=6, shuffle=True, fletcher32=False, contiguous=False, 
@@ -1412,8 +1399,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1
-    on Mon Jun 22 06:49:11 2009
+    Generated by Epydoc 3.0.1 on Tue Jun 30 09:18:49 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
