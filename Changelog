@@ -1,5 +1,8 @@
 version 0.8.2 (not yet released)
 ================================
+ * fix docs to point out that an unlimited dimension can be created by setting
+   size to *either* None or 0 in createDimension.
+
  * fix another slicing corner case.
 
  * remove auto pickling/unpickling into vlen strings (too cute, sometimes

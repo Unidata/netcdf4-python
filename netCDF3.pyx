@@ -86,7 +86,7 @@ the L{createDimension<Dataset.createDimension>} method of a L{Dataset}
 instance. A Python string is used to set the name of the
 dimension, and an integer value is used to set the size. To create an
 unlimited dimension (a dimension that can be appended to), the size
-value is set to C{None}. netCDF 3 files can only have one unlimited
+value is set to C{None} or 0. netCDF 3 files can only have one unlimited
 dimension, and it must be the first (leftmost) dimension of the variable.
 
 >>> ncfile.createDimension('press', 10)
