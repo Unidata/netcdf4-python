@@ -756,7 +756,8 @@ createDimension(self, dimname, size=None)
 Creates a new dimension with the given C{dimname} and C{size}. 
 
 C{size} must be a positive integer or C{None}, which stands for 
-"unlimited" (default is C{None}). The return value is the L{Dimension} 
+"unlimited" (default is C{None}). Specifying a size of 0 also
+results in an unlimited dimension. The return value is the L{Dimension} 
 class instance describing the new dimension.  To determine the current 
 maximum size of the dimension, use the C{len} function on the L{Dimension} 
 instance. To determine if a dimension is 'unlimited', use the 
@@ -923,7 +924,7 @@ B{C{name}}  - Name of the dimension.
 
 B{Keywords:}
 
-B{C{size}}  - Size of the dimension (Default C{None} means unlimited).
+B{C{size}}  - Size of the dimension. C{None} or 0 means unlimited. (Default C{None}).
 
 B{Returns:}
 
