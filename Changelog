@@ -1,5 +1,8 @@
 version 0.8.2 (not yet released)
 ================================
+ * make sure data retrieved from a netCDF variable is not coerced to a python
+   scalar (it should remain a numpy scalar array).
+
  * fix docs to point out that an unlimited dimension can be created by setting
    size to *either* None or 0 in createDimension.
 
