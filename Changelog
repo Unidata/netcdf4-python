@@ -1,5 +1,8 @@
-version 0.8.2 (not yet released)
+version 0.8.2 (svn revision 769)
 ================================
+ * compound type tests re-enabled. Compound and vlen types now fully
+   supported in netcdf-4.1-beta2.
+
  * make sure data retrieved from a netCDF variable is not coerced to a python
    scalar (it should remain a numpy scalar array).
 
