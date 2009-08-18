@@ -33,7 +33,7 @@ Requires
  - numpy array module U{http://numpy.scipy.org}, version 1.2.1 or later.
  - The HDF5 C library version 1.8.3 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl --enable-shared}'. Version 1.8.3-snap2
- from U{ftp://ftp.unidata.ucar.edu/pub/netcdf4} is recommended, since it fixes
+ from U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4} is recommended, since it fixes
  a bug that may affect the compound types.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
  Version 4.1-beta2 or higher is required.
