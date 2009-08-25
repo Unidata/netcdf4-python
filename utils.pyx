@@ -157,7 +157,7 @@ The index selection method. C{exact} will return the indices perfectly
 matching the dates given. C{before} and C{after} will return the indices 
 corresponding to the dates just before or just after the given dates if 
 an exact match cannot be found. C{nearest} will return the indices that 
-correpond to the closest dates. 
+correspond to the closest dates. 
       
 @return: an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
