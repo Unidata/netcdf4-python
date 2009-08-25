@@ -607,7 +607,7 @@ represent meteorological observations at stations:
 >>> data['surface_wind']['direction'] = 270
 >>> data['temp_sounding'] = (280.3,272.,270.,269.,266.,258.,254.1,250.,245.5,240.)
 >>> data['press_sounding'] = range(800,300,-50)
->>> # variable-length string datatypes are not supported, so
+>>> # variable-length string datatypes are not supported inside compound types, so
 >>> # to store strings in a compound data type, each string must be 
 >>> # stored as fixed-size (in this case 80) array of characters.
 >>> data['location_name'] = stringtoarr('Boulder, Colorado, USA',NUMCHARS)
