@@ -563,7 +563,7 @@ complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147
 >>>
 
 Compound types can be nested, but you must create the 'inner'
-ones first. Here's a more complex example that usesa nested compound type to
+ones first. Here's a more complex example that uses a nested compound type to
 represent meteorological observations at stations:
 
 >>> # compound type example.
