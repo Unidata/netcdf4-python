@@ -7,7 +7,7 @@ from datetime import datetime as real_datetime
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
 
-__version__ = '0.7.1'
+__version__ = '0.7.2'
 
 class datetime:
     """
@@ -959,6 +959,10 @@ def _check_index(indices, dates, nctime, calendar):
         return False
         
     t = nctime[indices] 
+# if fancy indexing not available, fall back on this.
+#   t=[]
+#   for ind in indices:
+#       t.append(nctime[ind])
     return numpy.all( num2date(t, nctime.units, calendar) == dates)
 
 
@@ -984,20 +988,21 @@ def date2index(dates, nctime, calendar=None, select='exact'):
     C{standard} if no such attribute exists.
     
     @param select: C{'exact', 'before', 'after', 'nearest'}
-      The index selection method. C{exact} will return the indices perfectly 
-      matching the dates given. C{before} and C{after} will return the indices 
-      corresponding to the dates just before or just after the given dates if 
-      an exact match cannot be found. C{nearest} will return the indices that 
-      correpond to the closest dates. 
+    The index selection method. C{exact} will return the indices perfectly 
+    matching the dates given. C{before} and C{after} will return the indices 
+    corresponding to the dates just before or just after the given dates if 
+    an exact match cannot be found. C{nearest} will return the indices that 
+    correpond to the closest dates. 
     """
     # Setting the calendar.
-    if calendar is None:
+   
+    if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
-
+   
     num = numpy.atleast_1d(date2num(dates, nctime.units, calendar))
-    
+   
     # Trying to infer the correct index from the starting time and the stride.
-    # This assumes that the times are increasing uniformly. 
+    # This assumes that the times are increasing uniformly.
     t0, t1 = nctime[:2]
     dt = t1 - t0
     index = numpy.array((num-t0)/dt, int)
@@ -1006,34 +1011,37 @@ def date2index(dates, nctime, calendar=None, select='exact'):
     # If the times do not correspond, then it means that the times
     # are not increasing uniformly and we try the bisection method.
     if not _check_index(index, dates, nctime, calendar):
-    
+   
         # Use the bisection method. Assumes the dates are ordered.
         import bisect
-        
+       
         index = numpy.array([bisect.bisect_left(nctime, n) for n in num], int)
-        
-        nomatch = num2date(nctime[index], nctime.units) != dates
-        
+       
+        # Find the dates for which the match is not perfect.
+        # Use list comprehension instead of the simpler `nctime[index]` since
+        # not all time objects support numpy integer indexing (eg dap).
+        ncnum = numpy.squeeze([nctime[i] for i in index])
+        mismatch = numpy.nonzero(ncnum != num)[0]
+   
         if select == 'exact':
-            if not (num2date(nctime[index], nctime.units) == dates).all():
-                raise ValueError, 'Dates not found.'
-    
+            if len(mismatch) > 0:
+                raise ValueError, 'Some dates not found.'
+   
         elif select == 'before':
-            index[nomatch] -= 1
-        
+            index[mismatch] -= 1
+               
         elif select == 'after':
             pass
-        
+       
         elif select == 'nearest':
-            index[nomatch] = index[nomatch] - 1 * ( num[nomatch] < (nctime[index[nomatch]-1] + nctime[index[nomatch]]) / 2. )
-        
+            nearest_to_left = num[mismatch] < numpy.array( [nctime[i-1] + nctime[i] for i in index[mismatch]]) / 2.
+            index[mismatch] = index[mismatch] - 1 * nearest_to_left
+       
         else:
-            raise ValueError, select
-    
+            raise ValueError("%s is not an option for the `select` argument."%select)
+   
     # convert numpy scalars or single element arrays to python ints.
-    index = _toscalar(index)
-
-    return index
+    return _toscalar(index)
 
 
 def _toscalar(a):
