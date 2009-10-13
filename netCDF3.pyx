@@ -353,7 +353,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # pure python utilities
 from netCDF4_utils import _StartCountStride, _out_array_shape
 
-__version__ = "0.8.2"
+__version__ = "0.8.3"
 
 # Initialize numpy
 import os
@@ -862,6 +862,26 @@ ncattrs(self)
 return netCDF global attribute names for this L{Dataset} in a list."""
         return _get_att_names(self._grpid, NC_GLOBAL)
 
+    def setncattr(self,name,value):
+        """
+setncattr(self,name,value)
+
+set a netCDF dataset attribute using name,value pair.  Only use if you need to set a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        self._redef()
+        _set_att(self._grpid, NC_GLOBAL, name, value)
+        self._enddef()
+
+    def getncattr(self,name):
+        """
+getncattr(self,name)
+
+retrievel a netCDF dataset attribute.  Only use if you need to set a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        return _get_att(self._grpid, NC_GLOBAL, name)
+
     def __delattr__(self,name):
         cdef char *attname
         # if it's a netCDF attribute, remove it
@@ -1171,6 +1191,26 @@ ncattrs(self)
 
 return netCDF attribute names for this L{Variable} in a list."""
         return _get_att_names(self._grpid, self._varid)
+
+    def setncattr(self,name,value):
+        """
+setncattr(self,name,value)
+
+set a netCDF variable attribute using name,value pair.  Only use if you need to set a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        self._grp._redef()
+        _set_att(self._grpid, self._varid, name, value)
+        self._grp._enddef()
+
+    def getncattr(self,name):
+        """
+getncattr(self,name)
+
+retrievel a netCDF variable attribute.  Only use if you need to set a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        return _get_att(self._grpid, self._varid, name)
 
     def __delattr__(self,name):
         cdef char *attname

@@ -31,6 +31,7 @@ class VariablesTestCase(unittest.TestCase):
     def setUp(self):
         self.file = FILE_NAME
         f = netCDF3.Dataset(self.file,'w')
+        f.setncattr('dimensions',3)
         f.stratt = STRATT
         f.emptystratt = EMPTYSTRATT
         f.intatt = INTATT
@@ -42,6 +43,7 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension(DIM2_NAME, DIM2_LEN)
         f.createDimension(DIM3_NAME, DIM3_LEN)
         v = f.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
+        v.setncattr('dtype','double')
         v.stratt = STRATT
         v.emptystratt = EMPTYSTRATT
         v.intatt = INTATT
@@ -73,6 +75,7 @@ class VariablesTestCase(unittest.TestCase):
         assert f.emptystratt == EMPTYSTRATT
         assert f.seqatt.tolist() == SEQATT.tolist()
         assert f.stringseqatt == ''.join(STRINGSEQATT)
+        assert f.getncattr('dimensions') == 3
         # variable attributes.
         # check __dict__ method for accessing all netCDF attributes.
         for key,val in ATTDICT.iteritems():
@@ -81,6 +84,7 @@ class VariablesTestCase(unittest.TestCase):
             else:
                 assert v.__dict__[key] == val
         # check accessing individual attributes.
+        assert v.getncattr('dtype') == 'double'
         assert v.intatt == INTATT
         assert v.floatatt == FLOATATT
         assert v.stratt == STRATT

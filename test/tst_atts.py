@@ -32,6 +32,8 @@ class VariablesTestCase(unittest.TestCase):
     def setUp(self):
         self.file = FILE_NAME
         f = netCDF4.Dataset(self.file,'w')
+        # try to set a dataset attribute with one of the reserved names.
+        f.setncattr('file_format','netcdf4_format')
         f.stratt = STRATT
         f.emptystratt = EMPTYSTRATT
         f.intatt = INTATT
@@ -53,6 +55,8 @@ class VariablesTestCase(unittest.TestCase):
         g.seqatt = SEQATT
         g.stringseqatt = STRINGSEQATT
         v = f.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
+        # try to set a variable attribute with one of the reserved names.
+        v.setncattr('ndim','three')
         v.stratt = STRATT
         v.emptystratt = EMPTYSTRATT
         v.intatt = INTATT
@@ -93,6 +97,7 @@ class VariablesTestCase(unittest.TestCase):
         assert f.emptystratt == EMPTYSTRATT
         assert f.seqatt.tolist() == SEQATT.tolist()
         assert f.stringseqatt == ''.join(STRINGSEQATT)
+        assert f.getncattr('file_format') == 'netcdf4_format'
         # variable attributes.
         # check __dict__ method for accessing all netCDF attributes.
         for key,val in ATTDICT.iteritems():
@@ -106,6 +111,7 @@ class VariablesTestCase(unittest.TestCase):
         assert v.stratt == STRATT
         assert v.seqatt.tolist() == SEQATT.tolist()
         assert v.stringseqatt == ''.join(STRINGSEQATT)
+        assert v.getncattr('ndim') == 'three'
         # check attributes in subgroup.
         # global attributes.
         for key,val in ATTDICT.iteritems():

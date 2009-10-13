@@ -788,7 +788,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
                           _out_array_shape, _sortbylist
 
-__version__ = "0.8.2"
+__version__ = "0.8.3"
 
 # Initialize numpy
 import os
@@ -1569,6 +1569,26 @@ ncattrs(self)
 return netCDF global attribute names for this L{Dataset} or L{Group} in a list."""
         return _get_att_names(self._grpid, NC_GLOBAL)
 
+    def setncattr(self,name,value):
+        """
+setncattr(self,name,value)
+
+set a netCDF dataset or group attribute using name,value pair.  Only use if you need to set a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        if self.file_format != 'NETCDF4': self._redef()
+        _set_att(self, NC_GLOBAL, name, value)
+        if self.file_format != 'NETCDF4': self._enddef()
+
+    def getncattr(self,name):
+        """
+getncattr(self,name)
+
+retrievel a netCDF dataset or group attribute.  Only use if you need to set a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        return _get_att(self, NC_GLOBAL, name)
+
     def __delattr__(self,name):
         cdef char *attname
         # if it's a netCDF attribute, remove it
@@ -2121,6 +2141,26 @@ ncattrs(self)
 
 return netCDF attribute names for this L{Variable} in a list."""
         return _get_att_names(self._grpid, self._varid)
+
+    def setncattr(self,name,value):
+        """
+setncattr(self,name,value)
+
+set a netCDF variable attribute using name,value pair.  Only use if you need to set a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        if self._grp.file_format != 'NETCDF4': self._grp._redef()
+        _set_att(self._grp, self._varid, name, value)
+        if self._grp.file_format != 'NETCDF4': self._grp._enddef()
+
+    def getncattr(self,name):
+        """
+getncattr(self,name)
+
+retrievel a netCDF variable attribute.  Only use if you need to set a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        return _get_att(self._grp, self._varid, name)
 
     def filters(self):
         """

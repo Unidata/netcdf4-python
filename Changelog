@@ -1,3 +1,8 @@
+version 0.8.3 (not yet released)
+================================
+ * add setncattr, getncattr methods (for setting and getting netcdf
+   attributes with names that clash with the reserved python attributes).
+
 version 0.8.2 (svn revision 769)
 ================================
  * compound type tests re-enabled. Compound and vlen types now fully
