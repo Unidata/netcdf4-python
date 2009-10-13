@@ -882,29 +882,38 @@ netCDF attribute with the same name as one of the reserved python
 attributes."""
         return _get_att(self._grpid, NC_GLOBAL, name)
 
-    def __delattr__(self,name):
+    def delncattr(self, name):
+        """
+delncattr(self,name,value)
+
+delete a netCDF dataset or group attribute.  Only use if you need to delete a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
         cdef char *attname
+        attname = PyString_AsString(name)
+        self._redef()
+        ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
+        self._enddef()
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+
+    def __delattr__(self,name):
         # if it's a netCDF attribute, remove it
         if name not in _private_atts:
-            attname = PyString_AsString(name)
-            self._redef()
-            ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
-            self._enddef()
-            if ierr != NC_NOERR:
-                raise RuntimeError(nc_strerror(ierr))
+            self.delncattr(name)
         else:
-            raise AttributeError, "'%s' is one of the reserved attributes %s, cannot delete" % (name, tuple(_private_atts))
+            raise AttributeError(
+            "'%s' is one of the reserved attributes %s, cannot delete. Use delncattr instead." % (name, tuple(_private_atts)))
 
     def __setattr__(self,name,value):
         # if name in _private_atts, it is stored at the python
         # level and not in the netCDF file.
         if name not in _private_atts:
-            self._redef()
-            _set_att(self._grpid, NC_GLOBAL, name, value)
-            self._enddef()
+            self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
-                raise AttributeError("'%s' is one of the reserved attributes %s, cannot rebind" % (name, tuple(_private_atts)))
+                raise AttributeError(
+            "'%s' is one of the reserved attributes %s, cannot rebind. Use setncattr instead." % (name, tuple(_private_atts)))
             else:
                 self.__dict__[name]=value
 
@@ -924,7 +933,7 @@ attributes."""
         elif name in _private_atts:
             return self.__dict__[name]
         else:
-            return _get_att(self._grpid, NC_GLOBAL, name)
+            return self.getncattr(name)
 
 cdef class Dimension:
     """
@@ -1212,18 +1221,28 @@ netCDF attribute with the same name as one of the reserved python
 attributes."""
         return _get_att(self._grpid, self._varid, name)
 
-    def __delattr__(self,name):
+    def delncattr(self, name):
+        """
+delncattr(self,name,value)
+
+delete a netCDF variable attribute.  Only use if you need to delete a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
         cdef char *attname
+        attname = PyString_AsString(name)
+        self._grp._redef()
+        ierr = nc_del_att(self._grpid, self._varid, attname)
+        self._grp._enddef()
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+
+    def __delattr__(self,name):
         # if it's a netCDF attribute, remove it
         if name not in _private_atts:
-            attname = PyString_AsString(name)
-            self._grp._redef()
-            ierr = nc_del_att(self._grpid, self._varid, attname)
-            self._grp._enddef()
-            if ierr != NC_NOERR:
-                raise RuntimeError(nc_strerror(ierr))
+            self.delncattr(name)
         else:
-            raise AttributeError("'%s' is one of the reserved attributes %s, cannot delete" % (name, tuple(_private_atts)))
+            raise AttributeError(
+            "'%s' is one of the reserved attributes %s, cannot delete. Use delncattr instead." % (name, tuple(_private_atts)))
 
     def __setattr__(self,name,value):
         # if name in _private_atts, it is stored at the python
@@ -1233,12 +1252,11 @@ attributes."""
             # has same type as variable.
             if name == '_FillValue':
                 value = numpy.array(value, self.dtype)
-            self._grp._redef()
-            _set_att(self._grpid, self._varid, name, value)
-            self._grp._enddef()
+            self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
-                raise AttributeError("'%s' is one of the reserved attributes %s, cannot rebind" % (name, tuple(_private_atts)))
+                raise AttributeError(
+            "'%s' is one of the reserved attributes %s, cannot rebind. Use setncattr instead." % (name, tuple(_private_atts)))
             else:
                 self.__dict__[name]=value
 
@@ -1258,7 +1276,7 @@ attributes."""
         elif name in _private_atts:
             return self.__dict__[name]
         else:
-            return _get_att(self._grpid, self._varid, name)
+            return self.getncattr(name)
 
     def __getitem__(self, elem):
         # This special method is used to index the netCDF variable

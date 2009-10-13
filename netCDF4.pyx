@@ -1590,28 +1590,38 @@ attributes."""
         return _get_att(self, NC_GLOBAL, name)
 
     def __delattr__(self,name):
-        cdef char *attname
         # if it's a netCDF attribute, remove it
         if name not in _private_atts:
-            attname = PyString_AsString(name)
-            if self.file_format != 'NETCDF4': self._redef()
-            ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
-            if self.file_format != 'NETCDF4': self._enddef()
-            if ierr != NC_NOERR:
-                raise RuntimeError(nc_strerror(ierr))
+            self.delncattr(name)
         else:
-            raise AttributeError, "'%s' is one of the reserved attributes %s, cannot delete" % (name, tuple(_private_atts))
+            raise AttributeError(
+            "'%s' is one of the reserved attributes %s, cannot delete. Use delncattr instead." % (name, tuple(_private_atts)))
+
+    def delncattr(self, name):
+        """
+delncattr(self,name,value)
+
+delete a netCDF dataset or group attribute.  Only use if you need to delete a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        cdef char *attname
+        cdef int ierr
+        attname = PyString_AsString(name)
+        if self.file_format != 'NETCDF4': self._redef()
+        ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
+        if self.file_format != 'NETCDF4': self._enddef()
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
 
     def __setattr__(self,name,value):
         # if name in _private_atts, it is stored at the python
         # level and not in the netCDF file.
         if name not in _private_atts:
-            if self.file_format != 'NETCDF4': self._redef()
-            _set_att(self, NC_GLOBAL, name, value)
-            if self.file_format != 'NETCDF4': self._enddef()
+            self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
-                raise AttributeError("'%s' is one of the reserved attributes %s, cannot rebind" % (name, tuple(_private_atts)))
+                raise AttributeError(
+            "'%s' is one of the reserved attributes %s, cannot rebind. Use setncattr instead." % (name, tuple(_private_atts)))
             else:
                 self.__dict__[name]=value
 
@@ -1631,7 +1641,7 @@ attributes."""
         elif name in _private_atts:
             return self.__dict__[name]
         else:
-            return _get_att(self, NC_GLOBAL, name)
+            return self.getncattr(name)
 
 cdef class Group(Dataset):
     """
@@ -2162,6 +2172,21 @@ netCDF attribute with the same name as one of the reserved python
 attributes."""
         return _get_att(self._grp, self._varid, name)
 
+    def delncattr(self, name):
+        """
+delncattr(self,name,value)
+
+delete a netCDF variable attribute.  Only use if you need to delete a
+netCDF attribute with the same name as one of the reserved python
+attributes."""
+        cdef char *attname
+        attname = PyString_AsString(name)
+        if self._grp.file_format != 'NETCDF4': self._grp._redef()
+        ierr = nc_del_att(self._grpid, self._varid, attname)
+        if self._grp.file_format != 'NETCDF4': self._grp._enddef()
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+
     def filters(self):
         """
 filters(self)
@@ -2228,17 +2253,12 @@ each dimension is returned."""
             return chunksizes
 
     def __delattr__(self,name):
-        cdef char *attname
         # if it's a netCDF attribute, remove it
         if name not in _private_atts:
-            attname = PyString_AsString(name)
-            if self._grp.file_format != 'NETCDF4': self._grp._redef()
-            ierr = nc_del_att(self._grpid, self._varid, attname)
-            if self._grp.file_format != 'NETCDF4': self._grp._enddef()
-            if ierr != NC_NOERR:
-                raise RuntimeError(nc_strerror(ierr))
+            self.delncattr(name)
         else:
-            raise AttributeError("'%s' is one of the reserved attributes %s, cannot delete" % (name, tuple(_private_atts)))
+            raise AttributeError(
+            "'%s' is one of the reserved attributes %s, cannot delete. Use delncattr instead." % (name, tuple(_private_atts)))
 
     def __setattr__(self,name,value):
         # if name in _private_atts, it is stored at the python
@@ -2251,12 +2271,11 @@ each dimension is returned."""
                     value = numpy.array(value, self.dtype)
                 else:
                     raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
-            if self._grp.file_format != 'NETCDF4': self._grp._redef()
-            _set_att(self._grp, self._varid, name, value)
-            if self._grp.file_format != 'NETCDF4': self._grp._enddef()
+            self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
-                raise AttributeError("'%s' is one of the reserved attributes %s, cannot rebind" % (name, tuple(_private_atts)))
+                raise AttributeError(
+                "'%s' is one of the reserved attributes %s, cannot rebind. Use setncattr instead." % (name, tuple(_private_atts)))
             else:
                 self.__dict__[name]=value
 
@@ -2276,7 +2295,7 @@ each dimension is returned."""
         elif name in _private_atts:
             return self.__dict__[name]
         else:
-            return _get_att(self._grp, self._varid, name)
+            return self.getncattr(name)
 
     def __getitem__(self, elem):
         # This special method is used to index the netCDF variable
