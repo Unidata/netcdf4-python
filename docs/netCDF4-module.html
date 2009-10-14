@@ -685,7 +685,7 @@
 <span class="py-output">complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>Compound types can be nested, but you must create the 'inner' ones
-      first. Here's a more complex example that usesa nested compound type 
+      first. Here's a more complex example that uses a nested compound type
       to represent meteorological observations at stations:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># compound type example.</span>
@@ -729,7 +729,7 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>data[<span class="py-string">'surface_wind'</span>][<span class="py-string">'direction'</span>] = 270
 <span class="py-prompt">&gt;&gt;&gt; </span>data[<span class="py-string">'temp_sounding'</span>] = (280.3,272.,270.,269.,266.,258.,254.1,250.,245.5,240.)
 <span class="py-prompt">&gt;&gt;&gt; </span>data[<span class="py-string">'press_sounding'</span>] = range(800,300,-50)
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># variable-length string datatypes are not supported, so</span>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># variable-length string datatypes are not supported inside compound types, so</span>
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># to store strings in a compound data type, each string must be </span>
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># stored as fixed-size (in this case 80) array of characters.</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>data[<span class="py-string">'location_name'</span>] = stringtoarr(<span class="py-string">'Boulder, Colorado, USA'</span>,NUMCHARS)
@@ -907,7 +907,7 @@
         PERFORMANCE OF THIS SOFTWARE.
       </p>
       <p><strong>Version:</strong>
-        0.8.2
+        0.8.3
       </p>
 </div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
@@ -918,9 +918,7 @@
     <span class="table-header">Classes</span></td>
 </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.CompoundType-class.html" class="summary-name">CompoundType</a><br />
       A <a href="netCDF4.CompoundType-class.html" 
         class="link">CompoundType</a> instance is used to describe a 
@@ -928,51 +926,39 @@
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.Dataset-class.html" class="summary-name">Dataset</a><br />
       Dataset(self, filename, mode=&quot;r&quot;, clobber=True, 
         format='NETCDF4')
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.Dimension-class.html" class="summary-name">Dimension</a><br />
       Dimension(self, group, name, size=None)
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.Group-class.html" class="summary-name">Group</a><br />
       Group(self, parent, name)
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.MFDataset-class.html" class="summary-name">MFDataset</a><br />
       MFDataset(self, files, check=False, exclude=[])
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.VLType-class.html" class="summary-name">VLType</a><br />
       A <a href="netCDF4.VLType-class.html" class="link">VLType</a> 
         instance is used to describe a variable length (VLEN) data type.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.Variable-class.html" class="summary-name">Variable</a><br />
       Variable(self, group, name, datatype, dimensions=(), zlib=False, 
         complevel=6, shuffle=True, fletcher32=False, contiguous=False, 
@@ -1196,7 +1182,7 @@
           <code>after</code> will return the indices corresponding to the 
           dates just before or just after the given dates if an exact match
           cannot be found. <code>nearest</code> will return the indices 
-          that correpond to the closest dates.</li>
+          that correspond to the closest dates.</li>
     </ul></dd>
     <dt>Returns:</dt>
         <dd>an index (indices) of the netCDF time variable corresponding to 
@@ -1399,7 +1385,8 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Aug 18 12:49:37 2009
+    Generated by Epydoc 3.0.1
+    on Tue Oct 13 20:06:01 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

@@ -45,8 +45,8 @@
     </td>
   </tr>
 </table>
-<!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class Dataset</h1><p class="nomargin-top"></p>
+<!-- ==================== TYPE DESCRIPTION ==================== -->
+<h1 class="epydoc">type Dataset</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
 object --+
          |
@@ -364,6 +364,43 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#delncattr" class="summary-sig-name">delncattr</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      delete a netCDF dataset or group attribute.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#getncattr" class="summary-sig-name">getncattr</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      retrievel a netCDF dataset or group attribute.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="ncattrs"></a><span class="summary-sig-name">ncattrs</span>(<span class="summary-sig-arg">self</span>)</span><br />
       return netCDF global attribute names for this <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
@@ -461,6 +498,25 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#setncattr" class="summary-sig-name">setncattr</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      set a netCDF dataset or group attribute using name,value pair.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a name="sync"></a><span class="summary-sig-name">sync</span>(<span class="summary-sig-arg">self</span>)</span><br />
       Writes all buffered data in the <a href="netCDF4.Dataset-class.html" 
       class="link">Dataset</a> to the disk file.</td>
@@ -471,17 +527,6 @@ object --+
         </tr>
       </table>
       
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
-      <code>__hash__</code>,
-      <code>__reduce__</code>,
-      <code>__reduce_ex__</code>,
-      <code>__repr__</code>,
-      <code>__str__</code>
-      </p>
     </td>
   </tr>
 </table>
@@ -596,13 +641,6 @@ object --+
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="vltypes"></a><span class="summary-name">vltypes</span>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
-      <code>__class__</code>
-      </p>
     </td>
   </tr>
 </table>
@@ -977,6 +1015,51 @@ object --+
   </dl>
 </td></tr></table>
 </div>
+<a name="delncattr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">delncattr</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>delete a netCDF dataset or group attribute.  Only use if you need to 
+  delete a netCDF attribute with the same name as one of the reserved 
+  python attributes.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getncattr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getncattr</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>retrievel a netCDF dataset or group attribute.  Only use if you need 
+  to set a netCDF attribute with the same name as one of the reserved 
+  python attributes.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
 <a name="set_fill_off"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1024,6 +1107,29 @@ object --+
   <code>set_fill_on</code>.  Data which are equal to the 
   <code>_Fill_Value</code> indicate that the variable was created, but 
   never written to.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setncattr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setncattr</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>set a netCDF dataset or group attribute using name,value pair.  Only 
+  use if you need to set a netCDF attribute with the same name as one of 
+  the reserved python attributes.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -1093,7 +1199,8 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Aug 18 12:49:37 2009
+    Generated by Epydoc 3.0.1
+    on Tue Oct 13 20:06:02 2009
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
