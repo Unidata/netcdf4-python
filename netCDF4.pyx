@@ -1425,9 +1425,14 @@ datatype."""
         self.vltypes[datatype_name] = VLType(self, datatype, datatype_name)
         return self.vltypes[datatype_name]
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
+    def createVariable(self, varname, datatype, dimensions=(), zlib=False,
+complevel=6, shuffle=True, szip = False, szip_encoding = 'nn', \
+szip_bits_per_block = 32, fletcher32=False, contiguous=False, \
+chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
-createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
+createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6,
+szip=False, szip_encoding='nn', szip_bits_per_block=32, shuffle=True,
+fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
 
 Creates a new variable with the given C{varname}, C{datatype}, and 
 C{dimensions}. If dimensions are not given, the variable is assumed to be 
@@ -1527,8 +1532,12 @@ attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
-        self.variables[varname] = Variable(self, varname, datatype,
-        dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
+        self.variables[varname] = Variable(self, varname, datatype,\
+        dimensions=dimensions, zlib=zlib, complevel=complevel, szip=szip,\
+        szip_encoding=szip_encoding, szip_bits_per_block=szip_bits_per_block,\
+        shuffle=shuffle, fletcher32=fletcher32, contiguous=contiguous,\
+        chunksizes=chunksizes, endian=endian, \
+        least_significant_digit=least_significant_digit, fill_value=fill_value)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -1806,7 +1815,9 @@ returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.""
 
 cdef class Variable:
     """
-Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
+Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=6,
+szip=False, szip_encoding='nn', szip_bits_per_block=32, shuffle=True,
+shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
 
 A netCDF L{Variable} is used to read and write netCDF data.  They are 
 analagous to numpy array objects.
@@ -1929,14 +1940,18 @@ instance. If C{None}, the data is not truncated. """
     cdef public ndim, dtype, maskandscale, _isprimitive, _iscompound, _isvlen
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
+            szip=False, szip_encoding='nn', szip_bits_per_block=32,
             complevel=6, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             fill_value=None, **kwargs):
-        cdef int ierr, ndims, icontiguous, ideflate_level, numdims
+        cdef int ierr, ndims, icontiguous, ideflate_level, numdims,\
+                 bits_per_block
         cdef char *varname
         cdef nc_type xtype
         cdef int dimids[NC_MAX_DIMS]
         cdef int *chunksizesp
+        if szip and zlib: # can't have both!
+            raise ValueError('must choose either szip or zlib for compression')
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
         # dimensions = ('lat') instead of ('lat',)
@@ -2000,7 +2015,7 @@ instance. If C{None}, the data is not truncated. """
             if ierr != NC_NOERR:
                 if grp.file_format != 'NETCDF4': grp._enddef()
                 raise RuntimeError(nc_strerror(ierr))
-            # set zlib, shuffle, chunking, fletcher32 and endian
+            # set zlib, shuffle, szip, chunking, fletcher32 and endian
             # variable settings.
             # don't bother for NETCDF3* formats.
             # for NETCDF3* formats, the zlib,shuffle,chunking,endian
@@ -2013,6 +2028,20 @@ instance. If C{None}, the data is not truncated. """
                         ierr = nc_def_var_deflate(self._grpid, self._varid, 1, 1, ideflate_level)
                     else:
                         ierr = nc_def_var_deflate(self._grpid, self._varid, 0, 1, ideflate_level)
+                    if ierr != NC_NOERR:
+                        if grp.file_format != 'NETCDF4': grp._enddef()
+                        raise RuntimeError(nc_strerror(ierr))
+                # set szip stuff.
+                if szip and ndims: # don't bother for scalar variable
+                    bits_per_block = szip_bits_per_block
+                    if szip_encoding == 'ec':
+                        ierr = nc_def_var_szip(self._grpid, self._varid,\
+                                NC_SZIP_EC_OPTION_MASK, bits_per_block)
+                    elif szip_encoding == 'nn':
+                        ierr = nc_def_var_szip(self._grpid, self._varid,\
+                                NC_SZIP_NN_OPTION_MASK, bits_per_block)
+                    else:
+                        raise ValueError("szip_encoding must be 'ec' or 'nn'")
                     if ierr != NC_NOERR:
                         if grp.file_format != 'NETCDF4': grp._enddef()
                         raise RuntimeError(nc_strerror(ierr))

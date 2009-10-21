@@ -219,6 +219,8 @@ cdef extern from "netcdf.h":
         NC_ENDIAN_NATIVE 
         NC_ENDIAN_LITTLE 
         NC_ENDIAN_BIG 
+        NC_SZIP_EC_OPTION_MASK  # entropy encoding
+        NC_SZIP_NN_OPTION_MASK  # nearest neighbor encoding
     char *nc_inq_libvers()
     char *nc_strerror(int ncerr)
     int nc_create(char *path, int cmode, int *ncidp)
@@ -675,6 +677,10 @@ cdef extern from "netcdf.h":
     # set logging verbosity level.
     void nc_set_log_level(int new_level)
     int nc_show_metadata(int ncid)
+    int nc_free_vlen(nc_vlen_t *vl)
+    int nc_free_string(size_t len, char **data)
+    int nc_def_var_szip(int ncid, int varid, int options_mask, int bits_per_block)
+    int nc_inq_var_szip(int ncid, int varid, int *options_maskp, int *bits_per_blockp)
 
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
@@ -689,4 +695,5 @@ cdef extern from "numpy/arrayobject.h":
         cdef int flags
     npy_intp PyArray_SIZE(ndarray arr)
     npy_intp PyArray_ISCONTIGUOUS(ndarray arr)
+    npy_intp PyArray_ISALIGNED(ndarray arr)
     void import_array()
