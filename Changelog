@@ -1,5 +1,8 @@
 version 0.8.3 (not yet released)
 ================================
+ * added support for szip compression (enabled in recent netcdf-4.1
+   snapshots).
+
  * add setncattr, getncattr, delncattr methods (for setting/getting/deleting netcdf
    attributes with names that clash with the reserved python attributes).
 
