@@ -56,7 +56,7 @@ Install
  - if HDF5 was build with U{szip <http://hdf.ncsa.uiuc.edu/doc_resource/SZIP/>},
  you may also need to set the C{SZIP_DIR} 
  environment variable to point to where szip is installed. Note that
- netCDF 4.0 does not yet support szip compression.
+ netCDF 4.1 does support szip compression.
  - run 'python setup.py install'
  - run the tests in the 'test' directory by running C{python run_all.py}.
 
@@ -1426,9 +1426,9 @@ datatype."""
         return self.vltypes[datatype_name]
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False,
-complevel=6, shuffle=True, szip = False, szip_encoding = 'nn', \
-szip_bits_per_block = 32, fletcher32=False, contiguous=False, \
-chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
+                       complevel=6, shuffle=True, szip = False, szip_encoding = 'nn', \
+                       szip_bits_per_block = 32, fletcher32=False, contiguous=False, \
+                       chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
 createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6,
 szip=False, szip_encoding='nn', szip_bits_per_block=32, shuffle=True,
@@ -1467,6 +1467,10 @@ will be applied before compressing the data (default C{True}).  This
 significantly improves compression. Default is C{True}. Ignored if
 C{zlib=False}.
 
+The optional keywords C{szip, szip_encoder} and C{szip_bits_per_block} can 
+be used to enable szip compression, if the HDF5 library supports it. See
+U{http://www.hdfgroup.org/doc_resource/SZIP} for details.  
+
 If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5 
 checksum algorithm is activated to detect errors. Default C{False}.
 
@@ -1490,7 +1494,8 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 
-The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
+The C{zlib, szip, szip_encoder, szip_bits_per_pixel, complevel, 
+shuffle, fletcher32, contiguous, chunksizes} and C{endian}
 keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword C{fill_value} can be used to override the default 
@@ -1816,8 +1821,9 @@ returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.""
 cdef class Variable:
     """
 Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=6,
-szip=False, szip_encoding='nn', szip_bits_per_block=32, shuffle=True,
-shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
+szip=False, szip_encoding='nn', szip_bits_per_block=16, shuffle=True,
+shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, 
+endian='native', least_significant_digit=None,fill_value=None)
 
 A netCDF L{Variable} is used to read and write netCDF data.  They are 
 analagous to numpy array objects.
@@ -1859,6 +1865,10 @@ which means the variable is a scalar (and therefore has no dimensions).
 B{C{zlib}} - if C{True}, data assigned to the L{Variable}  
 instance is compressed on disk. Default C{False}.
 
+B{C{szip, szip_encoder, szip_bits_per_block}} -
+Parameters used to enable szip compression, if the HDF5 library supports it. See
+U{http://www.hdfgroup.org/doc_resource/SZIP} for details.  
+
 B{C{complevel}} - the level of zlib compression to use (1 is the fastest, 
 but poorest compression, 9 is the slowest but best compression). Default 6.
 Ignored if C{zlib=False}. 
@@ -1889,7 +1899,8 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 
-The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
+The C{zlib, szip, szip_encoder, szip_bits_per_pixel, complevel, 
+shuffle, fletcher32, contiguous, chunksizes} and C{endian}
 keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 B{C{least_significant_digit}} - If specified, variable data will be
@@ -1940,7 +1951,7 @@ instance. If C{None}, the data is not truncated. """
     cdef public ndim, dtype, maskandscale, _isprimitive, _iscompound, _isvlen
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
-            szip=False, szip_encoding='nn', szip_bits_per_block=32,
+            szip=False, szip_encoding='nn', szip_bits_per_block=16,
             complevel=6, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             fill_value=None, **kwargs):
