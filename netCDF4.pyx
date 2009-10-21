@@ -2044,7 +2044,8 @@ instance. If C{None}, the data is not truncated. """
                         raise ValueError("szip_encoding must be 'ec' or 'nn'")
                     if ierr != NC_NOERR:
                         if grp.file_format != 'NETCDF4': grp._enddef()
-                        raise RuntimeError(nc_strerror(ierr))
+                        raise RuntimeError(nc_strerror(ierr)+' - this may'+
+                        ' mean that netcdf was compiled without szip support')
                 # set checksum.
                 if fletcher32:
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
