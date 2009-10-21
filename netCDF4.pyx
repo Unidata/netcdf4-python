@@ -1952,6 +1952,8 @@ instance. If C{None}, the data is not truncated. """
         cdef int *chunksizesp
         if szip and zlib: # can't have both!
             raise ValueError('must choose either szip or zlib for compression')
+        if shuffle and not zlib:
+            raise ValueError('shuffle filter only used with zlib compression')
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
         # dimensions = ('lat') instead of ('lat',)
