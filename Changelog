@@ -1,5 +1,8 @@
 version 0.8.3 (not yet released)
 ================================
+ * removed szip support (ugh) since unidata decided to pull it from the 4.1
+   release.
+
  * added support for szip compression (enabled in recent netcdf-4.1
    snapshots).
 

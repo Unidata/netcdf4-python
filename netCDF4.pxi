@@ -679,8 +679,6 @@ cdef extern from "netcdf.h":
     int nc_show_metadata(int ncid)
     int nc_free_vlen(nc_vlen_t *vl)
     int nc_free_string(size_t len, char **data)
-    int nc_def_var_szip(int ncid, int varid, int options_mask, int bits_per_block)
-    int nc_inq_var_szip(int ncid, int varid, int *options_maskp, int *bits_per_blockp)
 
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":

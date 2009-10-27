@@ -56,7 +56,8 @@ Install
  - if HDF5 was build with U{szip <http://hdf.ncsa.uiuc.edu/doc_resource/SZIP/>},
  you may also need to set the C{SZIP_DIR} 
  environment variable to point to where szip is installed. Note that
- netCDF 4.1 does support szip compression.
+ netCDF 4.0 does not support szip compression, but can read szip compressed
+ files if the HDF5 lib is configured to support szip.
  - run 'python setup.py install'
  - run the tests in the 'test' directory by running C{python run_all.py}.
 
@@ -1425,14 +1426,9 @@ datatype."""
         self.vltypes[datatype_name] = VLType(self, datatype, datatype_name)
         return self.vltypes[datatype_name]
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=False,
-                       complevel=6, shuffle=True, szip = False, szip_encoding = 'nn', \
-                       szip_bits_per_block = 32, fletcher32=False, contiguous=False, \
-                       chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
+    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
         """
-createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6,
-szip=False, szip_encoding='nn', szip_bits_per_block=32, shuffle=True,
-fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
+createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
 
 Creates a new variable with the given C{varname}, C{datatype}, and 
 C{dimensions}. If dimensions are not given, the variable is assumed to be 
@@ -1467,10 +1463,6 @@ will be applied before compressing the data (default C{True}).  This
 significantly improves compression. Default is C{True}. Ignored if
 C{zlib=False}.
 
-The optional keywords C{szip, szip_encoder} and C{szip_bits_per_block} can 
-be used to enable szip compression, if the HDF5 library supports it. See
-U{http://www.hdfgroup.org/doc_resource/SZIP} for details.  
-
 If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5 
 checksum algorithm is activated to detect errors. Default C{False}.
 
@@ -1494,8 +1486,7 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 
-The C{zlib, szip, szip_encoder, szip_bits_per_pixel, complevel, 
-shuffle, fletcher32, contiguous, chunksizes} and C{endian}
+The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
 keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword C{fill_value} can be used to override the default 
@@ -1537,12 +1528,8 @@ attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
-        self.variables[varname] = Variable(self, varname, datatype,\
-        dimensions=dimensions, zlib=zlib, complevel=complevel, szip=szip,\
-        szip_encoding=szip_encoding, szip_bits_per_block=szip_bits_per_block,\
-        shuffle=shuffle, fletcher32=fletcher32, contiguous=contiguous,\
-        chunksizes=chunksizes, endian=endian, \
-        least_significant_digit=least_significant_digit, fill_value=fill_value)
+        self.variables[varname] = Variable(self, varname, datatype,
+        dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -1820,10 +1807,7 @@ returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.""
 
 cdef class Variable:
     """
-Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=6,
-szip=False, szip_encoding='nn', szip_bits_per_block=16, shuffle=True,
-shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, 
-endian='native', least_significant_digit=None,fill_value=None)
+Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
 
 A netCDF L{Variable} is used to read and write netCDF data.  They are 
 analagous to numpy array objects.
@@ -1865,10 +1849,6 @@ which means the variable is a scalar (and therefore has no dimensions).
 B{C{zlib}} - if C{True}, data assigned to the L{Variable}  
 instance is compressed on disk. Default C{False}.
 
-B{C{szip, szip_encoder, szip_bits_per_block}} -
-Parameters used to enable szip compression, if the HDF5 library supports it. See
-U{http://www.hdfgroup.org/doc_resource/SZIP} for details.  
-
 B{C{complevel}} - the level of zlib compression to use (1 is the fastest, 
 but poorest compression, 9 is the slowest but best compression). Default 6.
 Ignored if C{zlib=False}. 
@@ -1899,8 +1879,7 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 
-The C{zlib, szip, szip_encoder, szip_bits_per_pixel, complevel, 
-shuffle, fletcher32, contiguous, chunksizes} and C{endian}
+The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
 keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 B{C{least_significant_digit}} - If specified, variable data will be
@@ -1951,18 +1930,14 @@ instance. If C{None}, the data is not truncated. """
     cdef public ndim, dtype, maskandscale, _isprimitive, _iscompound, _isvlen
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
-            szip=False, szip_encoding='nn', szip_bits_per_block=16,
             complevel=6, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             fill_value=None, **kwargs):
-        cdef int ierr, ndims, icontiguous, ideflate_level, numdims,\
-                 bits_per_block
+        cdef int ierr, ndims, icontiguous, ideflate_level, numdims
         cdef char *varname
         cdef nc_type xtype
         cdef int dimids[NC_MAX_DIMS]
         cdef int *chunksizesp
-        if szip and zlib: # can't have both!
-            raise ValueError('must choose either szip or zlib for compression')
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
         # dimensions = ('lat') instead of ('lat',)
@@ -2026,7 +2001,7 @@ instance. If C{None}, the data is not truncated. """
             if ierr != NC_NOERR:
                 if grp.file_format != 'NETCDF4': grp._enddef()
                 raise RuntimeError(nc_strerror(ierr))
-            # set zlib, shuffle, szip, chunking, fletcher32 and endian
+            # set zlib, shuffle, chunking, fletcher32 and endian
             # variable settings.
             # don't bother for NETCDF3* formats.
             # for NETCDF3* formats, the zlib,shuffle,chunking,endian
@@ -2042,21 +2017,6 @@ instance. If C{None}, the data is not truncated. """
                     if ierr != NC_NOERR:
                         if grp.file_format != 'NETCDF4': grp._enddef()
                         raise RuntimeError(nc_strerror(ierr))
-                # set szip stuff.
-                if szip and ndims: # don't bother for scalar variable
-                    bits_per_block = szip_bits_per_block
-                    if szip_encoding == 'ec':
-                        ierr = nc_def_var_szip(self._grpid, self._varid,\
-                                NC_SZIP_EC_OPTION_MASK, bits_per_block)
-                    elif szip_encoding == 'nn':
-                        ierr = nc_def_var_szip(self._grpid, self._varid,\
-                                NC_SZIP_NN_OPTION_MASK, bits_per_block)
-                    else:
-                        raise ValueError("szip_encoding must be 'ec' or 'nn'")
-                    if ierr != NC_NOERR:
-                        if grp.file_format != 'NETCDF4': grp._enddef()
-                        raise RuntimeError(nc_strerror(ierr)+' - this may'+
-                        ' mean that netcdf was compiled without szip support')
                 # set checksum.
                 if fletcher32:
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
