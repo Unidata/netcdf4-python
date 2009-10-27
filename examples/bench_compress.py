@@ -16,15 +16,14 @@ print '(average of %s trials)' % ntrials
 array = netCDF4._quantize(uniform(size=(n1dim,n2dim,n3dim,n4dim)),4)
 
 
-def write_netcdf(filename,zlib=False,shuffle=False,szip=False,szip_encoding=False,szip_bits_per_block=32):
+def write_netcdf(filename,zlib=False,shuffle=False):
     file = netCDF4.Dataset(filename,'w',format='NETCDF4')
     file.createDimension('n1', n1dim)
     file.createDimension('n2', n2dim)
     file.createDimension('n3', n3dim)
     file.createDimension('n4', n4dim)
     foo = file.createVariable('data',\
-            'f8',('n1','n2','n3','n4'),zlib=zlib,shuffle=shuffle,\
-            szip=szip,szip_encoding=szip_encoding,szip_bits_per_block=szip_bits_per_block)
+                              'f8',('n1','n2','n3','n4'),zlib=zlib,shuffle=shuffle)
     foo[:] = array
     file.close()
 
@@ -33,10 +32,8 @@ def read_netcdf(filename):
     data = file.variables['data'][:]
     file.close()
 
-for compress_kwargs in ["zlib=False,szip=False","zlib=True,shuffle=False",
-                        "zlib=True,shuffle=True",
-                        "szip=True,szip_encoding='nn',szip_bits_per_block=16",\
-                        "szip=True,szip_encoding='ec',szip_bits_per_block=16"]:
+for compress_kwargs in ["zlib=False,shuffle=False","zlib=True,shuffle=False",
+                        "zlib=True,shuffle=True"]:
     print 'testing compression ...',compress_kwargs
     # writing.
     t = Timer("write_netcdf('test.nc',%s)" % compress_kwargs,"from __main__ import write_netcdf")

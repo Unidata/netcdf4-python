@@ -34,17 +34,7 @@ for format in ['NETCDF3_CLASSIC','NETCDF3_64BIT','NETCDF4_CLASSIC','NETCDF4']:
     print 'testing file format %s ...' % format
     # writing, no compression. 
     t = Timer("write_netcdf('test1.nc',format='%s')" % format,"from __main__ import write_netcdf")
-    print 'writing with no compression took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
-    # writing, with compression.
-    if format.startswith('NETCDF4'):
-        t = Timer("write_netcdf('test2.nc',zlib=True,least_significant_digit=4,format='%s')" % format,"from __main__ import write_netcdf")
-        print 'writing with compression took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
+    print 'writing took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
     # test reading.
     t = Timer("read_netcdf('test1.nc')","from __main__ import read_netcdf")
-    print 'reading uncompressed file took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
-    if format.startswith('NETCDF4'):
-        t = Timer("read_netcdf('test2.nc')","from __main__ import read_netcdf")
-        print 'reading compressed file took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
-        # print out size of resulting files.
-        print 'size of test1.nc (no compression) = ',os.stat('test1.nc').st_size
-        print 'size of test2.nc (compression) = ',os.stat('test2.nc').st_size
+    print 'reading took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
