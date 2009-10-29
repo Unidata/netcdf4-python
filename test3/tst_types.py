@@ -41,6 +41,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         file = netCDF3.Dataset(self.file)
         for type in datatypes:
             data = file.variables['data_'+type]
+            data.set_auto_maskandscale(False)
             datarr = data[1:n1dim]
             # fill missing data with _FillValue
             # ('S1' array will have some missing values)

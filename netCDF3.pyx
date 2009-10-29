@@ -1148,7 +1148,7 @@ dimensions."""
         self.ndim = numdims
         # default for automatically applying scale_factor and
         # add_offset, and converting to/from masked arrays is False.
-        self.maskandscale = False
+        self.maskandscale = True
 
     property shape:
         """find current sizes of all variable dimensions"""
@@ -1464,8 +1464,8 @@ used to provide simple compression, see
 U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
 <http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>}.
 
-The default value of C{maskandscale} is C{False}
-(no automatic conversions are performed).
+The default value of C{maskandscale} is C{True}
+(automatic conversions are performed).
         """
         if maskandscale:
             self.maskandscale = True
