@@ -1,5 +1,10 @@
 version 0.8.3 (not yet released)
 ================================
+ * change automaskandscale default to True.  This means data will
+   automatically be converted to and from masked arrays.  Data scaled as short
+   integers using the scale_factor and add_offset attributes will also be
+   automatically converted to/from float arrays.
+
  * removed szip support (ugh) since unidata decided to pull it from the 4.1
    release.
 
