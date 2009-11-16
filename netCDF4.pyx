@@ -787,7 +787,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 
 # pure python utilities
 from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
-                          _out_array_shape, _sortbylist
+                          _out_array_shape, _sortbylist, OrderedDict
 
 __version__ = "0.8.3"
 
@@ -980,8 +980,8 @@ cdef _get_types(group):
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
     # create empty dictionary for CompoundType instances.
-    cmptypes = {}
-    vltypes = {}
+    cmptypes = OrderedDict()
+    vltypes = OrderedDict()
     if ntypes > 0:
         for n from 0 <= n < ntypes:
             xtype = typeids[n]
@@ -1023,7 +1023,7 @@ cdef _get_dims(group):
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
     # create empty dictionary for dimensions.
-    dimensions = {}
+    dimensions = OrderedDict()
     if numdims > 0:
         if group.file_format == 'NETCDF4':
             ierr = nc_inq_dimids(group._grpid, &numdims, dimids, 0)
@@ -1051,7 +1051,7 @@ cdef _get_grps(group):
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
     # create dictionary containing L{Group} instances for groups in this group
-    groups = {}
+    groups = OrderedDict()
     if numgrps > 0:
         grpids = <int *>malloc(sizeof(int) * numgrps)
         ierr = nc_inq_grps(group._grpid, NULL, grpids)
@@ -1079,7 +1079,7 @@ cdef _get_vars(group):
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
     # create empty dictionary for variables.
-    variables = {}
+    variables = OrderedDict()
     if numvars > 0:
         # get variable ids.
         varids = <int *>malloc(sizeof(int) * numvars)
@@ -1299,7 +1299,7 @@ group, so the path is simply C{'/'}."""
         if self.file_format == 'NETCDF4':
             self.groups = _get_grps(self)
         else:
-            self.groups = {}
+            self.groups = OrderedDict()
 
     def close(self):
         """
@@ -1636,7 +1636,7 @@ attributes."""
                 values = []
                 for name in names:
                     values.append(_get_att(self, NC_GLOBAL, name))
-                return dict(zip(names,values))
+                return OrderedDict(zip(names,values))
             else:
                 raise AttributeError
         elif name in _private_atts:
@@ -2290,7 +2290,7 @@ each dimension is returned."""
                 values = []
                 for name in names:
                     values.append(_get_att(self._grp, self._varid, name))
-                return dict(zip(names,values))
+                return OrderedDict(zip(names,values))
             else:
                 raise AttributeError
         elif name in _private_atts:

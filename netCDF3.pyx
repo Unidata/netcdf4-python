@@ -351,7 +351,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
 # pure python utilities
-from netCDF4_utils import _StartCountStride, _out_array_shape
+from netCDF4_utils import _StartCountStride, _out_array_shape, OrderedDict
 
 __version__ = "0.8.3"
 
@@ -521,7 +521,7 @@ cdef _get_dims(group):
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
     # create empty dictionary for dimensions.
-    dimensions = {}
+    dimensions = OrderedDict()
     if numdims > 0:
         for n from 0 <= n < numdims:
             ierr = nc_inq_dimname(group._grpid, n, namstring)
@@ -544,7 +544,7 @@ cdef _get_vars(group):
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr))
     # create empty dictionary for variables.
-    variables = {}
+    variables = OrderedDict()
     if numvars > 0:
         # loop over variables. 
         for n from 0 <= n < numvars:
@@ -927,7 +927,7 @@ attributes."""
                 values = []
                 for name in names:
                     values.append(_get_att(self._grpid, NC_GLOBAL, name))
-                return dict(zip(names,values))
+                return OrderedDict(zip(names,values))
             else:
                 raise AttributeError
         elif name in _private_atts:
@@ -1270,7 +1270,7 @@ attributes."""
                 values = []
                 for name in names:
                     values.append(_get_att(self._grpid, self._varid, name))
-                return dict(zip(names,values))
+                return OrderedDict(zip(names,values))
             else:
                 raise AttributeError
         elif name in _private_atts:
