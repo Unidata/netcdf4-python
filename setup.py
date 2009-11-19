@@ -81,6 +81,7 @@ if szip_dir is not None:
     inc_dirs.append(os.path.join(szip_dir,'include'))
     libs.append('sz')
 extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
+extensions.append(Extension('_ordereddict',sources=['ordereddict.c']))
 
 setup(name = "netCDF4",
   version = "0.8.3",

@@ -31,15 +31,13 @@ Requires
 ======== 
 
  - numpy array module U{http://numpy.scipy.org}, version 1.2.1 or later.
- - The HDF5 C library version 1.8.3 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
- Be sure to build with 'C{--enable-hl --enable-shared}'. Version 1.8.3-snap2
- from U{ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4} is recommended, since it fixes
- a bug that may affect the compound types.
+ - The HDF5 C library version 1.8.4 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
+ Be sure to build with 'C{--enable-hl --enable-shared}'.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.1-beta2 or higher is required.
- Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR --enable-shared}',
+ Version 4.1 or higher is required.
+ Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR
+ --enable-shared --enable-dap}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
- To enable U{OPeNDAP<http://opendap.org>} support, build with 'C{--enable-dap}'.
 
 
 Install
@@ -787,7 +785,12 @@ PERFORMANCE OF THIS SOFTWARE."""
 
 # pure python utilities
 from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
-                          _out_array_shape, _sortbylist, OrderedDict
+                          _out_array_shape, _sortbylist
+# try to use built-in ordered dict in python >= 2.7
+try:
+    from collections import OrderedDict
+except:
+    from _ordereddict import ordereddict as OrderedDict
 
 __version__ = "0.8.3"
 
