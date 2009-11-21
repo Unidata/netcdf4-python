@@ -792,7 +792,7 @@ try:
 except:
     from _ordereddict import ordereddict as OrderedDict
 
-__version__ = "0.8.3"
+__version__ = "0.9"
 
 # Initialize numpy
 import os

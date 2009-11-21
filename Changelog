@@ -1,5 +1,5 @@
-version 0.8.3 (not yet released)
-================================
+version 0.9 (svn revision 805)
+==============================
  * used ordered dictionaries for variables, dimensions, groups etc to
    preserve creation order (makes it easier to copy files, fixes
    http://code.google.com/p/netcdf4-python/issues/detail?id=28).
@@ -8,12 +8,6 @@ version 0.8.3 (not yet released)
    automatically be converted to and from masked arrays.  Data scaled as short
    integers using the scale_factor and add_offset attributes will also be
    automatically converted to/from float arrays.
-
- * removed szip support (ugh) since unidata decided to pull it from the 4.1
-   release.
-
- * added support for szip compression (enabled in recent netcdf-4.1
-   snapshots).
 
  * add setncattr, getncattr, delncattr methods (for setting/getting/deleting netcdf
    attributes with names that clash with the reserved python attributes).
