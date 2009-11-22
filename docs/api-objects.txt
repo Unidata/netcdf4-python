@@ -1,6 +1,5 @@
 netCDF3	netCDF3-module.html
 netCDF3._set_default_format	netCDF3-module.html#_set_default_format
-netCDF3._nctonptype	netCDF3-module.html#_nctonptype
 netCDF3.num2date	netCDF3-module.html#num2date
 netCDF3._private_atts	netCDF3-module.html#_private_atts
 netCDF3.chartostring	netCDF3-module.html#chartostring
@@ -12,6 +11,7 @@ netCDF3._value	netCDF3-module.html#_value
 netCDF3.date2index	netCDF3-module.html#date2index
 netCDF3._supportedtypes	netCDF3-module.html#_supportedtypes
 netCDF3._key	netCDF3-module.html#_key
+netCDF3._nctonptype	netCDF3-module.html#_nctonptype
 netCDF3._npversion	netCDF3-module.html#_npversion
 netCDF3._nptonctype	netCDF3-module.html#_nptonctype
 netCDF3._default_fillvals	netCDF3-module.html#_default_fillvals
@@ -20,11 +20,11 @@ netCDF4._set_default_format	netCDF4-module.html#_set_default_format
 netCDF4.num2date	netCDF4-module.html#num2date
 netCDF4._private_atts	netCDF4-module.html#_private_atts
 netCDF4._nctonptype	netCDF4-module.html#_nctonptype
-netCDF4.stringtoarr	netCDF4-module.html#stringtoarr
 netCDF4.stringtochar	netCDF4-module.html#stringtochar
 netCDF4.chartostring	netCDF4-module.html#chartostring
 netCDF4.getlibversion	netCDF4-module.html#getlibversion
 netCDF4.date2num	netCDF4-module.html#date2num
+netCDF4.stringtoarr	netCDF4-module.html#stringtoarr
 netCDF4._value	netCDF4-module.html#_value
 netCDF4.date2index	netCDF4-module.html#date2index
 netCDF4._supportedtypes	netCDF4-module.html#_supportedtypes
