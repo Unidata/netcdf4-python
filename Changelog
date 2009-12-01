@@ -1,4 +1,4 @@
-version 0.9 (svn revision 805)
+version 0.9 (svn revision 809)
 ==============================
  * used ordered dictionaries for variables, dimensions, groups etc to
    preserve creation order (makes it easier to copy files, fixes
