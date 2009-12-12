@@ -663,7 +663,7 @@ or C{NETCDF3_64BIT}."""
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
-        path = filename
+        path = PyString_AsString(str(filename))
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
@@ -777,7 +777,7 @@ renameDimension(self, oldname, newname)
 rename a L{Dimension} named C{oldname} to C{newname}."""
         cdef char *namstring
         dim = self.dimensions[oldname]
-        namstring = PyString_AsString(newname)
+        namstring = PyString_AsString(str(newname))
         self._redef()
         ierr = nc_rename_dim(self._grpid, dim._dimid, namstring)
         self._enddef()
@@ -849,7 +849,7 @@ rename a L{Variable} named C{oldname} to C{newname}"""
             var = self.variables[oldname]
         except:
             raise KeyError('%s not a valid variable name' % oldname)
-        namstring = PyString_AsString(newname)
+        namstring = PyString_AsString(str(newname))
         self._redef()
         ierr = nc_rename_var(self._grpid, var._varid, namstring)
         self._enddef()
@@ -895,7 +895,7 @@ delete a netCDF dataset or group attribute.  Only use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
-        attname = PyString_AsString(name)
+        attname = PyString_AsString(str(name))
         self._redef()
         ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
         self._enddef()
@@ -981,7 +981,7 @@ determine if the dimension is unlimited"""
         if kwargs.has_key('id'):
             self._dimid = kwargs['id']
         else:
-            dimname = PyString_AsString(name)
+            dimname = PyString_AsString(str(name))
             if size is not None:
                 lendim = size
             else:
@@ -1234,7 +1234,7 @@ delete a netCDF variable attribute.  Only use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
-        attname = PyString_AsString(name)
+        attname = PyString_AsString(str(name))
         self._grp._redef()
         ierr = nc_del_att(self._grpid, self._varid, attname)
         self._grp._enddef()

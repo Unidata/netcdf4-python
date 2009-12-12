@@ -1264,7 +1264,7 @@ group, so the path is simply C{'/'}."""
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
-        path = PyString_AsString(filename)
+        path = PyString_AsString(str(filename))
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
@@ -1387,7 +1387,7 @@ renameDimension(self, oldname, newname)
 rename a L{Dimension} named C{oldname} to C{newname}."""
         cdef char *namstring
         dim = self.dimensions[oldname]
-        namstring = PyString_AsString(newname)
+        namstring = PyString_AsString(str(newname))
         if self.file_format != 'NETCDF4': self._redef()
         ierr = nc_rename_dim(self._grpid, dim._dimid, namstring)
         if self.file_format != 'NETCDF4': self._enddef()
@@ -1545,7 +1545,7 @@ rename a L{Variable} named C{oldname} to C{newname}"""
             var = self.variables[oldname]
         except KeyError:
             raise KeyError('%s not a valid variable name' % oldname)
-        namstring = PyString_AsString(newname)
+        namstring = PyString_AsString(str(newname))
         if self.file_format != 'NETCDF4': self._redef()
         ierr = nc_rename_var(self._grpid, var._varid, namstring)
         if self.file_format != 'NETCDF4': self._enddef()
@@ -1610,7 +1610,7 @@ netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
         cdef int ierr
-        attname = PyString_AsString(name)
+        attname = PyString_AsString(str(name))
         if self.file_format != 'NETCDF4': self._redef()
         ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
         if self.file_format != 'NETCDF4': self._enddef()
@@ -1679,7 +1679,7 @@ method)."""
         cdef int ierr, n, numgrps, numdims, numvars
         cdef char *groupname
         cdef char namstring[NC_MAX_NAME+1]
-        groupname = PyString_AsString(name)
+        groupname = PyString_AsString(str(name))
         if kwargs.has_key('id'):
             self._grpid = kwargs['id']
         else:
@@ -1755,7 +1755,7 @@ determine if the dimension is unlimited"""
         if kwargs.has_key('id'):
             self._dimid = kwargs['id']
         else:
-            dimname = PyString_AsString(name)
+            dimname = PyString_AsString(str(name))
             if size is not None:
                 lendim = size
             else:
@@ -1978,7 +1978,7 @@ instance. If C{None}, the data is not truncated. """
         if kwargs.has_key('id'):
             self._varid = kwargs['id']
         else:
-            varname = PyString_AsString(name)
+            varname = PyString_AsString(str(name))
             ndims = len(dimensions)
             # find dimension ids.
             if ndims:
@@ -2184,7 +2184,7 @@ delete a netCDF variable attribute.  Only use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
-        attname = PyString_AsString(name)
+        attname = PyString_AsString(str(name))
         if self._grp.file_format != 'NETCDF4': self._grp._redef()
         ierr = nc_del_att(self._grpid, self._varid, attname)
         if self._grp.file_format != 'NETCDF4': self._grp._enddef()
