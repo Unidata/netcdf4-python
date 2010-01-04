@@ -500,7 +500,13 @@ class _Variable(object):
                     lstArr.append(dat)
             lstArr = numpy.concatenate(lstArr)
             if dat.dtype != data.dtype: data = data.astype(dat.dtype)
-            data[tuple(ind)] = lstArr.squeeze()
+            # sometimes there are legitimate singleton dimensions, in which
+            # case the array shapes won't conform. If so, a ValueError will
+            # result, and no squeeze will be done.
+            try:
+                data[tuple(ind)] = lstArr.squeeze()
+            except ValueError:
+                data[tuple(ind)] = lstArr
 
         # Remove extra singleton dimensions. 
         data = data[tuple(squeeze)]
