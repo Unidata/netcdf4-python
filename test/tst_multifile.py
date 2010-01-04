@@ -4,7 +4,7 @@ from numpy.random import seed, randint
 from numpy.testing import assert_array_equal
 import tempfile, unittest, os
 
-nx=100; ydim=5; zdim=10
+nx=100; ydim=5; zdim=1
 nfiles = 10
 ninc = nx/nfiles
 files = [tempfile.mktemp(".nc") for nfile in range(nfiles)]
@@ -47,6 +47,7 @@ class VariablesTestCase(unittest.TestCase):
         assert varin.dimensions == ('x','y','z')
         assert_array_equal(varin[4:-4:4,3:5,2:8],data[4:-4:4,3:5,2:8])
         assert varin[0,0,0] == data[0,0,0]
+        assert_array_equal(varin[:],data)
         assert getattr(varin,'nonexistantatt',None) == None
         f.close()
 

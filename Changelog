@@ -1,5 +1,8 @@
-version 0.9 (svn revision 809)
+version 0.9 (svn revision 813)
 ==============================
+ * fix bug (issue 34) when slicing MFDataset variables with dimensions of
+   length 1.
+
  * used ordered dictionaries for variables, dimensions, groups etc to
    preserve creation order (makes it easier to copy files, fixes
    http://code.google.com/p/netcdf4-python/issues/detail?id=28).
