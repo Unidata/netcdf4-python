@@ -1,7 +1,6 @@
 recursive-include docs *
 include MANIFEST.in
 include README
-include README.pydap
 include setup-netcdftime.py
 include setup-nc3.py
 include Changelog
