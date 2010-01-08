@@ -1,4 +1,4 @@
-version 0.9 (svn revision 813)
+version 0.9 (svn revision 816)
 ==============================
  * fix bug (issue 34) when slicing MFDataset variables with dimensions of
    length 1.
