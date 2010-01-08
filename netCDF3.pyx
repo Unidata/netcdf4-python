@@ -355,8 +355,8 @@ from netCDF4_utils import _StartCountStride, _out_array_shape
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict
-except:
-    from _ordereddict import ordereddict as OrderedDict
+except: # or else use drop-in substitute
+    from netCDF4_utils import OrderedDict
 
 __version__ = "0.9"
 
