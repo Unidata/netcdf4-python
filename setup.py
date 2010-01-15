@@ -71,15 +71,15 @@ else:
     if not isnetcdf4:
         raise ValueError('did not find netCDF version 4 headers and libs in %s' % netCDF4_dir)
 
-libs = ['netcdf','hdf5_hl','hdf5','z','sz']
+libs = ['netcdf','hdf5_hl','hdf5','z']
 lib_dirs = [os.path.join(netCDF4_dir,'lib'),os.path.join(HDF5_dir,'lib')]
 inc_dirs = [os.path.join(netCDF4_dir,'include'),os.path.join(HDF5_dir,'include')]
 # add szip to link if desired.
 szip_dir = os.environ.get('SZIP_DIR')
 if szip_dir is not None:
+    libs.append('sz')
     lib_dirs.append(os.path.join(szip_dir,'lib'))
     inc_dirs.append(os.path.join(szip_dir,'include'))
-#    libs.append('sz')
 extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
 
 setup(name = "netCDF4",
