@@ -105,7 +105,8 @@ cdef class open(object):
             key = PyString_AsString(name)
             # skip these apparently bogus keys (grib_api 1.8.0)
             if key in\
-            ['zero','one','eight','eleven','false','thousand','file','localDir','7777']:
+            ['zero','one','eight','eleven','false','thousand','file','localDir','7777',
+             'oneThousand']:
                 continue
             err = grib_get_native_type(self._gh, name, &type)
             if err:
