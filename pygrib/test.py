@@ -13,3 +13,4 @@ for grb in pygrib.open(filename):
         print k,'=',grb[k]
     data = grb['values']
     print 'min/max of data = ',data.min(),data.max()
+    lons, lats = grb.latlons()
