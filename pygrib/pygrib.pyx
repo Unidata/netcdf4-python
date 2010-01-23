@@ -348,12 +348,47 @@ cdef class open(object):
             y = llcrnry+dy*np.arange(ny)
             x, y = np.meshgrid(x, y)
             lons, lats = pj(x, y, inverse=True)
+        elif self['typeOfGrid'] =='albers':
+            lat1 = self['latitudeOfFirstGridPointInDegrees']
+            lon1 = self['longitudeOfFirstGridPointInDegrees']
+            nx = self['Ni']
+            ny = self['Nj']
+            dx = self['Dx']/1000.
+            dy = self['Dy']/1000.
+            projparams['proj']='aea'
+            scale = float(self['grib2divider'])
+            projparams['lon_0']=self['LoV']/scale
+            if self['truncateDegrees']:
+                projparams['lon_0'] = int(projparams['lon_0'])
+            projparams['lat_0']=self['LaD']/scale
+            if self['truncateDegrees']:
+                projparams['lat_0'] = int(projparams['lat_0'])
+            projparams['lat_1']=self['Latin1']/scale
+            if self['truncateDegrees']:
+                projparams['lat_1'] = int(projparams['lat_1'])
+            projparams['lat_2']=self['Latin2']/scale
+            if self['truncateDegrees']:
+                projparams['lat_2'] = int(projparams['lat_2'])
+            pj = pyproj.Proj(projparams)
+            llcrnrx, llcrnry = pj(lon1,lat1)
+            x = llcrnrx+dx*np.arange(nx)
+            y = llcrnry+dy*np.arange(ny)
+            x, y = np.meshgrid(x, y)
+            lons, lats = pj(x, y, inverse=True)
         elif self['typeOfGrid'] == 'mercator':
             scale = float(self['grib2divider'])
             lat1 = self['latitudeOfFirstGridPoint']/scale
+            if self['truncateDegrees']:
+                lat1 = int(lat1)
             lon1 = self['longitudeOfFirstGridPoint']/scale
+            if self['truncateDegrees']:
+                lon1 = int(lon1)
             lat2 = self['latitudeOfLastGridPoint']/scale
+            if self['truncateDegrees']:
+                lat2 = int(lat2)
             lon2 = self['longitudeOfLastGridPoint']/scale
+            if self['truncateDegrees']:
+                lon2 = int(lon2)
             projparams['lat_ts']=self['latitudeSAtWhichTheMercatorProjectionIntersectsTheEarth']/scale
             projparams['lon_0']=0.5*(lon1+lon2)
             projparams['proj']='merc'
