@@ -299,7 +299,8 @@ cdef class open(object):
             lons = self['longitudes']
             lats = self['latitudes']
             lons,lats = np.meshgrid(lons,lats) 
-        elif self['typeOfGrid'].startswith('reduced'):
+            projparams['proj']='cyl'
+        elif self['typeOfGrid'].startswith('reduced'): # reduced lat/lon grid
             lats = self['distinctLatitudes']
             ny = self['Nj']
             nx = 2*ny
@@ -308,6 +309,7 @@ cdef class open(object):
             lon2 = self['longitudeOfLastGridPointInDegrees']
             lons = np.arange(lon1,lon2+delon,delon)
             lons,lats = np.meshgrid(lons,lats) 
+            projparams['proj']='cyl'
         elif self['typeOfGrid'] == 'polar_stereographic':
             lat1 = self['latitudeOfFirstGridPointInDegrees']
             lon1 = self['longitudeOfFirstGridPointInDegrees']
@@ -328,7 +330,6 @@ cdef class open(object):
             y = llcrnry+dy*np.arange(ny)
             x, y = np.meshgrid(x, y)
             lons, lats = pj(x, y, inverse=True)
-            self.projparams = projparams
         elif self['typeOfGrid'] == 'lambert':
             lat1 = self['latitudeOfFirstGridPointInDegrees']
             lon1 = self['longitudeOfFirstGridPointInDegrees']
@@ -347,7 +348,6 @@ cdef class open(object):
             y = llcrnry+dy*np.arange(ny)
             x, y = np.meshgrid(x, y)
             lons, lats = pj(x, y, inverse=True)
-            self.projparams = projparams
         elif self['typeOfGrid'] == 'mercator':
             scale = float(self['grib2divider'])
             lat1 = self['latitudeOfFirstGridPoint']/scale
@@ -368,7 +368,7 @@ cdef class open(object):
             y = llcrnry+dy*np.arange(ny)
             x, y = np.meshgrid(x, y)
             lons, lats = pj(x, y, inverse=True)
-            self.projparams = projparams
+        self.projparams = projparams
         return lats, lons
 
 cdef _redtoreg(int nlons, ndarray lonsperlat, ndarray redgrid, double missval):
