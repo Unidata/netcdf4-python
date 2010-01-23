@@ -245,11 +245,11 @@ cdef class open(object):
                 # rows scan in the -x direction (so flip)
                 if not self['jScansPositively']:
                     datsave = datarr.copy()
-                    datarr[:,:] = datsave[:,::-1]
+                    datarr[:,:] = datsave[::-1,:]
                 # columns scan in the -y direction (so flip)
                 if self['iScansNegatively']:
                     datsave = datarr.copy()
-                    datarr[:,:] = datsave[::-1,:]
+                    datarr[:,:] = datsave[:,::-1]
                 # adjacent rows scan in opposite direction.
                 # (flip every other row)
                 if self['alternativeRowScanning']:
@@ -298,6 +298,15 @@ cdef class open(object):
         if self['typeOfGrid'] in ['regular_gg','regular_ll']: # regular lat/lon grid
             lons = self['longitudes']
             lats = self['latitudes']
+            lons,lats = np.meshgrid(lons,lats) 
+        elif self['typeOfGrid'].startswith('reduced'):
+            lats = self['distinctLatitudes']
+            ny = self['Nj']
+            nx = 2*ny
+            delon = 360./nx
+            lon1 = self['longitudeOfFirstGridPointInDegrees']
+            lon2 = self['longitudeOfLastGridPointInDegrees']
+            lons = np.arange(lon1,lon2+delon,delon)
             lons,lats = np.meshgrid(lons,lats) 
         elif self['typeOfGrid'] == 'polar_stereographic':
             lat1 = self['latitudeOfFirstGridPointInDegrees']
