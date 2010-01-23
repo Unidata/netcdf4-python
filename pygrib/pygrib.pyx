@@ -1,5 +1,6 @@
 import numpy as np
 from numpy import ma
+import pyproj
 import warnings
 import_array()
 
@@ -72,7 +73,7 @@ cdef extern from "grib_api.h":
 cdef class open(object):
     cdef FILE *_fd
     cdef grib_handle *_gh
-    cdef public object filename
+    cdef public object filename, projparams
     def __new__(self, filename):
         cdef grib_handle *gh
         cdef FILE *_fd
@@ -147,7 +148,12 @@ cdef class open(object):
                     raise RuntimeError(grib_get_error_message(err))
                 return longval
             else: # array
-                datarr = np.empty(size, np.int32)
+                if self.has_key('jPointsAreConsecutive') and\
+                   self['jPointsAreConsecutive']:
+                    storageorder='F'
+                else:
+                    storageorder='C'
+                datarr = np.empty(size, np.int32, order=storageorder)
                 err = grib_get_long_array(self._gh, name, <long *>datarr.data, &size)
                 if err:
                     raise RuntimeError(grib_get_error_message(err))
@@ -162,7 +168,12 @@ cdef class open(object):
                     raise RuntimeError(grib_get_error_message(err))
                 return doubleval
             else: # array
-                datarr = np.empty(size, np.double)
+                if self.has_key('jPointsAreConsecutive') and\
+                   self['jPointsAreConsecutive']:
+                    storageorder='F'
+                else:
+                    storageorder='C'
+                datarr = np.empty(size, np.double, order=storageorder)
                 err = grib_get_double_array(self._gh, name, <double *>datarr.data, &size)
                 if err:
                     raise RuntimeError(grib_get_error_message(err))
@@ -176,7 +187,7 @@ cdef class open(object):
             if err:
                 raise RuntimeError(grib_get_error_message(err))
             msg = PyString_FromString(strdata)
-            return msg
+            return msg.rstrip()
         elif type == GRIB_TYPE_BYTES:
             msg="cannot read data (size %d) for keys '%s', GRIB_TYPE_BYTES decoding not supported" %\
             (size,name)
@@ -229,10 +240,127 @@ cdef class open(object):
                 else:
                     missval = 1.e30
                 datarr = _redtoreg(2*ny, self['pl'], datarr, missval)
+            # check scan modes for rect grids.
+            if len(datarr.shape) == 2:
+                # rows scan in the -x direction (so flip)
+                if not self['jScansPositively']:
+                    datsave = datarr.copy()
+                    datarr[:,:] = datsave[:,::-1]
+                # columns scan in the -y direction (so flip)
+                if self['iScansNegatively']:
+                    datsave = datarr.copy()
+                    datarr[:,:] = datsave[::-1,:]
+                # adjacent rows scan in opposite direction.
+                # (flip every other row)
+                if self['alternativeRowScanning']:
+                    datsave = datarr.copy()
+                    datarr[1::2,:] = datsave[1::2,::-1]
             if self.has_key('missingValue') and self['numberOfMissing']:
                 #if (datarr == self['missingValue']).any():
                 datarr = ma.masked_values(datarr, self['missingValue'])
         return datarr
+    def latlons(self):
+        """
+ return lats,lons (in degrees) of grid.
+ currently can handle reg. lat/lon, global gaussian, mercator, stereographic,
+ lambert conformal, albers equal-area, space-view and azimuthal 
+ equidistant grids.
+
+ @return: C{B{lats},B{lons}}, float32 numpy arrays 
+ containing latitudes and longitudes of grid (in degrees).
+        """
+        projparams = {}
+
+        if self['shapeOfTheEarth'] == 6:
+            projparams['a']=self['radius']
+            projparams['b']=self['radius']
+        elif self['shapeOfTheEarth'] in [3,7]:
+            projparams['a']=self['scaledValueOfMajorAxisOfOblateSpheroidEarth']
+            projparams['b']=self['scaledValueOfMinorAxisOfOblateSpheroidEarth']
+        elif self['shapeOfTheEarth'] == 2:
+            projparams['a']=6378160.0
+            projparams['b']=6356775.0 
+        elif self['shapeOfTheEarth'] == 1:
+            projparams['a']=self['scaledValueOfRadiusOfSphericalEarth']
+            projparams['b']=self['scaledValueOfRadiusOfSphericalEarth']
+        elif self['shapeOfTheEarth'] == 0:
+            projparams['a']=6367470.0
+            projparams['b']=6367470.0
+        elif self['shapeOfTheEarth'] == 0: # WGS84
+            projparams['a']=6378137.0
+            projparams['b']=6356752.3142
+        elif self['shapeOfTheEarth'] == 8:
+            projparams['a']=6371200.0
+            projparams['b']=6371200.0
+        else:
+            raise ValueError('unknown shape of the earth flag')
+
+        if self['typeOfGrid'] in ['regular_gg','regular_ll']: # regular lat/lon grid
+            lons = self['longitudes']
+            lats = self['latitudes']
+            lons,lats = np.meshgrid(lons,lats) 
+        elif self['typeOfGrid'] == 'polar_stereographic':
+            lat1 = self['latitudeOfFirstGridPointInDegrees']
+            lon1 = self['longitudeOfFirstGridPointInDegrees']
+            nx = self['Ni']
+            ny = self['Nj']
+            dx = self['xDirectionGridLengthInMetres']
+            dy = self['yDirectionGridLengthInMetres']
+            projparams['proj']='stere'
+            projparams['lat_ts']=self['latitudeWhereDxAndDyAreSpecifiedInDegrees']
+            if self['projectionCentreFlag'] == 0:
+                projparams['lat_0']=90.
+            else:
+                projparams['lat_0']=-90.
+            projparams['lon_0']=self['orientationOfTheGridInDegrees']
+            pj = pyproj.Proj(projparams)
+            llcrnrx, llcrnry = pj(lon1,lat1)
+            x = llcrnrx+dx*np.arange(nx)
+            y = llcrnry+dy*np.arange(ny)
+            x, y = np.meshgrid(x, y)
+            lons, lats = pj(x, y, inverse=True)
+            self.projparams = projparams
+        elif self['typeOfGrid'] == 'lambert':
+            lat1 = self['latitudeOfFirstGridPointInDegrees']
+            lon1 = self['longitudeOfFirstGridPointInDegrees']
+            nx = self['Ni']
+            ny = self['Nj']
+            dx = self['DxInMetres']
+            dy = self['DyInMetres']
+            projparams['proj']='lcc'
+            projparams['lon_0']=self['LoVInDegrees']
+            projparams['lat_0']=self['LaDInDegrees']
+            projparams['lat_1']=self['Latin1InDegrees']
+            projparams['lat_2']=self['Latin2InDegrees']
+            pj = pyproj.Proj(projparams)
+            llcrnrx, llcrnry = pj(lon1,lat1)
+            x = llcrnrx+dx*np.arange(nx)
+            y = llcrnry+dy*np.arange(ny)
+            x, y = np.meshgrid(x, y)
+            lons, lats = pj(x, y, inverse=True)
+            self.projparams = projparams
+        elif self['typeOfGrid'] == 'mercator':
+            scale = float(self['grib2divider'])
+            lat1 = self['latitudeOfFirstGridPoint']/scale
+            lon1 = self['longitudeOfFirstGridPoint']/scale
+            lat2 = self['latitudeOfLastGridPoint']/scale
+            lon2 = self['longitudeOfLastGridPoint']/scale
+            projparams['lat_ts']=self['latitudeSAtWhichTheMercatorProjectionIntersectsTheEarth']/scale
+            projparams['lon_0']=0.5*(lon1+lon2)
+            projparams['proj']='merc'
+            pj = pyproj.Proj(projparams)
+            llcrnrx, llcrnry = pj(lon1,lat1)
+            urcrnrx, urcrnry = pj(lon2,lat2)
+            nx = self['Ni']
+            ny = self['Nj']
+            dx = (urcrnrx-llcrnrx)/(nx-1)
+            dy = (urcrnry-llcrnry)/(ny-1)
+            x = llcrnrx+dx*np.arange(nx)
+            y = llcrnry+dy*np.arange(ny)
+            x, y = np.meshgrid(x, y)
+            lons, lats = pj(x, y, inverse=True)
+            self.projparams = projparams
+        return lats, lons
 
 cdef _redtoreg(int nlons, ndarray lonsperlat, ndarray redgrid, double missval):
 # convert data on global reduced gaussian to global
