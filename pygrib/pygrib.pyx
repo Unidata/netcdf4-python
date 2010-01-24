@@ -1,5 +1,6 @@
 import numpy as np
 from numpy import ma
+import math
 import pyproj
 import warnings
 import_array()
@@ -271,18 +272,25 @@ cdef class open(object):
         """
         projparams = {}
 
+        if self.has_key('scaleFactorOfMajorAxisOfOblateSpheroidEarth'):
+            scalea = self['scaleFactorOfMajorAxisOfOblateSpheroidEarth']
+            scaleb = self['scaleFactorOfMinorAxisOfOblateSpheroidEarth']
+            scalea = 1000.*math.pow(10,-scalea)
+            scaleb = 1000.*math.pow(10,-scaleb)
+        else:
+            scale = 1.
         if self['shapeOfTheEarth'] == 6:
             projparams['a']=self['radius']
             projparams['b']=self['radius']
         elif self['shapeOfTheEarth'] in [3,7]:
-            projparams['a']=self['scaledValueOfMajorAxisOfOblateSpheroidEarth']
-            projparams['b']=self['scaledValueOfMinorAxisOfOblateSpheroidEarth']
+            projparams['a']=self['scaledValueOfMajorAxisOfOblateSpheroidEarth']*scalea
+            projparams['b']=self['scaledValueOfMinorAxisOfOblateSpheroidEarth']*scaleb
         elif self['shapeOfTheEarth'] == 2:
             projparams['a']=6378160.0
             projparams['b']=6356775.0 
         elif self['shapeOfTheEarth'] == 1:
-            projparams['a']=self['scaledValueOfRadiusOfSphericalEarth']
-            projparams['b']=self['scaledValueOfRadiusOfSphericalEarth']
+            projparams['a']=self['scaledValueOfRadiusOfSphericalEarth']*scalea
+            projparams['b']=self['scaledValueOfRadiusOfSphericalEarth']*scaleb
         elif self['shapeOfTheEarth'] == 0:
             projparams['a']=6367470.0
             projparams['b']=6367470.0
@@ -375,6 +383,55 @@ cdef class open(object):
             y = llcrnry+dy*np.arange(ny)
             x, y = np.meshgrid(x, y)
             lons, lats = pj(x, y, inverse=True)
+        elif self['typeOfGrid'] == 'space_view':
+            nx = self['Ni']
+            ny = self['Nj']
+            projparams['lon_0']=self['longitudeOfSubSatellitePointInDegrees']
+            projparams['lat_0']=self['latitudeOfSubSatellitePointInDegrees']
+            if projparams['lat_0'] == 0.: # if lat_0 is equator, it's a
+                projparams['proj'] = 'geos'
+            # general case of 'near-side perspective projection' (untested)
+            else:
+                projparams['proj'] = 'nsper'
+                msg = """
+only geostationary perspective is fully supported.
+lat/lon values returned by grid method may be incorrect."""
+                warnings.warn(msg)
+            scale = float(self['grib2divider'])
+            projparams['h'] = projparams['a'] *\
+            self['altitudeOfTheCameraFromTheEarthSCenterMeasuredInUnitsOfTheEarth']/scale
+            # latitude of horizon on central meridian
+            lonmax =\
+            90.-(180./np.pi)*np.arcsin(projparams['a']/projparams['h'])
+            # longitude of horizon on equator
+            latmax =\
+            90.-(180./np.pi)*np.arcsin(projparams['b']/projparams['h'])
+            # h is measured from surface of earth at equator.
+            projparams['h'] = projparams['h']-projparams['a']
+            # truncate to nearest thousandth of a degree (to make sure
+            # they aren't slightly over the horizon)
+            latmax = int(1000*latmax)/1000.
+            lonmax = int(1000*lonmax)/1000.
+            pj = pyproj.Proj(projparams)
+            x1,y1 = pj(0.,latmax); x2,y2 = pj(lonmax,0.)
+            width = 2*x2; height = 2*y1
+            dx =\
+            width/self['apparentDiameterOfEarthInGridLengthsInXDirection']
+            dy =\
+            height/self['apparentDiameterOfEarthInGridLengthsInYDirection']
+            x = dx*np.indices((ny,nx),'f')[1,:,:]
+            x = x - 0.5*x.max()
+            y = dy*np.indices((ny,nx),'f')[0,:,:]
+            y = y - 0.5*y.max()
+            lons, lats = pj(x,y,inverse=True)
+            # set lons,lats to 1.e30 where undefined
+            abslons = np.fabs(lons); abslats = np.fabs(lats)
+            lons = np.where(abslons < 1.e20, lons, 1.e30)
+            lats = np.where(abslats < 1.e20, lats, 1.e30)
+        elif self['typeOfGrid'] == "equatorial_azimuthal_equidistant":
+            pass
+        elif self['typeOfGrid'] == "lambert_azimuthal_equal_area":
+            pass
         elif self['typeOfGrid'] == 'mercator':
             scale = float(self['grib2divider'])
             lat1 = self['latitudeOfFirstGridPoint']/scale
