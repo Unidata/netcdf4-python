@@ -1,6 +1,5 @@
 import numpy as np
 from numpy import ma
-import math
 import pyproj
 import warnings
 import_array()
@@ -276,8 +275,8 @@ cdef class open(object):
         if self.has_key('scaleFactorOfMajorAxisOfOblateSpheroidEarth'):
             scalea = self['scaleFactorOfMajorAxisOfOblateSpheroidEarth']
             scaleb = self['scaleFactorOfMinorAxisOfOblateSpheroidEarth']
-            scalea = 1000.*math.pow(10,-scalea)
-            scaleb = 1000.*math.pow(10,-scaleb)
+            scalea = 1000.*np.power(10,-scalea)
+            scaleb = 1000.*np.power(10,-scaleb)
         else:
             scale = 1.
         if self['shapeOfTheEarth'] == 6:
