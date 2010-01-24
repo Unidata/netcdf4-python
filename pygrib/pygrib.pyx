@@ -429,9 +429,33 @@ lat/lon values returned by grid method may be incorrect."""
             lons = np.where(abslons < 1.e20, lons, 1.e30)
             lats = np.where(abslats < 1.e20, lats, 1.e30)
         elif self['typeOfGrid'] == "equatorial_azimuthal_equidistant":
-            pass
+            projparams['lat_0'] = self['standardParallel']/1.e6
+            projparams['lon_0'] = self['centralLongitude']/1.e6
+            dx = self['Dx']/1.e3
+            dy = self['Dy']/1.e3
+            projparams['proj'] = 'aeqd'
+            lat1 = self['latitudeOfFirstGridPointInDegrees']
+            lon1 = self['longitudeOfFirstGridPointInDegrees']
+            pj = pyproj.Proj(projparams)
+            llcrnrx, llcrnry = pj(lon1,lat1)
+            x = llcrnrx+dx*np.arange(nx)
+            y = llcrnry+dy*np.arange(ny)
+            x, y = np.meshgrid(x, y)
+            lons, lats = pj(x, y, inverse=True)
         elif self['typeOfGrid'] == "lambert_azimuthal_equal_area":
-            pass
+            projparams['lat_0'] = self['standardParallel']/1.e6
+            projparams['lon_0'] = self['centralLongitude']/1.e6
+            dx = self['Dx']/1.e3
+            dy = self['Dy']/1.e3
+            projparams['proj'] = 'laea'
+            lat1 = self['latitudeOfFirstGridPointInDegrees']
+            lon1 = self['longitudeOfFirstGridPointInDegrees']
+            pj = pyproj.Proj(projparams)
+            llcrnrx, llcrnry = pj(lon1,lat1)
+            x = llcrnrx+dx*np.arange(nx)
+            y = llcrnry+dy*np.arange(ny)
+            x, y = np.meshgrid(x, y)
+            lons, lats = pj(x, y, inverse=True)
         elif self['typeOfGrid'] == 'mercator':
             scale = float(self['grib2divider'])
             lat1 = self['latitudeOfFirstGridPoint']/scale
@@ -460,6 +484,8 @@ lat/lon values returned by grid method may be incorrect."""
             y = llcrnry+dy*np.arange(ny)
             x, y = np.meshgrid(x, y)
             lons, lats = pj(x, y, inverse=True)
+        else:
+            raise ValueError('unsupported grid')
         self.projparams = projparams
         return lats, lons
 
