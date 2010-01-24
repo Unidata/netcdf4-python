@@ -264,10 +264,11 @@ cdef class open(object):
         """
  return lats,lons (in degrees) of grid.
  currently can handle reg. lat/lon, global gaussian, mercator, stereographic,
- lambert conformal, albers equal-area, space-view and azimuthal 
- equidistant grids.
+ lambert conformal, albers equal-area, space-view, azimuthal 
+ equidistant, reduced gaussian, reduced lat/lon and
+ lambert azimuthal equal-area grids.
 
- @return: C{B{lats},B{lons}}, float32 numpy arrays 
+ @return: C{B{lats},B{lons}}, numpy arrays 
  containing latitudes and longitudes of grid (in degrees).
         """
         projparams = {}
