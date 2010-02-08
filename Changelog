@@ -1,13 +1,14 @@
-version 0.9 (svn revision 837)
+version 0.9 (svn revision 839)
 ==============================
+ * fixed bug (issue 30) with date2index occurring with dates outside the support.
+
  * make sure that auto masking works with MFDataset.
 
  * fix bug (issue 34) when slicing MFDataset variables with dimensions of
    length 1.
 
  * used ordered dictionaries for variables, dimensions, groups etc to
-   preserve creation order (makes it easier to copy files, fixes
-   http://code.google.com/p/netcdf4-python/issues/detail?id=28).
+   preserve creation order (makes it easier to copy files, fixes issue 28).
 
  * change automaskandscale default to True.  This means data will
    automatically be converted to and from masked arrays.  Data scaled as short
