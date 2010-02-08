@@ -3,6 +3,15 @@ import numpy as np
 from numpy import ma
 import types, warnings
 
+
+def _netcdf_version():
+    """Return a tuple with the netCDF version number, eg. (4,0,1)."""
+    import subprocess, re
+    output = subprocess.Popen(["nc-config", "--version"], stdout=subprocess.PIPE).communicate()[0]
+    version = re.match('netCDF (\d)\.(\d)\.(\d)', output).groups()
+    return tuple([int(d) for d in version])
+    
+        
 def _sortbylist(A,B):
     # sort one list (A) using the values from another list (B)
     return [A[i] for i in sorted(range(len(A)), key=B.__getitem__)]

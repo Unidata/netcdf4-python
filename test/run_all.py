@@ -1,4 +1,4 @@
-import glob, os, sys, unittest
+import glob, os, sys, unittest, netCDF4
 
 __all__ = ['test']
 # Find all test files.
@@ -12,15 +12,21 @@ os.environ['PYTHONPATH'] = py_path
 
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
+version = netCDF4._netcdf_version()
 for f in test_files:
     ff = os.path.join(sys.path[0],f)
     m = __import__(os.path.splitext(f)[0])
+    if m.__name__ == 'tst_compoundvar':
+        if not(version[0] >= 4 and version[1] >=1):
+            continue
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
+    
 
 # Run the test suite. 
-runner = unittest.TextTestRunner()
 
-def test():
+
+def test(verbosity=1):
+    runner = unittest.TextTestRunner(verbosity=verbosity)
     runner.run(testsuite)
 
 if __name__ == '__main__':
