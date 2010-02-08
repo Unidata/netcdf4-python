@@ -7,7 +7,7 @@ import sys
 import unittest
 import os, tempfile
 from datetime import datetime
-from numpy.testing import assert_almost_equal, assert_equal
+from numpy.testing import assert_almost_equal, assert_equal, assert_raises
 
 # test netcdftime module for netCDF time <--> python datetime conversions.
 
@@ -279,7 +279,24 @@ class TestDate2index(unittest.TestCase):
         t = date2index(dates, nutime, select='nearest')
         assert_equal(t, [1,2,3])
     
-
-
+        # Test dates outside the support with select
+        t = date2index(datetime(1949,12,1), nutime, select='nearest')
+        assert_equal(t, 0)
+        
+        t = date2index(datetime(1978,1,1), nutime, select='nearest')
+        assert_equal(t, 365)
+        
+        # Test dates outsied the support with before
+        assert_raises(ValueError, date2index, datetime(1949,12,1), nutime, select='before')
+        
+        t = date2index(datetime(1978,1,1), nutime, select='before')
+        assert_equal(t, 365)
+        
+        # Test dates outsied the support with after
+        t = date2index(datetime(1949,12,1), nutime, select='after')
+        assert_equal(t, 0)
+        
+        assert_raises(ValueError, date2index, datetime(1978,1,1), nutime, select='after')
+        
 if __name__ == '__main__':
     unittest.main()
