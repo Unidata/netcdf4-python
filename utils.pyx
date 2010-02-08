@@ -488,6 +488,7 @@ class _Variable(object):
             # Apply the slicing expression to each var in turn, extracting records
             # in a list of arrays.
             lstArr = []
+            ismasked = False
             for n in range(nv):
                 # Get the list of indices for variable 'n'.
                 idx = [i for i,numv in lst if numv == n]
@@ -497,9 +498,17 @@ class _Variable(object):
                     # Extract records from the var, and append them to a list
                     # of arrays.
                     dat = Variable.__getitem__(self._recVar[n],tuple(newSlice))
+                    if hasattr(dat,'mask') and not ismasked:
+                        ismasked=True
+                        fill_value = dat.fill_value
                     lstArr.append(dat)
-            lstArr = numpy.concatenate(lstArr)
-            if dat.dtype != data.dtype: data = data.astype(dat.dtype)
+            if ismasked:
+                lstArr = ma.concatenate(lstArr)
+                data = ma.empty(data.shape, data.dtype)
+                data.fill_value = fill_value
+            else:
+                lstArr = numpy.concatenate(lstArr)
+            if lstArr.dtype != data.dtype: data = data.astype(lstArr.dtype)
             # sometimes there are legitimate singleton dimensions, in which
             # case the array shapes won't conform. If so, a ValueError will
             # result, and no squeeze will be done.

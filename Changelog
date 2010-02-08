@@ -1,5 +1,7 @@
-version 0.9 (svn revision 821)
+version 0.9 (svn revision 836)
 ==============================
+ * make sure that auto masking works with MFDataset.
+
  * fix bug (issue 34) when slicing MFDataset variables with dimensions of
    length 1.
 
