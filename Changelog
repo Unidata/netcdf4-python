@@ -1,4 +1,4 @@
-version 0.9 (svn revision 845)
+version 0.9 (svn revision 846)
 ==============================
  * fixed bug (issue 30) with date2index occurring with dates outside the support.
 

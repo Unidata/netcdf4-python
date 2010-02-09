@@ -9,7 +9,6 @@ netCDF3.getlibversion	netCDF3-module.html#getlibversion
 netCDF3.date2num	netCDF3-module.html#date2num
 netCDF3._value	netCDF3-module.html#_value
 netCDF3.date2index	netCDF3-module.html#date2index
-netCDF3.__test__	netCDF3-module.html#__test__
 netCDF3._supportedtypes	netCDF3-module.html#_supportedtypes
 netCDF3._key	netCDF3-module.html#_key
 netCDF3._nctonptype	netCDF3-module.html#_nctonptype
@@ -28,7 +27,6 @@ netCDF4.date2num	netCDF4-module.html#date2num
 netCDF4.stringtoarr	netCDF4-module.html#stringtoarr
 netCDF4._value	netCDF4-module.html#_value
 netCDF4.date2index	netCDF4-module.html#date2index
-netCDF4.__test__	netCDF4-module.html#__test__
 netCDF4._supportedtypes	netCDF4-module.html#_supportedtypes
 netCDF4._key	netCDF4-module.html#_key
 netCDF4._npversion	netCDF4-module.html#_npversion
