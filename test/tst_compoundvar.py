@@ -89,7 +89,7 @@ class VariablesTestCase(unittest.TestCase):
         f.close()
 
 if __name__ == '__main__':
-    from netCDF4 import _netcdf_version
-    version =  _netcdf_version()
-    if version[0] >= 4 and version[1] >=1:
+    from netCDF4 import getlibversion
+    version =  getlibversion().split()[0]
+    if version >= "4.1":
         unittest.main()
