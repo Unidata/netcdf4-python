@@ -1,4 +1,5 @@
 import glob, os, sys, unittest, netCDF4
+from netCDF4 import getlibversion
 
 __all__ = ['test']
 # Find all test files.
@@ -12,12 +13,12 @@ os.environ['PYTHONPATH'] = py_path
 
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
-version = netCDF4._netcdf_version()
+version = getlibversion().split()[0]
 for f in test_files:
     ff = os.path.join(sys.path[0],f)
     m = __import__(os.path.splitext(f)[0])
     if m.__name__ == 'tst_compoundvar':
-        if not(version[0] >= 4 and version[1] >=1):
+        if version >= "4.1":
             continue
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
     
