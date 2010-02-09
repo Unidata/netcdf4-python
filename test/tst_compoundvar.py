@@ -93,3 +93,5 @@ if __name__ == '__main__':
     version =  getlibversion().split()[0]
     if version >= "4.1":
         unittest.main()
+    else:
+        print "skipping tst_compoundvar, requires netcdf >= 4.1, you have %s" % version

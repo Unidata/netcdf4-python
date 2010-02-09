@@ -19,6 +19,7 @@ for f in test_files:
     m = __import__(os.path.splitext(f)[0])
     if m.__name__ == 'tst_compoundvar':
         if version >= "4.1":
+            print 'skipping tst_compoundvar, requires netcdf-4.1 or higher.."
             continue
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
     
