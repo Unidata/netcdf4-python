@@ -785,7 +785,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 
 # pure python utilities
 from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
-                          _out_array_shape, _sortbylist, _netcdf_version
+                          _out_array_shape, _sortbylist
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict

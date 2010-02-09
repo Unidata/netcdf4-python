@@ -351,7 +351,7 @@ PERFORMANCE OF THIS SOFTWARE."""
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
 # pure python utilities
-from netCDF4_utils import _StartCountStride, _out_array_shape, _netcdf_version
+from netCDF4_utils import _StartCountStride, _out_array_shape
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict

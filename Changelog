@@ -1,4 +1,4 @@
-version 0.9 (svn revision 839)
+version 0.9 (svn revision 845)
 ==============================
  * fixed bug (issue 30) with date2index occurring with dates outside the support.
 
@@ -10,7 +10,7 @@ version 0.9 (svn revision 839)
  * used ordered dictionaries for variables, dimensions, groups etc to
    preserve creation order (makes it easier to copy files, fixes issue 28).
 
- * change automaskandscale default to True.  This means data will
+ * change auto_maskandscale default to True.  This means data will
    automatically be converted to and from masked arrays.  Data scaled as short
    integers using the scale_factor and add_offset attributes will also be
    automatically converted to/from float arrays.
