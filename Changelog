@@ -6,6 +6,8 @@ version 0.9.1 (not yet released)
  * fix tutorial.py to cast 64 bit integers to 32 bit when writing to 32-bit
    integer vlen (was causing tutorial.py to fail on 64-bit platforms).
 
+ * remove nose dependency from tst_netcdftime.py.
+
 version 0.9 (svn revision 846)
 ==============================
  * fixed bug (issue 30) with date2index occurring with dates outside the support.
