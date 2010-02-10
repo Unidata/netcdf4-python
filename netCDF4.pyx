@@ -727,7 +727,7 @@ In this case, they contain 1-D numpy C{int32} arrays of random length betwee
 >>> import random
 >>> data = numpy.empty(len(y)*len(x),object)
 >>> for n in range(len(y)*len(x)):
->>>    data[n] = numpy.arange(random.randint(1,10))+1
+>>>    data[n] = numpy.arange(random.randint(1,10),dtype='int32')+1
 >>> data = numpy.reshape(data,(len(y),len(x)))
 >>> vlvar[:] = data
 >>> print 'vlen variable =\\n',vlvar[:]
@@ -794,7 +794,7 @@ try:
 except: # or else use drop-in substitute
     from netCDF4_utils import OrderedDict
 
-__version__ = "0.9"
+__version__ = "0.9.1"
 
 # Initialize numpy
 import os
@@ -950,8 +950,10 @@ cdef _set_att(grp, int varid, name, value):
     value_arr = numpy.array(value)
     # if array is 64 bit integers or
     # if 64-bit datatype not supported, cast to 32 bit integers.
+    fmt = _get_format(grp._grpid)
+    is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'
     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
-       _get_format(grp._grpid).startswith('NETCDF3')):
+       is_netcdf3):
         value_arr = value_arr.astype('i4')
     # if array contains strings, write a text attribute.
     if value_arr.dtype.char == 'S':

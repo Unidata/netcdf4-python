@@ -360,7 +360,7 @@ try:
 except: # or else use drop-in substitute
     from netCDF4_utils import OrderedDict
 
-__version__ = "0.9"
+__version__ = "0.9.1"
 
 # Initialize numpy
 import os

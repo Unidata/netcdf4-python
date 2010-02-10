@@ -1,3 +1,11 @@
+version 0.9.1 (not yet released)
+===============================
+ * make sure int64 attributes cast to int32 when format=NETCDF4_CLASSIC. This
+   was causing tst_multifile.py to fail on 64-bit platforms.
+
+ * fix tutorial.py to cast 64 bit integers to 32 bit when writing to 32-bit
+   integer vlen (was causing tutorial.py to fail on 64-bit platforms).
+
 version 0.9 (svn revision 846)
 ==============================
  * fixed bug (issue 30) with date2index occurring with dates outside the support.
