@@ -237,7 +237,7 @@ vlvar = f.createVariable('phony_vlen_var', vlen_t, ('y','x'))
 import random
 data = numpy.empty(len(y)*len(x),object)
 for n in range(len(y)*len(x)):
-    data[n] = numpy.arange(random.randint(1,10))+1
+    data[n] = numpy.arange(random.randint(1,10),dtype='int32')+1
 data = numpy.reshape(data,(len(y),len(x)))
 vlvar[:] = data
 print 'vlen variable =\n',vlvar[:]
