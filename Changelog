@@ -1,5 +1,8 @@
 version 0.9.1 (not yet released)
 ===============================
+ * python 2.4 compatibility restored (by modifying OrderedDict).  Fixes issue
+   37.
+
  * make sure int64 attributes cast to int32 when format=NETCDF4_CLASSIC. This
    was causing tst_multifile.py to fail on 64-bit platforms.
 
