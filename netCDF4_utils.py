@@ -424,9 +424,9 @@ class OrderedDict(dict, DictMixin):
         #key = reversed(self).next() if last else iter(self).next()
         # python 2.4 compatible version of above.
         if last:
-           key = reversed(self).next()
+            key = reversed(self).next()
         else:
-           key = iter(self).next()
+            key = iter(self).next()
 
         value = self.pop(key)
         return key, value
