@@ -415,6 +415,8 @@ class _Variable(object):
             return self.__dict__[name]
         except:
             raise AttributeError(name)
+    def __len__(self):
+        return self._shape()[0]
     def _shape(self):
         recdimlen = len(self._dset.dimensions[self._recdimname])
         return (recdimlen,) + self._mastervar.shape[1:]

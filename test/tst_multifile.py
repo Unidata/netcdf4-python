@@ -52,6 +52,7 @@ class VariablesTestCase(unittest.TestCase):
         varin.set_auto_maskandscale(False)
         data2 = data.filled()
         assert varin.name == 'phony data'
+        assert len(varin) == nx
         assert varin.shape == (nx,ydim,zdim)
         assert varin.dimensions == ('x','y','z')
         assert_array_equal(varin[4:-4:4,3:5,2:8],data2[4:-4:4,3:5,2:8])
