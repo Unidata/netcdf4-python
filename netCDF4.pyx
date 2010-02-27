@@ -31,10 +31,10 @@ Requires
 ======== 
 
  - numpy array module U{http://numpy.scipy.org}, version 1.2.1 or later.
- - The HDF5 C library version 1.8.4 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
+ - The HDF5 C library version 1.8.4-patch1 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl --enable-shared}'.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.1 or higher is required.
+ Version 4.1.1 or higher is recommended.
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR
  --enable-shared --enable-dap}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
@@ -3114,6 +3114,12 @@ cdef _read_vlen(group, nc_type xtype):
         except KeyError:
             raise KeyError("unsupported component type for VLEN")
     return VLType(group, dt, name, typeid=xtype)
+
+#cpdef set_log_level(int loglevel):
+#    cdef int ierr
+#    ierr = nc_set_log_level(loglevel)
+#    if ierr != NC_NOERR:
+#        raise RuntimeError(nc_strerror(ierr))
 
 # include pure python utility functions and MFDataset class.
 # (use include instead of importing them so docstrings
