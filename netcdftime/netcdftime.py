@@ -412,7 +412,7 @@ Julian Day is a fractional day with a resolution of 1 second.
     #jd = int(360. * (year + 4716)) + int(30. * (month - 1)) + day
     (F, Z) = math.modf(JD)
     year = int((Z-0.5)/360.) - 4716
-    dayofyr =  JD - (year+4716)*360  
+    dayofyr =  Z - (year+4716)*360  
     month = int((dayofyr-0.5)/30)+1
     day = dayofyr - (month-1)*30 + F  
     

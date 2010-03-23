@@ -135,7 +135,7 @@ class netcdftimeTestCase(unittest.TestCase):
         t1 = self.cdftime_360day.date2num(d)
         assert_almost_equal(t1,360*400.)
         d2 = self.cdftime_360day.num2date(t1)
-        self.assert_(str(d) == str(d2))
+        assert_equal(str(d), str(d2))
         # check day of year.
         d = datetime(2001,12,30)
         t = self.cdftime_360day.date2num(d)
@@ -144,6 +144,11 @@ class netcdftimeTestCase(unittest.TestCase):
         self.assert_(str(d) == str(date))
         ndayr = date.timetuple()[7]
         self.assert_(ndayr == 360)
+        # Check fraction
+        d = datetime(1969, 12, 30, 12)
+        t = self.cdftime_360day.date2num(d)
+        date = self.cdftime_360day.num2date(t)
+        assert_equal(str(d), str(date))
         # test proleptic julian calendar.
         d = datetime(1858,11,17,12)
         t = self.cdftime_jul.date2num(d)
