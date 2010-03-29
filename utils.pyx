@@ -175,6 +175,17 @@ used to build the module, and when it was built.
     libstring = nc_inq_libvers()
     return PyString_FromString(libstring)
 
+def gethdf5libversion():
+    """
+gethdf5libversion()
+
+returns a string describing the version of the netcdf library
+used to build the module, and when it was built.
+    """
+    cdef char *libstring
+    libstring = H5_VERS_INFO
+    return PyString_FromString(H5_VERS_INFO)
+
 class MFDataset(Dataset): 
     """
 MFDataset(self, files, check=False, exclude=[])

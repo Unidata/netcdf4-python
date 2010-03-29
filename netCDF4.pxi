@@ -11,6 +11,17 @@ cdef extern from "Python.h":
     char * PyString_AsString(object)
     object PyString_FromString(char *)
 
+# hdf5 version info.
+cdef extern from "H5Public.h":
+    cdef char *H5_VERS_INFO
+    cdef char *H5_VERS_SUBRELEASE
+    cdef enum:
+        H5_VERS_MAJOR
+        H5_VERS_MINOR
+        H5_VERS_RELEASE
+        #H5_VERS_SUBRELEASE
+        #H5_VERS_INFO
+ 
 # netcdf functions.
 cdef extern from "netcdf.h":
     ctypedef int nclong
