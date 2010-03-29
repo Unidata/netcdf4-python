@@ -2464,7 +2464,12 @@ each dimension is returned."""
 
         # A numpy array is needed. Convert if necessary.
         if not type(data) == numpy.ndarray:
-            data = numpy.array(data,self.dtype)
+            # if auto scaling is to be done, don't cast to an integer yet. 
+            if self.maskandscale and self.dtype.kind == 'i' and \
+               hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+                data = numpy.array(data,numpy.float)
+            else:
+                data = numpy.array(data,self.dtype)
 
         start, count, stride, put_ind =\
         _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)

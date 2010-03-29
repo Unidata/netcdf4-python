@@ -1,5 +1,8 @@
 version 0.9.1 (not yet released)
 ===============================
+ * make sure data is not truncated to integers before scale_factor and
+   add_offset is applied.
+
  * fix bug in date2num with noleap calendar in netcdftime (issue 45).
 
  * fix bug in 360day calendar in netcdftime (issue 44).
