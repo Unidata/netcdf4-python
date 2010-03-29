@@ -636,12 +636,16 @@ Returns a scalar if input is a scalar, else returns a numpy array.
             else:
                 jdelta = [JulianDayFromDate(d,self.calendar)-self._jd0 for d in date.flat]
         elif self.calendar in ['noleap','365_day']:
-            if date.month == 2 and date.day == 29:
-                raise ValueError, 'there is no leap day in the noleap calendar'
             if isscalar:
+                if date.month == 2 and date.day == 29:
+                    raise ValueError, 'there is no leap day in the noleap calendar'
                 jdelta = _NoLeapDayFromDate(date) - self._jd0
             else:
-                jdelta = [_NoLeapDayFromDate(d)-self._jd0 for d in date.flat]
+                jdelta = []
+                for d in date.flat:
+                    if d.month == 2 and d.day == 29:
+                        raise ValueError, 'there is no leap day in the noleap calendar'                    
+                    jdelta.append(_NoLeapDayFromDate(d)-self._jd0)
         elif self.calendar in ['all_leap','366_day']:
             if isscalar:
                 jdelta = _AllLeapFromDate(date) - self._jd0

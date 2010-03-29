@@ -1,6 +1,8 @@
 version 0.9.1 (not yet released)
 ===============================
- * fix bug in 360=day calendar in netcdftime (issue 44).
+ * fix bug in date2num with noleap calendar in netcdftime (issue 45).
+
+ * fix bug in 360day calendar in netcdftime (issue 44).
 
  * python 2.4 compatibility restored (by modifying OrderedDict).  Fixes issue
    37.

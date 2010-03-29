@@ -87,6 +87,8 @@ class netcdftimeTestCase(unittest.TestCase):
         t2 = self.cdftime_noleap.date2num(d2)
         assert_almost_equal(t1,400*365.)
         assert_almost_equal(t2,0.)
+        t12 = self.cdftime_noleap.date2num([d1,d2])
+        assert_almost_equal(t12, [400*365., 0])
         # check num2date method.
         d2 = self.cdftime_noleap.num2date(t1)
         self.assert_(str(d1) == str(d2))
@@ -147,7 +149,7 @@ class netcdftimeTestCase(unittest.TestCase):
         # Check fraction
         d = datetime(1969, 12, 30, 12)
         t = self.cdftime_360day.date2num(d)
-        date = self.cdftime_360day.num2date(t)
+        date = self.cdftime_360day.num2date(t)  
         assert_equal(str(d), str(date))
         # test proleptic julian calendar.
         d = datetime(1858,11,17,12)
