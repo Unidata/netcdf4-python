@@ -21,7 +21,7 @@ for f in test_files:
         if version < "4.1":
             print \
             "skipping tst_compoundvar, requires netcdf 4.1 or higher, you"\
-            +" have %s.." % version
+            +" have %s." % version
             continue
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
     
