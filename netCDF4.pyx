@@ -840,6 +840,17 @@ for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
 _supportedtypes = _nptonctype.keys()
 
+def gethdf5libversion():
+    """
+gethdf5libversion()
+
+returns a string describing the version of the netcdf library
+used to build the module, and when it was built.
+    """
+    cdef char *libstring
+    libstring = H5_VERS_INFO
+    return PyString_FromString(H5_VERS_INFO)
+
 # internal C functions.
 
 cdef _get_att_names(int grpid, int varid):

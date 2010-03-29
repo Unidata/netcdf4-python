@@ -1,5 +1,7 @@
 version 0.9.1 (not yet released)
 ===============================
+ * add gethdf5libversion function to get version of HDF5 lib.
+
  * make sure data is not truncated to integers before scale_factor and
    add_offset is applied.
 

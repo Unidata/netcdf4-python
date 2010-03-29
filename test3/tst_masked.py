@@ -38,6 +38,11 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         bar.add_offset = add_offset
         foo[:] = maskedarr
         bar[:] = packeddata
+        # added to test fix to issue 46
+        doh = file.createVariable('packeddata2','i2','n')
+        doh.scale_factor = 0.1
+        doh.add_offset = 0.
+        doh[0] = 1.1
         file.close()
 
     def tearDown(self):
@@ -49,6 +54,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         file = netCDF3.Dataset(self.file)
         datamasked = file.variables['maskeddata']
         datapacked = file.variables['packeddata']
+        datapacked2 = file.variables['packeddata2']
         # check missing_value, scale_factor and add_offset attributes.
         assert datamasked.missing_value == missing_value
         assert datapacked.scale_factor == scale_factor
@@ -61,8 +67,11 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         # auto-conversion
         datamasked.set_auto_maskandscale(True)
         datapacked.set_auto_maskandscale(True)
+        datapacked2.set_auto_maskandscale(False)
         assert_array_almost_equal(datamasked[:].filled(),ranarr)
         assert_array_almost_equal(datapacked[:],packeddata,decimal=4)
+        # added to test fix to issue 46 (result before r865 was 10)
+        assert_array_equal(datapacked2[0],11)
         file.close()
 
 if __name__ == '__main__':
