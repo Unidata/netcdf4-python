@@ -840,16 +840,18 @@ for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
 _supportedtypes = _nptonctype.keys()
 
-def gethdf5libversion():
-    """
-gethdf5libversion()
+def _gethdf5libversion():
+    majorvers = H5_VERS_MAJOR
+    minorvers = H5_VERS_MINOR
+    releasevers = H5_VERS_RELEASE
+    patchstring = PyString_FromString(H5_VERS_SUBRELEASE)
+    if not patchstring:
+       return '%d.%d.%d' % (majorvers,minorvers,releasevers)
+    else:
+       return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
 
-returns a string describing the version of the netcdf library
-used to build the module, and when it was built.
-    """
-    cdef char *libstring
-    libstring = H5_VERS_INFO
-    return PyString_FromString(H5_VERS_INFO)
+__netcdf4libversion__ = getlibversion().split()[0]
+__hdf5libversion__ = _gethdf5libversion()
 
 # internal C functions.
 

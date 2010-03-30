@@ -19,8 +19,6 @@ cdef extern from "H5public.h":
         H5_VERS_MAJOR
         H5_VERS_MINOR
         H5_VERS_RELEASE
-        #H5_VERS_SUBRELEASE
-        #H5_VERS_INFO
  
 # netcdf functions.
 cdef extern from "netcdf.h":
