@@ -3,7 +3,7 @@ version 0.9.1 (not yet released)
  * add __netcdf4libversion__ and __hdf5libversion__ module variables.
 
  * make sure data is not truncated to integers before scale_factor and
-   add_offset is applied.
+   add_offset is applied (issue 46).
 
  * fix bug in date2num with noleap calendar in netcdftime (issue 45).
 
