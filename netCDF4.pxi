@@ -12,7 +12,7 @@ cdef extern from "Python.h":
     object PyString_FromString(char *)
 
 # hdf5 version info.
-cdef extern from "H5Public.h":
+cdef extern from "H5public.h":
     cdef char *H5_VERS_INFO
     cdef char *H5_VERS_SUBRELEASE
     cdef enum:
