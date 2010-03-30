@@ -808,6 +808,30 @@ if _npversion.split('.')[0] < '1':
 import_array()
 include "netCDF4.pxi"
 
+# check for required version of netcdf-4 and hdf5.
+
+def _gethdf5libversion():
+    majorvers = H5_VERS_MAJOR
+    minorvers = H5_VERS_MINOR
+    releasevers = H5_VERS_RELEASE
+    patchstring = PyString_FromString(H5_VERS_SUBRELEASE)
+    if not patchstring:
+       return '%d.%d.%d' % (majorvers,minorvers,releasevers)
+    else:
+       return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
+
+__netcdf4libversion__ = getlibversion().split()[0]
+__hdf5libversion__ = _gethdf5libversion()
+
+if __netcdf4libversion__ < '4.1.1':
+    msg=\
+'netCDF4 module must be linked against netcdf-4 version 4.1.1 or higher'
+    raise ImportError(msg)
+if __hdf5libversion__ <= '1.8.4':
+    msg=\
+'netCDF4 module must be linked against HDF5 version 1.8.4-patch1 or higher'
+    raise ImportError(msg)
+
 # numpy data type <--> netCDF 4 data type mapping.
 
 _nptonctype  = {'S1' : NC_CHAR,
@@ -839,19 +863,6 @@ _nctonptype = {}
 for _key,_value in _nptonctype.iteritems():
     _nctonptype[_value] = _key
 _supportedtypes = _nptonctype.keys()
-
-def _gethdf5libversion():
-    majorvers = H5_VERS_MAJOR
-    minorvers = H5_VERS_MINOR
-    releasevers = H5_VERS_RELEASE
-    patchstring = PyString_FromString(H5_VERS_SUBRELEASE)
-    if not patchstring:
-       return '%d.%d.%d' % (majorvers,minorvers,releasevers)
-    else:
-       return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
-
-__netcdf4libversion__ = getlibversion().split()[0]
-__hdf5libversion__ = _gethdf5libversion()
 
 # internal C functions.
 

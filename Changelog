@@ -1,5 +1,7 @@
 version 0.9.1 (not yet released)
 ===============================
+ * raise ImportError if netcdf-4 < 4.1.1 or hdf5 <= 1.8.4.
+
  * add __netcdf4libversion__ and __hdf5libversion__ module variables.
 
  * make sure data is not truncated to integers before scale_factor and
