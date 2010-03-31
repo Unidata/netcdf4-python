@@ -821,15 +821,20 @@ def _gethdf5libversion():
        return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
 
 __netcdf4libversion__ = getlibversion().split()[0]
+__required_netcdf4version__ = '4.1.1'
 __hdf5libversion__ = _gethdf5libversion()
+__required_hdf5version__ = '1.8.4-patch1'
 
-if __netcdf4libversion__ < '4.1.1':
+
+if __netcdf4libversion__ < __required_netcdf4version__:
     msg=\
-'netCDF4 module must be linked against netcdf-4 version 4.1.1 or higher'
+'netCDF4 module must be linked against netcdf-4 version %s or higher' %\
+__required_netcdf4version__
     raise ImportError(msg)
-if __hdf5libversion__ <= '1.8.4':
+if __hdf5libversion__ < __required_hdf5version__:
     msg=\
-'netCDF4 module must be linked against HDF5 version 1.8.4-patch1 or higher'
+'netCDF4 module must be linked against HDF5 version %s or higher' %\
+__required_hdf5version__
     raise ImportError(msg)
 
 # numpy data type <--> netCDF 4 data type mapping.
