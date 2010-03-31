@@ -34,7 +34,7 @@ Requires
  - The HDF5 C library version 1.8.4-patch1 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl --enable-shared}'.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.1.1 or higher is recommended.
+ Version 4.1.1 or higher is required.
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR
  --enable-shared --enable-dap}',
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
