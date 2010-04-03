@@ -33,11 +33,14 @@ Requires
  - numpy array module U{http://numpy.scipy.org}, version 1.2.1 or later.
  - The HDF5 C library version 1.8.4-patch1 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl --enable-shared}'.
+ - U{Libcurl <http://curl.haxx.se/libcurl/>}, if you want
+ U{OPeNDAP<http://opendap.org/>} support.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
  Version 4.1.1 or higher is required.
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR
- --enable-shared --enable-dap}',
- where C{$HDF5_DIR} is the directory where HDF5 was installed.
+ --enable-shared}', and 'C{--enable-dap}' if you want
+ U{OPeNDAP<http://opendap.org/>} support.
+ C{$HDF5_DIR} is the directory where HDF5 was installed.
 
 
 Install
@@ -496,7 +499,7 @@ keyword argument to L{createVariable<Dataset.createVariable>}. The least
 significant digit is the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
 precision of 0.1, then setting C{least_significant_digit=1} will cause
-data the data to be quantized using {numpy.around(scale*data)/scale}, where
+data the data to be quantized using C{numpy.around(scale*data)/scale}, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
 retained (in this case bits=4).  Effectively, this makes the compression
 'lossy' instead of 'lossless', that is some precision in the data is
@@ -637,8 +640,7 @@ Now we can fill a numpy array with strings describing the units, then
 assign that array to the C{units} attribute of the station data variable.
 Note again that since there is no fixed-length string type in netCDF,
 we have to use arrays of characters to represent strings. Variable length
-strings are supported by the library, but they have not been implemented
-in the python module yet.
+strings are supported (see the next section), but not inside compound types.
 
 >>> windunits = numpy.empty(1,winddtype_units)
 >>> stationobs_units = numpy.empty(1,statdtype_units)
