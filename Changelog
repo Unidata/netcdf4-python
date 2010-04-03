@@ -1,5 +1,5 @@
-version 0.9.1 (not yet released)
-===============================
+version 0.9.1 (svn revision 874)
+================================
  * raise ImportError if netcdf-4 < 4.1.1 or hdf5 <= 1.8.4.
 
  * add __netcdf4libversion__ and __hdf5libversion__ module variables.
