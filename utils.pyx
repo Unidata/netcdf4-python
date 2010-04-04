@@ -238,7 +238,11 @@ Default is an empty list.
         # Open the master file in the base class, so that the CDFMF instance
         # can be used like a CDF instance.
         if isinstance(files, str):
-            files = sorted(glob(files))
+            if files.startswith('http'):
+                msg='cannot using file globbing for remote (OPeNDAP) datasets'
+                raise ValueError(msg)
+            else:
+                files = sorted(glob(files))
         
         master = files[0]
 
