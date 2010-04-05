@@ -1,4 +1,4 @@
-version 0.9.1 (svn revision 875)
+version 0.9.1 (svn revision 879)
 ================================
  * raise ImportError if netcdf-4 < 4.1.1 or hdf5 <= 1.8.4.
 
