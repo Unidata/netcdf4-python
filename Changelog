@@ -1,3 +1,5 @@
+ * add masked array support to num2date (dates for missing times set to None).
+
 version 0.9.1 (svn revision 879)
 ================================
  * raise ImportError if netcdf-4 < 4.1.1 or hdf5 <= 1.8.4.
