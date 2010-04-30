@@ -1464,7 +1464,10 @@ datatype."""
         self.vltypes[datatype_name] = VLType(self, datatype, datatype_name)
         return self.vltypes[datatype_name]
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None):
+    def createVariable(self, varname, datatype, dimensions=(), zlib=False,
+            complevel=6, shuffle=True, fletcher32=False, contiguous=False,
+            chunksizes=None, endian='native', least_significant_digit=None,
+            fill_value=None, chunk_cache=None):
         """
 createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
 
@@ -1567,7 +1570,10 @@ the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
         self.variables[varname] = Variable(self, varname, datatype,
-        dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle, fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes, endian=endian, least_significant_digit=least_significant_digit, fill_value=fill_value)
+        dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
+        fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
+        endian=endian, least_significant_digit=least_significant_digit,
+        fill_value=fill_value, chunk_cache=chunk_cache)
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -1970,12 +1976,14 @@ instance. If C{None}, the data is not truncated. """
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=6, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
-            fill_value=None, **kwargs):
+            fill_value=None, chunk_cache=None, **kwargs):
         cdef int ierr, ndims, icontiguous, ideflate_level, numdims
         cdef char *varname
         cdef nc_type xtype
         cdef int dimids[NC_MAX_DIMS]
         cdef int *chunksizesp
+        cdef size_t sizep, nelemsp
+        cdef float preemptionp
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
         # dimensions = ('lat') instead of ('lat',)
@@ -2036,6 +2044,21 @@ instance. If C{None}, the data is not truncated. """
             else: # a scalar variable.
                 ierr = nc_def_var(self._grpid, varname, xtype, ndims,
                                   NULL, &self._varid)
+            # set chunk cache size if desired    
+            # default is 1mb per var, can cause problems when many (1000's)
+            # of vars are created.  This change only lasts as long as file is
+            # open.
+            if grp.file_format.startswith('NETCDF4') and chunk_cache is not None:
+                ierr = nc_get_var_chunk_cache(self._grpid, self._varid, &sizep,
+                        &nelemsp, &preemptionp)
+                if ierr != NC_NOERR:
+                    raise RuntimeError(nc_strerror(ierr))
+                # reset chunk cache size, leave other parameters unchanged.
+                sizep = chunk_cache
+                ierr = nc_set_var_chunk_cache(self._grpid, self._varid, sizep,
+                        nelemsp, preemptionp)
+                if ierr != NC_NOERR:
+                    raise RuntimeError(nc_strerror(ierr))
             if ierr != NC_NOERR:
                 if grp.file_format != 'NETCDF4': grp._enddef()
                 raise RuntimeError(nc_strerror(ierr))

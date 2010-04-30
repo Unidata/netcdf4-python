@@ -688,10 +688,10 @@ cdef extern from "netcdf.h":
     int nc_show_metadata(int ncid)
     int nc_free_vlen(nc_vlen_t *vl)
     int nc_free_string(size_t len, char **data)
-    int = nc_set_chunk_cache(size_t size, size_t nelems, float preemption)
-    int = nc_get_chunk_cache(size_t *sizep, size_t *nelemsp, float *preemptionp)
-    int = nc_set_var_chunk_cache(int ncid, int varid, size_t size, size_t nelems, float preemption)
-    int = nc_get_var_chunk_cache(int ncid, int varid, size_t *sizep, size_t *nelemsp, float *preemptionp)
+    int nc_set_chunk_cache(size_t size, size_t nelems, float preemption)
+    int nc_get_chunk_cache(size_t *sizep, size_t *nelemsp, float *preemptionp)
+    int nc_set_var_chunk_cache(int ncid, int varid, size_t size, size_t nelems, float preemption)
+    int nc_get_var_chunk_cache(int ncid, int varid, size_t *sizep, size_t *nelemsp, float *preemptionp)
 
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
