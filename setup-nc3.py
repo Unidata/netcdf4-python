@@ -39,7 +39,7 @@ inc_dirs = [os.path.join(netCDF3_dir,'include')]
 extensions = [Extension("netCDF3",["netCDF3.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
 
 setup(name = "netCDF3",
-  version = "0.9.1",
+  version = "0.9.2",
   description = "python interface to netCDF version 3",
   author            = "Jeff Whitaker",
   author_email      = "jeffrey.s.whitaker@noaa.gov",

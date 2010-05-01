@@ -796,7 +796,7 @@ try:
 except: # or else use drop-in substitute
     from netCDF4_utils import OrderedDict
 
-__version__ = "0.9.1"
+__version__ = "0.9.2"
 
 # Initialize numpy
 import os
@@ -1546,6 +1546,15 @@ U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}:
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is C{None}, or no
 quantization, or 'lossless' compression.
+
+When creating variables in a C{NETCDF4} or C{NETCDF4_CLASSIC} formatted file, 
+HDF5 creates something called a 'chunk cache' for each variable.  The
+default size of the chunk cache may be large enough to completely fill 
+available memory when creating thousands of variables.  The optional
+keyword C{chunk_cache} allows you to reduce (or increase) the size of
+the default chunk cache when creating a variable.  The setting only
+persists as long as the file is open.   Warning - messing with this parameter
+can seriously degrade performance.
 
 The return value is the L{Variable} class instance describing the new 
 variable.
