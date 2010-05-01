@@ -2323,6 +2323,52 @@ each dimension is returned."""
         else:
             return chunksizes
 
+    def get_var_chunk_cache(self):
+        """
+get_var_chunk_cache(self)
+
+return variable chunk cache information in a tuple.
+See netcdf C library documentation for C{nc_get_var_chunk_cache} for
+details."""
+        cdef int ierr
+        cdef size_t sizep, nelemsp
+        cdef float preemptionp
+        ierr = nc_get_var_chunk_cache(self._grpid, self._varid, &sizep,
+               &nelemsp, &preemptionp)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+        size = sizep; nelems = nelemsp; preemption = preemptionp
+        return (size,nelems,preemption)
+
+    def set_var_chunk_cache(self,size=None,nelems=None,preemption=None):
+        """
+set_var_chunk_cache(self,size=None,nelems=None,preemption=None)
+
+change variable chunk cache settings.
+See netcdf C library documentation for C{nc_set_var_chunk_cache} for
+details."""
+        cdef int ierr
+        cdef size_t sizep, nelemsp
+        cdef float preemptionp
+        # reset chunk cache size, leave other parameters unchanged.
+        size_orig, nelems_orig, preemption_orig = self.get_var_chunk_cache()
+        if size is not None:
+            sizep = size
+        else:
+            sizep = size_orig
+        if nelems is not None:
+            nelemsp = nelems
+        else:
+            nelemsp = nelems_orig
+        if preemption is not None:
+            preemptionp = preemption
+        else:
+            preemptionp = preemption_orig
+        ierr = nc_set_var_chunk_cache(self._grpid, self._varid, sizep,
+               nelemsp, preemptionp)
+        if ierr != NC_NOERR:
+            raise RuntimeError(nc_strerror(ierr))
+
     def __delattr__(self,name):
         # if it's a netCDF attribute, remove it
         if name not in _private_atts:

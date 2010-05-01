@@ -1,10 +1,12 @@
- version 0.9.1 (not yet released)
+ version 0.9.2 (not yet released)
  ================================
  * add masked array support to num2date (dates for missing times set to None).
 
  * add chunk_cache keyword to createVariable.  HDF5 default is 1mb, which can
    cause problems when creating 1000's of variables.  In such cases,
    chunk_cache can be reduced, or set to zero.  
+
+ * add set_var_chunk_cache and get_var_chunk_cache Variable methods.
 
 version 0.9.1 (svn revision 879)
 ================================

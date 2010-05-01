@@ -291,6 +291,7 @@ netCDF4.Variable.setncattr	netCDF4.Variable-class.html#setncattr
 netCDF4.Variable.__len__	netCDF4.Variable-class.html#__len__
 netCDF4.Variable._varid	netCDF4.Variable-class.html#_varid
 netCDF4.Variable.ncattrs	netCDF4.Variable-class.html#ncattrs
+netCDF4.Variable.set_var_chunk_cache	netCDF4.Variable-class.html#set_var_chunk_cache
 netCDF4.Variable.__getitem__	netCDF4.Variable-class.html#__getitem__
 netCDF4.Variable._assign_vlen	netCDF4.Variable-class.html#_assign_vlen
 netCDF4.Variable.chunking	netCDF4.Variable-class.html#chunking
@@ -300,6 +301,7 @@ netCDF4.Variable.getncattr	netCDF4.Variable-class.html#getncattr
 netCDF4.Variable.__setitem__	netCDF4.Variable-class.html#__setitem__
 netCDF4.Variable.delncattr	netCDF4.Variable-class.html#delncattr
 netCDF4.Variable.dimensions	netCDF4.Variable-class.html#dimensions
+netCDF4.Variable.get_var_chunk_cache	netCDF4.Variable-class.html#get_var_chunk_cache
 netCDF4.Variable.__delitem__	netCDF4.Variable-class.html#__delitem__
 netCDF4.Variable._put	netCDF4.Variable-class.html#_put
 netCDF4.Variable._isprimitive	netCDF4.Variable-class.html#_isprimitive
