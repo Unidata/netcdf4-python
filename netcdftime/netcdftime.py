@@ -701,11 +701,11 @@ do not exist in any real world calendar.
             time_value[0]
         except:
             isscalar = True
-        ismaskedarr = False
+        ismasked = False
+        if hasattr(time_value,'mask'):
+            mask = time_value.mask
+            ismasked = True
         if not isscalar:
-            if hasattr(time_value,'mask'):
-                mask = time_value.mask
-                ismaskedarr = True
             time_value = numpy.array(time_value, dtype='d')
             shape = time_value.shape
         # convert to desired units, remove time zone offset.
@@ -720,7 +720,7 @@ do not exist in any real world calendar.
         jd = self._jd0 + jdelta
         if self.calendar in ['julian','standard','gregorian','proleptic_gregorian']:
             if not isscalar:
-                if ismaskedarr:
+                if ismasked:
                     date = []
                     for j,m in zip(jd.flat, mask.flat):
                         if not m:
@@ -730,7 +730,10 @@ do not exist in any real world calendar.
                 else:
                     date = [DateFromJulianDay(j,self.calendar) for j in jd.flat]
             else:
-                date = DateFromJulianDay(jd,self.calendar)
+                if ismasked and mask.item():
+                    date = None
+                else:
+                    date = DateFromJulianDay(jd,self.calendar)
         elif self.calendar in ['noleap','365_day']:
             if not isscalar:
                 date = [_DateFromNoLeapDay(j) for j in jd.flat]
