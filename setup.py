@@ -1,23 +1,26 @@
 import os
 from numpy.distutils.core  import setup, Extension
 
-def check_hdf5version(hdf5_dir):
+def check_hdf5version(hdf5_includedir):
     try:
-        f = open(os.path.join(hdf5_dir,'include/H5pubconf.h'))
+        f = open(os.path.join(hdf5_includedir,'H5pubconf.h'))
     except IOError:
         try:
-            f = open(os.path.join(hdf5_dir,'include/H5pubconf-64.h'))
+            f = open(os.path.join(hdf5_includedir,'H5pubconf-64.h'))
         except IOError:
-            return None
+            try:
+                f = open(os.path.join(hdf5_includedir,'H5pubconf-32.h'))
+            except IOError:
+                return None
     hdf5_version = None
     for line in f:
         if line.startswith('#define H5_VERSION'):
             hdf5_version = line.split()[2]
     return hdf5_version
 
-def check_ifnetcdf4(netcdf4_dir):
+def check_ifnetcdf4(netcdf4_includedir):
     try:
-        f = open(os.path.join(netcdf4_dir,'include/netcdf.h'))
+        f = open(os.path.join(netcdf4_includedir,'netcdf.h'))
     except IOError:
         return False
     isnetcdf4 = False
@@ -28,52 +31,69 @@ def check_ifnetcdf4(netcdf4_dir):
 
 HDF5_dir = os.environ.get('HDF5_DIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
+HDF5_includedir = os.environ.get('HDF5_INCDIR')
+netCDF4_includedir = os.environ.get('NETCDF4_INCDIR')
+HDF5_libdir = os.environ.get('HDF5_LIBDIR')
+netCDF4_libdir = os.environ.get('NETCDF4_LIBDIR')
 
 dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
 
-if HDF5_dir is None:
+if HDF5_includedir is None and HDF5_dir is None:
     print """
 HDF5_DIR environment variable not set, checking some standard locations ..,"""
     for direc in dirstosearch:
         print 'checking %s ...' % direc
-        hdf5_version = check_hdf5version(direc)
+        hdf5_version = check_hdf5version(os.path.join(direc, 'include'))
         if hdf5_version is None or hdf5_version[1:6] < '1.8.0':
             continue
         else:
             HDF5_dir = direc
+            HDF5_includedir = os.path.join(direc, 'include')
             print 'HDF5 found in %s' % HDF5_dir
             break
     if HDF5_dir is None:
-        raise ValueError('did not find HDF5 headers and libraries')
+        raise ValueError('did not find HDF5 headers')
 else:
-    hdf5_version = check_hdf5version(HDF5_dir)
+    if HDF5_includedir is None:
+         HDF5_includedir = os.path.join(HDF5_dir, 'include')
+    hdf5_version = check_hdf5version(HDF5_includedir)
     if hdf5_version is None:
-        raise ValueError('did not find HDF5 headers and libraries in %s' % HDF5_dir)
+        raise ValueError('did not find HDF5 headers in %s' % HDF5_includedir)
     elif hdf5_version[1:6] < '1.8.0':
         raise ValueError('HDF5 version >= 1.8.0 is required')
 
-if netCDF4_dir is None:
+if netCDF4_includedir is None and netCDF4_dir is None:
     print """
 NETCDF4_DIR environment variable not set, checking some standard locations ..,"""
     for direc in dirstosearch:
         print 'checking %s ...' % direc
-        isnetcdf4 = check_ifnetcdf4(direc)
+        isnetcdf4 = check_ifnetcdf4(os.path.join(direc, 'include'))
         if not isnetcdf4:
             continue
         else:
             netCDF4_dir = direc
+            netCDF4_includedir = os.path.join(direc, 'include')
             print 'netCDF4 found in %s' % netCDF4_dir
             break
     if netCDF4_dir is None:
-        raise ValueError('did not find netCDF version 4 headers and libs')
+        raise ValueError('did not find netCDF version 4 headers')
 else:
-    isnetcdf4 = check_ifnetcdf4(netCDF4_dir)
+    if netCDF4_includedir is None:
+        netCDF4_includedir = os.path.join(netCDF4_dir, 'include')
+    isnetcdf4 = check_ifnetcdf4(netCDF4_includedir)
     if not isnetcdf4:
-        raise ValueError('did not find netCDF version 4 headers and libs in %s' % netCDF4_dir)
+        raise ValueError('did not find netCDF version 4 headers %s' % netCDF4_includedir)
+
+if HDF5_libdir is None and HDF5_dir is not None:
+    HDF5_libdir = os.path.join(HDF5_dir, 'lib')
+
+if netCDF4_libdir is None and netCDF4_dir is not None:
+    netCDF4_libdir = os.path.join(netCDF4_dir, 'lib')
+
 
 libs = ['netcdf','hdf5_hl','hdf5','z']
-lib_dirs = [os.path.join(netCDF4_dir,'lib'),os.path.join(HDF5_dir,'lib')]
-inc_dirs = [os.path.join(netCDF4_dir,'include'),os.path.join(HDF5_dir,'include')]
+lib_dirs = [netCDF4_libdir,HDF5_libdir]
+inc_dirs = [netCDF4_includedir,HDF5_includedir]
 # add szip to link if desired.
 szip_dir = os.environ.get('SZIP_DIR')
 if szip_dir is not None:
