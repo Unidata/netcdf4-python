@@ -94,12 +94,20 @@ if netCDF4_libdir is None and netCDF4_dir is not None:
 libs = ['netcdf','hdf5_hl','hdf5','z']
 lib_dirs = [netCDF4_libdir,HDF5_libdir]
 inc_dirs = [netCDF4_includedir,HDF5_includedir]
+
 # add szip to link if desired.
 szip_dir = os.environ.get('SZIP_DIR')
-if szip_dir is not None:
+szip_libdir = os.environ.get('SZIP_LIBDIR')
+szip_incdir = os.environ.get('SZIP_INCDIR')
+if szip_libdir is None and szip_dir is not None:
+    szip_libdir = os.path.join(szip_dir, 'lib')
+if szip_incdir is None and szip_dir is not None:
+    szip_incdir = os.path.join(szip_dir, 'include')
+if szip_incdir is not None and szip_libdir is not None:
     libs.append('sz')
-    lib_dirs.append(os.path.join(szip_dir,'lib'))
-    inc_dirs.append(os.path.join(szip_dir,'include'))
+    lib_dirs.append(szip_libdir)
+    inc_dirs.append(szip_incdir)
+
 extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
 
 setup(name = "netCDF4",
