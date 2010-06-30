@@ -7,7 +7,13 @@ from datetime import datetime as real_datetime
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
 
-__version__ = '0.7.2'
+__version__ = '0.9.2'
+
+# Adapted from http://delete.me.uk/2005/03/iso8601.html
+ISO8601_REGEX = re.compile(r"(?P<year>[0-9]{4})(-(?P<month>[0-9]{1,2})(-(?P<day>[0-9]{1,2})"
+    r"((?P<separator>.)(?P<hour>[0-9]{2}):(?P<minute>[0-9]{2})(:(?P<second>[0-9]{2})(\.(?P<fraction>[0-9]+))?)?"
+    r"(?P<timezone>Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?"
+)
 
 class datetime:
     """
@@ -754,62 +760,93 @@ do not exist in any real world calendar.
         else:
             return numpy.reshape(numpy.array(date),shape)
 
-def _parse_date(origin):
-    """Parses a date string and returns a tuple
-    (year,month,day,hour,minute,second,utc_offset).
-    utc_offset is in minutes.
-
-    This function parses the 'origin' part of the time unit. It should be
-    something like::
-
-        2004-11-03 14:42:27.0 +2:00
-
-    Lots of things are optional; just the date is mandatory.
-
-    by Roberto De Almeida
-
-    excerpted from coards.py - http://cheeseshop.python.org/pypi/coards/
-    """
-    # yyyy-mm-dd [hh:mm:ss[.s][ [+-]hh[:][mm]]]
-    p = re.compile( r'''(?P<year>\d{1,4})           # yyyy
-                        -                           #
-                        (?P<month>\d{1,2})          # mm or m
-                        -                           #
-                        (?P<day>\d{1,2})            # dd or d
-                                                    #
-                        (?:                         # [optional time and timezone]
-                            \s                      #
-                            (?P<hour>\d{1,2})       #   hh or h
-                            :                       #
-                            (?P<min>\d{1,2})        #   mm or m
-                            (?:
-                            \:
-                            (?P<sec>\d{1,2})        #   ss or s (optional)
-                            )?
-                                                    #
-                            (?:                     #   [optional decisecond]
-                                \.                  #       .
-                                (?P<dsec>\d)        #       s
-                            )?                      #
-                            (?:                     #   [optional timezone]
-                                \s                  #
-                                (?P<ho>[+-]?        #       [+ or -]
-                                \d{1,2})            #       hh or h
-                                :?                  #       [:]
-                                (?P<mo>\d{2})?      #       [mm]
-                            )?                      #
-                        )?                          #
-                        $                           # EOL
-                    ''', re.VERBOSE)
-
-    m = p.match(origin.strip())
-    if m:
-        c = m.groupdict(0)
-        # UTC offset.
-        offset = int(c['ho'])*60 + int(c['mo'])
-        return int(c['year']),int(c['month']),int(c['day']),int(c['hour']),int(c['min']),int(c['sec']),offset
+def _parse_date(datestring):
+    """Parses ISO 8601 dates into datetime objects
     
-    raise Exception('Invalid date origin: %s' % origin)
+    The timezone is parsed from the date string. However it is quite common to
+    have dates without a timezone (not strictly correct). In this case the
+    default timezone specified in default_timezone is used. This is UTC by
+    default.
+
+    Adapted from pyiso8601 (http://code.google.com/p/pyiso8601/)
+    """
+    if not isinstance(datestring, basestring):
+        raise ParseError("Expecting a string %r" % datestring)
+    m = ISO8601_REGEX.match(datestring)
+    if not m:
+        raise ParseError("Unable to parse date string %r" % datestring)
+    groups = m.groupdict()
+    #tz = parse_timezone(groups["timezone"], default_timezone=default_timezone)
+    if groups["hour"] is None:
+        groups["hour"]=0
+    if groups["minute"] is None:
+        groups["minute"]=0
+    if groups["second"] is None:
+        groups["second"]=0
+    if groups["fraction"] is None:
+        groups["fraction"] = 0
+    else:
+        groups["fraction"] = int(float("0.%s" % groups["fraction"]) * 1e6)
+    return int(groups["year"]), int(groups["month"]), int(groups["day"]),\
+        int(groups["hour"]), int(groups["minute"]), int(groups["second"]),\
+        int(groups["fraction"])
+
+#def _parse_date(origin):
+#    """Parses a date string and returns a tuple
+#    (year,month,day,hour,minute,second,utc_offset).
+#    utc_offset is in minutes.
+#
+#    This function parses the 'origin' part of the time unit. It should be
+#    something like::
+#
+#        2004-11-03 14:42:27.0 +2:00
+#
+#    Lots of things are optional; just the date is mandatory.
+#
+#    by Roberto De Almeida
+#
+#    excerpted from coards.py - http://cheeseshop.python.org/pypi/coards/
+#    """
+#    # yyyy-mm-dd [hh:mm:ss[.s][ [+-]hh[:][mm]]]
+#    p = re.compile( r'''(?P<year>\d{1,4})           # yyyy
+#                        -                           #
+#                        (?P<month>\d{1,2})          # mm or m
+#                        -                           #
+#                        (?P<day>\d{1,2})            # dd or d
+#                                                    #
+#                        (?:                         # [optional time and timezone]
+#                            \s                      #
+#                            (?P<hour>\d{1,2})       #   hh or h
+#                            :                       #
+#                            (?P<min>\d{1,2})        #   mm or m
+#                            (?:
+#                            \:
+#                            (?P<sec>\d{1,2})        #   ss or s (optional)
+#                            )?
+#                                                    #
+#                            (?:                     #   [optional decisecond]
+#                                \.                  #       .
+#                                (?P<dsec>\d)        #       s
+#                            )?                      #
+#                            (?:                     #   [optional timezone]
+#                                \s                  #
+#                                (?P<ho>[+-]?        #       [+ or -]
+#                                \d{1,2})            #       hh or h
+#                                :?                  #       [:]
+#                                (?P<mo>\d{2})?      #       [mm]
+#                            )?                      #
+#                        )?                          #
+#                        $                           # EOL
+#                    ''', re.VERBOSE)
+#
+#    m = p.match(origin.strip())
+#    if m:
+#        c = m.groupdict(0)
+#        # UTC offset.
+#        offset = int(c['ho'])*60 + int(c['mo'])
+#        return int(c['year']),int(c['month']),int(c['day']),int(c['hour']),int(c['min']),int(c['sec']),offset
+#    
+#    raise Exception('Invalid date origin: %s' % origin)
 
 # remove the unsupposed "%s" command.  But don't
 # do it if there's an even number of %s before the s

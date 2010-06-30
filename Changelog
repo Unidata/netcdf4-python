@@ -1,5 +1,8 @@
  version 0.9.2 (not yet released)
  ================================
+ * updated date parser in netcdftime.  Can now handle units like
+   "seconds since 1970-01-01T00:00:00Z".
+
  * add masked array support to num2date (dates for missing times set to None).
 
  * add chunk_cache keyword to createVariable.  HDF5 default is 1mb, which can

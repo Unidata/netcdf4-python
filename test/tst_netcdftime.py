@@ -21,6 +21,7 @@ class netcdftimeTestCase(unittest.TestCase):
         self.cdftime_leap = utime('days since 1600-02-29 00:00:00',calendar='all_leap')
         self.cdftime_360day = utime('days since 1600-02-30 00:00:00',calendar='360_day')
         self.cdftime_jul = utime('hours since 1000-01-01 00:00:00',calendar='julian')
+        self.cdftime_iso = utime("seconds since 1970-01-01T00:00:00Z")
 
     def runTest(self):
         """testing netcdftime"""
@@ -166,6 +167,10 @@ class netcdftimeTestCase(unittest.TestCase):
         assert_almost_equal(mjd,2400000.5)
         date = DateFromJulianDay(mjd)
         self.assert_(str(date) == str(d))
+        # test iso 8601 units string
+        d = datetime(1970,1,1,1)
+        t = self.cdftime_iso.date2num(d)
+        assert_equal(numpy.around(t),3600)
 
 
 class TestDate2index(unittest.TestCase):
