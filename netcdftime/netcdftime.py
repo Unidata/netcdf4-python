@@ -765,60 +765,24 @@ do not exist in any real world calendar.
 class ParseError(Exception):
     """Raised when there is a problem parsing a date string"""
 
-# Yoinked from python docs
-ZERO = timedelta(0)
-class Utc(tzinfo):
-    """UTC
-    
-    """
-    def utcoffset(self, dt):
-        return ZERO
-
-    def tzname(self, dt):
-        return "UTC"
-
-    def dst(self, dt):
-        return ZERO
-UTC = Utc()
-
-class FixedOffset(tzinfo):
-    """Fixed offset in hours and minutes from UTC
-    
-    """
-    def __init__(self, offset_hours, offset_minutes, name):
-        self.__offset = timedelta(hours=offset_hours, minutes=offset_minutes)
-        self.__name = name
-
-    def utcoffset(self, dt):
-        return self.__offset
-
-    def tzname(self, dt):
-        return self.__name
-
-    def dst(self, dt):
-        return ZERO
-    
-    def __repr__(self):
-        return "<FixedOffset %r>" % self.__name
-
-def _parse_timezone(tzstring, default_timezone=UTC):
+def _parse_timezone(tzstring):
     """Parses ISO 8601 time zone specs into tzinfo offsets
     
     """
     if tzstring == "Z":
-        return default_timezone
+        return 0
     # This isn't strictly correct, but it's common to encounter dates without
     # timezones so I'll assume the default (which defaults to UTC).
     # Addresses issue 4.
     if tzstring is None:
-        return default_timezone
+        return 0
     m = TIMEZONE_REGEX.match(tzstring)
     prefix, hours, minutes = m.groups()
     hours, minutes = int(hours), int(minutes)
     if prefix == "-":
         hours = -hours
         minutes = -minutes
-    return FixedOffset(hours, minutes, tzstring)
+    return minutes + hours*60.
 
 def _parse_date(datestring):
     """Parses ISO 8601 dates into datetime objects
@@ -836,7 +800,7 @@ def _parse_date(datestring):
     if not m:
         raise ParseError("Unable to parse date string %r" % datestring)
     groups = m.groupdict()
-    tz = _parse_timezone(groups["timezone"], default_timezone=UTC)
+    tzoffset_mins = _parse_timezone(groups["timezone"])
     if groups["hour"] is None:
         groups["hour"]=0
     if groups["minute"] is None:
@@ -849,7 +813,7 @@ def _parse_date(datestring):
     #    groups["fraction"] = int(float("0.%s" % groups["fraction"]) * 1e6)
     return int(groups["year"]), int(groups["month"]), int(groups["day"]),\
         int(groups["hour"]), int(groups["minute"]), int(groups["second"]),\
-        tz.utcoffset(0).seconds/60.
+        tzoffset_mins
 
 #def _parse_date(origin):
 #    """Parses a date string and returns a tuple
