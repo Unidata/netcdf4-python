@@ -762,12 +762,10 @@ do not exist in any real world calendar.
         else:
             return numpy.reshape(numpy.array(date),shape)
 
-class ParseError(Exception):
-    """Raised when there is a problem parsing a date string"""
-
 def _parse_timezone(tzstring):
     """Parses ISO 8601 time zone specs into tzinfo offsets
-    
+
+    Adapted from pyiso8601 (http://code.google.com/p/pyiso8601/)
     """
     if tzstring == "Z":
         return 0
@@ -786,7 +784,7 @@ def _parse_timezone(tzstring):
 
 def _parse_date(datestring):
     """Parses ISO 8601 dates into datetime objects
-    
+
     The timezone is parsed from the date string. However it is quite common to
     have dates without a timezone (not strictly correct). In this case the
     default timezone specified in default_timezone is used. This is UTC by
@@ -795,10 +793,10 @@ def _parse_date(datestring):
     Adapted from pyiso8601 (http://code.google.com/p/pyiso8601/)
     """
     if not isinstance(datestring, basestring):
-        raise ParseError("Expecting a string %r" % datestring)
+        raise ValueError("Expecting a string %r" % datestring)
     m = ISO8601_REGEX.match(datestring)
     if not m:
-        raise ParseError("Unable to parse date string %r" % datestring)
+        raise ValueError("Unable to parse date string %r" % datestring)
     groups = m.groupdict()
     tzoffset_mins = _parse_timezone(groups["timezone"])
     if groups["hour"] is None:
