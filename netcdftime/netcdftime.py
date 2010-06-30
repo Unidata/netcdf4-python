@@ -3,6 +3,7 @@ Performs conversions of netCDF time coordinate data to/from datetime objects.
 """
 import math, numpy, re, time
 from datetime import datetime as real_datetime
+from datetime import tzinfo, timedelta
 
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
@@ -14,6 +15,7 @@ ISO8601_REGEX = re.compile(r"(?P<year>[0-9]{4})(-(?P<month>[0-9]{1,2})(-(?P<day>
     r"((?P<separator>.)(?P<hour>[0-9]{2}):(?P<minute>[0-9]{2})(:(?P<second>[0-9]{2})(\.(?P<fraction>[0-9]+))?)?"
     r"(?P<timezone>Z|(([-+])([0-9]{2}):([0-9]{2})))?)?)?)?"
 )
+TIMEZONE_REGEX = re.compile("(?P<prefix>[+-])(?P<hours>[0-9]{2}).(?P<minutes>[0-9]{2})")
 
 class datetime:
     """
@@ -760,6 +762,64 @@ do not exist in any real world calendar.
         else:
             return numpy.reshape(numpy.array(date),shape)
 
+class ParseError(Exception):
+    """Raised when there is a problem parsing a date string"""
+
+# Yoinked from python docs
+ZERO = timedelta(0)
+class Utc(tzinfo):
+    """UTC
+    
+    """
+    def utcoffset(self, dt):
+        return ZERO
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return ZERO
+UTC = Utc()
+
+class FixedOffset(tzinfo):
+    """Fixed offset in hours and minutes from UTC
+    
+    """
+    def __init__(self, offset_hours, offset_minutes, name):
+        self.__offset = timedelta(hours=offset_hours, minutes=offset_minutes)
+        self.__name = name
+
+    def utcoffset(self, dt):
+        return self.__offset
+
+    def tzname(self, dt):
+        return self.__name
+
+    def dst(self, dt):
+        return ZERO
+    
+    def __repr__(self):
+        return "<FixedOffset %r>" % self.__name
+
+def _parse_timezone(tzstring, default_timezone=UTC):
+    """Parses ISO 8601 time zone specs into tzinfo offsets
+    
+    """
+    if tzstring == "Z":
+        return default_timezone
+    # This isn't strictly correct, but it's common to encounter dates without
+    # timezones so I'll assume the default (which defaults to UTC).
+    # Addresses issue 4.
+    if tzstring is None:
+        return default_timezone
+    m = TIMEZONE_REGEX.match(tzstring)
+    prefix, hours, minutes = m.groups()
+    hours, minutes = int(hours), int(minutes)
+    if prefix == "-":
+        hours = -hours
+        minutes = -minutes
+    return FixedOffset(hours, minutes, tzstring)
+
 def _parse_date(datestring):
     """Parses ISO 8601 dates into datetime objects
     
@@ -776,20 +836,20 @@ def _parse_date(datestring):
     if not m:
         raise ParseError("Unable to parse date string %r" % datestring)
     groups = m.groupdict()
-    #tz = parse_timezone(groups["timezone"], default_timezone=default_timezone)
+    tz = _parse_timezone(groups["timezone"], default_timezone=UTC)
     if groups["hour"] is None:
         groups["hour"]=0
     if groups["minute"] is None:
         groups["minute"]=0
     if groups["second"] is None:
         groups["second"]=0
-    if groups["fraction"] is None:
-        groups["fraction"] = 0
-    else:
-        groups["fraction"] = int(float("0.%s" % groups["fraction"]) * 1e6)
+    #if groups["fraction"] is None:
+    #    groups["fraction"] = 0
+    #else:
+    #    groups["fraction"] = int(float("0.%s" % groups["fraction"]) * 1e6)
     return int(groups["year"]), int(groups["month"]), int(groups["day"]),\
         int(groups["hour"]), int(groups["minute"]), int(groups["second"]),\
-        int(groups["fraction"])
+        tz.utcoffset(0).seconds/60.
 
 #def _parse_date(origin):
 #    """Parses a date string and returns a tuple
