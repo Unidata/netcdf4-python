@@ -771,7 +771,6 @@ def _parse_timezone(tzstring):
         return 0
     # This isn't strictly correct, but it's common to encounter dates without
     # timezones so I'll assume the default (which defaults to UTC).
-    # Addresses issue 4.
     if tzstring is None:
         return 0
     m = TIMEZONE_REGEX.match(tzstring)
@@ -785,10 +784,8 @@ def _parse_timezone(tzstring):
 def _parse_date(datestring):
     """Parses ISO 8601 dates into datetime objects
 
-    The timezone is parsed from the date string. However it is quite common to
-    have dates without a timezone (not strictly correct). In this case the
-    default timezone specified in default_timezone is used. This is UTC by
-    default.
+    The timezone is parsed from the date string, assuming UTC
+    by default.
 
     Adapted from pyiso8601 (http://code.google.com/p/pyiso8601/)
     """
