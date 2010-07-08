@@ -5,7 +5,7 @@ Introduction
 Python interface to the netCDF version 4 library.  U{netCDF version 4 
 <http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many features 
 not found in earlier versions of the library and is implemented on top of 
-U{HDF5 <http://hdf.ncsa.uiuc.edu/HDF5>}. This module can read and write 
+U{HDF5 <http://www.hdfgroup.org/HDF5>}. This module can read and write 
 files in both the new netCDF 4 and the old netCDF 3 format, and can create 
 files that are readable by HDF5 clients. The API modelled after 
 U{Scientific.IO.NetCDF 
@@ -57,7 +57,7 @@ Install
  where the netCDF version 4 library and headers are installed.
  - If the locations of the HDF5 and netCDF libs and headers are not specified
  with environment variables, some standard locations will be searched.
- - if HDF5 was build with U{szip <http://hdf.ncsa.uiuc.edu/doc_resource/SZIP/>},
+ - if HDF5 was build with U{szip <http://www.hdfgroup.org/doc_resource/SZIP/>},
  you may also need to set the C{SZIP_DIR} (or C{SZIP_INCDIR} and C{SZIP_LIBDIR})
  environment variable(s) to point to where szip is installed. Note that
  the netCDF library does not support creating szip compressed files, but can read szip
