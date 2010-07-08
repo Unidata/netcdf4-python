@@ -116,24 +116,33 @@
       </li>
       <li>
         optionally, set the <code>HDF5_DIR</code> environment variable to 
-        point to where HDF5 is installed. (the libs in 
+        point to where HDF5 is installed (the libs in 
         <code>$HDF5_DIR/lib</code>, the headers in 
-        <code>$HDF5_DIR/include</code>).
+        <code>$HDF5_DIR/include</code>). If the headers and libs are 
+        installed in different places, you can use <code>HDF5_INCDIR</code>
+        and <code>HDF5_LIBDIR</code> to define the locations of the headers
+        and libraries independently.
       </li>
       <li>
-        optionally, set the <code>NETCDF4_DIR</code> environment variable 
-        to point to where the netCDF version 4 library and headers are 
-        installed. If <code>HDF5_DIR</code> and <code>NETCDF4_DIR</code> 
-        are not set, some standard locations will be searched.
+        optionally, set the <code>NETCDF4_DIR</code> (or 
+        <code>NETCDF4_INCDIR</code> and <code>NETCDF4_LIBDIR</code>) 
+        environment variable(s) to point to where the netCDF version 4 
+        library and headers are installed.
+      </li>
+      <li>
+        If the locations of the HDF5 and netCDF libs and headers are not 
+        specified with environment variables, some standard locations will 
+        be searched.
       </li>
       <li>
         if HDF5 was build with <a 
         href="http://hdf.ncsa.uiuc.edu/doc_resource/SZIP/" 
         target="_top">szip</a>, you may also need to set the 
-        <code>SZIP_DIR</code> environment variable to point to where szip 
-        is installed. Note that netCDF 4.0 does not support szip 
-        compression, but can read szip compressed files if the HDF5 lib is 
-        configured to support szip.
+        <code>SZIP_DIR</code> (or <code>SZIP_INCDIR</code> and 
+        <code>SZIP_LIBDIR</code>) environment variable(s) to point to where
+        szip is installed. Note that the netCDF library does not support 
+        creating szip compressed files, but can read szip compressed files 
+        if the HDF5 lib is configured to support szip.
       </li>
       <li>
         run 'python setup.py install'
@@ -920,7 +929,9 @@
     <span class="table-header">Classes</span></td>
 </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.CompoundType-class.html" class="summary-name">CompoundType</a><br />
       A <a href="netCDF4.CompoundType-class.html" 
         class="link">CompoundType</a> instance is used to describe a 
@@ -928,39 +939,51 @@
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.Dataset-class.html" class="summary-name">Dataset</a><br />
       Dataset(self, filename, mode=&quot;r&quot;, clobber=True, 
         format='NETCDF4')
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.Dimension-class.html" class="summary-name">Dimension</a><br />
       Dimension(self, group, name, size=None)
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.Group-class.html" class="summary-name">Group</a><br />
       Group(self, parent, name)
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.MFDataset-class.html" class="summary-name">MFDataset</a><br />
       MFDataset(self, files, check=False, exclude=[])
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.VLType-class.html" class="summary-name">VLType</a><br />
       A <a href="netCDF4.VLType-class.html" class="link">VLType</a> 
         instance is used to describe a variable length (VLEN) data type.
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4.Variable-class.html" class="summary-name">Variable</a><br />
       Variable(self, group, name, datatype, dimensions=(), zlib=False, 
         complevel=6, shuffle=True, fletcher32=False, contiguous=False, 
@@ -1126,7 +1149,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="'4.1.1'"><code class="variable-quote">'</code><code class="variable-string">4.1.1</code><code class="variable-quote">'</code></code>
+        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="'4.1.1-rc1'"><code class="variable-quote">'</code><code class="variable-string">4.1.1-rc1</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -1431,8 +1454,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1
-    on Sat May  1 07:37:36 2010
+    Generated by Epydoc 3.0.1 on Thu Jul  8 10:41:20 2010
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

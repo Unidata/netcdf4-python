@@ -44,6 +44,8 @@ netcdftime.netcdftime._strftime	netcdftime.netcdftime-module.html#_strftime
 netcdftime.netcdftime._DateFromNoLeapDay	netcdftime.netcdftime-module.html#_DateFromNoLeapDay
 netcdftime.netcdftime._360DayFromDate	netcdftime.netcdftime-module.html#_360DayFromDate
 netcdftime.netcdftime.num2date	netcdftime.netcdftime-module.html#num2date
+netcdftime.netcdftime.TIMEZONE_REGEX	netcdftime.netcdftime-module.html#TIMEZONE_REGEX
+netcdftime.netcdftime.ISO8601_REGEX	netcdftime.netcdftime-module.html#ISO8601_REGEX
 netcdftime.netcdftime._check_index	netcdftime.netcdftime-module.html#_check_index
 netcdftime.netcdftime.JulianDayFromDate	netcdftime.netcdftime-module.html#JulianDayFromDate
 netcdftime.netcdftime._DateFromAllLeap	netcdftime.netcdftime-module.html#_DateFromAllLeap
@@ -53,6 +55,7 @@ netcdftime.netcdftime._calendars	netcdftime.netcdftime-module.html#_calendars
 netcdftime.netcdftime.__package__	netcdftime.netcdftime-module.html#__package__
 netcdftime.netcdftime._illegal_s	netcdftime.netcdftime-module.html#_illegal_s
 netcdftime.netcdftime._parse_date	netcdftime.netcdftime-module.html#_parse_date
+netcdftime.netcdftime._parse_timezone	netcdftime.netcdftime-module.html#_parse_timezone
 netcdftime.netcdftime._AllLeapFromDate	netcdftime.netcdftime-module.html#_AllLeapFromDate
 netcdftime.netcdftime._NoLeapDayFromDate	netcdftime.netcdftime-module.html#_NoLeapDayFromDate
 netcdftime.netcdftime.date2num	netcdftime.netcdftime-module.html#date2num
@@ -153,9 +156,9 @@ netCDF3.Variable._nunlimdim	netCDF3.Variable-class.html#_nunlimdim
 netCDF4.CompoundType	netCDF4.CompoundType-class.html
 netCDF4.CompoundType.__new__	netCDF4.CompoundType-class.html#__new__
 netCDF4.CompoundType.dtype	netCDF4.CompoundType-class.html#dtype
-netCDF4.CompoundType.name	netCDF4.CompoundType-class.html#name
-netCDF4.CompoundType.__init__	netCDF4.CompoundType-class.html#__init__
 netCDF4.CompoundType._nc_type	netCDF4.CompoundType-class.html#_nc_type
+netCDF4.CompoundType.__init__	netCDF4.CompoundType-class.html#__init__
+netCDF4.CompoundType.name	netCDF4.CompoundType-class.html#name
 netCDF4.Dataset	netCDF4.Dataset-class.html
 netCDF4.Dataset._enddef	netCDF4.Dataset-class.html#_enddef
 netCDF4.Dataset.variables	netCDF4.Dataset-class.html#variables
@@ -269,9 +272,9 @@ netCDF4.Dataset.createGroup	netCDF4.Dataset-class.html#createGroup
 netCDF4.VLType	netCDF4.VLType-class.html
 netCDF4.VLType.__new__	netCDF4.VLType-class.html#__new__
 netCDF4.VLType.dtype	netCDF4.VLType-class.html#dtype
-netCDF4.VLType.name	netCDF4.VLType-class.html#name
-netCDF4.VLType.__init__	netCDF4.VLType-class.html#__init__
 netCDF4.VLType._nc_type	netCDF4.VLType-class.html#_nc_type
+netCDF4.VLType.__init__	netCDF4.VLType-class.html#__init__
+netCDF4.VLType.name	netCDF4.VLType-class.html#name
 netCDF4.Variable	netCDF4.Variable-class.html
 netCDF4.Variable.ndim	netCDF4.Variable-class.html#ndim
 netCDF4.Variable.dtype	netCDF4.Variable-class.html#dtype

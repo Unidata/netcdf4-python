@@ -48,17 +48,20 @@ Install
 
  - install the requisite python modules and C libraries (see above).
  - optionally, set the C{HDF5_DIR} environment variable to point to where HDF5
- is installed. (the libs in C{$HDF5_DIR/lib}, the headers in
- C{$HDF5_DIR/include}).
- - optionally, set the C{NETCDF4_DIR} environment variable to point to
+ is installed (the libs in C{$HDF5_DIR/lib}, the headers in
+ C{$HDF5_DIR/include}). If the headers and libs are installed in different
+ places, you can use C{HDF5_INCDIR} and C{HDF5_LIBDIR} to define the locations
+ of the headers and libraries independently.
+ - optionally, set the C{NETCDF4_DIR} (or C{NETCDF4_INCDIR} and C{NETCDF4_LIBDIR})
+ environment variable(s) to point to
  where the netCDF version 4 library and headers are installed.
- If C{HDF5_DIR} and C{NETCDF4_DIR} are not set, some standard
- locations will be searched.
+ - If the locations of the HDF5 and netCDF libs and headers are not specified
+ with environment variables, some standard locations will be searched.
  - if HDF5 was build with U{szip <http://hdf.ncsa.uiuc.edu/doc_resource/SZIP/>},
- you may also need to set the C{SZIP_DIR} 
- environment variable to point to where szip is installed. Note that
- netCDF 4.0 does not support szip compression, but can read szip compressed
- files if the HDF5 lib is configured to support szip.
+ you may also need to set the C{SZIP_DIR} (or C{SZIP_INCDIR} and C{SZIP_LIBDIR})
+ environment variable(s) to point to where szip is installed. Note that
+ the netCDF library does not support creating szip compressed files, but can read szip
+ compressed files if the HDF5 lib is configured to support szip.
  - run 'python setup.py install'
  - run the tests in the 'test' directory by running C{python run_all.py}.
 
@@ -830,13 +833,13 @@ __required_hdf5version__ = '1.8.4-patch1'
 
 if __netcdf4libversion__ < __required_netcdf4version__:
     msg=\
-'netCDF4 module must be linked against netcdf-4 version %s or higher' %\
-__required_netcdf4version__
+'netCDF4 module must be linked against netcdf-4 version %s or higher, got %s' %\
+(__required_netcdf4version__,__netcdf4libversion__)
     raise ImportError(msg)
 if __hdf5libversion__ < __required_hdf5version__:
     msg=\
-'netCDF4 module must be linked against HDF5 version %s or higher' %\
-__required_hdf5version__
+'netCDF4 module must be linked against HDF5 version %s or higher, got %s' %\
+(__required_hdf5version__,__hdf5libversion__ )
     raise ImportError(msg)
 
 # numpy data type <--> netCDF 4 data type mapping.
@@ -2384,10 +2387,15 @@ details."""
             # if setting _FillValue, make sure value
             # has same type as variable.
             if name == '_FillValue':
+                #msg='_FillValue attribute must be set when variable is '+\
+                #'created (using fill_value keyword to createVariable)'
+                #raise AttributeError(msg)
                 if self._isprimitive:
                     value = numpy.array(value, self.dtype)
                 else:
-                    raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
+                    msg="cannot set _FillValue attribute for "+\
+                    "VLEN or compound variable"
+                    raise AttributeError(msg)
             self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
@@ -3228,12 +3236,6 @@ cdef _read_vlen(group, nc_type xtype):
         except KeyError:
             raise KeyError("unsupported component type for VLEN")
     return VLType(group, dt, name, typeid=xtype)
-
-#cpdef set_log_level(int loglevel):
-#    cdef int ierr
-#    ierr = nc_set_log_level(loglevel)
-#    if ierr != NC_NOERR:
-#        raise RuntimeError(nc_strerror(ierr))
 
 # include pure python utility functions and MFDataset class.
 # (use include instead of importing them so docstrings

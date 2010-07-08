@@ -3,6 +3,10 @@
  * updated date parser in netcdftime.  Can now handle units like
    "seconds since 1970-01-01T00:00:00Z".
 
+ * added support in setup.py for specifying the locations of the HDF5/netcdf-4 headers
+   and libs separately with environment variables (HDF5_INCDIR, HDF5_LIBDIR).i
+   Patch contributed by Patrice Dumas.
+
  * add masked array support to num2date (dates for missing times set to None).
 
  * add chunk_cache keyword to createVariable.  HDF5 default is 1mb, which can
@@ -10,6 +14,10 @@
    chunk_cache can be reduced, or set to zero.  
 
  * add set_var_chunk_cache and get_var_chunk_cache Variable methods.
+
+ * raise AttributeError when trying to set _FillValue attribute (it can only
+   be reliably set on variable creation, using the fill_value keyword to
+   createVariable).
 
 version 0.9.1 (svn revision 879)
 ================================
