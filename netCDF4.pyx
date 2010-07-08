@@ -23,9 +23,9 @@ types) are not supported.
 Download 
 ========
 
- - U{Project page <http://code.google.com/p/netcdf4-python/>}.
- - U{Subversion repository <http://code.google.com/p/netcdf4-python/source>}.
- - U{Source tar.gz <http://code.google.com/p/netcdf4-python/downloads/list>}.
+ - Latest bleeding-edge code from the U{subversion repository <http://code.google.com/p/netcdf4-python/source>}.
+ - Latest U{releases <http://code.google.com/p/netcdf4-python/downloads/list>}
+   (source code and windows installers).
 
 Requires 
 ======== 
