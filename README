@@ -4,7 +4,7 @@ Quick Start
 -----------
 
 make sure numpy (at least version 1.2.1) is installed.
-make sure HDF5 (at least version 1.8.4) and netcdf-4 (at least version 4.1)
+make sure HDF5 (at least version 1.8.4 patch level 1) and netcdf-4 (at least version 4.1.1)
 are installed.   
 'python setup.py install' installs the netCDF4 and netcdftime modules.
 The environment variables HDF5_DIR and NETCDF4_DIR can be 
