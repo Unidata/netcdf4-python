@@ -1295,15 +1295,14 @@ attributes."""
         datashape = _out_array_shape(count)
         data = numpy.empty(datashape, dtype=self.dtype)
         
-        # For mult-dim arrays, determine which dimensions need to be squeezed
+        # Determine which dimensions need to be squeezed
         # (those for which elem is an integer scalar).
         # The convention used is that for those cases, 
         # put_ind for this dimension is set to -1 by _StartCountStride.
         squeeze = data.ndim * [slice(None),]
-        if data.ndim > 1:
-            for i,n in enumerate(put_ind.shape[:-1]):
-                if n == 1 and put_ind[...,i].ravel()[0] == -1:
-                    squeeze[i] = 0
+        for i,n in enumerate(put_ind.shape[:-1]):
+            if n == 1 and put_ind[...,i].ravel()[0] == -1:
+                squeeze[i] = 0
 
         # Reshape the arrays so we can iterate over them. 
         start = start.reshape((-1, self.ndim or 1))

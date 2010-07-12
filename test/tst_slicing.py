@@ -44,6 +44,8 @@ class VariablesTestCase(unittest.TestCase):
         v = f.variables['data']
         vu = f.variables['datau']
         
+        # test return of array scalar.
+        assert_equal(v[0,0,0].shape,())
         assert_array_equal(v[:], datarev)
         # test reading of slices.
         # negative value means count back from end.
@@ -74,6 +76,8 @@ class VariablesTestCase(unittest.TestCase):
         d = data[:,0,0]
         assert_equal(v1[:], d)
         assert_equal(v1[4:], d[4:])
+        # test return of array scalar.
+        assert_equal(v1[0].shape, ())
         i1 = NP.array([2,3,4])
         assert_equal(v1[i1], d[i1])
         i2 = NP.array([2,3,5])

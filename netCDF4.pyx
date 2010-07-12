@@ -1635,7 +1635,7 @@ netCDF attribute with the same name as one of the reserved python
 attributes."""
         if self.file_format != 'NETCDF4': self._redef()
         _set_att(self, NC_GLOBAL, name, value)
-        if self.file_format != 'NETCDF4': self._enddef()
+        if self.file_format !=  'NETCDF4': self._enddef()
 
     def getncattr(self,name):
         """
@@ -2435,15 +2435,14 @@ details."""
         else:
             data = numpy.empty(datashape, dtype=self.dtype)
 
-        # For multi-dim arrays, determine which dimensions need to be 
+        # Determine which dimensions need to be 
         # squeezed (those for which elem is an integer scalar).
         # The convention used is that for those cases, 
         # put_ind for this dimension is set to -1 by _StartCountStride.
         squeeze = data.ndim * [slice(None),]
-        if data.ndim > 1:
-            for i,n in enumerate(put_ind.shape[:-1]):
-                if n == 1 and put_ind[...,i].ravel()[0] == -1:
-                    squeeze[i] = 0
+        for i,n in enumerate(put_ind.shape[:-1]):
+            if n == 1 and put_ind[...,i].ravel()[0] == -1:
+                squeeze[i] = 0
 
         # Reshape the arrays so we can iterate over them. 
         start = start.reshape((-1, self.ndim or 1))
