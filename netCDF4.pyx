@@ -2387,15 +2387,15 @@ details."""
             # if setting _FillValue, make sure value
             # has same type as variable.
             if name == '_FillValue':
-                #msg='_FillValue attribute must be set when variable is '+\
-                #'created (using fill_value keyword to createVariable)'
-                #raise AttributeError(msg)
-                if self._isprimitive:
-                    value = numpy.array(value, self.dtype)
-                else:
-                    msg="cannot set _FillValue attribute for "+\
-                    "VLEN or compound variable"
-                    raise AttributeError(msg)
+                msg='_FillValue attribute must be set when variable is '+\
+                'created (using fill_value keyword to createVariable)'
+                raise AttributeError(msg)
+                #if self._isprimitive:
+                #    value = numpy.array(value, self.dtype)
+                #else:
+                #    msg="cannot set _FillValue attribute for "+\
+                #    "VLEN or compound variable"
+                #    raise AttributeError(msg)
             self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
