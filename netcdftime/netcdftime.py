@@ -665,10 +665,11 @@ Returns a scalar if input is a scalar, else returns a numpy array.
                     raise ValueError, 'there are only 30 days in every month with the 360_day calendar'
                 jdelta = _360DayFromDate(date) - self._jd0
             else:
+                jdelta = []
                 for d in date.flat:
                     if d.day > 30:
                         raise ValueError, 'there are only 30 days in every month with the 360_day calendar'
-                jdelta = [_360DayFromDate(d)-self._jd0 for d in date.flat]
+                    jdelta.append(_360DayFromDate(d)-self._jd0)
         if not isscalar:
             jdelta = numpy.array(jdelta)
         # convert to desired units, add time zone offset.
