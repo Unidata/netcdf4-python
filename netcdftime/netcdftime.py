@@ -660,11 +660,14 @@ Returns a scalar if input is a scalar, else returns a numpy array.
             else:
                 jdelta = [_AllLeapFromDate(d)-self._jd0 for d in date.flat]
         elif self.calendar == '360_day':
-            if self.calendar == '360_day' and date.day > 30:
-                raise ValueError, 'there are only 30 days in every month with the 360_day calendar'
             if isscalar:
+                if date.day > 30:
+                    raise ValueError, 'there are only 30 days in every month with the 360_day calendar'
                 jdelta = _360DayFromDate(date) - self._jd0
             else:
+                for d in date.flat:
+                    if d.day > 30:
+                        raise ValueError, 'there are only 30 days in every month with the 360_day calendar'
                 jdelta = [_360DayFromDate(d)-self._jd0 for d in date.flat]
         if not isscalar:
             jdelta = numpy.array(jdelta)
