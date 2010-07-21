@@ -1,6 +1,6 @@
  version 0.9.2 (not yet released)
  ================================
- * fix netcdftime bug with '360_day' calendar.
+ * fix netcdftime bug with '360_day' calendar. Fixes issue 59.
 
  * make sure scalar slice of 1d variable returns array scalar (not array of
    shape (1,)). Fixes issue 57.
