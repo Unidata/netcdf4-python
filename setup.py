@@ -3,13 +3,13 @@ from numpy.distutils.core  import setup, Extension
 
 def check_hdf5version(hdf5_includedir):
     try:
-        f = open(os.path.join(hdf5_includedir,'H5pubconf.h'))
+        f = open(os.path.join(hdf5_includedir,'H5pubconf-64.h'))
     except IOError:
         try:
-            f = open(os.path.join(hdf5_includedir,'H5pubconf-64.h'))
+            f = open(os.path.join(hdf5_includedir,'H5pubconf-32.h'))
         except IOError:
             try:
-                f = open(os.path.join(hdf5_includedir,'H5pubconf-32.h'))
+                f = open(os.path.join(hdf5_includedir,'H5pubconf.h'))
             except IOError:
                 return None
     hdf5_version = None
