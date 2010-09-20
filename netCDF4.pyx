@@ -1993,8 +1993,7 @@ instance. If C{None}, the data is not truncated. """
         cdef char *varname
         cdef nc_type xtype
         cdef int dimids[NC_MAX_DIMS]
-        cdef int *chunksizesp
-        cdef size_t sizep, nelemsp
+        cdef size_t sizep, nelemsp, *chunksizesp
         cdef float preemptionp
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
@@ -2110,7 +2109,7 @@ instance. If C{None}, the data is not truncated. """
                         if len(chunksizes) != len(dimensions):
                             if grp.file_format != 'NETCDF4': grp._enddef()
                             raise ValueError('chunksizes must be a sequence with the same length as dimensions')
-                        chunksizesp = <int *>malloc(sizeof(int) * ndims)
+                        chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
                         for n from 0 <= n < ndims:
                             chunksizesp[n] = chunksizes[n]
                     if chunksizes is not None or contiguous:
@@ -2310,9 +2309,9 @@ defined to be contiguous (and hence there is no chunking) the word 'contiguous'
 is returned.  Otherwise, a sequence with the chunksize for
 each dimension is returned."""
         cdef int ierr, icontiguous, ndims
-        cdef int *chunksizesp
+        cdef size_t *chunksizesp
         if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return None
-        chunksizesp = <int *>malloc(sizeof(int) * ndims)
+        chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
         ierr = nc_inq_var_chunking(self._grpid, self._varid, &icontiguous, chunksizesp)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr))
