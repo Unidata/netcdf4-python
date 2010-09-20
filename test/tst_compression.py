@@ -4,19 +4,38 @@ from numpy.testing import assert_almost_equal
 import os, tempfile, unittest
 
 ndim = 100000
-nfiles = 6
+ndim2 = 100
+chunk1 = 10; chunk2 = ndim2
+nfiles = 7
 files = [tempfile.mktemp(".nc") for nfile in range(nfiles)]
 array = uniform(size=(ndim,))
+array2 = uniform(size=(ndim,ndim2))
 lsd = 3
 
-def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,contiguous=False,complevel=6,fletcher32=False):
+def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,contiguous=False,\
+                 chunksizes=None,complevel=6,fletcher32=False):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
-    foo = file.createVariable('data', dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,shuffle=shuffle,contiguous=contiguous,complevel=complevel,fletcher32=fletcher32)
+    foo = file.createVariable('data',\
+            dtype,('n'),zlib=zlib,least_significant_digit=least_significant_digit,\
+            shuffle=shuffle,contiguous=contiguous,complevel=complevel,fletcher32=fletcher32,chunksizes=chunksizes)
     foo[:] = data
     file.close()
     file = Dataset(filename)
     data = file.variables['data'][:]
+
+def write_netcdf2(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,contiguous=False,\
+                 chunksizes=None,complevel=6,fletcher32=False):
+    file = Dataset(filename,'w')
+    file.createDimension('n', ndim)
+    file.createDimension('n2', ndim2)
+    foo = file.createVariable('data2',\
+            dtype,('n','n2'),zlib=zlib,least_significant_digit=least_significant_digit,\
+            shuffle=shuffle,contiguous=contiguous,complevel=complevel,fletcher32=fletcher32,chunksizes=chunksizes)
+    foo[:] = data
+    file.close()
+    file = Dataset(filename)
+    data = file.variables['data2'][:]
 
 class CompressionTestCase(unittest.TestCase):
 
@@ -34,6 +53,9 @@ class CompressionTestCase(unittest.TestCase):
         write_netcdf(self.files[4],True,lsd,array,shuffle=True)
         # compressed, lossy, with shuffle and fletcher32 checksum.
         write_netcdf(self.files[5],True,lsd,array,shuffle=True,fletcher32=True)
+        # 2-d compressed, lossy, with shuffle and fletcher32 checksum and
+        # chunksizes.
+        write_netcdf2(self.files[6],True,lsd,array2,shuffle=True,fletcher32=True,chunksizes=(chunk1,chunk2))
 
     def tearDown(self):
         # Remove the temporary files
@@ -76,6 +98,12 @@ class CompressionTestCase(unittest.TestCase):
         assert(size < 0.20*uncompressed_size)
         # should be slightly larger than without fletcher32
         assert(size > size_save)
+        # check chunksizes
+        f = Dataset(self.files[6])
+        checkarray2 = _quantize(array2,lsd)
+        assert_almost_equal(checkarray2,f.variables['data2'][:])
+        assert f.variables['data2'].filters() == {'zlib':True,'shuffle':True,'complevel':6,'fletcher32':True}
+        assert f.variables['data2'].chunking() == [chunk1,chunk2]
 
 if __name__ == '__main__':
     unittest.main()
