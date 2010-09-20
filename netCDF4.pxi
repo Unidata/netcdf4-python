@@ -161,6 +161,8 @@ cdef extern from "netcdf.h":
         NC_CHUNK_SEQ 
         NC_CHUNK_SUB 
         NC_CHUNK_SIZES   
+        NC_CHUNKED
+        NC_CONTIGUOUS
         # The netcdf version 3 functions all return integer error status.
         # These are the possible values, in addition to certain
         # values from the system errno.h.

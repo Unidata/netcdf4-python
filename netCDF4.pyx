@@ -2099,11 +2099,11 @@ instance. If C{None}, the data is not truncated. """
                 # set chunking stuff.
                 if ndims: # don't bother for scalar variable.
                     if contiguous:
-                        icontiguous = 1
+                        icontiguous = NC_CONTIGUOUS
                         if chunksizes is not None:
                             raise ValueError('cannot specify chunksizes for a contiguous dataset')
                     else:
-                        icontiguous = 0
+                        icontiguous = NC_CHUNKED
                     if chunksizes is None:
                         chunksizesp = NULL
                     else:
