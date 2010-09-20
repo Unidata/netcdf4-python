@@ -1,0 +1,4 @@
+import netCDF4
+print netCDF4.__version__
+print netCDF4.__hdf5libversion__
+print netCDF4.__netcdf4libversion__
