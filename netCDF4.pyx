@@ -1557,8 +1557,9 @@ default size of the chunk cache may be large enough to completely fill
 available memory when creating thousands of variables.  The optional
 keyword C{chunk_cache} allows you to reduce (or increase) the size of
 the default chunk cache when creating a variable.  The setting only
-persists as long as the file is open.   Warning - messing with this parameter
-can seriously degrade performance.
+persists as long as the Dataset is open - you can use the set_var_chunk_cache
+method to change it the next time the Dataset is opened.
+Warning - messing with this parameter can seriously degrade performance.
 
 The return value is the L{Variable} class instance describing the new 
 variable.
@@ -1571,7 +1572,7 @@ the C{__dict__} attribute of a L{Variable} instance.
 L{Variable} instances behave much like array objects. Data can be
 assigned to or retrieved from a variable with indexing and slicing
 operations on the L{Variable} instance. A L{Variable} instance has five
-standard attributes: C{dimensions, dtype, shape, ndim} and
+Dataset standard attributes: C{dimensions, dtype, shape, ndim} and
 C{least_significant_digit}. Application programs should never modify
 these attributes. The C{dimensions} attribute is a tuple containing the
 names of the dimensions associated with this variable. The C{dtype}
@@ -2330,7 +2331,7 @@ each dimension is returned."""
         """
 get_var_chunk_cache(self)
 
-return variable chunk cache information in a tuple.
+return variable chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for C{nc_get_var_chunk_cache} for
 details."""
         cdef int ierr
