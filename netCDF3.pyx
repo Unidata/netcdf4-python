@@ -43,7 +43,8 @@ Install
  Optionally, set the C{NETCDF3_DIR} environment variable to point to where the
  netCDF version 3 library and headers are installed. If C{NETCDF3_DIR} is
  not set, some standard locations will be searched.
- - run 'python setup-nc3.py install'
+ - run C{python setup-nc3.py build}, then C{python setup-nc3.py install} (as root if
+ necessary).
  - run some of the tests in the 'test3' directory.
 
 Tutorial

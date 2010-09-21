@@ -62,7 +62,8 @@ Install
  environment variable(s) to point to where szip is installed. Note that
  the netCDF library does not support creating szip compressed files, but can read szip
  compressed files if the HDF5 lib is configured to support szip.
- - run 'python setup.py install'
+ - run C{python setup.py build}, then C{python setup.py install} (as root if
+ necessary).
  - run the tests in the 'test' directory by running C{python run_all.py}.
 
 Tutorial
