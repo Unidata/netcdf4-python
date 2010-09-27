@@ -20,7 +20,7 @@ class DapTestCase(unittest.TestCase):
     def runTest(self):
         """testing access of data over http using opendap"""
         file = netCDF4.Dataset(URL)
-        assert file.variables.keys()[0] == firstvarname
+        assert firstvarname in file.variables.keys()
         firstvar = file.variables[firstvarname]
         assert firstvar.shape == firstvarshape
         data = firstvar[:]
