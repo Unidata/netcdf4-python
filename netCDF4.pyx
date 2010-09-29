@@ -2469,32 +2469,38 @@ details."""
         # missing_value/_Fill_Value.
         # ignore for compound and vlen datatypes.
         if self.maskandscale and self._isprimitive:
-            totalmask = numpy.zeros(data.shape, numpy.bool)
-            fill_value = None
-            if hasattr(self, 'missing_value') and (data == self.missing_value).any():
-                mask=data==self.missing_value
-                fill_value = self.missing_value
-                totalmask += mask
-            if hasattr(self, '_FillValue') and (data == self._FillValue).any():
-                mask=data==self._FillValue
-                if fill_value is None:
-                    fill_value = self._FillValue
-                totalmask += mask
-            else:
-                fillval = _default_fillvals[self.dtype.str[1:]]
-                if (data == fillval).any():
-                    mask=data==fillval
-                    if fill_value is None:
-                        fill_value = fillval
-                    totalmask += mask
-            # all values where data == missing_value or _FillValue are
-            # masked.  fill_value set to missing_value if it exists,
-            # otherwise _FillValue.
-            if fill_value is not None:
-                data = ma.masked_array(data,mask=totalmask,fill_value=fill_value)
+            data = self._toma(data)
             # if variable has scale_factor and add_offset attributes, rescale.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = self.scale_factor*data + self.add_offset
+        return data
+
+    def _toma(self,data):
+        # private function for creating a masked array, masking missing_values
+        # and/or _FillValues.
+        totalmask = numpy.zeros(data.shape, numpy.bool)
+        fill_value = None
+        if hasattr(self, 'missing_value') and (data == self.missing_value).any():
+            mask=data==self.missing_value
+            fill_value = self.missing_value
+            totalmask += mask
+        if hasattr(self, '_FillValue') and (data == self._FillValue).any():
+            mask=data==self._FillValue
+            if fill_value is None:
+                fill_value = self._FillValue
+            totalmask += mask
+        else:
+            fillval = _default_fillvals[self.dtype.str[1:]]
+            if (data == fillval).any():
+                mask=data==fillval
+                if fill_value is None:
+                    fill_value = fillval
+                totalmask += mask
+        # all values where data == missing_value or _FillValue are
+        # masked.  fill_value set to missing_value if it exists,
+        # otherwise _FillValue.
+        if fill_value is not None:
+            data = ma.masked_array(data,mask=totalmask,fill_value=fill_value)
         return data
 
     def _assign_vlen(self, elem, data):
@@ -2580,7 +2586,8 @@ details."""
                 return
 
         # A numpy array is needed. Convert if necessary.
-        if not type(data) == numpy.ndarray:
+        if not type(data) == numpy.ndarray and \
+           not type(data) == numpy.ma.core.MaskedArray:
             # if auto scaling is to be done, don't cast to an integer yet. 
             if self.maskandscale and self.dtype.kind == 'i' and \
                hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
@@ -2618,6 +2625,11 @@ details."""
         if self.maskandscale and self._isprimitive:
             # use missing_value as fill value.
             # if no missing value set, use _FillValue.
+            # pack non-masked values using scale_factor and add_offset
+            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+                # if not masked, create a masked array.
+                if not hasattr(data, 'mask'): data = self._toma(data)
+                data = (data - self.add_offset)/self.scale_factor
             if hasattr(data,'mask'):
                 if hasattr(self, 'missing_value'):
                     fillval = self.missing_value
@@ -2625,10 +2637,10 @@ details."""
                     fillval = self._FillValue
                 else:
                     fillval = _default_fillvals[self.dtype.str[1:]]
-                data = data.filled(fill_value=fillval)
-            # pack using scale_factor and add_offset.
-            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
-                data = (data - self.add_offset)/self.scale_factor
+                # filled method doesn't work for default _FillValue for floats
+                # in numpy 1.5.0, use where instead.
+                #data = data.filled(fill_value=fillval)
+                data = numpy.where(data.mask, fillval, data)
 
         # Fill output array with data chunks. 
         for (a,b,c,i) in zip(start, count, stride, put_ind):
