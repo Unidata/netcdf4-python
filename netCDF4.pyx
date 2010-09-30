@@ -2580,14 +2580,14 @@ details."""
         # to use.
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
-            if type(data) != numpy.ndarray or data.dtype.kind != 'O':
+            if not hasattr(data,'ndim') or data.dtype.kind != 'O':
                 # if not, assume it's a single element slice.
                 self._assign_vlen(elem, data)
                 return
 
         # A numpy array is needed. Convert if necessary.
-        if not type(data) == numpy.ndarray and \
-           not type(data) == numpy.ma.core.MaskedArray:
+        # assume it's a numpy or masked array if it has an 'ndim' attribute.
+        if not hasattr(data,'ndim'): 
             # if auto scaling is to be done, don't cast to an integer yet. 
             if self.maskandscale and self.dtype.kind == 'i' and \
                hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
@@ -2637,10 +2637,7 @@ details."""
                     fillval = self._FillValue
                 else:
                     fillval = _default_fillvals[self.dtype.str[1:]]
-                # filled method doesn't work for default _FillValue for floats
-                # in numpy 1.5.0, use where instead.
-                #data = data.filled(fill_value=fillval)
-                data = numpy.where(data.mask, fillval, data)
+                data = data.filled(fill_value=fillval)
 
         # Fill output array with data chunks. 
         for (a,b,c,i) in zip(start, count, stride, put_ind):
