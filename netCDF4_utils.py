@@ -41,7 +41,7 @@ least_significant_digit=1, bits will be 4.
     scale = pow(2.,bits)
     datout = numpy.around(scale*data)/scale
     if hasattr(datout,'mask'):
-        datout.set_fill_value(data.fill_value())
+        datout.set_fill_value(data.fill_value)
         return datout
     else:
         return datout
