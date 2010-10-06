@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python
 from netCDF4 import Dataset
 import numpy as NP
 
@@ -59,12 +59,18 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
             hasunlimdim = False
         if dounpackshort:
             if not quiet: print 'unpacking short integers to floats ...'
-        var = ncfile4.createVariable(varname,datatype,ncvar.dimensions,least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
+            print
+        if hasattr(ncvar, '_FillValue'):
+            FillValue = ncvar._FillValue
+        else:
+            FillValue = None 
+        var = ncfile4.createVariable(varname,datatype,ncvar.dimensions, fill_value=FillValue, least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
         # fill variable attributes.
         for attname in ncvar.ncattrs():
             if dounpackshort and attname in ['add_offset','scale_factor']: continue
             if dounpackshort and attname == 'missing_value':
                 setattr(var,attname,mval)
+            if attname == '_FillValue': continue
             else:
                 setattr(var,attname,getattr(ncvar,attname))
         # fill variables with data.
