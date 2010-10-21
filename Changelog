@@ -6,6 +6,9 @@
  * fixed writing of data with missing values with scale/offset packing. Added
  test (tst_masked2.py).
 
+ * fix iso8601 regex in netcdftime date parser so it can parse 'hours since 1-1-1 ...'
+ (year had to be 4 digits previously)
+
  version 0.9.2 (svn revision 907)
  ================================
  * fix netcdftime bug with '360_day' calendar. Fixes issue 59.
