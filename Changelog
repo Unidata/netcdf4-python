@@ -1,4 +1,4 @@
- version 0.9.3 (not yet released)
+ version 0.9.3 (svn revision 930)
  ================================
  * fix chunk sizes bug (chunk sizes pointer should be size_t, not int).  Fixes
  issue 66. Added test in tst_compression.py
