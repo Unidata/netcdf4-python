@@ -1,17 +1,21 @@
-import os
+import os, subprocess
 from numpy.distutils.core  import setup, Extension
-import subprocess
 
 NETCDF4_DIR=os.getenv('NETCDF4_DIR')
+# if NETCDF4_DIR env var is set, look for nc-config in NETCDF4_DIR/bin.
 if NETCDF4_DIR is not None:
     ncconfig = os.path.join(NETCDF4_DIR,'bin/nc-config')
-else:
+else: # otherwise, just hope it's in the users PATH.
     ncconfig = 'nc-config'
+print 'nc-config = %s' % ncconfig
 dep=subprocess.Popen([ncconfig,'--libs'],stdout=subprocess.PIPE).communicate()[0]
 libs = [l[2:] for l in dep.split() if l[0:2] == '-l' ]
+print 'libs = %s' % libs
 lib_dirs = [l[2:] for l in dep.split() if l[0:2] == '-L' ]
+print 'lib_dirs = %s' % lib_dirs
 dep=subprocess.Popen([ncconfig,'--includedir'],stdout=subprocess.PIPE).communicate()[0]
 inc_dirs = [i for i in dep.split()]
+print 'inc_dirs = %s' % inc_dirs
 
 extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
 
