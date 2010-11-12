@@ -43,13 +43,14 @@ if netCDF4_dir is not None:
 else: # otherwise, just hope it's in the users PATH.
     ncconfig = 'nc-config' 
 # if nc-config works, use it.
-retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
+#retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
+retcode = 0 # disable for now, nc-config doesn't work correctly (20101113).
 if not retcode:
     print 'using nc-config ...'
     dep=subprocess.Popen([ncconfig,'--libs'],stdout=subprocess.PIPE).communicate()[0]
     libs = [l[2:] for l in dep.split() if l[0:2] == '-l' ]
     lib_dirs = [l[2:] for l in dep.split() if l[0:2] == '-L' ]
-    dep=subprocess.Popen([ncconfig,'--includedir'],stdout=subprocess.PIPE).communicate()[0]
+    dep=subprocess.Popen([ncconfig,'--cflags'],stdout=subprocess.PIPE).communicate()[0]
     inc_dirs = [i for i in dep.split()]
 # if nc-config didn't work (it won't on windows), fall back on brute force method
 else:
