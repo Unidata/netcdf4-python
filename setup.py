@@ -36,15 +36,18 @@ HDF5_includedir = os.environ.get('HDF5_INCDIR')
 netCDF4_includedir = os.environ.get('NETCDF4_INCDIR')
 HDF5_libdir = os.environ.get('HDF5_LIBDIR')
 netCDF4_libdir = os.environ.get('NETCDF4_LIBDIR')
+USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
 
-# if NETCDF4_DIR env var is set, look for nc-config in NETCDF4_DIR/bin.
-if netCDF4_dir is not None:
-    ncconfig = os.path.join(netCDF4_dir,'bin/nc-config')
-else: # otherwise, just hope it's in the users PATH.
-    ncconfig = 'nc-config' 
-# if nc-config works, use it.
-#retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
-retcode = 0 # disable for now, nc-config doesn't work correctly (20101113).
+# if USE_NCCONFIG set, and nc-config works, use it.
+if USE_NCCONFIG is not None:
+    # if NETCDF4_DIR env var is set, look for nc-config in NETCDF4_DIR/bin.
+    if netCDF4_dir is not None:
+        ncconfig = os.path.join(netCDF4_dir,'bin/nc-config')
+    else: # otherwise, just hope it's in the users PATH.
+        ncconfig = 'nc-config' 
+    retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
+else:
+    retcode = 1
 if not retcode:
     print 'using nc-config ...'
     dep=subprocess.Popen([ncconfig,'--libs'],stdout=subprocess.PIPE).communicate()[0]
