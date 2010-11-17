@@ -54,7 +54,7 @@ if not retcode:
     libs = [l[2:] for l in dep.split() if l[0:2] == '-l' ]
     lib_dirs = [l[2:] for l in dep.split() if l[0:2] == '-L' ]
     dep=subprocess.Popen([ncconfig,'--cflags'],stdout=subprocess.PIPE).communicate()[0]
-    inc_dirs = [i for i in dep.split()]
+    inc_dirs = [i[2:] for i in dep.split() if i[0:2] == '-I']
 # if nc-config didn't work (it won't on windows), fall back on brute force method
 else:
     dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
