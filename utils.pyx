@@ -527,3 +527,85 @@ class _Variable(object):
         data = data[tuple(squeeze)]
         
         return data
+
+
+class MFTime(_Variable):
+    """
+MFTime(self, time, units=None)
+
+Class providing an interface to a MFDataset time Variable by imposing a unique common
+time unit to all files.
+
+Example usage:
+
+>>> import numpy
+>>> f1 = Dataset('mftest_1.nc','w', format='NETCDF4_CLASSIC')
+>>> f2 = Dataset('mftest_2.nc','w', format='NETCDF4_CLASSIC')
+>>> f1.createDimension('time',None)
+>>> f2.createDimension('time',None)
+>>> t1 = f1.createVariable('time','i',('time',))
+>>> t2 = f2.createVariable('time','i',('time',))
+>>> t1.units = 'days since 2000-01-01'
+>>> t2.units = 'days since 2000-02-01'
+>>> t1.calendar = 'standard'
+>>> t2.calendar = 'standard'
+>>> t1[:] = numpy.arange(31)
+>>> t2[:] = numpy.arange(30)
+>>> f1.close()
+>>> f2.close()
+>>> # Read the two files in at once, in one Dataset.
+>>> f = MFDataset('mftest*nc')
+>>> t = f.variables['time']
+>>> print t.units
+days since 2000-01-01
+>>> print t[32] # The value written in the file, inconsistent with the MF time units.
+1
+>>> T = MFTime(t)
+>>> print T[32]                        
+32                           
+    """
+    
+    def __init__(self, time, units=None):
+        """
+Create a time Variable with units consistent across a multifile 
+dataset.
+
+@param time: Time variable from a MFDataset. 
+
+@param units: Time units, for example, 'days since 1979-01-01'. If None, use
+the units from the master record. 
+        """
+        import datetime
+        self.__time = time
+        
+        # copy attributes from master time variable.
+        for name, value in time.__dict__.items():
+            self.__dict__[name] = value
+           
+        
+        # Check that calendar is the same in all files.
+        if len(set([t.calendar for t in self._recVar])) > 1:
+            raise ValueError('MFTime requires that the same time calendar is used by all files.')
+ 
+        # Override units if units is specified.
+        self.units = units or time.units
+        
+        # Reference date to compute the difference between different time units. 
+        ref_date = datetime.datetime(1900,1,1)
+        ref_num = date2num(ref_date, self.units, self.calendar)
+        
+        # Create delta vector: delta = ref_num(ref_date) - num(ref_date)
+        # So that ref_num(date) = num(date) + delta 
+        self.__delta = numpy.empty(len(self), time.dtype)
+        
+        i0 = 0; i1 = 0
+        for i,v in enumerate(self._recVar):
+            n = self._recLen[i] # Length of time vector.
+            num = date2num(ref_date, v.units, self.calendar)
+            i1 += n            
+            self.__delta[i0:i1] = ref_num - num
+            i0 += n
+        
+                
+    def __getitem__(self, elem):
+        return self.__time[elem] + self.__delta[elem]

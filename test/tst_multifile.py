@@ -1,9 +1,9 @@
-from netCDF4 import Dataset, MFDataset
-import numpy
+from netCDF4 import Dataset, MFDataset, MFTime, num2date, date2num, date2index
+import numpy as np
 from numpy.random import seed, randint
-from numpy.testing import assert_array_equal
+from numpy.testing import assert_array_equal, assert_equal
 from numpy import ma
-import tempfile, unittest, os
+import tempfile, unittest, os, datetime
 
 nx=100; ydim=5; zdim=1
 nfiles = 10
@@ -30,8 +30,8 @@ class VariablesTestCase(unittest.TestCase):
             dat.name = 'phony data' 
             dat.missing_value = missval
             nx1 = nfile*ninc; nx2 = ninc*(nfile+1)
-            #x[0:ninc] = numpy.arange(nfile*ninc,ninc*(nfile+1))
-            x[:] = numpy.arange(nfile*ninc,ninc*(nfile+1))
+            #x[0:ninc] = np.arange(nfile*ninc,ninc*(nfile+1))
+            x[:] = np.arange(nfile*ninc,ninc*(nfile+1))
             #dat[0:ninc] = data[nx1:nx2]
             dat[:] = data[nx1:nx2]
             f.close()
@@ -45,7 +45,7 @@ class VariablesTestCase(unittest.TestCase):
         """testing multi-file dataset access"""
         f = MFDataset(self.files,check=True)
         assert f.history == 'created today'
-        assert_array_equal(numpy.arange(0,nx),f.variables['x'][:])
+        assert_array_equal(np.arange(0,nx),f.variables['x'][:])
         varin = f.variables['data']
         datin = varin[:]
         assert_array_equal(datin.mask,data.mask)
@@ -60,6 +60,64 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(varin[:],data2)
         assert getattr(varin,'nonexistantatt',None) == None
         f.close()
+
+
+class NonuniformTimeTestCase(unittest.TestCase):
+    ninc = 365
+    def setUp(self):
+        
+        self.files = [tempfile.mktemp(".nc") for nfile in range(2)]
+        for nfile,file in enumerate(self.files):
+            f = Dataset(file,'w',format='NETCDF4_CLASSIC')
+            f.createDimension('time',None)
+            f.createDimension('y',ydim)
+            f.createDimension('z',zdim)
+            f.history = 'created today'
+            
+            time = f.createVariable('time', 'f', ('time', )) 
+            time.units = 'days since {0}-01-01'.format(1979+nfile)
+            
+            time.calendar = 'standard'
+            
+            x = f.createVariable('x','f',('time', 'y', 'z'))
+            x.units = 'potatoes per square mile'
+            
+            nx1 = self.ninc*nfile; 
+            nx2 = self.ninc*(nfile+1)
+            
+            time[:] = np.arange(self.ninc)
+            x[:] = np.arange(nx1, nx2).reshape(self.ninc,1,1) * np.ones((1, ydim, zdim))
+            
+            f.close()
+            
+    def tearDown(self):
+        # Remove the temporary files
+        for file in self.files:
+            os.remove(file)
+            
+            
+    def runTest(self):
+        # Get the real dates
+        dates = []
+        for file in self.files:
+            f = Dataset(file)
+            t = f.variables['time']
+            dates.extend(num2date(t[:], t.units, t.calendar))
+            f.close()
+        
+        # Compare with the MF dates
+        f = MFDataset(self.files,check=True)
+        t = f.variables['time']
+        mfdates = num2date(t[:], t.units, t.calendar)
+        
+        T = MFTime(t)
+        assert_equal(len(T), len(t))
+        assert_equal(T.shape, t.shape)
+        assert_equal(T.dimensions, t.dimensions)
+        assert_equal(T.typecode(), t.typecode())
+        assert_array_equal(num2date(T[:], T.units, T.calendar), dates) 
+        assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
+        
 
 if __name__ == '__main__':
     unittest.main()
