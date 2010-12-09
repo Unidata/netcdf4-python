@@ -1,6 +1,6 @@
 from netcdftime import utime, JulianDayFromDate,DateFromJulianDay, date2index
 from netcdftime import datetime as datetimex, date2num
-from netCDF4 import Dataset
+from netCDF4 import Dataset, num2date
 import numpy
 import random
 import sys
@@ -171,6 +171,11 @@ class netcdftimeTestCase(unittest.TestCase):
         d = datetime(1970,1,1,1)
         t = self.cdftime_iso.date2num(d)
         assert_equal(numpy.around(t),3600)
+        # test fix for issue 75 (seconds hit 60 at end of month,
+        # day goes out of range).
+        t = 733498.999999
+        d = num2date(t,units='days since 0001-01-01 00:00:00')
+        assert_equal(str(d),'2009-04-01 00:00:00')
 
 
 class TestDate2index(unittest.TestCase):

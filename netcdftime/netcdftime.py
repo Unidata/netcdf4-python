@@ -4,6 +4,7 @@ Performs conversions of netCDF time coordinate data to/from datetime objects.
 import math, numpy, re, time
 from datetime import datetime as real_datetime
 from datetime import tzinfo, timedelta
+from calendar import monthrange
 
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
@@ -269,7 +270,7 @@ Virginia. p. 63
     (hfrac, hours) = math.modf(dfrac * 24.0)
     (mfrac, minutes) = math.modf(hfrac * 60.0)
     seconds = round(mfrac * 60.0) # seconds are rounded
-    
+
     if seconds > 59:
         seconds = 0
         minutes = minutes + 1
@@ -279,6 +280,16 @@ Virginia. p. 63
     if hours > 23:
         hours = 0
         days = days + 1
+
+    # if days exceeds number allowed in a month, flip to next month.
+    # this fixes issue 75.
+    daysinmonth = monthrange(year, month)[1]
+    if days > daysinmonth: 
+        days = 1
+        month = month + 1
+        if month > 12:
+            month = 1
+            year = year + 1
     
     # return a 'real' datetime instance if calendar is gregorian.
     if calendar == 'proleptic_gregorian' or \

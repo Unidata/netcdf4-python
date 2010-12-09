@@ -1,3 +1,10 @@
+ changes since 0.9.3 release
+ ================================
+ * Added a MFTime class. Provide a unified interface to MFDataset time
+ variable using different time units.
+ * Fixed bug in netcdftime (issue 75) that occurs is time specified is within
+ one second of the end of the month.
+
  version 0.9.3 (svn revision 930)
  ================================
  * fix chunk sizes bug (chunk sizes pointer should be size_t, not int).  Fixes
