@@ -6,6 +6,12 @@
  * Fixed bug in netcdftime (issue 75) that occurs when time specified is within
  one second of the end of the month.
 
+ * on unix-like systems, the environment variable USE_NCCONFIG can be set to
+ tell setup.py to use the nc-config script installed by netcdf to figure out
+ where all the libs and headers are (without having to specify NETCDF_DIR,
+ HDF5_DIR, etc).  Only works with recent snapshots of netcdf (from Dec 1 2010
+ onward).
+
  version 0.9.3 (svn revision 930)
  ================================
  * fix chunk sizes bug (chunk sizes pointer should be size_t, not int).  Fixes
