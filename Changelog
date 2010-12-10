@@ -2,7 +2,8 @@
  ================================
  * Added a MFTime class. Provide a unified interface to MFDataset time
  variable using different time units.
- * Fixed bug in netcdftime (issue 75) that occurs is time specified is within
+
+ * Fixed bug in netcdftime (issue 75) that occurs when time specified is within
  one second of the end of the month.
 
  version 0.9.3 (svn revision 930)
