@@ -1,5 +1,7 @@
  changes since 0.9.3 release
  ================================
+ * regenerated C source with Cython 0.14.
+
  * Added a MFTime class. Provide a unified interface to MFDataset time
  variable using different time units.
 
