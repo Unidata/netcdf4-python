@@ -374,6 +374,10 @@ if _npversion.split('.')[0] < '1':
     raise ImportError('requires numpy version 1.0rc1 or later')
 import_array()
 include "netCDF3.pxi"
+# include pure python utility functions.
+# (use include instead of importing them so docstrings
+#  get included in C extension code).
+include "utils.pyx"
 
 # numpy data type <--> netCDF 3 data type mapping.
 
@@ -1605,8 +1609,3 @@ The default value of C{maskandscale} is C{True}
             return data.squeeze()
         else:
             return data
-
-# include pure python utility functions.
-# (use include instead of importing them so docstrings
-#  get included in C extension code).
-include "utils.pyx"
