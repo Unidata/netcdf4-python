@@ -3,9 +3,11 @@ import unittest
 import os
 import tempfile
 import numpy as np
-from numpy import ma
+from numpy import ma, seterr
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from netCDF3 import Dataset, _default_fillvals
+
+seterr(over='ignore') # don't print warning for overflow errors 
 
 # test automatic conversion of masked arrays, and
 # packing/unpacking of short ints.
