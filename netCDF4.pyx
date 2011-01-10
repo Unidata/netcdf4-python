@@ -813,6 +813,10 @@ if _npversion.split('.')[0] < '1':
     raise ImportError('requires numpy version 1.0rc1 or later')
 import_array()
 include "netCDF4.pxi"
+# include pure python utility functions and MFDataset class.
+# (use include instead of importing them so docstrings
+#  get included in C extension code).
+include "utils.pyx"
 
 # check for required version of netcdf-4 and hdf5.
 
@@ -3245,8 +3249,3 @@ cdef _read_vlen(group, nc_type xtype):
         except KeyError:
             raise KeyError("unsupported component type for VLEN")
     return VLType(group, dt, name, typeid=xtype)
-
-# include pure python utility functions and MFDataset class.
-# (use include instead of importing them so docstrings
-#  get included in C extension code).
-include "utils.pyx"
