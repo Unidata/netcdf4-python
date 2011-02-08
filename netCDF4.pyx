@@ -36,18 +36,22 @@ Requires
  higher is recommended.
  - U{Libcurl <http://curl.haxx.se/libcurl/>}, if you want
  U{OPeNDAP<http://opendap.org/>} support.
+ - U{HDF4 <http://www.hdfgroup.org/products/hdf4/>}, if you want
+ to be able to read HDF4 "Scientific Dataset" (SD) files.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
  Version 4.1.1 or higher is required. Version 4.1.2 or higher is recommended.
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR
- --enable-shared}', and 'C{--enable-dap}' if you want
- U{OPeNDAP<http://opendap.org/>} support.
- C{$HDF5_DIR} is the directory where HDF5 was installed.
+ --enable-shared}', where C{$HDF5_DIR} is the directory where HDF5 was installed.
+ If you want U{OPeNDAP<http://opendap.org/>} support, add 'C{--enable-dap}'.
+ If you want HDF4 SD support, add 'C{--enable-hdf4 --with-hdf4=$HDF4_DIR}',
+ where C{$HDF4_DIR} is the directory where HDF4 was installed.
 
 
 Install
 =======
 
- - install the requisite python modules and C libraries (see above).
+ - install the requisite python modules and C libraries (see above). It's
+   easiest if all the C libs are built as shared libraries.
  - optionally, set the C{HDF5_DIR} environment variable to point to where HDF5
  is installed (the libs in C{$HDF5_DIR/lib}, the headers in
  C{$HDF5_DIR/include}). If the headers and libs are installed in different
@@ -63,6 +67,10 @@ Install
  environment variable(s) to point to where szip is installed. Note that
  the netCDF library does not support creating szip compressed files, but can read szip
  compressed files if the HDF5 lib is configured to support szip.
+ - If you are using netcdf 4.1.2 or higher, instead of setting all those
+ enviroment variables defining where libs are installed, you can just set one 
+ environment variable, USE_NCCONFIG, to 1.  This will tell python to run the
+ netcdf nc-config utility to determine where all the dependencies live.
  - run C{python setup.py build}, then C{python setup.py install} (as root if
  necessary).
  - run the tests in the 'test' directory by running C{python run_all.py}.
