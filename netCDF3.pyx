@@ -361,7 +361,7 @@ try:
 except: # or else use drop-in substitute
     from netCDF4_utils import OrderedDict
 
-__version__ = "0.9.3"
+__version__ = "0.9.4"
 
 # Initialize numpy
 import os
