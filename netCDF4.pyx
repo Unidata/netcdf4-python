@@ -32,11 +32,12 @@ Requires
 
  - numpy array module U{http://numpy.scipy.org}, version 1.2.1 or later.
  - The HDF5 C library version 1.8.4-patch1 or higher from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
- Be sure to build with 'C{--enable-hl --enable-shared}'.
+ Be sure to build with 'C{--enable-hl --enable-shared}'. Version 1.8.6 or
+ higher is recommended.
  - U{Libcurl <http://curl.haxx.se/libcurl/>}, if you want
  U{OPeNDAP<http://opendap.org/>} support.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.1.1 or higher is required.
+ Version 4.1.1 or higher is required. Version 4.1.2 or higher is recommended.
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR
  --enable-shared}', and 'C{--enable-dap}' if you want
  U{OPeNDAP<http://opendap.org/>} support.
