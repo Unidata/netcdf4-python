@@ -1,5 +1,5 @@
 import glob, os, sys, unittest, netCDF4
-from netCDF4 import getlibversion
+from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__version__
 
 __all__ = ['test']
 # Find all test files.
@@ -27,3 +27,7 @@ def test(verbosity=1):
 
 if __name__ == '__main__':
     test(verbosity=1)
+    print
+    print 'netcdf4-python version:',__version__
+    print 'HDF5 lib version:      ',__hdf5libversion__
+    print 'netcdf lib version:    ',__netcdf4libversion__
