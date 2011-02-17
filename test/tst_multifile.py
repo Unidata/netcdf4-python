@@ -75,7 +75,9 @@ class NonuniformTimeTestCase(unittest.TestCase):
             f.history = 'created today'
             
             time = f.createVariable('time', 'f', ('time', )) 
-            time.units = 'days since {0}-01-01'.format(1979+nfile)
+            #time.units = 'days since {0}-01-01'.format(1979+nfile)
+            yr = 1979+nfile
+            time.units = 'days since %s-01-01' % yr
             
             time.calendar = 'standard'
             
