@@ -91,7 +91,4 @@ class VariablesTestCase(unittest.TestCase):
 if __name__ == '__main__':
     from netCDF4 import getlibversion
     version =  getlibversion().split()[0]
-    if version >= "4.1":
-        unittest.main()
-    else:
-        print "skipping tst_compoundvar, requires netcdf >= 4.1, you have %s" % version
+    unittest.main()
