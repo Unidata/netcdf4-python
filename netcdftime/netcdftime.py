@@ -100,13 +100,13 @@ Virginia. p. 63
             # 1582 October 5 (Julian Calendar)
             B = 0
         else:
-            raise ValueError, 'impossible date (falls in gap between end of Julian calendar and beginning of Gregorian calendar'
+            raise ValueError('impossible date (falls in gap between end of Julian calendar and beginning of Gregorian calendar')
     elif calendar == 'proleptic_gregorian':
         B = 2 - A + int(A/4)
     elif calendar == 'julian':
         B = 0
     else:
-        raise ValueError, 'unknown calendar, must be one of julian,standard,gregorian,proleptic_gregorian, got %s' % calendar
+        raise ValueError('unknown calendar, must be one of julian,standard,gregorian,proleptic_gregorian, got %s' % calendar)
     
     # adjust for Julian calendar if necessary
     jd = jd + B
@@ -211,7 +211,7 @@ Virginia. p. 63
     # based on redate.py by David Finlayson.
     
     if JD < 0:
-        raise ValueError, 'Julian Day must be positive'
+        raise ValueError('Julian Day must be positive')
 
     dayofwk = int(math.fmod(int(JD + 1.5),7))
     (F, Z) = math.modf(JD + 0.5)
@@ -229,7 +229,7 @@ Virginia. p. 63
     elif calendar == 'julian':
         A = Z
     else:
-        raise ValueError, 'unknown calendar, must be one of julian,standard,gregorian,proleptic_gregorian, got %s' % calendar
+        raise ValueError('unknown calendar, must be one of julian,standard,gregorian,proleptic_gregorian, got %s' % calendar)
 
     B = A + 1524
     C = int((B - 122.1)/365.25)
@@ -260,7 +260,6 @@ Virginia. p. 63
     if calendar == 'proleptic_gregorian' or \
        (calendar in ['standard','gregorian'] and JD >= 2299160.5):
         if year % 100 == 0 and year % 400 != 0: 
-            print year % 100, year % 400
             leap = 0
     if leap and month > 2:
        dayofyr = dayofyr + leap
@@ -310,7 +309,7 @@ days. Julian Day is a fractional day with a resolution of 1 second.
     # based on redate.py by David Finlayson.
     
     if JD < 0:
-        raise ValueError, 'Julian Day must be positive'
+        raise ValueError('Julian Day must be positive')
 
     dayofwk = int(math.fmod(int(JD + 1.5),7))
     (F, Z) = math.modf(JD + 0.5)
@@ -368,7 +367,7 @@ Julian Day is a fractional day with a resolution of 1 second.
     # based on redate.py by David Finlayson.
     
     if JD < 0:
-        raise ValueError, 'Julian Day must be positive'
+        raise ValueError('Julian Day must be positive')
 
     dayofwk = int(math.fmod(int(JD + 1.5),7))
     (F, Z) = math.modf(JD + 0.5)
@@ -426,7 +425,7 @@ Julian Day is a fractional day with a resolution of 1 second.
     """
 
     if JD < 0:
-        raise ValueError, 'Julian Day must be positive'
+        raise ValueError('Julian Day must be positive')
 
     #jd = int(360. * (year + 4716)) + int(30. * (month - 1)) + day
     (F, Z) = math.modf(JD)
@@ -459,9 +458,9 @@ def _dateparse(timestr):
     timestr_split = timestr.split()
     units = timestr_split[0].lower()
     if units not in _units:
-        raise ValueError,"units must be one of 'seconds', 'minutes', 'hours' or 'days' (or singular version of these), got '%s'" % units
+        raise ValueError("units must be one of 'seconds', 'minutes', 'hours' or 'days' (or singular version of these), got '%s'" % units)
     if timestr_split[1].lower() != 'since':
-        raise ValueError,"no 'since' in unit_string"
+        raise ValueError("no 'since' in unit_string")
     # parse the date string.
     n = timestr.find('since')+6
     year,month,day,hour,minute,second,utc_offset = _parse_date(timestr[n:])
@@ -604,15 +603,15 @@ units to datetime objects.
         if calendar in _calendars:
             self.calendar = calendar
         else:
-            raise ValueError, "calendar must be one of %s, got '%s'" % (str(_calendars),calendar)
+            raise ValueError("calendar must be one of %s, got '%s'" % (str(_calendars),calendar))
         units, tzoffset, self.origin = _dateparse(unit_string)
         self.tzoffset = tzoffset # time zone offset in minutes
         self.units = units
         self.unit_string = unit_string
         if self.calendar in ['noleap','365_day'] and self.origin.month == 2 and self.origin.day == 29:
-            raise ValueError, 'cannot specify a leap day as the reference time with the noleap calendar'
+            raise ValueError('cannot specify a leap day as the reference time with the noleap calendar')
         if self.calendar == '360_day' and self.origin.day > 30:
-            raise ValueError, 'there are only 30 days in every month with the 360_day calendar'
+            raise ValueError('there are only 30 days in every month with the 360_day calendar')
         if self.calendar in ['noleap','365_day']:
             self._jd0 = _NoLeapDayFromDate(self.origin)
         elif self.calendar in ['all_leap','366_day']:
@@ -657,13 +656,13 @@ Returns a scalar if input is a scalar, else returns a numpy array.
         elif self.calendar in ['noleap','365_day']:
             if isscalar:
                 if date.month == 2 and date.day == 29:
-                    raise ValueError, 'there is no leap day in the noleap calendar'
+                    raise ValueError('there is no leap day in the noleap calendar')
                 jdelta = _NoLeapDayFromDate(date) - self._jd0
             else:
                 jdelta = []
                 for d in date.flat:
                     if d.month == 2 and d.day == 29:
-                        raise ValueError, 'there is no leap day in the noleap calendar'                    
+                        raise ValueError('there is no leap day in the noleap calendar') 
                     jdelta.append(_NoLeapDayFromDate(d)-self._jd0)
         elif self.calendar in ['all_leap','366_day']:
             if isscalar:
@@ -673,13 +672,13 @@ Returns a scalar if input is a scalar, else returns a numpy array.
         elif self.calendar == '360_day':
             if isscalar:
                 if date.day > 30:
-                    raise ValueError, 'there are only 30 days in every month with the 360_day calendar'
+                    raise ValueError('there are only 30 days in every month with the 360_day calendar')
                 jdelta = _360DayFromDate(date) - self._jd0
             else:
                 jdelta = []
                 for d in date.flat:
                     if d.day > 30:
-                        raise ValueError, 'there are only 30 days in every month with the 360_day calendar'
+                        raise ValueError('there are only 30 days in every month with the 360_day calendar')
                     jdelta.append(_360DayFromDate(d)-self._jd0)
         if not isscalar:
             jdelta = numpy.array(jdelta)
@@ -1046,10 +1045,10 @@ def date2index(dates, nctime, calendar=None, select='exact'):
         before = index == 0
         
         if select in ['before', 'exact'] and numpy.any(before):
-            raise ValueError, 'At least one of the dates given is before the first date in `nctime`.'
+            raise ValueError('At least one of the dates given is before the first date in `nctime`.')
         
         if select in ['after', 'exact'] and numpy.any(after):
-            raise ValueError, 'At least one of the dates given is after the last date in `nctime`.'
+            raise ValueError('At least one of the dates given is after the last date in `nctime`.')
             
         
         # Find the dates for which the match is not perfect.
@@ -1061,7 +1060,7 @@ def date2index(dates, nctime, calendar=None, select='exact'):
                    
         if select == 'exact':
             if len(mismatch) > 0:
-                raise ValueError, 'Some of the dates specified were not found in the `nctime` variable.'
+                raise ValueError('Some of the dates specified were not found in the `nctime` variable.')
    
         elif select == 'before':
             index[after] = N

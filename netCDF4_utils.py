@@ -217,7 +217,9 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
         # Booleans --- Same shape as data along corresponding dimension
         elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
             if shape[i] != len(e):
-                raise IndexError, 'Boolean array must have the same shape as the data along this dimension.'
+                msg="""
+Boolean array must have the same shape as the data along this dimension."""
+                raise IndexError(msg)
             sdim.append(e.sum())
             
         # Sequence of indices
@@ -229,7 +231,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
             elif np.alen(e) == 1 or np.alen(e) == sdim[ind_dim]:
                 sdim.append(1)
             else:
-                raise IndexError, "Indice mismatch. Indices must have the same length."
+                raise IndexError("Indice mismatch. Indices must have the same length.")
         # Scalar
         else:
             sdim.append(1)

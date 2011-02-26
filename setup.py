@@ -1,4 +1,4 @@
-import os
+import os, sys
 from numpy.distutils.core  import setup, Extension
 import subprocess
 
@@ -49,7 +49,7 @@ if USE_NCCONFIG is not None:
 else:
     retcode = 1
 if not retcode:
-    print 'using nc-config ...'
+    sys.stdout.write('using nc-config ...\n')
     dep=subprocess.Popen([ncconfig,'--libs'],stdout=subprocess.PIPE).communicate()[0]
     libs = [l[2:] for l in dep.split() if l[0:2] == '-l' ]
     lib_dirs = [l[2:] for l in dep.split() if l[0:2] == '-L' ]
@@ -60,17 +60,17 @@ else:
     dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
     
     if HDF5_includedir is None and HDF5_dir is None:
-        print """
-    HDF5_DIR environment variable not set, checking some standard locations ..,"""
+        sys.stdout.write("""
+HDF5_DIR environment variable not set, checking some standard locations ..\n""")
         for direc in dirstosearch:
-            print 'checking %s ...' % direc
+            sys.stdout.write('checking %s ...\n' % direc)
             hdf5_version = check_hdf5version(os.path.join(direc, 'include'))
             if hdf5_version is None or hdf5_version[1:6] < '1.8.0':
                 continue
             else:
                 HDF5_dir = direc
                 HDF5_includedir = os.path.join(direc, 'include')
-                print 'HDF5 found in %s' % HDF5_dir
+                sys.stdout.write('HDF5 found in %s\n' % HDF5_dir)
                 break
         if HDF5_dir is None:
             raise ValueError('did not find HDF5 headers')
@@ -84,17 +84,17 @@ else:
             raise ValueError('HDF5 version >= 1.8.0 is required')
     
     if netCDF4_includedir is None and netCDF4_dir is None:
-        print """
-    NETCDF4_DIR environment variable not set, checking some standard locations ..,"""
+        sys.stdout.write( """
+NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         for direc in dirstosearch:
-            print 'checking %s ...' % direc
+            sys.stdout.write('checking %s ...\n' % direc)
             isnetcdf4 = check_ifnetcdf4(os.path.join(direc, 'include'))
             if not isnetcdf4:
                 continue
             else:
                 netCDF4_dir = direc
                 netCDF4_includedir = os.path.join(direc, 'include')
-                print 'netCDF4 found in %s' % netCDF4_dir
+                sys.stdout.write('netCDF4 found in %s\n' % netCDF4_dir)
                 break
         if netCDF4_dir is None:
             raise ValueError('did not find netCDF version 4 headers')
