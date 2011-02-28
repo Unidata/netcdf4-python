@@ -28,7 +28,7 @@ def test(verbosity=1):
 if __name__ == '__main__':
     test(verbosity=1)
     import sys
-    sys.stdout('\n')
-    sys.stdout('netcdf4-python version:',__version__)
-    sys.stdout('HDF5 lib version:      ',__hdf5libversion__)
-    sys.stdout('netcdf lib version:    ',__netcdf4libversion__)
+    sys.stdout.write('\n')
+    sys.stdout.write('netcdf4-python version: %s\n' % __version__)
+    sys.stdout.write('HDF5 lib version:       %s\n' % __hdf5libversion__)
+    sys.stdout.write('netcdf lib version:     %s\n' % __netcdf4libversion__)
