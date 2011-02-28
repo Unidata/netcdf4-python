@@ -932,7 +932,7 @@ cdef _get_att(grp, int varid, name):
         ierr = nc_get_att_text(grp._grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr))
-        pstring = value_arr.tostring()
+        pstring = value_arr.tostring().decode('ascii')
         return pstring.replace('\x00','')
     else:
     # a regular numeric or compound type.
