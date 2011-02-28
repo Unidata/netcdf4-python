@@ -19,5 +19,5 @@ include test3/*py
 include utils/nc3tonc4
 include utils/nc4tonc3
 include utils/grib2nc4
-include netcdftime/__init__.py
-include netcdftime/netcdftime.py
+include netcdftime.py
+include ordereddict.py
