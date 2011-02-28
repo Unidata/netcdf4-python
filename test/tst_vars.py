@@ -71,8 +71,7 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_almost_equal(v1[:],randomdata)
         # check variables in sub group.
         g = f.groups[GROUP_NAME]
-        varnames = g.variables.keys()
-        varnames.sort()
+        varnames = sorted(g.variables.keys())
         v1 = g.variables[VAR_DOUBLE_NAME]
         v2 = g.variables[VAR_SHORT_NAME]
         assert varnames == VARNAMES
