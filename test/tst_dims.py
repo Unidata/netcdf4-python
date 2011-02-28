@@ -67,10 +67,10 @@ class DimensionsTestCase(unittest.TestCase):
         for name in f.dimensions.keys():
             self.assert_(name in names_check)
         # check that dimension lengths are correct.
-        for name,dim in f.dimensions.iteritems():
+        for name,dim in f.dimensions.items():
             self.assert_(len(dim) == lensdict[name])
         # check that isunlimited() method works.
-        for name,dim in f.dimensions.iteritems():
+        for name,dim in f.dimensions.items():
             self.assert_(dim.isunlimited() == unlimdict[name])
         # add some data to variable along unlimited dims,
         # make sure length of dimensions change correctly.
@@ -80,7 +80,7 @@ class DimensionsTestCase(unittest.TestCase):
         lensdict[LEVEL_NAME]=nadd1
         lensdict[TIME_NAME]=nadd2
         # check that dimension lengths are correct.
-        for name,dim in f.dimensions.iteritems():
+        for name,dim in f.dimensions.items():
             self.assert_(len(dim) == lensdict[name])
         # check dimensions in subgroup.
         g = f.groups[GROUP_NAME]
@@ -99,10 +99,10 @@ class DimensionsTestCase(unittest.TestCase):
         for name in g.dimensions.keys():
             self.assert_(name in names_check)
         # check that dimension lengths are correct.
-        for name,dim in g.dimensions.iteritems():
+        for name,dim in g.dimensions.items():
             self.assert_(len(dim) == lensdict[name])
         # check that isunlimited() method works.
-        for name,dim in g.dimensions.iteritems():
+        for name,dim in g.dimensions.items():
             self.assert_(dim.isunlimited() == unlimdict[name])
         # add some data to variable along unlimited dims,
         # make sure length of dimensions change correctly.
@@ -111,7 +111,7 @@ class DimensionsTestCase(unittest.TestCase):
         vg[0:nadd1,:,:,0:nadd2] = uniform(size=(nadd1,LAT_LENG,LON_LENG,nadd2))
         lensdict[LEVEL_NAME]=nadd1
         lensdict[TIME_NAME]=nadd2
-        for name,dim in g.dimensions.iteritems():
+        for name,dim in g.dimensions.items():
             self.assert_(len(dim) == lensdict[name])
         f.close()
 

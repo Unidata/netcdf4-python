@@ -12,8 +12,7 @@ import netCDF4
 FILE_NAME = tempfile.mktemp(".nc")
 VAR_DOUBLE_NAME="dummy_var"
 VAR_SHORT_NAME='dummy_var_short'
-VARNAMES = [VAR_DOUBLE_NAME,VAR_SHORT_NAME]
-VARNAMES.sort()
+VARNAMES = sorted([VAR_DOUBLE_NAME,VAR_SHORT_NAME])
 GROUP_NAME = "dummy_group"
 DIM1_NAME="x"
 DIM1_LEN=2
@@ -54,8 +53,7 @@ class VariablesTestCase(unittest.TestCase):
         """testing primitive variables"""
         f  = netCDF4.Dataset(self.file, 'r')
         # check variables in root group.
-        varnames = f.variables.keys()
-        varnames.sort()
+        varnames = sorted(f.variables.keys())
         v1 = f.variables[VAR_DOUBLE_NAME]
         v2 = f.variables[VAR_SHORT_NAME]
         assert varnames == VARNAMES

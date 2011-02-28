@@ -173,7 +173,8 @@ used to build the module, and when it was built.
     """
     cdef char *libstring
     libstring = nc_inq_libvers()
-    return PyString_FromString(libstring)
+    #return PyString_FromString(libstring)
+    return str(libstring)
 
 class MFDataset(Dataset): 
     """

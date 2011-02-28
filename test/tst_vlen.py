@@ -55,6 +55,8 @@ class VariablesTestCase(unittest.TestCase):
         assert f.vltypes[VL_NAME].dtype == VL_BASETYPE
         data2 = v[:]
         data2s = vs[:]
+        print(datas)
+        print(data2s)
         for i in range(nlons):
             for j in range(nlats):
                 assert_array_equal(data2[j,i], data[j,i])

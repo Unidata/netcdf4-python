@@ -85,7 +85,7 @@ class VariablesTestCase(unittest.TestCase):
         # check attributes in root group.
         # global attributes.
         # check __dict__ method for accessing all netCDF attributes.
-        for key,val in ATTDICT.iteritems():
+        for key,val in ATTDICT.items():
             if type(val) == NP.ndarray:
                 assert f.__dict__[key].tolist() == val.tolist()
             else:
@@ -100,7 +100,7 @@ class VariablesTestCase(unittest.TestCase):
         assert f.getncattr('file_format') == 'netcdf4_format'
         # variable attributes.
         # check __dict__ method for accessing all netCDF attributes.
-        for key,val in ATTDICT.iteritems():
+        for key,val in ATTDICT.items():
             if type(val) == NP.ndarray:
                 assert v.__dict__[key].tolist() == val.tolist()
             else:
@@ -114,7 +114,7 @@ class VariablesTestCase(unittest.TestCase):
         assert v.getncattr('ndim') == 'three'
         # check attributes in subgroup.
         # global attributes.
-        for key,val in ATTDICT.iteritems():
+        for key,val in ATTDICT.items():
             if type(val) == NP.ndarray:
                 assert g.__dict__[key].tolist() == val.tolist()
             else:
@@ -125,7 +125,7 @@ class VariablesTestCase(unittest.TestCase):
         assert g.emptystratt == EMPTYSTRATT
         assert g.seqatt.tolist() == SEQATT.tolist()
         assert g.stringseqatt == ''.join(STRINGSEQATT)
-        for key,val in ATTDICT.iteritems():
+        for key,val in ATTDICT.items():
             if type(val) == NP.ndarray:
                 assert v1.__dict__[key].tolist() == val.tolist()
             else:
