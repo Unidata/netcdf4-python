@@ -6,10 +6,10 @@ cdef extern from "stdlib.h":
     void free(void *ptr)
 
 # need some python C API functions for strings.
-#cdef extern from "Python.h":
-#     int PyString_Check(object)
-#     char * PyString_AsString(object)
-#     object PyString_FromString(char *)
+cdef extern from "Python.h":
+     int PyBytes_Check(object)
+     char * PyBytes_AsString(object)
+     object PyBytes_FromString(char *)
 
 # hdf5 version info.
 cdef extern from "H5public.h":
