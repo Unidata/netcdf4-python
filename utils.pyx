@@ -28,7 +28,7 @@ an array of characters (datatype 'S1') of shape a.shape + (N,).
 
 @return: A numpy character array with datatype 'S1' and shape 
 a.shape + (N,), where N is the length of each string in a."""
-    b = numpy.array(tuple(a.tostring()),'S1')
+    b = numpy.array(tuple(a.tostring()),'U1')
     b.shape = a.shape + (a.itemsize,)
     return b
 
@@ -46,7 +46,7 @@ length of b.shape[-1] characters.
 where N=b.shape[-1]."""
     bs = b.tostring()
     slen = b.shape[-1]
-    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'S'+repr(slen))
+    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
     a.shape = b.shape[:-1]
     return a
 
