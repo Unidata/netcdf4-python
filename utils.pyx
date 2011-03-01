@@ -173,8 +173,7 @@ used to build the module, and when it was built.
     """
     cdef char *libstring
     libstring = nc_inq_libvers()
-    #return PyString_FromString(libstring)
-    return str(libstring)
+    return libstring.decode('ascii')
 
 class MFDataset(Dataset): 
     """
@@ -484,7 +483,7 @@ class _Variable(object):
 
             # Merge the two lists to get a list of 2-elem lists.
             # Slice this list along the first dimension.
-            lst = zip(idx, vid).__getitem__(slice(sta, stop, step))
+            lst = list(zip(idx, vid)).__getitem__(slice(sta, stop, step))
 
             # Rebuild the slicing expression for dimensions 1 and ssq.
             newSlice = [slice(None, None, None)]
