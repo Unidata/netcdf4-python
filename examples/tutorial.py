@@ -223,7 +223,7 @@ for data in statdat[:]:
             ': units=',chartostring(statdat.units[name])
         elif data[name].dtype.kind == 'V': # a nested compound type
             print name,data[name].dtype.names,': value=',data[name],': units=',\
-            tuple([''.join(u.tolist()) for u in statdat.units[name]])
+            tuple(chartostring(numpy.array([u.tolist() for u in statdat.units[name]])))
         else: # a numeric type.
             print name,': value=',data[name],': units=',chartostring(statdat.units[name])
     print '----'
