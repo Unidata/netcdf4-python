@@ -837,7 +837,6 @@ def _gethdf5libversion():
     majorvers = H5_VERS_MAJOR
     minorvers = H5_VERS_MINOR
     releasevers = H5_VERS_RELEASE
-    #patchstring = PyString_FromString(H5_VERS_SUBRELEASE)
     patchstring = H5_VERS_SUBRELEASE.decode('ascii')
     if not patchstring:
        return '%d.%d.%d' % (majorvers,minorvers,releasevers)
@@ -925,7 +924,6 @@ cdef _get_att(grp, int varid, name):
     cdef char *attname
     cdef nc_type att_type
     cdef ndarray value_arr
-    #attname = PyString_AsString(name)
     bytestr = _strencode(name)
     attname = bytestr
     ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
@@ -997,7 +995,6 @@ cdef _set_att(grp, int varid, name, value):
     cdef int i, ierr, lenarr, n
     cdef char *attname, *datstring
     cdef ndarray value_arr 
-    #attname = PyString_AsString(name)
     bytestr = _strencode(name)
     attname = bytestr
     # put attribute value into a numpy array.
@@ -1013,7 +1010,6 @@ cdef _set_att(grp, int varid, name, value):
     if value_arr.dtype.char in ['S','U']:
         dats = value_arr.tostring()
         lenarr = len(dats)
-        #datstring = PyString_AsString(dats)
         bytestr = _strencode(dats)
         datstring = bytestr
         ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
@@ -1324,7 +1320,6 @@ group, so the path is simply C{'/'}."""
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
-        #path = PyString_AsString(str(filename))
         bytestr = _strencode(filename)
         path = bytestr
         if mode == 'w':
@@ -1449,7 +1444,6 @@ renameDimension(self, oldname, newname)
 rename a L{Dimension} named C{oldname} to C{newname}."""
         cdef char *namstring
         dim = self.dimensions[oldname]
-        #namstring = PyString_AsString(str(newname))
         bytestr = _strencode(newname)
         namstring = bytestr
         if self.file_format != 'NETCDF4': self._redef()
@@ -1626,7 +1620,6 @@ rename a L{Variable} named C{oldname} to C{newname}"""
             var = self.variables[oldname]
         except KeyError:
             raise KeyError('%s not a valid variable name' % oldname)
-        #namstring = PyString_AsString(str(newname))
         bytestr = _strencode(newname)
         namstring = bytestr
         if self.file_format != 'NETCDF4': self._redef()
@@ -1693,7 +1686,6 @@ netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
         cdef int ierr
-        #attname = PyString_AsString(str(name))
         bytestr = _strencode(name)
         attname = bytestr
         if self.file_format != 'NETCDF4': self._redef()
@@ -1764,7 +1756,6 @@ method)."""
         cdef int ierr, n, numgrps, numdims, numvars
         cdef char *groupname
         cdef char namstring[NC_MAX_NAME+1]
-        #groupname = PyString_AsString(str(name))
         bytestr = _strencode(name)
         groupname = bytestr
         if 'id' in kwargs:
@@ -1842,7 +1833,6 @@ determine if the dimension is unlimited"""
         if 'id' in kwargs:
             self._dimid = kwargs['id']
         else:
-            #dimname = PyString_AsString(str(name))
             bytestr = _strencode(name)
             dimname = bytestr
             if size is not None:
@@ -2068,7 +2058,6 @@ instance. If C{None}, the data is not truncated. """
         if 'id' in kwargs:
             self._varid = kwargs['id']
         else:
-            #varname = PyString_AsString(str(name))
             bytestr = _strencode(name)
             varname = bytestr
             ndims = len(dimensions)
@@ -2294,7 +2283,6 @@ delete a netCDF variable attribute.  Only use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
-        #attname = PyString_AsString(str(name))
         bytestr = _strencode(name)
         attname = bytestr
         if self._grp.file_format != 'NETCDF4': self._grp._redef()
@@ -2598,7 +2586,6 @@ details."""
             countp[n] = count[n] 
         if self.dtype == str: # VLEN string
             strdata = <char **>malloc(sizeof(char *))
-            #strdata[0] = PyString_AsString(data)
             bytestr = _strencode(data)
             strdata[0] = bytestr
             ierr = nc_put_vara(self._grpid, self._varid,
@@ -2951,7 +2938,6 @@ The default value of C{maskandscale} is C{True}
                 # loop over elements of object array, fill array with
                 # contents of strdata.
                 for i from 0<=i<totelem:
-                    #data[i] = PyString_FromString(strdata[i])
                     data[i] = strdata[i] # return bytes, not strings.
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
@@ -3052,7 +3038,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
     cdef size_t offset, size
     cdef char *namstring, *nested_namstring
     cdef int dim_sizes[NC_MAX_DIMS]
-    #namstring = PyString_AsString(dtype_name)
     bytestr = _strencode(dtype_name)
     namstring = bytestr
     size = dt.itemsize
@@ -3068,7 +3053,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
     formats = _sortbylist(formats, offsets)
     offsets.sort()
     for name, format, offset in zip(names, formats, offsets):
-        #namstring = PyString_AsString(name)
         bytestr = _strencode(name)
         namstring = bytestr
         if format.kind != 'V': # scalar primitive type
@@ -3084,7 +3068,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
             if format.shape ==  (): # nested scalar compound type
                 # find this compound type in this group or it's parents.
                 xtype_tmp = _find_cmptype(grp, format) 
-                #nested_namstring = PyString_AsString(name)
                 bytestr = _strencode(name)
                 nested_namstring = bytestr
                 ierr = nc_insert_compound(grp._grpid, xtype,\
@@ -3108,7 +3091,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
                 else: # nested array compound type.
                     # find this compound type in this group or it's parents.
                     xtype_tmp = _find_cmptype(grp, format.subdtype[0]) 
-                    #nested_namstring = PyString_AsString(name)
                     bytestr = _strencode(name)
                     nested_namstring = bytestr
                     ierr = nc_insert_array_compound(grp._grpid,xtype,\
@@ -3161,7 +3143,6 @@ cdef _read_compound(group, nc_type xtype):
     ierr = nc_inq_compound(group._grpid, xtype, cmp_namstring, NULL, &nfields)
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-    #name = PyString_FromString(cmp_namstring)
     name = cmp_namstring.decode(default_encoding)
     # loop over fields.
     names = []
@@ -3178,7 +3159,6 @@ cdef _read_compound(group, nc_type xtype):
                                      dim_sizes)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-        #field_name = PyString_FromString(field_namstring)
         field_name = field_namstring.decode(default_encoding)
         names.append(field_name)
         offsets.append(offset)
@@ -3271,7 +3251,6 @@ cdef _def_vlen(grp, object dt, object dtype_name):
         xtype = NC_STRING
         # dtype_name ignored
     else: # numpy datatype
-        #namstring = PyString_AsString(dtype_name)
         bytestr = _strencode(dtype_name)
         namstring = bytestr
         dt = numpy.dtype(dt) # convert to numpy datatype.
@@ -3302,7 +3281,6 @@ cdef _read_vlen(group, nc_type xtype):
         ierr = nc_inq_vlen(group._grpid, xtype, vl_namstring, &vlsize, &base_xtype)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-        #name = PyString_FromString(vl_namstring)
         name = vl_namstring.decode(default_encoding)
         try:
             dt = numpy.dtype(_nctonptype[base_xtype]) # see if it is a primitive type
