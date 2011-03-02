@@ -16,18 +16,8 @@ If HDF5 was built with szip support, you may also need to set the
 SZIP_DIR environment variable to point to the locations of the szip
 libraries and headers.
 
-If you can't install the HDF5 and netcdf-4 libs on your system,
-but have netcdf-3 installed, set NETCDF3_DIR to point to the
-location of the netcdf-3 library and headers, and then run
-'python setup-nc3.py install'. This will install the netCDF3 module.
-If you don't set NETCDF3_DIR, some standard locations will be searched.
-
-To install just the pure-python netcdftime module, 
-run 'python setup-netcdftime.py install'
-
 Unit tests are in the 'test' directory.
 To run all the tests, execute 'cd test; python run_all.py'.
-Tests for the netCDF3 module are in the 'test3' directory.
 Additional examples are in the 'examples' directory.
 
 More detailed documentation is available at docs/index.html, or
