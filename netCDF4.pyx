@@ -2527,7 +2527,11 @@ details."""
             totalmask += mask
         else:
             fillval = _default_fillvals[self.dtype.str[1:]]
-            if (data == fillval).any():
+            has_fillval = data == fillval
+            # if data is an array scalar, has_fillval will be a boolean.
+            # in that case convert to an array.
+            if type(has_fillval) == bool: has_fillval=numpy.asarray(has_fillval)
+            if has_fillval.any():
                 mask=data==fillval
                 if fill_value is None:
                     fill_value = fillval
