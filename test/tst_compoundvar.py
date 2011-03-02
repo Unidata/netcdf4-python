@@ -75,7 +75,7 @@ class VariablesTestCase(unittest.TestCase):
         vv = g.variables[VAR_NAME]
         dataout = v[:]
         dataoutg = vv[:]
-        assert(f.cmptypes.keys() ==\
+        assert(list(f.cmptypes.keys()) ==\
                [TYPE_NAME1,TYPE_NAME2,TYPE_NAME3,TYPE_NAME4,TYPE_NAME5])
         assert_array_equal(dataout['xxx']['xx']['i'],data['xxx']['xx']['i'])
         assert_array_equal(dataout['xxx']['xx']['j'],data['xxx']['xx']['j'])
