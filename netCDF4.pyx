@@ -838,11 +838,11 @@ def _gethdf5libversion():
     minorvers = H5_VERS_MINOR
     releasevers = H5_VERS_RELEASE
     #patchstring = PyString_FromString(H5_VERS_SUBRELEASE)
-    #if not patchstring:
-    if not releasevers:
+    patchstring = H5_VERS_SUBRELEASE.decode('ascii')
+    if not patchstring:
        return '%d.%d.%d' % (majorvers,minorvers,releasevers)
     else:
-       return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,releasevers)
+       return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
 
 __netcdf4libversion__ = getlibversion().split()[0]
 __required_netcdf4version__ = '4.1.2'
