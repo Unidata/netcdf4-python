@@ -264,7 +264,7 @@ Boolean array must have the same shape as the data along this dimension."""
             # yet.
             # length of slice may be longer than current shape
             # if dimension is unlimited.
-            if unlim and e.stop > shape[i]:
+            if unlim and e.stop is not None and e.stop > shape[i]:
                 length = e.stop
             elif unlim and e.stop is None and datashape != ():
                 if e.start is None:
@@ -313,7 +313,7 @@ Boolean array must have the same shape as the data along this dimension."""
             
             
         #    SCALAR INTEGER    #
-        elif np.alen(e)==1 and np.dtype(type(e)).kind is 'i': 
+        elif np.alen(e)==1 and np.dtype(type(e)).kind == 'i': 
             if e >= 0: 
                 start[...,i] = e
             elif e < 0 and (-e < shape[i]) :
@@ -325,8 +325,7 @@ Boolean array must have the same shape as the data along this dimension."""
             stride[...,i] = 1
             indices[...,i] = -1    # Use -1 instead of 0 to indicate that 
                                        # this dimension shall be squeezed. 
-            
-            
+
     return start, count, stride, indices#, out_shape
 
 def _out_array_shape(count):
