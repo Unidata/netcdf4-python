@@ -2821,15 +2821,16 @@ The default value of C{maskandscale} is C{True}
             # flatten data array.
             data = data.flatten()
             if self.dtype == str:
+                # convert all elements from strings to bytes
+                for n in range(data.shape[0]):
+                    data[n] = _strencode(data[n])
                 # vlen string (NC_STRING)
                 # loop over elements of object array, put data buffer for
                 # each element in struct.
                 # allocate struct array to hold vlen data.
                 strdata = <char **>malloc(sizeof(char *)*totelem)
                 for i from 0<=i<totelem:
-                    #strdata[i] = PyString_AsString(data[i])
-                    bytestr = _strencode(data[i])
-                    strdata[i] = bytestr
+                    strdata[i] = data[i]
                 # strides all 1 or scalar variable, use put_vara (faster)
                 if sum(stride) == ndims or ndims == 0: 
                     ierr = nc_put_vara(self._grpid, self._varid,
@@ -2946,7 +2947,7 @@ The default value of C{maskandscale} is C{True}
                 # contents of strdata.
                 for i from 0<=i<totelem:
                     #data[i] = PyString_FromString(strdata[i])
-                    data[i] = strdata[i]
+                    data[i] = strdata[i] # return bytes, not strings.
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
                 free(strdata)

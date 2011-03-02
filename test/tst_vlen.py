@@ -51,16 +51,14 @@ class VariablesTestCase(unittest.TestCase):
         f = Dataset(self.file, 'r')
         v = f.variables[VAR1_NAME]
         vs = f.variables[VAR2_NAME]
-        assert f.vltypes.keys() == [VL_NAME]
+        assert list(f.vltypes.keys()) == [VL_NAME]
         assert f.vltypes[VL_NAME].dtype == VL_BASETYPE
         data2 = v[:]
         data2s = vs[:]
-        print(datas)
-        print(data2s)
         for i in range(nlons):
             for j in range(nlats):
                 assert_array_equal(data2[j,i], data[j,i])
-                assert datas[j,i] == data2s[j,i]
+                assert datas[j,i] == data2s[j,i].decode()
         f.close()
 
 if __name__ == '__main__':
