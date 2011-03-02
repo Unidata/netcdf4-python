@@ -1,6 +1,10 @@
- changes since 0.9.3 release
+ version 0.9.4 (not yet released)
  ================================
- * regenerated C source with Cython 0.14.
+ * now works on Python 3.
+
+ * netCDF3 module removed. If you still need it, get it from netCDF4 0.9.3.
+
+ * regenerated C source with Cython 0.14.1.
 
  * Added a MFTime class. Provide a unified interface to MFDataset time
  variable using different time units.
