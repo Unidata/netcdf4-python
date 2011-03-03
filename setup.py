@@ -51,10 +51,10 @@ else:
 if not retcode:
     sys.stdout.write('using nc-config ...\n')
     dep=subprocess.Popen([ncconfig,'--libs'],stdout=subprocess.PIPE).communicate()[0]
-    libs = [l[2:] for l in dep.split() if l[0:2] == '-l' ]
-    lib_dirs = [l[2:] for l in dep.split() if l[0:2] == '-L' ]
+    libs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l' ]
+    lib_dirs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-L' ]
     dep=subprocess.Popen([ncconfig,'--cflags'],stdout=subprocess.PIPE).communicate()[0]
-    inc_dirs = [i[2:] for i in dep.split() if i[0:2] == '-I']
+    inc_dirs = [str(i[2:].decode()) for i in dep.split() if i[0:2].decode() == '-I']
 # if nc-config didn't work (it won't on windows), fall back on brute force method
 else:
     dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
