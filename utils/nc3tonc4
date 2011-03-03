@@ -1,6 +1,7 @@
-#!/Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python
+#!/usr/bin/env python
 from netCDF4 import Dataset
 import numpy as NP
+import sys
 
 def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=True,fletcher32=False,clobber=False,lsd_dict=None,nchunk=1000,quiet=False,classic=0):
     """convert a netcdf 3 file (filename3) to a netcdf 4 file
@@ -25,11 +26,11 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
     unlimdimname = False
     unlimdim = None
     # create global attributes.
-    if not quiet: print 'copying global attributes ..'
+    if not quiet: sys.stdout.write('copying global attributes ..\n')
     for attname in ncfile3.ncattrs():
         setattr(ncfile4,attname,getattr(ncfile3,attname))
-    if not quiet: print 'copying dimensions ..'
-    for dimname,dim in ncfile3.dimensions.iteritems():
+    if not quiet: sys.stdout.write('copying dimensions ..\n')
+    for dimname,dim in ncfile3.dimensions.items():
         if dim.isunlimited():
             unlimdimname = dimname
             unlimdim = dim
@@ -37,12 +38,12 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
         else:
             ncfile4.createDimension(dimname,len(dim))
     # create variables.
-    for varname,ncvar in ncfile3.variables.iteritems():
-        if not quiet: print 'copying variable',varname
+    for varname,ncvar in ncfile3.variables.items():
+        if not quiet: sys.stdout.write('copying variable %s\n' % varname)
         # quantize data?
         if lsd_dict is not None and lsd_dict.has_key(varname):
             lsd = lsd_dict[varname]
-            if not quiet: print 'truncating to least_significant_digit =',lsd
+            if not quiet: sys.stdout.write('truncating to least_significant_digit = %d\n'%lsd)
         else:
             lsd = None # no quantization.
         # unpack short integers to floats?
@@ -58,8 +59,8 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
         else:
             hasunlimdim = False
         if dounpackshort:
-            if not quiet: print 'unpacking short integers to floats ...'
-            print
+            if not quiet: sys.stdout.write('unpacking short integers to floats ...\n')
+            sys.stdout.write('')
         if hasattr(ncvar, '_FillValue'):
             FillValue = ncvar._FillValue
         else:
@@ -115,7 +116,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
 
 if __name__ == '__main__':
 
-    import sys, getopt, os
+    import getopt, os
 
     usage = """
  Convert a netCDF 3 file to netCDF 4 format, optionally
@@ -160,7 +161,7 @@ if __name__ == '__main__':
                                      ])
     except:
         (type, value, traceback) = sys.exc_info()
-        print "Error parsing the options. The error was:", value
+        sys.stdout.write("Error parsing the options. The error was: %s\n" % value)
         sys.stderr.write(usage)
         sys.exit(0)
 
@@ -202,13 +203,13 @@ if __name__ == '__main__':
         elif option[0] == '--quantize':
             quantize = option[1]
         else:
-            print option[0], ": Unrecognized option"
+            sys.stdout.write("%s: Unrecognized option\n" % option[0])
             sys.stderr.write(usage)
             sys.exit(0)
 
     # if we pass a number of files different from 2, abort
-    if len(pargs) <> 2:
-        print "You need to pass both source and destination!."
+    if len(pargs) < 2 or len(pargs) > 2:
+        sys.stdout.write("You need to pass both source and destination!.\n")
         sys.stderr.write(usage)
         sys.exit(0)
 
