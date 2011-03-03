@@ -1005,6 +1005,13 @@ cdef _set_att(grp, int varid, name, value):
         value_arr = value_arr.astype('i4')
     # if array contains strings, write a text attribute.
     if value_arr.dtype.char in ['S','U']:
+        # if unicode array, cast to string
+        if value_arr.dtype.char == 'U':
+            dt = value_arr.dtype.str
+            dtnew = dt.replace('U','S')
+            # change 'S0' to 'S1'
+            dtnew = dtnew.replace('0','1')
+            value_arr = value_arr.astype(dtnew)
         dats = value_arr.tostring()
         lenarr = len(dats)
         bytestr = _strencode(dats)
