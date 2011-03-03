@@ -12,11 +12,11 @@ def nc3tonc4(filename4,filename3,clobber=False,nchunk=1000,quiet=False):
     unlimdimname = False
     unlimdim = None
     # create global attributes.
-    if not quiet: print 'copying global attributes ..'
+    if not quiet: sys.stdout.write('copying global attributes ..\n')
     for attname in ncfile4.ncattrs():
         setattr(ncfile3,attname,getattr(ncfile4,attname))
-    if not quiet: print 'copying dimensions ..'
-    for dimname,dim in ncfile4.dimensions.iteritems():
+    if not quiet: sys.stdout.write('copying dimensions ..\n')
+    for dimname,dim in ncfile4.dimensions.items():
         if dim.isunlimited():
             unlimdimname = dimname
             unlimdim = dim
@@ -24,16 +24,21 @@ def nc3tonc4(filename4,filename3,clobber=False,nchunk=1000,quiet=False):
         else:
             ncfile3.createDimension(dimname,len(dim))
     # create variables.
-    for varname,ncvar in ncfile4.variables.iteritems():
-        if not quiet: print 'copying variable',varname
+    for varname,ncvar in ncfile4.variables.items():
+        if not quiet: sys.stdout.write('copying variable %s\n' % varname)
         # is there an unlimited dimension?
         if unlimdimname and unlimdimname in ncvar.dimensions:
             hasunlimdim = True
         else:
             hasunlimdim = False
-        var = ncfile3.createVariable(varname,ncvar.dtype,ncvar.dimensions)
+        if hasattr(ncvar, '_FillValue'):
+            FillValue = ncvar._FillValue
+        else:
+            FillValue = None 
+        var = ncfile3.createVariable(varname,ncvar.dtype,ncvar.dimensions,fill_value=FillValue)
         # fill variable attributes.
         for attname in ncvar.ncattrs():
+            if attname == '_FillValue': continue
             setattr(var,attname,getattr(ncvar,attname))
         # fill variables with data.
         if hasunlimdim: # has an unlim dim, loop over unlim dim index.
@@ -46,7 +51,7 @@ def nc3tonc4(filename4,filename3,clobber=False,nchunk=1000,quiet=False):
                     if nmax > len(unlimdim): nmax=len(unlimdim)
                     var[n:nmax] = ncvar[n:nmax]
             else:
-		var[0:len(unlimdim)] = ncvar[:]
+                var[0:len(unlimdim)] = ncvar[:]
         else: # no unlim dim or 1-d variable, just copy all data at once.
             var[:] = ncvar[:]
         ncfile3.sync() # flush data to disk
@@ -75,7 +80,7 @@ if __name__ == '__main__':
                                     ['chunk=','quiet='])
     except:
         (type, value, traceback) = sys.exc_info()
-        print "Error parsing the options. The error was:", value
+        sys.stdout.write("Error parsing the options. The error was: %s\n" % value)
         sys.stderr.write(usage)
         sys.exit(0)
 
@@ -96,13 +101,13 @@ if __name__ == '__main__':
         elif option[0] == '--chunk':
             chunk = int(option[1])
         else:
-            print option[0], ": Unrecognized option"
+            sys.stdout.write("%s : Unrecognized option\n" % options[0])
             sys.stderr.write(usage)
             sys.exit(0)
 
     # if we pass a number of files different from 2, abort
-    if len(pargs) <> 2:
-        print "You need to pass both source and destination!."
+    if len(pargs) < 2 or len(pargs) > 2:
+        sys.stdout.write("You need to pass both source and destination!\n.")
         sys.stderr.write(usage)
         sys.exit(0)
 
