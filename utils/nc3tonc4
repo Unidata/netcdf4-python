@@ -3,7 +3,7 @@ from netCDF4 import Dataset
 import numpy as NP
 import sys
 
-def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=True,fletcher32=False,clobber=False,lsd_dict=None,nchunk=1000,quiet=False,classic=0):
+def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=True,fletcher32=False,clobber=False,lsd_dict=None,nchunk=10,quiet=False,classic=0):
     """convert a netcdf 3 file (filename3) to a netcdf 4 file
     The default format is 'NETCDF4', but can be set
     to NETCDF4_CLASSIC if classic=1.
@@ -143,7 +143,7 @@ if __name__ == '__main__':
      is not to quantize any of the variables.
  --quiet=(0|1)  -- if 1, don't print diagnostic information.
  --chunk=(integer) -- number of records along unlimited dimension to 
-     write at once.  Default 1000.  Ignored if there is no unlimited 
+     write at once.  Default 10.  Ignored if there is no unlimited 
      dimension.  chunk=0 means write all the data at once.
 \n""" % os.path.basename(sys.argv[0])
 

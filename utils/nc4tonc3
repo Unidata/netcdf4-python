@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from netCDF4 import Dataset
 
-def nc4tonc3(filename4,filename3,clobber=False,nchunk=1000,quiet=False):
+def nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False):
     """convert a netcdf 4 file (filename4) in NETCDF4_CLASSIC format
     to a netcdf 3 file (filename3) in NETCDF3_64BIT format."""
     ncfile4 = Dataset(filename4,'r')
@@ -71,7 +71,7 @@ if __name__ == '__main__':
  -o -- Overwite destination file (default is to raise an error if output file already exists).
  --quiet=(0|1)  -- if 1, don't print diagnostic information.
  --chunk=(integer) -- number of records along unlimited dimension to 
-     write at once.  Default 1000.  Ignored if there is no unlimited 
+     write at once.  Default 10.  Ignored if there is no unlimited 
      dimension.  chunk=0 means write all the data at once.
 \n""" % os.path.basename(sys.argv[0])
 
