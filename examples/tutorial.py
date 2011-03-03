@@ -222,9 +222,8 @@ for data in statdat[:]:
             print name,': value =',chartostring(data[name]),\
             ': units=',chartostring(statdat.units[name])
         elif data[name].dtype.kind == 'V': # a nested compound type
-            units = [chartostring(s) for s in tuple(statdat.units[name])]
             print name,data[name].dtype.names,': value=',data[name],': units=',\
-            tuple([u.tostring().decode().rstrip('\x00') for u in units]) 
+            tuple([chartostring(s) for s in tuple(statdat.units[name])])
         else: # a numeric type.
             print name,': value=',data[name],': units=',chartostring(statdat.units[name])
     print '----'
