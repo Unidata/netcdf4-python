@@ -802,7 +802,7 @@ def _parse_date(datestring):
 
     Adapted from pyiso8601 (http://code.google.com/p/pyiso8601/)
     """
-    if not isinstance(datestring, str):
+    if not isinstance(datestring, str) and not isinstance(datestring, unicode):
         raise ValueError("Expecting a string %r" % datestring)
     m = ISO8601_REGEX.match(datestring)
     if not m:
