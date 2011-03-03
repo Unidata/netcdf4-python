@@ -1,5 +1,8 @@
  version 0.9.4 (not yet released)
  ================================
+ * Added a 'default_encoding' module variable that controls how unicode
+ strings are decoded. Default is 'ascii'.
+
  * now works on Python 3.
 
  * netCDF3 module removed. If you still need it, get it from netCDF4 0.9.3.
