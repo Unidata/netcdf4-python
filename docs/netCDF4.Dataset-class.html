@@ -14,6 +14,9 @@
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="netCDF4-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
       <th>&nbsp;&nbsp;&nbsp;<a
@@ -45,8 +48,8 @@
     </td>
   </tr>
 </table>
-<!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class Dataset</h1><p class="nomargin-top"></p>
+<!-- ==================== TYPE DESCRIPTION ==================== -->
+<h1 class="epydoc">type Dataset</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
 object --+
          |
@@ -187,7 +190,7 @@ object --+
         <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">&quot;r&quot;</span>,
         <span class="summary-sig-arg">clobber</span>=<span class="summary-sig-default">True</span>,
         <span class="summary-sig-arg">format</span>=<span class="summary-sig-default">'NETCDF4'</span>)</span><br />
-      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
           <td align="right" valign="top">
             
             
@@ -529,20 +532,6 @@ object --+
       
     </td>
   </tr>
-  <tr>
-    <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
-      <code>__format__</code>,
-      <code>__hash__</code>,
-      <code>__reduce__</code>,
-      <code>__reduce_ex__</code>,
-      <code>__repr__</code>,
-      <code>__sizeof__</code>,
-      <code>__str__</code>,
-      <code>__subclasshook__</code>
-      </p>
-    </td>
-  </tr>
 </table>
 <!-- ==================== INSTANCE VARIABLES ==================== -->
 <a name="section-InstanceVariables"></a>
@@ -657,13 +646,6 @@ object --+
         <a name="vltypes"></a><span class="summary-name">vltypes</span>
     </td>
   </tr>
-  <tr>
-    <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
-      <code>__class__</code>
-      </p>
-    </td>
-  </tr>
 </table>
 <!-- ==================== METHOD DETAILS ==================== -->
 <a name="section-MethodDetails"></a>
@@ -737,8 +719,7 @@ object --+
     </td>
   </tr></table>
   
-  <p>x.__init__(...) initializes x; see x.__class__.__doc__ for 
-  signature</p>
+  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
   <dl class="fields">
     <dt>Overrides:
         object.__init__
@@ -1012,8 +993,10 @@ object --+
   creating thousands of variables.  The optional keyword 
   <code>chunk_cache</code> allows you to reduce (or increase) the size of 
   the default chunk cache when creating a variable.  The setting only 
-  persists as long as the file is open.   Warning - messing with this 
-  parameter can seriously degrade performance.</p>
+  persists as long as the Dataset is open - you can use the 
+  set_var_chunk_cache method to change it the next time the Dataset is 
+  opened. Warning - messing with this parameter can seriously degrade 
+  performance.</p>
   <p>The return value is the <a href="netCDF4.Variable-class.html" 
   class="link">Variable</a> class instance describing the new variable.</p>
   <p>A list of names corresponding to netCDF variable attributes can be 
@@ -1028,19 +1011,20 @@ object --+
   retrieved from a variable with indexing and slicing operations on the <a 
   href="netCDF4.Variable-class.html" class="link">Variable</a> instance. A 
   <a href="netCDF4.Variable-class.html" class="link">Variable</a> instance 
-  has five standard attributes: <code>dimensions, dtype, shape, ndim</code>
-  and <code>least_significant_digit</code>. Application programs should 
-  never modify these attributes. The <code>dimensions</code> attribute is a
-  tuple containing the names of the dimensions associated with this 
-  variable. The <code>dtype</code> attribute is a string describing the 
-  variable's data type (<code>i4, f8, S1,</code> etc). The 
-  <code>shape</code> attribute is a tuple describing the current sizes of 
-  all the variable's dimensions. The <code>least_significant_digit</code> 
-  attributes describes the power of ten of the smallest decimal place in 
-  the data the contains a reliable value.  assigned to the <a 
-  href="netCDF4.Variable-class.html" class="link">Variable</a> instance. If
-  <code>None</code>, the data is not truncated. The <code>ndim</code> 
-  attribute is the number of variable dimensions.</p>
+  has five Dataset standard attributes: <code>dimensions, dtype, shape, 
+  ndim</code> and <code>least_significant_digit</code>. Application 
+  programs should never modify these attributes. The 
+  <code>dimensions</code> attribute is a tuple containing the names of the 
+  dimensions associated with this variable. The <code>dtype</code> 
+  attribute is a string describing the variable's data type (<code>i4, f8, 
+  S1,</code> etc). The <code>shape</code> attribute is a tuple describing 
+  the current sizes of all the variable's dimensions. The 
+  <code>least_significant_digit</code> attributes describes the power of 
+  ten of the smallest decimal place in the data the contains a reliable 
+  value.  assigned to the <a href="netCDF4.Variable-class.html" 
+  class="link">Variable</a> instance. If <code>None</code>, the data is not
+  truncated. The <code>ndim</code> attribute is the number of variable 
+  dimensions.</p>
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -1210,6 +1194,9 @@ object --+
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="netCDF4-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
       <th>&nbsp;&nbsp;&nbsp;<a
@@ -1229,7 +1216,8 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Jul  8 10:58:35 2010
+    Generated by Epydoc 3.0.1
+    on Thu Mar  3 19:05:29 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

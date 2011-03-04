@@ -14,6 +14,9 @@
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="netCDF4-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
       <th>&nbsp;&nbsp;&nbsp;<a
@@ -45,8 +48,8 @@
     </td>
   </tr>
 </table>
-<!-- ==================== CLASS DESCRIPTION ==================== -->
-<h1 class="epydoc">Class MFDataset</h1><p class="nomargin-top"></p>
+<!-- ==================== TYPE DESCRIPTION ==================== -->
+<h1 class="epydoc">type MFDataset</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
 object --+    
          |    
@@ -149,7 +152,7 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">...</span>)</span><br />
+          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Close the Dataset.</td>
           <td align="right" valign="top">
             
@@ -166,7 +169,7 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">...</span>)</span><br />
+          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">self</span>)</span><br />
       return netCDF global attribute names for this <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
       href="netCDF4.Group-class.html" class="link">Group</a> in a list.</td>
@@ -198,16 +201,6 @@ object --+
       <code><a href="netCDF4.Dataset-class.html#set_fill_on">set_fill_on</a></code>,
       <code><a href="netCDF4.Dataset-class.html#setncattr">setncattr</a></code>,
       <code><a href="netCDF4.Dataset-class.html#sync">sync</a></code>
-      </p>
-    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
-      <code>__format__</code>,
-      <code>__hash__</code>,
-      <code>__reduce__</code>,
-      <code>__reduce_ex__</code>,
-      <code>__repr__</code>,
-      <code>__sizeof__</code>,
-      <code>__str__</code>,
-      <code>__subclasshook__</code>
       </p>
     </td>
   </tr>
@@ -248,9 +241,6 @@ object --+
       <code><a href="netCDF4.Dataset-class.html#parent">parent</a></code>,
       <code><a href="netCDF4.Dataset-class.html#vltypes">vltypes</a></code>
       </p>
-    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
-      <code>__class__</code>
-      </p>
     </td>
   </tr>
 </table>
@@ -280,7 +270,7 @@ object --+
   <p>x.__getattribute__('name') &lt;==&gt; x.name</p>
   <dl class="fields">
     <dt>Overrides:
-        object.__getattribute__
+        <a href="netCDF4.Dataset-class.html#__getattribute__">Dataset.__getattribute__</a>
         <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
@@ -326,7 +316,7 @@ object --+
           an empty list.</li>
     </ul></dd>
     <dt>Overrides:
-        object.__init__
+        <a href="netCDF4.Dataset-class.html#__init__">Dataset.__init__</a>
     </dt>
   </dl>
 </td></tr></table>
@@ -348,7 +338,7 @@ object --+
   <p>override base class attribute creation</p>
   <dl class="fields">
     <dt>Overrides:
-        object.__setattr__
+        <a href="netCDF4.Dataset-class.html#__setattr__">Dataset.__setattr__</a>
     </dt>
   </dl>
 </td></tr></table>
@@ -360,7 +350,7 @@ object --+
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">...</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -383,7 +373,7 @@ object --+
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">ncattrs</span>(<span class="sig-arg">...</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ncattrs</span>(<span class="sig-arg">self</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -406,6 +396,9 @@ object --+
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="netCDF4-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
       <th>&nbsp;&nbsp;&nbsp;<a
@@ -425,7 +418,8 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Jul  8 10:58:35 2010
+    Generated by Epydoc 3.0.1
+    on Thu Mar  3 19:05:29 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
