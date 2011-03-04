@@ -51,14 +51,14 @@ else:
 if not retcode:
     sys.stdout.write('using nc-config ...\n')
     dep=subprocess.Popen([ncconfig,'--libs'],stdout=subprocess.PIPE).communicate()[0]
-    libs = [l[2:] for l in dep.split() if l[0:2] == '-l' ]
-    lib_dirs = [l[2:] for l in dep.split() if l[0:2] == '-L' ]
+    libs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l' ]
+    lib_dirs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-L' ]
     dep=subprocess.Popen([ncconfig,'--cflags'],stdout=subprocess.PIPE).communicate()[0]
-    inc_dirs = [i[2:] for i in dep.split() if i[0:2] == '-I']
+    inc_dirs = [str(i[2:].decode()) for i in dep.split() if i[0:2].decode() == '-I']
 # if nc-config didn't work (it won't on windows), fall back on brute force method
 else:
     dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
-    
+
     if HDF5_includedir is None and HDF5_dir is None:
         sys.stdout.write("""
 HDF5_DIR environment variable not set, checking some standard locations ..\n""")
@@ -82,7 +82,7 @@ HDF5_DIR environment variable not set, checking some standard locations ..\n""")
             raise ValueError('did not find HDF5 headers in %s' % HDF5_includedir)
         elif hdf5_version[1:6] < '1.8.0':
             raise ValueError('HDF5 version >= 1.8.0 is required')
-    
+
     if netCDF4_includedir is None and netCDF4_dir is None:
         sys.stdout.write( """
 NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
@@ -104,18 +104,17 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         isnetcdf4 = check_ifnetcdf4(netCDF4_includedir)
         if not isnetcdf4:
             raise ValueError('did not find netCDF version 4 headers %s' % netCDF4_includedir)
-    
+
     if HDF5_libdir is None and HDF5_dir is not None:
         HDF5_libdir = os.path.join(HDF5_dir, 'lib')
-    
+
     if netCDF4_libdir is None and netCDF4_dir is not None:
         netCDF4_libdir = os.path.join(netCDF4_dir, 'lib')
-    
-    
+
     libs = ['netcdf','hdf5_hl','hdf5','z']
     lib_dirs = [netCDF4_libdir,HDF5_libdir]
     inc_dirs = [netCDF4_includedir,HDF5_includedir]
-    
+
     # add szip to link if desired.
     szip_dir = os.environ.get('SZIP_DIR')
     szip_libdir = os.environ.get('SZIP_LIBDIR')
@@ -138,17 +137,16 @@ setup(name = "netCDF4",
   author_email      = "jeffrey.s.whitaker@noaa.gov",
   url               = "http://netcdf4-python.googlecode.com/svn/trunk/docs/netCDF4-module.html",
   download_url      = "http://code.google.com/p/netcdf4-python/downloads/list",
-  scripts           = ['utils/nc3tonc4','utils/nc4tonc3','utils/grib2nc4'],
+  scripts           = ['utils/nc3tonc4','utils/nc4tonc3'],
   platforms         = ["any"],
   license           = "OSI Approved",
   description = "Provides an object-oriented python interface to the netCDF version 4 library.",
   keywords = ['numpy','netcdf','data','science','network','oceanography','meteorology','climate'],
   classifiers = ["Development Status :: 3 - Alpha",
-		         "Intended Audience :: Science/Research", 
-		         "License :: OSI Approved", 
-		         "Topic :: Software Development :: Libraries :: Python Modules",
+                 "Intended Audience :: Science/Research", 
+                 "License :: OSI Approved", 
+                 "Topic :: Software Development :: Libraries :: Python Modules",
                  "Topic :: System :: Archiving :: Compression",
-		         "Operating System :: OS Independent"],
-  packages = ["netcdftime"],
-  py_modules = ["netCDF4_utils"],
+                 "Operating System :: OS Independent"],
+  py_modules = ["netcdftime","netCDF4_utils","ordereddict"],
   ext_modules = extensions)

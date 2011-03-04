@@ -59,7 +59,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
                 assert datarr.tostring() == ranarr[1:n1dim].astype(data.dtype).tostring()
             # check that variable elements not yet written are filled
             # with the specified _FillValue.
-            assert_array_equal(datfilled,data._FillValue)
+            assert_array_equal(datfilled,NP.asarray(data._FillValue,datfilled.dtype))
         file.close()
 
 if __name__ == '__main__':

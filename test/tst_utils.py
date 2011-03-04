@@ -245,7 +245,7 @@ class FakeGroup(object):
     keyed by dimension name."""
     def __init__(self, dimensions):
         self.dimensions = {}
-        for k,v in dimensions.iteritems():
+        for k,v in dimensions.items():
             self.dimensions[k] = FakeDimension(v)
     
 class FakeDimension(object):

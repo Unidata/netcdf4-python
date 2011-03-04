@@ -3,7 +3,7 @@
 from numpy.random.mtrand import uniform
 import netCDF4
 from timeit import Timer
-import os
+import os, sys
 
 # create an n1dim by n2dim by n3dim random array.
 n1dim = 30   
@@ -11,8 +11,7 @@ n2dim = 15
 n3dim = 73
 n4dim = 144
 ntrials = 10
-print 'reading and writing a %s by %s by %s by %s random array ..'%(n1dim,n2dim,n3dim,n4dim)
-print '(average of %s trials)' % ntrials
+sys.stdout.write('reading and writing a %s by %s by %s by %s random array ..\n'%(n1dim,n2dim,n3dim,n4dim))
 array = uniform(size=(n1dim,n2dim,n3dim,n4dim))
 
 def write_netcdf(filename,zlib=False,least_significant_digit=None,format='NETCDF4'):
@@ -31,10 +30,12 @@ def read_netcdf(filename):
     file.close()
 
 for format in ['NETCDF3_CLASSIC','NETCDF3_64BIT','NETCDF4_CLASSIC','NETCDF4']:
-    print 'testing file format %s ...' % format
+    sys.stdout.write('testing file format %s ...\n' % format)
     # writing, no compression. 
     t = Timer("write_netcdf('test1.nc',format='%s')" % format,"from __main__ import write_netcdf")
-    print 'writing took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
+    sys.stdout.write('writing took %s seconds\n' %\
+            repr(sum(t.repeat(ntrials,1))/ntrials))
     # test reading.
     t = Timer("read_netcdf('test1.nc')","from __main__ import read_netcdf")
-    print 'reading took',sum(t.repeat(ntrials,1))/ntrials,'seconds'
+    sys.stdout.write('reading took %s seconds\n' %
+            repr(sum(t.repeat(ntrials,1))/ntrials))

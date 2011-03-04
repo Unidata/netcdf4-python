@@ -8,7 +8,6 @@ from calendar import monthrange
 
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
-
 __version__ = '0.9.4'
 
 # Adapted from http://delete.me.uk/2005/03/iso8601.html
@@ -803,7 +802,7 @@ def _parse_date(datestring):
 
     Adapted from pyiso8601 (http://code.google.com/p/pyiso8601/)
     """
-    if not isinstance(datestring, basestring):
+    if not isinstance(datestring, str) and not isinstance(datestring, unicode):
         raise ValueError("Expecting a string %r" % datestring)
     m = ISO8601_REGEX.match(datestring)
     if not m:

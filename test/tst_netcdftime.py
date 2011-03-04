@@ -263,7 +263,7 @@ class TestDate2index(unittest.TestCase):
         except ValueError:
             pass
         else:
-            raise ValueError, 'This test should have failed.'
+            raise ValueError('This test should have failed.')
                 
     def test_select_dummy(self):
         nutime = self.TestTime(datetime(1950, 1, 1), 366, 24,
