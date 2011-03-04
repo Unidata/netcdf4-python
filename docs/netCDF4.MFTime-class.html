@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>netCDF4.Dimension</title>
+  <title>netCDF4.MFTime</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -38,7 +38,7 @@
     <td width="100%">
       <span class="breadcrumbs">
         <a href="netCDF4-module.html">Module&nbsp;netCDF4</a> ::
-        Class&nbsp;Dimension
+        Class&nbsp;MFTime
       </span>
     </td>
     <td>
@@ -49,44 +49,46 @@
   </tr>
 </table>
 <!-- ==================== TYPE DESCRIPTION ==================== -->
-<h1 class="epydoc">type Dimension</h1><p class="nomargin-top"></p>
+<h1 class="epydoc">type MFTime</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
-object --+
-         |
-        <strong class="uidshort">Dimension</strong>
+object --+    
+         |    
+ _Variable --+
+             |
+            <strong class="uidshort">MFTime</strong>
 </pre>
 
 <hr />
-<p>Dimension(self, group, name, size=None)</p>
-  <p>A netCDF <a href="netCDF4.Dimension-class.html" 
-  class="link">Dimension</a> is used to describe the coordinates of a <a 
-  href="netCDF4.Variable-class.html" class="link">Variable</a>.</p>
-  <p><a href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
-  instances should be created using the <a 
-  href="netCDF4.Dataset-class.html#createDimension" 
-  class="link">createDimension</a> method of a <a 
-  href="netCDF4.Group-class.html" class="link">Group</a> or <a 
-  href="netCDF4.Dataset-class.html" class="link">Dataset</a> instance, not 
-  using this class directly.</p>
-  <p><b>Parameters:</b></p>
-  <p><b><code>group</code></b> - <a href="netCDF4.Group-class.html" 
-  class="link">Group</a> instance to associate with dimension.</p>
-  <p><b><code>name</code></b>  - Name of the dimension.</p>
-  <p><b>Keywords:</b></p>
-  <p><b><code>size</code></b>  - Size of the dimension. <code>None</code> 
-  or 0 means unlimited. (Default <code>None</code>).</p>
-  <p><b>Returns:</b></p>
-  <p>a <a href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
-  instance.  All further operations on the netCDF Dimension are accomplised
-  via <a href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
-  instance methods.</p>
-  <p>The current maximum size of a <a href="netCDF4.Dimension-class.html" 
-  class="link">Dimension</a> instance can be obtained by calling the python
-  <code>len</code> function on the <a href="netCDF4.Dimension-class.html" 
-  class="link">Dimension</a> instance. The <code>isunlimited()</code> 
-  method of a <a href="netCDF4.Dimension-class.html" 
-  class="link">Dimension</a> instance can be used to determine if the 
-  dimension is unlimited</p>
+<p>MFTime(self, time, units=None)</p>
+  <p>Class providing an interface to a MFDataset time Variable by imposing 
+  a unique common time unit to all files.</p>
+  <p>Example usage:</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy
+<span class="py-prompt">&gt;&gt;&gt; </span>f1 = Dataset(<span class="py-string">'mftest_1.nc'</span>,<span class="py-string">'w'</span>, format=<span class="py-string">'NETCDF4_CLASSIC'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>f2 = Dataset(<span class="py-string">'mftest_2.nc'</span>,<span class="py-string">'w'</span>, format=<span class="py-string">'NETCDF4_CLASSIC'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>f1.createDimension(<span class="py-string">'time'</span>,None)
+<span class="py-prompt">&gt;&gt;&gt; </span>f2.createDimension(<span class="py-string">'time'</span>,None)
+<span class="py-prompt">&gt;&gt;&gt; </span>t1 = f1.createVariable(<span class="py-string">'time'</span>,<span class="py-string">'i'</span>,(<span class="py-string">'time'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span>t2 = f2.createVariable(<span class="py-string">'time'</span>,<span class="py-string">'i'</span>,(<span class="py-string">'time'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span>t1.units = <span class="py-string">'days since 2000-01-01'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>t2.units = <span class="py-string">'days since 2000-02-01'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>t1.calendar = <span class="py-string">'standard'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>t2.calendar = <span class="py-string">'standard'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>t1[:] = numpy.arange(31)
+<span class="py-prompt">&gt;&gt;&gt; </span>t2[:] = numpy.arange(30)
+<span class="py-prompt">&gt;&gt;&gt; </span>f1.close()
+<span class="py-prompt">&gt;&gt;&gt; </span>f2.close()
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># Read the two files in at once, in one Dataset.</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>f = MFDataset(<span class="py-string">'mftest*nc'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>t = f.variables[<span class="py-string">'time'</span>]
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> t.units
+<span class="py-output">days since 2000-01-01</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> t[32] <span class="py-comment"># The value written in the file, inconsistent with the MF time units.</span>
+<span class="py-output">1</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span>T = MFTime(t)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> T[32]                        
+<span class="py-output">32</span></pre>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -102,11 +104,8 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.Dimension-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">group</span>,
-        <span class="summary-sig-arg">name</span>,
-        <span class="summary-sig-arg">size</span>=<span class="summary-sig-default">None</span>)</span><br />
-      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td><span class="summary-sig"><a href="netCDF4.MFTime-class.html#__getitem__" class="summary-sig-name">__getitem__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      Get records from a concatenated set of variables.</td>
           <td align="right" valign="top">
             
             
@@ -122,8 +121,11 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__len__"></a><span class="summary-sig-name">__len__</span>(<span class="summary-sig-arg">x</span>)</span><br />
-      len(x)</td>
+          <td><span class="summary-sig"><a href="netCDF4.MFTime-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">time</span>,
+        <span class="summary-sig-arg">units</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Create a time Variable with units consistent across a multifile 
+      dataset.</td>
           <td align="right" valign="top">
             
             
@@ -133,41 +135,15 @@ object --+
       
     </td>
   </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">a new object with type S, a subtype of T</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a href="netCDF4.Dimension-class.html#__new__" class="summary-sig-name">__new__</a>(<span class="summary-sig-arg">T</span>,
-        <span class="summary-sig-arg">S</span>,
-        <span class="summary-sig-arg">...</span>)</span></td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="isunlimited"></a><span class="summary-sig-name">isunlimited</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      returns <code>True</code> if the <a 
-      href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
-      instance is unlimited, <code>False</code> otherwise.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>_Variable</code></b>:
+      <code>__getattr__</code>,
+      <code>__len__</code>,
+      <code>ncattrs</code>,
+      <code>set_auto_maskandscale</code>,
+      <code>typecode</code>
+      </p>
     </td>
   </tr>
 </table>
@@ -180,6 +156,30 @@ object --+
     <span class="table-header">Method Details</span></td>
 </tr>
 </table>
+<a name="__getitem__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getitem__</span>(<span class="sig-arg">...</span>)</span>
+    <br /><em class="fname">(Indexing operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get records from a concatenated set of variables.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        _Variable.__getitem__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="__init__"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -188,9 +188,8 @@ object --+
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">group</span>,
-        <span class="sig-arg">name</span>,
-        <span class="sig-arg">size</span>=<span class="sig-default">None</span>)</span>
+        <span class="sig-arg">time</span>,
+        <span class="sig-arg">units</span>=<span class="sig-default">None</span>)</span>
     <br /><em class="fname">(Constructor)</em>
   </h3>
   </td><td align="right" valign="top"
@@ -198,35 +197,17 @@ object --+
     </td>
   </tr></table>
   
-  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <p>Create a time Variable with units consistent across a multifile 
+  dataset.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>time</code></strong> - Time variable from a MFDataset.</li>
+        <li><strong class="pname"><code>units</code></strong> - Time units, for example, 'days since 1979-01-01'. If None, use 
+          the units from the master record.</li>
+    </ul></dd>
     <dt>Overrides:
-        object.__init__
-    </dt>
-  </dl>
-</td></tr></table>
-</div>
-<a name="__new__"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">__new__</span>(<span class="sig-arg">T</span>,
-        <span class="sig-arg">S</span>,
-        <span class="sig-arg">...</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    >&nbsp;
-    </td>
-  </tr></table>
-  
-  
-  <dl class="fields">
-    <dt>Returns: a new object with type S, a subtype of T</dt>
-    <dt>Overrides:
-        object.__new__
+        _Variable.__init__
     </dt>
   </dl>
 </td></tr></table>

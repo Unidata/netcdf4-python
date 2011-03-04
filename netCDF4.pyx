@@ -296,7 +296,7 @@ our example,
 >>> rootgrp.source = 'netCDF4 python module tutorial'
 >>> latitudes.units = 'degrees north'
 >>> longitudes.units = 'degrees east'
->>> pressure.units = 'hPa'
+>>> levels.units = 'hPa'
 >>> temp.units = 'K'
 >>> times.units = 'hours since 0001-01-01 00:00:00.0'
 >>> times.calendar = 'gregorian'
@@ -361,7 +361,7 @@ temp shape before adding data =  (0, 0, 73, 144)
 >>> from numpy.random import uniform
 >>> temp[0:5,0:10,:,:] = uniform(size=(5,10,nlats,nlons))
 >>> print 'temp shape after adding data = ',temp.shape
-temp shape after adding data =  (5, 10, 73, 144)
+temp shape after adding data =  (6, 10, 73, 144)
 >>>
 >>> # levels have grown, but no values yet assigned.
 >>> print 'levels shape after adding pressure data = ',levels.shape
@@ -398,14 +398,14 @@ variables by using logical operations on the dimension arrays to create slices.
 
 For example, 
 
->>> tempdat = temp[10:20:2, [1,3,6], lats>0, lons>0]
+>>> tempdat = temp[::2, [1,3,6], lats>0, lons>0]
 
-will extract time indices 10,12,14,16 and 18, pressure levels
+will extract time indices 0,2 and 4, pressure levels
 850, 500 and 200 hPa, all Northern Hemisphere latitudes and Eastern
-Hemisphere longitudes, resulting in a numpy array of shape  (5, 3, 36, 71).
+Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).
 
 >>> print 'shape of fancy temp slice = ',tempdat.shape
-shape of fancy temp slice =  (5, 3, 36, 71)
+shape of fancy temp slice =  (3, 3, 36, 71)
 >>>
 
 Time coordinate values pose a special challenge to netCDF users.  Most
