@@ -139,8 +139,8 @@ in a netCDF 3 file you will get an error message.
 >>> fcstgrp = rootgrp.createGroup('forecasts')
 >>> analgrp = rootgrp.createGroup('analyses')
 >>> print rootgrp.groups
-{'analyses': <netCDF4._Group object at 0x24a54c30>, 
- 'forecasts': <netCDF4._Group object at 0x24a54bd0>}
+OrderedDict([('forecasts', <netCDF4.Group object at 0x1b4b7b0>),
+             ('analyses', <netCDF4.Group object at 0x1b4b970>)])
 >>>
 
 Groups can exist within groups in a L{Dataset}, just as directories
@@ -198,10 +198,10 @@ one, and it must be the first (leftmost) dimension of the variable.
 All of the L{Dimension} instances are stored in a python dictionary.
 
 >>> print rootgrp.dimensions
-{'lat': <netCDF4.Dimension object at 0x24a5f7b0>, 
- 'time': <netCDF4.Dimension object at 0x24a5f788>, 
- 'lon': <netCDF4.Dimension object at 0x24a5f7d8>, 
- 'level': <netCDF4.Dimension object at 0x24a5f760>}
+OrderedDict([('level', <netCDF4.Dimension object at 0x1b48030>),
+             ('time', <netCDF4.Dimension object at 0x1b481c0>),
+             ('lat', <netCDF4.Dimension object at 0x1b480f8>),
+             ('lon', <netCDF4.Dimension object at 0x1b48a08>)])
 >>>
 
 Calling the python C{len} function with a L{Dimension} instance returns
@@ -266,12 +266,11 @@ All of the variables in the L{Dataset} or L{Group} are stored in a
 Python dictionary, in the same way as the dimensions:
 
 >>> print rootgrp.variables
-{'temp': <netCDF4.Variable object at 0x24a61068>,
- 'level': <netCDF4.Variable object at 0.35f0f80>, 
- 'longitude': <netCDF4.Variable object at 0x24a61030>,
- 'pressure': <netCDF4.Variable object at 0x24a610a0>, 
- 'time': <netCDF4.Variable object at 02x45f0.4.58>, 
- 'latitude': <netCDF4.Variable object at 0.3f0fb8>}
+OrderedDict([('time', <netCDF4.Variable object at 0x1b4ba70>),
+             ('level', <netCDF4.Variable object at 0x1b4bab0>), 
+             ('latitude', <netCDF4.Variable object at 0x1b4baf0>),
+             ('longitude', <netCDF4.Variable object at 0x1b4bb30>),
+             ('temp', <netCDF4.Variable object at 0x1b4bb70>)])
 >>>
 
 L{Variable} names can be changed using the
@@ -319,9 +318,9 @@ instance provides all the netCDF attribute name/value pairs in a python
 dictionary:
 
 >>> print rootgrp.__dict__
-{'source': 'netCDF4 python module tutorial',
-'description': 'bogus example script',
-'history': 'Created Mon Nov  7 10.30:56 2005'}
+OrderedDict([(u'description', u'bogus example script'),
+             (u'history', u'Created Thu Mar  3 19:30:33 2011'), 
+             (u'source', u'netCDF4 python module tutorial')])
 
 Attributes can be deleted from a netCDF L{Dataset}, L{Group} or
 L{Variable} using the python C{del} statement (i.e. C{del grp.foo}
@@ -639,10 +638,10 @@ All of the compound types defined for a L{Dataset} or L{Group} are stored in a
 Python dictionary, just like variables and dimensions:
 
 >>> print f.cmptypes
-{'wind_data': <netCDF4.CompoundType object at 0x14dd698>,
- 'station_data_units':<netCDF4.CompoundType object at 0x14dd620>,
- 'wind_data_units':<netCDF4.CompoundType object at 0x14dd648>,
- 'station_data':<netCDF4.CompoundType object at 0x14dd670>}
+OrderedDict([('wind_data', <netCDF4.CompoundType object at 0x1b51df0>),
+             ('station_data', <netCDF4.CompoundType object at 0x1b51f58>),
+             ('wind_data_units', <netCDF4.CompoundType object at 0x1b51fd0>),
+             ('station_data_units', <netCDF4.CompoundType object at 0x1b51e90>)])
 >>>
 
 Attributes cannot be assigned directly to compound type members,
@@ -696,14 +695,16 @@ data in a variable of compound type:
 ----
 latitude : value= 40.0 : units= degrees north
 longitude : value= -105.0 : units= degrees west
-surface_wind ('speed', 'direction') : value= (12.5, 270) : units= ('m/s', 'degrees')
+surface_wind (u'speed', u'direction') : value= (12.5, 270) :
+              units= (array('m/s', dtype='|S80'), array('degrees', dtype='|S80'))
 temp_sounding : value= [280.3 272. 270. 269. 266. 258. 254.1 250.245.5 240.] : units= Kelvin
 press_sounding : value= [800 750 700 650 600 550 500 450 400 350] : units= hPa
 location_name : value = Boulder, Colorado, USA : units= None
 ----
 latitude : value= 40.78 : units= degrees north
 longitude : value= -73.99 : units= degrees west
-surface_wind ('speed', 'direction') : value= (-12.5, 90) : units= ('m/s','degrees')
+surface_wind (u'speed', u'direction') : value= (-12.5, 90) :
+              units= (array('m/s', dtype='|S80'), array('degrees',dtype='|S80'))
 temp_sounding : value= [290.2 282.5 279. 277.9 276. 266. 264.1 260. 255.5 243.] : units= Kelvin
 press_sounding : value= [900 850 800 750 700 650 600 550 500 450] : units= hPa
 location_name : value = New York, New York, USA : units= None

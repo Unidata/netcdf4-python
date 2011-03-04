@@ -240,8 +240,8 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>fcstgrp = rootgrp.createGroup(<span class="py-string">'forecasts'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span>analgrp = rootgrp.createGroup(<span class="py-string">'analyses'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.groups
-<span class="py-output">{'analyses': &lt;netCDF4._Group object at 0x24a54c30&gt;, </span>
-<span class="py-output"> 'forecasts': &lt;netCDF4._Group object at 0x24a54bd0&gt;}</span>
+<span class="py-output">OrderedDict([('forecasts', &lt;netCDF4.Group object at 0x1b4b7b0&gt;),</span>
+<span class="py-output">             ('analyses', &lt;netCDF4.Group object at 0x1b4b970&gt;)])</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>Groups can exist within groups in a <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a>, just as 
@@ -302,10 +302,10 @@
       dictionary.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.dimensions
-<span class="py-output">{'lat': &lt;netCDF4.Dimension object at 0x24a5f7b0&gt;, </span>
-<span class="py-output"> 'time': &lt;netCDF4.Dimension object at 0x24a5f788&gt;, </span>
-<span class="py-output"> 'lon': &lt;netCDF4.Dimension object at 0x24a5f7d8&gt;, </span>
-<span class="py-output"> 'level': &lt;netCDF4.Dimension object at 0x24a5f760&gt;}</span>
+<span class="py-output">OrderedDict([('level', &lt;netCDF4.Dimension object at 0x1b48030&gt;),</span>
+<span class="py-output">             ('time', &lt;netCDF4.Dimension object at 0x1b481c0&gt;),</span>
+<span class="py-output">             ('lat', &lt;netCDF4.Dimension object at 0x1b480f8&gt;),</span>
+<span class="py-output">             ('lon', &lt;netCDF4.Dimension object at 0x1b48a08&gt;)])</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>Calling the python <code>len</code> function with a <a 
       href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
@@ -384,12 +384,11 @@
       way as the dimensions:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.variables
-<span class="py-output">{'temp': &lt;netCDF4.Variable object at 0x24a61068&gt;,</span>
-<span class="py-output"> 'level': &lt;netCDF4.Variable object at 0.35f0f80&gt;, </span>
-<span class="py-output"> 'longitude': &lt;netCDF4.Variable object at 0x24a61030&gt;,</span>
-<span class="py-output"> 'pressure': &lt;netCDF4.Variable object at 0x24a610a0&gt;, </span>
-<span class="py-output"> 'time': &lt;netCDF4.Variable object at 02x45f0.4.58&gt;, </span>
-<span class="py-output"> 'latitude': &lt;netCDF4.Variable object at 0.3f0fb8&gt;}</span>
+<span class="py-output">OrderedDict([('time', &lt;netCDF4.Variable object at 0x1b4ba70&gt;),</span>
+<span class="py-output">             ('level', &lt;netCDF4.Variable object at 0x1b4bab0&gt;), </span>
+<span class="py-output">             ('latitude', &lt;netCDF4.Variable object at 0x1b4baf0&gt;),</span>
+<span class="py-output">             ('longitude', &lt;netCDF4.Variable object at 0x1b4bb30&gt;),</span>
+<span class="py-output">             ('temp', &lt;netCDF4.Variable object at 0x1b4bb70&gt;)])</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p><a href="netCDF4.Variable-class.html" class="link">Variable</a> 
       names can be changed using the <a 
@@ -446,9 +445,9 @@
       dictionary:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.__dict__
-<span class="py-output">{'source': 'netCDF4 python module tutorial',</span>
-<span class="py-output">'description': 'bogus example script',</span>
-<span class="py-output">'history': 'Created Mon Nov  7 10.30:56 2005'}</span></pre>
+<span class="py-output">OrderedDict([(u'description', u'bogus example script'),</span>
+<span class="py-output">             (u'history', u'Created Thu Mar  3 19:30:33 2011'), </span>
+<span class="py-output">             (u'source', u'netCDF4 python module tutorial')])</span></pre>
       <p>Attributes can be deleted from a netCDF <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a>, <a 
       href="netCDF4.Group-class.html" class="link">Group</a> or <a 
@@ -775,10 +774,10 @@
       a Python dictionary, just like variables and dimensions:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.cmptypes
-<span class="py-output">{'wind_data': &lt;netCDF4.CompoundType object at 0x14dd698&gt;,</span>
-<span class="py-output"> 'station_data_units':&lt;netCDF4.CompoundType object at 0x14dd620&gt;,</span>
-<span class="py-output"> 'wind_data_units':&lt;netCDF4.CompoundType object at 0x14dd648&gt;,</span>
-<span class="py-output"> 'station_data':&lt;netCDF4.CompoundType object at 0x14dd670&gt;}</span>
+<span class="py-output">OrderedDict([('wind_data', &lt;netCDF4.CompoundType object at 0x1b51df0&gt;),</span>
+<span class="py-output">             ('station_data', &lt;netCDF4.CompoundType object at 0x1b51f58&gt;),</span>
+<span class="py-output">             ('wind_data_units', &lt;netCDF4.CompoundType object at 0x1b51fd0&gt;),</span>
+<span class="py-output">             ('station_data_units', &lt;netCDF4.CompoundType object at 0x1b51e90&gt;)])</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>Attributes cannot be assigned directly to compound type members, 
       However, a compound data type can be created to hold an attribute for
@@ -824,7 +823,7 @@
 <span class="py-more">... </span>            <span class="py-string">': units='</span>,chartostring(statdat.units[name])
 <span class="py-prompt">&gt;&gt;&gt; </span>        <span class="py-keyword">elif</span> data[name].dtype.kind == <span class="py-string">'V'</span>: <span class="py-comment"># a nested compound type</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>            <span class="py-keyword">print</span> name,data[name].dtype.names,<span class="py-string">': value='</span>,data[name],<span class="py-string">': units='</span>,
-<span class="py-more">... </span>            tuple([<span class="py-string">''</span>.join(u.tolist()) <span class="py-keyword">for</span> u <span class="py-keyword">in</span> statdat.units[name]])
+<span class="py-more">... </span>            tuple([chartostring(s) <span class="py-keyword">for</span> s <span class="py-keyword">in</span> tuple(statdat.units[name])])
 <span class="py-prompt">&gt;&gt;&gt; </span>        <span class="py-keyword">else</span>: <span class="py-comment"># a numeric type.</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>            <span class="py-keyword">print</span> name,<span class="py-string">': value='</span>,data[name],<span class="py-string">': units='</span>,chartostring(statdat.units[name])
 <span class="py-prompt">&gt;&gt;&gt; </span>    <span class="py-keyword">print</span> <span class="py-string">'----'</span>
@@ -832,14 +831,16 @@
 <span class="py-output">----</span>
 <span class="py-output">latitude : value= 40.0 : units= degrees north</span>
 <span class="py-output">longitude : value= -105.0 : units= degrees west</span>
-<span class="py-output">surface_wind ('speed', 'direction') : value= (12.5, 270) : units= ('m/s', 'degrees')</span>
+<span class="py-output">surface_wind (u'speed', u'direction') : value= (12.5, 270) :</span>
+<span class="py-output">              units= (array('m/s', dtype='|S80'), array('degrees', dtype='|S80'))</span>
 <span class="py-output">temp_sounding : value= [280.3 272. 270. 269. 266. 258. 254.1 250.245.5 240.] : units= Kelvin</span>
 <span class="py-output">press_sounding : value= [800 750 700 650 600 550 500 450 400 350] : units= hPa</span>
 <span class="py-output">location_name : value = Boulder, Colorado, USA : units= None</span>
 <span class="py-output">----</span>
 <span class="py-output">latitude : value= 40.78 : units= degrees north</span>
 <span class="py-output">longitude : value= -73.99 : units= degrees west</span>
-<span class="py-output">surface_wind ('speed', 'direction') : value= (-12.5, 90) : units= ('m/s','degrees')</span>
+<span class="py-output">surface_wind (u'speed', u'direction') : value= (-12.5, 90) :</span>
+<span class="py-output">              units= (array('m/s', dtype='|S80'), array('degrees',dtype='|S80'))</span>
 <span class="py-output">temp_sounding : value= [290.2 282.5 279. 277.9 276. 266. 264.1 260. 255.5 243.] : units= Kelvin</span>
 <span class="py-output">press_sounding : value= [900 850 800 750 700 650 600 550 500 450] : units= hPa</span>
 <span class="py-output">location_name : value = New York, New York, USA : units= None</span>
@@ -1475,7 +1476,7 @@
   <tr>
     <td align="left" class="footer">
     Generated by Epydoc 3.0.1
-    on Thu Mar  3 19:05:29 2011
+    on Thu Mar  3 20:00:31 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
