@@ -1009,7 +1009,7 @@ cdef _set_att(grp, int varid, name, value):
         if value_arr.dtype.char == 'U':
             dt = value_arr.dtype.str
             dtnew = dt.replace('U','S')
-            # change 'S0' to 'S1'
+            # change 'S0' to 'S1', since 'S0' doesn't exist.
             dtnew = dtnew.replace('0','1')
             value_arr = value_arr.astype(dtnew)
         dats = value_arr.tostring()
@@ -3293,9 +3293,11 @@ cdef _read_vlen(group, nc_type xtype):
     return VLType(group, dt, name, typeid=xtype)
 
 cdef _strencode(pystr,encoding=None):
+    # encode a string into bytes.  If already bytes, do nothing.
+    # uses default_encoding module variable for default encoding.
     if encoding is None:
         encoding = default_encoding
     try:
         return pystr.encode(encoding)
-    except:
+    except AttributeError:
         return pystr # already bytes?
