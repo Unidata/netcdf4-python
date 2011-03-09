@@ -1,7 +1,7 @@
  version 0.9.4 (not yet released)
  ================================
  * Added a 'default_encoding' module variable that controls how unicode
- strings are decoded. Default is 'ascii'.
+ strings are encoded into bytes. Default is 'ascii'.
 
  * now works on Python 3.
 
