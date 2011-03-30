@@ -40,7 +40,7 @@ Requires
  - U{HDF4 <http://www.hdfgroup.org/products/hdf4/>}, if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.1.1 or higher is required (4.1.2-beta2 or higher recommended).
+ Version 4.1.1 or higher is required (4.1.2 or higher recommended).
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR
  --enable-shared}', where C{$HDF5_DIR} is the directory where HDF5 was installed.
  If you want U{OPeNDAP<http://opendap.org/>} support, add 'C{--enable-dap}'.
