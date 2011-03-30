@@ -18,8 +18,7 @@
  * on unix-like systems, the environment variable USE_NCCONFIG can be set to
  tell setup.py to use the nc-config script installed by netcdf to figure out
  where all the libs and headers are (without having to specify NETCDF_DIR,
- HDF5_DIR, etc).  Only works with recent snapshots of netcdf (from Dec 1 2010
- onward).
+ HDF5_DIR, etc).  Only works with netcdf 4.1.2.
 
  version 0.9.3 (svn revision 930)
  ================================
