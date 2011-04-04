@@ -1,5 +1,7 @@
- version 0.9.4 (not yet released)
+ version 0.9.4 (svn revision 1018)
  ================================
+ * tested with python 2.7.1/3.1.3 using netcdf 4.1.2 and hdf5 1.8.6.
+
  * Added a 'default_encoding' module variable that controls how unicode
  strings are encoded into bytes. Default is 'ascii'.
 
