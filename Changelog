@@ -1,3 +1,5 @@
+ changes since version 0.9.4 release
+ ===================================
  * fix for compound variables on python 3.2.
 
  version 0.9.4 (svn revision 1018)
