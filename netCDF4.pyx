@@ -3049,7 +3049,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
     ierr = nc_def_compound(grp._grpid, size, namstring, &xtype)
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-    names = dt.fields.keys()
+    names = list(dt.fields.keys())
     formats = [v[0] for v in dt.fields.values()]
     offsets = [v[1] for v in dt.fields.values()]
     # make sure entries in lists sorted by offset.
