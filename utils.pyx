@@ -438,7 +438,7 @@ class _Variable(object):
         start, count, stride, put_ind =\
         _StartCountStride(elem, self.shape)
         datashape = _out_array_shape(count)
-        data = numpy.empty(datashape, dtype=self.dtype)
+        data = ma.empty(datashape, dtype=self.dtype)
         
         # Determine which dimensions need to be squeezed
         # (those for which elem is an integer scalar).
@@ -510,8 +510,6 @@ class _Variable(object):
                     lstArr.append(dat)
             if ismasked:
                 lstArr = ma.concatenate(lstArr)
-                data = ma.empty(data.shape, data.dtype)
-                data.fill_value = fill_value
             else:
                 lstArr = numpy.concatenate(lstArr)
             if lstArr.dtype != data.dtype: data = data.astype(lstArr.dtype)
@@ -525,6 +523,10 @@ class _Variable(object):
 
         # Remove extra singleton dimensions. 
         data = data[tuple(squeeze)]
+
+        # if no masked elements, return numpy array.
+        if not data.mask.any():
+           data = data.filled()
         
         return data
 
