@@ -525,7 +525,7 @@ class _Variable(object):
         data = data[tuple(squeeze)]
 
         # if no masked elements, return numpy array.
-        if not data.mask.any():
+        if hasattr(data,'mask') and not data.mask.any():
            data = data.filled()
         
         return data
