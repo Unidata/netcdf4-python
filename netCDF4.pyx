@@ -2668,7 +2668,7 @@ details."""
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 # if not masked, create a masked array.
                 if not hasattr(data, 'mask'): data = self._toma(data)
-                data = (data - self.add_offset)/self.scale_factor
+                data = numpy.around((data - self.add_offset)/self.scale_factor)
             if hasattr(data,'mask'):
                 if hasattr(self, 'missing_value'):
                     fillval = self.missing_value

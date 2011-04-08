@@ -21,7 +21,7 @@ ranarr[::2] = missing_value
 maskedarr = ma.masked_values(ranarr,-9999.)
 scale_factor = (packeddata.max()-packeddata.min())/(2.*32766.)
 add_offset = 0.5*(packeddata.max()+packeddata.min())
-packeddata2 = ((packeddata-add_offset)/scale_factor).astype('i2')
+packeddata2 = NP.around((packeddata-add_offset)/scale_factor).astype('i2')
 
 class PrimitiveTypesTestCase(unittest.TestCase):
 
