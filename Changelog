@@ -1,11 +1,15 @@
- changes since version 0.9.4 release
- ===================================
+ version 0.9.5 (not yet released)   
+ ================================
  * fix for compound variables on python 3.2.
 
  * fix slicing of masked MFDataset variables (issue 83).
 
  * round to nearest integer after packing with scale_factor and add_offset
    (instead of truncation) (issue 84).
+
+ * if add_offset missing, but scale_factor present, assume add_offset zero.
+   if scale_factor missing, but add_offset present, assume scale_factor one.
+   (this is consistent with unidata recommendations - issue 86).
 
  version 0.9.4 (svn revision 1018)
  ================================

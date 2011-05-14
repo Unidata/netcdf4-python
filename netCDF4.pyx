@@ -811,7 +811,7 @@ try:
 except: # or else use drop-in substitute
     from ordereddict import OrderedDict
 
-__version__ = "0.9.4"
+__version__ = "0.9.5"
 
 # Initialize numpy
 import os
@@ -2507,6 +2507,12 @@ details."""
             # if variable has scale_factor and add_offset attributes, rescale.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = self.scale_factor*data + self.add_offset
+            # else if variable has only scale_factor attributes, rescale.
+            elif hasattr(self, 'scale_factor'):
+                data = self.scale_factor*data
+            # else if variable has only add_offset attributes, rescale.
+            elif hasattr(self, 'add_offset'):
+                data += self.add_offset
         return data
 
     def _toma(self,data):
@@ -2629,7 +2635,7 @@ details."""
         if not hasattr(data,'ndim'): 
             # if auto scaling is to be done, don't cast to an integer yet. 
             if self.maskandscale and self.dtype.kind == 'i' and \
-               hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+               hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
                 data = numpy.array(data,numpy.float)
             else:
                 data = numpy.array(data,self.dtype)
@@ -2665,10 +2671,15 @@ details."""
             # use missing_value as fill value.
             # if no missing value set, use _FillValue.
             # pack non-masked values using scale_factor and add_offset
-            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+            if hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
                 # if not masked, create a masked array.
                 if not hasattr(data, 'mask'): data = self._toma(data)
+            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = numpy.around((data - self.add_offset)/self.scale_factor)
+            elif hasattr(self, 'scale_factor'):
+                data = numpy.around(data/self.scale_factor)
+            elif hasattr(self, 'add_offset'):
+                data = numpy.around(data - self.add_offset)
             if hasattr(data,'mask'):
                 if hasattr(self, 'missing_value'):
                     fillval = self.missing_value
@@ -2732,7 +2743,7 @@ array is converted back to a regular numpy array by replacing all the
 masked values by the fill_value of the masked array.
 
 If C{maskandscale} is set to C{True}, and the variable has a
-C{scale_factor} and an C{add_offset} attribute, then data read
+C{scale_factor} or an C{add_offset} attribute, then data read
 from that variable is unpacked using::
 
     data = self.scale_factor*data + self.add_offset
@@ -2741,6 +2752,9 @@ When data is written to a variable it is packed using::
 
     data = (data - self.add_offset)/self.scale_factor
 
+If either scale_factor is present, but add_offset is missing, add_offset
+is assumed zero.  If add_offset is present, but scale_factor is missing,
+scale_factor is assumed to be one.
 For more information on how C{scale_factor} and C{add_offset} can be 
 used to provide simple compression, see
 U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
