@@ -817,6 +817,7 @@ __version__ = "0.9.5"
 import os
 import netcdftime
 import numpy
+import sys
 from glob import glob
 from numpy import ma
 from numpy import __version__ as _npversion
@@ -889,6 +890,7 @@ _default_fillvals = {#'S1':NC_FILL_CHAR,
 # to the netcdf file, and for converting bytes to strings when reading
 # from the netcdf file.
 default_encoding = 'ascii'
+python3 = sys.version_info.major > 2
 
 _nctonptype = {}
 for _key,_value in _nptonctype.items():
@@ -3310,6 +3312,7 @@ cdef _read_vlen(group, nc_type xtype):
 cdef _strencode(pystr,encoding=None):
     # encode a string into bytes.  If already bytes, do nothing.
     # uses default_encoding module variable for default encoding.
+    if not python3: return pystr # if not python3, do nothing
     if encoding is None:
         encoding = default_encoding
     try:
