@@ -890,7 +890,7 @@ _default_fillvals = {#'S1':NC_FILL_CHAR,
 # to the netcdf file, and for converting bytes to strings when reading
 # from the netcdf file.
 default_encoding = 'ascii'
-python3 = sys.version_info.major > 2
+python3 = sys.version_info[0] > 2
 
 _nctonptype = {}
 for _key,_value in _nptonctype.items():
