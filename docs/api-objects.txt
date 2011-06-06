@@ -14,6 +14,7 @@ netCDF4.date2num	netCDF4-module.html#date2num
 netCDF4.stringtoarr	netCDF4-module.html#stringtoarr
 netCDF4._value	netCDF4-module.html#_value
 netCDF4._nptonctype	netCDF4-module.html#_nptonctype
+netCDF4.python3	netCDF4-module.html#python3
 netCDF4.__required_netcdf4version__	netCDF4-module.html#__required_netcdf4version__
 netCDF4._supportedtypes	netCDF4-module.html#_supportedtypes
 netCDF4._gethdf5libversion	netCDF4-module.html#_gethdf5libversion
