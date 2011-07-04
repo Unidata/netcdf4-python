@@ -1,5 +1,8 @@
  since version 0.9.5
  ===================
+ * don't add extra singleton dimensions to rhs numpy arrays when assigning to
+   a netcdf variable. Fixes issue 90.
+
  * coerce missing_value attribute to same type as variable (for primitive
    types). Fixes issue 91.
 

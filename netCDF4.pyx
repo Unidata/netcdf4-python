@@ -2654,7 +2654,9 @@ details."""
             data = numpy.tile(data,datashape)
         # reshape data array by adding extra singleton dimensions
         # if needed to conform with start,count,stride.
+        data_reshaped = None
         if len(data.shape) != len(datashape):
+            data_reshaped = data.shape
             data.shape = tuple(datashape)
         
         # Reshape these arrays so we can iterate over them. 
@@ -2703,6 +2705,10 @@ details."""
                 else:
                     dataput=numpy.array(dataput,dataput.dtype)
             self._put(dataput,a,b,c)
+        # if data was reshaped, restore original shape.
+        if data_reshaped is not None:
+            data.shape = data_reshaped
+
 
     def __len__(self):
         return self.shape[0]
