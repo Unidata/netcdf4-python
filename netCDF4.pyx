@@ -2650,11 +2650,12 @@ details."""
 
         # if a numpy scalar, create an array of the right size
         # and fill with scalar values.
+        data_reshaped = None
         if data.shape == ():
+            data_reshaped = data.shape
             data = numpy.tile(data,datashape)
         # reshape data array by adding extra singleton dimensions
         # if needed to conform with start,count,stride.
-        data_reshaped = None
         if len(data.shape) != len(datashape):
             data_reshaped = data.shape
             data.shape = tuple(datashape)
