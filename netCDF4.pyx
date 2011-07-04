@@ -2421,7 +2421,7 @@ details."""
         # if name in _private_atts, it is stored at the python
         # level and not in the netCDF file.
         if name not in _private_atts:
-            # if setting _FillValue, make sure value
+            # if setting _FillValue or missing_value, make sure value
             # has same type as variable.
             if name == '_FillValue':
                 msg='_FillValue attribute must be set when variable is '+\
@@ -2433,6 +2433,8 @@ details."""
                 #    msg="cannot set _FillValue attribute for "+\
                 #    "VLEN or compound variable"
                 #    raise AttributeError(msg)
+            elif name == 'missing_value' and self._isprimitive:
+                value = numpy.array(value, self.dtype)
             self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
