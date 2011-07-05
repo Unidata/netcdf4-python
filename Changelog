@@ -1,7 +1,7 @@
  since version 0.9.5
  ===================
  * add __enter__ and __exit__ methods so you can do "with Dataset(url) as f:"
-   (issue 90).
+   (issue 89).
 
  * don't add extra singleton dimensions to rhs numpy arrays when assigning to
    a netcdf variable. Fixes issue 90.
