@@ -1368,6 +1368,12 @@ group, so the path is simply C{'/'}."""
         else:
             self.groups = OrderedDict()
 
+    # these allow Dataset objects to be used via a "with" statement.
+    def __enter__(self):
+        return self
+    def __exit__(self,type,value,traceback):
+        self.close()
+
     def close(self):
         """
 close(self)
@@ -2650,12 +2656,11 @@ details."""
 
         # if a numpy scalar, create an array of the right size
         # and fill with scalar values.
-        data_reshaped = None
         if data.shape == ():
-            data_reshaped = data.shape
             data = numpy.tile(data,datashape)
         # reshape data array by adding extra singleton dimensions
         # if needed to conform with start,count,stride.
+        data_reshaped = None
         if len(data.shape) != len(datashape):
             data_reshaped = data.shape
             data.shape = tuple(datashape)
