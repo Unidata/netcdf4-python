@@ -1371,7 +1371,7 @@ group, so the path is simply C{'/'}."""
     # these allow Dataset objects to be used via a "with" statement.
     def __enter__(self):
         return self
-    def __exit__(self,type,value,traceback):
+    def __exit__(self,atype,value,traceback):
         self.close()
 
     def close(self):
