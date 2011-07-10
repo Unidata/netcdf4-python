@@ -890,6 +890,9 @@ _default_fillvals = {#'S1':NC_FILL_CHAR,
 # to the netcdf file, and for converting bytes to strings when reading
 # from the netcdf file.
 default_encoding = 'ascii'
+# unicode decode/encode error handling.  Replace bad chars with "?"
+# can be set to 'strict' or 'ignore'.
+unicode_error = 'replace'
 python3 = sys.version_info[0] > 2
 
 _nctonptype = {}
@@ -914,7 +917,7 @@ cdef _get_att_names(int grpid, int varid):
         ierr = nc_inq_attname(grpid, varid, n, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-        attslist.append(namstring.decode(default_encoding))
+        attslist.append(namstring.decode(default_encoding,unicode_error))
     return attslist
 
 cdef _get_att(grp, int varid, name):
@@ -935,7 +938,7 @@ cdef _get_att(grp, int varid, name):
         ierr = nc_get_att_text(grp._grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
             raise AttributeError(nc_strerror(ierr).decode('ascii'))
-        pstring = value_arr.tostring().decode(default_encoding)
+        pstring = value_arr.tostring().decode(default_encoding,unicode_error)
         return pstring.replace('\x00','')
     else:
     # a regular numeric or compound type.
@@ -1056,7 +1059,7 @@ cdef _get_types(group):
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr).decode('ascii'))
             if classp == NC_COMPOUND: # a compound
-                name = namstring.decode(default_encoding)
+                name = namstring.decode(default_encoding,unicode_error)
                 # read the compound type info from the file,
                 # create a CompoundType instance from it.
                 try:
@@ -1066,7 +1069,7 @@ cdef _get_types(group):
                     continue
                 cmptypes[name] = cmptype
             elif classp == NC_VLEN: # a vlen
-                name = namstring.decode(default_encoding)
+                name = namstring.decode(default_encoding,unicode_error)
                 # read the VLEN type info from the file,
                 # create a VLType instance from it.
                 try:
@@ -1102,7 +1105,7 @@ cdef _get_dims(group):
             ierr = nc_inq_dimname(group._grpid, dimids[n], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-            name = namstring.decode(default_encoding)
+            name = namstring.decode(default_encoding,unicode_error)
             dimensions[name] = Dimension(group, name, id=dimids[n])
     return dimensions
 
@@ -1127,7 +1130,7 @@ cdef _get_grps(group):
              ierr = nc_inq_grpname(grpids[n], namstring)
              if ierr != NC_NOERR:
                  raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-             name = namstring.decode(default_encoding)
+             name = namstring.decode(default_encoding,unicode_error)
              groups[name] = Group(group, name, id=grpids[n])
         free(grpids)
     return groups
@@ -1163,7 +1166,7 @@ cdef _get_vars(group):
              ierr = nc_inq_varname(group._grpid, varid, namstring)
              if ierr != NC_NOERR:
                  raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-             name = namstring.decode(default_encoding)
+             name = namstring.decode(default_encoding,unicode_error)
              if ierr != NC_NOERR:
                  raise RuntimeError(nc_strerror(ierr).decode('ascii'))
              # get variable type.
@@ -2225,7 +2228,7 @@ instance. If C{None}, the data is not truncated. """
             ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-            name = namstring.decode(default_encoding)
+            name = namstring.decode(default_encoding,unicode_error)
             dimensions = dimensions + (name,)
         return dimensions
 
@@ -3178,7 +3181,7 @@ cdef _read_compound(group, nc_type xtype):
     ierr = nc_inq_compound(group._grpid, xtype, cmp_namstring, NULL, &nfields)
     if ierr != NC_NOERR:
         raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-    name = cmp_namstring.decode(default_encoding)
+    name = cmp_namstring.decode(default_encoding,unicode_error)
     # loop over fields.
     names = []
     formats = []
@@ -3194,7 +3197,7 @@ cdef _read_compound(group, nc_type xtype):
                                      dim_sizes)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-        field_name = field_namstring.decode(default_encoding)
+        field_name = field_namstring.decode(default_encoding,unicode_error)
         names.append(field_name)
         offsets.append(offset)
         # if numdims=0, not an array.
@@ -3316,7 +3319,7 @@ cdef _read_vlen(group, nc_type xtype):
         ierr = nc_inq_vlen(group._grpid, xtype, vl_namstring, &vlsize, &base_xtype)
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr).decode('ascii'))
-        name = vl_namstring.decode(default_encoding)
+        name = vl_namstring.decode(default_encoding,unicode_error)
         try:
             dt = numpy.dtype(_nctonptype[base_xtype]) # see if it is a primitive type
         except KeyError:

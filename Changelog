@@ -1,5 +1,12 @@
  since version 0.9.5
  ===================
+ * add "unicode_error" module variable to control what happens when characters
+   cannot be decoded by the encoding specified by the "default_encoding" module
+   variable (which is "ascii" by default).  unicode_error = "replace" by default
+   which means bad characters are replace by "?".  Previously an error was
+   raised, the old behavior can be obtained by setting unicode_error = 'strict').
+   Fixes issue 92.
+
  * add __enter__ and __exit__ methods so you can do "with Dataset(url) as f:"
    (issue 89).
 
