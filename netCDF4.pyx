@@ -40,7 +40,7 @@ Requires
  - U{HDF4 <http://www.hdfgroup.org/products/hdf4/>}, if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.1.1 or higher is required (4.1.2 or higher recommended).
+ Version 4.1.1 or higher is required (4.1.3 or higher recommended).
  Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR
  --enable-shared}', where C{$HDF5_DIR} is the directory where HDF5 was installed.
  If you want U{OPeNDAP<http://opendap.org/>} support, add 'C{--enable-dap}'.
@@ -811,7 +811,7 @@ try:
 except: # or else use drop-in substitute
     from ordereddict import OrderedDict
 
-__version__ = "0.9.5"
+__version__ = "0.9.6"
 
 # Initialize numpy
 import os
@@ -889,7 +889,7 @@ _default_fillvals = {#'S1':NC_FILL_CHAR,
 # encoding used to convert strings to bytes when writing text data
 # to the netcdf file, and for converting bytes to strings when reading
 # from the netcdf file.
-default_encoding = 'ascii'
+default_encoding = 'latin-1'
 # unicode decode/encode error handling.  Replace bad chars with "?"
 # can be set to 'strict' or 'ignore'.
 unicode_error = 'replace'
