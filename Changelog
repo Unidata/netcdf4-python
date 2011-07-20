@@ -1,5 +1,5 @@
- version 0.9.6 (not yet released)
- ===============================
+ version 0.9.6 (svn revision 1043)
+ =================================
  * changed default unicode encoding from "ascii" to "latin-1" (iso-8859-1).
 
  * add "unicode_error" module variable to control what happens when characters
