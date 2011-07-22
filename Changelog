@@ -1,3 +1,8 @@
+ since version 0.9.6
+ ===================
+ * changed netCDF4._default_fillvals to netCDF4.default_fillvals (to make part
+   of public API).  Added to docs (issue 94).
+
  version 0.9.6 (svn revision 1043)
  =================================
  * changed default unicode encoding from "ascii" to "latin-1" (iso-8859-1).
