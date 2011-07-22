@@ -5,7 +5,7 @@ import tempfile
 import numpy as np
 from numpy import ma, seterr
 from numpy.testing import assert_array_equal, assert_array_almost_equal
-from netCDF4 import Dataset, _default_fillvals
+from netCDF4 import Dataset, default_fillvals
 
 seterr(over='ignore') # don't print warning for overflow errors 
 
@@ -23,7 +23,7 @@ datacheck3 =\
 ma.array([3000.0,5000.0,0,2000.0],dtype=np.float,mask=[False,False,True,False])
 mask = [False,True,False,False]
 datacheck4 = ma.array([1.5625,0,3.75,4.125],mask=mask,dtype=np.float32)
-fillval = _default_fillvals[datacheck4.dtype.str[1:]]
+fillval = default_fillvals[datacheck4.dtype.str[1:]]
 datacheck5 = np.array([1.5625,fillval,3.75,4.125],dtype=np.float32)
 
 class PrimitiveTypesTestCase(unittest.TestCase):

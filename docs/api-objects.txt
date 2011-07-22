@@ -2,8 +2,8 @@ netCDF4	netCDF4-module.html
 netCDF4._set_default_format	netCDF4-module.html#_set_default_format
 netCDF4.default_encoding	netCDF4-module.html#default_encoding
 netCDF4.num2date	netCDF4-module.html#num2date
-netCDF4.unicode_error	netCDF4-module.html#unicode_error
 netCDF4._private_atts	netCDF4-module.html#_private_atts
+netCDF4._nctonptype	netCDF4-module.html#_nctonptype
 netCDF4.__package__	netCDF4-module.html#__package__
 netCDF4.stringtochar	netCDF4-module.html#stringtochar
 netCDF4.chartostring	netCDF4-module.html#chartostring
@@ -16,14 +16,14 @@ netCDF4.stringtoarr	netCDF4-module.html#stringtoarr
 netCDF4._value	netCDF4-module.html#_value
 netCDF4._nptonctype	netCDF4-module.html#_nptonctype
 netCDF4.python3	netCDF4-module.html#python3
-netCDF4.__required_netcdf4version__	netCDF4-module.html#__required_netcdf4version__
+netCDF4.unicode_error	netCDF4-module.html#unicode_error
 netCDF4._supportedtypes	netCDF4-module.html#_supportedtypes
 netCDF4._gethdf5libversion	netCDF4-module.html#_gethdf5libversion
 netCDF4._key	netCDF4-module.html#_key
-netCDF4._nctonptype	netCDF4-module.html#_nctonptype
+netCDF4.default_fillvals	netCDF4-module.html#default_fillvals
 netCDF4._npversion	netCDF4-module.html#_npversion
 netCDF4.__hdf5libversion__	netCDF4-module.html#__hdf5libversion__
-netCDF4._default_fillvals	netCDF4-module.html#_default_fillvals
+netCDF4.__required_netcdf4version__	netCDF4-module.html#__required_netcdf4version__
 netCDF4.CompoundType	netCDF4.CompoundType-class.html
 netCDF4.CompoundType.__new__	netCDF4.CompoundType-class.html#__new__
 netCDF4.CompoundType.dtype	netCDF4.CompoundType-class.html#dtype
