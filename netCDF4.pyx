@@ -1572,8 +1572,8 @@ keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword C{fill_value} can be used to override the default 
 netCDF C{_FillValue} (the value that the variable gets filled with before 
-any data is written to it).  If fill_value is set to C{False}, then
-the variable is not pre-filled.
+any data is written to it, defaults given in netCDF4._default_fillvals).
+If fill_value is set to C{False}, then the variable is not pre-filled.
 
 If the optional keyword parameter C{least_significant_digit} is
 specified, variable data will be truncated (quantized). In conjunction
@@ -1991,7 +1991,8 @@ C{None}, or no quantization.
 B{C{fill_value}} - If specified, the default netCDF C{_FillValue} (the 
 value that the variable gets filled with before any data is written to it) 
 is replaced with this value.  If fill_value is set to C{False}, then
-the variable is not pre-filled.
+the variable is not pre-filled. The default netCDF fill values can be found
+in netCDF4._default_fillvals.
  
 B{Returns:}
 
