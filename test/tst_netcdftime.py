@@ -176,7 +176,10 @@ class netcdftimeTestCase(unittest.TestCase):
         t = 733498.999999
         d = num2date(t,units='days since 0001-01-01 00:00:00')
         assert_equal(str(d),'2009-04-01 00:00:00')
-
+        # Check equality testing 
+        d1 = datetimex(1979,06,21,9,23,12)
+        d2 = datetime(1979,06,21,9,23,12)
+        assert(d1 == d2)
 
 class TestDate2index(unittest.TestCase):
 

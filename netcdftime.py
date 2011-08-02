@@ -49,6 +49,9 @@ and format.
         return (self.year,self.month,self.day,self.hour,self.minute,self.second,self.dayofwk,self.dayofyr,-1)
     def __repr__(self):
         return self.strftime(self.format)
+    def __eq__(self, date):
+        return self.strftime('%Y-%m-%d %H:%M:%S') == date.strftime('%Y-%m-%d %H:%M:%S')
+
 
 def JulianDayFromDate(date,calendar='standard'):
 
@@ -1036,12 +1039,13 @@ def date2index(dates, nctime, calendar=None, select='exact'):
     # are not increasing uniformly and we try the bisection method.
     if not _check_index(index, dates, nctime, calendar):
         
-        # Use the bisection method. Assumes the dates are ordered.
+        # Use the bisection method. Assumes nctime is ordered.
         import bisect
-        index = numpy.array([bisect.bisect_left(nctime, n) for n in num], int)
-               
-        after = index == N
+        index = numpy.array([bisect.bisect_right(nctime, n) for n in num], int)
         before = index == 0
+        
+        index = numpy.array([bisect.bisect_left(nctime, n) for n in num], int)
+        after = index == N
         
         if select in ['before', 'exact'] and numpy.any(before):
             raise ValueError('At least one of the dates given is before the first date in `nctime`.')
