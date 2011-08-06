@@ -2519,13 +2519,14 @@ details."""
         if self.maskandscale and self._isprimitive:
             data = self._toma(data)
             # if variable has scale_factor and add_offset attributes, rescale.
-            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset') and\
+            (self.add_offset != 0.0 or self.scale_factor != 1.0):
                 data = self.scale_factor*data + self.add_offset
             # else if variable has only scale_factor attributes, rescale.
-            elif hasattr(self, 'scale_factor'):
+            elif hasattr(self, 'scale_factor') and self.scale_factor != 1.0:
                 data = self.scale_factor*data
             # else if variable has only add_offset attributes, rescale.
-            elif hasattr(self, 'add_offset'):
+            elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
                 data += self.add_offset
         return data
 

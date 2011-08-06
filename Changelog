@@ -1,5 +1,7 @@
  since version 0.9.6
  ===================
+ * don't try to apply scale_factor and offset if scale_factor=1 and
+   add_offset=0 (to avoid making copies of large arrays).
  * changed netCDF4._default_fillvals to netCDF4.default_fillvals (to make part
    of public API).  Added to docs (issue 94).
 
