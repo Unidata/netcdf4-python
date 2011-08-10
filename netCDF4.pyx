@@ -2033,7 +2033,7 @@ truncated to this decimal place when it is assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. """
     cdef public int _varid, _grpid, _nunlimdim
     cdef object _grp
-    cdef public ndim, dtype, maskandscale, _isprimitive, _iscompound, _isvlen
+    cdef public _name, ndim, dtype, maskandscale, _isprimitive, _iscompound, _isvlen,
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=6, shuffle=True, fletcher32=False, contiguous=False,
@@ -2213,9 +2213,30 @@ instance. If C{None}, the data is not truncated. """
         if ierr != NC_NOERR:
             raise RuntimeError(nc_strerror(ierr).decode('ascii'))
         self.ndim = numdims
+        self._name = name
         # default for automatically applying scale_factor and
         # add_offset, and converting to/from masked arrays is True.
         self.maskandscale = True
+
+    # __repr__ returns information from ncdump -h, plus path, unlim dim names,
+    # and shape.
+    def __repr__(self):
+        ncdump = _ncdump(self._grp.filename).readlines()
+        ncdump_var = []
+        for line in ncdump:
+            if line.find(self._name+"(") >= 0:
+                ncdump_var.append(line.lstrip())
+            if line.find(self._name+":") >= 0:
+                ncdump_var.append('    '+line.lstrip())
+        unlimdims = []
+        for dimname in self.dimensions:
+            dim = _find_dim(self._grp, dimname)
+            if dim.isunlimited():
+                unlimdims.append(str(dimname))
+        if (self._grp.path != '/'): ncdump_var.append('path = %s\n' % self._grp.path)
+        ncdump_var.append('unlimited dimensions %s\n' % repr(tuple(unlimdims)))
+        ncdump_var.append('current size %s\n' % repr(self.shape))
+        return ''.join(ncdump_var)
 
     def _getdims(self):
         # Private method to get variables's dimension names

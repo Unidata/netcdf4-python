@@ -1,5 +1,8 @@
  since version 0.9.6
  ===================
+ * Variable__repr__ returns relevant info from ncdump -h, as well as
+   path, current shape and unlimited dimension name.s
+
  * Dataset.__repr__ now returns 'ncdump -h', called via os.popen. Added
    Dataset.filename instance variable.
 
