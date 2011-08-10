@@ -1382,7 +1382,10 @@ group, so the path is simply C{'/'}."""
 
     # __repr__ returns ncdump -h
     def __repr__(self):
-        self.sync()
+        try:
+            self.sync()
+        except:
+            pass
         return _ncdump(self.filename).read()
 
     def close(self):
@@ -2232,13 +2235,16 @@ instance. If C{None}, the data is not truncated. """
     # __repr__ returns information from ncdump -h, plus path, unlim dim names,
     # and shape.
     def __repr__(self):
-        self._grp.sync()
+        try:
+            self._grp.sync()
+        except:
+            pass
         ncdump = _ncdump(self._grp.filename).readlines()
         ncdump_var = []
         for line in ncdump:
-            if line.find(self._name+"(") >= 0:
+            if line.find(' '+self._name+"(") >= 0:
                 ncdump_var.append(line.lstrip())
-            if line.find(self._name+":") >= 0:
+            if line.find('\t'+self._name+":") >= 0:
                 ncdump_var.append('    '+line.lstrip())
         unlimdims = []
         for dimname in self.dimensions:
@@ -2246,7 +2252,10 @@ instance. If C{None}, the data is not truncated. """
             if dim.isunlimited():
                 unlimdims.append(str(dimname))
         if (self._grp.path != '/'): ncdump_var.append('path = %s\n' % self._grp.path)
-        ncdump_var.append('unlimited dimensions = %s\n' % repr(tuple(unlimdims)))
+        if unlimdims:
+            ncdump_var.append('unlimited dimensions = %s\n' % repr(tuple(unlimdims)))
+        else:
+            ncdump_var.append('no unlimited dimensions\n')
         ncdump_var.append('current size = %s\n' % repr(self.shape))
         return ''.join(ncdump_var)
 
