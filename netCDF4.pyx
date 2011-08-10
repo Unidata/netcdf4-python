@@ -1846,7 +1846,7 @@ calling the python C{len} function on the L{Dimension} instance. The
 C{isunlimited()} method of a L{Dimension} instance can be used to
 determine if the dimension is unlimited"""
     cdef public int _dimid, _grpid
-    cdef public _file_format
+    cdef public _file_format, _name
 
     def __init__(self, grp, name, size=None, **kwargs):
         cdef int ierr
@@ -1854,6 +1854,7 @@ determine if the dimension is unlimited"""
         cdef size_t lendim
         self._grpid = grp._grpid
         self._file_format = grp.file_format
+        self._name = name
         if 'id' in kwargs:
             self._dimid = kwargs['id']
         else:
@@ -1869,6 +1870,15 @@ determine if the dimension is unlimited"""
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr).decode('ascii'))
 
+    def __repr__(self):
+        strings = []
+        strings.append('name = %s\n' % self._name)
+        if self.isunlimited():
+            strings.append('size = %s (unlimited)\n' % len(self))
+        else:
+            strings.append('size = %s\n' % len(self))
+        return ''.join(strings)
+ 
     def __len__(self):
         # len(L{Dimension} instance) returns current size of dimension
         cdef int ierr
@@ -2236,8 +2246,8 @@ instance. If C{None}, the data is not truncated. """
             if dim.isunlimited():
                 unlimdims.append(str(dimname))
         if (self._grp.path != '/'): ncdump_var.append('path = %s\n' % self._grp.path)
-        ncdump_var.append('unlimited dimensions %s\n' % repr(tuple(unlimdims)))
-        ncdump_var.append('current size %s\n' % repr(self.shape))
+        ncdump_var.append('unlimited dimensions = %s\n' % repr(tuple(unlimdims)))
+        ncdump_var.append('current size = %s\n' % repr(self.shape))
         return ''.join(ncdump_var)
 
     def _getdims(self):
