@@ -1382,6 +1382,7 @@ group, so the path is simply C{'/'}."""
 
     # __repr__ returns ncdump -h
     def __repr__(self):
+        self.sync()
         return _ncdump(self.filename).read()
 
     def close(self):
@@ -2221,6 +2222,7 @@ instance. If C{None}, the data is not truncated. """
     # __repr__ returns information from ncdump -h, plus path, unlim dim names,
     # and shape.
     def __repr__(self):
+        self._grp.sync()
         ncdump = _ncdump(self._grp.filename).readlines()
         ncdump_var = []
         for line in ncdump:
