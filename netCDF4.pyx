@@ -1380,13 +1380,13 @@ group, so the path is simply C{'/'}."""
     def __exit__(self,atype,value,traceback):
         self.close()
 
-    # __repr__ returns ncdump -h
-    def __repr__(self):
+    # __str__ returns ncdump -h
+    def __str__(self):
         try:
             self.sync()
         except:
             pass
-        return '%s\n' % repr(type(self))+_ncdump(self.filename).read()
+        return '%r\n' % type(self) + _ncdump(self.filename).read()
 
     def close(self):
         """
@@ -1810,6 +1810,10 @@ method)."""
         # get groups in this Group.
         self.groups = _get_grps(self)
 
+    # don't use Dataset.__str__
+    def __str__(self):
+        return repr(self)
+
     def close(self):
         """
 close(self)
@@ -1873,7 +1877,7 @@ determine if the dimension is unlimited"""
             if ierr != NC_NOERR:
                 raise RuntimeError(nc_strerror(ierr).decode('ascii'))
 
-    def __repr__(self):
+    def __str__(self):
         if self.isunlimited():
             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
         else:
@@ -2229,15 +2233,15 @@ instance. If C{None}, the data is not truncated. """
         # add_offset, and converting to/from masked arrays is True.
         self.maskandscale = True
 
-    # __repr__ returns information from ncdump -h, plus path, unlim dim names,
+    # __str__ returns information from ncdump -h, plus path, unlim dim names,
     # and shape.
-    def __repr__(self):
+    def __str__(self):
         try:
             self._grp.sync()
         except:
             pass
         ncdump = _ncdump(self._grp.filename).readlines()
-        ncdump_var = ['%s\n' % repr(type(self))]
+        ncdump_var = ['%r\n' % type(self)]
         for line in ncdump:
             if line.find(' '+self._name+"(") >= 0:
                 ncdump_var.append(line.lstrip())
