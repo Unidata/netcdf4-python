@@ -1386,7 +1386,7 @@ group, so the path is simply C{'/'}."""
             self.sync()
         except:
             pass
-        return _ncdump(self.filename).read()
+        return '%s\n' % repr(type(self))+_ncdump(self.filename).read()
 
     def close(self):
         """
@@ -1874,13 +1874,10 @@ determine if the dimension is unlimited"""
                 raise RuntimeError(nc_strerror(ierr).decode('ascii'))
 
     def __repr__(self):
-        strings = []
-        strings.append('name = %s\n' % self._name)
         if self.isunlimited():
-            strings.append('size = %s (unlimited)\n' % len(self))
+            return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
         else:
-            strings.append('size = %s\n' % len(self))
-        return ''.join(strings)
+            return repr(type(self))+": name = '%s', size = %s\n" % (self._name,len(self))
  
     def __len__(self):
         # len(L{Dimension} instance) returns current size of dimension
@@ -2240,7 +2237,7 @@ instance. If C{None}, the data is not truncated. """
         except:
             pass
         ncdump = _ncdump(self._grp.filename).readlines()
-        ncdump_var = []
+        ncdump_var = ['%s\n' % repr(type(self))]
         for line in ncdump:
             if line.find(' '+self._name+"(") >= 0:
                 ncdump_var.append(line.lstrip())
