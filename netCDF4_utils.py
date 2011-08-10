@@ -1,7 +1,7 @@
-import numpy
 import numpy as np
 from numpy import ma
 import warnings
+import os
 
         
 def _sortbylist(A,B):
@@ -32,14 +32,14 @@ from the least_significant_digit. For example, if
 least_significant_digit=1, bits will be 4.
     """
     precision = pow(10.,-least_significant_digit)
-    exp = numpy.log10(precision)
+    exp = np.log10(precision)
     if exp < 0:
-        exp = int(numpy.floor(exp))
+        exp = int(np.floor(exp))
     else:
-        exp = int(numpy.ceil(exp))
-    bits = numpy.ceil(numpy.log2(pow(10.,-exp)))
+        exp = int(np.ceil(exp))
+    bits = np.ceil(np.log2(pow(10.,-exp)))
     scale = pow(2.,bits)
-    datout = numpy.around(scale*data)/scale
+    datout = np.around(scale*data)/scale
     if hasattr(datout,'mask'):
         datout.set_fill_value(data.fill_value)
         return datout
@@ -355,3 +355,6 @@ def _is_int(a):
         return int(a) == a
     except:
         return False
+
+def _ncdump(filename):
+    return os.popen('ncdump -h %s' % filename)

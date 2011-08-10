@@ -804,7 +804,7 @@ del __test__ # hack so epydoc doesn't show __test__
 
 # pure python utilities
 from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
-                          _out_array_shape, _sortbylist
+                          _out_array_shape, _sortbylist, _ncdump
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict
@@ -1234,7 +1234,7 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format',
  '_nunlimdim','path','parent','ndim','maskandscale','cmptypes','vltypes','_isprimitive',
- '_isvlen','_iscompound']
+ '_isvlen','_iscompound','filename']
 
 
 cdef class Dataset:
@@ -1293,7 +1293,7 @@ name/value pairs is provided by the C{__dict__} attribute of a
 L{Dataset} instance.
 
 The instance variables C{dimensions, variables, groups, 
-cmptypes, file_format} and C{path} are read-only (and should not be modified by the 
+cmptypes, file_format, filename} and C{path} are read-only (and should not be modified by the 
 user).
 
 @ivar dimensions: The C{dimensions} dictionary maps the names of 
@@ -1318,13 +1318,15 @@ file format version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
 C{NETCDF4_CLASSIC} or C{NETCDF3_64BIT}.  This module can read and 
 write all formats.
 
+@ivar filename:  The filename associated with the L{Dataset} instance.
+
 @ivar path: The C{path} attribute shows the location of the L{Group} in
 the L{Dataset} in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
     cdef public int _grpid
     cdef public groups, dimensions, variables, file_format, path, parent,\
-    maskanscale, cmptypes, vltypes
+    maskanscale, cmptypes, vltypes, filename
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4', **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
@@ -1358,6 +1360,7 @@ group, so the path is simply C{'/'}."""
         self.file_format = _get_format(grpid)
         self._grpid = grpid
         self.path = '/'
+        self.filename = filename
         self.parent = None
         # get compound and vlen types in the root Group.
         self.cmptypes, self.vltypes = _get_types(self)
@@ -1376,6 +1379,10 @@ group, so the path is simply C{'/'}."""
         return self
     def __exit__(self,atype,value,traceback):
         self.close()
+
+    # __repr__ returns ncdump -h
+    def __repr__(self):
+        return _ncdump(self.filename).read()
 
     def close(self):
         """
