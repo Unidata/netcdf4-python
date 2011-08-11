@@ -162,15 +162,32 @@ to walk the directory tree.
 >>>     for value in top.groups.values():
 >>>         for children in walktree(value):
 >>>             yield children
->>> print rootgrp.path, rootgrp
+>>> print rootgrp.path
 >>> for children in walktree(rootgrp):
 >>>      for child in children:
->>>          print child.path, child
-/ <netCDF4.Dataset object at 0x24a54c00>
-/analyses <netCDF4.Group object at 0x24a54c30>
-/forecasts <netCDF4.Group object at 0x24a54bd0>
-/forecasts/model2 <netCDF4.Group object at 0x24a54cc0>
-/forecasts/model1 <netCDF4.Group object at 0x24a54c60>
+>>>          print child.path
+/ 
+/analyses 
+/forecasts 
+/forecasts/model2 
+/forecasts/model1 
+>>>
+
+To get summary information, just print the L{Dataset} instance (this just runs ``ncdump -h``
+under the hood and displays the results).
+
+>>> print rootgrp
+<type 'netCDF4.Dataset'>
+netcdf test {
+group: forecasts {
+  group: model1 {
+    } // group model1
+  group: model2 {
+    } // group model2
+  } // group forecasts
+group: analyses {
+  } // group analyses
+}
 >>>
 
 3) Dimensions in a netCDF file
@@ -189,10 +206,10 @@ C{level} dimensions are unlimited.  Having more than one unlimited
 dimension is a new netCDF 4 feature, in netCDF 3 files there may be only
 one, and it must be the first (leftmost) dimension of the variable.
 
->>> rootgrp.createDimension('level', None)
->>> rootgrp.createDimension('time', None)
->>> rootgrp.createDimension('lat', 73)
->>> rootgrp.createDimension('lon', 144)
+>>> level = rootgrp.createDimension('level', None)
+>>> time = rootgrp.createDimension('time', None)
+>>> lat = rootgrp.createDimension('lat', 73)
+>>> lon = rootgrp.createDimension('lon', 144)
             
 
 All of the L{Dimension} instances are stored in a python dictionary.
@@ -215,6 +232,12 @@ lat 73 False
 time 0 True
 lon 144 False
 level 0 True
+>>>
+
+To get all that information summarized for you in an interactive session, just print the L{Dimension} instance.
+
+>>> print time
+<type 'netCDF4.Dimension'> (unlimited): name = 'time', size = 0
 >>>
 
 L{Dimension} names can be changed using the
@@ -271,6 +294,17 @@ OrderedDict([('time', <netCDF4.Variable object at 0x1b4ba70>),
              ('latitude', <netCDF4.Variable object at 0x1b4baf0>),
              ('longitude', <netCDF4.Variable object at 0x1b4bb30>),
              ('temp', <netCDF4.Variable object at 0x1b4bb70>)])
+>>>
+
+To get summary info on a L{Variable} instance in an interactive session, just print it.
+
+>>> print rootgrp.variables['temp']
+<type 'netCDF4.Variable'>
+float temp(time, level, lat, lon) ;
+    temp:least_significant_digit = 3L ;
+    temp:units = "K" ;
+unlimited dimensions = ('time', 'level')
+current size = (0, 0, 73, 144)
 >>>
 
 L{Variable} names can be changed using the
@@ -811,7 +845,7 @@ try:
 except: # or else use drop-in substitute
     from ordereddict import OrderedDict
 
-__version__ = "0.9.6"
+__version__ = "0.9.7"
 
 # Initialize numpy
 import os

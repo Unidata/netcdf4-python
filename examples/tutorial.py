@@ -11,7 +11,6 @@ rootgrp.close()
 rootgrp = Dataset('test.nc', 'a')
 fcstgrp = rootgrp.createGroup('forecasts')
 analgrp = rootgrp.createGroup('analyses')
-print rootgrp.groups
 fcstgrp1 = fcstgrp.createGroup('model1')
 fcstgrp2 = fcstgrp.createGroup('model2')
 
@@ -22,21 +21,24 @@ def walktree(top):
     for value in top.groups.values():
         for children in walktree(value):
             yield  children
-print rootgrp.path, rootgrp
+print rootgrp.path
 for children in walktree(rootgrp):
      for child in children:
-         print child.path, child
+         print child.path
+print rootgrp
 
 # dimensions.
-rootgrp.createDimension('level', None)
-rootgrp.createDimension('time', None)
-rootgrp.createDimension('lat', 73)
-rootgrp.createDimension('lon', 144)
+level = rootgrp.createDimension('level', None)
+time = rootgrp.createDimension('time', None)
+lat = rootgrp.createDimension('lat', 73)
+lon = rootgrp.createDimension('lon', 144)
 
 print rootgrp.dimensions
 
 for dimname, dimobj in rootgrp.dimensions.iteritems():
     print dimname, len(dimobj), dimobj.isunlimited()
+
+print time
 
 # variables.
 times = rootgrp.createVariable('time','f8',('time',))
@@ -67,6 +69,8 @@ for name in rootgrp.ncattrs():
 print rootgrp.__dict__
 
 print rootgrp.variables
+
+print rootgrp.variables['temp']
 
 import numpy
 # no unlimited dimension, just assign to slice.

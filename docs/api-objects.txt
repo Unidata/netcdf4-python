@@ -3,7 +3,6 @@ netCDF4._set_default_format	netCDF4-module.html#_set_default_format
 netCDF4.default_encoding	netCDF4-module.html#default_encoding
 netCDF4.num2date	netCDF4-module.html#num2date
 netCDF4._private_atts	netCDF4-module.html#_private_atts
-netCDF4._nctonptype	netCDF4-module.html#_nctonptype
 netCDF4.__package__	netCDF4-module.html#__package__
 netCDF4.stringtochar	netCDF4-module.html#stringtochar
 netCDF4.chartostring	netCDF4-module.html#chartostring
@@ -21,6 +20,7 @@ netCDF4._supportedtypes	netCDF4-module.html#_supportedtypes
 netCDF4._gethdf5libversion	netCDF4-module.html#_gethdf5libversion
 netCDF4._key	netCDF4-module.html#_key
 netCDF4.default_fillvals	netCDF4-module.html#default_fillvals
+netCDF4._nctonptype	netCDF4-module.html#_nctonptype
 netCDF4._npversion	netCDF4-module.html#_npversion
 netCDF4.__hdf5libversion__	netCDF4-module.html#__hdf5libversion__
 netCDF4.__required_netcdf4version__	netCDF4-module.html#__required_netcdf4version__
@@ -46,9 +46,11 @@ netCDF4.Dataset.createDimension	netCDF4.Dataset-class.html#createDimension
 netCDF4.Dataset.createVariable	netCDF4.Dataset-class.html#createVariable
 netCDF4.Dataset.__enter__	netCDF4.Dataset-class.html#__enter__
 netCDF4.Dataset.__getattr__	netCDF4.Dataset-class.html#__getattr__
+netCDF4.Dataset.filename	netCDF4.Dataset-class.html#filename
 netCDF4.Dataset._redef	netCDF4.Dataset-class.html#_redef
 netCDF4.Dataset.setncattr	netCDF4.Dataset-class.html#setncattr
 netCDF4.Dataset.set_fill_off	netCDF4.Dataset-class.html#set_fill_off
+netCDF4.Dataset.__str__	netCDF4.Dataset-class.html#__str__
 netCDF4.Dataset.vltypes	netCDF4.Dataset-class.html#vltypes
 netCDF4.Dataset.ncattrs	netCDF4.Dataset-class.html#ncattrs
 netCDF4.Dataset.__exit__	netCDF4.Dataset-class.html#__exit__
@@ -69,7 +71,9 @@ netCDF4.Dataset.createVLType	netCDF4.Dataset-class.html#createVLType
 netCDF4.Dimension	netCDF4.Dimension-class.html
 netCDF4.Dimension.__new__	netCDF4.Dimension-class.html#__new__
 netCDF4.Dimension.isunlimited	netCDF4.Dimension-class.html#isunlimited
+netCDF4.Dimension.__str__	netCDF4.Dimension-class.html#__str__
 netCDF4.Dimension._grpid	netCDF4.Dimension-class.html#_grpid
+netCDF4.Dimension._name	netCDF4.Dimension-class.html#_name
 netCDF4.Dimension.__len__	netCDF4.Dimension-class.html#__len__
 netCDF4.Dimension._file_format	netCDF4.Dimension-class.html#_file_format
 netCDF4.Dimension._dimid	netCDF4.Dimension-class.html#_dimid
@@ -90,9 +94,11 @@ netCDF4.Dataset.createVariable	netCDF4.Dataset-class.html#createVariable
 netCDF4.Dataset.__enter__	netCDF4.Dataset-class.html#__enter__
 netCDF4.Dataset.file_format	netCDF4.Dataset-class.html#file_format
 netCDF4.Dataset.__getattr__	netCDF4.Dataset-class.html#__getattr__
+netCDF4.Dataset.filename	netCDF4.Dataset-class.html#filename
 netCDF4.Dataset._redef	netCDF4.Dataset-class.html#_redef
 netCDF4.Dataset.setncattr	netCDF4.Dataset-class.html#setncattr
 netCDF4.Dataset.set_fill_off	netCDF4.Dataset-class.html#set_fill_off
+netCDF4.Group.__str__	netCDF4.Group-class.html#__str__
 netCDF4.Dataset.vltypes	netCDF4.Dataset-class.html#vltypes
 netCDF4.Dataset.ncattrs	netCDF4.Dataset-class.html#ncattrs
 netCDF4.Dataset.__exit__	netCDF4.Dataset-class.html#__exit__
@@ -126,9 +132,11 @@ netCDF4.Dataset.createVariable	netCDF4.Dataset-class.html#createVariable
 netCDF4.Dataset.__enter__	netCDF4.Dataset-class.html#__enter__
 netCDF4.Dataset.file_format	netCDF4.Dataset-class.html#file_format
 netCDF4.Dataset.__getattr__	netCDF4.Dataset-class.html#__getattr__
+netCDF4.Dataset.filename	netCDF4.Dataset-class.html#filename
 netCDF4.Dataset._redef	netCDF4.Dataset-class.html#_redef
 netCDF4.Dataset.setncattr	netCDF4.Dataset-class.html#setncattr
 netCDF4.Dataset.set_fill_off	netCDF4.Dataset-class.html#set_fill_off
+netCDF4.Dataset.__str__	netCDF4.Dataset-class.html#__str__
 netCDF4.Dataset.vltypes	netCDF4.Dataset-class.html#vltypes
 netCDF4.MFDataset.ncattrs	netCDF4.MFDataset-class.html#ncattrs
 netCDF4.Dataset.__exit__	netCDF4.Dataset-class.html#__exit__
@@ -158,11 +166,13 @@ netCDF4.VLType.name	netCDF4.VLType-class.html#name
 netCDF4.Variable	netCDF4.Variable-class.html
 netCDF4.Variable.ndim	netCDF4.Variable-class.html#ndim
 netCDF4.Variable.dtype	netCDF4.Variable-class.html#dtype
+netCDF4.Variable.__str__	netCDF4.Variable-class.html#__str__
 netCDF4.Variable.__getattribute__	netCDF4.Variable-class.html#__getattribute__
 netCDF4.Variable.shape	netCDF4.Variable-class.html#shape
 netCDF4.Variable.set_auto_maskandscale	netCDF4.Variable-class.html#set_auto_maskandscale
 netCDF4.Variable.filters	netCDF4.Variable-class.html#filters
 netCDF4.Variable._toma	netCDF4.Variable-class.html#_toma
+netCDF4.Variable.getValue	netCDF4.Variable-class.html#getValue
 netCDF4.Variable.__init__	netCDF4.Variable-class.html#__init__
 netCDF4.Variable.size	netCDF4.Variable-class.html#size
 netCDF4.Variable.assignValue	netCDF4.Variable-class.html#assignValue
@@ -191,7 +201,7 @@ netCDF4.Variable._put	netCDF4.Variable-class.html#_put
 netCDF4.Variable._isprimitive	netCDF4.Variable-class.html#_isprimitive
 netCDF4.Variable._get	netCDF4.Variable-class.html#_get
 netCDF4.Variable._grpid	netCDF4.Variable-class.html#_grpid
-netCDF4.Variable.getValue	netCDF4.Variable-class.html#getValue
+netCDF4.Variable._name	netCDF4.Variable-class.html#_name
 netCDF4.Variable.__delattr__	netCDF4.Variable-class.html#__delattr__
 netCDF4.Variable._getdims	netCDF4.Variable-class.html#_getdims
 netCDF4.Variable.endian	netCDF4.Variable-class.html#endian

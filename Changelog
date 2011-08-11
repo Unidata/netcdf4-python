@@ -1,5 +1,5 @@
- since version 0.9.6
- ===================
+ version 0.9.7 (not yet released)
+ ================================
  * Dimension.__str__ prints name and size (and whether dim is unlimited).
 
  * Variable.__str__ returns relevant info from ncdump -h, as well as

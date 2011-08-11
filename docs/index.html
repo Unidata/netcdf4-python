@@ -265,15 +265,33 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>    <span class="py-keyword">for</span> value <span class="py-keyword">in</span> top.groups.values():
 <span class="py-prompt">&gt;&gt;&gt; </span>        <span class="py-keyword">for</span> children <span class="py-keyword">in</span> walktree(value):
 <span class="py-prompt">&gt;&gt;&gt; </span>            yield children
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.path, rootgrp
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.path
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> children <span class="py-keyword">in</span> walktree(rootgrp):
 <span class="py-prompt">&gt;&gt;&gt; </span>     <span class="py-keyword">for</span> child <span class="py-keyword">in</span> children:
-<span class="py-prompt">&gt;&gt;&gt; </span>         <span class="py-keyword">print</span> child.path, child
-<span class="py-output">/ &lt;netCDF4.Dataset object at 0x24a54c00&gt;</span>
-<span class="py-output">/analyses &lt;netCDF4.Group object at 0x24a54c30&gt;</span>
-<span class="py-output">/forecasts &lt;netCDF4.Group object at 0x24a54bd0&gt;</span>
-<span class="py-output">/forecasts/model2 &lt;netCDF4.Group object at 0x24a54cc0&gt;</span>
-<span class="py-output">/forecasts/model1 &lt;netCDF4.Group object at 0x24a54c60&gt;</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>         <span class="py-keyword">print</span> child.path
+<span class="py-output">/ </span>
+<span class="py-output">/analyses </span>
+<span class="py-output">/forecasts </span>
+<span class="py-output">/forecasts/model2 </span>
+<span class="py-output">/forecasts/model1 </span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p>To get summary information, just print the <a 
+      href="netCDF4.Dataset-class.html" class="link">Dataset</a> instance 
+      (this just runs ``ncdump -h`` under the hood and displays the 
+      results).</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp
+<span class="py-output">&lt;type 'netCDF4.Dataset'&gt;</span>
+<span class="py-output">netcdf test {</span>
+<span class="py-output">group: forecasts {</span>
+<span class="py-output">  group: model1 {</span>
+<span class="py-output">    } // group model1</span>
+<span class="py-output">  group: model2 {</span>
+<span class="py-output">    } // group model2</span>
+<span class="py-output">  } // group forecasts</span>
+<span class="py-output">group: analyses {</span>
+<span class="py-output">  } // group analyses</span>
+<span class="py-output">}</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
     <h2 class="heading">3) Dimensions in a netCDF file</h2>
       <p>netCDF defines the sizes of all variables in terms of dimensions, 
@@ -293,10 +311,10 @@
       in netCDF 3 files there may be only one, and it must be the first 
       (leftmost) dimension of the variable.</p>
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>rootgrp.createDimension(<span class="py-string">'level'</span>, None)
-<span class="py-prompt">&gt;&gt;&gt; </span>rootgrp.createDimension(<span class="py-string">'time'</span>, None)
-<span class="py-prompt">&gt;&gt;&gt; </span>rootgrp.createDimension(<span class="py-string">'lat'</span>, 73)
-<span class="py-prompt">&gt;&gt;&gt; </span>rootgrp.createDimension(<span class="py-string">'lon'</span>, 144)</pre>
+<span class="py-prompt">&gt;&gt;&gt; </span>level = rootgrp.createDimension(<span class="py-string">'level'</span>, None)
+<span class="py-prompt">&gt;&gt;&gt; </span>time = rootgrp.createDimension(<span class="py-string">'time'</span>, None)
+<span class="py-prompt">&gt;&gt;&gt; </span>lat = rootgrp.createDimension(<span class="py-string">'lat'</span>, 73)
+<span class="py-prompt">&gt;&gt;&gt; </span>lon = rootgrp.createDimension(<span class="py-string">'lon'</span>, 144)</pre>
       <p>All of the <a href="netCDF4.Dimension-class.html" 
       class="link">Dimension</a> instances are stored in a python 
       dictionary.</p>
@@ -322,6 +340,13 @@
 <span class="py-output">time 0 True</span>
 <span class="py-output">lon 144 False</span>
 <span class="py-output">level 0 True</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p>To get all that information summarized for you in an interactive 
+      session, just print the <a href="netCDF4.Dimension-class.html" 
+      class="link">Dimension</a> instance.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> time
+<span class="py-output">&lt;type 'netCDF4.Dimension'&gt; (unlimited): name = 'time', size = 0</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p><a href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
       names can be changed using the <a 
@@ -389,6 +414,18 @@
 <span class="py-output">             ('latitude', &lt;netCDF4.Variable object at 0x1b4baf0&gt;),</span>
 <span class="py-output">             ('longitude', &lt;netCDF4.Variable object at 0x1b4bb30&gt;),</span>
 <span class="py-output">             ('temp', &lt;netCDF4.Variable object at 0x1b4bb70&gt;)])</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p>To get summary info on a <a href="netCDF4.Variable-class.html" 
+      class="link">Variable</a> instance in an interactive session, just 
+      print it.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.variables[<span class="py-string">'temp'</span>]
+<span class="py-output">&lt;type 'netCDF4.Variable'&gt;</span>
+<span class="py-output">float temp(time, level, lat, lon) ;</span>
+<span class="py-output">    temp:least_significant_digit = 3L ;</span>
+<span class="py-output">    temp:units = &quot;K&quot; ;</span>
+<span class="py-output">unlimited dimensions = ('time', 'level')</span>
+<span class="py-output">current size = (0, 0, 73, 144)</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p><a href="netCDF4.Variable-class.html" class="link">Variable</a> 
       names can be changed using the <a 
@@ -936,7 +973,7 @@
         PERFORMANCE OF THIS SOFTWARE.
       </p>
       <p><strong>Version:</strong>
-        0.9.6
+        0.9.7
       </p>
 </div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
@@ -1555,7 +1592,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Jul 22 15:38:21 2011
+    Generated by Epydoc 3.0.1 on Thu Aug 11 14:14:37 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
