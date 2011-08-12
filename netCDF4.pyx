@@ -173,7 +173,8 @@ to walk the directory tree.
 /forecasts/model1 
 >>>
 
-To get summary information, just print the L{Dataset} instance (this just runs ``ncdump -h``
+To get summary information, just print the L{Dataset} instance (this just runs 
+U{ncdump -h <http://www.unidata.ucar.edu/software/netcdf/docs/ncdump-man-1.html>}
 under the hood and displays the results).
 
 >>> print rootgrp
@@ -702,15 +703,49 @@ strings are supported (see the next section), but not inside compound types.
 >>> statdat.units = stationobs_units
 
 Now let's close the file, reopen it, and see what's in there.
-The command line utility C{ncdump} can also be used to get a 
-quick look at the contents of the file.
 
 >>> # close and reopen the file.
 >>> f.close(); f = Dataset('compound_example.nc')
+>>> print f # ncdump-like output shows how data is organized in file
+<type 'netCDF4.Dataset'>
+netcdf compound_example {
+types:
+  compound wind_data {
+    float speed ;
+    int direction ;
+  }; // wind_data
+  compound station_data {
+    float latitude ;
+    float longitude ;
+    wind_data surface_wind ;
+    float temp_sounding(10) ;
+    int press_sounding(10) ;
+    char location_name(80) ;
+  }; // station_data
+  compound wind_data_units {
+    char speed(80) ;
+    char direction(80) ;
+  }; // wind_data_units
+  compound station_data_units {
+    char latitude(80) ;
+    char longitude(80) ;
+    wind_data_units surface_wind ;
+    char temp_sounding(80) ;
+    char location_name(80) ;
+    char press_sounding(80) ;
+  }; // station_data_units
+dimensions:
+	station = UNLIMITED ; // (2 currently)
+variables:
+	station_data station_obs(station) ;
+		station_data_units station_obs:units = 
+    {{"degrees north"}, {"degrees west"}, {{"m/s"}, {"degrees"}}, {"Kelvin"}, {"None"}, {"hPa"}} ;
+}
+>>>
+
+Here's some code to print out the data in the C{station_obs} variable.
+
 >>> statdat = f.variables['station_obs']
->>> # print out data in variable.
->>> # (also, try 'ncdump compound_example.nc' on the command line
->>> #  to see what's in the file)
 >>> print 'data in a variable of compound type:'
 >>> print '----'
 >>> for data in statdat[:]:

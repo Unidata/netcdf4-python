@@ -277,7 +277,9 @@
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>To get summary information, just print the <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a> instance 
-      (this just runs ``ncdump -h`` under the hood and displays the 
+      (this just runs <a 
+      href="http://www.unidata.ucar.edu/software/netcdf/docs/ncdump-man-1.html"
+      target="_top">ncdump -h</a> under the hood and displays the 
       results).</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp
@@ -839,16 +841,50 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>stationobs_units[<span class="py-string">'temp_sounding'</span>] = stringtoarr(<span class="py-string">'Kelvin'</span>,NUMCHARS)
 <span class="py-prompt">&gt;&gt;&gt; </span>stationobs_units[<span class="py-string">'press_sounding'</span>] = stringtoarr(<span class="py-string">'hPa'</span>,NUMCHARS)
 <span class="py-prompt">&gt;&gt;&gt; </span>statdat.units = stationobs_units</pre>
-      <p>Now let's close the file, reopen it, and see what's in there. The 
-      command line utility <code>ncdump</code> can also be used to get a 
-      quick look at the contents of the file.</p>
+      <p>Now let's close the file, reopen it, and see what's in there.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># close and reopen the file.</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>f.close(); f = Dataset(<span class="py-string">'compound_example.nc'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f <span class="py-comment"># ncdump-like output shows how data is organized in file</span>
+<span class="py-output">&lt;type 'netCDF4.Dataset'&gt;</span>
+<span class="py-output">netcdf compound_example {</span>
+<span class="py-output">types:</span>
+<span class="py-output">  compound wind_data {</span>
+<span class="py-output">    float speed ;</span>
+<span class="py-output">    int direction ;</span>
+<span class="py-output">  }; // wind_data</span>
+<span class="py-output">  compound station_data {</span>
+<span class="py-output">    float latitude ;</span>
+<span class="py-output">    float longitude ;</span>
+<span class="py-output">    wind_data surface_wind ;</span>
+<span class="py-output">    float temp_sounding(10) ;</span>
+<span class="py-output">    int press_sounding(10) ;</span>
+<span class="py-output">    char location_name(80) ;</span>
+<span class="py-output">  }; // station_data</span>
+<span class="py-output">  compound wind_data_units {</span>
+<span class="py-output">    char speed(80) ;</span>
+<span class="py-output">    char direction(80) ;</span>
+<span class="py-output">  }; // wind_data_units</span>
+<span class="py-output">  compound station_data_units {</span>
+<span class="py-output">    char latitude(80) ;</span>
+<span class="py-output">    char longitude(80) ;</span>
+<span class="py-output">    wind_data_units surface_wind ;</span>
+<span class="py-output">    char temp_sounding(80) ;</span>
+<span class="py-output">    char location_name(80) ;</span>
+<span class="py-output">    char press_sounding(80) ;</span>
+<span class="py-output">  }; // station_data_units</span>
+<span class="py-output">dimensions:</span>
+<span class="py-output">        station = UNLIMITED ; // (2 currently)</span>
+<span class="py-output">variables:</span>
+<span class="py-output">        station_data station_obs(station) ;</span>
+<span class="py-output">                station_data_units station_obs:units = </span>
+<span class="py-output">    {{&quot;degrees north&quot;}, {&quot;degrees west&quot;}, {{&quot;m/s&quot;}, {&quot;degrees&quot;}}, {&quot;Kelvin&quot;}, {&quot;None&quot;}, {&quot;hPa&quot;}} ;</span>
+<span class="py-output">}</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p>Here's some code to print out the data in the 
+      <code>station_obs</code> variable.</p>
+<pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>statdat = f.variables[<span class="py-string">'station_obs'</span>]
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># print out data in variable.</span>
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># (also, try 'ncdump compound_example.nc' on the command line</span>
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment">#  to see what's in the file)</span>
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'data in a variable of compound type:'</span>
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'----'</span>
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> data <span class="py-keyword">in</span> statdat[:]:
@@ -1592,7 +1628,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Aug 11 14:14:37 2011
+    Generated by Epydoc 3.0.1 on Fri Aug 12 10:13:45 2011
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
