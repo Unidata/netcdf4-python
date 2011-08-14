@@ -175,7 +175,8 @@ to walk the directory tree.
 
 To get summary information, just print the L{Dataset} instance (this just runs 
 U{ncdump -h <http://www.unidata.ucar.edu/software/netcdf/docs/ncdump-man-1.html>}
-under the hood and displays the results).
+under the hood and displays the results). B{Note:} On windows systems this
+will not work, since the ncdump utility is typically not available.
 
 >>> print rootgrp
 <type 'netCDF4.Dataset'>
@@ -1455,7 +1456,10 @@ group, so the path is simply C{'/'}."""
             self.sync()
         except:
             pass
-        return '%r\n' % type(self) + _ncdump(self.filename).read()
+        if sys.platform == 'win32':
+            return repr(self)
+        else:
+            return '%r\n' % type(self) + _ncdump(self.filename).read()
 
     def close(self):
         """
@@ -2309,7 +2313,10 @@ instance. If C{None}, the data is not truncated. """
             self._grp.sync()
         except:
             pass
-        ncdump = _ncdump(self._grp.filename).readlines()
+        if sys.platform == 'win32':
+            ncdump = []
+        else:
+            ncdump = _ncdump(self._grp.filename).readlines()
         ncdump_var = ['%r\n' % type(self)]
         for line in ncdump:
             if line.find(' '+self._name+"(") >= 0:
