@@ -173,10 +173,7 @@ to walk the directory tree.
 /forecasts/model1 
 >>>
 
-To get summary information, just print the L{Dataset} instance (this just runs 
-U{ncdump -h <http://www.unidata.ucar.edu/software/netcdf/docs/ncdump-man-1.html>}
-under the hood and displays the results). B{Note:} On windows systems this
-will not work, since the ncdump utility is typically not available.
+To get summary information, just print the L{Dataset} instance.
 
 >>> print rootgrp
 <type 'netCDF4.Dataset'>
@@ -874,7 +871,7 @@ del __test__ # hack so epydoc doesn't show __test__
 
 # pure python utilities
 from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
-                          _out_array_shape, _sortbylist, _ncdump
+                          _out_array_shape, _sortbylist
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict
@@ -1304,7 +1301,7 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format',
  '_nunlimdim','path','parent','ndim','maskandscale','cmptypes','vltypes','_isprimitive',
- '_isvlen','_iscompound','filename']
+ '_isvlen','_iscompound']
 
 
 cdef class Dataset:
@@ -1363,7 +1360,7 @@ name/value pairs is provided by the C{__dict__} attribute of a
 L{Dataset} instance.
 
 The instance variables C{dimensions, variables, groups, 
-cmptypes, file_format, filename} and C{path} are read-only (and should not be modified by the 
+cmptypes, file_format} and C{path} are read-only (and should not be modified by the 
 user).
 
 @ivar dimensions: The C{dimensions} dictionary maps the names of 
@@ -1388,15 +1385,13 @@ file format version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
 C{NETCDF4_CLASSIC} or C{NETCDF3_64BIT}.  This module can read and 
 write all formats.
 
-@ivar filename:  The filename associated with the L{Dataset} instance.
-
 @ivar path: The C{path} attribute shows the location of the L{Group} in
 the L{Dataset} in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
     cdef public int _grpid
     cdef public groups, dimensions, variables, file_format, path, parent,\
-    maskanscale, cmptypes, vltypes, filename
+    maskanscale, cmptypes, vltypes
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4', **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
@@ -1430,7 +1425,6 @@ group, so the path is simply C{'/'}."""
         self.file_format = _get_format(grpid)
         self._grpid = grpid
         self.path = '/'
-        self.filename = filename
         self.parent = None
         # get compound and vlen types in the root Group.
         self.cmptypes, self.vltypes = _get_types(self)
@@ -1450,16 +1444,26 @@ group, so the path is simply C{'/'}."""
     def __exit__(self,atype,value,traceback):
         self.close()
 
-    # __str__ returns ncdump -h
     def __str__(self):
         try:
             self.sync()
         except:
             pass
-        if sys.platform == 'win32':
-            return repr(self)
+        ncdump = ['%r\n' % type(self)]
+        dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
+        varnames = tuple([str(varname) for varname in self.variables.keys()])
+        grpnames = tuple([str(grpname) for grpname in self.groups.keys()])
+        if self.path == '/':
+            ncdump.append('root group:\n')
         else:
-            return '%r\n' % type(self) + _ncdump(self.filename).read()
+            ncdump.append('group %s:\n' % self.path)
+        attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
+                self.ncattrs()]
+        ncdump = ncdump + attrs
+        ncdump.append('    dimensions = %s\n' % str(dimnames))
+        ncdump.append('    variables = %s\n' % str(varnames))
+        if grpnames: ncdump.append('    groups = %s\n' % str(grpnames))
+        return ''.join(ncdump)
 
     def close(self):
         """
@@ -1883,10 +1887,6 @@ method)."""
         # get groups in this Group.
         self.groups = _get_grps(self)
 
-    # don't use Dataset.__str__
-    def __str__(self):
-        return repr(self)
-
     def close(self):
         """
 close(self)
@@ -2121,7 +2121,8 @@ truncated to this decimal place when it is assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. """
     cdef public int _varid, _grpid, _nunlimdim
     cdef object _grp
-    cdef public _name, ndim, dtype, maskandscale, _isprimitive, _iscompound, _isvlen,
+    cdef public _name, ndim, dtype, maskandscale, _isprimitive, _iscompound,\
+    _isvlen
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=6, shuffle=True, fletcher32=False, contiguous=False,
@@ -2306,8 +2307,6 @@ instance. If C{None}, the data is not truncated. """
         # add_offset, and converting to/from masked arrays is True.
         self.maskandscale = True
 
-    # __str__ returns information from ncdump -h, plus path, unlim dim names,
-    # and shape.
     def __str__(self):
         try:
             self._grp.sync()

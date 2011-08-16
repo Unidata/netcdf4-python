@@ -2,8 +2,7 @@
  ================================
  * Added __str__ methods to Dataset, Variable and Dimension, so useful
    human-readable information can be had in interactive sessions by printing the
-   objects. Dataset.__str__ and Variable.__str__ run 'ncdump -h', called via os.popen. Added
-   Dataset.filename instance variable.
+   objects. 
 
  * don't try to apply scale_factor and offset if scale_factor=1 and
    add_offset=0 (to avoid making copies of large arrays).
