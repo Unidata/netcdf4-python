@@ -1462,7 +1462,7 @@ group, so the path is simply C{'/'}."""
         ncdump = ncdump + attrs
         ncdump.append('    dimensions = %s\n' % str(dimnames))
         ncdump.append('    variables = %s\n' % str(varnames))
-        if grpnames: ncdump.append('    groups = %s\n' % str(grpnames))
+        ncdump.append('    groups = %s\n' % str(grpnames))
         return ''.join(ncdump)
 
     def close(self):
