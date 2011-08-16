@@ -2313,16 +2313,24 @@ instance. If C{None}, the data is not truncated. """
             self._grp.sync()
         except:
             pass
-        if sys.platform == 'win32':
-            ncdump = []
-        else:
-            ncdump = _ncdump(self._grp.filename).readlines()
         ncdump_var = ['%r\n' % type(self)]
-        for line in ncdump:
-            if line.find(' '+self._name+"(") >= 0:
-                ncdump_var.append(line.lstrip())
-            if line.find('\t'+self._name+":") >= 0:
-                ncdump_var.append('    '+line.lstrip())
+        dimnames = tuple([str(dimname) for dimname in self.dimensions])
+        attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
+                self.ncattrs()]
+        if self._iscompound:
+            ncdump_var.append('%s %s%s\n' %\
+            ('compound',self._name,dimnames))
+        elif self._isvlen:
+            ncdump_var.append('%s %s%s\n' %\
+            ('vlen',self._name,dimnames))
+        else:
+            ncdump_var.append('%s %s%s\n' %\
+            (self.dtype,self._name,dimnames))
+        ncdump_var = ncdump_var + attrs
+        if self._iscompound:
+            ncdump_var.append('compound data type: %s\n' % self.dtype)
+        elif self._isvlen:
+            ncdump_var.append('vlen data type: %s\n' % self.dtype)
         unlimdims = []
         for dimname in self.dimensions:
             dim = _find_dim(self._grp, dimname)
