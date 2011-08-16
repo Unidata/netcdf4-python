@@ -355,6 +355,7 @@ Default is an empty list.
         self._cdfRecVar = cdfRecVar          # dictionary of Variable instances for all
                                              # the record variables
         self._dims = cdfm.dimensions
+        self._grps = cdfm.groups
         for dimname, dim in self._dims.items():
             if dim.isunlimited():
                 self._dims[dimname] = _Dimension(dimname, dim, self._cdfVLen, self._cdfTLen)
@@ -373,10 +374,11 @@ Default is an empty list.
         self.__dict__[name] = value
 
     def __getattribute__(self, name):
-        if name in ['variables','dimensions','file_format']: 
+        if name in ['variables','dimensions','file_format','groups']: 
             if name == 'dimensions': return self._dims
             if name == 'variables': return self._vars
             if name == 'file_format': return self._file_format
+            if name == 'groups': return self._grps
         else:
             return Dataset.__getattribute__(self, name)
 
@@ -387,24 +389,49 @@ Default is an empty list.
         for dset in self._cdf:
             dset.close()
 
+    def __str__(self):
+        ncdump = ['%r\n' % type(self)]
+        dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
+        varnames = tuple([str(varname) for varname in self.variables.keys()])
+        grpnames = ()
+        if self.path == '/':
+            ncdump.append('root group (%s file format):\n' % self.file_format)
+        else:
+            ncdump.append('group %s:\n' % self.path)
+        attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
+                self.ncattrs()]
+        ncdump = ncdump + attrs
+        ncdump.append('    dimensions = %s\n' % str(dimnames))
+        ncdump.append('    variables = %s\n' % str(varnames))
+        ncdump.append('    groups = %s\n' % str(grpnames))
+        return ''.join(ncdump)
+
 class _Dimension(object):
     def __init__(self, dimname, dim, dimlens, dimtotlen):
         self.dimlens = dimlens
         self.dimtotlen = dimtotlen
+        self._name = dimname
     def __len__(self):
         return self.dimtotlen
     def isunlimited(self):
         return True
+    def __str__(self):
+        if self.isunlimited():
+            return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
+        else:
+            return repr(type(self))+": name = '%s', size = %s\n" % (self._name,len(self))
 
 class _Variable(object):
     def __init__(self, dset, varname, var, recdimname):
         self.dimensions = var.dimensions 
         self._dset = dset
+        self._grp = dset
         self._mastervar = var
         self._recVar = dset._cdfRecVar[varname]
         self._recdimname = recdimname
         self._recLen = dset._cdfVLen
         self.dtype = var.dtype
+        self._name = var._name
         # copy attributes from master.
         for name, value in var.__dict__.items():
             self.__dict__[name] = value
@@ -419,6 +446,22 @@ class _Variable(object):
             return self.__dict__[name]
         except:
             raise AttributeError(name)
+    def __str__(self):
+        ncdump_var = ['%r\n' % type(self)]
+        dimnames = tuple([str(dimname) for dimname in self.dimensions])
+        attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
+                self.ncattrs()]
+        ncdump_var.append('%s %s%s\n' %\
+        (self.dtype,self._name,dimnames))
+        ncdump_var = ncdump_var + attrs
+        unlimdims = []
+        for dimname in self.dimensions:
+            dim = _find_dim(self._grp, dimname)
+            if dim.isunlimited():
+                unlimdims.append(str(dimname))
+        ncdump_var.append('unlimited dimensions = %s\n' % repr(tuple(unlimdims)))
+        ncdump_var.append('current size = %s\n' % repr(self.shape))
+        return ''.join(ncdump_var)
     def __len__(self):
         return self._shape()[0]
     def _shape(self):
