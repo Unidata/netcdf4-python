@@ -2319,10 +2319,7 @@ instance. If C{None}, the data is not truncated. """
             if dim.isunlimited():
                 unlimdims.append(str(dimname))
         if (self._grp.path != '/'): ncdump_var.append('path = %s\n' % self._grp.path)
-        if unlimdims:
-            ncdump_var.append('unlimited dimensions = %s\n' % repr(tuple(unlimdims)))
-        else:
-            ncdump_var.append('no unlimited dimensions\n')
+        ncdump_var.append('unlimited dimensions = %s\n' % repr(tuple(unlimdims)))
         ncdump_var.append('current size = %s\n' % repr(self.shape))
         return ''.join(ncdump_var)
 
