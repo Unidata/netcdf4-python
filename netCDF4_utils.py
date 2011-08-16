@@ -1,7 +1,6 @@
 import numpy as np
 from numpy import ma
 import warnings
-import os
 
         
 def _sortbylist(A,B):
@@ -355,6 +354,3 @@ def _is_int(a):
         return int(a) == a
     except:
         return False
-
-def _ncdump(filename):
-    return os.popen('ncdump -h %s' % filename)
