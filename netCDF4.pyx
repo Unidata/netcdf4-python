@@ -1428,10 +1428,6 @@ group, so the path is simply C{'/'}."""
         self.close()
 
     def __str__(self):
-        try:
-            self.sync()
-        except:
-            pass
         ncdump = ['%r\n' % type(self)]
         dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
         varnames = tuple([str(varname) for varname in self.variables.keys()])
@@ -2291,10 +2287,6 @@ instance. If C{None}, the data is not truncated. """
         self.maskandscale = True
 
     def __str__(self):
-        try:
-            self._grp.sync()
-        except:
-            pass
         ncdump_var = ['%r\n' % type(self)]
         dimnames = tuple([str(dimname) for dimname in self.dimensions])
         attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
