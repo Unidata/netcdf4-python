@@ -21,11 +21,10 @@ def walktree(top):
     for value in top.groups.values():
         for children in walktree(value):
             yield  children
-print rootgrp.path
+print rootgrp
 for children in walktree(rootgrp):
      for child in children:
-         print child.path
-print rootgrp
+         print child
 
 # dimensions.
 level = rootgrp.createDimension('level', None)
@@ -35,8 +34,12 @@ lon = rootgrp.createDimension('lon', 144)
 
 print rootgrp.dimensions
 
-for dimname, dimobj in rootgrp.dimensions.iteritems():
-    print dimname, len(dimobj), dimobj.isunlimited()
+print len(lon)
+print lon.isunlimited()
+print time.isunlimited()
+
+for dimobj in rootgrp.dimensions.values():
+    print dimobj
 
 print time
 
@@ -65,6 +68,8 @@ times.calendar = 'gregorian'
 
 for name in rootgrp.ncattrs():
     print 'Global attr', name, '=', getattr(rootgrp,name)
+
+print rootgrp
 
 print rootgrp.__dict__
 
@@ -213,11 +218,11 @@ stationobs_units['temp_sounding'] = stringtoarr('Kelvin',NUMCHARS)
 stationobs_units['press_sounding'] = stringtoarr('hPa',NUMCHARS)
 statdat.units = stationobs_units
 # close and reopen the file.
-f.close(); f = Dataset('compound_example.nc')
+f.close()
+f = Dataset('compound_example.nc')
+print f
 statdat = f.variables['station_obs']
 # print out data in variable.
-# (also, try 'ncdump compound_example.nc' on the command line
-#  to see what's in the file)
 print 'data in a variable of compound type:'
 print '----'
 for data in statdat[:]:

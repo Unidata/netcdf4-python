@@ -152,7 +152,8 @@ that group.
 
 Here's an example that shows how to navigate all the groups in a
 L{Dataset}. The function C{walktree} is a Python generator that is used
-to walk the directory tree.
+to walk the directory tree. Note that printing the L{Dataset} or L{Group}
+object yields summary information about it's contents.
 
 >>> fcstgrp1 = fcstgrp.createGroup('model1')
 >>> fcstgrp2 = fcstgrp.createGroup('model2')
@@ -162,31 +163,35 @@ to walk the directory tree.
 >>>     for value in top.groups.values():
 >>>         for children in walktree(value):
 >>>             yield children
->>> print rootgrp.path
+>>> print rootgrp
 >>> for children in walktree(rootgrp):
 >>>      for child in children:
->>>          print child.path
-/ 
-/analyses 
-/forecasts 
-/forecasts/model2 
-/forecasts/model1 
->>>
-
-To get summary information, just print the L{Dataset} instance.
-
->>> print rootgrp
+>>>          print child
 <type 'netCDF4.Dataset'>
-netcdf test {
-group: forecasts {
-  group: model1 {
-    } // group model1
-  group: model2 {
-    } // group model2
-  } // group forecasts
-group: analyses {
-  } // group analyses
-}
+root group (NETCDF4 file format):
+    dimensions = ()
+    variables = ()
+    groups = ('forecasts', 'analyses')
+<type 'netCDF4.Group'>
+group /forecasts:
+    dimensions = ()
+    variables = ()
+    groups = ('model1', 'model2')
+<type 'netCDF4.Group'>
+group /analyses:
+    dimensions = ()
+    variables = ()
+    groups = ()
+<type 'netCDF4.Group'>
+group /forecasts/model1:
+    dimensions = ()
+    variables = ()
+    groups = ()
+<type 'netCDF4.Group'>
+group /forecasts/model2:
+    dimensions = ()
+    variables = ()
+    groups = ()
 >>>
 
 3) Dimensions in a netCDF file
@@ -221,21 +226,28 @@ OrderedDict([('level', <netCDF4.Dimension object at 0x1b48030>),
 >>>
 
 Calling the python C{len} function with a L{Dimension} instance returns
-the current size of that dimension. The
-L{isunlimited<Dimension.isunlimited>} method of a L{Dimension} instance
+the current size of that dimension.
+The L{isunlimited<Dimension.isunlimited>} method of a L{Dimension} instance
 can be used to determine if the dimensions is unlimited, or appendable.
 
->>> for dimname, dimobj in rootgrp.dimensions.items():
->>>    print dimname, len(dimobj), dimobj.isunlimited()
-lat 73 False
-time 0 True
-lon 144 False
-level 0 True
+>>> print len(lon)
+144
+>>> print len.is_unlimited()
+False
+>>> print time.is_unlimited()
+True
 >>>
 
-To get all that information summarized for you in an interactive session, just print the L{Dimension} instance.
+Printing the L{Dimension} object
+provides useful summary info, including the name and length of the dimension,
+and whether it is unlimited.
 
->>> print time
+>>> for dimobj in rootgrp.dimensions.values():
+>>>    print dimobj
+<type 'netCDF4.Dimension'> (unlimited): name = 'level', size = 0
+<type 'netCDF4.Dimension'> (unlimited): name = 'time', size = 0
+<type 'netCDF4.Dimension'>: name = 'lat', size = 73
+<type 'netCDF4.Dimension'>: name = 'lon', size = 144
 <type 'netCDF4.Dimension'> (unlimited): name = 'time', size = 0
 >>>
 
@@ -299,9 +311,9 @@ To get summary info on a L{Variable} instance in an interactive session, just pr
 
 >>> print rootgrp.variables['temp']
 <type 'netCDF4.Variable'>
-float temp(time, level, lat, lon) ;
-    temp:least_significant_digit = 3L ;
-    temp:units = "K" ;
+float32 temp('time', 'level', 'lat', 'lon')
+    least_significant_digit: 3
+    units: K
 unlimited dimensions = ('time', 'level')
 current size = (0, 0, 73, 144)
 >>>
@@ -704,41 +716,12 @@ Now let's close the file, reopen it, and see what's in there.
 
 >>> # close and reopen the file.
 >>> f.close(); f = Dataset('compound_example.nc')
->>> print f # ncdump-like output shows how data is organized in file
+>>> print f # summary info
 <type 'netCDF4.Dataset'>
-netcdf compound_example {
-types:
-  compound wind_data {
-    float speed ;
-    int direction ;
-  }; // wind_data
-  compound station_data {
-    float latitude ;
-    float longitude ;
-    wind_data surface_wind ;
-    float temp_sounding(10) ;
-    int press_sounding(10) ;
-    char location_name(80) ;
-  }; // station_data
-  compound wind_data_units {
-    char speed(80) ;
-    char direction(80) ;
-  }; // wind_data_units
-  compound station_data_units {
-    char latitude(80) ;
-    char longitude(80) ;
-    wind_data_units surface_wind ;
-    char temp_sounding(80) ;
-    char location_name(80) ;
-    char press_sounding(80) ;
-  }; // station_data_units
-dimensions:
-	station = UNLIMITED ; // (2 currently)
-variables:
-	station_data station_obs(station) ;
-		station_data_units station_obs:units = 
-    {{"degrees north"}, {"degrees west"}, {{"m/s"}, {"degrees"}}, {"Kelvin"}, {"None"}, {"hPa"}} ;
-}
+root group (NETCDF4 file format):
+    dimensions = ('station',)
+    variables = ('station_obs',)
+    groups = ()
 >>>
 
 Here's some code to print out the data in the C{station_obs} variable.
@@ -1454,7 +1437,7 @@ group, so the path is simply C{'/'}."""
         varnames = tuple([str(varname) for varname in self.variables.keys()])
         grpnames = tuple([str(grpname) for grpname in self.groups.keys()])
         if self.path == '/':
-            ncdump.append('root group:\n')
+            ncdump.append('root group (%s file format):\n' % self.file_format)
         else:
             ncdump.append('group %s:\n' % self.path)
         attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
