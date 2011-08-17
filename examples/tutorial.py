@@ -132,19 +132,25 @@ f = Dataset('complex.nc','w')
 size = 3 # length of 1-d complex array
 # create sample complex data.
 datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
+print datac.dtype
 # create complex128 compound data type.
 complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])
 complex128_t = f.createCompoundType(complex128,'complex128')
 # create a variable with this data type, write some data to it.
-f.createDimension('phony_dim',None)
-v = f.createVariable('phony_var',complex128_t,'phony_dim')
-data = numpy.empty(size,complex128)
+f.createDimension('x_dim',None)
+v = f.createVariable('cmplx_var',complex128_t,'x_dim')
+data = numpy.empty(size,complex128) # numpy structured array
 data['real'] = datac.real; data['imag'] = datac.imag
 v[:] = data
 # close and reopen the file, check the contents.
 f.close()
 f = Dataset('complex.nc')
-v = f.variables['phony_var']
+print f
+print f.variables['cmplx_var']
+print f.cmptypes
+print f.cmptypes['complex128']
+v = f.variables['cmplx_var']
+print v.shape
 datain = v[:] # read in all the data into a numpy structured array
 # create an empty numpy complex array
 datac2 = numpy.empty(datain.shape,numpy.complex128)
@@ -251,6 +257,9 @@ for n in range(len(y)*len(x)):
 data = numpy.reshape(data,(len(y),len(x)))
 vlvar[:] = data
 print 'vlen variable =\n',vlvar[:]
+print f
+print f.variables['phony_vlen_var']
+print f.vltypes['phony_vlen']
 z = f.createDimension('z', 10)
 strvar = f.createVariable('strvar',str,'z')
 chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -260,4 +269,6 @@ for n in range(10):
     data[n] = ''.join([random.choice(chars) for i in range(stringlen)])
 strvar[:] = data
 print 'variable-length string variable:\n',strvar[:]
+print f
+print f.variables['strvar']
 f.close()

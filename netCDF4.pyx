@@ -602,165 +602,48 @@ for storing numpy complex arrays.  Here's an example:
 >>> complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])
 >>> complex128_t = f.createCompoundType(complex128,'complex128')
 >>> # create a variable with this data type, write some data to it.
->>> f.createDimension('phony_dim',None)
->>> v = f.createVariable('phony_var',complex128_t,'phony_dim')
->>> data = numpy.empty(size,complex128)
+>>> f.createDimension('x_dim',None)
+>>> v = f.createVariable('cmplx_var',complex128_t,'x_dim')
+>>> data = numpy.empty(size,complex128) # numpy structured array
 >>> data['real'] = datac.real; data['imag'] = datac.imag
->>> v[:] = data
+>>> v[:] = data # write numpy structured array to netcdf compound var
 >>> # close and reopen the file, check the contents.
 >>> f.close(); f = Dataset('complex.nc')
->>> v = f.variables['phony_var']
+>>> v = f.variables['cmplx_var']
 >>> datain = v[:] # read in all the data into a numpy structured array
 >>> # create an empty numpy complex array
 >>> datac2 = numpy.empty(datain.shape,numpy.complex128)
 >>> # .. fill it with contents of structured array.
 >>> datac2.real = datain['real']; datac2.imag = datain['imag']
->>> print datac.dtype,datac
+>>> print datac.dtype,datac # original data
 complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
 >>>
->>> print datac2.dtype,datac2
+>>> print datac2.dtype,datac2 # data from file
 complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
 >>>
 
 Compound types can be nested, but you must create the 'inner'
-ones first. Here's a more complex example that uses a nested compound type to
-represent meteorological observations at stations:
+ones first. All of the compound types defined for a L{Dataset} or L{Group} are stored in a
+Python dictionary, just like variables and dimensions. As always, printing
+objects gives useful summary information in an interactive session:
 
->>> # compound type example.
->>> from netCDF4 import chartostring, stringtoarr
->>> f = Dataset('compound_example.nc','w') # create a new dataset.
->>> # create an unlimited  dimension call 'station'
->>> f.createDimension('station',None)
->>> # define a compound data type (can contain arrays, or nested compound types).
->>> NUMCHARS = 80 # number of characters to use in fixed-length strings.
->>> winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
->>> statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),
-...                          ('surface_wind',winddtype),
-...                          ('temp_sounding','f4',10),('press_sounding','i4',10),
-...                          ('location_name','S1',NUMCHARS)])
->>> # use this data type definitions to create a compound data types
->>> # called using the createCompoundType Dataset method.
->>> # create a compound type for vector wind which will be nested inside
->>> # the station data type. This must be done first!
->>> wind_data_t = f.createCompoundType(winddtype,'wind_data')
->>> # now that wind_data_t is defined, create the station data type.
->>> station_data_t = f.createCompoundType(statdtype,'station_data')
->>> # create nested compound data types to hold the units variable attribute.
->>> winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
->>> statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),
-...                                ('surface_wind',winddtype_units),
-...                                ('temp_sounding','S1',NUMCHARS),
-...                                ('location_name','S1',NUMCHARS),
-...                                ('press_sounding','S1',NUMCHARS)])
->>> # create the wind_data_units type first, since it will nested inside
->>> # the station_data_units data type.
->>> wind_data_units_t = f.createCompoundType(winddtype_units,'wind_data_units')
->>> station_data_units_t =
-... f.createCompoundType(statdtype_units,'station_data_units')
->>> # create a variable of of type 'station_data_t'
->>> statdat = f.createVariable('station_obs', station_data_t, ('station',))
->>> # create a numpy structured array, assign data to it.
->>> data = numpy.empty(1,station_data_t)
->>> data['latitude'] = 40.
->>> data['longitude'] = -105.
->>> data['surface_wind']['speed'] = 12.5
->>> data['surface_wind']['direction'] = 270
->>> data['temp_sounding'] = (280.3,272.,270.,269.,266.,258.,254.1,250.,245.5,240.)
->>> data['press_sounding'] = range(800,300,-50)
->>> # variable-length string datatypes are not supported inside compound types, so
->>> # to store strings in a compound data type, each string must be 
->>> # stored as fixed-size (in this case 80) array of characters.
->>> data['location_name'] = stringtoarr('Boulder, Colorado, USA',NUMCHARS)
->>> # assign structured array to variable slice.
->>> statdat[0] = data
->>> # or just assign a tuple of values to variable slice
->>> # (will automatically be converted to a structured array).
->>> statdat[1] = (40.78,-73.99,(-12.5,90),
-...              (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),
-...              range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
-
-All of the compound types defined for a L{Dataset} or L{Group} are stored in a
-Python dictionary, just like variables and dimensions:
-
->>> print f.cmptypes
-OrderedDict([('wind_data', <netCDF4.CompoundType object at 0x1b51df0>),
-             ('station_data', <netCDF4.CompoundType object at 0x1b51f58>),
-             ('wind_data_units', <netCDF4.CompoundType object at 0x1b51fd0>),
-             ('station_data_units', <netCDF4.CompoundType object at 0x1b51e90>)])
->>>
-
-Attributes cannot be assigned directly to compound type members,
-However, a compound data type can be created to hold an attribute for
-each member. In this example we have created the compound types
-C{wind_data_units_t} and C{station_data_units_t} to hold the units 
-attribute for each member of the nested compound type C{station_data_t}.
-Now we can fill a numpy array with strings describing the units, then
-assign that array to the C{units} attribute of the station data variable.
-Note again that since there is no fixed-length string type in netCDF,
-we have to use arrays of characters to represent strings. Variable length
-strings are supported (see the next section), but not inside compound types.
-
->>> windunits = numpy.empty(1,winddtype_units)
->>> stationobs_units = numpy.empty(1,statdtype_units)
->>> windunits['speed'] = stringtoarr('m/s',NUMCHARS)
->>> windunits['direction'] = stringtoarr('degrees',NUMCHARS)
->>> stationobs_units['latitude'] = stringtoarr('degrees north',NUMCHARS)
->>> stationobs_units['longitude'] = stringtoarr('degrees west',NUMCHARS)
->>> stationobs_units['surface_wind'] = windunits
->>> stationobs_units['location_name'] = stringtoarr('None', NUMCHARS)
->>> stationobs_units['temp_sounding'] = stringtoarr('Kelvin',NUMCHARS)
->>> stationobs_units['press_sounding'] = stringtoarr('hPa',NUMCHARS)
->>> statdat.units = stationobs_units
-
-Now let's close the file, reopen it, and see what's in there.
-
->>> # close and reopen the file.
->>> f.close(); f = Dataset('compound_example.nc')
->>> print f # summary info
+>>> print f
 <type 'netCDF4.Dataset'>
 root group (NETCDF4 file format):
-    dimensions = ('station',)
-    variables = ('station_obs',)
+    dimensions = ('x_dim',)
+    variables = ('cmplx_var',)
     groups = ()
+<type 'netCDF4.Variable'>
+>>> print f.variables['cmplx_var']
+compound cmplx_var('x_dim',)
+compound data type: [('real', '<f8'), ('imag', '<f8')]
+unlimited dimensions = ('x_dim',)
+current size = (3,)
+>>> print f.cmptypes
+OrderedDict([('complex128', <netCDF4.CompoundType object at 0x1029eb7e8>)])
+>>> print f.cmptypes['complex128']
+<type 'netCDF4.CompoundType'>: name = 'complex128', numpy dtype = [(u'real','<f8'), (u'imag', '<f8')]
 >>>
-
-Here's some code to print out the data in the C{station_obs} variable.
-
->>> statdat = f.variables['station_obs']
->>> print 'data in a variable of compound type:'
->>> print '----'
->>> for data in statdat[:]:
->>>     for name in statdat.dtype.names:
->>>         if data[name].dtype.kind == 'S': # a string
->>>             # convert array of characters back to a string for display.
->>>             print name,': value =',chartostring(data[name]),
-...             ': units=',chartostring(statdat.units[name])
->>>         elif data[name].dtype.kind == 'V': # a nested compound type
->>>             print name,data[name].dtype.names,': value=',data[name],': units=',
-...             tuple([chartostring(s) for s in tuple(statdat.units[name])])
->>>         else: # a numeric type.
->>>             print name,': value=',data[name],': units=',chartostring(statdat.units[name])
->>>     print '----'
-data in a variable of compound type:
-----
-latitude : value= 40.0 : units= degrees north
-longitude : value= -105.0 : units= degrees west
-surface_wind (u'speed', u'direction') : value= (12.5, 270) :
-              units= (array('m/s', dtype='|S80'), array('degrees', dtype='|S80'))
-temp_sounding : value= [280.3 272. 270. 269. 266. 258. 254.1 250.245.5 240.] : units= Kelvin
-press_sounding : value= [800 750 700 650 600 550 500 450 400 350] : units= hPa
-location_name : value = Boulder, Colorado, USA : units= None
-----
-latitude : value= 40.78 : units= degrees north
-longitude : value= -73.99 : units= degrees west
-surface_wind (u'speed', u'direction') : value= (-12.5, 90) :
-              units= (array('m/s', dtype='|S80'), array('degrees',dtype='|S80'))
-temp_sounding : value= [290.2 282.5 279. 277.9 276. 266. 264.1 260. 255.5 243.] : units= Kelvin
-press_sounding : value= [900 850 800 750 700 650 600 550 500 450] : units= hPa
-location_name : value = New York, New York, USA : units= None
-----
->>>
->>> f.close()
 
 10) Variable-length (vlen) data types.
 --------------------------------------
@@ -804,6 +687,21 @@ vlen variable =
  [[1 2 3 4 5] [1 2 3 4] [1]]
  [[ 1  2  3  4  5  6  7  8  9 10] [ 1  2  3  4  5  6  7  8  9 10]
   [1 2 3 4 5 6 7 8]]]
+>>> print f
+<type 'netCDF4.Dataset'>
+root group (NETCDF4 file format):
+    dimensions = ('x', 'y')
+    variables = ('phony_vlen_var',)
+    groups = ()
+>>> print f.variables['phony_vlen_var']
+<type 'netCDF4.Variable'>
+vlen phony_vlen_var('y', 'x')
+vlen data type: int32
+unlimited dimensions = ()
+current size = (4, 3)
+>>> print f.VLtypes['phony_vlen']
+<type 'netCDF4.VLType'>: name = 'phony_vlen', numpy dtype = int32
+>>>
 
 Numpy object arrays containing python strings can also be written as vlen
 variables,  For vlen strings, you don't need to create a vlen data type. 
@@ -827,6 +725,19 @@ array is assigned to the vlen string variable.
 variable-length string variable:
 [aDy29jPt jd7aplD b8t4RM jHh8hq KtaPWF9cQj Q1hHN5WoXSiT MMxsVeq td LUzvVTzj
  5DS9X8S]
+>>> print f
+<type 'netCDF4.Dataset'>
+root group (NETCDF4 file format):
+    dimensions = ('x', 'y', 'z')
+    variables = ('phony_vlen_var', 'strvar')
+    groups = ()
+>>> print f.variables['strvar']
+<type 'netCDF4.Variable'>
+vlen strvar('z',)
+vlen data type: <type 'str'>
+unlimited dimensions = ()
+current size = (10,)
+>>>
 
 All of the code in this tutorial is available in C{examples/tutorial.py},
 Unit tests are in the C{test} directory.
@@ -3175,6 +3086,10 @@ the user.
         self.dtype = dt
         self.name = dtype_name
 
+    def __str__(self):
+        return repr(type(self))+": name = '%s', numpy dtype = %s\n" %\
+        (self.name,self.dtype)
+
 cdef _def_compound(grp, object dt, object dtype_name):
     # private method used to construct a netcdf compound data type
     # from a numpy dtype object by CompoundType.__init__.
@@ -3383,6 +3298,13 @@ the user.
             self.name = None
         else:
             self.name = dtype_name
+
+    def __str__(self):
+        if self.dtype == str:
+            return repr(type(self))+': string type'
+        else:
+            return repr(type(self))+": name = '%s', numpy dtype = %s\n" %\
+            (self.name, self.dtype)
 
 cdef _def_vlen(grp, object dt, object dtype_name):
     # private method used to construct a netcdf VLEN data type

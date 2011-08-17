@@ -27,6 +27,7 @@ netCDF4.__required_netcdf4version__	netCDF4-module.html#__required_netcdf4versio
 netCDF4.CompoundType	netCDF4.CompoundType-class.html
 netCDF4.CompoundType.__new__	netCDF4.CompoundType-class.html#__new__
 netCDF4.CompoundType.dtype	netCDF4.CompoundType-class.html#dtype
+netCDF4.CompoundType.__str__	netCDF4.CompoundType-class.html#__str__
 netCDF4.CompoundType._nc_type	netCDF4.CompoundType-class.html#_nc_type
 netCDF4.CompoundType.__init__	netCDF4.CompoundType-class.html#__init__
 netCDF4.CompoundType.name	netCDF4.CompoundType-class.html#name
@@ -116,7 +117,7 @@ netCDF4.Dataset.set_fill_on	netCDF4.Dataset-class.html#set_fill_on
 netCDF4.Dataset.createGroup	netCDF4.Dataset-class.html#createGroup
 netCDF4.MFDataset	netCDF4.MFDataset-class.html
 netCDF4.Dataset._enddef	netCDF4.Dataset-class.html#_enddef
-netCDF4.Dataset.variables	netCDF4.Dataset-class.html#variables
+netCDF4.MFDataset.__str__	netCDF4.MFDataset-class.html#__str__
 netCDF4.MFDataset.__getattribute__	netCDF4.MFDataset-class.html#__getattribute__
 netCDF4.Dataset.sync	netCDF4.Dataset-class.html#sync
 netCDF4.Dataset.maskanscale	netCDF4.Dataset-class.html#maskanscale
@@ -133,7 +134,7 @@ netCDF4.Dataset.__getattr__	netCDF4.Dataset-class.html#__getattr__
 netCDF4.Dataset._redef	netCDF4.Dataset-class.html#_redef
 netCDF4.Dataset.setncattr	netCDF4.Dataset-class.html#setncattr
 netCDF4.Dataset.set_fill_off	netCDF4.Dataset-class.html#set_fill_off
-netCDF4.Dataset.__str__	netCDF4.Dataset-class.html#__str__
+netCDF4.Dataset.variables	netCDF4.Dataset-class.html#variables
 netCDF4.Dataset.vltypes	netCDF4.Dataset-class.html#vltypes
 netCDF4.MFDataset.ncattrs	netCDF4.MFDataset-class.html#ncattrs
 netCDF4.Dataset.__exit__	netCDF4.Dataset-class.html#__exit__
@@ -157,6 +158,7 @@ netCDF4.MFTime.__init__	netCDF4.MFTime-class.html#__init__
 netCDF4.VLType	netCDF4.VLType-class.html
 netCDF4.VLType.__new__	netCDF4.VLType-class.html#__new__
 netCDF4.VLType.dtype	netCDF4.VLType-class.html#dtype
+netCDF4.VLType.__str__	netCDF4.VLType-class.html#__str__
 netCDF4.VLType._nc_type	netCDF4.VLType-class.html#_nc_type
 netCDF4.VLType.__init__	netCDF4.VLType-class.html#__init__
 netCDF4.VLType.name	netCDF4.VLType-class.html#name
