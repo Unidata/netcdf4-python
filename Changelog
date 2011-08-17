@@ -1,7 +1,7 @@
- version 0.9.7 (svn revision 1072)
+ version 0.9.7 (svn revision 1073)
  ================================
- * Added __str__ methods to Dataset, Variable, Dimension, CompoundType and
-   VLType, so useful human-readable information is provided when these
+ * Added __str__ methods to Dataset, Variable, Dimension, CompoundType,
+   VLType and MFDataset, so useful human-readable information is provided when these
    objects are printed in an interactive session.
 
  * don't try to apply scale_factor and offset if scale_factor=1 and
