@@ -1,4 +1,5 @@
- * make sure unicode attributes don't get converted to ascii strings.
+ * make sure unicode attributes don't get converted to ascii strings (issue
+   98).
 
  version 0.9.7 (svn revision 1073)
  ================================
