@@ -1,3 +1,5 @@
+ * make sure unicode attributes don't get converted to ascii strings.
+
  version 0.9.7 (svn revision 1073)
  ================================
  * Added __str__ methods to Dataset, Variable, Dimension, CompoundType,
