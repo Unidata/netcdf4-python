@@ -171,9 +171,7 @@ getlibversion()
 returns a string describing the version of the netcdf library
 used to build the module, and when it was built.
     """
-    cdef char *libstring
-    libstring = nc_inq_libvers()
-    return libstring.decode('ascii')
+    return (<char *>nc_inq_libvers()).decode('ascii')
 
 class MFDataset(Dataset): 
     """

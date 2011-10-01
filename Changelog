@@ -1,3 +1,7 @@
+ version 0.9.8 (not yet released)
+ ================================
+ * fixes for AIX with ibm xlc compiler.
+
  * make sure unicode attributes don't get converted to ascii strings (issue
    98).
 

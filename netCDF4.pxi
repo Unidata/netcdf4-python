@@ -13,6 +13,9 @@ cdef extern from "H5public.h":
         H5_VERS_MAJOR
         H5_VERS_MINOR
         H5_VERS_RELEASE
+
+cdef extern from *:
+    ctypedef char* const_char_ptr "const char*"
  
 # netcdf functions.
 cdef extern from "netcdf.h":
@@ -226,8 +229,8 @@ cdef extern from "netcdf.h":
         NC_ENDIAN_BIG 
         NC_SZIP_EC_OPTION_MASK  # entropy encoding
         NC_SZIP_NN_OPTION_MASK  # nearest neighbor encoding
-    char *nc_inq_libvers()
-    char *nc_strerror(int ncerr)
+    const_char_ptr *nc_inq_libvers()
+    const_char_ptr *nc_strerror(int ncerr)
     int nc_create(char *path, int cmode, int *ncidp)
     int nc__create(char *path, int cmode, size_t initialsz, size_t *chunksizehintp, int *ncidp)
     int nc_open(char *path, int mode, int *ncidp)
