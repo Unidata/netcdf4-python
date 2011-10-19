@@ -1,5 +1,8 @@
  version 0.9.8 (not yet released)
  ================================
+ * use numpy.ma.isMA to check for masked array (instead of checking
+   for presence of 'mask' attribute).
+
  * fixes for AIX with ibm xlc compiler.
 
  * make sure unicode attributes don't get converted to ascii strings (issue

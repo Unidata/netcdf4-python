@@ -39,7 +39,7 @@ least_significant_digit=1, bits will be 4.
     bits = np.ceil(np.log2(pow(10.,-exp)))
     scale = pow(2.,bits)
     datout = np.around(scale*data)/scale
-    if hasattr(datout,'mask'):
+    if ma.isMA(datout):
         datout.set_fill_value(data.fill_value)
         return datout
     else:

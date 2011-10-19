@@ -545,7 +545,7 @@ class _Variable(object):
                     # Extract records from the var, and append them to a list
                     # of arrays.
                     dat = Variable.__getitem__(self._recVar[n],tuple(newSlice))
-                    if hasattr(dat,'mask') and not ismasked:
+                    if ma.isMA(dat) and not ismasked:
                         ismasked=True
                         fill_value = dat.fill_value
                     lstArr.append(dat)
@@ -566,7 +566,7 @@ class _Variable(object):
         data = data[tuple(squeeze)]
 
         # if no masked elements, return numpy array.
-        if hasattr(data,'mask') and not data.mask.any():
+        if ma.isMA(data) and not data.mask.any():
            data = data.filled()
         
         return data

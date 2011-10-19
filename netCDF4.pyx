@@ -2375,11 +2375,11 @@ each dimension is returned."""
         cdef int ierr, icontiguous, ndims
         cdef size_t *chunksizesp
         if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return None
+        ndims = self.ndim
         chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
         ierr = nc_inq_var_chunking(self._grpid, self._varid, &icontiguous, chunksizesp)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        ndims = self.ndim
         chunksizes=[]
         for n from 0 <= n < ndims:
             chunksizes.append(chunksizesp[n])
@@ -2706,14 +2706,14 @@ details."""
             # pack non-masked values using scale_factor and add_offset
             if hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
                 # if not masked, create a masked array.
-                if not hasattr(data, 'mask'): data = self._toma(data)
+                if not ma.isMA(data): data = self._toma(data)
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = numpy.around((data - self.add_offset)/self.scale_factor)
             elif hasattr(self, 'scale_factor'):
                 data = numpy.around(data/self.scale_factor)
             elif hasattr(self, 'add_offset'):
                 data = numpy.around(data - self.add_offset)
-            if hasattr(data,'mask'):
+            if ma.isMA(data):
                 if hasattr(self, 'missing_value'):
                     fillval = self.missing_value
                 elif hasattr(self, '_FillValue'):
