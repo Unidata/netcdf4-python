@@ -1,4 +1,4 @@
- version 0.9.8 (not yet released)
+ version 0.9.8 (svn revision 1080)
  ================================
  * use numpy.ma.isMA to check for masked array (instead of checking
    for presence of 'mask' attribute).
