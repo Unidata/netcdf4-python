@@ -1,3 +1,8 @@
+ since 0.9.8 release
+ ===================
+ * add --format option to nc4tonc3 utility (can be either NETCDF3_CLASSIC or
+   NETCDF3_64BIT). Fixes issue 104.
+
  version 0.9.8 (svn revision 1080)
  ================================
  * use numpy.ma.isMA to check for masked array (instead of checking
