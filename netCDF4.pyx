@@ -899,8 +899,9 @@ cdef _get_att(grp, int varid, name):
         ierr = nc_get_att_text(grp._grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        pstring = value_arr.tostring().decode(default_encoding,unicode_error)
-        return pstring.replace('\x00','')
+        pstring =\
+        value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
+        return pstring
     else:
     # a regular numeric or compound type.
         if att_type == NC_LONG:
@@ -972,14 +973,10 @@ cdef _set_att(grp, int varid, name, value):
         value_arr = value_arr.astype('i4')
     # if array contains strings, write a text attribute.
     if value_arr.dtype.char in ['S','U']:
-        # if unicode array, cast to string
-        #if value_arr.dtype.char == 'U':
-        #    dt = value_arr.dtype.str
-        #    dtnew = dt.replace('U','S')
-        #    # change 'S0' to 'S1', since 'S0' doesn't exist.
-        #    dtnew = dtnew.replace('0','1')
-        #   value_arr = value_arr.astype(dtnew)
-        dats = value_arr.tostring()
+        if not value_arr.shape:
+            dats = value_arr.item()
+        else:
+            dats = ''.join(value_arr.tolist())
         lenarr = len(dats)
         bytestr = _strencode(dats)
         datstring = bytestr
