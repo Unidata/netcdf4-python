@@ -772,7 +772,7 @@ try:
 except: # or else use drop-in substitute
     from ordereddict import OrderedDict
 
-__version__ = "0.9.8"
+__version__ = "0.9.9"
 
 # Initialize numpy
 import os

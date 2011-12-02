@@ -1,5 +1,5 @@
- since 0.9.8 release
- ===================
+ version 0.9.9 (not yet released)
+ ================================
  * fix for unicode attributes in python3 (ncdump did not intrepret them as
    text strings). Issue 107.
  * add runtime warning when fancy slicing is used (telling user not to expect
