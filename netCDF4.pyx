@@ -976,7 +976,8 @@ cdef _set_att(grp, int varid, name, value):
         if not value_arr.shape:
             dats = value_arr.item()
         else:
-            dats = ''.join(value_arr.tolist())
+            value_arr1 = value_arr.ravel()
+            dats = ''.join(value_arr1.tolist())
         lenarr = len(dats)
         bytestr = _strencode(dats)
         datstring = bytestr
