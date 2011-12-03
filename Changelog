@@ -2,6 +2,7 @@
  ================================
  * fix for unicode attributes in python3 (ncdump did not intrepret them as
    text strings). Issue 107.
+
  * add --format option to nc4tonc3 utility (can be either NETCDF3_CLASSIC or
    NETCDF3_64BIT). Fixes issue 104.
 
