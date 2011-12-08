@@ -1337,6 +1337,12 @@ group, so the path is simply C{'/'}."""
         self.close()
 
     def __str__(self):
+        if python3:
+           return self.__unicode__()
+        else:
+           return unicode(self).encode(default_encoding)
+
+    def __unicode__(self):
         ncdump = ['%r\n' % type(self)]
         dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
         varnames = tuple([str(varname) for varname in self.variables.keys()])
@@ -1839,6 +1845,12 @@ determine if the dimension is unlimited"""
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def __str__(self):
+        if python3:
+           return self.__unicode__()
+        else:
+           return unicode(self).encode(default_encoding)
+
+    def __unicode__(self):
         if self.isunlimited():
             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
         else:
@@ -2196,6 +2208,12 @@ instance. If C{None}, the data is not truncated. """
         self.maskandscale = True
 
     def __str__(self):
+        if python3:
+           return self.__unicode__()
+        else:
+           return unicode(self).encode(default_encoding)
+
+    def __unicode__(self):
         ncdump_var = ['%r\n' % type(self)]
         dimnames = tuple([str(dimname) for dimname in self.dimensions])
         attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
@@ -3085,6 +3103,12 @@ the user.
         self.name = dtype_name
 
     def __str__(self):
+        if python3:
+           return self.__unicode__()
+        else:
+           return unicode(self).encode(default_encoding)
+
+    def __unicode__(self):
         return repr(type(self))+": name = '%s', numpy dtype = %s\n" %\
         (self.name,self.dtype)
 
@@ -3298,6 +3322,12 @@ the user.
             self.name = dtype_name
 
     def __str__(self):
+        if python3:
+           return self.__unicode__()
+        else:
+           return unicode(self).encode(default_encoding)
+
+    def __unicode__(self):
         if self.dtype == str:
             return repr(type(self))+': string type'
         else:
@@ -3356,10 +3386,9 @@ cdef _read_vlen(group, nc_type xtype):
 cdef _strencode(pystr,encoding=None):
     # encode a string into bytes.  If already bytes, do nothing.
     # uses default_encoding module variable for default encoding.
-    if not python3: return pystr # if not python3, do nothing
     if encoding is None:
         encoding = default_encoding
     try:
         return pystr.encode(encoding)
-    except AttributeError:
-        return pystr # already bytes?
+    except (AttributeError, UnicodeDecodeError):
+        return pystr # already bytes or unicode?
