@@ -1,5 +1,7 @@
  version 0.9.9 (not yet released)
  ================================
+ * fixes for unicode variable, dimension and group names.
+
  * fix for unicode attributes in python3 (ncdump did not intrepret them as
    text strings). Issue 107.
 
