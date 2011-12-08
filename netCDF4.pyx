@@ -1354,9 +1354,9 @@ group, so the path is simply C{'/'}."""
         attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
                 self.ncattrs()]
         ncdump = ncdump + attrs
-        ncdump.append('    dimensions = %s\n' % str(dimnames))
-        ncdump.append('    variables = %s\n' % str(varnames))
-        ncdump.append('    groups = %s\n' % str(grpnames))
+        ncdump.append('    dimensions = %s\n' % repr(dimnames))
+        ncdump.append('    variables = %s\n' % repr(varnames))
+        ncdump.append('    groups = %s\n' % repr(grpnames))
         return ''.join(ncdump)
 
     def close(self):
