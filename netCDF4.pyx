@@ -974,13 +974,12 @@ cdef _set_att(grp, int varid, name, value):
     # if array contains strings, write a text attribute.
     if value_arr.dtype.char in ['S','U']:
         if not value_arr.shape:
-            dats = value_arr.item()
+            dats = _strencode(value_arr.item())
         else:
             value_arr1 = value_arr.ravel()
-            dats = ''.join(value_arr1.tolist())
+            dats = _strencode(''.join(value_arr1.tolist()))
         lenarr = len(dats)
-        bytestr = _strencode(dats)
-        datstring = bytestr
+        datstring = dats
         ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
