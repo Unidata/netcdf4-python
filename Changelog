@@ -1,5 +1,7 @@
  version 0.9.9 (not yet released)
  ================================
+ * added test case for unicode attributes, variable and dimension names.
+
  * fixes for unicode variable, dimension and group names.
 
  * fix for unicode attributes in python3 (ncdump did not intrepret them as
