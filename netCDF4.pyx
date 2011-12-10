@@ -850,7 +850,7 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
 # encoding used to convert strings to bytes when writing text data
 # to the netcdf file, and for converting bytes to strings when reading
 # from the netcdf file.
-default_encoding = 'latin-1'
+default_encoding = 'utf-8'
 # unicode decode/encode error handling.  Replace bad chars with "?"
 # can be set to 'strict' or 'ignore'.
 unicode_error = 'replace'

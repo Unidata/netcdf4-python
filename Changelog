@@ -1,5 +1,9 @@
  version 0.9.9 (not yet released)
  ================================
+ * changed default unicode encoding from "latin-1" to "utf-8", since
+   this is the python 3 default, and the only encoding that appears to
+   work for dimension and variable names.
+
  * added test case for unicode attributes, variable and dimension names.
 
  * fixes for unicode variable, dimension and group names.
