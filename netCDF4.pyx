@@ -3009,7 +3009,7 @@ The default value of C{maskandscale} is C{True}
                 # loop over elements of object array, fill array with
                 # contents of strdata.
                 for i from 0<=i<totelem:
-                    data[i] = strdata[i] # return bytes, not strings.
+                    data[i] = strdata[i].decode(default_encoding)
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
                 free(strdata)
