@@ -31,7 +31,7 @@ for nrec in range(nrecs):
     # fill data with random nchar character strings
     for n in range(n2):
         data[n] = ''.join([random.choice(chars) for i in range(nchar)])
-    print nrec,data
+    print(nrec,data)
     # convert data to array of characters with an extra dimension 
     # (the number of characters per string) added to the right.
     datac = stringtochar(data)
@@ -40,9 +40,9 @@ nc.close()
 
 nc = Dataset(FILE_NAME)
 v = nc.variables['strings']
-print v.shape, v.dtype
+print(v.shape, v.dtype)
 for nrec in range(nrecs):
     # read character array back, convert to an array of strings
     # of length equal to the rightmost dimension.
-    print nrec, chartostring(v[nrec])
+    print(nrec, chartostring(v[nrec]))
 nc.close()
