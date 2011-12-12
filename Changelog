@@ -1,4 +1,4 @@
- version 0.9.9 (not yet released)
+ version 0.9.9 (svn revion 1099)
  ================================
  * changed default unicode encoding from "latin-1" to "utf-8", since
    this is the python 3 default, and the only encoding that appears to
