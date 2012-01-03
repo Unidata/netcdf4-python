@@ -534,7 +534,7 @@ to the L{createVariable<Dataset.createVariable>} method. To turn on
 compression, set C{zlib=True}.  The C{complevel} keyword regulates the
 speed and efficiency of the compression (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
-default value of C{complevel} is 6. Setting C{shuffle=False} will turn
+default value of C{complevel} is 4. Setting C{shuffle=False} will turn
 off the HDF5 shuffle filter, which de-interlaces a block of data before
 compression by reordering the bytes.  The shuffle filter can
 significantly improve compression ratios, and is on by default.  Setting
@@ -1486,11 +1486,11 @@ datatype."""
         return self.vltypes[datatype_name]
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False,
-            complevel=6, shuffle=True, fletcher32=False, contiguous=False,
+            complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             fill_value=None, chunk_cache=None):
         """
-createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
+createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
 
 Creates a new variable with the given C{varname}, C{datatype}, and 
 C{dimensions}. If dimensions are not given, the variable is assumed to be 
@@ -1518,7 +1518,7 @@ If the optional keyword C{zlib} is C{True}, the data will be compressed in
 the netCDF file using gzip compression (default C{False}).
 
 The optional keyword C{complevel} is an integer between 1 and 9 describing 
-the level of compression desired (default 6). Ignored if C{zlib=False}.
+the level of compression desired (default 4). Ignored if C{zlib=False}.
 
 If the optional keyword C{shuffle} is C{True}, the HDF5 shuffle filter 
 will be applied before compressing the data (default C{True}).  This 
@@ -1899,7 +1899,7 @@ returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.""
 
 cdef class Variable:
     """
-Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=6, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
+Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
 
 A netCDF L{Variable} is used to read and write netCDF data.  They are 
 analagous to numpy array objects.
@@ -1942,7 +1942,7 @@ B{C{zlib}} - if C{True}, data assigned to the L{Variable}
 instance is compressed on disk. Default C{False}.
 
 B{C{complevel}} - the level of zlib compression to use (1 is the fastest, 
-but poorest compression, 9 is the slowest but best compression). Default 6.
+but poorest compression, 9 is the slowest but best compression). Default 4.
 Ignored if C{zlib=False}. 
 
 B{C{shuffle}} - if C{True}, the HDF5 shuffle filter is applied 
@@ -2024,7 +2024,7 @@ instance. If C{None}, the data is not truncated. """
     _isvlen
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
-            complevel=6, shuffle=True, fletcher32=False, contiguous=False,
+            complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             fill_value=None, chunk_cache=None, **kwargs):
         cdef int ierr, ndims, icontiguous, ideflate_level, numdims
@@ -2033,6 +2033,9 @@ instance. If C{None}, the data is not truncated. """
         cdef int dimids[NC_MAX_DIMS]
         cdef size_t sizep, nelemsp, *chunksizesp
         cdef float preemptionp
+        # if complevel is set to zero, set zlib to False.
+        if not complevel:
+            zlib = False
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
         # dimensions = ('lat') instead of ('lat',)

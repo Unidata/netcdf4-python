@@ -1,4 +1,10 @@
- version 0.9.9 (svn revion 1099)
+ since version 0.9.9
+ ===================
+ * based on results with examples/bench_compress2.py, change
+   default complevel for zlib compression from 6 to 4. If complevel=0,
+   turn compression off entirely (set zlib=False).
+
+ version 0.9.9 (svn revision 1099)
  ================================
  * changed default unicode encoding from "latin-1" to "utf-8", since
    this is the python 3 default, and the only encoding that appears to
