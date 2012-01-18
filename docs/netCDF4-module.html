@@ -89,7 +89,7 @@
         (1.5.1 or higher recommended, required if using python 3).
       </li>
       <li>
-        The HDF5 C library version 1.8.4-patch1 or higher (1.8.7 or higher 
+        The HDF5 C library version 1.8.4-patch1 or higher (1.8.8 or higher 
         recommended) from <a href="ftp://ftp.hdfgroup.org/HDF5/current/src"
         target="_top">ftp://ftp.hdfgroup.org/HDF5/current/src</a>. Be sure 
         to build with '<code>--enable-hl --enable-shared</code>'.
@@ -108,14 +108,16 @@
         The netCDF-4 C library from <a 
         href="ftp://ftp.unidata.ucar.edu/pub/netcdf" 
         target="_top">ftp://ftp.unidata.ucar.edu/pub/netcdf</a>. Version 
-        4.1.1 or higher is required (4.1.3 or higher recommended). Be sure 
-        to build with '<code>--enable-netcdf-4 --with-hdf5=$HDF5_DIR 
-        --enable-shared</code>', where <code>$HDF5_DIR</code> is the 
-        directory where HDF5 was installed. If you want <a 
-        href="http://opendap.org/" target="_top">OPeNDAP</a> support, add 
-        '<code>--enable-dap</code>'. If you want HDF4 SD support, add 
-        '<code>--enable-hdf4 --with-hdf4=$HDF4_DIR</code>', where 
-        <code>$HDF4_DIR</code> is the directory where HDF4 was installed.
+        4.1.1 or higher is required (4.2rc1 or higher recommended). Be sure
+        to build with '<code>--enable-netcdf-4 --enable-shared</code>', and
+        set <code>CPPFLAGS=&quot;-I $HDF5_DIR/include&quot;</code> and 
+        <code>LDFLAGS=&quot;-L $HDF5_DIR/lib&quot;</code>, where 
+        <code>$HDF5_DIR</code> is the directory where HDF5 was installed. 
+        If you want <a href="http://opendap.org/" target="_top">OPeNDAP</a>
+        support, add '<code>--enable-dap</code>'. If you want HDF4 SD 
+        support, add '<code>--enable-hdf4</code>' and add the location of 
+        the HDF4 headers and library to <code>CPPFLAGS</code> and 
+        <code>LDFLAGS</code>.
       </li>
     </ul>
   <h1 class="heading">Install</h1>
@@ -668,7 +670,7 @@
       <code>zlib=True</code>.  The <code>complevel</code> keyword regulates
       the speed and efficiency of the compression (1 being fastest, but 
       lowest compression ratio, 9 being slowest but best compression 
-      ratio). The default value of <code>complevel</code> is 6. Setting 
+      ratio). The default value of <code>complevel</code> is 4. Setting 
       <code>shuffle=False</code> will turn off the HDF5 shuffle filter, 
       which de-interlaces a block of data before compression by reordering 
       the bytes.  The shuffle filter can significantly improve compression 
@@ -978,7 +980,7 @@
     </td><td class="summary">
         <a href="netCDF4.Variable-class.html" class="summary-name">Variable</a><br />
       Variable(self, group, name, datatype, dimensions=(), zlib=False, 
-        complevel=6, shuffle=True, fletcher32=False, contiguous=False, 
+        complevel=4, shuffle=True, fletcher32=False, contiguous=False, 
         chunksizes=None, endian='native', 
         least_significant_digit=None,fill_value=None)
     </td>
@@ -1134,14 +1136,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.7'"><code class="variable-quote">'</code><code class="variable-string">1.8.7</code><code class="variable-quote">'</code></code>
+        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.8'"><code class="variable-quote">'</code><code class="variable-string">1.8.8</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.1.3'"><code class="variable-quote">u'</code><code class="variable-string">4.1.3</code><code class="variable-quote">'</code></code>
+        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.2-rc1'"><code class="variable-quote">u'</code><code class="variable-string">4.2-rc1</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -1169,7 +1171,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="default_encoding"></a><span class="summary-name">default_encoding</span> = <code title="'latin-1'"><code class="variable-quote">'</code><code class="variable-string">latin-1</code><code class="variable-quote">'</code></code>
+        <a name="default_encoding"></a><span class="summary-name">default_encoding</span> = <code title="'utf-8'"><code class="variable-quote">'</code><code class="variable-string">utf-8</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -1521,7 +1523,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sun Dec 11 09:25:41 2011
+    Generated by Epydoc 3.0.1 on Wed Jan 18 15:39:04 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

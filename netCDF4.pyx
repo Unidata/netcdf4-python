@@ -32,7 +32,7 @@ Requires
 
  - numpy array module U{http://numpy.scipy.org}, version 1.3.0 or later (1.5.1
    or higher recommended, required if using python 3).
- - The HDF5 C library version 1.8.4-patch1 or higher (1.8.7 or higher
+ - The HDF5 C library version 1.8.4-patch1 or higher (1.8.8 or higher
  recommended) from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl --enable-shared}'.
  - U{Libcurl <http://curl.haxx.se/libcurl/>}, if you want
@@ -40,12 +40,13 @@ Requires
  - U{HDF4 <http://www.hdfgroup.org/products/hdf4/>}, if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.1.1 or higher is required (4.1.3 or higher recommended).
- Be sure to build with 'C{--enable-netcdf-4 --with-hdf5=$HDF5_DIR
- --enable-shared}', where C{$HDF5_DIR} is the directory where HDF5 was installed.
+ Version 4.1.1 or higher is required (4.2rc1 or higher recommended).
+ Be sure to build with 'C{--enable-netcdf-4 --enable-shared}', and set
+ C{CPPFLAGS="-I $HDF5_DIR/include"} and C{LDFLAGS="-L $HDF5_DIR/lib"},
+ where C{$HDF5_DIR} is the directory where HDF5 was installed.
  If you want U{OPeNDAP<http://opendap.org/>} support, add 'C{--enable-dap}'.
- If you want HDF4 SD support, add 'C{--enable-hdf4 --with-hdf4=$HDF4_DIR}',
- where C{$HDF4_DIR} is the directory where HDF4 was installed.
+ If you want HDF4 SD support, add 'C{--enable-hdf4}' and add
+ the location of the HDF4 headers and library to C{CPPFLAGS} and C{LDFLAGS}.
 
 
 Install
