@@ -961,7 +961,7 @@ contains one.
     cdftime = utime(units,calendar=calendar)
     return cdftime.num2date(times)
 
-def _check_index(indices, dates, nctime, calendar):
+def _check_index(indices, dates, nctime, calendar, select):
     """Return True if the time indices given correspond to the given dates, 
     False otherwise.
     
@@ -978,11 +978,15 @@ def _check_index(indices, dates, nctime, calendar):
 
     calendar : string
     Calendar of nctime.
-     """
+
+    select : string
+    Index selection method.
+    """
+    N = nctime.shape[0]
     if  (indices <0).any():
        return False
        
-    if (indices >= nctime.shape[0]).any():
+    if (indices >= N).any():
         return False
         
     t = nctime[indices] 
@@ -990,9 +994,28 @@ def _check_index(indices, dates, nctime, calendar):
 #   t=[]
 #   for ind in indices:
 #       t.append(nctime[ind])
-    return numpy.all( num2date(t, nctime.units, calendar) == dates)
 
-
+    check = num2date(t, nctime.units, calendar)
+    if select == 'exact':
+        return numpy.all(check == dates)
+        
+    elif select == 'before':
+        ta = nctime[numpy.clip(indices + 1, 0, N-1)]
+        check_after = num2date(ta, nctime.units, calendar)
+        return numpy.all(check <= dates) and numpy.all(check_after > dates)
+        
+    elif select == 'after':
+        tb = nctime[numpy.clip(indices - 1, 0, N-1)]
+        check_before = num2date(tb, nctime.units, calendar)
+        return numpy.all(check >= dates) and numpy.all(check_before < dates)
+    
+    elif select == 'nearest':
+        ta = nctime[numpy.clip(indices + 1, 0, N-1)]
+        tb = nctime[numpy.clip(indices - 1, 0, N-1)]
+        delta_after = num2date(ta, nctime.units, calendar) - check
+        delta_before = check - num2date(tb, nctime.units, calendar) 
+        delta_check = numpy.abs(dates-check)
+        return numpy.all(delta_check <= delta_after) and numpy.all(delta_check <= delta_before)
 
 def date2index(dates, nctime, calendar=None, select='exact'):
     """
@@ -1032,12 +1055,17 @@ def date2index(dates, nctime, calendar=None, select='exact'):
     # This assumes that the times are increasing uniformly.
     t0, t1 = nctime[:2]
     dt = t1 - t0
-    index = numpy.array((num-t0)/dt, int)
+    if select in ['exact', 'before']:
+        index = numpy.array((num-t0)/dt, int)
+    elif select == 'after':
+        index = numpy.array(numpy.ceil( (num-t0)/dt ), int)
+    else:
+        index = numpy.array(numpy.around( (num-t0)/dt ), int)
 
     # Checking that the index really corresponds to the given date.
     # If the times do not correspond, then it means that the times
     # are not increasing uniformly and we try the bisection method.
-    if not _check_index(index, dates, nctime, calendar):
+    if not _check_index(index, dates, nctime, calendar, select):
         
         # Use the bisection method. Assumes nctime is ordered.
         import bisect

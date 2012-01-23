@@ -306,13 +306,13 @@ class TestDate2index(unittest.TestCase):
         t = date2index(datetime(1978,1,1), nutime, select='nearest')
         assert_equal(t, 365)
         
-        # Test dates outsied the support with before
+        # Test dates outside the support with before
         self.assertRaises(ValueError, date2index, datetime(1949,12,1), nutime, select='before')
         
         t = date2index(datetime(1978,1,1), nutime, select='before')
         assert_equal(t, 365)
         
-        # Test dates outsied the support with after
+        # Test dates outside the support with after
         t = date2index(datetime(1949,12,1), nutime, select='after')
         assert_equal(t, 0)
         
