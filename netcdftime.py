@@ -807,7 +807,7 @@ def _parse_date(datestring):
     """
     if not isinstance(datestring, str) and not isinstance(datestring, unicode):
         raise ValueError("Expecting a string %r" % datestring)
-    m = ISO8601_REGEX.match(datestring)
+    m = ISO8601_REGEX.match(datestring.strip())
     if not m:
         raise ValueError("Unable to parse date string %r" % datestring)
     groups = m.groupdict()
