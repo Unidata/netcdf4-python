@@ -148,32 +148,35 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
         # Replace boolean array with slice object if possible.
         elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
             el = e.tolist()
-            start = el.index(True)
-            el.reverse()
-            stop = len(el)-el.index(True)
-            step = False
-            if e[start:stop].all():
-                step = 1
-            else:
-                n1 = start+1
-                ee = e[n1]
-                estart = e[start]
-                while ee != estart:
-                    n1 = n1 + 1
+            if any(el):
+                start = el.index(True)
+                el.reverse()
+                stop = len(el)-el.index(True)
+                step = False
+                if e[start:stop].all():
+                    step = 1
+                else:
+                    n1 = start+1
                     ee = e[n1]
-                step = n1-start
-                # check to make sure e[start:stop:step] are all True,
-                # and other elements in e[start:stop] are all False.
-                ii = range(start,stop,step)
-                for i in range(start,stop):
-                    if i not in ii:
-                        if e[i]: step = False
-                    else:
-                        if not e[i]: step = False
-            if step: # it step False, can't convert to slice.
-                newElem.append(slice(start,stop,step))
+                    estart = e[start]
+                    while ee != estart:
+                        n1 = n1 + 1
+                        ee = e[n1]
+                    step = n1-start
+                    # check to make sure e[start:stop:step] are all True,
+                    # and other elements in e[start:stop] are all False.
+                    ii = range(start,stop,step)
+                    for i in range(start,stop):
+                        if i not in ii:
+                            if e[i]: step = False
+                        else:
+                            if not e[i]: step = False
+                if step: # it step False, can't convert to slice.
+                    newElem.append(slice(start,stop,step))
+                else:
+                    newElem.append(e)
             else:
-                newElem.append(e)
+                newElem.append(slice(0,0))
                 
         # Replace sequence of indices with slice object if possible.
         elif np.iterable(e) and len(e) > 1:

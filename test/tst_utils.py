@@ -107,7 +107,9 @@ class TestgetStartCountStride(unittest.TestCase):
             elem = (np.array([True, True, False]), np.array([True, True, True, False]), slice(None))
         except IndexError:
             pass
-    
+            
+            
+        
     def test_1d(self):
         # Scalar
         elem = (0)
@@ -170,6 +172,13 @@ class TestgetStartCountStride(unittest.TestCase):
         assert_equal(count, 3)
         assert_equal(stride, 1)
         assert_equal(put_ind, slice(None))
+
+        # All False
+        elem = (np.array([False, False, False, False]))
+        start, count, stride, put_ind = nc._StartCountStride(elem, (4,))
+        
+        assert_equal(count, 0)
+        assert_equal(nc._out_array_shape(count), (0,))
 
         
 class TestsetStartCountStride(unittest.TestCase):

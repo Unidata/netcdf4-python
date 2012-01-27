@@ -103,6 +103,15 @@ class VariablesTestCase(unittest.TestCase):
         datatmp = datatmp[:,iby,::2]
         assert_array_equal(v[ibx,iby,ibz], datatmp)
 
+        # Empty boolean -- all False
+        d1 = f.variables['data1']
+        m = np.zeros(xdim, bool)
+        assert_equal(d1[m], ())
+        
+        # Check that no assignment is made
+        d1[m] = 0
+        assert_equal(d1[:], self.data1)
+
         # boolean slices, only single items returned.
         iby = np.array([True, False, False, False, False, False, False, False,\
             False, False])
