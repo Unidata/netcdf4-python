@@ -2727,11 +2727,14 @@ details."""
                 # if not masked, create a masked array.
                 if not ma.isMA(data): data = self._toma(data)
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
-                data = numpy.around((data - self.add_offset)/self.scale_factor)
+                data = (data - self.add_offset)/self.scale_factor
+                if self.dtype.kind == 'i': data = numpy.around(data)
             elif hasattr(self, 'scale_factor'):
-                data = numpy.around(data/self.scale_factor)
+                data = data/self.scale_factor
+                if self.dtype.kind == 'i': data = numpy.around(data)
             elif hasattr(self, 'add_offset'):
-                data = numpy.around(data - self.add_offset)
+                data = data - self.add_offset
+                if self.dtype.kind == 'i': data = numpy.around(data)
             if ma.isMA(data):
                 if hasattr(self, 'missing_value'):
                     fillval = self.missing_value

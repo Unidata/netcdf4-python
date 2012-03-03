@@ -1,10 +1,15 @@
  since version 0.9.9
  ===================
+ * only round after apply scale_factor and add_offset if variable type is integer (issue 111).
+
  * Fixed bug with all False Boolean index (r1107).
+
  * added support for after, before and nearest selection method to date2index
    fast "first guess" indexing (r1106).
+
  * Remove white space in time units string (netcdftime._parse_date). An extra space in the 
    time units of one CMIP3 model caused an error (r1105).
+
  * based on results with examples/bench_compress2.py, change
    default complevel for zlib compression from 6 to 4. If complevel=0,
    turn compression off entirely (set zlib=False) (r1102).
