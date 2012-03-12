@@ -1,6 +1,7 @@
  version 1.0 (not yet released)
  ==============================
- * only round after apply scale_factor and add_offset if variable type is integer (issue 111).
+ * only round after apply scale_factor and add_offset if variable type is
+   integer (issue 111, r1109).
 
  * Fixed bug with all False Boolean index (r1107).
 
