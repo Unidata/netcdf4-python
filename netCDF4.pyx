@@ -1666,10 +1666,10 @@ set a bunch of netCDF dataset or group attributes at once using a python diction
 This may be faster when setting a lot of attributes for a NETCDF3 
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute"""
-        if self._grp.file_format != 'NETCDF4': self._grp._redef()
+        if self.file_format != 'NETCDF4': self._redef()
         for name, value in attdict.iteritems():
             _set_att(self, NC_GLOBAL, name, value)
-        if self._grp.file_format != 'NETCDF4': self._grp._enddef()
+        if self.file_format != 'NETCDF4': self._enddef()
 
     def getncattr(self,name):
         """
