@@ -27,8 +27,9 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
     unlimdim = None
     # create global attributes.
     if not quiet: sys.stdout.write('copying global attributes ..\n')
-    for attname in ncfile3.ncattrs():
-        setattr(ncfile4,attname,getattr(ncfile3,attname))
+    #for attname in ncfile3.ncattrs():
+    #    setattr(ncfile4,attname,getattr(ncfile3,attname))
+    ncfile4.setncatts(ncfile3.__dict__) 
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile3.dimensions.items():
         if dim.isunlimited():
@@ -67,13 +68,19 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
             FillValue = None 
         var = ncfile4.createVariable(varname,datatype,ncvar.dimensions, fill_value=FillValue, least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
         # fill variable attributes.
-        for attname in ncvar.ncattrs():
-            if attname == '_FillValue': continue
-            if dounpackshort and attname in ['add_offset','scale_factor']: continue
-            if dounpackshort and attname == 'missing_value':
-                setattr(var,attname,mval)
-            else:
-                setattr(var,attname,getattr(ncvar,attname))
+	attdict = ncvar.__dict__
+	if '_FillValue' in attdict: del attdict['_FillValue']
+	if dounpackshort and 'add_offset' in attdict: del attdict['add_offset']
+	if dounpackshort and 'scale_factor' in attdict: del attdict['scale_factor']
+	if dounpackshort and 'missing_value' in attdict: attdict['missing_value']=mval
+	var.setncatts(attdict)
+        #for attname in ncvar.ncattrs():
+        #    if attname == '_FillValue': continue
+        #    if dounpackshort and attname in ['add_offset','scale_factor']: continue
+        #    if dounpackshort and attname == 'missing_value':
+        #        setattr(var,attname,mval)
+        #    else:
+        #        setattr(var,attname,getattr(ncvar,attname))
         # fill variables with data.
         if hasunlimdim: # has an unlim dim, loop over unlim dim index.
             # range to copy
