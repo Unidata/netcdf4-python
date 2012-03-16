@@ -13,8 +13,9 @@ def nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NET
     unlimdim = None
     # create global attributes.
     if not quiet: sys.stdout.write('copying global attributes ..\n')
-    for attname in ncfile4.ncattrs():
-        setattr(ncfile3,attname,getattr(ncfile4,attname))
+    #for attname in ncfile4.ncattrs():
+    #    setattr(ncfile3,attname,getattr(ncfile4,attname))
+    ncfile4.setncatts(ncfile3.__dict__) 
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile4.dimensions.items():
         if dim.isunlimited():
@@ -37,9 +38,12 @@ def nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NET
             FillValue = None 
         var = ncfile3.createVariable(varname,ncvar.dtype,ncvar.dimensions,fill_value=FillValue)
         # fill variable attributes.
-        for attname in ncvar.ncattrs():
-            if attname == '_FillValue': continue
-            setattr(var,attname,getattr(ncvar,attname))
+	attdict = ncvar.__dict__
+	if '_FillValue' in attdict: del attdict['_FillValue']
+	var.setncatts(attdict)
+        #for attname in ncvar.ncattrs():
+        #    if attname == '_FillValue': continue
+        #    setattr(var,attname,getattr(ncvar,attname))
         # fill variables with data.
         if hasunlimdim: # has an unlim dim, loop over unlim dim index.
             # range to copy
