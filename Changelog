@@ -2,8 +2,11 @@
  ==============================
  * add setncatts Dataset,Group and Variable method to add a bunch of
    attributes (given in a python dictionary) at once.  Speeds things
-   up for NETCDF3 files a lot, since nc_redef/nc_enddef does not need
-   to be called for each attribute (issue 85, r1113).
+   up for NETCDF3 and NETCDF4_CLASSIC files a lot, since nc_redef/nc_enddef does not need
+   to be called for each attribute (issue 85, r1113). Adding 1000 attributes
+   is about 35 times faster using setncatts to add them all at once. 
+   Makes no difference for NETCDF4 formatted files, since nc_redef/nc_enddef
+   is not called.
 
  * only round after apply scale_factor and add_offset if variable type is
    integer (issue 111, r1109).
