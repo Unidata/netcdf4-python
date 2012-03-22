@@ -1,5 +1,8 @@
  version 1.0 (not yet released)
  ==============================
+ * fix ISO9601 date parser so it recognizes time zone offsets in time unit
+   strings (contributed by David Hassel, issue 114, r1117).
+
  * add setncatts Dataset,Group and Variable method to add a bunch of
    attributes (given in a python dictionary) at once.  Speeds things
    up for NETCDF3 and NETCDF4_CLASSIC files a lot, since nc_redef/nc_enddef does not need

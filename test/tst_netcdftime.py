@@ -15,6 +15,7 @@ class netcdftimeTestCase(unittest.TestCase):
 
     def setUp(self):
         self.cdftime_mixed = utime('hours since 0001-01-01 00:00:00')
+        self.cdftime_mixed_tz = utime('hours since 0001-01-01 00:00:00 -06:00')
         self.cdftime_pg = utime('seconds since 0001-01-01 00:00:00',
                           calendar='proleptic_gregorian')
         self.cdftime_noleap = utime('days since 1600-02-28 00:00:00',calendar='noleap')
@@ -180,6 +181,10 @@ class netcdftimeTestCase(unittest.TestCase):
         d1 = datetimex(1979,6,21,9,23,12)
         d2 = datetime(1979,6,21,9,23,12)
         assert(d1 == d2)
+        # check timezone offset
+        d = datetime(2012,2,29,15)
+        assert(self.cdftime_mixed.date2num(d)-self.cdftime_mixed_tz.date2num(d) == 6)
+
 
 class TestDate2index(unittest.TestCase):
 
