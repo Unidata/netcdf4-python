@@ -9,6 +9,9 @@ python3 = sys.version_info[0] > 2
 __all__ = ['test']
 # Find all test files.
 test_files = glob.glob('tst_*.py')
+# for some reason, tst_dap.py fails unless it is run first.
+test_files.remove('tst_dap.py')
+test_files.insert(0, 'tst_dap.py')
 if python3:
     test_files.remove('tst_unicode.py')
 else:
