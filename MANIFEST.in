@@ -3,6 +3,7 @@ include MANIFEST.in
 include README
 include COPYING
 include Changelog
+include setup.cfg.template
 include netCDF4.pyx
 include netCDF4_utils.py
 include netCDF4.pxi
