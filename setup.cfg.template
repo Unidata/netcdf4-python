@@ -1,5 +1,4 @@
-# Rename this file to setup.cfg to set pygrib's
-# build options. 
+# Rename this file to setup.cfg to set build options.
 # Follow instructions below for editing.
 [directories]
 # uncomment and set to netCDF install location.
