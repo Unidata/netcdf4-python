@@ -40,7 +40,7 @@ Requires
  - U{HDF4 <http://www.hdfgroup.org/products/hdf4/>}, if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
- Version 4.1.1 or higher is required (4.2rc1 or higher recommended).
+ Version 4.1.1 or higher is required (4.2 or higher recommended).
  Be sure to build with 'C{--enable-netcdf-4 --enable-shared}', and set
  C{CPPFLAGS="-I $HDF5_DIR/include"} and C{LDFLAGS="-L $HDF5_DIR/lib"},
  where C{$HDF5_DIR} is the directory where HDF5 was installed.
@@ -53,7 +53,7 @@ Install
 =======
 
  - install the requisite python modules and C libraries (see above). It's
-   easiest if all the C libs are built as shared libraries.
+ easiest if all the C libs are built as shared libraries.
  - optionally, set the C{HDF5_DIR} environment variable to point to where HDF5
  is installed (the libs in C{$HDF5_DIR/lib}, the headers in
  C{$HDF5_DIR/include}). If the headers and libs are installed in different
@@ -64,7 +64,8 @@ Install
  where the netCDF version 4 library and headers are installed.
  - If the locations of the HDF5 and netCDF libs and headers are not specified
  with environment variables, some standard locations will be searched.
- - if HDF5 was build with U{szip <http://www.hdfgroup.org/doc_resource/SZIP/>},
+ - if HDF5 was built as a static library  with U{szip
+ <http://www.hdfgroup.org/doc_resource/SZIP/>} support,
  you may also need to set the C{SZIP_DIR} (or C{SZIP_INCDIR} and C{SZIP_LIBDIR})
  environment variable(s) to point to where szip is installed. Note that
  the netCDF library does not support creating szip compressed files, but can read szip
@@ -75,6 +76,17 @@ Install
  netcdf nc-config utility to determine where all the dependencies live.
  - run C{python setup.py build}, then C{python setup.py install} (as root if
  necessary).
+ - If using environment variables to specify build options, be sure to run
+ 'python setup.py build' *without* using sudo.  sudo does not pass environment
+ variables. If you run 'setup.py build' first without sudo, you can run
+ 'setup.py install' with sudo.  
+ - Instead of using environment variables to specify the locations of the
+ required libraries, you can either let setup.py try to auto-detect their
+ locations, or use the file C{setup.cfg} to specify them.  To use this 
+ method, copy the file C{setup.cfg.template} to C{setup.cfg},
+ then open C{setup.cfg} in a text editor and follow the instructions in the  
+ comments for editing.  If you use C{setup.cfg}, environment variables will be
+ ignored.
  - run the tests in the 'test' directory by running C{python run_all.py}.
 
 Tutorial

@@ -1,6 +1,10 @@
 import os, sys
 from numpy.distutils.core  import setup, Extension
 import subprocess
+if sys.version_info[0] < 3:
+    import ConfigParser as configparser
+else:
+    import configparser
 
 def check_hdf5version(hdf5_includedir):
     try:
@@ -36,7 +40,36 @@ HDF5_includedir = os.environ.get('HDF5_INCDIR')
 netCDF4_includedir = os.environ.get('NETCDF4_INCDIR')
 HDF5_libdir = os.environ.get('HDF5_LIBDIR')
 netCDF4_libdir = os.environ.get('NETCDF4_LIBDIR')
+szip_dir = os.environ.get('SZIP_DIR')
+szip_libdir = os.environ.get('SZIP_LIBDIR')
+szip_incdir = os.environ.get('SZIP_INCDIR')
 USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
+
+setup_cfg = 'setup.cfg'
+# contents of setup.cfg will override env vars.
+if os.path.exists(setup_cfg):
+    print 'reading from setup.cfg...'
+    config = configparser.SafeConfigParser()
+    config.read(setup_cfg)
+    try: HDF5_dir = config.get("directories", "HDF5_dir")
+    except: pass
+    try: HDF5_libdir = config.get("directories", "HDF5_libdir")
+    except: pass
+    try: HDF5_incdir = config.get("directories", "HDF5_incdir")
+    except: pass
+    try: netCDF4_dir = config.get("directories", "netCDF4_dir")
+    except: pass
+    try: netCDF4_libdir = config.get("directories", "netCDF4_libdir")
+    except: pass
+    try: netCDF4_incdir = config.get("directories", "netCDF4_incdir")
+    except: pass
+    try: szip_dir = config.get("directories", "szip_dir")
+    except: pass
+    try: szip_libdir = config.get("directories", "szip_libdir")
+    except: pass
+    try: szip_incdir = config.get("directories", "szip_incdir")
+    except: pass
+    USE_NCCONFIG=None
 
 # if USE_NCCONFIG set, and nc-config works, use it.
 if USE_NCCONFIG is not None:
@@ -48,6 +81,7 @@ if USE_NCCONFIG is not None:
     retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
 else:
     retcode = 1
+
 if not retcode:
     sys.stdout.write('using nc-config ...\n')
     dep=subprocess.Popen([ncconfig,'--libs'],stdout=subprocess.PIPE).communicate()[0]
@@ -116,9 +150,6 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
     inc_dirs = [netCDF4_includedir,HDF5_includedir]
 
     # add szip to link if desired.
-    szip_dir = os.environ.get('SZIP_DIR')
-    szip_libdir = os.environ.get('SZIP_LIBDIR')
-    szip_incdir = os.environ.get('SZIP_INCDIR')
     if szip_libdir is None and szip_dir is not None:
         szip_libdir = os.path.join(szip_dir, 'lib')
     if szip_incdir is None and szip_dir is not None:

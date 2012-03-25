@@ -1,0 +1,23 @@
+# Rename this file to setup.cfg to set pygrib's
+# build options. 
+# Follow instructions below for editing.
+[directories]
+# uncomment and set to netCDF install location.
+# Include files should be located in netCDF4_dir/include and
+# the library should be located in netCDF4_dir/lib.
+# If the libraries and include files are installed in separate locations,
+# use netCDF4_libdir and netCDF4_incdir to specify the locations
+# separately.  
+#netCDF4_dir = /usr/local
+# uncomment and set to HDF5 install location.
+# Include files should be located in HDF5_dir/include and
+# the library should be located in HDF5_dir/lib.
+# If the libraries and include files are installed in separate locations,
+# use HDF5_libdir and HDF5_incdir to specify the locations
+# separately.  
+#HDF5_dir = /usr/local
+# if HDF5 was built with szip support as a static lib,
+# uncomment and set to szip lib install location.
+# If the libraries and include files are installed in separate locations,
+# use szip_libdir and szip_incdir.
+#szip_dir = /usr/local

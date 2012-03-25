@@ -3,23 +3,21 @@ Python/numpy interface to the netCDF version 4 library.
 Quick Start
 -----------
 
-make sure numpy is installed.
-make sure HDF5 and netcdf-4 are installed.
-'python setup.py install' installs the netCDF4 and netcdftime modules.
-The environment variables HDF5_DIR and NETCDF4_DIR can be 
-set to point to the locations of the HDF5 and netcdf-4 libraries and
-headers before setup.py is run. If they are not, some standard locations
-will be searched. If netcdf 4.1.2 or higher is installed, the USE_NCCONFIG 
-environment variable can be set in which case the nc-config utility will
-be used by setup.py to determine the library and include paths.
+* make sure numpy is installed.
 
-If HDF5 was built with szip support, you may also need to set the
-SZIP_DIR environment variable to point to the locations of the szip
-libraries and headers.
+* make sure HDF5 and netcdf-4 are installed.
 
-Unit tests are in the 'test' directory.
-To run all the tests, execute 'cd test; python run_all.py'.
-Additional examples are in the 'examples' directory.
+* copy setup.cfg.template to setup.cfg, open with a text editor
+  and follow the instructions in the comments for editing.
+
+* run 'python setup.py build, then 'python setup.py install' (with sudo
+  if necessary).
+
+* If netcdf 4.1.2 or higher is installed, the USE_NCCONFIG 
+  environment variable can be set in which case the nc-config utility will
+  be used by setup.py to determine the library and include paths.
+
+* To run all the tests, execute 'cd test; python run_all.py'.
 
 More detailed documentation is available at docs/index.html, or
 http://netcdf4-python.googlecode.com/svn/trunk/docs/index.html.
