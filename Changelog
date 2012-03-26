@@ -1,5 +1,9 @@
  version 1.0 (not yet released)
  ==============================
+ * add the ability to specify the location of the required libs 
+   (and whether to use nc-config) with setup.cfg, 
+   instead of using environment variables.
+
  * fix ISO9601 date parser so it recognizes time zone offsets in time unit
    strings (contributed by David Hassel, issue 114, r1117).
 
