@@ -13,10 +13,6 @@ Quick Start
 * run 'python setup.py build, then 'python setup.py install' (with sudo
   if necessary).
 
-* If netcdf 4.1.2 or higher is installed, the USE_NCCONFIG 
-  environment variable can be set in which case the nc-config utility will
-  be used by setup.py to determine the library and include paths.
-
 * To run all the tests, execute 'cd test; python run_all.py'.
 
 More detailed documentation is available at docs/index.html, or
