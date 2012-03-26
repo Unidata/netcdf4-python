@@ -47,6 +47,7 @@ USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
 
 setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars.
+ncconfig = None
 if os.path.exists(setup_cfg):
     print 'reading from setup.cfg...'
     config = configparser.SafeConfigParser()
@@ -69,12 +70,15 @@ if os.path.exists(setup_cfg):
     except: pass
     try: szip_incdir = config.get("directories", "szip_incdir")
     except: pass
-    USE_NCCONFIG=None
+    try: USE_NCCONFIG = config.get("options", "use_ncconfig")
+    except: pass
+    try: ncconfig = config.get("options", "ncconfig")
+    except: pass
 
 # if USE_NCCONFIG set, and nc-config works, use it.
 if USE_NCCONFIG is not None:
     # if NETCDF4_DIR env var is set, look for nc-config in NETCDF4_DIR/bin.
-    if netCDF4_dir is not None:
+    if ncconfig is None and netCDF4_dir is not None:
         ncconfig = os.path.join(netCDF4_dir,'bin/nc-config')
     else: # otherwise, just hope it's in the users PATH.
         ncconfig = 'nc-config' 

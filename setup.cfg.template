@@ -1,5 +1,11 @@
 # Rename this file to setup.cfg to set build options.
 # Follow instructions below for editing.
+[options]
+# if true, the nc-config script (installed with netcdf 4.1.2 and higher)
+# will be used to determine the locations of required libraries.
+#use_ncconfig=True
+# path to nc-config script.
+#ncconfig=/usr/local/bin/nc-config 
 [directories]
 # uncomment and set to netCDF install location.
 # Include files should be located in netCDF4_dir/include and
