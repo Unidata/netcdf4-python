@@ -1,7 +1,9 @@
  version 1.0 (not yet released)
  ==============================
- * added experimental 'diskless' file capability added to the C 
-   lib after the 4.2 release. 
+ * added experimental 'diskless' file capability (only added to the C 
+   lib after the 4.2 release).  Controlled by kwarg 'diskless' to
+   netCDF4.Dataset (default False).  Using diskless=True for netcdf <= 4.2
+   has no effect.
 
  * add the ability to specify the location of the required libs 
    (and whether to use nc-config) with setup.cfg, 
