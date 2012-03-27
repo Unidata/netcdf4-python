@@ -27,6 +27,13 @@ class DisklessTestCase(unittest.TestCase):
         # write some data to it.
         foo[0:n1dim-1] = ranarr[:-1,:,:]
         foo[n1dim-1] = ranarr[-1,:,:]
+        # bar has 2 unlimited dimensions
+        f.createDimension('n4', None)
+        f.createDimension('n5', n2dim)
+        f.createDimension('n6', None)
+        # write some data to it.
+        bar = f.createVariable('data2', ranarr.dtype.str[1:], ('n4','n5','n6'))
+        bar[0:n1dim,:, 0:n3dim] = 2.0
 
     def tearDown(self):
         self.f.close()
@@ -34,10 +41,13 @@ class DisklessTestCase(unittest.TestCase):
     def runTest(self):
         """testing diskless file capability"""
         foo = self.f.variables['data1']
+        bar = self.f.variables['data2']
         # check shape.
         self.assert_(foo.shape == (n1dim,n2dim,n3dim))
+        self.assert_(bar.shape == (n1dim,n2dim,n3dim))
         # check data.
         assert_array_almost_equal(foo[:], ranarr)
+        assert_array_almost_equal(bar[:,:,:], 2.*np.ones((n1dim,n2dim,n3dim),ranarr.dtype))
         # file does not actually exist on disk
         assert(os.path.isfile(self.file)==False)
 
