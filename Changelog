@@ -1,5 +1,8 @@
  version 1.0 (not yet released)
  ==============================
+ * added experimental 'diskless' file capability added to the C 
+   lib after the 4.2 release. 
+
  * add the ability to specify the location of the required libs 
    (and whether to use nc-config) with setup.cfg, 
    instead of using environment variables.

@@ -860,6 +860,9 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
                      'f4':NC_FILL_FLOAT,
                      'f8':NC_FILL_DOUBLE}
 
+# hard code this here, instead of importing from netcdf.h
+# so it will compile with versions < 4.3.
+NC_DISKLESS = 0x0008
 # encoding used to convert strings to bytes when writing text data
 # to the netcdf file, and for converting bytes to strings when reading
 # from the netcdf file.
@@ -1210,7 +1213,7 @@ _private_atts =\
 
 cdef class Dataset:
     """
-Dataset(self, filename, mode="r", clobber=True, format='NETCDF4')
+Dataset(self, filename, mode="r", clobber=True, diskless=False, format='NETCDF4')
 
 A netCDF L{Dataset} is a collection of dimensions, groups, variables and 
 attributes. Together they describe the meaning of data and relations among 
@@ -1250,6 +1253,9 @@ handle 2+ Gb files very well. C{'NETCDF3_64BIT'} is the 64-bit offset
 version of the netCDF 3 file format, which fully supports 2+ GB files, but 
 is only compatible with clients linked against netCDF version 3.6.0 or 
 later.
+
+C{diskless} - create diskless (in memory) file.  This is an experimental 
+feature added to the C library after the netcdf-4.2 release.
 
 B{Returns:}
 
@@ -1297,7 +1303,8 @@ group, so the path is simply C{'/'}."""
     cdef public groups, dimensions, variables, file_format, path, parent,\
     maskanscale, cmptypes, vltypes
 
-    def __init__(self, filename, mode='r', clobber=True, format='NETCDF4', **kwargs):
+    def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
+            diskless=False, **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
@@ -1306,9 +1313,15 @@ group, so the path is simply C{'/'}."""
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
-                ierr = nc_create(path, NC_CLOBBER, &grpid)
+                if diskless:
+                    ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
+                else:
+                    ierr = nc_create(path, NC_CLOBBER, &grpid)
             else:
-                ierr = nc_create(path, NC_NOCLOBBER, &grpid)
+                if diskless:
+                    ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                else:
+                    ierr = nc_create(path, NC_NOCLOBBER, &grpid)
             # initialize group dict.
         elif mode == 'r':
             ierr = nc_open(path, NC_NOWRITE, &grpid)
