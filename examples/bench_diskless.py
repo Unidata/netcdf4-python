@@ -14,7 +14,7 @@ ntrials = 10
 sys.stdout.write('reading and writing a %s by %s by %s by %s random array ..\n'%(n1dim,n2dim,n3dim,n4dim))
 array = uniform(size=(n1dim,n2dim,n3dim,n4dim))
 
-def write_netcdf(filename,zlib=False,least_significant_digit=None,format='NETCDF4'):
+def write_netcdf(filename,zlib=False,least_significant_digit=None,format='NETCDF4',closeit=False):
     file = netCDF4.Dataset(filename,'w',format=format,diskless=True)
     file.createDimension('n1', n1dim)
     file.createDimension('n2', n2dim)
@@ -29,15 +29,16 @@ def write_netcdf(filename,zlib=False,least_significant_digit=None,format='NETCDF
     foo.testme4="hi I am an attribute"
     foo.testme5="hi I am an attribute" 
     foo[:] = array
+    if closeit: file.close()
     return file
 
 def read_netcdf(ncfile):
     data = ncfile.variables['data'][:]
 
-for format in ['NETCDF3_CLASSIC','NETCDF3_64BIT']:
+for format in ['NETCDF4','NETCDF3_CLASSIC','NETCDF3_64BIT']:
     sys.stdout.write('testing file format %s ...\n' % format)
     # writing, no compression. 
-    t = Timer("write_netcdf('test1.nc',format='%s')" % format,"from __main__ import write_netcdf")
+    t = Timer("write_netcdf('test1.nc',closeit=True,format='%s')" % format,"from __main__ import write_netcdf")
     sys.stdout.write('writing took %s seconds\n' %\
             repr(sum(t.repeat(ntrials,1))/ntrials))
     # test reading.
