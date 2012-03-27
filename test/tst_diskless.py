@@ -11,6 +11,7 @@ n1dim = 10
 n2dim = 73 
 n3dim = 144
 ranarr = 100.*uniform(size=(n1dim,n2dim,n3dim))
+ranarr2 = 100.*uniform(size=(n1dim,n2dim,n3dim))
 FILE_NAME = tempfile.mktemp(".nc")
 
 class DisklessTestCase(unittest.TestCase):
@@ -31,7 +32,7 @@ class DisklessTestCase(unittest.TestCase):
         f.createDimension('n4', None)
         # write some data to it.
         bar = f.createVariable('data2', ranarr.dtype.str[1:], ('n1','n2','n4'))
-        bar[0:n1dim,:, 0:n3dim] = 2.0
+        bar[0:n1dim,:, 0:n3dim] = ranarr2
 
     def tearDown(self):
         self.f.close()
@@ -45,7 +46,7 @@ class DisklessTestCase(unittest.TestCase):
         self.assert_(bar.shape == (n1dim,n2dim,n3dim))
         # check data.
         assert_array_almost_equal(foo[:], ranarr)
-        assert_array_almost_equal(bar[:,:,:], 2.*np.ones((n1dim,n2dim,n3dim),ranarr.dtype))
+        assert_array_almost_equal(bar[:], ranarr2)
         if os.path.isfile(self.file):
             print '*** netcdf lib does not have diskless file support! ***'
         # file does not actually exist on disk
