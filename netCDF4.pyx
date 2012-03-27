@@ -1315,11 +1315,15 @@ group, so the path is simply C{'/'}."""
             if clobber:
                 if diskless:
                     ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
+                    if ierr != NC_NOERR:
+                        raise RuntimeError('diskless files not supported')
                 else:
                     ierr = nc_create(path, NC_CLOBBER, &grpid)
             else:
                 if diskless:
                     ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                    if ierr != NC_NOERR:
+                        raise RuntimeError('diskless files not supported')
                 else:
                     ierr = nc_create(path, NC_NOCLOBBER, &grpid)
             # initialize group dict.
