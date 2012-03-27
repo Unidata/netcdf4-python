@@ -29,10 +29,8 @@ class DisklessTestCase(unittest.TestCase):
         foo[n1dim-1] = ranarr[-1,:,:]
         # bar has 2 unlimited dimensions
         f.createDimension('n4', None)
-        f.createDimension('n5', n2dim)
-        f.createDimension('n6', None)
         # write some data to it.
-        bar = f.createVariable('data2', ranarr.dtype.str[1:], ('n4','n5','n6'))
+        bar = f.createVariable('data2', ranarr.dtype.str[1:], ('n1','n2','n4'))
         bar[0:n1dim,:, 0:n3dim] = 2.0
 
     def tearDown(self):
