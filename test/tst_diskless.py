@@ -46,6 +46,8 @@ class DisklessTestCase(unittest.TestCase):
         # check data.
         assert_array_almost_equal(foo[:], ranarr)
         assert_array_almost_equal(bar[:,:,:], 2.*np.ones((n1dim,n2dim,n3dim),ranarr.dtype))
+        if os.path.isfile(self.file):
+            print '*** netcdf lib does not have diskless file support! ***'
         # file does not actually exist on disk
         assert(os.path.isfile(self.file)==False)
 
