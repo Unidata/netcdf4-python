@@ -1,4 +1,5 @@
-* untar in home directory.
+* copy this directory to your home directory.
+(cd ..; tar -cvf $HOME/ports.tar; cd $HOME; tar -xvf ports.tar; rm ports.tar)
 
 * sudo vi /opt/local/etc/macports/sources.conf, add the line
 file:///Users/<myusername>/ports
