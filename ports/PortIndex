@@ -1,0 +1,12 @@
+py-netcdf4 411
+subports {py26-netcdf4 py27-netcdf4} portdir python/py-netcdf4 description {Python interface to the netCDF version 4 library.} homepage http://code.google.com/p/netcdf4-python/ epoch 0 platforms darwin name py-netcdf4 depends_lib port:py27-netcdf4 license MIT maintainers openmaintainer long_description {{Python interface to the netCDF version 4 library.}} version 0.9.9 categories {python science} revision 0
+py26-netcdf4 391
+variants universal portdir python/py-netcdf4 description {Python interface to the netCDF version 4 library.} homepage http://code.google.com/p/netcdf4-python/ epoch 0 platforms darwin name py26-netcdf4 depends_lib port:python26 long_description {{Python interface to the netCDF version 4 library.}} maintainers openmaintainer license MIT version 0.9.9 categories {python science} revision 0
+py27-netcdf4 391
+variants universal portdir python/py-netcdf4 description {Python interface to the netCDF version 4 library.} homepage http://code.google.com/p/netcdf4-python/ epoch 0 platforms darwin name py27-netcdf4 depends_lib port:python27 long_description {{Python interface to the netCDF version 4 library.}} maintainers openmaintainer license MIT version 0.9.9 categories {python science} revision 0
+py-pygrib 382
+subports {py26-pygrib py27-pygrib} portdir python/py-pygrib description {Python interface to the Grib API library.} homepage http://code.google.com/p/pygrib/ epoch 0 platforms darwin name py-pygrib depends_lib port:py27-pygrib license MIT maintainers openmaintainer long_description {{Python interface to the Grib API library.}} version 1.9.3 categories {python science} revision 0
+py26-pygrib 365
+variants universal portdir python/py-pygrib description {Python interface to the Grib API library.} homepage http://code.google.com/p/pygrib/ epoch 0 platforms darwin name py26-pygrib depends_lib port:python26 long_description {{Python interface to the Grib API library.}} maintainers openmaintainer license MIT version 1.9.3 categories {python science} revision 0
+py27-pygrib 365
+variants universal portdir python/py-pygrib description {Python interface to the Grib API library.} homepage http://code.google.com/p/pygrib/ epoch 0 platforms darwin name py27-pygrib depends_lib port:python27 long_description {{Python interface to the Grib API library.}} maintainers openmaintainer license MIT version 1.9.3 categories {python science} revision 0

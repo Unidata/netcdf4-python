@@ -1,0 +1,10 @@
+* untar in home directory.
+
+* sudo vi /opt/local/etc/macports/sources.conf, add the line
+file:///Users/<myusername>/ports
+  just *before* the line
+rsync://rsync.macports.org/release/ports [default]
+
+* cd /Users/<myusername>/ports; sudo portindex
+
+* sudo port install py27-netcdf4
