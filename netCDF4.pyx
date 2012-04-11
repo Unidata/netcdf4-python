@@ -2730,10 +2730,14 @@ details."""
         # to use.
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
-            if not hasattr(data,'ndim') or data.dtype.kind != 'O':
-                # if not, assume it's a single element slice.
+            if not hasattr(data,'ndim'):
+                # if not, assume it's a single element slice containing a
+                # string.
                 self._assign_vlen(elem, data)
                 return
+            elif data.dtype.kind != 'O':
+                msg='only numpy object arrays can be assigned to VLEN var slices'
+                raise TypeError(msg)
 
         # A numpy array is needed. Convert if necessary.
         # assume it's a numpy or masked array if it has an 'ndim' attribute.
