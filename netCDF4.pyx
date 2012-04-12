@@ -910,7 +910,7 @@ cdef _get_att(grp, int varid, name):
     if ierr != NC_NOERR:
         raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
     # attribute is a character or string ...
-    if att_type == NC_CHAR or att_type == NC_STRING:
+    if att_type == NC_CHAR:
         value_arr = numpy.empty(att_len,'S1')
         ierr = nc_get_att_text(grp._grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
@@ -2730,14 +2730,23 @@ details."""
         # to use.
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
-            if not hasattr(data,'ndim'):
-                # if not, assume it's a single element slice containing a
-                # string.
-                self._assign_vlen(elem, data)
-                return
-            elif data.dtype.kind != 'O':
-                msg='only numpy object arrays can be assigned to VLEN var slices'
-                raise TypeError(msg)
+            if self.dtype == str:
+                # for string vars, if data is not an array
+                # assume it is a python string and raise an error
+                # if it is an array, but not an object array.
+                if not hasattr(data,'ndim'):
+                    self._assign_vlen(elem, data)
+                    return
+                elif data.dtype.kind != 'O':
+                    msg='only numpy object arrays can be assigned to VLEN str var slices'
+                    raise TypeError(msg)
+            else:
+                # for non-string vlen arrays, if data is not multi-dim, or
+                # not an object array, assume it represents a single element
+                # of the vlen var.
+                if not hasattr(data,'ndim') or data.dtype.kind != 'O':
+                    self._assign_vlen(elem, data)
+                    return
 
         # A numpy array is needed. Convert if necessary.
         # assume it's a numpy or masked array if it has an 'ndim' attribute.
