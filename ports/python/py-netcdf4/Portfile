@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-netcdf4
-version             0.9.9
+version             svnhead
 categories-append   science
 platforms           darwin
 maintainers         openmaintainer
@@ -14,10 +14,10 @@ homepage            http://code.google.com/p/netcdf4-python/
 master_sites        http://netcdf4-python.googlecode.com/files/
 license             MIT
 
-distname            netCDF4-${version}
-checksums           md5    3f671a529b57ebc9c286a75baf80089d \
-                    sha1   0c542ddaeb6fccf4ebcfc1daefb41d120e29d60c \
-                    rmd160 77428e78b77b82f5bfcba960b1da38741b8b2835
+distname            trunk
+
+fetch.type          svn
+svn.url             http://netcdf4-python.googlecode.com/svn/${distname}
 
 depends_lib-append  port:netcdf port:py${python.version}-numpy 
 
