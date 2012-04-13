@@ -1,7 +1,7 @@
  version 1.0 (not yet released)
  ==============================
  * added MacPorts portfile (so it can be installed via MacPorts
-   on macosx using a "local Portfile repository".
+   on macosx using a "local Portfile repository").
 
  * added experimental 'diskless' file capability (only added to the C 
    lib after the 4.2 release).  Controlled by kwarg 'diskless' to
