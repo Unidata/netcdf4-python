@@ -18,6 +18,8 @@ FILE_NAME2 = tempfile.mktemp(".nc")
 class DisklessTestCase(unittest.TestCase):
 
     def setUp(self):
+        # in memory file, does not exist on disk (closing it
+        # makes data disappear from memory)
         self.file = FILE_NAME
         f = netCDF4.Dataset(self.file,'w',diskless=True, persist=False)
         self.f = f
@@ -35,6 +37,7 @@ class DisklessTestCase(unittest.TestCase):
         bar = f.createVariable('data2', ranarr.dtype.str[1:], ('n1','n2','n4'))
         bar[0:n1dim,:, 0:n3dim] = ranarr2
 
+        # in memory file, that is persisted to disk when close method called.
         self.file2 = FILE_NAME2
         f2 = netCDF4.Dataset(self.file2,'w',diskless=True, persist=True)
         f2.createDimension('n1', n1dim)
@@ -49,6 +52,7 @@ class DisklessTestCase(unittest.TestCase):
     def tearDown(self):
         # Remove the temporary files
         os.remove(self.file2)
+        self.f.close()
 
     def runTest(self):
         """testing diskless file capability"""
@@ -62,14 +66,6 @@ class DisklessTestCase(unittest.TestCase):
         assert_array_almost_equal(bar[:], ranarr2)
         # file does not actually exist on disk
         assert(os.path.isfile(self.file)==False)
-        # now it's gone.
-        self.f.close()
-        try:
-            f = netCDF4.Dataset(self.file)
-        except RuntimeError:
-            pass
-        else:
-            raise ValueError('The diskless dataset should not be there anymore')
         # open persisted file.
         # first, check that file does actually exist on disk
         assert(os.path.isfile(self.file2)==True)
