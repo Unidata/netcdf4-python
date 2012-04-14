@@ -19,8 +19,7 @@ class DisklessTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
-        f = netCDF4.Dataset(self.file,'w',diskless=True, persist=False,
-                format='NETCDF4')
+        f = netCDF4.Dataset(self.file,'w',diskless=True, persist=False)
         self.f = f
         # foo has a single unlimited dimension
         f.createDimension('n1', n1dim)
@@ -37,8 +36,7 @@ class DisklessTestCase(unittest.TestCase):
         bar[0:n1dim,:, 0:n3dim] = ranarr2
 
         self.file2 = FILE_NAME2
-        f2 = netCDF4.Dataset(self.file2,'w',diskless=True, persist=True,
-                format='NETCDF3_64BIT')
+        f2 = netCDF4.Dataset(self.file2,'w',diskless=True, persist=True)
         f2.createDimension('n1', n1dim)
         f2.createDimension('n2', n2dim)
         f2.createDimension('n3', n3dim)
