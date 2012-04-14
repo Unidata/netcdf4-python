@@ -861,7 +861,7 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
                      'f8':NC_FILL_DOUBLE}
 
 # hard code this here, instead of importing from netcdf.h
-# so it will compile with versions < 4.3.
+# so it will compile with versions <= 4.2.
 NC_DISKLESS = 0x0008
 # encoding used to convert strings to bytes when writing text data
 # to the netcdf file, and for converting bytes to strings when reading
@@ -1213,7 +1213,7 @@ _private_atts =\
 
 cdef class Dataset:
     """
-Dataset(self, filename, mode="r", clobber=True, diskless=False, format='NETCDF4')
+Dataset(self, filename, mode="r", clobber=True, diskless=False, persist=False, format='NETCDF4')
 
 A netCDF L{Dataset} is a collection of dimensions, groups, variables and 
 attributes. Together they describe the meaning of data and relations among 
@@ -1256,6 +1256,8 @@ later.
 
 C{diskless} - create diskless (in memory) file.  This is an experimental 
 feature added to the C library after the netcdf-4.2 release.
+
+C{persist} - if diskless=True, persist file to disk when closed (default False).
 
 B{Returns:}
 
@@ -1304,7 +1306,7 @@ group, so the path is simply C{'/'}."""
     maskanscale, cmptypes, vltypes
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-            diskless=False, **kwargs):
+                 diskless=False, persist=False, **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
@@ -1314,30 +1316,53 @@ group, so the path is simply C{'/'}."""
             _set_default_format(format=format)
             if clobber:
                 if diskless:
-                    ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
-                    if ierr != NC_NOERR:
-                        raise RuntimeError('diskless files not supported')
+                    if persist:
+                        ierr = nc_create(path, NC_WRITE | NC_CLOBBER | NC_DISKLESS , &grpid)
+                    else:
+                        ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
                 else:
                     ierr = nc_create(path, NC_CLOBBER, &grpid)
             else:
                 if diskless:
-                    ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
-                    if ierr != NC_NOERR:
-                        raise RuntimeError('diskless files not supported')
+                    if persist:
+                        ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                    else:
+                        ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
                 else:
                     ierr = nc_create(path, NC_NOCLOBBER, &grpid)
             # initialize group dict.
         elif mode == 'r':
-            ierr = nc_open(path, NC_NOWRITE, &grpid)
+            if diskless:
+                ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
+            else:
+                ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
-            ierr = nc_open(path, NC_WRITE, &grpid)
+            if diskless:
+                ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
+            else:
+                ierr = nc_open(path, NC_WRITE, &grpid)
         elif mode == 'as' or mode == 'r+s':
-            ierr = nc_open(path, NC_SHARE, &grpid)
+            if diskless:
+                ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
+            else:
+                ierr = nc_open(path, NC_SHARE, &grpid)
         elif mode == 'ws':
             if clobber:
-                ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)
+                if diskless:
+                    if persist:
+                        ierr = nc_create(path, NC_WRITE| NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
+                    else:
+                        ierr = nc_create(path, NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
+                else:
+                    ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)
             else:
-                ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
+                if diskless:
+                    if persist:
+                        ierr = nc_create(path, NC_WRITE| NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                    else:
+                        ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                else:
+                    ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
         else:
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
         if ierr != NC_NOERR:

@@ -13,12 +13,14 @@ n3dim = 144
 ranarr = 100.*uniform(size=(n1dim,n2dim,n3dim))
 ranarr2 = 100.*uniform(size=(n1dim,n2dim,n3dim))
 FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME2 = tempfile.mktemp(".nc")
 
 class DisklessTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
-        f = netCDF4.Dataset(self.file,'w',diskless=True)
+        f = netCDF4.Dataset(self.file,'w',diskless=True, persist=False,
+                format='NETCDF4')
         self.f = f
         # foo has a single unlimited dimension
         f.createDimension('n1', n1dim)
@@ -34,8 +36,21 @@ class DisklessTestCase(unittest.TestCase):
         bar = f.createVariable('data2', ranarr.dtype.str[1:], ('n1','n2','n4'))
         bar[0:n1dim,:, 0:n3dim] = ranarr2
 
+        self.file2 = FILE_NAME2
+        f2 = netCDF4.Dataset(self.file2,'w',diskless=True, persist=True,
+                format='NETCDF3_64BIT')
+        f2.createDimension('n1', n1dim)
+        f2.createDimension('n2', n2dim)
+        f2.createDimension('n3', n3dim)
+        foo = f2.createVariable('data1', ranarr.dtype.str[1:], ('n1','n2','n3'))
+        # write some data to it.
+        foo[0:n1dim-1] = ranarr[:-1,:,:]
+        foo[n1dim-1] = ranarr[-1,:,:]
+        f2.close()
+
     def tearDown(self):
-        self.f.close()
+        # Remove the temporary files
+        os.remove(self.file2)
 
     def runTest(self):
         """testing diskless file capability"""
@@ -49,6 +64,23 @@ class DisklessTestCase(unittest.TestCase):
         assert_array_almost_equal(bar[:], ranarr2)
         # file does not actually exist on disk
         assert(os.path.isfile(self.file)==False)
+        # now it's gone.
+        self.f.close()
+        try:
+            f = netCDF4.Dataset(self.file)
+        except RuntimeError:
+            pass
+        else:
+            raise ValueError('The diskless dataset should not be there anymore')
+        # open persisted file.
+        # first, check that file does actually exist on disk
+        assert(os.path.isfile(self.file2)==True)
+        f = netCDF4.Dataset(self.file2)
+        foo = f.variables['data1']
+        # check shape.
+        self.assert_(foo.shape == (n1dim,n2dim,n3dim))
+        # check data.
+        assert_array_almost_equal(foo[:], ranarr)
 
 if __name__ == '__main__':
     unittest.main()
