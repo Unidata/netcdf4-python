@@ -1369,6 +1369,10 @@ group, so the path is simply C{'/'}."""
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         # file format attribute.
         self.file_format = _get_format(grpid)
+        # diskless access only works with NETCDF_CLASSIC
+        ncopen = mode.startswith('a') or mode.startswith('r')
+        if self.file_format != 'NETCDF3_CLASSIC' and ncopen:
+            raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
         self._grpid = grpid
         self.path = '/'
         self.parent = None
