@@ -1,12 +1,16 @@
  version 1.0 (not yet released)
  ==============================
  * added MacPorts portfile (so it can be installed via MacPorts
-   on macosx using a "local Portfile repository").
+   on macosx using a "local Portfile repository"). Installs 
+   from svn HEAD using 'port install netcdf4-python'.
 
  * added experimental 'diskless' file capability (only added to the C 
    lib after the 4.2 release).  Controlled by kwarg 'diskless' to
-   netCDF4.Dataset (default False).  Using diskless=True for netcdf <= 4.2
-   has no effect.
+   netCDF4.Dataset (default False). diskless=True when creating a file
+   results in a file that exists only in memory, closing the file
+   makes the data disapper, except if persist=True keyword given in
+   which case it is persisted to a disk file on close.  diskless=True
+   when opening a file creates an in-memory copy of the file for faster access.
 
  * add the ability to specify the location of the required libs 
    (and whether to use nc-config) with setup.cfg, 
