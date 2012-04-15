@@ -46,3 +46,22 @@ for format in ['NETCDF4','NETCDF3_CLASSIC','NETCDF3_64BIT']:
     t = Timer("read_netcdf(ncfile)","from __main__ import read_netcdf,ncfile")
     sys.stdout.write('reading took %s seconds\n' %
             repr(sum(t.repeat(ntrials,1))/ntrials))
+
+# test diskless=True in nc_open
+format='NETCDF3_CLASSIC'
+trials=50
+print 'test caching of file in memory on open for %s' % format
+sys.stdout.write('testing file format %s ...\n' % format)
+write_netcdf('test1.nc',format=format,closeit=True)
+ncfile = netCDF4.Dataset('test1.nc',diskless=False)
+t = Timer("read_netcdf(ncfile)","from __main__ import read_netcdf,ncfile")
+sys.stdout.write('reading (from disk) took %s seconds\n' %
+            repr(sum(t.repeat(ntrials,1))/ntrials))
+ncfile.close()
+ncfile = netCDF4.Dataset('test1.nc',diskless=True)
+# setting diskless=True should cache the file in memory,
+# resulting in faster reads.
+t = Timer("read_netcdf(ncfile)","from __main__ import read_netcdf,ncfile")
+sys.stdout.write('reading (cached in memory) took %s seconds\n' %
+            repr(sum(t.repeat(ntrials,1))/ntrials))
+ncfile.close()
