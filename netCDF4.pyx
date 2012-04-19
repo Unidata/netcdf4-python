@@ -1310,6 +1310,9 @@ group, so the path is simply C{'/'}."""
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
+#       if __netcdf4libversion__ < '4.2.1':
+#           diskless = False # don't raise error, instead silently ignore
+#           raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
         bytestr = _strencode(filename)
         path = bytestr
         if mode == 'w':
@@ -1369,9 +1372,9 @@ group, so the path is simply C{'/'}."""
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         # file format attribute.
         self.file_format = _get_format(grpid)
-        # diskless access only works with NETCDF_CLASSIC
+        # diskless read access only works with NETCDF_CLASSIC (for now)
         ncopen = mode.startswith('a') or mode.startswith('r')
-        if self.file_format != 'NETCDF3_CLASSIC' and ncopen:
+        if diskless and self.file_format != 'NETCDF3_CLASSIC' and ncopen:
             raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
         self._grpid = grpid
         self.path = '/'
@@ -1409,7 +1412,9 @@ group, so the path is simply C{'/'}."""
             ncdump.append('root group (%s file format):\n' % self.file_format)
         else:
             ncdump.append('group %s:\n' % self.path)
-        attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
+        #attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
+        #        self.ncattrs()]
+        attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
                 self.ncattrs()]
         ncdump = ncdump + attrs
         ncdump.append('    dimensions = %s\n' % repr(dimnames))
@@ -2290,7 +2295,9 @@ instance. If C{None}, the data is not truncated. """
     def __unicode__(self):
         ncdump_var = ['%r\n' % type(self)]
         dimnames = tuple([dimname for dimname in self.dimensions])
-        attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
+        #attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
+        #        self.ncattrs()]
+        attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
                 self.ncattrs()]
         if self._iscompound:
             ncdump_var.append('%s %s%s\n' %\
