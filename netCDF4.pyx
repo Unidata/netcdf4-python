@@ -1310,7 +1310,7 @@ group, so the path is simply C{'/'}."""
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
-#       if __netcdf4libversion__ < '4.2.1':
+#       if diskless and __netcdf4libversion__ < '4.2.1':
 #           diskless = False # don't raise error, instead silently ignore
 #           raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
         bytestr = _strencode(filename)
@@ -1412,8 +1412,6 @@ group, so the path is simply C{'/'}."""
             ncdump.append('root group (%s file format):\n' % self.file_format)
         else:
             ncdump.append('group %s:\n' % self.path)
-        #attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
-        #        self.ncattrs()]
         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
                 self.ncattrs()]
         ncdump = ncdump + attrs
@@ -2295,8 +2293,6 @@ instance. If C{None}, the data is not truncated. """
     def __unicode__(self):
         ncdump_var = ['%r\n' % type(self)]
         dimnames = tuple([dimname for dimname in self.dimensions])
-        #attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
-        #        self.ncattrs()]
         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
                 self.ncattrs()]
         if self._iscompound:
