@@ -1353,7 +1353,7 @@ group, so the path is simply C{'/'}."""
             if clobber:
                 if diskless:
                     if persist:
-                        ierr = nc_create(path, NC_WRITE| NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
+                        ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
                     else:
                         ierr = nc_create(path, NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
                 else:
@@ -1361,7 +1361,7 @@ group, so the path is simply C{'/'}."""
             else:
                 if diskless:
                     if persist:
-                        ierr = nc_create(path, NC_WRITE| NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                        ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
                     else:
                         ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
                 else:
