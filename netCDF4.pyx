@@ -3090,6 +3090,8 @@ The default value of C{maskandscale} is C{True}
             else:
                 ierr = nc_get_vars(self._grpid, self._varid,
                                    startp, countp, stridep, data.data)
+            if ierr == NC_EINVALCOORDS:
+                raise IndexError 
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         elif self._isvlen:
@@ -3111,6 +3113,8 @@ The default value of C{maskandscale} is C{True}
                     raise IndexError('strides must all be 1 for string variables')
                     #ierr = nc_get_vars(self._grpid, self._varid,
                     #                   startp, countp, stridep, strdata)
+                if ierr == NC_EINVALCOORDS:
+                    raise IndexError 
                 if ierr != NC_NOERR:
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # loop over elements of object array, fill array with
@@ -3132,6 +3136,8 @@ The default value of C{maskandscale} is C{True}
                     raise IndexError('strides must all be 1 for vlen variables')
                     #ierr = nc_get_vars(self._grpid, self._varid,
                     #                   startp, countp, stridep, vldata)
+                if ierr == NC_EINVALCOORDS:
+                    raise IndexError 
                 if ierr != NC_NOERR:
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # loop over elements of object array, fill array with
