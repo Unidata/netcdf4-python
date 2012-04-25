@@ -1,5 +1,10 @@
  version 1.0 (not yet released)
  ==============================
+ * raise IndexError when indexing a netcdf variable out of range
+   so iterating over a variable in a for loop behaves as expected
+   (as described in http://effbot.org/zone/python-for-statement.htm).
+   Fixes issue 121.
+
  * added MacPorts portfile (so it can be installed via MacPorts
    on macosx using a "local Portfile repository"). Installs 
    from svn HEAD using 'port install netcdf4-python'.

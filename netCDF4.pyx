@@ -3092,7 +3092,7 @@ The default value of C{maskandscale} is C{True}
                                    startp, countp, stridep, data.data)
             if ierr == NC_EINVALCOORDS:
                 raise IndexError 
-            if ierr != NC_NOERR:
+            elif ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         elif self._isvlen:
             # allocate array of correct primitive type.
@@ -3115,7 +3115,7 @@ The default value of C{maskandscale} is C{True}
                     #                   startp, countp, stridep, strdata)
                 if ierr == NC_EINVALCOORDS:
                     raise IndexError 
-                if ierr != NC_NOERR:
+                elif ierr != NC_NOERR:
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # loop over elements of object array, fill array with
                 # contents of strdata.
@@ -3138,7 +3138,7 @@ The default value of C{maskandscale} is C{True}
                     #                   startp, countp, stridep, vldata)
                 if ierr == NC_EINVALCOORDS:
                     raise IndexError 
-                if ierr != NC_NOERR:
+                elif ierr != NC_NOERR:
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # loop over elements of object array, fill array with
                 # contents of vlarray struct, put array in object array.

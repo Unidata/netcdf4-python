@@ -73,6 +73,10 @@ class VariablesTestCase(unittest.TestCase):
         g = f.groups[GROUP_NAME]
         varnames = sorted(g.variables.keys())
         v1 = g.variables[VAR_DOUBLE_NAME]
+        # test iterating over variable (should stop when 
+        # it gets to the end and raises IndexError, issue 121)
+        for v in v1:
+            pass
         v2 = g.variables[VAR_SHORT_NAME]
         assert varnames == VARNAMES
         assert v1.dtype.str[1:] == 'f8'
