@@ -11,4 +11,4 @@ rsync://rsync.macports.org/release/ports [default]
 * sudo port install py27-netcdf4
 This will install netcdf4-python from svn HEAD. To periodically upgrade, just do
    - sudo port uninstall py-netcdf4
-   - sudo port install py-netcdf4 (this re-download and rebuild)
+   - sudo port install py-netcdf4 (this will re-download and rebuild)
