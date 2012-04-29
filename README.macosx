@@ -1,5 +1,5 @@
 Although netcdf4-python is not yet part of MacPorts (http://www.macports.org), you can use the 
-include Portfile to install it using a local Portfile repository.  See ports/README
+included Portfile to install it using a local Portfile repository.  See ports/README
 for more details.  Once macports is installed, and your local Portfile repo is set up,
 all you have to do to install netcdf4-python and it's dependencies is run "sudo port install py27-netcdf4".
 
