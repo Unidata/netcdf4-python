@@ -15,7 +15,7 @@ sys.stdout.write('reading and writing a %s by %s by %s by %s random array ..\n'%
 array = uniform(size=(n1dim,n2dim,n3dim,n4dim))
 
 def write_netcdf(filename,zlib=False,least_significant_digit=None,format='NETCDF4',closeit=False):
-    file = netCDF4.Dataset(filename,'w',format=format,diskless=True)
+    file = netCDF4.Dataset(filename,'w',format=format,diskless=True,persist=True)
     file.createDimension('n1', n1dim)
     file.createDimension('n2', n2dim)
     file.createDimension('n3', n3dim)
