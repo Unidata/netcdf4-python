@@ -1,5 +1,11 @@
  version 1.0 (not yet released)
  ==============================
+ * add 'aggdim' keyword to MFDataset, so the name of the dimension
+   to aggregate over can be specified (instead of using the unlimited
+   dimension).  aggdim=None by default, which results in the previous
+   behavior.  aggdim must be the leftmost dimension of all the variables
+   to be aggregated.
+
  * raise IndexError when indexing a netcdf variable out of range
    so iterating over a variable in a for loop behaves as expected
    (as described in http://effbot.org/zone/python-for-statement.htm).

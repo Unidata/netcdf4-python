@@ -205,22 +205,25 @@ Example usage:
  75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
     """
 
-    def __init__(self, files, check=False, exclude=[]):
+    def __init__(self, files, check=False, aggdim=None, exclude=[]):
         """
 Open a Dataset spanning multiple files, making it look as if it was a 
-single file. Variables in the list of files that share the same unlimited 
-dimension are aggregated. 
+single file. Variables in the list of files that share the same 
+dimension (specified with the keyword C{aggdim} are aggregated. If
+C{aggdim} is not specified, the unlimited is aggregated.  Currently,
+C{aggdim} must be the leftmost (fastest varying) dimension of each
+of the variables to be aggregated.
 
 Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
 
 Usage:
 
-nc = MFDataset(files, check=False, exclude=[])
+nc = MFDataset(files, check=False, aggdim=None, exclude=[])
 
 @param files: either a sequence of netCDF files or a string with a 
 wildcard (converted to a sorted list of files using glob)  The first file 
-in the list will become the "master" file, defining all the record 
-variables (variables with an unlimited dimension) which may span 
+in the list will become the "master" file, defining all the 
+variables with an aggregation dimension which may span 
 subsequent files. Attribute access returns attributes only from "master" 
 file. The files are always opened in read-only mode.
 
@@ -228,6 +231,10 @@ file. The files are always opened in read-only mode.
 correct variables structure for all of the netcdf files.  Checking makes 
 the initialization of the MFDataset instance much slower. Default is 
 False.
+
+@param aggdim: The name of the dimension to aggregate over (must
+be the leftmost dimension of each of the variables to be aggregated).
+If None (default), aggregate over the unlimited dimension.
 
 @param exclude: A list of variable names to exclude from aggregation. 
 Default is an empty list.
@@ -251,17 +258,23 @@ Default is an empty list.
         for name, value in cdfm.__dict__.items():
             self.__dict__[name] = value
 
-        # Make sure the master defines an unlimited dimension.
-        unlimDimId = None
+        # Make sure the master defines a dim with name aggdim,
+        # or an unlimited dimension.
+        aggDimId = None
         for dimname,dim in cdfm.dimensions.items():
-            if dim.isunlimited():
-                unlimDimId = dim
-                unlimDimName = dimname
-        if unlimDimId is None:
-            raise IOError("master dataset %s does not have an unlimited dimension" % master)
+            if aggdim is None:
+                if dim.isunlimited():
+                    aggDimId = dim
+                    aggDimName = dimname
+            else:
+                if dimname == aggdim:
+                    aggDimId = dim
+                    aggDimName = dimname
+        if aggDimId is None:
+            raise IOError("master dataset %s does not have a aggregation dimension" % master)
 
-        # Get info on all record variables defined in the master.
-        # Make sure the master defines at least one record variable.
+        # Get info on all aggregation variables defined in the master.
+        # Make sure the master defines at least one aggregation variable.
         masterRecVar = {}
         for vName,v in cdfm.variables.items():
             # skip variables specified in exclude list.
@@ -271,26 +284,26 @@ Default is an empty list.
             type = v.dtype
             # Be carefull: we may deal with a scalar (dimensionless) variable.
             # Unlimited dimension always occupies index 0.
-            if (len(dims) > 0 and unlimDimName == dims[0]):
+            if (len(dims) > 0 and aggDimName == dims[0]):
                 masterRecVar[vName] = (dims, shape, type)
         if len(masterRecVar) == 0:
-            raise IOError("master dataset %s does not have any record variable" % master)
+            raise IOError("master dataset %s does not have any variables to aggregate" % master)
 
         # Create the following:
         #   cdf       list of Dataset instances
         #   cdfVLen   list unlimited dimension lengths in each CDF instance
-        #   cdfRecVar dictionnary indexed by the record var names; each key holds
+        #   cdfRecVar dictionary indexed by the aggregation var names; each key holds
         #             a list of the corresponding Variable instance, one for each
         #             cdf file of the file set
         cdf = [cdfm]
         self._cdf = cdf        # Store this now, because dim() method needs it
-        cdfVLen = [len(unlimDimId)]
+        cdfVLen = [len(aggDimId)]
         cdfRecVar = {}
         for v in masterRecVar.keys():
             cdfRecVar[v] = [cdfm.variables[v]]
         
         # Open each remaining file in read-only mode.
-        # Make sure each file defines the same record variables as the master
+        # Make sure each file defines the same aggregation variables as the master
         # and that the variables are defined in the same way (name, shape and type)
         for f in files[1:]:
             part = Dataset(f)
@@ -299,12 +312,9 @@ Default is an empty list.
                 if check:
                     # Make sure master rec var is also defined here.
                     if v not in varInfo.keys():
-                        raise IOError("record variable %s not defined in %s" % (v, f))
+                        raise IOError("aggregation variable %s not defined in %s" % (v, f))
 
-                    # Make sure it is a record var.
-                    vInst = part.variables[v]
-                    if not part.dimensions[vInst.dimensions[0]].isunlimited():
-                        raise MFDataset("variable %s is not a record var inside %s" % (v, f))
+                    #if not vInst.dimensions[0] != aggDimName:
 
                     masterDims, masterShape, masterType = masterRecVar[v][:3]
                     extDims, extShape, extType = varInfo[v][:3]
@@ -336,6 +346,7 @@ Default is an empty list.
                                        (v, master, masterType, f, extType))
 
                     # Everythig ok.
+                    vInst = part.variables[v]
                     cdfRecVar[v].append(vInst)
                 else:
                     # No making sure of anything -- assume this is ok..
@@ -343,7 +354,7 @@ Default is an empty list.
                     cdfRecVar[v].append(vInst)
 
             cdf.append(part)
-            cdfVLen.append(len(part.dimensions[unlimDimName]))
+            cdfVLen.append(len(part.dimensions[aggDimName]))
 
         # Attach attributes to the MFDataset instance.
         # A local __setattr__() method is required for them.
@@ -351,16 +362,16 @@ Default is an empty list.
         self._cdfVLen = cdfVLen              # list of unlimited lengths
         self._cdfTLen = sum(cdfVLen) # total length
         self._cdfRecVar = cdfRecVar          # dictionary of Variable instances for all
-                                             # the record variables
+                                             # the aggregation variables
         self._dims = cdfm.dimensions
         self._grps = cdfm.groups
         for dimname, dim in self._dims.items():
-            if dim.isunlimited():
+            if dimname == aggDimName:
                 self._dims[dimname] = _Dimension(dimname, dim, self._cdfVLen, self._cdfTLen)
         self._vars = cdfm.variables
         for varname,var in self._vars.items():
             if varname in self._cdfRecVar.keys():
-                self._vars[varname] = _Variable(self, varname, var, unlimDimName)
+                self._vars[varname] = _Variable(self, varname, var, aggDimName)
         self._file_format = []
         for dset in self._cdf:
             if dset.file_format == 'NETCDF4':
@@ -616,7 +627,7 @@ dataset.
 @param time: Time variable from a MFDataset. 
 
 @param units: Time units, for example, 'days since 1979-01-01'. If None, use
-the units from the master record. 
+the units from the master variable. 
         """
         import datetime
         self.__time = time
