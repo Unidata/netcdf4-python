@@ -175,7 +175,7 @@ used to build the module, and when it was built.
 
 class MFDataset(Dataset): 
     """
-MFDataset(self, files, check=False, exclude=[])
+MFDataset(self, files, check=False, aggdim=None, exclude=[])
 
 Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
@@ -209,7 +209,7 @@ Example usage:
         """
 Open a Dataset spanning multiple files, making it look as if it was a 
 single file. Variables in the list of files that share the same 
-dimension (specified with the keyword C{aggdim} are aggregated. If
+dimension (specified with the keyword C{aggdim}) are aggregated. If
 C{aggdim} is not specified, the unlimited is aggregated.  Currently,
 C{aggdim} must be the leftmost (fastest varying) dimension of each
 of the variables to be aggregated.
