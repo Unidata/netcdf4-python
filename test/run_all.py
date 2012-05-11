@@ -16,6 +16,8 @@ if python3:
     test_files.remove('tst_unicode.py')
 else:
     test_files.remove('tst_unicode3.py')
+if __netcdf4libversion__ < '4.2.1':
+    test_files.remove('tst_diskless.py')
 py_path = os.environ.get('PYTHONPATH')
 if py_path is None:
     py_path = '.'

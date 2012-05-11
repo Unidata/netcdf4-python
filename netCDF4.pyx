@@ -1310,9 +1310,9 @@ group, so the path is simply C{'/'}."""
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
-#       if diskless and __netcdf4libversion__ < '4.2.1':
-#           diskless = False # don't raise error, instead silently ignore
-#           raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
+        if diskless and __netcdf4libversion__ < '4.2.1':
+            #diskless = False # don't raise error, instead silently ignore
+            raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
         bytestr = _strencode(filename)
         path = bytestr
         if mode == 'w':
