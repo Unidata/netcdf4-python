@@ -1,5 +1,5 @@
- version 1.0 (not yet released)
- ==============================
+ version 1.0 (svn revision 1164)
+ ===============================
  * add 'aggdim' keyword to MFDataset, so the name of the dimension
    to aggregate over can be specified (instead of using the unlimited
    dimension).  aggdim=None by default, which results in the previous
