@@ -59,7 +59,7 @@ object --+
 </pre>
 
 <hr />
-<p>MFDataset(self, files, check=False, exclude=[])</p>
+<p>MFDataset(self, files, check=False, aggdim=None, exclude=[])</p>
   <p>Class for reading multi-file netCDF Datasets, making variables 
   spanning multiple files appear as if they were in one file.</p>
   <p>Datasets must be in <code>NETCDF4_CLASSIC, NETCDF3_CLASSIC or 
@@ -169,7 +169,7 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">...</span>)</span><br />
       Close the Dataset.</td>
           <td align="right" valign="top">
             
@@ -186,7 +186,7 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="netCDF4.MFDataset-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">...</span>)</span><br />
       return netCDF global attribute names for this <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
       href="netCDF4.Group-class.html" class="link">Group</a> in a list.</td>
@@ -220,6 +220,7 @@ object --+
       <code><a href="netCDF4.Dataset-class.html#set_fill_off">set_fill_off</a></code>,
       <code><a href="netCDF4.Dataset-class.html#set_fill_on">set_fill_on</a></code>,
       <code><a href="netCDF4.Dataset-class.html#setncattr">setncattr</a></code>,
+      <code><a href="netCDF4.Dataset-class.html#setncatts">setncatts</a></code>,
       <code><a href="netCDF4.Dataset-class.html#sync">sync</a></code>
       </p>
     <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
@@ -324,26 +325,32 @@ object --+
   </tr></table>
   
   <p>Open a Dataset spanning multiple files, making it look as if it was a 
-  single file. Variables in the list of files that share the same unlimited
-  dimension are aggregated.</p>
+  single file. Variables in the list of files that share the same dimension
+  (specified with the keyword <code>aggdim</code>) are aggregated. If 
+  <code>aggdim</code> is not specified, the unlimited is aggregated.  
+  Currently, <code>aggdim</code> must be the leftmost (fastest varying) 
+  dimension of each of the variables to be aggregated.</p>
   <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf" 
   target="_top">pycdf</a> by Andre Gosselin.</p>
   <p>Usage:</p>
-  <p>nc = MFDataset(files, check=False, exclude=[])</p>
+  <p>nc = MFDataset(files, check=False, aggdim=None, exclude=[])</p>
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>files</code></strong> - either a sequence of netCDF files or a string with a wildcard 
           (converted to a sorted list of files using glob)  The first file 
           in the list will become the &quot;master&quot; file, defining all
-          the record variables (variables with an unlimited dimension) 
-          which may span subsequent files. Attribute access returns 
-          attributes only from &quot;master&quot; file. The files are 
-          always opened in read-only mode.</li>
+          the variables with an aggregation dimension which may span 
+          subsequent files. Attribute access returns attributes only from 
+          &quot;master&quot; file. The files are always opened in read-only
+          mode.</li>
         <li><strong class="pname"><code>check</code></strong> - True if you want to do consistency checking to ensure the correct
           variables structure for all of the netcdf files.  Checking makes 
           the initialization of the MFDataset instance much slower. Default
           is False.</li>
+        <li><strong class="pname"><code>aggdim</code></strong> - The name of the dimension to aggregate over (must be the leftmost
+          dimension of each of the variables to be aggregated). If None 
+          (default), aggregate over the unlimited dimension.</li>
         <li><strong class="pname"><code>exclude</code></strong> - A list of variable names to exclude from aggregation. Default is 
           an empty list.</li>
     </ul></dd>
@@ -406,7 +413,7 @@ object --+
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">self</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -429,7 +436,7 @@ object --+
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">ncattrs</span>(<span class="sig-arg">self</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ncattrs</span>(<span class="sig-arg">...</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -474,7 +481,7 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jan 18 15:39:04 2012
+    Generated by Epydoc 3.0.1 on Fri May 11 14:58:48 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

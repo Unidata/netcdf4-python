@@ -3,7 +3,6 @@ netCDF4._set_default_format	netCDF4-module.html#_set_default_format
 netCDF4.default_encoding	netCDF4-module.html#default_encoding
 netCDF4.num2date	netCDF4-module.html#num2date
 netCDF4._private_atts	netCDF4-module.html#_private_atts
-netCDF4._nctonptype	netCDF4-module.html#_nctonptype
 netCDF4.__package__	netCDF4-module.html#__package__
 netCDF4.stringtochar	netCDF4-module.html#stringtochar
 netCDF4.chartostring	netCDF4-module.html#chartostring
@@ -18,9 +17,11 @@ netCDF4._nptonctype	netCDF4-module.html#_nptonctype
 netCDF4.python3	netCDF4-module.html#python3
 netCDF4.unicode_error	netCDF4-module.html#unicode_error
 netCDF4._supportedtypes	netCDF4-module.html#_supportedtypes
-netCDF4._gethdf5libversion	netCDF4-module.html#_gethdf5libversion
+netCDF4.NC_DISKLESS	netCDF4-module.html#NC_DISKLESS
 netCDF4._key	netCDF4-module.html#_key
 netCDF4.default_fillvals	netCDF4-module.html#default_fillvals
+netCDF4._nctonptype	netCDF4-module.html#_nctonptype
+netCDF4._gethdf5libversion	netCDF4-module.html#_gethdf5libversion
 netCDF4._npversion	netCDF4-module.html#_npversion
 netCDF4.__hdf5libversion__	netCDF4-module.html#__hdf5libversion__
 netCDF4.__required_netcdf4version__	netCDF4-module.html#__required_netcdf4version__
@@ -50,6 +51,7 @@ netCDF4.Dataset.__enter__	netCDF4.Dataset-class.html#__enter__
 netCDF4.Dataset.__getattr__	netCDF4.Dataset-class.html#__getattr__
 netCDF4.Dataset.__unicode__	netCDF4.Dataset-class.html#__unicode__
 netCDF4.Dataset._redef	netCDF4.Dataset-class.html#_redef
+netCDF4.Dataset.setncatts	netCDF4.Dataset-class.html#setncatts
 netCDF4.Dataset.setncattr	netCDF4.Dataset-class.html#setncattr
 netCDF4.Dataset.set_fill_off	netCDF4.Dataset-class.html#set_fill_off
 netCDF4.Dataset.__str__	netCDF4.Dataset-class.html#__str__
@@ -98,6 +100,7 @@ netCDF4.Dataset.__enter__	netCDF4.Dataset-class.html#__enter__
 netCDF4.Dataset.file_format	netCDF4.Dataset-class.html#file_format
 netCDF4.Dataset.__getattr__	netCDF4.Dataset-class.html#__getattr__
 netCDF4.Dataset._redef	netCDF4.Dataset-class.html#_redef
+netCDF4.Dataset.setncatts	netCDF4.Dataset-class.html#setncatts
 netCDF4.Dataset.setncattr	netCDF4.Dataset-class.html#setncattr
 netCDF4.Dataset.set_fill_off	netCDF4.Dataset-class.html#set_fill_off
 netCDF4.Dataset.__str__	netCDF4.Dataset-class.html#__str__
@@ -136,6 +139,7 @@ netCDF4.Dataset.__enter__	netCDF4.Dataset-class.html#__enter__
 netCDF4.Dataset.file_format	netCDF4.Dataset-class.html#file_format
 netCDF4.Dataset.__getattr__	netCDF4.Dataset-class.html#__getattr__
 netCDF4.Dataset._redef	netCDF4.Dataset-class.html#_redef
+netCDF4.Dataset.setncatts	netCDF4.Dataset-class.html#setncatts
 netCDF4.Dataset.setncattr	netCDF4.Dataset-class.html#setncattr
 netCDF4.Dataset.set_fill_off	netCDF4.Dataset-class.html#set_fill_off
 netCDF4.Dataset.variables	netCDF4.Dataset-class.html#variables
@@ -186,6 +190,7 @@ netCDF4.Variable.group	netCDF4.Variable-class.html#group
 netCDF4.Variable.__new__	netCDF4.Variable-class.html#__new__
 netCDF4.Variable._iscompound	netCDF4.Variable-class.html#_iscompound
 netCDF4.Variable.__getattr__	netCDF4.Variable-class.html#__getattr__
+netCDF4.Variable.setncatts	netCDF4.Variable-class.html#setncatts
 netCDF4.Variable.setncattr	netCDF4.Variable-class.html#setncattr
 netCDF4.Variable.__len__	netCDF4.Variable-class.html#__len__
 netCDF4.Variable._varid	netCDF4.Variable-class.html#_varid
