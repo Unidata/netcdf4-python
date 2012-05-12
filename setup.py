@@ -49,7 +49,7 @@ setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars.
 ncconfig = None
 if os.path.exists(setup_cfg):
-    print 'reading from setup.cfg...'
+    sys.stdout.write('reading from setup.cfg...\n') 
     config = configparser.SafeConfigParser()
     config.read(setup_cfg)
     try: HDF5_dir = config.get("directories", "HDF5_dir")
