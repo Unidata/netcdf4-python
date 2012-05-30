@@ -1,3 +1,6 @@
+ version 1.0fix1
+ ===============
+  
  * fix python 3 incompatibility in setup.py (issue 125).
 
  version 1.0 (svn revision 1164)
