@@ -2929,7 +2929,8 @@ The default value of C{maskandscale} is C{True}
 
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
-        cdef int ierr, ndims, totelem
+        cdef int ierr, ndims
+        cdef npy_intp totelem
         cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
         cdef ptrdiff_t stridep[NC_MAX_DIMS]
         cdef char **strdata

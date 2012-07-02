@@ -1,3 +1,8 @@
+ since version 1.0fix1
+ =====================
+
+ * allow for writing of large variables (> 2**32 elements). Fixes issue 130.
+
  version 1.0fix1
  ===============
   
