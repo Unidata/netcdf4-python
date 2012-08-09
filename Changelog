@@ -1,6 +1,8 @@
  since version 1.0fix1
  =====================
 
+ * fix to allow writing of unicode data to a NC_CHAR variable.
+
  * allow for writing of large variables (> 2**32 elements). Fixes issue 130.
 
  version 1.0fix1

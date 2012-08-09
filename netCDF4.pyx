@@ -835,7 +835,8 @@ if __hdf5libversion__ < __required_hdf5version__:
 
 # numpy data type <--> netCDF 4 data type mapping.
 
-_nptonctype  = {'S1' : NC_CHAR,
+_nptonctype  = {'U1' : NC_CHAR,
+                'S1' : NC_CHAR,
                 'i1' : NC_BYTE,
                 'u1' : NC_UBYTE,
                 'i2' : NC_SHORT,
@@ -848,6 +849,7 @@ _nptonctype  = {'S1' : NC_CHAR,
                 'f8' : NC_DOUBLE}
 
 default_fillvals = {#'S1':NC_FILL_CHAR, 
+                     'U1':'\0',
                      'S1':'\0',
                      'i1':NC_FILL_BYTE,
                      'u1':NC_FILL_UBYTE,
