@@ -11,39 +11,52 @@ convert a string to a character array of length NUMCHARS
 @param NUMCHARS:  number of characters used to represent string 
 (if len(a) < NUMCHARS, it will be padded on the right with blanks).
 
-@return: A rank 1 numpy character array of length NUMCHARS with datatype 'S1'"""
+@param type:  type of numpy array to return.  Default is 'S', which 
+means an array of dtype 'S1' will be returned.  If type='U', a
+unicode array (dtype = 'U1') will be returned.
+
+@return: A rank 1 numpy character array of length NUMCHARS with datatype 'S1'
+(default) or 'U1' (if type='U')"""
+    if type not in ["S","U"]:
+        raise ValueError("type must string or unicode ('S' or 'U')")
     arr = numpy.zeros(NUMCHARS,type+'1')
     arr[0:len(string)] = tuple(string)
     return arr
 
-def stringtochar(a,type='S'):
+def stringtochar(a):
     """
 stringtochar(a)
 
 convert a string array to a character array with one extra dimension
 
-@param a:  Input numpy string array with numpy datatype 'SN', where N
+@param a:  Input numpy string array with numpy datatype 'SN' or 'UN', where N
 is the number of characters in each string.  Will be converted to
-an array of characters (datatype 'S1') of shape a.shape + (N,).
+an array of characters (datatype 'S1' or 'U1') of shape a.shape + (N,).
 
-@return: A numpy character array with datatype 'S1' and shape 
-a.shape + (N,), where N is the length of each string in a."""
+@return: A numpy character array with datatype 'S1' or 'U1'
+and shape a.shape + (N,), where N is the length of each string in a."""
+    type = a.dtype.kind
+    if type not in ["S","U"]:
+        raise ValueError("type must string or unicode ('S' or 'U')")
     b = numpy.array(tuple(a.tostring().decode(default_encoding)),type+'1')
     b.shape = a.shape + (a.itemsize,)
     return b
 
-def chartostring(b,type='S'):
+def chartostring(b):
     """
 chartostring(b)
 
 convert a character array to a string array with one less dimension.
 
-@param b:  Input character array (numpy datatype 'S1').
+@param b:  Input character array (numpy datatype 'S1' or 'U1').
 Will be converted to a array of strings, where each string has a fixed
 length of b.shape[-1] characters.
 
-@return: A numpy string array with datatype 'SN' and shape b.shape[:-1],
+@return: A numpy string array with datatype 'SN' or 'UN' and shape b.shape[:-1],
 where N=b.shape[-1]."""
+    type = b.dtype.kind
+    if type not in ["S","U"]:
+        raise ValueError("type must string or unicode ('S' or 'U')")
     bs = b.tostring().decode(default_encoding)
     slen = b.shape[-1]
     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],type+repr(slen))
