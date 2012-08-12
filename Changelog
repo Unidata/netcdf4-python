@@ -1,5 +1,5 @@
- since version 1.0fix1
- =====================
+ version 1.0.1 (not yet released)
+ ================================
 
  * fix to allow writing of unicode data to a NC_CHAR variable.
 
