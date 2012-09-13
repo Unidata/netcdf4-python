@@ -2626,13 +2626,14 @@ details."""
         # Fill output array with data chunks. 
         for (a,b,c,i) in zip(start, count, stride, put_ind):
             datout = self._get(a,b,c)
-            if data.shape == datout.shape:
+            if not hasattr(datout,'shape') or data.shape == datout.shape:
                 data = datout
             else:
                 data[tuple(i)] = numpy.squeeze(datout)
 
         # Remove extra singleton dimensions. 
-        data = data[tuple(squeeze)]
+        if hasattr(data,'shape'):
+            data = data[tuple(squeeze)]
 
         # if auto_maskandscale mode set to True, (through
         # a call to set_auto_maskandscale), perform
@@ -2700,7 +2701,7 @@ details."""
         # check to see that elem is a tuple of integers.
         # handle negative integers.
         if isinstance(elem, int):
-            if ndims != 1:
+            if ndims > 1:
                 raise IndexError(msg)
             if elem < 0: 
                 if self.shape[0]+elem >= 0:
