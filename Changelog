@@ -1,6 +1,9 @@
  version 1.0.1 (not yet released)
  ================================
 
+ * automatically close netcdf files when there are no references
+   left to Dataset object (using __dealloc__ method).  Fixes issue 137.
+
  * fix for slicing of scalar vlen string variables (issue 140).
 
  * fix to allow writing of unicode data to a NC_CHAR variable.

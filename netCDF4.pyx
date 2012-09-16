@@ -1431,6 +1431,13 @@ Close the Dataset."""
         ierr = nc_close(self._grpid)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        self._grpid = 0 # indicates file already closed, checked by __dealloc__
+
+    def __dealloc__(self):
+        # close file when there are no references to object left
+        cdef int ierr
+        if self._grpid:
+            ierr = nc_close(self._grpid)
 
     def sync(self):
         """
