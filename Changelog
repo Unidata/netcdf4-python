@@ -1,6 +1,9 @@
  version 1.0.1 (not yet released)
  ================================
 
+ * fix error that occurred when retrieving data from a variable that has a
+   missing_value attribute specified as a string (issue 142).
+
  * automatically close netcdf files when there are no references
    left to Dataset object (using __dealloc__ method).  Fixes issue 137.
 

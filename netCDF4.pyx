@@ -2667,15 +2667,19 @@ details."""
         # and/or _FillValues.
         totalmask = numpy.zeros(data.shape, numpy.bool)
         fill_value = None
-        if hasattr(self, 'missing_value') and (data == self.missing_value).any():
-            mask=data==self.missing_value
-            fill_value = self.missing_value
-            totalmask += mask
-        if hasattr(self, '_FillValue') and (data == self._FillValue).any():
-            mask=data==self._FillValue
-            if fill_value is None:
-                fill_value = self._FillValue
-            totalmask += mask
+        if hasattr(self, 'missing_value'):
+            mval = numpy.array(self.missing_value, self.dtype)
+            if (data == mval).any():
+                mask=data==mval
+                fill_value = mval
+                totalmask += mask
+        if hasattr(self, '_FillValue'):
+            fval = numpy.array(self._FillValue, self.dtype)
+            if (data == fval).any():
+                mask=data==fval
+                if fill_value is None:
+                    fill_value = fval
+                totalmask += mask
         else:
             fillval = default_fillvals[self.dtype.str[1:]]
             has_fillval = data == fillval
