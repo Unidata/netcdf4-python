@@ -1,6 +1,6 @@
 # utility functions (visible from python).
 
-def stringtoarr(string,NUMCHARS,type='S'):
+def stringtoarr(string,NUMCHARS,dtype='S'):
     """
 stringtoarr(a, NUMCHARS)
 
@@ -11,15 +11,15 @@ convert a string to a character array of length NUMCHARS
 @param NUMCHARS:  number of characters used to represent string 
 (if len(a) < NUMCHARS, it will be padded on the right with blanks).
 
-@param type:  type of numpy array to return.  Default is 'S', which 
-means an array of dtype 'S1' will be returned.  If type='U', a
+@param dtype:  type of numpy array to return.  Default is 'S', which 
+means an array of dtype 'S1' will be returned.  If dtype='U', a
 unicode array (dtype = 'U1') will be returned.
 
 @return: A rank 1 numpy character array of length NUMCHARS with datatype 'S1'
-(default) or 'U1' (if type='U')"""
-    if type not in ["S","U"]:
-        raise ValueError("type must string or unicode ('S' or 'U')")
-    arr = numpy.zeros(NUMCHARS,type+'1')
+(default) or 'U1' (if dtype='U')"""
+    if dtype not in ["S","U"]:
+        raise ValueError("dtype must string or unicode ('S' or 'U')")
+    arr = numpy.zeros(NUMCHARS,dtype+'1')
     arr[0:len(string)] = tuple(string)
     return arr
 
@@ -35,10 +35,10 @@ an array of characters (datatype 'S1' or 'U1') of shape a.shape + (N,).
 
 @return: A numpy character array with datatype 'S1' or 'U1'
 and shape a.shape + (N,), where N is the length of each string in a."""
-    type = a.dtype.kind
-    if type not in ["S","U"]:
+    dtype = a.dtype.kind
+    if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
-    b = numpy.array(tuple(a.tostring().decode(default_encoding)),type+'1')
+    b = numpy.array(tuple(a.tostring().decode(default_encoding)),dtype+'1')
     b.shape = a.shape + (a.itemsize,)
     return b
 
@@ -54,12 +54,12 @@ length of b.shape[-1] characters.
 
 @return: A numpy string array with datatype 'SN' or 'UN' and shape b.shape[:-1],
 where N=b.shape[-1]."""
-    type = b.dtype.kind
-    if type not in ["S","U"]:
+    dtype = b.dtype.kind
+    if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
     bs = b.tostring().decode(default_encoding)
     slen = b.shape[-1]
-    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],type+repr(slen))
+    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
     a.shape = b.shape[:-1]
     return a
 
@@ -294,11 +294,11 @@ Default is an empty list.
             if vName in exclude: continue
             dims = v.dimensions
             shape = v.shape
-            type = v.dtype
+            dtype = v.dtype
             # Be carefull: we may deal with a scalar (dimensionless) variable.
             # Unlimited dimension always occupies index 0.
             if (len(dims) > 0 and aggDimName == dims[0]):
-                masterRecVar[vName] = (dims, shape, type)
+                masterRecVar[vName] = (dims, shape, dtype)
         if len(masterRecVar) == 0:
             raise IOError("master dataset %s does not have any variables to aggregate" % master)
 
