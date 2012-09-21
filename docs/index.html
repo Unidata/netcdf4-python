@@ -920,7 +920,7 @@
         PERFORMANCE OF THIS SOFTWARE.
       </p>
       <p><strong>Version:</strong>
-        1.0
+        1.0.1
       </p>
 </div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
@@ -1111,7 +1111,8 @@
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="netCDF4-module.html#stringtoarr" class="summary-sig-name">stringtoarr</a>(<span class="summary-sig-arg">a</span>,
-        <span class="summary-sig-arg">NUMCHARS</span>)</span><br />
+        <span class="summary-sig-arg">NUMCHARS</span>,
+        <span class="summary-sig-arg">dtype</span>=<span class="summary-sig-default">'S'</span>)</span><br />
       convert a string to a character array of length NUMCHARS</td>
           <td align="right" valign="top">
             
@@ -1202,14 +1203,14 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a href="netCDF4-module.html#default_fillvals" class="summary-name">default_fillvals</a> = <code title="{'S1': '\x00',
+ 'U1': '\x00',
  'f4': 9.96920996839e+36,
  'f8': 9.96920996839e+36,
  'i1': -127,
  'i2': -32767,
  'i4': -2147483647,
  'i8': -9223372036854775806,
- 'u1': 255,
-..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">S1</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">\x00</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">f4</code><code class="variable-quote">'</code><code class="variable-op">: </code>9.96920996839e+36<code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">f8</code><code class="variable-ellipsis">...</code></code>
+..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">S1</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">\x00</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">U1</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">\x00</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">f4</code><code class="variable-quote">'</code><code class="variable-op">: </code>9.969209<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -1255,13 +1256,13 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>b</code></strong> - Input character array (numpy datatype 'S1'). Will be converted to
-          a array of strings, where each string has a fixed length of 
-          b.shape[-1] characters.</li>
+        <li><strong class="pname"><code>b</code></strong> - Input character array (numpy datatype 'S1' or 'U1'). Will be 
+          converted to a array of strings, where each string has a fixed 
+          length of b.shape[-1] characters.</li>
     </ul></dd>
     <dt>Returns:</dt>
-        <dd>A numpy string array with datatype 'SN' and shape b.shape[:-1], 
-          where N=b.shape[-1].</dd>
+        <dd>A numpy string array with datatype 'SN' or 'UN' and shape 
+          b.shape[:-1], where N=b.shape[-1].</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1433,7 +1434,8 @@
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">stringtoarr</span>(<span class="sig-arg">a</span>,
-        <span class="sig-arg">NUMCHARS</span>)</span>
+        <span class="sig-arg">NUMCHARS</span>,
+        <span class="sig-arg">dtype</span>=<span class="sig-default">'S'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -1447,10 +1449,13 @@
         <li><strong class="pname"><code>a</code></strong> - Input python string.</li>
         <li><strong class="pname"><code>NUMCHARS</code></strong> - number of characters used to represent string (if len(a) &lt; 
           NUMCHARS, it will be padded on the right with blanks).</li>
+        <li><strong class="pname"><code>dtype</code></strong> - type of numpy array to return.  Default is 'S', which means an 
+          array of dtype 'S1' will be returned.  If dtype='U', a unicode 
+          array (dtype = 'U1') will be returned.</li>
     </ul></dd>
     <dt>Returns:</dt>
         <dd>A rank 1 numpy character array of length NUMCHARS with datatype 
-          'S1'</dd>
+          'S1' (default) or 'U1' (if dtype='U')</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1473,13 +1478,14 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>a</code></strong> - Input numpy string array with numpy datatype 'SN', where N is the
-          number of characters in each string.  Will be converted to an 
-          array of characters (datatype 'S1') of shape a.shape + (N,).</li>
+        <li><strong class="pname"><code>a</code></strong> - Input numpy string array with numpy datatype 'SN' or 'UN', where 
+          N is the number of characters in each string.  Will be converted 
+          to an array of characters (datatype 'S1' or 'U1') of shape 
+          a.shape + (N,).</li>
     </ul></dd>
     <dt>Returns:</dt>
-        <dd>A numpy character array with datatype 'S1' and shape a.shape + 
-          (N,), where N is the length of each string in a.</dd>
+        <dd>A numpy character array with datatype 'S1' or 'U1' and shape 
+          a.shape + (N,), where N is the length of each string in a.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1506,13 +1512,13 @@
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
 <code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">S1</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">\x00</code><code class="variable-quote">'</code><code class="variable-op">,</code>
+ <code class="variable-quote">'</code><code class="variable-string">U1</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">\x00</code><code class="variable-quote">'</code><code class="variable-op">,</code>
  <code class="variable-quote">'</code><code class="variable-string">f4</code><code class="variable-quote">'</code><code class="variable-op">: </code>9.96920996839e+36<code class="variable-op">,</code>
  <code class="variable-quote">'</code><code class="variable-string">f8</code><code class="variable-quote">'</code><code class="variable-op">: </code>9.96920996839e+36<code class="variable-op">,</code>
  <code class="variable-quote">'</code><code class="variable-string">i1</code><code class="variable-quote">'</code><code class="variable-op">: </code>-127<code class="variable-op">,</code>
  <code class="variable-quote">'</code><code class="variable-string">i2</code><code class="variable-quote">'</code><code class="variable-op">: </code>-32767<code class="variable-op">,</code>
  <code class="variable-quote">'</code><code class="variable-string">i4</code><code class="variable-quote">'</code><code class="variable-op">: </code>-2147483647<code class="variable-op">,</code>
  <code class="variable-quote">'</code><code class="variable-string">i8</code><code class="variable-quote">'</code><code class="variable-op">: </code>-9223372036854775806<code class="variable-op">,</code>
- <code class="variable-quote">'</code><code class="variable-string">u1</code><code class="variable-quote">'</code><code class="variable-op">: </code>255<code class="variable-op">,</code>
 <code class="variable-ellipsis">...</code>
 </pre></td></tr></table>
 </dd>
@@ -1546,7 +1552,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri May 11 14:58:47 2012
+    Generated by Epydoc 3.0.1 on Fri Sep 21 15:54:32 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

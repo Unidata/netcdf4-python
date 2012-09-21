@@ -2,7 +2,7 @@
 
 def stringtoarr(string,NUMCHARS,dtype='S'):
     """
-stringtoarr(a, NUMCHARS)
+stringtoarr(a, NUMCHARS,dtype='S')
 
 convert a string to a character array of length NUMCHARS
 
@@ -11,7 +11,7 @@ convert a string to a character array of length NUMCHARS
 @param NUMCHARS:  number of characters used to represent string 
 (if len(a) < NUMCHARS, it will be padded on the right with blanks).
 
-@param dtype:  type of numpy array to return.  Default is 'S', which 
+@keyword dtype:  type of numpy array to return.  Default is 'S', which 
 means an array of dtype 'S1' will be returned.  If dtype='U', a
 unicode array (dtype = 'U1') will be returned.
 
@@ -123,7 +123,7 @@ describing the time units. B{C{time units}} can be days, hours, minutes
 or seconds.  B{C{reference time}} is the time origin. A valid choice
 would be units=C{'hours since 1800-01-01 00:00:00 -6:00'}.
 
-@param calendar: describes the calendar used in the time calculations. 
+@keyword calendar: describes the calendar used in the time calculations. 
 All the values currently defined in the U{CF metadata convention 
 <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
 Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
@@ -158,14 +158,14 @@ The datetime objects should not include a time-zone offset.
 @param nctime: A netCDF time variable object. The nctime object must have a
 C{units} attribute.
 
-@param calendar: Describes the calendar used in the time calculation.
+@keyword calendar: Describes the calendar used in the time calculation.
 Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
 Default is C{'standard'}, which is a mixed Julian/Gregorian calendar
 If C{calendar} is None, its value is given by C{nctime.calendar} or
 C{standard} if no such attribute exists.
 
-@param select: C{'exact', 'before', 'after', 'nearest'}
+@keyword select: C{'exact', 'before', 'after', 'nearest'}
 The index selection method. C{exact} will return the indices perfectly 
 matching the dates given. C{before} and C{after} will return the indices 
 corresponding to the dates just before or just after the given dates if 
@@ -240,16 +240,16 @@ variables with an aggregation dimension which may span
 subsequent files. Attribute access returns attributes only from "master" 
 file. The files are always opened in read-only mode.
 
-@param check: True if you want to do consistency checking to ensure the 
+@keyword check: True if you want to do consistency checking to ensure the 
 correct variables structure for all of the netcdf files.  Checking makes 
 the initialization of the MFDataset instance much slower. Default is 
 False.
 
-@param aggdim: The name of the dimension to aggregate over (must
+@keyword aggdim: The name of the dimension to aggregate over (must
 be the leftmost dimension of each of the variables to be aggregated).
 If None (default), aggregate over the unlimited dimension.
 
-@param exclude: A list of variable names to exclude from aggregation. 
+@keyword exclude: A list of variable names to exclude from aggregation. 
 Default is an empty list.
        """
 
@@ -639,7 +639,7 @@ dataset.
 
 @param time: Time variable from a MFDataset. 
 
-@param units: Time units, for example, 'days since 1979-01-01'. If None, use
+@keyword units: Time units, for example, 'days since 1979-01-01'. If None, use
 the units from the master variable. 
         """
         import datetime
