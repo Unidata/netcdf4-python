@@ -357,3 +357,10 @@ def _is_int(a):
         return int(a) == a
     except:
         return False
+
+def _tostr(s):
+    try:
+        ss = str(s)
+    except:
+        ss = s
+    return ss
