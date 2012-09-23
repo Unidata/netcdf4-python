@@ -1407,9 +1407,9 @@ group, so the path is simply C{'/'}."""
 
     def __unicode__(self):
         ncdump = ['%r\n' % type(self)]
-        dimnames = tuple([dimname for dimname in self.dimensions.keys()])
-        varnames = tuple([varname for varname in self.variables.keys()])
-        grpnames = tuple([grpname for grpname in self.groups.keys()])
+        dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
+        varnames = tuple([str(varname) for varname in self.variables.keys()])
+        grpnames = tuple([str(grpname) for grpname in self.groups.keys()])
         if self.path == '/':
             ncdump.append('root group (%s file format):\n' % self.file_format)
         else:
@@ -2301,7 +2301,7 @@ instance. If C{None}, the data is not truncated. """
 
     def __unicode__(self):
         ncdump_var = ['%r\n' % type(self)]
-        dimnames = tuple([dimname for dimname in self.dimensions])
+        dimnames = tuple([str(dimname) for dimname in self.dimensions])
         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
                 self.ncattrs()]
         if self._iscompound:
