@@ -58,7 +58,7 @@ class VariablesTestCase(unittest.TestCase):
         for i in range(nlons):
             for j in range(nlats):
                 assert_array_equal(data2[j,i], data[j,i])
-                assert datas[j,i] == data2s[j,i].decode()
+                assert datas[j,i] == data2s[j,i]
         f.close()
 
 if __name__ == '__main__':
