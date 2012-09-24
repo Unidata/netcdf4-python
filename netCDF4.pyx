@@ -650,7 +650,7 @@ root group (NETCDF4 file format):
 >>> print f.variables['cmplx_var']
 compound cmplx_var(x_dim)
 compound data type: [('real', '<f8'), ('imag', '<f8')]
-unlimited dimensions: x_di
+unlimited dimensions: x_dim
 current shape = (3,)
 >>> print f.cmptypes
 OrderedDict([('complex128', <netCDF4.CompoundType object at 0x1029eb7e8>)])
@@ -703,9 +703,9 @@ vlen variable =
 >>> print f
 <type 'netCDF4.Dataset'>
 root group (NETCDF4 file format):
-    dimensions = ('x', 'y')
-    variables = ('phony_vlen_var',)
-    groups = ()
+    dimensions: x, y
+    variables: phony_vlen_var
+    groups:
 >>> print f.variables['phony_vlen_var']
 <type 'netCDF4.Variable'>
 vlen phony_vlen_var(y, x)
@@ -743,7 +743,7 @@ variable-length string variable:
 root group (NETCDF4 file format):
     dimensions: x, y, z
     variables: phony_vlen_var, strvar
-    groups = ()
+    groups:
 >>> print f.variables['strvar']
 <type 'netCDF4.Variable'>
 vlen strvar(z)
