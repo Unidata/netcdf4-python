@@ -182,29 +182,29 @@ object yields summary information about it's contents.
 >>>          print child
 <type 'netCDF4.Dataset'>
 root group (NETCDF4 file format):
-    dimensions = ()
-    variables = ()
-    groups = ('forecasts', 'analyses')
+    dimensions: 
+    variables: 
+        groups: forecasts, analyses
 <type 'netCDF4.Group'>
 group /forecasts:
-    dimensions = ()
-    variables = ()
-    groups = ('model1', 'model2')
+    dimensions:
+    variables:
+    groups: model1, model2
 <type 'netCDF4.Group'>
 group /analyses:
-    dimensions = ()
-    variables = ()
-    groups = ()
+    dimensions:
+    variables:
+    groups:
 <type 'netCDF4.Group'>
 group /forecasts/model1:
-    dimensions = ()
-    variables = ()
-    groups = ()
+    dimensions:
+    variables:
+    groups:
 <type 'netCDF4.Group'>
 group /forecasts/model2:
-    dimensions = ()
-    variables = ()
-    groups = ()
+    dimensions:
+    variables:
+    groups:
 >>>
 
 3) Dimensions in a netCDF file
@@ -324,11 +324,11 @@ To get summary info on a L{Variable} instance in an interactive session, just pr
 
 >>> print rootgrp.variables['temp']
 <type 'netCDF4.Variable'>
-float32 temp('time', 'level', 'lat', 'lon')
+float32 temp(time, level, lat, lon)
     least_significant_digit: 3
     units: K
-unlimited dimensions = ('time', 'level')
-current size = (0, 0, 73, 144)
+unlimited dimensions: time, level
+current shape = (0, 0, 73, 144)
 >>>
 
 L{Variable} names can be changed using the
@@ -643,15 +643,15 @@ objects gives useful summary information in an interactive session:
 >>> print f
 <type 'netCDF4.Dataset'>
 root group (NETCDF4 file format):
-    dimensions = ('x_dim',)
-    variables = ('cmplx_var',)
-    groups = ()
+    dimensions: x_dim
+    variables: cmplx_var
+    groups:
 <type 'netCDF4.Variable'>
 >>> print f.variables['cmplx_var']
-compound cmplx_var('x_dim',)
+compound cmplx_var(x_dim)
 compound data type: [('real', '<f8'), ('imag', '<f8')]
-unlimited dimensions = ('x_dim',)
-current size = (3,)
+unlimited dimensions: x_di
+current shape = (3,)
 >>> print f.cmptypes
 OrderedDict([('complex128', <netCDF4.CompoundType object at 0x1029eb7e8>)])
 >>> print f.cmptypes['complex128']
@@ -708,10 +708,10 @@ root group (NETCDF4 file format):
     groups = ()
 >>> print f.variables['phony_vlen_var']
 <type 'netCDF4.Variable'>
-vlen phony_vlen_var('y', 'x')
+vlen phony_vlen_var(y, x)
 vlen data type: int32
-unlimited dimensions = ()
-current size = (4, 3)
+unlimited dimensions:
+current shape = (4, 3)
 >>> print f.VLtypes['phony_vlen']
 <type 'netCDF4.VLType'>: name = 'phony_vlen', numpy dtype = int32
 >>>
@@ -741,14 +741,14 @@ variable-length string variable:
 >>> print f
 <type 'netCDF4.Dataset'>
 root group (NETCDF4 file format):
-    dimensions = ('x', 'y', 'z')
-    variables = ('phony_vlen_var', 'strvar')
+    dimensions: x, y, z
+    variables: phony_vlen_var, strvar
     groups = ()
 >>> print f.variables['strvar']
 <type 'netCDF4.Variable'>
-vlen strvar('z',)
+vlen strvar(z)
 vlen data type: <type 'str'>
-unlimited dimensions = ()
+unlimited dimensions:
 current size = (10,)
 >>>
 
@@ -1417,9 +1417,9 @@ group, so the path is simply C{'/'}."""
         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
                 self.ncattrs()]
         ncdump = ncdump + attrs
-        ncdump.append('    dimensions = %s\n' % repr(dimnames))
-        ncdump.append('    variables = %s\n' % repr(varnames))
-        ncdump.append('    groups = %s\n' % repr(grpnames))
+        ncdump.append('    dimensions: %s\n' % ', '.join(dimnames))
+        ncdump.append('    variables: %s\n' % ', '.join(varnames))
+        ncdump.append('    groups: %s\n' % ', '.join(grpnames))
         return ''.join(ncdump)
 
     def close(self):
@@ -2122,8 +2122,8 @@ instance. If C{None}, the data is not truncated. """
             zlib = False
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
-        # dimensions = ('lat') instead of ('lat',)
-        if type(dimensions) == type(''):
+        # dimensions = 'lat' instead of ('lat',)
+        if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
             dimensions = dimensions,
         self._grpid = grp._grpid
         self._grp = grp
@@ -2305,14 +2305,14 @@ instance. If C{None}, the data is not truncated. """
         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
                 self.ncattrs()]
         if self._iscompound:
-            ncdump_var.append('%s %s%s\n' %\
-            ('compound',self._name,dimnames))
+            ncdump_var.append('%s %s(%s)\n' %\
+            ('compound',self._name,', '.join(dimnames)))
         elif self._isvlen:
-            ncdump_var.append('%s %s%s\n' %\
-            ('vlen',self._name,dimnames))
+            ncdump_var.append('%s %s(%s)\n' %\
+            ('vlen',self._name,', '.join(dimnames)))
         else:
-            ncdump_var.append('%s %s%s\n' %\
-            (self.dtype,self._name,dimnames))
+            ncdump_var.append('%s %s(%s)\n' %\
+            (self.dtype,self._name,', '.join(dimnames)))
         ncdump_var = ncdump_var + attrs
         if self._iscompound:
             ncdump_var.append('compound data type: %s\n' % self.dtype)
@@ -2324,8 +2324,8 @@ instance. If C{None}, the data is not truncated. """
             if dim.isunlimited():
                 unlimdims.append(dimname)
         if (self._grp.path != '/'): ncdump_var.append('path = %s\n' % self._grp.path)
-        ncdump_var.append('unlimited dimensions = %s\n' % repr(tuple(unlimdims)))
-        ncdump_var.append('current size = %s\n' % repr(self.shape))
+        ncdump_var.append('unlimited dimensions: %s\n' % ', '.join(unlimdims))
+        ncdump_var.append('current shape = %s\n' % repr(self.shape))
         return ''.join(ncdump_var)
 
     def _getdims(self):
