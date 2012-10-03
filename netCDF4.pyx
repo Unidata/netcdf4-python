@@ -1304,6 +1304,7 @@ the L{Dataset} in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
     cdef public int _grpid
+    cdef public int _isopen
     cdef public groups, dimensions, variables, file_format, path, parent,\
     maskanscale, cmptypes, vltypes
 
@@ -1379,6 +1380,7 @@ group, so the path is simply C{'/'}."""
         if diskless and self.file_format != 'NETCDF3_CLASSIC' and ncopen:
             raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
         self._grpid = grpid
+        self._isopen = 1
         self.path = '/'
         self.parent = None
         # get compound and vlen types in the root Group.
@@ -1431,12 +1433,12 @@ Close the Dataset."""
         ierr = nc_close(self._grpid)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        self._grpid = 0 # indicates file already closed, checked by __dealloc__
+        self._isopen = 0 # indicates file already closed, checked by __dealloc__
 
     def __dealloc__(self):
         # close file when there are no references to object left
         cdef int ierr
-        if self._grpid:
+        if self._isopen:
             ierr = nc_close(self._grpid)
 
     def sync(self):
