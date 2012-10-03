@@ -292,29 +292,29 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>         <span class="py-keyword">print</span> child
 <span class="py-output">&lt;type 'netCDF4.Dataset'&gt;</span>
 <span class="py-output">root group (NETCDF4 file format):</span>
-<span class="py-output">    dimensions = ()</span>
-<span class="py-output">    variables = ()</span>
-<span class="py-output">    groups = ('forecasts', 'analyses')</span>
+<span class="py-output">    dimensions: </span>
+<span class="py-output">    variables: </span>
+<span class="py-output">        groups: forecasts, analyses</span>
 <span class="py-output">&lt;type 'netCDF4.Group'&gt;</span>
 <span class="py-output">group /forecasts:</span>
-<span class="py-output">    dimensions = ()</span>
-<span class="py-output">    variables = ()</span>
-<span class="py-output">    groups = ('model1', 'model2')</span>
+<span class="py-output">    dimensions:</span>
+<span class="py-output">    variables:</span>
+<span class="py-output">    groups: model1, model2</span>
 <span class="py-output">&lt;type 'netCDF4.Group'&gt;</span>
 <span class="py-output">group /analyses:</span>
-<span class="py-output">    dimensions = ()</span>
-<span class="py-output">    variables = ()</span>
-<span class="py-output">    groups = ()</span>
+<span class="py-output">    dimensions:</span>
+<span class="py-output">    variables:</span>
+<span class="py-output">    groups:</span>
 <span class="py-output">&lt;type 'netCDF4.Group'&gt;</span>
 <span class="py-output">group /forecasts/model1:</span>
-<span class="py-output">    dimensions = ()</span>
-<span class="py-output">    variables = ()</span>
-<span class="py-output">    groups = ()</span>
+<span class="py-output">    dimensions:</span>
+<span class="py-output">    variables:</span>
+<span class="py-output">    groups:</span>
 <span class="py-output">&lt;type 'netCDF4.Group'&gt;</span>
 <span class="py-output">group /forecasts/model2:</span>
-<span class="py-output">    dimensions = ()</span>
-<span class="py-output">    variables = ()</span>
-<span class="py-output">    groups = ()</span>
+<span class="py-output">    dimensions:</span>
+<span class="py-output">    variables:</span>
+<span class="py-output">    groups:</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
     <h2 class="heading">3) Dimensions in a netCDF file</h2>
       <p>netCDF defines the sizes of all variables in terms of dimensions, 
@@ -450,11 +450,11 @@
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.variables[<span class="py-string">'temp'</span>]
 <span class="py-output">&lt;type 'netCDF4.Variable'&gt;</span>
-<span class="py-output">float32 temp('time', 'level', 'lat', 'lon')</span>
+<span class="py-output">float32 temp(time, level, lat, lon)</span>
 <span class="py-output">    least_significant_digit: 3</span>
 <span class="py-output">    units: K</span>
-<span class="py-output">unlimited dimensions = ('time', 'level')</span>
-<span class="py-output">current size = (0, 0, 73, 144)</span>
+<span class="py-output">unlimited dimensions: time, level</span>
+<span class="py-output">current shape = (0, 0, 73, 144)</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p><a href="netCDF4.Variable-class.html" class="link">Variable</a> 
       names can be changed using the <a 
@@ -788,15 +788,15 @@
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f
 <span class="py-output">&lt;type 'netCDF4.Dataset'&gt;</span>
 <span class="py-output">root group (NETCDF4 file format):</span>
-<span class="py-output">    dimensions = ('x_dim',)</span>
-<span class="py-output">    variables = ('cmplx_var',)</span>
-<span class="py-output">    groups = ()</span>
+<span class="py-output">    dimensions: x_dim</span>
+<span class="py-output">    variables: cmplx_var</span>
+<span class="py-output">    groups:</span>
 <span class="py-output">&lt;type 'netCDF4.Variable'&gt;</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.variables[<span class="py-string">'cmplx_var'</span>]
-<span class="py-output">compound cmplx_var('x_dim',)</span>
+<span class="py-output">compound cmplx_var(x_dim)</span>
 <span class="py-output">compound data type: [('real', '&lt;f8'), ('imag', '&lt;f8')]</span>
-<span class="py-output">unlimited dimensions = ('x_dim',)</span>
-<span class="py-output">current size = (3,)</span>
+<span class="py-output">unlimited dimensions: x_dim</span>
+<span class="py-output">current shape = (3,)</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.cmptypes
 <span class="py-output">OrderedDict([('complex128', &lt;netCDF4.CompoundType object at 0x1029eb7e8&gt;)])</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.cmptypes[<span class="py-string">'complex128'</span>]
@@ -846,15 +846,15 @@
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f
 <span class="py-output">&lt;type 'netCDF4.Dataset'&gt;</span>
 <span class="py-output">root group (NETCDF4 file format):</span>
-<span class="py-output">    dimensions = ('x', 'y')</span>
-<span class="py-output">    variables = ('phony_vlen_var',)</span>
-<span class="py-output">    groups = ()</span>
+<span class="py-output">    dimensions: x, y</span>
+<span class="py-output">    variables: phony_vlen_var</span>
+<span class="py-output">    groups:</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.variables[<span class="py-string">'phony_vlen_var'</span>]
 <span class="py-output">&lt;type 'netCDF4.Variable'&gt;</span>
-<span class="py-output">vlen phony_vlen_var('y', 'x')</span>
+<span class="py-output">vlen phony_vlen_var(y, x)</span>
 <span class="py-output">vlen data type: int32</span>
-<span class="py-output">unlimited dimensions = ()</span>
-<span class="py-output">current size = (4, 3)</span>
+<span class="py-output">unlimited dimensions:</span>
+<span class="py-output">current shape = (4, 3)</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.VLtypes[<span class="py-string">'phony_vlen'</span>]
 <span class="py-output">&lt;type 'netCDF4.VLType'&gt;: name = 'phony_vlen', numpy dtype = int32</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
@@ -884,14 +884,14 @@
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f
 <span class="py-output">&lt;type 'netCDF4.Dataset'&gt;</span>
 <span class="py-output">root group (NETCDF4 file format):</span>
-<span class="py-output">    dimensions = ('x', 'y', 'z')</span>
-<span class="py-output">    variables = ('phony_vlen_var', 'strvar')</span>
-<span class="py-output">    groups = ()</span>
+<span class="py-output">    dimensions: x, y, z</span>
+<span class="py-output">    variables: phony_vlen_var, strvar</span>
+<span class="py-output">    groups:</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.variables[<span class="py-string">'strvar'</span>]
 <span class="py-output">&lt;type 'netCDF4.Variable'&gt;</span>
-<span class="py-output">vlen strvar('z',)</span>
+<span class="py-output">vlen strvar(z)</span>
 <span class="py-output">vlen data type: &lt;type 'str'&gt;</span>
-<span class="py-output">unlimited dimensions = ()</span>
+<span class="py-output">unlimited dimensions:</span>
 <span class="py-output">current size = (10,)</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>All of the code in this tutorial is available in 
@@ -1160,14 +1160,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.8'"><code class="variable-quote">'</code><code class="variable-string">1.8.8</code><code class="variable-quote">'</code></code>
+        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.9'"><code class="variable-quote">'</code><code class="variable-string">1.8.9</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.2'"><code class="variable-quote">u'</code><code class="variable-string">4.2</code><code class="variable-quote">'</code></code>
+        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.2.1.1'"><code class="variable-quote">u'</code><code class="variable-string">4.2.1.1</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -1552,7 +1552,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Sep 21 15:54:32 2012
+    Generated by Epydoc 3.0.1 on Wed Oct  3 10:05:05 2012
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

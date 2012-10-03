@@ -1,5 +1,5 @@
- version 1.0.1 (svn revision 1189)
- ================================
+ version 1.0.1 (svn revision 1190)
+ =================================
 
  * fix error that occurred when retrieving data from a variable that has a
    missing_value attribute specified as a string (issue 142).
