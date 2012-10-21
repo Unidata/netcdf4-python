@@ -1,3 +1,8 @@
+ changes since version 1.0.1 release
+ ===================================
+
+ * make sure all files have a calendar attribute in MFTime (issue 144).
+
  version 1.0.1 (svn revision 1190)
  =================================
 
