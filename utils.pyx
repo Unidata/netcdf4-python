@@ -649,6 +649,10 @@ the units from the master variable.
         for name, value in time.__dict__.items():
             self.__dict__[name] = value
            
+        # make sure calendar attribute present in all files.
+        for t in self._recVar:
+            if not hasattr(t,'calendar'):
+                raise ValueError('MFTime requires that the time variable in all files have a calendar attribute')
         
         # Check that calendar is the same in all files.
         if len(set([t.calendar for t in self._recVar])) > 1:
