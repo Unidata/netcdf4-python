@@ -3,6 +3,9 @@
 
  * make sure all files have a calendar attribute in MFTime (issue 144).
 
+ * more robust fix to issue 90 (array shape modified by assignment to
+   a netCDF variable with one more dimension), including test case.
+
  version 1.0.1 (svn revision 1190)
  =================================
 
