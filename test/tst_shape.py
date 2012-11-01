@@ -23,7 +23,8 @@ class ShapeTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing variable slicing"""
+        """test for issue 90 (array shape should not be modified by
+        assigment to netCDF variable)"""
         f  = Dataset(self.file, 'a')
         v = f.variables['data']
         v[0] = data
