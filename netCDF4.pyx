@@ -827,11 +827,11 @@ if __netcdf4libversion__ < __required_netcdf4version__:
 'netCDF4 module must be linked against netcdf-4 version %s or higher, got %s' %\
 (__required_netcdf4version__,__netcdf4libversion__)
     raise ImportError(msg)
-if __hdf5libversion__ < __required_hdf5version__:
-    msg=\
-'netCDF4 module must be linked against HDF5 version %s or higher, got %s' %\
-(__required_hdf5version__,__hdf5libversion__ )
-    raise ImportError(msg)
+#if __hdf5libversion__ < __required_hdf5version__:
+#    msg=\
+#'netCDF4 module must be linked against HDF5 version %s or higher, got %s' %\
+#(__required_hdf5version__,__hdf5libversion__ )
+#    raise ImportError(msg)
 
 # numpy data type <--> netCDF 4 data type mapping.
 
