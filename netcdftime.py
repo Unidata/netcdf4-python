@@ -8,7 +8,8 @@ from calendar import monthrange
 
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
-__version__ = '0.9.4'
+
+__version__ = '0.9.5'
 
 # Adapted from http://delete.me.uk/2005/03/iso8601.html
 ISO8601_REGEX = re.compile(r"(?P<year>[0-9]{1,4})(-(?P<month>[0-9]{1,2})(-(?P<day>[0-9]{1,2})"
@@ -88,8 +89,11 @@ Virginia. p. 63
         
     A = int(year/100)
 
-    jd = int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + \
-         day - 1524.5
+    # MC
+    # jd = int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + \
+    #      day - 1524.5
+    jd = 365.*year + int(0.25 * year + 2000.) + int(30.6001 * (month + 1)) + \
+         day + 1718994.5
 
     # optionally adjust the jd for the switch from 
     # the Julian to Gregorian Calendar
@@ -222,20 +226,29 @@ Virginia. p. 63
         if JD < 2299160.5:
             A = Z
         else:
-            alpha = int((Z - 1867216.25)/36524.25)
-            A = Z + 1 + alpha - int(alpha/4)
+            # MC
+            # alpha = int((Z - 1867216.25)/36524.25)
+            # A = Z + 1 + alpha - int(alpha/4)
+            alpha = int(((Z - 1867216.)-0.25)/36524.25)
+            A = Z + 1 + alpha - int(0.25*alpha)
 
     elif calendar == 'proleptic_gregorian':
-        alpha = int((Z - 1867216.25)/36524.25)
-        A = Z + 1 + alpha - int(alpha/4)
+        # MC
+        # alpha = int((Z - 1867216.25)/36524.25)
+        # A = Z + 1 + alpha - int(alpha/4)
+        alpha = int(((Z - 1867216.)-0.25)/36524.25)
+        A = Z + 1 + alpha - int(0.25*alpha)
     elif calendar == 'julian':
         A = Z
     else:
         raise ValueError('unknown calendar, must be one of julian,standard,gregorian,proleptic_gregorian, got %s' % calendar)
 
     B = A + 1524
-    C = int((B - 122.1)/365.25)
-    D = int(365.25 * C)
+    # MC
+    # C = int((B - 122.1)/365.25)
+    # D = int(365.25 * C)
+    C = int(6680.+((B-2439870.)-122.1)/365.25)
+    D = 365*C + int(0.25 * C)
     E = int((B - D)/30.6001)
 
     # Convert to date
@@ -245,15 +258,21 @@ Virginia. p. 63
         dayofyr = nday+60
     else:
         dayofyr = nday-305
-    if E < 14:
-        month = E - 1
-    else:
-        month = E - 13
+    # MC
+    # if E < 14:
+    #     month = E - 1
+    # else:
+    #     month = E - 13
 
-    if month > 2:
-        year = C - 4716
-    else:
-        year = C - 4715
+    # if month > 2:
+    #     year = C - 4716
+    # else:
+    #     year = C - 4715
+    month = E - 1
+    if month > 12: month -= 12
+    year = C - 4715
+    if month > 2: year -= 1
+    if year <= 0: year -= 1
 
     # a leap year?
     leap = 0
