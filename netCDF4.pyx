@@ -2218,7 +2218,7 @@ instance. If C{None}, the data is not truncated. """
                         if grp.file_format != 'NETCDF4': grp._enddef()
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # set checksum.
-                if fletcher32:
+                if fletcher32 and ndims: # don't bother for scalar variable
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
                     if ierr != NC_NOERR:
                         if grp.file_format != 'NETCDF4': grp._enddef()
