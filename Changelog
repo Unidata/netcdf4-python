@@ -1,6 +1,9 @@
  since version 1.0.2
  ===================
 
+ * Add --istart/--istop options to nc3tonc4 (issue 148, courtesy of 
+   Rich Signell).
+
  * fix for proleptic_gregorian in netcdftime.py (courtesy of Matthias Cuntz).
 
  version 1.0.2 (svn revision 1196)

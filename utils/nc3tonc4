@@ -3,7 +3,11 @@ from netCDF4 import Dataset
 import numpy as NP
 import sys
 
-def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=True,fletcher32=False,clobber=False,lsd_dict=None,nchunk=10,quiet=False,classic=0):
+
+def nc3tonc4(filename3,filename4,unpackshort=True,
+    zlib=True,complevel=6,shuffle=True,fletcher32=False,
+    clobber=False,lsd_dict=None,nchunk=10,quiet=False,classic=0,
+    istart=0,istop=-1):
     """convert a netcdf 3 file (filename3) to a netcdf 4 file
     The default format is 'NETCDF4', but can be set
     to NETCDF4_CLASSIC if classic=1.
@@ -36,6 +40,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
             unlimdimname = dimname
             unlimdim = dim
             ncfile4.createDimension(dimname,None)
+            if istop == -1: istop=len(unlimdim)
         else:
             ncfile4.createDimension(dimname,len(dim))
     # create variables.
@@ -68,12 +73,12 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
             FillValue = None 
         var = ncfile4.createVariable(varname,datatype,ncvar.dimensions, fill_value=FillValue, least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
         # fill variable attributes.
-	attdict = ncvar.__dict__
-	if '_FillValue' in attdict: del attdict['_FillValue']
-	if dounpackshort and 'add_offset' in attdict: del attdict['add_offset']
-	if dounpackshort and 'scale_factor' in attdict: del attdict['scale_factor']
-	if dounpackshort and 'missing_value' in attdict: attdict['missing_value']=mval
-	var.setncatts(attdict)
+        attdict = ncvar.__dict__
+        if '_FillValue' in attdict: del attdict['_FillValue']
+        if dounpackshort and 'add_offset' in attdict: del attdict['add_offset']
+        if dounpackshort and 'scale_factor' in attdict: del attdict['scale_factor']
+        if dounpackshort and 'missing_value' in attdict: attdict['missing_value']=mval
+        var.setncatts(attdict)
         #for attname in ncvar.ncattrs():
         #    if attname == '_FillValue': continue
         #    if dounpackshort and attname in ['add_offset','scale_factor']: continue
@@ -85,11 +90,11 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
         if hasunlimdim: # has an unlim dim, loop over unlim dim index.
             # range to copy
             if nchunk:
-                start = 0; stop = len(unlimdim); step = nchunk
+                start = istart; stop = istop; step = nchunk
                 if step < 1: step = 1
                 for n in range(start, stop, step):
                     nmax = n+nchunk
-                    if nmax > len(unlimdim): nmax=len(unlimdim)
+                    if nmax > istop: nmax=istop
                     idata = ncvar[n:nmax]
                     if dounpackshort:
                         tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
@@ -97,7 +102,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,zlib=True,complevel=6,shuffle=
                             tmpdata = NP.where(idata == ncvar.missing_value, mval, tmpdata)
                     else:
                         tmpdata = idata
-                    var[n:nmax] = tmpdata
+                    var[n-istart:nmax-istart] = tmpdata
             else:
                 idata = ncvar[:]
                 if dounpackshort:
@@ -152,6 +157,10 @@ if __name__ == '__main__':
  --chunk=(integer) -- number of records along unlimited dimension to 
      write at once.  Default 10.  Ignored if there is no unlimited 
      dimension.  chunk=0 means write all the data at once.
+ --istart=(integer) -- number of record to start at along unlimited dimension. 
+     Default 0.  Ignored if there is no unlimited dimension.
+ --istop=(integer) -- number of record to stop at along unlimited dimension. 
+     Default -1.  Ignored if there is no unlimited dimension.
 \n""" % os.path.basename(sys.argv[0])
 
     try:
@@ -164,8 +173,9 @@ if __name__ == '__main__':
                                      'fletcher32=',
                                      'unpackshort=',
                                      'quantize=',
-                                     'chunk='
-                                     ])
+                                     'chunk=',
+                                     'istart=',
+                                     'istop='])
     except:
         (type, value, traceback) = sys.exc_info()
         sys.stdout.write("Error parsing the options. The error was: %s\n" % value)
@@ -183,6 +193,8 @@ if __name__ == '__main__':
     quantize = None
     quiet = 0
     chunk = 1000
+    istart = 0
+    istop = -1
 
     # Get the options
     for option in opts:
@@ -209,6 +221,10 @@ if __name__ == '__main__':
             chunk = int(option[1])
         elif option[0] == '--quantize':
             quantize = option[1]
+        elif option[0] == '--istart':
+            istart = int(option[1])
+        elif option[0] == '--istop':
+            istop = int(option[1])
         else:
             sys.stdout.write("%s: Unrecognized option\n" % option[0])
             sys.stderr.write(usage)
@@ -234,4 +250,8 @@ if __name__ == '__main__':
         lsd_dict=None
 
     # copy the data from filename3 to filename4.
-    nc3tonc4(filename3,filename4,unpackshort=unpackshort,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32,clobber=overwritefile,lsd_dict=lsd_dict,nchunk=chunk,quiet=quiet,classic=classic)
+    nc3tonc4(filename3,filename4,unpackshort=unpackshort,
+        zlib=zlib,complevel=complevel,shuffle=shuffle,
+        fletcher32=fletcher32,clobber=overwritefile,lsd_dict=lsd_dict,
+        nchunk=chunk,quiet=quiet,classic=classic,
+        istart=istart,istop=istop)
