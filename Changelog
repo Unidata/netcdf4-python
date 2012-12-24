@@ -1,6 +1,8 @@
  since version 1.0.2
  ===================
 
+ * add --vars option to nc3tonc4 (issue 154).
+
  * Don't try to set fletcher32 checksum on scalar variables (it causes HDF5
    to crash).  Fixes issue 150.
 
