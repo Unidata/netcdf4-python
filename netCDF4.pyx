@@ -903,7 +903,7 @@ cdef _get_att(grp, int varid, name):
     # Private function to get an attribute value given its name
     cdef int ierr, n
     cdef size_t att_len
-    cdef char *attname
+    cdef char *attname, *stratt
     cdef nc_type att_type
     cdef ndarray value_arr
     bytestr = _strencode(name)
@@ -920,6 +920,13 @@ cdef _get_att(grp, int varid, name):
         pstring =\
         value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
         return pstring
+    elif att_type == NC_STRING:
+        if att_len == 1:
+            ierr = nc_get_att_string(grp._grpid, varid, attname, &stratt)
+            pstring = stratt.decode(default_encoding,unicode_error).replace('\x00','')
+            return pstring
+        else:
+            raise KeyError('vlen string array attributes not supported')
     else:
     # a regular numeric or compound type.
         if att_type == NC_LONG:
