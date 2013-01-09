@@ -356,6 +356,7 @@ cdef extern from "netcdf.h":
     int nc_put_att_text(int ncid, int varid, char *name,
                     size_t len, char *op)
     int nc_get_att_text(int ncid, int varid, char *name, char *ip)
+    int nc_get_att_string(int ncid, int varid, char *name, char **ip)
     int nc_put_att_uchar(int ncid, int varid, char *name, nc_type xtype,
                      size_t len, unsigned char *op)
     int nc_get_att_uchar(int ncid, int varid, char *name, unsigned char *ip)
