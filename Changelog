@@ -1,5 +1,5 @@
- since version 1.0.2
- ===================
+ version 1.0.3 (not yet released)
+ =================================
 
  * support reading of vlen string attributes (issue 156).
 
