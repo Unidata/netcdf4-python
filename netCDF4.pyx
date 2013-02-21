@@ -32,6 +32,7 @@ Requires
 
  - numpy array module U{http://numpy.scipy.org}, version 1.3.0 or later (1.5.1
    or higher recommended, required if using python 3).
+ - For python < 2.7, the ordereddict module U{http://python.org/pypi/ordereddict}.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.8 or higher
  recommended) from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
  Be sure to build with 'C{--enable-hl --enable-shared}'.

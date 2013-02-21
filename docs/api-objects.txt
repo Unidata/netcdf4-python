@@ -161,12 +161,14 @@ netCDF4.Dataset.renameDimension	netCDF4.Dataset-class.html#renameDimension
 netCDF4.Dataset.cmptypes	netCDF4.Dataset-class.html#cmptypes
 netCDF4.Dataset.renameVariable	netCDF4.Dataset-class.html#renameVariable
 netCDF4.Dataset._grpid	netCDF4.Dataset-class.html#_grpid
+netCDF4.MFDataset.__qualname__	netCDF4.MFDataset-class.html#__qualname__
 netCDF4.Dataset.__delattr__	netCDF4.Dataset-class.html#__delattr__
 netCDF4.Dataset.set_fill_on	netCDF4.Dataset-class.html#set_fill_on
 netCDF4.Dataset.createGroup	netCDF4.Dataset-class.html#createGroup
 netCDF4.MFTime	netCDF4.MFTime-class.html
-netCDF4.MFTime.__getitem__	netCDF4.MFTime-class.html#__getitem__
 netCDF4.MFTime.__init__	netCDF4.MFTime-class.html#__init__
+netCDF4.MFTime.__getitem__	netCDF4.MFTime-class.html#__getitem__
+netCDF4.MFTime.__qualname__	netCDF4.MFTime-class.html#__qualname__
 netCDF4.VLType	netCDF4.VLType-class.html
 netCDF4.VLType.__new__	netCDF4.VLType-class.html#__new__
 netCDF4.VLType.dtype	netCDF4.VLType-class.html#dtype
