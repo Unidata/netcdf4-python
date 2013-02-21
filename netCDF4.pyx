@@ -782,8 +782,11 @@ from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict
-except: # or else use drop-in substitute
-    from ordereddict import OrderedDict
+except ImportError: # or else use drop-in substitute
+    try:
+        from ordereddict import OrderedDict
+    except ImportError:
+        raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
 
 __version__ = "1.0.3"
 
