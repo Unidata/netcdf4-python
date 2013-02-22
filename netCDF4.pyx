@@ -1916,8 +1916,7 @@ calling the python C{len} function on the L{Dimension} instance. The
 C{isunlimited()} method of a L{Dimension} instance can be used to
 determine if the dimension is unlimited"""
     cdef public int _dimid, _grpid
-    cdef object _grp
-    cdef public _file_format, _name
+    cdef public _file_format, _name, _grp
 
     def __init__(self, grp, name, size=None, **kwargs):
         cdef int ierr
@@ -2118,9 +2117,8 @@ decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the L{Variable} 
 instance. If C{None}, the data is not truncated. """
     cdef public int _varid, _grpid, _nunlimdim
-    cdef object _grp
     cdef public _name, ndim, dtype, maskandscale, _isprimitive, _iscompound,\
-    _isvlen
+    _isvlen, _grp
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
