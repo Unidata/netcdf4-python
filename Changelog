@@ -1,6 +1,8 @@
  version 1.0.3 (not yet released)
  =================================
 
+ * Added a _grp attribute to Dimension (issue 165).
+
  * don't bundle ordereddict (issue 164).
 
  * support reading of vlen string attributes (issue 156).

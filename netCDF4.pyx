@@ -1916,6 +1916,7 @@ calling the python C{len} function on the L{Dimension} instance. The
 C{isunlimited()} method of a L{Dimension} instance can be used to
 determine if the dimension is unlimited"""
     cdef public int _dimid, _grpid
+    cdef object _grp
     cdef public _file_format, _name
 
     def __init__(self, grp, name, size=None, **kwargs):
@@ -1923,6 +1924,7 @@ determine if the dimension is unlimited"""
         cdef char *dimname
         cdef size_t lendim
         self._grpid = grp._grpid
+        self._grp = grp
         self._file_format = grp.file_format
         self._name = name
         if 'id' in kwargs:
