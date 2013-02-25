@@ -183,5 +183,5 @@ setup(name = "netCDF4",
                  "Topic :: Software Development :: Libraries :: Python Modules",
                  "Topic :: System :: Archiving :: Compression",
                  "Operating System :: OS Independent"],
-  py_modules = ["netcdftime","netCDF4_utils","ordereddict"],
+  py_modules = ["netcdftime","netCDF4_utils"],
   ext_modules = extensions)
