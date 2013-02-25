@@ -284,7 +284,24 @@ correspond to the closest dates.
 @return: an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
     """
-    return netcdftime.date2index(dates, nctime, calendar, select)
+    unit = nctime.units.split()[0].lower()
+    if calendar == None:
+        calendar = getattr(nctime, 'calendar', 'standard')
+    if unit in ['microseconds','milliseconds','microsecond','millisecond']:
+        # for microsecond and/or millisecond accuracy, convert dates
+        # to numerical times, then use netcdftime.time2index.
+        from dateutil.tz import tzutc
+        basedate = _dateparse(nctime.units)
+        # can only use certain calendars.
+        if calendar != 'proleptic_gregorian' and not \
+           (calendar in ['gregorian','standard'] and \
+            basedate > gregorian.replace(tzinfo=tzutc())):
+            msg = 'milliseconds/microseconds not supported for this calendar'
+            raise ValueError(msg)
+        times = date2num(dates,nctime.units,calendar=calendar)
+        return netcdftime.time2index(times, nctime, calendar, select)
+    else: # if only second accuracy required, can use other calendars.
+        return netcdftime.date2index(dates, nctime, calendar, select)
 
 def getlibversion():
     """
