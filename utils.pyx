@@ -134,21 +134,28 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
         except:
             isscalar = True
         if isscalar: dates = [dates]
+        ismasked = False
+        if hasattr(dates,'mask'):
+            mask = dates.mask
+            ismasked = True
         times = []
         for date in dates:
-            date = date.replace(tzinfo=tzutc())
-            td = date - basedate
-            totaltime = td.microseconds + (td.seconds + td.days * 24 * 3600) * 1.e6
-            if unit == 'microseconds' or unit == 'microsecond':
-                times.append(totaltime)
-            elif unit == 'milliseconds' or unit == 'millisecond':
-                times.append(totaltime/1.e3)
-            elif unit == 'seconds' or unit == 'second':
-                times.append(totaltime/1.e6)
-            elif unit == 'hours' or unit == 'hour':
-                times.append(totaltime/1.e6/3600)
-            elif unit == 'days' or unit == 'day':
-                times.append(totaltime/1.e6/3600./24.)
+            if ismasked and not date:
+                times.append(None)
+            else:
+                date = date.replace(tzinfo=tzutc())
+                td = date - basedate
+                totaltime = td.microseconds + (td.seconds + td.days * 24 * 3600) * 1.e6
+                if unit == 'microseconds' or unit == 'microsecond':
+                    times.append(totaltime)
+                elif unit == 'milliseconds' or unit == 'millisecond':
+                    times.append(totaltime/1.e3)
+                elif unit == 'seconds' or unit == 'second':
+                    times.append(totaltime/1.e6)
+                elif unit == 'hours' or unit == 'hour':
+                    times.append(totaltime/1.e6/3600)
+                elif unit == 'days' or unit == 'day':
+                    times.append(totaltime/1.e6/3600./24.)
         if isscalar:
             return times[0]
         else:
@@ -212,27 +219,34 @@ contains one.
         except:
             isscalar = True
         if isscalar: times = [times]
+        ismasked = False
+        if hasattr(times,'mask'):
+            mask = times.mask
+            ismasked = True
         dates = []
         for time in times:
-            # convert to total seconds
-            if unit == 'microseconds' or unit == 'microsecond':
-                tsecs = time/1.e6
-            elif unit == 'milliseconds' or unit == 'millisecond':
-                tsecs = time/1.e3
-            elif unit == 'seconds' or unit == 'second':
-                tsecs = time
-            elif unit == 'hours' or unit == 'hour':
-                tsecs = time*3600.
-            elif unit == 'days' or unit == 'day':
-                tsecs = time*86400.
-            # compute time delta.
-            days = tsecs // 86400.
-            secs = tsecs - days*86400.
-            msecs = (secs - int(secs))*1.e6
-            td = timedelta(days=days,seconds=secs,microseconds=msecs)
-            # add time delta to base date.
-            date = basedate + td
-            dates.append(date)
+            if ismasked and not time:
+                dates.append(None)
+            else:
+                # convert to total seconds
+                if unit == 'microseconds' or unit == 'microsecond':
+                    tsecs = time/1.e6
+                elif unit == 'milliseconds' or unit == 'millisecond':
+                    tsecs = time/1.e3
+                elif unit == 'seconds' or unit == 'second':
+                    tsecs = time
+                elif unit == 'hours' or unit == 'hour':
+                    tsecs = time*3600.
+                elif unit == 'days' or unit == 'day':
+                    tsecs = time*86400.
+                # compute time delta.
+                days = tsecs // 86400.
+                secs = tsecs - days*86400.
+                msecs = (secs - int(secs))*1.e6
+                td = timedelta(days=days,seconds=secs,microseconds=msecs)
+                # add time delta to base date.
+                date = basedate + td
+                dates.append(date)
         if isscalar:
             return dates[0]
         else:
