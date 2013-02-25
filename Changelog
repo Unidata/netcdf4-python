@@ -1,6 +1,10 @@
  version 1.0.3 (not yet released)
  =================================
 
+ * date2num and num2date now can handle units of microseconds and milliseconds
+   (for proleptic_gregorian calendar, or gregorian and standard calendars
+    as long as the time origin is after 1582-10-15). Issue 159.
+
  * Added a _grp attribute to Dimension (issue 165).
 
  * don't bundle ordereddict (issue 164).
