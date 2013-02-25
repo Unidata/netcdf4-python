@@ -1,3 +1,27 @@
+from datetime import timedelta, datetime
+
+gregorian = datetime(1582,10,15)
+
+def _dateparse(timestr):
+    """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss
+    return a tuple (units, datetimeinstance)"""
+    try:
+        import dateutil.parser as dparse
+        from dateutil.tz import tzutc
+    except ImportError:
+        msg = 'dateutil module required for accuracy < 1 second'
+    timestr_split = timestr.split()
+    units = timestr_split[0].lower()
+    if timestr_split[1].lower() != 'since':
+        raise ValueError("no 'since' in unit_string")
+    # parse the date string.
+    n = timestr.find('since')+6
+    isostring = timestr[n:]
+    basedate = dparse.parse(isostring)
+    if basedate.tzinfo is None:
+        basedate = basedate.replace(tzinfo=tzutc())
+    return basedate
+
 # utility functions (visible from python).
 
 def stringtoarr(string,NUMCHARS,dtype='S'):
@@ -74,32 +98,64 @@ be in UTC with no time-zone offset.  If there is a
 time-zone offset in C{units}, it will be applied to the
 returned numeric values.
 
-Like the matplotlib C{date2num} function, except that it allows
-for different units and calendars.  Behaves the same if
-C{units = 'days since 0001-01-01 00:00:00'} and 
-C{calendar = 'proleptic_gregorian'}.
-
 @param dates: A datetime object or a sequence of datetime objects.
- The datetime objects should not include a time-zone offset.
+The datetime objects should not include a time-zone offset.
 
 @param units: a string of the form C{'B{time units} since B{reference time}}'
- describing the time units. B{C{time units}} can be days, hours, minutes
- or seconds.  B{C{reference time}} is the time origin. A valid choice
- would be units=C{'hours since 1800-01-01 00:00:00 -6:00'}.
+describing the time units. B{C{time units}} can be days, hours, minutes,
+seconds, milliseconds or microseconds. B{C{reference time}} is the time
+origin. Milliseconds and microseconds
+can only be used with the proleptic_gregorian calendar, or the standard
+and gregorian calendars if the time origin is after 1582-10-15.
+A valid choice would be units=C{'milliseconds since 1800-01-01 00:00:00-6:00'}.
 
 @param calendar: describes the calendar used in the time calculations. 
- All the values currently defined in the U{CF metadata convention 
- <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
- Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
- 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
- Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
+All the values currently defined in the U{CF metadata convention 
+<http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
+Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
+'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
+Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
 
 @return: a numeric time value, or an array of numeric time values.
-
-The maximum resolution of the numeric time values is 1 second.
     """
-    cdftime = netcdftime.utime(units,calendar=calendar)
-    return cdftime.date2num(dates)
+    unit = units.split()[0].lower()
+    if unit in ['microseconds','milliseconds','microsecond','millisecond']:
+        from dateutil.tz import tzutc
+        basedate = _dateparse(units)
+        if calendar != 'proleptic_gregorian' and not \
+           (calendar in ['gregorian','standard'] and \
+            basedate > gregorian.replace(tzinfo=tzutc())):
+            msg = 'milliseconds/microseconds not supported for this calendar'
+            raise ValueError(msg)
+        # use python datetime module,
+        isscalar = False
+        try:
+            dates[0]
+        except:
+            isscalar = True
+        if isscalar: dates = [dates]
+        times = []
+        for date in dates:
+            date = date.replace(tzinfo=tzutc())
+            td = date - basedate
+            totaltime = td.microseconds + (td.seconds + td.days * 24 * 3600) * 1.e6
+            if unit == 'microseconds' or unit == 'microsecond':
+                times.append(totaltime)
+            elif unit == 'milliseconds' or unit == 'millisecond':
+                times.append(totaltime/1.e3)
+            elif unit == 'seconds' or unit == 'second':
+                times.append(totaltime/1.e6)
+            elif unit == 'hours' or unit == 'hour':
+                times.append(totaltime/1.e6/3600)
+            elif unit == 'days' or unit == 'day':
+                times.append(totaltime/1.e6/3600./24.)
+        if isscalar:
+            return times[0]
+        else:
+            return times
+    else: # if only second accuracy required, can use other calendars.
+        cdftime = netcdftime.utime(units,calendar=calendar)
+        return cdftime.date2num(dates)
 
 def num2date(times,units,calendar='standard'):
     """
@@ -111,17 +167,15 @@ and the C{calendar} keyword. The returned datetime objects represent
 UTC with no time-zone offset, even if the specified 
 C{units} contain a time-zone offset.
 
-Like the matplotlib C{num2date} function, except that it allows
-for different units and calendars.  Behaves the same if
-C{units = 'days since 001-01-01 00:00:00'} and 
-C{calendar = 'proleptic_gregorian'}.
-
-@param times: numeric time values. Maximum resolution is 1 second.
+@param times: numeric time values. 
 
 @param units: a string of the form C{'B{time units} since B{reference time}}'
-describing the time units. B{C{time units}} can be days, hours, minutes
-or seconds.  B{C{reference time}} is the time origin. A valid choice
-would be units=C{'hours since 1800-01-01 00:00:00 -6:00'}.
+describing the time units. B{C{time units}} can be days, hours, minutes,
+seconds, milliseconds or microseconds. B{C{reference time}} is the time
+origin. Milliseconds and microseconds
+can only be used with the proleptic_gregorian calendar, or the standard
+and gregorian calendars if the time origin is after 1582-10-15.
+A valid choice would be units=C{'milliseconds since 1800-01-01 00:00:00-6:00'}.
 
 @keyword calendar: describes the calendar used in the time calculations. 
 All the values currently defined in the U{CF metadata convention 
@@ -143,8 +197,49 @@ occured from the Julian calendar in 1582. The datetime instances
 do not contain a time-zone offset, even if the specified C{units}
 contains one.
     """
-    cdftime = netcdftime.utime(units,calendar=calendar)
-    return cdftime.num2date(times)
+    unit = units.split()[0].lower()
+    if unit in ['microseconds','milliseconds','microsecond','millisecond']:
+        from dateutil.tz import tzutc
+        basedate = _dateparse(units)
+        if calendar != 'proleptic_gregorian' and not \
+           (calendar in ['gregorian','standard'] and \
+            basedate > gregorian.replace(tzinfo=tzutc())):
+            msg = 'milliseconds/microseconds not supported for this calendar'
+            raise ValueError(msg)
+        isscalar = False
+        try:
+            times[0]
+        except:
+            isscalar = True
+        if isscalar: times = [times]
+        dates = []
+        for time in times:
+            # convert to total seconds
+            if unit == 'microseconds' or unit == 'microsecond':
+                tsecs = time/1.e6
+            elif unit == 'milliseconds' or unit == 'millisecond':
+                tsecs = time/1.e3
+            elif unit == 'seconds' or unit == 'second':
+                tsecs = time
+            elif unit == 'hours' or unit == 'hour':
+                tsecs = time*3600.
+            elif unit == 'days' or unit == 'day':
+                tsecs = time*86400.
+            # compute time delta.
+            days = tsecs // 86400.
+            secs = tsecs - days*86400.
+            msecs = (secs - int(secs))*1.e6
+            td = timedelta(days=days,seconds=secs,microseconds=msecs)
+            # add time delta to base date.
+            date = basedate + td
+            dates.append(date)
+        if isscalar:
+            return dates[0]
+        else:
+            return dates
+    else: # if only second accuracy required, can use other calendars.
+        cdftime = netcdftime.utime(units,calendar=calendar)
+        return cdftime.num2date(times)
 
 def date2index(dates, nctime, calendar=None, select='exact'):
     """
