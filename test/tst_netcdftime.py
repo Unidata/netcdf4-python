@@ -322,6 +322,26 @@ class TestDate2index(unittest.TestCase):
         assert_equal(t, 0)
         
         self.assertRaises(ValueError, date2index, datetime(1978,1,1), nutime, select='after')
+        # test microsecond and millisecond units
+        unix_epoch = "milliseconds since 1970-01-01T00:00:00Z"
+        from netCDF4 import date2num
+        d = datetime(2038,1,19,3,14,7)
+        millisecs = int(date2num(d,unix_epoch,calendar='proleptic_gregorian'))
+        assert_equal(millisecs, (2**32/2 - 1)*1000)
+        unix_epoch = "microseconds since 1970-01-01T00:00:00Z"
+        microsecs = int(date2num(d,unix_epoch))
+        assert_equal(microsecs, (2**32/2 - 1)*1000000)
+        # test microsecond accuracy in date2num/num2date roundtrip
+        # note: microsecond accuracy lost for time intervals greater
+        # than about 270 years.
+        from dateutil.tz import tzutc
+        units = 'microseconds since 1776-07-04 00:00:00-12:00'
+        dates =\
+        [datetime(1962,10,27,6,1,30,9001),datetime(1993,11,21,12,5,25,999),datetime(1995,11,25,18,7,59,999999)]
+        times2 = date2num(dates,units)
+        dates2 = num2date(times2,units)
+        for date,date2 in zip(dates,dates2):
+            assert_equal(date.replace(tzinfo=tzutc()), date2)
         
 if __name__ == '__main__':
     unittest.main()
