@@ -1,4 +1,4 @@
- version 1.0.3 (not yet released)
+ version 1.0.3 (svn revision 1218)
  =================================
 
  * date2num, num2date and date2index now can handle units of microseconds and milliseconds
