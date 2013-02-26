@@ -2874,6 +2874,7 @@ details."""
         # Fill output array with data chunks. 
         for (a,b,c,i) in zip(start, count, stride, put_ind):
             dataput = data[tuple(i)]
+            if dataput.size == 0: continue # nothing to write
             # convert array scalar to regular array with one element.
             if dataput.shape == (): 
                 if self._isvlen:
