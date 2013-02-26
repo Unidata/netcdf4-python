@@ -1,5 +1,8 @@
- version 1.0.3 (svn revision 1218)
+ version 1.0.3 (svn revision 1219)
  =================================
+
+ * don't try to write empty data array to netcdf file (fixed failing
+   test with netcdf 4.3.0rc2).
 
  * date2num, num2date and date2index now can handle units of microseconds and milliseconds
    (for proleptic_gregorian calendar, or gregorian and standard calendars
