@@ -1,7 +1,7 @@
  version 1.0.3 (not yet released)
  =================================
 
- * date2num and num2date now can handle units of microseconds and milliseconds
+ * date2num, num2date and date2index now can handle units of microseconds and milliseconds
    (for proleptic_gregorian calendar, or gregorian and standard calendars
     as long as the time origin is after 1582-10-15). Issue 159.
 
