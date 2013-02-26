@@ -241,8 +241,9 @@ contains one.
                     tsecs = time*86400.
                 # compute time delta.
                 days = tsecs // 86400.
-                secs = tsecs - days*86400.
-                msecs = (secs - int(secs))*1.e6
+                msecsd = tsecs*1.e6 - days*86400.*1.e6
+                secs = msecsd // 1.e6
+                msecs = int(msecsd - secs*1.e6)
                 td = timedelta(days=days,seconds=secs,microseconds=msecs)
                 # add time delta to base date.
                 date = basedate + td
