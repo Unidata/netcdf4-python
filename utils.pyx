@@ -120,8 +120,8 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
     """
     unit = units.split()[0].lower()
     if unit in ['microseconds','milliseconds','microsecond','millisecond']:
-        from dateutil.tz import tzutc
         basedate = _dateparse(units)
+        from dateutil.tz import tzutc
         if calendar != 'proleptic_gregorian' and not \
            (calendar in ['gregorian','standard'] and \
             basedate > gregorian.replace(tzinfo=tzutc())):
@@ -206,8 +206,8 @@ contains one.
     """
     unit = units.split()[0].lower()
     if unit in ['microseconds','milliseconds','microsecond','millisecond']:
-        from dateutil.tz import tzutc
         basedate = _dateparse(units)
+        from dateutil.tz import tzutc
         if calendar != 'proleptic_gregorian' and not \
            (calendar in ['gregorian','standard'] and \
             basedate > gregorian.replace(tzinfo=tzutc())):
@@ -291,8 +291,8 @@ to the given datetime object(s).
     if unit in ['microseconds','milliseconds','microsecond','millisecond']:
         # for microsecond and/or millisecond accuracy, convert dates
         # to numerical times, then use netcdftime.time2index.
-        from dateutil.tz import tzutc
         basedate = _dateparse(nctime.units)
+        from dateutil.tz import tzutc
         # can only use certain calendars.
         if calendar != 'proleptic_gregorian' and not \
            (calendar in ['gregorian','standard'] and \
