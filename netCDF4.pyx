@@ -3251,7 +3251,7 @@ the user.
         (self.name,self.dtype)
 
 cdef _def_compound(grp, object dt, object dtype_name):
-    # private method used to construct a netcdf compound data type
+    # private function used to construct a netcdf compound data type
     # from a numpy dtype object by CompoundType.__init__.
     cdef nc_type xtype, xtype_tmp
     cdef int ierr, ndims
@@ -3473,7 +3473,7 @@ the user.
             (self.name, self.dtype)
 
 cdef _def_vlen(grp, object dt, object dtype_name):
-    # private method used to construct a netcdf VLEN data type
+    # private function used to construct a netcdf VLEN data type
     # from a numpy dtype object or python str object by VLType.__init__.
     cdef nc_type xtype, xtype_tmp
     cdef int ierr, ndims
