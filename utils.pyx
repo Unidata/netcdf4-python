@@ -351,7 +351,7 @@ Open a Dataset spanning multiple files, making it look as if it was a
 single file. Variables in the list of files that share the same 
 dimension (specified with the keyword C{aggdim}) are aggregated. If
 C{aggdim} is not specified, the unlimited is aggregated.  Currently,
-C{aggdim} must be the leftmost (fastest varying) dimension of each
+C{aggdim} must be the leftmost (slowest varying) dimension of each
 of the variables to be aggregated.
 
 Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
