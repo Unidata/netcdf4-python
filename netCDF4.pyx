@@ -3231,7 +3231,7 @@ the user.
     cdef public dtype, name
     def __init__(self, grp, object dt, object dtype_name, **kwargs):
         cdef nc_type xtype
-        dt = numpy.dtype(dt)
+        dt = numpy.dtype(dt,align=True)
         if 'typeid' in kwargs:
             xtype = kwargs['typeid']
         else:
