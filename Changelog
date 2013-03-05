@@ -1,3 +1,10 @@
+ version 1.0.4 (not yet released)
+ ===============================-
+
+ * fixed serious alignment bug only affecting compound types that could
+   cause memory corruption when reading compound types.  All users of
+   compound types should upgrade.
+
  version 1.0.3 (svn revision 1219)
  =================================
 
