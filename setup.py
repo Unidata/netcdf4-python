@@ -49,7 +49,7 @@ setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars.
 ncconfig = None
 if os.path.exists(setup_cfg):
-    sys.stdout.write('reading from setup.cfg...\n') 
+    sys.stdout.write('reading from setup.cfg...\n')
     config = configparser.SafeConfigParser()
     config.read(setup_cfg)
     try: HDF5_dir = config.get("directories", "HDF5_dir")
@@ -81,7 +81,7 @@ if USE_NCCONFIG is not None:
     if ncconfig is None and netCDF4_dir is not None:
         ncconfig = os.path.join(netCDF4_dir,'bin/nc-config')
     else: # otherwise, just hope it's in the users PATH.
-        ncconfig = 'nc-config' 
+        ncconfig = 'nc-config'
     retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
 else:
     retcode = 1
@@ -166,7 +166,7 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
 extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
 
 setup(name = "netCDF4",
-  version = "1.0.3",
+  version = "1.0.4",
   long_description = "netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project has a `Subversion repository <http://code.google.com/p/netcdf4-python/source>`_ where you may access the most up-to-date source.",
   author            = "Jeff Whitaker",
   author_email      = "jeffrey.s.whitaker@noaa.gov",
@@ -178,8 +178,8 @@ setup(name = "netCDF4",
   description = "Provides an object-oriented python interface to the netCDF version 4 library.",
   keywords = ['numpy','netcdf','data','science','network','oceanography','meteorology','climate'],
   classifiers = ["Development Status :: 3 - Alpha",
-                 "Intended Audience :: Science/Research", 
-                 "License :: OSI Approved", 
+                 "Intended Audience :: Science/Research",
+                 "License :: OSI Approved",
                  "Topic :: Software Development :: Libraries :: Python Modules",
                  "Topic :: System :: Archiving :: Compression",
                  "Operating System :: OS Independent"],

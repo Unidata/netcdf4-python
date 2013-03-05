@@ -1,4 +1,4 @@
- version 1.0.4 (svn revision 1228)
+ version 1.0.4 (svn revision 1229)
  =================================
 
  * fixed alignment bug that could cause memory corruption
