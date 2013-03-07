@@ -1962,6 +1962,13 @@ determine if the dimension is unlimited"""
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         return lengthp
 
+    def group(self):
+        """
+group(self)
+
+return the group that this L{Dimension} is a member of."""
+        return self._grp
+
     def isunlimited(self):
         """
 isunlimited(self)
