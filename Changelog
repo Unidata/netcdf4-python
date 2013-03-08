@@ -1,6 +1,8 @@
  since version 1.0.4 release
  ===========================
 
+ * add support for missing_value or _FillValue == NaN (issue 168).
+
  * added a Dimension.group() method (issue 165).
 
  version 1.0.4 (svn revision 1229)

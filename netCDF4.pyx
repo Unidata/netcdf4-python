@@ -2689,14 +2689,24 @@ details."""
         fill_value = None
         if hasattr(self, 'missing_value'):
             mval = numpy.array(self.missing_value, self.dtype)
-            if (data == mval).any():
-                mask=data==mval
+            if numpy.isnan(mval):
+                mask = numpy.isnan(data)
+            elif (data == mval).any():
+                mask = data==mval
+            else:
+                mask = None
+            if mask is not None:
                 fill_value = mval
                 totalmask += mask
         if hasattr(self, '_FillValue'):
             fval = numpy.array(self._FillValue, self.dtype)
-            if (data == fval).any():
-                mask=data==fval
+            if numpy.isnan(fval):
+                mask = numpy.isnan(data)
+            elif (data == fval).any():
+                mask = data==fval
+            else:
+                mask = None
+            if mask is not None:
                 if fill_value is None:
                     fill_value = fval
                 totalmask += mask
