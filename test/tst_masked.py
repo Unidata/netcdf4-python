@@ -5,7 +5,7 @@ import tempfile
 import numpy as NP
 from numpy import ma
 from numpy.testing import assert_array_equal, assert_array_almost_equal
-from numpy.random.mtrand import uniform 
+from numpy.random.mtrand import uniform
 import netCDF4
 
 # test automatic conversion of masked arrays, and
@@ -15,10 +15,14 @@ import netCDF4
 FILE_NAME = tempfile.mktemp(".nc")
 ndim = 10
 ranarr = 100.*uniform(size=(ndim))
+ranarr2 = 100.*uniform(size=(ndim))
 packeddata = 10.*uniform(size=(ndim))
 missing_value = -9999.
+missing_value2 = NP.nan
 ranarr[::2] = missing_value
-maskedarr = ma.masked_values(ranarr,-9999.)
+ranarr2[::2] = missing_value2
+maskedarr = ma.masked_values(ranarr,missing_value)
+maskedarr2 = ma.masked_values(ranarr2,missing_value2)
 scale_factor = (packeddata.max()-packeddata.min())/(2.*32766.)
 add_offset = 0.5*(packeddata.max()+packeddata.min())
 packeddata2 = NP.around((packeddata-add_offset)/scale_factor).astype('i2')
@@ -30,13 +34,17 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         file = netCDF4.Dataset(self.file,'w')
         file.createDimension('n', ndim)
         foo = file.createVariable('maskeddata', 'f8', ('n',))
+        foo2 = file.createVariable('maskeddata2', 'f8', ('n',))
         foo.missing_value = missing_value
         foo.set_auto_maskandscale(True)
+        foo2.missing_value = missing_value2
+        foo2.set_auto_maskandscale(True)
         bar = file.createVariable('packeddata', 'i2', ('n',))
         bar.set_auto_maskandscale(True)
         bar.scale_factor = scale_factor
         bar.add_offset = add_offset
         foo[:] = maskedarr
+        foo2[:] = maskedarr2
         bar[:] = packeddata
         # added to test fix to issue 46
         doh = file.createVariable('packeddata2','i2','n')
@@ -50,9 +58,10 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing auto-conversion of masked arrays and packed integers""" 
+        """testing auto-conversion of masked arrays and packed integers"""
         file = netCDF4.Dataset(self.file)
         datamasked = file.variables['maskeddata']
+        datamasked2 = file.variables['maskeddata2']
         datapacked = file.variables['packeddata']
         datapacked2 = file.variables['packeddata2']
         # check missing_value, scale_factor and add_offset attributes.
@@ -61,14 +70,18 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         assert datapacked.add_offset == add_offset
         # no auto-conversion.
         datamasked.set_auto_maskandscale(False)
+        datamasked2.set_auto_maskandscale(False)
         datapacked.set_auto_maskandscale(False)
         assert_array_equal(datapacked[:],packeddata2)
         assert_array_almost_equal(datamasked[:],ranarr)
+        assert_array_almost_equal(datamasked2[:],ranarr2)
         # auto-conversion
         datamasked.set_auto_maskandscale(True)
+        datamasked2.set_auto_maskandscale(True)
         datapacked.set_auto_maskandscale(True)
         datapacked2.set_auto_maskandscale(False)
         assert_array_almost_equal(datamasked[:].filled(),ranarr)
+        assert_array_almost_equal(datamasked2[:].filled(),ranarr2)
         assert_array_almost_equal(datapacked[:],packeddata,decimal=4)
         # added to test fix to issue 46 (result before r865 was 10)
         assert_array_equal(datapacked2[0],11)
