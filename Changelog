@@ -1,6 +1,8 @@
  since version 1.0.4 release
  ===========================
 
+ * fix for issue 169 (error in chartostring function on 64-bit windows).
+
  * add support for missing_value or _FillValue == NaN (issue 168).
 
  * added a Dimension.group() method (issue 165).

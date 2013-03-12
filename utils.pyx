@@ -82,7 +82,7 @@ where N=b.shape[-1]."""
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
     bs = b.tostring().decode(default_encoding)
-    slen = b.shape[-1]
+    slen = int(b.shape[-1])
     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
     a.shape = b.shape[:-1]
     return a
