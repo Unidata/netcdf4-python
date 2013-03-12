@@ -1,5 +1,5 @@
- since version 1.0.4 release
- ===========================
+ version 1.0.5 (not yet released)
+ ================================
 
  * fix for issue 169 (error in chartostring function on 64-bit windows).
 
