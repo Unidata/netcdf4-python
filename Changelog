@@ -1,6 +1,9 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * fix for issue 170 (opening a remote DAP dataset fails after creating
+   a NETCDF4 formatted file).
+
  * fix for issue 169 (error in chartostring function on 64-bit windows).
 
  * add support for missing_value or _FillValue == NaN (issue 168).

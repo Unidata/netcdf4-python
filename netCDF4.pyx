@@ -1347,7 +1347,10 @@ group, so the path is simply C{'/'}."""
                         ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
                 else:
                     ierr = nc_create(path, NC_NOCLOBBER, &grpid)
-            # initialize group dict.
+            # reset default format to netcdf3 - this is a workaround
+            # for issue 170 (nc_open'ing a DAP dataset after switching
+            # format to NETCDF4).
+            _set_default_format(format='NETCDF3_64BIT')
         elif mode == 'r':
             if diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
