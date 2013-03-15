@@ -1349,7 +1349,8 @@ group, so the path is simply C{'/'}."""
                     ierr = nc_create(path, NC_NOCLOBBER, &grpid)
             # reset default format to netcdf3 - this is a workaround
             # for issue 170 (nc_open'ing a DAP dataset after switching
-            # format to NETCDF4).
+            # format to NETCDF4). This bug should be fixed in version
+            # 4.3.0 of the netcdf library (add a version check here?).
             _set_default_format(format='NETCDF3_64BIT')
         elif mode == 'r':
             if diskless:
