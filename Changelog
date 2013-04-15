@@ -1,6 +1,9 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * add filepath method to Dataset instance to return file path (or opendap
+   URL) used to create Dataset (issue 172).
+
  * fix for issue 170 (opening a remote DAP dataset fails after creating
    a NETCDF4 formatted file).
 

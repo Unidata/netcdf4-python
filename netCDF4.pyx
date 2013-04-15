@@ -1416,6 +1416,18 @@ group, so the path is simply C{'/'}."""
     def __exit__(self,atype,value,traceback):
         self.close()
 
+    def filepath(self):
+        """
+filepath(self)
+
+Get the file system path (or the opendap URL) which was used to
+open/create the Dataset."""
+        cdef int ierr
+        cdef size_t pathlen
+        cdef char path[NC_MAX_NAME + 1]
+        ierr = nc_inq_path(self._grpid, &pathlen, path)
+        return path.decode('ascii')
+
     def __str__(self):
         if python3:
            return self.__unicode__()

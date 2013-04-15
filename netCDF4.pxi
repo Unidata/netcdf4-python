@@ -235,6 +235,7 @@ cdef extern from "netcdf.h":
     int nc__create(char *path, int cmode, size_t initialsz, size_t *chunksizehintp, int *ncidp)
     int nc_open(char *path, int mode, int *ncidp)
     int nc__open(char *path, int mode, size_t *chunksizehintp, int *ncidp)
+    int nc_inq_path(int ncid, size_t *pathlen, char *path)
     int nc_inq_ncid(int ncid, char *name, int *grp_ncid)
     int nc_inq_grps(int ncid, int *numgrps, int *ncids)
     int nc_inq_grpname(int ncid, char *name)
@@ -278,6 +279,7 @@ cdef extern from "netcdf.h":
     int nc_put_att(int ncid, int varid, char *name, nc_type xtype, 
                size_t len, void *op)
     int nc_get_att(int ncid, int varid, char *name, void *ip)
+    int nc_get_att_string(int ncid, int varid, char *name, char **ip)
     int nc_def_opaque(int ncid, size_t size, char *name, nc_type *xtypep)
     int nc_inq_opaque(int ncid, nc_type xtype, char *name, size_t *sizep)
     int nc_put_att_opaque(int ncid, int varid, char *name,
