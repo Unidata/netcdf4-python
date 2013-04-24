@@ -796,6 +796,7 @@ import os
 import netcdftime
 import numpy
 import sys
+import warnings
 from glob import glob
 from numpy import ma
 from numpy import __version__ as _npversion
@@ -2684,7 +2685,15 @@ details."""
         # and automatic conversion to masked array using
         # missing_value/_Fill_Value.
         # ignore for compound and vlen datatypes.
-        if self.maskandscale and self._isprimitive:
+        try: # check to see if scale_factor and add_offset is valid (issue 176).
+            float(self.scale_factor); float(self.add_offset)
+            valid_scaleoffset = True
+        except:
+            valid_scaleoffset = False
+            if self.maskandscale:
+                msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
+                warnings.warn(msg)
+        if self.maskandscale and self._isprimitive and valid_scaleoffset:
             data = self._toma(data)
             # if variable has scale_factor and add_offset attributes, rescale.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset') and\
