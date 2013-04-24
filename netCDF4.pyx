@@ -2686,7 +2686,8 @@ details."""
         # missing_value/_Fill_Value.
         # ignore for compound and vlen datatypes.
         try: # check to see if scale_factor and add_offset is valid (issue 176).
-            float(self.scale_factor); float(self.add_offset)
+            if hasattr(self,'scale_factor'): float(self.scale_factor)
+            if hasattr(self,'add_offset'): float(self.add_offset)
             valid_scaleoffset = True
         except:
             valid_scaleoffset = False
