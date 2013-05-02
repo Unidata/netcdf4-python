@@ -78,10 +78,11 @@ if os.path.exists(setup_cfg):
 # if USE_NCCONFIG set, and nc-config works, use it.
 if USE_NCCONFIG is not None:
     # if NETCDF4_DIR env var is set, look for nc-config in NETCDF4_DIR/bin.
-    if ncconfig is None and netCDF4_dir is not None:
-        ncconfig = os.path.join(netCDF4_dir,'bin/nc-config')
-    else: # otherwise, just hope it's in the users PATH.
-        ncconfig = 'nc-config'
+    if ncconfig is None:
+        if netCDF4_dir is not None:
+            ncconfig = os.path.join(netCDF4_dir,'bin/nc-config')
+        else: # otherwise, just hope it's in the users PATH.
+            ncconfig = 'nc-config'
     retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
 else:
     retcode = 1

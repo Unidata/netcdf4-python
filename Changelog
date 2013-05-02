@@ -1,6 +1,8 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * fix logic for deciding where to look for nc-config in setup.py (issue 177).
+
  * issue a warning and don't try to apply scale_factor or add_offset if these 
    attributes are not convertible to floats (issue 176). 
 
