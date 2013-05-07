@@ -1,6 +1,10 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * add datatype property for Variable that returns numpy dtype for primitive
+   datatypes (same as dtype attribute) but returns CompoundType or VLType 
+   instance for compound or vlen variables (issue 178).
+
  * fix logic for deciding where to look for nc-config in setup.py (issue 177).
 
  * issue a warning and don't try to apply scale_factor or add_offset if these 

@@ -1222,7 +1222,7 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format',
  '_nunlimdim','path','parent','ndim','maskandscale','cmptypes','vltypes','_isprimitive',
- '_isvlen','_iscompound']
+ '_isvlen','_iscompound','_cmptype','_vltype']
 
 
 cdef class Dataset:
@@ -2142,7 +2142,7 @@ truncated to this decimal place when it is assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, maskandscale, _isprimitive, _iscompound,\
-    _isvlen, _grp
+    _isvlen, _grp,_cmptype,_vltype
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
@@ -2176,9 +2176,15 @@ instance. If C{None}, the data is not truncated. """
         self._isvlen = False
         if isinstance(datatype, CompoundType) or isinstance(datatype, VLType)\
                       or datatype == str:
-            if isinstance(datatype, CompoundType): self._iscompound = True 
-            if isinstance(datatype, VLType) or datatype==str: self._isvlen = True 
-            if datatype==str:  datatype = VLType(self._grp, str, None)
+            if isinstance(datatype, CompoundType):
+               self._iscompound = True
+               self._cmptype = datatype
+            if isinstance(datatype, VLType) or datatype==str:
+               self._isvlen = True
+               self._vltype = datatype
+            if datatype==str:
+               datatype = VLType(self._grp, str, None)
+               self._vltype = datatype
             xtype = datatype._nc_type
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype.dtype
@@ -2387,6 +2393,16 @@ instance. If C{None}, the data is not truncated. """
             name = namstring.decode(default_encoding,unicode_error)
             dimensions = dimensions + (name,)
         return dimensions
+
+    property datatype:
+        """numpy data type (for primitive data types) or VLType/CompoundType instance (for compound or vlen data types)"""
+        def __get__(self):
+            if self._iscompound:
+                return self._cmptype
+            elif self._isvlen:
+                return self._vltype
+            elif self._isprimitive:
+                return self.dtype
 
     property shape:
         """find current sizes of all variable dimensions"""
