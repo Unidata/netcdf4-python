@@ -1,6 +1,8 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * remove dos line feeds from nc3tonc4 (issue 181).
+
  * add datatype property for Variable that returns numpy dtype for primitive
    datatypes (same as dtype attribute) but returns CompoundType or VLType 
    instance for compound or vlen variables (issue 178).
