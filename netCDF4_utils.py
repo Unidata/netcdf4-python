@@ -2,7 +2,7 @@ import numpy as np
 from numpy import ma
 import warnings
 
-        
+
 def _sortbylist(A,B):
     # sort one list (A) using the values from another list (B)
     return [A[i] for i in sorted(range(len(A)), key=B.__getitem__)]
@@ -25,9 +25,9 @@ def _find_dim(grp, dimname):
 
 def _quantize(data,least_significant_digit):
     """
-quantize data to improve compression. data is quantized using 
-around(scale*data)/scale, where scale is 2**bits, and bits is determined 
-from the least_significant_digit. For example, if 
+quantize data to improve compression. data is quantized using
+around(scale*data)/scale, where scale is 2**bits, and bits is determined
+from the least_significant_digit. For example, if
 least_significant_digit=1, bits will be 4.
     """
     precision = pow(10.,-least_significant_digit)
@@ -47,75 +47,75 @@ least_significant_digit=1, bits will be 4.
 
 def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
     """Return start, count, stride and indices needed to store/extract data
-    into/from a netCDF variable. 
-        
-    This function is used to convert a NumPy index into a form that is 
+    into/from a netCDF variable.
+
+    This function is used to convert a NumPy index into a form that is
     compatible with the nc_get_vars function. Specifically, it needs
     to interpret slices, ellipses, sequences of integers as well as
-    sequences of booleans. 
+    sequences of booleans.
 
     Note that all the fancy indexing tricks
     implemented in NumPy are not supported. In particular, multidimensional
     indexing is not supported and will raise an IndexError. Note also that
-    boolean indexing does not work as in NumPy. In NumPy, booleans arrays 
+    boolean indexing does not work as in NumPy. In NumPy, booleans arrays
     behave identically to integer indices. For netCDF variables, we thought
-    it would be useful to use a different logic, namely dimension independence. 
+    it would be useful to use a different logic, namely dimension independence.
     What this means is that you can do:
     >>> v[lat>60, lon<180, :]
-    to fetch the elements of v obeying conditions on latitude and longitude. 
-    
-    This function is used both by the __setitem__ and __getitem__ method of 
-    the Variable class. Although the behavior is similar in both cases, there 
-    are some differences to be noted. 
-    
+    to fetch the elements of v obeying conditions on latitude and longitude.
+
+    This function is used both by the __setitem__ and __getitem__ method of
+    the Variable class. Although the behavior is similar in both cases, there
+    are some differences to be noted.
+
     Parameters
     ----------
-    elem : tuple of integer, slice, ellipsis or sequence of integers. 
+    elem : tuple of integer, slice, ellipsis or sequence of integers.
       The indexing information for the netCDF Variable: Variable[elem]
     shape : tuple
-      The current shape of the netCDF variable. 
-    dimensions : sequence 
-      The name of the dimensions. This is only useful to find out 
+      The current shape of the netCDF variable.
+    dimensions : sequence
+      The name of the dimensions. This is only useful to find out
       whether or not some dimensions are unlimited. Only needed within
       __setitem__.
     grp  : netCDF Group
-      The netCDF group to which the variable being set belongs to. 
+      The netCDF group to which the variable being set belongs to.
       Only needed within __setitem__.
     datashape : sequence
       The shape of the data that is being stored. Only needed within
       __setitem__.
-      
+
     Returns
     -------
     start : ndarray (..., n)
-      A starting indices array of dimension n+1. The first n 
-      dimensions identify different independent data chunks. The last dimension 
+      A starting indices array of dimension n+1. The first n
+      dimensions identify different independent data chunks. The last dimension
       can be read as the starting indices.
     count : ndarray (..., n)
-      An array of dimension (n+1) storing the number of elements to get. 
+      An array of dimension (n+1) storing the number of elements to get.
     stride : ndarray (..., n)
-      An array of dimension (n+1) storing the steps between each datum. 
+      An array of dimension (n+1) storing the steps between each datum.
     indices : ndarray (..., n)
-      An array storing the indices describing the location of the 
-      data chunk in the target/source array (__getitem__/__setitem__). 
-      
+      An array storing the indices describing the location of the
+      data chunk in the target/source array (__getitem__/__setitem__).
+
     Notes:
-    
-    netCDF data is accessed via the function: 
+
+    netCDF data is accessed via the function:
        nc_get_vars(grpid, varid, start, count, stride, data)
-       
-    Assume that the variable has dimension n, then 
-    
+
+    Assume that the variable has dimension n, then
+
     start is a n-tuple that contains the indices at the beginning of data chunk.
-    count is a n-tuple that contains the number of elements to be accessed. 
-    stride is a n-tuple that contains the step length between each element. 
-        
+    count is a n-tuple that contains the number of elements to be accessed.
+    stride is a n-tuple that contains the step length between each element.
+
     """
     # Adapted from pycdf (http://pysclint.sourceforge.net/pycdf)
     # by Andre Gosselin..
     # Modified by David Huard to handle efficiently fancy indexing with
-    # sequences of integers or booleans. 
-    
+    # sequences of integers or booleans.
+
     nDims = len(shape)
     if nDims == 0:
         nDims = 1
@@ -129,14 +129,14 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
             np.array([_is_int(e) for e in elem]).all()):
             elem = [elem]
             for n in range(len(elem)+1,nDims+1):
-                elem.append(slice(None,None,None))  
+                elem.append(slice(None,None,None))
     else:   # Convert single index to sequence
         elem = [elem]
 
     hasEllipsis = 0
     newElem = []
     for e in elem:
-        # Raise error if multidimensional indexing is used. 
+        # Raise error if multidimensional indexing is used.
         if np.ndim(e) > 1:
             raise IndexError("Index cannot be multidimensional.")
         # Replace ellipsis with slices.
@@ -177,7 +177,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
                     newElem.append(e)
             else:
                 newElem.append(slice(0,0))
-                
+
         # Replace sequence of indices with slice object if possible.
         elif np.iterable(e) and len(e) > 1:
             start = e[0]
@@ -198,23 +198,23 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
     # If slice doesn't cover all dims, assume ellipsis for rest of dims.
     if len(elem) < nDims:
         for n in range(len(elem)+1,nDims+1):
-            elem.append(slice(None,None,None))  
+            elem.append(slice(None,None,None))
 
     # make sure there are not too many dimensions in slice.
     if len(elem) > nDims:
         raise ValueError("slicing expression exceeds the number of dimensions of the variable")
 
     # Compute the dimensions of the start, count, stride and indices arrays.
-    # The number of elements in the first n dimensions corresponds to the 
-    # number of times the _get method will be called. 
+    # The number of elements in the first n dimensions corresponds to the
+    # number of times the _get method will be called.
     sdim = []
     ind_dim = None
     for i, e in enumerate(elem):
-        
+
         # Slices
         if type(e) == slice:
             sdim.append(1)
-            
+
         # Booleans --- Same shape as data along corresponding dimension
         elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
             if shape[i] != len(e):
@@ -222,9 +222,9 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
 Boolean array must have the same shape as the data along this dimension."""
                 raise IndexError(msg)
             sdim.append(e.sum())
-            
+
         # Sequence of indices
-        # If multiple sequences are used, they must have the same length. 
+        # If multiple sequences are used, they must have the same length.
         elif np.iterable(e):
             if ind_dim is None:
                 sdim.append(np.alen(e))
@@ -236,15 +236,15 @@ Boolean array must have the same shape as the data along this dimension."""
         # Scalar
         else:
             sdim.append(1)
-        
-    # Create the start, count, stride and indices arrays. 
-    
+
+    # Create the start, count, stride and indices arrays.
+
     sdim.append(max(nDims, 1))
     start = np.empty(sdim, dtype=int)
     count = np.empty(sdim, dtype=int)
     stride = np.empty(sdim, dtype=int)
     indices = np.empty(sdim, dtype=object)
-    
+
     for i, e in enumerate(elem):
 
         # if dimensions and grp are given, set unlim flag for this dimension.
@@ -274,11 +274,16 @@ Boolean array must have the same shape as the data along this dimension."""
                 else:
                     length = e.start+datashape[i]
             else:
-                length = shape[i]
+                if unlim and datashape == ():
+                    # writing scalar along unlimited dimension using slicing
+                    # syntax (var[:] = 1, when var.shape = ())
+                    length = 1
+                else:
+                    length = shape[i]
 
             beg, end, inc = e.indices(length)
             n = len(range(beg,end,inc))
-            
+
             start[...,i] = beg
             count[...,i] = n
             stride[...,i] = inc
@@ -290,18 +295,18 @@ Boolean array must have the same shape as the data along this dimension."""
 
         #    ITERABLE    #
         elif np.iterable(e) and np.array(e).dtype.kind in 'ib':  # Sequence of integers or booleans
-        
+
             #    BOOLEAN ARRAY   #
             if type(e) == np.ndarray and e.dtype.kind == 'b':
                 e = np.arange(len(e))[e]
-                
-                # Originally, I thought boolean indexing worked differently than 
-                # integer indexing, namely that we could select the rows and columns 
-                # independently. 
+
+                # Originally, I thought boolean indexing worked differently than
+                # integer indexing, namely that we could select the rows and columns
+                # independently.
                 start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
                 indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
-                
-                
+
+
             # Sequence of INTEGER INDICES
             else:
                 start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, ind_dim, np.ones(sdim[:-1]))
@@ -312,30 +317,30 @@ Boolean array must have the same shape as the data along this dimension."""
 
             count[...,i] = 1
             stride[...,i] = 1
-            
-            
+
+
         #    SCALAR INTEGER    #
-        elif np.alen(e)==1 and np.dtype(type(e)).kind == 'i': 
-            if e >= 0: 
+        elif np.alen(e)==1 and np.dtype(type(e)).kind == 'i':
+            if e >= 0:
                 start[...,i] = e
             elif e < 0 and (-e < shape[i]) :
                 start[...,i] = e+shape[i]
             else:
                 raise IndexError("Index out of range")
-            
+
             count[...,i] = 1
             stride[...,i] = 1
-            indices[...,i] = -1    # Use -1 instead of 0 to indicate that 
-                                       # this dimension shall be squeezed. 
+            indices[...,i] = -1    # Use -1 instead of 0 to indicate that
+                                       # this dimension shall be squeezed.
 
     return start, count, stride, indices#, out_shape
 
 def _out_array_shape(count):
     """Return the output array shape given the count array created by getStartCountStride"""
-    
+
     s = list(count.shape[:-1])
     out = []
-    
+
     for i, n in enumerate(s):
         if n == 1:
             c = count[..., i].ravel()[0] # All elements should be identical.

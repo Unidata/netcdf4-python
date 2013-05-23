@@ -1,6 +1,12 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * fix so that var[:] = x works if x is a scalar, and var is a netcdf variable
+   with an unlimited dimension that has shape () - i.e. no data has been
+   written to it yet.  Before this change, var[:] = x did not write any data.
+   Now the scalar x will be written as the first entry in var along the
+   unlimited dimension.
+
  * remove dos line feeds from nc3tonc4 (issue 181).
 
  * add datatype property for Variable that returns numpy dtype for primitive
