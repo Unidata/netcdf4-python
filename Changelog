@@ -1,6 +1,8 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * add 'renameAttribute' method to Dataset, Group and Variable.
+
  * fix so that var[:] = x works if x is a scalar, and var is a netcdf variable
    with an unlimited dimension that has shape () - i.e. no data has been
    written to it yet.  Before this change, var[:] = x did not write any data.

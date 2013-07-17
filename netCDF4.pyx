@@ -1835,6 +1835,21 @@ attributes."""
         else:
             return self.getncattr(name)
 
+    def renameAttribute(self, oldname, newname):
+        """
+renameAttribute(self, oldname, newname)
+
+rename a L{Dataset} or L{Group} attribute named C{oldname} to C{newname}."""
+        cdef int ierr
+        cdef char *oldnamec, *newnamec
+        bytestr = _strencode(oldname)
+        oldnamec = bytestr
+        bytestr = _strencode(newname)
+        newnamec = bytestr
+        ierr = nc_rename_att(self._grpid, NC_GLOBAL, oldnamec, newnamec)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+
 cdef class Group(Dataset):
     """
 Group(self, parent, name) 
@@ -2654,6 +2669,21 @@ details."""
             return self.__dict__[name]
         else:
             return self.getncattr(name)
+
+    def renameAttribute(self, oldname, newname):
+        """
+renameAttribute(self, oldname, newname)
+
+rename a L{Variable} attribute named C{oldname} to C{newname}."""
+        cdef int ierr
+        cdef char *oldnamec, *newnamec
+        bytestr = _strencode(oldname)
+        oldnamec = bytestr
+        bytestr = _strencode(newname)
+        newnamec = bytestr
+        ierr = nc_rename_att(self._grpid, self._varid, oldnamec, newnamec)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def __getitem__(self, elem):
         # This special method is used to index the netCDF variable

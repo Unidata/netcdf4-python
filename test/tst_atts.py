@@ -34,7 +34,9 @@ class VariablesTestCase(unittest.TestCase):
         f = netCDF4.Dataset(self.file,'w')
         # try to set a dataset attribute with one of the reserved names.
         f.setncattr('file_format','netcdf4_format')
-        f.stratt = STRATT
+        # test attribute renameing
+        f.stratt_tmp = STRATT
+        f.renameAttribute('stratt_tmp','stratt')
         f.emptystratt = EMPTYSTRATT
         f.intatt = INTATT
         f.floatatt = FLOATATT
@@ -48,7 +50,8 @@ class VariablesTestCase(unittest.TestCase):
         g.createDimension(DIM1_NAME, DIM1_LEN)
         g.createDimension(DIM2_NAME, DIM2_LEN)
         g.createDimension(DIM3_NAME, DIM3_LEN)
-        g.stratt = STRATT
+        g.stratt_tmp = STRATT
+        g.renameAttribute('stratt_tmp','stratt')
         g.emptystratt = EMPTYSTRATT
         g.intatt = INTATT
         g.floatatt = FLOATATT
@@ -57,7 +60,8 @@ class VariablesTestCase(unittest.TestCase):
         v = f.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         # try to set a variable attribute with one of the reserved names.
         v.setncattr('ndim','three')
-        v.stratt = STRATT
+        v.stratt_tmp = STRATT
+        v.renameAttribute('stratt_tmp','stratt')
         v.emptystratt = EMPTYSTRATT
         v.intatt = INTATT
         v.floatatt = FLOATATT
