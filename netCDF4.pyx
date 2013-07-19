@@ -2761,17 +2761,18 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         fill_value = None
         if hasattr(self, 'missing_value'):
             mval = numpy.array(self.missing_value, self.dtype)
-            if numpy.isnan(mval):
+            # mval can be a vector
+            if mval.shape == ():
+                hasmval = data==mval # mval a scalar
+            else:
+                hasmval = numpy.zeros(data.shape, numpy.bool)
+                for m in mval:
+                    m =  numpy.array(m)
+                    hasmval += data == m
+            if mval.shape == () and numpy.isnan(mval):
                 mask = numpy.isnan(data)
-            elif numpy.array(data == mval).any():
-                # mval can be a vector
-                if mval.shape == ():
-                    mask = data==mval # mval a scalar
-                else:
-                    mask = numpy.zeros(data.shape, numpy.bool)
-                    for m in mval:
-                        m =  numpy.array(m)
-                        mask += data == m
+            elif hasmval.any():
+                mask = hasmval
             else:
                 mask = None
             if mask is not None:
@@ -2960,8 +2961,15 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 if self.dtype.kind == 'i': data = numpy.around(data)
             if ma.isMA(data):
                 if hasattr(self, 'missing_value'):
-                    # what if missing_value is a vector here???
-                    fillval = self.missing_value
+                    # if missing value is a scalar, use it as fill_value
+                    # if missing value is a vector, raise an exception
+                    # since we don't know how to fill in missing values in
+                    # masked array in that case.
+                    if numpy.array(self.missing_value).shape == ():
+                        fillval = self.missing_value
+                    else:
+                        msg="cannot assign fill_value for masked array when missing_value attribute is not a scalar"
+                        raise RuntimeError(msg)
                     if numpy.array(fillval).shape != ():
                         fillval = fillval[0]
                 elif hasattr(self, '_FillValue'):
