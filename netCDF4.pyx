@@ -2961,10 +2961,9 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 if self.dtype.kind == 'i': data = numpy.around(data)
             if ma.isMA(data):
                 if hasattr(self, 'missing_value'):
-                    # if missing value is a scalar, use it as fill_value
+                    # if missing value is a scalar, use it as fill_value.
                     # if missing value is a vector, raise an exception
-                    # since we don't know how to fill in missing values in
-                    # masked array in that case.
+                    # since we then don't know how to fill in masked values.
                     if numpy.array(self.missing_value).shape == ():
                         fillval = self.missing_value
                     else:
