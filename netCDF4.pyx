@@ -2960,22 +2960,29 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 data = data - self.add_offset
                 if self.dtype.kind == 'i': data = numpy.around(data)
             if ma.isMA(data):
-                if hasattr(self, 'missing_value'):
-                    # if missing value is a scalar, use it as fill_value.
-                    # if missing value is a vector, raise an exception
-                    # since we then don't know how to fill in masked values.
-                    if numpy.array(self.missing_value).shape == ():
-                        fillval = self.missing_value
-                    else:
-                        msg="cannot assign fill_value for masked array when missing_value attribute is not a scalar"
-                        raise RuntimeError(msg)
-                    if numpy.array(fillval).shape != ():
-                        fillval = fillval[0]
-                elif hasattr(self, '_FillValue'):
-                    fillval = self._FillValue
+                # if underlying data in masked regions of masked array
+                # corresponds to missing values, don't fill masked array -
+                # just use underlying data instead
+                if hasattr(self, 'missing_value') and \
+                   numpy.all(numpy.in1d(data.data[data.mask],self.missing_value)):
+                    data = data.data
                 else:
-                    fillval = default_fillvals[self.dtype.str[1:]]
-                data = data.filled(fill_value=fillval)
+                    if hasattr(self, 'missing_value'):
+                        # if missing value is a scalar, use it as fill_value.
+                        # if missing value is a vector, raise an exception
+                        # since we then don't know how to fill in masked values.
+                        if numpy.array(self.missing_value).shape == ():
+                            fillval = self.missing_value
+                        else:
+                            msg="cannot assign fill_value for masked array when missing_value attribute is not a scalar"
+                            raise RuntimeError(msg)
+                        if numpy.array(fillval).shape != ():
+                            fillval = fillval[0]
+                    elif hasattr(self, '_FillValue'):
+                        fillval = self._FillValue
+                    else:
+                        fillval = default_fillvals[self.dtype.str[1:]]
+                    data = data.filled(fill_value=fillval)
 
         # Fill output array with data chunks. 
         for (a,b,c,i) in zip(start, count, stride, put_ind):
