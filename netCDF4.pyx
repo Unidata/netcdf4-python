@@ -2763,7 +2763,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             mval = numpy.array(self.missing_value, self.dtype)
             if numpy.isnan(mval):
                 mask = numpy.isnan(data)
-            elif (data == mval).any():
+            elif numpy.array(data == mval).any():
                 # mval can be a vector
                 if mval.shape == ():
                     mask = data==mval # mval a scalar
@@ -2962,6 +2962,8 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 if hasattr(self, 'missing_value'):
                     # what if missing_value is a vector here???
                     fillval = self.missing_value
+                    if numpy.array(fillval).shape != ():
+                        fillval = fillval[0]
                 elif hasattr(self, '_FillValue'):
                     fillval = self._FillValue
                 else:
