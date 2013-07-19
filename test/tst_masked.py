@@ -16,9 +16,14 @@ FILE_NAME = tempfile.mktemp(".nc")
 ndim = 10
 ranarr = 100.*uniform(size=(ndim))
 ranarr2 = 100.*uniform(size=(ndim))
+# used for checking vector missing_values
+arr3 = NP.linspace(0,9,ndim)
+mask = NP.zeros(ndim,NP.bool); mask[-1]=True; mask[-2]=True
+marr3 = NP.ma.array(arr3, mask=mask, dtype=NP.int32)
 packeddata = 10.*uniform(size=(ndim))
 missing_value = -9999.
 missing_value2 = NP.nan
+missing_value3 = [8,9]
 ranarr[::2] = missing_value
 ranarr2[::2] = missing_value2
 maskedarr = ma.masked_values(ranarr,missing_value)
@@ -35,16 +40,20 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         file.createDimension('n', ndim)
         foo = file.createVariable('maskeddata', 'f8', ('n',))
         foo2 = file.createVariable('maskeddata2', 'f8', ('n',))
+        foo3 = file.createVariable('maskeddata3', 'i4', ('n',))
         foo.missing_value = missing_value
         foo.set_auto_maskandscale(True)
         foo2.missing_value = missing_value2
         foo2.set_auto_maskandscale(True)
+        foo3.missing_value = missing_value3
+        foo3.set_auto_maskandscale(True)
         bar = file.createVariable('packeddata', 'i2', ('n',))
         bar.set_auto_maskandscale(True)
         bar.scale_factor = scale_factor
         bar.add_offset = add_offset
         foo[:] = maskedarr
         foo2[:] = maskedarr2
+        foo3[:] = arr3
         bar[:] = packeddata
         # added to test fix to issue 46
         doh = file.createVariable('packeddata2','i2','n')
@@ -62,6 +71,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         file = netCDF4.Dataset(self.file)
         datamasked = file.variables['maskeddata']
         datamasked2 = file.variables['maskeddata2']
+        datamasked3 = file.variables['maskeddata3']
         datapacked = file.variables['packeddata']
         datapacked2 = file.variables['packeddata2']
         # check missing_value, scale_factor and add_offset attributes.
@@ -73,6 +83,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         datamasked2.set_auto_maskandscale(False)
         datapacked.set_auto_maskandscale(False)
         assert_array_equal(datapacked[:],packeddata2)
+        assert_array_equal(datamasked3[:],marr3)
         assert_array_almost_equal(datamasked[:],ranarr)
         assert_array_almost_equal(datamasked2[:],ranarr2)
         # auto-conversion
