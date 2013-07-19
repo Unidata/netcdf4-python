@@ -1,6 +1,9 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * support for more than one missing value (missing_value attribute
+   is a vector) when converting to masked array.
+
  * add 'renameAttribute' method to Dataset, Group and Variable.
 
  * fix so that var[:] = x works if x is a scalar, and var is a netcdf variable
