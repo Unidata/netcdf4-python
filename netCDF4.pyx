@@ -2745,10 +2745,10 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             # if variable has scale_factor and add_offset attributes, rescale.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset') and\
             (self.add_offset != 0.0 or self.scale_factor != 1.0):
-                data = self.scale_factor*data + self.add_offset
+                data = data*self.scale_factor + self.add_offset
             # else if variable has only scale_factor attributes, rescale.
             elif hasattr(self, 'scale_factor') and self.scale_factor != 1.0:
-                data = self.scale_factor*data
+                data = data*self.scale_factor
             # else if variable has only add_offset attributes, rescale.
             elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
                 data += self.add_offset
