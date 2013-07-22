@@ -1541,10 +1541,13 @@ renameDimension(self, oldname, newname)
 
 rename a L{Dimension} named C{oldname} to C{newname}."""
         cdef char *namstring
-        dim = self.dimensions[oldname]
         bytestr = _strencode(newname)
         namstring = bytestr
         if self.file_format != 'NETCDF4': self._redef()
+        try:
+            dim = self.dimensions[oldname]
+        except KeyError:
+            raise KeyError('%s not a valid dimension name' % oldname)
         ierr = nc_rename_dim(self._grpid, dim._dimid, namstring)
         if self.file_format != 'NETCDF4': self._enddef()
         if ierr != NC_NOERR:
@@ -1849,6 +1852,31 @@ rename a L{Dataset} or L{Group} attribute named C{oldname} to C{newname}."""
         ierr = nc_rename_att(self._grpid, NC_GLOBAL, oldnamec, newnamec)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+
+    def renameGroup(self, oldname, newname):
+        """
+renameGroup(self, oldname, newname)
+
+rename a L{Group} named C{oldname} to C{newname}."""
+        cdef int ierr
+        cdef char *newnamec
+        IF HAS_RENAME_GRP:
+            bytestr = _strencode(newname)
+            newnamec = bytestr
+            self.sync() # should not be needed??? 
+            try:
+                grp = self.groups[oldname]
+            except KeyError:
+                raise KeyError('%s not a valid group name' % oldname)
+            ierr = nc_rename_grp(grp._grpid, newnamec)
+            if ierr != NC_NOERR:
+                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            # remove old key from groups dict.
+            self.groups.pop(oldname)
+            # add new key.
+            self.groups[newname] = grp
+        ELSE:
+            raise ValueError('renaming groups requires netcdf lib >= 4.3.1, you have %s' % __netcdf4libversion__)
 
 cdef class Group(Dataset):
     """

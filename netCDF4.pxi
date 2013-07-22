@@ -690,6 +690,7 @@ cdef extern from "netcdf.h":
     int nc_get_chunk_cache(size_t *sizep, size_t *nelemsp, float *preemptionp)
     int nc_set_var_chunk_cache(int ncid, int varid, size_t size, size_t nelems, float preemption)
     int nc_get_var_chunk_cache(int ncid, int varid, size_t *sizep, size_t *nelemsp, float *preemptionp)
+    int nc_rename_grp(int grpid, char *name)
 
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
@@ -706,3 +707,7 @@ cdef extern from "numpy/arrayobject.h":
     npy_intp PyArray_ISCONTIGUOUS(ndarray arr)
     npy_intp PyArray_ISALIGNED(ndarray arr)
     void import_array()
+
+# setting this to 1 enables renaming of groups 
+# (added to library in version 4.3.1)
+DEF HAS_RENAME_GRP = 0
