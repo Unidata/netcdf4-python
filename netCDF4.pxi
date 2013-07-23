@@ -707,7 +707,3 @@ cdef extern from "numpy/arrayobject.h":
     npy_intp PyArray_ISCONTIGUOUS(ndarray arr)
     npy_intp PyArray_ISALIGNED(ndarray arr)
     void import_array()
-
-# setting this to 1 enables renaming of groups 
-# (added to library in version 4.3.1)
-DEF HAS_RENAME_GRP = 0

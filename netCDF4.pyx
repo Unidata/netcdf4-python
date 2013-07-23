@@ -808,6 +808,7 @@ include "netCDF4.pxi"
 # (use include instead of importing them so docstrings
 #  get included in C extension code).
 include "utils.pyx"
+include "constants.pyx"
 
 # check for required version of netcdf-4 and hdf5.
 
