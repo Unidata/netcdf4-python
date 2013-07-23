@@ -1,6 +1,12 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * added setup_cython.py, which will compile the Cython sources directly.
+   Requires Cython.  May become default in the future, since
+   it allows for "ifdef" like capability to modify source at compile time to
+   account for changes in netcdf API (for instance, the forthcoming addition of the 
+   nc_rename_grp in version 4.3.1).
+
  * added a placeholder "renameGroup" method, which will raise an exception if
    called.  nc_rename_grp has been added in netcdf svn, should be available in 
    the 4.3.1 release (at which point "renameGroup" will be enabled).
