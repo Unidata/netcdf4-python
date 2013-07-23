@@ -1,6 +1,6 @@
-import os, sys
+import os, sys, subprocess
 from numpy.distutils.core  import setup, Extension
-import subprocess
+
 if sys.version_info[0] < 3:
     import ConfigParser as configparser
 else:
@@ -33,37 +33,6 @@ def check_ifnetcdf4(netcdf4_includedir):
         if line.startswith('nc_inq_compound'):
             isnetcdf4 = True
     return isnetcdf4
-
-def getnetcdfvers(libdirs):
-    """
-    Get the version string for the first netcdf lib found in libdirs.
-    (major.minor.release). If nothing found, return None.
-    """
-
-    import os, re, sys, ctypes
-
-    if sys.platform.startswith('win'):
-        regexp = re.compile('^netcdf.dll$')
-    elif sys.platform.startswith('darwin'):
-        regexp = re.compile(r'^libnetcdf.dylib')
-    else:
-        regexp = re.compile(r'^libnetcdf.so')
-
-    for d in libdirs:
-        try:
-            candidates = [x for x in os.listdir(d) if regexp.match(x)]
-            if len(candidates) != 0:
-                candidates.sort(key=lambda x: len(x))   # Prefer libfoo.so to libfoo.so.X.Y.Z
-                path = os.path.abspath(os.path.join(d, candidates[0]))
-            lib = ctypes.cdll.LoadLibrary(path)
-            inq_libvers = lib.nc_inq_libvers
-            inq_libvers.restype = ctypes.c_char_p
-            vers = lib.nc_inq_libvers()
-            return vers.split()[0]
-        except Exception:
-            pass   # We skip invalid entries, because that's what the C compiler does
-
-    return None
 
 HDF5_dir = os.environ.get('HDF5_DIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
@@ -194,12 +163,6 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         libs.append('sz')
         lib_dirs.append(szip_libdir)
         inc_dirs.append(szip_incdir)
-
-netcdf_lib_version = getnetcdfvers(lib_dirs)
-if netcdf_lib_version is None:
-    raise ValueError('no valid netcdf library found in %s' % lib_dirs)
-else:
-    sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
 extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
 
