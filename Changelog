@@ -1,6 +1,10 @@
  version 1.0.5 (not yet released)
  ================================
 
+ * added a placeholder "renameGroup" method, which will raise an exception if
+   called.  nc_rename_grp has been added in netcdf svn, should be available in 
+   the 4.3.1 release (at which point "renameGroup" will be enabled).
+
  * support for more than one missing value (missing_value attribute
    is a vector) when converting to masked array.
 
