@@ -35,6 +35,19 @@ def check_ifnetcdf4(netcdf4_includedir):
             isnetcdf4 = True
     return isnetcdf4
 
+def check_has_rename_grp(inc_dirs):
+    has_rename_grp = False
+    for d in inc_dirs:
+        try:
+            f = open(os.path.join(d,'netcdf.h'))
+        except IOError:
+            continue
+        for line in f:
+            if line.startswith('nc_rename_grp'):
+                has_rename_grp = True
+        break
+    return has_rename_grp
+
 def getnetcdfvers(libdirs):
     """
     Get the version string for the first netcdf lib found in libdirs.
@@ -213,8 +226,10 @@ if os.path.exists('netCDF4.c'):
     os.remove('netCDF4.c')
 
 # this determines whether renameGroup method will work.
+has_rename_grp = check_has_rename_grp(inc_dirs)
 f = open('constants.pyx','w')
-if netcdf_lib_version >= '4.3.1':
+#if netcdf_lib_version >= '4.3.1':
+if has_rename_grp:
     f.write('DEF HAS_RENAME_GRP = 1')
 else:
     f.write('DEF HAS_RENAME_GRP = 0')
