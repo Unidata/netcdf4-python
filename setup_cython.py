@@ -222,7 +222,7 @@ else:
 extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
 
 # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
-if os.path.exists('netCDF4.c'):
+if sys.argv[1] == 'build' and os.path.exists('netCDF4.c'):
     os.remove('netCDF4.c')
 
 # this determines whether renameGroup method will work.
