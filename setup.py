@@ -195,8 +195,6 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         lib_dirs.append(szip_libdir)
         inc_dirs.append(szip_incdir)
 
-inc_dirs.remove('/opt/local/include')
-
 netcdf_lib_version = getnetcdfvers(lib_dirs)
 if netcdf_lib_version is None:
     raise ValueError('no valid netcdf library found in %s' % lib_dirs)
