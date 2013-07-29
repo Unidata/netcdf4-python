@@ -4,6 +4,7 @@ import os
 import tempfile
 import numpy as NP
 import netCDF4
+from netCDF4 import __has_rename_grp__
 
 # test changing dimension, variable names
 # and deleting attributes.
@@ -17,6 +18,7 @@ TIME_NAME="time"
 VAR_NAME='temp'
 VAR_NAME2='wind'
 GROUP_NAME='subgroup'
+GROUP_NAME2='subgroup2'
 
 class VariablesTestCase(unittest.TestCase):
 
@@ -27,7 +29,10 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension(LON_NAME,145)
         f.createDimension(LEVEL_NAME,10)
         f.createDimension(TIME_NAME,None)
-        g = f.createGroup(GROUP_NAME)
+        if __has_rename_grp__:
+            g = f.createGroup(GROUP_NAME)
+        else:
+            g = f.createGroup(GROUP_NAME2)
         g.createDimension(LAT_NAME,145)
         g.createDimension(LON_NAME,289)
         g.createDimension(LEVEL_NAME,20)
@@ -66,6 +71,9 @@ class VariablesTestCase(unittest.TestCase):
         f.renameDimension(LON_NAME,LON_NAME2)
         # rename variable.
         f.renameVariable(VAR_NAME,VAR_NAME2)
+        # rename group.
+        if __has_rename_grp__:
+            f.renameGroup(GROUP_NAME,GROUP_NAME2)
         # check that new dimension names are correct.
         names_check = [LAT_NAME, LON_NAME2, LEVEL_NAME, TIME_NAME]
         for name in f.dimensions.keys():
@@ -74,7 +82,7 @@ class VariablesTestCase(unittest.TestCase):
         # check that new variable names are correct.
         for name in f.variables.keys():
             self.assert_(name in names_check)
-        g = f.groups[GROUP_NAME]
+        g = f.groups[GROUP_NAME2]
         vg = g.variables[VAR_NAME]
         names_check = [LAT_NAME, LON_NAME, LEVEL_NAME, TIME_NAME]
         # check that dimension names are correct.
@@ -84,6 +92,8 @@ class VariablesTestCase(unittest.TestCase):
         # check that variable names are correct.
         for name in g.variables.keys():
             self.assert_(name in names_check)
+        # check that group name is correct.
+        self.assert_(GROUP_NAME not in f.groups and GROUP_NAME2 in f.groups)
         # rename dimension.
         g.renameDimension(LON_NAME,LON_NAME2)
         # rename variable.
@@ -122,7 +132,7 @@ class VariablesTestCase(unittest.TestCase):
         self.assertRaises(RuntimeError, delattr, v, 'bar')
         self.assertRaises(RuntimeError, f.renameVariable, VAR_NAME2, VAR_NAME)
         self.assertRaises(RuntimeError, f.renameDimension, LON_NAME2, LON_NAME)
-        g = f.groups[GROUP_NAME]
+        g = f.groups[GROUP_NAME2]
         vg = g.variables[VAR_NAME2]
         self.assertRaises(RuntimeError, delattr, vg, 'bar')
         self.assertRaises(RuntimeError, g.renameVariable, VAR_NAME2, VAR_NAME)
