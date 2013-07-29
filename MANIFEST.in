@@ -6,7 +6,6 @@ include README.macosx
 include COPYING
 include Changelog
 include setup.cfg.template
-include setup_cython.py
 include netCDF4.pyx
 include netCDF4_utils.py
 include netCDF4.pxi
