@@ -826,6 +826,7 @@ __netcdf4libversion__ = getlibversion().split()[0]
 __required_netcdf4version__ = '4.1.1'
 __hdf5libversion__ = _gethdf5libversion()
 __required_hdf5version__ = '1.8.4-patch1'
+__has_rename_grp__ = HAS_RENAME_GRP
 
 
 if __netcdf4libversion__ < __required_netcdf4version__:
@@ -1864,7 +1865,7 @@ rename a L{Group} named C{oldname} to C{newname}."""
         IF HAS_RENAME_GRP:
             bytestr = _strencode(newname)
             newnamec = bytestr
-            self.sync() # should not be needed??? 
+	    #self.sync() # should not be needed??? 
             try:
                 grp = self.groups[oldname]
             except KeyError:
