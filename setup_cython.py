@@ -1,6 +1,10 @@
 import os, sys, subprocess, numpy, shutil
 from distutils.core  import setup, Extension
-from Cython.Distutils import build_ext
+try:
+    from Cython.Distutils import build_ext
+    has_cython = True
+except ImportError:
+    has_cython = False
 
 if sys.version_info[0] < 3:
     import ConfigParser as configparser
@@ -219,26 +223,32 @@ if netcdf_lib_version is None:
 else:
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
-extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
-
-# remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
-if sys.argv[1] == 'build' and os.path.exists('netCDF4.c'):
-    os.remove('netCDF4.c')
-
-# this determines whether renameGroup method will work.
-has_rename_grp = check_has_rename_grp(inc_dirs)
-f = open('constants.pyx','w')
-#if netcdf_lib_version >= '4.3.1':
-if has_rename_grp:
-    sys.stdout.write('netcdf lib has group rename capability\n')
-    f.write('DEF HAS_RENAME_GRP = 1')
+if has_cython:
+    sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
+    # recompile netCDF4.pyx
+    extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
+    # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
+    if sys.argv[1] == 'build' and os.path.exists('netCDF4.c'):
+        os.remove('netCDF4.c')
+    # this determines whether renameGroup method will work.
+    has_rename_grp = check_has_rename_grp(inc_dirs)
+    f = open('constants.pyx','w')
+    #if netcdf_lib_version >= '4.3.1':
+    if has_rename_grp:
+        sys.stdout.write('netcdf lib has group rename capability\n')
+        f.write('DEF HAS_RENAME_GRP = 1')
+    else:
+        sys.stdout.write('netcdf lib does not have group rename capability\n')
+        f.write('DEF HAS_RENAME_GRP = 0')
+    f.close()
+    cmdclass = {'build_ext': build_ext}
 else:
-    sys.stdout.write('netcdf lib does not have group rename capability\n')
-    f.write('DEF HAS_RENAME_GRP = 0')
-f.close()
+    # use existing netCDF4.c, don't need cython.
+    extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
+    cmdclass = {}
 
 setup(name = "netCDF4",
-  cmdclass = {'build_ext': build_ext},
+  cmdclass = cmdclass,
   version = "1.0.5",
   long_description = "netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project has a `Subversion repository <http://code.google.com/p/netcdf4-python/source>`_ where you may access the most up-to-date source.",
   author            = "Jeff Whitaker",
