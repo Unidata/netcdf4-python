@@ -62,11 +62,11 @@ class VariablesTestCase(unittest.TestCase):
         names_check = [LAT_NAME, LON_NAME, LEVEL_NAME, TIME_NAME]
         # check that dimension names are correct.
         for name in f.dimensions.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         names_check = [VAR_NAME]
         # check that variable names are correct.
         for name in f.variables.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         # rename dimension.
         f.renameDimension(LON_NAME,LON_NAME2)
         # rename variable.
@@ -77,23 +77,23 @@ class VariablesTestCase(unittest.TestCase):
         # check that new dimension names are correct.
         names_check = [LAT_NAME, LON_NAME2, LEVEL_NAME, TIME_NAME]
         for name in f.dimensions.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         names_check = [VAR_NAME2]
         # check that new variable names are correct.
         for name in f.variables.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         g = f.groups[GROUP_NAME2]
         vg = g.variables[VAR_NAME]
         names_check = [LAT_NAME, LON_NAME, LEVEL_NAME, TIME_NAME]
         # check that dimension names are correct.
         for name in g.dimensions.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         names_check = [VAR_NAME]
         # check that variable names are correct.
         for name in g.variables.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         # check that group name is correct.
-        self.assert_(GROUP_NAME not in f.groups and GROUP_NAME2 in f.groups)
+        self.assertTrue(GROUP_NAME not in f.groups and GROUP_NAME2 in f.groups)
         # rename dimension.
         g.renameDimension(LON_NAME,LON_NAME2)
         # rename variable.
@@ -101,29 +101,29 @@ class VariablesTestCase(unittest.TestCase):
         # check that new dimension names are correct.
         names_check = [LAT_NAME, LON_NAME2, LEVEL_NAME, TIME_NAME]
         for name in g.dimensions.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         names_check = [VAR_NAME2]
         # check that new variable names are correct.
         for name in g.variables.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         # delete a global attribute.
         atts = f.ncattrs()
         del f.goober
         atts.remove('goober')
-        self.assert_(atts == f.ncattrs())
+        self.assertTrue(atts == f.ncattrs())
         atts = g.ncattrs()
         del g.goober
         atts.remove('goober')
-        self.assert_(atts == g.ncattrs())
+        self.assertTrue(atts == g.ncattrs())
         # delete a variable attribute.
         atts = v.ncattrs()
         del v.slobber
         atts.remove('slobber')
-        self.assert_(atts == v.ncattrs())
+        self.assertTrue(atts == v.ncattrs())
         atts = vg.ncattrs()
         del vg.slobber
         atts.remove('slobber')
-        self.assert_(atts == vg.ncattrs())
+        self.assertTrue(atts == vg.ncattrs())
         f.close()
         # make sure attributes cannot be deleted, or vars/dims renamed
         # when file is open read-only.
