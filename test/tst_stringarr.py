@@ -39,7 +39,7 @@ class StringArrayTestCase(unittest.TestCase):
         nc = Dataset(FILE_NAME)
         assert nc.dimensions['n1'].isunlimited() == True
         v = nc.variables['strings']
-        assert v.dtype.str[1:] == 'S1'
+        assert v.dtype.str[1:] in ['S1','U1']
         assert v.shape == (nrecs,n2,nchar)
         for nrec in range(nrecs):
             data2 = chartostring(v[nrec])
