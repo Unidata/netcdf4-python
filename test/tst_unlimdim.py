@@ -50,13 +50,13 @@ class UnlimdimTestCase(unittest.TestCase):
         f  = netCDF4.Dataset(self.file, 'r')
         foo = f.variables['data1']
         # check shape.
-        self.assert_(foo.shape == (n1dim,2*n2dim,n3dim))
+        self.assertTrue(foo.shape == (n1dim,2*n2dim,n3dim))
         # check data.
         assert_array_almost_equal(foo[:,0:n2dim,:], ranarr)
         assert_array_almost_equal(foo[:,n2dim:2*n2dim,:], 2.*ranarr)
         bar = f.variables['data2']
         # check shape.
-        self.assert_(bar.shape == (n1dim,n2dim,n3dim))
+        self.assertTrue(bar.shape == (n1dim,n2dim,n3dim))
         # check data.
         #assert_array_almost_equal(bar[:,:,:], ranarr)
         assert_array_almost_equal(bar[:,:,:], 2.*NP.ones((n1dim,n2dim,n3dim),ranarr.dtype))

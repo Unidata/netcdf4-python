@@ -40,16 +40,16 @@ class ScalarVariableTestCase(unittest.TestCase):
         f  = netCDF4.Dataset(self.file, 'r+')
         v = f.variables[VAR_NAME]
         # dimensions and shape should be empty tuples
-        self.assert_(v.dimensions == ())
-        self.assert_(v.shape == ())
+        self.assertTrue(v.dimensions == ())
+        self.assertTrue(v.shape == ())
         # check result of getValue and slice
         assert_almost_equal(v.getValue(), VAR_VAL, decimal=6)
         assert_almost_equal(v[:], VAR_VAL, decimal=6)
         g = f.groups[GROUP_NAME]
         vg = g.variables[VAR_NAME]
         # dimensions and shape should be empty tuples
-        self.assert_(vg.dimensions == ())
-        self.assert_(vg.shape == ())
+        self.assertTrue(vg.dimensions == ())
+        self.assertTrue(vg.shape == ())
         # check result of getValue and slice
         assert_almost_equal(vg.getValue(), VAR_VAL, decimal=6)
         assert_almost_equal(vg[:], VAR_VAL, decimal=6)

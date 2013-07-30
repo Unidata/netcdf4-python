@@ -50,7 +50,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
                 datarr = datarr.filled()
             datfilled = data[0]
             # check to see that data type is correct
-            self.assert_(data.dtype.str[1:] == type)
+            self.assertTrue(data.dtype.str[1:] == type)
             # check data in variable.
             if data.dtype.str[1:] != 'S1':
                 #assert NP.allclose(datarr, ranarr[1:n1dim].astype(data.dtype))

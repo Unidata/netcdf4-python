@@ -65,13 +65,13 @@ class DimensionsTestCase(unittest.TestCase):
         unlimdict = dict(zip(names_check,isunlim))
         # check that dimension names are correct.
         for name in f.dimensions.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         # check that dimension lengths are correct.
         for name,dim in f.dimensions.items():
-            self.assert_(len(dim) == lensdict[name])
+            self.assertTrue(len(dim) == lensdict[name])
         # check that isunlimited() method works.
         for name,dim in f.dimensions.items():
-            self.assert_(dim.isunlimited() == unlimdict[name])
+            self.assertTrue(dim.isunlimited() == unlimdict[name])
         # add some data to variable along unlimited dims,
         # make sure length of dimensions change correctly.
         nadd1 = 2
@@ -81,7 +81,7 @@ class DimensionsTestCase(unittest.TestCase):
         lensdict[TIME_NAME]=nadd2
         # check that dimension lengths are correct.
         for name,dim in f.dimensions.items():
-            self.assert_(len(dim) == lensdict[name])
+            self.assertTrue(len(dim) == lensdict[name])
         # check dimensions in subgroup.
         g = f.groups[GROUP_NAME]
         vg = g.variables[VAR_NAME]
@@ -97,13 +97,13 @@ class DimensionsTestCase(unittest.TestCase):
         unlimdict = dict(zip(names_check,isunlim))
         # check that dimension names are correct.
         for name in g.dimensions.keys():
-            self.assert_(name in names_check)
+            self.assertTrue(name in names_check)
         # check that dimension lengths are correct.
         for name,dim in g.dimensions.items():
-            self.assert_(len(dim) == lensdict[name])
+            self.assertTrue(len(dim) == lensdict[name])
         # check that isunlimited() method works.
         for name,dim in g.dimensions.items():
-            self.assert_(dim.isunlimited() == unlimdict[name])
+            self.assertTrue(dim.isunlimited() == unlimdict[name])
         # add some data to variable along unlimited dims,
         # make sure length of dimensions change correctly.
         nadd1 = 8
@@ -112,7 +112,7 @@ class DimensionsTestCase(unittest.TestCase):
         lensdict[LEVEL_NAME]=nadd1
         lensdict[TIME_NAME]=nadd2
         for name,dim in g.dimensions.items():
-            self.assert_(len(dim) == lensdict[name])
+            self.assertTrue(len(dim) == lensdict[name])
         f.close()
 
 if __name__ == '__main__':

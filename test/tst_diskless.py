@@ -59,8 +59,8 @@ class DisklessTestCase(unittest.TestCase):
         foo = self.f.variables['data1']
         bar = self.f.variables['data2']
         # check shape.
-        self.assert_(foo.shape == (n1dim,n2dim,n3dim))
-        self.assert_(bar.shape == (n1dim,n2dim,n3dim))
+        self.assertTrue(foo.shape == (n1dim,n2dim,n3dim))
+        self.assertTrue(bar.shape == (n1dim,n2dim,n3dim))
         # check data.
         assert_array_almost_equal(foo[:], ranarr)
         assert_array_almost_equal(bar[:], ranarr2)
@@ -72,7 +72,7 @@ class DisklessTestCase(unittest.TestCase):
         f = netCDF4.Dataset(self.file2)
         foo = f.variables['data1']
         # check shape.
-        self.assert_(foo.shape == (n1dim,n2dim,n3dim))
+        self.assertTrue(foo.shape == (n1dim,n2dim,n3dim))
         # check data.
         assert_array_almost_equal(foo[:], ranarr)
 
