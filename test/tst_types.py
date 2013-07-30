@@ -25,8 +25,8 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         file = netCDF4.Dataset(self.file,'w')
         file.createDimension('n1', None)
         file.createDimension('n2', n2dim)
-        for type in datatypes:
-            foo = file.createVariable('data_'+type, type, ('n1','n2',),zlib=zlib,complevel=complevel,shuffle=shuffle,least_significant_digit=least_significant_digit,fill_value=FillValue)
+        for typ in datatypes:
+            foo = file.createVariable('data_'+typ, typ, ('n1','n2',),zlib=zlib,complevel=complevel,shuffle=shuffle,least_significant_digit=least_significant_digit,fill_value=FillValue)
             #foo._FillValue = FillValue
             # test writing of _FillValue attribute for diff types
             # (should be cast to type of variable silently)
@@ -40,8 +40,8 @@ class PrimitiveTypesTestCase(unittest.TestCase):
     def runTest(self):
         """testing primitive data type """ 
         file = netCDF4.Dataset(self.file)
-        for type in datatypes:
-            data = file.variables['data_'+type]
+        for typ in datatypes:
+            data = file.variables['data_'+typ]
             data.set_auto_maskandscale(False)
             datarr = data[1:n1dim]
             # fill missing data with _FillValue
@@ -50,7 +50,10 @@ class PrimitiveTypesTestCase(unittest.TestCase):
                 datarr = datarr.filled()
             datfilled = data[0]
             # check to see that data type is correct
-            self.assertTrue(data.dtype.str[1:] == type)
+            if typ == 'S1':
+                self.assertTrue(data.dtype.str[1:] in ['S1','U1'])
+            else:
+                self.assertTrue(data.dtype.str[1:] == typ)
             # check data in variable.
             if data.dtype.str[1:] != 'S1':
                 #assert NP.allclose(datarr, ranarr[1:n1dim].astype(data.dtype))
