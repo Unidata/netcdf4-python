@@ -3,7 +3,7 @@ Python/numpy interface to the netCDF version 4 library.
 Quick Start
 -----------
 
-* make sure numpy is installed.
+* make sure numpy (required) and Cython (recommended) are installed.
 
 * make sure HDF5 and netcdf-4 are installed.
 
