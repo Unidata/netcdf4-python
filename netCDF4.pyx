@@ -32,6 +32,12 @@ Requires
 
  - numpy array module U{http://numpy.scipy.org}, version 1.3.0 or later (1.5.1
    or higher recommended, required if using python 3).
+ - U{Cython <http://cython.org>} is optional - if it is installed setup.py will 
+   use it to recompile the Cython source code into C, using conditional compilation
+   to enable features in the netCDF API that have been added since version 4.3.0.  If
+   Cython is not installed, these features (such as the ability to rename Group objects)
+   will be disabled to preserve backward compatibility with older versions of the netCDF
+   library.
  - For python < 2.7, the ordereddict module U{http://python.org/pypi/ordereddict}.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.8 or higher
  recommended) from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
@@ -1859,7 +1865,7 @@ rename a L{Dataset} or L{Group} attribute named C{oldname} to C{newname}."""
         """
 renameGroup(self, oldname, newname)
 
-rename a L{Group} named C{oldname} to C{newname}."""
+rename a L{Group} named C{oldname} to C{newname} (requires netcdf >= 4.3.1)."""
         cdef int ierr
         cdef char *newnamec
         IF HAS_RENAME_GRP:
