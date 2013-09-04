@@ -1,3 +1,9 @@
+ since version 1.0.5
+ ===================
+
+ * fix for issue 196 (test failures on win32 due to files being deleted
+   before they are closed).
+
  version 1.0.5 (svn revision 1278)
  ================================
 
