@@ -9,12 +9,12 @@ import netCDF4
 
 FILE_NAME1 = tempfile.mktemp(".nc")
 FILE_NAME2 = tempfile.mktemp(".nc")
-DYNASTY="Tudor"
-HENRY_VII="Henry_VII"
-MARGARET="Margaret"
-JAMES_V_OF_SCOTLAND="James_V_of_Scotland"
-MARY_I_OF_SCOTLAND="Mary_I_of_Scotland"
-JAMES_VI_OF_SCOTLAND_AND_I_OF_ENGLAND="James_VI_of_Scotland_and_I_of_England"
+DYNASTY=u"Tudor"
+HENRY_VII=u"Henry_VII"
+MARGARET=u"Margaret"
+JAMES_V_OF_SCOTLAND=u"James_V_of_Scotland"
+MARY_I_OF_SCOTLAND=u"Mary_I_of_Scotland"
+JAMES_VI_OF_SCOTLAND_AND_I_OF_ENGLAND=u"James_VI_of_Scotland_and_I_of_England"
 names = [HENRY_VII,MARGARET,JAMES_V_OF_SCOTLAND,MARY_I_OF_SCOTLAND,JAMES_VI_OF_SCOTLAND_AND_I_OF_ENGLAND]
 root = '/'
 TREE1 = [root]
@@ -70,16 +70,16 @@ class GroupsTestCase(unittest.TestCase):
         for children in walktree(f):
             for child in children:
                 tree.append(child.path)
-        assert tree == TREE1
         f.close()
+        assert tree == TREE1
         f  = netCDF4.Dataset(self.file2, 'r')
         tree = [f.path]
         for children in walktree(f):
             for child in children:
                 tree.append(child.path)
         tree.sort()
-        assert tree == TREE2
         f.close()
+        assert tree == TREE2
 
 if __name__ == '__main__':
     unittest.main()

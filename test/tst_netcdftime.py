@@ -342,6 +342,7 @@ class TestDate2index(unittest.TestCase):
         dates2 = num2date(times2,units)
         for date,date2 in zip(dates,dates2):
             assert_equal(date.replace(tzinfo=tzutc()), date2)
+        f.close()
         
 if __name__ == '__main__':
     unittest.main()

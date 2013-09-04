@@ -23,6 +23,7 @@ def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=F
     file.close()
     file = Dataset(filename)
     data = file.variables['data'][:]
+    file.close()
 
 def write_netcdf2(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,contiguous=False,\
                  chunksizes=None,complevel=6,fletcher32=False):
@@ -36,6 +37,7 @@ def write_netcdf2(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=
     file.close()
     file = Dataset(filename)
     data = file.variables['data2'][:]
+    file.close()
 
 class CompressionTestCase(unittest.TestCase):
 
@@ -78,18 +80,21 @@ class CompressionTestCase(unittest.TestCase):
         assert_almost_equal(array,f.variables['data'][:])
         assert f.variables['data'].filters() == {'zlib':True,'shuffle':True,'complevel':6,'fletcher32':False}
         assert(size < 0.85*uncompressed_size)
+        f.close()
         # check lossy compression without shuffle
         f = Dataset(self.files[3])
         size = os.stat(self.files[3]).st_size
         checkarray = _quantize(array,lsd)
         assert_almost_equal(checkarray,f.variables['data'][:])
         assert(size < 0.27*uncompressed_size)
+        f.close()
         # check lossy compression with shuffle
         f = Dataset(self.files[4])
         size = os.stat(self.files[4]).st_size
         assert_almost_equal(checkarray,f.variables['data'][:])
         assert(size < 0.20*uncompressed_size)
         size_save = size
+        f.close()
         # check lossy compression with shuffle and fletcher32 checksum.
         f = Dataset(self.files[5])
         size = os.stat(self.files[5]).st_size
@@ -99,11 +104,13 @@ class CompressionTestCase(unittest.TestCase):
         # should be slightly larger than without fletcher32
         assert(size > size_save)
         # check chunksizes
+        f.close()
         f = Dataset(self.files[6])
         checkarray2 = _quantize(array2,lsd)
         assert_almost_equal(checkarray2,f.variables['data2'][:])
         assert f.variables['data2'].filters() == {'zlib':True,'shuffle':True,'complevel':6,'fletcher32':True}
         assert f.variables['data2'].chunking() == [chunk1,chunk2]
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()

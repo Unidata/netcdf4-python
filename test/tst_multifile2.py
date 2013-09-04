@@ -121,7 +121,7 @@ class NonuniformTimeTestCase(unittest.TestCase):
         assert_equal(T.typecode(), t.typecode())
         assert_array_equal(num2date(T[:], T.units, T.calendar), dates) 
         assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
-        
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()

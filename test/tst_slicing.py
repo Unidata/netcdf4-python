@@ -30,7 +30,7 @@ class VariablesTestCase(unittest.TestCase):
         # write slice in reverse order
         #vu[0:xdim,::-1,0:zdim] = data
         vu[:,::-1,:] = data
-        
+
         v1[:] = data[:, 0, 0]
         f.close()
 
@@ -43,7 +43,7 @@ class VariablesTestCase(unittest.TestCase):
         f  = Dataset(self.file, 'r')
         v = f.variables['data']
         vu = f.variables['datau']
-        
+
         # test return of array scalar.
         assert_equal(v[0,0,0].shape,())
         assert_array_equal(v[:], datarev)
@@ -57,7 +57,8 @@ class VariablesTestCase(unittest.TestCase):
         # read elements in reverse order
         assert_array_equal(v[:,::-1,:],data)
         assert_array_equal(v[::-1,:,::-1],datarev[::-1,:,::-1])
-        assert_array_equal(v[xdim-1::-3,:,zdim-1::-3],datarev[xdim-1::-3,:,zdim-1::-3])           
+        assert_array_equal(v[xdim-1::-3,:,zdim-1::-3],datarev[xdim-1::-3,:,zdim-1::-3])
+
         # ellipsis slice.
         assert_array_equal(v[...,2:],datarev[...,2:])
         # variable with an unlimited dimension.
@@ -67,7 +68,7 @@ class VariablesTestCase(unittest.TestCase):
         # index using an integer array scalar
         i = NP.ones(1,'i4')[0]
         assert_array_equal(v[i],datarev[1])
-        
+
         f.close()
 
     def test_1d(self):
@@ -84,7 +85,7 @@ class VariablesTestCase(unittest.TestCase):
         assert_equal(v1[i2], d[i2])
         assert_equal(v1[d<5], d[d<5])
         assert_equal(v1[5], d[5])
-
+        f.close()
 
 
 if __name__ == '__main__':

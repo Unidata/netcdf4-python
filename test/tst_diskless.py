@@ -75,6 +75,7 @@ class DisklessTestCase(unittest.TestCase):
         self.assertTrue(foo.shape == (n1dim,n2dim,n3dim))
         # check data.
         assert_array_almost_equal(foo[:], ranarr)
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
