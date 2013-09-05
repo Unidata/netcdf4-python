@@ -798,7 +798,7 @@ except ImportError: # or else use drop-in substitute
 __version__ = "1.0.5"
 
 # Initialize numpy
-import os
+import posixpath
 import netcdftime
 import numpy
 import sys
@@ -1933,7 +1933,7 @@ method)."""
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         # full path to Group.
-        self.path = os.path.join(parent.path, name)
+        self.path = posixpath.join(parent.path, name)
         # parent group.
         self.parent = parent
         # get compound and vlen types in this Group.

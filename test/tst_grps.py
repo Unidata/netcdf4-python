@@ -69,7 +69,7 @@ class GroupsTestCase(unittest.TestCase):
         tree = [f.path]
         for children in walktree(f):
             for child in children:
-                tree.append(child.path.replace('\\', '/'))
+                tree.append(child.path)
         f.close()
         assert tree == TREE1
         f  = netCDF4.Dataset(self.file2, 'r')

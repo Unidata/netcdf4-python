@@ -1,6 +1,9 @@
  since version 1.0.5
  ===================
 
+ * create 'path' attribute for group instance using posixpath, instead 
+   of os.path (to ensure the unix path is used on all platforms). Issue 196.
+
  * fix for issue 196 (test failures on win32 due to files being deleted
    before they are closed).
 
