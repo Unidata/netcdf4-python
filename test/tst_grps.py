@@ -76,7 +76,7 @@ class GroupsTestCase(unittest.TestCase):
         tree = [f.path]
         for children in walktree(f):
             for child in children:
-                tree.append(child.path.replace('\\', '/'))
+                tree.append(child.path)
         tree.sort()
         f.close()
         assert tree == TREE2
