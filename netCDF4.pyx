@@ -2755,7 +2755,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             if not hasattr(datout,'shape') or data.shape == datout.shape:
                 data = datout
             else:
-                data[tuple(i)] = numpy.squeeze(datout)
+                data[tuple(i)] = datout.reshape(data[tuple(i)].shape)
 
         # Remove extra singleton dimensions. 
         if hasattr(data,'shape'):

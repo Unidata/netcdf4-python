@@ -1,6 +1,8 @@
  since version 1.0.5
  ===================
 
+ * fix for issue 197 (slicing of netCDF variables using lists of integers).
+
  * create 'path' attribute for group instance using posixpath, instead 
    of os.path (to ensure the unix path is used on all platforms). Issue 196.
 
