@@ -795,7 +795,7 @@ except ImportError: # or else use drop-in substitute
     except ImportError:
         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
 
-__version__ = "1.0.5"
+__version__ = "1.0.6"
 
 # Initialize numpy
 import posixpath

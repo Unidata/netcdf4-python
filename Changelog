@@ -1,5 +1,5 @@
- since version 1.0.5
- ===================
+ version 1.0.6 (not yet released)
+ ================================
 
  * fix for issue 197 (slicing of netCDF variables using lists of integers).
 
