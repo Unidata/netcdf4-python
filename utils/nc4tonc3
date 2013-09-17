@@ -15,7 +15,7 @@ def nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NET
     if not quiet: sys.stdout.write('copying global attributes ..\n')
     #for attname in ncfile4.ncattrs():
     #    setattr(ncfile3,attname,getattr(ncfile4,attname))
-    ncfile3.setncatts(ncfile3.__dict__) 
+    ncfile3.setncatts(ncfile4.__dict__) 
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile4.dimensions.items():
         if dim.isunlimited():
