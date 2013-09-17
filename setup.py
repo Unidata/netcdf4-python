@@ -62,6 +62,8 @@ def getnetcdfvers(libdirs):
 
     if sys.platform.startswith('win'):
         regexp = re.compile('^netcdf.dll$')
+    elif sys.platform.startswith('cygwin'):
+        regexp = re.compile(r'^libnetcdf.dll.a')
     elif sys.platform.startswith('darwin'):
         regexp = re.compile(r'^libnetcdf.dylib')
     else:
