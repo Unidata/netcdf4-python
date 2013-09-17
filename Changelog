@@ -3,6 +3,8 @@
 
  * fix for issue 199 (nc4tonc3 utility not copying global attributes).
 
+ * fix for issue 198 (setup.py chokes when no arguments given).
+
  * fix for issue 197 (slicing of netCDF variables using lists of integers).
 
  * create 'path' attribute for group instance using posixpath, instead 
