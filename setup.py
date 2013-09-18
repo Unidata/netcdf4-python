@@ -229,7 +229,7 @@ inc_dirs.append(numpy.get_include())
 # get netcdf library version.
 netcdf_lib_version = getnetcdfvers(lib_dirs)
 if netcdf_lib_version is None:
-    raise ValueError('no valid netcdf library found in %s' % lib_dirs)
+    sys.stdout.write('unable to detect netcdf library version')
 else:
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
@@ -243,7 +243,6 @@ if has_cython:
     # this determines whether renameGroup method will work.
     has_rename_grp = check_has_rename_grp(inc_dirs)
     f = open('constants.pyx','w')
-    #if netcdf_lib_version >= '4.3.1':
     if has_rename_grp:
         sys.stdout.write('netcdf lib has group rename capability\n')
         f.write('DEF HAS_RENAME_GRP = 1')
