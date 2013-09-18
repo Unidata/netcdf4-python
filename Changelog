@@ -1,6 +1,8 @@
  version 1.0.6 (not yet released)
  ================================
 
+ * fix for issue 200 (library version detection failed on cygwin).
+
  * fix for issue 199 (nc4tonc3 utility not copying global attributes).
 
  * fix for issue 198 (setup.py chokes when no arguments given).
