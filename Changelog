@@ -5,7 +5,8 @@
    same endian-ness as dtype, data was written incorrectly).  Now
    bytes are swapped if necessary.  Variable.endian() now returns
    'native' instead of None for NETCDF3 formatted files.  createVariable
-   now enforces endian='native' for NETCDF3 files.
+   now enforces endian='native' for NETCDF3 files. Added tst_endian.py
+   test case.
 
  * fix for issue 200 (library version detection failed on cygwin).
 
