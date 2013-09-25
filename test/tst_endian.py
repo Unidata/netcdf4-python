@@ -12,7 +12,6 @@ FILE_NAME2 = tempfile.mktemp(".nc")
 class EndianTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.file = FILE_NAME
         def create_file(file,format):
             dataset = netCDF4.Dataset(file,'w',format=format)
             dataset.createDimension('time', None)
@@ -27,8 +26,8 @@ class EndianTestCase(unittest.TestCase):
             bl[:] = little
             bb[:] = big
             dataset.close()
-        create_file(FILE_NAME,'NETCDF3_CLASSIC'); self.file=FILE_NAME
-        create_file(FILE_NAME2,'NETCDF4_CLASSIC'); self.file2=FILE_NAME2
+        create_file(FILE_NAME,'NETCDF4_CLASSIC'); self.file=FILE_NAME
+        create_file(FILE_NAME2,'NETCDF3_CLASSIC'); self.file2=FILE_NAME2
 
     def tearDown(self):
         # Remove the temporary files
