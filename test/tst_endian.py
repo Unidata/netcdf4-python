@@ -4,10 +4,8 @@ import unittest, os, tempfile
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 
 data = np.arange(12,dtype='f4').reshape(3,4)
-little_little = np.array(data, dtype='<f4')
-little_big = np.array(data, dtype='>f4')
-big_little = np.array(data, dtype='<f4')
-big_big = np.array(data, dtype='>f4')
+little = data.astype('<f4')
+big = data.astype('>f4')
 FILE_NAME = tempfile.mktemp(".nc")
 FILE_NAME2 = tempfile.mktemp(".nc")
 
@@ -24,10 +22,10 @@ class EndianTestCase(unittest.TestCase):
             lb = dataset.createVariable('little-big', '<f4', dims)
             bl = dataset.createVariable('big-little', '>f4', dims)
             bb = dataset.createVariable('big-big', '>f4', dims)
-            ll[:] = little_little
-            lb[:] = little_big
-            bl[:] = big_little
-            bb[:] = big_big
+            ll[:] = little
+            lb[:] = big
+            bl[:] = little
+            bb[:] = big
             dataset.close()
         create_file(FILE_NAME,'NETCDF3_CLASSIC'); self.file=FILE_NAME
         create_file(FILE_NAME2,'NETCDF4_CLASSIC'); self.file2=FILE_NAME2
