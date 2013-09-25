@@ -1,7 +1,7 @@
  version 1.0.6 (not yet released)
  ================================
 
- * issue warning of endian-ness of dtype argument does not match endian kward in
+ * issue warning of endian-ness of dtype argument does not match endian kwarg in
    createVariable.
 
  * make sure netcdf type NC_CHAR always returned in numpy array dtype 'S1'
