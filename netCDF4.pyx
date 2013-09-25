@@ -875,6 +875,9 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
                      'f4':NC_FILL_FLOAT,
                      'f8':NC_FILL_DOUBLE}
 
+is_native_little = numpy.dtype('<f4').byteorder == '='
+is_native_big = numpy.dtype('>f4').byteorder == '='
+
 # hard code this here, instead of importing from netcdf.h
 # so it will compile with versions <= 4.2.
 NC_DISKLESS = 0x0008
@@ -2572,7 +2575,8 @@ endian(self)
 
 return endian-ness (little,big,native) of variable (as stored in HDF5 file)."""
         cdef int ierr, iendian
-        if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return None
+        if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: 
+            return 'native'
         ierr = nc_inq_var_endian(self._grpid, self._varid, &iendian)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -3151,6 +3155,23 @@ The default value of C{maskandscale} is C{True}
             # try to cast the data.
             if self.dtype != data.dtype:
                 data = data.astype(self.dtype) # cast data, if necessary.
+            # make sure byte-order of data matches byte-order of netcdf
+            # variable.
+            if self.endian() == 'native':
+                if is_native_little and data.dtype.byteorder == '>':
+                    data.byteswap(True)
+                if is_native_big and data.dtype.byteorder == '<':
+                    data.byteswap(True)
+            if self.endian() == 'big':
+                if is_native_big and data.dtype.byteorder not in ['=','|']:
+                    data.byteswap(True)
+                if is_native_little and data.dtype.byteorder == '=':
+                    data.byteswap(True)
+            if self.endian() == 'little':
+                if is_native_little and data.dtype.byteorder not in ['=','|']:
+                    data.byteswap(True)
+                if is_native_big and data.dtype.byteorder == '=':
+                    data.byteswap(True)
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
                 ierr = nc_put_vara(self._grpid, self._varid,
