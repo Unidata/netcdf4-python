@@ -2227,6 +2227,18 @@ instance. If C{None}, the data is not truncated. """
             datatype != str and \
             type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
+	# check if endian keyword consistent with datatype specification.
+        dtype_endian = getattr(datatype,'byteorder',None)
+        if dtype_endian == '=': dtype_endian='native'
+        if dtype_endian == '>': dtype_endian='big'
+        if dtype_endian == '<': dtype_endian='little'
+        if dtype_endian == '|': dtype_endian=None
+        if dtype_endian is not None and dtype_endian != endian:
+            # endian keyword prevails, issue warning
+            msg = 'endian-ness of dtype and endian kwarg do not match, using endian kwarg'
+            #msg = 'endian-ness of dtype and endian kwarg do not match, dtype over-riding endian kwarg'
+            warnings.warn(msg)
+            #endian = dtype_endian # dtype prevails
         # check validity of datatype.
         self._isprimitive = False
         self._iscompound = False
