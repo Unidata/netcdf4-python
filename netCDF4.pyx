@@ -854,8 +854,8 @@ _nptonctype  = {'U1' : NC_CHAR,
                 'u1' : NC_UBYTE,
                 'i2' : NC_SHORT,
                 'u2' : NC_USHORT,
-                'i4' : NC_INT,   
-                'u4' : NC_UINT,           
+                'i4' : NC_INT,
+                'u4' : NC_UINT,
                 'i8' : NC_INT64,
                 'u8' : NC_UINT64,
                 'f4' : NC_FLOAT,
@@ -894,6 +894,8 @@ _nctonptype = {}
 for _key,_value in _nptonctype.items():
     _nctonptype[_value] = _key
 _supportedtypes = _nptonctype.keys()
+# make sure NC_CHAR points to S1
+_nctonptype[NC_CHAR]='S1'
 
 # internal C functions.
 
