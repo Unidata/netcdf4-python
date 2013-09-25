@@ -2146,8 +2146,9 @@ will automatically handle endian conversions when the data is read,
 but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
+For netCDF 3 files (that don't use HDF5), only C{endian='native'} is allowed.
 
-The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
+The C{zlib, complevel, shuffle, fletcher32, contiguous} and {chunksizes}
 keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 B{C{least_significant_digit}} - If specified, variable data will be
@@ -2299,8 +2300,9 @@ instance. If C{None}, the data is not truncated. """
             # set zlib, shuffle, chunking, fletcher32 and endian
             # variable settings.
             # don't bother for NETCDF3* formats.
-            # for NETCDF3* formats, the zlib,shuffle,chunking,endian
-            # and fletcher32 are silently ignored.
+            # for NETCDF3* formats, the zlib,shuffle,chunking,
+            # and fletcher32 are silently ignored. Only
+            # endian='native' allowed for NETCDF3.
             if grp.file_format in ['NETCDF4','NETCDF4_CLASSIC']:
                 # set zlib and shuffle parameters.
                 if zlib and ndims: # don't bother for scalar variable
@@ -2353,6 +2355,10 @@ instance. If C{None}, the data is not truncated. """
                 if ierr != NC_NOERR:
                     if grp.file_format != 'NETCDF4': grp._enddef()
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            else:
+                if endian != 'native':
+                    msg="only endian='native' allowed for NETCDF3 files"
+                    raise RuntimeError(msg)
             # set a fill value for this variable if fill_value keyword
             # given.  This avoids the HDF5 overhead of deleting and 
             # recreating the dataset if it is set later (after the enddef).
