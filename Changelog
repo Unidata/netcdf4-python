@@ -1,6 +1,10 @@
  version 1.0.6 (not yet released)
  ================================
 
+ * make sure netcdf type NC_CHAR always returned in numpy array dtype 'S1'
+   (sometimes arrays of type 'U1' were being returned). Fixes intermittently failing
+   test tst_compoundatt.py on python 3.3.
+
  * fix for issue 201 (if data associated with numpy array not the 
    same endian-ness as dtype, data was written incorrectly).  Now
    bytes are swapped if necessary.  Variable.endian() now returns
