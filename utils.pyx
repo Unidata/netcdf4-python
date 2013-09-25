@@ -24,7 +24,7 @@ def _dateparse(timestr):
 
 # utility functions (visible from python).
 
-def stringtoarr(string,NUMCHARS,dtype='U'):
+def stringtoarr(string,NUMCHARS,dtype='S'):
     """
 stringtoarr(a, NUMCHARS,dtype='S')
 
@@ -35,12 +35,12 @@ convert a string to a character array of length NUMCHARS
 @param NUMCHARS:  number of characters used to represent string 
 (if len(a) < NUMCHARS, it will be padded on the right with blanks).
 
-@keyword dtype:  type of numpy array to return.  Default is 'U', which 
-means an array of dtype 'U1' will be returned.  If dtype='S', a
-unicode array (dtype = 'S1') will be returned.
+@keyword dtype:  type of numpy array to return.  Default is 'S', which 
+means an array of dtype 'S1' will be returned.  If dtype='U', a
+unicode array (dtype = 'U1') will be returned.
 
-@return: A rank 1 numpy character array of length NUMCHARS with datatype 'U1'
-(default) or 'S1' (if dtype='S')"""
+@return: A rank 1 numpy character array of length NUMCHARS with datatype 'S1'
+(default) or 'U1' (if dtype='U')"""
     if dtype not in ["S","U"]:
         raise ValueError("dtype must string or unicode ('S' or 'U')")
     arr = numpy.zeros(NUMCHARS,dtype+'1')
