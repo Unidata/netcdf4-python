@@ -1,4 +1,4 @@
- version 1.0.6 (not yet released)
+ version 1.0.6 (svn revision 1312)
  ================================
 
  * issue warning of endian-ness of dtype argument does not match endian kwarg in
