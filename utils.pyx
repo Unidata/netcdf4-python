@@ -10,6 +10,7 @@ def _dateparse(timestr):
         from dateutil.tz import tzutc
     except ImportError:
         msg = 'dateutil module required for accuracy < 1 second'
+        raise ImportError(msg)
     timestr_split = timestr.split()
     units = timestr_split[0].lower()
     if timestr_split[1].lower() != 'since':

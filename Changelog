@@ -1,3 +1,9 @@
+ since version 1.0.6
+ ===================
+
+ * if dateutils not installed and time unit accuracy < 1 second requested, have
+   netcdftime raise an ImportError.
+
  version 1.0.6 (svn revision 1312)
  ================================
 
