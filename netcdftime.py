@@ -475,7 +475,7 @@ Julian Day is a fractional day with a resolution of 1 second.
 
 def _dateparse(timestr):
     """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss
-    return a tuple (units, datetimeinstance)"""
+    return a tuple (units,utc_offset, datetimeinstance)"""
     timestr_split = timestr.split()
     units = timestr_split[0].lower()
     if units not in _units:

@@ -3,8 +3,8 @@ from datetime import timedelta, datetime
 gregorian = datetime(1582,10,15)
 
 def _dateparse(timestr):
-    """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss
-    return a tuple (units, datetimeinstance)"""
+    """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss,
+    return a datetime instance"""
     try:
         import dateutil.parser as dparse
         from dateutil.tz import tzutc
