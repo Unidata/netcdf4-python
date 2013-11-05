@@ -795,7 +795,7 @@ except ImportError: # or else use drop-in substitute
     except ImportError:
         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
 
-__version__ = "1.0.6"
+__version__ = "1.0.7"
 
 # Initialize numpy
 import posixpath
@@ -2821,15 +2821,19 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         fill_value = None
         if hasattr(self, 'missing_value'):
             mval = numpy.array(self.missing_value, self.dtype)
-            # mval can be a vector
-            if mval.shape == ():
-                hasmval = data==mval # mval a scalar
-            else:
+            if mval.shape == (): # mval a scalar.
+                hasmval = data==mval 
+                # is scalar missing value a NaN?
+                try:
+                    mvalisnan = numpy.isnan(mval)
+                except TypeError: # isnan fails on some dtypes (issue 206)
+                    mvalisnan = False
+            else: # mval a vector.
                 hasmval = numpy.zeros(data.shape, numpy.bool)
                 for m in mval:
                     m =  numpy.array(m)
                     hasmval += data == m
-            if mval.shape == () and numpy.isnan(mval):
+            if mval.shape == () and mvalisnan:
                 mask = numpy.isnan(data)
             elif hasmval.any():
                 mask = hasmval

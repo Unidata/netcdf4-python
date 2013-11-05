@@ -1,6 +1,7 @@
- since version 1.0.6
- ===================
+ version 1.0.7 (not yet released)
+ ================================
 
+ * fix for issue 206 (crash in numpy.isnan for unsupported data types).
  * if dateutils not installed and time unit accuracy < 1 second requested, have
    netcdftime raise an ImportError.
 
