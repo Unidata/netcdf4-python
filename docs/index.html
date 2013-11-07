@@ -934,7 +934,7 @@
         PERFORMANCE OF THIS SOFTWARE.
       </p>
       <p><strong>Version:</strong>
-        1.0.5
+        1.0.7
       </p>
 </div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
@@ -945,9 +945,7 @@
     <span class="table-header">Classes</span></td>
 </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.CompoundType-class.html" class="summary-name">CompoundType</a><br />
       A <a href="netCDF4.CompoundType-class.html" 
         class="link">CompoundType</a> instance is used to describe a 
@@ -955,59 +953,45 @@
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.Dataset-class.html" class="summary-name">Dataset</a><br />
       Dataset(self, filename, mode=&quot;r&quot;, clobber=True, 
         diskless=False, persist=False, format='NETCDF4')
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.Dimension-class.html" class="summary-name">Dimension</a><br />
       Dimension(self, group, name, size=None)
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.Group-class.html" class="summary-name">Group</a><br />
       Group(self, parent, name)
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.MFDataset-class.html" class="summary-name">MFDataset</a><br />
       MFDataset(self, files, check=False, aggdim=None, exclude=[])
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.MFTime-class.html" class="summary-name">MFTime</a><br />
       MFTime(self, time, units=None)
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.VLType-class.html" class="summary-name">VLType</a><br />
       A <a href="netCDF4.VLType-class.html" class="link">VLType</a> 
         instance is used to describe a variable length (VLEN) data type.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
+    <td class="summary" colspan="2">
         <a href="netCDF4.Variable-class.html" class="summary-name">Variable</a><br />
       Variable(self, group, name, datatype, dimensions=(), zlib=False, 
         complevel=4, shuffle=True, fletcher32=False, contiguous=False, 
@@ -1174,21 +1158,28 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__has_rename_grp__"></a><span class="summary-name">__has_rename_grp__</span> = <code title="1">1</code>
+        <a name="__has_nc_inq_path__"></a><span class="summary-name">__has_nc_inq_path__</span> = <code title="0">0</code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.11'"><code class="variable-quote">'</code><code class="variable-string">1.8.11</code><code class="variable-quote">'</code></code>
+        <a name="__has_rename_grp__"></a><span class="summary-name">__has_rename_grp__</span> = <code title="0">0</code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.3.0'"><code class="variable-quote">u'</code><code class="variable-string">4.3.0</code><code class="variable-quote">'</code></code>
+        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.10'"><code class="variable-quote">'</code><code class="variable-string">1.8.10</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.3.1-rc2'"><code class="variable-quote">u'</code><code class="variable-string">4.3.1-rc2</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -1196,20 +1187,6 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="None">None</code>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a name="__required_hdf5version__"></a><span class="summary-name">__required_hdf5version__</span> = <code title="'1.8.4-patch1'"><code class="variable-quote">'</code><code class="variable-string">1.8.4-patch1</code><code class="variable-quote">'</code></code>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a name="__required_netcdf4version__"></a><span class="summary-name">__required_netcdf4version__</span> = <code title="'4.1.1'"><code class="variable-quote">'</code><code class="variable-string">4.1.1</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -1239,6 +1216,20 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="gregorian"></a><span class="summary-name">gregorian</span> = <code title="datetime.datetime(1582, 10, 15, 0, 0)">datetime.datetime(1582, 10, 15, 0, 0)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="is_native_big"></a><span class="summary-name">is_native_big</span> = <code title="False">False</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="is_native_little"></a><span class="summary-name">is_native_little</span> = <code title="True">True</code>
     </td>
   </tr>
 <tr>
@@ -1576,7 +1567,8 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul 31 04:48:42 2013
+    Generated by Epydoc 3.0.1
+    on Thu Nov  7 11:07:53 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
