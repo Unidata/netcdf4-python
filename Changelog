@@ -1,6 +1,12 @@
  version 1.0.7 (not yet released)
  ================================
 
+ * fix for issue 194 (versions after 1.0.5 fail for netcdf 4.1.1, due to 
+   call to nc_inq_path, which was added in netcdf 4.1.2).  Fixed by adding
+   compile time API check similar to what was done for nc_rename_grp.  If
+   filepath Dataset method is called an exception will be raised at runtime
+   if the module was built with netcdf < 4.1.2, or cython was not installed
+   at build time.
  * fix for issue 206 (crash in numpy.isnan for unsupported data types).
  * if dateutils not installed and time unit accuracy < 1 second requested, have
    netcdftime raise an ImportError.

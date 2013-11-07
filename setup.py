@@ -39,8 +39,9 @@ def check_ifnetcdf4(netcdf4_includedir):
             isnetcdf4 = True
     return isnetcdf4
 
-def check_has_rename_grp(inc_dirs):
+def check_api(inc_dirs):
     has_rename_grp = False
+    has_nc_inq_path = False
     for d in inc_dirs:
         try:
             f = open(os.path.join(d,'netcdf.h'))
@@ -49,8 +50,10 @@ def check_has_rename_grp(inc_dirs):
         for line in f:
             if line.startswith('nc_rename_grp'):
                 has_rename_grp = True
+            if line.startswith('nc_inq_path'):
+                has_nc_inq_path = True
         break
-    return has_rename_grp
+    return has_rename_grp, has_nc_inq_path
 
 def getnetcdfvers(libdirs):
     """
@@ -240,15 +243,21 @@ if has_cython:
     # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
     if len(sys.argv) >= 2 and sys.argv[1] == 'build' and os.path.exists('netCDF4.c'):
         os.remove('netCDF4.c')
-    # this determines whether renameGroup method will work.
-    has_rename_grp = check_has_rename_grp(inc_dirs)
+    # this determines whether renameGroup and filepath methods will work.
+    has_rename_grp, has_nc_inq_path = check_api(inc_dirs)
     f = open('constants.pyx','w')
     if has_rename_grp:
         sys.stdout.write('netcdf lib has group rename capability\n')
-        f.write('DEF HAS_RENAME_GRP = 1')
+        f.write('DEF HAS_RENAME_GRP = 1\n')
     else:
         sys.stdout.write('netcdf lib does not have group rename capability\n')
-        f.write('DEF HAS_RENAME_GRP = 0')
+        f.write('DEF HAS_RENAME_GRP = 0\n')
+    if has_nc_inq_path:
+        sys.stdout.write('netcdf lib has nc_inq_path function\n')
+        f.write('DEF HAS_NC_INQ_PATH = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have nc_inq_path function\n')
+        f.write('DEF HAS_NC_INQ_PATH = 0\n')
     f.close()
     cmdclass = {'build_ext': build_ext}
 else:

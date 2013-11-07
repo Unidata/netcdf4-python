@@ -829,22 +829,10 @@ def _gethdf5libversion():
        return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
 
 __netcdf4libversion__ = getlibversion().split()[0]
-__required_netcdf4version__ = '4.1.1'
 __hdf5libversion__ = _gethdf5libversion()
-__required_hdf5version__ = '1.8.4-patch1'
 __has_rename_grp__ = HAS_RENAME_GRP
+__has_nc_inq_path__ = HAS_NC_INQ_PATH
 
-
-if __netcdf4libversion__ < __required_netcdf4version__:
-    msg=\
-'netCDF4 module must be linked against netcdf-4 version %s or higher, got %s' %\
-(__required_netcdf4version__,__netcdf4libversion__)
-    raise ImportError(msg)
-#if __hdf5libversion__ < __required_hdf5version__:
-#    msg=\
-#'netCDF4 module must be linked against HDF5 version %s or higher, got %s' %\
-#(__required_hdf5version__,__hdf5libversion__ )
-#    raise ImportError(msg)
 
 # numpy data type <--> netCDF 4 data type mapping.
 
@@ -1435,12 +1423,15 @@ group, so the path is simply C{'/'}."""
 filepath(self)
 
 Get the file system path (or the opendap URL) which was used to
-open/create the Dataset."""
+open/create the Dataset. Requires netcdf >= 4.1.2"""
         cdef int ierr
         cdef size_t pathlen
         cdef char path[NC_MAX_NAME + 1]
-        ierr = nc_inq_path(self._grpid, &pathlen, path)
-        return path.decode('ascii')
+        IF HAS_NC_INQ_PATH:
+            ierr = nc_inq_path(self._grpid, &pathlen, path)
+            return path.decode('ascii')
+        ELSE:
+            raise ValueError('filepath method requires netcdf lib >= 4.1.2, you have %s' % __netcdf4libversion__)
 
     def __str__(self):
         if python3:
@@ -1876,7 +1867,6 @@ rename a L{Group} named C{oldname} to C{newname} (requires netcdf >= 4.3.1)."""
         IF HAS_RENAME_GRP:
             bytestr = _strencode(newname)
             newnamec = bytestr
-	    #self.sync() # should not be needed??? 
             try:
                 grp = self.groups[oldname]
             except KeyError:
