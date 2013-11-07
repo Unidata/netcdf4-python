@@ -34,7 +34,7 @@ Requires
    or higher recommended, required if using python 3).
  - U{Cython <http://cython.org>} is optional - if it is installed setup.py will 
    use it to recompile the Cython source code into C, using conditional compilation
-   to enable features in the netCDF API that have been added since version 4.3.0.  If
+   to enable features in the netCDF API that have been added since version 4.1.1.  If
    Cython is not installed, these features (such as the ability to rename Group objects)
    will be disabled to preserve backward compatibility with older versions of the netCDF
    library.
