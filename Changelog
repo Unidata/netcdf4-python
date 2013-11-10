@@ -1,6 +1,8 @@
  version 1.0.7 (not yet released)
  ================================
 
+ * add 'ncinfo' utility (ncdump-like).
+
  * more information displayed when Dataset or Group instance is printed.
 
  * fix for issue 194 (versions after 1.0.5 fail for netcdf 4.1.1, due to 

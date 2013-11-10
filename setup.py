@@ -241,7 +241,7 @@ if has_cython:
     # recompile netCDF4.pyx
     extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
     # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
-    if len(sys.argv) >= 2 and sys.argv[1] == 'build' and os.path.exists('netCDF4.c'):
+    if len(sys.argv) >= 2 and 'build' in sys.argv[1:] and os.path.exists('netCDF4.c'):
         os.remove('netCDF4.c')
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path = check_api(inc_dirs)
@@ -273,7 +273,7 @@ setup(name = "netCDF4",
   author_email      = "jeffrey.s.whitaker@noaa.gov",
   url               = "http://netcdf4-python.googlecode.com/svn/trunk/docs/netCDF4-module.html",
   download_url      = "http://code.google.com/p/netcdf4-python/downloads/list",
-  scripts           = ['utils/nc3tonc4','utils/nc4tonc3'],
+  scripts           = ['utils/nc3tonc4','utils/nc4tonc3','utils/ncinfo'],
   platforms         = ["any"],
   license           = "OSI Approved",
   description = "Provides an object-oriented python interface to the netCDF version 4 library.",
