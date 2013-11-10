@@ -1,6 +1,8 @@
  version 1.0.7 (not yet released)
  ================================
 
+ * more information displayed when Dataset or Group instance is printed.
+
  * fix for issue 194 (versions after 1.0.5 fail for netcdf 4.1.1, due to 
    call to nc_inq_path, which was added in netcdf 4.1.2).  Fixed by adding
    compile time API check similar to what was done for nc_rename_grp.  If

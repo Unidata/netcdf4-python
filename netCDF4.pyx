@@ -1441,8 +1441,15 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
 
     def __unicode__(self):
         ncdump = ['%r\n' % type(self)]
-        dimnames = tuple([_tostr(dimname) for dimname in self.dimensions.keys()])
-        varnames = tuple([_tostr(varname) for varname in self.variables.keys()])
+        dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
+        for dimname in self.dimensions.keys()])
+        varnames = tuple(\
+        [_tostr(varname)+\
+        (((_tostr(self.variables[varname].dimensions)
+        .replace("u'",""))\
+        .replace("'",""))\
+        .replace(", ",","))\
+        .replace(",)",")") for varname in self.variables.keys()])
         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
         if self.path == '/':
             ncdump.append('root group (%s file format):\n' % self.file_format)
@@ -1451,8 +1458,8 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
                 self.ncattrs()]
         ncdump = ncdump + attrs
-        ncdump.append('    dimensions: %s\n' % ', '.join(dimnames))
-        ncdump.append('    variables: %s\n' % ', '.join(varnames))
+        ncdump.append('    dimensions(sizes): %s\n' % ', '.join(dimnames))
+        ncdump.append('    variables(dimensions): %s\n' % ', '.join(varnames))
         ncdump.append('    groups: %s\n' % ', '.join(grpnames))
         return ''.join(ncdump)
 
