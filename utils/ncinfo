@@ -18,16 +18,20 @@ if __name__ == '__main__':
     usage = """
  Print summary information about a netCDF file.
 
- usage: %s [-h] [--group=grp] [--variable=var] [--dimension=dim] filename 
+ usage: %s [-h] [-g grp or --group=grp] [-v var or --variable=var] [-d dim or --dimension=dim] filename 
+
  -h -- Print usage message.
- --group=<group name> -- Print info for this group (default is root group). Nested
-      groups specified using posix paths ("group1/group2/group3").
- --variable=<variable name> -- Print info for this variable.
- --dimension=<dimension name> -- Print info for this dimension.
+ -g <group name> or --group=<group name> -- Print info for this group
+      (default is root group). Nested groups specified
+      using posix paths ("group1/group2/group3").
+ -v <variable name> or --variable=<variable name> -- Print info for this variable.
+ -d <dimension name> or --dimension=<dimension name> -- Print info for this dimension.
+
+ netcdf filename must be last argument.
 \n""" % os.path.basename(sys.argv[0])
 
     try:
-        opts, pargs = getopt.getopt(sys.argv[1:],'h',
+        opts, pargs = getopt.getopt(sys.argv[1:],'hv:g:d:',
                                     ['group=',
                                      'variable=',
                                      'dimension='])
@@ -43,11 +47,11 @@ if __name__ == '__main__':
         if option[0] == '-h':
             sys.stderr.write(usage)
             sys.exit(0)
-        elif option[0] == '--group':
+        elif option[0] == '--group' or option[0] == '-g':
             group = option[1]
-        elif option[0] == '--variable':
+        elif option[0] == '--variable' or option[0] == '-v':
             var = option[1]
-        elif option[0] == '--dimension':
+        elif option[0] == '--dimension' or option[0] == '-d':
             dim = option[1]
         else:
             sys.stdout.write("%s: Unrecognized option\n" % option[0])
