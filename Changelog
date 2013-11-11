@@ -1,7 +1,7 @@
  version 1.0.7 (not yet released)
  ================================
 
- * add 'ncinfo' utility (ncdump-like).
+ * add 'ncinfo' utility (like 'ncdump -h' but less verbose).
 
  * more information displayed when Dataset or Group instance is printed.
 
