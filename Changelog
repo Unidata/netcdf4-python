@@ -1,6 +1,10 @@
  version 1.0.7 (not yet released)
  ================================
 
+ * add the ability to specify the locations of hdf4,jpeg and curl libs, in
+   case netCDF4 was built statically with HDF4 and/or OpenDAP support (issue
+   207).
+
  * add 'ncinfo' utility (like 'ncdump -h' but less verbose).
 
  * more information displayed when Dataset or Group instance is printed.
