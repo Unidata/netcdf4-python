@@ -2841,10 +2841,10 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 totalmask += mask
         if hasattr(self, '_FillValue'):
             fval = numpy.array(self._FillValue, self.dtype)
-            # is scalar missing value a NaN?
+            # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
-            except TypeError: # isnan fails on some dtypes (issue 206)
+            except TypeError: # isnan fails on some dtypes (issue 202)
                 fvalisnan = False
             if fvalisnan:
                 mask = numpy.isnan(data)
