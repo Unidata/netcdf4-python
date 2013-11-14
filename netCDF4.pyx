@@ -77,6 +77,16 @@ Install
  environment variable(s) to point to where szip is installed. Note that
  the netCDF library does not support creating szip compressed files, but can read szip
  compressed files if the HDF5 lib is configured to support szip.
+ - if netCDF lib was built as a static library with HDF4 and/or OpenDAP
+ support, you may also need to set C{HDF4_DIR}, C{JPEG_DIR} and/or
+ C{CURL_DIR}.
+ - Instead of using environment variables to specify the locations of the
+ required libraries, you can either let setup.py try to auto-detect their
+ locations, or use the file C{setup.cfg} to specify them.  To use this 
+ method, copy the file C{setup.cfg.template} to C{setup.cfg},
+ then open C{setup.cfg} in a text editor and follow the instructions in the  
+ comments for editing.  If you use C{setup.cfg}, environment variables will be
+ ignored.
  - If you are using netcdf 4.1.2 or higher, instead of setting all those
  enviroment variables defining where libs are installed, you can just set one 
  environment variable, USE_NCCONFIG, to 1.  This will tell python to run the
@@ -87,13 +97,6 @@ Install
  'python setup.py build' *without* using sudo.  sudo does not pass environment
  variables. If you run 'setup.py build' first without sudo, you can run
  'setup.py install' with sudo.  
- - Instead of using environment variables to specify the locations of the
- required libraries, you can either let setup.py try to auto-detect their
- locations, or use the file C{setup.cfg} to specify them.  To use this 
- method, copy the file C{setup.cfg.template} to C{setup.cfg},
- then open C{setup.cfg} in a text editor and follow the instructions in the  
- comments for editing.  If you use C{setup.cfg}, environment variables will be
- ignored.
  - run the tests in the 'test' directory by running C{python run_all.py}.
 
 Tutorial
