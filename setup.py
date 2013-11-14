@@ -97,14 +97,24 @@ def getnetcdfvers(libdirs):
     return None
 
 HDF5_dir = os.environ.get('HDF5_DIR')
-netCDF4_dir = os.environ.get('NETCDF4_DIR')
 HDF5_includedir = os.environ.get('HDF5_INCDIR')
-netCDF4_includedir = os.environ.get('NETCDF4_INCDIR')
 HDF5_libdir = os.environ.get('HDF5_LIBDIR')
+netCDF4_dir = os.environ.get('NETCDF4_DIR')
+netCDF4_includedir = os.environ.get('NETCDF4_INCDIR')
 netCDF4_libdir = os.environ.get('NETCDF4_LIBDIR')
 szip_dir = os.environ.get('SZIP_DIR')
 szip_libdir = os.environ.get('SZIP_LIBDIR')
 szip_incdir = os.environ.get('SZIP_INCDIR')
+hdf4_dir = os.environ.get('HDF4_DIR')
+hdf4_libdir = os.environ.get('HDF4_LIBDIR')
+hdf4_incdir = os.environ.get('HDF4_INCDIR')
+jpeg_dir = os.environ.get('JPEG_DIR')
+jpeg_libdir = os.environ.get('JPEG_LIBDIR')
+jpeg_incdir = os.environ.get('JPEG_INCDIR')
+curl_dir = os.environ.get('CURL_DIR')
+curl_libdir = os.environ.get('CURL_LIBDIR')
+curl_incdir = os.environ.get('CURL_INCDIR')
+
 USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
 
 setup_cfg = 'setup.cfg'
@@ -131,6 +141,24 @@ if os.path.exists(setup_cfg):
     try: szip_libdir = config.get("directories", "szip_libdir")
     except: pass
     try: szip_incdir = config.get("directories", "szip_incdir")
+    except: pass
+    try: hdf4_dir = config.get("directories", "hdf4_dir")
+    except: pass
+    try: hdf4_libdir = config.get("directories", "hdf4_libdir")
+    except: pass
+    try: hdf4_incdir = config.get("directories", "hdf4_incdir")
+    except: pass
+    try: jpeg_dir = config.get("directories", "jpeg_dir")
+    except: pass
+    try: jpeg_libdir = config.get("directories", "jpeg_libdir")
+    except: pass
+    try: jpeg_incdir = config.get("directories", "jpeg_incdir")
+    except: pass
+    try: curl_dir = config.get("directories", "curl_dir")
+    except: pass
+    try: curl_libdir = config.get("directories", "curl_libdir")
+    except: pass
+    try: curl_incdir = config.get("directories", "curl_incdir")
     except: pass
     try: USE_NCCONFIG = config.get("options", "use_ncconfig")
     except: pass
@@ -225,6 +253,34 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         libs.append('sz')
         lib_dirs.append(szip_libdir)
         inc_dirs.append(szip_incdir)
+    # add hdf4 to link if desired.
+    if hdf4_libdir is None and hdf4_dir is not None:
+        hdf4_libdir = os.path.join(hdf4_dir, 'lib')
+    if hdf4_incdir is None and hdf4_dir is not None:
+        hdf4_incdir = os.path.join(hdf4_dir, 'include')
+    if hdf4_incdir is not None and hdf4_libdir is not None:
+        libs.append('mfhdf')
+        libs.append('df')
+        lib_dirs.append(hdf4_libdir)
+        inc_dirs.append(hdf4_incdir)
+    # add jpeg to link if desired.
+    if jpeg_libdir is None and jpeg_dir is not None:
+        jpeg_libdir = os.path.join(jpeg_dir, 'lib')
+    if jpeg_incdir is None and jpeg_dir is not None:
+        jpeg_incdir = os.path.join(jpeg_dir, 'include')
+    if jpeg_incdir is not None and jpeg_libdir is not None:
+        libs.append('jpeg')
+        lib_dirs.append(jpeg_libdir)
+        inc_dirs.append(jpeg_incdir)
+    # add curl to link if desired.
+    if curl_libdir is None and curl_dir is not None:
+        curl_libdir = os.path.join(curl_dir, 'lib')
+    if curl_incdir is None and curl_dir is not None:
+        curl_incdir = os.path.join(curl_dir, 'include')
+    if curl_incdir is not None and curl_libdir is not None:
+        libs.append('curl')
+        lib_dirs.append(curl_libdir)
+        inc_dirs.append(curl_incdir)
 
 # append numpy include dir.
 inc_dirs.append(numpy.get_include())

@@ -26,3 +26,18 @@
 # If the libraries and include files are installed in separate locations,
 # use szip_libdir and szip_incdir.
 #szip_dir = /usr/local
+# if netcdf lib was build statically with HDF4 support,
+# uncomment and set to hdf4 lib (libmfhdf and libdf) nstall location.
+# If the libraries and include files are installed in separate locations,
+# use hdf4_libdir and hdf4_incdir.
+#hdf4_dir = /usr/local
+# if netcdf lib was build statically with HDF4 support,
+# uncomment and set to jpeg lib install location (hdf4 needs jpeg).
+# If the libraries and include files are installed in separate locations,
+# use jpeg_libdir and jpeg_incdir.
+#jpeg_dir = /usr/local
+# if netcdf lib was build statically with OpenDAP support,
+# uncomment and set to curl lib install location.
+# If the libraries and include files are installed in separate locations,
+# use curl_libdir and curl_incdir.
+#curl_dir = /usr/local
