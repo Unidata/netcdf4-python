@@ -16,10 +16,7 @@
    if the module was built with netcdf < 4.1.2, or cython was not installed
    at build time.
 
- * fix for issue 202 (similar to issue 206, but occurs in a different place in
-   the code).
-
- * fix for issue 206 (exception raised by numpy.isnan for character data types).
+ * fix for issues 202 and 206 (exception raised by numpy.isnan for character data types).
 
  * if dateutils not installed and time unit accuracy < 1 second requested, have
    netcdftime raise an ImportError.
