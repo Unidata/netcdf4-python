@@ -292,7 +292,7 @@ if netcdf_lib_version is None:
 else:
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
-if has_cython:
+if has_cython and 'sdist' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
     # recompile netCDF4.pyx
     extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
