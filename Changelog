@@ -1,3 +1,8 @@
+ since version 1.0.7
+ ===================
+
+ * add variable type information to Dataset.__repr__ (output of ncinfo).
+
  version 1.0.7 (tag v1.0.7rel)
  =============================
 
