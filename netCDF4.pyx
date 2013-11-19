@@ -1447,7 +1447,7 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
         dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys()])
         varnames = tuple(\
-        [_tostr(varname)+\
+        [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+\
         (((_tostr(self.variables[varname].dimensions)
         .replace("u'",""))\
         .replace("'",""))\
