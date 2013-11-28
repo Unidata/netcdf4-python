@@ -2860,8 +2860,8 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 if fill_value is None:
                     fill_value = fval
                 totalmask += mask
-        # issue 209: don't return masked array if there is no _FillValue
-        # explicitly set.
+        # issue 209: don't return masked array if variable filling
+	# is disabled.
         else:
              ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
              if ierr != NC_NOERR:
