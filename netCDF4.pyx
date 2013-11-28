@@ -2815,6 +2815,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         return data
 
     def _toma(self,data):
+        cdef int ierr, no_fill
         # private function for creating a masked array, masking missing_values
         # and/or _FillValues.
         totalmask = numpy.zeros(data.shape, numpy.bool)
@@ -2859,17 +2860,24 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 if fill_value is None:
                     fill_value = fval
                 totalmask += mask
+        # issue 209: don't return masked array if there is no _FillValue
+        # explicitly set.
         else:
-            fillval = default_fillvals[self.dtype.str[1:]]
-            has_fillval = data == fillval
-            # if data is an array scalar, has_fillval will be a boolean.
-            # in that case convert to an array.
-            if type(has_fillval) == bool: has_fillval=numpy.asarray(has_fillval)
-            if has_fillval.any():
-                mask=data==fillval
-                if fill_value is None:
-                    fill_value = fillval
-                totalmask += mask
+             ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
+             if ierr != NC_NOERR:
+                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+             # if no_fill is not 1, then use default fill value.
+             if no_fill != 1:
+                 fillval = default_fillvals[self.dtype.str[1:]]
+                 has_fillval = data == fillval
+                 # if data is an array scalar, has_fillval will be a boolean.
+                 # in that case convert to an array.
+                 if type(has_fillval) == bool: has_fillval=numpy.asarray(has_fillval)
+                 if has_fillval.any():
+                     mask=data==fillval
+                     if fill_value is None:
+                         fill_value = fillval
+                     totalmask += mask
         # all values where data == missing_value or _FillValue are
         # masked.  fill_value set to missing_value if it exists,
         # otherwise _FillValue.

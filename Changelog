@@ -1,6 +1,9 @@
  since version 1.0.7
  ===================
 
+ * check to see if filling was disabled before masking data equal to
+   default fill value (issue 209).
+
  * add variable type information to Dataset.__repr__ (output of ncinfo).
 
  version 1.0.7 (tag v1.0.7rel)
