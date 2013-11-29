@@ -2450,7 +2450,7 @@ instance. If C{None}, the data is not truncated. """
         if no_fill != 1:
             try:
                 fillval = self._FillValue
-                msg = 'filling on, _FillValue set to %s\n' % fillval
+                msg = 'filling on'
             except AttributeError:
                 fillval = default_fillvals[self.dtype.str[1:]]
                 if self.dtype.str[1:] in ['u1','i1']:
