@@ -2417,6 +2417,7 @@ instance. If C{None}, the data is not truncated. """
            return unicode(self).encode(default_encoding)
 
     def __unicode__(self):
+        cdef int ierr, no_fill
         ncdump_var = ['%r\n' % type(self)]
         dimnames = tuple([_tostr(dimname) for dimname in self.dimensions])
         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
@@ -2443,6 +2444,24 @@ instance. If C{None}, the data is not truncated. """
         if (self._grp.path != '/'): ncdump_var.append('path = %s\n' % self._grp.path)
         ncdump_var.append('unlimited dimensions: %s\n' % ', '.join(unlimdims))
         ncdump_var.append('current shape = %s\n' % repr(self.shape))
+        ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        if no_fill != 1:
+            try:
+                fillval = self._FillValue
+                msg = 'filling on, _FillValue set to %s\n' % fillval
+            except AttributeError:
+                fillval = default_fillvals[self.dtype.str[1:]]
+                if self.dtype.str[1:] in ['u1','i1']:
+                    msg = 'filling on, default _FillValue of %s ignored\n' % fillval
+                else:
+                    msg = 'filling on, default _FillValue of %s used\n' % fillval
+            ncdump_var.append(msg)
+        else:
+            ncdump_var.append('filling off\n')
+
+
         return ''.join(ncdump_var)
 
     def _getdims(self):
@@ -2866,8 +2885,19 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
              ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
              if ierr != NC_NOERR:
                  raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-             # if no_fill is not 1, then use default fill value.
-             if no_fill != 1:
+             # if no_fill is not 1, and not a byte variable, then use default fill value.
+             # from http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
+             # "If you need a fill value for a byte variable, it is recommended
+             # that you explicitly define an appropriate _FillValue attribute, as
+             # generic utilities such as ncdump will not assume a default fill
+             # value for byte variables."
+             # Explained here too:
+             # http://www.unidata.ucar.edu/software/netcdf/docs/known_problems.html#ncdump_ubyte_fill
+             # "There should be no default fill values when reading any byte
+             # type, signed or unsigned, because the byte ranges are too
+             # small to assume one of the values should appear as a missing
+             # value unless a _FillValue attribute is set explicitly."
+             if no_fill != 1 and self.dtype.str[1:] not in ['u1','i1']:
                  fillval = default_fillvals[self.dtype.str[1:]]
                  has_fillval = data == fillval
                  # if data is an array scalar, has_fillval will be a boolean.

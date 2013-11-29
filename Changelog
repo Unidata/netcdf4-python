@@ -1,6 +1,13 @@
  since version 1.0.7
  ===================
 
+ * default _FillValue now ignored for byte data types (int8 and uint8) as per
+   http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
+   "If you need a fill value for a byte variable, it is recommended that you
+   explicitly define an appropriate _FillValue attribute, as generic utilities
+   such as ncdump will not assume a default fill value for byte variables".  
+   ncinfo now returns fill mode information (issue 209).
+
  * check to see if filling was disabled before masking data equal to
    default fill value (issue 209).
 
