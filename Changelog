@@ -1,5 +1,5 @@
- since version 1.0.7
- ===================
+ version 1.0.8 (not yet released)
+ ================================
 
  * default _FillValue now ignored for byte data types (int8 and uint8) as per
    http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
