@@ -54,7 +54,7 @@ def check_api(inc_dirs):
             if line.startswith('nc_inq_path'):
                 has_nc_inq_path = True
             if line.startswith('nc_inq_format_extended'):
-                has_nc_inq_path = True
+                has_nc_inq_format_extended = True
         break
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended
 
