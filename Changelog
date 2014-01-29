@@ -1,6 +1,12 @@
  version 1.0.8 (not yet released)
  ================================
 
+ * change file_format Dataset attribute to data_model (keeping file_format
+   for backward compatibility).  Add disk_format attribute (underlying
+   disk format, one of NETCDF3, HDF4, HDF5, DAP2, DAP4, PNETCDF or UNDEFINED).
+   Uses nc_inq_format_extended, added in version 4.3.1 of library.  If using
+   earlier version of lib, disk_format will be set to UNDEFINED.
+
  * default _FillValue now ignored for byte data types (int8 and uint8) as per
    http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
    "If you need a fill value for a byte variable, it is recommended that you
