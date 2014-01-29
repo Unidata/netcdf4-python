@@ -137,6 +137,13 @@ cdef extern from "netcdf.h":
         NC_FORMAT_64BIT   
         NC_FORMAT_NETCDF4 
         NC_FORMAT_NETCDF4_CLASSIC  
+        NC_FORMAT_NC3
+        NC_FORMAT_NC_HDF4
+        NC_FORMAT_NC_HDF5
+        NC_FORMAT_DAP2
+        NC_FORMAT_DAP4
+        NC_FORMAT_PNETCDF
+        NC_FORMAT_UNDEFINED
         # Let nc__create() or nc__open() figure out
         # as suitable chunk size.
         NC_SIZEHINT_DEFAULT 
@@ -236,6 +243,7 @@ cdef extern from "netcdf.h":
     int nc_open(char *path, int mode, int *ncidp)
     int nc__open(char *path, int mode, size_t *chunksizehintp, int *ncidp)
     int nc_inq_path(int ncid, size_t *pathlen, char *path)
+    int nc_inq_format_extended(int ncid, int *formatp, int* modep)
     int nc_inq_ncid(int ncid, char *name, int *grp_ncid)
     int nc_inq_grps(int ncid, int *numgrps, int *ncids)
     int nc_inq_grpname(int ncid, char *name)

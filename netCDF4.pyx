@@ -121,7 +121,7 @@ C{netCDF4} module can read and write files in any of these formats. When
 creating a new file, the format may be specified using the C{format}
 keyword in the C{Dataset} constructor.  The default format is
 C{NETCDF4}. To see how a given file is formatted, you can examine the
-C{file_format} L{Dataset} attribute.  Closing the netCDF file is
+C{data_model} L{Dataset} attribute.  Closing the netCDF file is
 accomplished via the L{close<Dataset.close>} method of the L{Dataset}
 instance.
 
@@ -129,7 +129,7 @@ Here's an example:
 
 >>> from netCDF4 import Dataset
 >>> rootgrp = Dataset('test.nc', 'w', format='NETCDF4')
->>> print rootgrp.file_format
+>>> print rootgrp.data_model
 NETCDF4
 >>>
 >>> rootgrp.close()
@@ -989,6 +989,30 @@ cdef _get_format(int grpid):
     elif formatp == NC_FORMAT_CLASSIC:
         return 'NETCDF3_CLASSIC'
 
+cdef _get_full_format(int grpid):
+    # Private function to get the underlying disk format
+    cdef int ierr, formatp, modep
+    IF HAS_NC_INQ_FORMAT_EXTENDED:
+        ierr = nc_inq_format_extended(grpid, &formatp, &modep)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        if formatp == NC_FORMAT_NC3:
+            return 'NETCDF3'
+        elif formatp == NC_FORMAT_NC_HDF5:
+            return 'HDF5'
+        elif formatp == NC_FORMAT_NC_HDF4:
+            return 'HDF4'
+        elif formatp == NC_FORMAT_PNETCDF:
+            return 'PNETCDF'
+        elif formatp == NC_FORMAT_DAP2:
+            return 'DAP2'
+        elif formatp == NC_FORMAT_DAP4:
+            return 'DAP4'
+        elif formatp == NC_FORMAT_UNDEFINED:
+            return 'UNDEFINED'
+    ELSE:
+        return 'UNDEFINED'
+
 cdef _set_att(grp, int varid, name, value):
     # Private function to set an attribute name/value pair
     cdef int i, ierr, lenarr, n
@@ -1086,7 +1110,7 @@ cdef _get_dims(group):
     # create empty dictionary for dimensions.
     dimensions = OrderedDict()
     if numdims > 0:
-        if group.file_format == 'NETCDF4':
+        if group.data_model == 'NETCDF4':
             ierr = nc_inq_dimids(group._grpid, &numdims, dimids, 0)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -1144,7 +1168,7 @@ cdef _get_vars(group):
     if numvars > 0:
         # get variable ids.
         varids = <int *>malloc(sizeof(int) * numvars)
-        if group.file_format == 'NETCDF4':
+        if group.data_model == 'NETCDF4':
             ierr = nc_inq_varids(group._grpid, &numvars, varids)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -1224,9 +1248,9 @@ cdef _get_vars(group):
 # only exist at the python level (not in the netCDF file).
 
 _private_atts =\
-['_grpid','_grp','_varid','groups','dimensions','variables','dtype','file_format',
+['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','maskandscale','cmptypes','vltypes','_isprimitive',
- '_isvlen','_iscompound','_cmptype','_vltype']
+ 'file_format','_isvlen','_iscompound','_cmptype','_vltype']
 
 
 cdef class Dataset:
@@ -1290,7 +1314,7 @@ name/value pairs is provided by the C{__dict__} attribute of a
 L{Dataset} instance.
 
 The instance variables C{dimensions, variables, groups, 
-cmptypes, file_format} and C{path} are read-only (and should not be modified by the 
+cmptypes, data_model, disk_format} and C{path} are read-only (and should not be modified by the 
 user).
 
 @ivar dimensions: The C{dimensions} dictionary maps the names of 
@@ -1310,10 +1334,14 @@ describes the root group in the netCDF file).
 compound types defined for the L{Group} or L{Dataset} to instances of the 
 L{CompoundType} class.
 
-@ivar file_format: The C{file_format} attribute describes the netCDF
-file format version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
-C{NETCDF4_CLASSIC} or C{NETCDF3_64BIT}.  This module can read and 
-write all formats.
+@ivar data_model: The C{data_model} attribute describes the netCDF
+data model version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
+C{NETCDF4_CLASSIC} or C{NETCDF3_64BIT}. 
+
+@ivar disk_format: The C{disk_format} attribute describes the underlying
+file format, one of C{NETCDF3}, C{HDF5}, C{HDF4},
+C{PNETCDF}, C{DAP2}, C{DAP4} or C{UNDEFINED}. Only available if using
+netcdf C library version >= 4.3.1, otherwise will always return C{UNDEFINED}.
 
 @ivar path: The C{path} attribute shows the location of the L{Group} in
 the L{Dataset} in a unix directory format (the names of groups in the
@@ -1321,8 +1349,8 @@ hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
     cdef public int _grpid
     cdef public int _isopen
-    cdef public groups, dimensions, variables, file_format, path, parent,\
-    maskanscale, cmptypes, vltypes
+    cdef public groups, dimensions, variables, disk_format, path, parent,\
+    file_format, data_model, maskanscale, cmptypes, vltypes
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                  diskless=False, persist=False, **kwargs):
@@ -1393,11 +1421,15 @@ group, so the path is simply C{'/'}."""
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        # file format attribute.
-        self.file_format = _get_format(grpid)
+        # data model and file format attributes
+        self.data_model = _get_format(grpid)
+        # data_model attribute used to be file_format (versions < 1.0.8), retain
+        # file_format for backwards compatibility.
+        self.file_format = self.data_model
+        self.disk_format = _get_full_format(grpid)
         # diskless read access only works with NETCDF_CLASSIC (for now)
         ncopen = mode.startswith('a') or mode.startswith('r')
-        if diskless and self.file_format != 'NETCDF3_CLASSIC' and ncopen:
+        if diskless and self.data_model != 'NETCDF3_CLASSIC' and ncopen:
             raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
         self._grpid = grpid
         self._isopen = 1
@@ -1410,7 +1442,7 @@ group, so the path is simply C{'/'}."""
         # get variables in the root Group.
         self.variables = _get_vars(self)
         # get groups in the root Group.
-        if self.file_format == 'NETCDF4':
+        if self.data_model == 'NETCDF4':
             self.groups = _get_grps(self)
         else:
             self.groups = OrderedDict()
@@ -1455,7 +1487,8 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
         .replace(",)",")") for varname in self.variables.keys()])
         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
         if self.path == '/':
-            ncdump.append('root group (%s file format):\n' % self.file_format)
+            ncdump.append('root group (%s data model, file format %s):\n' %
+                    (self.data_model, self.disk_format))
         else:
             ncdump.append('group %s:\n' % self.path)
         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
@@ -1557,13 +1590,13 @@ rename a L{Dimension} named C{oldname} to C{newname}."""
         cdef char *namstring
         bytestr = _strencode(newname)
         namstring = bytestr
-        if self.file_format != 'NETCDF4': self._redef()
+        if self.data_model != 'NETCDF4': self._redef()
         try:
             dim = self.dimensions[oldname]
         except KeyError:
             raise KeyError('%s not a valid dimension name' % oldname)
         ierr = nc_rename_dim(self._grpid, dim._dimid, namstring)
-        if self.file_format != 'NETCDF4': self._enddef()
+        if self.data_model != 'NETCDF4': self._enddef()
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         # remove old key from dimensions dict.
@@ -1737,9 +1770,9 @@ rename a L{Variable} named C{oldname} to C{newname}"""
             raise KeyError('%s not a valid variable name' % oldname)
         bytestr = _strencode(newname)
         namstring = bytestr
-        if self.file_format != 'NETCDF4': self._redef()
+        if self.data_model != 'NETCDF4': self._redef()
         ierr = nc_rename_var(self._grpid, var._varid, namstring)
-        if self.file_format != 'NETCDF4': self._enddef()
+        if self.data_model != 'NETCDF4': self._enddef()
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         # remove old key from dimensions dict.
@@ -1771,9 +1804,9 @@ setncattr(self,name,value)
 set a netCDF dataset or group attribute using name,value pair.  Only use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
-        if self.file_format != 'NETCDF4': self._redef()
+        if self.data_model != 'NETCDF4': self._redef()
         _set_att(self, NC_GLOBAL, name, value)
-        if self.file_format !=  'NETCDF4': self._enddef()
+        if self.data_model !=  'NETCDF4': self._enddef()
 
     def setncatts(self,attdict):
         """
@@ -1783,10 +1816,10 @@ set a bunch of netCDF dataset or group attributes at once using a python diction
 This may be faster when setting a lot of attributes for a NETCDF3 
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute"""
-        if self.file_format != 'NETCDF4': self._redef()
+        if self.data_model != 'NETCDF4': self._redef()
         for name, value in attdict.iteritems():
             _set_att(self, NC_GLOBAL, name, value)
-        if self.file_format != 'NETCDF4': self._enddef()
+        if self.data_model != 'NETCDF4': self._enddef()
 
     def getncattr(self,name):
         """
@@ -1816,9 +1849,9 @@ attributes."""
         cdef int ierr
         bytestr = _strencode(name)
         attname = bytestr
-        if self.file_format != 'NETCDF4': self._redef()
+        if self.data_model != 'NETCDF4': self._redef()
         ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
-        if self.file_format != 'NETCDF4': self._enddef()
+        if self.data_model != 'NETCDF4': self._enddef()
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
@@ -1931,8 +1964,8 @@ method)."""
             ierr = nc_def_grp(parent._grpid, groupname, &self._grpid)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        # set file_format attribute.
-        self.file_format = _get_format(self._grpid)
+        # set data_model attribute.
+        self.data_model = _get_format(self._grpid)
         # get number of groups in this group.
         ierr = nc_inq_grps(self._grpid, &numgrps, NULL)
         if ierr != NC_NOERR:
@@ -1989,7 +2022,7 @@ calling the python C{len} function on the L{Dimension} instance. The
 C{isunlimited()} method of a L{Dimension} instance can be used to
 determine if the dimension is unlimited"""
     cdef public int _dimid, _grpid
-    cdef public _file_format, _name, _grp
+    cdef public _data_model, _name, _grp
 
     def __init__(self, grp, name, size=None, **kwargs):
         cdef int ierr
@@ -1997,7 +2030,7 @@ determine if the dimension is unlimited"""
         cdef size_t lendim
         self._grpid = grp._grpid
         self._grp = grp
-        self._file_format = grp.file_format
+        self._data_model = grp.data_model
         self._name = name
         if 'id' in kwargs:
             self._dimid = kwargs['id']
@@ -2008,9 +2041,9 @@ determine if the dimension is unlimited"""
                 lendim = size
             else:
                 lendim = NC_UNLIMITED
-            if grp.file_format != 'NETCDF4': grp._redef()
+            if grp.data_model != 'NETCDF4': grp._redef()
             ierr = nc_def_dim(self._grpid, dimname, lendim, &self._dimid)
-            if grp.file_format != 'NETCDF4': grp._enddef()
+            if grp.data_model != 'NETCDF4': grp._enddef()
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
@@ -2049,7 +2082,7 @@ isunlimited(self)
 returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise."""
         cdef int ierr, n, numunlimdims, ndims, nvars, ngatts, xdimid
         cdef int unlimdimids[NC_MAX_DIMS]
-        if self._file_format == 'NETCDF4':
+        if self._data_model == 'NETCDF4':
             ierr = nc_inq_unlimdims(self._grpid, &numunlimdims, NULL)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -2285,7 +2318,7 @@ instance. If C{None}, the data is not truncated. """
             # go into define mode if it's a netCDF 3 compatible
             # file format.  Be careful to exit define mode before
             # any exceptions are raised.
-            if grp.file_format != 'NETCDF4': grp._redef()
+            if grp.data_model != 'NETCDF4': grp._redef()
             # define variable.
             if ndims:
                 ierr = nc_def_var(self._grpid, varname, xtype, ndims,
@@ -2297,7 +2330,7 @@ instance. If C{None}, the data is not truncated. """
             # default is 1mb per var, can cause problems when many (1000's)
             # of vars are created.  This change only lasts as long as file is
             # open.
-            if grp.file_format.startswith('NETCDF4') and chunk_cache is not None:
+            if grp.data_model.startswith('NETCDF4') and chunk_cache is not None:
                 ierr = nc_get_var_chunk_cache(self._grpid, self._varid, &sizep,
                         &nelemsp, &preemptionp)
                 if ierr != NC_NOERR:
@@ -2309,7 +2342,7 @@ instance. If C{None}, the data is not truncated. """
                 if ierr != NC_NOERR:
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             if ierr != NC_NOERR:
-                if grp.file_format != 'NETCDF4': grp._enddef()
+                if grp.data_model != 'NETCDF4': grp._enddef()
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # set zlib, shuffle, chunking, fletcher32 and endian
             # variable settings.
@@ -2317,7 +2350,7 @@ instance. If C{None}, the data is not truncated. """
             # for NETCDF3* formats, the zlib,shuffle,chunking,
             # and fletcher32 are silently ignored. Only
             # endian='native' allowed for NETCDF3.
-            if grp.file_format in ['NETCDF4','NETCDF4_CLASSIC']:
+            if grp.data_model in ['NETCDF4','NETCDF4_CLASSIC']:
                 # set zlib and shuffle parameters.
                 if zlib and ndims: # don't bother for scalar variable
                     ideflate_level = complevel
@@ -2326,13 +2359,13 @@ instance. If C{None}, the data is not truncated. """
                     else:
                         ierr = nc_def_var_deflate(self._grpid, self._varid, 0, 1, ideflate_level)
                     if ierr != NC_NOERR:
-                        if grp.file_format != 'NETCDF4': grp._enddef()
+                        if grp.data_model != 'NETCDF4': grp._enddef()
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # set checksum.
                 if fletcher32 and ndims: # don't bother for scalar variable
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
                     if ierr != NC_NOERR:
-                        if grp.file_format != 'NETCDF4': grp._enddef()
+                        if grp.data_model != 'NETCDF4': grp._enddef()
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # set chunking stuff.
                 if ndims: # don't bother for scalar variable.
@@ -2346,7 +2379,7 @@ instance. If C{None}, the data is not truncated. """
                         chunksizesp = NULL
                     else:
                         if len(chunksizes) != len(dimensions):
-                            if grp.file_format != 'NETCDF4': grp._enddef()
+                            if grp.data_model != 'NETCDF4': grp._enddef()
                             raise ValueError('chunksizes must be a sequence with the same length as dimensions')
                         chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
                         for n from 0 <= n < ndims:
@@ -2355,7 +2388,7 @@ instance. If C{None}, the data is not truncated. """
                         ierr = nc_def_var_chunking(self._grpid, self._varid, icontiguous, chunksizesp)
                         free(chunksizesp)
                         if ierr != NC_NOERR:
-                            if grp.file_format != 'NETCDF4': grp._enddef()
+                            if grp.data_model != 'NETCDF4': grp._enddef()
                             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # set endian-ness of variable
                 if endian == 'little':
@@ -2367,7 +2400,7 @@ instance. If C{None}, the data is not truncated. """
                 else:
                     raise ValueError("'endian' keyword argument must be 'little','big' or 'native', got '%s'" % endian)
                 if ierr != NC_NOERR:
-                    if grp.file_format != 'NETCDF4': grp._enddef()
+                    if grp.data_model != 'NETCDF4': grp._enddef()
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             else:
                 if endian != 'native':
@@ -2381,7 +2414,7 @@ instance. If C{None}, the data is not truncated. """
                     # no filling for this variable if fill_value==False.
                     ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
                     if ierr != NC_NOERR:
-                        if grp.file_format != 'NETCDF4': grp._enddef()
+                        if grp.data_model != 'NETCDF4': grp._enddef()
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 else:
                     # cast fill_value to type of variable.
@@ -2393,7 +2426,7 @@ instance. If C{None}, the data is not truncated. """
             if least_significant_digit is not None:
                 self.least_significant_digit = least_significant_digit
             # leave define mode if not a NETCDF4 format file.
-            if grp.file_format != 'NETCDF4': grp._enddef()
+            if grp.data_model != 'NETCDF4': grp._enddef()
         # count how many unlimited dimensions there are.
         self._nunlimdim = 0
         for dimname in dimensions:
@@ -2543,9 +2576,9 @@ setncattr(self,name,value)
 set a netCDF variable attribute using name,value pair.  Only use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
-        if self._grp.file_format != 'NETCDF4': self._grp._redef()
+        if self._grp.data_model != 'NETCDF4': self._grp._redef()
         _set_att(self._grp, self._varid, name, value)
-        if self._grp.file_format != 'NETCDF4': self._grp._enddef()
+        if self._grp.data_model != 'NETCDF4': self._grp._enddef()
 
     def setncatts(self,attdict):
         """
@@ -2555,10 +2588,10 @@ set a bunch of netCDF variable attributes at once using a python dictionary.
 This may be faster when setting a lot of attributes for a NETCDF3 
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute"""
-        if self._grp.file_format != 'NETCDF4': self._grp._redef()
+        if self._grp.data_model != 'NETCDF4': self._grp._redef()
         for name, value in attdict.iteritems():
             _set_att(self._grp, self._varid, name, value)
-        if self._grp.file_format != 'NETCDF4': self._grp._enddef()
+        if self._grp.data_model != 'NETCDF4': self._grp._enddef()
 
     def getncattr(self,name):
         """
@@ -2579,9 +2612,9 @@ attributes."""
         cdef char *attname
         bytestr = _strencode(name)
         attname = bytestr
-        if self._grp.file_format != 'NETCDF4': self._grp._redef()
+        if self._grp.data_model != 'NETCDF4': self._grp._redef()
         ierr = nc_del_att(self._grpid, self._varid, attname)
-        if self._grp.file_format != 'NETCDF4': self._grp._enddef()
+        if self._grp.data_model != 'NETCDF4': self._grp._enddef()
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
@@ -2592,7 +2625,7 @@ filters(self)
 return dictionary containing HDF5 filter parameters."""
         cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
         filtdict = {'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
-        if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return
+        if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
         ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &ideflate_level)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -2614,7 +2647,7 @@ endian(self)
 
 return endian-ness (little,big,native) of variable (as stored in HDF5 file)."""
         cdef int ierr, iendian
-        if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: 
+        if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: 
             return 'native'
         ierr = nc_inq_var_endian(self._grpid, self._varid, &iendian)
         if ierr != NC_NOERR:
@@ -2636,7 +2669,7 @@ is returned.  Otherwise, a sequence with the chunksize for
 each dimension is returned."""
         cdef int ierr, icontiguous, ndims
         cdef size_t *chunksizesp
-        if self._grp.file_format not in ['NETCDF4_CLASSIC','NETCDF4']: return None
+        if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return None
         ndims = self.ndim
         chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
         ierr = nc_inq_var_chunking(self._grpid, self._varid, &icontiguous, chunksizesp)
