@@ -835,6 +835,7 @@ __netcdf4libversion__ = getlibversion().split()[0]
 __hdf5libversion__ = _gethdf5libversion()
 __has_rename_grp__ = HAS_RENAME_GRP
 __has_nc_inq_path__ = HAS_NC_INQ_PATH
+__has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
 
 
 # numpy data type <--> netCDF 4 data type mapping.
