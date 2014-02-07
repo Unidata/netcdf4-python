@@ -48,8 +48,8 @@
     </td>
   </tr>
 </table>
-<!-- ==================== TYPE DESCRIPTION ==================== -->
-<h1 class="epydoc">type Dataset</h1><p class="nomargin-top"></p>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Dataset</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
 object --+
          |
@@ -123,8 +123,8 @@ object --+
   pairs is provided by the <code>__dict__</code> attribute of a <a 
   href="netCDF4.Dataset-class.html" class="link">Dataset</a> instance.</p>
   <p>The instance variables <code>dimensions, variables, groups, cmptypes, 
-  file_format</code> and <code>path</code> are read-only (and should not be
-  modified by the user).</p>
+  data_model, disk_format</code> and <code>path</code> are read-only (and 
+  should not be modified by the user).</p>
 
 <!-- ==================== INSTANCE METHODS ==================== -->
 <a name="section-InstanceMethods"></a>
@@ -684,6 +684,19 @@ object --+
       
     </td>
   </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__format__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
 </table>
 <!-- ==================== INSTANCE VARIABLES ==================== -->
 <a name="section-InstanceVariables"></a>
@@ -710,6 +723,16 @@ object --+
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a name="data_model"></a><span class="summary-name">data_model</span><br />
+      The <code>data_model</code> attribute describes the netCDF data model
+      version, one of <code>NETCDF3_CLASSIC</code>, <code>NETCDF4</code>, 
+      <code>NETCDF4_CLASSIC</code> or <code>NETCDF3_64BIT</code>.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a name="dimensions"></a><span class="summary-name">dimensions</span><br />
       The <code>dimensions</code> dictionary maps the names of dimensions 
       defined for the <a href="netCDF4.Group-class.html" 
@@ -722,11 +745,11 @@ object --+
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="netCDF4.Dataset-class.html#file_format" class="summary-name">file_format</a><br />
-      The <code>file_format</code> attribute describes the netCDF file 
-      format version, one of <code>NETCDF3_CLASSIC</code>, 
-      <code>NETCDF4</code>, <code>NETCDF4_CLASSIC</code> or 
-      <code>NETCDF3_64BIT</code>.
+        <a href="netCDF4.Dataset-class.html#disk_format" class="summary-name">disk_format</a><br />
+      The <code>disk_format</code> attribute describes the underlying file 
+      format, one of <code>NETCDF3</code>, <code>HDF5</code>, 
+      <code>HDF4</code>, <code>PNETCDF</code>, <code>DAP2</code>, 
+      <code>DAP4</code> or <code>UNDEFINED</code>.
     </td>
   </tr>
 <tr>
@@ -781,6 +804,13 @@ object --+
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a name="file_format"></a><span class="summary-name">file_format</span>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a name="maskanscale"></a><span class="summary-name">maskanscale</span>
     </td>
   </tr>
@@ -796,6 +826,13 @@ object --+
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="vltypes"></a><span class="summary-name">vltypes</span>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
     </td>
   </tr>
 </table>
@@ -1379,16 +1416,18 @@ object --+
     <span class="table-header">Instance Variable Details</span></td>
 </tr>
 </table>
-<a name="file_format"></a>
+<a name="disk_format"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">file_format</h3>
-  The <code>file_format</code> attribute describes the netCDF file format 
-  version, one of <code>NETCDF3_CLASSIC</code>, <code>NETCDF4</code>, 
-  <code>NETCDF4_CLASSIC</code> or <code>NETCDF3_64BIT</code>.  This module 
-  can read and write all formats.
+  <h3 class="epydoc">disk_format</h3>
+  The <code>disk_format</code> attribute describes the underlying file 
+  format, one of <code>NETCDF3</code>, <code>HDF5</code>, 
+  <code>HDF4</code>, <code>PNETCDF</code>, <code>DAP2</code>, 
+  <code>DAP4</code> or <code>UNDEFINED</code>. Only available if using 
+  netcdf C library version &gt;= 4.3.1, otherwise will always return 
+  <code>UNDEFINED</code>.
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -1437,8 +1476,7 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1
-    on Thu Nov 14 09:25:36 2013
+    Generated by Epydoc 3.0.1 on Fri Feb  7 14:52:16 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
