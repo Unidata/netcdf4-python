@@ -1,5 +1,5 @@
- version 1.0.8 (not yet released)
- ================================
+ version 1.0.8 (tag v1.0.8rel)
+ =============================
 
  * change file_format Dataset attribute to data_model (keeping file_format
    for backward compatibility).  Add disk_format attribute (underlying
