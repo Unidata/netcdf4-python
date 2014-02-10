@@ -1,3 +1,9 @@
+ since version 1.0.8
+ ===================
+ * silence warnings ("Non-trivial type declarators in shared declaration (e.g.
+   mix of pointers and values). Each pointer declaration should be on its own
+   line") with Cython 0.2.
+
  version 1.0.8 (tag v1.0.8rel)
  =============================
 

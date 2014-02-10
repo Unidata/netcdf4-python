@@ -913,7 +913,8 @@ cdef _get_att(grp, int varid, name):
     # Private function to get an attribute value given its name
     cdef int ierr, n
     cdef size_t att_len
-    cdef char *attname, *stratt
+    cdef char *attname
+    cdef char *stratt
     cdef nc_type att_type
     cdef ndarray value_arr
     bytestr = _strencode(name)
@@ -1017,7 +1018,8 @@ cdef _get_full_format(int grpid):
 cdef _set_att(grp, int varid, name, value):
     # Private function to set an attribute name/value pair
     cdef int i, ierr, lenarr, n
-    cdef char *attname, *datstring
+    cdef char *attname
+    cdef char *datstring
     cdef ndarray value_arr 
     bytestr = _strencode(name)
     attname = bytestr
@@ -1059,7 +1061,8 @@ cdef _get_types(group):
     # Private function to create L{CompoundType} or L{VLType} instances for all the
     # compound or VLEN types in a L{Group} or L{Dataset}.
     cdef int ierr, ntypes, classp, n
-    cdef nc_type xtype, typeids[NC_MAX_VARS]
+    cdef nc_type xtype
+    cdef nc_type typeids[NC_MAX_VARS]
     cdef char namstring[NC_MAX_NAME+1]
     # get the number of user defined types in this group.
     ierr = nc_inq_typeids(group._grpid, &ntypes, typeids)
@@ -1157,9 +1160,11 @@ cdef _get_vars(group):
     # variables in a L{Group} or Dataset
     cdef int ierr, numvars, n, nn, numdims, varid, classp
     cdef int *varids
-    cdef int dim_sizes[NC_MAX_DIMS], dimids[NC_MAX_DIMS]
+    cdef int dim_sizes[NC_MAX_DIMS]
+    cdef int dimids[NC_MAX_DIMS]
     cdef nc_type xtype
-    cdef char namstring[NC_MAX_NAME+1], namstring_cmp[NC_MAX_NAME+1]
+    cdef char namstring[NC_MAX_NAME+1]
+    cdef char namstring_cmp[NC_MAX_NAME+1]
     # get number of variables in this Group.
     ierr = nc_inq_nvars(group._grpid, &numvars)
     if ierr != NC_NOERR:
@@ -1892,7 +1897,8 @@ renameAttribute(self, oldname, newname)
 
 rename a L{Dataset} or L{Group} attribute named C{oldname} to C{newname}."""
         cdef int ierr
-        cdef char *oldnamec, *newnamec
+        cdef char *oldnamec
+        cdef char *newnamec
         bytestr = _strencode(oldname)
         oldnamec = bytestr
         bytestr = _strencode(newname)
@@ -2243,7 +2249,8 @@ instance. If C{None}, the data is not truncated. """
         cdef char *varname
         cdef nc_type xtype
         cdef int dimids[NC_MAX_DIMS]
-        cdef size_t sizep, nelemsp, *chunksizesp
+        cdef size_t sizep, nelemsp
+        cdef size_t *chunksizesp
         cdef float preemptionp
         # if complevel is set to zero, set zlib to False.
         if not complevel:
@@ -2789,7 +2796,8 @@ renameAttribute(self, oldname, newname)
 
 rename a L{Variable} attribute named C{oldname} to C{newname}."""
         cdef int ierr
-        cdef char *oldnamec, *newnamec
+        cdef char *oldnamec
+        cdef char *newnamec
         bytestr = _strencode(oldname)
         oldnamec = bytestr
         bytestr = _strencode(newname)
@@ -2951,7 +2959,8 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
 
     def _assign_vlen(self, elem, data):
         """private method to assign data to a single item in a VLEN variable"""
-        cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
+        cdef size_t startp[NC_MAX_DIMS]
+        cdef size_t countp[NC_MAX_DIMS]
         cdef int ndims, n
         cdef nc_vlen_t *vldata
         cdef char **strdata
@@ -3210,7 +3219,8 @@ The default value of C{maskandscale} is C{True}
         """Private method to put data into a netCDF variable"""
         cdef int ierr, ndims
         cdef npy_intp totelem
-        cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
+        cdef size_t startp[NC_MAX_DIMS]
+        cdef size_t countp[NC_MAX_DIMS]
         cdef ptrdiff_t stridep[NC_MAX_DIMS]
         cdef char **strdata
         cdef void* elptr
@@ -3342,7 +3352,8 @@ The default value of C{maskandscale} is C{True}
     def _get(self,start,count,stride):
         """Private method to retrieve data from a netCDF variable"""
         cdef int ierr, ndims
-        cdef size_t startp[NC_MAX_DIMS], countp[NC_MAX_DIMS]
+        cdef size_t startp[NC_MAX_DIMS]
+        cdef size_t countp[NC_MAX_DIMS]
         cdef ptrdiff_t stridep[NC_MAX_DIMS]
         cdef ndarray data, dataarr
         cdef void *elptr
@@ -3527,7 +3538,8 @@ cdef _def_compound(grp, object dt, object dtype_name):
     cdef nc_type xtype, xtype_tmp
     cdef int ierr, ndims
     cdef size_t offset, size
-    cdef char *namstring, *nested_namstring
+    cdef char *namstring
+    cdef char *nested_namstring
     cdef int dim_sizes[NC_MAX_DIMS]
     bytestr = _strencode(dtype_name)
     namstring = bytestr
@@ -3749,7 +3761,8 @@ cdef _def_vlen(grp, object dt, object dtype_name):
     cdef nc_type xtype, xtype_tmp
     cdef int ierr, ndims
     cdef size_t offset, size
-    cdef char *namstring, *nested_namstring
+    cdef char *namstring
+    cdef char *nested_namstring
     cdef int dim_sizes[NC_MAX_DIMS]
     if dt == str: # python string, use NC_STRING
         xtype = NC_STRING
