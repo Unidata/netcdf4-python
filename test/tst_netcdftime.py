@@ -233,6 +233,11 @@ class TestDate2index(unittest.TestCase):
         time = f.createVariable('time', float, ('time',))
         time.units = 'hours since 1900-01-01'
         time[:] = self.standardtime[:]
+        f.createDimension('time2', 1)
+        time2 = f.createVariable('time2', 'f8', ('time2',))
+        time2.units = 'days since 1901-01-01' 
+        self.first_timestamp = datetime(2000, 01, 01)
+        time2[0] = date2num(self.first_timestamp, time2.units)
         f.close()
         
     def tearDown(self):
@@ -242,6 +247,14 @@ class TestDate2index(unittest.TestCase):
         t = date2index(datetime(1950,2,1), self.standardtime)
         assert_equal(t, 31)
    
+    def test_singletime(self):
+        # issue 215 test (date2index with time variable length == 1)
+        f = Dataset(self.file)
+        time2 = f.variables['time2']
+        result_index = date2index(self.first_timestamp,time2, select="exact")
+        assert_equal(result_index, 0)
+        f.close()
+
     def test_list(self):
         t = date2index([datetime(1950,2,1), datetime(1950,2,3)], self.standardtime)
         assert_equal(t, [31, 33])
