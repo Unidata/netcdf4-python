@@ -1,5 +1,8 @@
  since version 1.0.8
  ===================
+
+ * fix for date2index error when time variable has only one entry (issue 215).
+
  * silence warnings ("Non-trivial type declarators in shared declaration (e.g.
    mix of pointers and values). Each pointer declaration should be on its own
    line") with Cython 0.2.

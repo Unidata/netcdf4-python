@@ -1101,8 +1101,12 @@ def time2index(times, nctime, calendar=None, select='exact'):
 
     # Trying to infer the correct index from the starting time and the stride.
     # This assumes that the times are increasing uniformly.
-    t0, t1 = nctime[:2]
-    dt = t1 - t0
+    if len(nctime) >= 2:
+        t0, t1 = nctime[:2]
+        dt = t1 - t0
+    else: 
+        t0 = nctime[0]
+        dt = 1.
     if select in ['exact', 'before']:
         index = numpy.array((num-t0)/dt, int)
     elif select == 'after':
