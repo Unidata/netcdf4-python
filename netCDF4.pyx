@@ -2451,6 +2451,12 @@ instance. If C{None}, the data is not truncated. """
         # add_offset, and converting to/from masked arrays is True.
         self.maskandscale = True
 
+    def __array__(self):
+        # numpy special method that returns a numpy array.
+	# allows numpy ufuncs to work faster on Variable objects 
+	# (issue 216).
+        return self[...]
+
     def __str__(self):
         if python3:
            return self.__unicode__()
