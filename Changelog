@@ -1,5 +1,5 @@
- since version 1.0.8
- ===================
+ version 1.0.9 (not yet released)
+ ================================
 
  * add an __array__ method to Variable to make numpy ufuncs faster (issue 216).
 
