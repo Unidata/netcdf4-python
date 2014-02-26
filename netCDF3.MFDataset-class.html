@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>netCDF3.MFDataset</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="netCDF3-module.html">Module&nbsp;netCDF3</a> ::
+        Class&nbsp;MFDataset
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class MFDataset</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+object --+    
+         |    
+   <a href="netCDF3.Dataset-class.html">Dataset</a> --+
+             |
+            <strong class="uidshort">MFDataset</strong>
+</pre>
+
+<hr />
+<p>MFDataset(self, files, check=False, exclude=[])</p>
+  <p>Class for reading multi-file netCDF Datasets, making variables 
+  spanning multiple files appear as if they were in one file.</p>
+  <p>Datasets must be in <code>NETCDF4_CLASSIC, NETCDF3_CLASSIC or 
+  NETCDF3_64BIT</code> format (<code>NETCDF4</code> Datasets won't 
+  work).</p>
+  <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf" 
+  target="_top">pycdf</a> by Andre Gosselin.</p>
+  <p>Example usage:</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># create a series of netCDF files with a variable sharing</span>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># the same unlimited dimension.</span>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> nfile <span class="py-keyword">in</span> range(10):
+<span class="py-prompt">&gt;&gt;&gt; </span>    f = Dataset(<span class="py-string">'mftest'</span>+repr(nfile)+<span class="py-string">'.nc'</span>,<span class="py-string">'w'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>    f.createDimension(<span class="py-string">'x'</span>,None)
+<span class="py-prompt">&gt;&gt;&gt; </span>    x = f.createVariable(<span class="py-string">'x'</span>,<span class="py-string">'i'</span>,(<span class="py-string">'x'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span>    x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+<span class="py-prompt">&gt;&gt;&gt; </span>    f.close()
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># now read all those files in at once, in one Dataset.</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>f = MFDataset(<span class="py-string">'mftest*nc'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.variables[<span class="py-string">'x'</span>][:]
+<span class="py-output">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24</span>
+<span class="py-output"> 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49</span>
+<span class="py-output"> 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74</span>
+<span class="py-output"> 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]</span></pre>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.MFDataset-class.html#__getattribute__" class="summary-sig-name">__getattribute__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      x.__getattribute__('name') &lt;==&gt; x.name</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.MFDataset-class.html#__init__" class="summary-sig-name">__init__</a>()</span><br />
+      Open a Dataset spanning multiple files, making it look as if it was a
+      single file.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.MFDataset-class.html#__setattr__" class="summary-sig-name">__setattr__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      override base class attribute creation</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.MFDataset-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      Close the Dataset.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.MFDataset-class.html#ncattrs" class="summary-sig-name">ncattrs</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      return netCDF global attribute names for this <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> in a list.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF3.Dataset-class.html">Dataset</a></code></b>:
+      <code><a href="netCDF3.Dataset-class.html#__delattr__">__delattr__</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#__new__">__new__</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#createDimension">createDimension</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#createVariable">createVariable</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#delncattr">delncattr</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#getncattr">getncattr</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#renameDimension">renameDimension</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#renameVariable">renameVariable</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#set_fill_off">set_fill_off</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#set_fill_on">set_fill_on</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#setncattr">setncattr</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#sync">sync</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__format__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Variables</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF3.Dataset-class.html">Dataset</a></code></b>:
+      <code><a href="netCDF3.Dataset-class.html#dimensions">dimensions</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#file_format">file_format</a></code>,
+      <code><a href="netCDF3.Dataset-class.html#variables">variables</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF3.Dataset-class.html">Dataset</a></code></b>:
+      <code><a href="netCDF3.Dataset-class.html#maskanscale">maskanscale</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
+</tr>
+</table>
+<a name="__getattribute__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getattribute__</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__getattribute__('name') &lt;==&gt; x.name</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__getattribute__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>()</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Open a Dataset spanning multiple files, making it look as if it was a 
+  single file. Variables in the list of files that share the same unlimited
+  dimension are aggregated.</p>
+  <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf" 
+  target="_top">pycdf</a> by Andre Gosselin.</p>
+  <p>Usage:</p>
+  <p>nc = MFDataset(files, check=False, exclude=[])</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>files</code></strong> - either a sequence of netCDF files or a string with a wildcard 
+          (converted to a sorted list of files using glob)  The first file 
+          in the list will become the &quot;master&quot; file, defining all
+          the record variables (variables with an unlimited dimension) 
+          which may span subsequent files. Attribute access returns 
+          attributes only from &quot;master&quot; file. The files are 
+          always opened in read-only mode.</li>
+        <li><strong class="pname"><code>check</code></strong> - True if you want to do consistency checking to ensure the correct
+          variables structure for all of the netcdf files.  Checking makes 
+          the initialization of the MFDataset instance much slower. Default
+          is False.</li>
+        <li><strong class="pname"><code>exclude</code></strong> - A list of variable names to exclude from aggregation. Default is 
+          an empty list.</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__setattr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__setattr__</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>override base class attribute creation</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__setattr__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="close"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Close the Dataset.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="netCDF3.Dataset-class.html#close">Dataset.close</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="ncattrs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ncattrs</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>return netCDF global attribute names for this <a 
+  href="netCDF3.Dataset-class.html" class="link">Dataset</a> in a list.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="netCDF3.Dataset-class.html#ncattrs">Dataset.ncattrs</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul  8 10:58:35 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

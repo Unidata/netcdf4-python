@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>netcdftime.netcdftime</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;netcdftime ::
+        Module&nbsp;netcdftime
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module netcdftime</h1><p class="nomargin-top"><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html">source&nbsp;code</a></span></p>
+<p>Performs conversions of netCDF time coordinate data to/from datetime 
+  objects.</p>
+
+<hr />
+<div class="fields">      <p><strong>Version:</strong>
+        0.9.2
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Classes</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netcdftime.netcdftime.datetime-class.html" class="summary-name">datetime</a><br />
+      Phony datetime object which mimics the python datetime object, but 
+        allows for dates that don't exist in the proleptic gregorian 
+        calendar.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netcdftime.netcdftime.utime-class.html" class="summary-name">utime</a><br />
+      Performs conversions of netCDF time coordinate data to/from 
+        datetime objects.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#DateFromJulianDay" class="summary-sig-name">DateFromJulianDay</a>(<span class="summary-sig-arg">JD</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span><br />
+      returns a 'datetime-like' object given Julian Day.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#DateFromJulianDay">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#JulianDayFromDate" class="summary-sig-name">JulianDayFromDate</a>(<span class="summary-sig-arg">date</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span><br />
+      creates a Julian Day from a 'datetime-like' object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#JulianDayFromDate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#date2index" class="summary-sig-name">date2index</a>(<span class="summary-sig-arg">dates</span>,
+        <span class="summary-sig-arg">nctime</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">select</span>=<span class="summary-sig-default">'exact'</span>)</span><br />
+      Return indices of a netCDF time variable corresponding to the given 
+      dates.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#date2index">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#date2num" class="summary-sig-name">date2num</a>(<span class="summary-sig-arg">dates</span>,
+        <span class="summary-sig-arg">units</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
+      Return numeric time values given datetime objects.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#date2num">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netcdftime.netcdftime-module.html#num2date" class="summary-sig-name">num2date</a>(<span class="summary-sig-arg">times</span>,
+        <span class="summary-sig-arg">units</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
+      Return datetime objects given numeric time values.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#num2date">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netcdftime.netcdftime-module.html#ISO8601_REGEX" class="summary-name">ISO8601_REGEX</a> = <code title="re.compile(r'(?P&lt;year&gt;[0-9]{4})(-(?P&lt;month&gt;[0-9]{1,2})(-(?P&lt;day&gt;[0-9]{\
+1,2})((?P&lt;separator&gt;.)(?P&lt;hour&gt;[0-9]{2}):(?P&lt;minute&gt;[0-9]{2})(:(?P&lt;sec\
+ond&gt;[0-9]{2})(\.(?P&lt;fraction&gt;[0-9]+))?)?(?P&lt;timezone&gt;Z|(([-\+])([0-9]{\
+2}):([0-9]{2})))?)?)?)?')">re.compile(r'<code class="re-group">(?P&lt;</code><code class="re-ref">year</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{4}</code><code class="re-group">)</code><code class="re-group">(</code>-<code class="re-group">(?P&lt;</code><code class="re-ref">month</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netcdftime.netcdftime-module.html#TIMEZONE_REGEX" class="summary-name">TIMEZONE_REGEX</a> = <code title="re.compile(r'(?P&lt;prefix&gt;[\+-])(?P&lt;hours&gt;[0-9]{2}).(?P&lt;minutes&gt;[0-9]{2}\
+)')">re.compile(r'<code class="re-group">(?P&lt;</code><code class="re-ref">prefix</code><code class="re-group">&gt;</code><code class="re-group">[</code>\+-<code class="re-group">]</code><code class="re-group">)</code><code class="re-group">(?P&lt;</code><code class="re-ref">hours</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'netcdftime'"><code class="variable-quote">'</code><code class="variable-string">netcdftime</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="DateFromJulianDay"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">DateFromJulianDay</span>(<span class="sig-arg">JD</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#DateFromJulianDay">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>returns a 'datetime-like' object given Julian Day. Julian Day is a 
+  fractional day with a resolution of 1 second.</p>
+  <p>if calendar='standard' or 'gregorian' (default), Julian day follows 
+  Julian Calendar on and before 1582-10-5, Gregorian calendar after  
+  1582-10-15.</p>
+  <p>if calendar='proleptic_gregorian', Julian Day follows gregorian 
+  calendar.</p>
+  <p>if calendar='julian', Julian Day follows julian calendar.</p>
+  <p>The datetime object is a 'real' datetime object if the date falls in 
+  the Gregorian calendar (i.e. calendar='proleptic_gregorian', or calendar 
+  = 'standard'/'gregorian' and the date is after 1582-10-15). Otherwise, 
+  it's a 'phony' datetime object which is actually an instance of 
+  netcdftime.datetime.</p>
+  <p>Algorithm:</p>
+  <p>Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
+  Willmann-Bell, Virginia. p. 63</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="JulianDayFromDate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">JulianDayFromDate</span>(<span class="sig-arg">date</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">standard</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#JulianDayFromDate">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>creates a Julian Day from a 'datetime-like' object.  Returns the 
+  fractional Julian Day (resolution 1 second).</p>
+  <p>if calendar='standard' or 'gregorian' (default), Julian day follows 
+  Julian Calendar on and before 1582-10-5, Gregorian calendar after 
+  1582-10-15.</p>
+  <p>if calendar='proleptic_gregorian', Julian Day follows gregorian 
+  calendar.</p>
+  <p>if calendar='julian', Julian Day follows julian calendar.</p>
+  <p>Algorithm:</p>
+  <p>Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). 
+  Willmann-Bell, Virginia. p. 63</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="date2index"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">date2index</span>(<span class="sig-arg">dates</span>,
+        <span class="sig-arg">nctime</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">select</span>=<span class="sig-default">'exact'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#date2index">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return indices of a netCDF time variable corresponding to the given 
+  dates.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dates</code></strong> - A datetime object or a sequence of datetime objects. The datetime
+          objects should not include a time-zone offset.</li>
+        <li><strong class="pname"><code>nctime</code></strong> - A netCDF time variable object. The nctime object must have a 
+          <code>units</code> attribute. The entries are assumed to be 
+          stored in increasing order.</li>
+        <li><strong class="pname"><code>calendar</code></strong> - Describes the calendar used in the time calculation. Valid 
+          calendars <code>'standard', 'gregorian', 'proleptic_gregorian' 
+          'noleap', '365_day', '360_day', 'julian', 'all_leap', 
+          '366_day'</code>. Default is <code>'standard'</code>, which is a 
+          mixed Julian/Gregorian calendar If <code>calendar</code> is None,
+          its value is given by <code>nctime.calendar</code> or 
+          <code>standard</code> if no such attribute exists.</li>
+        <li><strong class="pname"><code>select</code></strong> - <code>'exact', 'before', 'after', 'nearest'</code> The index 
+          selection method. <code>exact</code> will return the indices 
+          perfectly matching the dates given. <code>before</code> and 
+          <code>after</code> will return the indices corresponding to the 
+          dates just before or just after the given dates if an exact match
+          cannot be found. <code>nearest</code> will return the indices 
+          that correpond to the closest dates.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="date2num"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">date2num</span>(<span class="sig-arg">dates</span>,
+        <span class="sig-arg">units</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#date2num">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return numeric time values given datetime objects. The units of the 
+  numeric time values are described by the <code class="link">units</code> 
+  argument and the <code class="link">calendar</code> keyword. The datetime
+  objects must be in UTC with no time-zone offset.  If there is a time-zone
+  offset in <code>units</code>, it will be applied to the returned numeric 
+  values.</p>
+  <p>Like the matplotlib <code>date2num</code> function, except that it 
+  allows for different units and calendars.  Behaves the same if 
+  <code>units = 'days since 0001-01-01 00:00:00'</code> and <code>calendar 
+  = 'proleptic_gregorian'</code>.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dates</code></strong> - A datetime object or a sequence of datetime objects. The datetime
+          objects should not include a time-zone offset.</li>
+        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since <b>reference 
+          time</b></code>' describing the time units. <b><code>time 
+          units</code></b> can be days, hours, minutes or seconds.  
+          <b><code>reference time</code></b> is the time origin. A valid 
+          choice would be units=<code>'hours since 1800-01-01 00:00:00 
+          -6:00'</code>.</li>
+        <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
+          values currently defined in the <a 
+          href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
+          target="_top">CF metadata convention</a> are supported. Valid 
+          calendars <code>'standard', 'gregorian', 'proleptic_gregorian' 
+          'noleap', '365_day', '360_day', 'julian', 'all_leap', 
+          '366_day'</code>. Default is <code>'standard'</code>, which is a 
+          mixed Julian/Gregorian calendar.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>a numeric time value, or an array of numeric time values.
+          <p>The maximum resolution of the numeric time values is 1 
+          second.</p></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="num2date"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">num2date</span>(<span class="sig-arg">times</span>,
+        <span class="sig-arg">units</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netcdftime.netcdftime-pysrc.html#num2date">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return datetime objects given numeric time values. The units of the 
+  numeric time values are described by the <code>units</code> argument and 
+  the <code>calendar</code> keyword. The returned datetime objects 
+  represent UTC with no time-zone offset, even if the specified 
+  <code>units</code> contain a time-zone offset.</p>
+  <p>Like the matplotlib <code>num2date</code> function, except that it 
+  allows for different units and calendars.  Behaves the same if 
+  <code>units = 'days since 001-01-01 00:00:00'</code> and <code>calendar =
+  'proleptic_gregorian'</code>.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>times</code></strong> - numeric time values. Maximum resolution is 1 second.</li>
+        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since <b>reference 
+          time</b></code>' describing the time units. <b><code>time 
+          units</code></b> can be days, hours, minutes or seconds.  
+          <b><code>reference time</code></b> is the time origin. A valid 
+          choice would be units=<code>'hours since 1800-01-01 00:00:00 
+          -6:00'</code>.</li>
+        <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
+          values currently defined in the <a 
+          href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
+          target="_top">CF metadata convention</a> are supported. Valid 
+          calendars <code>'standard', 'gregorian', 'proleptic_gregorian' 
+          'noleap', '365_day', '360_day', 'julian', 'all_leap', 
+          '366_day'</code>. Default is <code>'standard'</code>, which is a 
+          mixed Julian/Gregorian calendar.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>a datetime instance, or an array of datetime instances.
+          <p>The datetime instances returned are 'real' python datetime 
+          objects if the date falls in the Gregorian calendar (i.e. 
+          <code>calendar='proleptic_gregorian'</code>, or <code>calendar = 
+          'standard'</code> or <code>'gregorian'</code> and the date is 
+          after 1582-10-15). Otherwise, they are 'phony' datetime objects 
+          which support some but not all the methods of 'real' python 
+          datetime objects.  This is because the python datetime module 
+          cannot the uses the <code>'proleptic_gregorian'</code> calendar, 
+          even before the switch occured from the Julian calendar in 1582. 
+          The datetime instances do not contain a time-zone offset, even if
+          the specified <code>units</code> contains one.</p></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables Details</span></td>
+</tr>
+</table>
+<a name="ISO8601_REGEX"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">ISO8601_REGEX</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-group">(?P&lt;</code><code class="re-ref">year</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{4}</code><code class="re-group">)</code><code class="re-group">(</code>-<code class="re-group">(?P&lt;</code><code class="re-ref">month</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{1,2}</code><code class="re-group">)</code><code class="re-group">(</code>-<code class="re-group">(?P&lt;</code><code class="re-ref">day</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-op">1,2}</code><code class="re-group">)</code><code class="re-group">(</code><code class="re-group">(?P&lt;</code><code class="re-ref">separator</code><code class="re-group">&gt;</code>.<code class="re-group">)</code><code class="re-group">(?P&lt;</code><code class="re-ref">hour</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{2}</code><code class="re-group">)</code>:<code class="re-group">(?P&lt;</code><code class="re-ref">minute</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{2}</code><code class="re-group">)</code><code class="re-group">(</code>:<code class="re-group">(?P&lt;</code><code class="re-ref">sec</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-ref">ond</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{2}</code><code class="re-group">)</code><code class="re-group">(</code>\.<code class="re-group">(?P&lt;</code><code class="re-ref">fraction</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">+</code><code class="re-group">)</code><code class="re-group">)</code><code class="re-op">?</code><code class="re-group">)</code><code class="re-op">?</code><code class="re-group">(?P&lt;</code><code class="re-ref">timezone</code><code class="re-group">&gt;</code>Z<code class="re-op">|</code><code class="re-group">(</code><code class="re-group">(</code><code class="re-group">[</code>-\+<code class="re-group">]</code><code class="re-group">)</code><code class="re-group">(</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{</code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-op">2}</code><code class="re-group">)</code>:<code class="re-group">(</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{2}</code><code class="re-group">)</code><code class="re-group">)</code><code class="re-group">)</code><code class="re-op">?</code><code class="re-group">)</code><code class="re-op">?</code><code class="re-group">)</code><code class="re-op">?</code><code class="re-group">)</code><code class="re-op">?</code>')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="TIMEZONE_REGEX"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">TIMEZONE_REGEX</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+re.compile(r'<code class="re-group">(?P&lt;</code><code class="re-ref">prefix</code><code class="re-group">&gt;</code><code class="re-group">[</code>\+-<code class="re-group">]</code><code class="re-group">)</code><code class="re-group">(?P&lt;</code><code class="re-ref">hours</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{2}</code><code class="re-group">)</code>.<code class="re-group">(?P&lt;</code><code class="re-ref">minutes</code><code class="re-group">&gt;</code><code class="re-group">[</code>0<code class="re-op">-</code>9<code class="re-group">]</code><code class="re-op">{2}</code><code class="re-group"></code><span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+<code class="re-group">)</code>')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul  8 10:58:35 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

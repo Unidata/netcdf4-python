@@ -1,0 +1,965 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>netCDF3</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Module&nbsp;netCDF3
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module netCDF3</h1><p class="nomargin-top"></p>
+<h1 class="heading">Introduction</h1>
+    <p>Python interface to the netCDF version 3 library. The API modelled 
+    after <a 
+    href="http://dirac.cnrs-orleans.fr/plone/software/scientificpython/" 
+    target="_top">Scientific.IO.NetCDF</a>, and should be familiar to users
+    of that module. Some new features not found in 
+    Scientific.IO.NetCDF:</p>
+    <ul>
+      <li>
+        ability to read multi-file netCDF Datasets, making variables 
+        spanning multiple files appear as if they were in one file (see <a 
+        href="netCDF3.MFDataset-class.html" class="link">MFDataset</a> for 
+        more details).
+      </li>
+      <li>
+        support for masked arrays, automatic packing and unpacking of 
+        packed integer data (see <a 
+        href="netCDF3.Variable-class.html#set_auto_maskandscale" 
+        class="link">Variable.set_auto_maskandscale</a> for details).
+      </li>
+      <li>
+        supports more complicated slicing (including numpy 'fancy 
+        indexing').
+      </li>
+      <li>
+        includes convenience functions for converting to and from datetime 
+        objects to numeric time values (see <a 
+        href="netCDF3-module.html#num2date" class="link">num2date</a> and 
+        <a href="netCDF3-module.html#date2num" class="link">date2num</a>), 
+        using all the calendars in the CF standard.
+      </li>
+      <li>
+        convenience functions for converting arrays of characters to arrays
+        of strings, and vice-versa (<a 
+        href="netCDF3-module.html#stringtochar" 
+        class="link">stringtochar</a> and <a 
+        href="netCDF3-module.html#chartostring" 
+        class="link">chartostring</a>).
+      </li>
+      <li>
+        can use numpy dtype objects to specify netCDF variable datatype.
+      </li>
+    </ul>
+  <h1 class="heading">Download</h1>
+    <ul>
+      <li>
+        <a href="http://code.google.com/p/netcdf4-python/" 
+        target="_top">Project page</a>.
+      </li>
+      <li>
+        <a href="http://code.google.com/p/netcdf4-python/source" 
+        target="_top">Subversion repository</a>.
+      </li>
+      <li>
+        <a href="http://code.google.com/p/netcdf4-python/downloads/list" 
+        target="_top">Source tar.gz</a>.
+      </li>
+    </ul>
+  <h1 class="heading">Requires</h1>
+    <ul>
+      <li>
+        numpy array module <a href="http://numpy.scipy.org" 
+        target="_top">http://numpy.scipy.org</a>, version 1.2.1 or later.
+      </li>
+      <li>
+        The netCDF-3 C library (version 3.6 or later), available at <a 
+        href="ftp://ftp.unidata.ucar.edu/pub/netcdf" 
+        target="_top">ftp://ftp.unidata.ucar.edu/pub/netcdf</a>.
+      </li>
+    </ul>
+  <h1 class="heading">Install</h1>
+    <ul>
+      <li>
+        install the requisite python modules and C libraries (see above). 
+        Optionally, set the <code>NETCDF3_DIR</code> environment variable 
+        to point to where the netCDF version 3 library and headers are 
+        installed. If <code>NETCDF3_DIR</code> is not set, some standard 
+        locations will be searched.
+      </li>
+      <li>
+        run 'python setup-nc3.py install'
+      </li>
+      <li>
+        run some of the tests in the 'test3' directory.
+      </li>
+    </ul>
+  <h1 class="heading">Tutorial</h1>
+    <h2 class="heading">1) Creating/Opening/Closing a netCDF file</h2>
+      <p>To create a netCDF file from python, you simply call the <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> 
+      constructor. This is also the method used to open an existing netCDF 
+      file.  If the file is open for write access (<code>w, r+</code> or 
+      <code>a</code>), you may write any type of data including new 
+      dimensions, variables and attributes.  netCDF files come in several 
+      flavors (<code>NETCDF3_CLASSIC, NETCDF3_64BIT, 
+      NETCDF4_CLASSIC</code>, and <code>NETCDF4</code>). The first two 
+      flavors are supported by version 3 of the netCDF library, and are 
+      supported in this module. To read or write <code>NETCDF4</code> and 
+      <code>NETCDF4_CLASSIC</code> files use the companion <a 
+      href="netCDF4-module.html" class="link">netCDF4</a> python module. 
+      The default format <code>NETCDF3_64BIT</code>. To see how a given 
+      file is formatted, you can examine the <code>file_format</code> <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> attribute.
+      Closing the netCDF file is accomplished via the <a 
+      href="netCDF3.Dataset-class.html#close" class="link">close</a> method
+      of the <a href="netCDF3.Dataset-class.html" class="link">Dataset</a> 
+      instance.</p>
+      <p>Here's an example:</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> netCDF3
+<span class="py-prompt">&gt;&gt;&gt; </span>ncfile = netCDF3.Dataset(<span class="py-string">'test.nc'</span>, <span class="py-string">'w'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> ncfile.file_format
+<span class="py-output">NETCDF3_64BIT</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>ncfile.close()</pre>
+    <h2 class="heading">2) Dimensions in a netCDF file</h2>
+      <p>netCDF defines the sizes of all variables in terms of dimensions, 
+      so before any variables can be created the dimensions they use must 
+      be created first. A special case, not often used in practice, is that
+      of a scalar variable, which has no dimensions. A dimension is created
+      using the <a href="netCDF3.Dataset-class.html#createDimension" 
+      class="link">createDimension</a> method of a <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> instance. 
+      A Python string is used to set the name of the dimension, and an 
+      integer value is used to set the size. To create an unlimited 
+      dimension (a dimension that can be appended to), the size value is 
+      set to <code>None</code> or 0. netCDF 3 files can only have one 
+      unlimited dimension, and it must be the first (leftmost) dimension of
+      the variable.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>ncfile.createDimension(<span class="py-string">'press'</span>, 10)
+<span class="py-prompt">&gt;&gt;&gt; </span>ncfile.createDimension(<span class="py-string">'time'</span>, None)
+<span class="py-prompt">&gt;&gt;&gt; </span>ncfile.createDimension(<span class="py-string">'lat'</span>, 73)
+<span class="py-prompt">&gt;&gt;&gt; </span>ncfile.createDimension(<span class="py-string">'lon'</span>, 144)</pre>
+      <p>All of the <a href="netCDF3.Dimension-class.html" 
+      class="link">Dimension</a> instances are stored in a python 
+      dictionary.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> ncfile.dimensions
+<span class="py-output">{'lat': &lt;netCDF3.Dimension object at 0x24a5f7b0&gt;, </span>
+<span class="py-output"> 'time': &lt;netCDF3.Dimension object at 0x24a5f788&gt;, </span>
+<span class="py-output"> 'lon': &lt;netCDF3.Dimension object at 0x24a5f7d8&gt;, </span>
+<span class="py-output"> 'press': &lt;netCDF3.Dimension object at 0x24a5f760&gt;}</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p>Calling the python <code>len</code> function with a <a 
+      href="netCDF3.Dimension-class.html" class="link">Dimension</a> 
+      instance returns the current size of that dimension. The <a 
+      href="netCDF3.Dimension-class.html#isunlimited" 
+      class="link">isunlimited</a> method of a <a 
+      href="netCDF3.Dimension-class.html" class="link">Dimension</a> 
+      instance can be used to determine if the dimensions is unlimited, or 
+      appendable.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> dimname, dimobj <span class="py-keyword">in</span> ncfile.dimensions.iteritems():
+<span class="py-prompt">&gt;&gt;&gt; </span>   <span class="py-keyword">print</span> dimname, len(dimobj), dimobj.isunlimited()
+<span class="py-output">lat 73 False</span>
+<span class="py-output">time 0 True</span>
+<span class="py-output">lon 144 False</span>
+<span class="py-output">press 10 False</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p><a href="netCDF3.Dimension-class.html" class="link">Dimension</a> 
+      names can be changed using the <a 
+      href="netCDF3.Dataset-class.html#renameDimension" 
+      class="link">renameDimension</a> method of a <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> 
+      instance.</p>
+    <h2 class="heading">3) Variables in a netCDF file</h2>
+      <p>netCDF variables behave much like python multidimensional array 
+      objects supplied by the <a href="http://numpy.scipy.org" 
+      target="_top">numpy module</a>. However, unlike numpy arrays, netCDF3
+      variables can be appended to along one 'unlimited' dimension. To 
+      create a netCDF variable, use the <a 
+      href="netCDF3.Dataset-class.html#createVariable" 
+      class="link">createVariable</a> method of a <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> instance. 
+      The <a href="netCDF3.Dataset-class.html#createVariable" 
+      class="link">createVariable</a> method has two mandatory arguments, 
+      the variable name (a Python string), and the variable datatype. The 
+      variable's dimensions are given by a tuple containing the dimension 
+      names (defined previously with <a 
+      href="netCDF3.Dataset-class.html#createDimension" 
+      class="link">createDimension</a>). To create a scalar variable, 
+      simply leave out the dimensions keyword. The variable primitive 
+      datatypes correspond to the dtype attribute of a numpy array. You can
+      specify the datatype as a numpy dtype object, or anything that can be
+      converted to a numpy dtype object.  Valid datatype specifiers 
+      include: <code>'f4'</code> (32-bit floating point), <code>'f8'</code>
+      (64-bit floating point), <code>'i4'</code> (32-bit signed integer), 
+      <code>'i2'</code> (16-bit signed integer), <code>'i1'</code> (8-bit 
+      signed integer), or <code>'S1'</code> (single-character string) The 
+      old Numeric single-character typecodes 
+      (<code>'f'</code>,<code>'d'</code>,<code>'h'</code>, 
+      <code>'s'</code>,<code>'b'</code>,<code>'B'</code>,<code>'c'</code>,<code>'i'</code>,<code>'l'</code>),
+      corresponding to 
+      (<code>'f4'</code>,<code>'f8'</code>,<code>'i2'</code>,<code>'i2'</code>,<code>'i1'</code>,<code>'i1'</code>,<code>'S1'</code>,<code>'i4'</code>,<code>'i4'</code>),
+      will also work.</p>
+      <p>The dimensions themselves are usually also defined as variables, 
+      called coordinate variables. The <a 
+      href="netCDF3.Dataset-class.html#createVariable" 
+      class="link">createVariable</a> method returns an instance of the <a 
+      href="netCDF3.Variable-class.html" class="link">Variable</a> class 
+      whose methods can be used later to access and set variable data and 
+      attributes.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>times = ncfile.createVariable(<span class="py-string">'time'</span>,<span class="py-string">'f8'</span>,(<span class="py-string">'time'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span>pressure = ncfile.createVariable(<span class="py-string">'press'</span>,<span class="py-string">'i4'</span>,(<span class="py-string">'press'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span>latitudes = ncfile.createVariable(<span class="py-string">'latitude'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'lat'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span>longitudes = ncfile.createVariable(<span class="py-string">'longitude'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'lon'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># two dimensions unlimited.</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>temp = ncfile.createVariable(<span class="py-string">'temp'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'time'</span>,<span class="py-string">'press'</span>,<span class="py-string">'lat'</span>,<span class="py-string">'lon'</span>,))</pre>
+      <p>All of the variables in the <a href="netCDF3.Dataset-class.html" 
+      class="link">Dataset</a> are stored in a Python dictionary, in the 
+      same way as the dimensions:</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> ncfile.variables
+<span class="py-output">{'temp': &lt;netCDF3.Variable object at 0x24a61068&gt;,</span>
+<span class="py-output"> 'pressure': &lt;netCDF3.Variable object at 0.35f0f80&gt;, </span>
+<span class="py-output"> 'longitude': &lt;netCDF3.Variable object at 0x24a61030&gt;,</span>
+<span class="py-output"> 'pressure': &lt;netCDF3.Variable object at 0x24a610a0&gt;, </span>
+<span class="py-output"> 'time': &lt;netCDF3.Variable object at 02x45f0.4.58&gt;, </span>
+<span class="py-output"> 'latitude': &lt;netCDF3.Variable object at 0.3f0fb8&gt;}</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p><a href="netCDF3.Variable-class.html" class="link">Variable</a> 
+      names can be changed using the <a 
+      href="netCDF3.Dataset-class.html#renameVariable" 
+      class="link">renameVariable</a> method of a <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> 
+      instance.</p>
+    <h2 class="heading">4) Attributes in a netCDF file</h2>
+      <p>There are two types of attributes in a netCDF file, global and 
+      variable. Global attributes provide information about a dataset as a 
+      whole. <a href="netCDF3.Variable-class.html" 
+      class="link">Variable</a> attributes provide information about one of
+      the variables in a dataset. Global attributes are set by assigning 
+      values to <a href="netCDF3.Dataset-class.html" 
+      class="link">Dataset</a> instance variables. <a 
+      href="netCDF3.Variable-class.html" class="link">Variable</a> 
+      attributes are set by assigning values to <a 
+      href="netCDF3.Variable-class.html" class="link">Variable</a> instance
+      variables. Attributes can be strings, numbers or sequences. Returning
+      to our example,</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> time
+<span class="py-prompt">&gt;&gt;&gt; </span>ncfile.description = <span class="py-string">'bogus example script'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>ncfile.history = <span class="py-string">'Created '</span> + time.ctime(time.time())
+<span class="py-prompt">&gt;&gt;&gt; </span>ncfile.source = <span class="py-string">'netCDF3 python module tutorial'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>latitudes.units = <span class="py-string">'degrees north'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>longitudes.units = <span class="py-string">'degrees east'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>pressure.units = <span class="py-string">'hPa'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>temp.units = <span class="py-string">'K'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>times.units = <span class="py-string">'hours since 0001-01-01 00:00:00.0'</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>times.calendar = <span class="py-string">'gregorian'</span></pre>
+      <p>The <a href="netCDF3.Dataset-class.html#ncattrs" 
+      class="link">ncattrs</a> method of a <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> or <a 
+      href="netCDF3.Variable-class.html" class="link">Variable</a> instance
+      can be used to retrieve the names of all the netCDF attributes. This 
+      method is provided as a convenience, since using the built-in 
+      <code>dir</code> Python function will return a bunch of private 
+      methods and attributes that cannot (or should not) be modified by the
+      user.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> name <span class="py-keyword">in</span> ncfile.ncattrs():
+<span class="py-prompt">&gt;&gt;&gt; </span>    <span class="py-keyword">print</span> <span class="py-string">'Global attr'</span>, name, <span class="py-string">'='</span>, getattr(ncfile,name)
+<span class="py-output">Global attr description = bogus example script</span>
+<span class="py-output">Global attr history = Created Mon Nov  7 10.30:56 2005</span>
+<span class="py-output">Global attr source = netCDF3 python module tutorial</span></pre>
+      <p>The <code>__dict__</code> attribute of a <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> or <a 
+      href="netCDF3.Variable-class.html" class="link">Variable</a> instance
+      provides all the netCDF attribute name/value pairs in a python 
+      dictionary:</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> ncfile.__dict__
+<span class="py-output">{'source': 'netCDF3 python module tutorial',</span>
+<span class="py-output">'description': 'bogus example script',</span>
+<span class="py-output">'history': 'Created Mon Nov  7 10.30:56 2005'}</span></pre>
+      <p>Attributes can be deleted from a netCDF <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> or <a 
+      href="netCDF3.Variable-class.html" class="link">Variable</a> using 
+      the python <code>del</code> statement (i.e. <code>del var.foo</code> 
+      removes the attribute <code>foo</code> the the variable 
+      <code>var</code>).</p>
+    <h2 class="heading">6) Writing data to and retrieving data from a netCDF variable</h2>
+      <p>Now that you have a netCDF <a href="netCDF3.Variable-class.html" 
+      class="link">Variable</a> instance, how do you put data into it? You 
+      can just treat it like an array and assign data to a slice.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy 
+<span class="py-prompt">&gt;&gt;&gt; </span>latitudes[:] = numpy.arange(-90,91,2.5)
+<span class="py-prompt">&gt;&gt;&gt; </span>pressure[:] = numpy.arange(1000,90,-100)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'latitudes =\n'</span>,latitudes[:]
+<span class="py-output">latitudes =</span>
+<span class="py-output">[-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5</span>
+<span class="py-output"> -60.  -57.5 -55.  -52.5 -50.  -47.5 -45.  -42.5 -40.  -37.5 -35.  -32.5</span>
+<span class="py-output"> -30.  -27.5 -25.  -22.5 -20.  -17.5 -15.  -12.5 -10.   -7.5  -5.   -2.5</span>
+<span class="py-output">   0.    2.5   5.    7.5  10.   12.5  15.   17.5  20.   22.5  25.   27.5</span>
+<span class="py-output">  30.   32.5  35.   37.5  40.   42.5  45.   47.5  50.   52.5  55.   57.5</span>
+<span class="py-output">  60.   62.5  65.   67.5  70.   72.5  75.   77.5  80.   82.5  85.   87.5</span>
+<span class="py-output">  90. ]</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'pressure levels =\n'</span>,pressure[:]
+<span class="py-output">[1000  900  800  700  600  500  400  300  200  100]</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p>Unlike numpy array objects, netCDF <a 
+      href="netCDF3.Variable-class.html" class="link">Variable</a> objects 
+      with unlimited dimensions will grow along those dimensions if you 
+      assign data outside the currently defined range of indices.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># append along two unlimited dimensions by assigning to slice.</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>nlats = len(ncfile.dimensions[<span class="py-string">'lat'</span>])
+<span class="py-prompt">&gt;&gt;&gt; </span>nlons = len(ncfile.dimensions[<span class="py-string">'lon'</span>])
+<span class="py-prompt">&gt;&gt;&gt; </span>nlevs = len(ncfile.dimensions[<span class="py-string">'press'</span>])
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'temp shape before adding data = '</span>,temp.shape
+<span class="py-output">temp shape before adding data =  (0, 10, 73, 144)</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> numpy.random.mtrand <span class="py-keyword">import</span> uniform
+<span class="py-prompt">&gt;&gt;&gt; </span>temp[0:5,:,:,:] = uniform(size=(5,nlevs,nlats,nlons))
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'temp shape after adding data = '</span>,temp.shape
+<span class="py-output">temp shape after adding data =  (5, 16, 73, 144)</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p>Time coordinate values pose a special challenge to netCDF users.  
+      Most metadata standards (such as CF and COARDS) specify that time 
+      should be measure relative to a fixed date using a certain calendar, 
+      with units specified like <code>hours since YY:MM:DD hh-mm-ss</code>.
+      These units can be awkward to deal with, without a utility to convert
+      the values to and from calendar dates.  The functione called <a 
+      href="netCDF3-module.html#num2date" class="link">num2date</a> and <a 
+      href="netCDF3-module.html#date2num" class="link">date2num</a> are 
+      provided with this package to do just that.  Here's an example of how
+      they can be used:</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># fill in times.</span>
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> datetime <span class="py-keyword">import</span> datetime, timedelta
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> netCDF3 <span class="py-keyword">import</span> num2date, date2num
+<span class="py-prompt">&gt;&gt;&gt; </span>dates = [datetime(2001,3,1)+n*timedelta(hours=12) <span class="py-keyword">for</span> n <span class="py-keyword">in</span> range(temp.shape[0])]
+<span class="py-prompt">&gt;&gt;&gt; </span>times[:] = date2num(dates,units=times.units,calendar=times.calendar)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'time values (in units %s): '</span> % times.units+<span class="py-string">'\n'</span>,times[:]
+<span class="py-output">time values (in units hours since January 1, 0001): </span>
+<span class="py-output">[ 17533056.  17533068.  17533080.  17533092.  17533104.]</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
+<span class="py-prompt">&gt;&gt;&gt; </span>dates = num2date(times[:],units=times.units,calendar=times.calendar)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'dates corresponding to time values:\n'</span>,dates
+<span class="py-output">dates corresponding to time values:</span>
+<span class="py-output">[2001-03-01 00:00:00 2001-03-01 12:00:00 2001-03-02 00:00:00</span>
+<span class="py-output"> 2001-03-02 12:00:00 2001-03-03 00:00:00]</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p><a href="netCDF3-module.html#num2date" class="link">num2date</a> 
+      converts numeric values of time in the specified <code>units</code> 
+      and <code>calendar</code> to datetime objects, and <a 
+      href="netCDF3-module.html#date2num" class="link">date2num</a> does 
+      the reverse. All the calendars currently defined in the <a 
+      href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
+      target="_top">CF metadata convention</a> are supported. A function 
+      called <a href="netCDF3-module.html#date2index" 
+      class="link">date2index</a> is also provided which returns the 
+      indices of a netCDF time variable corresponding to a sequence of 
+      datetime instances.</p>
+      <p>All of the code in this tutorial is available in 
+      <code>examples/tutorial-nc3.py</code>, Unit tests are in the 
+      <code>test3</code> directory.</p>
+    <h2 class="heading">7) Reading data from a multi-file netCDF dataset.</h2>
+      <p>If you want to read data from a variable that spans multiple 
+      netCDF files, you can use the <a href="netCDF3.MFDataset-class.html" 
+      class="link">MFDataset</a> class to read the data as if it were 
+      contained in a single file. Instead of using a single filename to 
+      create a <a href="netCDF3.Dataset-class.html" 
+      class="link">Dataset</a> instance, create a <a 
+      href="netCDF3.MFDataset-class.html" class="link">MFDataset</a> 
+      instance with either a list of filenames, or a string with a wildcard
+      (which is then converted to a sorted list of files using the python 
+      glob module). Variables in the list of files that share the same 
+      unlimited dimension are aggregated together, and can be sliced across
+      multiple files.  To illustrate this, let's first create a bunch of 
+      netCDF files with the same variable (with the same unlimited 
+      dimension).</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> nfile <span class="py-keyword">in</span> range(10):
+<span class="py-prompt">&gt;&gt;&gt; </span>    f = Dataset(<span class="py-string">'mftest'</span>+repr(nfile)+<span class="py-string">'.nc'</span>,<span class="py-string">'w'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>    f.createDimension(<span class="py-string">'x'</span>,None)
+<span class="py-prompt">&gt;&gt;&gt; </span>    x = f.createVariable(<span class="py-string">'x'</span>,<span class="py-string">'i'</span>,(<span class="py-string">'x'</span>,))
+<span class="py-prompt">&gt;&gt;&gt; </span>    x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+<span class="py-prompt">&gt;&gt;&gt; </span>    f.close()</pre>
+      <p>Now read all the files back in at once with <a 
+      href="netCDF3.MFDataset-class.html" class="link">MFDataset</a></p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>f = MFDataset(<span class="py-string">'mftest*nc'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.variables[<span class="py-string">'x'</span>][:]
+<span class="py-output">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24</span>
+<span class="py-output"> 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49</span>
+<span class="py-output"> 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74</span>
+<span class="py-output"> 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p>Note that MFDataset can only be used to read, not write, 
+      multi-file datasets.</p>
+
+<hr />
+<div class="fields">      <p><strong>Contact:</strong>
+        Jeffrey Whitaker &lt;jeffrey.s.whitaker@noaa.gov&gt;
+      </p>
+      <p><strong>Copyright:</strong>
+        2008 by Jeffrey Whitaker.
+      </p>
+      <p><strong>License:</strong>
+        Permission to use, copy, modify, and distribute this software and 
+        its documentation for any purpose and without fee is hereby 
+        granted, provided that the above copyright notice appear in all 
+        copies and that both the copyright notice and this permission 
+        notice appear in supporting documentation. THE AUTHOR DISCLAIMS ALL
+        WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING ALL IMPLIED 
+        WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE 
+        AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES
+        OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR 
+        PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER 
+        TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR 
+        PERFORMANCE OF THIS SOFTWARE.
+      </p>
+      <p><strong>Version:</strong>
+        0.9.2
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Classes</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netCDF3.Dataset-class.html" class="summary-name">Dataset</a><br />
+      Dataset(self, filename, mode=&quot;r&quot;, clobber=True, 
+        format='NETCDF3_64BIT')
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netCDF3.Dimension-class.html" class="summary-name">Dimension</a><br />
+      Dimension(self, dset, name, size=None)
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netCDF3.MFDataset-class.html" class="summary-name">MFDataset</a><br />
+      MFDataset(self, files, check=False, exclude=[])
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netCDF3.Variable-class.html" class="summary-name">Variable</a><br />
+      Variable(self, dset, name, datatype, dimensions=(), 
+        fill_value=None)
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3-module.html#chartostring" class="summary-sig-name">chartostring</a>(<span class="summary-sig-arg">b</span>)</span><br />
+      convert a character array to a string array with one less dimension.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3-module.html#date2index" class="summary-sig-name">date2index</a>(<span class="summary-sig-arg">dates</span>,
+        <span class="summary-sig-arg">nctime</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">select</span>=<span class="summary-sig-default">'exact'</span>)</span><br />
+      Return indices of a netCDF time variable corresponding to the given 
+      dates.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3-module.html#date2num" class="summary-sig-name">date2num</a>(<span class="summary-sig-arg">dates</span>,
+        <span class="summary-sig-arg">units</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
+      Return numeric time values given datetime objects.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getlibversion"></a><span class="summary-sig-name">getlibversion</span>()</span><br />
+      returns a string describing the version of the netcdf library used to
+      build the module, and when it was built.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3-module.html#num2date" class="summary-sig-name">num2date</a>(<span class="summary-sig-arg">times</span>,
+        <span class="summary-sig-arg">units</span>,
+        <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
+      Return datetime objects given numeric time values.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3-module.html#stringtoarr" class="summary-sig-name">stringtoarr</a>(<span class="summary-sig-arg">a</span>,
+        <span class="summary-sig-arg">NUMCHARS</span>)</span><br />
+      convert a string to a character array of length NUMCHARS</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3-module.html#stringtochar" class="summary-sig-name">stringtochar</a>(<span class="summary-sig-arg">a</span>)</span><br />
+      convert a string array to a character array with one extra dimension</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="None">None</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="chartostring"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">chartostring</span>(<span class="sig-arg">b</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>convert a character array to a string array with one less 
+  dimension.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>b</code></strong> - Input character array (numpy datatype 'S1'). Will be converted to
+          a array of strings, where each string has a fixed length of 
+          b.shape[-1] characters.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>A numpy string array with datatype 'SN' and shape b.shape[:-1], 
+          where N=b.shape[-1].</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="date2index"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">date2index</span>(<span class="sig-arg">dates</span>,
+        <span class="sig-arg">nctime</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">select</span>=<span class="sig-default">'exact'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return indices of a netCDF time variable corresponding to the given 
+  dates.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dates</code></strong> - A datetime object or a sequence of datetime objects. The datetime
+          objects should not include a time-zone offset.</li>
+        <li><strong class="pname"><code>nctime</code></strong> - A netCDF time variable object. The nctime object must have a 
+          <code>units</code> attribute.</li>
+        <li><strong class="pname"><code>calendar</code></strong> - Describes the calendar used in the time calculation. Valid 
+          calendars <code>'standard', 'gregorian', 'proleptic_gregorian' 
+          'noleap', '365_day', '360_day', 'julian', 'all_leap', 
+          '366_day'</code>. Default is <code>'standard'</code>, which is a 
+          mixed Julian/Gregorian calendar If <code>calendar</code> is None,
+          its value is given by <code>nctime.calendar</code> or 
+          <code>standard</code> if no such attribute exists.</li>
+        <li><strong class="pname"><code>select</code></strong> - <code>'exact', 'before', 'after', 'nearest'</code> The index 
+          selection method. <code>exact</code> will return the indices 
+          perfectly matching the dates given. <code>before</code> and 
+          <code>after</code> will return the indices corresponding to the 
+          dates just before or just after the given dates if an exact match
+          cannot be found. <code>nearest</code> will return the indices 
+          that correspond to the closest dates.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>an index (indices) of the netCDF time variable corresponding to 
+          the given datetime object(s).</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="date2num"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">date2num</span>(<span class="sig-arg">dates</span>,
+        <span class="sig-arg">units</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return numeric time values given datetime objects. The units of the 
+  numeric time values are described by the <code class="link">units</code> 
+  argument and the <code class="link">calendar</code> keyword. The datetime
+  objects must be in UTC with no time-zone offset.  If there is a time-zone
+  offset in <code>units</code>, it will be applied to the returned numeric 
+  values.</p>
+  <p>Like the matplotlib <code>date2num</code> function, except that it 
+  allows for different units and calendars.  Behaves the same if 
+  <code>units = 'days since 0001-01-01 00:00:00'</code> and <code>calendar 
+  = 'proleptic_gregorian'</code>.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dates</code></strong> - A datetime object or a sequence of datetime objects. The datetime
+          objects should not include a time-zone offset.</li>
+        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since <b>reference 
+          time</b></code>' describing the time units. <b><code>time 
+          units</code></b> can be days, hours, minutes or seconds.  
+          <b><code>reference time</code></b> is the time origin. A valid 
+          choice would be units=<code>'hours since 1800-01-01 00:00:00 
+          -6:00'</code>.</li>
+        <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
+          values currently defined in the <a 
+          href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
+          target="_top">CF metadata convention</a> are supported. Valid 
+          calendars <code>'standard', 'gregorian', 'proleptic_gregorian' 
+          'noleap', '365_day', '360_day', 'julian', 'all_leap', 
+          '366_day'</code>. Default is <code>'standard'</code>, which is a 
+          mixed Julian/Gregorian calendar.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>a numeric time value, or an array of numeric time values.
+          <p>The maximum resolution of the numeric time values is 1 
+          second.</p></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="num2date"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">num2date</span>(<span class="sig-arg">times</span>,
+        <span class="sig-arg">units</span>,
+        <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return datetime objects given numeric time values. The units of the 
+  numeric time values are described by the <code>units</code> argument and 
+  the <code>calendar</code> keyword. The returned datetime objects 
+  represent UTC with no time-zone offset, even if the specified 
+  <code>units</code> contain a time-zone offset.</p>
+  <p>Like the matplotlib <code>num2date</code> function, except that it 
+  allows for different units and calendars.  Behaves the same if 
+  <code>units = 'days since 001-01-01 00:00:00'</code> and <code>calendar =
+  'proleptic_gregorian'</code>.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>times</code></strong> - numeric time values. Maximum resolution is 1 second.</li>
+        <li><strong class="pname"><code>units</code></strong> - a string of the form <code>'<b>time units</b> since <b>reference 
+          time</b></code>' describing the time units. <b><code>time 
+          units</code></b> can be days, hours, minutes or seconds.  
+          <b><code>reference time</code></b> is the time origin. A valid 
+          choice would be units=<code>'hours since 1800-01-01 00:00:00 
+          -6:00'</code>.</li>
+        <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
+          values currently defined in the <a 
+          href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
+          target="_top">CF metadata convention</a> are supported. Valid 
+          calendars <code>'standard', 'gregorian', 'proleptic_gregorian' 
+          'noleap', '365_day', '360_day', 'julian', 'all_leap', 
+          '366_day'</code>. Default is <code>'standard'</code>, which is a 
+          mixed Julian/Gregorian calendar.</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>a datetime instance, or an array of datetime instances.
+          <p>The datetime instances returned are 'real' python datetime 
+          objects if the date falls in the Gregorian calendar (i.e. 
+          <code>calendar='proleptic_gregorian'</code>, or <code>calendar = 
+          'standard'</code> or <code>'gregorian'</code> and the date is 
+          after 1582-10-15). Otherwise, they are 'phony' datetime objects 
+          which support some but not all the methods of 'real' python 
+          datetime objects.  This is because the python datetime module 
+          cannot the uses the <code>'proleptic_gregorian'</code> calendar, 
+          even before the switch occured from the Julian calendar in 1582. 
+          The datetime instances do not contain a time-zone offset, even if
+          the specified <code>units</code> contains one.</p></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stringtoarr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stringtoarr</span>(<span class="sig-arg">a</span>,
+        <span class="sig-arg">NUMCHARS</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>convert a string to a character array of length NUMCHARS</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>a</code></strong> - Input python string.</li>
+        <li><strong class="pname"><code>NUMCHARS</code></strong> - number of characters used to represent string (if len(a) &lt; 
+          NUMCHARS, it will be padded on the right with blanks).</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>A rank 1 numpy character array of length NUMCHARS with datatype 
+          'S1'</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stringtochar"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stringtochar</span>(<span class="sig-arg">a</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>convert a string array to a character array with one extra 
+  dimension</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>a</code></strong> - Input numpy string array with numpy datatype 'SN', where N is the
+          number of characters in each string.  Will be converted to an 
+          array of characters (datatype 'S1') of shape a.shape + (N,).</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>A numpy character array with datatype 'S1' and shape a.shape + 
+          (N,), where N is the length of each string in a.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul  8 10:58:35 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
