@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>netCDF3.Dataset</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="netCDF3-module.html">Module&nbsp;netCDF3</a> ::
+        Class&nbsp;Dataset
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Dataset</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+object --+
+         |
+        <strong class="uidshort">Dataset</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="netCDF3.MFDataset-class.html">MFDataset</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<p>Dataset(self, filename, mode=&quot;r&quot;, clobber=True, 
+  format='NETCDF3_64BIT')</p>
+  <p>A netCDF <a href="netCDF3.Dataset-class.html" class="link">Dataset</a>
+  is a collection of dimensions, variables and attributes. Together they 
+  describe the meaning of data and relations among data fields stored in a 
+  netCDF file.</p>
+  <p><b>Parameters:</b></p>
+  <p><b><code>filename</code></b> - Name of netCDF file to hold 
+  dataset.</p>
+  <p><b>Keywords</b>:</p>
+  <p><b><code>mode</code></b> - access mode. <code>r</code> means 
+  read-only; no data can be modified. <code>w</code> means write; a new 
+  file is created, an existing file with the same name is deleted. 
+  <code>a</code> and <code>r+</code> mean append (in analogy with serial 
+  files); an existing file is opened for reading and writing. Appending 
+  <code>s</code> to modes <code>w</code>, <code>r+</code> or <code>a</code>
+  will enable unbuffered shared access.  Unbuffered acesss may be useful 
+  even if you don't need shared access, since it may be faster for programs
+  that don't access data sequentially.</p>
+  <p><b><code>clobber</code></b> - if <code>True</code> (default), opening 
+  a file with <code>mode='w'</code> will clobber an existing file with the 
+  same name.  if <code>False</code>, an exception will be raised if a file 
+  with the same name already exists.</p>
+  <p><b><code>format</code></b> - underlying file format (either 
+  <code>'NETCDF3_64BIT'</code> or <code>'NETCDF3_CLASSIC'</code>.  Only 
+  relevant if <code>mode = 'w'</code> (if <code>mode = 'r','a'</code> or 
+  <code>'r+'</code> the file format is automatically detected). Default 
+  <code>'NETCDF3_64BIT'</code> (the 64-bit offset version of the netCDF 3 
+  file format, which fully supports 2+ GB files)). 
+  <code>'NETCDF3_CLASSIC'</code> is the classic netCDF 3 file format that 
+  does not handle 2+ Gb files very well.</p>
+  <p><b>Returns:</b></p>
+  <p>a <a href="netCDF3.Dataset-class.html" class="link">Dataset</a> 
+  instance.  All further operations on the netCDF Dataset are accomplised 
+  via <a href="netCDF3.Dataset-class.html" class="link">Dataset</a> 
+  instance methods.</p>
+  <p>A list of attribute names corresponding to global netCDF attributes 
+  defined for the <a href="netCDF3.Dataset-class.html" 
+  class="link">Dataset</a> can be obtained with the <a 
+  href="netCDF3.Dataset-class.html#ncattrs" class="link">ncattrs()</a> 
+  method. These attributes can be created by assigning to an attribute of 
+  the <a href="netCDF3.Dataset-class.html" class="link">Dataset</a> 
+  instance. A dictionary containing all the netCDF attribute name/value 
+  pairs is provided by the <code>__dict__</code> attribute of a <a 
+  href="netCDF3.Dataset-class.html" class="link">Dataset</a> instance.</p>
+  <p>The instance variables <code>dimensions, variables, file_format</code>
+  and <code>path</code> are read-only (and should not be modified by the 
+  user).</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#__delattr__" class="summary-sig-name">__delattr__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      x.__delattr__('name') &lt;==&gt; del x.name</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getattr__"></a><span class="summary-sig-name">__getattr__</span>(<span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#__getattribute__" class="summary-sig-name">__getattribute__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      x.__getattribute__('name') &lt;==&gt; x.name</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">filename</span>,
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">&quot;r&quot;</span>,
+        <span class="summary-sig-arg">clobber</span>=<span class="summary-sig-default">True</span>,
+        <span class="summary-sig-arg">format</span>=<span class="summary-sig-default">'NETCDF3_64BIT'</span>)</span><br />
+      x.__init__(...) initializes x; see x.__class__.__doc__ for signature</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">a new object with type S, a subtype of T</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#__new__" class="summary-sig-name">__new__</a>(<span class="summary-sig-arg">T</span>,
+        <span class="summary-sig-arg">S</span>,
+        <span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#__setattr__" class="summary-sig-name">__setattr__</a>(<span class="summary-sig-arg">...</span>)</span><br />
+      x.__setattr__('name', value) &lt;==&gt; x.name = value</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="close"></a><span class="summary-sig-name">close</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Close the Dataset.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#createDimension" class="summary-sig-name">createDimension</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dimname</span>,
+        <span class="summary-sig-arg">size</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Creates a new dimension with the given <code>dimname</code> and 
+      <code>size</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#createVariable" class="summary-sig-name">createVariable</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">varname</span>,
+        <span class="summary-sig-arg">datatype</span>,
+        <span class="summary-sig-arg">dimensions</span>=<span class="summary-sig-default">()</span>,
+        <span class="summary-sig-arg">fill_value</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Creates a new variable with the given <code>varname</code>, 
+      <code>datatype</code>, and <code>dimensions</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#delncattr" class="summary-sig-name">delncattr</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      delete a netCDF dataset or group attribute.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#getncattr" class="summary-sig-name">getncattr</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      retrievel a netCDF dataset attribute.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ncattrs"></a><span class="summary-sig-name">ncattrs</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      return netCDF global attribute names for this <a 
+      href="netCDF3.Dataset-class.html" class="link">Dataset</a> in a list.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="renameDimension"></a><span class="summary-sig-name">renameDimension</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">oldname</span>,
+        <span class="summary-sig-arg">newname</span>)</span><br />
+      rename a <a href="netCDF3.Dimension-class.html" 
+      class="link">Dimension</a> named <code>oldname</code> to 
+      <code>newname</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="renameVariable"></a><span class="summary-sig-name">renameVariable</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">oldname</span>,
+        <span class="summary-sig-arg">newname</span>)</span><br />
+      rename a <a href="netCDF3.Variable-class.html" 
+      class="link">Variable</a> named <code>oldname</code> to 
+      <code>newname</code></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#set_fill_off" class="summary-sig-name">set_fill_off</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Sets the fill mode for a <a href="netCDF3.Dataset-class.html" 
+      class="link">Dataset</a> open for writing to <code>off</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#set_fill_on" class="summary-sig-name">set_fill_on</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Sets the fill mode for a <a href="netCDF3.Dataset-class.html" 
+      class="link">Dataset</a> open for writing to <code>on</code>.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF3.Dataset-class.html#setncattr" class="summary-sig-name">setncattr</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      set a netCDF dataset attribute using name,value pair.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="sync"></a><span class="summary-sig-name">sync</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Writes all buffered data in the <a href="netCDF3.Dataset-class.html" 
+      class="link">Dataset</a> to the disk file.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__format__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="dimensions"></a><span class="summary-name">dimensions</span><br />
+      The <code>dimensions</code> dictionary maps the names of dimensions 
+      defined for the <a href="netCDF3.Dataset-class.html" 
+      class="link">Dataset</a> to instances of the <a 
+      href="netCDF3.Dimension-class.html" class="link">Dimension</a> class.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="file_format"></a><span class="summary-name">file_format</span><br />
+      The <code>file_format</code> attribute describes the netCDF file 
+      format version, either <code>NETCDF3_CLASSIC</code> or or 
+      <code>NETCDF3_64BIT</code>.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="variables"></a><span class="summary-name">variables</span><br />
+      The <code>variables</code> dictionary maps the names of variables 
+      defined for this <a href="netCDF3.Dataset-class.html" 
+      class="link">Dataset</a> to instances of the <a 
+      href="netCDF3.Variable-class.html" class="link">Variable</a> class.
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="maskanscale"></a><span class="summary-name">maskanscale</span>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
+</tr>
+</table>
+<a name="__delattr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__delattr__</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__delattr__('name') &lt;==&gt; del x.name</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__delattr__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__getattribute__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__getattribute__</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__getattribute__('name') &lt;==&gt; x.name</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__getattribute__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">filename</span>,
+        <span class="sig-arg">mode</span>=<span class="sig-default">&quot;r&quot;</span>,
+        <span class="sig-arg">clobber</span>=<span class="sig-default">True</span>,
+        <span class="sig-arg">format</span>=<span class="sig-default">'NETCDF3_64BIT'</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see x.__class__.__doc__ for 
+  signature</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__new__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__new__</span>(<span class="sig-arg">T</span>,
+        <span class="sig-arg">S</span>,
+        <span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns: a new object with type S, a subtype of T</dt>
+    <dt>Overrides:
+        object.__new__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__setattr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__setattr__</span>(<span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__setattr__('name', value) &lt;==&gt; x.name = value</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__setattr__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="createDimension"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">createDimension</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dimname</span>,
+        <span class="sig-arg">size</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Creates a new dimension with the given <code>dimname</code> and 
+  <code>size</code>.</p>
+  <p><code>size</code> must be a positive integer or <code>None</code>, 
+  which stands for &quot;unlimited&quot; (default is <code>None</code>). 
+  Specifying a size of 0 also results in an unlimited dimension. The return
+  value is the <a href="netCDF3.Dimension-class.html" 
+  class="link">Dimension</a> class instance describing the new dimension.  
+  To determine the current maximum size of the dimension, use the 
+  <code>len</code> function on the <a href="netCDF3.Dimension-class.html" 
+  class="link">Dimension</a> instance. To determine if a dimension is 
+  'unlimited', use the <code>isunlimited()</code> method of the <a 
+  href="netCDF3.Dimension-class.html" class="link">Dimension</a> 
+  instance.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="createVariable"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">createVariable</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">varname</span>,
+        <span class="sig-arg">datatype</span>,
+        <span class="sig-arg">dimensions</span>=<span class="sig-default">()</span>,
+        <span class="sig-arg">fill_value</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Creates a new variable with the given <code>varname</code>, 
+  <code>datatype</code>, and <code>dimensions</code>. If dimensions are not
+  given, the variable is assumed to be a scalar.</p>
+  <p>The <code>datatype</code> can be a numpy datatype object, or a string 
+  that describes a numpy dtype object (like the <code>dtype.str</code> 
+  attribue of a numpy array). Supported specifiers include: <code>'S1' or 
+  'c' (NC_CHAR), 'i1' or 'b' or 'B' (NC_BYTE), 'i2' or 'h' or 's' 
+  (NC_SHORT), 'u2' (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'f4' or 'f' 
+  (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)</code>.</p>
+  <p>Data from netCDF variables is presented to python as numpy arrays with
+  the corresponding data type.</p>
+  <p><code>dimensions</code> must be a tuple containing dimension names 
+  (strings) that have been defined previously using 
+  <code>createDimension</code>. The default value is an empty tuple, which 
+  means the variable is a scalar.</p>
+  <p>The optional keyword <code>fill_value</code> can be used to override 
+  the default netCDF <code>_FillValue</code> (the value that the variable 
+  gets filled with before any data is written to it).</p>
+  <p>The return value is the <a href="netCDF3.Variable-class.html" 
+  class="link">Variable</a> class instance describing the new variable.</p>
+  <p>A list of names corresponding to netCDF variable attributes can be 
+  obtained with the <a href="netCDF3.Variable-class.html" 
+  class="link">Variable</a> method <code>ncattrs()</code>. A dictionary 
+  containing all the netCDF attribute name/value pairs is provided by the 
+  <code>__dict__</code> attribute of a <a 
+  href="netCDF3.Variable-class.html" class="link">Variable</a> 
+  instance.</p>
+  <p><a href="netCDF3.Variable-class.html" class="link">Variable</a> 
+  instances behave much like array objects. Data can be assigned to or 
+  retrieved from a variable with indexing and slicing operations on the <a 
+  href="netCDF3.Variable-class.html" class="link">Variable</a> instance. A 
+  <a href="netCDF3.Variable-class.html" class="link">Variable</a> instance 
+  has four standard attributes: <code>dimensions, dtype, shape, 
+  ndim</code>. Application programs should never modify these attributes. 
+  The <code>dimensions</code> attribute is a tuple containing the names of 
+  the dimensions associated with this variable. The <code>dtype</code> 
+  attribute is a string describing the variable's data type (<code>i4, f8, 
+  S1,</code> etc). The <code>shape</code> attribute is a tuple describing 
+  the current sizes of all the variable's dimensions.  The 
+  <code>ndim</code> attribute is the number of variable dimensions.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="delncattr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">delncattr</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>delete a netCDF dataset or group attribute.  Only use if you need to 
+  delete a netCDF attribute with the same name as one of the reserved 
+  python attributes.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="getncattr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getncattr</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>retrievel a netCDF dataset attribute.  Only use if you need to set a 
+  netCDF attribute with the same name as one of the reserved python 
+  attributes.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_fill_off"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_fill_off</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Sets the fill mode for a <a href="netCDF3.Dataset-class.html" 
+  class="link">Dataset</a> open for writing to <code>off</code>.</p>
+  <p>This will prevent the data from being pre-filled with fill values, 
+  which may result in some performance improvements. However, you must then
+  make sure the data is actually written before being read.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_fill_on"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_fill_on</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Sets the fill mode for a <a href="netCDF3.Dataset-class.html" 
+  class="link">Dataset</a> open for writing to <code>on</code>.</p>
+  <p>This causes data to be pre-filled with fill values. The fill values 
+  can be controlled by the variable's <code>_Fill_Value</code> attribute, 
+  but is usually sufficient to the use the netCDF default 
+  <code>_Fill_Value</code> (defined separately for each variable type). The
+  default behavior of the netCDF library correspongs to 
+  <code>set_fill_on</code>.  Data which are equal to the 
+  <code>_Fill_Value</code> indicate that the variable was created, but 
+  never written to.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setncattr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setncattr</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>set a netCDF dataset attribute using name,value pair.  Only use if you
+  need to set a netCDF attribute with the same name as one of the reserved 
+  python attributes.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul  8 10:58:35 2010
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
