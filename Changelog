@@ -1,6 +1,10 @@
  version 1.0.9 (not yet released)
  ================================
 
+ * use weak references to group instances when creating Dimension and Variable
+   objects to avoid cyclic references messing up garbage collection (issue
+   218).
+
  * accessing values from a 0-dimensional Variable now returns a 0-dimensional
    numpy array, not a 1-dimensional array (issue 220). To write code
    compatible with both the old and new (fixed) behavior, wrap values accessed

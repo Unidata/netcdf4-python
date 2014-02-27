@@ -2039,7 +2039,7 @@ determine if the dimension is unlimited"""
         cdef size_t lendim
         self._grpid = grp._grpid
         # make a weak ref to group to avoid circular ref (issue 218)
-        self._grp = weakref.ref(grp)
+        self._grp = weakref.proxy(grp)
         self._data_model = grp.data_model
         self._name = name
         if 'id' in kwargs:
@@ -2265,7 +2265,7 @@ instance. If C{None}, the data is not truncated. """
             dimensions = dimensions,
         self._grpid = grp._grpid
         # make a weak ref to group to avoid circular ref (issue 218)
-        self._grp = weakref.ref(grp)
+        self._grp = weakref.proxy(grp)
         # convert to a real numpy datatype object if necessary.
         if (not isinstance(datatype, CompoundType) and \
             not isinstance(datatype, VLType)) and \
