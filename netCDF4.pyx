@@ -804,6 +804,7 @@ __version__ = "1.0.9"
 import posixpath
 import netcdftime
 import numpy
+import weakref
 import sys
 import warnings
 from glob import glob
@@ -1353,6 +1354,7 @@ netcdf C library version >= 4.3.1, otherwise will always return C{UNDEFINED}.
 the L{Dataset} in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
+    cdef object __weakref__
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
@@ -2036,7 +2038,7 @@ determine if the dimension is unlimited"""
         cdef char *dimname
         cdef size_t lendim
         self._grpid = grp._grpid
-        self._grp = grp
+        self._grp = weakref.ref(grp)
         self._data_model = grp.data_model
         self._name = name
         if 'id' in kwargs:
@@ -2261,7 +2263,7 @@ instance. If C{None}, the data is not truncated. """
         if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
             dimensions = dimensions,
         self._grpid = grp._grpid
-        self._grp = grp
+        self._grp = weakref.ref(grp)
         # convert to a real numpy datatype object if necessary.
         if (not isinstance(datatype, CompoundType) and \
             not isinstance(datatype, VLType)) and \
