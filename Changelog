@@ -2,8 +2,8 @@
  ================================
 
  * use weak references to group instances when creating Dimension and Variable
-   objects to avoid cyclic references messing up garbage collection (issue
-   218).
+   objects. This prevents cyclic references messing up garbage collection (issue
+   218, pull request 219).
 
  * accessing values from a 0-dimensional Variable now returns a 0-dimensional
    numpy array, not a 1-dimensional array (issue 220). To write code
