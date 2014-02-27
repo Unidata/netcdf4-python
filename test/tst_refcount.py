@@ -14,7 +14,6 @@ class RefCountTestCase(unittest.TestCase):
     def tearDown(self):
         # Remove the temporary files
         os.remove(self.file)
-        pass
 
     def runTest(self):
         """testing garbage collection (issue 218)"""
