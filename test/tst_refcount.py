@@ -18,7 +18,11 @@ class RefCountTestCase(unittest.TestCase):
 
     def runTest(self):
         """testing garbage collection (issue 218)"""
+        # this should trigger garbage collection (__dealloc__ method)
         del self.nc
+        # if __dealloc__ not called to close file, then this
+        # will fail with "Permission denied" error (since you can't
+        # open a file 'w' that is already open for writing).
         nc = netCDF4.Dataset(self.file, mode='w', format='NETCDF4')
 
 if __name__ == '__main__':
