@@ -2038,6 +2038,7 @@ determine if the dimension is unlimited"""
         cdef char *dimname
         cdef size_t lendim
         self._grpid = grp._grpid
+        # make a weak ref to group to avoid circular ref (issue 218)
         self._grp = weakref.ref(grp)
         self._data_model = grp.data_model
         self._name = name
@@ -2263,6 +2264,7 @@ instance. If C{None}, the data is not truncated. """
         if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
             dimensions = dimensions,
         self._grpid = grp._grpid
+        # make a weak ref to group to avoid circular ref (issue 218)
         self._grp = weakref.ref(grp)
         # convert to a real numpy datatype object if necessary.
         if (not isinstance(datatype, CompoundType) and \
