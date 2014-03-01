@@ -3,10 +3,15 @@
 [options]
 # if true, the nc-config script (installed with netcdf 4.1.2 and higher)
 # will be used to determine the locations of required libraries.
-#use_ncconfig=True
-# path to nc-config script.
+# Usually, nothing else is needed.
+use_ncconfig=True
+# path to nc-config script (use if not found in unix PATH).
 #ncconfig=/usr/local/bin/nc-config 
 [directories]
+#
+# If nc-config doesn't do the trick, you can specify the locations
+# of the libraries and headers manually below
+#
 # uncomment and set to netCDF install location.
 # Include files should be located in netCDF4_dir/include and
 # the library should be located in netCDF4_dir/lib.
