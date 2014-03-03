@@ -2851,6 +2851,10 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         # Remove extra singleton dimensions. 
         if hasattr(data,'shape'):
             data = data[tuple(squeeze)]
+        if self.ndim == 0:
+            # this hack compensates for hack at the start of
+            # netCDF4_utils._StartCountStride that makes all 0d arrays 1d.
+            data = data[0]
 
         # if auto_maskandscale mode set to True, (through
         # a call to set_auto_maskandscale), perform
