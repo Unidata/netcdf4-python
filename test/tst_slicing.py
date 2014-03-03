@@ -92,6 +92,7 @@ class VariablesTestCase(unittest.TestCase):
         v = f.createVariable('data', float)
         v[...] = 10
         assert_array_equal(v[...], 10)
+        assert_equal(v.shape, v[...].shape)
         f.close()
  
 

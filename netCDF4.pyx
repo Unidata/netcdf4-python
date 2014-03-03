@@ -2852,8 +2852,8 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         if hasattr(data,'shape'):
             data = data[tuple(squeeze)]
         if self.ndim == 0:
-            # this hack compensates for hack at the start of
-            # netCDF4_utils._StartCountStride that makes all 0d arrays 1d.
+            # Make sure a numpy scalar is returned instead of a 1-d array of
+            # length 1.
             data = data[0]
 
         # if auto_maskandscale mode set to True, (through

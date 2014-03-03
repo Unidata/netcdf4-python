@@ -1,6 +1,11 @@
  version 1.0.9 (not yet released)
  ================================
 
+ * accessing values from a 0-dimensional Variable now returns a 0-dimensional
+   numpy array, not a 1-dimensional array (issue 220). To write code
+   compatible with both the old and new (fixed) behavior, wrap values accessed
+   from a 0-dimensional Variable with numpy.asscalar.
+
  * add an __array__ method to Variable to make numpy ufuncs faster (issue 216).
 
  * change download_url in setup.py to point to pypi instead of googlecode.
