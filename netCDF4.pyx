@@ -2851,6 +2851,10 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         # Remove extra singleton dimensions. 
         if hasattr(data,'shape'):
             data = data[tuple(squeeze)]
+        if self.ndim == 0:
+            # Make sure a numpy scalar is returned instead of a 1-d array of
+            # length 1.
+            data = data[0]
 
         # if auto_maskandscale mode set to True, (through
         # a call to set_auto_maskandscale), perform

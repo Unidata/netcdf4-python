@@ -87,6 +87,14 @@ class VariablesTestCase(unittest.TestCase):
         assert_equal(v1[5], d[5])
         f.close()
 
+    def test_0d(self):
+        f = Dataset(self.file, 'w')
+        v = f.createVariable('data', float)
+        v[...] = 10
+        assert_array_equal(v[...], 10)
+        assert_equal(v.shape, v[...].shape)
+        f.close()
+ 
 
 if __name__ == '__main__':
     unittest.main()
