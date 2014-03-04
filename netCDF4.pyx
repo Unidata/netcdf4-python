@@ -1436,9 +1436,9 @@ group, so the path is simply C{'/'}."""
         self.file_format = self.data_model
         self.disk_format = _get_full_format(grpid)
         # diskless read access only works with NETCDF_CLASSIC (for now)
-        ncopen = mode.startswith('a') or mode.startswith('r')
-        if diskless and self.data_model != 'NETCDF3_CLASSIC' and ncopen:
-            raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
+        #ncopen = mode.startswith('a') or mode.startswith('r')
+        #if diskless and self.data_model != 'NETCDF3_CLASSIC' and ncopen:
+        #    raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
         self._grpid = grpid
         self._isopen = 1
         self.path = '/'
