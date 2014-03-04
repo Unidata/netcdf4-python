@@ -2498,19 +2498,20 @@ instance. If C{None}, the data is not truncated. """
         ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        if no_fill != 1:
-            try:
-                fillval = self._FillValue
-                msg = 'filling on'
-            except AttributeError:
-                fillval = default_fillvals[self.dtype.str[1:]]
-                if self.dtype.str[1:] in ['u1','i1']:
-                    msg = 'filling on, default _FillValue of %s ignored\n' % fillval
-                else:
-                    msg = 'filling on, default _FillValue of %s used\n' % fillval
-            ncdump_var.append(msg)
-        else:
-            ncdump_var.append('filling off\n')
+        if self._isprimitive:
+            if no_fill != 1:
+                try:
+                    fillval = self._FillValue
+                    msg = 'filling on'
+                except AttributeError:
+                    fillval = default_fillvals[self.dtype.str[1:]]
+                    if self.dtype.str[1:] in ['u1','i1']:
+                        msg = 'filling on, default _FillValue of %s ignored\n' % fillval
+                    else:
+                        msg = 'filling on, default _FillValue of %s used\n' % fillval
+                ncdump_var.append(msg)
+            else:
+                ncdump_var.append('filling off\n')
 
 
         return ''.join(ncdump_var)
