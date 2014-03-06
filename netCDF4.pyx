@@ -2274,6 +2274,10 @@ instance. If C{None}, the data is not truncated. """
             datatype != str and \
             type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
+        # convert numpy string dtype with length > 1 into str
+        if (isinstance(datatype, numpy.dtype) and datatype.kind in ['S', 'U']
+                and int(datatype.str[2:]) > 1):
+            datatype = str
 	# check if endian keyword consistent with datatype specification.
         dtype_endian = getattr(datatype,'byteorder',None)
         if dtype_endian == '=': dtype_endian='native'
@@ -3062,8 +3066,11 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 if not hasattr(data,'ndim'):
                     self._assign_vlen(elem, data)
                     return
+                elif data.dtype.kind in ['S', 'U']:
+                    data = data.astype(object)
                 elif data.dtype.kind != 'O':
-                    msg='only numpy object arrays can be assigned to VLEN str var slices'
+                    msg = ('only numpy string, unicode or object arrays can '
+                           'be assigned to VLEN str var slices')
                     raise TypeError(msg)
             else:
                 # for non-string vlen arrays, if data is not multi-dim, or
