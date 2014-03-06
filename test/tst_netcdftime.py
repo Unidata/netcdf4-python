@@ -236,7 +236,7 @@ class TestDate2index(unittest.TestCase):
         f.createDimension('time2', 1)
         time2 = f.createVariable('time2', 'f8', ('time2',))
         time2.units = 'days since 1901-01-01' 
-        self.first_timestamp = datetime(2000, 01, 01)
+        self.first_timestamp = datetime(2000, 1, 1)
         time2[0] = date2num(self.first_timestamp, time2.units)
         f.close()
         
