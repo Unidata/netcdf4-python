@@ -1,0 +1,13 @@
+language: python
+python:
+  - "2.7"
+  - "3.3"
+notifications:
+  email: false
+before_install:
+  - sudo apt-get install libhdf5-serial-dev netcdf-bin libnetcdf-dev
+  - pip install numpy cython python-dateutil
+install:
+  - pip install .
+script:
+  - nosetests test/tst*py
