@@ -804,6 +804,7 @@ __version__ = "1.0.9"
 import posixpath
 import netcdftime
 import numpy
+import weakref
 import sys
 import warnings
 from glob import glob
@@ -1353,6 +1354,7 @@ netcdf C library version >= 4.3.1, otherwise will always return C{UNDEFINED}.
 the L{Dataset} in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A L{Dataset}, instance is the root
 group, so the path is simply C{'/'}."""
+    cdef object __weakref__
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
@@ -1434,9 +1436,9 @@ group, so the path is simply C{'/'}."""
         self.file_format = self.data_model
         self.disk_format = _get_full_format(grpid)
         # diskless read access only works with NETCDF_CLASSIC (for now)
-        ncopen = mode.startswith('a') or mode.startswith('r')
-        if diskless and self.data_model != 'NETCDF3_CLASSIC' and ncopen:
-            raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
+        #ncopen = mode.startswith('a') or mode.startswith('r')
+        #if diskless and self.data_model != 'NETCDF3_CLASSIC' and ncopen:
+        #    raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
         self._grpid = grpid
         self._isopen = 1
         self.path = '/'
@@ -2036,7 +2038,8 @@ determine if the dimension is unlimited"""
         cdef char *dimname
         cdef size_t lendim
         self._grpid = grp._grpid
-        self._grp = grp
+        # make a weakref to group to avoid circular ref (issue 218)
+        self._grp = weakref.proxy(grp)
         self._data_model = grp.data_model
         self._name = name
         if 'id' in kwargs:
@@ -2261,7 +2264,8 @@ instance. If C{None}, the data is not truncated. """
         if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
             dimensions = dimensions,
         self._grpid = grp._grpid
-        self._grp = grp
+        # make a weakref to group to avoid circular ref (issue 218)
+        self._grp = weakref.proxy(grp)
         # convert to a real numpy datatype object if necessary.
         if (not isinstance(datatype, CompoundType) and \
             not isinstance(datatype, VLType)) and \
@@ -2494,19 +2498,20 @@ instance. If C{None}, the data is not truncated. """
         ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        if no_fill != 1:
-            try:
-                fillval = self._FillValue
-                msg = 'filling on'
-            except AttributeError:
-                fillval = default_fillvals[self.dtype.str[1:]]
-                if self.dtype.str[1:] in ['u1','i1']:
-                    msg = 'filling on, default _FillValue of %s ignored\n' % fillval
-                else:
-                    msg = 'filling on, default _FillValue of %s used\n' % fillval
-            ncdump_var.append(msg)
-        else:
-            ncdump_var.append('filling off\n')
+        if self._isprimitive:
+            if no_fill != 1:
+                try:
+                    fillval = self._FillValue
+                    msg = 'filling on'
+                except AttributeError:
+                    fillval = default_fillvals[self.dtype.str[1:]]
+                    if self.dtype.str[1:] in ['u1','i1']:
+                        msg = 'filling on, default _FillValue of %s ignored\n' % fillval
+                    else:
+                        msg = 'filling on, default _FillValue of %s used\n' % fillval
+                ncdump_var.append(msg)
+            else:
+                ncdump_var.append('filling off\n')
 
 
         return ''.join(ncdump_var)

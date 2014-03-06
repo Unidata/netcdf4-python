@@ -16,4 +16,4 @@ Quick Start
 * To run all the tests, execute 'cd test; python run_all.py'.
 
 More detailed documentation is available at docs/index.html, or
-http://netcdf4-python.googlecode.com/svn/trunk/docs/index.html.
+http://unidata.github.io/netcdf4-python.
