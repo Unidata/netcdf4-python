@@ -8,12 +8,14 @@ FILE_NAME = tempfile.mktemp(".nc")
 FILE_NAME2 = tempfile.mktemp(".nc")
 
 def create_file(file,format,data):
+    import warnings
     dataset = netCDF4.Dataset(file,'w',format=format)
     dataset.createDimension('time', None)
     dataset.createDimension('space', 4)
     dims = ('time', 'space')
     little = data.astype('<f4')
     big = data.astype('>f4')
+    warnings.simplefilter('ignore') # ignore UserWarnings generated below
     ll = dataset.createVariable('little-little', '<f4', dims)
     lb = dataset.createVariable('little-big', '<f4', dims)
     bl = dataset.createVariable('big-little', '>f4', dims)
