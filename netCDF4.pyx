@@ -2064,6 +2064,8 @@ determine if the dimension is unlimited"""
            return unicode(self).encode(default_encoding)
 
     def __unicode__(self):
+        if not dir(self._grp):
+            return 'Dimension object no longer exists'
         if self.isunlimited():
             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
         else:
@@ -2469,6 +2471,8 @@ instance. If C{None}, the data is not truncated. """
 
     def __unicode__(self):
         cdef int ierr, no_fill
+        if not dir(self._grp):
+            return 'Variable object no longer exists'
         ncdump_var = ['%r\n' % type(self)]
         dimnames = tuple([_tostr(dimname) for dimname in self.dimensions])
         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\

@@ -1,6 +1,9 @@
  version 1.0.9 (not yet released)
  ================================
 
+ * modify __unicode__ for Variable and Dimension to return more useful error
+  message when Dataset object has been garbage collected.
+
  * use weak references to group instances when creating Dimension and Variable
    objects. This prevents cyclic references messing up garbage collection (issue
    218, pull request 219).
