@@ -10,5 +10,4 @@ before_install:
   - pip install numpy cython python-dateutil
 install:
   - pip install .
-script:
-  - python test/run_all.py
+script: ./run_test.sh
