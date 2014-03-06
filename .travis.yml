@@ -3,7 +3,7 @@ python:
   - "2.7"
   - "3.3"
 notifications:
-  email: true
+  email: false
 before_install:
   - sudo apt-get install libhdf5-serial-dev netcdf-bin libnetcdf-dev
   - pip install numpy cython python-dateutil
