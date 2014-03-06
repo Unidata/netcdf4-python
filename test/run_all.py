@@ -10,13 +10,13 @@ python3 = sys.version_info[0] > 2
 test_files = glob.glob('tst_*.py')
 if python3:
     test_files.remove('tst_unicode.py')
-    print 'not running tst_unicode.py ...'
+    sys.stdout.write('not running tst_unicode.py ...\n')
 else:
     test_files.remove('tst_unicode3.py')
-    print 'not running tst_unicode3.py ...'
+    sys.stdout.write('not running tst_unicode3.py ...\n')
 if __netcdf4libversion__ < '4.2.1':
     test_files.remove('tst_diskless.py')
-    print 'not running tst_diskless.py ...'
+    sys.stdout.write('not running tst_diskless.py ...\n')
 
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
