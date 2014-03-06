@@ -50,7 +50,7 @@ for format in ['NETCDF4','NETCDF3_CLASSIC','NETCDF3_64BIT']:
 # test diskless=True in nc_open
 format='NETCDF3_CLASSIC'
 trials=50
-print 'test caching of file in memory on open for %s' % format
+sys.stdout.write('test caching of file in memory on open for %s\n' % format)
 sys.stdout.write('testing file format %s ...\n' % format)
 write_netcdf('test1.nc',format=format,closeit=True)
 ncfile = netCDF4.Dataset('test1.nc',diskless=False)
