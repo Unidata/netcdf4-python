@@ -11,6 +11,5 @@ before_install:
 install:
   - pip install .
 script: 
-  - pwd
   - cd test
   - python run_all.py
