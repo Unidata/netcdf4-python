@@ -26,6 +26,7 @@ missing_value2 = NP.nan
 missing_value3 = [8,9]
 ranarr[::2] = missing_value
 ranarr2[::2] = missing_value2
+NP.seterr(invalid='ignore') # silence warnings from ma.masked_values
 maskedarr = ma.masked_values(ranarr,missing_value)
 maskedarr2 = ma.masked_values(ranarr2,missing_value2)
 scale_factor = (packeddata.max()-packeddata.min())/(2.*32766.)

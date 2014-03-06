@@ -6,35 +6,25 @@ from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__ver
 
 python3 = sys.version_info[0] > 2
 
-__all__ = ['test']
 # Find all test files.
 test_files = glob.glob('tst_*.py')
-# for some reason, tst_dap.py fails unless it is run first.
-test_files.remove('tst_dap.py')
-test_files.insert(0, 'tst_dap.py')
 if python3:
     test_files.remove('tst_unicode.py')
+    print 'not running tst_unicode.py ...'
 else:
     test_files.remove('tst_unicode3.py')
+    print 'not running tst_unicode3.py ...'
 if __netcdf4libversion__ < '4.2.1':
     test_files.remove('tst_diskless.py')
-py_path = os.environ.get('PYTHONPATH')
-if py_path is None:
-    py_path = '.'
-else:
-    py_path = os.pathsep.join(['.',py_path])
-os.environ['PYTHONPATH'] = py_path
+    print 'not running tst_diskless.py ...'
 
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
-version = getlibversion().split()[0]
 for f in test_files:
     m = __import__(os.path.splitext(f)[0])
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
 
-# Run the test suite. 
-
-
+# Run the test suite.
 def test(verbosity=1):
     runner = unittest.TextTestRunner(verbosity=verbosity)
     runner.run(testsuite)
