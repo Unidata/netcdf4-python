@@ -68,5 +68,16 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(datas, vs_alt[:])
         f.close()
 
+
+class TestInvalidDataType(unittest.TestCase):
+    def runTest(self):
+        f = Dataset(FILE_NAME, 'w', format='NETCDF3_CLASSIC')
+        f.createDimension('x', 1)
+        with self.assertRaisesRegexp(ValueError, 'strings are only supported'):
+           f.createVariable('foo', str, ('x',))
+        f.close()
+        os.remove(FILE_NAME)
+
+
 if __name__ == '__main__':
     unittest.main()

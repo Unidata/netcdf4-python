@@ -2303,8 +2303,14 @@ instance. If C{None}, the data is not truncated. """
                self._isvlen = True
                self._vltype = datatype
             if datatype==str:
-               datatype = VLType(self._grp, str, None)
-               self._vltype = datatype
+                if grp.data_model != 'NETCDF4':
+                    raise ValueError(
+                        'Variable length strings are only supported for the '
+                        'NETCDF4 format. For other formats, consider using '
+                        'netCDF4.stringtochar to convert string arrays into '
+                        'character arrays with an additional dimension.')
+                datatype = VLType(self._grp, str, None)
+                self._vltype = datatype
             xtype = datatype._nc_type
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype.dtype
