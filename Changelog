@@ -1,6 +1,9 @@
  version 1.0.9 (not yet released)
  ================================
 
+ * it is now possible to create create and set variable length string
+   variables with numpy string datatypes (pull request 224)
+
  * add .travis.yml (for travis-ci testing on github), silence warnings from
    test output (issue 225).
 
