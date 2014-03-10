@@ -728,8 +728,9 @@ current shape = (4, 3)
 
 Numpy object arrays containing python strings can also be written as vlen
 variables,  For vlen strings, you don't need to create a vlen data type. 
-Instead, simply use the python C{str} builtin instead of a numpy datatype when
-calling the L{createVariable<Dataset.createVariable>} method.  
+Instead, simply use the python C{str} builtin (or a numpy string datatype
+with fixed length greater than 1) when calling the
+L{createVariable<Dataset.createVariable>} method.  
 
 >>> z = f.createDimension('z',10)
 >>> strvar = rootgrp.createVariable('strvar', str, 'z')
@@ -739,7 +740,7 @@ random lengths between 2 and 12 characters, and the data in the object
 array is assigned to the vlen string variable.
 
 >>> chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
->>> data = NP.empty(10,'O')
+>>> data = numpy.empty(10,'O')
 >>> for n in range(10):
 >>>     stringlen = random.randint(2,12)
 >>>     data[n] = ''.join([random.choice(chars) for i in range(stringlen)])
@@ -761,6 +762,10 @@ vlen data type: <type 'str'>
 unlimited dimensions:
 current size = (10,)
 >>>
+
+It is also possible to set contents of vlen string variables with numpy arrays
+of any string or unicode data type. Note, however, that accessing the contents
+of such variables will always return numpy arrays with dtype C{object}.
 
 All of the code in this tutorial is available in C{examples/tutorial.py},
 Unit tests are in the C{test} directory.
@@ -1664,7 +1669,8 @@ Supported specifiers include: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 C{datatype} can also be a L{CompoundType} instance
 (for a structured, or compound array), a L{VLType} instance
 (for a variable-length array), or the python C{str} builtin 
-(for a variable-length string array).
+(for a variable-length string array). Numpy string and unicode datatypes with
+length greater than one are aliases for C{str}.
 
 Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type. 
@@ -2153,7 +2159,8 @@ C{'i1'}, C{'c'} instead of C{'S1'}, and C{'i'} or C{'l'} instead of
 C{'i4'}). C{datatype} can also be a L{CompoundType} instance
 (for a structured, or compound array), a L{VLType} instance
 (for a variable-length array), or the python C{str} builtin 
-(for a variable-length string array).
+(for a variable-length string array). Numpy string and unicode datatypes with
+length greater than one are aliases for C{str}.
 
 B{Keywords:}
 
@@ -2274,6 +2281,10 @@ instance. If C{None}, the data is not truncated. """
             datatype != str and \
             type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
+        # convert numpy string dtype with length > 1 into str
+        if (isinstance(datatype, numpy.dtype) and datatype.kind in ['S', 'U']
+                and int(datatype.str[2:]) > 1):
+            datatype = str
 	# check if endian keyword consistent with datatype specification.
         dtype_endian = getattr(datatype,'byteorder',None)
         if dtype_endian == '=': dtype_endian='native'
@@ -2299,8 +2310,14 @@ instance. If C{None}, the data is not truncated. """
                self._isvlen = True
                self._vltype = datatype
             if datatype==str:
-               datatype = VLType(self._grp, str, None)
-               self._vltype = datatype
+                if grp.data_model != 'NETCDF4':
+                    raise ValueError(
+                        'Variable length strings are only supported for the '
+                        'NETCDF4 format. For other formats, consider using '
+                        'netCDF4.stringtochar to convert string arrays into '
+                        'character arrays with an additional dimension.')
+                datatype = VLType(self._grp, str, None)
+                self._vltype = datatype
             xtype = datatype._nc_type
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype.dtype
@@ -3062,8 +3079,11 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 if not hasattr(data,'ndim'):
                     self._assign_vlen(elem, data)
                     return
+                elif data.dtype.kind in ['S', 'U']:
+                    data = data.astype(object)
                 elif data.dtype.kind != 'O':
-                    msg='only numpy object arrays can be assigned to VLEN str var slices'
+                    msg = ('only numpy string, unicode or object arrays can '
+                           'be assigned to VLEN str var slices')
                     raise TypeError(msg)
             else:
                 # for non-string vlen arrays, if data is not multi-dim, or
