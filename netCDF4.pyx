@@ -802,6 +802,11 @@ except ImportError: # or else use drop-in substitute
         from ordereddict import OrderedDict
     except ImportError:
         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
+try:
+    from itertools import izip as zip
+except ImportError:
+    # python3: zip is already python2's itertools.izip
+    pass
 
 __version__ = "1.0.9"
 
