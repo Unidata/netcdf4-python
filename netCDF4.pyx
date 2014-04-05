@@ -30,6 +30,7 @@ Download
 Requires 
 ======== 
 
+ - Python 2.5 or later (python 3 works too).
  - numpy array module U{http://numpy.scipy.org}, version 1.3.0 or later (1.5.1
    or higher recommended, required if using python 3).
  - U{Cython <http://cython.org>} is optional - if it is installed setup.py will 
