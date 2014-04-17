@@ -2289,10 +2289,9 @@ instance. If C{None}, the data is not truncated. """
             datatype = numpy.dtype(datatype)
         # convert numpy string dtype with length > 1 
         # or any numpy unicode dtype into str
-        if (isinstance(datatype, numpy.dtype) and datatype.kind == 'S'
-            and int(datatype.str[2:]) > 1):
-            datatype = str
-        if (isinstance(datatype, numpy.dtype) and datatype.kind == 'U'):
+        if (isinstance(datatype, numpy.dtype) and
+            ((datatype.kind == 'S' and int(datatype.str[2:]) > 1) or
+              datatype.kind == 'U')):
             datatype = str
 	# check if endian keyword consistent with datatype specification.
         dtype_endian = getattr(datatype,'byteorder',None)
