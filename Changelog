@@ -1,6 +1,8 @@
  version 1.0.9 (not yet released)
  ================================
 
+ * fix logic errors in setup.py (issue 236).
+
  * it is now possible to create and set variable length string variables with
    numpy string datatypes (pull request 224).
 

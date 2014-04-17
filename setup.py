@@ -100,10 +100,10 @@ def getnetcdfvers(libdirs):
     return None
 
 HDF5_dir = os.environ.get('HDF5_DIR')
-HDF5_includedir = os.environ.get('HDF5_INCDIR')
+HDF5_incdir = os.environ.get('HDF5_INCDIR')
 HDF5_libdir = os.environ.get('HDF5_LIBDIR')
 netCDF4_dir = os.environ.get('NETCDF4_DIR')
-netCDF4_includedir = os.environ.get('NETCDF4_INCDIR')
+netCDF4_incdir = os.environ.get('NETCDF4_INCDIR')
 netCDF4_libdir = os.environ.get('NETCDF4_LIBDIR')
 szip_dir = os.environ.get('SZIP_DIR')
 szip_libdir = os.environ.get('SZIP_LIBDIR')
@@ -191,7 +191,7 @@ if not retcode:
 else:
     dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
 
-    if HDF5_includedir is None and HDF5_dir is None:
+    if HDF5_incdir is None and HDF5_dir is None:
         sys.stdout.write("""
 HDF5_DIR environment variable not set, checking some standard locations ..\n""")
         for direc in dirstosearch:
@@ -201,21 +201,21 @@ HDF5_DIR environment variable not set, checking some standard locations ..\n""")
                 continue
             else:
                 HDF5_dir = direc
-                HDF5_includedir = os.path.join(direc, 'include')
+                HDF5_incdir = os.path.join(direc, 'include')
                 sys.stdout.write('HDF5 found in %s\n' % HDF5_dir)
                 break
         if HDF5_dir is None:
             raise ValueError('did not find HDF5 headers')
     else:
-        if HDF5_includedir is None:
-             HDF5_includedir = os.path.join(HDF5_dir, 'include')
-        hdf5_version = check_hdf5version(HDF5_includedir)
+        if HDF5_incdir is None:
+             HDF5_incdir = os.path.join(HDF5_dir, 'include')
+        hdf5_version = check_hdf5version(HDF5_incdir)
         if hdf5_version is None:
-            raise ValueError('did not find HDF5 headers in %s' % HDF5_includedir)
+            raise ValueError('did not find HDF5 headers in %s' % HDF5_incdir)
         elif hdf5_version[1:6] < '1.8.0':
             raise ValueError('HDF5 version >= 1.8.0 is required')
 
-    if netCDF4_includedir is None and netCDF4_dir is None:
+    if netCDF4_incdir is None and netCDF4_dir is None:
         sys.stdout.write( """
 NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         for direc in dirstosearch:
@@ -225,17 +225,17 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
                 continue
             else:
                 netCDF4_dir = direc
-                netCDF4_includedir = os.path.join(direc, 'include')
+                netCDF4_incdir = os.path.join(direc, 'include')
                 sys.stdout.write('netCDF4 found in %s\n' % netCDF4_dir)
                 break
         if netCDF4_dir is None:
             raise ValueError('did not find netCDF version 4 headers')
     else:
-        if netCDF4_includedir is None:
-            netCDF4_includedir = os.path.join(netCDF4_dir, 'include')
-        isnetcdf4 = check_ifnetcdf4(netCDF4_includedir)
+        if netCDF4_incdir is None:
+            netCDF4_incdir = os.path.join(netCDF4_dir, 'include')
+        isnetcdf4 = check_ifnetcdf4(netCDF4_incdir)
         if not isnetcdf4:
-            raise ValueError('did not find netCDF version 4 headers %s' % netCDF4_includedir)
+            raise ValueError('did not find netCDF version 4 headers %s' % netCDF4_incdir)
 
     if HDF5_libdir is None and HDF5_dir is not None:
         HDF5_libdir = os.path.join(HDF5_dir, 'lib')
@@ -245,7 +245,7 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
 
     libs = ['netcdf','hdf5_hl','hdf5','z']
     lib_dirs = [netCDF4_libdir,HDF5_libdir]
-    inc_dirs = [netCDF4_includedir,HDF5_includedir]
+    inc_dirs = [netCDF4_incdir,HDF5_incdir]
 
     # add szip to link if desired.
     if szip_libdir is None and szip_dir is not None:
@@ -332,7 +332,7 @@ else:
 
 setup(name = "netCDF4",
   cmdclass = cmdclass,
-  version = "1.0.8",
+  version = "1.0.9",
   long_description = "netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project has a `Subversion repository <http://code.google.com/p/netcdf4-python/source>`_ where you may access the most up-to-date source.",
   author            = "Jeff Whitaker",
   author_email      = "jeffrey.s.whitaker@noaa.gov",
