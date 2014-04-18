@@ -1,6 +1,8 @@
  version 1.0.9 (not yet released)
  ================================
 
+ * speed up the creation of new Group instances (issue 239).
+
  * fix logic errors in setup.py (issue 236).
 
  * it is now possible to create and set variable length string variables with
