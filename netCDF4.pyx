@@ -1974,7 +1974,7 @@ L{Group} inherits from L{Dataset}, so all the L{Dataset} class methods and
 variables are available to a L{Group} instance (except the C{close} 
 method)."""
     def __init__(self, parent, name, **kwargs):
-        cdef int ierr, n, numgrps, numdims, numvars
+        cdef int ierr
         cdef char *groupname
         cdef char namstring[NC_MAX_NAME+1]
         # set data_model attribute.
