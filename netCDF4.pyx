@@ -1976,7 +1976,6 @@ method)."""
     def __init__(self, parent, name, **kwargs):
         cdef int ierr
         cdef char *groupname
-        cdef char namstring[NC_MAX_NAME+1]
         # set data_model attribute.
         self.data_model = parent.data_model
         # full path to Group.
