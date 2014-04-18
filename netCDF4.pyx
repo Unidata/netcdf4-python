@@ -1977,6 +1977,12 @@ method)."""
         cdef int ierr, n, numgrps, numdims, numvars
         cdef char *groupname
         cdef char namstring[NC_MAX_NAME+1]
+        # set data_model attribute.
+        self.data_model = parent.data_model
+        # full path to Group.
+        self.path = posixpath.join(parent.path, name)
+        # parent group.
+        self.parent = parent
         if 'id' in kwargs:
             self._grpid = kwargs['id']
             # get compound and vlen types in this Group.
@@ -1998,12 +2004,6 @@ method)."""
             self.dimensions = OrderedDict()
             self.variables = OrderedDict()
             self.groups = OrderedDict()
-        # set data_model attribute.
-        self.data_model = parent.data_model
-        # full path to Group.
-        self.path = posixpath.join(parent.path, name)
-        # parent group.
-        self.parent = parent
 
     def close(self):
         """
