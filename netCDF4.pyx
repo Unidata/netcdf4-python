@@ -1974,35 +1974,35 @@ L{Group} inherits from L{Dataset}, so all the L{Dataset} class methods and
 variables are available to a L{Group} instance (except the C{close} 
 method)."""
     def __init__(self, parent, name, **kwargs):
-        cdef int ierr, n, numgrps, numdims, numvars
+        cdef int ierr
         cdef char *groupname
-        cdef char namstring[NC_MAX_NAME+1]
-        bytestr = _strencode(name)
-        groupname = bytestr
-        if 'id' in kwargs:
-            self._grpid = kwargs['id']
-        else:
-            ierr = nc_def_grp(parent._grpid, groupname, &self._grpid)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         # set data_model attribute.
-        self.data_model = _get_format(self._grpid)
-        # get number of groups in this group.
-        ierr = nc_inq_grps(self._grpid, &numgrps, NULL)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        self.data_model = parent.data_model
         # full path to Group.
         self.path = posixpath.join(parent.path, name)
         # parent group.
         self.parent = parent
-        # get compound and vlen types in this Group.
-        self.cmptypes, self.vltypes = _get_types(self)
-        # get dimensions in this Group.
-        self.dimensions = _get_dims(self)
-        # get variables in this Group.
-        self.variables = _get_vars(self)
-        # get groups in this Group.
-        self.groups = _get_grps(self)
+        if 'id' in kwargs:
+            self._grpid = kwargs['id']
+            # get compound and vlen types in this Group.
+            self.cmptypes, self.vltypes = _get_types(self)
+            # get dimensions in this Group.
+            self.dimensions = _get_dims(self)
+            # get variables in this Group.
+            self.variables = _get_vars(self)
+            # get groups in this Group.
+            self.groups = _get_grps(self)
+        else:
+            bytestr = _strencode(name)
+            groupname = bytestr
+            ierr = nc_def_grp(parent._grpid, groupname, &self._grpid)
+            if ierr != NC_NOERR:
+                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            self.cmptypes = OrderedDict()
+            self.vltypes = OrderedDict()
+            self.dimensions = OrderedDict()
+            self.variables = OrderedDict()
+            self.groups = OrderedDict()
 
     def close(self):
         """
