@@ -209,7 +209,6 @@ netCDF4.Variable.shape	netCDF4.Variable-class.html#shape
 netCDF4.Variable.set_auto_maskandscale	netCDF4.Variable-class.html#set_auto_maskandscale
 netCDF4.Variable.filters	netCDF4.Variable-class.html#filters
 netCDF4.Variable._toma	netCDF4.Variable-class.html#_toma
-netCDF4.Variable._put	netCDF4.Variable-class.html#_put
 netCDF4.Variable.getValue	netCDF4.Variable-class.html#getValue
 netCDF4.Variable.__init__	netCDF4.Variable-class.html#__init__
 netCDF4.Variable.size	netCDF4.Variable-class.html#size
@@ -218,6 +217,7 @@ netCDF4.Variable.__setattr__	netCDF4.Variable-class.html#__setattr__
 netCDF4.Variable.group	netCDF4.Variable-class.html#group
 netCDF4.Variable.__new__	netCDF4.Variable-class.html#__new__
 netCDF4.Variable._iscompound	netCDF4.Variable-class.html#_iscompound
+netCDF4.Variable.__array__	netCDF4.Variable-class.html#__array__
 netCDF4.Variable.__getattr__	netCDF4.Variable-class.html#__getattr__
 netCDF4.Variable.setncatts	netCDF4.Variable-class.html#setncatts
 netCDF4.Variable.setncattr	netCDF4.Variable-class.html#setncattr
@@ -240,7 +240,7 @@ netCDF4.Variable.dimensions	netCDF4.Variable-class.html#dimensions
 netCDF4.Variable._grp	netCDF4.Variable-class.html#_grp
 netCDF4.Variable.__delitem__	netCDF4.Variable-class.html#__delitem__
 netCDF4.Variable._cmptype	netCDF4.Variable-class.html#_cmptype
-netCDF4.Variable._isprimitive	netCDF4.Variable-class.html#_isprimitive
+netCDF4.Variable._put	netCDF4.Variable-class.html#_put
 netCDF4.Variable._get	netCDF4.Variable-class.html#_get
 netCDF4.Variable.datatype	netCDF4.Variable-class.html#datatype
 netCDF4.Variable.__setitem__	netCDF4.Variable-class.html#__setitem__
@@ -249,4 +249,5 @@ netCDF4.Variable.__delattr__	netCDF4.Variable-class.html#__delattr__
 netCDF4.Variable._getdims	netCDF4.Variable-class.html#_getdims
 netCDF4.Variable.endian	netCDF4.Variable-class.html#endian
 netCDF4.Variable._nunlimdim	netCDF4.Variable-class.html#_nunlimdim
+netCDF4.Variable._isprimitive	netCDF4.Variable-class.html#_isprimitive
 netCDF4.Variable._isvlen	netCDF4.Variable-class.html#_isvlen
