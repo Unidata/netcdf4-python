@@ -3,6 +3,9 @@ Python/numpy interface to the netCDF version 4 library.
 Quick Start
 -----------
 
+* clone github repository, or get source tarball (or Windows binary installers) from
+  https://pypi.python.org/pypi/netCDF4.
+
 * make sure numpy (required) and Cython (recommended) are installed and
   you have python 2.5 or newer.
 
