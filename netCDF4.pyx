@@ -23,8 +23,9 @@ types) are not supported.
 Download 
 ========
 
- - Latest bleeding-edge code from the U{subversion repository <http://code.google.com/p/netcdf4-python/source>}.
- - Latest U{releases <http://code.google.com/p/netcdf4-python/downloads/list>}
+ - Latest bleeding-edge code from the U{github repository
+   <http://github.com/Unidata/netcdf4-python>}.
+ - Latest U{releases <https://pypi.python.org/pypi/netCDF4>}
    (source code and windows installers).
 
 Requires 
