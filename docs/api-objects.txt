@@ -43,7 +43,6 @@ netCDF4.Dataset._enddef	netCDF4.Dataset-class.html#_enddef
 netCDF4.Dataset.__str__	netCDF4.Dataset-class.html#__str__
 netCDF4.Dataset.__getattribute__	netCDF4.Dataset-class.html#__getattribute__
 netCDF4.Dataset.sync	netCDF4.Dataset-class.html#sync
-netCDF4.Dataset.maskanscale	netCDF4.Dataset-class.html#maskanscale
 netCDF4.Dataset.createCompoundType	netCDF4.Dataset-class.html#createCompoundType
 netCDF4.Dataset.close	netCDF4.Dataset-class.html#close
 netCDF4.Dataset._isopen	netCDF4.Dataset-class.html#_isopen
@@ -101,7 +100,6 @@ netCDF4.Dataset._enddef	netCDF4.Dataset-class.html#_enddef
 netCDF4.Dataset.__str__	netCDF4.Dataset-class.html#__str__
 netCDF4.Dataset.__getattribute__	netCDF4.Dataset-class.html#__getattribute__
 netCDF4.Dataset.sync	netCDF4.Dataset-class.html#sync
-netCDF4.Dataset.maskanscale	netCDF4.Dataset-class.html#maskanscale
 netCDF4.Dataset.createCompoundType	netCDF4.Dataset-class.html#createCompoundType
 netCDF4.Group.close	netCDF4.Group-class.html#close
 netCDF4.Dataset._isopen	netCDF4.Dataset-class.html#_isopen
@@ -146,7 +144,6 @@ netCDF4.Dataset._enddef	netCDF4.Dataset-class.html#_enddef
 netCDF4.MFDataset.__str__	netCDF4.MFDataset-class.html#__str__
 netCDF4.MFDataset.__getattribute__	netCDF4.MFDataset-class.html#__getattribute__
 netCDF4.Dataset.sync	netCDF4.Dataset-class.html#sync
-netCDF4.Dataset.maskanscale	netCDF4.Dataset-class.html#maskanscale
 netCDF4.Dataset.createCompoundType	netCDF4.Dataset-class.html#createCompoundType
 netCDF4.MFDataset.close	netCDF4.MFDataset-class.html#close
 netCDF4.Dataset._isopen	netCDF4.Dataset-class.html#_isopen
