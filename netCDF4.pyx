@@ -1353,9 +1353,16 @@ describes the root group in the netCDF file).
 compound types defined for the L{Group} or L{Dataset} to instances of the 
 L{CompoundType} class.
 
+@ivar vltypes: The C{vltypes} dictionary maps the names of 
+variable-length types defined for the L{Group} or L{Dataset} to instances of the 
+L{VLType} class.
+
 @ivar data_model: The C{data_model} attribute describes the netCDF
 data model version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
 C{NETCDF4_CLASSIC} or C{NETCDF3_64BIT}. 
+
+@ivar file_format: same as C{data_model}, retained for backwards
+compatibility.
 
 @ivar disk_format: The C{disk_format} attribute describes the underlying
 file format, one of C{NETCDF3}, C{HDF5}, C{HDF4},
@@ -1364,13 +1371,16 @@ netcdf C library version >= 4.3.1, otherwise will always return C{UNDEFINED}.
 
 @ivar path: The C{path} attribute shows the location of the L{Group} in
 the L{Dataset} in a unix directory format (the names of groups in the
-hierarchy separated by backslashes). A L{Dataset}, instance is the root
-group, so the path is simply C{'/'}."""
+hierarchy separated by backslashes). A L{Dataset} instance is the root
+group, so the path is simply C{'/'}.
+
+@ivar parent:  The C{parent} attribute is a reference to the parent
+L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
     cdef object __weakref__
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
-    file_format, data_model, maskanscale, cmptypes, vltypes
+    file_format, data_model, cmptypes, vltypes
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                  diskless=False, persist=False, **kwargs):
@@ -2251,6 +2261,11 @@ associated with this variable.
 
 @ivar shape: a tuple describing the current size of all the variable's 
 dimensions.
+
+@ivar maskandscale:  if True, C{scale_factor} and C{add_offset} are automatically
+applied, and data is automatically converted to/from masked arrays when
+missing values or fill values are present. Default is C{True}, can be reset 
+using L{set_auto_maskandscale} method.
 
 @ivar least_significant_digit: Describes the power of ten of the smallest 
 decimal place in the data the contains a reliable value.  Data is 
