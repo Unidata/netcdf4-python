@@ -52,6 +52,16 @@ and format.
         return self.strftime(self.format)
     def __eq__(self, date):
         return self.strftime('%Y-%m-%d %H:%M:%S') == date.strftime('%Y-%m-%d %H:%M:%S')
+    
+    def __lt__(self, other):
+        if isinstance(other, (datetime, real_datetime)):
+            return self.strftime('%Y-%m-%d %H:%M:%S') < other.strftime('%Y-%m-%d %H:%M:%S')
+        return NotImplemented
+    
+    def __gt__(self, other):
+        if isinstance(other, (datetime, real_datetime)):
+            return self.strftime('%Y-%m-%d %H:%M:%S') > other.strftime('%Y-%m-%d %H:%M:%S')
+        return NotImplemented
 
 
 def JulianDayFromDate(date,calendar='standard'):
