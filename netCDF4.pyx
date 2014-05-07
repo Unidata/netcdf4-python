@@ -1321,9 +1321,18 @@ feature added to the C library after the netcdf-4.2 release.
 
 C{persist} - if diskless=True, persist file to disk when closed (default False).
 
-C{keepweakref} - if keepweakref=True, Dimension and Variable will keep weak
+C{keepweakref} - if keepweakref=True, child Dimension and Variable instances will keep weak
 references to the parent Dataset or Group object.  Default is False, which
-means strong references will be kept.
+means strong references will be kept.  Having Dimension and Variable instances
+keep a strong reference to the parent Dataset instance, which in turn keeps a
+reference to child Dimension and Variable instances, creates circular references.
+Circular references complicate garbage collection, which may mean increased
+memory usage for programs that create may Dataset instances with lots of
+Variables.  Setting keepweakref to True allows Dataset instances to be 
+garbage collected as soon as they go out of scope, potential reducing memory
+usage.  However, in most cases this is not desirable, since the associated
+Variable instances may still be needed, but are rendered unusable when the
+parent Dataset instance is garbage collected.
 
 B{Returns:}
 
