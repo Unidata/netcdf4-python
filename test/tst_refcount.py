@@ -5,7 +5,7 @@ file_name = tempfile.mktemp(".nc")
 class RefCountTestCase(unittest.TestCase):
 
     def setUp(self):
-        nc = netCDF4.Dataset(file_name, mode='w', format='NETCDF4')
+        nc = netCDF4.Dataset(file_name, mode='w', keepweakref=True, format='NETCDF4')
         d = nc.createDimension('fred', 2000)
         v = nc.createVariable('frank','f',('fred',))
         self.file = file_name

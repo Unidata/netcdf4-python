@@ -810,7 +810,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.0.9"
+__version__ = "1.1.0"
 
 # Initialize numpy
 import posixpath
