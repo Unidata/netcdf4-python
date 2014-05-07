@@ -1269,12 +1269,13 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','maskandscale','cmptypes','vltypes','_isprimitive',
- 'file_format','_isvlen','_iscompound','_cmptype','_vltype']
+ 'file_format','_isvlen','_iscompound','_cmptype','_vltype','keepweakref']
 
 
 cdef class Dataset:
     """
-Dataset(self, filename, mode="r", clobber=True, diskless=False, persist=False, format='NETCDF4')
+Dataset(self, filename, mode="r", clobber=True, diskless=False, persist=False,
+        keepweakref=False, format='NETCDF4')
 
 A netCDF L{Dataset} is a collection of dimensions, groups, variables and 
 attributes. Together they describe the meaning of data and relations among 
@@ -1319,6 +1320,10 @@ C{diskless} - create diskless (in memory) file.  This is an experimental
 feature added to the C library after the netcdf-4.2 release.
 
 C{persist} - if diskless=True, persist file to disk when closed (default False).
+
+C{keepweakref} - if keepweakref=True, Dimension and Variable will keep weak
+references to the parent Dataset or Group object.  Default is False, which
+means strong references will be kept.
 
 B{Returns:}
 
@@ -1380,10 +1385,10 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
-    file_format, data_model, cmptypes, vltypes
+    file_format, data_model, cmptypes, vltypes, keepweakref
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, **kwargs):
+                 diskless=False, persist=False, keepweakref=False, **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
@@ -1465,6 +1470,7 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
         self._isopen = 1
         self.path = '/'
         self.parent = None
+        self.keepweakref = keepweakref
         # get compound and vlen types in the root Group.
         self.cmptypes, self.vltypes = _get_types(self)
         # get dimensions in the root group.
@@ -1993,6 +1999,8 @@ method)."""
         self.path = posixpath.join(parent.path, name)
         # parent group.
         self.parent = parent
+        # propagate weak reference setting from parent.
+        self.keepweakref = parent.keepweakref
         if 'id' in kwargs:
             self._grpid = kwargs['id']
             # get compound and vlen types in this Group.
@@ -2062,7 +2070,11 @@ determine if the dimension is unlimited"""
         cdef size_t lendim
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
-        self._grp = weakref.proxy(grp)
+        # keep strong reference the default behaviour (issue 251(
+        if grp.keepweakref:
+            self._grp = weakref.proxy(grp)
+        else:
+            self._grp = grp
         self._data_model = grp.data_model
         self._name = name
         if 'id' in kwargs:
@@ -2296,7 +2308,11 @@ instance. If C{None}, the data is not truncated. """
             dimensions = dimensions,
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
-        self._grp = weakref.proxy(grp)
+        # keep strong reference the default behaviour (issue 251(
+        if grp.keepweakref:
+            self._grp = weakref.proxy(grp)
+        else:
+            self._grp = grp
         # convert to a real numpy datatype object if necessary.
         if (not isinstance(datatype, CompoundType) and \
             not isinstance(datatype, VLType)) and \
