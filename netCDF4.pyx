@@ -1274,8 +1274,7 @@ _private_atts =\
 
 cdef class Dataset:
     """
-Dataset(self, filename, mode="r", clobber=True, diskless=False, persist=False,
-        keepweakref=False, format='NETCDF4')
+Dataset(self, filename, mode="r", clobber=True, diskless=False, persist=False, keepweakref=False, format='NETCDF4')
 
 A netCDF L{Dataset} is a collection of dimensions, groups, variables and 
 attributes. Together they describe the meaning of data and relations among 
