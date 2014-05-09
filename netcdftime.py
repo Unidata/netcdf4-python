@@ -1,6 +1,7 @@
 """
 Performs conversions of netCDF time coordinate data to/from datetime objects.
 """
+import operator
 import math, numpy, re, time
 from datetime import datetime as real_datetime
 from datetime import tzinfo, timedelta
@@ -9,7 +10,7 @@ from calendar import monthrange
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
 
-__version__ = '1.0'
+__version__ = '1.1'
 
 # Adapted from http://delete.me.uk/2005/03/iso8601.html
 ISO8601_REGEX = re.compile(r"(?P<year>[0-9]{1,4})(-(?P<month>[0-9]{1,2})(-(?P<day>[0-9]{1,2})"
@@ -26,7 +27,8 @@ Doesn't do timedelta operations, doesn't overload + and -.
 
 Has strftime, timetuple and __repr__ methods.  The format
 of the string produced by __repr__ is controlled by self.format
-(default %Y-%m-%d %H:%M:%S).
+(default %Y-%m-%d %H:%M:%S). Does support comparisons with other
+phony datetime and with datetime.datetime objects.
 
 Instance variables are year,month,day,hour,minute,second,dayofwk,dayofyr
 and format.
@@ -50,18 +52,30 @@ and format.
         return (self.year,self.month,self.day,self.hour,self.minute,self.second,self.dayofwk,self.dayofyr,-1)
     def __repr__(self):
         return self.strftime(self.format)
-    def __eq__(self, date):
-        return self.strftime('%Y-%m-%d %H:%M:%S') == date.strftime('%Y-%m-%d %H:%M:%S')
-    
+
+    def _compare(self, comparison_op, other):
+        if hasattr(other, 'strftime'):
+            return comparison_op(self.strftime('%Y-%m-%d %H:%M:%S'),
+                                 other.strftime('%Y-%m-%d %H:%M:%S'))
+        return NotImplemented
+
+    def __eq__(self, other):
+        return self._compare(operator.eq, other)
+
+    def __ne__(self, other):
+        return self._compare(operator.ne, other)
+
     def __lt__(self, other):
-        if isinstance(other, (datetime, real_datetime)):
-            return self.strftime('%Y-%m-%d %H:%M:%S') < other.strftime('%Y-%m-%d %H:%M:%S')
-        return NotImplemented
-    
+        return self._compare(operator.lt, other)
+
+    def __le__(self, other):
+        return self._compare(operator.le, other)
+
     def __gt__(self, other):
-        if isinstance(other, (datetime, real_datetime)):
-            return self.strftime('%Y-%m-%d %H:%M:%S') > other.strftime('%Y-%m-%d %H:%M:%S')
-        return NotImplemented
+        return self._compare(operator.gt, other)
+
+    def __ge__(self, other):
+        return self._compare(operator.ge, other)
 
 
 def JulianDayFromDate(date,calendar='standard'):
