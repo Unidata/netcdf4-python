@@ -1,3 +1,11 @@
+ version 1.1.0
+ =============
+
+ * revert weakref change, so that previous behaviour (Dimensions and Variables
+   keep strong references to parent Dataset) is the default.  New keyword
+   argument 'keepweakref' for Dataset.__init__ can be set to true to get
+   weak references.
+
  version 1.0.9 (tag v1.0.9rel)
  =============================
 
