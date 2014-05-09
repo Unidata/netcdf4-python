@@ -192,6 +192,12 @@ class netcdftimeTestCase(unittest.TestCase):
         assert d1 < d2
         assert d2 < d3
 
+        # check all comparisons
+        assert d1 != d2
+        assert d1 <= d2
+        assert d2 > d1
+        assert d2 >= d1
+
 
 class TestDate2index(unittest.TestCase):
 
