@@ -1,5 +1,5 @@
- version 1.1.0
- =============
+ version 1.1.0 (tag v.1.10rel)
+ =============================
 
  * revert weakref change, so that previous behaviour (Dimensions and Variables
    keep strong references to parent Dataset) is the default.  New keyword
