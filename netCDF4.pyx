@@ -1862,7 +1862,7 @@ This may be faster when setting a lot of attributes for a NETCDF3
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute"""
         if self.data_model != 'NETCDF4': self._redef()
-        for name, value in attdict.iteritems():
+        for name, value in attdict.items():
             _set_att(self, NC_GLOBAL, name, value)
         if self.data_model != 'NETCDF4': self._enddef()
 
@@ -2677,7 +2677,7 @@ This may be faster when setting a lot of attributes for a NETCDF3
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute"""
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
-        for name, value in attdict.iteritems():
+        for name, value in attdict.items():
             _set_att(self._grp, self._varid, name, value)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
 

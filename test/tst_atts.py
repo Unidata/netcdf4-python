@@ -7,6 +7,11 @@ import numpy as NP
 from numpy.random.mtrand import uniform 
 import netCDF4
 
+try:
+    from collections import OrderedDict
+except ImportError: # or else use drop-in substitute
+    from ordereddict import OrderedDict
+
 # test attribute creation.
 FILE_NAME = tempfile.mktemp(".nc")
 VAR_NAME="dummy_var"
@@ -60,6 +65,8 @@ class VariablesTestCase(unittest.TestCase):
         v = f.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         # try to set a variable attribute with one of the reserved names.
         v.setncattr('ndim','three')
+        v.setncatts({'foo': 1})
+        v.setncatts(OrderedDict(bar=2))
         v.stratt_tmp = STRATT
         v.renameAttribute('stratt_tmp','stratt')
         v.emptystratt = EMPTYSTRATT
@@ -116,6 +123,8 @@ class VariablesTestCase(unittest.TestCase):
         assert v.seqatt.tolist() == SEQATT.tolist()
         assert v.stringseqatt == ''.join(STRINGSEQATT)
         assert v.getncattr('ndim') == 'three'
+        assert v.getncattr('foo') == 1
+        assert v.getncattr('bar') == 2
         # check attributes in subgroup.
         # global attributes.
         for key,val in ATTDICT.items():
