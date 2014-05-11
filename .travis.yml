@@ -8,7 +8,8 @@ before_install:
   - sudo apt-get install libhdf5-serial-dev netcdf-bin libnetcdf-dev
   - pip install numpy cython python-dateutil
 install:
-  - pip install .
+  - python setup.py build
+  - python setup.py install
 script: 
   - cd test
   - python run_all.py
