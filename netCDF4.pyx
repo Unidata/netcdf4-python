@@ -2078,7 +2078,7 @@ determine if the dimension is unlimited"""
         cdef size_t lendim
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
-        # keep strong reference the default behaviour (issue 251(
+        # keep strong reference the default behaviour (issue 251)
         if grp.keepweakref:
             self._grp = weakref.proxy(grp)
         else:
@@ -2316,7 +2316,7 @@ instance. If C{None}, the data is not truncated. """
             dimensions = dimensions,
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
-        # keep strong reference the default behaviour (issue 251(
+        # keep strong reference the default behaviour (issue 251)
         if grp.keepweakref:
             self._grp = weakref.proxy(grp)
         else:
