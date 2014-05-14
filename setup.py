@@ -1,5 +1,9 @@
-import os, sys, subprocess, numpy, shutil
-from distutils.core  import setup, Extension
+import os, sys, subprocess, shutil
+try:
+    from setuptools import setup, Extension
+except ImportError:
+    from distutils.core  import setup, Extension
+from distutils.dist import Distribution
 try:
     from Cython.Distutils import build_ext
     has_cython = True
@@ -285,8 +289,15 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         lib_dirs.append(curl_libdir)
         inc_dirs.append(curl_incdir)
 
-# append numpy include dir.
-inc_dirs.append(numpy.get_include())
+# Do not require numpy for just querying the package
+# Taken from the h5py setup file.
+if any('--' + opt in sys.argv for opt in Distribution.display_option_names +
+       ['help-commands', 'help']) or sys.argv[1] == 'egg_info':
+    pass
+else:
+    # append numpy include dir.
+    import numpy
+    inc_dirs.append(numpy.get_include())
 
 # get netcdf library version.
 netcdf_lib_version = getnetcdfvers(lib_dirs)
