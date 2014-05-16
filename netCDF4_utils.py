@@ -274,7 +274,7 @@ Boolean array must have the same shape as the data along this dimension."""
                 else:
                     length = e.start+datashape[i]
             else:
-                if unlim and datashape == ():
+                if unlim and datashape == () and len(dim) == 0:
                     # writing scalar along unlimited dimension using slicing
                     # syntax (var[:] = 1, when var.shape = ())
                     length = 1
