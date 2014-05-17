@@ -1,5 +1,5 @@
- since version 1.1.0
- ===================
+ since version 1.1.1 (not yet released)
+ ======================================
 
  * fix for issue #259 ("Cannot use broadcasting to set all elements of a
    Variable to a given value.).
