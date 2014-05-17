@@ -94,7 +94,19 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(v[...], 10)
         assert_equal(v.shape, v[...].shape)
         f.close()
- 
+
+    def test_issue259(self):
+        dset = Dataset(self.file, 'w', format='NETCDF4_CLASSIC')
+        dset.createDimension('dim', None)
+        a = dset.createVariable('a', 'i', ('dim',))
+        b = dset.createVariable('b', 'i', ('dim',))
+        c = dset.createVariable('c', 'i', ('dim',))
+        c[:] = 1 # c initially is empty, new entry created
+        assert_array_equal(c[...], NP.array([1]))
+        b[:] = NP.array([1,1])
+        a[:] = 1 # a should be same as b
+        assert_array_equal(a[...], b[...])
+        dset.close()
 
 if __name__ == '__main__':
     unittest.main()
