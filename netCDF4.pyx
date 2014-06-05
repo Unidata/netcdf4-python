@@ -1510,7 +1510,10 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
             ierr = nc_inq_path(self._grpid, &pathlen, path)
             return path.decode('ascii')
         ELSE:
-            raise ValueError('filepath method requires netcdf lib >= 4.1.2, you have %s' % __netcdf4libversion__)
+            msg = """
+filepath method not enabled.  To enable, install Cython, make sure you have 
+version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+            raise ValueError(msg)
 
     def __str__(self):
         if python3:
@@ -1968,7 +1971,10 @@ rename a L{Group} named C{oldname} to C{newname} (requires netcdf >= 4.3.1)."""
             # add new key.
             self.groups[newname] = grp
         ELSE:
-            raise ValueError('renaming groups requires netcdf lib >= 4.3.1, you have %s' % __netcdf4libversion__)
+            msg = """
+renameGroup method not enabled.  To enable, install Cython, make sure you have 
+version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+            raise ValueError(msg)
 
 cdef class Group(Dataset):
     """
