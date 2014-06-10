@@ -3,11 +3,11 @@ import netCDF4
 
 # test accessing data over http with opendap.
 
-URL = 'http://test.opendap.org/opendap/hyrax/data/nc/testfile.nc'
-firstvarname = 'aa'
-firstvarmin = -2
-firstvarmax = -0
-firstvarshape = (4,)
+URL = 'http://test.opendap.org/opendap/hyrax/data/nc/bears.nc'
+firstvarname = 'shot'
+firstvarmin = 2
+firstvarmax = 7
+firstvarshape = (2,3)
 
 class DapTestCase(unittest.TestCase):
 
