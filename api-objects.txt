@@ -68,6 +68,7 @@ netCDF4.Dataset.__exit__	netCDF4.Dataset-class.html#__exit__
 netCDF4.Dataset.renameAttribute	netCDF4.Dataset-class.html#renameAttribute
 netCDF4.Dataset.parent	netCDF4.Dataset-class.html#parent
 netCDF4.Dataset.createVLType	netCDF4.Dataset-class.html#createVLType
+netCDF4.Dataset.keepweakref	netCDF4.Dataset-class.html#keepweakref
 netCDF4.Dataset.renameDimension	netCDF4.Dataset-class.html#renameDimension
 netCDF4.Dataset.groups	netCDF4.Dataset-class.html#groups
 netCDF4.Dataset.path	netCDF4.Dataset-class.html#path
@@ -124,6 +125,7 @@ netCDF4.Dataset.__exit__	netCDF4.Dataset-class.html#__exit__
 netCDF4.Dataset.renameAttribute	netCDF4.Dataset-class.html#renameAttribute
 netCDF4.Dataset.parent	netCDF4.Dataset-class.html#parent
 netCDF4.Dataset.delncattr	netCDF4.Dataset-class.html#delncattr
+netCDF4.Dataset.keepweakref	netCDF4.Dataset-class.html#keepweakref
 netCDF4.Dataset.getncattr	netCDF4.Dataset-class.html#getncattr
 netCDF4.Dataset.groups	netCDF4.Dataset-class.html#groups
 netCDF4.Dataset.path	netCDF4.Dataset-class.html#path
@@ -168,6 +170,7 @@ netCDF4.Dataset.__exit__	netCDF4.Dataset-class.html#__exit__
 netCDF4.Dataset.renameAttribute	netCDF4.Dataset-class.html#renameAttribute
 netCDF4.Dataset.parent	netCDF4.Dataset-class.html#parent
 netCDF4.Dataset.delncattr	netCDF4.Dataset-class.html#delncattr
+netCDF4.Dataset.keepweakref	netCDF4.Dataset-class.html#keepweakref
 netCDF4.Dataset.getncattr	netCDF4.Dataset-class.html#getncattr
 netCDF4.Dataset.groups	netCDF4.Dataset-class.html#groups
 netCDF4.Dataset.path	netCDF4.Dataset-class.html#path
