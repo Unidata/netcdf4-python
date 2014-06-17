@@ -11,7 +11,7 @@ VL_NAME = 'vlen_type'
 VL_BASETYPE = np.int16
 DIM1_NAME = 'lon'
 DIM2_NAME = 'lat'
-nlons = 4; nlats = 3
+nlons = 5; nlats = 5
 VAR1_NAME = 'ragged'
 VAR2_NAME = 'strings'
 VAR3_NAME = 'strings_alt'
@@ -78,6 +78,33 @@ class TestInvalidDataType(unittest.TestCase):
         f.close()
         os.remove(FILE_NAME)
 
+class TestObjectArrayIndexing(unittest.TestCase):
+
+    def setUp(self):
+        self.file = FILE_NAME
+        f = Dataset(self.file,'w')
+        vlen_t = f.createVLType(VL_BASETYPE, VL_NAME)
+        f.createDimension(DIM1_NAME,nlons)
+        f.createDimension(DIM2_NAME,nlats)
+        strings_alt = f.createVariable(VAR3_NAME, datas.astype(str).dtype,
+                                       (DIM2_NAME, DIM1_NAME))
+        strings_alt[:] = datas.astype(str)
+        f.close()
+
+    def tearDown(self):
+        # Remove the temporary files
+        os.remove(self.file)
+
+    def runTest(self):
+        """testing vlen variables"""
+        f = Dataset(self.file, 'r')
+        vs_alt = f.variables[VAR3_NAME]
+        unicode_strings = vs_alt[:]
+        fancy_indexed = unicode_strings[0][[1,2,4]] 
+        assert fancy_indexed[0] == 'abc'
+        assert fancy_indexed[1] == 'abcd'
+        assert fancy_indexed[2] == 'abcdef'
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
