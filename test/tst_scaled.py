@@ -135,5 +135,62 @@ class SetAutoScaleTrue(SetAutoScaleTestBase):
         f.close()
 
 
+class GlobalSetAutoScaleTest(unittest.TestCase):
+
+    def setUp(self):
+
+        self.testfile = tempfile.mktemp(".nc")
+
+        f = Dataset(self.testfile, 'w')
+
+        grp1 = f.createGroup('Group1')
+        grp2 = f.createGroup('Group2')
+        f.createGroup('Group3')         # empty group
+
+        f.createVariable('var0', "i2", ())
+        grp1.createVariable('var1', 'f8', ())
+        grp2.createVariable('var2', 'f4', ())
+
+        f.close()
+
+    def tearDown(self):
+
+        os.remove(self.testfile)
+
+    def runTest(self):
+
+        f = Dataset(self.testfile, "r")
+
+        # Default is both scaling and masking enabled
+
+        v0 = f.variables['var0']
+        v1 = f.groups['Group1'].variables['var1']
+        v2 = f.groups['Group2'].variables['var2']
+
+        self.assertTrue(v0.scale)
+        self.assertTrue(v0.mask)
+
+        self.assertTrue(v1.scale)
+        self.assertTrue(v1.mask)
+
+        self.assertTrue(v2.scale)
+        self.assertTrue(v2.mask)
+
+        # No auto-scaling
+
+        f.set_auto_scale(False)
+
+        self.assertFalse(v0.scale)
+        self.assertTrue(v0.mask)
+
+        self.assertFalse(v1.scale)
+        self.assertTrue(v1.mask)
+
+        self.assertFalse(v2.scale)
+        self.assertTrue(v2.mask)
+
+        f.close()
+
+
 if __name__ == '__main__':
     unittest.main()

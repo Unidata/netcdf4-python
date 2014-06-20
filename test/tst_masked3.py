@@ -133,5 +133,69 @@ class SetAutoMaskTrue(SetAutoMaskTestBase):
         f.close()
 
 
+class GlobalSetAutoMaskTest(unittest.TestCase):
+
+    def setUp(self):
+
+        self.testfile = tempfile.mktemp(".nc")
+
+        f = Dataset(self.testfile, 'w')
+
+        grp1 = f.createGroup('Group1')
+        grp2 = f.createGroup('Group2')
+        f.createGroup('Group3')         # empty group
+
+        f.createVariable('var0', "i2", ())
+        grp1.createVariable('var1', 'f8', ())
+        grp2.createVariable('var2', 'f4', ())
+
+        f.close()
+
+    def tearDown(self):
+
+        os.remove(self.testfile)
+
+    def runTest(self):
+
+        # Note: The default behaviour is to to have both auto-masking and auto-scaling activated.
+        #       This is already tested in tst_scaled.py, so no need to repeat here. Instead,
+        #       disable auto-masking and auto-scaling altogether.
+
+        f = Dataset(self.testfile, "r")
+
+        # Neither scaling and masking enabled
+
+        f.set_auto_maskandscale(False)
+
+        v0 = f.variables['var0']
+        v1 = f.groups['Group1'].variables['var1']
+        v2 = f.groups['Group2'].variables['var2']
+
+        self.assertFalse(v0.scale)
+        self.assertFalse(v0.mask)
+
+        self.assertFalse(v1.scale)
+        self.assertFalse(v1.mask)
+
+        self.assertFalse(v2.scale)
+        self.assertFalse(v2.mask)
+
+        # No auto-masking, but auto-scaling
+
+        f.set_auto_maskandscale(True)
+        f.set_auto_mask(False)
+
+        self.assertTrue(v0.scale)
+        self.assertFalse(v0.mask)
+
+        self.assertTrue(v1.scale)
+        self.assertFalse(v1.mask)
+
+        self.assertTrue(v2.scale)
+        self.assertFalse(v2.mask)
+
+        f.close()
+
+
 if __name__ == '__main__':
     unittest.main()

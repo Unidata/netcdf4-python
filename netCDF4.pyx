@@ -794,7 +794,7 @@ del __test__ # hack so epydoc doesn't show __test__
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
 # pure python utilities
-from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
+from netCDF4_utils import _StartCountStride, _quantize, _find_dim, _walk_grps, \
                           _out_array_shape, _sortbylist, _tostr
 # try to use built-in ordered dict in python >= 2.7
 try:
@@ -1975,6 +1975,86 @@ rename a L{Group} named C{oldname} to C{newname} (requires netcdf >= 4.3.1)."""
 renameGroup method not enabled.  To enable, install Cython, make sure you have 
 version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
+
+    def set_auto_maskandscale(self, value):
+        """
+set_auto_maskandscale(self, True_or_False)
+
+Call L{set_auto_maskandscale} for all variables contained in this L{Dataset} or
+L{Group), as well as for all variables in all its subgroups.
+
+B{Parameters}:
+
+B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
+and variable scaling shall be applied for all variables.
+
+B{Notes}:
+
+Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.
+        """
+
+        for var in self.variables.values():
+            var.set_auto_maskandscale(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                for var in group.variables.values():
+                    var.set_auto_maskandscale(value)
+
+
+    def set_auto_mask(self, value):
+        """
+set_auto_mask(self, True_or_False)
+
+Call L{set_auto_mask} for all variables contained in this L{Dataset} or
+L{Group), as well as for all variables in all its subgroups.
+
+B{Parameters}:
+
+B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
+shall be applied for all variables.
+
+B{Notes}:
+
+Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.
+        """
+
+        for var in self.variables.values():
+            var.set_auto_mask(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                for var in group.variables.values():
+                    var.set_auto_mask(value)
+
+    def set_auto_scale(self, value):
+        """
+set_auto_scale(self, True_or_False)
+
+Call L{set_auto_scale} for all variables contained in this L{Dataset} or
+L{Group), as well as for all variables in all its subgroups.
+
+B{Parameters}:
+
+B{C{True_or_False}} - Boolean determining if automatic variable scaling
+shall be applied for all variables.
+
+B{Notes}:
+
+Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.
+        """
+
+        for var in self.variables.values():
+            var.set_auto_scale(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                for var in group.variables.values():
+                    var.set_auto_scale(value)
+
 
 cdef class Group(Dataset):
     """
