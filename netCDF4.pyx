@@ -2087,8 +2087,9 @@ method)."""
     def __init__(self, parent, name, **kwargs):
         cdef int ierr
         cdef char *groupname
-        # set data_model attribute.
+        # set data_model and file_format attributes.
         self.data_model = parent.data_model
+        self.file_format = parent.file_format
         # full path to Group.
         self.path = posixpath.join(parent.path, name)
         # parent group.

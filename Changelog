@@ -1,6 +1,7 @@
  since version 1.1.1 (not yet released)
  ======================================
 
+ * make sure file_format attribute propagated to Group instances (issue 265).
  * fix for issue #259 ("Cannot use broadcasting to set all elements of a
    Variable to a given value.).
 
