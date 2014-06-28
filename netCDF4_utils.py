@@ -23,6 +23,16 @@ def _find_dim(grp, dimname):
                 raise ValueError("cannot find dimension %s in this group or parent groups" % dimname)
     return dim
 
+def _walk_grps(topgrp):
+    """Iterate through all (sub-) groups of topgrp, similar to os.walktree.
+
+    """
+    grps = topgrp.groups.values()
+    yield grps
+    for grp in topgrp.groups.values():
+        for children in _walk_grps(grp):
+            yield children
+
 def _quantize(data,least_significant_digit):
     """
 quantize data to improve compression. data is quantized using

@@ -794,7 +794,7 @@ del __test__ # hack so epydoc doesn't show __test__
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
 # pure python utilities
-from netCDF4_utils import _StartCountStride, _quantize, _find_dim, \
+from netCDF4_utils import _StartCountStride, _quantize, _find_dim, _walk_grps, \
                           _out_array_shape, _sortbylist, _tostr
 # try to use built-in ordered dict in python >= 2.7
 try:
@@ -1268,7 +1268,7 @@ cdef _get_vars(group):
 
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
- '_nunlimdim','path','parent','ndim','maskandscale','cmptypes','vltypes','_isprimitive',
+ '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','_isprimitive',
  'file_format','_isvlen','_iscompound','_cmptype','_vltype','keepweakref']
 
 
@@ -1976,6 +1976,86 @@ renameGroup method not enabled.  To enable, install Cython, make sure you have
 version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
 
+    def set_auto_maskandscale(self, value):
+        """
+set_auto_maskandscale(self, True_or_False)
+
+Call L{set_auto_maskandscale} for all variables contained in this L{Dataset} or
+L{Group), as well as for all variables in all its subgroups.
+
+B{Parameters}:
+
+B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
+and variable scaling shall be applied for all variables.
+
+B{Notes}:
+
+Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.
+        """
+
+        for var in self.variables.values():
+            var.set_auto_maskandscale(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                for var in group.variables.values():
+                    var.set_auto_maskandscale(value)
+
+
+    def set_auto_mask(self, value):
+        """
+set_auto_mask(self, True_or_False)
+
+Call L{set_auto_mask} for all variables contained in this L{Dataset} or
+L{Group), as well as for all variables in all its subgroups.
+
+B{Parameters}:
+
+B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
+shall be applied for all variables.
+
+B{Notes}:
+
+Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.
+        """
+
+        for var in self.variables.values():
+            var.set_auto_mask(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                for var in group.variables.values():
+                    var.set_auto_mask(value)
+
+    def set_auto_scale(self, value):
+        """
+set_auto_scale(self, True_or_False)
+
+Call L{set_auto_scale} for all variables contained in this L{Dataset} or
+L{Group), as well as for all variables in all its subgroups.
+
+B{Parameters}:
+
+B{C{True_or_False}} - Boolean determining if automatic variable scaling
+shall be applied for all variables.
+
+B{Notes}:
+
+Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.
+        """
+
+        for var in self.variables.values():
+            var.set_auto_scale(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                for var in group.variables.values():
+                    var.set_auto_scale(value)
+
+
 cdef class Group(Dataset):
     """
 Group(self, parent, name) 
@@ -2289,17 +2369,20 @@ associated with this variable.
 @ivar shape: a tuple describing the current size of all the variable's 
 dimensions.
 
-@ivar maskandscale:  if True, C{scale_factor} and C{add_offset} are automatically
-applied, and data is automatically converted to/from masked arrays when
-missing values or fill values are present. Default is C{True}, can be reset 
-using L{set_auto_maskandscale} method.
+@ivar scale:  if True, C{scale_factor} and C{add_offset} are automatically
+applied. Default is C{True}, can be reset using L{set_auto_scale} and
+L{set_auto_maskandscale} methods.
 
-@ivar least_significant_digit: Describes the power of ten of the smallest 
+@ivar mask:  if True, data is automatically converted to/from masked arrays
+when missing values or fill values are present. Default is C{True}, can be
+reset using L{set_auto_mask} and L{set_auto_maskandscale} methods.
+
+@ivar least_significant_digit: Describes the power of ten of the smallest
 decimal place in the data the contains a reliable value.  Data is 
 truncated to this decimal place when it is assigned to the L{Variable} 
 instance. If C{None}, the data is not truncated. """
     cdef public int _varid, _grpid, _nunlimdim
-    cdef public _name, ndim, dtype, maskandscale, _isprimitive, _iscompound,\
+    cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
     _isvlen, _grp,_cmptype,_vltype
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
@@ -2527,7 +2610,8 @@ instance. If C{None}, the data is not truncated. """
         self._name = name
         # default for automatically applying scale_factor and
         # add_offset, and converting to/from masked arrays is True.
-        self.maskandscale = True
+        self.scale = True
+        self.mask = True
 
     def __array__(self):
         # numpy special method that returns a numpy array.
@@ -2937,10 +3021,12 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             # length 1.
             data = data[0]
 
-        # if auto_maskandscale mode set to True, (through
-        # a call to set_auto_maskandscale), perform
-        # automatic unpacking using scale_factor/add_offset
-        # and automatic conversion to masked array using
+        # if auto_scale mode set to True, (through
+        # a call to set_auto_scale or set_auto_maskandscale),
+        # perform automatic unpacking using scale_factor/add_offset.
+        # if auto_mask mode is set to True (through a call to
+        # set_auto_mask or set_auto_maskandscale), perform
+        # automatic conversion to masked array using
         # missing_value/_Fill_Value.
         # ignore for compound and vlen datatypes.
         try: # check to see if scale_factor and add_offset is valid (issue 176).
@@ -2949,11 +3035,12 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             valid_scaleoffset = True
         except:
             valid_scaleoffset = False
-            if self.maskandscale:
+            if self.scale:
                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
                 warnings.warn(msg)
-        if self.maskandscale and self._isprimitive and valid_scaleoffset:
+        if self.mask and self._isprimitive:
             data = self._toma(data)
+        if self.scale and self._isprimitive and valid_scaleoffset:
             # if variable has scale_factor and add_offset attributes, rescale.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset') and\
             (self.add_offset != 0.0 or self.scale_factor != 1.0):
@@ -3152,7 +3239,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         # assume it's a numpy or masked array if it has an 'ndim' attribute.
         if not hasattr(data,'ndim'): 
             # if auto scaling is to be done, don't cast to an integer yet. 
-            if self.maskandscale and self.dtype.kind == 'i' and \
+            if self.scale and self.dtype.kind == 'i' and \
                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
                 data = numpy.array(data,numpy.float)
             else:
@@ -3181,19 +3268,22 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
 
         if 'least_significant_digit' in self.ncattrs():
             data = _quantize(data,self.least_significant_digit)
-        # if auto_maskandscale mode set to True, (through
-        # a call to set_auto_maskandscale), perform
-        # automatic packing using scale_factor/add_offset
-        # and automatic filling of masked arrays using
+        # if auto_scale mode set to True, (through
+        # a call to set_auto_scale or set_auto_maskandscale),
+        # perform automatic unpacking using scale_factor/add_offset.
+        # if auto_mask mode is set to True (through a call to
+        # set_auto_mask or set_auto_maskandscale), perform
+        # automatic conversion to masked array using
         # missing_value/_Fill_Value.
         # ignore if not a primitive (not compound or vlen) datatype.
-        if self.maskandscale and self._isprimitive:
+        if self.mask and self._isprimitive:
             # use missing_value as fill value.
             # if no missing value set, use _FillValue.
-            # pack non-masked values using scale_factor and add_offset
             if hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
                 # if not masked, create a masked array.
                 if not ma.isMA(data): data = self._toma(data)
+        if self.scale and self._isprimitive:
+            # pack non-masked values using scale_factor and add_offset
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = (data - self.add_offset)/self.scale_factor
                 if self.dtype.kind == 'i': data = numpy.around(data)
@@ -3305,9 +3395,70 @@ The default value of C{maskandscale} is C{True}
 (automatic conversions are performed).
         """
         if maskandscale:
-            self.maskandscale = True
+            self.scale = True
+            self.mask = True
         else:
-            self.maskandscale = False
+            self.scale = False
+            self.mask = False
+
+    def set_auto_scale(self,scale):
+        """
+set_auto_scale(self,scale)
+
+turn on or off automatic packing/unpacking of variable
+data using C{scale_factor} and C{add_offset} attributes.
+
+If C{scale} is set to C{True}, and the variable has a
+C{scale_factor} or an C{add_offset} attribute, then data read
+from that variable is unpacked using::
+
+    data = self.scale_factor*data + self.add_offset
+
+When data is written to a variable it is packed using::
+
+    data = (data - self.add_offset)/self.scale_factor
+
+If either scale_factor is present, but add_offset is missing, add_offset
+is assumed zero.  If add_offset is present, but scale_factor is missing,
+scale_factor is assumed to be one.
+For more information on how C{scale_factor} and C{add_offset} can be
+used to provide simple compression, see
+U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
+<http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>}.
+
+The default value of C{scale} is C{True}
+(automatic conversions are performed).
+        """
+        if scale:
+            self.scale = True
+        else:
+            self.scale = False
+
+    def set_auto_mask(self,mask):
+        """
+set_auto_mask(self,mask)
+
+turn on or off automatic conversion of variable data to and
+from masked arrays .
+
+If C{mask} is set to C{True}, when data is read from a variable
+it is converted to a masked array if any of the values are exactly
+equal to the either the netCDF _FillValue or the value specified by the
+missing_value variable attribute. The fill_value of the masked array
+is set to the missing_value attribute (if it exists), otherwise
+the netCDF _FillValue attribute (which has a default value
+for each data type).  When data is written to a variable, the masked
+array is converted back to a regular numpy array by replacing all the
+masked values by the fill_value of the masked array.
+
+The default value of C{mask} is C{True}
+(automatic conversions are performed).
+        """
+        if mask:
+            self.mask = True
+        else:
+            self.mask = False
+
 
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
