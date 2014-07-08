@@ -1,6 +1,7 @@
  since version 1.1.1 (not yet released)
  ======================================
 
+ * Make netcdftime.datetime immutable and hashable (issue 255).
  * Fix issue with slicing of scalar VLEN arrays (issue 270).
  * Add set_auto_mask and set_auto_scale methods to control auto scaling and
    auto masking separately. (issue 269).  Also added set_auto_maskandscale, 
