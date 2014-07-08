@@ -10,7 +10,7 @@ from calendar import monthrange
 _units = ['days','hours','minutes','seconds','day','hour','minute','second']
 _calendars = ['standard','gregorian','proleptic_gregorian','noleap','julian','all_leap','365_day','366_day','360_day']
 
-__version__ = '1.1'
+__version__ = '1.2'
 
 # Adapted from http://delete.me.uk/2005/03/iso8601.html
 ISO8601_REGEX = re.compile(r"(?P<year>[0-9]{1,4})(-(?P<month>[0-9]{1,2})(-(?P<day>[0-9]{1,2})"
@@ -19,7 +19,7 @@ ISO8601_REGEX = re.compile(r"(?P<year>[0-9]{1,4})(-(?P<month>[0-9]{1,2})(-(?P<da
 )
 TIMEZONE_REGEX = re.compile("(?P<prefix>[+-])(?P<hours>[0-9]{1,2}):(?P<minutes>[0-9]{1,2})")
 
-class datetime:
+class datetime(object):
     """
 Phony datetime object which mimics the python datetime object,
 but allows for dates that don't exist in the proleptic gregorian calendar.
@@ -35,23 +35,46 @@ and format.
     """
     def __init__(self,year,month,day,hour=0,minute=0,second=0,dayofwk=-1,dayofyr=1):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
-        self.year=year
-        self.month=month
-        self.day=day
-        self.hour=hour
-        self.minute=minute
-        self.dayofwk=dayofwk
-        self.dayofyr=dayofyr
-        self.second=second
-        self.format='%Y-%m-%d %H:%M:%S'
+        self._year=year
+        self._month=month
+        self._day=day
+        self._hour=hour
+        self._minute=minute
+        self._dayofwk=dayofwk
+        self._dayofyr=dayofyr
+        self._second=second
+        self._format='%Y-%m-%d %H:%M:%S'
+
+    year = property(lambda self: self._year)
+    month = property(lambda self: self._month)
+    day = property(lambda self: self._day)
+    hour = property(lambda self: self._hour)
+    minute = property(lambda self: self._minute)
+    dayofwk = property(lambda self: self._dayofwk)
+    dayofyr = property(lambda self: self._dayofyr)
+    second = property(lambda self: self._second)
+    format = property(lambda self: self._format)
+                       
     def strftime(self,format=None):
         if format is None:
             format = self.format
         return _strftime(self,format)
+
     def timetuple(self):
         return (self.year,self.month,self.day,self.hour,self.minute,self.second,self.dayofwk,self.dayofyr,-1)
+
+    def _to_real_datetime(self):
+        return real_datetime(self._year, self._month, self._day, self._hour, self._minute, self._second)
+
     def __repr__(self):
         return self.strftime(self.format)
+
+    def __hash__(self):
+        try:
+            d = self._to_real_datetime()
+        except ValueError:
+            return hash(tuple(sorted(self.__dict__.items())))
+        return hash(d)
 
     def _compare(self, comparison_op, other):
         if hasattr(other, 'strftime'):

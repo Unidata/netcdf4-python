@@ -198,6 +198,35 @@ class netcdftimeTestCase(unittest.TestCase):
         assert d2 > d1
         assert d2 >= d1
 
+        # check datetime hash
+        d1 = datetimex(1995, 1, 1)
+        d2 = datetime(1995, 1, 1)
+        d3 = datetimex(2001, 2, 30)
+        assert hash(d1) == hash(d1)
+        assert hash(d1) == hash(d2)
+        assert hash(d1) != hash(d3)
+        assert hash(d3) == hash(d3)
+
+        # check datetime immutability
+        with self.assertRaises(AttributeError):
+            d1.year = 1999
+        with self.assertRaises(AttributeError):
+            d1.month = 6
+        with self.assertRaises(AttributeError):
+            d1.day = 5
+        with self.assertRaises(AttributeError):
+            d1.hour = 10
+        with self.assertRaises(AttributeError):
+            d1.minute = 33
+        with self.assertRaises(AttributeError):
+            d1.second = 45
+        with self.assertRaises(AttributeError):
+            d1.dayofwk = 1
+        with self.assertRaises(AttributeError):
+            d1.dayofyr = 52
+        with self.assertRaises(AttributeError):
+            d1.format = '%Y'
+
 
 class TestDate2index(unittest.TestCase):
 
