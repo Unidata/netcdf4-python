@@ -12,18 +12,20 @@ except ImportError:
 
 if sys.version_info[0] < 3:
     import ConfigParser as configparser
+    open_kwargs = {}
 else:
     import configparser
+    open_kwargs = {'encoding':'utf-8'}
 
 def check_hdf5version(hdf5_includedir):
     try:
-        f = open(os.path.join(hdf5_includedir,'H5pubconf-64.h'))
+        f = open(os.path.join(hdf5_includedir,'H5pubconf-64.h'),**open_kwargs)
     except IOError:
         try:
-            f = open(os.path.join(hdf5_includedir,'H5pubconf-32.h'))
+            f = open(os.path.join(hdf5_includedir,'H5pubconf-32.h'),**open_kwargs)
         except IOError:
             try:
-                f = open(os.path.join(hdf5_includedir,'H5pubconf.h'))
+                f = open(os.path.join(hdf5_includedir,'H5pubconf.h'),**open_kwargs)
             except IOError:
                 return None
     hdf5_version = None
@@ -34,7 +36,7 @@ def check_hdf5version(hdf5_includedir):
 
 def check_ifnetcdf4(netcdf4_includedir):
     try:
-        f = open(os.path.join(netcdf4_includedir,'netcdf.h'))
+        f = open(os.path.join(netcdf4_includedir,'netcdf.h'),**open_kwargs)
     except IOError:
         return False
     isnetcdf4 = False
@@ -49,7 +51,7 @@ def check_api(inc_dirs):
     has_nc_inq_format_extended = False
     for d in inc_dirs:
         try:
-            f = open(os.path.join(d,'netcdf.h'))
+            f = open(os.path.join(d,'netcdf.h'),**open_kwargs)
         except IOError:
             continue
         for line in f:
