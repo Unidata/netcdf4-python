@@ -1,14 +1,16 @@
  since version 1.1.1 (not yet released)
  ======================================
 
+ * Fix for issue 278 (UnicodeDecodeError reading netcdf.h from setup.py with
+   Python 3.4).
  * Make netcdftime.datetime immutable and hashable (issue 255).
  * Fix issue with slicing of scalar VLEN arrays (issue 270).
  * Add set_auto_mask and set_auto_scale methods to control auto scaling and
    auto masking separately. (issue 269).  Also added set_auto_maskandscale, 
    set_auto_scale, set_auto_mask Dataset/Group methods that recursively walk
    through all variables in the Dataset/Group.
- * make sure file_format attribute propagated to Group instances (issue 265).
- * fix for issue #259 ("Cannot use broadcasting to set all elements of a
+ * Make sure file_format attribute propagated to Group instances (issue 265).
+ * Fix for issue #259 ("Cannot use broadcasting to set all elements of a
    Variable to a given value").
 
  version 1.1.0 (tag v.1.10rel)
