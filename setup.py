@@ -363,4 +363,5 @@ setup(name = "netCDF4",
                  "Topic :: System :: Archiving :: Compression",
                  "Operating System :: OS Independent"],
   py_modules = ["netcdftime","netCDF4_utils"],
+  install_requires = ['numpy>=1.3'],
   ext_modules = extensions)
