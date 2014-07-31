@@ -1,10 +1,10 @@
 import os, sys, subprocess, shutil
-setuptools_extra_kwargs = {}
 try:
     from setuptools import setup, Extension
-    setuptools_extra_kwargs["install_requires"] = ["numpy>=1.3"]
+    setuptools_extra_kwargs = {"install_requires": ["numpy>=1.3"]}
 except ImportError:
     from distutils.core  import setup, Extension
+    setuptools_extra_kwargs = {}
 from distutils.dist import Distribution
 try:
     from Cython.Distutils import build_ext
