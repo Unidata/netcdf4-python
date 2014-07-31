@@ -1,6 +1,8 @@
 import os, sys, subprocess, shutil
+setuptools_extra_kwargs = {}
 try:
     from setuptools import setup, Extension
+    setuptools_extra_kwargs["install_requires"] = ["numpy>=1.3"]
 except ImportError:
     from distutils.core  import setup, Extension
 from distutils.dist import Distribution
@@ -363,5 +365,5 @@ setup(name = "netCDF4",
                  "Topic :: System :: Archiving :: Compression",
                  "Operating System :: OS Independent"],
   py_modules = ["netcdftime","netCDF4_utils"],
-  install_requires = ['numpy>=1.3'],
-  ext_modules = extensions)
+  ext_modules = extensions,
+  **setuptools_extra_kwargs)
