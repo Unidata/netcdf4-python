@@ -1,8 +1,10 @@
 import os, sys, subprocess, shutil
 try:
     from setuptools import setup, Extension
+    setuptools_extra_kwargs = {"install_requires": ["numpy>=1.3"]}
 except ImportError:
     from distutils.core  import setup, Extension
+    setuptools_extra_kwargs = {}
 from distutils.dist import Distribution
 try:
     from Cython.Distutils import build_ext
@@ -363,4 +365,5 @@ setup(name = "netCDF4",
                  "Topic :: System :: Archiving :: Compression",
                  "Operating System :: OS Independent"],
   py_modules = ["netcdftime","netCDF4_utils"],
-  ext_modules = extensions)
+  ext_modules = extensions,
+  **setuptools_extra_kwargs)
