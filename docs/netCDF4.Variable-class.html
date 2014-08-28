@@ -623,10 +623,48 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#set_auto_mask" class="summary-sig-name">set_auto_mask</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mask</span>)</span><br />
+      turn on or off automatic conversion of variable data to and from 
+      masked arrays .</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#set_auto_maskandscale" class="summary-sig-name">set_auto_maskandscale</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">maskandscale</span>)</span><br />
       turn on or off automatic conversion of variable data to and from 
       masked arrays and automatic packing/unpacking of variable data using 
+      <code>scale_factor</code> and <code>add_offset</code> attributes.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Variable-class.html#set_auto_scale" class="summary-sig-name">set_auto_scale</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">scale</span>)</span><br />
+      turn on or off automatic packing/unpacking of variable data using 
       <code>scale_factor</code> and <code>add_offset</code> attributes.</td>
           <td align="right" valign="top">
             
@@ -747,10 +785,9 @@ object --+
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="netCDF4.Variable-class.html#maskandscale" class="summary-name">maskandscale</a><br />
-      if True, <code>scale_factor</code> and <code>add_offset</code> are 
-      automatically applied, and data is automatically converted to/from 
-      masked arrays when missing values or fill values are present.
+        <a href="netCDF4.Variable-class.html#mask" class="summary-name">mask</a><br />
+      if True, data is automatically converted to/from masked arrays when 
+      missing values or fill values are present.
     </td>
   </tr>
 <tr>
@@ -759,6 +796,15 @@ object --+
     </td><td class="summary">
         <a name="ndim"></a><span class="summary-name">ndim</span><br />
       The number of variable dimensions.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netCDF4.Variable-class.html#scale" class="summary-name">scale</a><br />
+      if True, <code>scale_factor</code> and <code>add_offset</code> are 
+      automatically applied.
     </td>
   </tr>
 <tr>
@@ -1091,6 +1137,38 @@ object --+
   </dl>
 </td></tr></table>
 </div>
+<a name="set_auto_mask"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_auto_mask</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mask</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>turn on or off automatic conversion of variable data to and from 
+  masked arrays .</p>
+  <p>If <code>mask</code> is set to <code>True</code>, when data is read 
+  from a variable it is converted to a masked array if any of the values 
+  are exactly equal to the either the netCDF _FillValue or the value 
+  specified by the missing_value variable attribute. The fill_value of the 
+  masked array is set to the missing_value attribute (if it exists), 
+  otherwise the netCDF _FillValue attribute (which has a default value for 
+  each data type).  When data is written to a variable, the masked array is
+  converted back to a regular numpy array by replacing all the masked 
+  values by the fill_value of the masked array.</p>
+  <p>The default value of <code>mask</code> is <code>True</code> (automatic
+  conversions are performed).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
 <a name="set_auto_maskandscale"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1136,6 +1214,46 @@ object --+
   href="http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml" 
   target="_top">http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml</a>.</p>
   <p>The default value of <code>maskandscale</code> is <code>True</code> 
+  (automatic conversions are performed).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_auto_scale"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_auto_scale</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">scale</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>turn on or off automatic packing/unpacking of variable data using 
+  <code>scale_factor</code> and <code>add_offset</code> attributes.</p>
+  <p>If <code>scale</code> is set to <code>True</code>, and the variable 
+  has a <code>scale_factor</code> or an <code>add_offset</code> attribute, 
+  then data read from that variable is unpacked using:</p>
+<pre class="literalblock">
+   data = self.scale_factor*data + self.add_offset
+</pre>
+  <p>When data is written to a variable it is packed using:</p>
+<pre class="literalblock">
+   data = (data - self.add_offset)/self.scale_factor
+</pre>
+  <p>If either scale_factor is present, but add_offset is missing, 
+  add_offset is assumed zero.  If add_offset is present, but scale_factor 
+  is missing, scale_factor is assumed to be one. For more information on 
+  how <code>scale_factor</code> and <code>add_offset</code> can be used to 
+  provide simple compression, see <a 
+  href="http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml" 
+  target="_top">http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml</a>.</p>
+  <p>The default value of <code>scale</code> is <code>True</code> 
   (automatic conversions are performed).</p>
   <dl class="fields">
   </dl>
@@ -1235,18 +1353,34 @@ object --+
   </dl>
 </td></tr></table>
 </div>
-<a name="maskandscale"></a>
+<a name="mask"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">maskandscale</h3>
-  if True, <code>scale_factor</code> and <code>add_offset</code> are 
-  automatically applied, and data is automatically converted to/from masked
-  arrays when missing values or fill values are present. Default is 
-  <code>True</code>, can be reset using <a 
+  <h3 class="epydoc">mask</h3>
+  if True, data is automatically converted to/from masked arrays when 
+  missing values or fill values are present. Default is <code>True</code>, 
+  can be reset using <a href="netCDF4.Variable-class.html#set_auto_mask" 
+  class="link">set_auto_mask</a> and <a 
   href="netCDF4.Variable-class.html#set_auto_maskandscale" 
-  class="link">set_auto_maskandscale</a> method.
+  class="link">set_auto_maskandscale</a> methods.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="scale"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">scale</h3>
+  if True, <code>scale_factor</code> and <code>add_offset</code> are 
+  automatically applied. Default is <code>True</code>, can be reset using 
+  <a href="netCDF4.Variable-class.html#set_auto_scale" 
+  class="link">set_auto_scale</a> and <a 
+  href="netCDF4.Variable-class.html#set_auto_maskandscale" 
+  class="link">set_auto_maskandscale</a> methods.
   <dl class="fields">
   </dl>
 </td></tr></table>
@@ -1278,7 +1412,7 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat May 17 08:44:23 2014
+    Generated by Epydoc 3.0.1 on Thu Aug 28 13:53:20 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

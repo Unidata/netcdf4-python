@@ -1,5 +1,5 @@
- version 1.1.1 (not yet released)
- ================================
+ version 1.1.1 (tag v.1.1.1rel)
+ ==============================
 
  * add numpy to install_requires in setup.py (issue #282, fixes issue #211).
    'pip install netcdf4-python' will no longer fail if numpy not installed.
