@@ -1981,7 +1981,7 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 set_auto_maskandscale(self, True_or_False)
 
 Call L{set_auto_maskandscale} for all variables contained in this L{Dataset} or
-L{Group), as well as for all variables in all its subgroups.
+L{Group}, as well as for all variables in all its subgroups.
 
 B{Parameters}:
 
@@ -2008,7 +2008,7 @@ after calling this function will follow the default behaviour.
 set_auto_mask(self, True_or_False)
 
 Call L{set_auto_mask} for all variables contained in this L{Dataset} or
-L{Group), as well as for all variables in all its subgroups.
+L{Group}, as well as for all variables in all its subgroups.
 
 B{Parameters}:
 
@@ -2034,7 +2034,7 @@ after calling this function will follow the default behaviour.
 set_auto_scale(self, True_or_False)
 
 Call L{set_auto_scale} for all variables contained in this L{Dataset} or
-L{Group), as well as for all variables in all its subgroups.
+L{Group}, as well as for all variables in all its subgroups.
 
 B{Parameters}:
 
