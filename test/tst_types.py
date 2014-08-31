@@ -4,7 +4,7 @@ import os
 import tempfile
 import numpy as NP
 from numpy.testing import assert_array_equal, assert_array_almost_equal
-from numpy.random.mtrand import uniform 
+from numpy.random.mtrand import uniform
 import netCDF4
 
 # test primitive data types.
@@ -31,6 +31,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
             # test writing of _FillValue attribute for diff types
             # (should be cast to type of variable silently)
             foo[1:n1dim] = ranarr[1:n1dim]
+        v = file.createVariable('issue271', NP.dtype('S1'), [], fill_value=b'Z')
         file.close()
 
     def tearDown(self):
@@ -38,7 +39,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing primitive data type """ 
+        """testing primitive data type """
         file = netCDF4.Dataset(self.file)
         for typ in datatypes:
             data = file.variables['data_'+typ]
@@ -63,6 +64,10 @@ class PrimitiveTypesTestCase(unittest.TestCase):
             # check that variable elements not yet written are filled
             # with the specified _FillValue.
             assert_array_equal(datfilled,NP.asarray(data._FillValue,datfilled.dtype))
+        # issue 271 (_FillValue should be a byte for character arrays on
+        # Python 3)
+        v = file.variables['issue271']
+        assert(v._FillValue == b'Z')
         file.close()
 
 if __name__ == '__main__':

@@ -1,6 +1,8 @@
- version 1.1.1 (tag v.1.1.1rel)
+ version 1.1.1 (tag v1.1.1rel)
  ==============================
 
+ * make sure _FillValue is a byte for character arrays in Python 3 (issue
+   271).
  * add numpy to install_requires in setup.py (issue #282, fixes issue #211).
    'pip install netcdf4-python' will no longer fail if numpy not installed.
  * Fix for issue 278 (UnicodeDecodeError reading netcdf.h from setup.py with
@@ -15,7 +17,7 @@
  * Fix for issue #259 ("Cannot use broadcasting to set all elements of a
    Variable to a given value").
 
- version 1.1.0 (tag v.1.1.0rel)
+ version 1.1.0 (tag v1.1.0rel)
  =============================
 
  * revert weakref change, so that previous behaviour (Dimensions and Variables

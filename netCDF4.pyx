@@ -941,8 +941,13 @@ cdef _get_att(grp, int varid, name):
         ierr = nc_get_att_text(grp._grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        pstring =\
-        value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
+        if name == '_FillValue' and python3:
+            # make sure _FillValue for character arrays is a byte on python 3
+            # (issue 271).
+            pstring = bytes(value_arr)
+        else:
+            pstring =\
+            value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
         return pstring
     elif att_type == NC_STRING:
         if att_len == 1:
