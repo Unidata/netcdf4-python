@@ -612,6 +612,72 @@ object --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#set_auto_mask" class="summary-sig-name">set_auto_mask</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">True_or_False</span>)</span><br />
+      Call <a href="netCDF4.Dataset-class.html#set_auto_mask" 
+      class="link">set_auto_mask</a> for all variables contained in this <a
+      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
+      href="netCDF4.Group-class.html" class="link">Group</a>, as well as 
+      for all variables in all its subgroups.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#set_auto_maskandscale" class="summary-sig-name">set_auto_maskandscale</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">True_or_False</span>)</span><br />
+      Call <a href="netCDF4.Dataset-class.html#set_auto_maskandscale" 
+      class="link">set_auto_maskandscale</a> for all variables contained in
+      this <a href="netCDF4.Dataset-class.html" class="link">Dataset</a> or
+      <a href="netCDF4.Group-class.html" class="link">Group</a>, as well as
+      for all variables in all its subgroups.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#set_auto_scale" class="summary-sig-name">set_auto_scale</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">True_or_False</span>)</span><br />
+      Call <a href="netCDF4.Dataset-class.html#set_auto_scale" 
+      class="link">set_auto_scale</a> for all variables contained in this 
+      <a href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
+      href="netCDF4.Group-class.html" class="link">Group</a>, as well as 
+      for all variables in all its subgroups.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
           <td><span class="summary-sig"><a href="netCDF4.Dataset-class.html#set_fill_off" class="summary-sig-name">set_fill_off</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Sets the fill mode for a <a href="netCDF4.Dataset-class.html" 
       class="link">Dataset</a> open for writing to <code>off</code>.</td>
@@ -1334,6 +1400,100 @@ object --+
   </dl>
 </td></tr></table>
 </div>
+<a name="set_auto_mask"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_auto_mask</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">True_or_False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Call <a href="netCDF4.Dataset-class.html#set_auto_mask" 
+  class="link">set_auto_mask</a> for all variables contained in this <a 
+  href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
+  href="netCDF4.Group-class.html" class="link">Group</a>, as well as for 
+  all variables in all its subgroups.</p>
+  <p><b>Parameters</b>:</p>
+  <p><b><code>True_or_False</code></b> - Boolean determining if automatic 
+  conversion to masked arrays shall be applied for all variables.</p>
+  <p><b>Notes</b>:</p>
+  <p>Calling this function only affects existing variables. Variables 
+  created after calling this function will follow the default 
+  behaviour.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_auto_maskandscale"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_auto_maskandscale</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">True_or_False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Call <a href="netCDF4.Dataset-class.html#set_auto_maskandscale" 
+  class="link">set_auto_maskandscale</a> for all variables contained in 
+  this <a href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
+  href="netCDF4.Group-class.html" class="link">Group</a>, as well as for 
+  all variables in all its subgroups.</p>
+  <p><b>Parameters</b>:</p>
+  <p><b><code>True_or_False</code></b> - Boolean determining if automatic 
+  conversion to masked arrays and variable scaling shall be applied for all
+  variables.</p>
+  <p><b>Notes</b>:</p>
+  <p>Calling this function only affects existing variables. Variables 
+  created after calling this function will follow the default 
+  behaviour.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_auto_scale"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_auto_scale</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">True_or_False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Call <a href="netCDF4.Dataset-class.html#set_auto_scale" 
+  class="link">set_auto_scale</a> for all variables contained in this <a 
+  href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
+  href="netCDF4.Group-class.html" class="link">Group</a>, as well as for 
+  all variables in all its subgroups.</p>
+  <p><b>Parameters</b>:</p>
+  <p><b><code>True_or_False</code></b> - Boolean determining if automatic 
+  variable scaling shall be applied for all variables.</p>
+  <p><b>Notes</b>:</p>
+  <p>Calling this function only affects existing variables. Variables 
+  created after calling this function will follow the default 
+  behaviour.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
 <a name="set_fill_off"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1515,7 +1675,7 @@ object --+
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat May 17 08:44:23 2014
+    Generated by Epydoc 3.0.1 on Wed Sep  3 14:13:33 2014
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
