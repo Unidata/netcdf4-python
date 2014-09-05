@@ -1,3 +1,9 @@
+ version 1.1.2 (not yet released)
+ ================================
+
+ * Allow for null byte attributes (so _FillValue='\x00' can be set manually).
+   Issue 273.
+
  version 1.1.1 (tag v1.1.1rel)
  ==============================
 
