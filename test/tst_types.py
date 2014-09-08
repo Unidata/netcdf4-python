@@ -17,6 +17,8 @@ ranarr = 100.*uniform(size=(n1dim,n2dim))
 zlib=False;complevel=0;shuffle=0;least_significant_digit=None
 datatypes = ['f8','f4','i1','i2','i4','i8','u1','u2','u4','u8','S1']
 FillValue = 1.0
+issue273_data = NP.ma.array(['z']*10,dtype='S1',\
+mask=[False,False,False,False,False,True,False,False,False,False])
 
 class PrimitiveTypesTestCase(unittest.TestCase):
 
@@ -32,6 +34,9 @@ class PrimitiveTypesTestCase(unittest.TestCase):
             # (should be cast to type of variable silently)
             foo[1:n1dim] = ranarr[1:n1dim]
         v = file.createVariable('issue271', NP.dtype('S1'), [], fill_value=b'Z')
+        v2 = file.createVariable('issue273', NP.dtype('S1'), 'n2',\
+                fill_value='\x00')
+        v2[:] = issue273_data
         file.close()
 
     def tearDown(self):
@@ -67,7 +72,17 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         # issue 271 (_FillValue should be a byte for character arrays on
         # Python 3)
         v = file.variables['issue271']
-        assert(v._FillValue == b'Z')
+        if type(v._FillValue) == bytes:
+            assert(v._FillValue == b'Z') # python 3
+        else:
+            assert(v._FillValue == u'Z') # python 2
+        # issue 273 (setting _FillValue to null byte manually)
+        v2 = file.variables['issue273']
+        if type(v2._FillValue) == bytes:
+            assert(v2._FillValue == b'\x00') # python 3
+        else:
+            assert(v2._FillValue == u'') # python 2
+        assert(str(issue273_data) == str(v2[:]))
         file.close()
 
 if __name__ == '__main__':

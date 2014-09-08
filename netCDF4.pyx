@@ -810,7 +810,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 
 # Initialize numpy
 import posixpath
@@ -1059,6 +1059,9 @@ cdef _set_att(grp, int varid, name, value):
             dats = _strencode(''.join(value_arr1.tolist()))
         lenarr = len(dats)
         datstring = dats
+        if lenarr == 0:
+            # write null byte
+            lenarr=1; datstring = '\x00'
         ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
