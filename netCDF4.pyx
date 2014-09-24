@@ -1523,7 +1523,7 @@ filepath method not enabled.  To enable, install Cython, make sure you have
 version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
 
-    def __str__(self):
+    def __repr__(self):
         if python3:
            return self.__unicode__()
         else:
@@ -2195,7 +2195,7 @@ determine if the dimension is unlimited"""
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
-    def __str__(self):
+    def __repr__(self):
         if python3:
            return self.__unicode__()
         else:
@@ -2627,7 +2627,7 @@ instance. If C{None}, the data is not truncated. """
 	# (issue 216).
         return self[...]
 
-    def __str__(self):
+    def __repr__(self):
         if python3:
            return self.__unicode__()
         else:
@@ -3776,7 +3776,7 @@ the user.
         self.dtype = dt
         self.name = dtype_name
 
-    def __str__(self):
+    def __repr__(self):
         if python3:
            return self.__unicode__()
         else:
@@ -3996,7 +3996,7 @@ the user.
         else:
             self.name = dtype_name
 
-    def __str__(self):
+    def __repr__(self):
         if python3:
            return self.__unicode__()
         else:
