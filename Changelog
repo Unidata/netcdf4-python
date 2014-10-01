@@ -3,7 +3,10 @@
 
  * Allow for null byte attributes (so _FillValue='\x00' can be set manually).
    Issue 273.
- * Added __repr__ (matching __str__) for all types.
+ * Added __repr__ (matching __str__) for all types (pull request #291). 
+   IPython uses __repr__ to make use-friendly human-readable summaries
+   of objects in the terminal.
+ 
 
  version 1.1.1 (tag v1.1.1rel)
  ==============================
