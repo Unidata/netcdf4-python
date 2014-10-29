@@ -1277,7 +1277,7 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','_isprimitive',
- 'file_format','_isvlen','_iscompound','_cmptype','_vltype','keepweakref']
+ 'file_format','_isvlen','_iscompound','_cmptype','_vltype','keepweakref','name']
 
 
 cdef class Dataset:
@@ -1795,14 +1795,16 @@ the C{__dict__} attribute of a L{Variable} instance.
 
 L{Variable} instances behave much like array objects. Data can be
 assigned to or retrieved from a variable with indexing and slicing
-operations on the L{Variable} instance. A L{Variable} instance has five
-Dataset standard attributes: C{dimensions, dtype, shape, ndim} and
+operations on the L{Variable} instance. A L{Variable} instance has six
+Dataset standard attributes: C{dimensions, dtype, shape, ndim, name} and
 C{least_significant_digit}. Application programs should never modify
 these attributes. The C{dimensions} attribute is a tuple containing the
 names of the dimensions associated with this variable. The C{dtype}
 attribute is a string describing the variable's data type (C{i4, f8,
 S1,} etc). The C{shape} attribute is a tuple describing the current
-sizes of all the variable's dimensions. The C{least_significant_digit}
+sizes of all the variable's dimensions. The C{name} attribute is a
+string containing the name of the Variable instance.
+The C{least_significant_digit}
 attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
@@ -2134,17 +2136,21 @@ overrides L{Dataset} close method which does not apply to L{Group}
 instances, raises IOError."""
         raise IOError('cannot close a L{Group} (only applies to Dataset)')
 
-    def name(self):
-        """
-name(self)
-
-return name associated with L{Group} object."""
+    def _getname(self):
+        # private method to get name associated with instance.
         cdef int err
         cdef char namstring[NC_MAX_NAME+1]
         ierr = nc_inq_grpname(self._grp._grpid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         return namstring.decode(default_encoding,unicode_error)
+
+    property name:
+        """string name of Group instance"""
+        def __get__(self):
+            return self._getname()
+        def __set__(self,value):
+            raise AttributeError("name cannot be altered")
 
 
 cdef class Dimension:
@@ -2207,17 +2213,21 @@ determine if the dimension is unlimited"""
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
-    def name(self):
-        """
-name(self)
-
-return name associated with L{Dimension} object."""
+    def _getname(self):
+        # private method to get name associated with instance.
         cdef int err
         cdef char namstring[NC_MAX_NAME+1]
         ierr = nc_inq_dimname(self._grp._grpid, self._dimid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         return namstring.decode(default_encoding,unicode_error)
+
+    property name:
+        """string name of Dimension instance"""
+        def __get__(self):
+            return self._getname()
+        def __set__(self,value):
+            raise AttributeError("name cannot be altered")
 
     def __repr__(self):
         if python3:
@@ -2731,6 +2741,22 @@ instance. If C{None}, the data is not truncated. """
             dimensions = dimensions + (name,)
         return dimensions
 
+    def _getname(self):
+        # Private method to get name associated with instance
+        cdef int err
+        cdef char namstring[NC_MAX_NAME+1]
+        ierr = nc_inq_varname(self._grp._grpid, self._varid, namstring)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        return namstring.decode(default_encoding,unicode_error)
+
+    property name:
+        """string name of Variable instance"""
+        def __get__(self):
+            return self._getname()
+        def __set__(self,value):
+            raise AttributeError("name cannot be altered")
+
     property datatype:
         """numpy data type (for primitive data types) or VLType/CompoundType instance (for compound or vlen data types)"""
         def __get__(self):
@@ -2740,18 +2766,6 @@ instance. If C{None}, the data is not truncated. """
                 return self._vltype
             elif self._isprimitive:
                 return self.dtype
-
-    def name(self):
-        """
-name(self)
-
-return name associated with L{Variable} object."""
-        cdef int err
-        cdef char namstring[NC_MAX_NAME+1]
-        ierr = nc_inq_varname(self._grp._grpid, self._varid, namstring)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        return namstring.decode(default_encoding,unicode_error)
 
     property shape:
         """find current sizes of all variable dimensions"""
