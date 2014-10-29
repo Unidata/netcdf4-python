@@ -2134,6 +2134,18 @@ overrides L{Dataset} close method which does not apply to L{Group}
 instances, raises IOError."""
         raise IOError('cannot close a L{Group} (only applies to Dataset)')
 
+    def name(self):
+        """
+name(self)
+
+return name associated with L{Group} object."""
+        cdef int err
+        cdef char namstring[NC_MAX_NAME+1]
+        ierr = nc_inq_grpname(self._grp._grpid, namstring)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        return namstring.decode(default_encoding,unicode_error)
+
 
 cdef class Dimension:
     """
@@ -2194,6 +2206,18 @@ determine if the dimension is unlimited"""
             if grp.data_model != 'NETCDF4': grp._enddef()
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+
+    def name(self):
+        """
+name(self)
+
+return name associated with L{Dimension} object."""
+        cdef int err
+        cdef char namstring[NC_MAX_NAME+1]
+        ierr = nc_inq_dimname(self._grp._grpid, self._dimid, namstring)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        return namstring.decode(default_encoding,unicode_error)
 
     def __repr__(self):
         if python3:
@@ -2716,6 +2740,18 @@ instance. If C{None}, the data is not truncated. """
                 return self._vltype
             elif self._isprimitive:
                 return self.dtype
+
+    def name(self):
+        """
+name(self)
+
+return name associated with L{Variable} object."""
+        cdef int err
+        cdef char namstring[NC_MAX_NAME+1]
+        ierr = nc_inq_varname(self._grp._grpid, self._varid, namstring)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        return namstring.decode(default_encoding,unicode_error)
 
     property shape:
         """find current sizes of all variable dimensions"""
