@@ -531,7 +531,7 @@ def _dateparse(timestr):
         raise ValueError("no 'since' in unit_string")
     # parse the date string.
     n = timestr.find('since')+6
-    year,month,day,hour,minute,second,utc_offset = _parse_date(timestr[n:])
+    year,month,day,hour,minute,second,utc_offset = _parse_date(timestr[n:].strip())
     return units, utc_offset, datetime(year, month, day, hour, minute, second)
 
 class utime:

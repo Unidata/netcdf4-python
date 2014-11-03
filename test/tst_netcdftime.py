@@ -23,6 +23,7 @@ class netcdftimeTestCase(unittest.TestCase):
         self.cdftime_360day = utime('days since 1600-02-30 00:00:00',calendar='360_day')
         self.cdftime_jul = utime('hours since 1000-01-01 00:00:00',calendar='julian')
         self.cdftime_iso = utime("seconds since 1970-01-01T00:00:00Z")
+        self.cdftime_leading_space = utime("days since  850-01-01 00:00:00")
 
     def runTest(self):
         """testing netcdftime"""
@@ -135,7 +136,7 @@ class netcdftimeTestCase(unittest.TestCase):
         # check date2num,num2date methods.
         # use datetime from netcdftime, since this date doesn't
         # exist in "normal" calendars.
-        d = datetimex(2000,2,30) 
+        d = datetimex(2000,2,30)
         t1 = self.cdftime_360day.date2num(d)
         assert_almost_equal(t1,360*400.)
         d2 = self.cdftime_360day.num2date(t1)
@@ -151,7 +152,7 @@ class netcdftimeTestCase(unittest.TestCase):
         # Check fraction
         d = datetime(1969, 12, 30, 12)
         t = self.cdftime_360day.date2num(d)
-        date = self.cdftime_360day.num2date(t)  
+        date = self.cdftime_360day.num2date(t)
         assert_equal(str(d), str(date))
         # test proleptic julian calendar.
         d = datetime(1858,11,17,12)
@@ -177,14 +178,14 @@ class netcdftimeTestCase(unittest.TestCase):
         t = 733498.999999
         d = num2date(t,units='days since 0001-01-01 00:00:00')
         assert_equal(str(d),'2009-04-01 00:00:00')
-        # Check equality testing 
+        # Check equality testing
         d1 = datetimex(1979,6,21,9,23,12)
         d2 = datetime(1979,6,21,9,23,12)
         assert(d1 == d2)
         # check timezone offset
         d = datetime(2012,2,29,15)
         assert(self.cdftime_mixed.date2num(d)-self.cdftime_mixed_tz.date2num(d) == 6)
-        
+
         # Check comparisons with Python datetime types
         d1 = num2date(0, 'days since 1000-01-01', 'standard')
         d2 = datetime(2000, 1, 1)
@@ -227,6 +228,8 @@ class netcdftimeTestCase(unittest.TestCase):
         with self.assertRaises(AttributeError):
             d1.format = '%Y'
 
+	# Check leading white space
+        self.assertEqual(repr(self.cdftime_leading_space.origin), ' 850-01-01 00:00:00')
 
 class TestDate2index(unittest.TestCase):
 
@@ -239,7 +242,7 @@ class TestDate2index(unittest.TestCase):
             corresponds to dates in the given units and calendar. `start`, `n`
             and `step` define the starting date, the length of the array and
             the distance between each date (in units).
-           
+
             :Example:
             >>> t = TestTime(datetime(1989, 2, 18), 45, 6, 'hours since 1979-01-01')
             >>> print num2date(t[1], t.units)
@@ -256,12 +259,12 @@ class TestDate2index(unittest.TestCase):
 
         def __len__(self):
             return len(self._data)
-        
+
         def shape():
             def fget(self):
                 return self._data.shape
             return locals()
-            
+
         shape = property(**shape())
 
 
@@ -277,18 +280,18 @@ class TestDate2index(unittest.TestCase):
         time[:] = self.standardtime[:]
         f.createDimension('time2', 1)
         time2 = f.createVariable('time2', 'f8', ('time2',))
-        time2.units = 'days since 1901-01-01' 
+        time2.units = 'days since 1901-01-01'
         self.first_timestamp = datetime(2000, 1, 1)
         time2[0] = date2num(self.first_timestamp, time2.units)
         f.close()
-        
+
     def tearDown(self):
         os.remove(self.file)
-        
+
     def test_simple(self):
         t = date2index(datetime(1950,2,1), self.standardtime)
         assert_equal(t, 31)
-   
+
     def test_singletime(self):
         # issue 215 test (date2index with time variable length == 1)
         f = Dataset(self.file)
@@ -305,77 +308,77 @@ class TestDate2index(unittest.TestCase):
         """Check that the fallback mechanism works. """
         nutime = self.TestTime(datetime(1950, 1, 1), 366, 24,
           'hours since 1900-01-01', 'standard')
-          
+
         # Let's remove the second entry, so that the computed stride is not
         # representative and the bisection method is needed.
         nutime._data = nutime._data[numpy.r_[0,slice(2,200)]]
-       
-        t = date2index(datetime(1950,2,1), nutime)
-        assert_equal(t, 30)       
 
-       
+        t = date2index(datetime(1950,2,1), nutime)
+        assert_equal(t, 30)
+
+
         t = date2index([datetime(1950,2,1), datetime(1950,2,3)], nutime)
-        assert_equal(t, [30, 32])       
-        
-    
+        assert_equal(t, [30, 32])
+
+
     def test_failure(self):
         nutime = self.TestTime(datetime(1950, 1, 1), 366, 24,
           'hours since 1900-01-01', 'standard')
         try:
-            t = date2index(datetime(1949,2,1), nutime)  
+            t = date2index(datetime(1949,2,1), nutime)
         except ValueError:
             pass
         else:
             raise ValueError('This test should have failed.')
-                
+
     def test_select_dummy(self):
         nutime = self.TestTime(datetime(1950, 1, 1), 366, 24,
           'hours since 1900-01-01', 'standard')
-        
+
         dates = [datetime(1950,1,2,6), datetime(1950,1,3), datetime(1950,1,3,18)]
-        
+
         t = date2index(dates, nutime, select='before')
         assert_equal(t, [1, 2, 2])
-        
+
         t = date2index(dates, nutime, select='after')
         assert_equal(t, [2, 2, 3])
-        
+
         t = date2index(dates, nutime, select='nearest')
         assert_equal(t, [1,2,3])
-        
-    
+
+
     def test_select_nc(self):
         f = Dataset(self.file, 'r')
         nutime = f.variables['time']
-        
+
         dates = [datetime(1950,1,2,6), datetime(1950,1,3), datetime(1950,1,3,18)]
-        
+
         t = date2index(dates, nutime, select='before')
         assert_equal(t, [1, 2, 2])
-        
+
         t = date2index(dates, nutime, select='after')
         assert_equal(t, [2, 2, 3])
-        
+
         t = date2index(dates, nutime, select='nearest')
         assert_equal(t, [1,2,3])
-    
+
         # Test dates outside the support with select
         t = date2index(datetime(1949,12,1), nutime, select='nearest')
         assert_equal(t, 0)
-        
+
         t = date2index(datetime(1978,1,1), nutime, select='nearest')
         assert_equal(t, 365)
-        
+
         # Test dates outside the support with before
         self.assertRaises(ValueError, date2index, datetime(1949,12,1), nutime, select='before')
-        
+
         t = date2index(datetime(1978,1,1), nutime, select='before')
         assert_equal(t, 365)
-        
+
         # Test dates outside the support with after
         t = date2index(datetime(1949,12,1), nutime, select='after')
         assert_equal(t, 0)
-        
+
         self.assertRaises(ValueError, date2index, datetime(1978,1,1), nutime, select='after')
         # test microsecond and millisecond units
         unix_epoch = "milliseconds since 1970-01-01T00:00:00Z"
@@ -398,6 +401,6 @@ class TestDate2index(unittest.TestCase):
         for date,date2 in zip(dates,dates2):
             assert_equal(date.replace(tzinfo=tzutc()), date2)
         f.close()
-        
+
 if __name__ == '__main__':
     unittest.main()
