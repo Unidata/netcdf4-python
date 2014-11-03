@@ -23,6 +23,7 @@ class netcdftimeTestCase(unittest.TestCase):
         self.cdftime_360day = utime('days since 1600-02-30 00:00:00',calendar='360_day')
         self.cdftime_jul = utime('hours since 1000-01-01 00:00:00',calendar='julian')
         self.cdftime_iso = utime("seconds since 1970-01-01T00:00:00Z")
+	self.cdftime_leading_space = utime("days since  850-01-01 00:00:00")
 
     def runTest(self):
         """testing netcdftime"""
@@ -227,6 +228,8 @@ class netcdftimeTestCase(unittest.TestCase):
         with self.assertRaises(AttributeError):
             d1.format = '%Y'
 
+	# Check leading white space
+	self.assertEqual(repr(self.cdftime_leading_space.origin), ' 850-01-01 00:00:00')
 
 class TestDate2index(unittest.TestCase):
 
