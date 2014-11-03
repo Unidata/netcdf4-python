@@ -30,8 +30,10 @@ def test(verbosity=1):
     runner.run(testsuite)
 
 if __name__ == '__main__':
+    import numpy
     test(verbosity=1)
     sys.stdout.write('\n')
     sys.stdout.write('netcdf4-python version: %s\n' % __version__)
     sys.stdout.write('HDF5 lib version:       %s\n' % __hdf5libversion__)
     sys.stdout.write('netcdf lib version:     %s\n' % __netcdf4libversion__)
+    sys.stdout.write('numpy version           %s\n' % numpy.__version__)
