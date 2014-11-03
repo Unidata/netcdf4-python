@@ -3,11 +3,11 @@ Performs conversions of netCDF time coordinate data to/from datetime objects.
 """
 import operator
 import numpy as np
-import pytesmo.timedate.julian as pytesmojd
 import math
 import numpy
 import re
 import time
+from itertools import izip
 from datetime import datetime as real_datetime
 from datetime import tzinfo, timedelta
 from calendar import monthrange
@@ -46,25 +46,32 @@ and format.
 
     def __init__(self, year, month, day, hour=0, minute=0, second=0, dayofwk=-1, dayofyr=1):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
-        self._year = year
-        self._month = month
-        self._day = day
-        self._hour = hour
-        self._minute = minute
-        self._dayofwk = dayofwk
-        self._dayofyr = dayofyr
-        self._second = second
-        self._format = '%Y-%m-%d %H:%M:%S'
 
-    year = property(lambda self: self._year)
-    month = property(lambda self: self._month)
-    day = property(lambda self: self._day)
-    hour = property(lambda self: self._hour)
-    minute = property(lambda self: self._minute)
-    dayofwk = property(lambda self: self._dayofwk)
-    dayofyr = property(lambda self: self._dayofyr)
-    second = property(lambda self: self._second)
-    format = property(lambda self: self._format)
+        # set these attributes once using the object itself
+        # since the local __setattr__ method is overwritten
+        # to make the datetime object immutable
+        # this is done instead of properties
+        # because it is much faster
+        # for access
+        object.__setattr__(self, '_year', year)
+        object.__setattr__(self, '_month', month)
+        object.__setattr__(self, '_day', day)
+        object.__setattr__(self, '_hour', hour)
+        object.__setattr__(self, '_minute', minute)
+        object.__setattr__(self, '_dayofwk', dayofwk)
+        object.__setattr__(self, '_dayofyr', dayofyr)
+        object.__setattr__(self, '_second', second)
+        object.__setattr__(self, '_format', '%Y-%m-%d %H:%M:%S')
+
+        object.__setattr__(self, 'year', self._year)
+        object.__setattr__(self, 'month', self._month)
+        object.__setattr__(self, 'day', self._day)
+        object.__setattr__(self, 'hour', self._hour)
+        object.__setattr__(self, 'minute', self._minute)
+        object.__setattr__(self, 'dayofwk', self._dayofwk)
+        object.__setattr__(self, 'dayofyr', self._dayofyr)
+        object.__setattr__(self, 'second', self._second)
+        object.__setattr__(self, 'format', self._format)
 
     def strftime(self, format=None):
         if format is None:
@@ -113,6 +120,13 @@ and format.
     def __ge__(self, other):
         return self._compare(operator.ge, other)
 
+    def __setattr__(self, name, value):
+        if name in ['year', 'month', 'day', 'hour', 'minute',
+                    'dayofwk', 'dayofyr', 'second', 'format']:
+            raise AttributeError("%s can not be set." % name)
+        else:
+            super(datetime, self).__setattr__(name, value)
+
 
 def JulianDayFromDate(date, calendar='standard'):
     """
@@ -136,45 +150,60 @@ def JulianDayFromDate(date, calendar='standard'):
 
     # based on redate.py by David Finlayson.
 
-    year = date.year
-    month = date.month
-    day = date.day
-    hour = date.hour
-    minute = date.minute
-    second = date.second
+    # check if input was scalar and change return accordingly
+    isscalar = False
+    try:
+        date[0]
+    except:
+        isscalar = True
+
+    date = np.atleast_1d(np.array(date))
+    year = np.empty(len(date), dtype=np.int32)
+    month = year.copy()
+    day = year.copy()
+    hour = year.copy()
+    minute = year.copy()
+    second = year.copy()
+    for i, d in enumerate(date):
+        year[i] = d.year
+        month[i] = d.month
+        day[i] = d.day
+        hour[i] = d.hour
+        minute[i] = d.minute
+        second[i] = d.second
     # Convert time to fractions of a day
     day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
 
     # Start Meeus algorithm (variables are in his notation)
-    if (month < 3):
-        month = month + 12
-        year = year - 1
+    month_lt_3 = month < 3
+    month[month_lt_3] = month[month_lt_3] + 12
+    year[month_lt_3] = year[month_lt_3] - 1
 
-    A = int(year / 100)
+    A = np.int64(year / 100)
 
     # MC
     # jd = int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + \
     #      day - 1524.5
-    jd = 365. * year + int(0.25 * year + 2000.) + int(30.6001 * (month + 1)) + \
+    jd = 365. * year + np.int32(0.25 * year + 2000.) + np.int32(30.6001 * (month + 1)) + \
         day + 1718994.5
 
     # optionally adjust the jd for the switch from
     # the Julian to Gregorian Calendar
     # here assumed to have occurred the day after 1582 October 4
     if calendar in ['standard', 'gregorian']:
-        if jd >= 2299170.5:
+        if np.min(jd) >= 2299170.5:
             # 1582 October 15 (Gregorian Calendar)
-            B = 2 - A + int(A / 4)
-        elif jd < 2299160.5:
+            B = 2 - A + np.int32(A / 4)
+        elif np.max(jd) < 2299160.5:
             # 1582 October 5 (Julian Calendar)
-            B = 0
+            B = np.zeros(len(jd))
         else:
             raise ValueError(
                 'impossible date (falls in gap between end of Julian calendar and beginning of Gregorian calendar')
     elif calendar == 'proleptic_gregorian':
-        B = 2 - A + int(A / 4)
+        B = 2 - A + np.int32(A / 4)
     elif calendar == 'julian':
-        B = 0
+        B = np.zeros(len(jd))
     else:
         raise ValueError(
             'unknown calendar, must be one of julian,standard,gregorian,proleptic_gregorian, got %s' % calendar)
@@ -182,7 +211,10 @@ def JulianDayFromDate(date, calendar='standard'):
     # adjust for Julian calendar if necessary
     jd = jd + B
 
-    return jd
+    if isscalar:
+        return jd[0]
+    else:
+        return jd
 
 
 def _NoLeapDayFromDate(date):
@@ -301,7 +333,7 @@ def DateFromJulianDay(JD, calendar='standard'):
 
     dayofwk = np.atleast_1d(np.int32(np.fmod(np.int32(julian + 1.5), 7)))
     # get the day (Z) and the fraction of the day (F)
-    # add 0.000005 in case of jd being after
+    # add 0.000005 which is 452 ms in case of jd being after
     # second 59 of a day we want to round to the next day see issue #75
     Z = np.atleast_1d(np.int32(np.round(julian + 0.000005)))
     F = np.atleast_1d(julian + 0.5 - Z).astype(np.float64)
@@ -397,30 +429,35 @@ def DateFromJulianDay(JD, calendar='standard'):
     #        month = 1
     #        year = year + 1
 
+    # check if input was scalar and change return accordingly
+    isscalar = False
+    try:
+        JD[0]
+    except:
+        isscalar = True
     # return a 'real' datetime instance if calendar is gregorian.
     if calendar in 'proleptic_gregorian' or \
             (calendar in ['standard', 'gregorian'] and len(ind_before) == 0):
-        if type(JD) == np.array or type(JD) == np.memmap or \
-                type(JD) == np.ndarray or type(JD) == np.flatiter:
-
+        if not isscalar:
             return np.array([real_datetime(y, m, d, h, mi, s, ms)
                              for y, m, d, h, mi, s, ms in
-                             zip(year, month, day, hour, minute,
-                                 second, microsecond)])
+                             izip(year, month, day, hour, minute,
+                                  second, microsecond)])
 
-        return real_datetime(year, month, day, hour, minute, second,
-                             microsecond)
+        else:
+            return real_datetime(year, month, day, hour, minute, second,
+                                 microsecond)
     else:
         # or else, return a 'datetime-like' instance.
-        if type(JD) == np.array or type(JD) == np.memmap or \
-                type(JD) == np.ndarray or type(JD) == np.flatiter:
-
+        if not isscalar:
             return np.array([datetime(y, m, d, h, mi, s, dwk, dyr)
                              for y, m, d, h, mi, s, dwk, dyr in
-                             zip(year, month, day, hour, minute,
-                                 second, dayofwk, dayofyr)])
-        return datetime(year[0], month[0], day[0], hour[0], minute[0], second[0],
-                        dayofwk[0], dayofyr[0])
+                             izip(year, month, day, hour, minute,
+                                  second, dayofwk, dayofyr)])
+        else:
+            return datetime(year[0], month[0], day[0], hour[0],
+                            minute[0], second[0], dayofwk[0],
+                            dayofyr[0])
 
 
 def _DateFromNoLeapDay(JD):
@@ -788,8 +825,8 @@ units to datetime objects.
             if isscalar:
                 jdelta = JulianDayFromDate(date, self.calendar) - self._jd0
             else:
-                jdelta = [
-                    JulianDayFromDate(d, self.calendar) - self._jd0 for d in date.flat]
+                jdelta = JulianDayFromDate(
+                    date.flat, self.calendar) - self._jd0
         elif self.calendar in ['noleap', '365_day']:
             if isscalar:
                 if date.month == 2 and date.day == 29:
