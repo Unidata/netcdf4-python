@@ -47,12 +47,6 @@ and format.
     def __init__(self, year, month, day, hour=0, minute=0, second=0, dayofwk=-1, dayofyr=1):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
 
-        # set these attributes once using the object itself
-        # since the local __setattr__ method is overwritten
-        # to make the datetime object immutable
-        # this is done instead of properties
-        # because it is much faster
-        # for access
         self._year = year
         self._month = month
         self._day = day
