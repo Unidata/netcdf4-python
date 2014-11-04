@@ -53,25 +53,25 @@ and format.
         # this is done instead of properties
         # because it is much faster
         # for access
-        object.__setattr__(self, '_year', year)
-        object.__setattr__(self, '_month', month)
-        object.__setattr__(self, '_day', day)
-        object.__setattr__(self, '_hour', hour)
-        object.__setattr__(self, '_minute', minute)
-        object.__setattr__(self, '_dayofwk', dayofwk)
-        object.__setattr__(self, '_dayofyr', dayofyr)
-        object.__setattr__(self, '_second', second)
-        object.__setattr__(self, '_format', '%Y-%m-%d %H:%M:%S')
+        self._year = year
+        self._month = month
+        self._day = day
+        self._hour = hour
+        self._minute = minute
+        self._dayofwk = dayofwk
+        self._dayofyr = dayofyr
+        self._second = second
+        self._format = '%Y-%m-%d %H:%M:%S'
 
-        object.__setattr__(self, 'year', self._year)
-        object.__setattr__(self, 'month', self._month)
-        object.__setattr__(self, 'day', self._day)
-        object.__setattr__(self, 'hour', self._hour)
-        object.__setattr__(self, 'minute', self._minute)
-        object.__setattr__(self, 'dayofwk', self._dayofwk)
-        object.__setattr__(self, 'dayofyr', self._dayofyr)
-        object.__setattr__(self, 'second', self._second)
-        object.__setattr__(self, 'format', self._format)
+    year = property(lambda self: self._year)
+    month = property(lambda self: self._month)
+    day = property(lambda self: self._day)
+    hour = property(lambda self: self._hour)
+    minute = property(lambda self: self._minute)
+    dayofwk = property(lambda self: self._dayofwk)
+    dayofyr = property(lambda self: self._dayofyr)
+    second = property(lambda self: self._second)
+    format = property(lambda self: self._format)
 
     def strftime(self, format=None):
         if format is None:
@@ -120,13 +120,6 @@ and format.
     def __ge__(self, other):
         return self._compare(operator.ge, other)
 
-    def __setattr__(self, name, value):
-        if name in ['year', 'month', 'day', 'hour', 'minute',
-                    'dayofwk', 'dayofyr', 'second', 'format']:
-            raise AttributeError("%s can not be set." % name)
-        else:
-            super(datetime, self).__setattr__(name, value)
-
 
 def JulianDayFromDate(date, calendar='standard'):
     """
@@ -164,13 +157,22 @@ def JulianDayFromDate(date, calendar='standard'):
     hour = year.copy()
     minute = year.copy()
     second = year.copy()
-    for i, d in enumerate(date):
-        year[i] = d.year
-        month[i] = d.month
-        day[i] = d.day
-        hour[i] = d.hour
-        minute[i] = d.minute
-        second[i] = d.second
+    if type(date[0]) == datetime:
+        for i, d in enumerate(date):
+            year[i] = d._year
+            month[i] = d._month
+            day[i] = d._day
+            hour[i] = d._hour
+            minute[i] = d._minute
+            second[i] = d._second
+    else:
+        for i, d in enumerate(date):
+            year[i] = d.year
+            month[i] = d.month
+            day[i] = d.day
+            hour[i] = d.hour
+            minute[i] = d.minute
+            second[i] = d.second
     # Convert time to fractions of a day
     day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
 
