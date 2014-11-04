@@ -334,9 +334,11 @@ def DateFromJulianDay(JD, calendar='standard'):
     dayofwk = np.atleast_1d(np.int32(np.fmod(np.int32(julian + 1.5), 7)))
     # get the day (Z) and the fraction of the day (F)
     # add 0.000005 which is 452 ms in case of jd being after
-    # second 59 of a day we want to round to the next day see issue #75
+    # second 23:59:59 of a day we want to round to the next day see issue #75
     Z = np.atleast_1d(np.int32(np.round(julian + 0.000005)))
-    F = np.atleast_1d(julian + 0.5 - Z).astype(np.float64)
+    # if date is after second 23:59:59 the fraction will be to low
+    # if we don't add 0.0001
+    F = np.atleast_1d(julian + 0.50001 - Z).astype(np.float64)
     if calendar in ['standard', 'gregorian']:
         # MC
         # alpha = int((Z - 1867216.25)/36524.25)
