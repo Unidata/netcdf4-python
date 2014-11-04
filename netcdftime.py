@@ -344,7 +344,7 @@ def DateFromJulianDay(JD, calendar='standard'):
         alpha = np.int32(((Z - 1867216.) - 0.25) / 36524.25)
         A = Z + 1 + alpha - np.int32(0.25 * alpha)
         # check if dates before oct 5th 1582 are in the array
-        ind_before = np.where(julian < 2299160.5)
+        ind_before = np.where(julian < 2299160.5)[0]
         if len(ind_before) > 0:
             A[ind_before] = Z[ind_before]
 
@@ -372,7 +372,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     day = B - D - np.int64(30.6001 * E) + F
     nday = B - D - 123
     dayofyr = nday - 305
-    ind_nday_before = np.where(nday <= 305)
+    ind_nday_before = np.where(nday <= 305)[0]
     if len(ind_nday_before) > 0:
         dayofyr[ind_nday_before] = nday[ind_nday_before] + 60
     # MC
@@ -399,7 +399,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     elif calendar in ['standard', 'gregorian']:
         leap[(year % 100 == 0) & (year % 400 != 0) & (julian < 2299160.5)] = 0
 
-    inc_idx = np.where((leap == 1) & (month > 2))
+    inc_idx = np.where((leap == 1) & (month > 2))[0]
     dayofyr[inc_idx] = dayofyr[inc_idx] + leap[inc_idx]
 
     eps = (1e-12 * np.abs(Z)).astype(np.float64)
