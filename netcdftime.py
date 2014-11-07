@@ -7,8 +7,11 @@ import math
 import numpy
 import re
 import time
-from itertools import izip
 from datetime import datetime as real_datetime
+try:
+    from itertools import izip
+except ImportError:  # python 3.x
+    izip = zip
 
 _units = ['days', 'hours', 'minutes', 'seconds',
           'day', 'hour', 'minute', 'second']
