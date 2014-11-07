@@ -9,8 +9,6 @@ import re
 import time
 from itertools import izip
 from datetime import datetime as real_datetime
-from datetime import tzinfo, timedelta
-from calendar import monthrange
 
 _units = ['days', 'hours', 'minutes', 'seconds',
           'day', 'hour', 'minute', 'second']
@@ -44,7 +42,8 @@ Instance variables are year,month,day,hour,minute,second,dayofwk,dayofyr
 and format.
     """
 
-    def __init__(self, year, month, day, hour=0, minute=0, second=0, dayofwk=-1, dayofyr=1):
+    def __init__(self, year, month, day, hour=0, minute=0, second=0,
+                 dayofwk=-1, dayofyr=1):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
 
         self._year = year
@@ -926,7 +925,6 @@ units to datetime objects.
                         else:
                             date.append(None)
                 else:
-                    # date = pytesmojd.julian2datetime(jd.flat)
                     date = DateFromJulianDay(jd.flat, self.calendar)
             else:
                 if ismasked and mask.item():
