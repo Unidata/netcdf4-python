@@ -1,15 +1,17 @@
  version 1.1.2 (not yet released)
  ================================
 
+ * Improved speed of num2date and date2num for standard, julian, gregorian
+   and proleptic gregorian calendars by vectorizing the functions. See Issue #296
  * Fix for issue #301 ("Datestring parser chokes on years with extra space").
  * Add name property for Dimension, Variable and Group instances (to access string
    name associated with instance).
  * Allow for null byte attributes (so _FillValue='\x00' can be set manually).
    Issue 273.
- * Added __repr__ (matching __str__) for all types (pull request #291). 
+ * Added __repr__ (matching __str__) for all types (pull request #291).
    IPython uses __repr__ to make use-friendly human-readable summaries
    of objects in the terminal.
- 
+
 
  version 1.1.1 (tag v1.1.1rel)
  ==============================
@@ -23,7 +25,7 @@
  * Make netcdftime.datetime immutable and hashable (issue 255).
  * Fix issue with slicing of scalar VLEN arrays (issue 270).
  * Add set_auto_mask and set_auto_scale methods to control auto scaling and
-   auto masking separately. (issue 269).  Also added set_auto_maskandscale, 
+   auto masking separately. (issue 269).  Also added set_auto_maskandscale,
    set_auto_scale, set_auto_mask Dataset/Group methods that recursively walk
    through all variables in the Dataset/Group.
  * Make sure file_format attribute propagated to Group instances (issue 265).
@@ -88,7 +90,7 @@
    http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
    "If you need a fill value for a byte variable, it is recommended that you
    explicitly define an appropriate _FillValue attribute, as generic utilities
-   such as ncdump will not assume a default fill value for byte variables".  
+   such as ncdump will not assume a default fill value for byte variables".
    ncinfo now returns fill mode information (issue 209).
 
  * check to see if filling was disabled before masking data equal to
@@ -107,7 +109,7 @@
 
  * more information displayed when Dataset or Group instance is printed.
 
- * fix for issue 194 (versions after 1.0.5 fail for netcdf 4.1.1, due to 
+ * fix for issue 194 (versions after 1.0.5 fail for netcdf 4.1.1, due to
    call to nc_inq_path, which was added in netcdf 4.1.2).  Fixed by adding
    compile time API check similar to what was done for nc_rename_grp.  If
    filepath Dataset method is called an exception will be raised at runtime
@@ -129,7 +131,7 @@
    (sometimes arrays of type 'U1' were being returned). Fixes intermittently failing
    test tst_compoundatt.py on python 3.3.
 
- * fix for issue 201 (if data associated with numpy array not the 
+ * fix for issue 201 (if data associated with numpy array not the
    same endian-ness as dtype, data was written incorrectly).  Now
    bytes are swapped if necessary.  Variable.endian() now returns
    'native' instead of None for NETCDF3 formatted files.  createVariable
@@ -144,7 +146,7 @@
 
  * fix for issue 197 (slicing of netCDF variables using lists of integers).
 
- * create 'path' attribute for group instance using posixpath, instead 
+ * create 'path' attribute for group instance using posixpath, instead
    of os.path (to ensure the unix path is used on all platforms). Issue 196.
 
  * fix for issue 196 (test failures on win32 due to files being deleted
@@ -154,14 +156,14 @@
  ================================
 
  * change setup.py to compile the Cython sources directly, if
-   cython is available. 
+   cython is available.
    This allows for "ifdef" like capability to modify source at compile time to
-   account for changes in netcdf API (e.g. the forthcoming addition of the 
+   account for changes in netcdf API (e.g. the forthcoming addition of the
    nc_rename_grp in version 4.3.1).
 
  * added a "renameGroup" method, which raises an exception if
    the netcdf lib version linked does not support it. Requires
-   netcdf >= 4.3.1. 
+   netcdf >= 4.3.1.
 
  * support for more than one missing value (missing_value attribute
    is a vector) when converting to masked array.
@@ -177,13 +179,13 @@
  * remove dos line feeds from nc3tonc4 (issue 181).
 
  * add datatype property for Variable that returns numpy dtype for primitive
-   datatypes (same as dtype attribute) but returns CompoundType or VLType 
+   datatypes (same as dtype attribute) but returns CompoundType or VLType
    instance for compound or vlen variables (issue 178).
 
  * fix logic for deciding where to look for nc-config in setup.py (issue 177).
 
- * issue a warning and don't try to apply scale_factor or add_offset if these 
-   attributes are not convertible to floats (issue 176). 
+ * issue a warning and don't try to apply scale_factor or add_offset if these
+   attributes are not convertible to floats (issue 176).
 
  * add filepath method to Dataset instance to return file path (or opendap
    URL) used to create Dataset (issue 172).
@@ -225,7 +227,7 @@
  * Don't try to set fletcher32 checksum on scalar variables (it causes HDF5
    to crash).  Fixes issue 150.
 
- * Add --istart/--istop options to nc3tonc4 (issue 148, courtesy of 
+ * Add --istart/--istop options to nc3tonc4 (issue 148, courtesy of
    Rich Signell).
 
  * fix for proleptic_gregorian in netcdftime.py (courtesy of Matthias Cuntz).
@@ -257,7 +259,7 @@
 
  version 1.0fix1
  ===============
-  
+
  * fix python 3 incompatibility in setup.py (issue 125).
 
  version 1.0 (svn revision 1164)
@@ -274,10 +276,10 @@
    Fixes issue 121.
 
  * added MacPorts portfile (so it can be installed via MacPorts
-   on macosx using a "local Portfile repository"). Installs 
+   on macosx using a "local Portfile repository"). Installs
    from svn HEAD using 'port install netcdf4-python'.
 
- * added experimental 'diskless' file capability (only added to the C 
+ * added experimental 'diskless' file capability (only added to the C
    lib after the 4.2 release).  Controlled by kwarg 'diskless' to
    netCDF4.Dataset (default False). diskless=True when creating a file
    results in a file that exists only in memory, closing the file
@@ -285,8 +287,8 @@
    which case it is persisted to a disk file on close.  diskless=True
    when opening a file creates an in-memory copy of the file for faster access.
 
- * add the ability to specify the location of the required libs 
-   (and whether to use nc-config) with setup.cfg, 
+ * add the ability to specify the location of the required libs
+   (and whether to use nc-config) with setup.cfg,
    instead of using environment variables.
 
  * fix ISO9601 date parser so it recognizes time zone offsets in time unit
@@ -294,9 +296,9 @@
 
  * add setncatts Dataset,Group and Variable method to add a bunch of
    attributes (given in a python dictionary) at once.  Speeds things
-   up for NETCDF3 and NETCDF4_CLASSIC files a lot, since nc_redef/nc_enddef  
-   not need to be called for each attribute (issue 85, r1113). Adding 1000 
-   attributes is about 35 times faster using setncatts to add them all at once. 
+   up for NETCDF3 and NETCDF4_CLASSIC files a lot, since nc_redef/nc_enddef
+   not need to be called for each attribute (issue 85, r1113). Adding 1000
+   attributes is about 35 times faster using setncatts to add them all at once.
    Makes no difference for NETCDF4 formatted files, since nc_redef/nc_enddef
    is not called.
 
@@ -443,7 +445,7 @@
 
  * add chunk_cache keyword to createVariable.  HDF5 default is 1mb, which can
    cause problems when creating 1000's of variables.  In such cases,
-   chunk_cache can be reduced, or set to zero.  
+   chunk_cache can be reduced, or set to zero.
 
  * add set_var_chunk_cache and get_var_chunk_cache Variable methods.
 
@@ -514,7 +516,7 @@ version 0.8.2 (svn revision 769)
 version 0.8.1 (svn revision 744)
 ================================
  * added 'cmptypes' and 'vltypes' Group/Dataset attributes, which contain
-   dictionaries that map the names of compound and vlen types to 
+   dictionaries that map the names of compound and vlen types to
    CompoundType and VLType instances.
 
  * Experimental variable-length (vlen) data type support added.
@@ -526,14 +528,14 @@ version 0.8.1 (svn revision 744)
 
  * In date2index, replaced the brute force method by the bisection method and
    added a 'select' keyword to find the index of the date before, after or
-   nearest the given date. 
+   nearest the given date.
 
  * Fixed bug occurring when indexing with a numpy array of length 1.
-   
+
  * Fixed bug that occured when -1 was used as a variable index.
 
  * enabled 'shared access' mode for NETCDF3 formatted files (mode='ws',
-   'r+s' or 'as'). Writes in shared mode are unbuffered, which can 
+   'r+s' or 'as'). Writes in shared mode are unbuffered, which can
    improve performance for non-sequential access.
 
  * fixed bug in renameVariable that caused failure when new name is longer
@@ -593,7 +595,7 @@ version 0.7.6 (svn revision 574)
   # you used to have to do this
   #var[0:10] = numpy.arange(10)
   # but now you can simply do this
-  var[:] = numpy.arange(10)  
+  var[:] = numpy.arange(10)
 
 version 0.7.5 (svn revision 549)
 ================================
@@ -627,7 +629,7 @@ version 0.7.3 (svn revision 501)
   on a per-variable basis.
   var.set_auto_maskandscale(True) turns automatic
   conversion on (it is off by default).
-* automatically pack/unpack short integer variables 
+* automatically pack/unpack short integer variables
   if scale_factor and add_offset variable attributes are set.
 * added support for masked arrays.  If you try to write a masked
   array to a variable with the missing_value or _FillValue attributes
@@ -636,13 +638,13 @@ version 0.7.3 (svn revision 501)
   or _FillValue attribute set, a masked array is returned with the
   appropriate values masked.
 * added date2num and num2date functions.
-* added capability to use 'fancy indexing' with variable objects 
+* added capability to use 'fancy indexing' with variable objects
   (i.e. using sequences of integers or booleans in slices). WARNING:
   if a sequence of integers or booleans is used to slice a netCDF4
   variable, all of the data in that dimension is read into a numpy
   array, and then the sequence is used to slice the numpy array,
   returning just the requested elements to the user.  This can
-  potentially gobble a lot of memory and degrade performance 
+  potentially gobble a lot of memory and degrade performance
   (especially if 'fancy indexing' is done on the left-most dimension).
 * added convenience functions stringtochar and chartostring for
   converting character arrays to arrays of fixed-length strings and
@@ -666,7 +668,7 @@ version 0.7.3 (svn revision 501)
   of netcdf-4 library used to build module.
 
 * if a variable has an unsupported datatype (such as 'compound', or
-  'vlen'), then instead of raising an exception, just skip it. 
+  'vlen'), then instead of raising an exception, just skip it.
   Print a useful error message when an attribute with an unsupported
   datatype is accessed.
 
@@ -684,8 +686,8 @@ version 0.7.3 (svn revision 501)
 * eliminated netCDF4_classic module (all file formats handled by
   netCDF4 module now).
 
-* removed all user-defined data type stuff (it was hacky and made 
-  the code too complex - wait till there is a real use case to 
+* removed all user-defined data type stuff (it was hacky and made
+  the code too complex - wait till there is a real use case to
   refactor and put back in).
 
 * added 'ndim' variable attribute (number of variable dimensions).
@@ -698,10 +700,10 @@ version 0.7.3 (svn revision 501)
   try to convert to one if it is not).  This allows numpy scalar arrays
   to work as slice indices.
 
-* (netCDF4_classic only) try to make sure file is not left in 'define mode' 
+* (netCDF4_classic only) try to make sure file is not left in 'define mode'
   when execption is raised.
 
-* if slicing a variable results in a array with shape (1,), just return 
+* if slicing a variable results in a array with shape (1,), just return
   a scalar (except for compound types).
 
 * added instructions for using the netCDF4_classic module to serve
@@ -710,7 +712,7 @@ version 0.7.3 (svn revision 501)
 * added --quiet and --chunk options to nc3tonc4.
 
 * Turned off zlib compression by default so as not to violate the
-  'principle of least surprise'.  Shuffle filter still activated 
+  'principle of least surprise'.  Shuffle filter still activated
   by default when zlib compression turned on.
 
 * Fixed bug in fletcher32 checksum activation call.  Renamed compression()
@@ -725,7 +727,7 @@ version 0.7.3 (svn revision 501)
 * reimplemented 'shape' and 'dimensions' variable attributes as
   properties.
 
-* fixed bug when 'chunking' keyword in createVariable was set to 'sub' 
+* fixed bug when 'chunking' keyword in createVariable was set to 'sub'
   (caused Bus Error on MacOS X).
 
 * Setting 'shuffle=0' keyword in createVariable was turning off
@@ -740,14 +742,14 @@ version 0.7.3 (svn revision 501)
   for datatype specification.
 
 * Improvements to MFDataset (now called MFnetCDF4_classic) by Rob Hetland.
- 
+
 20061121 - version 0.6.1
 ========================
 * bugfixes for negative strides.
 
 * bugfix for empty string attributes.
 
-* support for shared dimensions (variables can use dimensions defined 
+* support for shared dimensions (variables can use dimensions defined
   only in a parent group).  This doesn't actually work yet, because of
   a bug in netcdf-4.0-alpha17.
 
@@ -762,7 +764,7 @@ version 0.7.3 (svn revision 501)
 
 * updated to be compatible with netcdf-4.0-alpha17.
   Can now install pure-python netcdftime separately with setup-netcdftime.py.
-  netcdftime will try to use numpy, but fall back to Numeric if numpy 
+  netcdftime will try to use numpy, but fall back to Numeric if numpy
   not installed.
 
 * generated source files with a version of pyrex
@@ -798,14 +800,14 @@ version 0.7.3 (svn revision 501)
 
 * netCDF attributes can be deleted using python del (i.e. 'del dset.foo').
 
-* Moved examples from test and test_classic to examples and 
+* Moved examples from test and test_classic to examples and
   examples_classic directories.
 
 * Added proper unit tests (in test and test_classic directories).
 
 * NULL characters are removed from text attributes.
 
-* Variable _FillValue can be set using new keyword argument 'fill_value' 
+* Variable _FillValue can be set using new keyword argument 'fill_value'
   to createVariable Dataset and Group method.
 
 * docstrings now formatted with epydoc (http://epydoc.sf.net).
