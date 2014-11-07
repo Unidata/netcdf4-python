@@ -27,7 +27,7 @@ class VariablesTestCase(unittest.TestCase):
             x = f.createVariable('x','i',('x',))
             x.units = 'zlotys'
             dat = f.createVariable('data','i',('x','y','z',))
-            dat.name = 'phony data' 
+            dat.long_name = 'phony data'
             dat.missing_value = missval
             nx1 = nfile*ninc; nx2 = ninc*(nfile+1)
             #x[0:ninc] = np.arange(nfile*ninc,ninc*(nfile+1))
@@ -51,7 +51,7 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(datin.mask,data.mask)
         varin.set_auto_maskandscale(False)
         data2 = data.filled()
-        assert varin.name == 'phony data'
+        assert varin.long_name == 'phony data'
         assert len(varin) == nx
         assert varin.shape == (nx,ydim,zdim)
         assert varin.dimensions == ('x','y','z')
@@ -65,7 +65,7 @@ class VariablesTestCase(unittest.TestCase):
 class NonuniformTimeTestCase(unittest.TestCase):
     ninc = 365
     def setUp(self):
-        
+
         self.files = [tempfile.mktemp(".nc") for nfile in range(2)]
         for nfile,file in enumerate(self.files):
             f = Dataset(file,'w',format='NETCDF4_CLASSIC')
@@ -73,31 +73,31 @@ class NonuniformTimeTestCase(unittest.TestCase):
             f.createDimension('y',ydim)
             f.createDimension('z',zdim)
             f.history = 'created today'
-            
-            time = f.createVariable('time', 'f', ('time', )) 
+
+            time = f.createVariable('time', 'f', ('time', ))
             #time.units = 'days since {0}-01-01'.format(1979+nfile)
             yr = 1979+nfile
             time.units = 'days since %s-01-01' % yr
-            
+
             time.calendar = 'standard'
-            
+
             x = f.createVariable('x','f',('time', 'y', 'z'))
             x.units = 'potatoes per square mile'
-            
-            nx1 = self.ninc*nfile; 
+
+            nx1 = self.ninc*nfile;
             nx2 = self.ninc*(nfile+1)
-            
+
             time[:] = np.arange(self.ninc)
             x[:] = np.arange(nx1, nx2).reshape(self.ninc,1,1) * np.ones((1, ydim, zdim))
-            
+
             f.close()
-            
+
     def tearDown(self):
         # Remove the temporary files
         for file in self.files:
             os.remove(file)
-            
-            
+
+
     def runTest(self):
         # Get the real dates
         dates = []
@@ -106,18 +106,18 @@ class NonuniformTimeTestCase(unittest.TestCase):
             t = f.variables['time']
             dates.extend(num2date(t[:], t.units, t.calendar))
             f.close()
-        
+
         # Compare with the MF dates
         f = MFDataset(self.files,check=True)
         t = f.variables['time']
         mfdates = num2date(t[:], t.units, t.calendar)
-        
+
         T = MFTime(t)
         assert_equal(len(T), len(t))
         assert_equal(T.shape, t.shape)
         assert_equal(T.dimensions, t.dimensions)
         assert_equal(T.typecode(), t.typecode())
-        assert_array_equal(num2date(T[:], T.units, T.calendar), dates) 
+        assert_array_equal(num2date(T[:], T.units, T.calendar), dates)
         assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
         f.close()
 
