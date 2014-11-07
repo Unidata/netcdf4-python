@@ -9,9 +9,9 @@ import re
 import time
 from datetime import datetime as real_datetime
 try:
-    from itertools import izip
+    from itertools import izip as zip
 except ImportError:  # python 3.x
-    izip = zip
+    pass
 
 _units = ['days', 'hours', 'minutes', 'seconds',
           'day', 'hour', 'minute', 'second']
@@ -441,8 +441,8 @@ def DateFromJulianDay(JD, calendar='standard'):
         if not isscalar:
             return np.array([real_datetime(y, m, d, h, mi, s, ms)
                              for y, m, d, h, mi, s, ms in
-                             izip(year, month, day, hour, minute,
-                                  second, microsecond)])
+                             zip(year, month, day, hour, minute,
+                                 second, microsecond)])
 
         else:
             return real_datetime(year, month, day, hour, minute, second,
@@ -452,8 +452,8 @@ def DateFromJulianDay(JD, calendar='standard'):
         if not isscalar:
             return np.array([datetime(y, m, d, h, mi, s, dwk, dyr)
                              for y, m, d, h, mi, s, dwk, dyr in
-                             izip(year, month, day, hour, minute,
-                                  second, dayofwk, dayofyr)])
+                             zip(year, month, day, hour, minute,
+                                 second, dayofwk, dayofyr)])
         else:
             return datetime(year[0], month[0], day[0], hour[0],
                             minute[0], second[0], dayofwk[0],
