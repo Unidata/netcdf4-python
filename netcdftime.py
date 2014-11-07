@@ -333,10 +333,8 @@ def DateFromJulianDay(JD, calendar='standard'):
     # get the day (Z) and the fraction of the day (F)
     # add 0.000005 which is 452 ms in case of jd being after
     # second 23:59:59 of a day we want to round to the next day see issue #75
-    Z = np.atleast_1d(np.int32(np.round(julian + 0.000005)))
-    # if date is after second 23:59:59 the fraction will be to low
-    # if we don't add 0.0001
-    F = np.atleast_1d(julian + 0.50001 - Z).astype(np.float64)
+    Z = np.atleast_1d(np.int32(np.round(julian + 0.00005)))
+    F = np.atleast_1d(julian + 0.5 - Z).astype(np.float64)
     if calendar in ['standard', 'gregorian']:
         # MC
         # alpha = int((Z - 1867216.25)/36524.25)
@@ -369,7 +367,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     E = np.int32((B - D) / 30.6001)
 
     # Convert to date
-    day = B - D - np.int64(30.6001 * E) + F
+    day = np.clip(B - D - np.int64(30.6001 * E) + F, 1, None)
     nday = B - D - 123
     dayofyr = nday - 305
     ind_nday_before = np.where(nday <= 305)[0]
@@ -402,15 +400,11 @@ def DateFromJulianDay(JD, calendar='standard'):
     inc_idx = np.where((leap == 1) & (month > 2))[0]
     dayofyr[inc_idx] = dayofyr[inc_idx] + leap[inc_idx]
 
-    eps = (1e-12 * np.abs(Z)).astype(np.float64)
-    eps.clip(min=np.float64(1e-12), max=None)
-    hour = (F * 24. + eps).astype(np.int64)
-    hour.clip(min=0, max=23)
+    eps = np.clip((1e-12 * np.abs(Z)).astype(np.float64), np.float64(1e-12), None)
+    hour = np.clip((F * 24. + eps).astype(np.int64), 0, 23)
     F -= hour / 24.
-    minute = (F * 1440. + eps).astype(np.int64)
-    minute.clip(min=0, max=59)
-    second = (F - minute / 1440.) * 86400.
-    second.clip(min=0, max=None)
+    minute = np.clip((F * 1440. + eps).astype(np.int64), 0, 59)
+    second = np.clip((F - minute / 1440.) * 86400., 0, None)
     second = second.astype(np.int32)
     microsecond = ((second - np.int32(second)) * 1e6).astype(np.int32)
 
@@ -418,16 +412,6 @@ def DateFromJulianDay(JD, calendar='standard'):
     year = year.astype(np.int32)
     month = month.astype(np.int32)
     day = day.astype(np.int32)
-
-    # if days exceeds number allowed in a month, flip to next month.
-    # this fixes issue 75.
-    #daysinmonth = monthrange(year, month)[1]
-    # if days > daysinmonth:
-    #    days = 1
-    #    month = month + 1
-    #    if month > 12:
-    #        month = 1
-    #        year = year + 1
 
     # check if input was scalar and change return accordingly
     isscalar = False

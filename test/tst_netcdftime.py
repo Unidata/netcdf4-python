@@ -178,6 +178,11 @@ class netcdftimeTestCase(unittest.TestCase):
         t = 733498.999999
         d = num2date(t,units='days since 0001-01-01 00:00:00')
         assert_equal(str(d),'2009-04-01 00:00:00')
+        # test edge case of issue 75 for numerical problems
+        for t in (733498.999, 733498.9999, 733498.99999, 733498.999999, 733498.9999999):
+            d = num2date(t,units='days since 0001-01-01 00:00:00')
+            t2 = date2num(d,units='days since 0001-01-01 00:00:00')
+            assert(abs(t2-t) < 1e-5) # values should be less than second
         # Check equality testing
         d1 = datetimex(1979,6,21,9,23,12)
         d2 = datetime(1979,6,21,9,23,12)
