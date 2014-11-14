@@ -313,7 +313,8 @@ else:
 if has_cython and 'sdist' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
     # recompile netCDF4.pyx
-    extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
+    extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs),
+                  Extension('netcdftime._datetime', ['netcdftime/_datetime.pyx'])]
     # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
     if len(sys.argv) >= 2 and 'build' in sys.argv[1:] and os.path.exists('netCDF4.c'):
         os.remove('netCDF4.c')
@@ -342,7 +343,8 @@ if has_cython and 'sdist' not in sys.argv[1:]:
     cmdclass = {'build_ext': build_ext}
 else:
     # use existing netCDF4.c, don't need cython.
-    extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs)]
+    extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs),
+                  Extension('netcdftime._datetime', ['netcdftime/_datetime.c'])]
     cmdclass = {}
 
 setup(name = "netCDF4",
@@ -364,6 +366,7 @@ setup(name = "netCDF4",
                  "Topic :: Software Development :: Libraries :: Python Modules",
                  "Topic :: System :: Archiving :: Compression",
                  "Operating System :: OS Independent"],
-  py_modules = ["netcdftime","netCDF4_utils"],
+  py_modules = ["netCDF4_utils"],
+  packages = ['netcdftime'],
   ext_modules = extensions,
   **setuptools_extra_kwargs)
