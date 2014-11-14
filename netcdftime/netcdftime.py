@@ -11,7 +11,7 @@ try:
 except ImportError:  # python 3.x
     pass
 
-from _datetime import datetime
+from ._datetime import datetime
 
 _units = ['days', 'hours', 'minutes', 'seconds',
           'day', 'hour', 'minute', 'second']
