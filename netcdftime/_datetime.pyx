@@ -3,7 +3,10 @@ import operator
 import re
 import time
 
-class datetime(object):
+from cpython.object cimport PyObject_RichCompare
+
+
+cdef class datetime(object):
 
     """
 Phony datetime object which mimics the python datetime object,
@@ -18,30 +21,24 @@ phony datetime and with datetime.datetime objects.
 Instance variables are year,month,day,hour,minute,second,dayofwk,dayofyr
 and format.
     """
+    cdef readonly int year, month, day, hour, minute, dayofwk, dayofyr, second
 
     def __init__(self, year, month, day, hour=0, minute=0, second=0,
                  dayofwk=-1, dayofyr=1):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
 
-        self._year = year
-        self._month = month
-        self._day = day
-        self._hour = hour
-        self._minute = minute
-        self._dayofwk = dayofwk
-        self._dayofyr = dayofyr
-        self._second = second
-        self._format = '%Y-%m-%d %H:%M:%S'
+        self.year = year
+        self.month = month
+        self.day = day
+        self.hour = hour
+        self.minute = minute
+        self.dayofwk = dayofwk
+        self.dayofyr = dayofyr
+        self.second = second
 
-    year = property(lambda self: self._year)
-    month = property(lambda self: self._month)
-    day = property(lambda self: self._day)
-    hour = property(lambda self: self._hour)
-    minute = property(lambda self: self._minute)
-    dayofwk = property(lambda self: self._dayofwk)
-    dayofyr = property(lambda self: self._dayofyr)
-    second = property(lambda self: self._second)
-    format = property(lambda self: self._format)
+    property format:
+        def __get__(self):
+            return '%Y-%m-%d %H:%M:%S'
 
     def strftime(self, format=None):
         if format is None:
@@ -53,8 +50,8 @@ and format.
                 self.minute, self.second, self.dayofwk, self.dayofyr, -1)
 
     def _to_real_datetime(self):
-        return real_datetime(self._year, self._month, self._day,
-                             self._hour, self._minute, self._second)
+        return real_datetime(self.year, self.month, self.day,
+                             self.hour, self.minute, self.second)
 
     def __repr__(self):
         return self.strftime(self.format)
@@ -63,32 +60,15 @@ and format.
         try:
             d = self._to_real_datetime()
         except ValueError:
-            return hash(tuple(sorted(self.__dict__.items())))
+            return hash(self.timetuple())
         return hash(d)
 
-    def _compare(self, comparison_op, other):
+    def __richcmp__(self, other, int op):
         if hasattr(other, 'strftime'):
-            return comparison_op(self.strftime('%Y-%m-%d %H:%M:%S'),
-                                 other.strftime('%Y-%m-%d %H:%M:%S'))
+            self_str = self.strftime('%Y-%m-%d %H:%M:%S')
+            other_str = other.strftime('%Y-%m-%d %H:%M:%S')
+            return PyObject_RichCompare(self_str, other_str, op)
         return NotImplemented
-
-    def __eq__(self, other):
-        return self._compare(operator.eq, other)
-
-    def __ne__(self, other):
-        return self._compare(operator.ne, other)
-
-    def __lt__(self, other):
-        return self._compare(operator.lt, other)
-
-    def __le__(self, other):
-        return self._compare(operator.le, other)
-
-    def __gt__(self, other):
-        return self._compare(operator.gt, other)
-
-    def __ge__(self, other):
-        return self._compare(operator.ge, other)
 
 
 _illegal_s = re.compile(r"((^|[^%])(%%)*%s)")

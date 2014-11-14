@@ -67,22 +67,13 @@ def JulianDayFromDate(date, calendar='standard'):
     hour = year.copy()
     minute = year.copy()
     second = year.copy()
-    if type(date[0]) == datetime:
-        for i, d in enumerate(date):
-            year[i] = d._year
-            month[i] = d._month
-            day[i] = d._day
-            hour[i] = d._hour
-            minute[i] = d._minute
-            second[i] = d._second
-    else:
-        for i, d in enumerate(date):
-            year[i] = d.year
-            month[i] = d.month
-            day[i] = d.day
-            hour[i] = d.hour
-            minute[i] = d.minute
-            second[i] = d.second
+    for i, d in enumerate(date):
+        year[i] = d.year
+        month[i] = d.month
+        day[i] = d.day
+        hour[i] = d.hour
+        minute[i] = d.minute
+        second[i] = d.second
     # Convert time to fractions of a day
     day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
 
