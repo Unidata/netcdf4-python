@@ -31,7 +31,10 @@ def test(verbosity=1):
 
 if __name__ == '__main__':
     import numpy
-    test(verbosity=1)
+    runner = unittest.TextTestRunner(verbosity=1)
+    result = runner.run(testsuite)
+    if not result.wasSuccessful():
+        sys.exit(1)
     sys.stdout.write('\n')
     sys.stdout.write('netcdf4-python version: %s\n' % __version__)
     sys.stdout.write('HDF5 lib version:       %s\n' % __hdf5libversion__)
