@@ -31,12 +31,12 @@ def test(verbosity=1):
 
 if __name__ == '__main__':
     import numpy
-    runner = unittest.TextTestRunner(verbosity=1)
-    result = runner.run(testsuite)
     sys.stdout.write('\n')
     sys.stdout.write('netcdf4-python version: %s\n' % __version__)
     sys.stdout.write('HDF5 lib version:       %s\n' % __hdf5libversion__)
     sys.stdout.write('netcdf lib version:     %s\n' % __netcdf4libversion__)
     sys.stdout.write('numpy version           %s\n' % numpy.__version__)
+    runner = unittest.TextTestRunner(verbosity=1)
+    result = runner.run(testsuite)
     if not result.wasSuccessful():
         sys.exit(1)
