@@ -1,6 +1,7 @@
 from netCDF4 import Dataset
 from numpy.random import seed, randint
-from numpy.testing import assert_array_equal, assert_equal
+from numpy.testing import assert_array_equal, assert_equal,\
+assert_array_almost_equal
 import tempfile, unittest, os, random
 import numpy as NP
 
@@ -107,6 +108,27 @@ class VariablesTestCase(unittest.TestCase):
         a[:] = 1 # a should be same as b
         assert_array_equal(a[...], b[...])
         dset.close()
+
+    def test_issue306(self):
+        f = Dataset(self.file,'w')
+        nlats = 7; lat = f.createDimension('lat',nlats)
+        nlons = 12; lon = f.createDimension('lon',nlons)
+        nlevs = 1; lev = f.createDimension('lev',nlevs)
+        time = f.createDimension('time',None)
+        var = f.createVariable('var',NP.float,('time','lev','lat','lon'))
+        a = NP.random.uniform(size=(10,nlevs,nlats,nlons))
+        var[0:10] = a
+        f.close()
+        f = Dataset(self.file)
+        aa = f.variables['var'][4,-1,:,:]
+        assert_array_almost_equal(a[4,-1,:,:],aa)
+        try:
+            aa = f.variables['var'][4,-2,:,:]
+        except IndexError:
+            pass
+        else:
+            raise IndexError('This test should have failed.')
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()

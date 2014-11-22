@@ -333,7 +333,7 @@ Boolean array must have the same shape as the data along this dimension."""
         elif np.alen(e)==1 and np.dtype(type(e)).kind == 'i':
             if e >= 0:
                 start[...,i] = e
-            elif e < 0 and (-e < shape[i]) :
+            elif e < 0 and (-e <= shape[i]) :
                 start[...,i] = e+shape[i]
             else:
                 raise IndexError("Index out of range")

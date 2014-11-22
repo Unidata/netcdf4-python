@@ -1,6 +1,8 @@
  version 1.1.2 (not yet released)
  ================================
 
+ * fix for issue #306 (slicing variable with "-1" when there is only
+   one element along that dimension).
  * Improved speed of num2date and date2num for standard, julian, gregorian
    and proleptic gregorian calendars by vectorizing the functions. See Issue #296
  * Fix for issue #301 ("Datestring parser chokes on years with extra space").
