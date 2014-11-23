@@ -143,6 +143,34 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
     else:   # Convert single index to sequence
         elem = [elem]
 
+    # replace sequence of integer indices with boolean arrays
+    newElem = []
+    for i, e in enumerate(elem):
+        ea = np.asarray(e)
+        # an iterable that is not a boolean array
+        if np.iterable(e) and not getattr(getattr(ea, 'dtype', None), 'kind', None) == 'b':
+            # if dimensions and grp are given, set unlim flag for this dimension.
+            elen = shape[i]
+            if (dimensions is not None and grp is not None) and len(dimensions):
+                dimname = dimensions[i]
+                # is this dimension unlimited?
+                # look in current group, and parents for dim.
+                dim = _find_dim(grp, dimname)
+                unlim = dim.isunlimited()
+                if unlim:
+                   e = np.asarray(e); emax = e.max()
+                   elen = max(emax+1,elen)
+            eb = np.zeros(elen,np.bool)
+            eb[e] = True
+            newElem.append(eb)
+        # an iterable that is a boolean array
+        elif np.iterable(e) and getattr(getattr(ea, 'dtype', None), 'kind', None) == 'b':
+            newElem.append(ea)
+        # everything else.
+        else:
+            newElem.append(e)
+    elem = newElem
+
     hasEllipsis = 0
     newElem = []
     for e in elem:
@@ -187,20 +215,6 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
                     newElem.append(e)
             else:
                 newElem.append(slice(0,0))
-
-        # Replace sequence of indices with slice object if possible.
-        elif np.iterable(e) and len(e) > 1:
-            start = e[0]
-            stop = e[-1]+1
-            step = e[1]-e[0]
-            try:
-                ee = range(start,stop,step)
-            except ValueError: # start, stop or step is not valid for a range
-                ee = False
-            if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
-                newElem.append(slice(start,stop,step))
-            else:
-                newElem.append(e)
         else:
             newElem.append(e)
     elem = newElem
@@ -218,31 +232,26 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
     # The number of elements in the first n dimensions corresponds to the
     # number of times the _get method will be called.
     sdim = []
-    ind_dim = None
     for i, e in enumerate(elem):
 
-        # Slices
         if type(e) == slice:
             sdim.append(1)
 
         # Booleans --- Same shape as data along corresponding dimension
         elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
-            if shape[i] != len(e):
+            if (dimensions is not None and grp is not None) and len(dimensions):
+                # is this dimension unlimited?
+                # look in current group, and parents for dim.
+                dim = _find_dim(grp, dimensions[i])
+                unlim = dim.isunlimited()
+            else:
+                unlim = False
+            if not unlim and shape[i] != len(e):
                 msg="""
 Boolean array must have the same shape as the data along this dimension."""
                 raise IndexError(msg)
             sdim.append(e.sum())
 
-        # Sequence of indices
-        # If multiple sequences are used, they must have the same length.
-        elif np.iterable(e):
-            if ind_dim is None:
-                sdim.append(np.alen(e))
-                ind_dim = i
-            elif np.alen(e) == 1 or np.alen(e) == sdim[ind_dim]:
-                sdim.append(1)
-            else:
-                raise IndexError("Indice mismatch. Indices must have the same length.")
         # Scalar
         else:
             sdim.append(1)
@@ -303,27 +312,11 @@ Boolean array must have the same shape as the data along this dimension."""
         elif type(e) is str:
             raise IndexError("Index cannot be a string.")
 
-        #    ITERABLE    #
-        elif np.iterable(e) and np.array(e).dtype.kind in 'ib':  # Sequence of integers or booleans
-
-            #    BOOLEAN ARRAY   #
-            if type(e) == np.ndarray and e.dtype.kind == 'b':
-                e = np.arange(len(e))[e]
-
-                # Originally, I thought boolean indexing worked differently than
-                # integer indexing, namely that we could select the rows and columns
-                # independently.
-                start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
-                indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
-
-
-            # Sequence of INTEGER INDICES
-            else:
-                start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, ind_dim, np.ones(sdim[:-1]))
-                if i == ind_dim:
-                    indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, ind_dim, np.ones(sdim[:-1], int))
-                else:
-                    indices[...,i] = -1
+        #    BOOLEAN ITERABLE    #
+        elif np.iterable(e) and np.array(e).dtype.kind in 'b':  # Sequence of integers or booleans
+            e = np.arange(len(e))[e]
+            start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
+            indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
 
             count[...,i] = 1
             stride[...,i] = 1

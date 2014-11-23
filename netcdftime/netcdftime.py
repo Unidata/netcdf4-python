@@ -1006,7 +1006,7 @@ def _check_index(indices, times, nctime, calendar, select):
     if (indices >= N).any():
         return False
 
-    t = nctime[indices]
+    t = _extendarr(nctime[indices],times)
 # if fancy indexing not available, fall back on this.
 #   t=[]
 #   for ind in indices:
@@ -1016,11 +1016,11 @@ def _check_index(indices, times, nctime, calendar, select):
         return numpy.all(t == times)
 
     elif select == 'before':
-        ta = nctime[numpy.clip(indices + 1, 0, N - 1)]
+        ta = _extendarr(nctime[numpy.clip(indices + 1, 0, N - 1)],times)
         return numpy.all(t <= times) and numpy.all(ta > times)
 
     elif select == 'after':
-        tb = nctime[numpy.clip(indices - 1, 0, N - 1)]
+        tb = _extendarr(nctime[numpy.clip(indices - 1, 0, N - 1)],times)
         return numpy.all(t >= times) and numpy.all(tb < times)
 
     elif select == 'nearest':
@@ -1031,6 +1031,16 @@ def _check_index(indices, times, nctime, calendar, select):
         delta_check = numpy.abs(times - t)
         return numpy.all(delta_check <= delta_after) and numpy.all(delta_check <= delta_before)
 
+
+def _extendarr(arr1,arr2):
+    # extend 1d array arr1 to be same length as arr2
+    # by repeating last element.
+    if np.iterable(arr1) and np.iterable(arr2):
+        n1 = len(arr1); n2 = len(arr2)
+        if n1 < n2:
+            arr1l = arr1.tolist()
+            arr1 = np.array(arr1l + (n2-n1)*[arr1l[-1]])
+    return arr1
 
 def date2index(dates, nctime, calendar=None, select='exact'):
     """
