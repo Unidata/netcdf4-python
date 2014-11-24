@@ -149,6 +149,17 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
         ea = np.asarray(e)
         # an iterable that is not a boolean array
         if np.iterable(e) and not getattr(getattr(ea, 'dtype', None), 'kind', None) == 'b':
+            msg =\
+"""starting in version 1.1.2, integer sequence slices are converted to boolean
+arrays.  This means that the index values are implicitly sorted, and duplicate
+indices are ignored."""
+            #try:
+            #    el = e.tolist()
+            #except:
+            #    el = e
+            #if sorted(el) != el or len(el) != len(el):
+            #    warnings.warn(msg)
+            warnings.warn(msg)
             # if dimensions and grp are given, set unlim flag for this dimension.
             elen = shape[i]
             if (dimensions is not None and grp is not None) and len(dimensions):
