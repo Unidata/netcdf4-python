@@ -313,7 +313,7 @@ Boolean array must have the same shape as the data along this dimension."""
             raise IndexError("Index cannot be a string.")
 
         #    BOOLEAN ITERABLE    #
-        elif np.iterable(e) and np.array(e).dtype.kind in 'b':  # Sequence of integers or booleans
+        elif np.iterable(e) and np.array(e).dtype.kind in 'b':
             e = np.arange(len(e))[e]
             start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
             indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
