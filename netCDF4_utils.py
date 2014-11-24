@@ -239,8 +239,10 @@ Boolean array must have the same shape as the data along this dimension."""
             if ind_dim is None:
                 sdim.append(np.alen(e))
                 ind_dim = i
-            elif np.alen(e) == 1 or np.alen(e) == sdim[ind_dim]:
+            elif np.alen(e) == 1:
                 sdim.append(1)
+            elif np.alen(e) == sdim[ind_dim]:
+                sdim.append(np.alen(e))
             else:
                 raise IndexError("Indice mismatch. Indices must have the same length.")
         # Scalar

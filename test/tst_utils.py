@@ -65,13 +65,15 @@ class TestgetStartCountStride(unittest.TestCase):
     
     
     def test_multiple_sequences(self):
-        elem = [[4,6,7], [1,3, 4], slice(None)]
+        elem = [[4,6,7], [1,3,4], slice(None)]
         start, count, stride, put_ind = nc._StartCountStride(elem, (50, 4, 10))
         
-        assert_equal(nc._out_array_shape(count), (3, 1, 10))
+        assert_equal(nc._out_array_shape(count), (3, 3, 10))
         
-        assert_equal(start[..., 0].squeeze(), [4,6,7])
-        assert_equal(start[..., 1].squeeze(),  [1,3, 4])
+        assert_equal(start[..., 0].squeeze(),\
+                np.array([[4,4,4],[6,6,6],[7,7,7]]))
+        assert_equal(start[..., 1].squeeze(),
+                np.array([[1,1,1],[3,3,3],[4,4,4]]))
         assert_equal(start[..., 2], 0)
         assert_equal(count[...,0], 1)
         assert_equal(count[...,1], 1)       
@@ -80,7 +82,7 @@ class TestgetStartCountStride(unittest.TestCase):
         i = [1,3,4]
         elem = (i, i, i)
         start, count, stride, put_ind = nc._StartCountStride(elem, (50, 4, 10))
-        assert_equal(nc._out_array_shape(count), (3,1,1))
+        assert_equal(nc._out_array_shape(count), (3,3,3))
         
     def test_put_indices(self):
         elem = (1, slice(None), slice(None))
