@@ -3309,7 +3309,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 data = numpy.array(data,self.dtype)
 
         start, count, stride, put_ind =\
-        _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
+        _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape,put=True)
         datashape = _out_array_shape(count)
 
         # if a numpy scalar, create an array of the right size

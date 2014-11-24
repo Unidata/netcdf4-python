@@ -55,7 +55,8 @@ least_significant_digit=1, bits will be 4.
     else:
         return datout
 
-def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
+def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
+        put=False):
     """Return start, count, stride and indices needed to store/extract data
     into/from a netCDF variable.
 
@@ -94,6 +95,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None):
     datashape : sequence
       The shape of the data that is being stored. Only needed within
       __setitem__.
+    put : True|False (default False).  If called from __setitem__, put is True.
 
     Returns
     -------
@@ -162,7 +164,7 @@ indices are ignored."""
             warnings.warn(msg)
             # if dimensions and grp are given, set unlim flag for this dimension.
             elen = shape[i]
-            if (dimensions is not None and grp is not None) and len(dimensions):
+            if put and (dimensions is not None and grp is not None) and len(dimensions):
                 dimname = dimensions[i]
                 # is this dimension unlimited?
                 # look in current group, and parents for dim.
@@ -250,7 +252,7 @@ indices are ignored."""
 
         # Booleans --- Same shape as data along corresponding dimension
         elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
-            if (dimensions is not None and grp is not None) and len(dimensions):
+            if put and (dimensions is not None and grp is not None) and len(dimensions):
                 # is this dimension unlimited?
                 # look in current group, and parents for dim.
                 dim = _find_dim(grp, dimensions[i])
@@ -278,7 +280,7 @@ Boolean array must have the same shape as the data along this dimension."""
     for i, e in enumerate(elem):
 
         # if dimensions and grp are given, set unlim flag for this dimension.
-        if (dimensions is not None and grp is not None) and len(dimensions):
+        if put and (dimensions is not None and grp is not None) and len(dimensions):
             dimname = dimensions[i]
             # is this dimension unlimited?
             # look in current group, and parents for dim.

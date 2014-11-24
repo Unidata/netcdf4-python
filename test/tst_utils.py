@@ -194,7 +194,8 @@ class TestsetStartCountStride(unittest.TestCase):
         assert_equal(take_ind[0][0][0], (slice(None), slice(None), -1))
 
         elem=(slice(None), slice(None), slice(1, 4))
-        start, count, stride, take_ind = nc._StartCountStride(elem, (22, 25, 1), ['x', 'y', 'time'], grp, (22,25,3))
+        start, count, stride, take_ind = nc._StartCountStride(elem, (22,25,1),\
+            ['x', 'y', 'time'], grp, (22,25,3), put=True)
         assert_equal(start[0][0][0], [0, 0, 1])
         assert_equal(count[0][0][0], (22, 25, 3))
         assert_equal(take_ind[0][0][0], (slice(None), slice(None), slice(None)))
@@ -233,7 +234,8 @@ class TestsetStartCountStride(unittest.TestCase):
         grp = FakeGroup({'time':True,'x':False, 'y':False})
 
         elem = ([0,2,5], slice(None), slice(None))
-        start, count, stride, take_ind = nc._StartCountStride(elem, (0, 6, 7), ['time', 'x', 'y'], grp, (3, 6, 7))
+        start, count, stride, take_ind = nc._StartCountStride(elem, (0, 6, 7),\
+                ['time', 'x', 'y'], grp, (3, 6, 7), put=True)
         assert_equal(start[0][0][0], (0, 0, 0))
         assert_equal(start[2][0][0], (5, 0, 0))
         assert_equal(count[2][0][0], (1, 6, 7))
@@ -242,7 +244,8 @@ class TestsetStartCountStride(unittest.TestCase):
 
 
         elem = (slice(None, None, 2), slice(None), slice(None))
-        start, count, stride, take_ind = nc._StartCountStride(elem, (0, 6, 7), ['time', 'x', 'y'], grp, (10, 6, 7))
+        start, count, stride, take_ind = nc._StartCountStride(elem, (0, 6, 7),\
+                ['time', 'x', 'y'], grp, (10, 6, 7),put=True)
         assert_equal(start[0][0][0], (0,0,0))
         assert_equal(count[0][0][0], (5, 6, 7))
         assert_equal(stride[0][0][0], (2, 1, 1))
