@@ -21,7 +21,7 @@ See test2unlim below for an example.
 
 file_name = tempfile.mktemp(".nc")
 xdim=9; ydim=10; zdim=11
-i = np.array([2,5,7],'i4')
+i = np.array([0,1,2],'i4')
 ib = np.zeros(ydim,dtype=np.bool)
 ib[2] = True; ib[5] = True; ib[7] = True
 ib2 = np.zeros(xdim, dtype=np.bool)
@@ -85,7 +85,7 @@ class VariablesTestCase(unittest.TestCase):
         # Two slices
         assert_array_equal(v[1:2,1:3,:], self.data[1:2,1:3,:])
         # Three sequences
-        assert_array_equal(v[i,i,i], self.data[i,:,:][:,i,:][:,:,i])
+        assert_array_equal(v[i,i,i], self.data[i][:,i,:][:,:,i])
         assert_equal(v[i,i,i].shape, (3,3,3))
         
         # Two booleans and one slice.  Different from NumPy
