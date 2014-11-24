@@ -149,19 +149,21 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     newElem = []
     for i, e in enumerate(elem):
         ea = np.asarray(e)
+        # Raise error if multidimensional indexing is used.
+        if np.ndim(ea) > 1:
+            raise IndexError("Index cannot be multidimensional.")
         # an iterable that is not a boolean array
         if np.iterable(e) and not getattr(getattr(ea, 'dtype', None), 'kind', None) == 'b':
             msg =\
 """starting in version 1.1.2, integer sequence slices are converted to boolean
 arrays.  This means that the index values are implicitly sorted, and duplicate
 indices are ignored."""
-            #try:
-            #    el = e.tolist()
-            #except:
-            #    el = e
-            #if sorted(el) != el or len(el) != len(el):
-            #    warnings.warn(msg)
-            warnings.warn(msg)
+            el = ea.tolist()
+            if sorted(el) != el or len(el) != len(set(el)):
+                # print warning when new indexing behavior is different
+                # (i.e. when integer sequence not sorted, or there are
+                # duplicate indices in the sequence)
+                warnings.warn(msg)
             # if dimensions and grp are given, set unlim flag for this dimension.
             elen = shape[i]
             if put and (dimensions is not None and grp is not None) and len(dimensions):
@@ -187,9 +189,6 @@ indices are ignored."""
     hasEllipsis = 0
     newElem = []
     for e in elem:
-        # Raise error if multidimensional indexing is used.
-        if np.ndim(e) > 1:
-            raise IndexError("Index cannot be multidimensional.")
         # Replace ellipsis with slices.
         if type(e) == type(Ellipsis):
             if hasEllipsis:
