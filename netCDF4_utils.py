@@ -297,7 +297,7 @@ Boolean array must have the same shape as the data along this dimension."""
             # shape[i] can be zero for unlim dim that hasn't been written to
             # yet.
             # length of slice may be longer than current shape
-            # if dimension is unlimited.
+            # if dimension is unlimited (and we are writing, not reading).
             if unlim and e.stop is not None and e.stop > shape[i]:
                 length = e.stop
             elif unlim and e.stop is None and datashape != ():
