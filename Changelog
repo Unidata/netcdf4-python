@@ -1,6 +1,12 @@
  version 1.1.2 (not yet released)
  ================================
 
+ * fix for issue #300 (inconsistent behavior for slicing with integer
+   sequences).  Remove special case when each dimension is sliced with an
+   integer sequence, and the integer sequences have a length equal to
+   the number of dimensions.  In that case, netcdf4-python used to follow
+   the numpy convention, and treat the elements of the integer sequences
+   as sequences of scalar indices. 
  * fix for issue #306 (slicing variable with "-1" when there is only
    one element along that dimension).
  * Improved speed of num2date and date2num for standard, julian, gregorian

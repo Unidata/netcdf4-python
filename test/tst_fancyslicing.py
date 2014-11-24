@@ -85,8 +85,8 @@ class VariablesTestCase(unittest.TestCase):
         # Two slices
         assert_array_equal(v[1:2,1:3,:], self.data[1:2,1:3,:])
         # Three sequences
-        assert_array_equal(v[i,i,i], self.data[i,i,i])
-        assert_equal(v[i,i,i].shape, (3,))
+        assert_array_equal(v[i,i,i], self.data[i,:,:][:,i,:][:,:,i])
+        assert_equal(v[i,i,i].shape, (3,3,3))
         
         # Two booleans and one slice.  Different from NumPy
         # ibx,ibz should be converted to slice, iby not.
