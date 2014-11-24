@@ -154,16 +154,13 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             raise IndexError("Index cannot be multidimensional.")
         # an iterable that is not a boolean array
         if np.iterable(e) and not getattr(getattr(ea, 'dtype', None), 'kind', None) == 'b':
-            msg =\
-"""starting in version 1.1.2, integer sequence slices are converted to boolean
-arrays.  This means that the index values are implicitly sorted, and duplicate
-indices are ignored."""
+            msg = "integer sequences in slices must be sorted and cannot have duplicates"
             el = ea.tolist()
             if sorted(el) != el or len(el) != len(set(el)):
-                # print warning when new indexing behavior is different
+                # raise an error when new indexing behavior is different
                 # (i.e. when integer sequence not sorted, or there are
                 # duplicate indices in the sequence)
-                warnings.warn(msg)
+                raise IndexError(msg)
             # if dimensions and grp are given, set unlim flag for this dimension.
             elen = shape[i]
             if put and (dimensions is not None and grp is not None) and len(dimensions):
