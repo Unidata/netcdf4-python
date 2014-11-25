@@ -462,7 +462,7 @@ Similarly, a netCDF variable of shape C{(2,3,4,5)} indexed
 with C{[0, array([True, False, True]), array([False, True, True, True]), :]}
 would return a C{(2, 3, 5)} array. In NumPy, this would raise an error since
 it would be equivalent to C{[0, [0,1], [1,2,3], :]}. When slicing with integer
-sequences, the integer sequences must be sorted and contain no duplicates.
+sequences, the indices must be sorted in increasing order and contain no duplicates.
 While this behaviour may some confusion for those used to NumPy's 'fancy indexing' rules,
 it provides a very powerful way to extract data from multidimensional netCDF
 variables by using logical operations on the dimension arrays to create slices.
