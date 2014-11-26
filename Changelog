@@ -13,6 +13,8 @@
    would produce a different result than the old, i.e. when the
    indices in an integer sequence are not sorted, or there are duplicate
    indices in the sequence.
+ * fix for issue #310 (masked arrays not returned correctly when variable
+   has not native endian-ness).
  * fix for issue #306 (slicing variable with "-1" when there is only
    one element along that dimension).
  * Improved speed of num2date and date2num for standard, julian, gregorian

@@ -3121,6 +3121,9 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         fill_value = None
         if hasattr(self, 'missing_value'):
             mval = numpy.array(self.missing_value, self.dtype)
+            if (self.endian() == 'big' and is_native_little) or\
+               (self.endian() == 'little' and is_native_big):
+                     mval.byteswap(True)
             if mval.shape == (): # mval a scalar.
                 hasmval = data==mval 
                 # is scalar missing value a NaN?
@@ -3144,6 +3147,11 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 totalmask += mask
         if hasattr(self, '_FillValue'):
             fval = numpy.array(self._FillValue, self.dtype)
+            # byte swap the _FillValue if endian-ness of the variable
+            # is not native.
+            if (self.endian() == 'big' and is_native_little) or\
+               (self.endian() == 'little' and is_native_big):
+                     fval.byteswap(True)
             # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
@@ -3178,7 +3186,12 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
              # small to assume one of the values should appear as a missing
              # value unless a _FillValue attribute is set explicitly."
              if no_fill != 1 and self.dtype.str[1:] not in ['u1','i1']:
-                 fillval = default_fillvals[self.dtype.str[1:]]
+                 fillval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
+                 # byte swap the _FillValue if endian-ness of the variable
+                 # is not native.
+                 if (self.endian() == 'big' and is_native_little) or\
+                    (self.endian() == 'little' and is_native_big):
+                     fillval.byteswap(True)
                  has_fillval = data == fillval
                  # if data is an array scalar, has_fillval will be a boolean.
                  # in that case convert to an array.

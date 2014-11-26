@@ -39,6 +39,32 @@ def check_data(file, data):
     assert_array_almost_equal(bb, data)
     f.close()
 
+def issue310(file):
+    mval = 999.; fval = -999
+    nc = netCDF4.Dataset(file, "w")
+    nc.createDimension('obs', 10)
+    if netCDF4.is_native_little:
+        endian='big'
+    elif netCDF4.is_native_big:
+        endian='little'
+    else:
+        raise ValueError('cannot determine native endianness')
+    var_big_endian = nc.createVariable(\
+            'obs_big_endian', '>f8', ('obs', ),\
+            endian=endian,fill_value=fval)
+    var_big_endian.missing_value = mval
+    var_big_endian[0]=np.pi
+    var_big_endian[1]=mval
+    var_native_endian = nc.createVariable(\
+             'obs_native_endian', '<f8', ('obs', ),\
+             endian='native',fill_value=fval)
+    var_native_endian.missing_value = mval
+    var_native_endian[0]=np.pi
+    var_native_endian[1]=mval
+    assert_array_almost_equal(var_native_endian[:].filled(),
+                              var_big_endian[:].filled())
+    nc.close()
+
 class EndianTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -54,6 +80,7 @@ class EndianTestCase(unittest.TestCase):
         """testing endian conversion capability"""
         check_data(self.file, data)
         check_data(self.file2, data)
+        issue310(self.file)
 
 if __name__ == '__main__':
     unittest.main()
