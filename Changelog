@@ -2,7 +2,7 @@
  ================================
 
  * fix for issue #310 (masked arrays not returned correctly when variable
-   has not native endian-ness).
+   has non native endian-ness).
  * fix for issue #306 (slicing variable with "-1" when there is only
    one element along that dimension).
  * Improved speed of num2date and date2num for standard, julian, gregorian
