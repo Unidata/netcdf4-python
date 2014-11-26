@@ -388,16 +388,16 @@ class TestDate2index(unittest.TestCase):
         nutime = f.variables['time']
 
         dates = [datetime(1950, 1, 2, 6), datetime(
-            1950, 1, 3, 18), datetime(1950, 1, 4, 12)]
+            1950, 1, 3), datetime(1950, 1, 3, 18)]
 
         t = date2index(dates, nutime, select='before')
-        assert_equal(t, [1, 2, 3])
+        assert_equal(t, [1, 2, 2])
 
         t = date2index(dates, nutime, select='after')
-        assert_equal(t, [2, 3, 4])
+        assert_equal(t, [2, 2, 3])
 
         t = date2index(dates, nutime, select='nearest')
-        assert_equal(t, [1, 3, 4])
+        assert_equal(t, [1, 2, 3])
 
         # Test dates outside the support with select
         t = date2index(datetime(1949, 12, 1), nutime, select='nearest')
