@@ -138,6 +138,8 @@ class VariablesTestCase(unittest.TestCase):
         var = f.createVariable('var',np.float,('time','lat','lon'))
         a = np.random.uniform(size=(3,nlats,nlons))
         var[[True,True,False,False,False,True]] = a
+        var[0,2.0,"-1"] = 0 # issue 312
+        a[0,2,-1]=0
         f.close()
         f = Dataset(self.file)
         var = f.variables['var']

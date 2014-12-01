@@ -1,6 +1,17 @@
 import numpy as np
 from numpy import ma
-import warnings
+import sys
+
+python3 = sys.version_info[0] > 2
+if python3:
+    # no unicode type in python 3, use bytes instead when testing
+    # for a string-like object
+    unicode = str   
+try:
+    bytes
+except NameError:
+    # no bytes type in python < 2.6
+    bytes = str
 
 
 def _sortbylist(A,B):
@@ -147,11 +158,19 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
 
     # replace sequence of integer indices with boolean arrays
     newElem = []
+    IndexErrorMsg=\
+    "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
     for i, e in enumerate(elem):
+        # string, try to cast to int
+        if type(e) == str or type(e) == bytes or type(e) == unicode:
+            try:
+                e = int(e)
+            except:
+                raise IndexError(IndexErrorMsg)
         ea = np.asarray(e)
         # Raise error if multidimensional indexing is used.
         if np.ndim(ea) > 1:
-            raise IndexError("Index cannot be multidimensional.")
+            raise IndexError("Index cannot be multidimensional")
         # an iterable that is not a boolean array
         if np.iterable(e) and not getattr(getattr(ea, 'dtype', None), 'kind', None) == 'b':
             msg = "integer sequences in slices must be sorted and cannot have duplicates"
@@ -317,10 +336,6 @@ Boolean array must have the same shape as the data along this dimension."""
             stride[...,i] = inc
             indices[...,i] = slice(None)
 
-        #    STRING    #
-        elif type(e) is str:
-            raise IndexError("Index cannot be a string.")
-
         #    BOOLEAN ITERABLE    #
         elif np.iterable(e) and np.array(e).dtype.kind in 'b':
             e = np.arange(len(e))[e]
@@ -332,7 +347,13 @@ Boolean array must have the same shape as the data along this dimension."""
 
 
         #    SCALAR INTEGER    #
-        elif np.alen(e)==1 and np.dtype(type(e)).kind == 'i':
+        elif np.alen(e)==1:
+            # if not an integer, try to cast to an integer.
+            if np.dtype(type(e)).kind != 'i':
+                try:
+                    e = int(e)
+                except:
+                    raise IndexError(IndexErrorMsg)
             if e >= 0:
                 start[...,i] = e
             elif e < 0 and (-e <= shape[i]) :
