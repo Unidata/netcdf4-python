@@ -213,7 +213,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     elem = newElem
 
     # replace Ellipsis and boolean arrays with slice objects, if possible.
-    hasEllipsis = 0
+    hasEllipsis = False
     newElem = []
     for e in elem:
         ea = np.asarray(e)
@@ -223,6 +223,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
                 raise IndexError("At most one ellipsis allowed in a slicing expression")
             # The ellipsis stands for the missing dimensions.
             newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
+            hasEllipsis = True
         # Replace boolean array with slice object if possible.
         elif ea.dtype.kind == 'b':
             el = e.tolist()

@@ -128,6 +128,12 @@ class VariablesTestCase(unittest.TestCase):
             pass
         else:
             raise IndexError('This test should have failed.')
+        try:
+            aa = f.variables['var'][4,...,...,:]
+        except IndexError:
+            pass
+        else:
+            raise IndexError('This test should have failed.')
         f.close()
 
     def test_issue300(self):
