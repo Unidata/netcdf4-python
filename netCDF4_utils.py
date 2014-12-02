@@ -6,7 +6,7 @@ python3 = sys.version_info[0] > 2
 if python3:
     # no unicode type in python 3, use bytes instead when testing
     # for a string-like object
-    unicode = str   
+    unicode = str
 try:
     bytes
 except NameError:
