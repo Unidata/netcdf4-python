@@ -349,8 +349,8 @@ Boolean array must have the same shape as the data along this dimension."""
 
         #    BOOLEAN ITERABLE    #
         elif ea.dtype.kind == 'b':
-            e = np.arange(len(e))[e]
-            start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
+            e = np.arange(len(e))[e] # convert to integer array
+            start[...,i] = np.apply_along_axis(lambda x: e*x, i, np.ones(sdim[:-1]))
             indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
 
             count[...,i] = 1
