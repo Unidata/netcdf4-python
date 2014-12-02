@@ -161,25 +161,27 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     IndexErrorMsg=\
     "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
     for i, e in enumerate(elem):
-        # string, try to cast to int
-        if type(e) == str or type(e) == bytes or type(e) == unicode:
+        # string-like object try to cast to int
+        # needs to be done first, since strings are iterable and
+        # hard to distinguish from something castable to an iterable numpy array.
+        if type(e) in [str,bytes,unicode]:
             try:
                 e = int(e)
             except:
                 raise IndexError(IndexErrorMsg)
         ea = np.asarray(e)
         # Raise error if multidimensional indexing is used.
-        if np.ndim(ea) > 1:
+        if ea.ndim > 1:
             raise IndexError("Index cannot be multidimensional")
-        # an iterable that is not a boolean array
-        if np.iterable(e) and not getattr(getattr(ea, 'dtype', None), 'kind', None) == 'b':
-            msg = "integer sequences in slices must be sorted and cannot have duplicates"
-            el = ea.tolist()
-            if sorted(el) != el or len(el) != len(set(el)):
+        # an iterable (non-scalar) integer array.
+        if np.iterable(ea) and ea.dtype.kind == 'i':
+            if not np.all(np.diff(ea) > 0): # same but cheaper than np.all(np.unique(ea) == ea)
                 # raise an error when new indexing behavior is different
                 # (i.e. when integer sequence not sorted, or there are
                 # duplicate indices in the sequence)
+                msg = "integer sequences in slices must be sorted and cannot have duplicates"
                 raise IndexError(msg)
+            # convert to boolean array.
             # if dimensions and grp are given, set unlim flag for this dimension.
             elen = shape[i]
             if put and (dimensions is not None and grp is not None) and len(dimensions):
@@ -189,22 +191,32 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
                 dim = _find_dim(grp, dimname)
                 unlim = dim.isunlimited()
                 if unlim:
-                   e = np.asarray(e); emax = e.max()
-                   elen = max(emax+1,elen)
+                   elen = max(ea.max()+1,elen)
             eb = np.zeros(elen,np.bool)
-            eb[e] = True
+            eb[ea] = True
             newElem.append(eb)
-        # an iterable that is a boolean array
-        elif np.iterable(e) and getattr(getattr(ea, 'dtype', None), 'kind', None) == 'b':
+        # an iterable (non-scalar) boolean array
+        elif np.iterable(ea) and ea.dtype.kind =='b':
             newElem.append(ea)
-        # everything else.
-        else:
+        # integer scalar
+        elif ea.dtype.kind == 'i':
             newElem.append(e)
+        # slice or ellipsis object
+        elif type(e) == slice or type(e) == type(Ellipsis):
+            newElem.append(e)
+        else:  # castable to a scalar int, otherwise invalid
+            try:
+                e = int(e)
+                newElem.append(e)
+            except:
+                raise IndexError(IndexErrorMsg)
     elem = newElem
 
+    # replace Ellipsis and boolean arrays with slice objects, if possible.
     hasEllipsis = 0
     newElem = []
     for e in elem:
+        ea = np.asarray(e)
         # Replace ellipsis with slices.
         if type(e) == type(Ellipsis):
             if hasEllipsis:
@@ -212,7 +224,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             # The ellipsis stands for the missing dimensions.
             newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
         # Replace boolean array with slice object if possible.
-        elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
+        elif ea.dtype.kind == 'b':
             el = e.tolist()
             if any(el):
                 start = el.index(True)
@@ -262,11 +274,13 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     sdim = []
     for i, e in enumerate(elem):
 
-        if type(e) == slice:
-            sdim.append(1)
+        # at this stage e is a slice, a scalar integer, or a 1d boolean array.
+        ea = np.asarray(e)
 
         # Booleans --- Same shape as data along corresponding dimension
-        elif getattr(getattr(e, 'dtype', None), 'kind', None) == 'b':
+        # allow for larger than dim is dim not unlimited, and called from
+        # __setitem__ (put==True).
+        if ea.dtype.kind == 'b':
             if put and (dimensions is not None and grp is not None) and len(dimensions):
                 # is this dimension unlimited?
                 # look in current group, and parents for dim.
@@ -280,7 +294,7 @@ Boolean array must have the same shape as the data along this dimension."""
                 raise IndexError(msg)
             sdim.append(e.sum())
 
-        # Scalar
+        # Scalar int or slice
         else:
             sdim.append(1)
 
@@ -293,6 +307,8 @@ Boolean array must have the same shape as the data along this dimension."""
     indices = np.empty(sdim, dtype=object)
 
     for i, e in enumerate(elem):
+
+        ea = np.asarray(e)
 
         # if dimensions and grp are given, set unlim flag for this dimension.
         if put and (dimensions is not None and grp is not None) and len(dimensions):
@@ -337,7 +353,7 @@ Boolean array must have the same shape as the data along this dimension."""
             indices[...,i] = slice(None)
 
         #    BOOLEAN ITERABLE    #
-        elif np.iterable(e) and np.array(e).dtype.kind in 'b':
+        elif ea.dtype.kind == 'b':
             e = np.arange(len(e))[e]
             start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, i, np.ones(sdim[:-1]))
             indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
@@ -346,14 +362,8 @@ Boolean array must have the same shape as the data along this dimension."""
             stride[...,i] = 1
 
 
-        #    SCALAR INTEGER    #
-        elif np.alen(e)==1:
-            # if not an integer, try to cast to an integer.
-            if np.dtype(type(e)).kind != 'i':
-                try:
-                    e = int(e)
-                except:
-                    raise IndexError(IndexErrorMsg)
+        #   all that's left is SCALAR INTEGER    #
+        else:
             if e >= 0:
                 start[...,i] = e
             elif e < 0 and (-e <= shape[i]) :
