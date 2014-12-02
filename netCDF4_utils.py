@@ -304,7 +304,8 @@ Boolean array must have the same shape as the data along this dimension."""
 
         ea = np.asarray(e)
 
-        # if dimensions and grp are given, set unlim flag for this dimension.
+        # set unlim to True if dimension is unlimited and put==True
+        # (called from __setitem__). Note: grp and dimensions must be set.
         if put and (dimensions is not None and grp is not None) and len(dimensions):
             dimname = dimensions[i]
             # is this dimension unlimited?
