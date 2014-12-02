@@ -125,7 +125,7 @@ class VariablesTestCase(unittest.TestCase):
             False])
         assert_array_equal(v[:,iby,ibz],self.data[:,0:1,1:2])
 
-        # test than illegal integer sequences raise an IndexError
+        # test to see that illegal integer sequences raise an IndexError
         try:
             v[:,[1,3,2],:] # unsorted indices
             v[:,[1,2,2],:] # duplicate index
