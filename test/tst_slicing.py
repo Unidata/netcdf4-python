@@ -122,14 +122,21 @@ class VariablesTestCase(unittest.TestCase):
         f = Dataset(self.file)
         aa = f.variables['var'][4,-1,:,:]
         assert_array_almost_equal(a[4,-1,:,:],aa)
+        v = f.variables['var']
         try:
-            aa = f.variables['var'][4,-2,:,:]
+            aa = v[4,-2,:,:] # -2 when dimension is length 1
         except IndexError:
             pass
         else:
             raise IndexError('This test should have failed.')
         try:
-            aa = f.variables['var'][4,...,...,:]
+            aa = v[4,...,...,:] # more than one Ellipsis
+        except IndexError:
+            pass
+        else:
+            raise IndexError('This test should have failed.')
+        try:
+            aa = v[:,[True,True],:,:] # boolean array too long.
         except IndexError:
             pass
         else:

@@ -122,7 +122,7 @@ class VariablesTestCase(unittest.TestCase):
         iby = np.array([True, False, False, False, False, False, False, False,\
             False, False])
         ibz = np.array([False, True, False, False, False, False, False, False,\
-            False])
+            False,False,False])
         assert_array_equal(v[:,iby,ibz],self.data[:,0:1,1:2])
 
         # test to see that illegal integer sequences raise an IndexError

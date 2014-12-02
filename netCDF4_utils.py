@@ -173,6 +173,16 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         # Raise error if multidimensional indexing is used.
         if ea.ndim > 1:
             raise IndexError("Index cannot be multidimensional")
+        # set unlim to True if dimension is unlimited and put==True
+        # (called from __setitem__)
+        if put and (dimensions is not None and grp is not None) and len(dimensions):
+            dimname = dimensions[i]
+            # is this dimension unlimited?
+            # look in current group, and parents for dim.
+            dim = _find_dim(grp, dimname)
+            unlim = dim.isunlimited()
+        else:
+            unlim = False
         # an iterable (non-scalar) integer array.
         if np.iterable(ea) and ea.dtype.kind == 'i':
             if not np.all(np.diff(ea) > 0): # same but cheaper than np.all(np.unique(ea) == ea)
@@ -182,21 +192,21 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
                 msg = "integer sequences in slices must be sorted and cannot have duplicates"
                 raise IndexError(msg)
             # convert to boolean array.
-            # if dimensions and grp are given, set unlim flag for this dimension.
+            # if unlim, let boolean array be longer than current dimension
+            # length.
             elen = shape[i]
-            if put and (dimensions is not None and grp is not None) and len(dimensions):
-                dimname = dimensions[i]
-                # is this dimension unlimited?
-                # look in current group, and parents for dim.
-                dim = _find_dim(grp, dimname)
-                unlim = dim.isunlimited()
-                if unlim:
-                   elen = max(ea.max()+1,elen)
+            if unlim:
+               elen = max(ea.max()+1,elen)
             eb = np.zeros(elen,np.bool)
             eb[ea] = True
             newElem.append(eb)
         # an iterable (non-scalar) boolean array
         elif np.iterable(ea) and ea.dtype.kind =='b':
+            # check that boolen array not too long
+            if not unlim and shape[i] != len(ea):
+                msg="""
+Boolean array must have the same shape as the data along this dimension."""
+                raise IndexError(msg)
             newElem.append(ea)
         # integer scalar
         elif ea.dtype.kind == 'i':
@@ -274,28 +284,11 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     # number of times the _get method will be called.
     sdim = []
     for i, e in enumerate(elem):
-
         # at this stage e is a slice, a scalar integer, or a 1d boolean array.
-        ea = np.asarray(e)
-
-        # Booleans --- Same shape as data along corresponding dimension
-        # allow for larger than dim is dim not unlimited, and called from
-        # __setitem__ (put==True).
-        if ea.dtype.kind == 'b':
-            if put and (dimensions is not None and grp is not None) and len(dimensions):
-                # is this dimension unlimited?
-                # look in current group, and parents for dim.
-                dim = _find_dim(grp, dimensions[i])
-                unlim = dim.isunlimited()
-            else:
-                unlim = False
-            if not unlim and shape[i] != len(e):
-                msg="""
-Boolean array must have the same shape as the data along this dimension."""
-                raise IndexError(msg)
+        # Booleans --- _get call for each True value
+        if np.asarray(e).dtype.kind == 'b':
             sdim.append(e.sum())
-
-        # Scalar int or slice
+        # Scalar int or slice, just a single _get call
         else:
             sdim.append(1)
 
