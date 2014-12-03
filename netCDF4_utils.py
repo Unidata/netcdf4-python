@@ -185,6 +185,8 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             unlim = False
         # an iterable (non-scalar) integer array.
         if np.iterable(ea) and ea.dtype.kind == 'i':
+            # convert negative indices in 1d array to positive ones.
+            ea = np.where(ea < 0, ea + shape[i], ea)
             if not np.all(np.diff(ea) > 0): # same but cheaper than np.all(np.unique(ea) == ea)
                 # raise an error when new indexing behavior is different
                 # (i.e. when integer sequence not sorted, or there are
