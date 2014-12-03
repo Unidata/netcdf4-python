@@ -196,7 +196,11 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             # length.
             elen = shape[i]
             if unlim:
-               elen = max(ea.max()+1,elen)
+                elen = max(ea.max()+1,elen)
+            else:
+                if ea.max()+1 > elen:
+                    msg="integer index exceeds dimension size" 
+                    raise IndexError(msg)
             eb = np.zeros(elen,np.bool)
             eb[ea] = True
             newElem.append(eb)
