@@ -1,6 +1,19 @@
  version 1.1.2 (not yet released)
  ================================
 
+ * fix for issue 312 (allow slicing with objects that can be cast to ints).
+ * indexing netCDF variables with integer sequences and boolean arrays now
+   behave the same way (integer sequences are converted to boolean arrays 
+   internally). Addresses issue #300.  Since indexing using integer sequences
+   does not behave exactly as before, some client code may break.  For example,
+   previously when integer index arrays had the same length, and that length
+   was equal to the number of dimensions of the array being indexed,
+   netcdf4-python mirrored the numpy indexing behavior and treated the elements
+   of the index arrays as individual sets of integer indices.  This special
+   case has been removed. An IndexError is now raised when the new behavior
+   would produce a different result than the old, i.e. when the
+   indices in an integer sequence are not sorted, or there are duplicate
+   indices in the sequence.
  * fix for issue #310 (masked arrays not returned correctly when variable
    has non native endian-ness).
  * fix for issue #306 (slicing variable with "-1" when there is only

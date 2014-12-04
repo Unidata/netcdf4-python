@@ -461,9 +461,10 @@ numpy array it returns an array of shape (4,).
 Similarly, a netCDF variable of shape C{(2,3,4,5)} indexed
 with C{[0, array([True, False, True]), array([False, True, True, True]), :]}
 would return a C{(2, 3, 5)} array. In NumPy, this would raise an error since
-it would be equivalent to C{[0, [0,1], [1,2,3], :]}. While this behaviour can
-cause some confusion for those used to NumPy's 'fancy indexing' rules, it
-provides a very powerful way to extract data from multidimensional netCDF
+it would be equivalent to C{[0, [0,1], [1,2,3], :]}. When slicing with integer
+sequences, the indices must be sorted in increasing order and contain no duplicates.
+While this behaviour may some confusion for those used to NumPy's 'fancy indexing' rules,
+it provides a very powerful way to extract data from multidimensional netCDF
 variables by using logical operations on the dimension arrays to create slices.
 
 For example, 
@@ -3318,7 +3319,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 data = numpy.array(data,self.dtype)
 
         start, count, stride, put_ind =\
-        _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape)
+        _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape,put=True)
         datashape = _out_array_shape(count)
 
         # if a numpy scalar, create an array of the right size

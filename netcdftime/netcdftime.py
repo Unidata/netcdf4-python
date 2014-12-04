@@ -1006,7 +1006,17 @@ def _check_index(indices, times, nctime, calendar, select):
     if (indices >= N).any():
         return False
 
-    t = nctime[indices]
+    try:
+        t = nctime[indices]
+        nctime = nctime
+    # WORKAROUND TO CHANGES IN SLICING BEHAVIOUR in 1.1.2
+    # this may be unacceptably slow...
+    # if indices are unsorted, or there are duplicate
+    # values in indices, read entire time variable into numpy
+    # array so numpy slicing rules can be used.
+    except IndexError:
+        nctime = nctime[:]
+        t = nctime[indices]
 # if fancy indexing not available, fall back on this.
 #   t=[]
 #   for ind in indices:

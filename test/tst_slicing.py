@@ -3,7 +3,7 @@ from numpy.random import seed, randint
 from numpy.testing import assert_array_equal, assert_equal,\
 assert_array_almost_equal
 import tempfile, unittest, os, random
-import numpy as NP
+import numpy as np
 
 file_name = tempfile.mktemp(".nc")
 xdim=9; ydim=10; zdim=11
@@ -67,7 +67,7 @@ class VariablesTestCase(unittest.TestCase):
         # read data in reverse order
         assert_array_equal(vu[:,::-1,:],data)
         # index using an integer array scalar
-        i = NP.ones(1,'i4')[0]
+        i = np.ones(1,'i4')[0]
         assert_array_equal(v[i],datarev[1])
 
         f.close()
@@ -80,9 +80,9 @@ class VariablesTestCase(unittest.TestCase):
         assert_equal(v1[4:], d[4:])
         # test return of array scalar.
         assert_equal(v1[0].shape, ())
-        i1 = NP.array([2,3,4])
+        i1 = np.array([2,3,4])
         assert_equal(v1[i1], d[i1])
-        i2 = NP.array([2,3,5])
+        i2 = np.array([2,3,5])
         assert_equal(v1[i2], d[i2])
         assert_equal(v1[d<5], d[d<5])
         assert_equal(v1[5], d[5])
@@ -103,8 +103,8 @@ class VariablesTestCase(unittest.TestCase):
         b = dset.createVariable('b', 'i', ('dim',))
         c = dset.createVariable('c', 'i', ('dim',))
         c[:] = 1 # c initially is empty, new entry created
-        assert_array_equal(c[...], NP.array([1]))
-        b[:] = NP.array([1,1])
+        assert_array_equal(c[...], np.array([1]))
+        b[:] = np.array([1,1])
         a[:] = 1 # a should be same as b
         assert_array_equal(a[...], b[...])
         dset.close()
@@ -115,19 +115,60 @@ class VariablesTestCase(unittest.TestCase):
         nlons = 12; lon = f.createDimension('lon',nlons)
         nlevs = 1; lev = f.createDimension('lev',nlevs)
         time = f.createDimension('time',None)
-        var = f.createVariable('var',NP.float,('time','lev','lat','lon'))
-        a = NP.random.uniform(size=(10,nlevs,nlats,nlons))
+        var = f.createVariable('var',np.float,('time','lev','lat','lon'))
+        a = np.random.uniform(size=(10,nlevs,nlats,nlons))
         var[0:10] = a
         f.close()
         f = Dataset(self.file)
         aa = f.variables['var'][4,-1,:,:]
         assert_array_almost_equal(a[4,-1,:,:],aa)
+        v = f.variables['var']
         try:
-            aa = f.variables['var'][4,-2,:,:]
+            aa = v[4,-2,:,:] # -2 when dimension is length 1
         except IndexError:
             pass
         else:
             raise IndexError('This test should have failed.')
+        try:
+            aa = v[4,...,...,:] # more than one Ellipsis
+        except IndexError:
+            pass
+        else:
+            raise IndexError('This test should have failed.')
+        try:
+            aa = v[:,[True,True],:,:] # boolean array too long.
+        except IndexError:
+            pass
+        else:
+            raise IndexError('This test should have failed.')
+        try:
+            aa = v[:,[0,1],:,:] # integer index too large
+        except IndexError:
+            pass
+        else:
+            raise IndexError('This test should have failed.')
+        f.close()
+
+    def test_issue300(self):
+        f = Dataset(self.file,'w')
+        nlats = 11; lat = f.createDimension('lat',nlats)
+        nlons = 20; lon = f.createDimension('lon',nlons)
+        time = f.createDimension('time',None)
+        var = f.createVariable('var',np.float,('time','lat','lon'))
+        a = np.random.uniform(size=(3,nlats,nlons))
+        var[[True,True,False,False,False,True]] = a
+        var[0,2.0,"-1"] = 0 # issue 312
+        a[0,2,-1]=0
+        f.close()
+        f = Dataset(self.file)
+        var = f.variables['var']
+        aa = var[[0,1,5]]
+        bb = var[[True,True,False,False,False,True]]
+        lats = np.arange(nlats); lons = np.arange(nlons)
+        cc = var[-1,lats > 2,lons < 6]
+        assert_array_almost_equal(a,aa)
+        assert_array_almost_equal(bb,aa)
+        assert_array_almost_equal(cc,a[-1,3:,:6])
         f.close()
 
 if __name__ == '__main__':
