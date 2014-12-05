@@ -1,4 +1,4 @@
- version 1.1.2 (tag v1.1.1rel)
+ version 1.1.2 (tag v1.1.2rel)
  =============================
 
  * fix for issue 312 (allow slicing with objects that can be cast to ints).
