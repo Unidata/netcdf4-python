@@ -265,9 +265,9 @@ def DateFromJulianDay(JD, calendar='standard'):
     # MC
     # C = int((B - 122.1)/365.25)
     # D = int(365.25 * C)
-    C = np.int32(6680. + ((B - 2439870.) - 122.1) / 365.25)
-    D = np.int32(365 * C + np.int32(0.25 * C))
-    E = np.int32((B - D) / 30.6001)
+    C = np.atleast_1d(np.int32(6680. + ((B - 2439870.) - 122.1) / 365.25))
+    D = np.atleast_1d(np.int32(365 * C + np.int32(0.25 * C)))
+    E = np.atleast_1d(np.int32((B - D) / 30.6001))
 
     # Convert to date
     day = np.clip(B - D - np.int64(30.6001 * E) + F, 1, None)
