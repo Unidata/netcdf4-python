@@ -1,3 +1,8 @@
+ since version 1.1.2
+ ===================
+
+ * checked in _datetime.c to git (resolves issue #315).
+
  version 1.1.2 (tag v1.1.2rel)
  =============================
 
