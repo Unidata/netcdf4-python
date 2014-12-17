@@ -514,20 +514,29 @@ Default is an empty list.
             if varname in self._cdfRecVar.keys():
                 self._vars[varname] = _Variable(self, varname, var, aggDimName)
         self._file_format = []
+        self._data_model = []
+        self._disk_format = []
         for dset in self._cdf:
-            if dset.file_format == 'NETCDF4':
+            if dset.file_format == 'NETCDF4' or dset.data_model == 'NETCDF4':
                 raise ValueError('MFNetCDF4 only works with NETCDF3_CLASSIC, NETCDF3_64BIT and NETCDF4_CLASSIC formatted files, not NETCDF4')
             self._file_format.append(dset.file_format)
+            self._data_model.append(dset.data_model)
+            self._disk_format.append(dset.disk_format)
+        self._path = '/'
 
     def __setattr__(self, name, value):
         """override base class attribute creation"""
         self.__dict__[name] = value
 
     def __getattribute__(self, name):
-        if name in ['variables','dimensions','file_format','groups']: 
+        if name in ['variables','dimensions','file_format','groups',\
+                    'data_model','disk_format','path']: 
             if name == 'dimensions': return self._dims
             if name == 'variables': return self._vars
             if name == 'file_format': return self._file_format
+            if name == 'data_model': return self._data_model
+            if name == 'disk_format': return self._disk_format
+            if name == 'path': return self._path
             if name == 'groups': return self._grps
         else:
             return Dataset.__getattribute__(self, name)
@@ -545,7 +554,8 @@ Default is an empty list.
         varnames = tuple([str(varname) for varname in self.variables.keys()])
         grpnames = ()
         if self.path == '/':
-            ncdump.append('root group (%s file format):\n' % self.file_format)
+            ncdump.append('root group (%s data model, file format %s):\n' %
+                    (self.data_model[0], self.disk_format[0]))
         else:
             ncdump.append('group %s:\n' % self.path)
         attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
