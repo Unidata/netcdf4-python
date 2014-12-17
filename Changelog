@@ -1,7 +1,8 @@
  since version 1.1.2
  ===================
 
- * checked in _datetime.c to git (resolves issue #315).
+ * checked in _datetime.c to git (resolves issue #315).  Note - _datetime.c
+   was included in the 1.1.2 release.
 
  version 1.1.2 (tag v1.1.2rel)
  =============================
