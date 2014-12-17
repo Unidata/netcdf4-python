@@ -1063,16 +1063,16 @@ static PyObject *__pyx_pf_7netCDF4_9MFDataset_2__setattr__(CYTHON_UNUSED PyObjec
 static PyObject *__pyx_pf_7netCDF4_9MFDataset_4__getattribute__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_name); /* proto */
 static PyObject *__pyx_pf_7netCDF4_9MFDataset_6ncattrs(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_9MFDataset_8close(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7netCDF4_9MFDataset_10__str__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7netCDF4_9MFDataset_10__repr__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_10_Dimension___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_dimname, CYTHON_UNUSED PyObject *__pyx_v_dim, PyObject *__pyx_v_dimlens, PyObject *__pyx_v_dimtotlen); /* proto */
 static PyObject *__pyx_pf_7netCDF4_10_Dimension_2__len__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_10_Dimension_4isunlimited(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_7netCDF4_10_Dimension_6__str__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7netCDF4_10_Dimension_6__repr__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_9_Variable___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_dset, PyObject *__pyx_v_varname, PyObject *__pyx_v_var, PyObject *__pyx_v_recdimname); /* proto */
 static PyObject *__pyx_pf_7netCDF4_9_Variable_2typecode(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_9_Variable_4ncattrs(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_9_Variable_6__getattr__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_name); /* proto */
-static PyObject *__pyx_pf_7netCDF4_9_Variable_8__str__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7netCDF4_9_Variable_8__repr__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_9_Variable_10__len__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_9_Variable_12_shape(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_9_Variable_14set_auto_maskandscale(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_val); /* proto */
@@ -1411,6 +1411,7 @@ static char __pyx_k_numv[] = "numv";
 static char __pyx_k_part[] = "part";
 static char __pyx_k_path[] = "path";
 static char __pyx_k_prod[] = "prod";
+static char __pyx_k_repr[] = "__repr__";
 static char __pyx_k_secs[] = "secs";
 static char __pyx_k_self[] = "self";
 static char __pyx_k_size[] = "size";
@@ -1429,7 +1430,7 @@ static char __pyx_k_view[] = "view";
 static char __pyx_k_vlen[] = "vlen";
 static char __pyx_k_warn[] = "warn";
 static char __pyx_k_zlib[] = "zlib";
-static char __pyx_k_1_1_2[] = "1.1.2";
+static char __pyx_k_1_1_3[] = "1.1.3";
 static char __pyx_k_4_2_1[] = "4.2.1";
 static char __pyx_k_align[] = "align";
 static char __pyx_k_array[] = "array";
@@ -1468,7 +1469,6 @@ static char __pyx_k_shape[] = "shape";
 static char __pyx_k_since[] = "since";
 static char __pyx_k_split[] = "split";
 static char __pyx_k_start[] = "start";
-static char __pyx_k_str_2[] = "__str__";
 static char __pyx_k_times[] = "times";
 static char __pyx_k_tostr[] = "_tostr";
 static char __pyx_k_tsecs[] = "tsecs";
@@ -1721,26 +1721,26 @@ static char __pyx_k_timestr_split[] = "timestr_split";
 static char __pyx_k_unicode_error[] = "unicode_error";
 static char __pyx_k_AttributeError[] = "AttributeError";
 static char __pyx_k_Variable___len[] = "_Variable.__len__";
-static char __pyx_k_Variable___str[] = "_Variable.__str__";
 static char __pyx_k_current_size_s[] = "current size = %s\n";
 static char __pyx_k_has_rename_grp[] = "__has_rename_grp__";
 static char __pyx_k_hdf5libversion[] = "__hdf5libversion__";
 static char __pyx_k_set_auto_scale[] = "set_auto_scale";
 static char __pyx_k_supportedtypes[] = "_supportedtypes";
 static char __pyx_k_Dimension___len[] = "_Dimension.__len__";
-static char __pyx_k_Dimension___str[] = "_Dimension.__str__";
-static char __pyx_k_MFDataset___str[] = "MFDataset.__str__";
 static char __pyx_k_MFDataset_close[] = "MFDataset.close";
 static char __pyx_k_NETCDF3_CLASSIC[] = "NETCDF3_CLASSIC";
 static char __pyx_k_NETCDF4_CLASSIC[] = "NETCDF4_CLASSIC";
 static char __pyx_k_Variable___init[] = "_Variable.__init__";
+static char __pyx_k_Variable___repr[] = "_Variable.__repr__";
 static char __pyx_k_Variable__shape[] = "_Variable._shape";
 static char __pyx_k_current_shape_s[] = "current shape = %s\n";
 static char __pyx_k_dateutil_parser[] = "dateutil.parser";
 static char __pyx_k_has_nc_inq_path[] = "__has_nc_inq_path__";
 static char __pyx_k_out_array_shape[] = "_out_array_shape";
 static char __pyx_k_Dimension___init[] = "_Dimension.__init__";
+static char __pyx_k_Dimension___repr[] = "_Dimension.__repr__";
 static char __pyx_k_MFDataset___init[] = "MFDataset.__init__";
+static char __pyx_k_MFDataset___repr[] = "MFDataset.__repr__";
 static char __pyx_k_MFTime___getitem[] = "MFTime.__getitem__";
 static char __pyx_k_StartCountStride[] = "_StartCountStride";
 static char __pyx_k_Variable_ncattrs[] = "_Variable.ncattrs";
@@ -1788,7 +1788,7 @@ static char __pyx_k_Introduction_Python_interface_t[] = "\nIntroduction\n=======
 static char __pyx_k_MFDataset_self_files_check_Fals[] = "\nMFDataset(self, files, check=False, aggdim=None, exclude=[])\n\nClass for reading multi-file netCDF Datasets, making variables\nspanning multiple files appear as if they were in one file.\n\nDatasets must be in C{NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT}\nformat (C{NETCDF4} Datasets won't work).\n\nAdapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.\n\nExample usage:\n\n>>> import numpy\n>>> # create a series of netCDF files with a variable sharing\n>>> # the same unlimited dimension.\n>>> for nfile in range(10):\n>>>     f = Dataset('mftest'+repr(nfile)+'.nc','w')\n>>>     f.createDimension('x',None)\n>>>     x = f.createVariable('x','i',('x',))\n>>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))\n>>>     f.close()\n>>> # now read all those files in at once, in one Dataset.\n>>> f = MFDataset('mftest*nc')\n>>> print f.variables['x'][:]\n[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24\n 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49\n 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74\n 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]\n    ";
 static char __pyx_k_MFTime_self_time_units_None_Cla[] = "\nMFTime(self, time, units=None)\n\nClass providing an interface to a MFDataset time Variable by imposing a unique common\ntime unit to all files.\n\nExample usage:\n\n>>> import numpy\n>>> f1 = Dataset('mftest_1.nc','w', format='NETCDF4_CLASSIC')\n>>> f2 = Dataset('mftest_2.nc','w', format='NETCDF4_CLASSIC')\n>>> f1.createDimension('time',None)\n>>> f2.createDimension('time',None)\n>>> t1 = f1.createVariable('time','i',('time',))\n>>> t2 = f2.createVariable('time','i',('time',))\n>>> t1.units = 'days since 2000-01-01'\n>>> t2.units = 'days since 2000-02-01'\n>>> t1.calendar = 'standard'\n>>> t2.calendar = 'standard'\n>>> t1[:] = numpy.arange(31)\n>>> t2[:] = numpy.arange(30)\n>>> f1.close()\n>>> f2.close()\n>>> # Read the two files in at once, in one Dataset.\n>>> f = MFDataset('mftest*nc')\n>>> t = f.variables['time']\n>>> print t.units\ndays since 2000-01-01\n>>> print t[32] # The value written in the file, inconsistent with the MF time units.\n1\n>>> T = MFTime(t)\n>>> print T[32]                        \n32                           \n    ";
 static char __pyx_k_Variable_object_no_longer_valid[] = "Variable object no longer valid";
-static char __pyx_k_Volumes_Drobo_python_netcdf4_py[] = "/Volumes/Drobo/python/netcdf4-python.git/utils.pyx";
+static char __pyx_k_Volumes_Drobo_python_netcdf4_py[] = "/Volumes/Drobo/python/netcdf4-python.jswhit.git/utils.pyx";
 static char __pyx_k_assign_vlen_method_only_for_use[] = "_assign_vlen method only for use with VLEN variables";
 static char __pyx_k_cannot_set__FillValue_attribute[] = "cannot set _FillValue attribute for VLEN or compound variable";
 static char __pyx_k_cannot_specify_chunksizes_for_a[] = "cannot specify chunksizes for a contiguous dataset";
@@ -1850,21 +1850,21 @@ static char __pyx_k_variable_s_dimensions_mismatch_b[] = "variable %s : dimensio
 static char __pyx_k_variable_s_rank_mismatch_between[] = "variable %s : rank mismatch between master %s (%s) and extension %s (%s)";
 static char __pyx_k_variable_s_shape_mismatch_betwee[] = "variable %s : shape mismatch between master %s (%s) and extension %s (%s)";
 static char __pyx_k_vlen_string_array_attributes_not[] = "vlen string array attributes not supported";
-static char __pyx_k_Volumes_Drobo_python_netcdf4_py_2[] = "/Volumes/Drobo/python/netcdf4-python.git/netCDF4.pyx";
+static char __pyx_k_Volumes_Drobo_python_netcdf4_py_2[] = "/Volumes/Drobo/python/netcdf4-python.jswhit.git/netCDF4.pyx";
 static char __pyx_k_s_is_one_of_the_reserved_attrib_2[] = "'%s' is one of the reserved attributes %s, cannot rebind. Use setncattr instead.";
 static char __pyx_k_filling_on_default__FillValue_of_2[] = "filling on, default _FillValue of %s used\n";
 static char __pyx_k_master_dataset_s_does_not_have_a_2[] = "master dataset %s does not have any variables to aggregate";
 static PyObject *__pyx_n_s_;
 static PyObject *__pyx_kp_s_0m;
 static PyObject *__pyx_kp_s_1;
-static PyObject *__pyx_kp_s_1_1_2;
+static PyObject *__pyx_kp_s_1_1_3;
 static PyObject *__pyx_kp_s_4_2_1;
 static PyObject *__pyx_kp_s_4m;
 static PyObject *__pyx_n_s_AttributeError;
 static PyObject *__pyx_n_s_Dimension;
 static PyObject *__pyx_n_s_Dimension___init;
 static PyObject *__pyx_n_s_Dimension___len;
-static PyObject *__pyx_n_s_Dimension___str;
+static PyObject *__pyx_n_s_Dimension___repr;
 static PyObject *__pyx_n_s_Dimension_isunlimited;
 static PyObject *__pyx_kp_s_Dimension_object_no_longer_valid;
 static PyObject *__pyx_n_s_FillValue;
@@ -1877,8 +1877,8 @@ static PyObject *__pyx_n_s_KeyError;
 static PyObject *__pyx_n_s_MFDataset;
 static PyObject *__pyx_n_s_MFDataset___getattribute;
 static PyObject *__pyx_n_s_MFDataset___init;
+static PyObject *__pyx_n_s_MFDataset___repr;
 static PyObject *__pyx_n_s_MFDataset___setattr;
-static PyObject *__pyx_n_s_MFDataset___str;
 static PyObject *__pyx_n_s_MFDataset_close;
 static PyObject *__pyx_n_s_MFDataset_ncattrs;
 static PyObject *__pyx_kp_s_MFDataset_self_files_check_Fals;
@@ -1917,7 +1917,7 @@ static PyObject *__pyx_n_s_Variable___getattr;
 static PyObject *__pyx_n_s_Variable___getitem;
 static PyObject *__pyx_n_s_Variable___init;
 static PyObject *__pyx_n_s_Variable___len;
-static PyObject *__pyx_n_s_Variable___str;
+static PyObject *__pyx_n_s_Variable___repr;
 static PyObject *__pyx_n_s_Variable__shape;
 static PyObject *__pyx_kp_s_Variable_length_strings_are_only;
 static PyObject *__pyx_n_s_Variable_ncattrs;
@@ -2273,6 +2273,7 @@ static PyObject *__pyx_n_s_ref_num;
 static PyObject *__pyx_n_s_releasevers;
 static PyObject *__pyx_kp_s_renameGroup_method_not_enabled;
 static PyObject *__pyx_n_s_replace;
+static PyObject *__pyx_n_s_repr;
 static PyObject *__pyx_kp_s_requires_numpy_version_1_0rc1_or;
 static PyObject *__pyx_n_s_reshape;
 static PyObject *__pyx_kp_s_root_group_s_data_model_file_for;
@@ -2319,7 +2320,6 @@ static PyObject *__pyx_n_s_startswith;
 static PyObject *__pyx_n_s_step;
 static PyObject *__pyx_n_s_stop;
 static PyObject *__pyx_n_s_str;
-static PyObject *__pyx_n_s_str_2;
 static PyObject *__pyx_n_s_strd;
 static PyObject *__pyx_n_s_stride;
 static PyObject *__pyx_kp_s_strides_must_all_be_1_for_string;
@@ -9845,7 +9845,7 @@ static PyObject *__pyx_pf_7netCDF4_9MFDataset_8close(CYTHON_UNUSED PyObject *__p
  *         for dset in self._cdf:
  *             dset.close()             # <<<<<<<<<<<<<<
  * 
- *     def __str__(self):
+ *     def __repr__(self):
  */
     __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_dset, __pyx_n_s_close); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 540; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
@@ -9907,26 +9907,26 @@ static PyObject *__pyx_pf_7netCDF4_9MFDataset_8close(CYTHON_UNUSED PyObject *__p
 /* "utils.pyx":542
  *             dset.close()
  * 
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7netCDF4_9MFDataset_11__str__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_7netCDF4_9MFDataset_11__str__ = {"__str__", (PyCFunction)__pyx_pw_7netCDF4_9MFDataset_11__str__, METH_O, 0};
-static PyObject *__pyx_pw_7netCDF4_9MFDataset_11__str__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_7netCDF4_9MFDataset_11__repr__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_7netCDF4_9MFDataset_11__repr__ = {"__repr__", (PyCFunction)__pyx_pw_7netCDF4_9MFDataset_11__repr__, METH_O, 0};
+static PyObject *__pyx_pw_7netCDF4_9MFDataset_11__repr__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7netCDF4_9MFDataset_10__str__(__pyx_self, ((PyObject *)__pyx_v_self));
+  __Pyx_RefNannySetupContext("__repr__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_7netCDF4_9MFDataset_10__repr__(__pyx_self, ((PyObject *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7netCDF4_9MFDataset_10__str__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_7netCDF4_9MFDataset_10__repr__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_v_ncdump = NULL;
   PyObject *__pyx_v_dimnames = NULL;
   PyObject *__pyx_v_varnames = NULL;
@@ -9948,11 +9948,11 @@ static PyObject *__pyx_pf_7netCDF4_9MFDataset_10__str__(CYTHON_UNUSED PyObject *
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__str__", 0);
+  __Pyx_RefNannySetupContext("__repr__", 0);
 
   /* "utils.pyx":543
  * 
- *     def __str__(self):
+ *     def __repr__(self):
  *         ncdump = ['%r\n' % type(self)]             # <<<<<<<<<<<<<<
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
  *         varnames = tuple([str(varname) for varname in self.variables.keys()])
@@ -9968,7 +9968,7 @@ static PyObject *__pyx_pf_7netCDF4_9MFDataset_10__str__(CYTHON_UNUSED PyObject *
   __pyx_t_2 = 0;
 
   /* "utils.pyx":544
- *     def __str__(self):
+ *     def __repr__(self):
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])             # <<<<<<<<<<<<<<
  *         varnames = tuple([str(varname) for varname in self.variables.keys()])
@@ -10405,7 +10405,7 @@ static PyObject *__pyx_pf_7netCDF4_9MFDataset_10__str__(CYTHON_UNUSED PyObject *
   /* "utils.pyx":542
  *             dset.close()
  * 
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
  */
@@ -10416,7 +10416,7 @@ static PyObject *__pyx_pf_7netCDF4_9MFDataset_10__str__(CYTHON_UNUSED PyObject *
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("netCDF4.MFDataset.__str__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("netCDF4.MFDataset.__repr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_ncdump);
@@ -10653,7 +10653,7 @@ static PyObject *__pyx_pf_7netCDF4_10_Dimension_2__len__(CYTHON_UNUSED PyObject 
  *         return self.dimtotlen
  *     def isunlimited(self):             # <<<<<<<<<<<<<<
  *         return True
- *     def __str__(self):
+ *     def __repr__(self):
  */
 
 /* Python wrapper */
@@ -10679,7 +10679,7 @@ static PyObject *__pyx_pf_7netCDF4_10_Dimension_4isunlimited(CYTHON_UNUSED PyObj
  *         return self.dimtotlen
  *     def isunlimited(self):
  *         return True             # <<<<<<<<<<<<<<
- *     def __str__(self):
+ *     def __repr__(self):
  *         if self.isunlimited():
  */
   __Pyx_XDECREF(__pyx_r);
@@ -10692,7 +10692,7 @@ static PyObject *__pyx_pf_7netCDF4_10_Dimension_4isunlimited(CYTHON_UNUSED PyObj
  *         return self.dimtotlen
  *     def isunlimited(self):             # <<<<<<<<<<<<<<
  *         return True
- *     def __str__(self):
+ *     def __repr__(self):
  */
 
   /* function exit code */
@@ -10705,26 +10705,26 @@ static PyObject *__pyx_pf_7netCDF4_10_Dimension_4isunlimited(CYTHON_UNUSED PyObj
 /* "utils.pyx":568
  *     def isunlimited(self):
  *         return True
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         if self.isunlimited():
  *             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7netCDF4_10_Dimension_7__str__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_7netCDF4_10_Dimension_7__str__ = {"__str__", (PyCFunction)__pyx_pw_7netCDF4_10_Dimension_7__str__, METH_O, 0};
-static PyObject *__pyx_pw_7netCDF4_10_Dimension_7__str__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_7netCDF4_10_Dimension_7__repr__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_7netCDF4_10_Dimension_7__repr__ = {"__repr__", (PyCFunction)__pyx_pw_7netCDF4_10_Dimension_7__repr__, METH_O, 0};
+static PyObject *__pyx_pw_7netCDF4_10_Dimension_7__repr__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7netCDF4_10_Dimension_6__str__(__pyx_self, ((PyObject *)__pyx_v_self));
+  __Pyx_RefNannySetupContext("__repr__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_7netCDF4_10_Dimension_6__repr__(__pyx_self, ((PyObject *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7netCDF4_10_Dimension_6__str__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_7netCDF4_10_Dimension_6__repr__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -10736,11 +10736,11 @@ static PyObject *__pyx_pf_7netCDF4_10_Dimension_6__str__(CYTHON_UNUSED PyObject 
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__str__", 0);
+  __Pyx_RefNannySetupContext("__repr__", 0);
 
   /* "utils.pyx":569
  *         return True
- *     def __str__(self):
+ *     def __repr__(self):
  *         if self.isunlimited():             # <<<<<<<<<<<<<<
  *             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
  *         else:
@@ -10770,7 +10770,7 @@ static PyObject *__pyx_pf_7netCDF4_10_Dimension_6__str__(CYTHON_UNUSED PyObject 
   if (__pyx_t_4) {
 
     /* "utils.pyx":570
- *     def __str__(self):
+ *     def __repr__(self):
  *         if self.isunlimited():
  *             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))             # <<<<<<<<<<<<<<
  *         else:
@@ -10843,7 +10843,7 @@ static PyObject *__pyx_pf_7netCDF4_10_Dimension_6__str__(CYTHON_UNUSED PyObject 
   /* "utils.pyx":568
  *     def isunlimited(self):
  *         return True
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         if self.isunlimited():
  *             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
  */
@@ -10854,7 +10854,7 @@ static PyObject *__pyx_pf_7netCDF4_10_Dimension_6__str__(CYTHON_UNUSED PyObject 
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("netCDF4._Dimension.__str__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("netCDF4._Dimension.__repr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -11607,7 +11607,7 @@ static PyObject *__pyx_pf_7netCDF4_9_Variable_6__getattr__(CYTHON_UNUSED PyObjec
  *             return self.__dict__[name]
  *         except:             # <<<<<<<<<<<<<<
  *             raise AttributeError(name)
- *     def __str__(self):
+ *     def __repr__(self):
  */
     /*except:*/ {
       __Pyx_AddTraceback("netCDF4._Variable.__getattr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -11620,7 +11620,7 @@ static PyObject *__pyx_pf_7netCDF4_9_Variable_6__getattr__(CYTHON_UNUSED PyObjec
  *             return self.__dict__[name]
  *         except:
  *             raise AttributeError(name)             # <<<<<<<<<<<<<<
- *     def __str__(self):
+ *     def __repr__(self):
  *         ncdump_var = ['%r\n' % type(self)]
  */
       __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 598; __pyx_clineno = __LINE__; goto __pyx_L7_except_error;}
@@ -11675,26 +11675,26 @@ static PyObject *__pyx_pf_7netCDF4_9_Variable_6__getattr__(CYTHON_UNUSED PyObjec
 /* "utils.pyx":599
  *         except:
  *             raise AttributeError(name)
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         ncdump_var = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions])
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7netCDF4_9_Variable_9__str__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_7netCDF4_9_Variable_9__str__ = {"__str__", (PyCFunction)__pyx_pw_7netCDF4_9_Variable_9__str__, METH_O, 0};
-static PyObject *__pyx_pw_7netCDF4_9_Variable_9__str__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_7netCDF4_9_Variable_9__repr__(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_7netCDF4_9_Variable_9__repr__ = {"__repr__", (PyCFunction)__pyx_pw_7netCDF4_9_Variable_9__repr__, METH_O, 0};
+static PyObject *__pyx_pw_7netCDF4_9_Variable_9__repr__(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__str__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_7netCDF4_9_Variable_8__str__(__pyx_self, ((PyObject *)__pyx_v_self));
+  __Pyx_RefNannySetupContext("__repr__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_7netCDF4_9_Variable_8__repr__(__pyx_self, ((PyObject *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7netCDF4_9_Variable_8__str__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_7netCDF4_9_Variable_8__repr__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_v_ncdump_var = NULL;
   PyObject *__pyx_v_dimnames = NULL;
   PyObject *__pyx_v_attrs = NULL;
@@ -11718,11 +11718,11 @@ static PyObject *__pyx_pf_7netCDF4_9_Variable_8__str__(CYTHON_UNUSED PyObject *_
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__str__", 0);
+  __Pyx_RefNannySetupContext("__repr__", 0);
 
   /* "utils.pyx":600
  *             raise AttributeError(name)
- *     def __str__(self):
+ *     def __repr__(self):
  *         ncdump_var = ['%r\n' % type(self)]             # <<<<<<<<<<<<<<
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions])
  *         attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
@@ -11738,7 +11738,7 @@ static PyObject *__pyx_pf_7netCDF4_9_Variable_8__str__(CYTHON_UNUSED PyObject *_
   __pyx_t_2 = 0;
 
   /* "utils.pyx":601
- *     def __str__(self):
+ *     def __repr__(self):
  *         ncdump_var = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions])             # <<<<<<<<<<<<<<
  *         attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
@@ -12180,7 +12180,7 @@ static PyObject *__pyx_pf_7netCDF4_9_Variable_8__str__(CYTHON_UNUSED PyObject *_
   /* "utils.pyx":599
  *         except:
  *             raise AttributeError(name)
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         ncdump_var = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions])
  */
@@ -12193,7 +12193,7 @@ static PyObject *__pyx_pf_7netCDF4_9_Variable_8__str__(CYTHON_UNUSED PyObject *_
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("netCDF4._Variable.__str__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("netCDF4._Variable.__repr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_ncdump_var);
@@ -58920,14 +58920,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 1},
   {&__pyx_kp_s_0m, __pyx_k_0m, sizeof(__pyx_k_0m), 0, 0, 1, 0},
   {&__pyx_kp_s_1, __pyx_k_1, sizeof(__pyx_k_1), 0, 0, 1, 0},
-  {&__pyx_kp_s_1_1_2, __pyx_k_1_1_2, sizeof(__pyx_k_1_1_2), 0, 0, 1, 0},
+  {&__pyx_kp_s_1_1_3, __pyx_k_1_1_3, sizeof(__pyx_k_1_1_3), 0, 0, 1, 0},
   {&__pyx_kp_s_4_2_1, __pyx_k_4_2_1, sizeof(__pyx_k_4_2_1), 0, 0, 1, 0},
   {&__pyx_kp_s_4m, __pyx_k_4m, sizeof(__pyx_k_4m), 0, 0, 1, 0},
   {&__pyx_n_s_AttributeError, __pyx_k_AttributeError, sizeof(__pyx_k_AttributeError), 0, 0, 1, 1},
   {&__pyx_n_s_Dimension, __pyx_k_Dimension, sizeof(__pyx_k_Dimension), 0, 0, 1, 1},
   {&__pyx_n_s_Dimension___init, __pyx_k_Dimension___init, sizeof(__pyx_k_Dimension___init), 0, 0, 1, 1},
   {&__pyx_n_s_Dimension___len, __pyx_k_Dimension___len, sizeof(__pyx_k_Dimension___len), 0, 0, 1, 1},
-  {&__pyx_n_s_Dimension___str, __pyx_k_Dimension___str, sizeof(__pyx_k_Dimension___str), 0, 0, 1, 1},
+  {&__pyx_n_s_Dimension___repr, __pyx_k_Dimension___repr, sizeof(__pyx_k_Dimension___repr), 0, 0, 1, 1},
   {&__pyx_n_s_Dimension_isunlimited, __pyx_k_Dimension_isunlimited, sizeof(__pyx_k_Dimension_isunlimited), 0, 0, 1, 1},
   {&__pyx_kp_s_Dimension_object_no_longer_valid, __pyx_k_Dimension_object_no_longer_valid, sizeof(__pyx_k_Dimension_object_no_longer_valid), 0, 0, 1, 0},
   {&__pyx_n_s_FillValue, __pyx_k_FillValue, sizeof(__pyx_k_FillValue), 0, 0, 1, 1},
@@ -58940,8 +58940,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_MFDataset, __pyx_k_MFDataset, sizeof(__pyx_k_MFDataset), 0, 0, 1, 1},
   {&__pyx_n_s_MFDataset___getattribute, __pyx_k_MFDataset___getattribute, sizeof(__pyx_k_MFDataset___getattribute), 0, 0, 1, 1},
   {&__pyx_n_s_MFDataset___init, __pyx_k_MFDataset___init, sizeof(__pyx_k_MFDataset___init), 0, 0, 1, 1},
+  {&__pyx_n_s_MFDataset___repr, __pyx_k_MFDataset___repr, sizeof(__pyx_k_MFDataset___repr), 0, 0, 1, 1},
   {&__pyx_n_s_MFDataset___setattr, __pyx_k_MFDataset___setattr, sizeof(__pyx_k_MFDataset___setattr), 0, 0, 1, 1},
-  {&__pyx_n_s_MFDataset___str, __pyx_k_MFDataset___str, sizeof(__pyx_k_MFDataset___str), 0, 0, 1, 1},
   {&__pyx_n_s_MFDataset_close, __pyx_k_MFDataset_close, sizeof(__pyx_k_MFDataset_close), 0, 0, 1, 1},
   {&__pyx_n_s_MFDataset_ncattrs, __pyx_k_MFDataset_ncattrs, sizeof(__pyx_k_MFDataset_ncattrs), 0, 0, 1, 1},
   {&__pyx_kp_s_MFDataset_self_files_check_Fals, __pyx_k_MFDataset_self_files_check_Fals, sizeof(__pyx_k_MFDataset_self_files_check_Fals), 0, 0, 1, 0},
@@ -58980,7 +58980,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Variable___getitem, __pyx_k_Variable___getitem, sizeof(__pyx_k_Variable___getitem), 0, 0, 1, 1},
   {&__pyx_n_s_Variable___init, __pyx_k_Variable___init, sizeof(__pyx_k_Variable___init), 0, 0, 1, 1},
   {&__pyx_n_s_Variable___len, __pyx_k_Variable___len, sizeof(__pyx_k_Variable___len), 0, 0, 1, 1},
-  {&__pyx_n_s_Variable___str, __pyx_k_Variable___str, sizeof(__pyx_k_Variable___str), 0, 0, 1, 1},
+  {&__pyx_n_s_Variable___repr, __pyx_k_Variable___repr, sizeof(__pyx_k_Variable___repr), 0, 0, 1, 1},
   {&__pyx_n_s_Variable__shape, __pyx_k_Variable__shape, sizeof(__pyx_k_Variable__shape), 0, 0, 1, 1},
   {&__pyx_kp_s_Variable_length_strings_are_only, __pyx_k_Variable_length_strings_are_only, sizeof(__pyx_k_Variable_length_strings_are_only), 0, 0, 1, 0},
   {&__pyx_n_s_Variable_ncattrs, __pyx_k_Variable_ncattrs, sizeof(__pyx_k_Variable_ncattrs), 0, 0, 1, 1},
@@ -59336,6 +59336,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_releasevers, __pyx_k_releasevers, sizeof(__pyx_k_releasevers), 0, 0, 1, 1},
   {&__pyx_kp_s_renameGroup_method_not_enabled, __pyx_k_renameGroup_method_not_enabled, sizeof(__pyx_k_renameGroup_method_not_enabled), 0, 0, 1, 0},
   {&__pyx_n_s_replace, __pyx_k_replace, sizeof(__pyx_k_replace), 0, 0, 1, 1},
+  {&__pyx_n_s_repr, __pyx_k_repr, sizeof(__pyx_k_repr), 0, 0, 1, 1},
   {&__pyx_kp_s_requires_numpy_version_1_0rc1_or, __pyx_k_requires_numpy_version_1_0rc1_or, sizeof(__pyx_k_requires_numpy_version_1_0rc1_or), 0, 0, 1, 0},
   {&__pyx_n_s_reshape, __pyx_k_reshape, sizeof(__pyx_k_reshape), 0, 0, 1, 1},
   {&__pyx_kp_s_root_group_s_data_model_file_for, __pyx_k_root_group_s_data_model_file_for, sizeof(__pyx_k_root_group_s_data_model_file_for), 0, 0, 1, 0},
@@ -59382,7 +59383,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_step, __pyx_k_step, sizeof(__pyx_k_step), 0, 0, 1, 1},
   {&__pyx_n_s_stop, __pyx_k_stop, sizeof(__pyx_k_stop), 0, 0, 1, 1},
   {&__pyx_n_s_str, __pyx_k_str, sizeof(__pyx_k_str), 0, 0, 1, 1},
-  {&__pyx_n_s_str_2, __pyx_k_str_2, sizeof(__pyx_k_str_2), 0, 0, 1, 1},
   {&__pyx_n_s_strd, __pyx_k_strd, sizeof(__pyx_k_strd), 0, 0, 1, 1},
   {&__pyx_n_s_stride, __pyx_k_stride, sizeof(__pyx_k_stride), 0, 0, 1, 1},
   {&__pyx_kp_s_strides_must_all_be_1_for_string, __pyx_k_strides_must_all_be_1_for_string, sizeof(__pyx_k_strides_must_all_be_1_for_string), 0, 0, 1, 0},
@@ -60779,14 +60779,14 @@ static int __Pyx_InitCachedConstants(void) {
   /* "utils.pyx":542
  *             dset.close()
  * 
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
  */
   __pyx_tuple__145 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_ncdump, __pyx_n_s_dimnames, __pyx_n_s_varnames, __pyx_n_s_grpnames, __pyx_n_s_attrs, __pyx_n_s_dimname, __pyx_n_s_varname, __pyx_n_s_name); if (unlikely(!__pyx_tuple__145)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 542; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__145);
   __Pyx_GIVEREF(__pyx_tuple__145);
-  __pyx_codeobj__146 = (PyObject*)__Pyx_PyCode_New(1, 0, 9, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__145, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Volumes_Drobo_python_netcdf4_py, __pyx_n_s_str_2, 542, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__146)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 542; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__146 = (PyObject*)__Pyx_PyCode_New(1, 0, 9, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__145, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Volumes_Drobo_python_netcdf4_py, __pyx_n_s_repr, 542, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__146)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 542; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "utils.pyx":560
  * 
@@ -60817,7 +60817,7 @@ static int __Pyx_InitCachedConstants(void) {
  *         return self.dimtotlen
  *     def isunlimited(self):             # <<<<<<<<<<<<<<
  *         return True
- *     def __str__(self):
+ *     def __repr__(self):
  */
   __pyx_tuple__151 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__151)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__151);
@@ -60827,14 +60827,14 @@ static int __Pyx_InitCachedConstants(void) {
   /* "utils.pyx":568
  *     def isunlimited(self):
  *         return True
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         if self.isunlimited():
  *             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
  */
   __pyx_tuple__153 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__153)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 568; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__153);
   __Pyx_GIVEREF(__pyx_tuple__153);
-  __pyx_codeobj__154 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__153, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Volumes_Drobo_python_netcdf4_py, __pyx_n_s_str_2, 568, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__154)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 568; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__154 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__153, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Volumes_Drobo_python_netcdf4_py, __pyx_n_s_repr, 568, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__154)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 568; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "utils.pyx":575
  * 
@@ -60887,14 +60887,14 @@ static int __Pyx_InitCachedConstants(void) {
   /* "utils.pyx":599
  *         except:
  *             raise AttributeError(name)
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         ncdump_var = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions])
  */
   __pyx_tuple__163 = PyTuple_Pack(8, __pyx_n_s_self, __pyx_n_s_ncdump_var, __pyx_n_s_dimnames, __pyx_n_s_attrs, __pyx_n_s_unlimdims, __pyx_n_s_dimname, __pyx_n_s_dim, __pyx_n_s_name); if (unlikely(!__pyx_tuple__163)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 599; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__163);
   __Pyx_GIVEREF(__pyx_tuple__163);
-  __pyx_codeobj__164 = (PyObject*)__Pyx_PyCode_New(1, 0, 8, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__163, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Volumes_Drobo_python_netcdf4_py, __pyx_n_s_str_2, 599, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__164)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 599; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_codeobj__164 = (PyObject*)__Pyx_PyCode_New(1, 0, 8, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__163, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Volumes_Drobo_python_netcdf4_py, __pyx_n_s_repr, 599, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__164)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 599; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "utils.pyx":615
  *         ncdump_var.append('current size = %s\n' % repr(self.shape))
@@ -61497,11 +61497,11 @@ PyMODINIT_FUNC PyInit_netCDF4(void)
   /* "netCDF4.pyx":814
  *     pass
  * 
- * __version__ = "1.1.2"             # <<<<<<<<<<<<<<
+ * __version__ = "1.1.3"             # <<<<<<<<<<<<<<
  * 
  * # Initialize numpy
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_1_1_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 814; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_1_1_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 814; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "netCDF4.pyx":817
  * 
@@ -61909,13 +61909,13 @@ PyMODINIT_FUNC PyInit_netCDF4(void)
   /* "utils.pyx":542
  *             dset.close()
  * 
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
  */
-  __pyx_t_13 = __Pyx_CyFunction_NewEx(&__pyx_mdef_7netCDF4_9MFDataset_11__str__, 0, __pyx_n_s_MFDataset___str, NULL, __pyx_n_s_netCDF4, __pyx_d, ((PyObject *)__pyx_codeobj__146)); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 542; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_13 = __Pyx_CyFunction_NewEx(&__pyx_mdef_7netCDF4_9MFDataset_11__repr__, 0, __pyx_n_s_MFDataset___repr, NULL, __pyx_n_s_netCDF4, __pyx_d, ((PyObject *)__pyx_codeobj__146)); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 542; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_13);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_str_2, __pyx_t_13) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 542; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_repr, __pyx_t_13) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 542; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
   /* "utils.pyx":317
@@ -61979,7 +61979,7 @@ PyMODINIT_FUNC PyInit_netCDF4(void)
  *         return self.dimtotlen
  *     def isunlimited(self):             # <<<<<<<<<<<<<<
  *         return True
- *     def __str__(self):
+ *     def __repr__(self):
  */
   __pyx_t_13 = __Pyx_CyFunction_NewEx(&__pyx_mdef_7netCDF4_10_Dimension_5isunlimited, 0, __pyx_n_s_Dimension_isunlimited, NULL, __pyx_n_s_netCDF4, __pyx_d, ((PyObject *)__pyx_codeobj__152)); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 566; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_13);
@@ -61989,13 +61989,13 @@ PyMODINIT_FUNC PyInit_netCDF4(void)
   /* "utils.pyx":568
  *     def isunlimited(self):
  *         return True
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         if self.isunlimited():
  *             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
  */
-  __pyx_t_13 = __Pyx_CyFunction_NewEx(&__pyx_mdef_7netCDF4_10_Dimension_7__str__, 0, __pyx_n_s_Dimension___str, NULL, __pyx_n_s_netCDF4, __pyx_d, ((PyObject *)__pyx_codeobj__154)); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 568; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_13 = __Pyx_CyFunction_NewEx(&__pyx_mdef_7netCDF4_10_Dimension_7__repr__, 0, __pyx_n_s_Dimension___repr, NULL, __pyx_n_s_netCDF4, __pyx_d, ((PyObject *)__pyx_codeobj__154)); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 568; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_13);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_str_2, __pyx_t_13) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 568; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_repr, __pyx_t_13) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 568; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
   /* "utils.pyx":559
@@ -62081,13 +62081,13 @@ PyMODINIT_FUNC PyInit_netCDF4(void)
   /* "utils.pyx":599
  *         except:
  *             raise AttributeError(name)
- *     def __str__(self):             # <<<<<<<<<<<<<<
+ *     def __repr__(self):             # <<<<<<<<<<<<<<
  *         ncdump_var = ['%r\n' % type(self)]
  *         dimnames = tuple([str(dimname) for dimname in self.dimensions])
  */
-  __pyx_t_13 = __Pyx_CyFunction_NewEx(&__pyx_mdef_7netCDF4_9_Variable_9__str__, 0, __pyx_n_s_Variable___str, NULL, __pyx_n_s_netCDF4, __pyx_d, ((PyObject *)__pyx_codeobj__164)); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 599; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_13 = __Pyx_CyFunction_NewEx(&__pyx_mdef_7netCDF4_9_Variable_9__repr__, 0, __pyx_n_s_Variable___repr, NULL, __pyx_n_s_netCDF4, __pyx_d, ((PyObject *)__pyx_codeobj__164)); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 599; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_13);
-  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_str_2, __pyx_t_13) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 599; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetItem(__pyx_t_1, __pyx_n_s_repr, __pyx_t_13) < 0) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 599; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
 
   /* "utils.pyx":615

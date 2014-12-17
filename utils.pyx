@@ -539,7 +539,7 @@ Default is an empty list.
         for dset in self._cdf:
             dset.close()
 
-    def __str__(self):
+    def __repr__(self):
         ncdump = ['%r\n' % type(self)]
         dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
         varnames = tuple([str(varname) for varname in self.variables.keys()])
@@ -565,7 +565,7 @@ class _Dimension(object):
         return self.dimtotlen
     def isunlimited(self):
         return True
-    def __str__(self):
+    def __repr__(self):
         if self.isunlimited():
             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
         else:
@@ -596,7 +596,7 @@ class _Variable(object):
             return self.__dict__[name]
         except:
             raise AttributeError(name)
-    def __str__(self):
+    def __repr__(self):
         ncdump_var = ['%r\n' % type(self)]
         dimnames = tuple([str(dimname) for dimname in self.dimensions])
         attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\

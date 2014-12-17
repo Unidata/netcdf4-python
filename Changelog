@@ -1,8 +1,11 @@
- since version 1.1.2
- ===================
+ version 1.1.3 (not yet released)
+ ================================
 
  * checked in _datetime.c to git (resolves issue #315).  Note - _datetime.c
    was included in the 1.1.2 release.
+ * Changed __str__ to __repr__ in MFDataset, to be consistent with Dataset
+   (issue #317). IPython uses __repr__ to make use-friendly human-readable summaries
+   of objects in the terminal.
 
  version 1.1.2 (tag v1.1.2rel)
  =============================
