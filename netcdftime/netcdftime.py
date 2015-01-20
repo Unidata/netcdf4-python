@@ -309,8 +309,8 @@ def DateFromJulianDay(JD, calendar='standard'):
     F -= hour / 24.
     minute = np.clip((F * 1440. + eps).astype(np.int64), 0, 59)
     second = np.clip((F - minute / 1440.) * 86400., 0, None)
-    second = second.astype(np.int32)
     microsecond = ((second - np.int32(second)) * 1e6).astype(np.int32)
+    second = second.astype(np.int32)
 
     # convert year, month and day to int
     year = year.astype(np.int32)
