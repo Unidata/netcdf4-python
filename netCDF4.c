@@ -1430,7 +1430,7 @@ static char __pyx_k_view[] = "view";
 static char __pyx_k_vlen[] = "vlen";
 static char __pyx_k_warn[] = "warn";
 static char __pyx_k_zlib[] = "zlib";
-static char __pyx_k_1_1_3[] = "1.1.3";
+static char __pyx_k_1_1_4[] = "1.1.4";
 static char __pyx_k_4_2_1[] = "4.2.1";
 static char __pyx_k_align[] = "align";
 static char __pyx_k_array[] = "array";
@@ -1859,7 +1859,7 @@ static char __pyx_k_master_dataset_s_does_not_have_a_2[] = "master dataset %s do
 static PyObject *__pyx_n_s_;
 static PyObject *__pyx_kp_s_0m;
 static PyObject *__pyx_kp_s_1;
-static PyObject *__pyx_kp_s_1_1_3;
+static PyObject *__pyx_kp_s_1_1_4;
 static PyObject *__pyx_kp_s_4_2_1;
 static PyObject *__pyx_kp_s_4m;
 static PyObject *__pyx_n_s_AttributeError;
@@ -59091,7 +59091,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 1},
   {&__pyx_kp_s_0m, __pyx_k_0m, sizeof(__pyx_k_0m), 0, 0, 1, 0},
   {&__pyx_kp_s_1, __pyx_k_1, sizeof(__pyx_k_1), 0, 0, 1, 0},
-  {&__pyx_kp_s_1_1_3, __pyx_k_1_1_3, sizeof(__pyx_k_1_1_3), 0, 0, 1, 0},
+  {&__pyx_kp_s_1_1_4, __pyx_k_1_1_4, sizeof(__pyx_k_1_1_4), 0, 0, 1, 0},
   {&__pyx_kp_s_4_2_1, __pyx_k_4_2_1, sizeof(__pyx_k_4_2_1), 0, 0, 1, 0},
   {&__pyx_kp_s_4m, __pyx_k_4m, sizeof(__pyx_k_4m), 0, 0, 1, 0},
   {&__pyx_n_s_AttributeError, __pyx_k_AttributeError, sizeof(__pyx_k_AttributeError), 0, 0, 1, 1},
@@ -61670,11 +61670,11 @@ PyMODINIT_FUNC PyInit_netCDF4(void)
   /* "netCDF4.pyx":814
  *     pass
  * 
- * __version__ = "1.1.3"             # <<<<<<<<<<<<<<
+ * __version__ = "1.1.4"             # <<<<<<<<<<<<<<
  * 
  * # Initialize numpy
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_1_1_3) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 814; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_1_1_4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 814; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "netCDF4.pyx":817
  * 
