@@ -203,7 +203,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
                 elen = max(ea.max()+1,elen)
             else:
                 if ea.max()+1 > elen:
-                    msg="integer index exceeds dimension size" 
+                    msg="integer index exceeds dimension size"
                     raise IndexError(msg)
             eb = np.zeros(elen,np.bool)
             eb[ea] = True
@@ -244,36 +244,37 @@ Boolean array must have the same shape as the data along this dimension."""
             hasEllipsis = True
         # Replace boolean array with slice object if possible.
         elif ea.dtype.kind == 'b':
-            el = e.tolist()
-            if any(el):
-                start = el.index(True)
-                el.reverse()
-                stop = len(el)-el.index(True)
-                step = False
-                if e[start:stop].all():
-                    step = 1
-                else:
-                    n1 = start+1
-                    ee = e[n1]
-                    estart = e[start]
-                    while ee != estart:
-                        n1 = n1 + 1
-                        ee = e[n1]
-                    step = n1-start
-                    # check to make sure e[start:stop:step] are all True,
-                    # and other elements in e[start:stop] are all False.
-                    ii = range(start,stop,step)
-                    for i in range(start,stop):
-                        if i not in ii:
-                            if e[i]: step = False
-                        else:
-                            if not e[i]: step = False
-                if step: # it step False, can't convert to slice.
-                    newElem.append(slice(start,stop,step))
-                else:
-                    newElem.append(e)
-            else:
-                newElem.append(slice(0,0))
+           el = e.tolist()
+           if any(el):
+               start = el.index(True)
+               el.reverse()
+               stop = len(el)-el.index(True)
+               step = False
+               if e[start:stop].all():
+                   step = 1
+               # skip this part of check, since it is very slow (issue 325)
+               #else:
+               #    n1 = start+1
+               #    ee = e[n1]
+               #    estart = e[start]
+               #    while ee != estart:
+               #        n1 = n1 + 1
+               #        ee = e[n1]
+               #    step = n1-start
+               #    # check to make sure e[start:stop:step] are all True,
+               #    # and other elements in e[start:stop] are all False.
+               #    ii = range(start,stop,step)
+               #    for i in range(start,stop):
+               #        if i not in ii:
+               #            if e[i]: step = False
+               #        else:
+               #            if not e[i]: step = False
+               if step: # it step False, can't convert to slice.
+                   newElem.append(slice(start,stop,step))
+               else:
+                   newElem.append(e)
+           else:
+               newElem.append(slice(0,0))
         else:
             newElem.append(e)
     elem = newElem
