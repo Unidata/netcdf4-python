@@ -59,9 +59,11 @@ class TestgetStartCountStride(unittest.TestCase):
             pass
 
         # this one should be converted to a slice
-        elem = [slice(None), [1,3,5], 8]
-        start, count, stride, put_ind = nc._StartCountStride(elem, (50, 6, 10))
-        assert_equal(put_ind[...,1].squeeze(), slice(None,None,None))
+        # (this was slowing things down too much, so conversion was removed -
+        # issue 325)
+        #elem = [slice(None), [1,3,5], 8]
+        #start, count, stride, put_ind = nc._StartCountStride(elem, (50, 6, 10))
+        #assert_equal(put_ind[...,1].squeeze(), slice(None,None,None))
 
 
     def test_multiple_sequences(self):
