@@ -2624,7 +2624,12 @@ instance. If C{None}, the data is not truncated. """
             if fill_value is not None:
                 if not fill_value and isinstance(fill_value,bool):
                     # no filling for this variable if fill_value==False.
-                    ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
+                    if not self._isprimitive:
+                        # no fill values for VLEN and compound variables
+                        # anyway.
+                        ierr = 0
+                    else:
+                        ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
