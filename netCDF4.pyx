@@ -2485,11 +2485,13 @@ instance. If C{None}, the data is not truncated. """
         if isinstance(datatype, CompoundType) or isinstance(datatype, VLType)\
                       or datatype == str:
             if isinstance(datatype, CompoundType):
-               self._iscompound = True
-               self._cmptype = datatype
+                self._iscompound = True
+                self._cmptype = datatype
             if isinstance(datatype, VLType) or datatype==str:
-               self._isvlen = True
-               self._vltype = datatype
+                if not dimensions:
+                    raise ValueError('scalar vlen variables not supported')
+                self._isvlen = True
+                self._vltype = datatype
             if datatype==str:
                 if grp.data_model != 'NETCDF4':
                     raise ValueError(
@@ -3230,7 +3232,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                     elem = self.shape[0]+elem
                 else:
                     raise IndexError("Illegal index")
-        elif isinstance(elem, tuple):
+        elif elem and isinstance(elem, tuple):
             if len(elem) != ndims:
                 raise IndexError("Illegal index")
             elemnew = []
