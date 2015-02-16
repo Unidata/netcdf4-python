@@ -2485,13 +2485,11 @@ instance. If C{None}, the data is not truncated. """
         if isinstance(datatype, CompoundType) or isinstance(datatype, VLType)\
                       or datatype == str:
             if isinstance(datatype, CompoundType):
-                self._iscompound = True
-                self._cmptype = datatype
+               self._iscompound = True
+               self._cmptype = datatype
             if isinstance(datatype, VLType) or datatype==str:
-                if not dimensions:
-                    raise ValueError('scalar vlen variables not supported')
-                self._isvlen = True
-                self._vltype = datatype
+               self._isvlen = True
+               self._vltype = datatype
             if datatype==str:
                 if grp.data_model != 'NETCDF4':
                     raise ValueError(
@@ -3078,10 +3076,10 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         # Remove extra singleton dimensions. 
         if hasattr(data,'shape'):
             data = data[tuple(squeeze)]
-        if self.ndim == 0:
+        if hasattr(data,'ndim') and self.ndim == 0:
             # Make sure a numpy scalar is returned instead of a 1-d array of
             # length 1.
-            data = data[0]
+            if data.ndim != 0: data = data[0]
 
         # if auto_scale mode set to True, (through
         # a call to set_auto_scale or set_auto_maskandscale),
@@ -3232,7 +3230,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                     elem = self.shape[0]+elem
                 else:
                     raise IndexError("Illegal index")
-        elif elem and isinstance(elem, tuple):
+        elif isinstance(elem, tuple):
             if len(elem) != ndims:
                 raise IndexError("Illegal index")
             elemnew = []
