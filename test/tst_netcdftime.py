@@ -266,6 +266,12 @@ class netcdftimeTestCase(unittest.TestCase):
         self.assertEqual(
             repr(self.cdftime_leading_space.origin), ' 850-01-01 00:00:00')
 
+        #issue 330
+        units = "seconds since 1970-01-01T00:00:00Z"
+        t = utime(units)
+        for n in range(10):
+            assert n == int(round(t.date2num(t.num2date(n))))
+
 
 class TestDate2index(unittest.TestCase):
 
