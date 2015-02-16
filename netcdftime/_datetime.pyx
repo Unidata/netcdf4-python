@@ -48,7 +48,7 @@ and format.
 
     def timetuple(self):
         return (self.year, self.month, self.day, self.hour,
-                self.minute, self.second, self.microsecond, self.dayofwk, self.dayofyr, -1)
+                self.minute, self.second, self.dayofwk, self.dayofyr, -1)
 
     def _to_real_datetime(self):
         return real_datetime(self.year, self.month, self.day,

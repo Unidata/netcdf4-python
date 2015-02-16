@@ -344,10 +344,10 @@ def DateFromJulianDay(JD, calendar='standard'):
             return np.array([datetime(*args)
                              for args in
                              zip(year, month, day, hour, minute,
-                                 second, dayofwk, dayofyr)])
+                                 second, microsecond, dayofwk, dayofyr)])
         else:
             return datetime(year[0], month[0], day[0], hour[0],
-                            minute[0], second[0], dayofwk[0],
+                            minute[0], second[0], microsecond[0], dayofwk[0],
                             dayofyr[0])
 
 
