@@ -311,7 +311,6 @@ def DateFromJulianDay(JD, calendar='standard'):
     # don't attempt microsecond accuracy, just round to nearest
     # second (issue #330)
     second = np.round(np.clip((F - minute / 1440.) * 86400., 0, None))
-    microsecond = np.zeros(second.shape, np.int32)
 
     # convert to int32
     year = year.astype(np.int32)
@@ -332,12 +331,11 @@ def DateFromJulianDay(JD, calendar='standard'):
         if not isscalar:
             return np.array([real_datetime(*args)
                              for args in
-                             zip(year, month, day, hour, minute,
-                                 second, microsecond)])
+                             zip(year, month, day, hour, minute, second)])
 
         else:
             return real_datetime(year[0], month[0], day[0], hour[0],
-                                 minute[0], second[0], microsecond[0])
+                                 minute[0], second[0])
     else:
         # or else, return a 'datetime-like' instance.
         if not isscalar:
