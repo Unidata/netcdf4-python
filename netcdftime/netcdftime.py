@@ -312,12 +312,10 @@ def DateFromJulianDay(JD, calendar='standard'):
     # second (issue #330)
     second = np.round(np.clip((F - minute / 1440.) * 86400., 0, None))
 
-    # convert to int32
+    # convert year, month, day to int32
     year = year.astype(np.int32)
     month = month.astype(np.int32)
     day = day.astype(np.int32)
-    minute = minute.astype(np.int32)
-    second = second.astype(np.int32)
 
     # check if input was scalar and change return accordingly
     isscalar = False
