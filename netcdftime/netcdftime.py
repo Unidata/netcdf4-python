@@ -65,6 +65,7 @@ def JulianDayFromDate(date, calendar='standard'):
     hour = year.copy()
     minute = year.copy()
     second = year.copy()
+    microsecond = year.copy()
     for i, d in enumerate(date):
         year[i] = d.year
         month[i] = d.month
@@ -72,8 +73,10 @@ def JulianDayFromDate(date, calendar='standard'):
         hour[i] = d.hour
         minute[i] = d.minute
         second[i] = d.second
+        microsecond[i] = d.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
+    day = day + hour / 24.0 + minute / 1440.0 + \
+        second / 86400.0 + microsecond / (1e6 * 86400.)
 
     # Start Meeus algorithm (variables are in his notation)
     month_lt_3 = month < 3
