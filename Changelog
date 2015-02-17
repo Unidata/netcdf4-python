@@ -1,15 +1,14 @@
  version 1.1.4 (not yet released)
  ===============================
 
- * fix for microsecond calculation in netcdftime (issue #321).
  * speedup conversion of array indices to slices (issue #325).
  * fix for issue #330 (incorrect values for seconds returned by netcdftime).
  * fix reading of scalar vlen variables (issue #333).
  * setting fill_value=False in createVariable for vlen and compound variables 
    now does nothing, instead of causing an error when the Dataset is closed
    (issue #331).
- * cython will regenerate netCDF4.c when install is run, not just
-   build (issue #263).
+ * cython will regenerate netCDF4.c when install is run, not just build.
+   Makes 'pip install' do the right thing when cython is installed (issue #263).
 
  version 1.1.3 (tag v1.1.3rel)
  =============================
