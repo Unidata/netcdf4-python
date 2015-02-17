@@ -1,7 +1,7 @@
 recursive-include docs *
 recursive-include ports *
 include MANIFEST.in
-include README
+include README.md
 include README.macosx
 include COPYING
 include Changelog
