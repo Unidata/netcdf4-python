@@ -2624,7 +2624,12 @@ instance. If C{None}, the data is not truncated. """
             if fill_value is not None:
                 if not fill_value and isinstance(fill_value,bool):
                     # no filling for this variable if fill_value==False.
-                    ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
+                    if not self._isprimitive:
+                        # no fill values for VLEN and compound variables
+                        # anyway.
+                        ierr = 0
+                    else:
+                        ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -3076,10 +3081,10 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         # Remove extra singleton dimensions. 
         if hasattr(data,'shape'):
             data = data[tuple(squeeze)]
-        if self.ndim == 0:
+        if hasattr(data,'ndim') and self.ndim == 0:
             # Make sure a numpy scalar is returned instead of a 1-d array of
             # length 1.
-            data = data[0]
+            if data.ndim != 0: data = data[0]
 
         # if auto_scale mode set to True, (through
         # a call to set_auto_scale or set_auto_maskandscale),

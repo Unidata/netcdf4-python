@@ -78,6 +78,19 @@ class TestInvalidDataType(unittest.TestCase):
         f.close()
         os.remove(FILE_NAME)
 
+class TestScalarVlenString(unittest.TestCase):
+    # issue 333
+    def runTest(self):
+        f = Dataset(FILE_NAME, 'w', format='NETCDF4')
+        teststring = f.createVariable('teststring', str)
+        stringout = "yyyymmdd_hhmmss"
+        teststring[()] = stringout
+        f.close()
+        f = Dataset(FILE_NAME)
+        assert f.variables['teststring'][:] == stringout
+        f.close()
+        os.remove(FILE_NAME)
+
 class TestObjectArrayIndexing(unittest.TestCase):
 
     def setUp(self):
