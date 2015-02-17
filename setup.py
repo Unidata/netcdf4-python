@@ -316,7 +316,8 @@ if has_cython and 'sdist' not in sys.argv[1:]:
     extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs),
                   Extension('netcdftime._datetime', ['netcdftime/_datetime.pyx'])]
     # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
-    # run for build *and* install (issue #263).
+    # run for build *and* install (issue #263). Otherwise 'pip install' will
+    # not regenerate netCDF4.c, even if the C lib supports the new features.
     if len(sys.argv) >= 2 and os.path.exists('netCDF4.c'):
         os.remove('netCDF4.c')
     # this determines whether renameGroup and filepath methods will work.
