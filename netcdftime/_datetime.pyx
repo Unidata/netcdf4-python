@@ -21,9 +21,9 @@ phony datetime and with datetime.datetime objects.
 Instance variables are year,month,day,hour,minute,second,dayofwk,dayofyr
 and format.
     """
-    cdef readonly int year, month, day, hour, minute, dayofwk, dayofyr, second
+    cdef readonly int year, month, day, hour, minute, dayofwk, dayofyr, second, microsecond
 
-    def __init__(self, year, month, day, hour=0, minute=0, second=0,
+    def __init__(self, year, month, day, hour=0, minute=0, second=0, microsecond=0,
                  dayofwk=-1, dayofyr=1):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
 
@@ -35,6 +35,7 @@ and format.
         self.dayofwk = dayofwk
         self.dayofyr = dayofyr
         self.second = second
+        self.microsecond = microsecond
 
     property format:
         def __get__(self):
@@ -51,7 +52,7 @@ and format.
 
     def _to_real_datetime(self):
         return real_datetime(self.year, self.month, self.day,
-                             self.hour, self.minute, self.second)
+                             self.hour, self.minute, self.second, self.microsecond)
 
     def __repr__(self):
         return self.strftime(self.format)

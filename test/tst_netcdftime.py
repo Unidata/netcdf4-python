@@ -117,7 +117,7 @@ class netcdftimeTestCase(unittest.TestCase):
         d2 = self.cdftime_noleap.num2date(t1)
         self.assertTrue(str(d1) == str(d2))
         # check day of year.
-        ndayr = d2.timetuple()[7]
+        ndayr = d2.timetuple()[6]
         self.assertTrue(ndayr == 59)
         # non-existant date, should raise ValueError.
         date = datetime(2000, 2, 29)
@@ -142,7 +142,7 @@ class netcdftimeTestCase(unittest.TestCase):
         d2 = self.cdftime_leap.num2date(t1)
         self.assertTrue(str(d1) == str(d2))
         # check day of year.
-        ndayr = d2.timetuple()[7]
+        ndayr = d2.timetuple()[6]
         self.assertTrue(ndayr == 60)
         # double check date2num,num2date methods.
         d = datetime(2000, 12, 31)
@@ -174,7 +174,7 @@ class netcdftimeTestCase(unittest.TestCase):
         assert_almost_equal(t, 144660.0)
         date = self.cdftime_360day.num2date(t)
         self.assertTrue(str(d) == str(date))
-        ndayr = date.timetuple()[7]
+        ndayr = date.timetuple()[6]
         self.assertTrue(ndayr == 360)
         # Check fraction
         d = datetime(1969, 12, 30, 12)
@@ -261,6 +261,13 @@ class netcdftimeTestCase(unittest.TestCase):
             d1.dayofyr = 52
         with self.assertRaises(AttributeError):
             d1.format = '%Y'
+
+        # test for issue #330
+        t = utime("seconds since 1970-01-01T00:00:00Z")
+        n = numpy.arange(50)
+        conv_n = t.num2date(n)
+        reconv_n = t.date2num(conv_n)
+        assert list(n) == list(numpy.round(reconv_n))
 
         # Check leading white space
         self.assertEqual(
