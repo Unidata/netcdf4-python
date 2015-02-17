@@ -3,6 +3,7 @@
 
  * fix for microsecond calculation in netcdftime (issue #321).
  * speedup conversion of array indices to slices (issue #325).
+ * fix for issue #330 (incorrect values for seconds returned by netcdftime).
  * fix reading of scalar vlen variables (issue #333).
  * setting fill_value=False in createVariable for vlen and compound variables 
    now does nothing, instead of causing an error when the Dataset is closed
