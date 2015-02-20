@@ -1,5 +1,10 @@
 Python/numpy interface to the netCDF version 4 library.
 
+News
+----
+
+2/19/2015: Version 1.1.5 released. Fixes serious bug in netcdftime that caused errors in num2date when units contains "seconds since".  Users of 1.1.2 and 1.1.3 should upgrade.  For other changes see https://github.com/Unidata/netcdf4-python/blob/master/Changelog.
+
 Quick Start
 -----------
 
