@@ -184,7 +184,10 @@ if USE_NCCONFIG is not None:
             ncconfig = os.path.join(netCDF4_dir,'bin/nc-config')
         else: # otherwise, just hope it's in the users PATH.
             ncconfig = 'nc-config'
-    retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
+    try:
+        retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
+    except:
+        retcode = 1
 else:
     retcode = 1
 
