@@ -1,3 +1,9 @@
+ since version 1.1.4
+ ===================
+  
+  * make use_ncconfig=True default in setup.cfg.  setup.py modified to handle failure
+    to find nc-config more gracefully (issue #340).
+
  version 1.1.4 (tag v1.1.4rel)
  =============================
 
