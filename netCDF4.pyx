@@ -1278,7 +1278,12 @@ cdef _get_vars(group):
                              break
                      grp = grp.parent 
              # create new variable instance.
-             variables[name] = Variable(group, name, datatype, dimensions, id=varid)
+             if endianness == '>':
+                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
+             elif endianness == '<':
+                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='little')
+             else:
+                 variables[name] = Variable(group, name, datatype, dimensions, id=varid)
         free(varids) # free pointer holding variable ids.
     return variables
 
