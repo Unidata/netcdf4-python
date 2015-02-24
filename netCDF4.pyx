@@ -811,7 +811,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.1.4"
+__version__ = "1.1.5"
 
 # Initialize numpy
 import posixpath
@@ -1196,10 +1196,6 @@ cdef _get_vars(group):
     if numvars > 0:
         # get variable ids.
         varids = <int *>malloc(sizeof(int) * numvars)
-        if group.data_model in ['NETCDF4','NETCDF4_CLASSIC']:
-            netcdf4 = True
-        else:
-            netcdf4 = False
         if group.data_model == 'NETCDF4':
             ierr = nc_inq_varids(group._grpid, &numvars, varids)
             if ierr != NC_NOERR:
@@ -1247,11 +1243,9 @@ cdef _get_vars(group):
                      else:
                          #print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
                          continue
-             # get endian-ness of variable
-             if netcdf4:
-                 ierr = nc_inq_var_endian(group._grpid, varid, &iendian)
-                 if ierr != NC_NOERR:
-                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+             # get endian-ness of variable, add to datatype if specified.
+             ierr = nc_inq_var_endian(group._grpid, varid, &iendian)
+             if ierr == NC_NOERR:
                  if iendian == NC_ENDIAN_LITTLE:
                      datatype = '<'+datatype
                  elif iendian == NC_ENDIAN_BIG:

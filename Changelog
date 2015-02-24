@@ -1,8 +1,10 @@
- since version 1.1.4
- ===================
+ version 1.1.5 (not yet released)
+ ===============================
   
   * make use_ncconfig=True default in setup.cfg.  setup.py modified to handle failure
     to find nc-config more gracefully (issue #340).
+  * if endian-ness of variable is specified, adjust datatype to reflect this when opening
+    a file (issue 346).
 
  version 1.1.4 (tag v1.1.4rel)
  =============================
