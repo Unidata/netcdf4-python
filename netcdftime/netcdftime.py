@@ -751,14 +751,16 @@ units to datetime objects.
         if not isscalar:
             jdelta = numpy.array(jdelta)
         # convert to desired units, add time zone offset.
+        # round results consistent with second accuracy 
+        # (improves round trip accuracy, issue #344).
         if self.units in ['second', 'seconds']:
-            jdelta = jdelta * 86400. + self.tzoffset * 60.
+            jdelta = np.round(jdelta * 86400. + self.tzoffset * 60.)
         elif self.units in ['minute', 'minutes']:
-            jdelta = jdelta * 1440. + self.tzoffset
+            jdelta = np.round(jdelta * 1440. + self.tzoffset, 2)
         elif self.units in ['hour', 'hours']:
-            jdelta = jdelta * 24. + self.tzoffset / 60.
+            jdelta = np.round(jdelta * 24. + self.tzoffset / 60., 4)
         elif self.units in ['day', 'days']:
-            jdelta = jdelta + self.tzoffset / 1440.
+            jdelta = np.round(jdelta + self.tzoffset / 1440., 6)
         if isscalar:
             return jdelta
         else:
