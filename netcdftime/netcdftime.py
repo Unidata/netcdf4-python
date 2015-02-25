@@ -754,13 +754,17 @@ units to datetime objects.
         # round results consistent with second accuracy 
         # (improves round trip accuracy, issue #344).
         if self.units in ['second', 'seconds']:
+            # accuracy of 1 sec
             jdelta = np.round(jdelta * 86400. + self.tzoffset * 60.)
         elif self.units in ['minute', 'minutes']:
-            jdelta = np.round(jdelta * 1440. + self.tzoffset, 2)
+            # accuracy of 0.1 mins
+            jdelta = np.round(jdelta * 1440. + self.tzoffset, 1)
         elif self.units in ['hour', 'hours']:
-            jdelta = np.round(jdelta * 24. + self.tzoffset / 60., 4)
+            # accuray of 0.01 hours
+            jdelta = np.round(jdelta * 24. + self.tzoffset / 60., 2)
         elif self.units in ['day', 'days']:
-            jdelta = np.round(jdelta + self.tzoffset / 1440., 6)
+            # accuracy of 0.0001 days
+            jdelta = np.round(jdelta + self.tzoffset / 1440., 4)
         if isscalar:
             return jdelta
         else:
