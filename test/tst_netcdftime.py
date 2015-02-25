@@ -272,6 +272,12 @@ class netcdftimeTestCase(unittest.TestCase):
         for n in range(10):
             assert n == int(round(t.date2num(t.num2date(n))))
 
+        #issue 344 (round trip accuracy)
+        units = 'hours since 2013-12-12T12:00:00'
+        t = utime(units)
+        h = t.date2num(t.num2date(1))
+        assert(h==1.0)
+
 
 class TestDate2index(unittest.TestCase):
 
