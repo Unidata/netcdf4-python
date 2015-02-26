@@ -65,6 +65,26 @@ def issue310(file):
                               var_big_endian[:].filled())
     nc.close()
 
+def issue346(file):
+    # create a big and a little endian variable
+    xb = np.arange(10, dtype='>i4')
+    xl = np.arange(xb.size, dtype='<i4')
+    nc = netCDF4.Dataset(file, mode='w')
+    nc.createDimension('x', size=xb.size)
+    vb=nc.createVariable('xb', xb.dtype, ('x'),
+                         endian='big')
+    vl=nc.createVariable('xl', xl.dtype, ('x'),
+                         endian='little')
+    nc.variables['xb'][:] = xb
+    nc.variables['xl'][:] = xl
+    nc.close()
+    nc = netCDF4.Dataset(file)
+    datab = nc.variables['xb'][:]
+    datal = nc.variables['xl'][:]
+    assert_array_equal(datab,xb)
+    assert_array_equal(datal,xl)
+    nc.close()
+
 class EndianTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -81,6 +101,7 @@ class EndianTestCase(unittest.TestCase):
         check_data(self.file, data)
         check_data(self.file2, data)
         issue310(self.file)
+        issue346(self.file2)
 
 if __name__ == '__main__':
     unittest.main()

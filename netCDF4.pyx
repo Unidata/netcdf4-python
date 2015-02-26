@@ -811,7 +811,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.1.4"
+__version__ = "1.1.5"
 
 # Initialize numpy
 import posixpath
@@ -1180,7 +1180,7 @@ cdef _get_grps(group):
 cdef _get_vars(group):
     # Private function to create L{Variable} instances for all the
     # variables in a L{Group} or Dataset
-    cdef int ierr, numvars, n, nn, numdims, varid, classp
+    cdef int ierr, numvars, n, nn, numdims, varid, classp, iendian
     cdef int *varids
     cdef int dim_sizes[NC_MAX_DIMS]
     cdef int dimids[NC_MAX_DIMS]
@@ -1217,9 +1217,19 @@ cdef _get_vars(group):
              ierr = nc_inq_vartype(group._grpid, varid, &xtype)
              if ierr != NC_NOERR:
                  raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+             # get endian-ness of variable.
+             endianness = None
+             ierr = nc_inq_var_endian(group._grpid, varid, &iendian)
+             if ierr == NC_NOERR:
+                 if iendian == NC_ENDIAN_LITTLE:
+                     endianness = '<'
+                 elif iendian == NC_ENDIAN_BIG:
+                     endianness = '>'
              # check to see if it is a supported user-defined type.
              try:
                  datatype = _nctonptype[xtype]
+                 if endianness is not None:
+                     datatype = endianness + datatype
              except KeyError:
                  if xtype == NC_STRING:
                      datatype = str
@@ -1229,14 +1239,14 @@ cdef _get_vars(group):
                      if classp == NC_COMPOUND: # a compound type
                          # create CompoundType instance describing this compound type.
                          try:
-                             datatype = _read_compound(group, xtype)
+                             datatype = _read_compound(group, xtype, endian=endianness)
                          except KeyError:
                              #print "WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
                              continue
                      elif classp == NC_VLEN: # a compound type
                          # create VLType instance describing this compound type.
                          try:
-                             datatype = _read_vlen(group, xtype)
+                             datatype = _read_vlen(group, xtype, endian=endianness)
                          except KeyError:
                              #print "WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
                              continue
@@ -1268,7 +1278,12 @@ cdef _get_vars(group):
                              break
                      grp = grp.parent 
              # create new variable instance.
-             variables[name] = Variable(group, name, datatype, dimensions, id=varid)
+             if endianness == '>':
+                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
+             elif endianness == '<':
+                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='little')
+             else:
+                 variables[name] = Variable(group, name, datatype, dimensions, id=varid)
         free(varids) # free pointer holding variable ids.
     return variables
 
@@ -3953,7 +3968,7 @@ cdef _find_cmptype(grp, dtype):
             xtype = _find_cmptype(parent_grp,dtype)
     return xtype
 
-cdef _read_compound(group, nc_type xtype):
+cdef _read_compound(group, nc_type xtype, endian=None):
     # read a compound data type id from an existing file,
     # construct a corresponding numpy dtype instance, 
     # then use that to create a CompoundType instance.
@@ -3996,12 +4011,14 @@ cdef _read_compound(group, nc_type xtype):
         # check to see if this field is a nested compound type.
         try: 
             field_type =  _nctonptype[field_typeid]
+            if endian is not None:
+                format = endian + format
         except KeyError:
             ierr = nc_inq_user_type(group._grpid,
                    field_typeid,NULL,NULL,NULL,NULL,&classp)
             if classp == NC_COMPOUND: # a compound type
                 # recursively call this function?
-                field_type = _read_compound(group, field_typeid)
+                field_type = _read_compound(group, field_typeid, endian=endian)
             else:
                 raise KeyError('compound field of an unsupported data type')
         if field_shape != ():
@@ -4105,7 +4122,7 @@ cdef _def_vlen(grp, object dt, object dtype_name):
             raise KeyError("unsupported datatype specified for VLEN")
     return xtype, dt
 
-cdef _read_vlen(group, nc_type xtype):
+cdef _read_vlen(group, nc_type xtype, endian=None):
     # read a VLEN data type id from an existing file,
     # construct a corresponding numpy dtype instance, 
     # then use that to create a VLType instance.
@@ -4123,7 +4140,9 @@ cdef _read_vlen(group, nc_type xtype):
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         name = vl_namstring.decode(default_encoding,unicode_error)
         try:
-            dt = numpy.dtype(_nctonptype[base_xtype]) # see if it is a primitive type
+            datatype = _nctonptype[base_xtype]
+            if endian is not None: datatype = endian + datatype 
+            dt = numpy.dtype(datatype) # see if it is a primitive type
         except KeyError:
             raise KeyError("unsupported component type for VLEN")
     return VLType(group, dt, name, typeid=xtype)
