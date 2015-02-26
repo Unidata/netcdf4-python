@@ -273,6 +273,7 @@ class netcdftimeTestCase(unittest.TestCase):
             assert n == int(round(t.date2num(t.num2date(n))))
 
         # test rountrip accuracy
+        # also tests error found in issue #349
         eps0 = 1.
         eps = eps0
         units = 'seconds since 0001-01-01 01:01:01'
