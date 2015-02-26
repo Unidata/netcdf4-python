@@ -310,6 +310,8 @@ def DateFromJulianDay(JD, calendar='standard'):
     minute = np.clip((F * 1440. + eps).astype(np.int64), 0, 59)
     # don't attempt microsecond accuracy, just round to nearest
     # second (issue #330)
+    # Largest error (up to 1 second) can occur when second is clipped to 59.
+    # Otherwise, largest error is 0.5 seconds.
     second = np.round(np.clip((F - minute / 1440.) * 86400., 0, 59))
 
     # convert year, month, day, hour, minute, second to int32
