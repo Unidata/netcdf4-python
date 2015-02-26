@@ -310,7 +310,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     minute = np.clip((F * 1440. + eps).astype(np.int64), 0, 59)
     # don't attempt microsecond accuracy, just round to nearest
     # second (issue #330)
-    second = np.round(np.clip((F - minute / 1440.) * 86400., 0, None))
+    second = np.round(np.clip((F - minute / 1440.) * 86400., 0, 59))
 
     # convert year, month, day, hour, minute, second to int32
     year = year.astype(np.int32)
