@@ -14,10 +14,10 @@ Quick Start
 * make sure numpy (required) and Cython (recommended) are installed and
   you have python 2.5 or newer.
 
-* make sure HDF5 and netcdf-4 are installed.
-
-* copy setup.cfg.template to setup.cfg, open with a text editor
-  and follow the instructions in the comments for editing.
+* make sure HDF5 and netcdf-4 are installed, and the nc-config utility
+  is in your Unix PATH. If setup.cfg does not exist, copy setup.cfg.template
+  to setup.cfg, and make sure the line with 'use_ncconfig=True' is 
+  un-commented.
 
 * run 'python setup.py build, then 'python setup.py install' (with sudo
   if necessary).
