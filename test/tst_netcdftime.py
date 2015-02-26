@@ -275,47 +275,51 @@ class netcdftimeTestCase(unittest.TestCase):
         # test rountrip accuracy
         # also tests error found in issue #349
         eps0 = 1.
-        eps = eps0
-        units = 'seconds since 0001-01-01 01:01:01'
-        secs0 = 62345678345.0
-        secs1 = secs0
-        for n in range(1001):
-            secs1 += 0.1
-            date1 = num2date(secs1, units)
-            secs2 = date2num(date1, units)
-            date2 = num2date(secs2, units)
-            assert(str(date1) == str(date2))
-            assert(numpy.abs(secs1 - secs2) < eps)
-        eps = eps0/60.
-        units = 'minutes since 0001-01-01 01:01:01'
-        mins1 = secs0/60.
-        for n in range(1001):
-            mins1 += 0.01
-            date1 = num2date(mins1, units)
-            mins2 = date2num(date1, units)
-            date2 = num2date(mins2, units)
-            assert(numpy.abs(mins1 - mins2) < eps)
-            assert(str(date1) == str(date2))
-        eps = eps0/3600.
-        units = 'hours since 0001-01-01 01:01:01'
-        hrs1 = secs0/3600.
-        for n in range(1001):
-            hrs1 += 0.001
-            date1 = num2date(hrs1, units)
-            hrs2 = date2num(date1, units)
-            date2 = num2date(hrs2, units)
-            assert(numpy.abs(hrs1 - hrs2) < eps)
-            assert(str(date1) == str(date2))
-        eps = eps0/86400.
-        units = 'days since 0001-01-01 01:01:01'
-        days1 = secs0/86400.
-        for n in range(1001):
-            days1 += 0.00001
-            date1 = num2date(days1, units)
-            days2 = date2num(date1, units)
-            date2 = num2date(days2, units)
-            assert(numpy.abs(days1 - days2) < eps)
-            assert(str(date1) == str(date2))
+        calendars=['standard', 'gregorian', 'proleptic_gregorian', 'noleap', 'julian',\
+                   'all_leap', '365_day', '366_day', '360_day']
+        ntimes = 1001
+        for calendar in calendars:
+            eps = eps0
+            units = 'seconds since 0001-01-01 01:01:01'
+            secs0 = 62345678345.0
+            secs1 = secs0
+            for n in range(ntimes):
+                secs1 += 0.1
+                date1 = num2date(secs1, units, calendar=calendar)
+                secs2 = date2num(date1, units, calendar=calendar)
+                date2 = num2date(secs2, units, calendar=calendar)
+                assert(str(date1) == str(date2))
+                assert(numpy.abs(secs1 - secs2) < eps)
+            eps = eps0/60.
+            units = 'minutes since 0001-01-01 01:01:01'
+            mins1 = secs0/60.
+            for n in range(ntimes):
+                mins1 += 0.01
+                date1 = num2date(mins1, units, calendar=calendar)
+                mins2 = date2num(date1, units, calendar=calendar)
+                date2 = num2date(mins2, units, calendar=calendar)
+                assert(numpy.abs(mins1 - mins2) < eps)
+                assert(str(date1) == str(date2))
+            eps = eps0/3600.
+            units = 'hours since 0001-01-01 01:01:01'
+            hrs1 = secs0/3600.
+            for n in range(ntimes):
+                hrs1 += 0.001
+                date1 = num2date(hrs1, units, calendar=calendar)
+                hrs2 = date2num(date1, units, calendar=calendar)
+                date2 = num2date(hrs2, units, calendar=calendar)
+                assert(numpy.abs(hrs1 - hrs2) < eps)
+                assert(str(date1) == str(date2))
+            eps = eps0/86400.
+            units = 'days since 0001-01-01 01:01:01'
+            days1 = secs0/86400.
+            for n in range(ntimes):
+                days1 += 0.00001
+                date1 = num2date(days1, units, calendar=calendar)
+                days2 = date2num(date1, units, calendar=calendar)
+                date2 = num2date(days2, units, calendar=calendar)
+                assert(numpy.abs(days1 - days2) < eps)
+                assert(str(date1) == str(date2))
 
 
 class TestDate2index(unittest.TestCase):
