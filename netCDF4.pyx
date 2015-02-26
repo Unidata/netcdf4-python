@@ -63,42 +63,14 @@ Install
 
  - install the requisite python modules and C libraries (see above). It's
  easiest if all the C libs are built as shared libraries.
- - optionally, set the C{HDF5_DIR} environment variable to point to where HDF5
- is installed (the libs in C{$HDF5_DIR/lib}, the headers in
- C{$HDF5_DIR/include}). If the headers and libs are installed in different
- places, you can use C{HDF5_INCDIR} and C{HDF5_LIBDIR} to define the locations
- of the headers and libraries independently.
- - optionally, set the C{NETCDF4_DIR} (or C{NETCDF4_INCDIR} and C{NETCDF4_LIBDIR})
- environment variable(s) to point to
- where the netCDF version 4 library and headers are installed.
- - If the locations of the HDF5 and netCDF libs and headers are not specified
- with environment variables, some standard locations will be searched.
- - if HDF5 was built as a static library  with U{szip
- <http://www.hdfgroup.org/doc_resource/SZIP/>} support,
- you may also need to set the C{SZIP_DIR} (or C{SZIP_INCDIR} and C{SZIP_LIBDIR})
- environment variable(s) to point to where szip is installed. Note that
- the netCDF library does not support creating szip compressed files, but can read szip
- compressed files if the HDF5 lib is configured to support szip.
- - if netCDF lib was built as a static library with HDF4 and/or OpenDAP
- support, you may also need to set C{HDF4_DIR}, C{JPEG_DIR} and/or
- C{CURL_DIR}.
- - Instead of using environment variables to specify the locations of the
- required libraries, you can either let setup.py try to auto-detect their
- locations, or use the file C{setup.cfg} to specify them.  To use this 
- method, copy the file C{setup.cfg.template} to C{setup.cfg},
- then open C{setup.cfg} in a text editor and follow the instructions in the  
- comments for editing.  If you use C{setup.cfg}, environment variables will be
- ignored.
- - If you are using netcdf 4.1.2 or higher, instead of setting all those
- enviroment variables defining where libs are installed, you can just set one 
- environment variable, USE_NCCONFIG, to 1.  This will tell python to run the
- netcdf nc-config utility to determine where all the dependencies live.
+ - By default, the utility C{nc-config}, installed with netcdf 4.1.2 or higher,
+ will be run used to determine where all the dependencies live.
+ - If C{nc-config} is not in your default C{PATH}, edit the file C{setup.cfg}
+ in a text editor (follow the instructions in the comments).  
+ In addition to specifying the path to C{nc-config},
+ you can manually set the paths to all the libraries and their include files.
  - run C{python setup.py build}, then C{python setup.py install} (as root if
  necessary).
- - If using environment variables to specify build options, be sure to run
- 'python setup.py build' *without* using sudo.  sudo does not pass environment
- variables. If you run 'setup.py build' first without sudo, you can run
- 'setup.py install' with sudo.  
  - run the tests in the 'test' directory by running C{python run_all.py}.
 
 Tutorial

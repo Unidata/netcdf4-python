@@ -1,8 +1,9 @@
  version 1.1.5 (not yet released)
  ===============================
   
- * make use_ncconfig=True default in setup.cfg.  setup.py modified to handle failure
-   to find nc-config more gracefully (issue #340).
+ * use nc-config by default to find dependencies.  setup.py modified to handle failure
+   to find nc-config more gracefully (issue #340). If you wish to use env vars to point
+   to the libs, you must first move the setup.cfg file out of the way (rename it to setup.cfg.save).
  * if endian-ness of variable is specified, adjust datatype to reflect this when opening
    a file (issue 346).
  * fix for issue #349 (seconds outside the range 0-59 in netcdftime.num2date).
