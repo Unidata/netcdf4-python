@@ -280,7 +280,7 @@ class netcdftimeTestCase(unittest.TestCase):
         secs0 = 62345678345.0
         secs1 = secs0
         for n in range(1001):
-            secs1 += 1.0
+            secs1 += 0.1
             date1 = num2date(secs1, units)
             secs2 = date2num(date1, units)
             date2 = num2date(secs2, units)
@@ -290,7 +290,7 @@ class netcdftimeTestCase(unittest.TestCase):
         units = 'minutes since 0001-01-01 01:01:01'
         mins1 = secs0/60.
         for n in range(1001):
-            mins1 += 0.1
+            mins1 += 0.01
             date1 = num2date(mins1, units)
             mins2 = date2num(date1, units)
             date2 = num2date(mins2, units)
@@ -310,7 +310,7 @@ class netcdftimeTestCase(unittest.TestCase):
         units = 'days since 0001-01-01 01:01:01'
         days1 = secs0/86400.
         for n in range(1001):
-            days1 += 0.0001
+            days1 += 0.00001
             date1 = num2date(days1, units)
             days2 = date2num(date1, units)
             date2 = num2date(days2, units)
