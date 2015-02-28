@@ -195,13 +195,12 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
 @return: a datetime instance, or an array of datetime instances.
 
 The datetime instances returned are 'real' python datetime 
-objects if the date falls in the Gregorian calendar (i.e. 
-C{calendar='proleptic_gregorian'}, or C{calendar = 'standard'} or C{'gregorian'}
-and the date is after 1582-10-15). Otherwise, they are 'phony' datetime 
+objects if C{calendar='proleptic_gregorian'}, or
+C{calendar = 'standard'} or C{'gregorian'}
+and the date is after the breakpoint between the Julian and
+Gregorian calendars (1582-10-15). Otherwise, they are 'phony' datetime 
 objects which support some but not all the methods of 'real' python
-datetime objects.  This is because the python datetime module cannot
-the uses the C{'proleptic_gregorian'} calendar, even before the switch
-occured from the Julian calendar in 1582. The datetime instances
+datetime objects. The datetime instances
 do not contain a time-zone offset, even if the specified C{units}
 contains one.
     """
