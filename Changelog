@@ -1,6 +1,9 @@
  version 1.1.5 (not yet released)
  ===============================
   
+ * add dependency on dateutil in install docs.
+ * remove redundant netcdftime.date2num and netcdftime.num2date.
+ * use python datetime in num2date and date2num whenever possible
  * use nc-config by default to find dependencies.  setup.py modified to handle failure
    to find nc-config more gracefully (issue #340). If you wish to use env vars to point
    to the libs, you must first move the setup.cfg file out of the way (rename it to setup.cfg.save),

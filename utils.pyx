@@ -1,4 +1,5 @@
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, MINYEAR
+from netcdftime import _parse_date
 
 gregorian = datetime(1582,10,15)
 
@@ -18,7 +19,12 @@ def _dateparse(timestr):
     # parse the date string.
     n = timestr.find('since')+6
     isostring = timestr[n:]
-    basedate = dparse.parse(isostring)
+    year, month, day, hour, minute, second, utc_offset =\
+        _parse_date( isostring.strip() )
+    if year >= 100: # don't use dateutil parser for years < 100
+        basedate = dparse.parse(isostring)
+    else:
+        basedate = datetime(year, month, day, hour, minute, second)
     if basedate.tzinfo is None:
         basedate = basedate.replace(tzinfo=tzutc())
     return basedate
@@ -119,15 +125,13 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
 
 @return: a numeric time value, or an array of numeric time values.
     """
+    basedate = _dateparse(units)
+    from dateutil.tz import tzutc
     unit = units.split()[0].lower()
-    if unit in ['microseconds','milliseconds','microsecond','millisecond']:
-        basedate = _dateparse(units)
-        from dateutil.tz import tzutc
-        if calendar != 'proleptic_gregorian' and not \
-           (calendar in ['gregorian','standard'] and \
-            basedate > gregorian.replace(tzinfo=tzutc())):
-            msg = 'milliseconds/microseconds not supported for this calendar'
-            raise ValueError(msg)
+
+    if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
+       (calendar in ['gregorian','standard'] and \
+        basedate > gregorian.replace(tzinfo=tzutc())):
         # use python datetime module,
         isscalar = False
         try:
@@ -153,6 +157,8 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
                     times.append(totaltime/1.e3)
                 elif unit == 'seconds' or unit == 'second':
                     times.append(totaltime/1.e6)
+                elif unit == 'minutes' or unit == 'minute':
+                    times.append(totaltime/1.e6/60)
                 elif unit == 'hours' or unit == 'hour':
                     times.append(totaltime/1.e6/3600)
                 elif unit == 'days' or unit == 'day':
@@ -161,7 +167,7 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
             return times[0]
         else:
             return times
-    else: # if only second accuracy required, can use other calendars.
+    else: # use netcdftime module for other calendars
         cdftime = netcdftime.utime(units,calendar=calendar)
         return cdftime.date2num(dates)
 
@@ -205,15 +211,14 @@ occured from the Julian calendar in 1582. The datetime instances
 do not contain a time-zone offset, even if the specified C{units}
 contains one.
     """
+    basedate = _dateparse(units)
+    from dateutil.tz import tzutc
     unit = units.split()[0].lower()
-    if unit in ['microseconds','milliseconds','microsecond','millisecond']:
-        basedate = _dateparse(units)
-        from dateutil.tz import tzutc
-        if calendar != 'proleptic_gregorian' and not \
-           (calendar in ['gregorian','standard'] and \
-            basedate > gregorian.replace(tzinfo=tzutc())):
-            msg = 'milliseconds/microseconds not supported for this calendar'
-            raise ValueError(msg)
+
+    if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
+       (calendar in ['gregorian','standard'] and \
+        basedate > gregorian.replace(tzinfo=tzutc())):
+        # use python datetime module,
         isscalar = False
         try:
             times[0]
@@ -236,6 +241,8 @@ contains one.
                     tsecs = time/1.e3
                 elif unit == 'seconds' or unit == 'second':
                     tsecs = time
+                elif unit == 'minutes' or unit == 'minute':
+                    tsecs = time*60.
                 elif unit == 'hours' or unit == 'hour':
                     tsecs = time*3600.
                 elif unit == 'days' or unit == 'day':
@@ -286,23 +293,18 @@ correspond to the closest dates.
 @return: an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
     """
-    unit = nctime.units.split()[0].lower()
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
-    if unit in ['microseconds','milliseconds','microsecond','millisecond']:
-        # for microsecond and/or millisecond accuracy, convert dates
-        # to numerical times, then use netcdftime.time2index.
-        basedate = _dateparse(nctime.units)
-        from dateutil.tz import tzutc
-        # can only use certain calendars.
-        if calendar != 'proleptic_gregorian' and not \
-           (calendar in ['gregorian','standard'] and \
-            basedate > gregorian.replace(tzinfo=tzutc())):
-            msg = 'milliseconds/microseconds not supported for this calendar'
-            raise ValueError(msg)
+    basedate = _dateparse(nctime.units)
+    from dateutil.tz import tzutc
+
+    if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
+       (calendar in ['gregorian','standard'] and \
+        basedate > gregorian.replace(tzinfo=tzutc())):
+        # use python datetime
         times = date2num(dates,nctime.units,calendar=calendar)
         return netcdftime.time2index(times, nctime, calendar, select)
-    else: # if only second accuracy required, can use other calendars.
+    else: # use netcdftime module for other cases
         return netcdftime.date2index(dates, nctime, calendar, select)
 
 def getlibversion():
