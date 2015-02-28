@@ -1,7 +1,7 @@
  version 1.1.5 (not yet released)
  ===============================
   
- * add dependency on dateutil in install docs.
+ * add dependency on python-dateutil in setup.py and install docs.
  * use python datetime in num2date and date2num whenever possible. Remove
    duplicate num2date and date2num functions from netcdftime.
  * use nc-config by default to find dependencies.  setup.py modified to handle failure
