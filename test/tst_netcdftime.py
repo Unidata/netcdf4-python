@@ -274,6 +274,10 @@ class netcdftimeTestCase(unittest.TestCase):
         for n in range(10):
             assert n == int(round(t.date2num(t.num2date(n))))
 
+        #issue 344
+        units = 'hours since 2013-12-12T12:00:00'
+        assert(1.0 == date2num(num2date(1.0, units), units))
+
         # test rountrip accuracy
         # also tests error found in issue #349
         eps0 = 1.
