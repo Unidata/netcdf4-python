@@ -251,7 +251,7 @@ contains one.
                 days = tsecs // 86400.
                 msecsd = tsecs*1.e6 - days*86400.*1.e6
                 secs = msecsd // 1.e6
-                msecs = int(msecsd - secs*1.e6)
+                msecs = numpy.round(msecsd - secs*1.e6)
                 td = timedelta(days=days,seconds=secs,microseconds=msecs)
                 # add time delta to base date.
                 date = basedate + td
