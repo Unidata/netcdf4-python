@@ -110,7 +110,6 @@ seconds, milliseconds or microseconds. B{C{reference time}} is the time
 origin. Milliseconds and microseconds
 can only be used with the proleptic_gregorian calendar, or the standard
 and gregorian calendars if the time origin is after 1582-10-15.
-A valid choice would be units=C{'milliseconds since 1800-01-01 00:00:00-6:00'}.
 
 @param calendar: describes the calendar used in the time calculations. 
 All the values currently defined in the U{CF metadata convention 
@@ -183,7 +182,6 @@ seconds, milliseconds or microseconds. B{C{reference time}} is the time
 origin. Milliseconds and microseconds
 can only be used with the proleptic_gregorian calendar, or the standard
 and gregorian calendars if the time origin is after 1582-10-15.
-A valid choice would be units=C{'milliseconds since 1800-01-01 00:00:00-6:00'}.
 
 @keyword calendar: describes the calendar used in the time calculations. 
 All the values currently defined in the U{CF metadata convention 
