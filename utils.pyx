@@ -1,17 +1,13 @@
 from datetime import timedelta, datetime, MINYEAR
 from netcdftime import _parse_date
+import dateutil.parser as dparse
+from dateutil.tz import tzutc
 
-gregorian = datetime(1582,10,15)
+gregorian = datetime(1582,10,15).replace(tzinfo=tzutc())
 
 def _dateparse(timestr):
     """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss,
     return a datetime instance"""
-    try:
-        import dateutil.parser as dparse
-        from dateutil.tz import tzutc
-    except ImportError:
-        msg = 'dateutil module required for accuracy < 1 second'
-        raise ImportError(msg)
     timestr_split = timestr.split()
     units = timestr_split[0].lower()
     if timestr_split[1].lower() != 'since':
@@ -126,12 +122,10 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
 @return: a numeric time value, or an array of numeric time values.
     """
     basedate = _dateparse(units)
-    from dateutil.tz import tzutc
     unit = units.split()[0].lower()
 
     if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
-       (calendar in ['gregorian','standard'] and \
-        basedate > gregorian.replace(tzinfo=tzutc())):
+       (calendar in ['gregorian','standard'] and basedate > gregorian):
         # use python datetime module,
         isscalar = False
         try:
@@ -212,12 +206,10 @@ do not contain a time-zone offset, even if the specified C{units}
 contains one.
     """
     basedate = _dateparse(units)
-    from dateutil.tz import tzutc
     unit = units.split()[0].lower()
 
     if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
-       (calendar in ['gregorian','standard'] and \
-        basedate > gregorian.replace(tzinfo=tzutc())):
+       (calendar in ['gregorian','standard'] and basedate > gregorian):
         # use python datetime module,
         isscalar = False
         try:
@@ -296,11 +288,9 @@ to the given datetime object(s).
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
     basedate = _dateparse(nctime.units)
-    from dateutil.tz import tzutc
 
     if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
-       (calendar in ['gregorian','standard'] and \
-        basedate > gregorian.replace(tzinfo=tzutc())):
+       (calendar in ['gregorian','standard'] and basedate > gregorian):
         # use python datetime
         times = date2num(dates,nctime.units,calendar=calendar)
         return netcdftime.time2index(times, nctime, calendar, select)
