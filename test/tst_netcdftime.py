@@ -284,8 +284,8 @@ class netcdftimeTestCase(unittest.TestCase):
         calendars=['standard', 'gregorian', 'proleptic_gregorian', 'noleap', 'julian',\
                    'all_leap', '365_day', '366_day', '360_day']
         ntimes = 1001
+        eps = 1.e-4
         for calendar in calendars:
-            eps = eps0
             units = 'seconds since 0001-01-01 01:01:01'
             secs0 = 62345678345.0
             secs1 = secs0
@@ -296,7 +296,6 @@ class netcdftimeTestCase(unittest.TestCase):
                 date2 = num2date(secs2, units, calendar=calendar)
                 assert(date1.strftime(dateformat) == date2.strftime(dateformat))
                 assert(numpy.abs(secs1 - secs2) < eps)
-            eps = eps0/60.
             units = 'minutes since 0001-01-01 01:01:01'
             mins1 = secs0/60.
             for n in range(ntimes):
@@ -306,7 +305,6 @@ class netcdftimeTestCase(unittest.TestCase):
                 date2 = num2date(mins2, units, calendar=calendar)
                 assert(numpy.abs(mins1 - mins2) < eps)
                 assert(date1.strftime(dateformat) == date2.strftime(dateformat))
-            eps = eps0/3600.
             units = 'hours since 0001-01-01 01:01:01'
             hrs1 = secs0/3600.
             for n in range(ntimes):
@@ -316,7 +314,6 @@ class netcdftimeTestCase(unittest.TestCase):
                 date2 = num2date(hrs2, units, calendar=calendar)
                 assert(numpy.abs(hrs1 - hrs2) < eps)
                 assert(date1.strftime(dateformat) == date2.strftime(dateformat))
-            eps = eps0/86400.
             units = 'days since 0001-01-01 01:01:01'
             days1 = secs0/86400.
             for n in range(ntimes):
