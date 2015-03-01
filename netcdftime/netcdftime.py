@@ -14,7 +14,8 @@ except ImportError:  # python 3.x
 from ._datetime import datetime
 
 _units = ['days', 'hours', 'minutes', 'seconds',
-          'day', 'hour', 'minute', 'second']
+          'day', 'hour', 'minute', 'second',
+          'milliseconds','millisecond','microseconds','microsecond']
 _calendars = ['standard', 'gregorian', 'proleptic_gregorian',
               'noleap', 'julian', 'all_leap', '365_day', '366_day', '360_day']
 
@@ -33,7 +34,7 @@ def JulianDayFromDate(date, calendar='standard'):
     """
 
     creates a Julian Day from a 'datetime-like' object.  Returns the fractional
-    Julian Day (resolution 1 second).
+    Julian Day (resolution approx 0.1 second).
 
     if calendar='standard' or 'gregorian' (default), Julian day follows Julian
     Calendar on and before 1582-10-5, Gregorian calendar after 1582-10-15.
@@ -65,6 +66,7 @@ def JulianDayFromDate(date, calendar='standard'):
     hour = year.copy()
     minute = year.copy()
     second = year.copy()
+    microsecond = year.copy()
     for i, d in enumerate(date):
         year[i] = d.year
         month[i] = d.month
@@ -72,8 +74,9 @@ def JulianDayFromDate(date, calendar='standard'):
         hour[i] = d.hour
         minute[i] = d.minute
         second[i] = d.second
+        microsecond[i] = d.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
+    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0 
 
     # Start Meeus algorithm (variables are in his notation)
     month_lt_3 = month < 3
@@ -122,7 +125,7 @@ def _NoLeapDayFromDate(date):
     """
 
 creates a Julian Day for a calendar with no leap years from a datetime
-instance.  Returns the fractional Julian Day (resolution 1 second).
+instance.  Returns the fractional Julian Day (resolution approx 0.1 second).
 
     """
 
@@ -132,8 +135,9 @@ instance.  Returns the fractional Julian Day (resolution 1 second).
     hour = date.hour
     minute = date.minute
     second = date.second
+    microsecond = date.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
+    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0
 
     # Start Meeus algorithm (variables are in his notation)
     if (month < 3):
@@ -151,7 +155,7 @@ def _AllLeapFromDate(date):
 
 creates a Julian Day for a calendar where all years have 366 days from
 a 'datetime-like' object.
-Returns the fractional Julian Day (resolution 1 second).
+Returns the fractional Julian Day (resolution approx 0.1 second).
 
     """
 
@@ -161,8 +165,9 @@ Returns the fractional Julian Day (resolution 1 second).
     hour = date.hour
     minute = date.minute
     second = date.second
+    microsecond = date.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
+    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0
 
     # Start Meeus algorithm (variables are in his notation)
     if (month < 3):
@@ -180,7 +185,7 @@ def _360DayFromDate(date):
 
 creates a Julian Day for a calendar where all months have 30 daysfrom
 a 'datetime-like' object.
-Returns the fractional Julian Day (resolution 1 second).
+Returns the fractional Julian Day (resolution approx 0.1 second).
 
     """
 
@@ -190,8 +195,9 @@ Returns the fractional Julian Day (resolution 1 second).
     hour = date.hour
     minute = date.minute
     second = date.second
+    microsecond = date.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
+    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0
 
     jd = int(360. * (year + 4716)) + int(30. * (month - 1)) + day
 
@@ -202,7 +208,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     """
 
     returns a 'datetime-like' object given Julian Day. Julian Day is a
-    fractional day with a resolution of 1 second.
+    fractional day with a resolution of approximately 0.1 seconds.
 
     if calendar='standard' or 'gregorian' (default), Julian day follows Julian
     Calendar on and before 1582-10-5, Gregorian calendar after  1582-10-15.
@@ -308,11 +314,9 @@ def DateFromJulianDay(JD, calendar='standard'):
     hour = np.clip((F * 24. + eps).astype(np.int64), 0, 23)
     F -= hour / 24.
     minute = np.clip((F * 1440. + eps).astype(np.int64), 0, 59)
-    # don't attempt microsecond accuracy, just round to nearest
-    # second (issue #330)
-    # Largest error (up to 1 second) can occur when second is clipped to 59.
-    # Otherwise, largest error is 0.5 seconds.
-    second = np.round(np.clip((F - minute / 1440.) * 86400., 0, 59))
+    second = np.clip((F - minute / 1440.) * 86400., 0, None)
+    # microseconds may not be accurate.
+    microsecond = (second % 1)*1.e6
 
     # convert year, month, day, hour, minute, second to int32
     year = year.astype(np.int32)
@@ -321,6 +325,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     hour = hour.astype(np.int32)
     minute = minute.astype(np.int32)
     second = second.astype(np.int32)
+    microsecond = microsecond.astype(np.int32)
 
     # check if input was scalar and change return accordingly
     isscalar = False
@@ -334,21 +339,22 @@ def DateFromJulianDay(JD, calendar='standard'):
         if not isscalar:
             return np.array([real_datetime(*args)
                              for args in
-                             zip(year, month, day, hour, minute, second)])
+                             zip(year, month, day, hour, minute, second,
+                                 microsecond)])
 
         else:
             return real_datetime(year[0], month[0], day[0], hour[0],
-                                 minute[0], second[0])
+                                 minute[0], second[0], microsecond[0])
     else:
         # or else, return a 'datetime-like' instance.
         if not isscalar:
             return np.array([datetime(*args)
                              for args in
                              zip(year, month, day, hour, minute,
-                                 second, dayofwk, dayofyr)])
+                                 second, microsecond, dayofwk, dayofyr)])
         else:
             return datetime(year[0], month[0], day[0], hour[0],
-                            minute[0], second[0], dayofwk[0],
+                            minute[0], second[0], microsecond[0], dayofwk[0],
                             dayofyr[0])
 
 
@@ -356,7 +362,7 @@ def _DateFromNoLeapDay(JD):
     """
 
 returns a 'datetime-like' object given Julian Day for a calendar with no leap
-days. Julian Day is a fractional day with a resolution of 1 second.
+days. Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
 
     """
 
@@ -395,19 +401,11 @@ days. Julian Day is a fractional day with a resolution of 1 second.
     (dfrac, days) = math.modf(day / 1.0)
     (hfrac, hours) = math.modf(dfrac * 24.0)
     (mfrac, minutes) = math.modf(hfrac * 60.0)
-    seconds = round(mfrac * 60.0)  # seconds are rounded
+    (sfrac, seconds) = math.modf(mfrac * 60.0)
+    microseconds = sfrac*1.e6
 
-    if seconds > 59:
-        seconds = 0
-        minutes = minutes + 1
-    if minutes > 59:
-        minutes = 0
-        hours = hours + 1
-    if hours > 23:
-        hours = 0
-        days = days + 1
-
-    return datetime(year, month, int(days), int(hours), int(minutes), int(seconds), dayofwk, dayofyr)
+    return datetime(year, month, int(days), int(hours), int(minutes),
+            int(seconds), int(microseconds),dayofwk, dayofyr)
 
 
 def _DateFromAllLeap(JD):
@@ -415,7 +413,7 @@ def _DateFromAllLeap(JD):
 
 returns a 'datetime-like' object given Julian Day for a calendar where all
 years have 366 days.
-Julian Day is a fractional day with a resolution of 1 second.
+Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
 
     """
 
@@ -456,19 +454,11 @@ Julian Day is a fractional day with a resolution of 1 second.
     (dfrac, days) = math.modf(day / 1.0)
     (hfrac, hours) = math.modf(dfrac * 24.0)
     (mfrac, minutes) = math.modf(hfrac * 60.0)
-    seconds = round(mfrac * 60.0)  # seconds are rounded
+    (sfrac, seconds) = math.modf(mfrac * 60.0)
+    microseconds = sfrac*1.e6
 
-    if seconds > 59:
-        seconds = 0
-        minutes = minutes + 1
-    if minutes > 59:
-        minutes = 0
-        hours = hours + 1
-    if hours > 23:
-        hours = 0
-        days = days + 1
-
-    return datetime(year, month, int(days), int(hours), int(minutes), int(seconds), dayofwk, dayofyr)
+    return datetime(year, month, int(days), int(hours), int(minutes),
+            int(seconds), int(microseconds),dayofwk, dayofyr)
 
 
 def _DateFrom360Day(JD):
@@ -476,7 +466,7 @@ def _DateFrom360Day(JD):
 
 returns a 'datetime-like' object given Julian Day for a calendar where all
 months have 30 days.
-Julian Day is a fractional day with a resolution of 1 second.
+Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
 
     """
 
@@ -494,19 +484,11 @@ Julian Day is a fractional day with a resolution of 1 second.
     (dfrac, days) = math.modf(day / 1.0)
     (hfrac, hours) = math.modf(dfrac * 24.0)
     (mfrac, minutes) = math.modf(hfrac * 60.0)
-    seconds = round(mfrac * 60.0)  # seconds are rounded
+    (sfrac, seconds) = math.modf(mfrac * 60.0)
+    microseconds = sfrac*1.e6
 
-    if seconds > 59:
-        seconds = 0
-        minutes = minutes + 1
-    if minutes > 59:
-        minutes = 0
-        hours = hours + 1
-    if hours > 23:
-        hours = 0
-        days = days + 1
-
-    return datetime(year, month, int(days), int(hours), int(minutes), int(seconds), -1, int(dayofyr))
+    return datetime(year, month, int(days), int(hours), int(minutes),
+            int(seconds), int(microseconds), -1, dayofyr)
 
 
 def _dateparse(timestr):
@@ -606,7 +588,7 @@ Example usage:
 2006-03-17 16:04:02
 >>>
 
-The resolution of the transformation operation is 1 second.
+The resolution of the transformation operation is approximately 0.1 seconds.
 
 Warning:  Dates between 1582-10-5 and 1582-10-15 do not exist in the
 C{'standard'} or C{'gregorian'} calendars.  An exception will be raised if you pass
@@ -695,7 +677,7 @@ units to datetime objects.
         If there is a time-zone offset implied by L{unit_string}, it will
         be applied to the returned numeric values.
 
-        Resolution is 1 second.
+        Resolution is approximately 0.1 seconds.
 
         If C{calendar = 'standard'} or C{'gregorian'} (indicating
         that the mixed Julian/Gregorian calendar is to be used), an
@@ -753,7 +735,11 @@ units to datetime objects.
         if not isscalar:
             jdelta = numpy.array(jdelta)
         # convert to desired units, add time zone offset.
-        if self.units in ['second', 'seconds']:
+        if self.units in ['microseconds','microsecond']:
+            jdelta = jdelta * 86400. * 1.e6  + self.tzoffset * 60. * 1.e6
+        elif self.units in ['milliseconds', 'millisecond']:
+            jdelta = jdelta * 86400. * 1.e3  + self.tzoffset * 60. * 1.e3
+        elif self.units in ['second', 'seconds']:
             jdelta = jdelta * 86400. + self.tzoffset * 60.
         elif self.units in ['minute', 'minutes']:
             jdelta = jdelta * 1440. + self.tzoffset
@@ -774,7 +760,7 @@ units to datetime objects.
         dates are in UTC with no offset, even if L{unit_string} contains
         a time zone offset from UTC.
 
-        Resolution is 1 second.
+        Resolution is approximately 0.1 seconds.
 
         Works for scalars, sequences and numpy arrays.
         Returns a scalar if input is a scalar, else returns a numpy array.
@@ -801,7 +787,11 @@ units to datetime objects.
             time_value = numpy.array(time_value, dtype='d')
             shape = time_value.shape
         # convert to desired units, remove time zone offset.
-        if self.units in ['second', 'seconds']:
+        if self.units in ['microseconds','microsecond']:
+            jdelta = time_value / 86400000000. - self.tzoffset / 1440.
+        elif self.units in ['milliseconds', 'millisecond']:
+            jdelta = time_value / 86400000. - self.tzoffset / 1440.
+        elif self.units in ['second', 'seconds']:
             jdelta = time_value / 86400. - self.tzoffset / 1440.
         elif self.units in ['minute', 'minutes']:
             jdelta = time_value / 1440. - self.tzoffset / 1440.
@@ -895,92 +885,6 @@ def _parse_date(datestring):
     return int(groups["year"]), int(groups["month"]), int(groups["day"]),\
         int(groups["hour"]), int(groups["minute"]), int(groups["second"]),\
         tzoffset_mins
-
-
-def date2num(dates, units, calendar='standard'):
-    """
-date2num(dates,units,calendar='standard')
-
-Return numeric time values given datetime objects. The units
-of the numeric time values are described by the L{units} argument
-and the L{calendar} keyword. The datetime objects must
-be in UTC with no time-zone offset.  If there is a
-time-zone offset in C{units}, it will be applied to the
-returned numeric values.
-
-Like the matplotlib C{date2num} function, except that it allows
-for different units and calendars.  Behaves the same if
-C{units = 'days since 0001-01-01 00:00:00'} and
-C{calendar = 'proleptic_gregorian'}.
-
-@param dates: A datetime object or a sequence of datetime objects.
- The datetime objects should not include a time-zone offset.
-
-@param units: a string of the form C{'B{time units} since B{reference time}}'
- describing the time units. B{C{time units}} can be days, hours, minutes
- or seconds.  B{C{reference time}} is the time origin. A valid choice
- would be units=C{'hours since 1800-01-01 00:00:00 -6:00'}.
-
-@param calendar: describes the calendar used in the time calculations.
- All the values currently defined in the U{CF metadata convention
- <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
- Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
- 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
- Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
-
-@return: a numeric time value, or an array of numeric time values.
-
-The maximum resolution of the numeric time values is 1 second.
-    """
-    cdftime = utime(units, calendar=calendar)
-    return cdftime.date2num(dates)
-
-
-def num2date(times, units, calendar='standard'):
-    """
-num2date(times,units,calendar='standard')
-
-Return datetime objects given numeric time values. The units
-of the numeric time values are described by the C{units} argument
-and the C{calendar} keyword. The returned datetime objects represent
-UTC with no time-zone offset, even if the specified
-C{units} contain a time-zone offset.
-
-Like the matplotlib C{num2date} function, except that it allows
-for different units and calendars.  Behaves the same if
-C{units = 'days since 001-01-01 00:00:00'} and
-C{calendar = 'proleptic_gregorian'}.
-
-@param times: numeric time values. Maximum resolution is 1 second.
-
-@param units: a string of the form C{'B{time units} since B{reference time}}'
-describing the time units. B{C{time units}} can be days, hours, minutes
-or seconds.  B{C{reference time}} is the time origin. A valid choice
-would be units=C{'hours since 1800-01-01 00:00:00 -6:00'}.
-
-@param calendar: describes the calendar used in the time calculations.
-All the values currently defined in the U{CF metadata convention
-<http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
-Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
-'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
-Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
-
-@return: a datetime instance, or an array of datetime instances.
-
-The datetime instances returned are 'real' python datetime
-objects if the date falls in the Gregorian calendar (i.e.
-C{calendar='proleptic_gregorian'}, or C{calendar = 'standard'} or C{'gregorian'}
-and the date is after 1582-10-15). Otherwise, they are 'phony' datetime
-objects which support some but not all the methods of 'real' python
-datetime objects.  This is because the python datetime module cannot
-the uses the C{'proleptic_gregorian'} calendar, even before the switch
-occured from the Julian calendar in 1582. The datetime instances
-do not contain a time-zone offset, even if the specified C{units}
-contains one.
-    """
-    cdftime = utime(units, calendar=calendar)
-    return cdftime.num2date(times)
-
 
 def _check_index(indices, times, nctime, calendar, select):
     """Return True if the time indices given correspond to the given times,

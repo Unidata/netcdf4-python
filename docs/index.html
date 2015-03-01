@@ -91,6 +91,10 @@
         (1.5.1 or higher recommended, required if using python 3).
       </li>
       <li>
+        python dateutil module <a href="https://dateutil.readthedocs.org" 
+        target="_top">https://dateutil.readthedocs.org</a>.
+      </li>
+      <li>
         <a href="http://cython.org" target="_top">Cython</a> is optional - 
         if it is installed setup.py will use it to recompile the Cython 
         source code into C, using conditional compilation to enable 
@@ -143,66 +147,20 @@
         It's easiest if all the C libs are built as shared libraries.
       </li>
       <li>
-        optionally, set the <code>HDF5_DIR</code> environment variable to 
-        point to where HDF5 is installed (the libs in 
-        <code>$HDF5_DIR/lib</code>, the headers in 
-        <code>$HDF5_DIR/include</code>). If the headers and libs are 
-        installed in different places, you can use <code>HDF5_INCDIR</code>
-        and <code>HDF5_LIBDIR</code> to define the locations of the headers
-        and libraries independently.
+        By default, the utility <code>nc-config</code>, installed with 
+        netcdf 4.1.2 or higher, will be run used to determine where all the
+        dependencies live.
       </li>
       <li>
-        optionally, set the <code>NETCDF4_DIR</code> (or 
-        <code>NETCDF4_INCDIR</code> and <code>NETCDF4_LIBDIR</code>) 
-        environment variable(s) to point to where the netCDF version 4 
-        library and headers are installed.
-      </li>
-      <li>
-        If the locations of the HDF5 and netCDF libs and headers are not 
-        specified with environment variables, some standard locations will 
-        be searched.
-      </li>
-      <li>
-        if HDF5 was built as a static library  with <a 
-        href="http://www.hdfgroup.org/doc_resource/SZIP/" 
-        target="_top">szip</a> support, you may also need to set the 
-        <code>SZIP_DIR</code> (or <code>SZIP_INCDIR</code> and 
-        <code>SZIP_LIBDIR</code>) environment variable(s) to point to where
-        szip is installed. Note that the netCDF library does not support 
-        creating szip compressed files, but can read szip compressed files 
-        if the HDF5 lib is configured to support szip.
-      </li>
-      <li>
-        if netCDF lib was built as a static library with HDF4 and/or 
-        OpenDAP support, you may also need to set <code>HDF4_DIR</code>, 
-        <code>JPEG_DIR</code> and/or <code>CURL_DIR</code>.
-      </li>
-      <li>
-        Instead of using environment variables to specify the locations of 
-        the required libraries, you can either let setup.py try to 
-        auto-detect their locations, or use the file <code>setup.cfg</code>
-        to specify them.  To use this method, copy the file 
-        <code>setup.cfg.template</code> to <code>setup.cfg</code>, then 
-        open <code>setup.cfg</code> in a text editor and follow the 
-        instructions in the comments for editing.  If you use 
-        <code>setup.cfg</code>, environment variables will be ignored.
-      </li>
-      <li>
-        If you are using netcdf 4.1.2 or higher, instead of setting all 
-        those enviroment variables defining where libs are installed, you 
-        can just set one environment variable, USE_NCCONFIG, to 1.  This 
-        will tell python to run the netcdf nc-config utility to determine 
-        where all the dependencies live.
+        If <code>nc-config</code> is not in your default <code>PATH</code>,
+        edit the file <code>setup.cfg</code> in a text editor (follow the 
+        instructions in the comments). In addition to specifying the path 
+        to <code>nc-config</code>, you can manually set the paths to all 
+        the libraries and their include files.
       </li>
       <li>
         run <code>python setup.py build</code>, then <code>python setup.py 
         install</code> (as root if necessary).
-      </li>
-      <li>
-        If using environment variables to specify build options, be sure to
-        run 'python setup.py build' *without* using sudo.  sudo does not 
-        pass environment variables. If you run 'setup.py build' first 
-        without sudo, you can run 'setup.py install' with sudo.
       </li>
       <li>
         run the tests in the 'test' directory by running <code>python 
@@ -947,7 +905,7 @@
         PERFORMANCE OF THIS SOFTWARE.
       </p>
       <p><strong>Version:</strong>
-        1.1.2
+        1.1.5
       </p>
 </div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
@@ -1180,6 +1138,13 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a name="MINYEAR"></a><span class="summary-name">MINYEAR</span> = <code title="1">1</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a name="NC_DISKLESS"></a><span class="summary-name">NC_DISKLESS</span> = <code title="8">8</code>
     </td>
   </tr>
@@ -1187,21 +1152,21 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__has_nc_inq_format_extended__"></a><span class="summary-name">__has_nc_inq_format_extended__</span> = <code title="0">0</code>
+        <a name="__has_nc_inq_format_extended__"></a><span class="summary-name">__has_nc_inq_format_extended__</span> = <code title="1">1</code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__has_nc_inq_path__"></a><span class="summary-name">__has_nc_inq_path__</span> = <code title="0">0</code>
+        <a name="__has_nc_inq_path__"></a><span class="summary-name">__has_nc_inq_path__</span> = <code title="1">1</code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__has_rename_grp__"></a><span class="summary-name">__has_rename_grp__</span> = <code title="0">0</code>
+        <a name="__has_rename_grp__"></a><span class="summary-name">__has_rename_grp__</span> = <code title="1">1</code>
     </td>
   </tr>
 <tr>
@@ -1251,7 +1216,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="gregorian"></a><span class="summary-name">gregorian</span> = <code title="datetime.datetime(1582, 10, 15, 0, 0)">datetime.datetime(1582, 10, 15, 0, 0)</code>
+        <a name="gregorian"></a><span class="summary-name">gregorian</span> = <code title="datetime.datetime(1582, 10, 15, 0, 0, tzinfo=tzutc())">datetime.datetime(1582, 10, 15, 0, 0, tzinfo=tzutc())</code>
     </td>
   </tr>
 <tr>
@@ -1399,11 +1364,9 @@
           time</b></code>' describing the time units. <b><code>time 
           units</code></b> can be days, hours, minutes, seconds, 
           milliseconds or microseconds. <b><code>reference time</code></b> 
-          is the time origin. Milliseconds and microseconds can only be 
-          used with the proleptic_gregorian calendar, or the standard and 
-          gregorian calendars if the time origin is after 1582-10-15. A 
-          valid choice would be units=<code>'milliseconds since 1800-01-01 
-          00:00:00-6:00'</code>.</li>
+          is the time origin.  Accuracy is somewhere between a millisecond 
+          and a microsecond, depending on the time interval and the 
+          calendar used.</li>
         <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
           values currently defined in the <a 
           href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
@@ -1447,11 +1410,9 @@
           time</b></code>' describing the time units. <b><code>time 
           units</code></b> can be days, hours, minutes, seconds, 
           milliseconds or microseconds. <b><code>reference time</code></b> 
-          is the time origin. Milliseconds and microseconds can only be 
-          used with the proleptic_gregorian calendar, or the standard and 
-          gregorian calendars if the time origin is after 1582-10-15. A 
-          valid choice would be units=<code>'milliseconds since 1800-01-01 
-          00:00:00-6:00'</code>.</li>
+          is the time origin.  Accuracy is somewhere between a millisecond 
+          and a microsecond, depending on the time interval and the 
+          calendar used.</li>
         <li><strong class="pname"><code>calendar</code></strong> - describes the calendar used in the time calculations. All the 
           values currently defined in the <a 
           href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
@@ -1464,16 +1425,14 @@
     <dt>Returns:</dt>
         <dd>a datetime instance, or an array of datetime instances.
           <p>The datetime instances returned are 'real' python datetime 
-          objects if the date falls in the Gregorian calendar (i.e. 
-          <code>calendar='proleptic_gregorian'</code>, or <code>calendar = 
-          'standard'</code> or <code>'gregorian'</code> and the date is 
-          after 1582-10-15). Otherwise, they are 'phony' datetime objects 
-          which support some but not all the methods of 'real' python 
-          datetime objects.  This is because the python datetime module 
-          cannot the uses the <code>'proleptic_gregorian'</code> calendar, 
-          even before the switch occured from the Julian calendar in 1582. 
-          The datetime instances do not contain a time-zone offset, even if
-          the specified <code>units</code> contains one.</p></dd>
+          objects if <code>calendar='proleptic_gregorian'</code>, or 
+          <code>calendar = 'standard'</code> or <code>'gregorian'</code> 
+          and the date is after the breakpoint between the Julian and 
+          Gregorian calendars (1582-10-15). Otherwise, they are 'phony' 
+          datetime objects which support some but not all the methods of 
+          'real' python datetime objects. The datetime instances do not 
+          contain a time-zone offset, even if the specified 
+          <code>units</code> contains one.</p></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1603,7 +1562,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Fri Dec  5 15:19:53 2014
+    Generated by Epydoc 3.0.1 on Sat Feb 28 20:23:36 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

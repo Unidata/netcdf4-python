@@ -1,10 +1,15 @@
- version 1.1.5 (not yet released)
- ===============================
+ version 1.1.5 (tab v1.1.5rel)
+ =============================
   
+ * add dependency on python-dateutil in setup.py and install docs.
+ * use python datetime in num2date and date2num whenever possible. Remove
+   duplicate num2date and date2num functions from netcdftime. Addresses issue
+   #344. Add microsecond capability to netcdftime.datetime. Roundtrip
+   accuracy of num2date/date2num now down to less than a millisecond.
  * use nc-config by default to find dependencies.  setup.py modified to handle failure
    to find nc-config more gracefully (issue #340). If you wish to use env vars to point
-   to the libs, you must first move the setup.cfg file out of the way (rename it to setup.cfg.save),
-   or set USE_NCCONFIG to 0.
+   to the libs, you must first move the setup.cfg file out of the way
+   (rename it to setup.cfg.save), or set USE_NCCONFIG to 0.
  * if endian-ness of variable is specified, adjust datatype to reflect this when opening
    a file (issue 346).
  * fix for issue #349 (seconds outside the range 0-59 in netcdftime.num2date).
