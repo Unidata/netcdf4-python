@@ -980,7 +980,7 @@ def date2index(dates, nctime, calendar=None, select='exact'):
     # Setting the calendar.
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
-    cdftime = netcdftime.utime(nctime.units,calendar=calendar)
+    cdftime = utime(nctime.units,calendar=calendar)
     times = cdftime.date2num(dates)
     return time2index(times, nctime, calendar=calendar, select=select)
 

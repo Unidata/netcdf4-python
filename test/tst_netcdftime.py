@@ -455,7 +455,7 @@ class TestDate2index(unittest.TestCase):
 
     def test_select_dummy(self):
         nutime = self.TestTime(datetime(1950, 1, 1), 366, 24,
-                               'hours since 1900-01-01', 'standard')
+                               'hours since 1400-01-01', 'standard')
 
         dates = [datetime(1950, 1, 2, 6), datetime(
             1950, 1, 3), datetime(1950, 1, 3, 18)]
