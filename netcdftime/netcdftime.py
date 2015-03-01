@@ -34,7 +34,7 @@ def JulianDayFromDate(date, calendar='standard'):
     """
 
     creates a Julian Day from a 'datetime-like' object.  Returns the fractional
-    Julian Day (resolution 1 second).
+    Julian Day (resolution approx 0.1 second).
 
     if calendar='standard' or 'gregorian' (default), Julian day follows Julian
     Calendar on and before 1582-10-5, Gregorian calendar after 1582-10-15.
@@ -125,7 +125,7 @@ def _NoLeapDayFromDate(date):
     """
 
 creates a Julian Day for a calendar with no leap years from a datetime
-instance.  Returns the fractional Julian Day (resolution 1 second).
+instance.  Returns the fractional Julian Day (resolution approx 0.1 second).
 
     """
 
@@ -155,7 +155,7 @@ def _AllLeapFromDate(date):
 
 creates a Julian Day for a calendar where all years have 366 days from
 a 'datetime-like' object.
-Returns the fractional Julian Day (resolution 1 second).
+Returns the fractional Julian Day (resolution approx 0.1 second).
 
     """
 
@@ -185,7 +185,7 @@ def _360DayFromDate(date):
 
 creates a Julian Day for a calendar where all months have 30 daysfrom
 a 'datetime-like' object.
-Returns the fractional Julian Day (resolution 1 second).
+Returns the fractional Julian Day (resolution approx 0.1 second).
 
     """
 
@@ -588,7 +588,7 @@ Example usage:
 2006-03-17 16:04:02
 >>>
 
-The resolution of the transformation operation is 1 second.
+The resolution of the transformation operation is approximately 0.1 seconds.
 
 Warning:  Dates between 1582-10-5 and 1582-10-15 do not exist in the
 C{'standard'} or C{'gregorian'} calendars.  An exception will be raised if you pass
@@ -677,7 +677,7 @@ units to datetime objects.
         If there is a time-zone offset implied by L{unit_string}, it will
         be applied to the returned numeric values.
 
-        Resolution is 1 second.
+        Resolution is approximately 0.1 seconds.
 
         If C{calendar = 'standard'} or C{'gregorian'} (indicating
         that the mixed Julian/Gregorian calendar is to be used), an
@@ -760,7 +760,7 @@ units to datetime objects.
         dates are in UTC with no offset, even if L{unit_string} contains
         a time zone offset from UTC.
 
-        Resolution is 1 second.
+        Resolution is approximately 0.1 seconds.
 
         Works for scalars, sequences and numpy arrays.
         Returns a scalar if input is a scalar, else returns a numpy array.
