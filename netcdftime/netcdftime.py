@@ -14,7 +14,8 @@ except ImportError:  # python 3.x
 from ._datetime import datetime
 
 _units = ['days', 'hours', 'minutes', 'seconds',
-          'day', 'hour', 'minute', 'second']
+          'day', 'hour', 'minute', 'second',
+          'milliseconds','millisecond','microseconds','microsecond']
 _calendars = ['standard', 'gregorian', 'proleptic_gregorian',
               'noleap', 'julian', 'all_leap', '365_day', '366_day', '360_day']
 
@@ -207,7 +208,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     """
 
     returns a 'datetime-like' object given Julian Day. Julian Day is a
-    fractional day with a resolution of 1 second.
+    fractional day with a resolution of approximately 0.1 seconds.
 
     if calendar='standard' or 'gregorian' (default), Julian day follows Julian
     Calendar on and before 1582-10-5, Gregorian calendar after  1582-10-15.
@@ -313,12 +314,8 @@ def DateFromJulianDay(JD, calendar='standard'):
     hour = np.clip((F * 24. + eps).astype(np.int64), 0, 23)
     F -= hour / 24.
     minute = np.clip((F * 1440. + eps).astype(np.int64), 0, 59)
-    # don't attempt microsecond accuracy, just round to nearest
-    # second (issue #330)
-    # Largest error (up to 1 second) can occur when second is clipped to 59.
-    # Otherwise, largest error is 0.5 seconds.
-    #second = np.round(np.clip((F - minute / 1440.) * 86400., 0, 59))
     second = np.clip((F - minute / 1440.) * 86400., 0, None)
+    # microseconds may not be accurate.
     microsecond = (second % 1)*1.e6
 
     # convert year, month, day, hour, minute, second to int32
@@ -365,7 +362,7 @@ def _DateFromNoLeapDay(JD):
     """
 
 returns a 'datetime-like' object given Julian Day for a calendar with no leap
-days. Julian Day is a fractional day with a resolution of 1 second.
+days. Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
 
     """
 
@@ -426,7 +423,7 @@ def _DateFromAllLeap(JD):
 
 returns a 'datetime-like' object given Julian Day for a calendar where all
 years have 366 days.
-Julian Day is a fractional day with a resolution of 1 second.
+Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
 
     """
 
@@ -489,7 +486,7 @@ def _DateFrom360Day(JD):
 
 returns a 'datetime-like' object given Julian Day for a calendar where all
 months have 30 days.
-Julian Day is a fractional day with a resolution of 1 second.
+Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
 
     """
 
@@ -768,7 +765,11 @@ units to datetime objects.
         if not isscalar:
             jdelta = numpy.array(jdelta)
         # convert to desired units, add time zone offset.
-        if self.units in ['second', 'seconds']:
+        if self.units in ['microseconds','microsecond']:
+            jdelta = jdelta * 86400. * 1.e6  + self.tzoffset * 60. * 1.e6
+        elif self.units in ['milliseconds', 'millisecond']:
+            jdelta = jdelta * 86400. * 1.e3  + self.tzoffset * 60. * 1.e3
+        elif self.units in ['second', 'seconds']:
             jdelta = jdelta * 86400. + self.tzoffset * 60.
         elif self.units in ['minute', 'minutes']:
             jdelta = jdelta * 1440. + self.tzoffset
@@ -816,7 +817,11 @@ units to datetime objects.
             time_value = numpy.array(time_value, dtype='d')
             shape = time_value.shape
         # convert to desired units, remove time zone offset.
-        if self.units in ['second', 'seconds']:
+        if self.units in ['microseconds','microsecond']:
+            jdelta = time_value / 86400000000. - self.tzoffset / 1440.
+        elif self.units in ['milliseconds', 'millisecond']:
+            jdelta = time_value / 86400000. - self.tzoffset / 1440.
+        elif self.units in ['second', 'seconds']:
             jdelta = time_value / 86400. - self.tzoffset / 1440.
         elif self.units in ['minute', 'minutes']:
             jdelta = time_value / 1440. - self.tzoffset / 1440.

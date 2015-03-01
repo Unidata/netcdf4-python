@@ -107,9 +107,7 @@ The datetime objects should not include a time-zone offset.
 @param units: a string of the form C{'B{time units} since B{reference time}}'
 describing the time units. B{C{time units}} can be days, hours, minutes,
 seconds, milliseconds or microseconds. B{C{reference time}} is the time
-origin. Milliseconds and microseconds
-can only be used with the proleptic_gregorian calendar, or the standard
-and gregorian calendars if the time origin is after 1582-10-15.
+origin.
 
 @param calendar: describes the calendar used in the time calculations. 
 All the values currently defined in the U{CF metadata convention 
@@ -179,9 +177,7 @@ C{units} contain a time-zone offset.
 @param units: a string of the form C{'B{time units} since B{reference time}}'
 describing the time units. B{C{time units}} can be days, hours, minutes,
 seconds, milliseconds or microseconds. B{C{reference time}} is the time
-origin. Milliseconds and microseconds
-can only be used with the proleptic_gregorian calendar, or the standard
-and gregorian calendars if the time origin is after 1582-10-15.
+origin. 
 
 @keyword calendar: describes the calendar used in the time calculations. 
 All the values currently defined in the U{CF metadata convention 
@@ -249,7 +245,7 @@ contains one.
             return dates[0]
         else:
             return dates
-    else: # if only second accuracy required, can use other calendars.
+    else: # use netcdftime for other calendars
         cdftime = netcdftime.utime(units,calendar=calendar)
         return cdftime.num2date(times)
 
