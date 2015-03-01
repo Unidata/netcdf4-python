@@ -4,7 +4,8 @@
  * add dependency on python-dateutil in setup.py and install docs.
  * use python datetime in num2date and date2num whenever possible. Remove
    duplicate num2date and date2num functions from netcdftime. Addresses issue
-   #344.
+   #344. Add microsecond capability to netcdftime.datetime (to increase
+   roundtrip accuracy).
  * use nc-config by default to find dependencies.  setup.py modified to handle failure
    to find nc-config more gracefully (issue #340). If you wish to use env vars to point
    to the libs, you must first move the setup.cfg file out of the way

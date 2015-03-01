@@ -65,6 +65,7 @@ def JulianDayFromDate(date, calendar='standard'):
     hour = year.copy()
     minute = year.copy()
     second = year.copy()
+    microsecond = year.copy()
     for i, d in enumerate(date):
         year[i] = d.year
         month[i] = d.month
@@ -72,8 +73,9 @@ def JulianDayFromDate(date, calendar='standard'):
         hour[i] = d.hour
         minute[i] = d.minute
         second[i] = d.second
+        microsecond[i] = d.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
+    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0 
 
     # Start Meeus algorithm (variables are in his notation)
     month_lt_3 = month < 3
@@ -132,8 +134,9 @@ instance.  Returns the fractional Julian Day (resolution 1 second).
     hour = date.hour
     minute = date.minute
     second = date.second
+    microsecond = date.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
+    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0
 
     # Start Meeus algorithm (variables are in his notation)
     if (month < 3):
@@ -161,8 +164,9 @@ Returns the fractional Julian Day (resolution 1 second).
     hour = date.hour
     minute = date.minute
     second = date.second
+    microsecond = date.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
+    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0
 
     # Start Meeus algorithm (variables are in his notation)
     if (month < 3):
@@ -190,8 +194,9 @@ Returns the fractional Julian Day (resolution 1 second).
     hour = date.hour
     minute = date.minute
     second = date.second
+    microsecond = date.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + second / 86400.0
+    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0
 
     jd = int(360. * (year + 4716)) + int(30. * (month - 1)) + day
 
@@ -312,7 +317,9 @@ def DateFromJulianDay(JD, calendar='standard'):
     # second (issue #330)
     # Largest error (up to 1 second) can occur when second is clipped to 59.
     # Otherwise, largest error is 0.5 seconds.
-    second = np.round(np.clip((F - minute / 1440.) * 86400., 0, 59))
+    #second = np.round(np.clip((F - minute / 1440.) * 86400., 0, 59))
+    second = np.clip((F - minute / 1440.) * 86400., 0, None)
+    microsecond = (second % 1)*1.e6
 
     # convert year, month, day, hour, minute, second to int32
     year = year.astype(np.int32)
@@ -321,6 +328,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     hour = hour.astype(np.int32)
     minute = minute.astype(np.int32)
     second = second.astype(np.int32)
+    microsecond = microsecond.astype(np.int32)
 
     # check if input was scalar and change return accordingly
     isscalar = False
@@ -334,21 +342,22 @@ def DateFromJulianDay(JD, calendar='standard'):
         if not isscalar:
             return np.array([real_datetime(*args)
                              for args in
-                             zip(year, month, day, hour, minute, second)])
+                             zip(year, month, day, hour, minute, second,
+                                 microsecond)])
 
         else:
             return real_datetime(year[0], month[0], day[0], hour[0],
-                                 minute[0], second[0])
+                                 minute[0], second[0], microsecond[0])
     else:
         # or else, return a 'datetime-like' instance.
         if not isscalar:
             return np.array([datetime(*args)
                              for args in
                              zip(year, month, day, hour, minute,
-                                 second, dayofwk, dayofyr)])
+                                 second, microsecond, dayofwk, dayofyr)])
         else:
             return datetime(year[0], month[0], day[0], hour[0],
-                            minute[0], second[0], dayofwk[0],
+                            minute[0], second[0], microsecond[0], dayofwk[0],
                             dayofyr[0])
 
 
@@ -395,7 +404,8 @@ days. Julian Day is a fractional day with a resolution of 1 second.
     (dfrac, days) = math.modf(day / 1.0)
     (hfrac, hours) = math.modf(dfrac * 24.0)
     (mfrac, minutes) = math.modf(hfrac * 60.0)
-    seconds = round(mfrac * 60.0)  # seconds are rounded
+    (sfrac, seconds) = math.modf(mfrac * 60.0)
+    microseconds = sfrac*1.e6
 
     if seconds > 59:
         seconds = 0
@@ -407,7 +417,8 @@ days. Julian Day is a fractional day with a resolution of 1 second.
         hours = 0
         days = days + 1
 
-    return datetime(year, month, int(days), int(hours), int(minutes), int(seconds), dayofwk, dayofyr)
+    return datetime(year, month, int(days), int(hours), int(minutes),
+            int(seconds), int(microseconds),dayofwk, dayofyr)
 
 
 def _DateFromAllLeap(JD):
@@ -456,7 +467,8 @@ Julian Day is a fractional day with a resolution of 1 second.
     (dfrac, days) = math.modf(day / 1.0)
     (hfrac, hours) = math.modf(dfrac * 24.0)
     (mfrac, minutes) = math.modf(hfrac * 60.0)
-    seconds = round(mfrac * 60.0)  # seconds are rounded
+    (sfrac, seconds) = math.modf(mfrac * 60.0)
+    microseconds = sfrac*1.e6
 
     if seconds > 59:
         seconds = 0
@@ -468,7 +480,8 @@ Julian Day is a fractional day with a resolution of 1 second.
         hours = 0
         days = days + 1
 
-    return datetime(year, month, int(days), int(hours), int(minutes), int(seconds), dayofwk, dayofyr)
+    return datetime(year, month, int(days), int(hours), int(minutes),
+            int(seconds), int(microseconds),dayofwk, dayofyr)
 
 
 def _DateFrom360Day(JD):
@@ -494,7 +507,8 @@ Julian Day is a fractional day with a resolution of 1 second.
     (dfrac, days) = math.modf(day / 1.0)
     (hfrac, hours) = math.modf(dfrac * 24.0)
     (mfrac, minutes) = math.modf(hfrac * 60.0)
-    seconds = round(mfrac * 60.0)  # seconds are rounded
+    (sfrac, seconds) = math.modf(mfrac * 60.0)
+    microseconds = sfrac*1.e6
 
     if seconds > 59:
         seconds = 0
@@ -506,7 +520,8 @@ Julian Day is a fractional day with a resolution of 1 second.
         hours = 0
         days = days + 1
 
-    return datetime(year, month, int(days), int(hours), int(minutes), int(seconds), -1, int(dayofyr))
+    return datetime(year, month, int(days), int(hours), int(minutes),
+            int(seconds), int(microseconds), -1, dayofyr)
 
 
 def _dateparse(timestr):
