@@ -404,16 +404,6 @@ days. Julian Day is a fractional day with a resolution of approximately 0.1 seco
     (sfrac, seconds) = math.modf(mfrac * 60.0)
     microseconds = sfrac*1.e6
 
-    if seconds > 59:
-        seconds = 0
-        minutes = minutes + 1
-    if minutes > 59:
-        minutes = 0
-        hours = hours + 1
-    if hours > 23:
-        hours = 0
-        days = days + 1
-
     return datetime(year, month, int(days), int(hours), int(minutes),
             int(seconds), int(microseconds),dayofwk, dayofyr)
 
@@ -467,16 +457,6 @@ Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
     (sfrac, seconds) = math.modf(mfrac * 60.0)
     microseconds = sfrac*1.e6
 
-    if seconds > 59:
-        seconds = 0
-        minutes = minutes + 1
-    if minutes > 59:
-        minutes = 0
-        hours = hours + 1
-    if hours > 23:
-        hours = 0
-        days = days + 1
-
     return datetime(year, month, int(days), int(hours), int(minutes),
             int(seconds), int(microseconds),dayofwk, dayofyr)
 
@@ -506,16 +486,6 @@ Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
     (mfrac, minutes) = math.modf(hfrac * 60.0)
     (sfrac, seconds) = math.modf(mfrac * 60.0)
     microseconds = sfrac*1.e6
-
-    if seconds > 59:
-        seconds = 0
-        minutes = minutes + 1
-    if minutes > 59:
-        minutes = 0
-        hours = hours + 1
-    if hours > 23:
-        hours = 0
-        days = days + 1
 
     return datetime(year, month, int(days), int(hours), int(minutes),
             int(seconds), int(microseconds), -1, dayofyr)
