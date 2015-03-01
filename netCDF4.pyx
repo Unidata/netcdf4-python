@@ -66,10 +66,12 @@ Install
  easiest if all the C libs are built as shared libraries.
  - By default, the utility C{nc-config}, installed with netcdf 4.1.2 or higher,
  will be run used to determine where all the dependencies live.
- - If C{nc-config} is not in your default C{PATH}, edit the file C{setup.cfg}
+ - If C{nc-config} is not in your default C{PATH}, rename the
+ file C{setup.cfg.template} to C{setup.cfg}, then edit 
  in a text editor (follow the instructions in the comments).  
  In addition to specifying the path to C{nc-config},
- you can manually set the paths to all the libraries and their include files.
+ you can manually set the paths to all the libraries and their include files
+ (in case C{nc-config} does not do the right thing).
  - run C{python setup.py build}, then C{python setup.py install} (as root if
  necessary).
  - run the tests in the 'test' directory by running C{python run_all.py}.
