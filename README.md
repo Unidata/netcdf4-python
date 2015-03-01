@@ -7,7 +7,7 @@ News
 num2date/date2num - accuracy is now between a millisecond and a microsecond depending
 on the time interval and calendar use_ncconfig is now True by default
 in setup.py, so the utility nc-config e used to find the library and
-include file paths.  For other changesttps://github.com/Unidata/netcdf4-python/blob/master/Changelog.
+include file paths.  For other changes see https://github.com/Unidata/netcdf4-python/blob/master/Changelog.
 
 Quick Start
 -----------
