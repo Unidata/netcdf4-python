@@ -283,7 +283,7 @@ class netcdftimeTestCase(unittest.TestCase):
         calendars=['standard', 'gregorian', 'proleptic_gregorian', 'noleap', 'julian',\
                    'all_leap', '365_day', '366_day', '360_day']
         dateformat =  '%Y-%m-%d %H:%M:%S'
-        dateref = datetime(2015,02,28,12)
+        dateref = datetime(2015,2,28,12)
         for calendar in calendars:
             eps = 100.
             units = 'microseconds since 1800-01-30 01:01:01'
