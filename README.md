@@ -5,7 +5,9 @@ News
 
 3/1/2015: Version 1.1.5 released.  Significant improvements to netcdftime and 
 num2date/date2num - accuracy is now between a millisecond and a microsecond depending
-on the time interval and calendar used.
+on the time interval and calendar used. use_ncconfig is now True by default
+in setup.py, so the utility nc-config will be used to find the library and
+include file paths.
 
 2/19/2015: Version 1.1.4 released. Fixes serious bug in netcdftime that caused errors in num2date and date2num when units contains "seconds since".  Users of 1.1.2 and 1.1.3 should upgrade.  For other changes see https://github.com/Unidata/netcdf4-python/blob/master/Changelog.
 
