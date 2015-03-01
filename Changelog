@@ -1,4 +1,4 @@
- version 1.1.5 (tab v1.1.5rel)
+ version 1.1.5 (tag v1.1.5rel)
  =============================
   
  * add dependency on python-dateutil in setup.py and install docs.
