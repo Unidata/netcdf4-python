@@ -1,0 +1,48 @@
+# Rename this file to setup.cfg to set build options.
+# Follow instructions below for editing.
+[options]
+# if true, the nc-config script (installed with netcdf 4.1.2 and higher)
+# will be used to determine the locations of required libraries.
+# Usually, nothing else is needed.
+use_ncconfig=True
+# path to nc-config script (use if not found in unix PATH).
+#ncconfig=/usr/local/bin/nc-config 
+[directories]
+#
+# If nc-config doesn't do the trick, you can specify the locations
+# of the libraries and headers manually below
+#
+# uncomment and set to netCDF install location.
+# Include files should be located in netCDF4_dir/include and
+# the library should be located in netCDF4_dir/lib.
+# If the libraries and include files are installed in separate locations,
+# use netCDF4_libdir and netCDF4_incdir to specify the locations
+# separately.  
+#netCDF4_dir = /usr/local
+# uncomment and set to HDF5 install location.
+# Include files should be located in HDF5_dir/include and
+# the library should be located in HDF5_dir/lib.
+# If the libraries and include files are installed in separate locations,
+# use HDF5_libdir and HDF5_incdir to specify the locations
+# separately.  
+#HDF5_dir = /usr/local
+# if HDF5 was built with szip support as a static lib,
+# uncomment and set to szip lib install location.
+# If the libraries and include files are installed in separate locations,
+# use szip_libdir and szip_incdir.
+#szip_dir = /usr/local
+# if netcdf lib was build statically with HDF4 support,
+# uncomment and set to hdf4 lib (libmfhdf and libdf) nstall location.
+# If the libraries and include files are installed in separate locations,
+# use hdf4_libdir and hdf4_incdir.
+#hdf4_dir = /usr/local
+# if netcdf lib was build statically with HDF4 support,
+# uncomment and set to jpeg lib install location (hdf4 needs jpeg).
+# If the libraries and include files are installed in separate locations,
+# use jpeg_libdir and jpeg_incdir.
+#jpeg_dir = /usr/local
+# if netcdf lib was build statically with OpenDAP support,
+# uncomment and set to curl lib install location.
+# If the libraries and include files are installed in separate locations,
+# use curl_libdir and curl_incdir.
+#curl_dir = /usr/local
