@@ -352,7 +352,7 @@ class netcdftimeTestCase(unittest.TestCase):
                 assert(err < eps)
                 assert(date1.strftime(dateformat) == date2.strftime(dateformat))
     # issue 353
-    assert (num2date(0, 'hours since 2000-01-01 0') == \
+    assert (num2date(0, 'hours since 2000-01-01 0') == 
             datetime(2000,1,1,0).replace(tzinfo=tzutc()) ) 
 
 

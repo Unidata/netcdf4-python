@@ -20,7 +20,7 @@ def _dateparse(timestr):
     if year >= 100: # don't use dateutil parser for years < 100
         try:
             basedate = dparse.parse(isostring)
-        except ValueError:
+        except:
             basedate = datetime(year, month, day, hour, minute, second)
     else:
         basedate = datetime(year, month, day, hour, minute, second)

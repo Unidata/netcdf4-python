@@ -1,3 +1,9 @@
+ since version 1.1.5
+ ===================
+
+ * fix for issue 353 (num2date can no longer handle units like 'hours since
+  2000-01-01 0').
+
  version 1.1.5 (tag v1.1.5rel)
  =============================
   
