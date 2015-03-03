@@ -352,6 +352,11 @@ class netcdftimeTestCase(unittest.TestCase):
                 err = numpy.abs(days1 - days2)
                 assert(err < eps)
                 assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+
+        # issue 353
+        assert (num2date(0, 'hours since 2000-01-01 0') ==
+                datetime(2000,1,1,0).replace(tzinfo=tzutc()) )
+
         # issue354
         num1 = numpy.array([[0, 1], [2, 3]])
         num2 = numpy.array([[0, 1], [2, 3]])
@@ -365,6 +370,7 @@ class netcdftimeTestCase(unittest.TestCase):
         assert( num2b.shape == (2,2) )
         assert_almost_equal(num1,num1b)
         assert_almost_equal(num2,num2b)
+
 
 
 class TestDate2index(unittest.TestCase):
