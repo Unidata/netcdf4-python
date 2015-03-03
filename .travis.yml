@@ -2,6 +2,7 @@ language: python
 python:
   - "2.7"
   - "3.3"
+  - "3.4"
 notifications:
   email: false
 before_install:
@@ -10,6 +11,6 @@ before_install:
 install:
   - python setup.py build
   - python setup.py install
-script: 
+script:
   - cd test
   - python run_all.py
