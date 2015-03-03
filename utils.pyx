@@ -211,13 +211,17 @@ contains one.
             times[0]
         except:
             isscalar = True
-        if isscalar: times = [times]
+        if isscalar:
+            times = numpy.array([times],dtype='d')
+        else:
+            times = numpy.array(times, dtype='d')
+            shape = times.shape
         ismasked = False
         if hasattr(times,'mask'):
             mask = times.mask
             ismasked = True
         dates = []
-        for time in times:
+        for time in times.flat:
             if ismasked and not time:
                 dates.append(None)
             else:
@@ -246,7 +250,7 @@ contains one.
         if isscalar:
             return dates[0]
         else:
-            return dates
+            return numpy.reshape(numpy.array(dates), shape)
     else: # use netcdftime for other calendars
         cdftime = netcdftime.utime(units,calendar=calendar)
         return cdftime.num2date(times)

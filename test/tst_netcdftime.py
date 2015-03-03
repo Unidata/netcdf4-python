@@ -351,6 +351,14 @@ class netcdftimeTestCase(unittest.TestCase):
                 err = numpy.abs(days1 - days2)
                 assert(err < eps)
                 assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+        # issue354
+        dates1 = num2date(numpy.array([[0, 1], [2, 3]]), 'days since 0001-01-01')
+        dates2 = num2date(numpy.array([[0, 1], [2, 3]]), 'days since 2001-01-01')
+        assert( dates1.shape == (2,2) )
+        assert( dates2.shape == (2,2) )
+        for date1,date2 in zip(dates1.flat, dates2.flat):
+            assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+
 
 
 class TestDate2index(unittest.TestCase):
