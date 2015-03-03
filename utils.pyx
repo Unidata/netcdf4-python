@@ -1,6 +1,5 @@
 from datetime import timedelta, datetime, MINYEAR
 from netcdftime import _parse_date
-#import dateutil.parser as dparse
 
 gregorian = datetime(1582,10,15)
 
@@ -17,16 +16,6 @@ def _dateparse(timestr):
     year, month, day, hour, minute, second, utc_offset =\
         _parse_date( isostring.strip() )
     basedate = datetime(year, month, day, hour, minute, second)
-    #if year >= 100: # don't use dateutil parser for years < 100
-    #    try:
-    #        basedate = dparse.parse(isostring)
-    #    except:
-    #        basedate = datetime(year, month, day, hour, minute, second)
-    #else:
-    #    basedate = datetime(year, month, day, hour, minute, second)
-    # make sure time-zone naive datetime instance returned (issue #357)
-    #if basedate.tzinfo is not None:
-    #    basedate = basedate.replace(tzinfo=None)
     return basedate
 
 # utility functions (visible from python).
