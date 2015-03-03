@@ -76,7 +76,7 @@ def JulianDayFromDate(date, calendar='standard'):
         second[i] = d.second
         microsecond[i] = d.microsecond
     # Convert time to fractions of a day
-    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0 
+    day = day + hour / 24.0 + minute / 1440.0 + (second + microsecond/1.e6) / 86400.0
 
     # Start Meeus algorithm (variables are in his notation)
     month_lt_3 = month < 3
@@ -734,19 +734,19 @@ units to datetime objects.
                     jdelta.append(_360DayFromDate(d) - self._jd0)
         if not isscalar:
             jdelta = numpy.array(jdelta)
-        # convert to desired units, add time zone offset.
+        # convert to desired units, subtract time zone offset.
         if self.units in ['microseconds','microsecond']:
-            jdelta = jdelta * 86400. * 1.e6  + self.tzoffset * 60. * 1.e6
+            jdelta = jdelta * 86400. * 1.e6  - self.tzoffset * 60. * 1.e6
         elif self.units in ['milliseconds', 'millisecond']:
-            jdelta = jdelta * 86400. * 1.e3  + self.tzoffset * 60. * 1.e3
+            jdelta = jdelta * 86400. * 1.e3  - self.tzoffset * 60. * 1.e3
         elif self.units in ['second', 'seconds']:
-            jdelta = jdelta * 86400. + self.tzoffset * 60.
+            jdelta = jdelta * 86400. - self.tzoffset * 60.
         elif self.units in ['minute', 'minutes']:
-            jdelta = jdelta * 1440. + self.tzoffset
+            jdelta = jdelta * 1440. - self.tzoffset
         elif self.units in ['hour', 'hours']:
-            jdelta = jdelta * 24. + self.tzoffset / 60.
+            jdelta = jdelta * 24. - self.tzoffset / 60.
         elif self.units in ['day', 'days']:
-            jdelta = jdelta + self.tzoffset / 1440.
+            jdelta = jdelta - self.tzoffset / 1440.
         if isscalar:
             return jdelta
         else:
@@ -786,19 +786,19 @@ units to datetime objects.
         if not isscalar:
             time_value = numpy.array(time_value, dtype='d')
             shape = time_value.shape
-        # convert to desired units, remove time zone offset.
+        # convert to desired units, add time zone offset.
         if self.units in ['microseconds','microsecond']:
-            jdelta = time_value / 86400000000. - self.tzoffset / 1440.
+            jdelta = time_value / 86400000000. + self.tzoffset / 1440.
         elif self.units in ['milliseconds', 'millisecond']:
-            jdelta = time_value / 86400000. - self.tzoffset / 1440.
+            jdelta = time_value / 86400000. + self.tzoffset / 1440.
         elif self.units in ['second', 'seconds']:
-            jdelta = time_value / 86400. - self.tzoffset / 1440.
+            jdelta = time_value / 86400. + self.tzoffset / 1440.
         elif self.units in ['minute', 'minutes']:
-            jdelta = time_value / 1440. - self.tzoffset / 1440.
+            jdelta = time_value / 1440. + self.tzoffset / 1440.
         elif self.units in ['hour', 'hours']:
-            jdelta = time_value / 24. - self.tzoffset / 1440.
+            jdelta = time_value / 24. + self.tzoffset / 1440.
         elif self.units in ['day', 'days']:
-            jdelta = time_value - self.tzoffset / 1440.
+            jdelta = time_value + self.tzoffset / 1440.
         jd = self._jd0 + jdelta
         if self.calendar in ['julian', 'standard', 'gregorian', 'proleptic_gregorian']:
             if not isscalar:
