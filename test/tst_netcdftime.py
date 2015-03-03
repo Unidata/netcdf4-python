@@ -375,8 +375,9 @@ class netcdftimeTestCase(unittest.TestCase):
         # Denver time, 7 hours behind UTC
         units = 'hours since 1682-10-15 -07:00 UTC'
         # date after gregorian switch, python datetime used
-        date = datetime(1682,10,15)
+        date = datetime(1682,10,15) # assumed UTC
         num = date2num(date,units)
+        # UTC is 7 hours ahead of units, so num should be 7
         assert (num == 7)
         assert (num2date(num, units) == date)
         units = 'hours since 1482-10-15 -07:00 UTC'
