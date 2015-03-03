@@ -9,7 +9,6 @@ import os
 import tempfile
 from datetime import datetime
 from numpy.testing import assert_almost_equal, assert_equal
-from dateutil.tz import tzutc
 
 # test netcdftime module for netCDF time <--> python datetime conversions.
 
@@ -227,7 +226,7 @@ class netcdftimeTestCase(unittest.TestCase):
         d2 = datetime(2000, 1, 1)
         d3 = num2date(0, 'days since 3000-01-01', 'standard')
         assert d1 < d2
-        assert d2.replace(tzinfo=tzutc()) < d3
+        assert d2 < d3
 
         # check all comparisons
         assert d1 != d2
@@ -524,7 +523,7 @@ class TestDate2index(unittest.TestCase):
         times2 = date2num(dates, units)
         dates2 = num2date(times2, units)
         for date, date2 in zip(dates, dates2):
-            assert_equal(date.replace(tzinfo=tzutc()), date2)
+            assert_equal(date, date2)
         f.close()
 
 if __name__ == '__main__':

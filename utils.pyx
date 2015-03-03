@@ -1,9 +1,8 @@
 from datetime import timedelta, datetime, MINYEAR
 from netcdftime import _parse_date
 import dateutil.parser as dparse
-from dateutil.tz import tzutc
 
-gregorian = datetime(1582,10,15).replace(tzinfo=tzutc())
+gregorian = datetime(1582,10,15)
 
 def _dateparse(timestr):
     """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss,
@@ -21,8 +20,8 @@ def _dateparse(timestr):
         basedate = dparse.parse(isostring)
     else:
         basedate = datetime(year, month, day, hour, minute, second)
-    if basedate.tzinfo is None:
-        basedate = basedate.replace(tzinfo=tzutc())
+    if basedate.tzinfo is not None:
+        basedate = basedate.replace(tzinfo=None)
     return basedate
 
 # utility functions (visible from python).
@@ -140,7 +139,6 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
             if ismasked and not date:
                 times.append(None)
             else:
-                date = date.replace(tzinfo=tzutc())
                 td = date - basedate
                 totaltime = td.microseconds + (td.seconds + td.days * 24 * 3600) * 1.e6
                 if unit == 'microseconds' or unit == 'microsecond':
