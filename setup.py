@@ -1,8 +1,7 @@
 import os, sys, subprocess, shutil
 try:
     from setuptools import setup, Extension
-    setuptools_extra_kwargs = {"install_requires":
-    ["numpy>=1.3","python-dateutil>=2.0"]}
+    setuptools_extra_kwargs = {"install_requires":["numpy>=1.3"]}
 except ImportError:
     from distutils.core  import setup, Extension
     setuptools_extra_kwargs = {}

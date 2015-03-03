@@ -15,7 +15,7 @@ Quick Start
 * clone github repository, or get sourball (or Windows binary installers) from
   https://pypi.python.org/pypi/netCDF4
 
-* make sure numpy and python-dateutil (required), plus Cython (recommended) are
+* make sure numpy and (required) and Cython (recommended) are
   installed and you have python 2.5 or newer.
 
 * make sure HDF5 and netcdf-4 are installed, and the nc-config utility

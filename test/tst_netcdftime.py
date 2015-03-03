@@ -354,7 +354,7 @@ class netcdftimeTestCase(unittest.TestCase):
 
         # issue 353
         assert (num2date(0, 'hours since 2000-01-01 0') ==
-                datetime(2000,1,1,0).replace(tzinfo=tzutc()) )
+                datetime(2000,1,1,0))
 
         # issue354
         num1 = numpy.array([[0, 1], [2, 3]])

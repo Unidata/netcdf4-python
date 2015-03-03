@@ -5,7 +5,7 @@
   2000-01-01 0').
  * fix for issue 354 (num2date no longer supports multi-dimensional arrays).
  * make sure units parser returns time-zone naive datetime instance (issue
-  357).
+  357). Removes the need for dateutil dependency.
 
  version 1.1.5 (tag v1.1.5rel)
  =============================
