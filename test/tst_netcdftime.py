@@ -357,7 +357,7 @@ class netcdftimeTestCase(unittest.TestCase):
         assert (num2date(0, 'hours since 2000-01-01 0') ==
                 datetime(2000,1,1,0))
 
-        # issue354
+        # issue 354
         num1 = numpy.array([[0, 1], [2, 3]])
         num2 = numpy.array([[0, 1], [2, 3]])
         dates1 = num2date(num1, 'days since 0001-01-01')
@@ -370,6 +370,27 @@ class netcdftimeTestCase(unittest.TestCase):
         assert( num2b.shape == (2,2) )
         assert_almost_equal(num1,num1b)
         assert_almost_equal(num2,num2b)
+
+        # issue 357 (make sure time zone offset in units done correctly)
+        # Denver time, 7 hours behind UTC
+        units = 'hours since 1682-10-15 -07:00 UTC'
+        # date after gregorian switch, python datetime used
+        date = datetime(1682,10,15)
+        num = date2num(date,units)
+        assert (num == 7)
+        assert (num2date(num, units) == date)
+        units = 'hours since 1482-10-15 -07:00 UTC'
+        # date before gregorian switch, netcdftime datetime used
+        date = datetime(1482,10,15)
+        num = date2num(date,units)
+        date2 = num2date(num, units)
+        assert (num == 7)
+        assert (date2.year == date.year)
+        assert (date2.month == date.month)
+        assert (date2.day == date.day)
+        assert (date2.hour == date.hour)
+        assert (date2.minute == date.minute)
+        assert (date2.second == date.second)
 
 
 
