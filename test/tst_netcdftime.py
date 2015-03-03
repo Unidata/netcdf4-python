@@ -219,6 +219,7 @@ class netcdftimeTestCase(unittest.TestCase):
         # check timezone offset
         d = datetime(2012, 2, 29, 15)
         # mixed_tz is -6 hours from UTC, mixed is UTC so
+        # difference in elapsed time is 6 hours.
         assert(self.cdftime_mixed_tz.date2num(
             d) - self.cdftime_mixed.date2num(d) == 6)
 
