@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime, MINYEAR
-from netcdftime import _parse_date
+from netcdftime import _parse_date 
 
+# start of the gregorian calendar
 gregorian = datetime(1582,10,15)
 
 def _dateparse(timestr):
