@@ -218,8 +218,9 @@ class netcdftimeTestCase(unittest.TestCase):
         assert(d1 == d2)
         # check timezone offset
         d = datetime(2012, 2, 29, 15)
-        assert(self.cdftime_mixed.date2num(
-            d) - self.cdftime_mixed_tz.date2num(d) == 6)
+        # mixed_tz is -6 hours from UTC, mixed is UTC so
+        assert(self.cdftime_mixed_tz.date2num(
+            d) - self.cdftime_mixed.date2num(d) == 6)
 
         # Check comparisons with Python datetime types
         d1 = num2date(0, 'days since 1000-01-01', 'standard')
