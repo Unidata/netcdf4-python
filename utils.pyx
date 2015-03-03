@@ -20,6 +20,7 @@ def _dateparse(timestr):
         basedate = dparse.parse(isostring)
     else:
         basedate = datetime(year, month, day, hour, minute, second)
+    # make sure time-zone naive datetime instance returned (issue #357)
     if basedate.tzinfo is not None:
         basedate = basedate.replace(tzinfo=None)
     return basedate
