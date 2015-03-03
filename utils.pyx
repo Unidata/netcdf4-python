@@ -131,9 +131,9 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
         except:
             isscalar = True
         if isscalar:
-            dates = numpy.array([dates],dtype=object)
+            dates = numpy.array([dates])
         else:
-            dates = numpy.array(dates, dtype=object)
+            dates = numpy.array(dates)
             shape = dates.shape
         ismasked = False
         if hasattr(dates,'mask'):
