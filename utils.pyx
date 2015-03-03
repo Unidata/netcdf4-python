@@ -18,7 +18,10 @@ def _dateparse(timestr):
     year, month, day, hour, minute, second, utc_offset =\
         _parse_date( isostring.strip() )
     if year >= 100: # don't use dateutil parser for years < 100
-        basedate = dparse.parse(isostring)
+        try:
+            basedate = dparse.parse(isostring)
+        except:
+            basedate = datetime(year, month, day, hour, minute, second)
     else:
         basedate = datetime(year, month, day, hour, minute, second)
     if basedate.tzinfo is None:
