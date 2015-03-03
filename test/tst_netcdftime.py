@@ -283,11 +283,12 @@ class netcdftimeTestCase(unittest.TestCase):
                    'all_leap', '365_day', '366_day', '360_day']
         dateformat =  '%Y-%m-%d %H:%M:%S'
         dateref = datetime(2015,2,28,12)
+        ntimes = 1001
         for calendar in calendars:
             eps = 100.
             units = 'microseconds since 1800-01-30 01:01:01'
             microsecs1 = date2num(dateref,units,calendar=calendar)
-            for n in range(1001):
+            for n in range(ntimes):
                 microsecs1 += 1.
                 date1 = num2date(microsecs1, units, calendar=calendar)
                 microsecs2 = date2num(date1, units, calendar=calendar)
@@ -298,7 +299,7 @@ class netcdftimeTestCase(unittest.TestCase):
             units = 'milliseconds since 1800-01-30 01:01:01'
             eps = 0.1
             millisecs1 = date2num(dateref,units,calendar=calendar)
-            for n in range(1001):
+            for n in range(ntimes):
                 millisecs1 += 0.001
                 date1 = num2date(millisecs1, units, calendar=calendar)
                 millisecs2 = date2num(date1, units, calendar=calendar)
@@ -309,7 +310,7 @@ class netcdftimeTestCase(unittest.TestCase):
             eps = 1.e-4
             units = 'seconds since 0001-01-30 01:01:01'
             secs1 = date2num(dateref,units,calendar=calendar)
-            for n in range(1001):
+            for n in range(ntimes):
                 secs1 += 0.1
                 date1 = num2date(secs1, units, calendar=calendar)
                 secs2 = date2num(date1, units, calendar=calendar)
@@ -320,7 +321,7 @@ class netcdftimeTestCase(unittest.TestCase):
             eps = 1.e-5
             units = 'minutes since 0001-01-30 01:01:01'
             mins1 = date2num(dateref,units,calendar=calendar)
-            for n in range(1001):
+            for n in range(ntimes):
                 mins1 += 0.01
                 date1 = num2date(mins1, units, calendar=calendar)
                 mins2 = date2num(date1, units, calendar=calendar)
@@ -331,7 +332,7 @@ class netcdftimeTestCase(unittest.TestCase):
             eps = 1.e-5
             units = 'hours since 0001-01-30 01:01:01'
             hrs1 = date2num(dateref,units,calendar=calendar)
-            for n in range(1001):
+            for n in range(ntimes):
                 hrs1 += 0.001
                 date1 = num2date(hrs1, units, calendar=calendar)
                 hrs2 = date2num(date1, units, calendar=calendar)
@@ -342,7 +343,7 @@ class netcdftimeTestCase(unittest.TestCase):
             eps = 1.e-5
             units = 'days since 0001-01-30 01:01:01'
             days1 = date2num(dateref,units,calendar=calendar)
-            for n in range(1001):
+            for n in range(ntimes):
                 days1 += 0.00001
                 date1 = num2date(days1, units, calendar=calendar)
                 days2 = date2num(date1, units, calendar=calendar)
@@ -350,6 +351,25 @@ class netcdftimeTestCase(unittest.TestCase):
                 err = numpy.abs(days1 - days2)
                 assert(err < eps)
                 assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+
+        # issue 353
+        assert (num2date(0, 'hours since 2000-01-01 0') ==
+                datetime(2000,1,1,0).replace(tzinfo=tzutc()) )
+
+        # issue354
+        num1 = numpy.array([[0, 1], [2, 3]])
+        num2 = numpy.array([[0, 1], [2, 3]])
+        dates1 = num2date(num1, 'days since 0001-01-01')
+        dates2 = num2date(num2, 'days since 2001-01-01')
+        assert( dates1.shape == (2,2) )
+        assert( dates2.shape == (2,2) )
+        num1b = date2num(dates1, 'days since 0001-01-01')
+        num2b = date2num(dates2, 'days since 2001-01-01')
+        assert( num1b.shape == (2,2) )
+        assert( num2b.shape == (2,2) )
+        assert_almost_equal(num1,num1b)
+        assert_almost_equal(num2,num2b)
+
 
 
 class TestDate2index(unittest.TestCase):

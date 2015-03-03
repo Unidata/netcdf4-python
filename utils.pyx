@@ -17,7 +17,10 @@ def _dateparse(timestr):
     year, month, day, hour, minute, second, utc_offset =\
         _parse_date( isostring.strip() )
     if year >= 100: # don't use dateutil parser for years < 100
-        basedate = dparse.parse(isostring)
+        try:
+            basedate = dparse.parse(isostring)
+        except:
+            basedate = datetime(year, month, day, hour, minute, second)
     else:
         basedate = datetime(year, month, day, hour, minute, second)
     # make sure time-zone naive datetime instance returned (issue #357)
@@ -130,13 +133,17 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
             dates[0]
         except:
             isscalar = True
-        if isscalar: dates = [dates]
+        if isscalar:
+            dates = numpy.array([dates])
+        else:
+            dates = numpy.array(dates)
+            shape = dates.shape
         ismasked = False
         if hasattr(dates,'mask'):
             mask = dates.mask
             ismasked = True
         times = []
-        for date in dates:
+        for date in dates.flat:
             if ismasked and not date:
                 times.append(None)
             else:
@@ -157,7 +164,7 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
         if isscalar:
             return times[0]
         else:
-            return times
+            return numpy.reshape(numpy.array(times), shape)
     else: # use netcdftime module for other calendars
         cdftime = netcdftime.utime(units,calendar=calendar)
         return cdftime.date2num(dates)
@@ -210,13 +217,17 @@ contains one.
             times[0]
         except:
             isscalar = True
-        if isscalar: times = [times]
+        if isscalar:
+            times = numpy.array([times],dtype='d')
+        else:
+            times = numpy.array(times, dtype='d')
+            shape = times.shape
         ismasked = False
         if hasattr(times,'mask'):
             mask = times.mask
             ismasked = True
         dates = []
-        for time in times:
+        for time in times.flat:
             if ismasked and not time:
                 dates.append(None)
             else:
@@ -245,7 +256,7 @@ contains one.
         if isscalar:
             return dates[0]
         else:
-            return dates
+            return numpy.reshape(numpy.array(dates), shape)
     else: # use netcdftime for other calendars
         cdftime = netcdftime.utime(units,calendar=calendar)
         return cdftime.num2date(times)
