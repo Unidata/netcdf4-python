@@ -33,6 +33,10 @@ class netcdftimeTestCase(unittest.TestCase):
             'hours since 1000-01-01 00:00:00', calendar='julian')
         self.cdftime_iso = utime("seconds since 1970-01-01T00:00:00Z")
         self.cdftime_leading_space = utime("days since  850-01-01 00:00:00")
+        self.cdftime_mixed_capcal = utime('hours since 0001-01-01 00:00:00',
+                                          calendar='Standard')
+        self.cdftime_noleap_capcal = utime(
+            'days since 1600-02-28 00:00:00', calendar='NOLEAP')
 
     def runTest(self):
         """testing netcdftime"""
@@ -371,6 +375,9 @@ class netcdftimeTestCase(unittest.TestCase):
         assert_almost_equal(num1,num1b)
         assert_almost_equal(num2,num2b)
 
+        # issue 362: case insensitive calendars
+        self.assertTrue(self.cdftime_mixed_capcal.calendar == 'standard')
+        self.assertTrue(self.cdftime_noleap_capcal.calendar == 'noleap')
 
 
 class TestDate2index(unittest.TestCase):
