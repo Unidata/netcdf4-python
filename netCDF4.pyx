@@ -3121,7 +3121,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             mval = numpy.array(self.missing_value, self.dtype)
             if (self.endian() == 'big' and is_native_little) or\
                (self.endian() == 'little' and is_native_big):
-                     mval.byteswap(True)
+                mval.byteswap(True)
             if mval.shape == (): # mval a scalar.
                 hasmval = data==mval 
                 # is scalar missing value a NaN?
@@ -3149,7 +3149,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             # is not native.
             if (self.endian() == 'big' and is_native_little) or\
                (self.endian() == 'little' and is_native_big):
-                     fval.byteswap(True)
+                fval.byteswap(True)
             # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
