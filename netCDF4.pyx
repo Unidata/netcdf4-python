@@ -2463,11 +2463,14 @@ instance. If C{None}, the data is not truncated. """
         if dtype_endian == '<': dtype_endian='little'
         if dtype_endian == '|': dtype_endian=None
         if dtype_endian is not None and dtype_endian != endian:
-            # endian keyword prevails, issue warning
-            msg = 'endian-ness of dtype and endian kwarg do not match, using endian kwarg'
-            #msg = 'endian-ness of dtype and endian kwarg do not match, dtype over-riding endian kwarg'
-            warnings.warn(msg)
-            #endian = dtype_endian # dtype prevails
+            if dtype_endian is 'native' and endian == sys.byteorder:
+                pass
+            else:
+                # endian keyword prevails, issue warning
+                msg = 'endian-ness of dtype and endian kwarg do not match, using endian kwarg'
+                #msg = 'endian-ness of dtype and endian kwarg do not match, dtype over-riding endian kwarg'
+                warnings.warn(msg)
+                #endian = dtype_endian # dtype prevails
         # check validity of datatype.
         self._isprimitive = False
         self._iscompound = False
