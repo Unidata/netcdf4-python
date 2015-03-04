@@ -2463,7 +2463,7 @@ instance. If C{None}, the data is not truncated. """
         if dtype_endian == '<': dtype_endian='little'
         if dtype_endian == '|': dtype_endian=None
         if dtype_endian is not None and dtype_endian != endian:
-            if dtype_endian is 'native' and endian == sys.byteorder:
+            if dtype_endian == 'native' and endian == sys.byteorder:
                 pass
             else:
                 # endian keyword prevails, issue warning
