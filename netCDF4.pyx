@@ -2463,11 +2463,14 @@ instance. If C{None}, the data is not truncated. """
         if dtype_endian == '<': dtype_endian='little'
         if dtype_endian == '|': dtype_endian=None
         if dtype_endian is not None and dtype_endian != endian:
-            # endian keyword prevails, issue warning
-            msg = 'endian-ness of dtype and endian kwarg do not match, using endian kwarg'
-            #msg = 'endian-ness of dtype and endian kwarg do not match, dtype over-riding endian kwarg'
-            warnings.warn(msg)
-            #endian = dtype_endian # dtype prevails
+            if dtype_endian == 'native' and endian == sys.byteorder:
+                pass
+            else:
+                # endian keyword prevails, issue warning
+                msg = 'endian-ness of dtype and endian kwarg do not match, using endian kwarg'
+                #msg = 'endian-ness of dtype and endian kwarg do not match, dtype over-riding endian kwarg'
+                warnings.warn(msg)
+                #endian = dtype_endian # dtype prevails
         # check validity of datatype.
         self._isprimitive = False
         self._iscompound = False
@@ -3118,7 +3121,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             mval = numpy.array(self.missing_value, self.dtype)
             if (self.endian() == 'big' and is_native_little) or\
                (self.endian() == 'little' and is_native_big):
-                     mval.byteswap(True)
+                mval.byteswap(True)
             if mval.shape == (): # mval a scalar.
                 hasmval = data==mval 
                 # is scalar missing value a NaN?
@@ -3146,7 +3149,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             # is not native.
             if (self.endian() == 'big' and is_native_little) or\
                (self.endian() == 'little' and is_native_big):
-                     fval.byteswap(True)
+                fval.byteswap(True)
             # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
