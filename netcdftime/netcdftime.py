@@ -644,6 +644,7 @@ are:
 @returns: A class instance which may be used for converting times from netCDF
 units to datetime objects.
         """
+        calendar = calendar.lower()
         if calendar in _calendars:
             self.calendar = calendar
         else:

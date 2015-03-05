@@ -207,6 +207,7 @@ datetime objects. The datetime instances
 do not contain a time-zone offset, even if the specified C{units}
 contains one.
     """
+    calendar = calendar.lower()
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
 
@@ -293,6 +294,7 @@ to the given datetime object(s).
     """
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
+    calendar = calendar.lower()
     basedate = _dateparse(nctime.units)
 
     if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
