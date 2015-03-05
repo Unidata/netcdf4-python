@@ -378,7 +378,17 @@ class netcdftimeTestCase(unittest.TestCase):
         # issue 362: case insensitive calendars
         self.assertTrue(self.cdftime_mixed_capcal.calendar == 'standard')
         self.assertTrue(self.cdftime_noleap_capcal.calendar == 'noleap')
-
+        d = datetime(2015, 3, 4, 12, 18, 30)
+        units = 'days since 0001-01-01'
+        for cap_cal, low_cal in (('STANDARD', 'standard'),
+                                 ('NoLeap', 'noleap'),
+                                 ('Gregorian', 'gregorian'),
+                                 ('ALL_LEAP', 'all_leap')):
+            d1 = date2num(d, units, cap_cal)
+            d2 = date2num(d, units, low_cal)
+            self.assertEqual(d1, d2)
+            self.assertEqual(num2date(d1, units, cap_cal),
+                             num2date(d1, units, low_cal))
 
 class TestDate2index(unittest.TestCase):
 
