@@ -1,13 +1,16 @@
  version 1.1.6 (tag v1.1.6rel)
- ============================
+ =============================
 
  * fix for issue 353 (num2date can no longer handle units like 'hours since
-  2000-01-01 0').
+   2000-01-01 0').
  * fix for issue 354 (num2date no longer supports multi-dimensional arrays).
+ * fix for spurious UserWarning about endian-ness mismatch (issue 364).
+ * make calendar name keyword for num2date/date2num case insensitive
+   (issue362).
  * make sure units parser returns time-zone naive datetime instance that
-  includes UTC offset (issue 357).  UTC offset was applied incorrectly in 
-  netcdftime.date2num and num2date.  No longer need to depend on
-  python-dateutil.
+   includes UTC offset (issue 357).  UTC offset was applied incorrectly in 
+   netcdftime.date2num and num2date.  No longer need to depend on
+   python-dateutil.
 
  version 1.1.5 (tag v1.1.5rel)
  =============================
