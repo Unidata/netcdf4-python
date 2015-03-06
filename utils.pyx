@@ -1,13 +1,14 @@
 from datetime import timedelta, datetime, MINYEAR
-from netcdftime import _parse_date
-import dateutil.parser as dparse
-from dateutil.tz import tzutc
+from netcdftime import _parse_date 
 
-gregorian = datetime(1582,10,15).replace(tzinfo=tzutc())
+# start of the gregorian calendar
+gregorian = datetime(1582,10,15)
 
 def _dateparse(timestr):
     """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss,
     return a datetime instance"""
+    # same as version in netcdftime, but returns a timezone naive
+    # python datetime instance with the utc_offset included.
     timestr_split = timestr.split()
     units = timestr_split[0].lower()
     if timestr_split[1].lower() != 'since':
@@ -17,15 +18,9 @@ def _dateparse(timestr):
     isostring = timestr[n:]
     year, month, day, hour, minute, second, utc_offset =\
         _parse_date( isostring.strip() )
-    if year >= 100: # don't use dateutil parser for years < 100
-        try:
-            basedate = dparse.parse(isostring)
-        except:
-            basedate = datetime(year, month, day, hour, minute, second)
-    else:
-        basedate = datetime(year, month, day, hour, minute, second)
-    if basedate.tzinfo is None:
-        basedate = basedate.replace(tzinfo=tzutc())
+    basedate = datetime(year, month, day, hour, minute, second)
+    # add utc_offset to basedate time instance (which is timezone naive)
+    basedate += timedelta(days=utc_offset/1440.)
     return basedate
 
 # utility functions (visible from python).
@@ -147,8 +142,8 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
             if ismasked and not date:
                 times.append(None)
             else:
-                date = date.replace(tzinfo=tzutc())
                 td = date - basedate
+                # total time in microseconds.
                 totaltime = td.microseconds + (td.seconds + td.days * 24 * 3600) * 1.e6
                 if unit == 'microseconds' or unit == 'microsecond':
                     times.append(totaltime)

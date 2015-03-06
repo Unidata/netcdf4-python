@@ -9,7 +9,6 @@ import os
 import tempfile
 from datetime import datetime
 from numpy.testing import assert_almost_equal, assert_equal
-from dateutil.tz import tzutc
 
 # test netcdftime module for netCDF time <--> python datetime conversions.
 
@@ -223,15 +222,17 @@ class netcdftimeTestCase(unittest.TestCase):
         assert(d1 == d2)
         # check timezone offset
         d = datetime(2012, 2, 29, 15)
-        assert(self.cdftime_mixed.date2num(
-            d) - self.cdftime_mixed_tz.date2num(d) == 6)
+        # mixed_tz is -6 hours from UTC, mixed is UTC so
+        # difference in elapsed time is 6 hours.
+        assert(self.cdftime_mixed_tz.date2num(
+            d) - self.cdftime_mixed.date2num(d) == 6)
 
         # Check comparisons with Python datetime types
         d1 = num2date(0, 'days since 1000-01-01', 'standard')
         d2 = datetime(2000, 1, 1)
         d3 = num2date(0, 'days since 3000-01-01', 'standard')
         assert d1 < d2
-        assert d2.replace(tzinfo=tzutc()) < d3
+        assert d2 < d3
 
         # check all comparisons
         assert d1 != d2
@@ -359,9 +360,9 @@ class netcdftimeTestCase(unittest.TestCase):
 
         # issue 353
         assert (num2date(0, 'hours since 2000-01-01 0') ==
-                datetime(2000,1,1,0).replace(tzinfo=tzutc()) )
+                datetime(2000,1,1,0))
 
-        # issue354
+        # issue 354
         num1 = numpy.array([[0, 1], [2, 3]])
         num2 = numpy.array([[0, 1], [2, 3]])
         dates1 = num2date(num1, 'days since 0001-01-01')
@@ -374,6 +375,28 @@ class netcdftimeTestCase(unittest.TestCase):
         assert( num2b.shape == (2,2) )
         assert_almost_equal(num1,num1b)
         assert_almost_equal(num2,num2b)
+
+        # issue 357 (make sure time zone offset in units done correctly)
+        # Denver time, 7 hours behind UTC
+        units = 'hours since 1682-10-15 -07:00 UTC'
+        # date after gregorian switch, python datetime used
+        date = datetime(1682,10,15) # assumed UTC
+        num = date2num(date,units)
+        # UTC is 7 hours ahead of units, so num should be 7
+        assert (num == 7)
+        assert (num2date(num, units) == date)
+        units = 'hours since 1482-10-15 -07:00 UTC'
+        # date before gregorian switch, netcdftime datetime used
+        date = datetime(1482,10,15)
+        num = date2num(date,units)
+        date2 = num2date(num, units)
+        assert (num == 7)
+        assert (date2.year == date.year)
+        assert (date2.month == date.month)
+        assert (date2.day == date.day)
+        assert (date2.hour == date.hour)
+        assert (date2.minute == date.minute)
+        assert (date2.second == date.second)
 
         # issue 362: case insensitive calendars
         self.assertTrue(self.cdftime_mixed_capcal.calendar == 'standard')
@@ -561,7 +584,7 @@ class TestDate2index(unittest.TestCase):
         times2 = date2num(dates, units)
         dates2 = num2date(times2, units)
         for date, date2 in zip(dates, dates2):
-            assert_equal(date.replace(tzinfo=tzutc()), date2)
+            assert_equal(date, date2)
         f.close()
 
 if __name__ == '__main__':
