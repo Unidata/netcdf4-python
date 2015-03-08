@@ -3,6 +3,9 @@ Python/numpy interface to the netCDF version 4 library.
 News
 ----
 
+3/8/2015: Version 1.1.6 released.  Minor bug fixes and regressions introduced in 1.1.5, 
+including incorrect handling of UTC offsets in units string by date2num/num2date.
+
 3/1/2015: Version 1.1.5 released.  Significant improvements to netcdftime and 
 num2date/date2num - accuracy is now between a millisecond and a microsecond depending
 on the time interval and calendar used. use_ncconfig is now True by default
