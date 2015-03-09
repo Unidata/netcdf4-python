@@ -17,7 +17,7 @@ include file paths.  For other changes see https://github.com/Unidata/netcdf4-py
 Quick Start
 -----------
 
-* clone github repository, or get sourball (or Windows binary installers) from
+* clone github repository, or get source tarball (or Windows binary installers) from
   https://pypi.python.org/pypi/netCDF4
 
 * make sure numpy and (required) and Cython (recommended) are
