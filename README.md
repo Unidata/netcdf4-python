@@ -3,7 +3,7 @@ Python/numpy interface to the netCDF version 4 library.
 News
 ----
 
-For latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
+For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
 3/8/2015: Version 1.1.6 released.  Minor bug fixes for regressions introduced in 1.1.5, 
 including incorrect handling of UTC offsets in units string by date2num/num2date. 
@@ -20,7 +20,7 @@ Quick Start
 -----------
 
 * clone github repository, or get source tarball (or Windows binary installers) from
-  https://pypi.python.org/pypi/netCDF4
+  [PyPI](https://pypi.python.org/pypi/netCDF4).
 
 * make sure numpy and (required) and Cython (recommended) are
   installed and you have python 2.5 or newer.
@@ -30,10 +30,9 @@ Quick Start
   to setup.cfg, and make sure the line with 'use_ncconfig=True' is 
   un-commented.
 
-* run 'python setup.py build, then 'python setup.py install' (with sudo
+* run `python setup.py build`, then `python setup.py install` (with sudo
   if necessary).
 
-* To run all the tests, execute 'cd test; python run_all.py'.
+* To run all the tests, execute `cd test; python run_all.py`.
 
-More detailed documentation is available at docs/index.html, or
-http://unidata.github.io/netcdf4-python.
+See the online [docs](http://unidata.github.io/netcdf4-python) for more details.
