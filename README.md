@@ -35,4 +35,4 @@ Quick Start
 
 See the online [docs](http://unidata.github.io/netcdf4-python) for more details.
 
-Sample ipython notebooks available in the examples directory.
+Sample ipython notebooks available in the examples directory on [reading](http://nbviewer.ipython.org/github/Unidata/netcdf4-python/blob/master/examples/reading_netCDF.ipynb) and [writing](http://nbviewer.ipython.org/github/Unidata/netcdf4-python/blob/master/examples/writing_netCDF.ipynb) netcdf data with python.
