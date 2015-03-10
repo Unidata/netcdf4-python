@@ -8,7 +8,13 @@ except ImportError:
 from distutils.dist import Distribution
 try:
     from Cython.Distutils import build_ext
-    has_cython = True
+    from Cython import __version__ as cython_version
+    if cython_version >= '0.19':
+        has_cython = True
+        sys.stdout.write('cython version %s found ...\n' % cython_version)
+    else:
+        sys.stdout.write('cython not found or too old...\n')
+        has_cython = False
 except ImportError:
     has_cython = False
 
