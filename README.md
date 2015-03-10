@@ -1,4 +1,4 @@
-*netcdf4-python*: Python/numpy interface to the netCDF version 4 library.
+**netcdf4-python**: Python/numpy interface to the netCDF version 4 library.
 
 News
 ----
