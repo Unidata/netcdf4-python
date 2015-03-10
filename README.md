@@ -34,3 +34,5 @@ Quick Start
 * To run all the tests, execute `cd test; python run_all.py`.
 
 See the online [docs](http://unidata.github.io/netcdf4-python) for more details.
+
+Sample ipython notebooks available in the examples directory.
