@@ -3,6 +3,8 @@ Python/numpy interface to the netCDF version 4 library.
 News
 ----
 
+For latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
+
 3/8/2015: Version 1.1.6 released.  Minor bug fixes for regressions introduced in 1.1.5, 
 including incorrect handling of UTC offsets in units string by date2num/num2date. 
 Datetime instances returned by num2date are now time-zone naive, so python-dateutil
@@ -12,7 +14,7 @@ is no longer required.
 num2date/date2num - accuracy is now between a millisecond and a microsecond depending
 on the time interval and calendar used. use_ncconfig is now True by default
 in setup.py, so the utility nc-config e used to find the library and
-include file paths.  For other changes see https://github.com/Unidata/netcdf4-python/blob/master/Changelog.
+include file paths.  
 
 Quick Start
 -----------
