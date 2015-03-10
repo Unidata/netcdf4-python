@@ -27,7 +27,7 @@ Quick Start
 
 * make sure HDF5 and netcdf-4 are installed, and the nc-config utility
   is in your Unix PATH. If setup.cfg does not exist, copy setup.cfg.template
-  to setup.cfg, and make sure the line with 'use_ncconfig=True' is 
+  to setup.cfg, and make sure the line with `use_ncconfig=True` is 
   un-commented.
 
 * run `python setup.py build`, then `python setup.py install` (with sudo
