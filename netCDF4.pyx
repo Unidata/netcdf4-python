@@ -3315,9 +3315,8 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             strdata = <char **>malloc(sizeof(char *))
             bytestr = _strencode(data)
             strdata[0] = bytestr
-            with nogil:
-                ierr = nc_put_vara(self._grpid, self._varid,
-                                   startp, countp, strdata)
+            ierr = nc_put_vara(self._grpid, self._varid,
+                               startp, countp, strdata)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             free(strdata)
@@ -3328,9 +3327,8 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             vldata = <nc_vlen_t *>malloc(sizeof(nc_vlen_t))
             vldata[0].len = PyArray_SIZE(data2)
             vldata[0].p = data2.data
-            with nogil:
-                ierr = nc_put_vara(self._grpid, self._varid,
-                                   startp, countp, vldata)
+            ierr = nc_put_vara(self._grpid, self._varid,
+                               startp, countp, vldata)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             free(vldata)
@@ -3659,13 +3657,11 @@ The default value of C{mask} is C{True}
                     data.byteswap(True)
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
-                with nogil:
-                    ierr = nc_put_vara(self._grpid, self._varid,
-                                       startp, countp, data.data)
-            else:  
-                with nogil:
-                    ierr = nc_put_vars(self._grpid, self._varid,
-                                       startp, countp, stridep, data.data)
+                ierr = nc_put_vara(self._grpid, self._varid,
+                                   startp, countp, data.data)
+            else:
+                ierr = nc_put_vars(self._grpid, self._varid,
+                                   startp, countp, stridep, data.data)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         elif self._isvlen: 
@@ -3686,9 +3682,8 @@ The default value of C{mask} is C{True}
                     strdata[i] = data[i]
                 # strides all 1 or scalar variable, use put_vara (faster)
                 if sum(stride) == ndims or ndims == 0: 
-                    with nogil:
-                        ierr = nc_put_vara(self._grpid, self._varid,
-                                           startp, countp, strdata)
+                    ierr = nc_put_vara(self._grpid, self._varid,
+                                       startp, countp, strdata)
                 else: 
                     raise IndexError('strides must all be 1 for string variables')
                     #ierr = nc_put_vars(self._grpid, self._varid,
@@ -3715,9 +3710,8 @@ The default value of C{mask} is C{True}
                     databuff = databuff + data.strides[0]
                 # strides all 1 or scalar variable, use put_vara (faster)
                 if sum(stride) == ndims or ndims == 0: 
-                    with nogil:
-                        ierr = nc_put_vara(self._grpid, self._varid,
-                                           startp, countp, vldata)
+                    ierr = nc_put_vara(self._grpid, self._varid,
+                                       startp, countp, vldata)
                 else:  
                     raise IndexError('strides must all be 1 for vlen variables')
                     #ierr = nc_put_vars(self._grpid, self._varid,

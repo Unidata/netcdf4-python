@@ -303,12 +303,12 @@ cdef extern from "netcdf.h":
     int nc_get_var1(int ncid, int varid,  size_t *indexp,
                 void *ip)
     int nc_put_vara(int ncid, int varid,  size_t *startp, 
-                size_t *countp, void *op) nogil
+                size_t *countp, void *op) 
     int nc_get_vara(int ncid, int varid,  size_t *startp, 
                 size_t *countp, void *ip) nogil
     int nc_put_vars(int ncid, int varid,  size_t *startp, 
                 size_t *countp, ptrdiff_t *stridep,
-                void *op) nogil
+                void *op) 
     int nc_get_vars(int ncid, int varid,  size_t *startp, 
                 size_t *countp, ptrdiff_t *stridep,
                 void *ip) nogil
