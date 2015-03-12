@@ -286,8 +286,8 @@ cdef extern from "netcdf.h":
     int nc_inq_typeids(int ncid, int *ntypes, int *typeids) nogil
     int nc_put_att(int ncid, int varid, char *name, nc_type xtype, 
                size_t len, void *op)
-    int nc_get_att(int ncid, int varid, char *name, void *ip)
-    int nc_get_att_string(int ncid, int varid, char *name, char **ip)
+    int nc_get_att(int ncid, int varid, char *name, void *ip) nogil
+    int nc_get_att_string(int ncid, int varid, char *name, char **ip) nogil
     int nc_def_opaque(int ncid, size_t size, char *name, nc_type *xtypep)
     int nc_inq_opaque(int ncid, nc_type xtype, char *name, size_t *sizep)
     int nc_put_att_opaque(int ncid, int varid, char *name,
@@ -365,8 +365,7 @@ cdef extern from "netcdf.h":
     int nc_del_att(int ncid, int varid, char *name)
     int nc_put_att_text(int ncid, int varid, char *name,
                     size_t len, char *op)
-    int nc_get_att_text(int ncid, int varid, char *name, char *ip)
-    int nc_get_att_string(int ncid, int varid, char *name, char **ip)
+    int nc_get_att_text(int ncid, int varid, char *name, char *ip) nogil
     int nc_put_att_uchar(int ncid, int varid, char *name, nc_type xtype,
                      size_t len, unsigned char *op)
     int nc_get_att_uchar(int ncid, int varid, char *name, unsigned char *ip)
@@ -697,7 +696,7 @@ cdef extern from "netcdf.h":
     int nc_set_chunk_cache(size_t size, size_t nelems, float preemption)
     int nc_get_chunk_cache(size_t *sizep, size_t *nelemsp, float *preemptionp)
     int nc_set_var_chunk_cache(int ncid, int varid, size_t size, size_t nelems, float preemption)
-    int nc_get_var_chunk_cache(int ncid, int varid, size_t *sizep, size_t *nelemsp, float *preemptionp)
+    int nc_get_var_chunk_cache(int ncid, int varid, size_t *sizep, size_t *nelemsp, float *preemptionp) nogil
     int nc_rename_grp(int grpid, char *name)
 
 # taken from numpy.pxi in numpy 1.0rc2.
