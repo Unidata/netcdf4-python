@@ -918,7 +918,8 @@ cdef _get_att(grp, int varid, name):
     # attribute is a character or string ...
     if att_type == NC_CHAR:
         value_arr = numpy.empty(att_len,'S1')
-        ierr = nc_get_att_text(grp._grpid, varid, attname, <char *>value_arr.data)
+        with nogil:
+            ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
         if name == '_FillValue' and python3:
@@ -931,7 +932,8 @@ cdef _get_att(grp, int varid, name):
         return pstring
     elif att_type == NC_STRING:
         if att_len == 1:
-            ierr = nc_get_att_string(grp._grpid, varid, attname, &stratt)
+            with nogil:
+                ierr = nc_get_att_string(_grpid, varid, attname, &stratt)
             pstring = stratt.decode(default_encoding,unicode_error).replace('\x00','')
             return pstring
         else:
@@ -949,7 +951,8 @@ cdef _get_att(grp, int varid, name):
             except:
                 raise KeyError('attribute %s has unsupported datatype' % attname)
         value_arr = numpy.empty(att_len,type_att)
-        ierr = nc_get_att(grp._grpid, varid, attname, value_arr.data)
+        with nogil:
+            ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
         if value_arr.shape == ():
@@ -1067,8 +1070,8 @@ cdef _get_types(group):
     cdef nc_type xtype
     cdef nc_type typeids[NC_MAX_VARS]
     cdef char namstring[NC_MAX_NAME+1]
-    # get the number of user defined types in this group.
     _grpid = group._grpid
+    # get the number of user defined types in this group.
     with nogil:
         ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
     if ierr != NC_NOERR:
@@ -1172,8 +1175,7 @@ cdef _get_grps(group):
 cdef _get_vars(group):
     # Private function to create L{Variable} instances for all the
     # variables in a L{Group} or Dataset
-    cdef int ierr, numvars, n, nn, numdims, varid, classp, iendian
-    cdef int _grpid
+    cdef int ierr, numvars, n, nn, numdims, varid, classp, iendian, _grpid
     cdef int *varids
     cdef int dim_sizes[NC_MAX_DIMS]
     cdef int dimids[NC_MAX_DIMS]
@@ -1529,13 +1531,12 @@ filepath(self)
 
 Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf >= 4.1.2"""
-        cdef int ierr, _grpid
+        cdef int ierr
         cdef size_t pathlen
         cdef char path[NC_MAX_NAME + 1]
-        _grpid = self._grpid
         IF HAS_NC_INQ_PATH:
             with nogil:
-                ierr = nc_inq_path(_grpid, &pathlen, path)
+                ierr = nc_inq_path(self._grpid, &pathlen, path)
             return path.decode('ascii')
         ELSE:
             msg = """
@@ -2158,11 +2159,10 @@ instances, raises IOError."""
 
     def _getname(self):
         # private method to get name associated with instance.
-        cdef int err, _grpid
+        cdef int err
         cdef char namstring[NC_MAX_NAME+1]
-        _grpid = self._grp._grpid
         with nogil:
-            ierr = nc_inq_grpname(_grpid, namstring)
+            ierr = nc_inq_grpname(self._grpid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         return namstring.decode(default_encoding,unicode_error)
@@ -2269,11 +2269,10 @@ determine if the dimension is unlimited"""
  
     def __len__(self):
         # len(L{Dimension} instance) returns current size of dimension
-        cdef int ierr, _grpid
+        cdef int ierr
         cdef size_t lengthp
-        _grpid = self._grpid
         with nogil:
-            ierr = nc_inq_dimlen(_grpid, self._dimid, &lengthp)
+            ierr = nc_inq_dimlen(self._grpid, self._dimid, &lengthp)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         return lengthp
@@ -2290,11 +2289,10 @@ return the group that this L{Dimension} is a member of."""
 isunlimited(self)
 
 returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise."""
-        cdef int ierr, n, numunlimdims, ndims, nvars, ngatts, xdimid, _grpid
+        cdef int ierr, n, numunlimdims, ndims, nvars, ngatts, xdimid
         cdef int unlimdimids[NC_MAX_DIMS]
-        _grpid = self._grpid
         if self._data_model == 'NETCDF4':
-            ierr = nc_inq_unlimdims(_grpid, &numunlimdims, NULL)
+            ierr = nc_inq_unlimdims(self._grpid, &numunlimdims, NULL)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             if numunlimdims == 0:
@@ -2302,7 +2300,7 @@ returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.""
             else:
                 dimid = self._dimid
                 with nogil:
-                    ierr = nc_inq_unlimdims(_grpid, &numunlimdims, unlimdimids)
+                    ierr = nc_inq_unlimdims(self._grpid, &numunlimdims, unlimdimids)
                 if ierr != NC_NOERR:
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 unlimdim_ids = []
@@ -2315,7 +2313,7 @@ returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.""
         else: # if not NETCDF4, there is only one unlimited dimension.
             # nc_inq_unlimdims only works for NETCDF4.
             with nogil:
-                ierr = nc_inq(_grpid, &ndims, &nvars, &ngatts, &xdimid)
+                ierr = nc_inq(self._grpid, &ndims, &nvars, &ngatts, &xdimid)
             if self._dimid == xdimid:
                 return True
             else:
@@ -2475,8 +2473,7 @@ instance. If C{None}, the data is not truncated. """
         # dimensions = 'lat' instead of ('lat',)
         if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
             dimensions = dimensions,
-        _grpid = grp._grpid
-        self._grpid = _grpid
+        self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
         if grp.keepweakref:
@@ -2684,7 +2681,7 @@ instance. If C{None}, the data is not truncated. """
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
         # set ndim attribute (number of dimensions).
         with nogil:
-            ierr = nc_inq_varndims(_grpid, self._varid, &numdims)
+            ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         self.ndim = numdims
@@ -2707,7 +2704,7 @@ instance. If C{None}, the data is not truncated. """
            return unicode(self).encode(default_encoding)
 
     def __unicode__(self):
-        cdef int ierr, no_fill, _grpid
+        cdef int ierr, no_fill
         if not dir(self._grp):
             return 'Variable object no longer valid'
         ncdump_var = ['%r\n' % type(self)]
@@ -2736,9 +2733,8 @@ instance. If C{None}, the data is not truncated. """
         if (self._grp.path != '/'): ncdump_var.append('path = %s\n' % self._grp.path)
         ncdump_var.append('unlimited dimensions: %s\n' % ', '.join(unlimdims))
         ncdump_var.append('current shape = %s\n' % repr(self.shape))
-        _grpid = self._grpid
         with nogil:
-            ierr = nc_inq_var_fill(_grpid,self._varid,&no_fill,NULL)
+            ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         if self._isprimitive:
@@ -2761,24 +2757,24 @@ instance. If C{None}, the data is not truncated. """
 
     def _getdims(self):
         # Private method to get variables's dimension names
-        cdef int ierr, numdims, n, nn, _grpid
+        cdef int ierr, numdims, n, nn
         cdef char namstring[NC_MAX_NAME+1]
         cdef int dimids[NC_MAX_DIMS]
         # get number of dimensions for this variable.
-        _grpid = self._grpid
         with nogil:
-            ierr = nc_inq_varndims(_grpid, self._varid, &numdims)
+            ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         # get dimension ids.
-        ierr = nc_inq_vardimid(self._grpid, self._varid, dimids)
+        with nogil:
+            ierr = nc_inq_vardimid(self._grpid, self._varid, dimids)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         # loop over dimensions, retrieve names.
         dimensions = ()
         for nn from 0 <= nn < numdims:
             with nogil:
-                ierr = nc_inq_dimname(_grpid, dimids[nn], namstring)
+                ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             name = namstring.decode(default_encoding,unicode_error)
@@ -2789,9 +2785,9 @@ instance. If C{None}, the data is not truncated. """
         # Private method to get name associated with instance
         cdef int err, _grpid
         cdef char namstring[NC_MAX_NAME+1]
-        _grpid = self._grp._grpid; _varid = self._varid
+        _grpid = self._grp._grpid
         with nogil:
-            ierr = nc_inq_varname(_grpid, _varid, namstring)
+            ierr = nc_inq_varname(_grpid, self._varid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         return namstring.decode(default_encoding,unicode_error)
@@ -2906,16 +2902,15 @@ attributes."""
 filters(self)
 
 return dictionary containing HDF5 filter parameters."""
-        cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32,_grpid,_varid
+        cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
         filtdict = {'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
-        _varid = self._varid; _grpid = self._grpid
         with nogil:
-            ierr = nc_inq_var_deflate(_grpid, _varid, &ishuffle, &ideflate, &ideflate_level)
+            ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &ideflate_level)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         with nogil:
-            ierr = nc_inq_var_fletcher32(_grpid, _varid, &ifletcher32)
+            ierr = nc_inq_var_fletcher32(self._grpid, self._varid, &ifletcher32)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         if ideflate:
@@ -2932,12 +2927,11 @@ return dictionary containing HDF5 filter parameters."""
 endian(self)
 
 return endian-ness (little,big,native) of variable (as stored in HDF5 file)."""
-        cdef int ierr, iendian, _grpid, _varid
+        cdef int ierr, iendian
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: 
             return 'native'
-        _grpid = self._grpid; _varid = self._varid
         with nogil:
-            ierr = nc_inq_var_endian(_grpid, _varid, &iendian)
+            ierr = nc_inq_var_endian(self._grpid, self._varid, &iendian)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         if iendian == NC_ENDIAN_LITTLE:
@@ -2955,14 +2949,13 @@ return variable chunking information.  If the dataset is
 defined to be contiguous (and hence there is no chunking) the word 'contiguous'
 is returned.  Otherwise, a sequence with the chunksize for
 each dimension is returned."""
-        cdef int ierr, icontiguous, ndims, _grpid, _varid
+        cdef int ierr, icontiguous, ndims
         cdef size_t *chunksizesp
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return None
         ndims = self.ndim
         chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
-        _grpid = self._grpid; _varid = self._varid
         with nogil:
-            ierr = nc_inq_var_chunking(_grpid, _varid, &icontiguous, chunksizesp)
+            ierr = nc_inq_var_chunking(self._grpid, self._varid, &icontiguous, chunksizesp)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         chunksizes=[]
@@ -2984,8 +2977,9 @@ details."""
         cdef int ierr
         cdef size_t sizep, nelemsp
         cdef float preemptionp
-        ierr = nc_get_var_chunk_cache(self._grpid, self._varid, &sizep,
-               &nelemsp, &preemptionp)
+        with nogil:
+            ierr = nc_get_var_chunk_cache(self._grpid, self._varid, &sizep,
+                   &nelemsp, &preemptionp)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         size = sizep; nelems = nelemsp; preemption = preemptionp
@@ -3166,10 +3160,9 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         return data
 
     def _toma(self,data):
-        cdef int ierr, no_fill, _grpid, _varid
+        cdef int ierr, no_fill
         # private function for creating a masked array, masking missing_values
         # and/or _FillValues.
-        _grpid = self._grpid; _varid = self._varid
         totalmask = numpy.zeros(data.shape, numpy.bool)
         fill_value = None
         if hasattr(self, 'missing_value'):
@@ -3224,7 +3217,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
 	# is disabled.
         else:
             with nogil:
-                ierr = nc_inq_var_fill(_grpid,_varid,&no_fill,NULL)
+                ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # if no_fill is not 1, and not a byte variable, then use default fill value.
