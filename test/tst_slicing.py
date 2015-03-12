@@ -109,6 +109,15 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(a[...], b[...])
         dset.close()
 
+    def test_issue371(self):
+        dataset = Dataset(self.file, 'w')
+        dataset.createDimension('dim', 5)
+        var = dataset.createVariable('bar', 'i8', ('dim', ))
+        data = [1, 2, 3, 4, 5]
+        var[..., :] = data
+        assert_array_equal(var[..., :], np.array(data))
+        dataset.close()
+
     def test_issue306(self):
         f = Dataset(self.file,'w')
         nlats = 7; lat = f.createDimension('lat',nlats)
