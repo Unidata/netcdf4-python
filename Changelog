@@ -3,6 +3,7 @@
  * check to make sure cython >= 0.19 is available before trying
    to use it (otherwise compilation with fail).  Issue 367.
  * add ipython notebooks from Unidata workshop in examples directory.
+ * fix ellipsis variable slicing regression (issue 371).
 
  version 1.1.6 (tag v1.1.6rel)
  =============================

@@ -176,11 +176,14 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         # set unlim to True if dimension is unlimited and put==True
         # (called from __setitem__)
         if put and (dimensions is not None and grp is not None) and len(dimensions):
-            dimname = dimensions[i]
-            # is this dimension unlimited?
-            # look in current group, and parents for dim.
-            dim = _find_dim(grp, dimname)
-            unlim = dim.isunlimited()
+            try:
+                dimname = dimensions[i]
+                # is this dimension unlimited?
+                # look in current group, and parents for dim.
+                dim = _find_dim(grp, dimname)
+                unlim = dim.isunlimited()
+            except IndexError: # more slices than dimensions (issue 371)
+                unlim = False
         else:
             unlim = False
         # an iterable (non-scalar) integer array.
