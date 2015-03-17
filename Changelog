@@ -1,9 +1,14 @@
- since version 1.1.6
- ===================
+ version 1.1.7 (tag v1.1.7rel)
+ =============================
  * check to make sure cython >= 0.19 is available before trying
    to use it (otherwise compilation with fail).  Issue 367.
  * add ipython notebooks from Unidata workshop in examples directory.
  * fix ellipsis variable slicing regression (issue 371).
+ * release the Global Interpreter Lock (GIL) when calling the C 
+   library for read operations.  Speeds up multi-threaded reads
+   (issue 369).  Caution - the HDF5 library may need to be compiled 
+   with the threadsafe option to ensure that global data structures
+   are not corrupted by simultaneous manipulation by different threads.
 
  version 1.1.6 (tag v1.1.6rel)
  =============================
