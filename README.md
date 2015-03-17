@@ -1,7 +1,7 @@
 netcdf4-python
 ==============
 
-[python](http://python.org)/[numpy](http://numpy.org) interface to the netcdf [C library](https://github.com/Unidata/netcdf-c).
+[python](http://python.org)/[numpy](http://numpy.org) interface to the netCDF [C library](https://github.com/Unidata/netcdf-c).
 
 [![Build Status](https://travis-ci.org/Unidata/netcdf4-python.svg?branch=master)](https://travis-ci.org/Unidata/netcdf4-python)
 
