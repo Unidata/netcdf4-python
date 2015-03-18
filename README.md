@@ -15,7 +15,7 @@ For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-p
 module calls C library for read operations.  This speeds up concurrent reads when using threads.
 Users who wish to use netcdf4-python inside threads should read http://www.hdfgroup.org/hdf5-quest.html#gconc 
 regarding thread-safety in the HDF5 C library.  Fixes to setup.py now ensure that `pip install netCDF4`
-with `export USE_NCCONFIG=1` will use environment variables to find paths to libraries and include files,
+with `export USE_NCCONFIG=0` will use environment variables to find paths to libraries and include files,
 instead of relying exclusively on the nc-config utility.
 
 3/8/2015: Version 1.1.6 released.  Minor bug fixes for regressions introduced in 1.1.5, 
