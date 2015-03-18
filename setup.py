@@ -188,8 +188,8 @@ if os.path.exists(setup_cfg):
 # make sure USE_NCCONFIG from environment takes 
 # precendence over use_ncconfig from setup.cfg (issue #341).
 if USE_NCCONFIG is None and use_ncconfig is not None:
-    USE_NCCONFIG = use_ncconfig
-elif use_ncconfig is None and use_ncconfig is None:
+    USE_NCCONFIG = bool(use_ncconfig)
+elif USE_NCONFIG is None:
     USE_NCCONFIG = False
 
 # if USE_NCCONFIG set, and nc-config works, use it.
