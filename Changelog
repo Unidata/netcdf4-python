@@ -9,6 +9,10 @@
    (issue 369).  Caution - the HDF5 library may need to be compiled 
    with the threadsafe option to ensure that global data structures
    are not corrupted by simultaneous manipulation by different threads.
+ * Make sure USE_NCCONFIG environment variable takes precedence over value
+   of use_ncconfig in setup.cfg.  With this change, 'pip install netCDF4'
+   with USE_NCCONFIG=1 will use environment variables to find paths to 
+   libraries and include files, instead of relying on nc-config (issue #341).
 
  version 1.1.6 (tag v1.1.6rel)
  =============================
