@@ -132,11 +132,14 @@ curl_dir = os.environ.get('CURL_DIR')
 curl_libdir = os.environ.get('CURL_LIBDIR')
 curl_incdir = os.environ.get('CURL_INCDIR')
 
-USE_NCCONFIG = bool(int(os.environ.get('USE_NCCONFIG')))
+USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
+if USE_NCCONFIG is not None:
+    USE_NCCONFIG = bool(int(USE_NCCONFIG))
 
 setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars.
 ncconfig = None
+use_ncconfig = None
 if os.path.exists(setup_cfg):
     sys.stdout.write('reading from setup.cfg...\n')
     config = configparser.SafeConfigParser()
@@ -186,6 +189,8 @@ if os.path.exists(setup_cfg):
 # precendence over use_ncconfig from setup.cfg (issue #341).
 if USE_NCCONFIG is None and use_ncconfig is not None:
     USE_NCCONFIG = use_ncconfig
+elif use_ncconfig is None and use_ncconfig is None:
+    USE_NCCONFIG = False
 
 # if USE_NCCONFIG set, and nc-config works, use it.
 if USE_NCCONFIG:
