@@ -132,7 +132,7 @@ curl_dir = os.environ.get('CURL_DIR')
 curl_libdir = os.environ.get('CURL_LIBDIR')
 curl_incdir = os.environ.get('CURL_INCDIR')
 
-USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
+USE_NCCONFIG = bool(int(os.environ.get('USE_NCCONFIG')))
 
 setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars.
@@ -177,13 +177,18 @@ if os.path.exists(setup_cfg):
     except: pass
     try: curl_incdir = config.get("directories", "curl_incdir")
     except: pass
-    try: USE_NCCONFIG = config.get("options", "use_ncconfig")
+    try: use_ncconfig = config.get("options", "use_ncconfig")
     except: pass
     try: ncconfig = config.get("options", "ncconfig")
     except: pass
 
+# make sure USE_NCCONFIG from environment takes 
+# precendence over use_ncconfig from setup.cfg (issue #341).
+if USE_NCCONFIG is None and use_ncconfig is not None:
+    USE_NCCONFIG = use_ncconfig
+
 # if USE_NCCONFIG set, and nc-config works, use it.
-if USE_NCCONFIG is not None:
+if USE_NCCONFIG:
     # if NETCDF4_DIR env var is set, look for nc-config in NETCDF4_DIR/bin.
     if ncconfig is None:
         if netCDF4_dir is not None:
