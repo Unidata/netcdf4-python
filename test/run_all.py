@@ -1,5 +1,9 @@
-import glob, os, sys, unittest, netCDF4
-from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__version__
+import glob
+import os
+import sys
+import unittest
+import netCDF4
+from netCDF4 import getlibversion, __hdf5libversion__, __netcdf4libversion__, __version__
 
 # can also just run
 # python -m unittest discover . 'tst*py'
@@ -25,6 +29,8 @@ for f in test_files:
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
 
 # Run the test suite.
+
+
 def test(verbosity=1):
     runner = unittest.TextTestRunner(verbosity=verbosity)
     runner.run(testsuite)

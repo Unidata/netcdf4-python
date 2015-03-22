@@ -7,7 +7,8 @@ URL = 'http://test.opendap.org/opendap/hyrax/data/nc/bears.nc'
 firstvarname = 'shot'
 firstvarmin = 2
 firstvarmax = 7
-firstvarshape = (2,3)
+firstvarshape = (2, 3)
+
 
 class DapTestCase(unittest.TestCase):
 

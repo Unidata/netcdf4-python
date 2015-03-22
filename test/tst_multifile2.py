@@ -3,36 +3,43 @@ import numpy as np
 from numpy.random import seed, randint
 from numpy.testing import assert_array_equal, assert_equal
 from numpy import ma
-import tempfile, unittest, os, datetime
+import tempfile
+import unittest
+import os
+import datetime
 
-nx=100; ydim=5; zdim=1
+nx = 100
+ydim = 5
+zdim = 1
 nfiles = 10
-ninc = nx/nfiles
+ninc = nx / nfiles
 files = [tempfile.mktemp(".nc") for nfile in range(nfiles)]
-data = randint(0,10,size=(nx,ydim,zdim))
+data = randint(0, 10, size=(nx, ydim, zdim))
 missval = 99
 data[::10] = missval
-data = ma.masked_values(data,missval)
+data = ma.masked_values(data, missval)
+
 
 class VariablesTestCase(unittest.TestCase):
 
     def setUp(self):
         self.files = files
-        for nfile,file in enumerate(self.files):
-            f = Dataset(file,'w',format='NETCDF4_CLASSIC')
-            #f.createDimension('x',None)
-            f.createDimension('x',ninc)
-            f.createDimension('y',ydim)
-            f.createDimension('z',zdim)
+        for nfile, file in enumerate(self.files):
+            f = Dataset(file, 'w', format='NETCDF4_CLASSIC')
+            # f.createDimension('x',None)
+            f.createDimension('x', ninc)
+            f.createDimension('y', ydim)
+            f.createDimension('z', zdim)
             f.history = 'created today'
-            x = f.createVariable('x','i',('x',))
+            x = f.createVariable('x', 'i', ('x',))
             x.units = 'zlotys'
-            dat = f.createVariable('data','i',('x','y','z',))
+            dat = f.createVariable('data', 'i', ('x', 'y', 'z',))
             dat.long_name = 'phony data'
             dat.missing_value = missval
-            nx1 = nfile*ninc; nx2 = ninc*(nfile+1)
+            nx1 = nfile * ninc
+            nx2 = ninc * (nfile + 1)
             #x[0:ninc] = np.arange(nfile*ninc,ninc*(nfile+1))
-            x[:] = np.arange(nfile*ninc,ninc*(nfile+1))
+            x[:] = np.arange(nfile * ninc, ninc * (nfile + 1))
             #dat[0:ninc] = data[nx1:nx2]
             dat[:] = data[nx1:nx2]
             f.close()
@@ -45,52 +52,54 @@ class VariablesTestCase(unittest.TestCase):
     def runTest(self):
         """testing multi-file dataset access"""
         # specify the aggregation dim (not necessarily unlimited)
-        f = MFDataset(self.files,aggdim='x',check=True)
+        f = MFDataset(self.files, aggdim='x', check=True)
         assert f.history == 'created today'
-        assert_array_equal(np.arange(0,nx),f.variables['x'][:])
+        assert_array_equal(np.arange(0, nx), f.variables['x'][:])
         varin = f.variables['data']
         datin = varin[:]
-        assert_array_equal(datin.mask,data.mask)
+        assert_array_equal(datin.mask, data.mask)
         varin.set_auto_maskandscale(False)
         data2 = data.filled()
         assert varin.long_name == 'phony data'
         assert len(varin) == nx
-        assert varin.shape == (nx,ydim,zdim)
-        assert varin.dimensions == ('x','y','z')
-        assert_array_equal(varin[4:-4:4,3:5,2:8],data2[4:-4:4,3:5,2:8])
-        assert varin[0,0,0] == data2[0,0,0]
-        assert_array_equal(varin[:],data2)
-        assert getattr(varin,'nonexistantatt',None) == None
+        assert varin.shape == (nx, ydim, zdim)
+        assert varin.dimensions == ('x', 'y', 'z')
+        assert_array_equal(varin[4:-4:4, 3:5, 2:8], data2[4:-4:4, 3:5, 2:8])
+        assert varin[0, 0, 0] == data2[0, 0, 0]
+        assert_array_equal(varin[:], data2)
+        assert getattr(varin, 'nonexistantatt', None) == None
         f.close()
 
 
 class NonuniformTimeTestCase(unittest.TestCase):
     ninc = 365
+
     def setUp(self):
 
         self.files = [tempfile.mktemp(".nc") for nfile in range(2)]
-        for nfile,file in enumerate(self.files):
-            f = Dataset(file,'w',format='NETCDF4_CLASSIC')
-            f.createDimension('time',None)
-            f.createDimension('y',ydim)
-            f.createDimension('z',zdim)
+        for nfile, file in enumerate(self.files):
+            f = Dataset(file, 'w', format='NETCDF4_CLASSIC')
+            f.createDimension('time', None)
+            f.createDimension('y', ydim)
+            f.createDimension('z', zdim)
             f.history = 'created today'
 
             time = f.createVariable('time', 'f', ('time', ))
             #time.units = 'days since {0}-01-01'.format(1979+nfile)
-            yr = 1979+nfile
+            yr = 1979 + nfile
             time.units = 'days since %s-01-01' % yr
 
             time.calendar = 'standard'
 
-            x = f.createVariable('x','f',('time', 'y', 'z'))
+            x = f.createVariable('x', 'f', ('time', 'y', 'z'))
             x.units = 'potatoes per square mile'
 
-            nx1 = self.ninc*nfile;
-            nx2 = self.ninc*(nfile+1)
+            nx1 = self.ninc * nfile
+            nx2 = self.ninc * (nfile + 1)
 
             time[:] = np.arange(self.ninc)
-            x[:] = np.arange(nx1, nx2).reshape(self.ninc,1,1) * np.ones((1, ydim, zdim))
+            x[:] = np.arange(nx1, nx2).reshape(
+                self.ninc, 1, 1) * np.ones((1, ydim, zdim))
 
             f.close()
 
@@ -98,7 +107,6 @@ class NonuniformTimeTestCase(unittest.TestCase):
         # Remove the temporary files
         for file in self.files:
             os.remove(file)
-
 
     def runTest(self):
         # Get the real dates
@@ -110,7 +118,7 @@ class NonuniformTimeTestCase(unittest.TestCase):
             f.close()
 
         # Compare with the MF dates
-        f = MFDataset(self.files,check=True)
+        f = MFDataset(self.files, check=True)
         t = f.variables['time']
         mfdates = num2date(t[:], t.units, t.calendar)
 
