@@ -1,21 +1,26 @@
 from netCDF4 import Dataset
-import tempfile, unittest, os
+import tempfile
+import unittest
+import os
 import numpy as np
 
 file_name = tempfile.mktemp(".nc")
-xdim=None; ydim=121; zdim=169
-datashape = (ydim,zdim)
-data = np.ones(datashape,dtype=np.float)
+xdim = None
+ydim = 121
+zdim = 169
+datashape = (ydim, zdim)
+data = np.ones(datashape, dtype=np.float)
+
 
 class ShapeTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = file_name
-        f = Dataset(file_name,'w')
-        f.createDimension('x',xdim)
-        f.createDimension('y',ydim)
-        f.createDimension('z',zdim)
-        v = f.createVariable('data',np.float,('x','y','z'))
+        f = Dataset(file_name, 'w')
+        f.createDimension('x', xdim)
+        f.createDimension('y', ydim)
+        f.createDimension('z', zdim)
+        v = f.createVariable('data', np.float, ('x', 'y', 'z'))
         f.close()
 
     def tearDown(self):
@@ -25,7 +30,7 @@ class ShapeTestCase(unittest.TestCase):
     def runTest(self):
         """test for issue 90 (array shape should not be modified by
         assigment to netCDF variable)"""
-        f  = Dataset(self.file, 'a')
+        f = Dataset(self.file, 'a')
         v = f.variables['data']
         v[0] = data
         # make sure shape of data array

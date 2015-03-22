@@ -1,21 +1,25 @@
 import netCDF4
 import numpy as np
-import sys, unittest, os, tempfile
+import sys
+import unittest
+import os
+import tempfile
 
 netCDF4.default_encoding = 'utf-8'
 
 FILE_NAME = tempfile.mktemp(".nc")
 ATT1 = u'\u03a0\u03a3\u03a9'
 ATT2 = u'x\xb0'
-ATT3 = [u'\u03a0',u'\u03a3',u'\u03a9']
+ATT3 = [u'\u03a0', u'\u03a3', u'\u03a9']
 DIM_NAME = u'x\xb0'
 VAR_NAME = u'Andr\xe9'
+
 
 class UnicodeTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
-        f = netCDF4.Dataset(self.file,'w')
+        f = netCDF4.Dataset(self.file, 'w')
         f.attribute1 = ATT1
         f.attribute2 = ATT2
         f.attribute3 = ATT3
@@ -29,7 +33,7 @@ class UnicodeTestCase(unittest.TestCase):
 
     def runTest(self):
         """testing unicode"""
-        f  = netCDF4.Dataset(self.file, 'r')
+        f = netCDF4.Dataset(self.file, 'r')
         d = f.dimensions[DIM_NAME]
         v = f.variables[VAR_NAME]
         # check accessing individual attributes.

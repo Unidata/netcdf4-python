@@ -11,39 +11,40 @@ VL_NAME = 'vlen_type'
 VL_BASETYPE = np.int16
 DIM1_NAME = 'lon'
 DIM2_NAME = 'lat'
-nlons = 5; nlats = 5
+nlons = 5
+nlats = 5
 VAR1_NAME = 'ragged'
 VAR2_NAME = 'strings'
 VAR3_NAME = 'strings_alt'
-data = np.empty(nlats*nlons,object)
-datas = np.empty(nlats*nlons,object)
+data = np.empty(nlats * nlons, object)
+datas = np.empty(nlats * nlons, object)
 nn = 0
-for n in range(nlats*nlons):
+for n in range(nlats * nlons):
     nn = nn + 1
-    data[n] = np.arange(nn,dtype=VL_BASETYPE)
-    datas[n] = ''.join([chr(i) for i in range(97,97+nn+1)])
-data = np.reshape(data,(nlats,nlons))
-datas = np.reshape(datas,(nlats,nlons))
+    data[n] = np.arange(nn, dtype=VL_BASETYPE)
+    datas[n] = ''.join([chr(i) for i in range(97, 97 + nn + 1)])
+data = np.reshape(data, (nlats, nlons))
+datas = np.reshape(datas, (nlats, nlons))
 
 
 class VariablesTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
-        f = Dataset(self.file,'w')
+        f = Dataset(self.file, 'w')
         vlen_t = f.createVLType(VL_BASETYPE, VL_NAME)
-        f.createDimension(DIM1_NAME,nlons)
-        f.createDimension(DIM2_NAME,nlats)
-        ragged = f.createVariable(VAR1_NAME, vlen_t,\
-                (DIM2_NAME,DIM1_NAME))
+        f.createDimension(DIM1_NAME, nlons)
+        f.createDimension(DIM2_NAME, nlats)
+        ragged = f.createVariable(VAR1_NAME, vlen_t,
+                                  (DIM2_NAME, DIM1_NAME))
         strings = f.createVariable(VAR2_NAME, str,
-                (DIM2_NAME,DIM1_NAME))
+                                   (DIM2_NAME, DIM1_NAME))
         strings_alt = f.createVariable(VAR3_NAME, datas.astype(str).dtype,
                                        (DIM2_NAME, DIM1_NAME))
         ragged[:] = data
-        ragged[-1,-1] = data[-1,-1]
+        ragged[-1, -1] = data[-1, -1]
         strings[:] = datas
-        strings[-2,-2] = datas[-2,-2]
+        strings[-2, -2] = datas[-2, -2]
         strings_alt[:] = datas.astype(str)
         f.close()
 
@@ -63,23 +64,26 @@ class VariablesTestCase(unittest.TestCase):
         data2s = vs[:]
         for i in range(nlons):
             for j in range(nlats):
-                assert_array_equal(data2[j,i], data[j,i])
-                assert datas[j,i] == data2s[j,i]
+                assert_array_equal(data2[j, i], data[j, i])
+                assert datas[j, i] == data2s[j, i]
         assert_array_equal(datas, vs_alt[:])
         f.close()
 
 
 class TestInvalidDataType(unittest.TestCase):
+
     def runTest(self):
         f = Dataset(FILE_NAME, 'w', format='NETCDF3_CLASSIC')
         f.createDimension('x', 1)
         with self.assertRaisesRegexp(ValueError, 'strings are only supported'):
-           f.createVariable('foo', str, ('x',))
+            f.createVariable('foo', str, ('x',))
         f.close()
         os.remove(FILE_NAME)
 
+
 class TestScalarVlenString(unittest.TestCase):
     # issue 333
+
     def runTest(self):
         f = Dataset(FILE_NAME, 'w', format='NETCDF4')
         teststring = f.createVariable('teststring', str)
@@ -91,14 +95,15 @@ class TestScalarVlenString(unittest.TestCase):
         f.close()
         os.remove(FILE_NAME)
 
+
 class TestObjectArrayIndexing(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
-        f = Dataset(self.file,'w')
+        f = Dataset(self.file, 'w')
         vlen_t = f.createVLType(VL_BASETYPE, VL_NAME)
-        f.createDimension(DIM1_NAME,nlons)
-        f.createDimension(DIM2_NAME,nlats)
+        f.createDimension(DIM1_NAME, nlons)
+        f.createDimension(DIM2_NAME, nlats)
         strings_alt = f.createVariable(VAR3_NAME, datas.astype(str).dtype,
                                        (DIM2_NAME, DIM1_NAME))
         strings_alt[:] = datas.astype(str)
@@ -113,7 +118,7 @@ class TestObjectArrayIndexing(unittest.TestCase):
         f = Dataset(self.file, 'r')
         vs_alt = f.variables[VAR3_NAME]
         unicode_strings = vs_alt[:]
-        fancy_indexed = unicode_strings[0][[1,2,4]] 
+        fancy_indexed = unicode_strings[0][[1, 2, 4]]
         assert fancy_indexed[0] == 'abc'
         assert fancy_indexed[1] == 'abcd'
         assert fancy_indexed[2] == 'abcdef'

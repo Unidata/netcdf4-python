@@ -10,6 +10,7 @@ from netCDF4 import Dataset, default_fillvals
 
 # Test automatic scaling of variables (set_auto_scale())
 
+
 class SetAutoScaleTestBase(unittest.TestCase):
 
     """Base object for tests checking the functionality of set_auto_scale()"""
@@ -21,9 +22,17 @@ class SetAutoScaleTestBase(unittest.TestCase):
         self.fillval = default_fillvals["i2"]
         self.missing_value = -9999
 
-        self.v    = np.array([0, 5, 4, self.missing_value], dtype = "i2")
-        self.v_ma = ma.array([0, 5, 4, self.missing_value], dtype = "i2",
-                             mask = [True, False, False, True], fill_value = self.fillval)
+        self.v = np.array([0, 5, 4, self.missing_value], dtype="i2")
+        self.v_ma = ma.array([0,
+                              5,
+                              4,
+                              self.missing_value],
+                             dtype="i2",
+                             mask=[True,
+                                   False,
+                                   False,
+                                   True],
+                             fill_value=self.fillval)
 
         self.scale_factor = 10.
         self.add_offset = 5.
@@ -37,13 +46,13 @@ class SetAutoScaleTestBase(unittest.TestCase):
 
         v[:] = self.v
 
-        # Note: Scale factors are only added after writing, so that no auto-scaling takes place!
+        # Note: Scale factors are only added after writing, so that no
+        # auto-scaling takes place!
 
         v.scale_factor = self.scale_factor
         v.add_offset = self.add_offset
 
         f.close()
-
 
     def tearDown(self):
 
@@ -53,7 +62,6 @@ class SetAutoScaleTestBase(unittest.TestCase):
 class SetAutoScaleFalse(SetAutoScaleTestBase):
 
     def test_unmasked(self):
-
         """Testing (not) auto-scaling of variables for set_auto_scale(False)"""
 
         f = Dataset(self.testfile, "r")
@@ -68,9 +76,7 @@ class SetAutoScaleFalse(SetAutoScaleTestBase):
 
         f.close()
 
-
     def test_masked(self):
-
         """Testing auto-conversion of masked arrays for set_auto_mask(False) with masking"""
 
         # Update test data file
@@ -79,7 +85,8 @@ class SetAutoScaleFalse(SetAutoScaleTestBase):
         f.variables["v"].missing_value = self.missing_value
         f.close()
 
-        # Note: Converting arrays to masked arrays is default if missing_value is present
+        # Note: Converting arrays to masked arrays is default if missing_value
+        # is present
 
         f = Dataset(self.testfile, "r")
 
@@ -97,12 +104,11 @@ class SetAutoScaleFalse(SetAutoScaleTestBase):
 class SetAutoScaleTrue(SetAutoScaleTestBase):
 
     def test_unmasked(self):
-
         """Testing auto-scaling of variables for set_auto_scale(True)"""
 
         f = Dataset(self.testfile)
 
-        f.variables["v"].set_auto_scale(True) # The default anyway...
+        f.variables["v"].set_auto_scale(True)  # The default anyway...
         v_scaled = f.variables['v'][:]
 
         self.assertEqual(v_scaled.dtype, "f8")
@@ -112,7 +118,6 @@ class SetAutoScaleTrue(SetAutoScaleTestBase):
         f.close()
 
     def test_masked(self):
-
         """Testing auto-scaling of variables for set_auto_scale(True) with masking"""
 
         # Update test data file
@@ -121,7 +126,8 @@ class SetAutoScaleTrue(SetAutoScaleTestBase):
         f.variables["v"].missing_value = self.missing_value
         f.close()
 
-        # Note: Converting arrays to masked arrays is default if missing_value is present
+        # Note: Converting arrays to masked arrays is default if missing_value
+        # is present
 
         f = Dataset(self.testfile)
 

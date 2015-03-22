@@ -1,9 +1,12 @@
-import os, sys, subprocess, shutil
+import os
+import sys
+import subprocess
+import shutil
 try:
     from setuptools import setup, Extension
-    setuptools_extra_kwargs = {"install_requires":["numpy>=1.3"]}
+    setuptools_extra_kwargs = {"install_requires": ["numpy>=1.3"]}
 except ImportError:
-    from distutils.core  import setup, Extension
+    from distutils.core import setup, Extension
     setuptools_extra_kwargs = {}
 from distutils.dist import Distribution
 try:
@@ -23,17 +26,30 @@ if sys.version_info[0] < 3:
     open_kwargs = {}
 else:
     import configparser
-    open_kwargs = {'encoding':'utf-8'}
+    open_kwargs = {'encoding': 'utf-8'}
+
 
 def check_hdf5version(hdf5_includedir):
     try:
-        f = open(os.path.join(hdf5_includedir,'H5pubconf-64.h'),**open_kwargs)
+        f = open(
+            os.path.join(
+                hdf5_includedir,
+                'H5pubconf-64.h'),
+            **open_kwargs)
     except IOError:
         try:
-            f = open(os.path.join(hdf5_includedir,'H5pubconf-32.h'),**open_kwargs)
+            f = open(
+                os.path.join(
+                    hdf5_includedir,
+                    'H5pubconf-32.h'),
+                **open_kwargs)
         except IOError:
             try:
-                f = open(os.path.join(hdf5_includedir,'H5pubconf.h'),**open_kwargs)
+                f = open(
+                    os.path.join(
+                        hdf5_includedir,
+                        'H5pubconf.h'),
+                    **open_kwargs)
             except IOError:
                 return None
     hdf5_version = None
@@ -42,9 +58,10 @@ def check_hdf5version(hdf5_includedir):
             hdf5_version = line.split()[2]
     return hdf5_version
 
+
 def check_ifnetcdf4(netcdf4_includedir):
     try:
-        f = open(os.path.join(netcdf4_includedir,'netcdf.h'),**open_kwargs)
+        f = open(os.path.join(netcdf4_includedir, 'netcdf.h'), **open_kwargs)
     except IOError:
         return False
     isnetcdf4 = False
@@ -53,13 +70,14 @@ def check_ifnetcdf4(netcdf4_includedir):
             isnetcdf4 = True
     return isnetcdf4
 
+
 def check_api(inc_dirs):
     has_rename_grp = False
     has_nc_inq_path = False
     has_nc_inq_format_extended = False
     for d in inc_dirs:
         try:
-            f = open(os.path.join(d,'netcdf.h'),**open_kwargs)
+            f = open(os.path.join(d, 'netcdf.h'), **open_kwargs)
         except IOError:
             continue
         for line in f:
@@ -72,26 +90,29 @@ def check_api(inc_dirs):
         break
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended
 
+
 def getnetcdfvers(libdirs):
     """
     Get the version string for the first netcdf lib found in libdirs.
     (major.minor.release). If nothing found, return None.
     """
 
-    import os, re, sys, ctypes
+    import os
+    import re
+    import sys
+    import ctypes
 
     if sys.platform.startswith('win'):
         regexp = re.compile('^netcdf.dll$')
     elif sys.platform.startswith('cygwin'):
         bindirs = []
         for d in libdirs:
-            bindirs.append(os.path.dirname(d)+'/bin')
+            bindirs.append(os.path.dirname(d) + '/bin')
         regexp = re.compile(r'^cygnetcdf-\d.dll')
     elif sys.platform.startswith('darwin'):
         regexp = re.compile(r'^libnetcdf.dylib')
     else:
         regexp = re.compile(r'^libnetcdf.so')
-
 
     if sys.platform.startswith('cygwin'):
         dirs = bindirs
@@ -101,7 +122,8 @@ def getnetcdfvers(libdirs):
         try:
             candidates = [x for x in os.listdir(d) if regexp.match(x)]
             if len(candidates) != 0:
-                candidates.sort(key=lambda x: len(x))   # Prefer libfoo.so to libfoo.so.X.Y.Z
+                # Prefer libfoo.so to libfoo.so.X.Y.Z
+                candidates.sort(key=lambda x: len(x))
                 path = os.path.abspath(os.path.join(d, candidates[0]))
             lib = ctypes.cdll.LoadLibrary(path)
             inq_libvers = lib.nc_inq_libvers
@@ -109,7 +131,8 @@ def getnetcdfvers(libdirs):
             vers = lib.nc_inq_libvers()
             return vers.split()[0]
         except Exception:
-            pass   # We skip invalid entries, because that's what the C compiler does
+            # We skip invalid entries, because that's what the C compiler does
+            pass
 
     return None
 
@@ -144,46 +167,86 @@ if os.path.exists(setup_cfg):
     sys.stdout.write('reading from setup.cfg...\n')
     config = configparser.SafeConfigParser()
     config.read(setup_cfg)
-    try: HDF5_dir = config.get("directories", "HDF5_dir")
-    except: pass
-    try: HDF5_libdir = config.get("directories", "HDF5_libdir")
-    except: pass
-    try: HDF5_incdir = config.get("directories", "HDF5_incdir")
-    except: pass
-    try: netCDF4_dir = config.get("directories", "netCDF4_dir")
-    except: pass
-    try: netCDF4_libdir = config.get("directories", "netCDF4_libdir")
-    except: pass
-    try: netCDF4_incdir = config.get("directories", "netCDF4_incdir")
-    except: pass
-    try: szip_dir = config.get("directories", "szip_dir")
-    except: pass
-    try: szip_libdir = config.get("directories", "szip_libdir")
-    except: pass
-    try: szip_incdir = config.get("directories", "szip_incdir")
-    except: pass
-    try: hdf4_dir = config.get("directories", "hdf4_dir")
-    except: pass
-    try: hdf4_libdir = config.get("directories", "hdf4_libdir")
-    except: pass
-    try: hdf4_incdir = config.get("directories", "hdf4_incdir")
-    except: pass
-    try: jpeg_dir = config.get("directories", "jpeg_dir")
-    except: pass
-    try: jpeg_libdir = config.get("directories", "jpeg_libdir")
-    except: pass
-    try: jpeg_incdir = config.get("directories", "jpeg_incdir")
-    except: pass
-    try: curl_dir = config.get("directories", "curl_dir")
-    except: pass
-    try: curl_libdir = config.get("directories", "curl_libdir")
-    except: pass
-    try: curl_incdir = config.get("directories", "curl_incdir")
-    except: pass
-    try: use_ncconfig = config.get("options", "use_ncconfig")
-    except: pass
-    try: ncconfig = config.get("options", "ncconfig")
-    except: pass
+    try:
+        HDF5_dir = config.get("directories", "HDF5_dir")
+    except:
+        pass
+    try:
+        HDF5_libdir = config.get("directories", "HDF5_libdir")
+    except:
+        pass
+    try:
+        HDF5_incdir = config.get("directories", "HDF5_incdir")
+    except:
+        pass
+    try:
+        netCDF4_dir = config.get("directories", "netCDF4_dir")
+    except:
+        pass
+    try:
+        netCDF4_libdir = config.get("directories", "netCDF4_libdir")
+    except:
+        pass
+    try:
+        netCDF4_incdir = config.get("directories", "netCDF4_incdir")
+    except:
+        pass
+    try:
+        szip_dir = config.get("directories", "szip_dir")
+    except:
+        pass
+    try:
+        szip_libdir = config.get("directories", "szip_libdir")
+    except:
+        pass
+    try:
+        szip_incdir = config.get("directories", "szip_incdir")
+    except:
+        pass
+    try:
+        hdf4_dir = config.get("directories", "hdf4_dir")
+    except:
+        pass
+    try:
+        hdf4_libdir = config.get("directories", "hdf4_libdir")
+    except:
+        pass
+    try:
+        hdf4_incdir = config.get("directories", "hdf4_incdir")
+    except:
+        pass
+    try:
+        jpeg_dir = config.get("directories", "jpeg_dir")
+    except:
+        pass
+    try:
+        jpeg_libdir = config.get("directories", "jpeg_libdir")
+    except:
+        pass
+    try:
+        jpeg_incdir = config.get("directories", "jpeg_incdir")
+    except:
+        pass
+    try:
+        curl_dir = config.get("directories", "curl_dir")
+    except:
+        pass
+    try:
+        curl_libdir = config.get("directories", "curl_libdir")
+    except:
+        pass
+    try:
+        curl_incdir = config.get("directories", "curl_incdir")
+    except:
+        pass
+    try:
+        use_ncconfig = config.get("options", "use_ncconfig")
+    except:
+        pass
+    try:
+        ncconfig = config.get("options", "ncconfig")
+    except:
+        pass
 
 # make sure USE_NCCONFIG from environment takes
 # precendence over use_ncconfig from setup.cfg (issue #341).
@@ -197,11 +260,11 @@ if USE_NCCONFIG:
     # if NETCDF4_DIR env var is set, look for nc-config in NETCDF4_DIR/bin.
     if ncconfig is None:
         if netCDF4_dir is not None:
-            ncconfig = os.path.join(netCDF4_dir,'bin/nc-config')
-        else: # otherwise, just hope it's in the users PATH.
+            ncconfig = os.path.join(netCDF4_dir, 'bin/nc-config')
+        else:  # otherwise, just hope it's in the users PATH.
             ncconfig = 'nc-config'
     try:
-        retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
+        retcode = subprocess.call([ncconfig, '--libs'], stdout=subprocess.PIPE)
     except:
         retcode = 1
 else:
@@ -209,14 +272,26 @@ else:
 
 if not retcode:
     sys.stdout.write('using nc-config ...\n')
-    dep=subprocess.Popen([ncconfig,'--libs'],stdout=subprocess.PIPE).communicate()[0]
-    libs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l' ]
-    lib_dirs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-L' ]
-    dep=subprocess.Popen([ncconfig,'--cflags'],stdout=subprocess.PIPE).communicate()[0]
-    inc_dirs = [str(i[2:].decode()) for i in dep.split() if i[0:2].decode() == '-I']
-# if nc-config didn't work (it won't on windows), fall back on brute force method
+    dep = subprocess.Popen(
+        [ncconfig, '--libs'], stdout=subprocess.PIPE).communicate()[0]
+    libs = [str(l[2:].decode())
+            for l in dep.split() if l[0:2].decode() == '-l']
+    lib_dirs = [str(l[2:].decode())
+                for l in dep.split() if l[0:2].decode() == '-L']
+    dep = subprocess.Popen(
+        [ncconfig, '--cflags'], stdout=subprocess.PIPE).communicate()[0]
+    inc_dirs = [str(i[2:].decode())
+                for i in dep.split() if i[0:2].decode() == '-I']
+# if nc-config didn't work (it won't on windows), fall back on brute force
+# method
 else:
-    dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
+    dirstosearch = [
+        os.path.expanduser('~'),
+        '/usr/local',
+        '/sw',
+        '/opt',
+        '/opt/local',
+        '/usr']
 
     if HDF5_incdir is None and HDF5_dir is None:
         sys.stdout.write("""
@@ -235,7 +310,7 @@ HDF5_DIR environment variable not set, checking some standard locations ..\n""")
             raise ValueError('did not find HDF5 headers')
     else:
         if HDF5_incdir is None:
-             HDF5_incdir = os.path.join(HDF5_dir, 'include')
+            HDF5_incdir = os.path.join(HDF5_dir, 'include')
         hdf5_version = check_hdf5version(HDF5_incdir)
         if hdf5_version is None:
             raise ValueError('did not find HDF5 headers in %s' % HDF5_incdir)
@@ -262,7 +337,9 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
             netCDF4_incdir = os.path.join(netCDF4_dir, 'include')
         isnetcdf4 = check_ifnetcdf4(netCDF4_incdir)
         if not isnetcdf4:
-            raise ValueError('did not find netCDF version 4 headers %s' % netCDF4_incdir)
+            raise ValueError(
+                'did not find netCDF version 4 headers %s' %
+                netCDF4_incdir)
 
     if HDF5_libdir is None and HDF5_dir is not None:
         HDF5_libdir = os.path.join(HDF5_dir, 'lib')
@@ -270,9 +347,9 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
     if netCDF4_libdir is None and netCDF4_dir is not None:
         netCDF4_libdir = os.path.join(netCDF4_dir, 'lib')
 
-    libs = ['netcdf','hdf5_hl','hdf5','z']
-    lib_dirs = [netCDF4_libdir,HDF5_libdir]
-    inc_dirs = [netCDF4_incdir,HDF5_incdir]
+    libs = ['netcdf', 'hdf5_hl', 'hdf5', 'z']
+    lib_dirs = [netCDF4_libdir, HDF5_libdir]
+    inc_dirs = [netCDF4_incdir, HDF5_incdir]
 
     # add szip to link if desired.
     if szip_libdir is None and szip_dir is not None:
@@ -332,16 +409,26 @@ else:
 if has_cython and 'sdist' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
     # recompile netCDF4.pyx
-    extensions = [Extension("netCDF4",["netCDF4.pyx"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs),
-                  Extension('netcdftime._datetime', ['netcdftime/_datetime.pyx'])]
+    extensions = [
+        Extension(
+            "netCDF4",
+            ["netCDF4.pyx"],
+            libraries=libs,
+            library_dirs=lib_dirs,
+            include_dirs=inc_dirs,
+            runtime_library_dirs=lib_dirs),
+        Extension(
+            'netcdftime._datetime',
+            ['netcdftime/_datetime.pyx'])]
     # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
     # run for build *and* install (issue #263). Otherwise 'pip install' will
     # not regenerate netCDF4.c, even if the C lib supports the new features.
     if len(sys.argv) >= 2 and os.path.exists('netCDF4.c'):
         os.remove('netCDF4.c')
     # this determines whether renameGroup and filepath methods will work.
-    has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended = check_api(inc_dirs)
-    f = open('constants.pyx','w')
+    has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended = check_api(
+        inc_dirs)
+    f = open('constants.pyx', 'w')
     if has_rename_grp:
         sys.stdout.write('netcdf lib has group rename capability\n')
         f.write('DEF HAS_RENAME_GRP = 1\n')
@@ -358,36 +445,59 @@ if has_cython and 'sdist' not in sys.argv[1:]:
         sys.stdout.write('netcdf lib has nc_inq_format_extended function\n')
         f.write('DEF HAS_NC_INQ_FORMAT_EXTENDED = 1\n')
     else:
-        sys.stdout.write('netcdf lib does not have nc_inq_format_extended function\n')
+        sys.stdout.write(
+            'netcdf lib does not have nc_inq_format_extended function\n')
         f.write('DEF HAS_NC_INQ_FORMAT_EXTENDED = 0\n')
     f.close()
     cmdclass = {'build_ext': build_ext}
 else:
     # use existing netCDF4.c, don't need cython.
-    extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs),
-                  Extension('netcdftime._datetime', ['netcdftime/_datetime.c'])]
+    extensions = [
+        Extension(
+            "netCDF4",
+            ["netCDF4.c"],
+            libraries=libs,
+            library_dirs=lib_dirs,
+            include_dirs=inc_dirs,
+            runtime_library_dirs=lib_dirs),
+        Extension(
+            'netcdftime._datetime',
+            ['netcdftime/_datetime.c'])]
     cmdclass = {}
 
-setup(name = "netCDF4",
-  cmdclass = cmdclass,
-  version = "1.1.7",
-  long_description = "netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project has a `Subversion repository <http://code.google.com/p/netcdf4-python/source>`_ where you may access the most up-to-date source.",
-  author            = "Jeff Whitaker",
-  author_email      = "jeffrey.s.whitaker@noaa.gov",
-  url               = "http://github.com/Unidata/netcdf4-python",
-  download_url      = "http://python.org/pypi/netCDF4",
-  scripts           = ['utils/nc3tonc4','utils/nc4tonc3','utils/ncinfo'],
-  platforms         = ["any"],
-  license           = "OSI Approved",
-  description = "Provides an object-oriented python interface to the netCDF version 4 library.",
-  keywords = ['numpy','netcdf','data','science','network','oceanography','meteorology','climate'],
-  classifiers = ["Development Status :: 3 - Alpha",
-                 "Intended Audience :: Science/Research",
-                 "License :: OSI Approved",
-                 "Topic :: Software Development :: Libraries :: Python Modules",
-                 "Topic :: System :: Archiving :: Compression",
-                 "Operating System :: OS Independent"],
-  py_modules = ["netCDF4_utils"],
-  packages = ['netcdftime'],
-  ext_modules = extensions,
-  **setuptools_extra_kwargs)
+setup(
+    name="netCDF4",
+    cmdclass=cmdclass,
+    version="1.1.7",
+    long_description="netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project has a `Subversion repository <http://code.google.com/p/netcdf4-python/source>`_ where you may access the most up-to-date source.",
+    author="Jeff Whitaker",
+    author_email="jeffrey.s.whitaker@noaa.gov",
+    url="http://github.com/Unidata/netcdf4-python",
+    download_url="http://python.org/pypi/netCDF4",
+    scripts=[
+        'utils/nc3tonc4',
+        'utils/nc4tonc3',
+        'utils/ncinfo'],
+    platforms=["any"],
+    license="OSI Approved",
+    description="Provides an object-oriented python interface to the netCDF version 4 library.",
+    keywords=[
+            'numpy',
+            'netcdf',
+            'data',
+            'science',
+            'network',
+            'oceanography',
+            'meteorology',
+            'climate'],
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: System :: Archiving :: Compression",
+        "Operating System :: OS Independent"],
+    py_modules=["netCDF4_utils"],
+    packages=['netcdftime'],
+    ext_modules=extensions,
+    **setuptools_extra_kwargs)

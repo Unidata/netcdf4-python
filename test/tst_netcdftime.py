@@ -99,7 +99,10 @@ class netcdftimeTestCase(unittest.TestCase):
         # check noleap calendar.
         # this is a non-existant date, should raise ValueError.
         self.assertRaises(
-            ValueError, utime, 'days since 1600-02-29 00:00:00', calendar='noleap')
+            ValueError,
+            utime,
+            'days since 1600-02-29 00:00:00',
+            calendar='noleap')
         self.assertTrue(self.cdftime_noleap.units == 'days')
         self.assertTrue(
             repr(self.cdftime_noleap.origin) == '1600-02-28 00:00:00')
@@ -192,7 +195,9 @@ class netcdftimeTestCase(unittest.TestCase):
         d1 = datetime(1582, 10, 4, 23)
         d2 = datetime(1582, 10, 15, 0)
         assert_almost_equal(
-            self.cdftime_jul.date2num(d1) + 241.0, self.cdftime_jul.date2num(d2))
+            self.cdftime_jul.date2num(d1) +
+            241.0,
+            self.cdftime_jul.date2num(d2))
         date = self.cdftime_jul.num2date(t)
         self.assertTrue(str(d) == str(date))
         # test julian day from date, date from julian day
@@ -209,10 +214,15 @@ class netcdftimeTestCase(unittest.TestCase):
         # day goes out of range).
         t = 733498.999999
         d = num2date(t, units='days since 0001-01-01 00:00:00')
-        dateformat =  '%Y-%m-%d %H:%M:%S'
+        dateformat = '%Y-%m-%d %H:%M:%S'
         assert_equal(d.strftime(dateformat), '2009-04-01 00:00:00')
         # test edge case of issue 75 for numerical problems
-        for t in (733498.999, 733498.9999, 733498.99999, 733498.999999, 733498.9999999):
+        for t in (
+                733498.999,
+                733498.9999,
+                733498.99999,
+                733498.999999,
+                733498.9999999):
             d = num2date(t, units='days since 0001-01-01 00:00:00')
             t2 = date2num(d, units='days since 0001-01-01 00:00:00')
             assert(abs(t2 - t) < 1e-5)  # values should be less than second
@@ -273,27 +283,35 @@ class netcdftimeTestCase(unittest.TestCase):
         self.assertEqual(
             repr(self.cdftime_leading_space.origin), ' 850-01-01 00:00:00')
 
-        #issue 330
+        # issue 330
         units = "seconds since 1970-01-01T00:00:00Z"
         t = utime(units)
         for n in range(10):
             assert n == int(round(t.date2num(t.num2date(n))))
 
-        #issue 344
+        # issue 344
         units = 'hours since 2013-12-12T12:00:00'
         assert(1.0 == date2num(num2date(1.0, units), units))
 
         # test rountrip accuracy
         # also tests error found in issue #349
-        calendars=['standard', 'gregorian', 'proleptic_gregorian', 'noleap', 'julian',\
-                   'all_leap', '365_day', '366_day', '360_day']
-        dateformat =  '%Y-%m-%d %H:%M:%S'
-        dateref = datetime(2015,2,28,12)
+        calendars = [
+            'standard',
+            'gregorian',
+            'proleptic_gregorian',
+            'noleap',
+            'julian',
+            'all_leap',
+            '365_day',
+            '366_day',
+            '360_day']
+        dateformat = '%Y-%m-%d %H:%M:%S'
+        dateref = datetime(2015, 2, 28, 12)
         ntimes = 1001
         for calendar in calendars:
             eps = 100.
             units = 'microseconds since 1800-01-30 01:01:01'
-            microsecs1 = date2num(dateref,units,calendar=calendar)
+            microsecs1 = date2num(dateref, units, calendar=calendar)
             for n in range(ntimes):
                 microsecs1 += 1.
                 date1 = num2date(microsecs1, units, calendar=calendar)
@@ -301,10 +319,11 @@ class netcdftimeTestCase(unittest.TestCase):
                 date2 = num2date(microsecs2, units, calendar=calendar)
                 err = numpy.abs(microsecs1 - microsecs2)
                 assert(err < eps)
-                assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+                assert(
+                    date1.strftime(dateformat) == date2.strftime(dateformat))
             units = 'milliseconds since 1800-01-30 01:01:01'
             eps = 0.1
-            millisecs1 = date2num(dateref,units,calendar=calendar)
+            millisecs1 = date2num(dateref, units, calendar=calendar)
             for n in range(ntimes):
                 millisecs1 += 0.001
                 date1 = num2date(millisecs1, units, calendar=calendar)
@@ -312,10 +331,11 @@ class netcdftimeTestCase(unittest.TestCase):
                 date2 = num2date(millisecs2, units, calendar=calendar)
                 err = numpy.abs(millisecs1 - millisecs2)
                 assert(err < eps)
-                assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+                assert(
+                    date1.strftime(dateformat) == date2.strftime(dateformat))
             eps = 1.e-4
             units = 'seconds since 0001-01-30 01:01:01'
-            secs1 = date2num(dateref,units,calendar=calendar)
+            secs1 = date2num(dateref, units, calendar=calendar)
             for n in range(ntimes):
                 secs1 += 0.1
                 date1 = num2date(secs1, units, calendar=calendar)
@@ -323,10 +343,11 @@ class netcdftimeTestCase(unittest.TestCase):
                 date2 = num2date(secs2, units, calendar=calendar)
                 err = numpy.abs(secs1 - secs2)
                 assert(err < eps)
-                assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+                assert(
+                    date1.strftime(dateformat) == date2.strftime(dateformat))
             eps = 1.e-5
             units = 'minutes since 0001-01-30 01:01:01'
-            mins1 = date2num(dateref,units,calendar=calendar)
+            mins1 = date2num(dateref, units, calendar=calendar)
             for n in range(ntimes):
                 mins1 += 0.01
                 date1 = num2date(mins1, units, calendar=calendar)
@@ -334,10 +355,11 @@ class netcdftimeTestCase(unittest.TestCase):
                 date2 = num2date(mins2, units, calendar=calendar)
                 err = numpy.abs(mins1 - mins2)
                 assert(err < eps)
-                assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+                assert(
+                    date1.strftime(dateformat) == date2.strftime(dateformat))
             eps = 1.e-5
             units = 'hours since 0001-01-30 01:01:01'
-            hrs1 = date2num(dateref,units,calendar=calendar)
+            hrs1 = date2num(dateref, units, calendar=calendar)
             for n in range(ntimes):
                 hrs1 += 0.001
                 date1 = num2date(hrs1, units, calendar=calendar)
@@ -345,10 +367,11 @@ class netcdftimeTestCase(unittest.TestCase):
                 date2 = num2date(hrs2, units, calendar=calendar)
                 err = numpy.abs(hrs1 - hrs2)
                 assert(err < eps)
-                assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+                assert(
+                    date1.strftime(dateformat) == date2.strftime(dateformat))
             eps = 1.e-5
             units = 'days since 0001-01-30 01:01:01'
-            days1 = date2num(dateref,units,calendar=calendar)
+            days1 = date2num(dateref, units, calendar=calendar)
             for n in range(ntimes):
                 days1 += 0.00001
                 date1 = num2date(days1, units, calendar=calendar)
@@ -356,39 +379,40 @@ class netcdftimeTestCase(unittest.TestCase):
                 date2 = num2date(days2, units, calendar=calendar)
                 err = numpy.abs(days1 - days2)
                 assert(err < eps)
-                assert(date1.strftime(dateformat) == date2.strftime(dateformat))
+                assert(
+                    date1.strftime(dateformat) == date2.strftime(dateformat))
 
         # issue 353
         assert (num2date(0, 'hours since 2000-01-01 0') ==
-                datetime(2000,1,1,0))
+                datetime(2000, 1, 1, 0))
 
         # issue 354
         num1 = numpy.array([[0, 1], [2, 3]])
         num2 = numpy.array([[0, 1], [2, 3]])
         dates1 = num2date(num1, 'days since 0001-01-01')
         dates2 = num2date(num2, 'days since 2001-01-01')
-        assert( dates1.shape == (2,2) )
-        assert( dates2.shape == (2,2) )
+        assert(dates1.shape == (2, 2))
+        assert(dates2.shape == (2, 2))
         num1b = date2num(dates1, 'days since 0001-01-01')
         num2b = date2num(dates2, 'days since 2001-01-01')
-        assert( num1b.shape == (2,2) )
-        assert( num2b.shape == (2,2) )
-        assert_almost_equal(num1,num1b)
-        assert_almost_equal(num2,num2b)
+        assert(num1b.shape == (2, 2))
+        assert(num2b.shape == (2, 2))
+        assert_almost_equal(num1, num1b)
+        assert_almost_equal(num2, num2b)
 
         # issue 357 (make sure time zone offset in units done correctly)
         # Denver time, 7 hours behind UTC
         units = 'hours since 1682-10-15 -07:00 UTC'
         # date after gregorian switch, python datetime used
-        date = datetime(1682,10,15) # assumed UTC
-        num = date2num(date,units)
+        date = datetime(1682, 10, 15)  # assumed UTC
+        num = date2num(date, units)
         # UTC is 7 hours ahead of units, so num should be 7
         assert (num == 7)
         assert (num2date(num, units) == date)
         units = 'hours since 1482-10-15 -07:00 UTC'
         # date before gregorian switch, netcdftime datetime used
-        date = datetime(1482,10,15)
-        num = date2num(date,units)
+        date = datetime(1482, 10, 15)
+        num = date2num(date, units)
         date2 = num2date(num, units)
         assert (num == 7)
         assert (date2.year == date.year)
@@ -412,6 +436,7 @@ class netcdftimeTestCase(unittest.TestCase):
             self.assertEqual(d1, d2)
             self.assertEqual(num2date(d1, units, cap_cal),
                              num2date(d1, units, low_cal))
+
 
 class TestDate2index(unittest.TestCase):
 
@@ -554,7 +579,14 @@ class TestDate2index(unittest.TestCase):
 
         # Test dates outside the support with before
         self.assertRaises(
-            ValueError, date2index, datetime(1949, 12, 1), nutime, select='before')
+            ValueError,
+            date2index,
+            datetime(
+                1949,
+                12,
+                1),
+            nutime,
+            select='before')
 
         t = date2index(datetime(1978, 1, 1), nutime, select='before')
         assert_equal(t, 365)
@@ -564,7 +596,14 @@ class TestDate2index(unittest.TestCase):
         assert_equal(t, 0)
 
         self.assertRaises(
-            ValueError, date2index, datetime(1978, 1, 1), nutime, select='after')
+            ValueError,
+            date2index,
+            datetime(
+                1978,
+                1,
+                1),
+            nutime,
+            select='after')
         # test microsecond and millisecond units
         unix_epoch = "milliseconds since 1970-01-01T00:00:00Z"
         d = datetime(2038, 1, 19, 3, 14, 7)
@@ -578,9 +617,11 @@ class TestDate2index(unittest.TestCase):
         # note: microsecond accuracy lost for time intervals greater
         # than about 270 years.
         units = 'microseconds since 1776-07-04 00:00:00-12:00'
-        dates =\
-            [datetime(1962, 10, 27, 6, 1, 30, 9001), datetime(
-                1993, 11, 21, 12, 5, 25, 999), datetime(1995, 11, 25, 18, 7, 59, 999999)]
+        dates = [
+            datetime(
+                1962, 10, 27, 6, 1, 30, 9001), datetime(
+                1993, 11, 21, 12, 5, 25, 999), datetime(
+                1995, 11, 25, 18, 7, 59, 999999)]
         times2 = date2num(dates, units)
         dates2 = num2date(times2, units)
         for date, date2 in zip(dates, dates2):

@@ -14,16 +14,17 @@ except NameError:
     bytes = str
 
 
-def _sortbylist(A,B):
+def _sortbylist(A, B):
     # sort one list (A) using the values from another list (B)
     return [A[i] for i in sorted(range(len(A)), key=B.__getitem__)]
+
 
 def _find_dim(grp, dimname):
     # find Dimension instance given group and name.
     # look in current group, and parents.
     group = grp
     dim = None
-    while 1:
+    while True:
         try:
             dim = group.dimensions[dimname]
             break
@@ -31,8 +32,11 @@ def _find_dim(grp, dimname):
             try:
                 group = group.parent
             except:
-                raise ValueError("cannot find dimension %s in this group or parent groups" % dimname)
+                raise ValueError(
+                    "cannot find dimension %s in this group or parent groups" %
+                    dimname)
     return dim
+
 
 def _walk_grps(topgrp):
     """Iterate through all (sub-) groups of topgrp, similar to os.walktree.
@@ -44,30 +48,32 @@ def _walk_grps(topgrp):
         for children in _walk_grps(grp):
             yield children
 
-def _quantize(data,least_significant_digit):
+
+def _quantize(data, least_significant_digit):
     """
 quantize data to improve compression. data is quantized using
 around(scale*data)/scale, where scale is 2**bits, and bits is determined
 from the least_significant_digit. For example, if
 least_significant_digit=1, bits will be 4.
     """
-    precision = pow(10.,-least_significant_digit)
+    precision = pow(10., -least_significant_digit)
     exp = np.log10(precision)
     if exp < 0:
         exp = int(np.floor(exp))
     else:
         exp = int(np.ceil(exp))
-    bits = np.ceil(np.log2(pow(10.,-exp)))
-    scale = pow(2.,bits)
-    datout = np.around(scale*data)/scale
+    bits = np.ceil(np.log2(pow(10., -exp)))
+    scale = pow(2., bits)
+    datout = np.around(scale * data) / scale
     if ma.isMA(datout):
         datout.set_fill_value(data.fill_value)
         return datout
     else:
         return datout
 
-def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
-        put=False):
+
+def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,
+                      put=False):
     """Return start, count, stride and indices needed to store/extract data
     into/from a netCDF variable.
 
@@ -148,23 +154,24 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     # as a slice, assume it applies to the first dimension,
     # and use ellipsis for remaining dimensions.
     if np.iterable(elem):
-        if type(elem) == np.ndarray or (type(elem) != tuple and \
-            np.array([_is_int(e) for e in elem]).all()):
+        if isinstance(elem, np.ndarray) or (
+                not isinstance(elem, tuple) and np.array([_is_int(e) for e in elem]).all()):
             elem = [elem]
-            for n in range(len(elem)+1,nDims+1):
-                elem.append(slice(None,None,None))
+            for n in range(len(elem) + 1, nDims + 1):
+                elem.append(slice(None, None, None))
     else:   # Convert single index to sequence
         elem = [elem]
 
     # replace sequence of integer indices with boolean arrays
     newElem = []
-    IndexErrorMsg=\
-    "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
+    IndexErrorMsg =\
+        "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
     for i, e in enumerate(elem):
         # string-like object try to cast to int
         # needs to be done first, since strings are iterable and
-        # hard to distinguish from something castable to an iterable numpy array.
-        if type(e) in [str,bytes,unicode]:
+        # hard to distinguish from something castable to an iterable numpy
+        # array.
+        if type(e) in [str, bytes, unicode]:
             try:
                 e = int(e)
             except:
@@ -175,14 +182,15 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             raise IndexError("Index cannot be multidimensional")
         # set unlim to True if dimension is unlimited and put==True
         # (called from __setitem__)
-        if put and (dimensions is not None and grp is not None) and len(dimensions):
+        if put and (
+                dimensions is not None and grp is not None) and len(dimensions):
             try:
                 dimname = dimensions[i]
                 # is this dimension unlimited?
                 # look in current group, and parents for dim.
                 dim = _find_dim(grp, dimname)
                 unlim = dim.isunlimited()
-            except IndexError: # more slices than dimensions (issue 371)
+            except IndexError:  # more slices than dimensions (issue 371)
                 unlim = False
         else:
             unlim = False
@@ -192,7 +200,8 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             ea = np.where(ea < 0, ea + shape[i], ea)
             if np.any(ea < 0):
                 raise IndexErro("integer index out of range")
-            if not np.all(np.diff(ea) > 0): # same but cheaper than np.all(np.unique(ea) == ea)
+            # same but cheaper than np.all(np.unique(ea) == ea)
+            if not np.all(np.diff(ea) > 0):
                 # raise an error when new indexing behavior is different
                 # (i.e. when integer sequence not sorted, or there are
                 # duplicate indices in the sequence)
@@ -203,19 +212,19 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             # length.
             elen = shape[i]
             if unlim:
-                elen = max(ea.max()+1,elen)
+                elen = max(ea.max() + 1, elen)
             else:
-                if ea.max()+1 > elen:
-                    msg="integer index exceeds dimension size"
+                if ea.max() + 1 > elen:
+                    msg = "integer index exceeds dimension size"
                     raise IndexError(msg)
-            eb = np.zeros(elen,np.bool)
+            eb = np.zeros(elen, np.bool)
             eb[ea] = True
             newElem.append(eb)
         # an iterable (non-scalar) boolean array
-        elif np.iterable(ea) and ea.dtype.kind =='b':
+        elif np.iterable(ea) and ea.dtype.kind == 'b':
             # check that boolen array not too long
             if not unlim and shape[i] != len(ea):
-                msg="""
+                msg = """
 Boolean array must have the same shape as the data along this dimension."""
                 raise IndexError(msg)
             newElem.append(ea)
@@ -223,7 +232,7 @@ Boolean array must have the same shape as the data along this dimension."""
         elif ea.dtype.kind == 'i':
             newElem.append(e)
         # slice or ellipsis object
-        elif type(e) == slice or type(e) == type(Ellipsis):
+        elif isinstance(e, slice) or isinstance(e, type(Ellipsis)):
             newElem.append(e)
         else:  # castable to a scalar int, otherwise invalid
             try:
@@ -239,11 +248,13 @@ Boolean array must have the same shape as the data along this dimension."""
     for e in elem:
         ea = np.asarray(e)
         # Replace ellipsis with slices.
-        if type(e) == type(Ellipsis):
+        if isinstance(e, type(Ellipsis)):
             if hasEllipsis:
-                raise IndexError("At most one ellipsis allowed in a slicing expression")
+                raise IndexError(
+                    "At most one ellipsis allowed in a slicing expression")
             # The ellipsis stands for the missing dimensions.
-            newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
+            newElem.extend(
+                (slice(None, None, None),) * (nDims - len(elem) + 1))
             hasEllipsis = True
         # Replace boolean array with slice object if possible.
         elif ea.dtype.kind == 'b':
@@ -267,12 +278,13 @@ Boolean array must have the same shape as the data along this dimension."""
 
     # If slice doesn't cover all dims, assume ellipsis for rest of dims.
     if len(elem) < nDims:
-        for n in range(len(elem)+1,nDims+1):
-            elem.append(slice(None,None,None))
+        for n in range(len(elem) + 1, nDims + 1):
+            elem.append(slice(None, None, None))
 
     # make sure there are not too many dimensions in slice.
     if len(elem) > nDims:
-        raise ValueError("slicing expression exceeds the number of dimensions of the variable")
+        raise ValueError(
+            "slicing expression exceeds the number of dimensions of the variable")
 
     # Compute the dimensions of the start, count, stride and indices arrays.
     # The number of elements in the first n dimensions corresponds to the
@@ -301,7 +313,8 @@ Boolean array must have the same shape as the data along this dimension."""
 
         # set unlim to True if dimension is unlimited and put==True
         # (called from __setitem__). Note: grp and dimensions must be set.
-        if put and (dimensions is not None and grp is not None) and len(dimensions):
+        if put and (
+                dimensions is not None and grp is not None) and len(dimensions):
             dimname = dimensions[i]
             # is this dimension unlimited?
             # look in current group, and parents for dim.
@@ -311,7 +324,7 @@ Boolean array must have the same shape as the data along this dimension."""
             unlim = False
 
         #    SLICE    #
-        if type(e) == slice:
+        if isinstance(e, slice):
 
             # determine length parameter for slice.indices.
 
@@ -325,7 +338,7 @@ Boolean array must have the same shape as the data along this dimension."""
                 if e.start is None:
                     length = datashape[i]
                 else:
-                    length = e.start+datashape[i]
+                    length = e.start + datashape[i]
             else:
                 if unlim and datashape == () and len(dim) == 0:
                     # writing scalar along unlimited dimension using slicing
@@ -335,38 +348,40 @@ Boolean array must have the same shape as the data along this dimension."""
                     length = shape[i]
 
             beg, end, inc = e.indices(length)
-            n = len(range(beg,end,inc))
+            n = len(range(beg, end, inc))
 
-            start[...,i] = beg
-            count[...,i] = n
-            stride[...,i] = inc
-            indices[...,i] = slice(None)
+            start[..., i] = beg
+            count[..., i] = n
+            stride[..., i] = inc
+            indices[..., i] = slice(None)
 
         #    BOOLEAN ITERABLE    #
         elif ea.dtype.kind == 'b':
-            e = np.arange(len(e))[e] # convert to integer array
-            start[...,i] = np.apply_along_axis(lambda x: e*x, i, np.ones(sdim[:-1]))
-            indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
+            e = np.arange(len(e))[e]  # convert to integer array
+            start[..., i] = np.apply_along_axis(
+                lambda x: e * x, i, np.ones(sdim[:-1]))
+            indices[..., i] = np.apply_along_axis(
+                lambda x: np.arange(sdim[i]) * x, i, np.ones(sdim[:-1], int))
 
-            count[...,i] = 1
-            stride[...,i] = 1
-
+            count[..., i] = 1
+            stride[..., i] = 1
 
         #   all that's left is SCALAR INTEGER    #
         else:
             if e >= 0:
-                start[...,i] = e
-            elif e < 0 and (-e <= shape[i]) :
-                start[...,i] = e+shape[i]
+                start[..., i] = e
+            elif e < 0 and (-e <= shape[i]):
+                start[..., i] = e + shape[i]
             else:
                 raise IndexError("Index out of range")
 
-            count[...,i] = 1
-            stride[...,i] = 1
-            indices[...,i] = -1    # Use -1 instead of 0 to indicate that
-                                       # this dimension shall be squeezed.
+            count[..., i] = 1
+            stride[..., i] = 1
+            indices[..., i] = -1    # Use -1 instead of 0 to indicate that
+            # this dimension shall be squeezed.
 
-    return start, count, stride, indices#, out_shape
+    return start, count, stride, indices  # , out_shape
+
 
 def _out_array_shape(count):
     """Return the output array shape given the count array created by getStartCountStride"""
@@ -376,25 +391,31 @@ def _out_array_shape(count):
 
     for i, n in enumerate(s):
         if n == 1:
-            c = count[..., i].ravel()[0] # All elements should be identical.
+            c = count[..., i].ravel()[0]  # All elements should be identical.
             out.append(c)
         else:
             out.append(n)
     return out
 
+
 def _is_container(a):
     # is object container-like?  (can test for
     # membership with "is in", but not a string)
-    try: 1 in a
-    except: return False
-    if type(a) == type(basestring): return False
+    try:
+        1 in a
+    except:
+        return False
+    if isinstance(a, type(basestring)):
+        return False
     return True
+
 
 def _is_int(a):
     try:
         return int(a) == a
     except:
         return False
+
 
 def _tostr(s):
     try:

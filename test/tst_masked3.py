@@ -9,6 +9,7 @@ from netCDF4 import Dataset, default_fillvals
 
 # Test automatic conversion of masked arrays (set_auto_mask())
 
+
 class SetAutoMaskTestBase(unittest.TestCase):
 
     """Base object for tests checking the functionality of set_auto_mask()"""
@@ -18,8 +19,9 @@ class SetAutoMaskTestBase(unittest.TestCase):
         self.testfile = tempfile.mktemp(".nc")
 
         self.fillval = default_fillvals["i2"]
-        self.v    = np.array([self.fillval, 5, 4, -9999], dtype = "i2")
-        self.v_ma = ma.array([self.fillval, 5, 4, -9999], dtype = "i2", mask = [True, False, False, True])
+        self.v = np.array([self.fillval, 5, 4, -9999], dtype="i2")
+        self.v_ma = ma.array(
+            [self.fillval, 5, 4, -9999], dtype="i2", mask=[True, False, False, True])
 
         self.scale_factor = 10.
         self.add_offset = 5.
@@ -40,7 +42,6 @@ class SetAutoMaskTestBase(unittest.TestCase):
 
         f.close()
 
-
     def tearDown(self):
 
         os.remove(self.testfile)
@@ -49,7 +50,6 @@ class SetAutoMaskTestBase(unittest.TestCase):
 class SetAutoMaskFalse(SetAutoMaskTestBase):
 
     def test_unscaled(self):
-
         """Testing auto-conversion of masked arrays for set_auto_mask(False)"""
 
         f = Dataset(self.testfile, "r")
@@ -64,9 +64,7 @@ class SetAutoMaskFalse(SetAutoMaskTestBase):
 
         f.close()
 
-
     def test_scaled(self):
-
         """Testing auto-conversion of masked arrays for set_auto_mask(False) with scaling"""
 
         # Update test data file
@@ -76,7 +74,8 @@ class SetAutoMaskFalse(SetAutoMaskTestBase):
         f.variables["v"].add_offset = self.add_offset
         f.close()
 
-        # Note: Scaling variables is default if scale_factor and/or add_offset are present
+        # Note: Scaling variables is default if scale_factor and/or add_offset
+        # are present
 
         f = Dataset(self.testfile, "r")
 
@@ -94,12 +93,11 @@ class SetAutoMaskFalse(SetAutoMaskTestBase):
 class SetAutoMaskTrue(SetAutoMaskTestBase):
 
     def test_unscaled(self):
-
         """Testing auto-conversion of masked arrays for set_auto_mask(True)"""
 
         f = Dataset(self.testfile)
 
-        f.variables["v"].set_auto_mask(True) # The default anyway...
+        f.variables["v"].set_auto_mask(True)  # The default anyway...
         v_ma = f.variables['v'][:]
 
         self.assertEqual(v_ma.dtype, "i2")
@@ -109,7 +107,6 @@ class SetAutoMaskTrue(SetAutoMaskTestBase):
         f.close()
 
     def test_scaled(self):
-
         """Testing auto-conversion of masked arrays for set_auto_mask(True)"""
 
         # Update test data file
@@ -119,7 +116,8 @@ class SetAutoMaskTrue(SetAutoMaskTestBase):
         f.variables["v"].add_offset = self.add_offset
         f.close()
 
-        # Note: Scaling variables is default if scale_factor and/or add_offset are present
+        # Note: Scaling variables is default if scale_factor and/or add_offset
+        # are present
 
         f = Dataset(self.testfile)
 

@@ -7,13 +7,14 @@ from numpy.testing import assert_almost_equal
 import netCDF4
 import math
 
-VAR_NAME='temp'
-VAR_TYPE='f4'
-VAR_VAL=math.pi
+VAR_NAME = 'temp'
+VAR_TYPE = 'f4'
+VAR_VAL = math.pi
 FILE_NAME = tempfile.mktemp(".nc")
 GROUP_NAME = 'subgroup'
 
 # test scalar variable creation and retrieval.
+
 
 class ScalarVariableTestCase(unittest.TestCase):
 
@@ -21,13 +22,13 @@ class ScalarVariableTestCase(unittest.TestCase):
         self.file = FILE_NAME
         rootgrp = netCDF4.Dataset(self.file, 'w')
         # scalar variable.
-        temp = rootgrp.createVariable(VAR_NAME,VAR_TYPE)
+        temp = rootgrp.createVariable(VAR_NAME, VAR_TYPE)
         #temp[:] = VAR_VAL
         temp.assignValue(VAR_VAL)
         subgroup = rootgrp.createGroup(GROUP_NAME)
-        tempg = subgroup.createVariable(VAR_NAME,VAR_TYPE)
+        tempg = subgroup.createVariable(VAR_NAME, VAR_TYPE)
         tempg[:] = VAR_VAL
-        #tempg.assignValue(VAR_VAL)
+        # tempg.assignValue(VAR_VAL)
         rootgrp.close()
 
     def tearDown(self):
@@ -37,7 +38,7 @@ class ScalarVariableTestCase(unittest.TestCase):
     def runTest(self):
         """testing scalar variables"""
         # check dimensions in root group.
-        f  = netCDF4.Dataset(self.file, 'r+')
+        f = netCDF4.Dataset(self.file, 'r+')
         v = f.variables[VAR_NAME]
         # dimensions and shape should be empty tuples
         self.assertTrue(v.dimensions == ())

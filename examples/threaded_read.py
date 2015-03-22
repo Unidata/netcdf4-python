@@ -13,7 +13,8 @@ import time
 
 # Make some files
 nfiles = 4
-fnames = []; datal = []
+fnames = []
+datal = []
 for i in range(nfiles):
     fname = 'test%d.nc' % i
     fnames.append(fname)
@@ -29,29 +30,31 @@ for i in range(nfiles):
 
 # Queue them up
 items = Queue.Queue()
-for data,fname in zip(datal,fnames):
+for data, fname in zip(datal, fnames):
     items.put(fname)
 
 # Function for threads to use
+
+
 def get_data(serial=None):
-    if serial is None: # if not called from a thread
+    if serial is None:  # if not called from a thread
         fname = items.get()
     else:
         fname = fnames[serial]
     nc = Dataset(fname, 'r')
     data2 = nc.variables['grid'][:]
     # make sure the data is correct
-    #assert_array_almost_equal(data2,datal[int(fname[4])])
+    # assert_array_almost_equal(data2,datal[int(fname[4])])
     nc.close()
     if serial is None:
-       items.task_done()
+        items.task_done()
 
 # Time it (no threading).
 start = time.time()
 for i in range(nfiles):
     get_data(serial=i)
 end = time.time()
-print 'no threads, time = ',end - start
+print 'no threads, time = ', end - start
 
 # with threading.
 start = time.time()
@@ -59,4 +62,4 @@ for i in range(nfiles):
     threading.Thread(target=get_data).start()
 items.join()
 end = time.time()
-print 'with threading, time = ',end - start
+print 'with threading, time = ', end - start

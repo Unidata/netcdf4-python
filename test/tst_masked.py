@@ -14,30 +14,33 @@ import netCDF4
 # create an n1dim by n2dim random ranarr.
 FILE_NAME = tempfile.mktemp(".nc")
 ndim = 10
-ranarr = 100.*uniform(size=(ndim))
-ranarr2 = 100.*uniform(size=(ndim))
+ranarr = 100. * uniform(size=(ndim))
+ranarr2 = 100. * uniform(size=(ndim))
 # used for checking vector missing_values
-arr3 = NP.linspace(0,9,ndim)
-mask = NP.zeros(ndim,NP.bool); mask[-1]=True; mask[-2]=True
+arr3 = NP.linspace(0, 9, ndim)
+mask = NP.zeros(ndim, NP.bool)
+mask[-1] = True
+mask[-2] = True
 marr3 = NP.ma.array(arr3, mask=mask, dtype=NP.int32)
-packeddata = 10.*uniform(size=(ndim))
+packeddata = 10. * uniform(size=(ndim))
 missing_value = -9999.
 missing_value2 = NP.nan
-missing_value3 = [8,9]
+missing_value3 = [8, 9]
 ranarr[::2] = missing_value
 ranarr2[::2] = missing_value2
-NP.seterr(invalid='ignore') # silence warnings from ma.masked_values
-maskedarr = ma.masked_values(ranarr,missing_value)
-maskedarr2 = ma.masked_values(ranarr2,missing_value2)
-scale_factor = (packeddata.max()-packeddata.min())/(2.*32766.)
-add_offset = 0.5*(packeddata.max()+packeddata.min())
-packeddata2 = NP.around((packeddata-add_offset)/scale_factor).astype('i2')
+NP.seterr(invalid='ignore')  # silence warnings from ma.masked_values
+maskedarr = ma.masked_values(ranarr, missing_value)
+maskedarr2 = ma.masked_values(ranarr2, missing_value2)
+scale_factor = (packeddata.max() - packeddata.min()) / (2. * 32766.)
+add_offset = 0.5 * (packeddata.max() + packeddata.min())
+packeddata2 = NP.around((packeddata - add_offset) / scale_factor).astype('i2')
+
 
 class PrimitiveTypesTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
-        file = netCDF4.Dataset(self.file,'w')
+        file = netCDF4.Dataset(self.file, 'w')
         file.createDimension('n', ndim)
         foo = file.createVariable('maskeddata', 'f8', ('n',))
         foo2 = file.createVariable('maskeddata2', 'f8', ('n',))
@@ -57,7 +60,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         foo3[:] = arr3
         bar[:] = packeddata
         # added to test fix to issue 46
-        doh = file.createVariable('packeddata2','i2','n')
+        doh = file.createVariable('packeddata2', 'i2', 'n')
         doh.scale_factor = 0.1
         doh.add_offset = 0.
         doh[0] = 1.1
@@ -83,20 +86,20 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         datamasked.set_auto_maskandscale(False)
         datamasked2.set_auto_maskandscale(False)
         datapacked.set_auto_maskandscale(False)
-        assert_array_equal(datapacked[:],packeddata2)
-        assert_array_equal(datamasked3[:],marr3)
-        assert_array_almost_equal(datamasked[:],ranarr)
-        assert_array_almost_equal(datamasked2[:],ranarr2)
+        assert_array_equal(datapacked[:], packeddata2)
+        assert_array_equal(datamasked3[:], marr3)
+        assert_array_almost_equal(datamasked[:], ranarr)
+        assert_array_almost_equal(datamasked2[:], ranarr2)
         # auto-conversion
         datamasked.set_auto_maskandscale(True)
         datamasked2.set_auto_maskandscale(True)
         datapacked.set_auto_maskandscale(True)
         datapacked2.set_auto_maskandscale(False)
-        assert_array_almost_equal(datamasked[:].filled(),ranarr)
-        assert_array_almost_equal(datamasked2[:].filled(),ranarr2)
-        assert_array_almost_equal(datapacked[:],packeddata,decimal=4)
+        assert_array_almost_equal(datamasked[:].filled(), ranarr)
+        assert_array_almost_equal(datamasked2[:].filled(), ranarr2)
+        assert_array_almost_equal(datapacked[:], packeddata, decimal=4)
         # added to test fix to issue 46 (result before r865 was 10)
-        assert_array_equal(datapacked2[0],11)
+        assert_array_equal(datapacked2[0], 11)
         file.close()
 
 if __name__ == '__main__':
