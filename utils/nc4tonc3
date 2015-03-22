@@ -38,9 +38,9 @@ def nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NET
             FillValue = None 
         var = ncfile3.createVariable(varname,ncvar.dtype,ncvar.dimensions,fill_value=FillValue)
         # fill variable attributes.
-	attdict = ncvar.__dict__
-	if '_FillValue' in attdict: del attdict['_FillValue']
-	var.setncatts(attdict)
+        attdict = ncvar.__dict__
+        if '_FillValue' in attdict: del attdict['_FillValue']
+        var.setncatts(attdict)
         #for attname in ncvar.ncattrs():
         #    if attname == '_FillValue': continue
         #    setattr(var,attname,getattr(ncvar,attname))
