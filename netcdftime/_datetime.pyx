@@ -25,7 +25,7 @@ and format.
     cdef readonly int second, microsecond
 
     def __init__(self, year, month, day, hour=0, minute=0, second=0,
-                 microsecond=0,dayofwk=-1, dayofyr=1):
+                 microsecond=0, dayofwk=-1, dayofyr=1):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
 
         self.year = year
