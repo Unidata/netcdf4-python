@@ -1,6 +1,6 @@
 import unittest, os, tempfile
 import numpy as np
-from numpy.random.mtrand import uniform 
+from numpy.random.mtrand import uniform
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 import netCDF4
 
@@ -8,7 +8,7 @@ import netCDF4
 
 # create an n1dim by n2dim by n3dim random array
 n1dim = 10
-n2dim = 73 
+n2dim = 73
 n3dim = 144
 ranarr = 100.*uniform(size=(n1dim,n2dim,n3dim))
 ranarr2 = 100.*uniform(size=(n1dim,n2dim,n3dim))

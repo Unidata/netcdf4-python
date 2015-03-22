@@ -235,7 +235,7 @@ HDF5_DIR environment variable not set, checking some standard locations ..\n""")
             raise ValueError('did not find HDF5 headers')
     else:
         if HDF5_incdir is None:
-             HDF5_incdir = os.path.join(HDF5_dir, 'include')
+            HDF5_incdir = os.path.join(HDF5_dir, 'include')
         hdf5_version = check_hdf5version(HDF5_incdir)
         if hdf5_version is None:
             raise ValueError('did not find HDF5 headers in %s' % HDF5_incdir)

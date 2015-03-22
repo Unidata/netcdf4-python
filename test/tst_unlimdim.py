@@ -3,7 +3,7 @@ import unittest
 import os
 import tempfile
 import numpy as NP
-from numpy.random.mtrand import uniform 
+from numpy.random.mtrand import uniform
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 import netCDF4
 
@@ -28,8 +28,8 @@ class UnlimdimTestCase(unittest.TestCase):
         f.createDimension('n3', n3dim)
         foo = f.createVariable('data1', ranarr.dtype.str[1:], ('n1','n2','n3'))
         # write some data to it.
-        #foo[:,0:n2dim,:] = ranarr 
-        foo[:] = ranarr 
+        #foo[:,0:n2dim,:] = ranarr
+        foo[:] = ranarr
         foo[:,n2dim:,:] = 2.*ranarr
         # bar has 2 unlimited dimensions
         f.createDimension('n4', None)

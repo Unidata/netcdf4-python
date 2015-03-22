@@ -17,7 +17,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,
     corresponding to the keys of the dict will be truncated to the decimal place
     specified by the values of the dict.  This improves compression by
     making it 'lossy'..
-    If vars is not None, only variable names in the list 
+    If vars is not None, only variable names in the list
     will be copied (plus all the dimension variables).
     The zlib, complevel and shuffle keywords control
     how the compression is done."""
@@ -35,7 +35,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,
     if not quiet: sys.stdout.write('copying global attributes ..\n')
     #for attname in ncfile3.ncattrs():
     #    setattr(ncfile4,attname,getattr(ncfile3,attname))
-    ncfile4.setncatts(ncfile3.__dict__) 
+    ncfile4.setncatts(ncfile3.__dict__)
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile3.dimensions.items():
         if dim.isunlimited():
@@ -47,15 +47,15 @@ def nc3tonc4(filename3,filename4,unpackshort=True,
             ncfile4.createDimension(dimname,len(dim))
     # create variables.
     if vars is None:
-       varnames = ncfile3.variables.keys()
+        varnames = ncfile3.variables.keys()
     else:
-       # variables to copy specified
-       varnames = vars
-       # add dimension variables
-       for dimname in ncfile3.dimensions.keys():
-           if dimname in ncfile3.variables.keys() and\
-              dimname not in varnames:
-               varnames.append(dimname)
+        # variables to copy specified
+        varnames = vars
+        # add dimension variables
+        for dimname in ncfile3.dimensions.keys():
+            if dimname in ncfile3.variables.keys() and\
+               dimname not in varnames:
+                varnames.append(dimname)
     for varname in varnames:
         ncvar = ncfile3.variables[varname]
         if not quiet: sys.stdout.write('copying variable %s\n' % varname)
@@ -83,7 +83,7 @@ def nc3tonc4(filename3,filename4,unpackshort=True,
         if hasattr(ncvar, '_FillValue'):
             FillValue = ncvar._FillValue
         else:
-            FillValue = None 
+            FillValue = None
         var = ncfile4.createVariable(varname,datatype,ncvar.dimensions, fill_value=FillValue, least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
         # fill variable attributes.
         attdict = ncvar.__dict__
@@ -169,12 +169,12 @@ if __name__ == '__main__':
      and 'temp' to 1. This can significantly improve compression. The default
      is not to quantize any of the variables.
  --quiet=(0|1)  -- if 1, don't print diagnostic information.
- --chunk=(integer) -- number of records along unlimited dimension to 
-     write at once.  Default 10.  Ignored if there is no unlimited 
+ --chunk=(integer) -- number of records along unlimited dimension to
+     write at once.  Default 10.  Ignored if there is no unlimited
      dimension.  chunk=0 means write all the data at once.
- --istart=(integer) -- number of record to start at along unlimited dimension. 
+ --istart=(integer) -- number of record to start at along unlimited dimension.
      Default 0.  Ignored if there is no unlimited dimension.
- --istop=(integer) -- number of record to stop at along unlimited dimension. 
+ --istop=(integer) -- number of record to stop at along unlimited dimension.
      Default -1.  Ignored if there is no unlimited dimension.
 \n""" % os.path.basename(sys.argv[0])
 
@@ -270,7 +270,7 @@ if __name__ == '__main__':
 
     # Parse the vars option, create a list of variable names.
     if vars is not None:
-       vars = vars.split(',')
+        vars = vars.split(',')
 
     # copy the data from filename3 to filename4.
     nc3tonc4(filename3,filename4,unpackshort=unpackshort,

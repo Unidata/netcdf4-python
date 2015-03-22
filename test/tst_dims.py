@@ -3,7 +3,7 @@ import unittest
 import os
 import tempfile
 import numpy as NP
-from numpy.random.mtrand import uniform 
+from numpy.random.mtrand import uniform
 import netCDF4
 
 FILE_NAME = tempfile.mktemp(".nc")
@@ -11,7 +11,7 @@ LAT_NAME="lat"
 LAT_LEN = 25
 LAT_LENG = 50
 LON_NAME="lon"
-LON_LEN = 50  
+LON_LEN = 50
 LON_LENG = 100
 LEVEL_NAME="level"
 LEVEL_LEN = None

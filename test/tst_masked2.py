@@ -7,7 +7,7 @@ from numpy import ma, seterr
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from netCDF4 import Dataset, default_fillvals
 
-seterr(over='ignore') # don't print warning for overflow errors 
+seterr(over='ignore') # don't print warning for overflow errors
 
 # test automatic conversion of masked arrays, and
 # packing/unpacking of short ints.
@@ -42,7 +42,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         v[2]=4000
         v[3]=v.missing_value
         f.close()
-        
+
         self.files.append(FILE_NAME2)
         f = Dataset(FILE_NAME1,'r')
         # create a new file, copy data, but change missing value and
@@ -56,7 +56,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         b[:] = f.variables['v'][:]
         f.close()
         f2.close()
-        
+
         self.files.append(FILE_NAME3)
         f = Dataset(FILE_NAME3,'w')
         x = f.createDimension('x',None)
@@ -75,7 +75,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
             os.remove(f)
 
     def runTest(self):
-        """testing auto-conversion of masked arrays and packed integers""" 
+        """testing auto-conversion of masked arrays and packed integers"""
 
         f = Dataset(self.files[0])
         data = f.variables['v'][:]

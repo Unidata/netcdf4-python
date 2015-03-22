@@ -10,7 +10,7 @@ URL="http://nomad1.ncep.noaa.gov:9090/dods/reanalyses/reanalysis-2/6hr/pgb/pgb"
 nc = netCDF4.Dataset(URL)
 
 # use real 500 hPa geopotential height data.
-n1dim = 100   
+n1dim = 100
 n3dim = 73
 n4dim = 144
 ntrials = 10
