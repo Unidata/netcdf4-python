@@ -1,0 +1,44 @@
+.\" (C) Copyright 2015, Ross Gammon <rossgammon@mail.dk>,
+.\"
+.TH NCINFO 1 "22 Mar 2015"
+.\"
+.SH NAME
+ncinfo \- a program to print summary information about a netCDF file
+.SH SYNOPSIS
+.B ncinfo
+.RB [ \-h ]
+.RB [ \-g|\-\-group=\fIgrp\fR ]
+.RB [ \-v|\-\-variable=\fIvar\fR ]
+.RB [ \-d|\-\-dimension=\fIdim\fR ]
+.I filename
+.br
+.SH DESCRIPTION
+This manual page documents briefly the
+.B ncinfo
+command.
+.PP
+\fBncinfo\fP is a program that prints summary information about a netCDF file
+.SH OPTIONS
+These programs follow the usual GNU command line syntax, with long
+options starting with two dashes (`-').
+A summary of options is included below.
+.TP
+.B \-h
+Shows a summary of the available options.
+.TP
+.B \-g grp, \-\-group=grp
+Prints information for this group. The default group is the root group. Nested groups are specified using posix paths e.g. group1/group2/group3.
+.TP
+.B \-v <variable name>, \-\-variable=<variable name>
+Prints information for this variable.
+.TP
+.B \-d <dimension name>, \-\-dimension=<dimension name>
+Prints information for this dimension.
+.TP
+The filename of the netCDF file must be supplied as the last argument.
+.SH SEE ALSO
+.BR nc3tonc4 (1),
+.BR nc4tonc3 (1).
+.br
+.SH AUTHOR
+This manual page was written by Ross Gammon <rossgammon@mail.dk> based on the options displayed by ncinfo \-h.
