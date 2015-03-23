@@ -61,6 +61,10 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         doh.scale_factor = 0.1
         doh.add_offset = 0.
         doh[0] = 1.1
+        # added to test fix to issue 381
+        doh2 = file.createVariable('packeddata3','i2','n')
+        doh2.add_offset = 1.
+        doh2[0] = 1.
         file.close()
 
     def tearDown(self):
@@ -75,6 +79,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         datamasked3 = file.variables['maskeddata3']
         datapacked = file.variables['packeddata']
         datapacked2 = file.variables['packeddata2']
+        datapacked3 = file.variables['packeddata3']
         # check missing_value, scale_factor and add_offset attributes.
         assert datamasked.missing_value == missing_value
         assert datapacked.scale_factor == scale_factor
@@ -95,6 +100,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         assert_array_almost_equal(datamasked[:].filled(),ranarr)
         assert_array_almost_equal(datamasked2[:].filled(),ranarr2)
         assert_array_almost_equal(datapacked[:],packeddata,decimal=4)
+        assert(datapacked3[:].dtype == NP.float)
         # added to test fix to issue 46 (result before r865 was 10)
         assert_array_equal(datapacked2[0],11)
         file.close()

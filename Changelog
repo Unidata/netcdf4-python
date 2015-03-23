@@ -1,3 +1,8 @@
+ since version 1.1.7
+ ==================
+ * make sure application of scale_factor and add_offset works correctly when
+   scale_factor not given (issue #381).
+
  version 1.1.7 (tag v1.1.7rel)
  =============================
  * check to make sure cython >= 0.19 is available before trying
