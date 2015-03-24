@@ -3156,7 +3156,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
                 data = data*self.scale_factor
             # else if variable has only add_offset attributes, rescale.
             elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
-                data += self.add_offset
+                data = data + self.add_offset
         return data
 
     def _toma(self,data):
