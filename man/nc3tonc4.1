@@ -1,0 +1,78 @@
+.\" (C) Copyright 2015, Ross Gammon <rossgammon@mail.dk>,
+.\"
+.TH NC3TONC4 1 "22 Mar 2015"
+.\"
+.SH NAME
+nc3tonc4 \- a program to convert netCDF 3 files to netCDF 4 format files
+.SH SYNOPSIS
+.B nc3tonc4
+.RB [\-h ]
+.RB [\-o ]
+.RB [\-\-vars=\fIvar1,var2,..\fR ]
+.RB [\-\-zlib=\fI(0|1)\fR ]
+.RB [\-\-complevel=\fI(1\-9)\fR ]
+.RB [\-\-shuffle=\fI(0|1)\fR ]
+.RB [\-\-fletcher32=\fI(0|1)\fR ]
+.RB [\-\-unpackshort=\fI(0|1)\fR ]
+.RB [\-\-quantize=\fIvar1=n1,var2=n2,..\fR ]
+.I netcdf3filename
+.I netcdf4filename
+.br
+.SH DESCRIPTION
+This manual page documents briefly the
+.B nc3tonc4
+command.
+.PP
+\fBnc3tonc4\fP is a program that converts a netCDF 3 file into netCDF 4 format, optionally unpacking variables packed as short integers (with scale_factor and add_offset) to floats, and adding zlib compression (with the HDF5 shuffle filter and fletcher32 checksum). Data may also be quantized (truncated) to a specified precision to improve compression.
+.SH OPTIONS
+These programs follow the usual GNU command line syntax, with long
+options starting with two dashes (`-').
+A summary of options is included below.
+.TP
+.B \-h
+Shows a summary of the available options.
+.TP
+.B \-o
+Overwite destination file (default is to raise an error if output file already exists).
+.TP
+.B \-\-vars
+A comma separated list of variable names to copy (default is to copy all variables).
+.TP
+.B \-\-classic=(0|1)
+Use NETCDF4_CLASSIC format instead of NETCDF4 (default = 1).
+.TP
+.B \-\-zlib=(0|1)
+Activate (or disable) zlib compression (the default is to activate).
+.TP
+.B \-\-complevel=(1-9)
+Set the zlib compression level (6 is default).
+.TP
+.B \-\-shuffle=(0|1)
+Activate (or disable) the shuffle filter (it is active by default).
+.TP
+.B \-\-fletcher32=(0|1)
+Activate (or disable) the fletcher32 checksum (it is not active by default).
+.TP
+.B \-\-unpackshort=(0|1)
+Unpack short integer variables to float variables using scale_factor and add_offset netCDF variable attributes (it is active by default).
+.TP
+.B \-\-quantize=(comma separated list of "variable name=integer" pairs)
+Truncate the data in the specified variables to a given decimal precision. For example, 'speed=2, height=-2, temp=0' will cause the variable 'speed' to be truncated to a precision of 0.01, 'height' to a precision of 100 and 'temp' to 1. This can significantly improve compression. The default is not to quantize any of the variables.
+.TP
+.B \-\-quiet=(0|1)
+If set to 1, don't print any diagnostic information.
+.TP
+.B \-\-chunk=(integer)
+The number of records along unlimited dimension to write at once. The default is 10. It is ignored if there is no unlimited dimension. If chunk=0, it means write all the data at once.
+.TP
+.B \-\-istart=(integer)
+The number of the record to start at along unlimited dimension. The default is 0. This option is ignored if there is no unlimited dimension.
+.TP
+.B \-\-istop=(integer)
+The number of the record to stop at along unlimited dimension. The default is 1. This option is ignored if there is no unlimited dimension.
+.SH SEE ALSO
+.BR ncinfo (1),
+.BR nc4tonc3 (1).
+.br
+.SH AUTHOR
+This manual page was written by Ross Gammon <rossgammon@mail.dk> based on the options displayed by nc3tonc4 \-h.
