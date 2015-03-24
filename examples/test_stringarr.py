@@ -32,7 +32,7 @@ for nrec in range(nrecs):
     for n in range(n2):
         data[n] = ''.join([random.choice(chars) for i in range(nchar)])
     print(nrec,data)
-    # convert data to array of characters with an extra dimension 
+    # convert data to array of characters with an extra dimension
     # (the number of characters per string) added to the right.
     datac = stringtochar(data)
     v[nrec] = datac

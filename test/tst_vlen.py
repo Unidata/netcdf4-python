@@ -74,7 +74,7 @@ class TestInvalidDataType(unittest.TestCase):
         f = Dataset(FILE_NAME, 'w', format='NETCDF3_CLASSIC')
         f.createDimension('x', 1)
         with self.assertRaisesRegexp(ValueError, 'strings are only supported'):
-           f.createVariable('foo', str, ('x',))
+            f.createVariable('foo', str, ('x',))
         f.close()
         os.remove(FILE_NAME)
 
@@ -113,7 +113,7 @@ class TestObjectArrayIndexing(unittest.TestCase):
         f = Dataset(self.file, 'r')
         vs_alt = f.variables[VAR3_NAME]
         unicode_strings = vs_alt[:]
-        fancy_indexed = unicode_strings[0][[1,2,4]] 
+        fancy_indexed = unicode_strings[0][[1,2,4]]
         assert fancy_indexed[0] == 'abc'
         assert fancy_indexed[1] == 'abcd'
         assert fancy_indexed[2] == 'abcdef'

@@ -6,7 +6,7 @@ from timeit import Timer
 import os, sys
 
 # create an n1dim by n2dim by n3dim random array.
-n1dim = 30   
+n1dim = 30
 n2dim = 15
 n3dim = 73
 n4dim = 144
@@ -27,7 +27,7 @@ def write_netcdf(filename,zlib=False,least_significant_digit=None,format='NETCDF
     foo.testme2="hi I am an attribute"
     foo.testme3="hi I am an attribute"
     foo.testme4="hi I am an attribute"
-    foo.testme5="hi I am an attribute" 
+    foo.testme5="hi I am an attribute"
     foo[:] = array
     if closeit: file.close()
     return file
@@ -37,7 +37,7 @@ def read_netcdf(ncfile):
 
 for format in ['NETCDF4','NETCDF3_CLASSIC','NETCDF3_64BIT']:
     sys.stdout.write('testing file format %s ...\n' % format)
-    # writing, no compression. 
+    # writing, no compression.
     t = Timer("write_netcdf('test1.nc',closeit=True,format='%s')" % format,"from __main__ import write_netcdf")
     sys.stdout.write('writing took %s seconds\n' %\
             repr(sum(t.repeat(ntrials,1))/ntrials))

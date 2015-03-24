@@ -1,5 +1,5 @@
 from datetime import timedelta, datetime, MINYEAR
-from netcdftime import _parse_date 
+from netcdftime import _parse_date
 
 # start of the gregorian calendar
 gregorian = datetime(1582,10,15)
@@ -33,10 +33,10 @@ convert a string to a character array of length NUMCHARS
 
 @param a:  Input python string.
 
-@param NUMCHARS:  number of characters used to represent string 
+@param NUMCHARS:  number of characters used to represent string
 (if len(a) < NUMCHARS, it will be padded on the right with blanks).
 
-@keyword dtype:  type of numpy array to return.  Default is 'S', which 
+@keyword dtype:  type of numpy array to return.  Default is 'S', which
 means an array of dtype 'S1' will be returned.  If dtype='U', a
 unicode array (dtype = 'U1') will be returned.
 
@@ -95,7 +95,7 @@ date2num(dates,units,calendar='standard')
 Return numeric time values given datetime objects. The units
 of the numeric time values are described by the L{units} argument
 and the L{calendar} keyword. The datetime objects must
-be in UTC with no time-zone offset.  If there is a 
+be in UTC with no time-zone offset.  If there is a
 time-zone offset in C{units}, it will be applied to the
 returned numeric values.
 
@@ -108,8 +108,8 @@ seconds, milliseconds or microseconds. B{C{reference time}} is the time
 origin.  Accuracy is somewhere between a millisecond and a microsecond,
 depending on the time interval and the calendar used.
 
-@param calendar: describes the calendar used in the time calculations. 
-All the values currently defined in the U{CF metadata convention 
+@param calendar: describes the calendar used in the time calculations.
+All the values currently defined in the U{CF metadata convention
 <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
 Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
@@ -171,11 +171,11 @@ num2date(times,units,calendar='standard')
 
 Return datetime objects given numeric time values. The units
 of the numeric time values are described by the C{units} argument
-and the C{calendar} keyword. The returned datetime objects represent 
-UTC with no time-zone offset, even if the specified 
+and the C{calendar} keyword. The returned datetime objects represent
+UTC with no time-zone offset, even if the specified
 C{units} contain a time-zone offset.
 
-@param times: numeric time values. 
+@param times: numeric time values.
 
 @param units: a string of the form C{'B{time units} since B{reference time}}'
 describing the time units. B{C{time units}} can be days, hours, minutes,
@@ -183,8 +183,8 @@ seconds, milliseconds or microseconds. B{C{reference time}} is the time
 origin.  Accuracy is somewhere between a millisecond and a microsecond,
 depending on the time interval and the calendar used.
 
-@keyword calendar: describes the calendar used in the time calculations. 
-All the values currently defined in the U{CF metadata convention 
+@keyword calendar: describes the calendar used in the time calculations.
+All the values currently defined in the U{CF metadata convention
 <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
 Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
@@ -192,11 +192,11 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
 
 @return: a datetime instance, or an array of datetime instances.
 
-The datetime instances returned are 'real' python datetime 
+The datetime instances returned are 'real' python datetime
 objects if C{calendar='proleptic_gregorian'}, or
 C{calendar = 'standard'} or C{'gregorian'}
 and the date is after the breakpoint between the Julian and
-Gregorian calendars (1582-10-15). Otherwise, they are 'phony' datetime 
+Gregorian calendars (1582-10-15). Otherwise, they are 'phony' datetime
 objects which support some but not all the methods of 'real' python
 datetime objects. The datetime instances
 do not contain a time-zone offset, even if the specified C{units}
@@ -278,12 +278,12 @@ If C{calendar} is None, its value is given by C{nctime.calendar} or
 C{standard} if no such attribute exists.
 
 @keyword select: C{'exact', 'before', 'after', 'nearest'}
-The index selection method. C{exact} will return the indices perfectly 
-matching the dates given. C{before} and C{after} will return the indices 
-corresponding to the dates just before or just after the given dates if 
-an exact match cannot be found. C{nearest} will return the indices that 
-correspond to the closest dates. 
-      
+The index selection method. C{exact} will return the indices perfectly
+matching the dates given. C{before} and C{after} will return the indices
+corresponding to the dates just before or just after the given dates if
+an exact match cannot be found. C{nearest} will return the indices that
+correspond to the closest dates.
+
 @return: an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
     """
@@ -309,7 +309,7 @@ used to build the module, and when it was built.
     """
     return (<char *>nc_inq_libvers()).decode('ascii')
 
-class MFDataset(Dataset): 
+class MFDataset(Dataset):
     """
 MFDataset(self, files, check=False, aggdim=None, exclude=[])
 
@@ -343,8 +343,8 @@ Example usage:
 
     def __init__(self, files, check=False, aggdim=None, exclude=[]):
         """
-Open a Dataset spanning multiple files, making it look as if it was a 
-single file. Variables in the list of files that share the same 
+Open a Dataset spanning multiple files, making it look as if it was a
+single file. Variables in the list of files that share the same
 dimension (specified with the keyword C{aggdim}) are aggregated. If
 C{aggdim} is not specified, the unlimited is aggregated.  Currently,
 C{aggdim} must be the leftmost (slowest varying) dimension of each
@@ -356,23 +356,23 @@ Usage:
 
 nc = MFDataset(files, check=False, aggdim=None, exclude=[])
 
-@param files: either a sequence of netCDF files or a string with a 
-wildcard (converted to a sorted list of files using glob)  The first file 
-in the list will become the "master" file, defining all the 
-variables with an aggregation dimension which may span 
-subsequent files. Attribute access returns attributes only from "master" 
+@param files: either a sequence of netCDF files or a string with a
+wildcard (converted to a sorted list of files using glob)  The first file
+in the list will become the "master" file, defining all the
+variables with an aggregation dimension which may span
+subsequent files. Attribute access returns attributes only from "master"
 file. The files are always opened in read-only mode.
 
-@keyword check: True if you want to do consistency checking to ensure the 
-correct variables structure for all of the netcdf files.  Checking makes 
-the initialization of the MFDataset instance much slower. Default is 
+@keyword check: True if you want to do consistency checking to ensure the
+correct variables structure for all of the netcdf files.  Checking makes
+the initialization of the MFDataset instance much slower. Default is
 False.
 
 @keyword aggdim: The name of the dimension to aggregate over (must
 be the leftmost dimension of each of the variables to be aggregated).
 If None (default), aggregate over the unlimited dimension.
 
-@keyword exclude: A list of variable names to exclude from aggregation. 
+@keyword exclude: A list of variable names to exclude from aggregation.
 Default is an empty list.
        """
 
@@ -384,7 +384,7 @@ Default is an empty list.
                 raise ValueError(msg)
             else:
                 files = sorted(glob(files))
-        
+
         master = files[0]
 
         # Open the master again, this time as a classic CDF instance. This will avoid
@@ -437,7 +437,7 @@ Default is an empty list.
         cdfRecVar = {}
         for v in masterRecVar.keys():
             cdfRecVar[v] = [cdfm.variables[v]]
-        
+
         # Open each remaining file in read-only mode.
         # Make sure each file defines the same aggregation variables as the master
         # and that the variables are defined in the same way (name, shape and type)
@@ -525,7 +525,7 @@ Default is an empty list.
 
     def __getattribute__(self, name):
         if name in ['variables','dimensions','file_format','groups',\
-                    'data_model','disk_format','path']: 
+                    'data_model','disk_format','path']:
             if name == 'dimensions': return self._dims
             if name == 'variables': return self._vars
             if name == 'file_format': return self._file_format
@@ -578,7 +578,7 @@ class _Dimension(object):
 
 class _Variable(object):
     def __init__(self, dset, varname, var, recdimname):
-        self.dimensions = var.dimensions 
+        self.dimensions = var.dimensions
         self._dset = dset
         self._grp = dset
         self._mastervar = var
@@ -637,23 +637,23 @@ class _Variable(object):
         _StartCountStride(elem, self.shape)
         datashape = _out_array_shape(count)
         data = ma.empty(datashape, dtype=self.dtype)
-        
+
         # Determine which dimensions need to be squeezed
         # (those for which elem is an integer scalar).
-        # The convention used is that for those cases, 
+        # The convention used is that for those cases,
         # put_ind for this dimension is set to -1 by _StartCountStride.
         squeeze = data.ndim * [slice(None),]
         for i,n in enumerate(put_ind.shape[:-1]):
             if n == 1 and put_ind[...,i].ravel()[0] == -1:
                 squeeze[i] = 0
 
-        # Reshape the arrays so we can iterate over them. 
+        # Reshape the arrays so we can iterate over them.
         strt = start.reshape((-1, self.ndim or 1))
         cnt = count.reshape((-1, self.ndim or 1))
         strd = stride.reshape((-1, self.ndim or 1))
         put_ind = put_ind.reshape((-1, self.ndim or 1))
 
-        # Fill output array with data chunks. 
+        # Fill output array with data chunks.
         # Number of variables making up the MFVariable.Variable.
         nv = len(self._recLen)
         for (start,count,stride,ind) in zip(strt, cnt, strd, put_ind):
@@ -666,7 +666,7 @@ class _Variable(object):
             sta = start[0]
             step = stride[0]
             stop = sta + count[0] * step
-            
+
             # Build a list representing the concatenated list of all records in
             # the MFVariable variable set. The list is composed of 2-elem lists
             # each holding:
@@ -688,7 +688,7 @@ class _Variable(object):
             for n in range(1, len(start)):   # skip dimension 0
                 s = slice(start[n],start[n] + count[n] * stride[n], stride[n])
                 newSlice.append(s)
-                
+
             # Apply the slicing expression to each var in turn, extracting records
             # in a list of arrays.
             lstArr = []
@@ -719,13 +719,13 @@ class _Variable(object):
             except ValueError:
                 data[tuple(ind)] = lstArr
 
-        # Remove extra singleton dimensions. 
+        # Remove extra singleton dimensions.
         data = data[tuple(squeeze)]
 
         # if no masked elements, return numpy array.
         if ma.isMA(data) and not data.mask.any():
-           data = data.filled()
-        
+            data = data.filled()
+
         return data
 
 
@@ -761,55 +761,55 @@ days since 2000-01-01
 >>> print t[32] # The value written in the file, inconsistent with the MF time units.
 1
 >>> T = MFTime(t)
->>> print T[32]                        
-32                           
+>>> print T[32]
+32
     """
-    
+
     def __init__(self, time, units=None):
         """
-Create a time Variable with units consistent across a multifile 
+Create a time Variable with units consistent across a multifile
 dataset.
 
-@param time: Time variable from a MFDataset. 
+@param time: Time variable from a MFDataset.
 
 @keyword units: Time units, for example, 'days since 1979-01-01'. If None, use
-the units from the master variable. 
+the units from the master variable.
         """
         import datetime
         self.__time = time
-        
+
         # copy attributes from master time variable.
         for name, value in time.__dict__.items():
             self.__dict__[name] = value
-           
+
         # make sure calendar attribute present in all files.
         for t in self._recVar:
             if not hasattr(t,'calendar'):
                 raise ValueError('MFTime requires that the time variable in all files have a calendar attribute')
-        
+
         # Check that calendar is the same in all files.
         if len(set([t.calendar for t in self._recVar])) > 1:
             raise ValueError('MFTime requires that the same time calendar is used by all files.')
- 
+
         # Override units if units is specified.
         self.units = units or time.units
-        
-        # Reference date to compute the difference between different time units. 
+
+        # Reference date to compute the difference between different time units.
         ref_date = datetime.datetime(1900,1,1)
         ref_num = date2num(ref_date, self.units, self.calendar)
-        
+
         # Create delta vector: delta = ref_num(ref_date) - num(ref_date)
-        # So that ref_num(date) = num(date) + delta 
+        # So that ref_num(date) = num(date) + delta
         self.__delta = numpy.empty(len(self), time.dtype)
-        
+
         i0 = 0; i1 = 0
         for i,v in enumerate(self._recVar):
             n = self._recLen[i] # Length of time vector.
             num = date2num(ref_date, v.units, self.calendar)
-            i1 += n            
+            i1 += n
             self.__delta[i0:i1] = ref_num - num
             i0 += n
-        
-                
+
+
     def __getitem__(self, elem):
         return self.__time[elem] + self.__delta[elem]

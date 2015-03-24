@@ -2,6 +2,10 @@
  ==================
  * make sure application of scale_factor and add_offset works correctly when
    scale_factor not given (issue #381).
+ * add man pages for nc3tonc4, nc4tonc3, ncinfo in man directory.
+   Not installed by setup.py (contributed by Ross Gammon, ssue #383).
+ * replace tabs with spaces by running reindent.py on all *.py and *.pyx files
+   (issue #378).
 
  version 1.1.7 (tag v1.1.7rel)
  =============================

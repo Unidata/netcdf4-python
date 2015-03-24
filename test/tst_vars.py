@@ -3,7 +3,7 @@ import unittest
 import os
 import tempfile
 import numpy as NP
-from numpy.random.mtrand import uniform 
+from numpy.random.mtrand import uniform
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 import netCDF4
 
@@ -66,14 +66,14 @@ class VariablesTestCase(unittest.TestCase):
         assert v2.shape == (DIM2_LEN,DIM3_LEN)
         assert v1.size == DIM1_LEN * DIM2_LEN * DIM3_LEN
         assert len(v1) == DIM1_LEN
-        
+
         #assert NP.allclose(v1[:],randomdata)
         assert_array_almost_equal(v1[:],randomdata)
         # check variables in sub group.
         g = f.groups[GROUP_NAME]
         varnames = sorted(g.variables.keys())
         v1 = g.variables[VAR_DOUBLE_NAME]
-        # test iterating over variable (should stop when 
+        # test iterating over variable (should stop when
         # it gets to the end and raises IndexError, issue 121)
         for v in v1:
             pass

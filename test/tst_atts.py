@@ -4,7 +4,7 @@ import unittest
 import os
 import tempfile
 import numpy as NP
-from numpy.random.mtrand import uniform 
+from numpy.random.mtrand import uniform
 import netCDF4
 
 try:

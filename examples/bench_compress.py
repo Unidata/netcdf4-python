@@ -6,7 +6,7 @@ from timeit import Timer
 import os, sys
 
 # create an n1dim by n2dim by n3dim random array.
-n1dim = 30   
+n1dim = 30
 n2dim = 15
 n3dim = 73
 n4dim = 144
