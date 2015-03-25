@@ -6,6 +6,21 @@
    Not installed by setup.py (contributed by Ross Gammon, issue #383).
  * replace tabs with spaces by running reindent.py on all *.py and *.pyx files
    (issue #378).
+ * allow index arrays to be multi-dimensional, as long as all the dimensions
+   except one are singletons (can be 'squeezed' to 1d).  This allows
+   integer index arrays to work for both numpy and netcdf variables, as
+   long as index arrays are 'squeezable' to 1d, and they can be 
+   broadcast against each other (issue #385).  For example,
+
+   v[np.array([0,1])[:,None], np.array([0,2,3])]
+   
+   now behaves the same as
+
+   v[(0,1),(0,2,3)]
+
+   if v is a netcdf variable.  However, the former also
+   works if v is a numpy array.
+
 
  version 1.1.7 (tag v1.1.7rel)
  =============================
