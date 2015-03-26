@@ -172,7 +172,15 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         ea = np.asarray(e)
         # Raise error if multidimensional indexing is used.
         if ea.ndim > 1:
-            raise IndexError("Index cannot be multidimensional")
+            # see if array can be squeezed to 1d.
+            # Also require singleton dimension to not
+            # be the one being sliced, since the numpy
+            # slicing rules will behave differently in that case.
+            eas = ea.squeeze()
+            if eas.ndim > 1 or (ea.shape[i] == 1 and max(ea.shape) > 1):
+                raise IndexError("Illegal multidimensional index array")
+            else:
+                ea = eas
         # set unlim to True if dimension is unlimited and put==True
         # (called from __setitem__)
         if put and (dimensions is not None and grp is not None) and len(dimensions):
