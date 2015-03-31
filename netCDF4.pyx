@@ -1421,13 +1421,16 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
-    file_format, data_model, cmptypes, vltypes, keepweakref
+    file_format, data_model, cmptypes, vltypes, keepweakref, \
+    __orthogonal_indexing__
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                  diskless=False, persist=False, keepweakref=False, **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
+        # flag to indicate that Variables in this Dataset support orthogonal indexing.
+        self.__orthogonal_indexing__ = True
         if diskless and __netcdf4libversion__ < '4.2.1':
             #diskless = False # don't raise error, instead silently ignore
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
@@ -2118,6 +2121,8 @@ method)."""
     def __init__(self, parent, name, **kwargs):
         cdef int ierr
         cdef char *groupname
+        # flag to indicate that Variables in this Group support orthogonal indexing.
+        self.__orthogonal_indexing__ = True
         # set data_model and file_format attributes.
         self.data_model = parent.data_model
         self.file_format = parent.file_format
