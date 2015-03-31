@@ -1297,7 +1297,7 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','_isprimitive',
- 'file_format','_isvlen','_iscompound','_cmptype','_vltype','keepweakref','name']
+ 'file_format','_isvlen','_iscompound','_cmptype','_vltype','keepweakref','name','__orthogoral_indexing__']
 
 
 cdef class Dataset:
@@ -2452,7 +2452,7 @@ truncated to this decimal place when it is assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
-    _isvlen, _grp,_cmptype,_vltype
+    _isvlen, _grp, _cmptype, _vltype, __orthogonal_indexing__
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
@@ -2465,6 +2465,8 @@ instance. If C{None}, the data is not truncated. """
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
+        # flag to indicate that orthogonal indexing is supported
+        self.__orthogonal_indexing__ = True
         # if complevel is set to zero, set zlib to False.
         if not complevel:
             zlib = False
