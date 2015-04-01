@@ -2454,7 +2454,12 @@ reset using L{set_auto_mask} and L{set_auto_maskandscale} methods.
 @ivar least_significant_digit: Describes the power of ten of the smallest
 decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the L{Variable}
-instance. If C{None}, the data is not truncated. """
+instance. If C{None}, the data is not truncated. 
+
+@ivar __orthogonal_indexing__: Always C{True}.  Indicates to client code
+that the object supports "orthogonal indexing", which means that slices
+that are 1d arrays or lists slice along each dimension independently.  This
+behavior is similar to Fortran or Matlab, but different than numpy."""
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
     _isvlen, _grp, _cmptype, _vltype, __orthogonal_indexing__
