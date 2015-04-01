@@ -87,6 +87,7 @@ netCDF4.Dataset.data_model	netCDF4.Dataset-class.html#data_model
 netCDF4.Dataset.__repr__	netCDF4.Dataset-class.html#__repr__
 netCDF4.Dataset.createGroup	netCDF4.Dataset-class.html#createGroup
 netCDF4.Dataset.createDimension	netCDF4.Dataset-class.html#createDimension
+netCDF4.Dataset.__orthogonal_indexing__	netCDF4.Dataset-class.html#__orthogonal_indexing__
 netCDF4.Dimension	netCDF4.Dimension-class.html
 netCDF4.Dimension.isunlimited	netCDF4.Dimension-class.html#isunlimited
 netCDF4.Dimension.__init__	netCDF4.Dimension-class.html#__init__
@@ -152,6 +153,7 @@ netCDF4.Dataset.createVLType	netCDF4.Dataset-class.html#createVLType
 netCDF4.Dataset.createGroup	netCDF4.Dataset-class.html#createGroup
 netCDF4.Dataset.createDimension	netCDF4.Dataset-class.html#createDimension
 netCDF4.Group._getname	netCDF4.Group-class.html#_getname
+netCDF4.Dataset.__orthogonal_indexing__	netCDF4.Dataset-class.html#__orthogonal_indexing__
 netCDF4.MFDataset	netCDF4.MFDataset-class.html
 netCDF4.Dataset._enddef	netCDF4.Dataset-class.html#_enddef
 netCDF4.Dataset.renameVariable	netCDF4.Dataset-class.html#renameVariable
@@ -201,6 +203,7 @@ netCDF4.MFDataset.__repr__	netCDF4.MFDataset-class.html#__repr__
 netCDF4.Dataset.createVLType	netCDF4.Dataset-class.html#createVLType
 netCDF4.Dataset.createGroup	netCDF4.Dataset-class.html#createGroup
 netCDF4.Dataset.createDimension	netCDF4.Dataset-class.html#createDimension
+netCDF4.Dataset.__orthogonal_indexing__	netCDF4.Dataset-class.html#__orthogonal_indexing__
 netCDF4.MFTime	netCDF4.MFTime-class.html
 netCDF4.MFTime.__init__	netCDF4.MFTime-class.html#__init__
 netCDF4.MFTime.__getitem__	netCDF4.MFTime-class.html#__getitem__
@@ -235,6 +238,7 @@ netCDF4.Variable.__array__	netCDF4.Variable-class.html#__array__
 netCDF4.Variable.__getattr__	netCDF4.Variable-class.html#__getattr__
 netCDF4.Variable.name	netCDF4.Variable-class.html#name
 netCDF4.Variable.set_auto_mask	netCDF4.Variable-class.html#set_auto_mask
+netCDF4.Variable.__orthogonal_indexing__	netCDF4.Variable-class.html#__orthogonal_indexing__
 netCDF4.Variable.setncatts	netCDF4.Variable-class.html#setncatts
 netCDF4.Variable.setncattr	netCDF4.Variable-class.html#setncattr
 netCDF4.Variable.__len__	netCDF4.Variable-class.html#__len__

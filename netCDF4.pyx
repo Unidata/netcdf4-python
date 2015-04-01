@@ -1297,7 +1297,7 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','_isprimitive',
- 'file_format','_isvlen','_iscompound','_cmptype','_vltype','keepweakref','name']
+ 'file_format','_isvlen','_iscompound','_cmptype','_vltype','keepweakref','name','__orthogoral_indexing__']
 
 
 cdef class Dataset:
@@ -1421,13 +1421,16 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
-    file_format, data_model, cmptypes, vltypes, keepweakref
+    file_format, data_model, cmptypes, vltypes, keepweakref, \
+    __orthogonal_indexing__
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                  diskless=False, persist=False, keepweakref=False, **kwargs):
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
+        # flag to indicate that Variables in this Dataset support orthogonal indexing.
+        self.__orthogonal_indexing__ = True
         if diskless and __netcdf4libversion__ < '4.2.1':
             #diskless = False # don't raise error, instead silently ignore
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
@@ -2118,6 +2121,8 @@ method)."""
     def __init__(self, parent, name, **kwargs):
         cdef int ierr
         cdef char *groupname
+        # flag to indicate that Variables in this Group support orthogonal indexing.
+        self.__orthogonal_indexing__ = True
         # set data_model and file_format attributes.
         self.data_model = parent.data_model
         self.file_format = parent.file_format
@@ -2449,10 +2454,15 @@ reset using L{set_auto_mask} and L{set_auto_maskandscale} methods.
 @ivar least_significant_digit: Describes the power of ten of the smallest
 decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the L{Variable}
-instance. If C{None}, the data is not truncated. """
+instance. If C{None}, the data is not truncated. 
+
+@ivar __orthogonal_indexing__: Always C{True}.  Indicates to client code
+that the object supports "orthogonal indexing", which means that slices
+that are 1d arrays or lists slice along each dimension independently.  This
+behavior is similar to Fortran or Matlab, but different than numpy."""
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
-    _isvlen, _grp,_cmptype,_vltype
+    _isvlen, _grp, _cmptype, _vltype, __orthogonal_indexing__
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
@@ -2465,6 +2475,8 @@ instance. If C{None}, the data is not truncated. """
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
+        # flag to indicate that orthogonal indexing is supported
+        self.__orthogonal_indexing__ = True
         # if complevel is set to zero, set zlib to False.
         if not complevel:
             zlib = False
