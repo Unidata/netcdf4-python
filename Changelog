@@ -1,5 +1,8 @@
  version 1.1.8 (not yet released)
  ================================
+ * add __orthogonal_indexing__ attribute to Variable, Dataset and Group (issue #385) to 
+   denote that Variable objects do not follow numpy indexing semantics for integer and
+   boolean array indices. 
  * make sure application of scale_factor and add_offset works correctly when
    scale_factor not given (issue #381).
  * add man pages for nc3tonc4, nc4tonc3, ncinfo in man directory.
