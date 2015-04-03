@@ -88,8 +88,8 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     use "orthogonal indexing" which only allows for 1-d index arrays and
     treats these arrays of indices independently along each dimension.
 
-    The implementation of "orthogonal indexing" used here requires that array
-    indices be 1-d boolean or integer sequences. If integer arrays are used,
+    The implementation of "orthogonal indexing" used here requires that
+    index arrays be 1-d boolean or integer. If integer arrays are used,
     the index values must be sorted and contain no duplicates.
 
     In summary, slicing netcdf4-python variable objects with 1-d integer or
@@ -97,7 +97,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     numpy array.
 
     Numpy also supports slicing an array with a boolean array of the same
-    shape. For example x[x<0] returns a 1-d array with all the positive values of x.
+    shape. For example x[x>0] returns a 1-d array with all the positive values of x.
     This is also not supported in netcdf4-python, if x.ndim > 1.
 
     Orthogonal indexing can be used in to select netcdf variable slices
