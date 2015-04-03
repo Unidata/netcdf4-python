@@ -71,31 +71,49 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     """Return start, count, stride and indices needed to store/extract data
     into/from a netCDF variable.
 
-    This function is used to convert a NumPy index into a form that is
+    This function is used to convert a slicing expression into a form that is
     compatible with the nc_get_vars function. Specifically, it needs
-    to interpret slices, ellipses, sequences of integers as well as
-    sequences of booleans.
+    to interpret integers, slices, Ellipses, and 1-d sequences of integers
+    and booleans.
 
-    Note that all the fancy indexing tricks
-    implemented in NumPy are not supported. In particular, multidimensional
-    indexing is not supported and will raise an IndexError. Note also that
-    boolean indexing does not work as in NumPy. In NumPy, booleans arrays
-    behave identically to integer indices. For netCDF variables, we thought
-    it would be useful to use a different logic, namely dimension independence.
-    What this means is that you can do:
-    >>> v[lat>60, lon<180, :]
+    Numpy uses "broadcasting indexing" to handle array-valued indices.
+    "Broadcasting indexing" (a.k.a "fancy indexing") treats all multi-valued
+    indices together to allow arbitrary points to be extracted. The index
+    arrays can be multidimensional, and more than one can be specified in a
+    slice, as long as they can be "broadcast" against each other.
+    This style of indexing can be very powerful, but it is very hard
+    to understand, explain, and implement (and can lead to hard to find bugs).
+    Most other python packages and array processing
+    languages (such as netcdf4-python, xray, biggus, matlab and fortran)
+    use "orthogonal indexing" which only allows for 1-d index arrays and
+    treats these arrays of indices independently along each dimension.
+
+    The implementation of "orthogonal indexing" used here requires that array
+    indices be 1-d boolean or integer sequences. If integer arrays are used,
+    the index values must be sorted and contain no duplicates.
+
+    In summary, slicing netcdf4-python variable objects with 1-d integer or
+    boolean arrays is allowed, but may give a different result than slicing a
+    numpy array.
+
+    Numpy also supports slicing an array with a boolean array of the same
+    shape. For example x[x<0] returns a 1-d array with all the positive values of x.
+    This is also not supported in netcdf4-python, if x.ndim > 1.
+
+    Orthogonal indexing can be used in to select netcdf variable slices
+    using the dimension variables. For example, you can use v[lat>60,lon<180]
     to fetch the elements of v obeying conditions on latitude and longitude.
+    Allow for this sort of simple variable subsetting is the reason we decided to
+    deviate from numpy's slicing rules.
 
     This function is used both by the __setitem__ and __getitem__ method of
-    the Variable class. Although the behavior is similar in both cases, there
-    are some differences to be noted.
+    the Variable class.
 
     Parameters
     ----------
-    elem : tuple of integer, slice, ellipsis or sequence of integers.
-      The indexing information for the netCDF Variable: Variable[elem]
-    shape : tuple
-      The current shape of the netCDF variable.
+    elem : tuple of integer, slice, ellipsis or 1-d boolean or integer
+    sequences used to slice the netCDF Variable (Variable[elem]).
+    shape : tuple containing the current shape of the netCDF variable.
     dimensions : sequence
       The name of the dimensions. This is only useful to find out
       whether or not some dimensions are unlimited. Only needed within
@@ -104,8 +122,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
       The netCDF group to which the variable being set belongs to.
       Only needed within __setitem__.
     datashape : sequence
-      The shape of the data that is being stored. Only needed within
-      __setitem__.
+      The shape of the data that is being stored. Only needed by __setitime__
     put : True|False (default False).  If called from __setitem__, put is True.
 
     Returns
