@@ -1035,8 +1035,9 @@ cdef _set_att(grp, int varid, name, value):
     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
        is_netcdf3):
         value_arr = value_arr.astype('i4')
-    # if array contains strings, write a text attribute.
-    if value_arr.dtype.char == 'S':
+    # if array contains ascii strings, write a text attribute.
+    if value_arr.dtype.char == 'S' or \
+       (value_arr.dtype.char == 'U' and is_netcdf3):
         if not value_arr.shape:
             dats = _strencode(value_arr.item())
         else:
