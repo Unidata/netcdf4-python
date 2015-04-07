@@ -288,6 +288,7 @@ cdef extern from "netcdf.h":
                size_t len, void *op)
     int nc_get_att(int ncid, int varid, char *name, void *ip) nogil
     int nc_get_att_string(int ncid, int varid, char *name, char **ip) nogil
+    int nc_put_att_string(int ncid, int varid, char *name, size_t len, char **op) nogil
     int nc_def_opaque(int ncid, size_t size, char *name, nc_type *xtypep)
     int nc_inq_opaque(int ncid, nc_type xtype, char *name, size_t *sizep)
     int nc_put_att_opaque(int ncid, int varid, char *name,

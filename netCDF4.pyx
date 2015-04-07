@@ -1036,7 +1036,7 @@ cdef _set_att(grp, int varid, name, value):
        is_netcdf3):
         value_arr = value_arr.astype('i4')
     # if array contains strings, write a text attribute.
-    if value_arr.dtype.char in ['S','U']:
+    if value_arr.dtype.char == 'S':
         if not value_arr.shape:
             dats = _strencode(value_arr.item())
         else:
@@ -1048,6 +1048,21 @@ cdef _set_att(grp, int varid, name, value):
             # write null byte
             lenarr=1; datstring = '\x00'
         ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
+        if ierr != NC_NOERR:
+            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    elif value_arr.dtype.char == 'U':
+        # a unicode string, use put_att_string.
+        if not value_arr.shape:
+            dats = _strencode(value_arr.item())
+        else:
+            value_arr1 = value_arr.ravel()
+            dats = _strencode(''.join(value_arr1.tolist()))
+        lenarr = len(dats)
+        datstring = dats
+        if lenarr == 0:
+            # write null byte
+            lenarr=1; datstring = '\x00'
+        ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
     # a 'regular' array type ('f4','i4','f8' etc)
