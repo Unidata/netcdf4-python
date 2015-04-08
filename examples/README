@@ -1,6 +1,7 @@
 tutorial.py:  code from introduction section of documentation.
 json_att.py:  shows to to use json to serialize python objects, save them as
               netcdf attributes, and then convert them back to python objects.
+subset.py: shows how to use 'orthogonal indexing' to select geographic regions.
 reading_netcdf.ipynb,writing_netcdf.ipynb: ipython notebooks from Unidata python workshop
 threaded_read.py:  test script for concurrent threaded reads.
 bench.py:  benchmarks for reading/writing using different formats.
