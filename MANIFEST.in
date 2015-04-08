@@ -1,9 +1,7 @@
 recursive-include docs *
-recursive-include ports *
 recursive-include man *
 include MANIFEST.in
 include README.md
-include README.macosx
 include COPYING
 include Changelog
 include setup.cfg
