@@ -140,6 +140,7 @@ setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars.
 ncconfig = None
 use_ncconfig = None
+use_cython = True
 if os.path.exists(setup_cfg):
     sys.stdout.write('reading from setup.cfg...\n')
     config = configparser.SafeConfigParser()
@@ -180,15 +181,21 @@ if os.path.exists(setup_cfg):
     except: pass
     try: curl_incdir = config.get("directories", "curl_incdir")
     except: pass
-    try: use_ncconfig = config.get("options", "use_ncconfig")
+    try: use_ncconfig = config.getboolean("options", "use_ncconfig")
     except: pass
     try: ncconfig = config.get("options", "ncconfig")
     except: pass
+    try: use_cython = config.getboolean("options", "use_cython")
+    except: pass
+
+# turn off cython compilation if desired
+if has_cython and not use_cython:
+    has_cython = False
 
 # make sure USE_NCCONFIG from environment takes
 # precendence over use_ncconfig from setup.cfg (issue #341).
 if USE_NCCONFIG is None and use_ncconfig is not None:
-    USE_NCCONFIG = bool(use_ncconfig)
+    USE_NCCONFIG = use_ncconfig
 elif USE_NCCONFIG is None:
     USE_NCCONFIG = False
 
