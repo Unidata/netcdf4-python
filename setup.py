@@ -7,7 +7,6 @@ except ImportError:
     setuptools_extra_kwargs = {}
 from distutils.dist import Distribution
 try:
-    #from Cython.Distutils import build_ext
     from Cython.Build import cythonize
     from Cython import __version__ as cython_version
     if cython_version >= '0.19':
