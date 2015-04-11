@@ -1,11 +1,23 @@
 import os, sys, subprocess, shutil
 try:
     from setuptools import setup, Extension
-    setuptools_extra_kwargs = {"install_requires":["numpy>=1.3"]}
+    setuptools_extra_kwargs = {
+        "install_requires":  ["numpy>=1.3"],
+        "entry_points": {
+            'console_scripts': [
+                'ncinfo = netCDF4_utils:ncinfo',
+                'nc4tonc3 = netCDF4_utils:nc4tonc3',
+                'nc3tonc4 = netCDF4_utils:nc3tonc4',
+            ]
+        },
+    }
 except ImportError:
     from distutils.core  import setup, Extension
-    setuptools_extra_kwargs = {}
+    setuptools_extra_kwargs = {
+        "scripts": ['utils/nc3tonc4','utils/nc4tonc3','utils/ncinfo']
+    }
 from distutils.dist import Distribution
+
 try:
     from Cython.Build import cythonize
     from Cython import __version__ as cython_version
@@ -383,7 +395,6 @@ setup(name = "netCDF4",
   author_email      = "jeffrey.s.whitaker@noaa.gov",
   url               = "http://github.com/Unidata/netcdf4-python",
   download_url      = "http://python.org/pypi/netCDF4",
-  scripts           = ['utils/nc3tonc4','utils/nc4tonc3','utils/ncinfo'],
   platforms         = ["any"],
   license           = "OSI Approved",
   description = "Provides an object-oriented python interface to the netCDF version 4 library.",
