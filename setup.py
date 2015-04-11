@@ -7,7 +7,7 @@ except ImportError:
     setuptools_extra_kwargs = {}
 from distutils.dist import Distribution
 try:
-    from Cython.Distutils import build_ext
+    from Cython.Build import cythonize
     from Cython import __version__ as cython_version
     if cython_version >= '0.19':
         has_cython = True
@@ -140,6 +140,7 @@ setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars.
 ncconfig = None
 use_ncconfig = None
+use_cython = True
 if os.path.exists(setup_cfg):
     sys.stdout.write('reading from setup.cfg...\n')
     config = configparser.SafeConfigParser()
@@ -180,15 +181,21 @@ if os.path.exists(setup_cfg):
     except: pass
     try: curl_incdir = config.get("directories", "curl_incdir")
     except: pass
-    try: use_ncconfig = config.get("options", "use_ncconfig")
+    try: use_ncconfig = config.getboolean("options", "use_ncconfig")
     except: pass
     try: ncconfig = config.get("options", "ncconfig")
     except: pass
+    try: use_cython = config.getboolean("options", "use_cython")
+    except: pass
+
+# turn off cython compilation if desired
+if has_cython and not use_cython:
+    has_cython = False
 
 # make sure USE_NCCONFIG from environment takes
 # precendence over use_ncconfig from setup.cfg (issue #341).
 if USE_NCCONFIG is None and use_ncconfig is not None:
-    USE_NCCONFIG = bool(use_ncconfig)
+    USE_NCCONFIG = use_ncconfig
 elif USE_NCCONFIG is None:
     USE_NCCONFIG = False
 
@@ -329,6 +336,9 @@ if netcdf_lib_version is None:
 else:
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
+extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs),
+              Extension('netcdftime._datetime', ['netcdftime/_datetime.c'])]
+cmdclass = {}
 if has_cython and 'sdist' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
     # recompile netCDF4.pyx
@@ -361,12 +371,9 @@ if has_cython and 'sdist' not in sys.argv[1:]:
         sys.stdout.write('netcdf lib does not have nc_inq_format_extended function\n')
         f.write('DEF HAS_NC_INQ_FORMAT_EXTENDED = 0\n')
     f.close()
-    cmdclass = {'build_ext': build_ext}
+    ext_modules = cythonize(extensions)
 else:
-    # use existing netCDF4.c, don't need cython.
-    extensions = [Extension("netCDF4",["netCDF4.c"],libraries=libs,library_dirs=lib_dirs,include_dirs=inc_dirs,runtime_library_dirs=lib_dirs),
-                  Extension('netcdftime._datetime', ['netcdftime/_datetime.c'])]
-    cmdclass = {}
+    ext_modules = extensions
 
 setup(name = "netCDF4",
   cmdclass = cmdclass,
@@ -389,5 +396,5 @@ setup(name = "netCDF4",
                  "Operating System :: OS Independent"],
   py_modules = ["netCDF4_utils"],
   packages = ['netcdftime'],
-  ext_modules = extensions,
+  ext_modules = ext_modules,
   **setuptools_extra_kwargs)
