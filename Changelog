@@ -1,5 +1,8 @@
  version 1.1.8 (not yet released)
  ================================
+ * convert utility scripts into utils directory to setuptools entry points 
+   (pull request #392 from @mindw).  Code for utilities moved
+   to netCDF4_utils.py - makes utilities more windows-friendly.
  * make sure booleans are treated correctly in setup.cfg. Add
    use_cython (default True) to setup.cfg.  If set to False, then
    cython will not be used to compile netCDF4.pyx (existing netCDF4.c 
