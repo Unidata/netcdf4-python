@@ -453,7 +453,6 @@ Default is an empty list.
                     #if not vInst.dimensions[0] != aggDimName:
 
                     masterDims, masterShape, masterType = masterRecVar[v][:3]
-                    extDims, extShape, extType = varInfo[v][:3]
                     extDims = varInfo[v].dimensions
                     extShape = varInfo[v].shape
                     extType = varInfo[v].dtype
