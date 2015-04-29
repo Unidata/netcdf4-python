@@ -15,7 +15,9 @@ from ._datetime import datetime
 
 _units = ['days', 'hours', 'minutes', 'seconds',
           'day', 'hour', 'minute', 'second',
-          'milliseconds','millisecond','microseconds','microsecond']
+          'd', 'h', 'hr', 'hrs', 'min', 'mins', 'sec', 'secs',
+          'milliseconds','millisecond','microseconds','microsecond',
+          'millisecs','millisec','microsecs','microsec']
 _calendars = ['standard', 'gregorian', 'proleptic_gregorian',
               'noleap', 'julian', 'all_leap', '365_day', '366_day', '360_day']
 
