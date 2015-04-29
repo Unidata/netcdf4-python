@@ -752,6 +752,8 @@ units to datetime objects.
             jdelta = jdelta * 24. - self.tzoffset / 60.
         elif self.units in ['day', 'days', 'd']:
             jdelta = jdelta - self.tzoffset / 1440.
+        else:
+            raise ValueError('unsupported time units')
         if isscalar:
             return jdelta
         else:
@@ -806,6 +808,8 @@ units to datetime objects.
             jdelta = time_value / 24. + self.tzoffset / 1440.
         elif self.units in ['day', 'days', 'd']:
             jdelta = time_value + self.tzoffset / 1440.
+        else:
+            raise ValueError('unsupported time units')
         jd = self._jd0 + jdelta
         if self.calendar in ['julian', 'standard', 'gregorian', 'proleptic_gregorian']:
             if not isscalar:

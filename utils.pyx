@@ -157,6 +157,8 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
                     times.append(totaltime/1.e6/3600)
                 elif unit in ['day', 'days', 'd']:
                     times.append(totaltime/1.e6/3600./24.)
+                else:
+                    raise ValueError('unsupported time units')
         if isscalar:
             return times[0]
         else:
@@ -237,10 +239,12 @@ contains one.
                     tsecs = time
                 elif unit in ['minute', 'minutes', 'min', 'mins']:
                     tsecs = time*60.
-                elif unit in ['minute', 'minutes', 'min', 'mins']:
+                elif unit in ['hour', 'hours', 'hr', 'hrs', 'h']:
                     tsecs = time*3600.
                 elif unit in ['day', 'days', 'd']:
                     tsecs = time*86400.
+                else:
+                    raise ValueError('unsupported time units')
                 # compute time delta.
                 days = tsecs // 86400.
                 msecsd = tsecs*1.e6 - days*86400.*1.e6
