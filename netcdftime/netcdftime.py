@@ -738,17 +738,19 @@ units to datetime objects.
         if not isscalar:
             jdelta = numpy.array(jdelta)
         # convert to desired units, subtract time zone offset.
-        if self.units in ['microseconds','microsecond']:
+        if self.units in \
+           ['microseconds','microsecond', 'microsec', 'microsecs']:
             jdelta = jdelta * 86400. * 1.e6  - self.tzoffset * 60. * 1.e6
-        elif self.units in ['milliseconds', 'millisecond']:
+        elif self.units in \
+           ['milliseconds', 'millisecond', 'millisec', 'millisecs']:
             jdelta = jdelta * 86400. * 1.e3  - self.tzoffset * 60. * 1.e3
-        elif self.units in ['second', 'seconds']:
+        elif self.units in ['second', 'seconds', 'sec', 'secs', 's']:
             jdelta = jdelta * 86400. - self.tzoffset * 60.
-        elif self.units in ['minute', 'minutes']:
+        elif self.units in ['minute', 'minutes', 'min', 'mins']:
             jdelta = jdelta * 1440. - self.tzoffset
-        elif self.units in ['hour', 'hours']:
+        elif self.units in ['hour', 'hours', 'hr', 'hrs', 'h']:
             jdelta = jdelta * 24. - self.tzoffset / 60.
-        elif self.units in ['day', 'days']:
+        elif self.units in ['day', 'days', 'd']:
             jdelta = jdelta - self.tzoffset / 1440.
         if isscalar:
             return jdelta
@@ -790,17 +792,19 @@ units to datetime objects.
             time_value = numpy.array(time_value, dtype='d')
             shape = time_value.shape
         # convert to desired units, add time zone offset.
-        if self.units in ['microseconds','microsecond']:
+        if self.units in \
+           ['microseconds','microsecond', 'microsec', 'microsecs']:
             jdelta = time_value / 86400000000. + self.tzoffset / 1440.
-        elif self.units in ['milliseconds', 'millisecond']:
+        elif self.units in
+           ['milliseconds', 'millisecond', 'millisec', 'millisecs']:
             jdelta = time_value / 86400000. + self.tzoffset / 1440.
-        elif self.units in ['second', 'seconds']:
+        elif self.units in ['second', 'seconds', 'sec', 'secs', 's']:
             jdelta = time_value / 86400. + self.tzoffset / 1440.
-        elif self.units in ['minute', 'minutes']:
+        elif self.units in ['minute', 'minutes', 'min', 'mins']:
             jdelta = time_value / 1440. + self.tzoffset / 1440.
-        elif self.units in ['hour', 'hours']:
+        elif self.units in ['hour', 'hours', 'hr', 'hrs', 'h']:
             jdelta = time_value / 24. + self.tzoffset / 1440.
-        elif self.units in ['day', 'days']:
+        elif self.units in ['day', 'days', 'd']:
             jdelta = time_value + self.tzoffset / 1440.
         jd = self._jd0 + jdelta
         if self.calendar in ['julian', 'standard', 'gregorian', 'proleptic_gregorian']:
