@@ -795,7 +795,7 @@ units to datetime objects.
         if self.units in \
            ['microseconds','microsecond', 'microsec', 'microsecs']:
             jdelta = time_value / 86400000000. + self.tzoffset / 1440.
-        elif self.units in
+        elif self.units in \
            ['milliseconds', 'millisecond', 'millisec', 'millisecs']:
             jdelta = time_value / 86400000. + self.tzoffset / 1440.
         elif self.units in ['second', 'seconds', 'sec', 'secs', 's']:

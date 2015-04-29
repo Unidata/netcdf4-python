@@ -145,17 +145,17 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
                 td = date - basedate
                 # total time in microseconds.
                 totaltime = td.microseconds + (td.seconds + td.days * 24 * 3600) * 1.e6
-                if unit == 'microseconds' or unit == 'microsecond':
+                if unit in ['microseconds','microsecond', 'microsec', 'microsecs']:
                     times.append(totaltime)
-                elif unit == 'milliseconds' or unit == 'millisecond':
+                elif unit in ['milliseconds', 'millisecond', 'millisec', 'millisecs']:
                     times.append(totaltime/1.e3)
-                elif unit == 'seconds' or unit == 'second':
+                elif unit in ['second', 'seconds', 'sec', 'secs', 's']:
                     times.append(totaltime/1.e6)
-                elif unit == 'minutes' or unit == 'minute':
+                elif unit in ['minute', 'minutes', 'min', 'mins']:
                     times.append(totaltime/1.e6/60)
-                elif unit == 'hours' or unit == 'hour':
+                elif unit in ['hour', 'hours', 'hr', 'hrs', 'h']:
                     times.append(totaltime/1.e6/3600)
-                elif unit == 'days' or unit == 'day':
+                elif unit in ['day', 'days', 'd']:
                     times.append(totaltime/1.e6/3600./24.)
         if isscalar:
             return times[0]
@@ -229,17 +229,17 @@ contains one.
                 dates.append(None)
             else:
                 # convert to total seconds
-                if unit == 'microseconds' or unit == 'microsecond':
+                if unit in ['microseconds','microsecond', 'microsec', 'microsecs']:
                     tsecs = time/1.e6
-                elif unit == 'milliseconds' or unit == 'millisecond':
+                elif unit in ['milliseconds', 'millisecond', 'millisec', 'millisecs']:
                     tsecs = time/1.e3
-                elif unit == 'seconds' or unit == 'second':
+                elif unit in ['second', 'seconds', 'sec', 'secs', 's']:
                     tsecs = time
-                elif unit == 'minutes' or unit == 'minute':
+                elif unit in ['minute', 'minutes', 'min', 'mins']:
                     tsecs = time*60.
-                elif unit == 'hours' or unit == 'hour':
+                elif unit in ['minute', 'minutes', 'min', 'mins']:
                     tsecs = time*3600.
-                elif unit == 'days' or unit == 'day':
+                elif unit in ['day', 'days', 'd']:
                     tsecs = time*86400.
                 # compute time delta.
                 days = tsecs // 86400.
