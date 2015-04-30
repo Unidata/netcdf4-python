@@ -13,11 +13,13 @@ except ImportError:  # python 3.x
 
 from ._datetime import datetime
 
-_units = ['days', 'hours', 'minutes', 'seconds',
-          'day', 'hour', 'minute', 'second',
-          'd', 'h', 'hr', 'hrs', 'min', 'mins', 'sec', 'secs',
-          'milliseconds','millisecond','microseconds','microsecond',
-          'millisecs','millisec','microsecs','microsec']
+microsec_units = ['microseconds','microsecond', 'microsec', 'microsecs']
+millisec_units = ['milliseconds', 'millisecond', 'millisec', 'millisecs']
+sec_units =      ['second', 'seconds', 'sec', 'secs', 's']
+min_units =      ['minute', 'minutes', 'min', 'mins']
+hr_units =       ['hour', 'hours', 'hr', 'hrs', 'h']
+day_units =      ['day', 'days', 'd']
+_units = microsec_units+millisec_units+sec_units+min_units+hr_units+day_units
 _calendars = ['standard', 'gregorian', 'proleptic_gregorian',
               'noleap', 'julian', 'all_leap', '365_day', '366_day', '360_day']
 
@@ -738,19 +740,17 @@ units to datetime objects.
         if not isscalar:
             jdelta = numpy.array(jdelta)
         # convert to desired units, subtract time zone offset.
-        if self.units in \
-           ['microseconds','microsecond', 'microsec', 'microsecs']:
+        if self.units in microsec_units:
             jdelta = jdelta * 86400. * 1.e6  - self.tzoffset * 60. * 1.e6
-        elif self.units in \
-           ['milliseconds', 'millisecond', 'millisec', 'millisecs']:
+        elif self.units in millisec_units:
             jdelta = jdelta * 86400. * 1.e3  - self.tzoffset * 60. * 1.e3
-        elif self.units in ['second', 'seconds', 'sec', 'secs', 's']:
+        elif self.units in sec_units:
             jdelta = jdelta * 86400. - self.tzoffset * 60.
-        elif self.units in ['minute', 'minutes', 'min', 'mins']:
+        elif self.units in min_units:
             jdelta = jdelta * 1440. - self.tzoffset
-        elif self.units in ['hour', 'hours', 'hr', 'hrs', 'h']:
+        elif self.units in hr_units:
             jdelta = jdelta * 24. - self.tzoffset / 60.
-        elif self.units in ['day', 'days', 'd']:
+        elif self.units in day_units:
             jdelta = jdelta - self.tzoffset / 1440.
         else:
             raise ValueError('unsupported time units')
@@ -794,19 +794,17 @@ units to datetime objects.
             time_value = numpy.array(time_value, dtype='d')
             shape = time_value.shape
         # convert to desired units, add time zone offset.
-        if self.units in \
-           ['microseconds','microsecond', 'microsec', 'microsecs']:
+        if self.units in microsec_units:
             jdelta = time_value / 86400000000. + self.tzoffset / 1440.
-        elif self.units in \
-           ['milliseconds', 'millisecond', 'millisec', 'millisecs']:
+        elif self.units in millisec_units:
             jdelta = time_value / 86400000. + self.tzoffset / 1440.
-        elif self.units in ['second', 'seconds', 'sec', 'secs', 's']:
+        elif self.units in sec_units:
             jdelta = time_value / 86400. + self.tzoffset / 1440.
-        elif self.units in ['minute', 'minutes', 'min', 'mins']:
+        elif self.units in min_units:
             jdelta = time_value / 1440. + self.tzoffset / 1440.
-        elif self.units in ['hour', 'hours', 'hr', 'hrs', 'h']:
+        elif self.units in hr_units:
             jdelta = time_value / 24. + self.tzoffset / 1440.
-        elif self.units in ['day', 'days', 'd']:
+        elif self.units in day_units:
             jdelta = time_value + self.tzoffset / 1440.
         else:
             raise ValueError('unsupported time units')

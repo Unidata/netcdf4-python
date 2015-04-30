@@ -1,5 +1,6 @@
 from datetime import timedelta, datetime, MINYEAR
-from netcdftime import _parse_date
+from netcdftime import _parse_date, microsec_units, millisec_units,\
+                       sec_units, min_units, hr_units, day_units
 
 # start of the gregorian calendar
 gregorian = datetime(1582,10,15)
@@ -145,17 +146,17 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
                 td = date - basedate
                 # total time in microseconds.
                 totaltime = td.microseconds + (td.seconds + td.days * 24 * 3600) * 1.e6
-                if unit in ['microseconds','microsecond', 'microsec', 'microsecs']:
+                if unit in microsec_units:
                     times.append(totaltime)
-                elif unit in ['milliseconds', 'millisecond', 'millisec', 'millisecs']:
+                elif unit in millisec_units:
                     times.append(totaltime/1.e3)
-                elif unit in ['second', 'seconds', 'sec', 'secs', 's']:
+                elif unit in sec_units:
                     times.append(totaltime/1.e6)
-                elif unit in ['minute', 'minutes', 'min', 'mins']:
+                elif unit in min_units:
                     times.append(totaltime/1.e6/60)
-                elif unit in ['hour', 'hours', 'hr', 'hrs', 'h']:
+                elif unit in hr_units:
                     times.append(totaltime/1.e6/3600)
-                elif unit in ['day', 'days', 'd']:
+                elif unit in day_units:
                     times.append(totaltime/1.e6/3600./24.)
                 else:
                     raise ValueError('unsupported time units')
@@ -231,17 +232,17 @@ contains one.
                 dates.append(None)
             else:
                 # convert to total seconds
-                if unit in ['microseconds','microsecond', 'microsec', 'microsecs']:
+                if unit in microsec_units:
                     tsecs = time/1.e6
-                elif unit in ['milliseconds', 'millisecond', 'millisec', 'millisecs']:
+                elif unit in millisec_units:
                     tsecs = time/1.e3
-                elif unit in ['second', 'seconds', 'sec', 'secs', 's']:
+                elif unit in sec_units:
                     tsecs = time
-                elif unit in ['minute', 'minutes', 'min', 'mins']:
+                elif unit in min_units:
                     tsecs = time*60.
-                elif unit in ['hour', 'hours', 'hr', 'hrs', 'h']:
+                elif unit in hr_units:
                     tsecs = time*3600.
-                elif unit in ['day', 'days', 'd']:
+                elif unit in day_units:
                     tsecs = time*86400.
                 else:
                     raise ValueError('unsupported time units')
