@@ -8,13 +8,10 @@ python:
   - "3.4"
 matrix:
   include:
-    - python: 2.7
-      env:
-        - COVERAGE=1
     # Absolute minimum dependencies
     - python: 2.7
       env:
-        - DEPENDS=numpy==1.5.1 cython==0.19
+        - DEPENDS="numpy==1.5.1 cython==0.19"
 notifications:
   email: false
 before_install:
