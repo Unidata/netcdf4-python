@@ -3219,7 +3219,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
-            except TypeError: # isnan fails on some dtypes (issue 202)
+            except: # isnan fails on some dtypes (issue 202)
                 fvalisnan = False
             if fvalisnan:
                 mask = numpy.isnan(data)
