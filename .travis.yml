@@ -16,7 +16,7 @@ notifications:
   email: false
 before_install:
   - sudo apt-get install libhdf5-serial-dev netcdf-bin libnetcdf-dev
-  - pip install numpy cython python-dateutil
+  - pip install $DEPENDS
 install:
   - python setup.py build
   - python setup.py install
