@@ -11,7 +11,7 @@ matrix:
     # Absolute minimum dependencies
     - python: 2.7
       env:
-        - DEPENDS="numpy==1.6.0 cython==0.19"
+        - DEPENDS="numpy==1.6.2 cython==0.19"
     # test without Cython installed
     - python: 2.7
       env:
