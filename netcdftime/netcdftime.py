@@ -307,7 +307,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     year[year <= 0] = year[year <= 0] - 1
 
     # a leap year?
-    leap = np.zeros(len(year))
+    leap = np.zeros(len(year),dtype=dayofyr.dtype)
     leap[year % 4 == 0] = 1
     if calendar == 'proleptic_gregorian':
         leap[(year % 100 == 0) & (year % 400 != 0)] = 0
