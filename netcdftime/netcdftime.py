@@ -255,7 +255,11 @@ def DateFromJulianDay(JD, calendar='standard'):
         alpha = np.int32(((Z - 1867216.) - 0.25) / 36524.25)
         A = Z + 1 + alpha - np.int32(0.25 * alpha)
         # check if dates before oct 5th 1582 are in the array
-        ind_before = np.where(julian < 2299160.5)[0]
+        ind_before_a = np.where(julian < 2299160.5)
+        try:
+            ind_before = ind_before_a[0]
+        except IndexError: # numpy 1.5.1 returns scalar 
+            ind_before = np.array([],dtype=julian.dtype)
         if len(ind_before) > 0:
             A[ind_before] = Z[ind_before]
 
