@@ -2,7 +2,7 @@ import os, sys, subprocess, shutil
 try:
     from setuptools import setup, Extension
     setuptools_extra_kwargs = {
-        "install_requires":  ["numpy>=1.3"],
+        "install_requires":  ["numpy>=1.7"],
         "entry_points": {
             'console_scripts': [
                 'ncinfo = netCDF4_utils:ncinfo',
