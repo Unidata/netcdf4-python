@@ -32,8 +32,7 @@ Requires
 ========
 
  - Python 2.5 or later (python 3 works too).
- - numpy array module U{http://numpy.scipy.org}, version 1.3.0 or later (1.5.1
-   or higher recommended, required if using python 3).
+ - numpy array module U{http://numpy.scipy.org}, version 1.7.0 or later.
  - U{Cython <http://cython.org>}, version 0.19 or later, is optional - if it is installed setup.py will
    use it to recompile the Cython source code into C, using conditional compilation
    to enable features in the netCDF API that have been added since version 4.1.1.  If
@@ -3219,7 +3218,7 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
             # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
-            except TypeError: # isnan fails on some dtypes (issue 202)
+            except: # isnan fails on some dtypes (issue 202)
                 fvalisnan = False
             if fvalisnan:
                 mask = numpy.isnan(data)

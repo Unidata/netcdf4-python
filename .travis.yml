@@ -11,12 +11,16 @@ matrix:
     # Absolute minimum dependencies
     - python: 2.7
       env:
-        - DEPENDS="numpy==1.5.1 cython==0.19"
+        - DEPENDS="numpy==1.7.0 cython==0.19"
+    # test without Cython installed
+    - python: 2.7
+      env:
+        - DEPENDS="numpy"
 notifications:
   email: false
 before_install:
   - sudo apt-get install libhdf5-serial-dev netcdf-bin libnetcdf-dev
-  - pip install numpy cython python-dateutil
+  - pip install $DEPENDS
 install:
   - python setup.py build
   - python setup.py install
