@@ -1,9 +1,12 @@
 netCDF4	netCDF4-module.html
 netCDF4._set_default_format	netCDF4-module.html#_set_default_format
+netCDF4.hr_units	netCDF4-module.html#hr_units
 netCDF4.default_encoding	netCDF4-module.html#default_encoding
 netCDF4.num2date	netCDF4-module.html#num2date
 netCDF4.is_native_big	netCDF4-module.html#is_native_big
+netCDF4.microsec_units	netCDF4-module.html#microsec_units
 netCDF4._private_atts	netCDF4-module.html#_private_atts
+netCDF4.day_units	netCDF4-module.html#day_units
 netCDF4.MINYEAR	netCDF4-module.html#MINYEAR
 netCDF4._gethdf5libversion	netCDF4-module.html#_gethdf5libversion
 netCDF4.__has_nc_inq_format_extended__	netCDF4-module.html#__has_nc_inq_format_extended__
@@ -12,8 +15,10 @@ netCDF4.stringtochar	netCDF4-module.html#stringtochar
 netCDF4.chartostring	netCDF4-module.html#chartostring
 netCDF4.getlibversion	netCDF4-module.html#getlibversion
 netCDF4.__netcdf4libversion__	netCDF4-module.html#__netcdf4libversion__
+netCDF4.sec_units	netCDF4-module.html#sec_units
 netCDF4.__has_nc_inq_path__	netCDF4-module.html#__has_nc_inq_path__
 netCDF4.date2num	netCDF4-module.html#date2num
+netCDF4.millisec_units	netCDF4-module.html#millisec_units
 netCDF4.stringtoarr	netCDF4-module.html#stringtoarr
 netCDF4._value	netCDF4-module.html#_value
 netCDF4._nptonctype	netCDF4-module.html#_nptonctype
@@ -30,6 +35,7 @@ netCDF4._nctonptype	netCDF4-module.html#_nctonptype
 netCDF4.__has_rename_grp__	netCDF4-module.html#__has_rename_grp__
 netCDF4._npversion	netCDF4-module.html#_npversion
 netCDF4.__hdf5libversion__	netCDF4-module.html#__hdf5libversion__
+netCDF4.min_units	netCDF4-module.html#min_units
 netCDF4.unicode_error	netCDF4-module.html#unicode_error
 netCDF4.CompoundType	netCDF4.CompoundType-class.html
 netCDF4.CompoundType.__new__	netCDF4.CompoundType-class.html#__new__
