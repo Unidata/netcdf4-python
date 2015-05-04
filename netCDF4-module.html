@@ -48,7 +48,7 @@
   </tr>
 </table>
 <!-- ==================== MODULE DESCRIPTION ==================== -->
-<h1 class="epydoc">Module netCDF4</h1><p class="nomargin-top"></p>
+<h1 class="epydoc">Module netCDF4</h1><p class="nomargin-top"><span class="codelink"><a href="netCDF4-pysrc.html">source&nbsp;code</a></span></p>
 <h1 class="heading">Introduction</h1>
     <p>Python interface to the netCDF version 4 library.  <a 
     href="http://www.unidata.ucar.edu/software/netcdf/netcdf-4" 
@@ -87,8 +87,7 @@
       </li>
       <li>
         numpy array module <a href="http://numpy.scipy.org" 
-        target="_top">http://numpy.scipy.org</a>, version 1.3.0 or later 
-        (1.5.1 or higher recommended, required if using python 3).
+        target="_top">http://numpy.scipy.org</a>, version 1.7.0 or later.
       </li>
       <li>
         <a href="http://cython.org" target="_top">Cython</a>, version 0.19 
@@ -270,8 +269,8 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>         <span class="py-keyword">print</span> child
 <span class="py-output">&lt;type 'netCDF4.Dataset'&gt;</span>
 <span class="py-output">root group (NETCDF4 file format):</span>
-<span class="py-output">    dimensions: </span>
-<span class="py-output">    variables: </span>
+<span class="py-output">    dimensions:</span>
+<span class="py-output">    variables:</span>
 <span class="py-output">        groups: forecasts, analyses</span>
 <span class="py-output">&lt;type 'netCDF4.Group'&gt;</span>
 <span class="py-output">group /forecasts:</span>
@@ -417,7 +416,7 @@
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.variables
 <span class="py-output">OrderedDict([('time', &lt;netCDF4.Variable object at 0x1b4ba70&gt;),</span>
-<span class="py-output">             ('level', &lt;netCDF4.Variable object at 0x1b4bab0&gt;), </span>
+<span class="py-output">             ('level', &lt;netCDF4.Variable object at 0x1b4bab0&gt;),</span>
 <span class="py-output">             ('latitude', &lt;netCDF4.Variable object at 0x1b4baf0&gt;),</span>
 <span class="py-output">             ('longitude', &lt;netCDF4.Variable object at 0x1b4bb30&gt;),</span>
 <span class="py-output">             ('temp', &lt;netCDF4.Variable object at 0x1b4bb70&gt;)])</span>
@@ -490,7 +489,7 @@
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.__dict__
 <span class="py-output">OrderedDict([(u'description', u'bogus example script'),</span>
-<span class="py-output">             (u'history', u'Created Thu Mar  3 19:30:33 2011'), </span>
+<span class="py-output">             (u'history', u'Created Thu Mar  3 19:30:33 2011'),</span>
 <span class="py-output">             (u'source', u'netCDF4 python module tutorial')])</span></pre>
       <p>Attributes can be deleted from a netCDF <a 
       href="netCDF4.Dataset-class.html" class="link">Dataset</a>, <a 
@@ -504,7 +503,7 @@
       class="link">Variable</a> instance, how do you put data into it? You 
       can just treat it like an array and assign data to a slice.</p>
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy 
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy
 <span class="py-prompt">&gt;&gt;&gt; </span>lats =  numpy.arange(-90,91,2.5)
 <span class="py-prompt">&gt;&gt;&gt; </span>lons =  numpy.arange(-180,180,2.5)
 <span class="py-prompt">&gt;&gt;&gt; </span>latitudes[:] = lats
@@ -597,7 +596,7 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>dates = [datetime(2001,3,1)+n*timedelta(hours=12) <span class="py-keyword">for</span> n <span class="py-keyword">in</span> range(temp.shape[0])]
 <span class="py-prompt">&gt;&gt;&gt; </span>times[:] = date2num(dates,units=times.units,calendar=times.calendar)
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'time values (in units %s): '</span> % times.units+<span class="py-string">'\n'</span>,times[:]
-<span class="py-output">time values (in units hours since January 1, 0001): </span>
+<span class="py-output">time values (in units hours since January 1, 0001):</span>
 <span class="py-output">[ 17533056.  17533068.  17533080.  17533092.  17533104.]</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>dates = num2date(times[:],units=times.units,calendar=times.calendar)
@@ -904,7 +903,7 @@
         PERFORMANCE OF THIS SOFTWARE.
       </p>
       <p><strong>Version:</strong>
-        1.1.7
+        1.1.8
       </p>
 </div><!-- ==================== CLASSES ==================== -->
 <a name="section-Classes"></a>
@@ -1003,7 +1002,7 @@
           <td><span class="summary-sig"><a href="netCDF4-module.html#chartostring" class="summary-sig-name">chartostring</a>(<span class="summary-sig-arg">b</span>)</span><br />
       convert a character array to a string array with one less dimension.</td>
           <td align="right" valign="top">
-            
+            <span class="codelink"><a href="netCDF4-pysrc.html#chartostring">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1024,7 +1023,7 @@
       Return indices of a netCDF time variable corresponding to the given 
       dates.</td>
           <td align="right" valign="top">
-            
+            <span class="codelink"><a href="netCDF4-pysrc.html#date2index">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1043,7 +1042,7 @@
         <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
       Return numeric time values given datetime objects.</td>
           <td align="right" valign="top">
-            
+            <span class="codelink"><a href="netCDF4-pysrc.html#date2num">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1061,7 +1060,7 @@
       returns a string describing the version of the netcdf library used to
       build the module, and when it was built.</td>
           <td align="right" valign="top">
-            
+            <span class="codelink"><a href="netCDF4-pysrc.html#getlibversion">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1080,7 +1079,7 @@
         <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
       Return datetime objects given numeric time values.</td>
           <td align="right" valign="top">
-            
+            <span class="codelink"><a href="netCDF4-pysrc.html#num2date">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1099,7 +1098,7 @@
         <span class="summary-sig-arg">dtype</span>=<span class="summary-sig-default">'S'</span>)</span><br />
       convert a string to a character array of length NUMCHARS</td>
           <td align="right" valign="top">
-            
+            <span class="codelink"><a href="netCDF4-pysrc.html#stringtoarr">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1116,7 +1115,7 @@
           <td><span class="summary-sig"><a href="netCDF4-module.html#stringtochar" class="summary-sig-name">stringtochar</a>(<span class="summary-sig-arg">a</span>)</span><br />
       convert a string array to a character array with one extra dimension</td>
           <td align="right" valign="top">
-            
+            <span class="codelink"><a href="netCDF4-pysrc.html#stringtochar">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -1172,14 +1171,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.14'"><code class="variable-quote">'</code><code class="variable-string">1.8.14</code><code class="variable-quote">'</code></code>
+        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.13'"><code class="variable-quote">'</code><code class="variable-string">1.8.13</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.3.3-rc2'"><code class="variable-quote">u'</code><code class="variable-string">4.3.3-rc2</code><code class="variable-quote">'</code></code>
+        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.3.2'"><code class="variable-quote">u'</code><code class="variable-string">4.3.2</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -1187,6 +1186,13 @@
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
         <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="None">None</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="day_units"></a><span class="summary-name">day_units</span> = <code title="['day', 'days', 'd']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">day</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">days</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">d</code><code class="variable-quote">'</code><code class="variable-group">]</code></code>
     </td>
   </tr>
 <tr>
@@ -1222,6 +1228,13 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a name="hr_units"></a><span class="summary-name">hr_units</span> = <code title="['hour', 'hours', 'hr', 'hrs', 'h']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">hour</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">hours</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">hr</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">hrs</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">h</code><code class="variable-quote">'</code><code class="variable-group">]</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a name="is_native_big"></a><span class="summary-name">is_native_big</span> = <code title="False">False</code>
     </td>
   </tr>
@@ -1236,7 +1249,35 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
+        <a href="netCDF4-module.html#microsec_units" class="summary-name">microsec_units</a> = <code title="['microseconds', 'microsecond', 'microsec', 'microsecs']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">microseconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">microsecond</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">microsec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="netCDF4-module.html#millisec_units" class="summary-name">millisec_units</a> = <code title="['milliseconds', 'millisecond', 'millisec', 'millisecs']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">milliseconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">millisecond</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">millisec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="min_units"></a><span class="summary-name">min_units</span> = <code title="['minute', 'minutes', 'min', 'mins']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">minute</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">minutes</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">min</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">mins</code><code class="variable-quote">'</code><code class="variable-group">]</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a name="python3"></a><span class="summary-name">python3</span> = <code title="False">False</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="sec_units"></a><span class="summary-name">sec_units</span> = <code title="['second', 'seconds', 'sec', 'secs', 's']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">second</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">seconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">sec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">secs</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">s</code><code class="variable-quote">'</code><code class="variable-group">]</code></code>
     </td>
   </tr>
 <tr>
@@ -1266,7 +1307,7 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">chartostring</span>(<span class="sig-arg">b</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;
+    ><span class="codelink"><a href="netCDF4-pysrc.html#chartostring">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -1298,7 +1339,7 @@
         <span class="sig-arg">select</span>=<span class="sig-default">'exact'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;
+    ><span class="codelink"><a href="netCDF4-pysrc.html#date2index">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -1344,7 +1385,7 @@
         <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;
+    ><span class="codelink"><a href="netCDF4-pysrc.html#date2num">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -1392,7 +1433,7 @@
         <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;
+    ><span class="codelink"><a href="netCDF4-pysrc.html#num2date">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -1447,7 +1488,7 @@
         <span class="sig-arg">dtype</span>=<span class="sig-default">'S'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;
+    ><span class="codelink"><a href="netCDF4-pysrc.html#stringtoarr">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -1478,7 +1519,7 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">stringtochar</span>(<span class="sig-arg">a</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    >&nbsp;
+    ><span class="codelink"><a href="netCDF4-pysrc.html#stringtochar">source&nbsp;code</a></span>&nbsp;
     </td>
   </tr></table>
   
@@ -1534,6 +1575,42 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="microsec_units"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">microsec_units</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">microseconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">microsecond</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">microsec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">microsecs</code><code class="variable-quote">'</code><code class="variable-group">]</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="millisec_units"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">millisec_units</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+<code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">milliseconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">millisecond</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">millisec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">millisecs</code><code class="variable-quote">'</code><code class="variable-group">]</code>
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
@@ -1561,7 +1638,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Mar 18 10:55:13 2015
+    Generated by Epydoc 3.0.1 on Sun May  3 20:05:24 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
