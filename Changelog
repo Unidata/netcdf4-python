@@ -27,6 +27,10 @@
    Not installed by setup.py (contributed by Ross Gammon, issue #383).
  * replace tabs with spaces by running reindent.py on all *.py and *.pyx files
    (issue #378).
+ * refactor netCDF4_utils and netCDF4 module into netCDF4 package.
+   Refactoring effectively removes netCDF4 utils private attributes from
+   netCDF4 namespace, so has the potential to break code using private
+   attributes (issue #409).
 
  version 1.1.7 (tag v1.1.7rel)
  =============================

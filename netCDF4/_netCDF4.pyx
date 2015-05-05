@@ -768,8 +768,8 @@ del __test__ # hack so epydoc doesn't show __test__
 # Make changes to this file, not the c-wrappers that Pyrex generates.
 
 # pure python utilities
-from netCDF4_utils import _StartCountStride, _quantize, _find_dim, _walk_grps, \
-                          _out_array_shape, _sortbylist, _tostr
+from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
+                    _out_array_shape, _sortbylist, _tostr)
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict

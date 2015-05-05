@@ -1,4 +1,4 @@
 #!/usr/bin/env python
 
-from netCDF4_utils import ncinfo
+from netCDF4.utils import ncinfo
 ncinfo()
