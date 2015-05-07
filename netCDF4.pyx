@@ -2,14 +2,14 @@
 Introduction
 ============
 
-Python interface to the netCDF version 4 library.  U{netCDF version 4
-<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many features
+Python interface to the netCDF version 4 library.  `netCDF version 4
+<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>`_ has many features
 not found in earlier versions of the library and is implemented on top of
-U{HDF5 <http://www.hdfgroup.org/HDF5>}. This module can read and write
+`HDF5 <http://www.hdfgroup.org/HDF5>`_. This module can read and write
 files in both the new netCDF 4 and the old netCDF 3 format, and can create
 files that are readable by HDF5 clients. The API modelled after
-U{Scientific.IO.NetCDF
-<http://dirac.cnrs-orleans.fr/plone/software/scientificpython/>}, and should be
+`Scientific.IO.NetCDF
+<http://dirac.cnrs-orleans.fr/plone/software/scientificpython/>`_, and should be
 familiar to users of that module.
 
 Most new features of netCDF 4 are implemented, such as multiple
@@ -80,7 +80,7 @@ Tutorial
 1) Creating/Opening/Closing a netCDF file
 -----------------------------------------
 
-To create a netCDF file from python, you simply call the L{Dataset}
+To create a netCDF file from python, you simply call the :class:`Dataset`
 constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (C{w, r+} or C{a}), you may
 write any type of data including new dimensions, groups, variables and
@@ -96,8 +96,8 @@ C{netCDF4} module can read and write files in any of these formats. When
 creating a new file, the format may be specified using the C{format}
 keyword in the C{Dataset} constructor.  The default format is
 C{NETCDF4}. To see how a given file is formatted, you can examine the
-C{data_model} L{Dataset} attribute.  Closing the netCDF file is
-accomplished via the L{close<Dataset.close>} method of the L{Dataset}
+C{data_model} :class:`Dataset` attribute.  Closing the netCDF file is
+accomplished via the :class:`close<Dataset.close>` method of the :class:`Dataset`
 instance.
 
 Here's an example:
@@ -110,7 +110,7 @@ NETCDF4
 >>> rootgrp.close()
 
 Remote U{OPeNDAP<http://opendap.org>}-hosted datasets can be accessed for
-reading over http if a URL is provided to the L{Dataset} constructor instead of a
+reading over http if a URL is provided to the :class:`Dataset` constructor instead of a
 filename.  However, this requires that the netCDF library be built with
 OPenDAP support, via the C{--enable-dap} configure option (added in
 version 4.0.1).
@@ -124,12 +124,12 @@ groups, which are analagous to directories in a filesystem. Groups serve
 as containers for variables, dimensions and attributes, as well as other
 groups.  A C{netCDF4.Dataset} defines creates a special group, called
 the 'root group', which is similar to the root directory in a unix
-filesystem.  To create L{Group} instances, use the
-L{createGroup<Dataset.createGroup>} method of a L{Dataset} or L{Group}
-instance. L{createGroup<Dataset.createGroup>} takes a single argument, a
-python string containing the name of the new group. The new L{Group}
+filesystem.  To create :class:`Group` instances, use the
+:class:`createGroup<Dataset.createGroup>` method of a :class:`Dataset` or :class:`Group`
+instance. :class:`createGroup<Dataset.createGroup>` takes a single argument, a
+python string containing the name of the new group. The new :class:`Group`
 instances contained within the root group can be accessed by name using
-the C{groups} dictionary attribute of the L{Dataset} instance.  Only
+the C{groups} dictionary attribute of the :class:`Dataset` instance.  Only
 C{NETCDF4} formatted files support Groups, if you try to create a Group
 in a netCDF 3 file you will get an error message.
 
@@ -141,16 +141,16 @@ OrderedDict([('forecasts', <netCDF4.Group object at 0x1b4b7b0>),
              ('analyses', <netCDF4.Group object at 0x1b4b970>)])
 >>>
 
-Groups can exist within groups in a L{Dataset}, just as directories
-exist within directories in a unix filesystem. Each L{Group} instance
+Groups can exist within groups in a :class:`Dataset`, just as directories
+exist within directories in a unix filesystem. Each :class:`Group` instance
 has a C{'groups'} attribute dictionary containing all of the group
-instances contained within that group. Each L{Group} instance also has a
+instances contained within that group. Each :class:`Group` instance also has a
 C{'path'} attribute that contains a simulated unix directory path to
 that group.
 
 Here's an example that shows how to navigate all the groups in a
-L{Dataset}. The function C{walktree} is a Python generator that is used
-to walk the directory tree. Note that printing the L{Dataset} or L{Group}
+:class:`Dataset`. The function C{walktree} is a Python generator that is used
+to walk the directory tree. Note that printing the :class:`Dataset` or :class:`Group`
 object yields summary information about it's contents.
 
 >>> fcstgrp1 = fcstgrp.createGroup('model1')
@@ -199,11 +199,11 @@ netCDF defines the sizes of all variables in terms of dimensions, so
 before any variables can be created the dimensions they use must be
 created first. A special case, not often used in practice, is that of a
 scalar variable, which has no dimensions. A dimension is created using
-the L{createDimension<Dataset.createDimension>} method of a L{Dataset}
-or L{Group} instance. A Python string is used to set the name of the
+the :class:`createDimension<Dataset.createDimension>` method of a :class:`Dataset`
+or :class:`Group` instance. A Python string is used to set the name of the
 dimension, and an integer value is used to set the size. To create an
 unlimited dimension (a dimension that can be appended to), the size
-value is set to C{None} or 0. In this example, there both the C{time} and
+value is set to ``None`` or 0. In this example, there both the C{time} and
 C{level} dimensions are unlimited.  Having more than one unlimited
 dimension is a new netCDF 4 feature, in netCDF 3 files there may be only
 one, and it must be the first (leftmost) dimension of the variable.
@@ -214,7 +214,7 @@ one, and it must be the first (leftmost) dimension of the variable.
 >>> lon = rootgrp.createDimension('lon', 144)
 
 
-All of the L{Dimension} instances are stored in a python dictionary.
+All of the :class:`Dimension` instances are stored in a python dictionary.
 
 >>> print rootgrp.dimensions
 OrderedDict([('level', <netCDF4.Dimension object at 0x1b48030>),
@@ -223,9 +223,9 @@ OrderedDict([('level', <netCDF4.Dimension object at 0x1b48030>),
              ('lon', <netCDF4.Dimension object at 0x1b48a08>)])
 >>>
 
-Calling the python C{len} function with a L{Dimension} instance returns
+Calling the python C{len} function with a :class:`Dimension` instance returns
 the current size of that dimension.
-The L{isunlimited<Dimension.isunlimited>} method of a L{Dimension} instance
+The :class:`isunlimited<Dimension.isunlimited>` method of a :class:`Dimension` instance
 can be used to determine if the dimensions is unlimited, or appendable.
 
 >>> print len(lon)
@@ -236,7 +236,7 @@ False
 True
 >>>
 
-Printing the L{Dimension} object
+Printing the :class:`Dimension` object
 provides useful summary info, including the name and length of the dimension,
 and whether it is unlimited.
 
@@ -249,9 +249,9 @@ and whether it is unlimited.
 <type 'netCDF4.Dimension'> (unlimited): name = 'time', size = 0
 >>>
 
-L{Dimension} names can be changed using the
-L{renameDimension<Dataset.renameDimension>} method of a L{Dataset} or
-L{Group} instance.
+:class:`Dimension` names can be changed using the
+:class:`renameDimension<Dataset.renameDimension>` method of a :class:`Dataset` or
+:class:`Group` instance.
 
 4) Variables in a netCDF file
 -----------------------------
@@ -260,12 +260,12 @@ netCDF variables behave much like python multidimensional array objects
 supplied by the U{numpy module <http://numpy.scipy.org>}. However,
 unlike numpy arrays, netCDF4 variables can be appended to along one or
 more 'unlimited' dimensions. To create a netCDF variable, use the
-L{createVariable<Dataset.createVariable>} method of a L{Dataset} or
-L{Group} instance. The L{createVariable<Dataset.createVariable>} method
+:class:`createVariable<Dataset.createVariable>` method of a :class:`Dataset` or
+:class:`Group` instance. The :class:`createVariable<Dataset.createVariable>` method
 has two mandatory arguments, the variable name (a Python string), and
 the variable datatype. The variable's dimensions are given by a tuple
 containing the dimension names (defined previously with
-L{createDimension<Dataset.createDimension>}). To create a scalar
+:class:`createDimension<Dataset.createDimension>`). To create a scalar
 variable, simply leave out the dimensions keyword. The variable
 primitive datatypes correspond to the dtype attribute of a numpy array.
 You can specify the datatype as a numpy dtype object, or anything that
@@ -283,8 +283,8 @@ will also work. The unsigned integer types and the 64-bit integer type
 can only be used if the file format is C{NETCDF4}.
 
 The dimensions themselves are usually also defined as variables, called
-coordinate variables. The L{createVariable<Dataset.createVariable>}
-method returns an instance of the L{Variable} class whose methods can be
+coordinate variables. The :class:`createVariable<Dataset.createVariable>`
+method returns an instance of the :class:`Variable` class whose methods can be
 used later to access and set variable data and attributes.
 
 >>> times = rootgrp.createVariable('time','f8',('time',))
@@ -294,7 +294,7 @@ used later to access and set variable data and attributes.
 >>> # two dimensions unlimited.
 >>> temp = rootgrp.createVariable('temp','f4',('time','level','lat','lon',))
 
-All of the variables in the L{Dataset} or L{Group} are stored in a
+All of the variables in the :class:`Dataset` or :class:`Group` are stored in a
 Python dictionary, in the same way as the dimensions:
 
 >>> print rootgrp.variables
@@ -305,7 +305,7 @@ OrderedDict([('time', <netCDF4.Variable object at 0x1b4ba70>),
              ('temp', <netCDF4.Variable object at 0x1b4bb70>)])
 >>>
 
-To get summary info on a L{Variable} instance in an interactive session, just print it.
+To get summary info on a :class:`Variable` instance in an interactive session, just print it.
 
 >>> print rootgrp.variables['temp']
 <type 'netCDF4.Variable'>
@@ -316,8 +316,8 @@ unlimited dimensions: time, level
 current shape = (0, 0, 73, 144)
 >>>
 
-L{Variable} names can be changed using the
-L{renameVariable<Dataset.renameVariable>} method of a L{Dataset}
+:class:`Variable` names can be changed using the
+:class:`renameVariable<Dataset.renameVariable>` method of a :class:`Dataset`
 instance.
 
 
@@ -326,10 +326,10 @@ instance.
 
 There are two types of attributes in a netCDF file, global and variable.
 Global attributes provide information about a group, or the entire
-dataset, as a whole. L{Variable} attributes provide information about
+dataset, as a whole. :class:`Variable` attributes provide information about
 one of the variables in a group. Global attributes are set by assigning
-values to L{Dataset} or L{Group} instance variables. L{Variable}
-attributes are set by assigning values to L{Variable} instances
+values to :class:`Dataset` or :class:`Group` instance variables. :class:`Variable`
+attributes are set by assigning values to :class:`Variable` instances
 variables. Attributes can be strings, numbers or sequences. Returning to
 our example,
 
@@ -344,8 +344,8 @@ our example,
 >>> times.units = 'hours since 0001-01-01 00:00:00.0'
 >>> times.calendar = 'gregorian'
 
-The L{ncattrs<Dataset.ncattrs>} method of a L{Dataset}, L{Group} or
-L{Variable} instance can be used to retrieve the names of all the netCDF
+The :class:`ncattrs<Dataset.ncattrs>` method of a :class:`Dataset`, :class:`Group` or
+:class:`Variable` instance can be used to retrieve the names of all the netCDF
 attributes. This method is provided as a convenience, since using the
 built-in C{dir} Python function will return a bunch of private methods
 and attributes that cannot (or should not) be modified by the user.
@@ -356,7 +356,7 @@ Global attr description = bogus example script
 Global attr history = Created Mon Nov  7 10.30:56 2005
 Global attr source = netCDF4 python module tutorial
 
-The C{__dict__} attribute of a L{Dataset}, L{Group} or L{Variable}
+The C{__dict__} attribute of a :class:`Dataset`, :class:`Group` or :class:`Variable`
 instance provides all the netCDF attribute name/value pairs in a python
 dictionary:
 
@@ -365,14 +365,14 @@ OrderedDict([(u'description', u'bogus example script'),
              (u'history', u'Created Thu Mar  3 19:30:33 2011'),
              (u'source', u'netCDF4 python module tutorial')])
 
-Attributes can be deleted from a netCDF L{Dataset}, L{Group} or
-L{Variable} using the python C{del} statement (i.e. C{del grp.foo}
+Attributes can be deleted from a netCDF :class:`Dataset`, :class:`Group` or
+:class:`Variable` using the python C{del} statement (i.e. C{del grp.foo}
 removes the attribute C{foo} the the group C{grp}).
 
 6) Writing data to and retrieving data from a netCDF variable
 -------------------------------------------------------------
 
-Now that you have a netCDF L{Variable} instance, how do you put data
+Now that you have a netCDF :class:`Variable` instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.
 
 >>> import numpy
@@ -391,7 +391,7 @@ latitudes =
   90. ]
 >>>
 
-Unlike NumPy's array objects, netCDF L{Variable}
+Unlike NumPy's array objects, netCDF :class:`Variable`
 objects with unlimited dimensions will grow along those dimensions if you
 assign data outside the currently defined range of indices.
 
@@ -457,7 +457,7 @@ metadata standards (such as CF and COARDS) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
 specified like C{hours since YY:MM:DD hh-mm-ss}.  These units can be
 awkward to deal with, without a utility to convert the values to and
-from calendar dates.  The functione called L{num2date} and L{date2num} are
+from calendar dates.  The functione called :class:`num2date` and :class:`date2num` are
 provided with this package to do just that.  Here's an example of how they
 can be used:
 
@@ -477,11 +477,11 @@ dates corresponding to time values:
  2001-03-02 12:00:00 2001-03-03 00:00:00]
 >>>
 
-L{num2date} converts numeric values of time in the specified C{units}
-and C{calendar} to datetime objects, and L{date2num} does the reverse.
+:class:`num2date` converts numeric values of time in the specified C{units}
+and C{calendar} to datetime objects, and :class:`date2num` does the reverse.
 All the calendars currently defined in the U{CF metadata convention
 <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
-A function called L{date2index} is also provided which returns the indices
+A function called :class:`date2index` is also provided which returns the indices
 of a netCDF time variable corresponding to a sequence of datetime instances.
 
 
@@ -489,9 +489,9 @@ of a netCDF time variable corresponding to a sequence of datetime instances.
 -------------------------------------------------
 
 If you want to read data from a variable that spans multiple netCDF files,
-you can use the L{MFDataset} class to read the data as if it were
+you can use the :class:`MFDataset` class to read the data as if it were
 contained in a single file. Instead of using a single filename to create
-a L{Dataset} instance, create a L{MFDataset} instance with either a list
+a :class:`Dataset` instance, create a :class:`MFDataset` instance with either a list
 of filenames, or a string with a wildcard (which is then converted to
 a sorted list of files using the python glob module).
 Variables in the list of files that share the same unlimited
@@ -509,7 +509,7 @@ datasets are not supported).
 >>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
 >>>     f.close()
 
-Now read all the files back in at once with L{MFDataset}
+Now read all the files back in at once with :class:`MFDataset`
 
 >>> from netCDF4 import MFDataset
 >>> f = MFDataset('mftest*nc')
@@ -526,10 +526,10 @@ datasets.
 8) Efficient compression of netCDF variables
 --------------------------------------------
 
-Data stored in netCDF 4 L{Variable} objects can be compressed and
+Data stored in netCDF 4 :class:`Variable` objects can be compressed and
 decompressed on the fly. The parameters for the compression are
 determined by the C{zlib}, C{complevel} and C{shuffle} keyword arguments
-to the L{createVariable<Dataset.createVariable>} method. To turn on
+to the :class:`createVariable<Dataset.createVariable>` method. To turn on
 compression, set C{zlib=True}.  The C{complevel} keyword regulates the
 speed and efficiency of the compression (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
@@ -538,12 +538,12 @@ off the HDF5 shuffle filter, which de-interlaces a block of data before
 compression by reordering the bytes.  The shuffle filter can
 significantly improve compression ratios, and is on by default.  Setting
 C{fletcher32} keyword argument to
-L{createVariable<Dataset.createVariable>} to C{True} (it's C{False} by
+:class:`createVariable<Dataset.createVariable>` to C{True} (it's C{False} by
 default) enables the Fletcher32 checksum algorithm for error detection.
 It's also possible to set the HDF5 chunking parameters and endian-ness
 of the binary data stored in the HDF5 file with the C{chunksizes}
 and C{endian} keyword arguments to
-L{createVariable<Dataset.createVariable>}.  These keyword arguments only
+:class:`createVariable<Dataset.createVariable>`.  These keyword arguments only
 are relevant for C{NETCDF4} and C{NETCDF4_CLASSIC} files (where the
 underlying file format is HDF5) and are silently ignored if the file
 format is C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT},
@@ -552,7 +552,7 @@ If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
 0.1 degrees), you can dramatically improve zlib compression by
 quantizing (or truncating) the data using the C{least_significant_digit}
-keyword argument to L{createVariable<Dataset.createVariable>}. The least
+keyword argument to :class:`createVariable<Dataset.createVariable>`. The least
 significant digit is the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
 precision of 0.1, then setting C{least_significant_digit=1} will cause
@@ -589,7 +589,7 @@ location for scattered (point) data. You can then access all the
 information for a point by reading one variable, instead of reading
 different parameters from different variables.  Compound data types
 are created from the corresponding numpy data type using the
-L{createCompoundType<Dataset.createCompoundType>} method of a L{Dataset} or L{Group} instance.
+:class:`createCompoundType<Dataset.createCompoundType>` method of a :class:`Dataset` or :class:`Group` instance.
 Since there is no native complex data type in netcdf, compound types are handy
 for storing numpy complex arrays.  Here's an example:
 
@@ -622,7 +622,7 @@ complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147
 >>>
 
 Compound types can be nested, but you must create the 'inner'
-ones first. All of the compound types defined for a L{Dataset} or L{Group} are stored in a
+ones first. All of the compound types defined for a :class:`Dataset` or :class:`Group` are stored in a
 Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:
 
@@ -649,8 +649,8 @@ OrderedDict([('complex128', <netCDF4.CompoundType object at 0x1029eb7e8>)])
 
 NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
 of variable length sequences having the same type. To create a variable-length
-data type, use the L{createVLType<Dataset.createVLType>} method
-method of a L{Dataset} or L{Group} instance.
+data type, use the :class:`createVLType<Dataset.createVLType>` method
+method of a :class:`Dataset` or :class:`Group` instance.
 
 >>> f = Dataset('tst_vlen.nc','w')
 >>> vlen_t = f.createVLType(numpy.int32, 'phony_vlen')
@@ -666,7 +666,7 @@ A new variable can then be created using this datatype.
 >>> vlvar = f.createVariable('phony_vlen_var', vlen_t, ('y','x'))
 
 Since there is no native vlen datatype in numpy, vlen arrays are represented
-in python as object arrays (arrays of dtype C{object}). These are arrays whose
+in python as object arrays (arrays of dtype ``object``). These are arrays whose
 elements are Python object pointers, and can contain any type of python object.
 For this application, they must contain 1-D numpy arrays all of the same type
 but of varying length.
@@ -704,9 +704,9 @@ current shape = (4, 3)
 
 Numpy object arrays containing python strings can also be written as vlen
 variables,  For vlen strings, you don't need to create a vlen data type.
-Instead, simply use the python C{str} builtin (or a numpy string datatype
+Instead, simply use the python ``str`` builtin (or a numpy string datatype
 with fixed length greater than 1) when calling the
-L{createVariable<Dataset.createVariable>} method.
+:class:`createVariable<Dataset.createVariable>` method.
 
 >>> z = f.createDimension('z',10)
 >>> strvar = rootgrp.createVariable('strvar', str, 'z')
@@ -741,7 +741,7 @@ current size = (10,)
 
 It is also possible to set contents of vlen string variables with numpy arrays
 of any string or unicode data type. Note, however, that accessing the contents
-of such variables will always return numpy arrays with dtype C{object}.
+of such variables will always return numpy arrays with dtype ``object``.
 
 All of the code in this tutorial is available in C{examples/tutorial.py},
 Unit tests are in the C{test} directory.
@@ -1075,8 +1075,8 @@ cdef _set_att(grp, int varid, name, value):
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
 cdef _get_types(group):
-    # Private function to create L{CompoundType} or L{VLType} instances for all the
-    # compound or VLEN types in a L{Group} or L{Dataset}.
+    # Private function to create :class:`CompoundType` or :class:`VLType` instances for all the
+    # compound or VLEN types in a :class:`Group` or :class:`Dataset`.
     cdef int ierr, ntypes, classp, n, _grpid
     cdef nc_type xtype
     cdef nc_type typeids[NC_MAX_VARS]
@@ -1122,8 +1122,8 @@ cdef _get_types(group):
     return cmptypes, vltypes
 
 cdef _get_dims(group):
-    # Private function to create L{Dimension} instances for all the
-    # dimensions in a L{Group} or Dataset
+    # Private function to create :class:`Dimension` instances for all the
+    # dimensions in a :class:`Group` or Dataset
     cdef int ierr, numdims, n, _grpid
     cdef int dimids[NC_MAX_DIMS]
     cdef char namstring[NC_MAX_NAME+1]
@@ -1154,8 +1154,8 @@ cdef _get_dims(group):
     return dimensions
 
 cdef _get_grps(group):
-    # Private function to create L{Group} instances for all the
-    # groups in a L{Group} or Dataset
+    # Private function to create :class:`Group` instances for all the
+    # groups in a :class:`Group` or Dataset
     cdef int ierr, numgrps, n, _grpid
     cdef int *grpids
     cdef char namstring[NC_MAX_NAME+1]
@@ -1165,7 +1165,7 @@ cdef _get_grps(group):
         ierr = nc_inq_grps(_grpid, &numgrps, NULL)
     if ierr != NC_NOERR:
         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-    # create dictionary containing L{Group} instances for groups in this group
+    # create dictionary containing :class:`Group` instances for groups in this group
     groups = OrderedDict()
     if numgrps > 0:
         grpids = <int *>malloc(sizeof(int) * numgrps)
@@ -1184,8 +1184,8 @@ cdef _get_grps(group):
     return groups
 
 cdef _get_vars(group):
-    # Private function to create L{Variable} instances for all the
-    # variables in a L{Group} or Dataset
+    # Private function to create :class:`Variable` instances for all the
+    # variables in a :class:`Group` or Dataset
     cdef int ierr, numvars, n, nn, numdims, varid, classp, iendian, _grpid
     cdef int *varids
     cdef int dim_sizes[NC_MAX_DIMS]
@@ -1315,7 +1315,7 @@ cdef class Dataset:
     """
 Dataset(self, filename, mode="r", clobber=True, diskless=False, persist=False, keepweakref=False, format='NETCDF4')
 
-A netCDF L{Dataset} is a collection of dimensions, groups, variables and
+A netCDF :class:`Dataset` is a collection of dimensions, groups, variables and
 attributes. Together they describe the meaning of data and relations among
 data fields stored in a netCDF file.
 
@@ -1374,40 +1374,40 @@ parent Dataset instance is garbage collected.
 
 B{Returns:}
 
-a L{Dataset} instance.  All further operations on the netCDF
-Dataset are accomplised via L{Dataset} instance methods.
+a :class:`Dataset` instance.  All further operations on the netCDF
+Dataset are accomplised via :class:`Dataset` instance methods.
 
 A list of attribute names corresponding to global netCDF attributes
-defined for the L{Dataset} can be obtained with the L{ncattrs()} method.
+defined for the :class:`Dataset` can be obtained with the :class:`ncattrs()` method.
 These attributes can be created by assigning to an attribute of the
-L{Dataset} instance. A dictionary containing all the netCDF attribute
+:class:`Dataset` instance. A dictionary containing all the netCDF attribute
 name/value pairs is provided by the C{__dict__} attribute of a
-L{Dataset} instance.
+:class:`Dataset` instance.
 
 The instance variables C{dimensions, variables, groups,
 cmptypes, data_model, disk_format} and C{path} are read-only (and should not be modified by the
 user).
 
 :ivar dimensions: The C{dimensions} dictionary maps the names of
-dimensions defined for the L{Group} or L{Dataset} to instances of the
-L{Dimension} class.
+dimensions defined for the :class:`Group` or :class:`Dataset` to instances of the
+:class:`Dimension` class.
 
 :ivar variables: The C{variables} dictionary maps the names of variables
-defined for this L{Dataset} or L{Group} to instances of the L{Variable}
+defined for this :class:`Dataset` or :class:`Group` to instances of the :class:`Variable`
 class.
 
 :ivar groups: The groups dictionary maps the names of groups created for
-this L{Dataset} or L{Group} to instances of the L{Group} class (the
-L{Dataset} class is simply a special case of the L{Group} class which
+this :class:`Dataset` or :class:`Group` to instances of the :class:`Group` class (the
+:class:`Dataset` class is simply a special case of the :class:`Group` class which
 describes the root group in the netCDF file).
 
 :ivar cmptypes: The C{cmptypes} dictionary maps the names of
-compound types defined for the L{Group} or L{Dataset} to instances of the
-L{CompoundType} class.
+compound types defined for the :class:`Group` or :class:`Dataset` to instances of the
+:class:`CompoundType` class.
 
 :ivar vltypes: The C{vltypes} dictionary maps the names of
-variable-length types defined for the L{Group} or L{Dataset} to instances of the
-L{VLType} class.
+variable-length types defined for the :class:`Group` or :class:`Dataset` to instances of the
+:class:`VLType` class.
 
 :ivar data_model: The C{data_model} attribute describes the netCDF
 data model version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
@@ -1421,13 +1421,13 @@ file format, one of C{NETCDF3}, C{HDF5}, C{HDF4},
 C{PNETCDF}, C{DAP2}, C{DAP4} or C{UNDEFINED}. Only available if using
 netcdf C library version >= 4.3.1, otherwise will always return C{UNDEFINED}.
 
-:ivar path: The C{path} attribute shows the location of the L{Group} in
-the L{Dataset} in a unix directory format (the names of groups in the
-hierarchy separated by backslashes). A L{Dataset} instance is the root
+:ivar path: The C{path} attribute shows the location of the :class:`Group` in
+the :class:`Dataset` in a unix directory format (the names of groups in the
+hierarchy separated by backslashes). A :class:`Dataset` instance is the root
 group, so the path is simply C{'/'}.
 
 :ivar parent:  The C{parent} attribute is a reference to the parent
-L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
+:class:`Group` instance. ``None`` for a the root group or :class:`Dataset` instance"""
     cdef object __weakref__
     cdef public int _grpid
     cdef public int _isopen
@@ -1613,7 +1613,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def sync(self):
         """sync(self)
         
-        Writes all buffered data in the L{Dataset} to the disk file.
+        Writes all buffered data in the :class:`Dataset` to the disk file.
 
 
         """
@@ -1635,7 +1635,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def set_fill_on(self):
         """set_fill_on(self)
         
-        Sets the fill mode for a L{Dataset} open for writing to C{on}.
+        Sets the fill mode for a :class:`Dataset` open for writing to C{on}.
         
         This causes data to be pre-filled with fill values. The fill values can be
         controlled by the variable's C{_Fill_Value} attribute, but is usually
@@ -1655,7 +1655,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def set_fill_off(self):
         """set_fill_off(self)
         
-        Sets the fill mode for a L{Dataset} open for writing to C{off}.
+        Sets the fill mode for a :class:`Dataset` open for writing to C{off}.
         
         This will prevent the data from being pre-filled with fill values, which
         may result in some performance improvements. However, you must then make
@@ -1673,13 +1673,13 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         
         Creates a new dimension with the given C{dimname} and C{size}.
         
-        C{size} must be a positive integer or C{None}, which stands for
-        "unlimited" (default is C{None}). Specifying a size of 0 also
-        results in an unlimited dimension. The return value is the L{Dimension}
+        C{size} must be a positive integer or ``None``, which stands for
+        "unlimited" (default is ``None``). Specifying a size of 0 also
+        results in an unlimited dimension. The return value is the :class:`Dimension`
         class instance describing the new dimension.  To determine the current
-        maximum size of the dimension, use the C{len} function on the L{Dimension}
+        maximum size of the dimension, use the C{len} function on the :class:`Dimension`
         instance. To determine if a dimension is 'unlimited', use the
-        C{isunlimited()} method of the L{Dimension} instance.
+        C{isunlimited()} method of the :class:`Dimension` instance.
 
         :param dimname: 
         :param size:  (Default value = None)
@@ -1691,7 +1691,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def renameDimension(self, oldname, newname):
         """renameDimension(self, oldname, newname)
         
-        rename a L{Dimension} named C{oldname} to C{newname}.
+        rename a :class:`Dimension` named C{oldname} to C{newname}.
 
         :param oldname: 
         :param newname: 
@@ -1727,7 +1727,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         are homogenous numeric data types), then the 'inner' compound types B{must} be
         created first.
         
-        The return value is the L{CompoundType} class instance describing the new
+        The return value is the :class:`CompoundType` class instance describing the new
         datatype.
 
         :param datatype: 
@@ -1744,7 +1744,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         Creates a new VLEN data type named C{datatype_name} from a numpy
         dtype object C{datatype}.
         
-        The return value is the L{VLType} class instance describing the new
+        The return value is the :class:`VLType` class instance describing the new
         datatype.
 
         :param datatype: 
@@ -1770,11 +1770,11 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
         (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
         'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)}.
-        C{datatype} can also be a L{CompoundType} instance
-        (for a structured, or compound array), a L{VLType} instance
-        (for a variable-length array), or the python C{str} builtin
+        C{datatype} can also be a :class:`CompoundType` instance
+        (for a structured, or compound array), a :class:`VLType` instance
+        (for a variable-length array), or the python ``str`` builtin
         (for a variable-length string array). Numpy string and unicode datatypes with
-        length greater than one are aliases for C{str}.
+        length greater than one are aliases for ``str``.
         
         Data from netCDF variables is presented to python as numpy arrays with
         the corresponding data type.
@@ -1834,7 +1834,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         retained (in this case bits=4). From
         U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}:
         "least_significant_digit -- power of ten of the smallest decimal place
-        in unpacked data that is a reliable value." Default is C{None}, or no
+        in unpacked data that is a reliable value." Default is ``None``, or no
         quantization, or 'lossless' compression.
         
         When creating variables in a C{NETCDF4} or C{NETCDF4_CLASSIC} formatted file,
@@ -1847,17 +1847,17 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         method to change it the next time the Dataset is opened.
         Warning - messing with this parameter can seriously degrade performance.
         
-        The return value is the L{Variable} class instance describing the new
+        The return value is the :class:`Variable` class instance describing the new
         variable.
         
         A list of names corresponding to netCDF variable attributes can be
-        obtained with the L{Variable} method C{ncattrs()}. A dictionary
+        obtained with the :class:`Variable` method C{ncattrs()}. A dictionary
         containing all the netCDF attribute name/value pairs is provided by
-        the C{__dict__} attribute of a L{Variable} instance.
+        the C{__dict__} attribute of a :class:`Variable` instance.
         
-        L{Variable} instances behave much like array objects. Data can be
+        :class:`Variable` instances behave much like array objects. Data can be
         assigned to or retrieved from a variable with indexing and slicing
-        operations on the L{Variable} instance. A L{Variable} instance has six
+        operations on the :class:`Variable` instance. A :class:`Variable` instance has six
         Dataset standard attributes: C{dimensions, dtype, shape, ndim, name} and
         C{least_significant_digit}. Application programs should never modify
         these attributes. The C{dimensions} attribute is a tuple containing the
@@ -1868,8 +1868,8 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         string containing the name of the Variable instance.
         The C{least_significant_digit}
         attributes describes the power of ten of the smallest decimal place in
-        the data the contains a reliable value.  assigned to the L{Variable}
-        instance. If C{None}, the data is not truncated. The C{ndim} attribute
+        the data the contains a reliable value.  assigned to the :class:`Variable`
+        instance. If ``None``, the data is not truncated. The C{ndim} attribute
         is the number of variable dimensions.
 
         :param varname: 
@@ -1887,7 +1887,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def renameVariable(self, oldname, newname):
         """renameVariable(self, oldname, newname)
         
-        rename a L{Variable} named C{oldname} to C{newname}
+        rename a :class:`Variable` named C{oldname} to C{newname}
 
         :param oldname: 
         :param newname: 
@@ -1913,9 +1913,9 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def createGroup(self, groupname):
         """createGroup(self, groupname)
         
-        Creates a new L{Group} with the given C{groupname}.
+        Creates a new :class:`Group` with the given C{groupname}.
         
-        The return value is a L{Group} class instance describing the new group.
+        The return value is a :class:`Group` class instance describing the new group.
 
         :param groupname: 
 
@@ -2031,7 +2031,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def renameAttribute(self, oldname, newname):
         """renameAttribute(self, oldname, newname)
         
-        rename a L{Dataset} or L{Group} attribute named C{oldname} to C{newname}.
+        rename a :class:`Dataset` or :class:`Group` attribute named C{oldname} to C{newname}.
 
         :param oldname: 
         :param newname: 
@@ -2051,7 +2051,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def renameGroup(self, oldname, newname):
         """renameGroup(self, oldname, newname)
         
-        rename a L{Group} named C{oldname} to C{newname} (requires netcdf >= 4.3.1).
+        rename a :class:`Group` named C{oldname} to C{newname} (requires netcdf >= 4.3.1).
 
         :param oldname: 
         :param newname: 
@@ -2082,8 +2082,8 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def set_auto_maskandscale(self, value):
         """set_auto_maskandscale(self, True_or_False)
         
-        Call L{set_auto_maskandscale} for all variables contained in this L{Dataset} or
-        L{Group}, as well as for all variables in all its subgroups.
+        Call :class:`set_auto_maskandscale` for all variables contained in this :class:`Dataset` or
+        :class:`Group`, as well as for all variables in all its subgroups.
         
         B{Parameters}:
         
@@ -2111,8 +2111,8 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def set_auto_mask(self, value):
         """set_auto_mask(self, True_or_False)
         
-        Call L{set_auto_mask} for all variables contained in this L{Dataset} or
-        L{Group}, as well as for all variables in all its subgroups.
+        Call :class:`set_auto_mask` for all variables contained in this :class:`Dataset` or
+        :class:`Group`, as well as for all variables in all its subgroups.
         
         B{Parameters}:
         
@@ -2139,8 +2139,8 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def set_auto_scale(self, value):
         """set_auto_scale(self, True_or_False)
         
-        Call L{set_auto_scale} for all variables contained in this L{Dataset} or
-        L{Group}, as well as for all variables in all its subgroups.
+        Call :class:`set_auto_scale` for all variables contained in this :class:`Dataset` or
+        :class:`Group`, as well as for all variables in all its subgroups.
         
         B{Parameters}:
         
@@ -2170,28 +2170,28 @@ cdef class Group(Dataset):
 Group(self, parent, name)
 
 Groups define a hierarchical namespace within a netCDF file. They are
-analagous to directories in a unix filesystem. Each L{Group} behaves like
-a L{Dataset} within a Dataset, and can contain it's own variables,
+analagous to directories in a unix filesystem. Each :class:`Group` behaves like
+a :class:`Dataset` within a Dataset, and can contain it's own variables,
 dimensions and attributes (and other Groups).
 
-L{Group} instances should be created using the
-L{createGroup<Dataset.createGroup>} method of a L{Dataset} instance, or
-another L{Group} instance, not using this class directly.
+:class:`Group` instances should be created using the
+:class:`createGroup<Dataset.createGroup>` method of a :class:`Dataset` instance, or
+another :class:`Group` instance, not using this class directly.
 
 B{Parameters:}
 
-B{C{parent}} - L{Group} instance for the parent group.  If being created
-in the root group, use a L{Dataset} instance.
+B{C{parent}} - :class:`Group` instance for the parent group.  If being created
+in the root group, use a :class:`Dataset` instance.
 
 B{C{name}} - Name of the group.
 
 B{Returns:}
 
-a L{Group} instance.  All further operations on the netCDF
-Group are accomplished via L{Group} instance methods.
+a :class:`Group` instance.  All further operations on the netCDF
+Group are accomplished via :class:`Group` instance methods.
 
-L{Group} inherits from L{Dataset}, so all the L{Dataset} class methods and
-variables are available to a L{Group} instance (except the C{close}
+:class:`Group` inherits from :class:`Dataset`, so all the :class:`Dataset` class methods and
+variables are available to a :class:`Group` instance (except the C{close}
 method)."""
     def __init__(self, parent, name, **kwargs):
         cdef int ierr
@@ -2232,12 +2232,12 @@ method)."""
     def close(self):
         """close(self)
         
-        overrides L{Dataset} close method which does not apply to L{Group}
+        overrides :class:`Dataset` close method which does not apply to :class:`Group`
         instances, raises IOError.
 
 
         """
-        raise IOError('cannot close a L{Group} (only applies to Dataset)')
+        raise IOError('cannot close a :class:`Group` (only applies to Dataset)')
 
     def _getname(self):
         """ """
@@ -2262,30 +2262,30 @@ cdef class Dimension:
     """
 Dimension(self, group, name, size=None)
 
-A netCDF L{Dimension} is used to describe the coordinates of a L{Variable}.
+A netCDF :class:`Dimension` is used to describe the coordinates of a :class:`Variable`.
 
-L{Dimension} instances should be created using the
-L{createDimension<Dataset.createDimension>} method of a L{Group} or
-L{Dataset} instance, not using this class directly.
+:class:`Dimension` instances should be created using the
+:class:`createDimension<Dataset.createDimension>` method of a :class:`Group` or
+:class:`Dataset` instance, not using this class directly.
 
 B{Parameters:}
 
-B{C{group}} - L{Group} instance to associate with dimension.
+B{C{group}} - :class:`Group` instance to associate with dimension.
 
 B{C{name}}  - Name of the dimension.
 
 B{Keywords:}
 
-B{C{size}}  - Size of the dimension. C{None} or 0 means unlimited. (Default C{None}).
+B{C{size}}  - Size of the dimension. ``None`` or 0 means unlimited. (Default ``None``).
 
 B{Returns:}
 
-a L{Dimension} instance.  All further operations on the netCDF Dimension
-are accomplised via L{Dimension} instance methods.
+a :class:`Dimension` instance.  All further operations on the netCDF Dimension
+are accomplised via :class:`Dimension` instance methods.
 
-The current maximum size of a L{Dimension} instance can be obtained by
-calling the python C{len} function on the L{Dimension} instance. The
-C{isunlimited()} method of a L{Dimension} instance can be used to
+The current maximum size of a :class:`Dimension` instance can be obtained by
+calling the python C{len} function on the :class:`Dimension` instance. The
+C{isunlimited()} method of a :class:`Dimension` instance can be used to
 determine if the dimension is unlimited"""
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
@@ -2352,7 +2352,7 @@ determine if the dimension is unlimited"""
             return repr(type(self))+": name = '%s', size = %s\n" % (self._name,len(self))
 
     def __len__(self):
-        # len(L{Dimension} instance) returns current size of dimension
+        # len(:class:`Dimension` instance) returns current size of dimension
         cdef int ierr
         cdef size_t lengthp
         with nogil:
@@ -2368,7 +2368,7 @@ determine if the dimension is unlimited"""
     def isunlimited(self):
         """isunlimited(self)
         
-        returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.
+        returns C{True} if the :class:`Dimension` instance is unlimited, C{False} otherwise.
 
 
         """
@@ -2406,22 +2406,22 @@ cdef class Variable:
     """
 Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
 
-A netCDF L{Variable} is used to read and write netCDF data.  They are
+A netCDF :class:`Variable` is used to read and write netCDF data.  They are
 analagous to numpy array objects.
 
-L{Variable} instances should be created using the
-L{createVariable<Dataset.createVariable>} method of a L{Dataset} or
-L{Group} instance, not using this class directly.
+:class:`Variable` instances should be created using the
+:class:`createVariable<Dataset.createVariable>` method of a :class:`Dataset` or
+:class:`Group` instance, not using this class directly.
 
 B{Parameters:}
 
-B{C{group}} - L{Group} or L{Dataset} instance to associate with variable.
+B{C{group}} - :class:`Group` or :class:`Dataset` instance to associate with variable.
 
 B{C{name}}  - Name of the variable.
 
-B{C{datatype}} - L{Variable} data type. Can be specified by providing a
+B{C{datatype}} - :class:`Variable` data type. Can be specified by providing a
 numpy dtype object, or a string that describes a numpy dtype object.
-Supported values, corresponding to C{str} attribute of numpy dtype
+Supported values, corresponding to ``str`` attribute of numpy dtype
 objects, include C{'f4'} (32-bit floating point), C{'f8'} (64-bit floating
 point), C{'i4'} (32-bit signed integer), C{'i2'} (16-bit signed integer),
 C{'i8'} (64-bit singed integer), C{'i4'} (8-bit singed integer), C{'i1'}
@@ -2432,11 +2432,11 @@ compatibility with Scientific.IO.NetCDF, the old Numeric single character
 typecodes can also be used (C{'f'} instead of C{'f4'}, C{'d'} instead of
 C{'f8'}, C{'h'} or C{'s'} instead of C{'i2'}, C{'b'} or C{'B'} instead of
 C{'i1'}, C{'c'} instead of C{'S1'}, and C{'i'} or C{'l'} instead of
-C{'i4'}). C{datatype} can also be a L{CompoundType} instance
-(for a structured, or compound array), a L{VLType} instance
-(for a variable-length array), or the python C{str} builtin
+C{'i4'}). C{datatype} can also be a :class:`CompoundType` instance
+(for a structured, or compound array), a :class:`VLType` instance
+(for a variable-length array), or the python ``str`` builtin
 (for a variable-length string array). Numpy string and unicode datatypes with
-length greater than one are aliases for C{str}.
+length greater than one are aliases for ``str``.
 
 B{Keywords:}
 
@@ -2444,7 +2444,7 @@ B{C{dimensions}} - a tuple containing the variable's dimension names
 (defined previously with C{createDimension}). Default is an empty tuple
 which means the variable is a scalar (and therefore has no dimensions).
 
-B{C{zlib}} - if C{True}, data assigned to the L{Variable}
+B{C{zlib}} - if C{True}, data assigned to the :class:`Variable`
 instance is compressed on disk. Default C{False}.
 
 B{C{complevel}} - the level of zlib compression to use (1 is the fastest,
@@ -2487,7 +2487,7 @@ truncated (quantized). In conjunction with C{zlib=True} this produces
 C{least_significant_digit=1}, data will be quantized using
 around(scale*data)/scale, where scale = 2**bits, and bits is determined
 so that a precision of 0.1 is retained (in this case bits=4). Default is
-C{None}, or no quantization.
+``None``, or no quantization.
 
 B{C{fill_value}} - If specified, the default netCDF C{_FillValue} (the
 value that the variable gets filled with before any data is written to it)
@@ -2497,15 +2497,15 @@ in netCDF4.default_fillvals.
 
 B{Returns:}
 
-a L{Variable} instance.  All further operations on the netCDF Variable are
-accomplised via L{Variable} instance methods.
+a :class:`Variable` instance.  All further operations on the netCDF Variable are
+accomplised via :class:`Variable` instance methods.
 
 A list of attribute names corresponding to netCDF attributes defined for
 the variable can be obtained with the C{ncattrs()} method. These
 attributes can be created by assigning to an attribute of the
-L{Variable} instance. A dictionary containing all the netCDF attribute
+:class:`Variable` instance. A dictionary containing all the netCDF attribute
 name/value pairs is provided by the C{__dict__} attribute of a
-L{Variable} instance.
+:class:`Variable` instance.
 
 The instance variables C{dimensions, dtype, ndim, shape}
 and C{least_significant_digit} are read-only (and
@@ -2522,17 +2522,17 @@ associated with this variable.
 dimensions.
 
 :ivar scale:  if True, C{scale_factor} and C{add_offset} are automatically
-applied. Default is C{True}, can be reset using L{set_auto_scale} and
-L{set_auto_maskandscale} methods.
+applied. Default is C{True}, can be reset using :class:`set_auto_scale` and
+:class:`set_auto_maskandscale` methods.
 
 :ivar mask:  if True, data is automatically converted to/from masked arrays
 when missing values or fill values are present. Default is C{True}, can be
-reset using L{set_auto_mask} and L{set_auto_maskandscale} methods.
+reset using :class:`set_auto_mask` and :class:`set_auto_maskandscale` methods.
 
 :ivar least_significant_digit: Describes the power of ten of the smallest
 decimal place in the data the contains a reliable value.  Data is
-truncated to this decimal place when it is assigned to the L{Variable}
-instance. If C{None}, the data is not truncated. 
+truncated to this decimal place when it is assigned to the :class:`Variable`
+instance. If ``None``, the data is not truncated. 
 
 :ivar __orthogonal_indexing__: Always C{True}.  Indicates to client code
 that the object supports "orthogonal indexing", which means that slices
@@ -3169,7 +3169,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
     def renameAttribute(self, oldname, newname):
         """renameAttribute(self, oldname, newname)
         
-        rename a L{Variable} attribute named C{oldname} to C{newname}.
+        rename a :class:`Variable` attribute named C{oldname} to C{newname}.
 
         :param oldname: 
         :param newname: 
@@ -3980,7 +3980,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
 
 cdef class CompoundType:
     """
-A L{CompoundType} instance is used to describe a compound data type.
+A :class:`CompoundType` instance is used to describe a compound data type.
 
 Constructor: C{CompoundType(group, datatype, datatype_name)}
 
@@ -3989,13 +3989,13 @@ the inner compound data types must already be associated with CompoundType
 instances (so create CompoundType instances for the innermost structures
 first).
 
-L{CompoundType} instances should be created using the
-L{createCompoundType<Dataset.createCompoundType>}
-method of a Dataset or L{Group} instance, not using this class directly.
+:class:`CompoundType` instances should be created using the
+:class:`createCompoundType<Dataset.createCompoundType>`
+method of a Dataset or :class:`Group` instance, not using this class directly.
 
 B{Parameters:}
 
-B{C{group}} - L{Group} instance to associate with the compound datatype.
+B{C{group}} - :class:`Group` instance to associate with the compound datatype.
 
 B{C{datatype}} - A numpy dtype object describing a structured (a.k.a record)
 array.  Can be composed of homogeneous numeric or character data types, or
@@ -4006,8 +4006,8 @@ compound data type.
 
 B{Returns:}
 
-a L{CompoundType} instance, which can be passed to the C{createVariable}
-method of a L{Dataset} or L{Group} instance.
+a :class:`CompoundType` instance, which can be passed to the C{createVariable}
+method of a :class:`Dataset` or :class:`Group` instance.
 
 The instance variables C{dtype} and C{name} should not be modified by
 the user.
@@ -4210,17 +4210,17 @@ cdef _read_compound(group, nc_type xtype, endian=None):
 
 cdef class VLType:
     """
-A L{VLType} instance is used to describe a variable length (VLEN) data type.
+A :class:`VLType` instance is used to describe a variable length (VLEN) data type.
 
 Constructor: C{VLType(group, datatype, datatype_name)}
 
-L{VLType} instances should be created using the
-L{createVLType<Dataset.createVLType>}
-method of a Dataset or L{Group} instance, not using this class directly.
+:class:`VLType` instances should be created using the
+:class:`createVLType<Dataset.createVLType>`
+method of a Dataset or :class:`Group` instance, not using this class directly.
 
 B{Parameters:}
 
-B{C{group}} - L{Group} instance to associate with the VLEN datatype.
+B{C{group}} - :class:`Group` instance to associate with the VLEN datatype.
 
 B{C{datatype}} - An numpy dtype object describing a the component type for the
 variable length array.
@@ -4230,8 +4230,8 @@ VLEN data type.
 
 B{Returns:}
 
-a L{VLType} instance, which can be passed to the C{createVariable}
-method of a L{Dataset} or L{Group} instance.
+a :class:`VLType` instance, which can be passed to the C{createVariable}
+method of a :class:`Dataset` or :class:`Group` instance.
 
 The instance variables C{dtype} and C{name} should not be modified by
 the user.
