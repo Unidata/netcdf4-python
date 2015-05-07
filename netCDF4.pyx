@@ -42,19 +42,19 @@ Requires
  - For python < 2.7, the ordereddict module U{http://python.org/pypi/ordereddict}.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.8 or higher
  recommended) from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
- Be sure to build with 'C{--enable-hl --enable-shared}'.
+ Be sure to build with '``--enable-hl --enable-shared``'.
  - U{Libcurl <http://curl.haxx.se/libcurl/>}, if you want
  U{OPeNDAP<http://opendap.org/>} support.
  - U{HDF4 <http://www.hdfgroup.org/products/hdf4/>}, if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
  - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
  Version 4.1.1 or higher is required (4.2 or higher recommended).
- Be sure to build with 'C{--enable-netcdf-4 --enable-shared}', and set
- C{CPPFLAGS="-I $HDF5_DIR/include"} and C{LDFLAGS="-L $HDF5_DIR/lib"},
- where C{$HDF5_DIR} is the directory where HDF5 was installed.
- If you want U{OPeNDAP<http://opendap.org/>} support, add 'C{--enable-dap}'.
- If you want HDF4 SD support, add 'C{--enable-hdf4}' and add
- the location of the HDF4 headers and library to C{CPPFLAGS} and C{LDFLAGS}.
+ Be sure to build with '``--enable-netcdf-4 --enable-shared``', and set
+ ``CPPFLAGS="-I $HDF5_DIR/include"`` and ``LDFLAGS="-L $HDF5_DIR/lib"``,
+ where ``$HDF5_DIR`` is the directory where HDF5 was installed.
+ If you want U{OPeNDAP<http://opendap.org/>} support, add '``--enable-dap``'.
+ If you want HDF4 SD support, add '``--enable-hdf4``' and add
+ the location of the HDF4 headers and library to ``CPPFLAGS`` and ``LDFLAGS``.
 
 
 Install
@@ -62,17 +62,17 @@ Install
 
  - install the requisite python modules and C libraries (see above). It's
  easiest if all the C libs are built as shared libraries.
- - By default, the utility C{nc-config}, installed with netcdf 4.1.2 or higher,
+ - By default, the utility ``nc-config``, installed with netcdf 4.1.2 or higher,
  will be run used to determine where all the dependencies live.
- - If C{nc-config} is not in your default C{PATH}, rename the
- file C{setup.cfg.template} to C{setup.cfg}, then edit
+ - If ``nc-config`` is not in your default ``PATH``, rename the
+ file ``setup.cfg.template`` to ``setup.cfg``, then edit
  in a text editor (follow the instructions in the comments).
- In addition to specifying the path to C{nc-config},
+ In addition to specifying the path to ``nc-config``,
  you can manually set the paths to all the libraries and their include files
- (in case C{nc-config} does not do the right thing).
- - run C{python setup.py build}, then C{python setup.py install} (as root if
+ (in case ``nc-config`` does not do the right thing).
+ - run ``python setup.py build``, then ``python setup.py install`` (as root if
  necessary).
- - run the tests in the 'test' directory by running C{python run_all.py}.
+ - run the tests in the 'test' directory by running ``python run_all.py``.
 
 Tutorial
 ========
@@ -82,21 +82,21 @@ Tutorial
 
 To create a netCDF file from python, you simply call the :class:`Dataset`
 constructor. This is also the method used to open an existing netCDF
-file.  If the file is open for write access (C{w, r+} or C{a}), you may
+file.  If the file is open for write access (``w, r+`` or ``a``), you may
 write any type of data including new dimensions, groups, variables and
 attributes.  netCDF files come in several flavors (C{NETCDF3_CLASSIC,
-NETCDF3_64BIT, NETCDF4_CLASSIC}, and C{NETCDF4}). The first two flavors
-are supported by version 3 of the netCDF library. C{NETCDF4_CLASSIC}
+NETCDF3_64BIT, NETCDF4_CLASSIC}, and ``NETCDF4``). The first two flavors
+are supported by version 3 of the netCDF library. ``NETCDF4_CLASSIC``
 files use the version 4 disk format (HDF5), but do not use any features
 not found in the version 3 API. They can be read by netCDF 3 clients
 only if they have been relinked against the netCDF 4 library. They can
-also be read by HDF5 clients. C{NETCDF4} files use the version 4 disk
+also be read by HDF5 clients. ``NETCDF4`` files use the version 4 disk
 format (HDF5) and use the new features of the version 4 API.  The
-C{netCDF4} module can read and write files in any of these formats. When
-creating a new file, the format may be specified using the C{format}
-keyword in the C{Dataset} constructor.  The default format is
-C{NETCDF4}. To see how a given file is formatted, you can examine the
-C{data_model} :class:`Dataset` attribute.  Closing the netCDF file is
+``netCDF4`` module can read and write files in any of these formats. When
+creating a new file, the format may be specified using the ``format``
+keyword in the ``Dataset`` constructor.  The default format is
+``NETCDF4``. To see how a given file is formatted, you can examine the
+``data_model`` :class:`Dataset` attribute.  Closing the netCDF file is
 accomplished via the :class:`close<Dataset.close>` method of the :class:`Dataset`
 instance.
 
@@ -112,7 +112,7 @@ NETCDF4
 Remote U{OPeNDAP<http://opendap.org>}-hosted datasets can be accessed for
 reading over http if a URL is provided to the :class:`Dataset` constructor instead of a
 filename.  However, this requires that the netCDF library be built with
-OPenDAP support, via the C{--enable-dap} configure option (added in
+OPenDAP support, via the ``--enable-dap`` configure option (added in
 version 4.0.1).
 
 
@@ -122,15 +122,15 @@ version 4.0.1).
 netCDF version 4 added support for organizing data in hierarchical
 groups, which are analagous to directories in a filesystem. Groups serve
 as containers for variables, dimensions and attributes, as well as other
-groups.  A C{netCDF4.Dataset} defines creates a special group, called
+groups.  A ``netCDF4.Dataset`` defines creates a special group, called
 the 'root group', which is similar to the root directory in a unix
 filesystem.  To create :class:`Group` instances, use the
 :class:`createGroup<Dataset.createGroup>` method of a :class:`Dataset` or :class:`Group`
 instance. :class:`createGroup<Dataset.createGroup>` takes a single argument, a
 python string containing the name of the new group. The new :class:`Group`
 instances contained within the root group can be accessed by name using
-the C{groups} dictionary attribute of the :class:`Dataset` instance.  Only
-C{NETCDF4} formatted files support Groups, if you try to create a Group
+the ``groups`` dictionary attribute of the :class:`Dataset` instance.  Only
+``NETCDF4`` formatted files support Groups, if you try to create a Group
 in a netCDF 3 file you will get an error message.
 
 >>> rootgrp = Dataset('test.nc', 'a')
@@ -143,13 +143,13 @@ OrderedDict([('forecasts', <netCDF4.Group object at 0x1b4b7b0>),
 
 Groups can exist within groups in a :class:`Dataset`, just as directories
 exist within directories in a unix filesystem. Each :class:`Group` instance
-has a C{'groups'} attribute dictionary containing all of the group
+has a ``'groups'`` attribute dictionary containing all of the group
 instances contained within that group. Each :class:`Group` instance also has a
-C{'path'} attribute that contains a simulated unix directory path to
+``'path'`` attribute that contains a simulated unix directory path to
 that group.
 
 Here's an example that shows how to navigate all the groups in a
-:class:`Dataset`. The function C{walktree} is a Python generator that is used
+:class:`Dataset`. The function ``walktree`` is a Python generator that is used
 to walk the directory tree. Note that printing the :class:`Dataset` or :class:`Group`
 object yields summary information about it's contents.
 
@@ -203,8 +203,8 @@ the :class:`createDimension<Dataset.createDimension>` method of a :class:`Datase
 or :class:`Group` instance. A Python string is used to set the name of the
 dimension, and an integer value is used to set the size. To create an
 unlimited dimension (a dimension that can be appended to), the size
-value is set to ``None`` or 0. In this example, there both the C{time} and
-C{level} dimensions are unlimited.  Having more than one unlimited
+value is set to ``None`` or 0. In this example, there both the ``time`` and
+``level`` dimensions are unlimited.  Having more than one unlimited
 dimension is a new netCDF 4 feature, in netCDF 3 files there may be only
 one, and it must be the first (leftmost) dimension of the variable.
 
@@ -223,7 +223,7 @@ OrderedDict([('level', <netCDF4.Dimension object at 0x1b48030>),
              ('lon', <netCDF4.Dimension object at 0x1b48a08>)])
 >>>
 
-Calling the python C{len} function with a :class:`Dimension` instance returns
+Calling the python ``len`` function with a :class:`Dimension` instance returns
 the current size of that dimension.
 The :class:`isunlimited<Dimension.isunlimited>` method of a :class:`Dimension` instance
 can be used to determine if the dimensions is unlimited, or appendable.
@@ -270,17 +270,17 @@ variable, simply leave out the dimensions keyword. The variable
 primitive datatypes correspond to the dtype attribute of a numpy array.
 You can specify the datatype as a numpy dtype object, or anything that
 can be converted to a numpy dtype object.  Valid datatype specifiers
-include: C{'f4'} (32-bit floating point), C{'f8'} (64-bit floating
-point), C{'i4'} (32-bit signed integer), C{'i2'} (16-bit signed
-integer), C{'i8'} (64-bit singed integer), C{'i1'} (8-bit signed
-integer), C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit unsigned
-integer), C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit unsigned
-integer), or C{'S1'} (single-character string).  The old Numeric
-single-character typecodes (C{'f'},C{'d'},C{'h'},
-C{'s'},C{'b'},C{'B'},C{'c'},C{'i'},C{'l'}), corresponding to
-(C{'f4'},C{'f8'},C{'i2'},C{'i2'},C{'i1'},C{'i1'},C{'S1'},C{'i4'},C{'i4'}),
+include: ``'f4'`` (32-bit floating point), ``'f8'`` (64-bit floating
+point), ``'i4'`` (32-bit signed integer), ``'i2'`` (16-bit signed
+integer), ``'i8'`` (64-bit singed integer), ``'i1'`` (8-bit signed
+integer), ``'u1'`` (8-bit unsigned integer), ``'u2'`` (16-bit unsigned
+integer), ``'u4'`` (32-bit unsigned integer), ``'u8'`` (64-bit unsigned
+integer), or ``'S1'`` (single-character string).  The old Numeric
+single-character typecodes (``'f'``,``'d'``,``'h'``,
+``'s'``,``'b'``,``'B'``,``'c'``,``'i'``,``'l'``), corresponding to
+(``'f4'``,``'f8'``,``'i2'``,``'i2'``,``'i1'``,``'i1'``,``'S1'``,``'i4'``,``'i4'``),
 will also work. The unsigned integer types and the 64-bit integer type
-can only be used if the file format is C{NETCDF4}.
+can only be used if the file format is ``NETCDF4``.
 
 The dimensions themselves are usually also defined as variables, called
 coordinate variables. The :class:`createVariable<Dataset.createVariable>`
@@ -347,7 +347,7 @@ our example,
 The :class:`ncattrs<Dataset.ncattrs>` method of a :class:`Dataset`, :class:`Group` or
 :class:`Variable` instance can be used to retrieve the names of all the netCDF
 attributes. This method is provided as a convenience, since using the
-built-in C{dir} Python function will return a bunch of private methods
+built-in ``dir`` Python function will return a bunch of private methods
 and attributes that cannot (or should not) be modified by the user.
 
 >>> for name in rootgrp.ncattrs():
@@ -356,7 +356,7 @@ Global attr description = bogus example script
 Global attr history = Created Mon Nov  7 10.30:56 2005
 Global attr source = netCDF4 python module tutorial
 
-The C{__dict__} attribute of a :class:`Dataset`, :class:`Group` or :class:`Variable`
+The ``__dict__`` attribute of a :class:`Dataset`, :class:`Group` or :class:`Variable`
 instance provides all the netCDF attribute name/value pairs in a python
 dictionary:
 
@@ -366,8 +366,8 @@ OrderedDict([(u'description', u'bogus example script'),
              (u'source', u'netCDF4 python module tutorial')])
 
 Attributes can be deleted from a netCDF :class:`Dataset`, :class:`Group` or
-:class:`Variable` using the python C{del} statement (i.e. C{del grp.foo}
-removes the attribute C{foo} the the group C{grp}).
+:class:`Variable` using the python ``del`` statement (i.e. ``del grp.foo``
+removes the attribute ``foo`` the the group ``grp``).
 
 6) Writing data to and retrieving data from a netCDF variable
 -------------------------------------------------------------
@@ -412,7 +412,7 @@ levels shape after adding pressure data =  (10,)
 >>>
 
 Note that the size of the levels variable grows when data is appended
-along the C{level} dimension of the variable C{temp}, even though no
+along the ``level`` dimension of the variable ``temp``, even though no
 data has yet been assigned to levels.
 
 >>> # now, assign data to levels dimension variable.
@@ -420,7 +420,7 @@ data has yet been assigned to levels.
 
 However, that there are some differences between NumPy and netCDF
 variable slicing rules. Slices behave as usual, being specified as a
-C{start:stop:step} triplet. Using a scalar integer index C{i} takes the ith
+``start:stop:step`` triplet. Using a scalar integer index ``i`` takes the ith
 element and reduces the rank of the output array by one. Boolean array and
 integer sequence indexing behaves differently for netCDF variables
 than for numpy arrays.  Only 1-d boolean arrays and integer sequences are
@@ -431,10 +431,10 @@ to the way vector subscripts work in fortran).  This means that
 
 returns an array of shape (4,4) when slicing a netCDF variable, but for a
 numpy array it returns an array of shape (4,).
-Similarly, a netCDF variable of shape C{(2,3,4,5)} indexed
-with C{[0, array([True, False, True]), array([False, True, True, True]), :]}
-would return a C{(2, 3, 5)} array. In NumPy, this would raise an error since
-it would be equivalent to C{[0, [0,1], [1,2,3], :]}. When slicing with integer
+Similarly, a netCDF variable of shape ``(2,3,4,5)`` indexed
+with ``[0, array([True, False, True]), array([False, True, True, True]), :]``
+would return a ``(2, 3, 5)`` array. In NumPy, this would raise an error since
+it would be equivalent to ``[0, [0,1], [1,2,3], :]``. When slicing with integer
 sequences, the indices must be sorted in increasing order and contain no duplicates.
 While this behaviour may cause some confusion for those used to NumPy's 'fancy indexing' rules,
 it provides a very powerful way to extract data from multidimensional netCDF
@@ -455,7 +455,7 @@ shape of fancy temp slice =  (3, 3, 36, 71)
 Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF and COARDS) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
-specified like C{hours since YY:MM:DD hh-mm-ss}.  These units can be
+specified like ``hours since YY:MM:DD hh-mm-ss``.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The functione called :class:`num2date` and :class:`date2num` are
 provided with this package to do just that.  Here's an example of how they
@@ -477,8 +477,8 @@ dates corresponding to time values:
  2001-03-02 12:00:00 2001-03-03 00:00:00]
 >>>
 
-:class:`num2date` converts numeric values of time in the specified C{units}
-and C{calendar} to datetime objects, and :class:`date2num` does the reverse.
+:class:`num2date` converts numeric values of time in the specified ``units``
+and ``calendar`` to datetime objects, and :class:`date2num` does the reverse.
 All the calendars currently defined in the U{CF metadata convention
 <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
 A function called :class:`date2index` is also provided which returns the indices
@@ -498,8 +498,8 @@ Variables in the list of files that share the same unlimited
 dimension are aggregated together, and can be sliced across multiple
 files.  To illustrate this, let's first create a bunch of netCDF files with
 the same variable (with the same unlimited dimension).  The files
-must in be in C{NETCDF3_64BIT}, C{NETCDF3_CLASSIC} or
-C{NETCDF4_CLASSIC format} (C{NETCDF4} formatted multi-file
+must in be in ``NETCDF3_64BIT``, ``NETCDF3_CLASSIC`` or
+``NETCDF4_CLASSIC format`` (``NETCDF4`` formatted multi-file
 datasets are not supported).
 
 >>> for nfile in range(10):
@@ -528,35 +528,35 @@ datasets.
 
 Data stored in netCDF 4 :class:`Variable` objects can be compressed and
 decompressed on the fly. The parameters for the compression are
-determined by the C{zlib}, C{complevel} and C{shuffle} keyword arguments
+determined by the ``zlib``, ``complevel`` and ``shuffle`` keyword arguments
 to the :class:`createVariable<Dataset.createVariable>` method. To turn on
-compression, set C{zlib=True}.  The C{complevel} keyword regulates the
+compression, set ``zlib=True``.  The ``complevel`` keyword regulates the
 speed and efficiency of the compression (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
-default value of C{complevel} is 4. Setting C{shuffle=False} will turn
+default value of ``complevel`` is 4. Setting ``shuffle=False`` will turn
 off the HDF5 shuffle filter, which de-interlaces a block of data before
 compression by reordering the bytes.  The shuffle filter can
 significantly improve compression ratios, and is on by default.  Setting
-C{fletcher32} keyword argument to
-:class:`createVariable<Dataset.createVariable>` to C{True} (it's C{False} by
+``fletcher32`` keyword argument to
+:class:`createVariable<Dataset.createVariable>` to ``True`` (it's ``False`` by
 default) enables the Fletcher32 checksum algorithm for error detection.
 It's also possible to set the HDF5 chunking parameters and endian-ness
-of the binary data stored in the HDF5 file with the C{chunksizes}
-and C{endian} keyword arguments to
+of the binary data stored in the HDF5 file with the ``chunksizes``
+and ``endian`` keyword arguments to
 :class:`createVariable<Dataset.createVariable>`.  These keyword arguments only
-are relevant for C{NETCDF4} and C{NETCDF4_CLASSIC} files (where the
+are relevant for ``NETCDF4`` and ``NETCDF4_CLASSIC`` files (where the
 underlying file format is HDF5) and are silently ignored if the file
-format is C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT},
+format is ``NETCDF3_CLASSIC`` or ``NETCDF3_64BIT``,
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
 0.1 degrees), you can dramatically improve zlib compression by
-quantizing (or truncating) the data using the C{least_significant_digit}
+quantizing (or truncating) the data using the ``least_significant_digit``
 keyword argument to :class:`createVariable<Dataset.createVariable>`. The least
 significant digit is the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
-precision of 0.1, then setting C{least_significant_digit=1} will cause
-data the data to be quantized using C{numpy.around(scale*data)/scale}, where
+precision of 0.1, then setting ``least_significant_digit=1`` will cause
+data the data to be quantized using ``numpy.around(scale*data)/scale``, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
 retained (in this case bits=4).  Effectively, this makes the compression
 'lossy' instead of 'lossless', that is some precision in the data is
@@ -670,7 +670,7 @@ in python as object arrays (arrays of dtype ``object``). These are arrays whose
 elements are Python object pointers, and can contain any type of python object.
 For this application, they must contain 1-D numpy arrays all of the same type
 but of varying length.
-In this case, they contain 1-D numpy C{int32} arrays of random length betwee
+In this case, they contain 1-D numpy ``int32`` arrays of random length betwee
 1 and 10.
 
 >>> import random
@@ -743,8 +743,8 @@ It is also possible to set contents of vlen string variables with numpy arrays
 of any string or unicode data type. Note, however, that accessing the contents
 of such variables will always return numpy arrays with dtype ``object``.
 
-All of the code in this tutorial is available in C{examples/tutorial.py},
-Unit tests are in the C{test} directory.
+All of the code in this tutorial is available in ``examples/tutorial.py``,
+Unit tests are in the ``test`` directory.
 
 @contact: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
 
@@ -1321,45 +1321,45 @@ data fields stored in a netCDF file.
 
 B{Parameters:}
 
-B{C{filename}} - Name of netCDF file to hold dataset.
+B{``filename``} - Name of netCDF file to hold dataset.
 
 B{Keywords}:
 
-B{C{mode}} - access mode. C{r} means read-only; no data can be
-modified. C{w} means write; a new file is created, an existing file with
-the same name is deleted. C{a} and C{r+} mean append (in analogy with
+B{``mode``} - access mode. ``r`` means read-only; no data can be
+modified. ``w`` means write; a new file is created, an existing file with
+the same name is deleted. ``a`` and ``r+`` mean append (in analogy with
 serial files); an existing file is opened for reading and writing.
-Appending C{s} to modes C{w}, C{r+} or C{a} will enable unbuffered shared
-access to C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT} formatted files.
+Appending ``s`` to modes ``w``, ``r+`` or ``a`` will enable unbuffered shared
+access to ``NETCDF3_CLASSIC`` or ``NETCDF3_64BIT`` formatted files.
 Unbuffered acesss may be useful even if you don't need shared
 access, since it may be faster for programs that don't access data
-sequentially. This option is ignored for C{NETCDF4} and C{NETCDF4_CLASSIC}
+sequentially. This option is ignored for ``NETCDF4`` and ``NETCDF4_CLASSIC``
 formatted files.
 
-B{C{clobber}} - if C{True} (default), opening a file with C{mode='w'}
-will clobber an existing file with the same name.  if C{False}, an
+B{``clobber``} - if ``True`` (default), opening a file with ``mode='w'``
+will clobber an existing file with the same name.  if ``False``, an
 exception will be raised if a file with the same name already exists.
 
-B{C{format}} - underlying file format (one of C{'NETCDF4',
-'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'} or C{'NETCDF3_64BIT'}.  Only
-relevant if C{mode = 'w'} (if C{mode = 'r','a'} or C{'r+'} the file format
-is automatically detected). Default C{'NETCDF4'}, which means the data is
+B{``format``} - underlying file format (one of C{'NETCDF4',
+'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'} or ``'NETCDF3_64BIT'``.  Only
+relevant if ``mode = 'w'`` (if ``mode = 'r','a'`` or ``'r+'`` the file format
+is automatically detected). Default ``'NETCDF4'``, which means the data is
 stored in an HDF5 file, using netCDF 4 API features.  Setting
-C{format='NETCDF4_CLASSIC'} will create an HDF5 file, using only netCDF 3
+``format='NETCDF4_CLASSIC'`` will create an HDF5 file, using only netCDF 3
 compatibile API features. netCDF 3 clients must be recompiled and linked
-against the netCDF 4 library to read files in C{NETCDF4_CLASSIC} format.
-C{'NETCDF3_CLASSIC'} is the classic netCDF 3 file format that does not
-handle 2+ Gb files very well. C{'NETCDF3_64BIT'} is the 64-bit offset
+against the netCDF 4 library to read files in ``NETCDF4_CLASSIC`` format.
+``'NETCDF3_CLASSIC'`` is the classic netCDF 3 file format that does not
+handle 2+ Gb files very well. ``'NETCDF3_64BIT'`` is the 64-bit offset
 version of the netCDF 3 file format, which fully supports 2+ GB files, but
 is only compatible with clients linked against netCDF version 3.6.0 or
 later.
 
-C{diskless} - create diskless (in memory) file.  This is an experimental
+``diskless`` - create diskless (in memory) file.  This is an experimental
 feature added to the C library after the netcdf-4.2 release.
 
-C{persist} - if diskless=True, persist file to disk when closed (default False).
+``persist`` - if diskless=True, persist file to disk when closed (default False).
 
-C{keepweakref} - if keepweakref=True, child Dimension and Variable instances will keep weak
+``keepweakref`` - if keepweakref=True, child Dimension and Variable instances will keep weak
 references to the parent Dataset or Group object.  Default is False, which
 means strong references will be kept.  Having Dimension and Variable instances
 keep a strong reference to the parent Dataset instance, which in turn keeps a
@@ -1381,18 +1381,18 @@ A list of attribute names corresponding to global netCDF attributes
 defined for the :class:`Dataset` can be obtained with the :class:`ncattrs()` method.
 These attributes can be created by assigning to an attribute of the
 :class:`Dataset` instance. A dictionary containing all the netCDF attribute
-name/value pairs is provided by the C{__dict__} attribute of a
+name/value pairs is provided by the ``__dict__`` attribute of a
 :class:`Dataset` instance.
 
 The instance variables C{dimensions, variables, groups,
-cmptypes, data_model, disk_format} and C{path} are read-only (and should not be modified by the
+cmptypes, data_model, disk_format} and ``path`` are read-only (and should not be modified by the
 user).
 
-:ivar dimensions: The C{dimensions} dictionary maps the names of
+:ivar dimensions: The ``dimensions`` dictionary maps the names of
 dimensions defined for the :class:`Group` or :class:`Dataset` to instances of the
 :class:`Dimension` class.
 
-:ivar variables: The C{variables} dictionary maps the names of variables
+:ivar variables: The ``variables`` dictionary maps the names of variables
 defined for this :class:`Dataset` or :class:`Group` to instances of the :class:`Variable`
 class.
 
@@ -1401,32 +1401,32 @@ this :class:`Dataset` or :class:`Group` to instances of the :class:`Group` class
 :class:`Dataset` class is simply a special case of the :class:`Group` class which
 describes the root group in the netCDF file).
 
-:ivar cmptypes: The C{cmptypes} dictionary maps the names of
+:ivar cmptypes: The ``cmptypes`` dictionary maps the names of
 compound types defined for the :class:`Group` or :class:`Dataset` to instances of the
 :class:`CompoundType` class.
 
-:ivar vltypes: The C{vltypes} dictionary maps the names of
+:ivar vltypes: The ``vltypes`` dictionary maps the names of
 variable-length types defined for the :class:`Group` or :class:`Dataset` to instances of the
 :class:`VLType` class.
 
-:ivar data_model: The C{data_model} attribute describes the netCDF
-data model version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
-C{NETCDF4_CLASSIC} or C{NETCDF3_64BIT}.
+:ivar data_model: The ``data_model`` attribute describes the netCDF
+data model version, one of ``NETCDF3_CLASSIC``, ``NETCDF4``,
+``NETCDF4_CLASSIC`` or ``NETCDF3_64BIT``.
 
-:ivar file_format: same as C{data_model}, retained for backwards
+:ivar file_format: same as ``data_model``, retained for backwards
 compatibility.
 
-:ivar disk_format: The C{disk_format} attribute describes the underlying
-file format, one of C{NETCDF3}, C{HDF5}, C{HDF4},
-C{PNETCDF}, C{DAP2}, C{DAP4} or C{UNDEFINED}. Only available if using
-netcdf C library version >= 4.3.1, otherwise will always return C{UNDEFINED}.
+:ivar disk_format: The ``disk_format`` attribute describes the underlying
+file format, one of ``NETCDF3``, ``HDF5``, ``HDF4``,
+``PNETCDF``, ``DAP2``, ``DAP4`` or ``UNDEFINED``. Only available if using
+netcdf C library version >= 4.3.1, otherwise will always return ``UNDEFINED``.
 
-:ivar path: The C{path} attribute shows the location of the :class:`Group` in
+:ivar path: The ``path`` attribute shows the location of the :class:`Group` in
 the :class:`Dataset` in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A :class:`Dataset` instance is the root
-group, so the path is simply C{'/'}.
+group, so the path is simply ``'/'``.
 
-:ivar parent:  The C{parent} attribute is a reference to the parent
+:ivar parent:  The ``parent`` attribute is a reference to the parent
 :class:`Group` instance. ``None`` for a the root group or :class:`Dataset` instance"""
     cdef object __weakref__
     cdef public int _grpid
@@ -1635,14 +1635,14 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def set_fill_on(self):
         """set_fill_on(self)
         
-        Sets the fill mode for a :class:`Dataset` open for writing to C{on}.
+        Sets the fill mode for a :class:`Dataset` open for writing to ``on``.
         
         This causes data to be pre-filled with fill values. The fill values can be
-        controlled by the variable's C{_Fill_Value} attribute, but is usually
-        sufficient to the use the netCDF default C{_Fill_Value} (defined
+        controlled by the variable's ``_Fill_Value`` attribute, but is usually
+        sufficient to the use the netCDF default ``_Fill_Value`` (defined
         separately for each variable type). The default behavior of the netCDF
-        library correspongs to C{set_fill_on}.  Data which are equal to the
-        C{_Fill_Value} indicate that the variable was created, but never written
+        library correspongs to ``set_fill_on``.  Data which are equal to the
+        ``_Fill_Value`` indicate that the variable was created, but never written
         to.
 
 
@@ -1655,7 +1655,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def set_fill_off(self):
         """set_fill_off(self)
         
-        Sets the fill mode for a :class:`Dataset` open for writing to C{off}.
+        Sets the fill mode for a :class:`Dataset` open for writing to ``off``.
         
         This will prevent the data from being pre-filled with fill values, which
         may result in some performance improvements. However, you must then make
@@ -1671,15 +1671,15 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def createDimension(self, dimname, size=None):
         """createDimension(self, dimname, size=None)
         
-        Creates a new dimension with the given C{dimname} and C{size}.
+        Creates a new dimension with the given ``dimname`` and ``size``.
         
-        C{size} must be a positive integer or ``None``, which stands for
+        ``size`` must be a positive integer or ``None``, which stands for
         "unlimited" (default is ``None``). Specifying a size of 0 also
         results in an unlimited dimension. The return value is the :class:`Dimension`
         class instance describing the new dimension.  To determine the current
-        maximum size of the dimension, use the C{len} function on the :class:`Dimension`
+        maximum size of the dimension, use the ``len`` function on the :class:`Dimension`
         instance. To determine if a dimension is 'unlimited', use the
-        C{isunlimited()} method of the :class:`Dimension` instance.
+        ``isunlimited()`` method of the :class:`Dimension` instance.
 
         :param dimname: 
         :param size:  (Default value = None)
@@ -1691,7 +1691,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def renameDimension(self, oldname, newname):
         """renameDimension(self, oldname, newname)
         
-        rename a :class:`Dimension` named C{oldname} to C{newname}.
+        rename a :class:`Dimension` named ``oldname`` to ``newname``.
 
         :param oldname: 
         :param newname: 
@@ -1719,8 +1719,8 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def createCompoundType(self, datatype, datatype_name):
         """createCompoundType(self, datatype, datatype_name)
         
-        Creates a new compound data type named C{datatype_name} from the numpy
-        dtype object C{datatype}.
+        Creates a new compound data type named ``datatype_name`` from the numpy
+        dtype object ``datatype``.
         
         @attention: If the new compound data type contains other compound data types
         (i.e. it is a 'nested' compound type, where not all of the elements
@@ -1741,8 +1741,8 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def createVLType(self, datatype, datatype_name):
         """createVLType(self, datatype, datatype_name)
         
-        Creates a new VLEN data type named C{datatype_name} from a numpy
-        dtype object C{datatype}.
+        Creates a new VLEN data type named ``datatype_name`` from a numpy
+        dtype object ``datatype``.
         
         The return value is the :class:`VLType` class instance describing the new
         datatype.
@@ -1760,17 +1760,17 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             fill_value=None, chunk_cache=None):
         """createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
         
-        Creates a new variable with the given C{varname}, C{datatype}, and
-        C{dimensions}. If dimensions are not given, the variable is assumed to be
+        Creates a new variable with the given ``varname``, ``datatype``, and
+        ``dimensions``. If dimensions are not given, the variable is assumed to be
         a scalar.
         
-        The C{datatype} can be a numpy datatype object, or a string that describes
-        a numpy dtype object (like the C{dtype.str} attribue of a numpy array).
+        The ``datatype`` can be a numpy datatype object, or a string that describes
+        a numpy dtype object (like the ``dtype.str`` attribue of a numpy array).
         Supported specifiers include: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
         (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
         (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
         'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)}.
-        C{datatype} can also be a :class:`CompoundType` instance
+        ``datatype`` can also be a :class:`CompoundType` instance
         (for a structured, or compound array), a :class:`VLType` instance
         (for a variable-length array), or the python ``str`` builtin
         (for a variable-length string array). Numpy string and unicode datatypes with
@@ -1779,57 +1779,57 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         Data from netCDF variables is presented to python as numpy arrays with
         the corresponding data type.
         
-        C{dimensions} must be a tuple containing dimension names (strings) that
-        have been defined previously using C{createDimension}. The default value
+        ``dimensions`` must be a tuple containing dimension names (strings) that
+        have been defined previously using ``createDimension``. The default value
         is an empty tuple, which means the variable is a scalar.
         
-        If the optional keyword C{zlib} is C{True}, the data will be compressed in
-        the netCDF file using gzip compression (default C{False}).
+        If the optional keyword ``zlib`` is ``True``, the data will be compressed in
+        the netCDF file using gzip compression (default ``False``).
         
-        The optional keyword C{complevel} is an integer between 1 and 9 describing
-        the level of compression desired (default 4). Ignored if C{zlib=False}.
+        The optional keyword ``complevel`` is an integer between 1 and 9 describing
+        the level of compression desired (default 4). Ignored if ``zlib=False``.
         
-        If the optional keyword C{shuffle} is C{True}, the HDF5 shuffle filter
-        will be applied before compressing the data (default C{True}).  This
-        significantly improves compression. Default is C{True}. Ignored if
-        C{zlib=False}.
+        If the optional keyword ``shuffle`` is ``True``, the HDF5 shuffle filter
+        will be applied before compressing the data (default ``True``).  This
+        significantly improves compression. Default is ``True``. Ignored if
+        ``zlib=False``.
         
-        If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5
-        checksum algorithm is activated to detect errors. Default C{False}.
+        If the optional keyword ``fletcher32`` is ``True``, the Fletcher32 HDF5
+        checksum algorithm is activated to detect errors. Default ``False``.
         
-        If the optional keyword C{contiguous} is C{True}, the variable data is
-        stored contiguously on disk.  Default C{False}. Setting to C{True} for
+        If the optional keyword ``contiguous`` is ``True``, the variable data is
+        stored contiguously on disk.  Default ``False``. Setting to ``True`` for
         a variable with an unlimited dimension will trigger an error.
         
-        The optional keyword C{chunksizes} can be used to manually specify the
+        The optional keyword ``chunksizes`` can be used to manually specify the
         HDF5 chunksizes for each dimension of the variable. A detailed
         discussion of HDF chunking and I/O performance is available U{here
         <http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>}.
         Basically, you want the chunk size for each dimension to match as
         closely as possible the size of the data block that users will read
-        from the file.  C{chunksizes} cannot be set if C{contiguous=True}.
+        from the file.  ``chunksizes`` cannot be set if ``contiguous=True``.
         
-        The optional keyword C{endian} can be used to control whether the
+        The optional keyword ``endian`` can be used to control whether the
         data is stored in little or big endian format on disk. Possible
-        values are C{little, big} or C{native} (default). The library
+        values are ``little, big`` or ``native`` (default). The library
         will automatically handle endian conversions when the data is read,
         but if the data is always going to be read on a computer with the
         opposite format as the one used to create the file, there may be
         some performance advantage to be gained by setting the endian-ness.
         
-        The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
+        The ``zlib, complevel, shuffle, fletcher32, contiguous, chunksizes`` and ``endian``
         keywords are silently ignored for netCDF 3 files that do not use HDF5.
         
-        The optional keyword C{fill_value} can be used to override the default
-        netCDF C{_FillValue} (the value that the variable gets filled with before
+        The optional keyword ``fill_value`` can be used to override the default
+        netCDF ``_FillValue`` (the value that the variable gets filled with before
         any data is written to it, defaults given in netCDF4.default_fillvals).
-        If fill_value is set to C{False}, then the variable is not pre-filled.
+        If fill_value is set to ``False``, then the variable is not pre-filled.
         
-        If the optional keyword parameter C{least_significant_digit} is
+        If the optional keyword parameter ``least_significant_digit`` is
         specified, variable data will be truncated (quantized). In conjunction
-        with C{zlib=True} this produces 'lossy', but significantly more
-        efficient compression. For example, if C{least_significant_digit=1},
-        data will be quantized using C{numpy.around(scale*data)/scale}, where
+        with ``zlib=True`` this produces 'lossy', but significantly more
+        efficient compression. For example, if ``least_significant_digit=1``,
+        data will be quantized using ``numpy.around(scale*data)/scale``, where
         scale = 2**bits, and bits is determined so that a precision of 0.1 is
         retained (in this case bits=4). From
         U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}:
@@ -1837,11 +1837,11 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         in unpacked data that is a reliable value." Default is ``None``, or no
         quantization, or 'lossless' compression.
         
-        When creating variables in a C{NETCDF4} or C{NETCDF4_CLASSIC} formatted file,
+        When creating variables in a ``NETCDF4`` or ``NETCDF4_CLASSIC`` formatted file,
         HDF5 creates something called a 'chunk cache' for each variable.  The
         default size of the chunk cache may be large enough to completely fill
         available memory when creating thousands of variables.  The optional
-        keyword C{chunk_cache} allows you to reduce (or increase) the size of
+        keyword ``chunk_cache`` allows you to reduce (or increase) the size of
         the default chunk cache when creating a variable.  The setting only
         persists as long as the Dataset is open - you can use the set_var_chunk_cache
         method to change it the next time the Dataset is opened.
@@ -1851,25 +1851,25 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         variable.
         
         A list of names corresponding to netCDF variable attributes can be
-        obtained with the :class:`Variable` method C{ncattrs()}. A dictionary
+        obtained with the :class:`Variable` method ``ncattrs()``. A dictionary
         containing all the netCDF attribute name/value pairs is provided by
-        the C{__dict__} attribute of a :class:`Variable` instance.
+        the ``__dict__`` attribute of a :class:`Variable` instance.
         
         :class:`Variable` instances behave much like array objects. Data can be
         assigned to or retrieved from a variable with indexing and slicing
         operations on the :class:`Variable` instance. A :class:`Variable` instance has six
-        Dataset standard attributes: C{dimensions, dtype, shape, ndim, name} and
-        C{least_significant_digit}. Application programs should never modify
-        these attributes. The C{dimensions} attribute is a tuple containing the
-        names of the dimensions associated with this variable. The C{dtype}
+        Dataset standard attributes: ``dimensions, dtype, shape, ndim, name`` and
+        ``least_significant_digit``. Application programs should never modify
+        these attributes. The ``dimensions`` attribute is a tuple containing the
+        names of the dimensions associated with this variable. The ``dtype``
         attribute is a string describing the variable's data type (C{i4, f8,
-        S1,} etc). The C{shape} attribute is a tuple describing the current
-        sizes of all the variable's dimensions. The C{name} attribute is a
+        S1,} etc). The ``shape`` attribute is a tuple describing the current
+        sizes of all the variable's dimensions. The ``name`` attribute is a
         string containing the name of the Variable instance.
-        The C{least_significant_digit}
+        The ``least_significant_digit``
         attributes describes the power of ten of the smallest decimal place in
         the data the contains a reliable value.  assigned to the :class:`Variable`
-        instance. If ``None``, the data is not truncated. The C{ndim} attribute
+        instance. If ``None``, the data is not truncated. The ``ndim`` attribute
         is the number of variable dimensions.
 
         :param varname: 
@@ -1887,7 +1887,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def renameVariable(self, oldname, newname):
         """renameVariable(self, oldname, newname)
         
-        rename a :class:`Variable` named C{oldname} to C{newname}
+        rename a :class:`Variable` named ``oldname`` to ``newname``
 
         :param oldname: 
         :param newname: 
@@ -1913,7 +1913,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def createGroup(self, groupname):
         """createGroup(self, groupname)
         
-        Creates a new :class:`Group` with the given C{groupname}.
+        Creates a new :class:`Group` with the given ``groupname``.
         
         The return value is a :class:`Group` class instance describing the new group.
 
@@ -2031,7 +2031,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def renameAttribute(self, oldname, newname):
         """renameAttribute(self, oldname, newname)
         
-        rename a :class:`Dataset` or :class:`Group` attribute named C{oldname} to C{newname}.
+        rename a :class:`Dataset` or :class:`Group` attribute named ``oldname`` to ``newname``.
 
         :param oldname: 
         :param newname: 
@@ -2051,7 +2051,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
     def renameGroup(self, oldname, newname):
         """renameGroup(self, oldname, newname)
         
-        rename a :class:`Group` named C{oldname} to C{newname} (requires netcdf >= 4.3.1).
+        rename a :class:`Group` named ``oldname`` to ``newname`` (requires netcdf >= 4.3.1).
 
         :param oldname: 
         :param newname: 
@@ -2087,7 +2087,7 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         
         B{Parameters}:
         
-        B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
+        B{``True_or_False``} - Boolean determining if automatic conversion to masked arrays
         and variable scaling shall be applied for all variables.
         
         B{Notes}:
@@ -2116,7 +2116,7 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         
         B{Parameters}:
         
-        B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
+        B{``True_or_False``} - Boolean determining if automatic conversion to masked arrays
         shall be applied for all variables.
         
         B{Notes}:
@@ -2144,7 +2144,7 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         
         B{Parameters}:
         
-        B{C{True_or_False}} - Boolean determining if automatic variable scaling
+        B{``True_or_False``} - Boolean determining if automatic variable scaling
         shall be applied for all variables.
         
         B{Notes}:
@@ -2180,10 +2180,10 @@ another :class:`Group` instance, not using this class directly.
 
 B{Parameters:}
 
-B{C{parent}} - :class:`Group` instance for the parent group.  If being created
+B{``parent``} - :class:`Group` instance for the parent group.  If being created
 in the root group, use a :class:`Dataset` instance.
 
-B{C{name}} - Name of the group.
+B{``name``} - Name of the group.
 
 B{Returns:}
 
@@ -2191,7 +2191,7 @@ a :class:`Group` instance.  All further operations on the netCDF
 Group are accomplished via :class:`Group` instance methods.
 
 :class:`Group` inherits from :class:`Dataset`, so all the :class:`Dataset` class methods and
-variables are available to a :class:`Group` instance (except the C{close}
+variables are available to a :class:`Group` instance (except the ``close``
 method)."""
     def __init__(self, parent, name, **kwargs):
         cdef int ierr
@@ -2270,13 +2270,13 @@ A netCDF :class:`Dimension` is used to describe the coordinates of a :class:`Var
 
 B{Parameters:}
 
-B{C{group}} - :class:`Group` instance to associate with dimension.
+B{``group``} - :class:`Group` instance to associate with dimension.
 
-B{C{name}}  - Name of the dimension.
+B{``name``}  - Name of the dimension.
 
 B{Keywords:}
 
-B{C{size}}  - Size of the dimension. ``None`` or 0 means unlimited. (Default ``None``).
+B{``size``}  - Size of the dimension. ``None`` or 0 means unlimited. (Default ``None``).
 
 B{Returns:}
 
@@ -2284,8 +2284,8 @@ a :class:`Dimension` instance.  All further operations on the netCDF Dimension
 are accomplised via :class:`Dimension` instance methods.
 
 The current maximum size of a :class:`Dimension` instance can be obtained by
-calling the python C{len} function on the :class:`Dimension` instance. The
-C{isunlimited()} method of a :class:`Dimension` instance can be used to
+calling the python ``len`` function on the :class:`Dimension` instance. The
+``isunlimited()`` method of a :class:`Dimension` instance can be used to
 determine if the dimension is unlimited"""
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
@@ -2368,7 +2368,7 @@ determine if the dimension is unlimited"""
     def isunlimited(self):
         """isunlimited(self)
         
-        returns C{True} if the :class:`Dimension` instance is unlimited, C{False} otherwise.
+        returns ``True`` if the :class:`Dimension` instance is unlimited, ``False`` otherwise.
 
 
         """
@@ -2415,24 +2415,24 @@ analagous to numpy array objects.
 
 B{Parameters:}
 
-B{C{group}} - :class:`Group` or :class:`Dataset` instance to associate with variable.
+B{``group``} - :class:`Group` or :class:`Dataset` instance to associate with variable.
 
-B{C{name}}  - Name of the variable.
+B{``name``}  - Name of the variable.
 
-B{C{datatype}} - :class:`Variable` data type. Can be specified by providing a
+B{``datatype``} - :class:`Variable` data type. Can be specified by providing a
 numpy dtype object, or a string that describes a numpy dtype object.
 Supported values, corresponding to ``str`` attribute of numpy dtype
-objects, include C{'f4'} (32-bit floating point), C{'f8'} (64-bit floating
-point), C{'i4'} (32-bit signed integer), C{'i2'} (16-bit signed integer),
-C{'i8'} (64-bit singed integer), C{'i4'} (8-bit singed integer), C{'i1'}
-(8-bit signed integer), C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit
-unsigned integer), C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit
-unsigned integer), or C{'S1'} (single-character string).  From
+objects, include ``'f4'`` (32-bit floating point), ``'f8'`` (64-bit floating
+point), ``'i4'`` (32-bit signed integer), ``'i2'`` (16-bit signed integer),
+``'i8'`` (64-bit singed integer), ``'i4'`` (8-bit singed integer), ``'i1'``
+(8-bit signed integer), ``'u1'`` (8-bit unsigned integer), ``'u2'`` (16-bit
+unsigned integer), ``'u4'`` (32-bit unsigned integer), ``'u8'`` (64-bit
+unsigned integer), or ``'S1'`` (single-character string).  From
 compatibility with Scientific.IO.NetCDF, the old Numeric single character
-typecodes can also be used (C{'f'} instead of C{'f4'}, C{'d'} instead of
-C{'f8'}, C{'h'} or C{'s'} instead of C{'i2'}, C{'b'} or C{'B'} instead of
-C{'i1'}, C{'c'} instead of C{'S1'}, and C{'i'} or C{'l'} instead of
-C{'i4'}). C{datatype} can also be a :class:`CompoundType` instance
+typecodes can also be used (``'f'`` instead of ``'f4'``, ``'d'`` instead of
+``'f8'``, ``'h'`` or ``'s'`` instead of ``'i2'``, ``'b'`` or ``'B'`` instead of
+``'i1'``, ``'c'`` instead of ``'S1'``, and ``'i'`` or ``'l'`` instead of
+``'i4'``). ``datatype`` can also be a :class:`CompoundType` instance
 (for a structured, or compound array), a :class:`VLType` instance
 (for a variable-length array), or the python ``str`` builtin
 (for a variable-length string array). Numpy string and unicode datatypes with
@@ -2440,58 +2440,58 @@ length greater than one are aliases for ``str``.
 
 B{Keywords:}
 
-B{C{dimensions}} - a tuple containing the variable's dimension names
-(defined previously with C{createDimension}). Default is an empty tuple
+B{``dimensions``} - a tuple containing the variable's dimension names
+(defined previously with ``createDimension``). Default is an empty tuple
 which means the variable is a scalar (and therefore has no dimensions).
 
-B{C{zlib}} - if C{True}, data assigned to the :class:`Variable`
-instance is compressed on disk. Default C{False}.
+B{``zlib``} - if ``True``, data assigned to the :class:`Variable`
+instance is compressed on disk. Default ``False``.
 
-B{C{complevel}} - the level of zlib compression to use (1 is the fastest,
+B{``complevel``} - the level of zlib compression to use (1 is the fastest,
 but poorest compression, 9 is the slowest but best compression). Default 4.
-Ignored if C{zlib=False}.
+Ignored if ``zlib=False``.
 
-B{C{shuffle}} - if C{True}, the HDF5 shuffle filter is applied
-to improve compression. Default C{True}. Ignored if C{zlib=False}.
+B{``shuffle``} - if ``True``, the HDF5 shuffle filter is applied
+to improve compression. Default ``True``. Ignored if ``zlib=False``.
 
-B{C{fletcher32}} - if C{True} (default C{False}), the Fletcher32 checksum
+B{``fletcher32``} - if ``True`` (default ``False``), the Fletcher32 checksum
 algorithm is used for error detection.
 
-B{C{contiguous}} - if C{True} (default C{False}), the variable data is
-stored contiguously on disk.  Default C{False}. Setting to C{True} for
+B{``contiguous``} - if ``True`` (default ``False``), the variable data is
+stored contiguously on disk.  Default ``False``. Setting to ``True`` for
 a variable with an unlimited dimension will trigger an error.
 
-B{C{chunksizes}} - Can be used to specify the HDF5 chunksizes for each
+B{``chunksizes``} - Can be used to specify the HDF5 chunksizes for each
 dimension of the variable. A detailed discussion of HDF chunking and I/O
 performance is available U{here
 <http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>}.
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
-from the file. C{chunksizes} cannot be set if C{contiguous=True}.
+from the file. ``chunksizes`` cannot be set if ``contiguous=True``.
 
-B{C{endian}} - Can be used to control whether the
+B{``endian``} - Can be used to control whether the
 data is stored in little or big endian format on disk. Possible
-values are C{little, big} or C{native} (default). The library
+values are ``little, big`` or ``native`` (default). The library
 will automatically handle endian conversions when the data is read,
 but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
-For netCDF 3 files (that don't use HDF5), only C{endian='native'} is allowed.
+For netCDF 3 files (that don't use HDF5), only ``endian='native'`` is allowed.
 
-The C{zlib, complevel, shuffle, fletcher32, contiguous} and {chunksizes}
+The ``zlib, complevel, shuffle, fletcher32, contiguous`` and {chunksizes}
 keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
-B{C{least_significant_digit}} - If specified, variable data will be
-truncated (quantized). In conjunction with C{zlib=True} this produces
+B{``least_significant_digit``} - If specified, variable data will be
+truncated (quantized). In conjunction with ``zlib=True`` this produces
 'lossy', but significantly more efficient compression. For example, if
-C{least_significant_digit=1}, data will be quantized using
+``least_significant_digit=1``, data will be quantized using
 around(scale*data)/scale, where scale = 2**bits, and bits is determined
 so that a precision of 0.1 is retained (in this case bits=4). Default is
 ``None``, or no quantization.
 
-B{C{fill_value}} - If specified, the default netCDF C{_FillValue} (the
+B{``fill_value``} - If specified, the default netCDF ``_FillValue`` (the
 value that the variable gets filled with before any data is written to it)
-is replaced with this value.  If fill_value is set to C{False}, then
+is replaced with this value.  If fill_value is set to ``False``, then
 the variable is not pre-filled. The default netCDF fill values can be found
 in netCDF4.default_fillvals.
 
@@ -2501,14 +2501,14 @@ a :class:`Variable` instance.  All further operations on the netCDF Variable are
 accomplised via :class:`Variable` instance methods.
 
 A list of attribute names corresponding to netCDF attributes defined for
-the variable can be obtained with the C{ncattrs()} method. These
+the variable can be obtained with the ``ncattrs()`` method. These
 attributes can be created by assigning to an attribute of the
 :class:`Variable` instance. A dictionary containing all the netCDF attribute
-name/value pairs is provided by the C{__dict__} attribute of a
+name/value pairs is provided by the ``__dict__`` attribute of a
 :class:`Variable` instance.
 
-The instance variables C{dimensions, dtype, ndim, shape}
-and C{least_significant_digit} are read-only (and
+The instance variables ``dimensions, dtype, ndim, shape``
+and ``least_significant_digit`` are read-only (and
 should not be modified by the user).
 
 :ivar dimensions: A tuple containing the names of the dimensions
@@ -2521,12 +2521,12 @@ associated with this variable.
 :ivar shape: a tuple describing the current size of all the variable's
 dimensions.
 
-:ivar scale:  if True, C{scale_factor} and C{add_offset} are automatically
-applied. Default is C{True}, can be reset using :class:`set_auto_scale` and
+:ivar scale:  if True, ``scale_factor`` and ``add_offset`` are automatically
+applied. Default is ``True``, can be reset using :class:`set_auto_scale` and
 :class:`set_auto_maskandscale` methods.
 
 :ivar mask:  if True, data is automatically converted to/from masked arrays
-when missing values or fill values are present. Default is C{True}, can be
+when missing values or fill values are present. Default is ``True``, can be
 reset using :class:`set_auto_mask` and :class:`set_auto_maskandscale` methods.
 
 :ivar least_significant_digit: Describes the power of ten of the smallest
@@ -2534,7 +2534,7 @@ decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the :class:`Variable`
 instance. If ``None``, the data is not truncated. 
 
-:ivar __orthogonal_indexing__: Always C{True}.  Indicates to client code
+:ivar __orthogonal_indexing__: Always ``True``.  Indicates to client code
 that the object supports "orthogonal indexing", which means that slices
 that are 1d arrays or lists slice along each dimension independently.  This
 behavior is similar to Fortran or Matlab, but different than numpy."""
@@ -3065,7 +3065,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         """get_var_chunk_cache(self)
 
 
-        :returns: See netcdf C library documentation for C{nc_get_var_chunk_cache} for
+        :returns: See netcdf C library documentation for ``nc_get_var_chunk_cache`` for
         details.
 
         """
@@ -3084,7 +3084,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         """set_var_chunk_cache(self,size=None,nelems=None,preemption=None)
         
         change variable chunk cache settings.
-        See netcdf C library documentation for C{nc_set_var_chunk_cache} for
+        See netcdf C library documentation for ``nc_set_var_chunk_cache`` for
         details.
 
         :param size:  (Default value = None)
@@ -3169,7 +3169,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
     def renameAttribute(self, oldname, newname):
         """renameAttribute(self, oldname, newname)
         
-        rename a :class:`Variable` attribute named C{oldname} to C{newname}.
+        rename a :class:`Variable` attribute named ``oldname`` to ``newname``.
 
         :param oldname: 
         :param newname: 
@@ -3599,9 +3599,9 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         
         turn on or off automatic conversion of variable data to and
         from masked arrays and automatic packing/unpacking of variable
-        data using C{scale_factor} and C{add_offset} attributes.
+        data using ``scale_factor`` and ``add_offset`` attributes.
         
-        If C{maskandscale} is set to C{True}, when data is read from a variable
+        If ``maskandscale`` is set to ``True``, when data is read from a variable
         it is converted to a masked array if any of the values are exactly
         equal to the either the netCDF _FillValue or the value specified by the
         missing_value variable attribute. The fill_value of the masked array
@@ -3611,8 +3611,8 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         array is converted back to a regular numpy array by replacing all the
         masked values by the fill_value of the masked array.
         
-        If C{maskandscale} is set to C{True}, and the variable has a
-        C{scale_factor} or an C{add_offset} attribute, then data read
+        If ``maskandscale`` is set to ``True``, and the variable has a
+        ``scale_factor`` or an ``add_offset`` attribute, then data read
         from that variable is unpacked using::
         
             data = self.scale_factor*data + self.add_offset
@@ -3624,12 +3624,12 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         If either scale_factor is present, but add_offset is missing, add_offset
         is assumed zero.  If add_offset is present, but scale_factor is missing,
         scale_factor is assumed to be one.
-        For more information on how C{scale_factor} and C{add_offset} can be
+        For more information on how ``scale_factor`` and ``add_offset`` can be
         used to provide simple compression, see
         U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
         <http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>}.
         
-        The default value of C{maskandscale} is C{True}
+        The default value of ``maskandscale`` is ``True``
         (automatic conversions are performed).
 
         :param maskandscale: 
@@ -3646,10 +3646,10 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         """set_auto_scale(self,scale)
         
         turn on or off automatic packing/unpacking of variable
-        data using C{scale_factor} and C{add_offset} attributes.
+        data using ``scale_factor`` and ``add_offset`` attributes.
         
-        If C{scale} is set to C{True}, and the variable has a
-        C{scale_factor} or an C{add_offset} attribute, then data read
+        If ``scale`` is set to ``True``, and the variable has a
+        ``scale_factor`` or an ``add_offset`` attribute, then data read
         from that variable is unpacked using::
         
             data = self.scale_factor*data + self.add_offset
@@ -3661,12 +3661,12 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         If either scale_factor is present, but add_offset is missing, add_offset
         is assumed zero.  If add_offset is present, but scale_factor is missing,
         scale_factor is assumed to be one.
-        For more information on how C{scale_factor} and C{add_offset} can be
+        For more information on how ``scale_factor`` and ``add_offset`` can be
         used to provide simple compression, see
         U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
         <http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>}.
         
-        The default value of C{scale} is C{True}
+        The default value of ``scale`` is ``True``
         (automatic conversions are performed).
 
         :param scale: 
@@ -3683,7 +3683,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         turn on or off automatic conversion of variable data to and
         from masked arrays .
         
-        If C{mask} is set to C{True}, when data is read from a variable
+        If ``mask`` is set to ``True``, when data is read from a variable
         it is converted to a masked array if any of the values are exactly
         equal to the either the netCDF _FillValue or the value specified by the
         missing_value variable attribute. The fill_value of the masked array
@@ -3693,7 +3693,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         array is converted back to a regular numpy array by replacing all the
         masked values by the fill_value of the masked array.
         
-        The default value of C{mask} is C{True}
+        The default value of ``mask`` is ``True``
         (automatic conversions are performed).
 
         :param mask: 
@@ -3982,7 +3982,7 @@ cdef class CompoundType:
     """
 A :class:`CompoundType` instance is used to describe a compound data type.
 
-Constructor: C{CompoundType(group, datatype, datatype_name)}
+Constructor: ``CompoundType(group, datatype, datatype_name)``
 
 @attention: When creating nested compound data types,
 the inner compound data types must already be associated with CompoundType
@@ -3995,21 +3995,21 @@ method of a Dataset or :class:`Group` instance, not using this class directly.
 
 B{Parameters:}
 
-B{C{group}} - :class:`Group` instance to associate with the compound datatype.
+B{``group``} - :class:`Group` instance to associate with the compound datatype.
 
-B{C{datatype}} - A numpy dtype object describing a structured (a.k.a record)
+B{``datatype``} - A numpy dtype object describing a structured (a.k.a record)
 array.  Can be composed of homogeneous numeric or character data types, or
 other structured array data types.
 
-B{C{datatype_name}} - a Python string containing a description of the
+B{``datatype_name``} - a Python string containing a description of the
 compound data type.
 
 B{Returns:}
 
-a :class:`CompoundType` instance, which can be passed to the C{createVariable}
+a :class:`CompoundType` instance, which can be passed to the ``createVariable``
 method of a :class:`Dataset` or :class:`Group` instance.
 
-The instance variables C{dtype} and C{name} should not be modified by
+The instance variables ``dtype`` and ``name`` should not be modified by
 the user.
 
 :ivar dtype: A numpy dtype object describing the compound data type.
@@ -4212,7 +4212,7 @@ cdef class VLType:
     """
 A :class:`VLType` instance is used to describe a variable length (VLEN) data type.
 
-Constructor: C{VLType(group, datatype, datatype_name)}
+Constructor: ``VLType(group, datatype, datatype_name)``
 
 :class:`VLType` instances should be created using the
 :class:`createVLType<Dataset.createVLType>`
@@ -4220,20 +4220,20 @@ method of a Dataset or :class:`Group` instance, not using this class directly.
 
 B{Parameters:}
 
-B{C{group}} - :class:`Group` instance to associate with the VLEN datatype.
+B{``group``} - :class:`Group` instance to associate with the VLEN datatype.
 
-B{C{datatype}} - An numpy dtype object describing a the component type for the
+B{``datatype``} - An numpy dtype object describing a the component type for the
 variable length array.
 
-B{C{datatype_name}} - a Python string containing a description of the
+B{``datatype_name``} - a Python string containing a description of the
 VLEN data type.
 
 B{Returns:}
 
-a :class:`VLType` instance, which can be passed to the C{createVariable}
+a :class:`VLType` instance, which can be passed to the ``createVariable``
 method of a :class:`Dataset` or :class:`Group` instance.
 
-The instance variables C{dtype} and C{name} should not be modified by
+The instance variables ``dtype`` and ``name`` should not be modified by
 the user.
 
 :ivar dtype: An object describing the VLEN type.
