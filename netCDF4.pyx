@@ -809,6 +809,7 @@ include "constants.pyx"
 # check for required version of netcdf-4 and hdf5.
 
 def _gethdf5libversion():
+    """ """
     majorvers = H5_VERS_MAJOR
     minorvers = H5_VERS_MINOR
     releasevers = H5_VERS_RELEASE
@@ -964,6 +965,11 @@ cdef _get_att(grp, int varid, name):
             return value_arr
 
 def _set_default_format(object format='NETCDF4'):
+    """
+
+    :param object format:  (Default value = 'NETCDF4')
+
+    """
     # Private function to set the netCDF file format
     if format == 'NETCDF4':
         nc_set_default_format(NC_FORMAT_NETCDF4, NULL)
@@ -1534,11 +1540,13 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
         self.close()
 
     def filepath(self):
-        """
-filepath(self)
+        """filepath(self)
+        
+        Get the file system path (or the opendap URL) which was used to
+        open/create the Dataset. Requires netcdf >= 4.1.2
 
-Get the file system path (or the opendap URL) which was used to
-open/create the Dataset. Requires netcdf >= 4.1.2"""
+
+        """
         cdef int ierr
         cdef size_t pathlen
         cdef char path[NC_MAX_NAME + 1]
@@ -1584,10 +1592,12 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         return ''.join(ncdump)
 
     def close(self):
-        """
-close(self)
+        """close(self)
+        
+        Close the Dataset.
 
-Close the Dataset."""
+
+        """
         cdef int ierr
         ierr = nc_close(self._grpid)
         if ierr != NC_NOERR:
@@ -1601,76 +1611,92 @@ Close the Dataset."""
             ierr = nc_close(self._grpid)
 
     def sync(self):
-        """
-sync(self)
+        """sync(self)
+        
+        Writes all buffered data in the L{Dataset} to the disk file.
 
-Writes all buffered data in the L{Dataset} to the disk file."""
+
+        """
         cdef int ierr
         ierr = nc_sync(self._grpid)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def _redef(self):
+        """ """
         cdef int ierr
         ierr = nc_redef(self._grpid)
 
     def _enddef(self):
+        """ """
         cdef int ierr
         ierr = nc_enddef(self._grpid)
 
     def set_fill_on(self):
+        """set_fill_on(self)
+        
+        Sets the fill mode for a L{Dataset} open for writing to C{on}.
+        
+        This causes data to be pre-filled with fill values. The fill values can be
+        controlled by the variable's C{_Fill_Value} attribute, but is usually
+        sufficient to the use the netCDF default C{_Fill_Value} (defined
+        separately for each variable type). The default behavior of the netCDF
+        library correspongs to C{set_fill_on}.  Data which are equal to the
+        C{_Fill_Value} indicate that the variable was created, but never written
+        to.
+
+
         """
-set_fill_on(self)
-
-Sets the fill mode for a L{Dataset} open for writing to C{on}.
-
-This causes data to be pre-filled with fill values. The fill values can be
-controlled by the variable's C{_Fill_Value} attribute, but is usually
-sufficient to the use the netCDF default C{_Fill_Value} (defined
-separately for each variable type). The default behavior of the netCDF
-library correspongs to C{set_fill_on}.  Data which are equal to the
-C{_Fill_Value} indicate that the variable was created, but never written
-to."""
         cdef int ierr, oldmode
         ierr = nc_set_fill (self._grpid, NC_FILL, &oldmode)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def set_fill_off(self):
+        """set_fill_off(self)
+        
+        Sets the fill mode for a L{Dataset} open for writing to C{off}.
+        
+        This will prevent the data from being pre-filled with fill values, which
+        may result in some performance improvements. However, you must then make
+        sure the data is actually written before being read.
+
+
         """
-set_fill_off(self)
-
-Sets the fill mode for a L{Dataset} open for writing to C{off}.
-
-This will prevent the data from being pre-filled with fill values, which
-may result in some performance improvements. However, you must then make
-sure the data is actually written before being read."""
         cdef int ierr, oldmode
         ierr = nc_set_fill (self._grpid, NC_NOFILL, &oldmode)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def createDimension(self, dimname, size=None):
+        """createDimension(self, dimname, size=None)
+        
+        Creates a new dimension with the given C{dimname} and C{size}.
+        
+        C{size} must be a positive integer or C{None}, which stands for
+        "unlimited" (default is C{None}). Specifying a size of 0 also
+        results in an unlimited dimension. The return value is the L{Dimension}
+        class instance describing the new dimension.  To determine the current
+        maximum size of the dimension, use the C{len} function on the L{Dimension}
+        instance. To determine if a dimension is 'unlimited', use the
+        C{isunlimited()} method of the L{Dimension} instance.
+
+        :param dimname: 
+        :param size:  (Default value = None)
+
         """
-createDimension(self, dimname, size=None)
-
-Creates a new dimension with the given C{dimname} and C{size}.
-
-C{size} must be a positive integer or C{None}, which stands for
-"unlimited" (default is C{None}). Specifying a size of 0 also
-results in an unlimited dimension. The return value is the L{Dimension}
-class instance describing the new dimension.  To determine the current
-maximum size of the dimension, use the C{len} function on the L{Dimension}
-instance. To determine if a dimension is 'unlimited', use the
-C{isunlimited()} method of the L{Dimension} instance."""
         self.dimensions[dimname] = Dimension(self, dimname, size=size)
         return self.dimensions[dimname]
 
     def renameDimension(self, oldname, newname):
-        """
-renameDimension(self, oldname, newname)
+        """renameDimension(self, oldname, newname)
+        
+        rename a L{Dimension} named C{oldname} to C{newname}.
 
-rename a L{Dimension} named C{oldname} to C{newname}."""
+        :param oldname: 
+        :param newname: 
+
+        """
         cdef char *namstring
         bytestr = _strencode(newname)
         namstring = bytestr
@@ -1691,32 +1717,40 @@ rename a L{Dimension} named C{oldname} to C{newname}."""
         # looks in the file, so no need to manually update.
 
     def createCompoundType(self, datatype, datatype_name):
+        """createCompoundType(self, datatype, datatype_name)
+        
+        Creates a new compound data type named C{datatype_name} from the numpy
+        dtype object C{datatype}.
+        
+        @attention: If the new compound data type contains other compound data types
+        (i.e. it is a 'nested' compound type, where not all of the elements
+        are homogenous numeric data types), then the 'inner' compound types B{must} be
+        created first.
+        
+        The return value is the L{CompoundType} class instance describing the new
+        datatype.
+
+        :param datatype: 
+        :param datatype_name: 
+
         """
-createCompoundType(self, datatype, datatype_name)
-
-Creates a new compound data type named C{datatype_name} from the numpy
-dtype object C{datatype}.
-
-@attention: If the new compound data type contains other compound data types
-(i.e. it is a 'nested' compound type, where not all of the elements
-are homogenous numeric data types), then the 'inner' compound types B{must} be
-created first.
-
-The return value is the L{CompoundType} class instance describing the new
-datatype."""
         self.cmptypes[datatype_name] = CompoundType(self, datatype,\
                 datatype_name)
         return self.cmptypes[datatype_name]
 
     def createVLType(self, datatype, datatype_name):
+        """createVLType(self, datatype, datatype_name)
+        
+        Creates a new VLEN data type named C{datatype_name} from a numpy
+        dtype object C{datatype}.
+        
+        The return value is the L{VLType} class instance describing the new
+        datatype.
+
+        :param datatype: 
+        :param datatype_name: 
+
         """
-createVLType(self, datatype, datatype_name)
-
-Creates a new VLEN data type named C{datatype_name} from a numpy
-dtype object C{datatype}.
-
-The return value is the L{VLType} class instance describing the new
-datatype."""
         self.vltypes[datatype_name] = VLType(self, datatype, datatype_name)
         return self.vltypes[datatype_name]
 
@@ -1724,120 +1758,125 @@ datatype."""
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             fill_value=None, chunk_cache=None):
+        """createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
+        
+        Creates a new variable with the given C{varname}, C{datatype}, and
+        C{dimensions}. If dimensions are not given, the variable is assumed to be
+        a scalar.
+        
+        The C{datatype} can be a numpy datatype object, or a string that describes
+        a numpy dtype object (like the C{dtype.str} attribue of a numpy array).
+        Supported specifiers include: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
+        (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
+        (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
+        'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)}.
+        C{datatype} can also be a L{CompoundType} instance
+        (for a structured, or compound array), a L{VLType} instance
+        (for a variable-length array), or the python C{str} builtin
+        (for a variable-length string array). Numpy string and unicode datatypes with
+        length greater than one are aliases for C{str}.
+        
+        Data from netCDF variables is presented to python as numpy arrays with
+        the corresponding data type.
+        
+        C{dimensions} must be a tuple containing dimension names (strings) that
+        have been defined previously using C{createDimension}. The default value
+        is an empty tuple, which means the variable is a scalar.
+        
+        If the optional keyword C{zlib} is C{True}, the data will be compressed in
+        the netCDF file using gzip compression (default C{False}).
+        
+        The optional keyword C{complevel} is an integer between 1 and 9 describing
+        the level of compression desired (default 4). Ignored if C{zlib=False}.
+        
+        If the optional keyword C{shuffle} is C{True}, the HDF5 shuffle filter
+        will be applied before compressing the data (default C{True}).  This
+        significantly improves compression. Default is C{True}. Ignored if
+        C{zlib=False}.
+        
+        If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5
+        checksum algorithm is activated to detect errors. Default C{False}.
+        
+        If the optional keyword C{contiguous} is C{True}, the variable data is
+        stored contiguously on disk.  Default C{False}. Setting to C{True} for
+        a variable with an unlimited dimension will trigger an error.
+        
+        The optional keyword C{chunksizes} can be used to manually specify the
+        HDF5 chunksizes for each dimension of the variable. A detailed
+        discussion of HDF chunking and I/O performance is available U{here
+        <http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>}.
+        Basically, you want the chunk size for each dimension to match as
+        closely as possible the size of the data block that users will read
+        from the file.  C{chunksizes} cannot be set if C{contiguous=True}.
+        
+        The optional keyword C{endian} can be used to control whether the
+        data is stored in little or big endian format on disk. Possible
+        values are C{little, big} or C{native} (default). The library
+        will automatically handle endian conversions when the data is read,
+        but if the data is always going to be read on a computer with the
+        opposite format as the one used to create the file, there may be
+        some performance advantage to be gained by setting the endian-ness.
+        
+        The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
+        keywords are silently ignored for netCDF 3 files that do not use HDF5.
+        
+        The optional keyword C{fill_value} can be used to override the default
+        netCDF C{_FillValue} (the value that the variable gets filled with before
+        any data is written to it, defaults given in netCDF4.default_fillvals).
+        If fill_value is set to C{False}, then the variable is not pre-filled.
+        
+        If the optional keyword parameter C{least_significant_digit} is
+        specified, variable data will be truncated (quantized). In conjunction
+        with C{zlib=True} this produces 'lossy', but significantly more
+        efficient compression. For example, if C{least_significant_digit=1},
+        data will be quantized using C{numpy.around(scale*data)/scale}, where
+        scale = 2**bits, and bits is determined so that a precision of 0.1 is
+        retained (in this case bits=4). From
+        U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}:
+        "least_significant_digit -- power of ten of the smallest decimal place
+        in unpacked data that is a reliable value." Default is C{None}, or no
+        quantization, or 'lossless' compression.
+        
+        When creating variables in a C{NETCDF4} or C{NETCDF4_CLASSIC} formatted file,
+        HDF5 creates something called a 'chunk cache' for each variable.  The
+        default size of the chunk cache may be large enough to completely fill
+        available memory when creating thousands of variables.  The optional
+        keyword C{chunk_cache} allows you to reduce (or increase) the size of
+        the default chunk cache when creating a variable.  The setting only
+        persists as long as the Dataset is open - you can use the set_var_chunk_cache
+        method to change it the next time the Dataset is opened.
+        Warning - messing with this parameter can seriously degrade performance.
+        
+        The return value is the L{Variable} class instance describing the new
+        variable.
+        
+        A list of names corresponding to netCDF variable attributes can be
+        obtained with the L{Variable} method C{ncattrs()}. A dictionary
+        containing all the netCDF attribute name/value pairs is provided by
+        the C{__dict__} attribute of a L{Variable} instance.
+        
+        L{Variable} instances behave much like array objects. Data can be
+        assigned to or retrieved from a variable with indexing and slicing
+        operations on the L{Variable} instance. A L{Variable} instance has six
+        Dataset standard attributes: C{dimensions, dtype, shape, ndim, name} and
+        C{least_significant_digit}. Application programs should never modify
+        these attributes. The C{dimensions} attribute is a tuple containing the
+        names of the dimensions associated with this variable. The C{dtype}
+        attribute is a string describing the variable's data type (C{i4, f8,
+        S1,} etc). The C{shape} attribute is a tuple describing the current
+        sizes of all the variable's dimensions. The C{name} attribute is a
+        string containing the name of the Variable instance.
+        The C{least_significant_digit}
+        attributes describes the power of ten of the smallest decimal place in
+        the data the contains a reliable value.  assigned to the L{Variable}
+        instance. If C{None}, the data is not truncated. The C{ndim} attribute
+        is the number of variable dimensions.
+
+        :param varname: 
+        :param datatype: 
+        :param dimensions:  (Default value = ()
+
         """
-createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
-
-Creates a new variable with the given C{varname}, C{datatype}, and
-C{dimensions}. If dimensions are not given, the variable is assumed to be
-a scalar.
-
-The C{datatype} can be a numpy datatype object, or a string that describes
-a numpy dtype object (like the C{dtype.str} attribue of a numpy array).
-Supported specifiers include: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
-(NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
-(NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
-'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)}.
-C{datatype} can also be a L{CompoundType} instance
-(for a structured, or compound array), a L{VLType} instance
-(for a variable-length array), or the python C{str} builtin
-(for a variable-length string array). Numpy string and unicode datatypes with
-length greater than one are aliases for C{str}.
-
-Data from netCDF variables is presented to python as numpy arrays with
-the corresponding data type.
-
-C{dimensions} must be a tuple containing dimension names (strings) that
-have been defined previously using C{createDimension}. The default value
-is an empty tuple, which means the variable is a scalar.
-
-If the optional keyword C{zlib} is C{True}, the data will be compressed in
-the netCDF file using gzip compression (default C{False}).
-
-The optional keyword C{complevel} is an integer between 1 and 9 describing
-the level of compression desired (default 4). Ignored if C{zlib=False}.
-
-If the optional keyword C{shuffle} is C{True}, the HDF5 shuffle filter
-will be applied before compressing the data (default C{True}).  This
-significantly improves compression. Default is C{True}. Ignored if
-C{zlib=False}.
-
-If the optional keyword C{fletcher32} is C{True}, the Fletcher32 HDF5
-checksum algorithm is activated to detect errors. Default C{False}.
-
-If the optional keyword C{contiguous} is C{True}, the variable data is
-stored contiguously on disk.  Default C{False}. Setting to C{True} for
-a variable with an unlimited dimension will trigger an error.
-
-The optional keyword C{chunksizes} can be used to manually specify the
-HDF5 chunksizes for each dimension of the variable. A detailed
-discussion of HDF chunking and I/O performance is available U{here
-<http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>}.
-Basically, you want the chunk size for each dimension to match as
-closely as possible the size of the data block that users will read
-from the file.  C{chunksizes} cannot be set if C{contiguous=True}.
-
-The optional keyword C{endian} can be used to control whether the
-data is stored in little or big endian format on disk. Possible
-values are C{little, big} or C{native} (default). The library
-will automatically handle endian conversions when the data is read,
-but if the data is always going to be read on a computer with the
-opposite format as the one used to create the file, there may be
-some performance advantage to be gained by setting the endian-ness.
-
-The C{zlib, complevel, shuffle, fletcher32, contiguous, chunksizes} and C{endian}
-keywords are silently ignored for netCDF 3 files that do not use HDF5.
-
-The optional keyword C{fill_value} can be used to override the default
-netCDF C{_FillValue} (the value that the variable gets filled with before
-any data is written to it, defaults given in netCDF4.default_fillvals).
-If fill_value is set to C{False}, then the variable is not pre-filled.
-
-If the optional keyword parameter C{least_significant_digit} is
-specified, variable data will be truncated (quantized). In conjunction
-with C{zlib=True} this produces 'lossy', but significantly more
-efficient compression. For example, if C{least_significant_digit=1},
-data will be quantized using C{numpy.around(scale*data)/scale}, where
-scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4). From
-U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}:
-"least_significant_digit -- power of ten of the smallest decimal place
-in unpacked data that is a reliable value." Default is C{None}, or no
-quantization, or 'lossless' compression.
-
-When creating variables in a C{NETCDF4} or C{NETCDF4_CLASSIC} formatted file,
-HDF5 creates something called a 'chunk cache' for each variable.  The
-default size of the chunk cache may be large enough to completely fill
-available memory when creating thousands of variables.  The optional
-keyword C{chunk_cache} allows you to reduce (or increase) the size of
-the default chunk cache when creating a variable.  The setting only
-persists as long as the Dataset is open - you can use the set_var_chunk_cache
-method to change it the next time the Dataset is opened.
-Warning - messing with this parameter can seriously degrade performance.
-
-The return value is the L{Variable} class instance describing the new
-variable.
-
-A list of names corresponding to netCDF variable attributes can be
-obtained with the L{Variable} method C{ncattrs()}. A dictionary
-containing all the netCDF attribute name/value pairs is provided by
-the C{__dict__} attribute of a L{Variable} instance.
-
-L{Variable} instances behave much like array objects. Data can be
-assigned to or retrieved from a variable with indexing and slicing
-operations on the L{Variable} instance. A L{Variable} instance has six
-Dataset standard attributes: C{dimensions, dtype, shape, ndim, name} and
-C{least_significant_digit}. Application programs should never modify
-these attributes. The C{dimensions} attribute is a tuple containing the
-names of the dimensions associated with this variable. The C{dtype}
-attribute is a string describing the variable's data type (C{i4, f8,
-S1,} etc). The C{shape} attribute is a tuple describing the current
-sizes of all the variable's dimensions. The C{name} attribute is a
-string containing the name of the Variable instance.
-The C{least_significant_digit}
-attributes describes the power of ten of the smallest decimal place in
-the data the contains a reliable value.  assigned to the L{Variable}
-instance. If C{None}, the data is not truncated. The C{ndim} attribute
-is the number of variable dimensions."""
         self.variables[varname] = Variable(self, varname, datatype,
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
@@ -1846,10 +1885,14 @@ is the number of variable dimensions."""
         return self.variables[varname]
 
     def renameVariable(self, oldname, newname):
-        """
-renameVariable(self, oldname, newname)
+        """renameVariable(self, oldname, newname)
+        
+        rename a L{Variable} named C{oldname} to C{newname}
 
-rename a L{Variable} named C{oldname} to C{newname}"""
+        :param oldname: 
+        :param newname: 
+
+        """
         cdef char *namstring
         try:
             var = self.variables[oldname]
@@ -1868,53 +1911,63 @@ rename a L{Variable} named C{oldname} to C{newname}"""
         self.variables[newname] = var
 
     def createGroup(self, groupname):
+        """createGroup(self, groupname)
+        
+        Creates a new L{Group} with the given C{groupname}.
+        
+        The return value is a L{Group} class instance describing the new group.
+
+        :param groupname: 
+
         """
-createGroup(self, groupname)
-
-Creates a new L{Group} with the given C{groupname}.
-
-The return value is a L{Group} class instance describing the new group."""
         self.groups[groupname] = Group(self, groupname)
         return self.groups[groupname]
 
     def ncattrs(self):
-        """
-ncattrs(self)
-
-return netCDF global attribute names for this L{Dataset} or L{Group} in a list."""
+        """ncattrs(self)"""
         return _get_att_names(self._grpid, NC_GLOBAL)
 
     def setncattr(self,name,value):
-        """
-setncattr(self,name,value)
+        """setncattr(self,name,value)
+        
+        set a netCDF dataset or group attribute using name,value pair.  Only use if you need to set a
+        netCDF attribute with the same name as one of the reserved python
+        attributes.
 
-set a netCDF dataset or group attribute using name,value pair.  Only use if you need to set a
-netCDF attribute with the same name as one of the reserved python
-attributes."""
+        :param name: 
+        :param value: 
+
+        """
         if self.data_model != 'NETCDF4': self._redef()
         _set_att(self, NC_GLOBAL, name, value)
         if self.data_model !=  'NETCDF4': self._enddef()
 
     def setncatts(self,attdict):
-        """
-setncatts(self,attdict)
+        """setncatts(self,attdict)
+        
+        set a bunch of netCDF dataset or group attributes at once using a python dictionary.
+        This may be faster when setting a lot of attributes for a NETCDF3
+        formatted file, since nc_redef/nc_enddef is not called in between setting
+        each attribute
 
-set a bunch of netCDF dataset or group attributes at once using a python dictionary.
-This may be faster when setting a lot of attributes for a NETCDF3
-formatted file, since nc_redef/nc_enddef is not called in between setting
-each attribute"""
+        :param attdict: 
+
+        """
         if self.data_model != 'NETCDF4': self._redef()
         for name, value in attdict.items():
             _set_att(self, NC_GLOBAL, name, value)
         if self.data_model != 'NETCDF4': self._enddef()
 
     def getncattr(self,name):
-        """
-getncattr(self,name)
+        """getncattr(self,name)
+        
+        retrievel a netCDF dataset or group attribute.  Only use if you need to set a
+        netCDF attribute with the same name as one of the reserved python
+        attributes.
 
-retrievel a netCDF dataset or group attribute.  Only use if you need to set a
-netCDF attribute with the same name as one of the reserved python
-attributes."""
+        :param name: 
+
+        """
         return _get_att(self, NC_GLOBAL, name)
 
     def __delattr__(self,name):
@@ -1926,12 +1979,15 @@ attributes."""
             "'%s' is one of the reserved attributes %s, cannot delete. Use delncattr instead." % (name, tuple(_private_atts)))
 
     def delncattr(self, name):
-        """
-delncattr(self,name,value)
+        """delncattr(self,name,value)
+        
+        delete a netCDF dataset or group attribute.  Only use if you need to delete a
+        netCDF attribute with the same name as one of the reserved python
+        attributes.
 
-delete a netCDF dataset or group attribute.  Only use if you need to delete a
-netCDF attribute with the same name as one of the reserved python
-attributes."""
+        :param name: 
+
+        """
         cdef char *attname
         cdef int ierr
         bytestr = _strencode(name)
@@ -1973,10 +2029,14 @@ attributes."""
             return self.getncattr(name)
 
     def renameAttribute(self, oldname, newname):
-        """
-renameAttribute(self, oldname, newname)
+        """renameAttribute(self, oldname, newname)
+        
+        rename a L{Dataset} or L{Group} attribute named C{oldname} to C{newname}.
 
-rename a L{Dataset} or L{Group} attribute named C{oldname} to C{newname}."""
+        :param oldname: 
+        :param newname: 
+
+        """
         cdef int ierr
         cdef char *oldnamec
         cdef char *newnamec
@@ -1989,10 +2049,14 @@ rename a L{Dataset} or L{Group} attribute named C{oldname} to C{newname}."""
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def renameGroup(self, oldname, newname):
-        """
-renameGroup(self, oldname, newname)
+        """renameGroup(self, oldname, newname)
+        
+        rename a L{Group} named C{oldname} to C{newname} (requires netcdf >= 4.3.1).
 
-rename a L{Group} named C{oldname} to C{newname} (requires netcdf >= 4.3.1)."""
+        :param oldname: 
+        :param newname: 
+
+        """
         cdef int ierr
         cdef char *newnamec
         IF HAS_RENAME_GRP:
@@ -2016,21 +2080,23 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
 
     def set_auto_maskandscale(self, value):
-        """
-set_auto_maskandscale(self, True_or_False)
+        """set_auto_maskandscale(self, True_or_False)
+        
+        Call L{set_auto_maskandscale} for all variables contained in this L{Dataset} or
+        L{Group}, as well as for all variables in all its subgroups.
+        
+        B{Parameters}:
+        
+        B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
+        and variable scaling shall be applied for all variables.
+        
+        B{Notes}:
+        
+        Calling this function only affects existing variables. Variables created
+        after calling this function will follow the default behaviour.
 
-Call L{set_auto_maskandscale} for all variables contained in this L{Dataset} or
-L{Group}, as well as for all variables in all its subgroups.
+        :param value: 
 
-B{Parameters}:
-
-B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
-and variable scaling shall be applied for all variables.
-
-B{Notes}:
-
-Calling this function only affects existing variables. Variables created
-after calling this function will follow the default behaviour.
         """
 
         for var in self.variables.values():
@@ -2043,21 +2109,23 @@ after calling this function will follow the default behaviour.
 
 
     def set_auto_mask(self, value):
-        """
-set_auto_mask(self, True_or_False)
+        """set_auto_mask(self, True_or_False)
+        
+        Call L{set_auto_mask} for all variables contained in this L{Dataset} or
+        L{Group}, as well as for all variables in all its subgroups.
+        
+        B{Parameters}:
+        
+        B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
+        shall be applied for all variables.
+        
+        B{Notes}:
+        
+        Calling this function only affects existing variables. Variables created
+        after calling this function will follow the default behaviour.
 
-Call L{set_auto_mask} for all variables contained in this L{Dataset} or
-L{Group}, as well as for all variables in all its subgroups.
+        :param value: 
 
-B{Parameters}:
-
-B{C{True_or_False}} - Boolean determining if automatic conversion to masked arrays
-shall be applied for all variables.
-
-B{Notes}:
-
-Calling this function only affects existing variables. Variables created
-after calling this function will follow the default behaviour.
         """
 
         for var in self.variables.values():
@@ -2069,21 +2137,23 @@ after calling this function will follow the default behaviour.
                     var.set_auto_mask(value)
 
     def set_auto_scale(self, value):
-        """
-set_auto_scale(self, True_or_False)
+        """set_auto_scale(self, True_or_False)
+        
+        Call L{set_auto_scale} for all variables contained in this L{Dataset} or
+        L{Group}, as well as for all variables in all its subgroups.
+        
+        B{Parameters}:
+        
+        B{C{True_or_False}} - Boolean determining if automatic variable scaling
+        shall be applied for all variables.
+        
+        B{Notes}:
+        
+        Calling this function only affects existing variables. Variables created
+        after calling this function will follow the default behaviour.
 
-Call L{set_auto_scale} for all variables contained in this L{Dataset} or
-L{Group}, as well as for all variables in all its subgroups.
+        :param value: 
 
-B{Parameters}:
-
-B{C{True_or_False}} - Boolean determining if automatic variable scaling
-shall be applied for all variables.
-
-B{Notes}:
-
-Calling this function only affects existing variables. Variables created
-after calling this function will follow the default behaviour.
         """
 
         for var in self.variables.values():
@@ -2160,14 +2230,17 @@ method)."""
             self.groups = OrderedDict()
 
     def close(self):
-        """
-close(self)
+        """close(self)
+        
+        overrides L{Dataset} close method which does not apply to L{Group}
+        instances, raises IOError.
 
-overrides L{Dataset} close method which does not apply to L{Group}
-instances, raises IOError."""
+
+        """
         raise IOError('cannot close a L{Group} (only applies to Dataset)')
 
     def _getname(self):
+        """ """
         # private method to get name associated with instance.
         cdef int err
         cdef char namstring[NC_MAX_NAME+1]
@@ -2246,6 +2319,7 @@ determine if the dimension is unlimited"""
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def _getname(self):
+        """ """
         # private method to get name associated with instance.
         cdef int err, _grpid
         cdef char namstring[NC_MAX_NAME+1]
@@ -2288,17 +2362,16 @@ determine if the dimension is unlimited"""
         return lengthp
 
     def group(self):
-        """
-group(self)
-
-return the group that this L{Dimension} is a member of."""
+        """group(self)"""
         return self._grp
 
     def isunlimited(self):
-        """
-isunlimited(self)
+        """isunlimited(self)
+        
+        returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise.
 
-returns C{True} if the L{Dimension} instance is unlimited, C{False} otherwise."""
+
+        """
         cdef int ierr, n, numunlimdims, ndims, nvars, ngatts, xdimid
         cdef int unlimdimids[NC_MAX_DIMS]
         if self._data_model == 'NETCDF4':
@@ -2773,6 +2846,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         return ''.join(ncdump_var)
 
     def _getdims(self):
+        """ """
         # Private method to get variables's dimension names
         cdef int ierr, numdims, n, nn
         cdef char namstring[NC_MAX_NAME+1]
@@ -2799,6 +2873,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         return dimensions
 
     def _getname(self):
+        """ """
         # Private method to get name associated with instance
         cdef int err, _grpid
         cdef char namstring[NC_MAX_NAME+1]
@@ -2852,59 +2927,66 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
 
 
     def group(self):
-        """
-group(self)
-
-return the group that this L{Variable} is a member of."""
+        """group(self)"""
         return self._grp
 
     def ncattrs(self):
-        """
-ncattrs(self)
-
-return netCDF attribute names for this L{Variable} in a list."""
+        """ncattrs(self)"""
         return _get_att_names(self._grpid, self._varid)
 
     def setncattr(self,name,value):
-        """
-setncattr(self,name,value)
+        """setncattr(self,name,value)
+        
+        set a netCDF variable attribute using name,value pair.  Only use if you need to set a
+        netCDF attribute with the same name as one of the reserved python
+        attributes.
 
-set a netCDF variable attribute using name,value pair.  Only use if you need to set a
-netCDF attribute with the same name as one of the reserved python
-attributes."""
+        :param name: 
+        :param value: 
+
+        """
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
         _set_att(self._grp, self._varid, name, value)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
 
     def setncatts(self,attdict):
-        """
-setncatts(self,attdict)
+        """setncatts(self,attdict)
+        
+        set a bunch of netCDF variable attributes at once using a python dictionary.
+        This may be faster when setting a lot of attributes for a NETCDF3
+        formatted file, since nc_redef/nc_enddef is not called in between setting
+        each attribute
 
-set a bunch of netCDF variable attributes at once using a python dictionary.
-This may be faster when setting a lot of attributes for a NETCDF3
-formatted file, since nc_redef/nc_enddef is not called in between setting
-each attribute"""
+        :param attdict: 
+
+        """
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
         for name, value in attdict.items():
             _set_att(self._grp, self._varid, name, value)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
 
     def getncattr(self,name):
-        """
-getncattr(self,name)
+        """getncattr(self,name)
+        
+        retrievel a netCDF variable attribute.  Only use if you need to set a
+        netCDF attribute with the same name as one of the reserved python
+        attributes.
 
-retrievel a netCDF variable attribute.  Only use if you need to set a
-netCDF attribute with the same name as one of the reserved python
-attributes."""
+        :param name: 
+
+        """
         return _get_att(self._grp, self._varid, name)
 
     def delncattr(self, name):
-        """
-delncattr(self,name,value)
+        """delncattr(self,name,value)
+        
+        delete a netCDF variable attribute.  Only use if you need to delete a
+        netCDF attribute with the same name as one of the reserved python
+        attributes.
 
-delete a netCDF variable attribute.  Only use if you need to delete a
-netCDF attribute with the same name as one of the reserved python
-attributes."""
+        :param name: 
+
+        """
         cdef char *attname
         bytestr = _strencode(name)
         attname = bytestr
@@ -2915,10 +2997,7 @@ attributes."""
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def filters(self):
-        """
-filters(self)
-
-return dictionary containing HDF5 filter parameters."""
+        """filters(self)"""
         cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
         filtdict = {'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
@@ -2940,10 +3019,7 @@ return dictionary containing HDF5 filter parameters."""
         return filtdict
 
     def endian(self):
-        """
-endian(self)
-
-return endian-ness (little,big,native) of variable (as stored in HDF5 file)."""
+        """endian(self)"""
         cdef int ierr, iendian
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']:
             return 'native'
@@ -2959,13 +3035,14 @@ return endian-ness (little,big,native) of variable (as stored in HDF5 file)."""
             return 'native'
 
     def chunking(self):
-        """
-chunking(self)
+        """chunking(self)
 
-return variable chunking information.  If the dataset is
-defined to be contiguous (and hence there is no chunking) the word 'contiguous'
-is returned.  Otherwise, a sequence with the chunksize for
-each dimension is returned."""
+
+        :returns: defined to be contiguous (and hence there is no chunking) the word 'contiguous'
+        is returned.  Otherwise, a sequence with the chunksize for
+        each dimension is returned.
+
+        """
         cdef int ierr, icontiguous, ndims
         cdef size_t *chunksizesp
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return None
@@ -2985,12 +3062,13 @@ each dimension is returned."""
             return chunksizes
 
     def get_var_chunk_cache(self):
-        """
-get_var_chunk_cache(self)
+        """get_var_chunk_cache(self)
 
-return variable chunk cache information in a tuple (size,nelems,preemption).
-See netcdf C library documentation for C{nc_get_var_chunk_cache} for
-details."""
+
+        :returns: See netcdf C library documentation for C{nc_get_var_chunk_cache} for
+        details.
+
+        """
         cdef int ierr
         cdef size_t sizep, nelemsp
         cdef float preemptionp
@@ -3003,12 +3081,17 @@ details."""
         return (size,nelems,preemption)
 
     def set_var_chunk_cache(self,size=None,nelems=None,preemption=None):
-        """
-set_var_chunk_cache(self,size=None,nelems=None,preemption=None)
+        """set_var_chunk_cache(self,size=None,nelems=None,preemption=None)
+        
+        change variable chunk cache settings.
+        See netcdf C library documentation for C{nc_set_var_chunk_cache} for
+        details.
 
-change variable chunk cache settings.
-See netcdf C library documentation for C{nc_set_var_chunk_cache} for
-details."""
+        :param size:  (Default value = None)
+        :param nelems:  (Default value = None)
+        :param preemption:  (Default value = None)
+
+        """
         cdef int ierr
         cdef size_t sizep, nelemsp
         cdef float preemptionp
@@ -3084,10 +3167,14 @@ details."""
             return self.getncattr(name)
 
     def renameAttribute(self, oldname, newname):
-        """
-renameAttribute(self, oldname, newname)
+        """renameAttribute(self, oldname, newname)
+        
+        rename a L{Variable} attribute named C{oldname} to C{newname}.
 
-rename a L{Variable} attribute named C{oldname} to C{newname}."""
+        :param oldname: 
+        :param newname: 
+
+        """
         cdef int ierr
         cdef char *oldnamec
         cdef char *newnamec
@@ -3177,6 +3264,11 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         return data
 
     def _toma(self,data):
+        """
+
+        :param data: 
+
+        """
         cdef int ierr, no_fill
         # private function for creating a masked array, masking missing_values
         # and/or _FillValues.
@@ -3273,7 +3365,12 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         return data
 
     def _assign_vlen(self, elem, data):
-        """private method to assign data to a single item in a VLEN variable"""
+        """private method to assign data to a single item in a VLEN variable
+
+        :param elem: 
+        :param data: 
+
+        """
         cdef size_t startp[NC_MAX_DIMS]
         cdef size_t countp[NC_MAX_DIMS]
         cdef int ndims, n
@@ -3473,63 +3570,70 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
 
 
     def assignValue(self,val):
-        """
-assignValue(self, val)
+        """assignValue(self, val)
+        
+        assign a value to a scalar variable.  Provided for compatibility with
+        Scientific.IO.NetCDF, can also be done by assigning to a slice ([:]).
 
-assign a value to a scalar variable.  Provided for compatibility with
-Scientific.IO.NetCDF, can also be done by assigning to a slice ([:])."""
+        :param val: 
+
+        """
         if len(self.dimensions):
             raise IndexError('to assign values to a non-scalar variable, use a slice')
         self[:]=val
 
     def getValue(self):
-        """
-getValue(self)
+        """getValue(self)
+        
+        get the value of a scalar variable.  Provided for compatibility with
+        Scientific.IO.NetCDF, can also be done by slicing ([:]).
 
-get the value of a scalar variable.  Provided for compatibility with
-Scientific.IO.NetCDF, can also be done by slicing ([:])."""
+
+        """
         if len(self.dimensions):
             raise IndexError('to retrieve values from a non-scalar variable, use slicing')
         return self[slice(None)]
 
     def set_auto_maskandscale(self,maskandscale):
-        """
-set_auto_maskandscale(self,maskandscale)
+        """set_auto_maskandscale(self,maskandscale)
+        
+        turn on or off automatic conversion of variable data to and
+        from masked arrays and automatic packing/unpacking of variable
+        data using C{scale_factor} and C{add_offset} attributes.
+        
+        If C{maskandscale} is set to C{True}, when data is read from a variable
+        it is converted to a masked array if any of the values are exactly
+        equal to the either the netCDF _FillValue or the value specified by the
+        missing_value variable attribute. The fill_value of the masked array
+        is set to the missing_value attribute (if it exists), otherwise
+        the netCDF _FillValue attribute (which has a default value
+        for each data type).  When data is written to a variable, the masked
+        array is converted back to a regular numpy array by replacing all the
+        masked values by the fill_value of the masked array.
+        
+        If C{maskandscale} is set to C{True}, and the variable has a
+        C{scale_factor} or an C{add_offset} attribute, then data read
+        from that variable is unpacked using::
+        
+            data = self.scale_factor*data + self.add_offset
+        
+        When data is written to a variable it is packed using::
+        
+            data = (data - self.add_offset)/self.scale_factor
+        
+        If either scale_factor is present, but add_offset is missing, add_offset
+        is assumed zero.  If add_offset is present, but scale_factor is missing,
+        scale_factor is assumed to be one.
+        For more information on how C{scale_factor} and C{add_offset} can be
+        used to provide simple compression, see
+        U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
+        <http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>}.
+        
+        The default value of C{maskandscale} is C{True}
+        (automatic conversions are performed).
 
-turn on or off automatic conversion of variable data to and
-from masked arrays and automatic packing/unpacking of variable
-data using C{scale_factor} and C{add_offset} attributes.
+        :param maskandscale: 
 
-If C{maskandscale} is set to C{True}, when data is read from a variable
-it is converted to a masked array if any of the values are exactly
-equal to the either the netCDF _FillValue or the value specified by the
-missing_value variable attribute. The fill_value of the masked array
-is set to the missing_value attribute (if it exists), otherwise
-the netCDF _FillValue attribute (which has a default value
-for each data type).  When data is written to a variable, the masked
-array is converted back to a regular numpy array by replacing all the
-masked values by the fill_value of the masked array.
-
-If C{maskandscale} is set to C{True}, and the variable has a
-C{scale_factor} or an C{add_offset} attribute, then data read
-from that variable is unpacked using::
-
-    data = self.scale_factor*data + self.add_offset
-
-When data is written to a variable it is packed using::
-
-    data = (data - self.add_offset)/self.scale_factor
-
-If either scale_factor is present, but add_offset is missing, add_offset
-is assumed zero.  If add_offset is present, but scale_factor is missing,
-scale_factor is assumed to be one.
-For more information on how C{scale_factor} and C{add_offset} can be
-used to provide simple compression, see
-U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
-<http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>}.
-
-The default value of C{maskandscale} is C{True}
-(automatic conversions are performed).
         """
         if maskandscale:
             self.scale = True
@@ -3539,32 +3643,34 @@ The default value of C{maskandscale} is C{True}
             self.mask = False
 
     def set_auto_scale(self,scale):
-        """
-set_auto_scale(self,scale)
+        """set_auto_scale(self,scale)
+        
+        turn on or off automatic packing/unpacking of variable
+        data using C{scale_factor} and C{add_offset} attributes.
+        
+        If C{scale} is set to C{True}, and the variable has a
+        C{scale_factor} or an C{add_offset} attribute, then data read
+        from that variable is unpacked using::
+        
+            data = self.scale_factor*data + self.add_offset
+        
+        When data is written to a variable it is packed using::
+        
+            data = (data - self.add_offset)/self.scale_factor
+        
+        If either scale_factor is present, but add_offset is missing, add_offset
+        is assumed zero.  If add_offset is present, but scale_factor is missing,
+        scale_factor is assumed to be one.
+        For more information on how C{scale_factor} and C{add_offset} can be
+        used to provide simple compression, see
+        U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
+        <http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>}.
+        
+        The default value of C{scale} is C{True}
+        (automatic conversions are performed).
 
-turn on or off automatic packing/unpacking of variable
-data using C{scale_factor} and C{add_offset} attributes.
+        :param scale: 
 
-If C{scale} is set to C{True}, and the variable has a
-C{scale_factor} or an C{add_offset} attribute, then data read
-from that variable is unpacked using::
-
-    data = self.scale_factor*data + self.add_offset
-
-When data is written to a variable it is packed using::
-
-    data = (data - self.add_offset)/self.scale_factor
-
-If either scale_factor is present, but add_offset is missing, add_offset
-is assumed zero.  If add_offset is present, but scale_factor is missing,
-scale_factor is assumed to be one.
-For more information on how C{scale_factor} and C{add_offset} can be
-used to provide simple compression, see
-U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
-<http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>}.
-
-The default value of C{scale} is C{True}
-(automatic conversions are performed).
         """
         if scale:
             self.scale = True
@@ -3572,24 +3678,26 @@ The default value of C{scale} is C{True}
             self.scale = False
 
     def set_auto_mask(self,mask):
-        """
-set_auto_mask(self,mask)
+        """set_auto_mask(self,mask)
+        
+        turn on or off automatic conversion of variable data to and
+        from masked arrays .
+        
+        If C{mask} is set to C{True}, when data is read from a variable
+        it is converted to a masked array if any of the values are exactly
+        equal to the either the netCDF _FillValue or the value specified by the
+        missing_value variable attribute. The fill_value of the masked array
+        is set to the missing_value attribute (if it exists), otherwise
+        the netCDF _FillValue attribute (which has a default value
+        for each data type).  When data is written to a variable, the masked
+        array is converted back to a regular numpy array by replacing all the
+        masked values by the fill_value of the masked array.
+        
+        The default value of C{mask} is C{True}
+        (automatic conversions are performed).
 
-turn on or off automatic conversion of variable data to and
-from masked arrays .
+        :param mask: 
 
-If C{mask} is set to C{True}, when data is read from a variable
-it is converted to a masked array if any of the values are exactly
-equal to the either the netCDF _FillValue or the value specified by the
-missing_value variable attribute. The fill_value of the masked array
-is set to the missing_value attribute (if it exists), otherwise
-the netCDF _FillValue attribute (which has a default value
-for each data type).  When data is written to a variable, the masked
-array is converted back to a regular numpy array by replacing all the
-masked values by the fill_value of the masked array.
-
-The default value of C{mask} is C{True}
-(automatic conversions are performed).
         """
         if mask:
             self.mask = True
@@ -3598,7 +3706,14 @@ The default value of C{mask} is C{True}
 
 
     def _put(self,ndarray data,start,count,stride):
-        """Private method to put data into a netCDF variable"""
+        """Private method to put data into a netCDF variable
+
+        :param ndarray data: 
+        :param start: 
+        :param count: 
+        :param stride: 
+
+        """
         cdef int ierr, ndims
         cdef npy_intp totelem
         cdef size_t startp[NC_MAX_DIMS]
@@ -3732,7 +3847,13 @@ The default value of C{mask} is C{True}
                 free(vldata)
 
     def _get(self,start,count,stride):
-        """Private method to retrieve data from a netCDF variable"""
+        """Private method to retrieve data from a netCDF variable
+
+        :param start: 
+        :param count: 
+        :param stride: 
+
+        """
         cdef int ierr, ndims
         cdef size_t startp[NC_MAX_DIMS]
         cdef size_t countp[NC_MAX_DIMS]
