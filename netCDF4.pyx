@@ -1388,45 +1388,45 @@ The instance variables C{dimensions, variables, groups,
 cmptypes, data_model, disk_format} and C{path} are read-only (and should not be modified by the
 user).
 
-@ivar dimensions: The C{dimensions} dictionary maps the names of
+:ivar dimensions: The C{dimensions} dictionary maps the names of
 dimensions defined for the L{Group} or L{Dataset} to instances of the
 L{Dimension} class.
 
-@ivar variables: The C{variables} dictionary maps the names of variables
+:ivar variables: The C{variables} dictionary maps the names of variables
 defined for this L{Dataset} or L{Group} to instances of the L{Variable}
 class.
 
-@ivar groups: The groups dictionary maps the names of groups created for
+:ivar groups: The groups dictionary maps the names of groups created for
 this L{Dataset} or L{Group} to instances of the L{Group} class (the
 L{Dataset} class is simply a special case of the L{Group} class which
 describes the root group in the netCDF file).
 
-@ivar cmptypes: The C{cmptypes} dictionary maps the names of
+:ivar cmptypes: The C{cmptypes} dictionary maps the names of
 compound types defined for the L{Group} or L{Dataset} to instances of the
 L{CompoundType} class.
 
-@ivar vltypes: The C{vltypes} dictionary maps the names of
+:ivar vltypes: The C{vltypes} dictionary maps the names of
 variable-length types defined for the L{Group} or L{Dataset} to instances of the
 L{VLType} class.
 
-@ivar data_model: The C{data_model} attribute describes the netCDF
+:ivar data_model: The C{data_model} attribute describes the netCDF
 data model version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
 C{NETCDF4_CLASSIC} or C{NETCDF3_64BIT}.
 
-@ivar file_format: same as C{data_model}, retained for backwards
+:ivar file_format: same as C{data_model}, retained for backwards
 compatibility.
 
-@ivar disk_format: The C{disk_format} attribute describes the underlying
+:ivar disk_format: The C{disk_format} attribute describes the underlying
 file format, one of C{NETCDF3}, C{HDF5}, C{HDF4},
 C{PNETCDF}, C{DAP2}, C{DAP4} or C{UNDEFINED}. Only available if using
 netcdf C library version >= 4.3.1, otherwise will always return C{UNDEFINED}.
 
-@ivar path: The C{path} attribute shows the location of the L{Group} in
+:ivar path: The C{path} attribute shows the location of the L{Group} in
 the L{Dataset} in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A L{Dataset} instance is the root
 group, so the path is simply C{'/'}.
 
-@ivar parent:  The C{parent} attribute is a reference to the parent
+:ivar parent:  The C{parent} attribute is a reference to the parent
 L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
     cdef object __weakref__
     cdef public int _grpid
@@ -2511,30 +2511,30 @@ The instance variables C{dimensions, dtype, ndim, shape}
 and C{least_significant_digit} are read-only (and
 should not be modified by the user).
 
-@ivar dimensions: A tuple containing the names of the dimensions
+:ivar dimensions: A tuple containing the names of the dimensions
 associated with this variable.
 
-@ivar dtype: A numpy dtype object describing the variable's data type.
+:ivar dtype: A numpy dtype object describing the variable's data type.
 
-@ivar ndim: The number of variable dimensions.
+:ivar ndim: The number of variable dimensions.
 
-@ivar shape: a tuple describing the current size of all the variable's
+:ivar shape: a tuple describing the current size of all the variable's
 dimensions.
 
-@ivar scale:  if True, C{scale_factor} and C{add_offset} are automatically
+:ivar scale:  if True, C{scale_factor} and C{add_offset} are automatically
 applied. Default is C{True}, can be reset using L{set_auto_scale} and
 L{set_auto_maskandscale} methods.
 
-@ivar mask:  if True, data is automatically converted to/from masked arrays
+:ivar mask:  if True, data is automatically converted to/from masked arrays
 when missing values or fill values are present. Default is C{True}, can be
 reset using L{set_auto_mask} and L{set_auto_maskandscale} methods.
 
-@ivar least_significant_digit: Describes the power of ten of the smallest
+:ivar least_significant_digit: Describes the power of ten of the smallest
 decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. 
 
-@ivar __orthogonal_indexing__: Always C{True}.  Indicates to client code
+:ivar __orthogonal_indexing__: Always C{True}.  Indicates to client code
 that the object supports "orthogonal indexing", which means that slices
 that are 1d arrays or lists slice along each dimension independently.  This
 behavior is similar to Fortran or Matlab, but different than numpy."""
@@ -4012,9 +4012,9 @@ method of a L{Dataset} or L{Group} instance.
 The instance variables C{dtype} and C{name} should not be modified by
 the user.
 
-@ivar dtype: A numpy dtype object describing the compound data type.
+:ivar dtype: A numpy dtype object describing the compound data type.
 
-@ivar name: A python string describing the compound type.
+:ivar name: A python string describing the compound type.
 """
     cdef public nc_type _nc_type
     cdef public dtype, name
@@ -4236,9 +4236,9 @@ method of a L{Dataset} or L{Group} instance.
 The instance variables C{dtype} and C{name} should not be modified by
 the user.
 
-@ivar dtype: An object describing the VLEN type.
+:ivar dtype: An object describing the VLEN type.
 
-@ivar name: A python string describing the VLEN type.
+:ivar name: A python string describing the VLEN type.
 """
     cdef public nc_type _nc_type
     cdef public dtype, name

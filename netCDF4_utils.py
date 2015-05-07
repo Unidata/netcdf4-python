@@ -22,8 +22,8 @@ except NameError:
 def _sortbylist(A,B):
     """
 
-    :param A: 
-    :param B: 
+    :param A:
+    :param B:
 
     """
     # sort one list (A) using the values from another list (B)
@@ -32,8 +32,8 @@ def _sortbylist(A,B):
 def _find_dim(grp, dimname):
     """
 
-    :param grp: 
-    :param dimname: 
+    :param grp:
+    :param dimname:
 
     """
     # find Dimension instance given group and name.
@@ -54,7 +54,7 @@ def _find_dim(grp, dimname):
 def _walk_grps(topgrp):
     """Iterate through all (sub-) groups of topgrp, similar to os.walktree.
 
-    :param topgrp: 
+    :param topgrp:
 
     """
     grps = topgrp.groups.values()
@@ -69,8 +69,8 @@ def _quantize(data,least_significant_digit):
     from the least_significant_digit. For example, if
     least_significant_digit=1, bits will be 4.
 
-    :param data: 
-    :param least_significant_digit: 
+    :param data:
+    :param least_significant_digit:
 
     """
     precision = pow(10.,-least_significant_digit)
@@ -92,12 +92,12 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         put=False):
     """Return start, count, stride and indices needed to store/extract data
     into/from a netCDF variable.
-    
+
     This function is used to convert a slicing expression into a form that is
     compatible with the nc_get_vars function. Specifically, it needs
     to interpret integers, slices, Ellipses, and 1-d sequences of integers
     and booleans.
-    
+
     Numpy uses "broadcasting indexing" to handle array-valued indices.
     "Broadcasting indexing" (a.k.a "fancy indexing") treats all multi-valued
     indices together to allow arbitrary points to be extracted. The index
@@ -109,32 +109,32 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     languages (such as netcdf4-python, xray, biggus, matlab and fortran)
     use "orthogonal indexing" which only allows for 1-d index arrays and
     treats these arrays of indices independently along each dimension.
-    
+
     The implementation of "orthogonal indexing" used here requires that
     index arrays be 1-d boolean or integer. If integer arrays are used,
     the index values must be sorted and contain no duplicates.
-    
+
     In summary, slicing netcdf4-python variable objects with 1-d integer or
     boolean arrays is allowed, but may give a different result than slicing a
     numpy array.
-    
+
     Numpy also supports slicing an array with a boolean array of the same
     shape. For example x[x>0] returns a 1-d array with all the positive values of x.
     This is also not supported in netcdf4-python, if x.ndim > 1.
-    
+
     Orthogonal indexing can be used in to select netcdf variable slices
     using the dimension variables. For example, you can use v[lat>60,lon<180]
     to fetch the elements of v obeying conditions on latitude and longitude.
     Allow for this sort of simple variable subsetting is the reason we decided to
     deviate from numpy's slicing rules.
-    
+
     This function is used both by the __setitem__ and __getitem__ method of
     the Variable class.
 
-    :param elem: 
+    :param elem:
     :type elem: tuple of integer, slice, ellipsis or 1-d boolean or integer
-    :param sequences used to slice the netCDF Variable (Variable[elem]).: 
-    :param shape: 
+    :param sequences used to slice the netCDF Variable (Variable[elem]).:
+    :param shape:
     :type shape: tuple containing the current shape of the netCDF variable.
     :param dimensions: The name of the dimensions. This is only useful to find out
       whether or not some dimensions are unlimited. Only needed within
@@ -145,11 +145,11 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     :type grp: netCDF Group
     :param datashape: The shape of the data that is being stored. Only needed by __setitime__ (Default value = None)
     :type datashape: sequence
-    :param put: 
+    :param put:
     :type put: True|False (default False).  If called from __setitem__, put is True.
     :param \put:  (Default value = False)
 
-    
+
     """
     # Adapted from pycdf (http://pysclint.sourceforge.net/pycdf)
     # by Andre Gosselin..
@@ -388,7 +388,7 @@ Boolean array must have the same shape as the data along this dimension."""
 def _out_array_shape(count):
     """
 
-    :param count: 
+    :param count:
 
     """
 
@@ -406,7 +406,7 @@ def _out_array_shape(count):
 def _is_container(a):
     """
 
-    :param a: 
+    :param a:
 
     """
     # is object container-like?  (can test for
@@ -419,7 +419,7 @@ def _is_container(a):
 def _is_int(a):
     """
 
-    :param a: 
+    :param a:
 
     """
     try:
@@ -430,7 +430,7 @@ def _is_int(a):
 def _tostr(s):
     """
 
-    :param s: 
+    :param s:
 
     """
     try:
@@ -443,8 +443,8 @@ def _tostr(s):
 def _getgrp(g,p):
     """
 
-    :param g: 
-    :param p: 
+    :param g:
+    :param p:
 
     """
     import posixpath
@@ -463,7 +463,7 @@ def ncinfo():
     usage = """
  Print summary information about a netCDF file.
 
- usage: %s [-h] [-g grp or --group=grp] [-v var or --variable=var] [-d dim or --dimension=dim] filename 
+ usage: %s [-h] [-g grp or --group=grp] [-v var or --variable=var] [-d dim or --dimension=dim] filename
 
  -h -- Print usage message.
  -g <group name> or --group=<group name> -- Print info for this group
@@ -530,8 +530,8 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
     """convert a netcdf 4 file (filename4) in NETCDF4_CLASSIC format
     to a netcdf 3 file (filename3) in NETCDF3_64BIT format.
 
-    :param filename4: 
-    :param filename3: 
+    :param filename4:
+    :param filename3:
     :param clobber:  (Default value = False)
     :param nchunk:  (Default value = 10)
     :param quiet:  (Default value = False)
@@ -549,7 +549,7 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
     if not quiet: sys.stdout.write('copying global attributes ..\n')
     #for attname in ncfile4.ncattrs():
     #    setattr(ncfile3,attname,getattr(ncfile4,attname))
-    ncfile3.setncatts(ncfile4.__dict__) 
+    ncfile3.setncatts(ncfile4.__dict__)
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile4.dimensions.items():
         if dim.isunlimited():
@@ -560,7 +560,7 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
             ncfile3.createDimension(dimname,len(dim))
     # create variables.
     for varname,ncvar in ncfile4.variables.items():
-        if not quiet: 
+        if not quiet:
             sys.stdout.write('copying variable %s\n' % varname)
         # is there an unlimited dimension?
         if unlimdimname and unlimdimname in ncvar.dimensions:
@@ -570,11 +570,11 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
         if hasattr(ncvar, '_FillValue'):
             FillValue = ncvar._FillValue
         else:
-            FillValue = None 
+            FillValue = None
         var = ncfile3.createVariable(varname,ncvar.dtype,ncvar.dimensions,fill_value=FillValue)
         # fill variable attributes.
     attdict = ncvar.__dict__
-    if '_FillValue' in attdict: 
+    if '_FillValue' in attdict:
         del attdict['_FillValue']
     var.setncatts(attdict)
     #for attname in ncvar.ncattrs():
@@ -585,11 +585,11 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
         # range to copy
         if nchunk:
             start = 0; stop = len(unlimdim); step = nchunk
-            if step < 1: 
+            if step < 1:
                 step = 1
             for n in range(start, stop, step):
                 nmax = n+nchunk
-                if nmax > len(unlimdim): 
+                if nmax > len(unlimdim):
                     nmax=len(unlimdim)
                 var[n:nmax] = ncvar[n:nmax]
         else:
@@ -602,9 +602,9 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
     ncfile4.close()
 
 def nc4tonc3():
-    """usage = """
+    """
      Convert a netCDF 4 file (in NETCDF4_CLASSIC format) to netCDF 3 format.
-    
+
      usage: %s [-h] [-o] [--chunk] netcdf4filename netcdf3filename
      -h -- Print usage message.
      -o -- Overwite destination file (default is to raise an error if output file already exists).
@@ -680,8 +680,8 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
     The zlib, complevel and shuffle keywords control
     how the compression is done.
 
-    :param filename3: 
-    :param filename4: 
+    :param filename3:
+    :param filename4:
     :param unpackshort:  (Default value = True)
     :param zlib:  (Default value = True)
     :param complevel:  (Default value = 6)
@@ -699,7 +699,7 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
     """
 
     from netCDF4 import Dataset
-    
+
     ncfile3 = Dataset(filename3,'r')
     if classic:
         ncfile4 = Dataset(filename4,'w',clobber=clobber,format='NETCDF4_CLASSIC')
@@ -713,7 +713,7 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
     if not quiet: sys.stdout.write('copying global attributes ..\n')
     #for attname in ncfile3.ncattrs():
     #    setattr(ncfile4,attname,getattr(ncfile3,attname))
-    ncfile4.setncatts(ncfile3.__dict__) 
+    ncfile4.setncatts(ncfile3.__dict__)
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile3.dimensions.items():
         if dim.isunlimited():
@@ -761,16 +761,16 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
         if hasattr(ncvar, '_FillValue'):
             FillValue = ncvar._FillValue
         else:
-            FillValue = None 
+            FillValue = None
         var = ncfile4.createVariable(varname,datatype,ncvar.dimensions, fill_value=FillValue, least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
         # fill variable attributes.
         attdict = ncvar.__dict__
         if '_FillValue' in attdict: del attdict['_FillValue']
-        if dounpackshort and 'add_offset' in attdict: 
+        if dounpackshort and 'add_offset' in attdict:
             del attdict['add_offset']
-        if dounpackshort and 'scale_factor' in attdict: 
+        if dounpackshort and 'scale_factor' in attdict:
             del attdict['scale_factor']
-        if dounpackshort and 'missing_value' in attdict: 
+        if dounpackshort and 'missing_value' in attdict:
             attdict['missing_value']=mval
         var.setncatts(attdict)
         #for attname in ncvar.ncattrs():
@@ -822,12 +822,12 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
 
 
 def nc3tonc4():
-    """usage = """
+    """
      Convert a netCDF 3 file to netCDF 4 format, optionally
      unpacking variables packed as short integers (with scale_factor and add_offset)
      to floats, and adding zlib compression (with the HDF5 shuffle filter and fletcher32 checksum).
      Data may also be quantized (truncated) to a specified precision to improve compression.
-    
+
      usage: %s [-h] [-o] [--vars=var1,var2,..] [--zlib=(0|1)] [--complevel=(1-9)] [--shuffle=(0|1)] [--fletcher32=(0|1)] [--unpackshort=(0|1)] [--quantize=var1=n1,var2=n2,..] netcdf3filename netcdf4filename
      -h -- Print usage message.
      -o -- Overwite destination file (default is to raise an error if output file already exists).
