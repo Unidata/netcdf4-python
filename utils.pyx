@@ -7,7 +7,10 @@ gregorian = datetime(1582,10,15)
 
 def _dateparse(timestr):
     """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss,
-    return a datetime instance"""
+
+    :param timestr: 
+
+    """
     # same as version in netcdftime, but returns a timezone naive
     # python datetime instance with the utc_offset included.
     timestr_split = timestr.split()
@@ -27,22 +30,23 @@ def _dateparse(timestr):
 # utility functions (visible from python).
 
 def stringtoarr(string,NUMCHARS,dtype='S'):
+    """stringtoarr(a, NUMCHARS,dtype='S')
+    
+    convert a string to a character array of length NUMCHARS
+
+    :param a: Input python string.
+    :param NUMCHARS: number of characters used to represent string
+    (if len(a) < NUMCHARS, it will be padded on the right with blanks).
+    
+    @keyword dtype:  type of numpy array to return.  Default is 'S', which
+    means an array of dtype 'S1' will be returned.  If dtype='U', a
+    unicode array (dtype = 'U1') will be returned.
+    :param string: 
+    :param dtype:  (Default value = 'S')
+    :returns: A rank 1 numpy character array of length NUMCHARS with datatype 'S1'
+    (default) or 'U1' (if dtype='U')
+
     """
-stringtoarr(a, NUMCHARS,dtype='S')
-
-convert a string to a character array of length NUMCHARS
-
-@param a:  Input python string.
-
-@param NUMCHARS:  number of characters used to represent string
-(if len(a) < NUMCHARS, it will be padded on the right with blanks).
-
-@keyword dtype:  type of numpy array to return.  Default is 'S', which
-means an array of dtype 'S1' will be returned.  If dtype='U', a
-unicode array (dtype = 'U1') will be returned.
-
-@return: A rank 1 numpy character array of length NUMCHARS with datatype 'S1'
-(default) or 'U1' (if dtype='U')"""
     if dtype not in ["S","U"]:
         raise ValueError("dtype must string or unicode ('S' or 'U')")
     arr = numpy.zeros(NUMCHARS,dtype+'1')
@@ -50,17 +54,17 @@ unicode array (dtype = 'U1') will be returned.
     return arr
 
 def stringtochar(a):
+    """stringtochar(a)
+    
+    convert a string array to a character array with one extra dimension
+
+    :param a: Input numpy string array with numpy datatype 'SN' or 'UN', where N
+    is the number of characters in each string.  Will be converted to
+    an array of characters (datatype 'S1' or 'U1') of shape a.shape + (N,).
+    :returns: A numpy character array with datatype 'S1' or 'U1'
+    and shape a.shape + (N,), where N is the length of each string in a.
+
     """
-stringtochar(a)
-
-convert a string array to a character array with one extra dimension
-
-@param a:  Input numpy string array with numpy datatype 'SN' or 'UN', where N
-is the number of characters in each string.  Will be converted to
-an array of characters (datatype 'S1' or 'U1') of shape a.shape + (N,).
-
-@return: A numpy character array with datatype 'S1' or 'U1'
-and shape a.shape + (N,), where N is the length of each string in a."""
     dtype = a.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
@@ -69,17 +73,17 @@ and shape a.shape + (N,), where N is the length of each string in a."""
     return b
 
 def chartostring(b):
+    """chartostring(b)
+    
+    convert a character array to a string array with one less dimension.
+
+    :param b: Input character array (numpy datatype 'S1' or 'U1').
+    Will be converted to a array of strings, where each string has a fixed
+    length of b.shape[-1] characters.
+    :returns: A numpy string array with datatype 'SN' or 'UN' and shape b.shape[:-1],
+    where N=b.shape[-1].
+
     """
-chartostring(b)
-
-convert a character array to a string array with one less dimension.
-
-@param b:  Input character array (numpy datatype 'S1' or 'U1').
-Will be converted to a array of strings, where each string has a fixed
-length of b.shape[-1] characters.
-
-@return: A numpy string array with datatype 'SN' or 'UN' and shape b.shape[:-1],
-where N=b.shape[-1]."""
     dtype = b.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
@@ -90,33 +94,30 @@ where N=b.shape[-1]."""
     return a
 
 def date2num(dates,units,calendar='standard'):
-    """
-date2num(dates,units,calendar='standard')
+    """date2num(dates,units,calendar='standard')
+    
+    Return numeric time values given datetime objects. The units
+    of the numeric time values are described by the L{units} argument
+    and the L{calendar} keyword. The datetime objects must
+    be in UTC with no time-zone offset.  If there is a
+    time-zone offset in C{units}, it will be applied to the
+    returned numeric values.
 
-Return numeric time values given datetime objects. The units
-of the numeric time values are described by the L{units} argument
-and the L{calendar} keyword. The datetime objects must
-be in UTC with no time-zone offset.  If there is a
-time-zone offset in C{units}, it will be applied to the
-returned numeric values.
+    :param dates: A datetime object or a sequence of datetime objects.
+    The datetime objects should not include a time-zone offset.
+    :param units: a string of the form C{'B{time units} since B{reference time}}'
+    describing the time units. B{C{time units}} can be days, hours, minutes,
+    seconds, milliseconds or microseconds. B{C{reference time}} is the time
+    origin.  Accuracy is somewhere between a millisecond and a microsecond,
+    depending on the time interval and the calendar used.
+    :param calendar: describes the calendar used in the time calculations.
+    All the values currently defined in the U{CF metadata convention
+    <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
+    Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
+    'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
+    Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
+    :returns: a numeric time value, or an array of numeric time values.
 
-@param dates: A datetime object or a sequence of datetime objects.
-The datetime objects should not include a time-zone offset.
-
-@param units: a string of the form C{'B{time units} since B{reference time}}'
-describing the time units. B{C{time units}} can be days, hours, minutes,
-seconds, milliseconds or microseconds. B{C{reference time}} is the time
-origin.  Accuracy is somewhere between a millisecond and a microsecond,
-depending on the time interval and the calendar used.
-
-@param calendar: describes the calendar used in the time calculations.
-All the values currently defined in the U{CF metadata convention
-<http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
-Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
-'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
-Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
-
-@return: a numeric time value, or an array of numeric time values.
     """
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
@@ -169,41 +170,40 @@ Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
         return cdftime.date2num(dates)
 
 def num2date(times,units,calendar='standard'):
-    """
-num2date(times,units,calendar='standard')
+    """num2date(times,units,calendar='standard')
+    
+    Return datetime objects given numeric time values. The units
+    of the numeric time values are described by the C{units} argument
+    and the C{calendar} keyword. The returned datetime objects represent
+    UTC with no time-zone offset, even if the specified
+    C{units} contain a time-zone offset.
 
-Return datetime objects given numeric time values. The units
-of the numeric time values are described by the C{units} argument
-and the C{calendar} keyword. The returned datetime objects represent
-UTC with no time-zone offset, even if the specified
-C{units} contain a time-zone offset.
+    :param times: numeric time values.
+    :param units: a string of the form C{'B{time units} since B{reference time}}'
+    describing the time units. B{C{time units}} can be days, hours, minutes,
+    seconds, milliseconds or microseconds. B{C{reference time}} is the time
+    origin.  Accuracy is somewhere between a millisecond and a microsecond,
+    depending on the time interval and the calendar used.
+    
+    @keyword calendar: describes the calendar used in the time calculations.
+    All the values currently defined in the U{CF metadata convention
+    <http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
+    Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
+    'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
+    Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
+    :param calendar:  (Default value = 'standard')
+    :returns: a datetime instance, or an array of datetime instances.
+    
+    The datetime instances returned are 'real' python datetime
+    objects if C{calendar='proleptic_gregorian'}, or
+    C{calendar = 'standard'} or C{'gregorian'}
+    and the date is after the breakpoint between the Julian and
+    Gregorian calendars (1582-10-15). Otherwise, they are 'phony' datetime
+    objects which support some but not all the methods of 'real' python
+    datetime objects. The datetime instances
+    do not contain a time-zone offset, even if the specified C{units}
+    contains one.
 
-@param times: numeric time values.
-
-@param units: a string of the form C{'B{time units} since B{reference time}}'
-describing the time units. B{C{time units}} can be days, hours, minutes,
-seconds, milliseconds or microseconds. B{C{reference time}} is the time
-origin.  Accuracy is somewhere between a millisecond and a microsecond,
-depending on the time interval and the calendar used.
-
-@keyword calendar: describes the calendar used in the time calculations.
-All the values currently defined in the U{CF metadata convention
-<http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.
-Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
-'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
-Default is C{'standard'}, which is a mixed Julian/Gregorian calendar.
-
-@return: a datetime instance, or an array of datetime instances.
-
-The datetime instances returned are 'real' python datetime
-objects if C{calendar='proleptic_gregorian'}, or
-C{calendar = 'standard'} or C{'gregorian'}
-and the date is after the breakpoint between the Julian and
-Gregorian calendars (1582-10-15). Otherwise, they are 'phony' datetime
-objects which support some but not all the methods of 'real' python
-datetime objects. The datetime instances
-do not contain a time-zone offset, even if the specified C{units}
-contains one.
     """
     calendar = calendar.lower()
     basedate = _dateparse(units)
@@ -264,33 +264,33 @@ contains one.
         return cdftime.num2date(times)
 
 def date2index(dates, nctime, calendar=None, select='exact'):
-    """
-date2index(dates, nctime, calendar=None, select='exact')
+    """date2index(dates, nctime, calendar=None, select='exact')
+    
+    Return indices of a netCDF time variable corresponding to the given dates.
 
-Return indices of a netCDF time variable corresponding to the given dates.
+    :param dates: A datetime object or a sequence of datetime objects.
+    The datetime objects should not include a time-zone offset.
+    :param nctime: A netCDF time variable object. The nctime object must have a
+    C{units} attribute.
+    
+    @keyword calendar: Describes the calendar used in the time calculation.
+    Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
+    'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
+    Default is C{'standard'}, which is a mixed Julian/Gregorian calendar
+    If C{calendar} is None, its value is given by C{nctime.calendar} or
+    C{standard} if no such attribute exists.
+    
+    @keyword select: C{'exact', 'before', 'after', 'nearest'}
+    The index selection method. C{exact} will return the indices perfectly
+    matching the dates given. C{before} and C{after} will return the indices
+    corresponding to the dates just before or just after the given dates if
+    an exact match cannot be found. C{nearest} will return the indices that
+    correspond to the closest dates.
+    :param calendar:  (Default value = None)
+    :param select:  (Default value = 'exact')
+    :returns: an index (indices) of the netCDF time variable corresponding
+    to the given datetime object(s).
 
-@param dates: A datetime object or a sequence of datetime objects.
-The datetime objects should not include a time-zone offset.
-
-@param nctime: A netCDF time variable object. The nctime object must have a
-C{units} attribute.
-
-@keyword calendar: Describes the calendar used in the time calculation.
-Valid calendars C{'standard', 'gregorian', 'proleptic_gregorian'
-'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'}.
-Default is C{'standard'}, which is a mixed Julian/Gregorian calendar
-If C{calendar} is None, its value is given by C{nctime.calendar} or
-C{standard} if no such attribute exists.
-
-@keyword select: C{'exact', 'before', 'after', 'nearest'}
-The index selection method. C{exact} will return the indices perfectly
-matching the dates given. C{before} and C{after} will return the indices
-corresponding to the dates just before or just after the given dates if
-an exact match cannot be found. C{nearest} will return the indices that
-correspond to the closest dates.
-
-@return: an index (indices) of the netCDF time variable corresponding
-to the given datetime object(s).
     """
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
@@ -306,44 +306,46 @@ to the given datetime object(s).
         return netcdftime.date2index(dates, nctime, calendar, select)
 
 def getlibversion():
-    """
-getlibversion()
+    """getlibversion()
+    
+    returns a string describing the version of the netcdf library
+    used to build the module, and when it was built.
 
-returns a string describing the version of the netcdf library
-used to build the module, and when it was built.
+
     """
     return (<char *>nc_inq_libvers()).decode('ascii')
 
 class MFDataset(Dataset):
-    """
-MFDataset(self, files, check=False, aggdim=None, exclude=[])
+    """MFDataset(self, files, check=False, aggdim=None, exclude=[])
+    
+    Class for reading multi-file netCDF Datasets, making variables
+    spanning multiple files appear as if they were in one file.
+    
+    Datasets must be in C{NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT}
+    format (C{NETCDF4} Datasets won't work).
+    
+    Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
+    
+    Example usage:
+    
+    >>> import numpy
+    >>> # create a series of netCDF files with a variable sharing
+    >>> # the same unlimited dimension.
+    >>> for nfile in range(10):
+    >>> f = Dataset('mftest'+repr(nfile)+'.nc','w')
+    >>> f.createDimension('x',None)
+    >>> x = f.createVariable('x','i',('x',))
+    >>> x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+    >>> f.close()
+    >>> # now read all those files in at once, in one Dataset.
+    >>> f = MFDataset('mftest*nc')
+    >>> print f.variables['x'][:]
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+     25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
+     50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
+     75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
 
-Class for reading multi-file netCDF Datasets, making variables
-spanning multiple files appear as if they were in one file.
 
-Datasets must be in C{NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT}
-format (C{NETCDF4} Datasets won't work).
-
-Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.
-
-Example usage:
-
->>> import numpy
->>> # create a series of netCDF files with a variable sharing
->>> # the same unlimited dimension.
->>> for nfile in range(10):
->>>     f = Dataset('mftest'+repr(nfile)+'.nc','w')
->>>     f.createDimension('x',None)
->>>     x = f.createVariable('x','i',('x',))
->>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
->>>     f.close()
->>> # now read all those files in at once, in one Dataset.
->>> f = MFDataset('mftest*nc')
->>> print f.variables['x'][:]
-[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
- 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
- 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
- 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
     """
 
     def __init__(self, files, check=False, aggdim=None, exclude=[]):
@@ -541,9 +543,11 @@ Default is an empty list.
             return Dataset.__getattribute__(self, name)
 
     def ncattrs(self):
+        """ """
         return self._cdf[0].__dict__.keys()
 
     def close(self):
+        """ """
         for dset in self._cdf:
             dset.close()
 
@@ -566,6 +570,7 @@ Default is an empty list.
         return ''.join(ncdump)
 
 class _Dimension(object):
+    """ """
     def __init__(self, dimname, dim, dimlens, dimtotlen):
         self.dimlens = dimlens
         self.dimtotlen = dimtotlen
@@ -573,6 +578,7 @@ class _Dimension(object):
     def __len__(self):
         return self.dimtotlen
     def isunlimited(self):
+        """ """
         return True
     def __repr__(self):
         if self.isunlimited():
@@ -581,6 +587,7 @@ class _Dimension(object):
             return repr(type(self))+": name = '%s', size = %s\n" % (self._name,len(self))
 
 class _Variable(object):
+    """ """
     def __init__(self, dset, varname, var, recdimname):
         self.dimensions = var.dimensions
         self._dset = dset
@@ -595,8 +602,10 @@ class _Variable(object):
         for name, value in var.__dict__.items():
             self.__dict__[name] = value
     def typecode(self):
+        """ """
         return self.dtype
     def ncattrs(self):
+        """ """
         return self._mastervar.__dict__.keys()
     def __getattr__(self,name):
         if name == 'shape': return self._shape()
@@ -624,9 +633,15 @@ class _Variable(object):
     def __len__(self):
         return self._shape()[0]
     def _shape(self):
+        """ """
         recdimlen = len(self._dset.dimensions[self._recdimname])
         return (recdimlen,) + self._mastervar.shape[1:]
     def set_auto_maskandscale(self,val):
+        """
+
+        :param val: 
+
+        """
         for v in self._recVar:
             v.set_auto_maskandscale(val)
     def __getitem__(self, elem):
@@ -734,39 +749,40 @@ class _Variable(object):
 
 
 class MFTime(_Variable):
-    """
-MFTime(self, time, units=None)
+    """MFTime(self, time, units=None)
+    
+    Class providing an interface to a MFDataset time Variable by imposing a unique common
+    time unit to all files.
+    
+    Example usage:
+    
+    >>> import numpy
+    >>> f1 = Dataset('mftest_1.nc','w', format='NETCDF4_CLASSIC')
+    >>> f2 = Dataset('mftest_2.nc','w', format='NETCDF4_CLASSIC')
+    >>> f1.createDimension('time',None)
+    >>> f2.createDimension('time',None)
+    >>> t1 = f1.createVariable('time','i',('time',))
+    >>> t2 = f2.createVariable('time','i',('time',))
+    >>> t1.units = 'days since 2000-01-01'
+    >>> t2.units = 'days since 2000-02-01'
+    >>> t1.calendar = 'standard'
+    >>> t2.calendar = 'standard'
+    >>> t1[:] = numpy.arange(31)
+    >>> t2[:] = numpy.arange(30)
+    >>> f1.close()
+    >>> f2.close()
+    >>> # Read the two files in at once, in one Dataset.
+    >>> f = MFDataset('mftest*nc')
+    >>> t = f.variables['time']
+    >>> print t.units
+    days since 2000-01-01
+    >>> print t[32] # The value written in the file, inconsistent with the MF time units.
+    1
+    >>> T = MFTime(t)
+    >>> print T[32]
+    32
 
-Class providing an interface to a MFDataset time Variable by imposing a unique common
-time unit to all files.
 
-Example usage:
-
->>> import numpy
->>> f1 = Dataset('mftest_1.nc','w', format='NETCDF4_CLASSIC')
->>> f2 = Dataset('mftest_2.nc','w', format='NETCDF4_CLASSIC')
->>> f1.createDimension('time',None)
->>> f2.createDimension('time',None)
->>> t1 = f1.createVariable('time','i',('time',))
->>> t2 = f2.createVariable('time','i',('time',))
->>> t1.units = 'days since 2000-01-01'
->>> t2.units = 'days since 2000-02-01'
->>> t1.calendar = 'standard'
->>> t2.calendar = 'standard'
->>> t1[:] = numpy.arange(31)
->>> t2[:] = numpy.arange(30)
->>> f1.close()
->>> f2.close()
->>> # Read the two files in at once, in one Dataset.
->>> f = MFDataset('mftest*nc')
->>> t = f.variables['time']
->>> print t.units
-days since 2000-01-01
->>> print t[32] # The value written in the file, inconsistent with the MF time units.
-1
->>> T = MFTime(t)
->>> print T[32]
-32
     """
 
     def __init__(self, time, units=None):
