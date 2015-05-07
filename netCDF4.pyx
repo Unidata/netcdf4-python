@@ -25,34 +25,34 @@ Download
 
  - Latest bleeding-edge code from the U{github repository
    <http://github.com/Unidata/netcdf4-python>}.
- - Latest U{releases <https://pypi.python.org/pypi/netCDF4>}
+ - Latest `releases <https://pypi.python.org/pypi/netCDF4>`_
    (source code and windows installers).
 
 Requires
 ========
 
  - Python 2.5 or later (python 3 works too).
- - numpy array module U{http://numpy.scipy.org}, version 1.7.0 or later.
- - U{Cython <http://cython.org>}, version 0.19 or later, is optional - if it is installed setup.py will
+ - numpy array module `http://numpy.scipy.org`_, version 1.7.0 or later.
+ - `Cython <http://cython.org>`_, version 0.19 or later, is optional - if it is installed setup.py will
    use it to recompile the Cython source code into C, using conditional compilation
    to enable features in the netCDF API that have been added since version 4.1.1.  If
    Cython is not installed, these features (such as the ability to rename Group objects)
    will be disabled to preserve backward compatibility with older versions of the netCDF
    library.
- - For python < 2.7, the ordereddict module U{http://python.org/pypi/ordereddict}.
+ - For python < 2.7, the ordereddict module `http://python.org/pypi/ordereddict`_.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.8 or higher
- recommended) from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
+ recommended) from `ftp://ftp.hdfgroup.org/HDF5/current/src`_.
  Be sure to build with '``--enable-hl --enable-shared``'.
- - U{Libcurl <http://curl.haxx.se/libcurl/>}, if you want
- U{OPeNDAP<http://opendap.org/>} support.
- - U{HDF4 <http://www.hdfgroup.org/products/hdf4/>}, if you want
+ - `Libcurl <http://curl.haxx.se/libcurl/>`_, if you want
+ `OPeNDAP<http://opendap.org/>`_ support.
+ - `HDF4 <http://www.hdfgroup.org/products/hdf4/>`_, if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
- - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
+ - The netCDF-4 C library from `ftp://ftp.unidata.ucar.edu/pub/netcdf`_.
  Version 4.1.1 or higher is required (4.2 or higher recommended).
  Be sure to build with '``--enable-netcdf-4 --enable-shared``', and set
  ``CPPFLAGS="-I $HDF5_DIR/include"`` and ``LDFLAGS="-L $HDF5_DIR/lib"``,
  where ``$HDF5_DIR`` is the directory where HDF5 was installed.
- If you want U{OPeNDAP<http://opendap.org/>} support, add '``--enable-dap``'.
+ If you want `OPeNDAP<http://opendap.org/>`_ support, add '``--enable-dap``'.
  If you want HDF4 SD support, add '``--enable-hdf4``' and add
  the location of the HDF4 headers and library to ``CPPFLAGS`` and ``LDFLAGS``.
 
@@ -109,7 +109,7 @@ NETCDF4
 >>>
 >>> rootgrp.close()
 
-Remote U{OPeNDAP<http://opendap.org>}-hosted datasets can be accessed for
+Remote `OPeNDAP<http://opendap.org>`_-hosted datasets can be accessed for
 reading over http if a URL is provided to the :class:`Dataset` constructor instead of a
 filename.  However, this requires that the netCDF library be built with
 OPenDAP support, via the ``--enable-dap`` configure option (added in
@@ -257,7 +257,7 @@ and whether it is unlimited.
 -----------------------------
 
 netCDF variables behave much like python multidimensional array objects
-supplied by the U{numpy module <http://numpy.scipy.org>}. However,
+supplied by the `numpy module <http://numpy.scipy.org>`_. However,
 unlike numpy arrays, netCDF4 variables can be appended to along one or
 more 'unlimited' dimensions. To create a netCDF variable, use the
 :class:`createVariable<Dataset.createVariable>` method of a :class:`Dataset` or
@@ -1832,7 +1832,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         data will be quantized using ``numpy.around(scale*data)/scale``, where
         scale = 2**bits, and bits is determined so that a precision of 0.1 is
         retained (in this case bits=4). From
-        U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml}:
+        `http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml`_:
         "least_significant_digit -- power of ten of the smallest decimal place
         in unpacked data that is a reliable value." Default is ``None``, or no
         quantization, or 'lossless' compression.
