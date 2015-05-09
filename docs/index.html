@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>netCDF4</title>
+  <title>netCDF4._netCDF4</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -30,14 +30,20 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >netcdf4-python</th>
+          </tr></table></th>
   </tr>
 </table>
 <table width="100%" cellpadding="0" cellspacing="0">
   <tr valign="top">
     <td width="100%">
       <span class="breadcrumbs">
-        Module&nbsp;netCDF4
+        Package&nbsp;netCDF4 ::
+        Module&nbsp;_netCDF4
       </span>
     </td>
     <td>
@@ -48,7 +54,7 @@
   </tr>
 </table>
 <!-- ==================== MODULE DESCRIPTION ==================== -->
-<h1 class="epydoc">Module netCDF4</h1><p class="nomargin-top"><span class="codelink"><a href="netCDF4-pysrc.html">source&nbsp;code</a></span></p>
+<h1 class="epydoc">Module _netCDF4</h1><p class="nomargin-top"></p>
 <h1 class="heading">Introduction</h1>
     <p>Python interface to the netCDF version 4 library.  <a 
     href="http://www.unidata.ucar.edu/software/netcdf/netcdf-4" 
@@ -168,7 +174,7 @@
   <h1 class="heading">Tutorial</h1>
     <h2 class="heading">1) Creating/Opening/Closing a netCDF file</h2>
       <p>To create a netCDF file from python, you simply call the <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
       constructor. This is also the method used to open an existing netCDF 
       file.  If the file is open for write access (<code>w, r+</code> or 
       <code>a</code>), you may write any type of data including new 
@@ -187,10 +193,11 @@
       <code>format</code> keyword in the <code>Dataset</code> constructor.
       The default format is <code>NETCDF4</code>. To see how a given file 
       is formatted, you can examine the <code>data_model</code> <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> attribute.
-      Closing the netCDF file is accomplished via the <a 
-      href="netCDF4.Dataset-class.html#close" class="link">close</a> method
-      of the <a href="netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      attribute.  Closing the netCDF file is accomplished via the <a 
+      href="netCDF4._netCDF4.Dataset-class.html#close" 
+      class="link">close</a> method of the <a 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
       instance.</p>
       <p>Here's an example:</p>
 <pre class="py-doctest">
@@ -203,7 +210,7 @@
       <p>Remote <a href="http://opendap.org" 
       target="_top">OPeNDAP</a>-hosted datasets can be accessed for reading
       over http if a URL is provided to the <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
       constructor instead of a filename.  However, this requires that the 
       netCDF library be built with OPenDAP support, via the 
       <code>--enable-dap</code> configure option (added in version 
@@ -215,20 +222,21 @@
       as other groups.  A <code>netCDF4.Dataset</code> defines creates a 
       special group, called the 'root group', which is similar to the root 
       directory in a unix filesystem.  To create <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instances, use
-      the <a href="netCDF4.Dataset-class.html#createGroup" 
+      href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+      instances, use the <a 
+      href="netCDF4._netCDF4.Dataset-class.html#createGroup" 
       class="link">createGroup</a> method of a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instance. <a 
-      href="netCDF4.Dataset-class.html#createGroup" 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
+      instance. <a href="netCDF4._netCDF4.Dataset-class.html#createGroup" 
       class="link">createGroup</a> takes a single argument, a python string
       containing the name of the new group. The new <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instances 
-      contained within the root group can be accessed by name using the 
-      <code>groups</code> dictionary attribute of the <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> instance.
-      Only <code>NETCDF4</code> formatted files support Groups, if you try 
-      to create a Group in a netCDF 3 file you will get an error 
+      href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+      instances contained within the root group can be accessed by name 
+      using the <code>groups</code> dictionary attribute of the <a 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      instance.  Only <code>NETCDF4</code> formatted files support Groups, 
+      if you try to create a Group in a netCDF 3 file you will get an error
       message.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>rootgrp = Dataset(<span class="py-string">'test.nc'</span>, <span class="py-string">'a'</span>)
@@ -239,21 +247,23 @@
 <span class="py-output">             ('analyses', &lt;netCDF4.Group object at 0x1b4b970&gt;)])</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>Groups can exist within groups in a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a>, just as 
-      directories exist within directories in a unix filesystem. Each <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instance has a
-      <code>'groups'</code> attribute dictionary containing all of the 
-      group instances contained within that group. Each <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instance also 
-      has a <code>'path'</code> attribute that contains a simulated unix 
-      directory path to that group.</p>
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a>, 
+      just as directories exist within directories in a unix filesystem. 
+      Each <a href="netCDF4._netCDF4.Group-class.html" 
+      class="link">Group</a> instance has a <code>'groups'</code> attribute
+      dictionary containing all of the group instances contained within 
+      that group. Each <a href="netCDF4._netCDF4.Group-class.html" 
+      class="link">Group</a> instance also has a <code>'path'</code> 
+      attribute that contains a simulated unix directory path to that 
+      group.</p>
       <p>Here's an example that shows how to navigate all the groups in a 
-      <a href="netCDF4.Dataset-class.html" class="link">Dataset</a>. The 
-      function <code>walktree</code> is a Python generator that is used to 
-      walk the directory tree. Note that printing the <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> object yields 
-      summary information about it's contents.</p>
+      <a href="netCDF4._netCDF4.Dataset-class.html" 
+      class="link">Dataset</a>. The function <code>walktree</code> is a 
+      Python generator that is used to walk the directory tree. Note that 
+      printing the <a href="netCDF4._netCDF4.Dataset-class.html" 
+      class="link">Dataset</a> or <a 
+      href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+      object yields summary information about it's contents.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>fcstgrp1 = fcstgrp.createGroup(<span class="py-string">'model1'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span>fcstgrp2 = fcstgrp.createGroup(<span class="py-string">'model2'</span>)
@@ -298,12 +308,13 @@
       so before any variables can be created the dimensions they use must 
       be created first. A special case, not often used in practice, is that
       of a scalar variable, which has no dimensions. A dimension is created
-      using the <a href="netCDF4.Dataset-class.html#createDimension" 
+      using the <a 
+      href="netCDF4._netCDF4.Dataset-class.html#createDimension" 
       class="link">createDimension</a> method of a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instance. A 
-      Python string is used to set the name of the dimension, and an 
-      integer value is used to set the size. To create an unlimited 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
+      instance. A Python string is used to set the name of the dimension, 
+      and an integer value is used to set the size. To create an unlimited 
       dimension (a dimension that can be appended to), the size value is 
       set to <code>None</code> or 0. In this example, there both the 
       <code>time</code> and <code>level</code> dimensions are unlimited.  
@@ -315,7 +326,7 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>time = rootgrp.createDimension(<span class="py-string">'time'</span>, None)
 <span class="py-prompt">&gt;&gt;&gt; </span>lat = rootgrp.createDimension(<span class="py-string">'lat'</span>, 73)
 <span class="py-prompt">&gt;&gt;&gt; </span>lon = rootgrp.createDimension(<span class="py-string">'lon'</span>, 144)</pre>
-      <p>All of the <a href="netCDF4.Dimension-class.html" 
+      <p>All of the <a href="netCDF4._netCDF4.Dimension-class.html" 
       class="link">Dimension</a> instances are stored in a python 
       dictionary.</p>
 <pre class="py-doctest">
@@ -326,13 +337,14 @@
 <span class="py-output">             ('lon', &lt;netCDF4.Dimension object at 0x1b48a08&gt;)])</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>Calling the python <code>len</code> function with a <a 
-      href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
-      instance returns the current size of that dimension. The <a 
-      href="netCDF4.Dimension-class.html#isunlimited" 
+      href="netCDF4._netCDF4.Dimension-class.html" 
+      class="link">Dimension</a> instance returns the current size of that 
+      dimension. The <a 
+      href="netCDF4._netCDF4.Dimension-class.html#isunlimited" 
       class="link">isunlimited</a> method of a <a 
-      href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
-      instance can be used to determine if the dimensions is unlimited, or 
-      appendable.</p>
+      href="netCDF4._netCDF4.Dimension-class.html" 
+      class="link">Dimension</a> instance can be used to determine if the 
+      dimensions is unlimited, or appendable.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> len(lon)
 <span class="py-output">144</span>
@@ -341,7 +353,7 @@
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> time.is_unlimited()
 <span class="py-output">True</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
-      <p>Printing the <a href="netCDF4.Dimension-class.html" 
+      <p>Printing the <a href="netCDF4._netCDF4.Dimension-class.html" 
       class="link">Dimension</a> object provides useful summary info, 
       including the name and length of the dimension, and whether it is 
       unlimited.</p>
@@ -354,28 +366,30 @@
 <span class="py-output">&lt;type 'netCDF4.Dimension'&gt;: name = 'lon', size = 144</span>
 <span class="py-output">&lt;type 'netCDF4.Dimension'&gt; (unlimited): name = 'time', size = 0</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
-      <p><a href="netCDF4.Dimension-class.html" class="link">Dimension</a> 
-      names can be changed using the <a 
-      href="netCDF4.Dataset-class.html#renameDimension" 
+      <p><a href="netCDF4._netCDF4.Dimension-class.html" 
+      class="link">Dimension</a> names can be changed using the <a 
+      href="netCDF4._netCDF4.Dataset-class.html#renameDimension" 
       class="link">renameDimension</a> method of a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instance.</p>
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
+      instance.</p>
     <h2 class="heading">4) Variables in a netCDF file</h2>
       <p>netCDF variables behave much like python multidimensional array 
       objects supplied by the <a href="http://numpy.scipy.org" 
       target="_top">numpy module</a>. However, unlike numpy arrays, netCDF4
       variables can be appended to along one or more 'unlimited' 
       dimensions. To create a netCDF variable, use the <a 
-      href="netCDF4.Dataset-class.html#createVariable" 
+      href="netCDF4._netCDF4.Dataset-class.html#createVariable" 
       class="link">createVariable</a> method of a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instance. The 
-      <a href="netCDF4.Dataset-class.html#createVariable" 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
+      instance. The <a 
+      href="netCDF4._netCDF4.Dataset-class.html#createVariable" 
       class="link">createVariable</a> method has two mandatory arguments, 
       the variable name (a Python string), and the variable datatype. The 
       variable's dimensions are given by a tuple containing the dimension 
       names (defined previously with <a 
-      href="netCDF4.Dataset-class.html#createDimension" 
+      href="netCDF4._netCDF4.Dataset-class.html#createDimension" 
       class="link">createDimension</a>). To create a scalar variable, 
       simply leave out the dimensions keyword. The variable primitive 
       datatypes correspond to the dtype attribute of a numpy array. You can
@@ -397,11 +411,11 @@
       type can only be used if the file format is <code>NETCDF4</code>.</p>
       <p>The dimensions themselves are usually also defined as variables, 
       called coordinate variables. The <a 
-      href="netCDF4.Dataset-class.html#createVariable" 
+      href="netCDF4._netCDF4.Dataset-class.html#createVariable" 
       class="link">createVariable</a> method returns an instance of the <a 
-      href="netCDF4.Variable-class.html" class="link">Variable</a> class 
-      whose methods can be used later to access and set variable data and 
-      attributes.</p>
+      href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
+      class whose methods can be used later to access and set variable data
+      and attributes.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>times = rootgrp.createVariable(<span class="py-string">'time'</span>,<span class="py-string">'f8'</span>,(<span class="py-string">'time'</span>,))
 <span class="py-prompt">&gt;&gt;&gt; </span>levels = rootgrp.createVariable(<span class="py-string">'level'</span>,<span class="py-string">'i4'</span>,(<span class="py-string">'level'</span>,))
@@ -409,10 +423,11 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>longitudes = rootgrp.createVariable(<span class="py-string">'longitude'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'lon'</span>,))
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># two dimensions unlimited.</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>temp = rootgrp.createVariable(<span class="py-string">'temp'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'time'</span>,<span class="py-string">'level'</span>,<span class="py-string">'lat'</span>,<span class="py-string">'lon'</span>,))</pre>
-      <p>All of the variables in the <a href="netCDF4.Dataset-class.html" 
-      class="link">Dataset</a> or <a href="netCDF4.Group-class.html" 
-      class="link">Group</a> are stored in a Python dictionary, in the same
-      way as the dimensions:</p>
+      <p>All of the variables in the <a 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
+      are stored in a Python dictionary, in the same way as the 
+      dimensions:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.variables
 <span class="py-output">OrderedDict([('time', &lt;netCDF4.Variable object at 0x1b4ba70&gt;),</span>
@@ -421,9 +436,9 @@
 <span class="py-output">             ('longitude', &lt;netCDF4.Variable object at 0x1b4bb30&gt;),</span>
 <span class="py-output">             ('temp', &lt;netCDF4.Variable object at 0x1b4bb70&gt;)])</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
-      <p>To get summary info on a <a href="netCDF4.Variable-class.html" 
-      class="link">Variable</a> instance in an interactive session, just 
-      print it.</p>
+      <p>To get summary info on a <a 
+      href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
+      instance in an interactive session, just print it.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.variables[<span class="py-string">'temp'</span>]
 <span class="py-output">&lt;type 'netCDF4.Variable'&gt;</span>
@@ -433,26 +448,26 @@
 <span class="py-output">unlimited dimensions: time, level</span>
 <span class="py-output">current shape = (0, 0, 73, 144)</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
-      <p><a href="netCDF4.Variable-class.html" class="link">Variable</a> 
-      names can be changed using the <a 
-      href="netCDF4.Dataset-class.html#renameVariable" 
+      <p><a href="netCDF4._netCDF4.Variable-class.html" 
+      class="link">Variable</a> names can be changed using the <a 
+      href="netCDF4._netCDF4.Dataset-class.html#renameVariable" 
       class="link">renameVariable</a> method of a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
       instance.</p>
     <h2 class="heading">5) Attributes in a netCDF file</h2>
       <p>There are two types of attributes in a netCDF file, global and 
       variable. Global attributes provide information about a group, or the
-      entire dataset, as a whole. <a href="netCDF4.Variable-class.html" 
-      class="link">Variable</a> attributes provide information about one of
-      the variables in a group. Global attributes are set by assigning 
-      values to <a href="netCDF4.Dataset-class.html" 
-      class="link">Dataset</a> or <a href="netCDF4.Group-class.html" 
-      class="link">Group</a> instance variables. <a 
-      href="netCDF4.Variable-class.html" class="link">Variable</a> 
-      attributes are set by assigning values to <a 
-      href="netCDF4.Variable-class.html" class="link">Variable</a> 
-      instances variables. Attributes can be strings, numbers or sequences.
-      Returning to our example,</p>
+      entire dataset, as a whole. <a 
+      href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
+      attributes provide information about one of the variables in a group.
+      Global attributes are set by assigning values to <a 
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
+      instance variables. <a href="netCDF4._netCDF4.Variable-class.html" 
+      class="link">Variable</a> attributes are set by assigning values to 
+      <a href="netCDF4._netCDF4.Variable-class.html" 
+      class="link">Variable</a> instances variables. Attributes can be 
+      strings, numbers or sequences. Returning to our example,</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> time
 <span class="py-prompt">&gt;&gt;&gt; </span>rootgrp.description = <span class="py-string">'bogus example script'</span>
@@ -464,16 +479,16 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>temp.units = <span class="py-string">'K'</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>times.units = <span class="py-string">'hours since 0001-01-01 00:00:00.0'</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>times.calendar = <span class="py-string">'gregorian'</span></pre>
-      <p>The <a href="netCDF4.Dataset-class.html#ncattrs" 
+      <p>The <a href="netCDF4._netCDF4.Dataset-class.html#ncattrs" 
       class="link">ncattrs</a> method of a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a>, <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> or <a 
-      href="netCDF4.Variable-class.html" class="link">Variable</a> instance
-      can be used to retrieve the names of all the netCDF attributes. This 
-      method is provided as a convenience, since using the built-in 
-      <code>dir</code> Python function will return a bunch of private 
-      methods and attributes that cannot (or should not) be modified by the
-      user.</p>
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a>, 
+      <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> or
+      <a href="netCDF4._netCDF4.Variable-class.html" 
+      class="link">Variable</a> instance can be used to retrieve the names 
+      of all the netCDF attributes. This method is provided as a 
+      convenience, since using the built-in <code>dir</code> Python 
+      function will return a bunch of private methods and attributes that 
+      cannot (or should not) be modified by the user.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> name <span class="py-keyword">in</span> rootgrp.ncattrs():
 <span class="py-prompt">&gt;&gt;&gt; </span>    <span class="py-keyword">print</span> <span class="py-string">'Global attr'</span>, name, <span class="py-string">'='</span>, getattr(rootgrp,name)
@@ -481,27 +496,28 @@
 <span class="py-output">Global attr history = Created Mon Nov  7 10.30:56 2005</span>
 <span class="py-output">Global attr source = netCDF4 python module tutorial</span></pre>
       <p>The <code>__dict__</code> attribute of a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a>, <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> or <a 
-      href="netCDF4.Variable-class.html" class="link">Variable</a> instance
-      provides all the netCDF attribute name/value pairs in a python 
-      dictionary:</p>
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a>, 
+      <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> or
+      <a href="netCDF4._netCDF4.Variable-class.html" 
+      class="link">Variable</a> instance provides all the netCDF attribute 
+      name/value pairs in a python dictionary:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.__dict__
 <span class="py-output">OrderedDict([(u'description', u'bogus example script'),</span>
 <span class="py-output">             (u'history', u'Created Thu Mar  3 19:30:33 2011'),</span>
 <span class="py-output">             (u'source', u'netCDF4 python module tutorial')])</span></pre>
       <p>Attributes can be deleted from a netCDF <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a>, <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> or <a 
-      href="netCDF4.Variable-class.html" class="link">Variable</a> using 
-      the python <code>del</code> statement (i.e. <code>del grp.foo</code> 
-      removes the attribute <code>foo</code> the the group 
-      <code>grp</code>).</p>
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a>, 
+      <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> or
+      <a href="netCDF4._netCDF4.Variable-class.html" 
+      class="link">Variable</a> using the python <code>del</code> statement
+      (i.e. <code>del grp.foo</code> removes the attribute <code>foo</code>
+      the the group <code>grp</code>).</p>
     <h2 class="heading">6) Writing data to and retrieving data from a netCDF variable</h2>
-      <p>Now that you have a netCDF <a href="netCDF4.Variable-class.html" 
-      class="link">Variable</a> instance, how do you put data into it? You 
-      can just treat it like an array and assign data to a slice.</p>
+      <p>Now that you have a netCDF <a 
+      href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
+      instance, how do you put data into it? You can just treat it like an 
+      array and assign data to a slice.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">import</span> numpy
 <span class="py-prompt">&gt;&gt;&gt; </span>lats =  numpy.arange(-90,91,2.5)
@@ -519,9 +535,9 @@
 <span class="py-output">  90. ]</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>Unlike NumPy's array objects, netCDF <a 
-      href="netCDF4.Variable-class.html" class="link">Variable</a> objects 
-      with unlimited dimensions will grow along those dimensions if you 
-      assign data outside the currently defined range of indices.</p>
+      href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
+      objects with unlimited dimensions will grow along those dimensions if
+      you assign data outside the currently defined range of indices.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># append along two unlimited dimensions by assigning to slice.</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>nlats = len(rootgrp.dimensions[<span class="py-string">'lat'</span>])
@@ -585,10 +601,11 @@
       with units specified like <code>hours since YY:MM:DD hh-mm-ss</code>.
       These units can be awkward to deal with, without a utility to convert
       the values to and from calendar dates.  The functione called <a 
-      href="netCDF4-module.html#num2date" class="link">num2date</a> and <a 
-      href="netCDF4-module.html#date2num" class="link">date2num</a> are 
-      provided with this package to do just that.  Here's an example of how
-      they can be used:</p>
+      href="netCDF4._netCDF4-module.html#num2date" 
+      class="link">num2date</a> and <a 
+      href="netCDF4._netCDF4-module.html#date2num" 
+      class="link">date2num</a> are provided with this package to do just 
+      that.  Here's an example of how they can be used:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># fill in times.</span>
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> datetime <span class="py-keyword">import</span> datetime, timedelta
@@ -605,35 +622,37 @@
 <span class="py-output">[2001-03-01 00:00:00 2001-03-01 12:00:00 2001-03-02 00:00:00</span>
 <span class="py-output"> 2001-03-02 12:00:00 2001-03-03 00:00:00]</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
-      <p><a href="netCDF4-module.html#num2date" class="link">num2date</a> 
-      converts numeric values of time in the specified <code>units</code> 
-      and <code>calendar</code> to datetime objects, and <a 
-      href="netCDF4-module.html#date2num" class="link">date2num</a> does 
-      the reverse. All the calendars currently defined in the <a 
+      <p><a href="netCDF4._netCDF4-module.html#num2date" 
+      class="link">num2date</a> converts numeric values of time in the 
+      specified <code>units</code> and <code>calendar</code> to datetime 
+      objects, and <a href="netCDF4._netCDF4-module.html#date2num" 
+      class="link">date2num</a> does the reverse. All the calendars 
+      currently defined in the <a 
       href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/" 
       target="_top">CF metadata convention</a> are supported. A function 
-      called <a href="netCDF4-module.html#date2index" 
+      called <a href="netCDF4._netCDF4-module.html#date2index" 
       class="link">date2index</a> is also provided which returns the 
       indices of a netCDF time variable corresponding to a sequence of 
       datetime instances.</p>
     <h2 class="heading">7) Reading data from a multi-file netCDF dataset.</h2>
       <p>If you want to read data from a variable that spans multiple 
-      netCDF files, you can use the <a href="netCDF4.MFDataset-class.html" 
+      netCDF files, you can use the <a 
+      href="netCDF4._netCDF4.MFDataset-class.html" 
       class="link">MFDataset</a> class to read the data as if it were 
       contained in a single file. Instead of using a single filename to 
-      create a <a href="netCDF4.Dataset-class.html" 
+      create a <a href="netCDF4._netCDF4.Dataset-class.html" 
       class="link">Dataset</a> instance, create a <a 
-      href="netCDF4.MFDataset-class.html" class="link">MFDataset</a> 
-      instance with either a list of filenames, or a string with a wildcard
-      (which is then converted to a sorted list of files using the python 
-      glob module). Variables in the list of files that share the same 
-      unlimited dimension are aggregated together, and can be sliced across
-      multiple files.  To illustrate this, let's first create a bunch of 
-      netCDF files with the same variable (with the same unlimited 
-      dimension).  The files must in be in <code>NETCDF3_64BIT</code>, 
-      <code>NETCDF3_CLASSIC</code> or <code>NETCDF4_CLASSIC format</code> 
-      (<code>NETCDF4</code> formatted multi-file datasets are not 
-      supported).</p>
+      href="netCDF4._netCDF4.MFDataset-class.html" 
+      class="link">MFDataset</a> instance with either a list of filenames, 
+      or a string with a wildcard (which is then converted to a sorted list
+      of files using the python glob module). Variables in the list of 
+      files that share the same unlimited dimension are aggregated 
+      together, and can be sliced across multiple files.  To illustrate 
+      this, let's first create a bunch of netCDF files with the same 
+      variable (with the same unlimited dimension).  The files must in be 
+      in <code>NETCDF3_64BIT</code>, <code>NETCDF3_CLASSIC</code> or 
+      <code>NETCDF4_CLASSIC format</code> (<code>NETCDF4</code> formatted 
+      multi-file datasets are not supported).</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">for</span> nfile <span class="py-keyword">in</span> range(10):
 <span class="py-prompt">&gt;&gt;&gt; </span>    f = Dataset(<span class="py-string">'mftest'</span>+repr(nfile)+<span class="py-string">'.nc'</span>,<span class="py-string">'w'</span>,format=<span class="py-string">'NETCDF4_CLASSIC'</span>)
@@ -642,7 +661,8 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>    x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
 <span class="py-prompt">&gt;&gt;&gt; </span>    f.close()</pre>
       <p>Now read all the files back in at once with <a 
-      href="netCDF4.MFDataset-class.html" class="link">MFDataset</a></p>
+      href="netCDF4._netCDF4.MFDataset-class.html" 
+      class="link">MFDataset</a></p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">from</span> netCDF4 <span class="py-keyword">import</span> MFDataset
 <span class="py-prompt">&gt;&gt;&gt; </span>f = MFDataset(<span class="py-string">'mftest*nc'</span>)
@@ -655,12 +675,12 @@
       <p>Note that MFDataset can only be used to read, not write, 
       multi-file datasets.</p>
     <h2 class="heading">8) Efficient compression of netCDF variables</h2>
-      <p>Data stored in netCDF 4 <a href="netCDF4.Variable-class.html" 
-      class="link">Variable</a> objects can be compressed and decompressed 
-      on the fly. The parameters for the compression are determined by the 
-      <code>zlib</code>, <code>complevel</code> and <code>shuffle</code> 
-      keyword arguments to the <a 
-      href="netCDF4.Dataset-class.html#createVariable" 
+      <p>Data stored in netCDF 4 <a 
+      href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
+      objects can be compressed and decompressed on the fly. The parameters
+      for the compression are determined by the <code>zlib</code>, 
+      <code>complevel</code> and <code>shuffle</code> keyword arguments to 
+      the <a href="netCDF4._netCDF4.Dataset-class.html#createVariable" 
       class="link">createVariable</a> method. To turn on compression, set 
       <code>zlib=True</code>.  The <code>complevel</code> keyword regulates
       the speed and efficiency of the compression (1 being fastest, but 
@@ -671,14 +691,14 @@
       the bytes.  The shuffle filter can significantly improve compression 
       ratios, and is on by default.  Setting <code>fletcher32</code> 
       keyword argument to <a 
-      href="netCDF4.Dataset-class.html#createVariable" 
+      href="netCDF4._netCDF4.Dataset-class.html#createVariable" 
       class="link">createVariable</a> to <code>True</code> (it's 
       <code>False</code> by default) enables the Fletcher32 checksum 
       algorithm for error detection. It's also possible to set the HDF5 
       chunking parameters and endian-ness of the binary data stored in the 
       HDF5 file with the <code>chunksizes</code> and <code>endian</code> 
       keyword arguments to <a 
-      href="netCDF4.Dataset-class.html#createVariable" 
+      href="netCDF4._netCDF4.Dataset-class.html#createVariable" 
       class="link">createVariable</a>.  These keyword arguments only are 
       relevant for <code>NETCDF4</code> and <code>NETCDF4_CLASSIC</code> 
       files (where the underlying file format is HDF5) and are silently 
@@ -689,7 +709,7 @@
       precision of 0.1 degrees), you can dramatically improve zlib 
       compression by quantizing (or truncating) the data using the 
       <code>least_significant_digit</code> keyword argument to <a 
-      href="netCDF4.Dataset-class.html#createVariable" 
+      href="netCDF4._netCDF4.Dataset-class.html#createVariable" 
       class="link">createVariable</a>. The least significant digit is the 
       power of ten of the smallest decimal place in the data that is a 
       reliable value. For example if the data has a precision of 0.1, then 
@@ -722,12 +742,13 @@
       instead of reading different parameters from different variables.  
       Compound data types are created from the corresponding numpy data 
       type using the <a 
-      href="netCDF4.Dataset-class.html#createCompoundType" 
+      href="netCDF4._netCDF4.Dataset-class.html#createCompoundType" 
       class="link">createCompoundType</a> method of a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instance. 
-      Since there is no native complex data type in netcdf, compound types 
-      are handy for storing numpy complex arrays.  Here's an example:</p>
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
+      instance. Since there is no native complex data type in netcdf, 
+      compound types are handy for storing numpy complex arrays.  Here's an
+      example:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>f = Dataset(<span class="py-string">'complex.nc'</span>,<span class="py-string">'w'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span>size = 3 <span class="py-comment"># length of 1-d complex array</span>
@@ -758,11 +779,11 @@
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>Compound types can be nested, but you must create the 'inner' ones
       first. All of the compound types defined for a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> are stored in 
-      a Python dictionary, just like variables and dimensions. As always, 
-      printing objects gives useful summary information in an interactive 
-      session:</p>
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
+      are stored in a Python dictionary, just like variables and 
+      dimensions. As always, printing objects gives useful summary 
+      information in an interactive session:</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f
 <span class="py-output">&lt;type 'netCDF4.Dataset'&gt;</span>
@@ -785,10 +806,11 @@
       <p>NetCDF 4 has support for variable-length or &quot;ragged&quot; 
       arrays.  These are arrays of variable length sequences having the 
       same type. To create a variable-length data type, use the <a 
-      href="netCDF4.Dataset-class.html#createVLType" 
+      href="netCDF4._netCDF4.Dataset-class.html#createVLType" 
       class="link">createVLType</a> method method of a <a 
-      href="netCDF4.Dataset-class.html" class="link">Dataset</a> or <a 
-      href="netCDF4.Group-class.html" class="link">Group</a> instance.</p>
+      href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+      or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
+      instance.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>f = Dataset(<span class="py-string">'tst_vlen.nc'</span>,<span class="py-string">'w'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span>vlen_t = f.createVLType(numpy.int32, <span class="py-string">'phony_vlen'</span>)</pre>
@@ -841,7 +863,8 @@
       as vlen variables,  For vlen strings, you don't need to create a vlen
       data type. Instead, simply use the python <code>str</code> builtin 
       (or a numpy string datatype with fixed length greater than 1) when 
-      calling the <a href="netCDF4.Dataset-class.html#createVariable" 
+      calling the <a 
+      href="netCDF4._netCDF4.Dataset-class.html#createVariable" 
       class="link">createVariable</a> method.</p>
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>z = f.createDimension(<span class="py-string">'z'</span>,10)
@@ -914,70 +937,55 @@
     <span class="table-header">Classes</span></td>
 </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4.CompoundType-class.html" class="summary-name">CompoundType</a><br />
-      A <a href="netCDF4.CompoundType-class.html" 
+    <td class="summary" colspan="2">
+        <a href="netCDF4._netCDF4.CompoundType-class.html" class="summary-name">CompoundType</a><br />
+      A <a href="netCDF4._netCDF4.CompoundType-class.html" 
         class="link">CompoundType</a> instance is used to describe a 
         compound data type.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4.Dataset-class.html" class="summary-name">Dataset</a><br />
+    <td class="summary" colspan="2">
+        <a href="netCDF4._netCDF4.Dataset-class.html" class="summary-name">Dataset</a><br />
       Dataset(self, filename, mode=&quot;r&quot;, clobber=True, 
         diskless=False, persist=False, keepweakref=False, format='NETCDF4')
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4.Dimension-class.html" class="summary-name">Dimension</a><br />
+    <td class="summary" colspan="2">
+        <a href="netCDF4._netCDF4.Dimension-class.html" class="summary-name">Dimension</a><br />
       Dimension(self, group, name, size=None)
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4.Group-class.html" class="summary-name">Group</a><br />
+    <td class="summary" colspan="2">
+        <a href="netCDF4._netCDF4.Group-class.html" class="summary-name">Group</a><br />
       Group(self, parent, name)
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4.MFDataset-class.html" class="summary-name">MFDataset</a><br />
+    <td class="summary" colspan="2">
+        <a href="netCDF4._netCDF4.MFDataset-class.html" class="summary-name">MFDataset</a><br />
       MFDataset(self, files, check=False, aggdim=None, exclude=[])
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4.MFTime-class.html" class="summary-name">MFTime</a><br />
+    <td class="summary" colspan="2">
+        <a href="netCDF4._netCDF4.MFTime-class.html" class="summary-name">MFTime</a><br />
       MFTime(self, time, units=None)
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4.VLType-class.html" class="summary-name">VLType</a><br />
-      A <a href="netCDF4.VLType-class.html" class="link">VLType</a> 
-        instance is used to describe a variable length (VLEN) data type.
+    <td class="summary" colspan="2">
+        <a href="netCDF4._netCDF4.VLType-class.html" class="summary-name">VLType</a><br />
+      A <a href="netCDF4._netCDF4.VLType-class.html" 
+        class="link">VLType</a> instance is used to describe a variable 
+        length (VLEN) data type.
     </td>
   </tr>
 <tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="netCDF4.Variable-class.html" class="summary-name">Variable</a><br />
+    <td class="summary" colspan="2">
+        <a href="netCDF4._netCDF4.Variable-class.html" class="summary-name">Variable</a><br />
       Variable(self, group, name, datatype, dimensions=(), zlib=False, 
         complevel=4, shuffle=True, fletcher32=False, contiguous=False, 
         chunksizes=None, endian='native', 
@@ -999,10 +1007,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4-module.html#chartostring" class="summary-sig-name">chartostring</a>(<span class="summary-sig-arg">b</span>)</span><br />
+          <td><span class="summary-sig"><a href="netCDF4._netCDF4-module.html#chartostring" class="summary-sig-name">chartostring</a>(<span class="summary-sig-arg">b</span>)</span><br />
       convert a character array to a string array with one less dimension.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="netCDF4-pysrc.html#chartostring">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -1016,14 +1024,14 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4-module.html#date2index" class="summary-sig-name">date2index</a>(<span class="summary-sig-arg">dates</span>,
+          <td><span class="summary-sig"><a href="netCDF4._netCDF4-module.html#date2index" class="summary-sig-name">date2index</a>(<span class="summary-sig-arg">dates</span>,
         <span class="summary-sig-arg">nctime</span>,
         <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">select</span>=<span class="summary-sig-default">'exact'</span>)</span><br />
       Return indices of a netCDF time variable corresponding to the given 
       dates.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="netCDF4-pysrc.html#date2index">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -1037,12 +1045,12 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4-module.html#date2num" class="summary-sig-name">date2num</a>(<span class="summary-sig-arg">dates</span>,
+          <td><span class="summary-sig"><a href="netCDF4._netCDF4-module.html#date2num" class="summary-sig-name">date2num</a>(<span class="summary-sig-arg">dates</span>,
         <span class="summary-sig-arg">units</span>,
         <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
       Return numeric time values given datetime objects.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="netCDF4-pysrc.html#date2num">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -1060,7 +1068,7 @@
       returns a string describing the version of the netcdf library used to
       build the module, and when it was built.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="netCDF4-pysrc.html#getlibversion">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -1074,12 +1082,12 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4-module.html#num2date" class="summary-sig-name">num2date</a>(<span class="summary-sig-arg">times</span>,
+          <td><span class="summary-sig"><a href="netCDF4._netCDF4-module.html#num2date" class="summary-sig-name">num2date</a>(<span class="summary-sig-arg">times</span>,
         <span class="summary-sig-arg">units</span>,
         <span class="summary-sig-arg">calendar</span>=<span class="summary-sig-default">'standard'</span>)</span><br />
       Return datetime objects given numeric time values.</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="netCDF4-pysrc.html#num2date">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -1093,12 +1101,12 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4-module.html#stringtoarr" class="summary-sig-name">stringtoarr</a>(<span class="summary-sig-arg">a</span>,
+          <td><span class="summary-sig"><a href="netCDF4._netCDF4-module.html#stringtoarr" class="summary-sig-name">stringtoarr</a>(<span class="summary-sig-arg">a</span>,
         <span class="summary-sig-arg">NUMCHARS</span>,
         <span class="summary-sig-arg">dtype</span>=<span class="summary-sig-default">'S'</span>)</span><br />
       convert a string to a character array of length NUMCHARS</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="netCDF4-pysrc.html#stringtoarr">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -1112,10 +1120,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="netCDF4-module.html#stringtochar" class="summary-sig-name">stringtochar</a>(<span class="summary-sig-arg">a</span>)</span><br />
+          <td><span class="summary-sig"><a href="netCDF4._netCDF4-module.html#stringtochar" class="summary-sig-name">stringtochar</a>(<span class="summary-sig-arg">a</span>)</span><br />
       convert a string array to a character array with one extra dimension</td>
           <td align="right" valign="top">
-            <span class="codelink"><a href="netCDF4-pysrc.html#stringtochar">source&nbsp;code</a></span>
+            
             
           </td>
         </tr>
@@ -1178,14 +1186,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.3.2'"><code class="variable-quote">u'</code><code class="variable-string">4.3.2</code><code class="variable-quote">'</code></code>
+        <a name="__netcdf4libversion__"></a><span class="summary-name">__netcdf4libversion__</span> = <code title="u'4.3.3-rc2'"><code class="variable-quote">u'</code><code class="variable-string">4.3.3-rc2</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="None">None</code>
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'netCDF4'"><code class="variable-quote">'</code><code class="variable-string">netCDF4</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -1206,7 +1214,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="netCDF4-module.html#default_fillvals" class="summary-name">default_fillvals</a> = <code title="{'S1': '\x00',
+        <a href="netCDF4._netCDF4-module.html#default_fillvals" class="summary-name">default_fillvals</a> = <code title="{'S1': '\x00',
  'U1': '\x00',
  'f4': 9.96920996839e+36,
  'f8': 9.96920996839e+36,
@@ -1249,14 +1257,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="netCDF4-module.html#microsec_units" class="summary-name">microsec_units</a> = <code title="['microseconds', 'microsecond', 'microsec', 'microsecs']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">microseconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">microsecond</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">microsec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-ellipsis">...</code></code>
+        <a href="netCDF4._netCDF4-module.html#microsec_units" class="summary-name">microsec_units</a> = <code title="['microseconds', 'microsecond', 'microsec', 'microsecs']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">microseconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">microsecond</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">microsec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="netCDF4-module.html#millisec_units" class="summary-name">millisec_units</a> = <code title="['milliseconds', 'millisecond', 'millisec', 'millisecs']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">milliseconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">millisecond</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">millisec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-ellipsis">...</code></code>
+        <a href="netCDF4._netCDF4-module.html#millisec_units" class="summary-name">millisec_units</a> = <code title="['milliseconds', 'millisecond', 'millisec', 'millisecs']"><code class="variable-group">[</code><code class="variable-quote">'</code><code class="variable-string">milliseconds</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">millisecond</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-string">millisec</code><code class="variable-quote">'</code><code class="variable-op">, </code><code class="variable-quote">'</code><code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -1307,7 +1315,7 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">chartostring</span>(<span class="sig-arg">b</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netCDF4-pysrc.html#chartostring">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
@@ -1339,7 +1347,7 @@
         <span class="sig-arg">select</span>=<span class="sig-default">'exact'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netCDF4-pysrc.html#date2index">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
@@ -1385,7 +1393,7 @@
         <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netCDF4-pysrc.html#date2num">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
@@ -1433,7 +1441,7 @@
         <span class="sig-arg">calendar</span>=<span class="sig-default">'standard'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netCDF4-pysrc.html#num2date">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
@@ -1488,7 +1496,7 @@
         <span class="sig-arg">dtype</span>=<span class="sig-default">'S'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netCDF4-pysrc.html#stringtoarr">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
@@ -1519,7 +1527,7 @@
   <h3 class="epydoc"><span class="sig"><span class="sig-name">stringtochar</span>(<span class="sig-arg">a</span>)</span>
   </h3>
   </td><td align="right" valign="top"
-    ><span class="codelink"><a href="netCDF4-pysrc.html#stringtochar">source&nbsp;code</a></span>&nbsp;
+    >&nbsp;
     </td>
   </tr></table>
   
@@ -1632,13 +1640,19 @@
       <th>&nbsp;&nbsp;&nbsp;<a
         href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
 
-      <th class="navbar" width="100%"></th>
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >netcdf4-python</th>
+          </tr></table></th>
   </tr>
 </table>
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sun May  3 20:05:24 2015
+    Generated by Epydoc 3.0.1
+    on Sat May  9 15:08:16 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
