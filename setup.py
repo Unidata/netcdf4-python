@@ -1,13 +1,15 @@
-import os, sys, subprocess, shutil
+import os, sys, subprocess
+import os.path as osp
+
 try:
     from setuptools import setup, Extension
     setuptools_extra_kwargs = {
         "install_requires":  ["numpy>=1.7"],
         "entry_points": {
             'console_scripts': [
-                'ncinfo = netCDF4_utils:ncinfo',
-                'nc4tonc3 = netCDF4_utils:nc4tonc3',
-                'nc3tonc4 = netCDF4_utils:nc3tonc4',
+                'ncinfo = netCDF4.utils:ncinfo',
+                'nc4tonc3 = netCDF4.utils:nc4tonc3',
+                'nc3tonc4 = netCDF4.utils:nc3tonc4',
             ]
         },
     }
@@ -349,22 +351,25 @@ else:
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
 cmdclass = {}
+netcdf4_src_root = osp.join('netCDF4', '_netCDF4')
+netcdf4_src_c = netcdf4_src_root + '.c'
 if has_cython and 'sdist' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
-    extensions = [Extension("netCDF4",["netCDF4.pyx"],
-                  libraries=libs,
-                  library_dirs=lib_dirs,
-                  include_dirs=inc_dirs,
-                  runtime_library_dirs=lib_dirs),
+    extensions = [Extension("netCDF4._netCDF4",
+                            [netcdf4_src_root + '.pyx'],
+                            libraries=libs,
+                            library_dirs=lib_dirs,
+                            include_dirs=inc_dirs,
+                            runtime_library_dirs=lib_dirs),
                   Extension('netcdftime._datetime', ['netcdftime/_datetime.pyx'])]
     # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
     # run for build *and* install (issue #263). Otherwise 'pip install' will
     # not regenerate netCDF4.c, even if the C lib supports the new features.
-    if len(sys.argv) >= 2 and os.path.exists('netCDF4.c'):
-        os.remove('netCDF4.c')
+    if len(sys.argv) >= 2 and os.path.exists(netcdf4_src_c):
+        os.remove(netcdf4_src_c)
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended = check_api(inc_dirs)
-    f = open('constants.pyx','w')
+    f = open(osp.join('include', 'constants.pyx'),'w')
     if has_rename_grp:
         sys.stdout.write('netcdf lib has group rename capability\n')
         f.write('DEF HAS_RENAME_GRP = 1\n')
@@ -384,13 +389,14 @@ if has_cython and 'sdist' not in sys.argv[1:]:
         sys.stdout.write('netcdf lib does not have nc_inq_format_extended function\n')
         f.write('DEF HAS_NC_INQ_FORMAT_EXTENDED = 0\n')
     f.close()
-    ext_modules = cythonize(extensions)
+    ext_modules = cythonize(extensions, include_path=['include'])
 else:
-    extensions = [Extension("netCDF4",["netCDF4.c"],
-                  libraries=libs,
-                  library_dirs=lib_dirs,
-                  include_dirs=inc_dirs,
-                  runtime_library_dirs=lib_dirs),
+    extensions = [Extension("netCDF4._netCDF4",
+                            [netcdf4_src_c],
+                            libraries=libs,
+                            library_dirs=lib_dirs,
+                            include_dirs=inc_dirs,
+                            runtime_library_dirs=lib_dirs),
                   Extension('netcdftime._datetime', ['netcdftime/_datetime.c'])]
     ext_modules = extensions
 
@@ -412,7 +418,6 @@ setup(name = "netCDF4",
                  "Topic :: Software Development :: Libraries :: Python Modules",
                  "Topic :: System :: Archiving :: Compression",
                  "Operating System :: OS Independent"],
-  py_modules = ["netCDF4_utils"],
-  packages = ['netcdftime'],
+  packages = ['netcdftime', 'netCDF4'],
   ext_modules = ext_modules,
   **setuptools_extra_kwargs)

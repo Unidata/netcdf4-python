@@ -1,5 +1,6 @@
 from numpy.random.mtrand import uniform
-from netCDF4 import Dataset, _quantize
+from netCDF4 import Dataset
+from netCDF4.utils import _quantize
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest
 
