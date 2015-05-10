@@ -1098,7 +1098,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_4_set_default_format(CYTHON_UNUSED 
 static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_filename, PyObject *__pyx_v_mode, PyObject *__pyx_v_clobber, PyObject *__pyx_v_format, PyObject *__pyx_v_diskless, PyObject *__pyx_v_persist, PyObject *__pyx_v_keepweakref, CYTHON_UNUSED PyObject *__pyx_v_kwargs); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_2__enter__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_4__exit__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_atype, CYTHON_UNUSED PyObject *__pyx_v_value, CYTHON_UNUSED PyObject *__pyx_v_traceback); /* proto */
-static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6filepath(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6filepath(CYTHON_UNUSED struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_8__repr__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__unicode__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12close(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
@@ -1124,7 +1124,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_50delncattr(struct __pyx_o
 static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_52__setattr__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_name, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_54__getattr__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_name); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_56renameAttribute(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_oldname, PyObject *__pyx_v_newname); /* proto */
-static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_58renameGroup(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_oldname, PyObject *__pyx_v_newname); /* proto */
+static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_58renameGroup(CYTHON_UNUSED struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_oldname, CYTHON_UNUSED PyObject *__pyx_v_newname); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_60set_auto_maskandscale(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_62set_auto_mask(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_64set_auto_scale(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
@@ -1424,10 +1424,6 @@ static char __pyx_k_val[] = "val";
 static char __pyx_k_var[] = "var";
 static char __pyx_k_vid[] = "vid";
 static char __pyx_k_zip[] = "zip";
-static char __pyx_k_DAP2[] = "DAP2";
-static char __pyx_k_DAP4[] = "DAP4";
-static char __pyx_k_HDF4[] = "HDF4";
-static char __pyx_k_HDF5[] = "HDF5";
 static char __pyx_k__116[] = ".";
 static char __pyx_k_bool[] = "bool";
 static char __pyx_k_cdfm[] = "cdfm";
@@ -1583,7 +1579,6 @@ static char __pyx_k_IOError[] = "IOError";
 static char __pyx_k_MINYEAR[] = "MINYEAR";
 static char __pyx_k_NETCDF3[] = "NETCDF3";
 static char __pyx_k_NETCDF4[] = "NETCDF4";
-static char __pyx_k_PNETCDF[] = "PNETCDF";
 static char __pyx_k_asarray[] = "asarray";
 static char __pyx_k_cdfTLen[] = "_cdfTLen";
 static char __pyx_k_cdfVLen[] = "_cdfVLen";
@@ -1835,7 +1830,6 @@ static char __pyx_k_no_since_in_unit_string[] = "no 'since' in unit_string";
 static char __pyx_k_shape_cannot_be_altered[] = "shape cannot be altered";
 static char __pyx_k_unlimited_name_s_size_s[] = " (unlimited): name = '%s', size = %s\n";
 static char __pyx_k_MFDataset___getattribute[] = "MFDataset.__getattribute__";
-static char __pyx_k_s_not_a_valid_group_name[] = "%s not a valid group name";
 static char __pyx_k_unlimited_dimensions_s_2[] = "unlimited dimensions = %s\n";
 static char __pyx_k_has_nc_inq_format_extended[] = "__has_nc_inq_format_extended__";
 static char __pyx_k_s_not_a_valid_variable_name[] = "%s not a valid variable name";
@@ -1844,6 +1838,8 @@ static char __pyx_k_s_not_a_valid_dimension_name[] = "%s not a valid dimension n
 static char __pyx_k_mode_must_be_w_r_a_or_r_got_s[] = "mode must be 'w', 'r', 'a' or 'r+', got '%s'";
 static char __pyx_k_string_name_of_Group_instance[] = "string name of Group instance";
 static char __pyx_k_Variable_set_auto_maskandscale[] = "_Variable.set_auto_maskandscale";
+static char __pyx_k_filepath_method_not_enabled_To[] = "\nfilepath method not enabled.  To enable, install Cython, make sure you have\nversion 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python.";
+static char __pyx_k_renameGroup_method_not_enabled[] = "\nrenameGroup method not enabled.  To enable, install Cython, make sure you have\nversion 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python.";
 static char __pyx_k_FillValue_attribute_must_be_set[] = "_FillValue attribute must be set when variable is ";
 static char __pyx_k_Introduction_Python_interface_t[] = "\nIntroduction\n============\n\nPython interface to the netCDF version 4 library.  U{netCDF version 4\n<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many features\nnot found in earlier versions of the library and is implemented on top of\nU{HDF5 <http://www.hdfgroup.org/HDF5>}. This module can read and write\nfiles in both the new netCDF 4 and the old netCDF 3 format, and can create\nfiles that are readable by HDF5 clients. The API modelled after\nU{Scientific.IO.NetCDF\n<http://dirac.cnrs-orleans.fr/plone/software/scientificpython/>}, and should be\nfamiliar to users of that module.\n\nMost new features of netCDF 4 are implemented, such as multiple\nunlimited dimensions, groups and zlib data compression.  All the new\nnumeric data types (such as 64 bit and unsigned integer types) are\nimplemented. Compound and variable length (vlen) data types are supported,\nbut the enum and opaque data types are not. Mixtures of compound and vlen\ndata types (compound types containing vlens, and vlens containing compound\ntypes) are not supported.\n\nDownload\n========\n\n - Latest bleeding-edge code from the U{github repository\n   <http://github.com/Unidata/netcdf4-python>}.\n - Latest U{releases <https://pypi.python.org/pypi/netCDF4>}\n   (source code and windows installers).\n\nRequires\n========\n\n - Python 2.5 or later (python 3 works too).\n - numpy array module U{http://numpy.scipy.org}, version 1.7.0 or later.\n - U{Cython <http://cython.org>}, version 0.19 or later, is optional - if it is installed setup.py will\n   use it to recompile the Cython source code into C, using conditional compilation\n   to enable features in the netCDF API that have been added since version 4.1.1.  If\n   Cython is not installed, these features (such as the ability to rename Group objects)\n   will be disabled to preserve backward compatibility with older versions of the netCDF\n   library.\n - For python < 2.7, the ordereddict module U{http://python.org/pypi/ordereddict}.""\n - The HDF5 C library version 1.8.4-patch1 or higher (1.8.8 or higher\n recommended) from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.\n Be sure to build with 'C{--enable-hl --enable-shared}'.\n - U{Libcurl <http://curl.haxx.se/libcurl/>}, if you want\n U{OPeNDAP<http://opendap.org/>} support.\n - U{HDF4 <http://www.hdfgroup.org/products/hdf4/>}, if you want\n to be able to read HDF4 \"Scientific Dataset\" (SD) files.\n - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.\n Version 4.1.1 or higher is required (4.2 or higher recommended).\n Be sure to build with 'C{--enable-netcdf-4 --enable-shared}', and set\n C{CPPFLAGS=\"-I $HDF5_DIR/include\"} and C{LDFLAGS=\"-L $HDF5_DIR/lib\"},\n where C{$HDF5_DIR} is the directory where HDF5 was installed.\n If you want U{OPeNDAP<http://opendap.org/>} support, add 'C{--enable-dap}'.\n If you want HDF4 SD support, add 'C{--enable-hdf4}' and add\n the location of the HDF4 headers and library to C{CPPFLAGS} and C{LDFLAGS}.\n\n\nInstall\n=======\n\n - install the requisite python modules and C libraries (see above). It's\n easiest if all the C libs are built as shared libraries.\n - By default, the utility C{nc-config}, installed with netcdf 4.1.2 or higher,\n will be run used to determine where all the dependencies live.\n - If C{nc-config} is not in your default C{PATH}, rename the\n file C{setup.cfg.template} to C{setup.cfg}, then edit\n in a text editor (follow the instructions in the comments).\n In addition to specifying the path to C{nc-config},\n you can manually set the paths to all the libraries and their include files\n (in case C{nc-config} does not do the right thing).\n - run C{python setup.py build}, then C{python setup.py install} (as root if\n necessary).\n - run the tests in the 'test' directory by running C{python run_all.py}.\n\nTutorial\n========\n\n1) Creating/Opening/Closing a netCDF file\n-----------------------------------------\n\nTo create a netCDF file from python, you simply call th""e L{Dataset}\nconstructor. This is also the method used to open an existing netCDF\nfile.  If the file is open for write access (C{w, r+} or C{a}), you may\nwrite any type of data including new dimensions, groups, variables and\nattributes.  netCDF files come in several flavors (C{NETCDF3_CLASSIC,\nNETCDF3_64BIT, NETCDF4_CLASSIC}, and C{NETCDF4}). The first two flavors\nare supported by version 3 of the netCDF library. C{NETCDF4_CLASSIC}\nfiles use the version 4 disk format (HDF5), but do not use any features\nnot found in the version 3 API. They can be read by netCDF 3 clients\nonly if they have been relinked against the netCDF 4 library. They can\nalso be read by HDF5 clients. C{NETCDF4} files use the version 4 disk\nformat (HDF5) and use the new features of the version 4 API.  The\nC{netCDF4} module can read and write files in any of these formats. When\ncreating a new file, the format may be specified using the C{format}\nkeyword in the C{Dataset} constructor.  The default format is\nC{NETCDF4}. To see how a given file is formatted, you can examine the\nC{data_model} L{Dataset} attribute.  Closing the netCDF file is\naccomplished via the L{close<Dataset.close>} method of the L{Dataset}\ninstance.\n\nHere's an example:\n\n>>> from netCDF4 import Dataset\n>>> rootgrp = Dataset('test.nc', 'w', format='NETCDF4')\n>>> print rootgrp.data_model\nNETCDF4\n>>>\n>>> rootgrp.close()\n\nRemote U{OPeNDAP<http://opendap.org>}-hosted datasets can be accessed for\nreading over http if a URL is provided to the L{Dataset} constructor instead of a\nfilename.  However, this requires that the netCDF library be built with\nOPenDAP support, via the C{--enable-dap} configure option (added in\nversion 4.0.1).\n\n\n2) Groups in a netCDF file\n--------------------------\n\nnetCDF version 4 added support for organizing data in hierarchical\ngroups, which are analagous to directories in a filesystem. Groups serve\nas containers for variables, dimensions and attributes, as well as other\ngro""ups.  A C{netCDF4.Dataset} defines creates a special group, called\nthe 'root group', which is similar to the root directory in a unix\nfilesystem.  To create L{Group} instances, use the\nL{createGroup<Dataset.createGroup>} method of a L{Dataset} or L{Group}\ninstance. L{createGroup<Dataset.createGroup>} takes a single argument, a\npython string containing the name of the new group. The new L{Group}\ninstances contained within the root group can be accessed by name using\nthe C{groups} dictionary attribute of the L{Dataset} instance.  Only\nC{NETCDF4} formatted files support Groups, if you try to create a Group\nin a netCDF 3 file you will get an error message.\n\n>>> rootgrp = Dataset('test.nc', 'a')\n>>> fcstgrp = rootgrp.createGroup('forecasts')\n>>> analgrp = rootgrp.createGroup('analyses')\n>>> print rootgrp.groups\nOrderedDict([('forecasts', <netCDF4.Group object at 0x1b4b7b0>),\n             ('analyses', <netCDF4.Group object at 0x1b4b970>)])\n>>>\n\nGroups can exist within groups in a L{Dataset}, just as directories\nexist within directories in a unix filesystem. Each L{Group} instance\nhas a C{'groups'} attribute dictionary containing all of the group\ninstances contained within that group. Each L{Group} instance also has a\nC{'path'} attribute that contains a simulated unix directory path to\nthat group.\n\nHere's an example that shows how to navigate all the groups in a\nL{Dataset}. The function C{walktree} is a Python generator that is used\nto walk the directory tree. Note that printing the L{Dataset} or L{Group}\nobject yields summary information about it's contents.\n\n>>> fcstgrp1 = fcstgrp.createGroup('model1')\n>>> fcstgrp2 = fcstgrp.createGroup('model2')\n>>> def walktree(top):\n>>>     values = top.groups.values()\n>>>     yield values\n>>>     for value in top.groups.values():\n>>>         for children in walktree(value):\n>>>             yield children\n>>> print rootgrp\n>>> for children in walktree(rootgrp):\n>>>      for child in children:""\n>>>          print child\n<type 'netCDF4.Dataset'>\nroot group (NETCDF4 file format):\n    dimensions:\n    variables:\n        groups: forecasts, analyses\n<type 'netCDF4.Group'>\ngroup /forecasts:\n    dimensions:\n    variables:\n    groups: model1, model2\n<type 'netCDF4.Group'>\ngroup /analyses:\n    dimensions:\n    variables:\n    groups:\n<type 'netCDF4.Group'>\ngroup /forecasts/model1:\n    dimensions:\n    variables:\n    groups:\n<type 'netCDF4.Group'>\ngroup /forecasts/model2:\n    dimensions:\n    variables:\n    groups:\n>>>\n\n3) Dimensions in a netCDF file\n------------------------------\n\nnetCDF defines the sizes of all variables in terms of dimensions, so\nbefore any variables can be created the dimensions they use must be\ncreated first. A special case, not often used in practice, is that of a\nscalar variable, which has no dimensions. A dimension is created using\nthe L{createDimension<Dataset.createDimension>} method of a L{Dataset}\nor L{Group} instance. A Python string is used to set the name of the\ndimension, and an integer value is used to set the size. To create an\nunlimited dimension (a dimension that can be appended to), the size\nvalue is set to C{None} or 0. In this example, there both the C{time} and\nC{level} dimensions are unlimited.  Having more than one unlimited\ndimension is a new netCDF 4 feature, in netCDF 3 files there may be only\none, and it must be the first (leftmost) dimension of the variable.\n\n>>> level = rootgrp.createDimension('level', None)\n>>> time = rootgrp.createDimension('time', None)\n>>> lat = rootgrp.createDimension('lat', 73)\n>>> lon = rootgrp.createDimension('lon', 144)\n\n\nAll of the L{Dimension} instances are stored in a python dictionary.\n\n>>> print rootgrp.dimensions\nOrderedDict([('level', <netCDF4.Dimension object at 0x1b48030>),\n             ('time', <netCDF4.Dimension object at 0x1b481c0>),\n             ('lat', <netCDF4.Dimension object at 0x1b480f8>),\n             ('lon', <netCDF4.Dime""nsion object at 0x1b48a08>)])\n>>>\n\nCalling the python C{len} function with a L{Dimension} instance returns\nthe current size of that dimension.\nThe L{isunlimited<Dimension.isunlimited>} method of a L{Dimension} instance\ncan be used to determine if the dimensions is unlimited, or appendable.\n\n>>> print len(lon)\n144\n>>> print len.is_unlimited()\nFalse\n>>> print time.is_unlimited()\nTrue\n>>>\n\nPrinting the L{Dimension} object\nprovides useful summary info, including the name and length of the dimension,\nand whether it is unlimited.\n\n>>> for dimobj in rootgrp.dimensions.values():\n>>>    print dimobj\n<type 'netCDF4.Dimension'> (unlimited): name = 'level', size = 0\n<type 'netCDF4.Dimension'> (unlimited): name = 'time', size = 0\n<type 'netCDF4.Dimension'>: name = 'lat', size = 73\n<type 'netCDF4.Dimension'>: name = 'lon', size = 144\n<type 'netCDF4.Dimension'> (unlimited): name = 'time', size = 0\n>>>\n\nL{Dimension} names can be changed using the\nL{renameDimension<Dataset.renameDimension>} method of a L{Dataset} or\nL{Group} instance.\n\n4) Variables in a netCDF file\n-----------------------------\n\nnetCDF variables behave much like python multidimensional array objects\nsupplied by the U{numpy module <http://numpy.scipy.org>}. However,\nunlike numpy arrays, netCDF4 variables can be appended to along one or\nmore 'unlimited' dimensions. To create a netCDF variable, use the\nL{createVariable<Dataset.createVariable>} method of a L{Dataset} or\nL{Group} instance. The L{createVariable<Dataset.createVariable>} method\nhas two mandatory arguments, the variable name (a Python string), and\nthe variable datatype. The variable's dimensions are given by a tuple\ncontaining the dimension names (defined previously with\nL{createDimension<Dataset.createDimension>}). To create a scalar\nvariable, simply leave out the dimensions keyword. The variable\nprimitive datatypes correspond to the dtype attribute of a numpy array.\nYou can specify the datatype as a numpy dty""pe object, or anything that\ncan be converted to a numpy dtype object.  Valid datatype specifiers\ninclude: C{'f4'} (32-bit floating point), C{'f8'} (64-bit floating\npoint), C{'i4'} (32-bit signed integer), C{'i2'} (16-bit signed\ninteger), C{'i8'} (64-bit singed integer), C{'i1'} (8-bit signed\ninteger), C{'u1'} (8-bit unsigned integer), C{'u2'} (16-bit unsigned\ninteger), C{'u4'} (32-bit unsigned integer), C{'u8'} (64-bit unsigned\ninteger), or C{'S1'} (single-character string).  The old Numeric\nsingle-character typecodes (C{'f'},C{'d'},C{'h'},\nC{'s'},C{'b'},C{'B'},C{'c'},C{'i'},C{'l'}), corresponding to\n(C{'f4'},C{'f8'},C{'i2'},C{'i2'},C{'i1'},C{'i1'},C{'S1'},C{'i4'},C{'i4'}),\nwill also work. The unsigned integer types and the 64-bit integer type\ncan only be used if the file format is C{NETCDF4}.\n\nThe dimensions themselves are usually also defined as variables, called\ncoordinate variables. The L{createVariable<Dataset.createVariable>}\nmethod returns an instance of the L{Variable} class whose methods can be\nused later to access and set variable data and attributes.\n\n>>> times = rootgrp.createVariable('time','f8',('time',))\n>>> levels = rootgrp.createVariable('level','i4',('level',))\n>>> latitudes = rootgrp.createVariable('latitude','f4',('lat',))\n>>> longitudes = rootgrp.createVariable('longitude','f4',('lon',))\n>>> # two dimensions unlimited.\n>>> temp = rootgrp.createVariable('temp','f4',('time','level','lat','lon',))\n\nAll of the variables in the L{Dataset} or L{Group} are stored in a\nPython dictionary, in the same way as the dimensions:\n\n>>> print rootgrp.variables\nOrderedDict([('time', <netCDF4.Variable object at 0x1b4ba70>),\n             ('level', <netCDF4.Variable object at 0x1b4bab0>),\n             ('latitude', <netCDF4.Variable object at 0x1b4baf0>),\n             ('longitude', <netCDF4.Variable object at 0x1b4bb30>),\n             ('temp', <netCDF4.Variable object at 0x1b4bb70>)])\n>>>\n\nTo get summary info on a L{Variable} insta""nce in an interactive session, just print it.\n\n>>> print rootgrp.variables['temp']\n<type 'netCDF4.Variable'>\nfloat32 temp(time, level, lat, lon)\n    least_significant_digit: 3\n    units: K\nunlimited dimensions: time, level\ncurrent shape = (0, 0, 73, 144)\n>>>\n\nL{Variable} names can be changed using the\nL{renameVariable<Dataset.renameVariable>} method of a L{Dataset}\ninstance.\n\n\n5) Attributes in a netCDF file\n------------------------------\n\nThere are two types of attributes in a netCDF file, global and variable.\nGlobal attributes provide information about a group, or the entire\ndataset, as a whole. L{Variable} attributes provide information about\none of the variables in a group. Global attributes are set by assigning\nvalues to L{Dataset} or L{Group} instance variables. L{Variable}\nattributes are set by assigning values to L{Variable} instances\nvariables. Attributes can be strings, numbers or sequences. Returning to\nour example,\n\n>>> import time\n>>> rootgrp.description = 'bogus example script'\n>>> rootgrp.history = 'Created ' + time.ctime(time.time())\n>>> rootgrp.source = 'netCDF4 python module tutorial'\n>>> latitudes.units = 'degrees north'\n>>> longitudes.units = 'degrees east'\n>>> levels.units = 'hPa'\n>>> temp.units = 'K'\n>>> times.units = 'hours since 0001-01-01 00:00:00.0'\n>>> times.calendar = 'gregorian'\n\nThe L{ncattrs<Dataset.ncattrs>} method of a L{Dataset}, L{Group} or\nL{Variable} instance can be used to retrieve the names of all the netCDF\nattributes. This method is provided as a convenience, since using the\nbuilt-in C{dir} Python function will return a bunch of private methods\nand attributes that cannot (or should not) be modified by the user.\n\n>>> for name in rootgrp.ncattrs():\n>>>     print 'Global attr', name, '=', getattr(rootgrp,name)\nGlobal attr description = bogus example script\nGlobal attr history = Created Mon Nov  7 10.30:56 2005\nGlobal attr source = netCDF4 python module tutorial\n\nThe C{__dict__} a""ttribute of a L{Dataset}, L{Group} or L{Variable}\ninstance provides all the netCDF attribute name/value pairs in a python\ndictionary:\n\n>>> print rootgrp.__dict__\nOrderedDict([(u'description', u'bogus example script'),\n             (u'history', u'Created Thu Mar  3 19:30:33 2011'),\n             (u'source', u'netCDF4 python module tutorial')])\n\nAttributes can be deleted from a netCDF L{Dataset}, L{Group} or\nL{Variable} using the python C{del} statement (i.e. C{del grp.foo}\nremoves the attribute C{foo} the the group C{grp}).\n\n6) Writing data to and retrieving data from a netCDF variable\n-------------------------------------------------------------\n\nNow that you have a netCDF L{Variable} instance, how do you put data\ninto it? You can just treat it like an array and assign data to a slice.\n\n>>> import numpy\n>>> lats =  numpy.arange(-90,91,2.5)\n>>> lons =  numpy.arange(-180,180,2.5)\n>>> latitudes[:] = lats\n>>> longitudes[:] = lons\n>>> print 'latitudes =\\n',latitudes[:]\nlatitudes =\n[-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5\n -60.  -57.5 -55.  -52.5 -50.  -47.5 -45.  -42.5 -40.  -37.5 -35.  -32.5\n -30.  -27.5 -25.  -22.5 -20.  -17.5 -15.  -12.5 -10.   -7.5  -5.   -2.5\n   0.    2.5   5.    7.5  10.   12.5  15.   17.5  20.   22.5  25.   27.5\n  30.   32.5  35.   37.5  40.   42.5  45.   47.5  50.   52.5  55.   57.5\n  60.   62.5  65.   67.5  70.   72.5  75.   77.5  80.   82.5  85.   87.5\n  90. ]\n>>>\n\nUnlike NumPy's array objects, netCDF L{Variable}\nobjects with unlimited dimensions will grow along those dimensions if you\nassign data outside the currently defined range of indices.\n\n>>> # append along two unlimited dimensions by assigning to slice.\n>>> nlats = len(rootgrp.dimensions['lat'])\n>>> nlons = len(rootgrp.dimensions['lon'])\n>>> print 'temp shape before adding data = ',temp.shape\ntemp shape before adding data =  (0, 0, 73, 144)\n>>>\n>>> from numpy.random import uniform\n>>> temp[0:5,0:10,:,:] = unif""orm(size=(5,10,nlats,nlons))\n>>> print 'temp shape after adding data = ',temp.shape\ntemp shape after adding data =  (6, 10, 73, 144)\n>>>\n>>> # levels have grown, but no values yet assigned.\n>>> print 'levels shape after adding pressure data = ',levels.shape\nlevels shape after adding pressure data =  (10,)\n>>>\n\nNote that the size of the levels variable grows when data is appended\nalong the C{level} dimension of the variable C{temp}, even though no\ndata has yet been assigned to levels.\n\n>>> # now, assign data to levels dimension variable.\n>>> levels[:] =  [1000.,850.,700.,500.,300.,250.,200.,150.,100.,50.]\n\nHowever, that there are some differences between NumPy and netCDF\nvariable slicing rules. Slices behave as usual, being specified as a\nC{start:stop:step} triplet. Using a scalar integer index C{i} takes the ith\nelement and reduces the rank of the output array by one. Boolean array and\ninteger sequence indexing behaves differently for netCDF variables\nthan for numpy arrays.  Only 1-d boolean arrays and integer sequences are\nallowed, and these indices work independently along each dimension (similar\nto the way vector subscripts work in fortran).  This means that\n\n>>> temp[0, 0, [0,1,2,3], [0,1,2,3]]\n\nreturns an array of shape (4,4) when slicing a netCDF variable, but for a\nnumpy array it returns an array of shape (4,).\nSimilarly, a netCDF variable of shape C{(2,3,4,5)} indexed\nwith C{[0, array([True, False, True]), array([False, True, True, True]), :]}\nwould return a C{(2, 3, 5)} array. In NumPy, this would raise an error since\nit would be equivalent to C{[0, [0,1], [1,2,3], :]}. When slicing with integer\nsequences, the indices must be sorted in increasing order and contain no duplicates.\nWhile this behaviour may cause some confusion for those used to NumPy's 'fancy indexing' rules,\nit provides a very powerful way to extract data from multidimensional netCDF\nvariables by using logical operations on the dimension arrays to create sl""ices.\n\nFor example,\n\n>>> tempdat = temp[::2, [1,3,6], lats>0, lons>0]\n\nwill extract time indices 0,2 and 4, pressure levels\n850, 500 and 200 hPa, all Northern Hemisphere latitudes and Eastern\nHemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).\n\n>>> print 'shape of fancy temp slice = ',tempdat.shape\nshape of fancy temp slice =  (3, 3, 36, 71)\n>>>\n\nTime coordinate values pose a special challenge to netCDF users.  Most\nmetadata standards (such as CF and COARDS) specify that time should be\nmeasure relative to a fixed date using a certain calendar, with units\nspecified like C{hours since YY:MM:DD hh-mm-ss}.  These units can be\nawkward to deal with, without a utility to convert the values to and\nfrom calendar dates.  The functione called L{num2date} and L{date2num} are\nprovided with this package to do just that.  Here's an example of how they\ncan be used:\n\n>>> # fill in times.\n>>> from datetime import datetime, timedelta\n>>> from netCDF4 import num2date, date2num\n>>> dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]\n>>> times[:] = date2num(dates,units=times.units,calendar=times.calendar)\n>>> print 'time values (in units %s): ' % times.units+'\\n',times[:]\ntime values (in units hours since January 1, 0001):\n[ 17533056.  17533068.  17533080.  17533092.  17533104.]\n>>>\n>>> dates = num2date(times[:],units=times.units,calendar=times.calendar)\n>>> print 'dates corresponding to time values:\\n',dates\ndates corresponding to time values:\n[2001-03-01 00:00:00 2001-03-01 12:00:00 2001-03-02 00:00:00\n 2001-03-02 12:00:00 2001-03-03 00:00:00]\n>>>\n\nL{num2date} converts numeric values of time in the specified C{units}\nand C{calendar} to datetime objects, and L{date2num} does the reverse.\nAll the calendars currently defined in the U{CF metadata convention\n<http://cf-pcmdi.llnl.gov/documents/cf-conventions/>} are supported.\nA function called L{date2index} is also provided which returns the in""dices\nof a netCDF time variable corresponding to a sequence of datetime instances.\n\n\n7) Reading data from a multi-file netCDF dataset.\n-------------------------------------------------\n\nIf you want to read data from a variable that spans multiple netCDF files,\nyou can use the L{MFDataset} class to read the data as if it were\ncontained in a single file. Instead of using a single filename to create\na L{Dataset} instance, create a L{MFDataset} instance with either a list\nof filenames, or a string with a wildcard (which is then converted to\na sorted list of files using the python glob module).\nVariables in the list of files that share the same unlimited\ndimension are aggregated together, and can be sliced across multiple\nfiles.  To illustrate this, let's first create a bunch of netCDF files with\nthe same variable (with the same unlimited dimension).  The files\nmust in be in C{NETCDF3_64BIT}, C{NETCDF3_CLASSIC} or\nC{NETCDF4_CLASSIC format} (C{NETCDF4} formatted multi-file\ndatasets are not supported).\n\n>>> for nfile in range(10):\n>>>     f = Dataset('mftest'+repr(nfile)+'.nc','w',format='NETCDF4_CLASSIC')\n>>>     f.createDimension('x',None)\n>>>     x = f.createVariable('x','i',('x',))\n>>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))\n>>>     f.close()\n\nNow read all the files back in at once with L{MFDataset}\n\n>>> from netCDF4 import MFDataset\n>>> f = MFDataset('mftest*nc')\n>>> print f.variables['x'][:]\n[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24\n 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49\n 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74\n 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]\n>>>\n\nNote that MFDataset can only be used to read, not write, multi-file\ndatasets.\n\n8) Efficient compression of netCDF variables\n--------------------------------------------\n\nData stored in netCDF 4 L{Variable} objects can be ""compressed and\ndecompressed on the fly. The parameters for the compression are\ndetermined by the C{zlib}, C{complevel} and C{shuffle} keyword arguments\nto the L{createVariable<Dataset.createVariable>} method. To turn on\ncompression, set C{zlib=True}.  The C{complevel} keyword regulates the\nspeed and efficiency of the compression (1 being fastest, but lowest\ncompression ratio, 9 being slowest but best compression ratio). The\ndefault value of C{complevel} is 4. Setting C{shuffle=False} will turn\noff the HDF5 shuffle filter, which de-interlaces a block of data before\ncompression by reordering the bytes.  The shuffle filter can\nsignificantly improve compression ratios, and is on by default.  Setting\nC{fletcher32} keyword argument to\nL{createVariable<Dataset.createVariable>} to C{True} (it's C{False} by\ndefault) enables the Fletcher32 checksum algorithm for error detection.\nIt's also possible to set the HDF5 chunking parameters and endian-ness\nof the binary data stored in the HDF5 file with the C{chunksizes}\nand C{endian} keyword arguments to\nL{createVariable<Dataset.createVariable>}.  These keyword arguments only\nare relevant for C{NETCDF4} and C{NETCDF4_CLASSIC} files (where the\nunderlying file format is HDF5) and are silently ignored if the file\nformat is C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT},\n\nIf your data only has a certain number of digits of precision (say for\nexample, it is temperature data that was measured with a precision of\n0.1 degrees), you can dramatically improve zlib compression by\nquantizing (or truncating) the data using the C{least_significant_digit}\nkeyword argument to L{createVariable<Dataset.createVariable>}. The least\nsignificant digit is the power of ten of the smallest decimal place in\nthe data that is a reliable value. For example if the data has a\nprecision of 0.1, then setting C{least_significant_digit=1} will cause\ndata the data to be quantized using C{numpy.around(scale*data)/scale}, where\nscale = 2**bits, and"" bits is determined so that a precision of 0.1 is\nretained (in this case bits=4).  Effectively, this makes the compression\n'lossy' instead of 'lossless', that is some precision in the data is\nsacrificed for the sake of disk space.\n\nIn our example, try replacing the line\n\n>>> temp = rootgrp.createVariable('temp','f4',('time','level','lat','lon',))\n\nwith\n\n>>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),zlib=True)\n\nand then\n\n>>> temp = dataset.createVariable('temp','f4',('time','level','lat','lon',),zlib=True,least_significant_digit=3)\n\nand see how much smaller the resulting files are.\n\n9) Beyond homogenous arrays of a fixed type - compound data types\n-----------------------------------------------------------------\n\nCompound data types map directly to numpy structured (a.k.a 'record'\narrays).  Structured arrays are akin to C structs, or derived types\nin Fortran. They allow for the construction of table-like structures\ncomposed of combinations of other data types, including other\ncompound types. Compound types might be useful for representing multiple\nparameter values at each point on a grid, or at each time and space\nlocation for scattered (point) data. You can then access all the\ninformation for a point by reading one variable, instead of reading\ndifferent parameters from different variables.  Compound data types\nare created from the corresponding numpy data type using the\nL{createCompoundType<Dataset.createCompoundType>} method of a L{Dataset} or L{Group} instance.\nSince there is no native complex data type in netcdf, compound types are handy\nfor storing numpy complex arrays.  Here's an example:\n\n>>> f = Dataset('complex.nc','w')\n>>> size = 3 # length of 1-d complex array\n>>> # create sample complex data.\n>>> datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))\n>>> # create complex128 compound data type.\n>>> complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])\n>>> comp""lex128_t = f.createCompoundType(complex128,'complex128')\n>>> # create a variable with this data type, write some data to it.\n>>> f.createDimension('x_dim',None)\n>>> v = f.createVariable('cmplx_var',complex128_t,'x_dim')\n>>> data = numpy.empty(size,complex128) # numpy structured array\n>>> data['real'] = datac.real; data['imag'] = datac.imag\n>>> v[:] = data # write numpy structured array to netcdf compound var\n>>> # close and reopen the file, check the contents.\n>>> f.close(); f = Dataset('complex.nc')\n>>> v = f.variables['cmplx_var']\n>>> datain = v[:] # read in all the data into a numpy structured array\n>>> # create an empty numpy complex array\n>>> datac2 = numpy.empty(datain.shape,numpy.complex128)\n>>> # .. fill it with contents of structured array.\n>>> datac2.real = datain['real']; datac2.imag = datain['imag']\n>>> print datac.dtype,datac # original data\ncomplex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]\n>>>\n>>> print datac2.dtype,datac2 # data from file\ncomplex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]\n>>>\n\nCompound types can be nested, but you must create the 'inner'\nones first. All of the compound types defined for a L{Dataset} or L{Group} are stored in a\nPython dictionary, just like variables and dimensions. As always, printing\nobjects gives useful summary information in an interactive session:\n\n>>> print f\n<type 'netCDF4.Dataset'>\nroot group (NETCDF4 file format):\n    dimensions: x_dim\n    variables: cmplx_var\n    groups:\n<type 'netCDF4.Variable'>\n>>> print f.variables['cmplx_var']\ncompound cmplx_var(x_dim)\ncompound data type: [('real', '<f8'), ('imag', '<f8')]\nunlimited dimensions: x_dim\ncurrent shape = (3,)\n>>> print f.cmptypes\nOrderedDict([('complex128', <netCDF4.CompoundType object at 0x1029eb7e8>)])\n>>> print f.cmptypes['complex128']\n<type 'netCDF4.CompoundType'>: name = 'complex128', numpy dtype = [(u'real','<f8'), (u'imag', '<f8')]\n>>>\n\n10)"" Variable-length (vlen) data types.\n--------------------------------------\n\nNetCDF 4 has support for variable-length or \"ragged\" arrays.  These are arrays\nof variable length sequences having the same type. To create a variable-length\ndata type, use the L{createVLType<Dataset.createVLType>} method\nmethod of a L{Dataset} or L{Group} instance.\n\n>>> f = Dataset('tst_vlen.nc','w')\n>>> vlen_t = f.createVLType(numpy.int32, 'phony_vlen')\n\nThe numpy datatype of the variable-length sequences and the name of the\nnew datatype must be specified. Any of the primitive datatypes can be\nused (signed and unsigned integers, 32 and 64 bit floats, and characters),\nbut compound data types cannot.\nA new variable can then be created using this datatype.\n\n>>> x = f.createDimension('x',3)\n>>> y = f.createDimension('y',4)\n>>> vlvar = f.createVariable('phony_vlen_var', vlen_t, ('y','x'))\n\nSince there is no native vlen datatype in numpy, vlen arrays are represented\nin python as object arrays (arrays of dtype C{object}). These are arrays whose\nelements are Python object pointers, and can contain any type of python object.\nFor this application, they must contain 1-D numpy arrays all of the same type\nbut of varying length.\nIn this case, they contain 1-D numpy C{int32} arrays of random length betwee\n1 and 10.\n\n>>> import random\n>>> data = numpy.empty(len(y)*len(x),object)\n>>> for n in range(len(y)*len(x)):\n>>>    data[n] = numpy.arange(random.randint(1,10),dtype='int32')+1\n>>> data = numpy.reshape(data,(len(y),len(x)))\n>>> vlvar[:] = data\n>>> print 'vlen variable =\\n',vlvar[:]\nvlen variable =\n[[[ 1  2  3  4  5  6  7  8  9 10] [1 2 3 4 5] [1 2 3 4 5 6 7 8]]\n [[1 2 3 4 5 6 7] [1 2 3 4 5 6] [1 2 3 4 5]]\n [[1 2 3 4 5] [1 2 3 4] [1]]\n [[ 1  2  3  4  5  6  7  8  9 10] [ 1  2  3  4  5  6  7  8  9 10]\n  [1 2 3 4 5 6 7 8]]]\n>>> print f\n<type 'netCDF4.Dataset'>\nroot group (NETCDF4 file format):\n    dimensions: x, y\n    variables: phony_vlen_var\n    groups:""\n>>> print f.variables['phony_vlen_var']\n<type 'netCDF4.Variable'>\nvlen phony_vlen_var(y, x)\nvlen data type: int32\nunlimited dimensions:\ncurrent shape = (4, 3)\n>>> print f.VLtypes['phony_vlen']\n<type 'netCDF4.VLType'>: name = 'phony_vlen', numpy dtype = int32\n>>>\n\nNumpy object arrays containing python strings can also be written as vlen\nvariables,  For vlen strings, you don't need to create a vlen data type.\nInstead, simply use the python C{str} builtin (or a numpy string datatype\nwith fixed length greater than 1) when calling the\nL{createVariable<Dataset.createVariable>} method.\n\n>>> z = f.createDimension('z',10)\n>>> strvar = rootgrp.createVariable('strvar', str, 'z')\n\nIn this example, an object array is filled with random python strings with\nrandom lengths between 2 and 12 characters, and the data in the object\narray is assigned to the vlen string variable.\n\n>>> chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'\n>>> data = numpy.empty(10,'O')\n>>> for n in range(10):\n>>>     stringlen = random.randint(2,12)\n>>>     data[n] = ''.join([random.choice(chars) for i in range(stringlen)])\n>>> strvar[:] = data\n>>> print 'variable-length string variable:\\n',strvar[:]\nvariable-length string variable:\n[aDy29jPt jd7aplD b8t4RM jHh8hq KtaPWF9cQj Q1hHN5WoXSiT MMxsVeq td LUzvVTzj\n 5DS9X8S]\n>>> print f\n<type 'netCDF4.Dataset'>\nroot group (NETCDF4 file format):\n    dimensions: x, y, z\n    variables: phony_vlen_var, strvar\n    groups:\n>>> print f.variables['strvar']\n<type 'netCDF4.Variable'>\nvlen strvar(z)\nvlen data type: <type 'str'>\nunlimited dimensions:\ncurrent size = (10,)\n>>>\n\nIt is also possible to set contents of vlen string variables with numpy arrays\nof any string or unicode data type. Note, however, that accessing the contents\nof such variables will always return numpy arrays with dtype C{object}.\n\nAll of the code in this tutorial is available in C{examples/tutorial.py},\nUnit tests are in the C{te""st} directory.\n\n@contact: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>\n\n@copyright: 2008 by Jeffrey Whitaker.\n\n@license: Permission to use, copy, modify, and distribute this software and\nits documentation for any purpose and without fee is hereby granted,\nprovided that the above copyright notice appear in all copies and that\nboth the copyright notice and this permission notice appear in\nsupporting documentation.\nTHE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,\nINCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO\nEVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT OR\nCONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF\nUSE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR\nOTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR\nPERFORMANCE OF THIS SOFTWARE.";
 static char __pyx_k_MFDataset_self_files_check_Fals[] = "\nMFDataset(self, files, check=False, aggdim=None, exclude=[])\n\nClass for reading multi-file netCDF Datasets, making variables\nspanning multiple files appear as if they were in one file.\n\nDatasets must be in C{NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT}\nformat (C{NETCDF4} Datasets won't work).\n\nAdapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>} by Andre Gosselin.\n\nExample usage:\n\n>>> import numpy\n>>> # create a series of netCDF files with a variable sharing\n>>> # the same unlimited dimension.\n>>> for nfile in range(10):\n>>>     f = Dataset('mftest'+repr(nfile)+'.nc','w')\n>>>     f.createDimension('x',None)\n>>>     x = f.createVariable('x','i',('x',))\n>>>     x[0:10] = numpy.arange(nfile*10,10*(nfile+1))\n>>>     f.close()\n>>> # now read all those files in at once, in one Dataset.\n>>> f = MFDataset('mftest*nc')\n>>> print f.variables['x'][:]\n[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24\n 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49\n 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74\n 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]\n    ";
@@ -1919,8 +1915,6 @@ static PyObject *__pyx_kp_s_1_1_8;
 static PyObject *__pyx_kp_s_4_2_1;
 static PyObject *__pyx_kp_s_4m;
 static PyObject *__pyx_n_s_AttributeError;
-static PyObject *__pyx_n_s_DAP2;
-static PyObject *__pyx_n_s_DAP4;
 static PyObject *__pyx_n_s_Dimension;
 static PyObject *__pyx_n_s_Dimension___init;
 static PyObject *__pyx_n_s_Dimension___len;
@@ -1929,8 +1923,6 @@ static PyObject *__pyx_n_s_Dimension_isunlimited;
 static PyObject *__pyx_kp_s_Dimension_object_no_longer_valid;
 static PyObject *__pyx_n_s_FillValue;
 static PyObject *__pyx_kp_s_FillValue_attribute_must_be_set;
-static PyObject *__pyx_n_s_HDF4;
-static PyObject *__pyx_n_s_HDF5;
 static PyObject *__pyx_n_s_IOError;
 static PyObject *__pyx_kp_s_Illegal_index;
 static PyObject *__pyx_n_s_ImportError;
@@ -1963,7 +1955,6 @@ static PyObject *__pyx_n_s_NETCDF4_CLASSIC;
 static PyObject *__pyx_n_s_NUMCHARS;
 static PyObject *__pyx_n_s_O;
 static PyObject *__pyx_n_s_OrderedDict;
-static PyObject *__pyx_n_s_PNETCDF;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_S;
 static PyObject *__pyx_n_s_S1;
@@ -2141,6 +2132,7 @@ static PyObject *__pyx_n_s_fields;
 static PyObject *__pyx_n_s_file_format;
 static PyObject *__pyx_n_s_file_format_2;
 static PyObject *__pyx_n_s_filename;
+static PyObject *__pyx_kp_s_filepath_method_not_enabled_To;
 static PyObject *__pyx_n_s_files;
 static PyObject *__pyx_n_s_files_2;
 static PyObject *__pyx_n_s_fill_value;
@@ -2335,6 +2327,7 @@ static PyObject *__pyx_n_s_redef;
 static PyObject *__pyx_n_s_ref_date;
 static PyObject *__pyx_n_s_ref_num;
 static PyObject *__pyx_n_s_releasevers;
+static PyObject *__pyx_kp_s_renameGroup_method_not_enabled;
 static PyObject *__pyx_n_s_replace;
 static PyObject *__pyx_n_s_repr;
 static PyObject *__pyx_kp_s_requires_numpy_version_1_0rc1_or;
@@ -2346,7 +2339,6 @@ static PyObject *__pyx_n_s_s_2;
 static PyObject *__pyx_kp_s_s_is_one_of_the_reserved_attrib;
 static PyObject *__pyx_kp_s_s_is_one_of_the_reserved_attrib_2;
 static PyObject *__pyx_kp_s_s_not_a_valid_dimension_name;
-static PyObject *__pyx_kp_s_s_not_a_valid_group_name;
 static PyObject *__pyx_kp_s_s_not_a_valid_variable_name;
 static PyObject *__pyx_kp_s_s_s;
 static PyObject *__pyx_kp_s_s_s_s;
@@ -4691,261 +4683,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
  *     cdef int ierr, formatp, modep
  */
 
-static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_full_format(int __pyx_v_grpid) {
-  int __pyx_v_ierr;
-  int __pyx_v_formatp;
-  int __pyx_v_modep;
+static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_full_format(CYTHON_UNUSED int __pyx_v_grpid) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  char *__pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_get_full_format", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1004
- *     cdef int ierr, formatp, modep
- *     IF HAS_NC_INQ_FORMAT_EXTENDED:
- *         with nogil:             # <<<<<<<<<<<<<<
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
- *         if ierr != NC_NOERR:
- */
-  {
-      #ifdef WITH_THREAD
-      PyThreadState *_save;
-      Py_UNBLOCK_THREADS
-      #endif
-      /*try:*/ {
-
-        /* "netCDF4/_netCDF4.pyx":1005
- *     IF HAS_NC_INQ_FORMAT_EXTENDED:
- *         with nogil:
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)             # <<<<<<<<<<<<<<
- *         if ierr != NC_NOERR:
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- */
-        __pyx_v_ierr = nc_inq_format_extended(__pyx_v_grpid, (&__pyx_v_formatp), (&__pyx_v_modep));
-      }
-
-      /* "netCDF4/_netCDF4.pyx":1004
- *     cdef int ierr, formatp, modep
- *     IF HAS_NC_INQ_FORMAT_EXTENDED:
- *         with nogil:             # <<<<<<<<<<<<<<
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
- *         if ierr != NC_NOERR:
- */
-      /*finally:*/ {
-        /*normal exit:*/{
-          #ifdef WITH_THREAD
-          Py_BLOCK_THREADS
-          #endif
-          goto __pyx_L5;
-        }
-        __pyx_L5:;
-      }
-  }
-
-  /* "netCDF4/_netCDF4.pyx":1006
- *         with nogil:
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
- *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *         if formatp == NC_FORMAT_NC3:
- */
-  __pyx_t_1 = ((__pyx_v_ierr != NC_NOERR) != 0);
-  if (__pyx_t_1) {
-
-    /* "netCDF4/_netCDF4.pyx":1007
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
- *         if ierr != NC_NOERR:
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
- *         if formatp == NC_FORMAT_NC3:
- *             return 'NETCDF3'
- */
-    __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1007; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1007; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_INCREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
-    __Pyx_GIVEREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1007; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_Raise(__pyx_t_3, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1007; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  }
-
-  /* "netCDF4/_netCDF4.pyx":1020
- *         elif formatp == NC_FORMAT_DAP4:
- *             return 'DAP4'
- *         elif formatp == NC_FORMAT_UNDEFINED:             # <<<<<<<<<<<<<<
+  /* "netCDF4/_netCDF4.pyx":1023
  *             return 'UNDEFINED'
  *     ELSE:
+ *         return 'UNDEFINED'             # <<<<<<<<<<<<<<
+ * 
+ * cdef _set_att(grp, int varid, name, value):
  */
-  switch (__pyx_v_formatp) {
-
-    /* "netCDF4/_netCDF4.pyx":1008
- *         if ierr != NC_NOERR:
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *         if formatp == NC_FORMAT_NC3:             # <<<<<<<<<<<<<<
- *             return 'NETCDF3'
- *         elif formatp == NC_FORMAT_NC_HDF5:
- */
-    case NC_FORMAT_NC3:
-
-    /* "netCDF4/_netCDF4.pyx":1009
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *         if formatp == NC_FORMAT_NC3:
- *             return 'NETCDF3'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_NC_HDF5:
- *             return 'HDF5'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_NETCDF3);
-    __pyx_r = __pyx_n_s_NETCDF3;
-    goto __pyx_L0;
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1010
- *         if formatp == NC_FORMAT_NC3:
- *             return 'NETCDF3'
- *         elif formatp == NC_FORMAT_NC_HDF5:             # <<<<<<<<<<<<<<
- *             return 'HDF5'
- *         elif formatp == NC_FORMAT_NC_HDF4:
- */
-    case NC_FORMAT_NC_HDF5:
-
-    /* "netCDF4/_netCDF4.pyx":1011
- *             return 'NETCDF3'
- *         elif formatp == NC_FORMAT_NC_HDF5:
- *             return 'HDF5'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_NC_HDF4:
- *             return 'HDF4'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_HDF5);
-    __pyx_r = __pyx_n_s_HDF5;
-    goto __pyx_L0;
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1012
- *         elif formatp == NC_FORMAT_NC_HDF5:
- *             return 'HDF5'
- *         elif formatp == NC_FORMAT_NC_HDF4:             # <<<<<<<<<<<<<<
- *             return 'HDF4'
- *         elif formatp == NC_FORMAT_PNETCDF:
- */
-    case NC_FORMAT_NC_HDF4:
-
-    /* "netCDF4/_netCDF4.pyx":1013
- *             return 'HDF5'
- *         elif formatp == NC_FORMAT_NC_HDF4:
- *             return 'HDF4'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_PNETCDF:
- *             return 'PNETCDF'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_HDF4);
-    __pyx_r = __pyx_n_s_HDF4;
-    goto __pyx_L0;
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1014
- *         elif formatp == NC_FORMAT_NC_HDF4:
- *             return 'HDF4'
- *         elif formatp == NC_FORMAT_PNETCDF:             # <<<<<<<<<<<<<<
- *             return 'PNETCDF'
- *         elif formatp == NC_FORMAT_DAP2:
- */
-    case NC_FORMAT_PNETCDF:
-
-    /* "netCDF4/_netCDF4.pyx":1015
- *             return 'HDF4'
- *         elif formatp == NC_FORMAT_PNETCDF:
- *             return 'PNETCDF'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_DAP2:
- *             return 'DAP2'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_PNETCDF);
-    __pyx_r = __pyx_n_s_PNETCDF;
-    goto __pyx_L0;
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1016
- *         elif formatp == NC_FORMAT_PNETCDF:
- *             return 'PNETCDF'
- *         elif formatp == NC_FORMAT_DAP2:             # <<<<<<<<<<<<<<
- *             return 'DAP2'
- *         elif formatp == NC_FORMAT_DAP4:
- */
-    case NC_FORMAT_DAP2:
-
-    /* "netCDF4/_netCDF4.pyx":1017
- *             return 'PNETCDF'
- *         elif formatp == NC_FORMAT_DAP2:
- *             return 'DAP2'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_DAP4:
- *             return 'DAP4'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_DAP2);
-    __pyx_r = __pyx_n_s_DAP2;
-    goto __pyx_L0;
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1018
- *         elif formatp == NC_FORMAT_DAP2:
- *             return 'DAP2'
- *         elif formatp == NC_FORMAT_DAP4:             # <<<<<<<<<<<<<<
- *             return 'DAP4'
- *         elif formatp == NC_FORMAT_UNDEFINED:
- */
-    case NC_FORMAT_DAP4:
-
-    /* "netCDF4/_netCDF4.pyx":1019
- *             return 'DAP2'
- *         elif formatp == NC_FORMAT_DAP4:
- *             return 'DAP4'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_UNDEFINED:
- *             return 'UNDEFINED'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_DAP4);
-    __pyx_r = __pyx_n_s_DAP4;
-    goto __pyx_L0;
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1020
- *         elif formatp == NC_FORMAT_DAP4:
- *             return 'DAP4'
- *         elif formatp == NC_FORMAT_UNDEFINED:             # <<<<<<<<<<<<<<
- *             return 'UNDEFINED'
- *     ELSE:
- */
-    case NC_FORMAT_UNDEFINED:
-
-    /* "netCDF4/_netCDF4.pyx":1021
- *             return 'DAP4'
- *         elif formatp == NC_FORMAT_UNDEFINED:
- *             return 'UNDEFINED'             # <<<<<<<<<<<<<<
- *     ELSE:
- *         return 'UNDEFINED'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_UNDEFINED);
-    __pyx_r = __pyx_n_s_UNDEFINED;
-    goto __pyx_L0;
-    break;
-    default: break;
-  }
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_n_s_UNDEFINED);
+  __pyx_r = __pyx_n_s_UNDEFINED;
+  goto __pyx_L0;
 
   /* "netCDF4/_netCDF4.pyx":1000
  *         return 'NETCDF3_CLASSIC'
@@ -4956,13 +4709,6 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_full_format(int __pyx_v_grpid) 
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("netCDF4._netCDF4._get_full_format", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -10301,73 +10047,45 @@ static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_7filepath(PyObject *__pyx_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6filepath(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self) {
-  CYTHON_UNUSED int __pyx_v_ierr;
-  size_t __pyx_v_pathlen;
-  char __pyx_v_path[(NC_MAX_NAME + 1)];
+static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6filepath(CYTHON_UNUSED struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self) {
+  PyObject *__pyx_v_msg = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("filepath", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1551
- *         cdef char path[NC_MAX_NAME + 1]
- *         IF HAS_NC_INQ_PATH:
- *             with nogil:             # <<<<<<<<<<<<<<
- *                 ierr = nc_inq_path(self._grpid, &pathlen, path)
- *             return path.decode('ascii')
- */
-  {
-      #ifdef WITH_THREAD
-      PyThreadState *_save;
-      Py_UNBLOCK_THREADS
-      #endif
-      /*try:*/ {
-
-        /* "netCDF4/_netCDF4.pyx":1552
- *         IF HAS_NC_INQ_PATH:
- *             with nogil:
- *                 ierr = nc_inq_path(self._grpid, &pathlen, path)             # <<<<<<<<<<<<<<
+  /* "netCDF4/_netCDF4.pyx":1555
  *             return path.decode('ascii')
  *         ELSE:
+ *             msg = """             # <<<<<<<<<<<<<<
+ * filepath method not enabled.  To enable, install Cython, make sure you have
+ * version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
  */
-        __pyx_v_ierr = nc_inq_path(__pyx_v_self->_grpid, (&__pyx_v_pathlen), __pyx_v_path);
-      }
+  __Pyx_INCREF(__pyx_kp_s_filepath_method_not_enabled_To);
+  __pyx_v_msg = __pyx_kp_s_filepath_method_not_enabled_To;
 
-      /* "netCDF4/_netCDF4.pyx":1551
- *         cdef char path[NC_MAX_NAME + 1]
- *         IF HAS_NC_INQ_PATH:
- *             with nogil:             # <<<<<<<<<<<<<<
- *                 ierr = nc_inq_path(self._grpid, &pathlen, path)
- *             return path.decode('ascii')
+  /* "netCDF4/_netCDF4.pyx":1558
+ * filepath method not enabled.  To enable, install Cython, make sure you have
+ * version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+ *             raise ValueError(msg)             # <<<<<<<<<<<<<<
+ * 
+ *     def __repr__(self):
  */
-      /*finally:*/ {
-        /*normal exit:*/{
-          #ifdef WITH_THREAD
-          Py_BLOCK_THREADS
-          #endif
-          goto __pyx_L5;
-        }
-        __pyx_L5:;
-      }
-  }
-
-  /* "netCDF4/_netCDF4.pyx":1553
- *             with nogil:
- *                 ierr = nc_inq_path(self._grpid, &pathlen, path)
- *             return path.decode('ascii')             # <<<<<<<<<<<<<<
- *         ELSE:
- *             msg = """
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_c_string(__pyx_v_path, 0, strlen(__pyx_v_path), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1553; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1558; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
+  __Pyx_INCREF(__pyx_v_msg);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_msg);
+  __Pyx_GIVEREF(__pyx_v_msg);
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1558; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1558; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "netCDF4/_netCDF4.pyx":1541
  *         self.close()
@@ -10380,9 +10098,10 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6filepath(struct __pyx_obj
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_AddTraceback("netCDF4._netCDF4.Dataset.filepath", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
-  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_msg);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -15360,8 +15079,8 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_56renameAttribute(struct _
 static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_59renameGroup(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static char __pyx_doc_7netCDF4_8_netCDF4_7Dataset_58renameGroup[] = "\nrenameGroup(self, oldname, newname)\n\nrename a L{Group} named C{oldname} to C{newname} (requires netcdf >= 4.3.1).";
 static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_59renameGroup(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_oldname = 0;
-  PyObject *__pyx_v_newname = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_oldname = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_newname = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -15418,221 +15137,45 @@ static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_59renameGroup(PyObject *__
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_58renameGroup(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_oldname, PyObject *__pyx_v_newname) {
-  int __pyx_v_ierr;
-  char *__pyx_v_newnamec;
-  PyObject *__pyx_v_bytestr = NULL;
-  PyObject *__pyx_v_grp = NULL;
+static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_58renameGroup(CYTHON_UNUSED struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_oldname, CYTHON_UNUSED PyObject *__pyx_v_newname) {
+  PyObject *__pyx_v_msg = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  char *__pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  PyObject *__pyx_t_10 = NULL;
-  int __pyx_t_11;
+  PyObject *__pyx_t_2 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("renameGroup", 0);
 
-  /* "netCDF4/_netCDF4.pyx":2004
- *         cdef char *newnamec
- *         IF HAS_RENAME_GRP:
- *             bytestr = _strencode(newname)             # <<<<<<<<<<<<<<
- *             newnamec = bytestr
- *             try:
- */
-  __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_v_newname, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2004; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_bytestr = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "netCDF4/_netCDF4.pyx":2005
- *         IF HAS_RENAME_GRP:
- *             bytestr = _strencode(newname)
- *             newnamec = bytestr             # <<<<<<<<<<<<<<
- *             try:
- *                 grp = self.groups[oldname]
- */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_bytestr); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2005; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_v_newnamec = __pyx_t_2;
-
-  /* "netCDF4/_netCDF4.pyx":2006
- *             bytestr = _strencode(newname)
- *             newnamec = bytestr
- *             try:             # <<<<<<<<<<<<<<
- *                 grp = self.groups[oldname]
- *             except KeyError:
- */
-  {
-    __Pyx_ExceptionSave(&__pyx_t_3, &__pyx_t_4, &__pyx_t_5);
-    __Pyx_XGOTREF(__pyx_t_3);
-    __Pyx_XGOTREF(__pyx_t_4);
-    __Pyx_XGOTREF(__pyx_t_5);
-    /*try:*/ {
-
-      /* "netCDF4/_netCDF4.pyx":2007
- *             newnamec = bytestr
- *             try:
- *                 grp = self.groups[oldname]             # <<<<<<<<<<<<<<
- *             except KeyError:
- *                 raise KeyError('%s not a valid group name' % oldname)
- */
-      __pyx_t_1 = PyObject_GetItem(__pyx_v_self->groups, __pyx_v_oldname); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2007; __pyx_clineno = __LINE__; goto __pyx_L3_error;};
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_v_grp = __pyx_t_1;
-      __pyx_t_1 = 0;
-    }
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    goto __pyx_L10_try_end;
-    __pyx_L3_error:;
-    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "netCDF4/_netCDF4.pyx":2008
- *             try:
- *                 grp = self.groups[oldname]
- *             except KeyError:             # <<<<<<<<<<<<<<
- *                 raise KeyError('%s not a valid group name' % oldname)
- *             ierr = nc_rename_grp(grp._grpid, newnamec)
- */
-    __pyx_t_6 = PyErr_ExceptionMatches(__pyx_builtin_KeyError);
-    if (__pyx_t_6) {
-      __Pyx_AddTraceback("netCDF4._netCDF4.Dataset.renameGroup", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_7, &__pyx_t_8) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2008; __pyx_clineno = __LINE__; goto __pyx_L5_except_error;}
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GOTREF(__pyx_t_8);
-
-      /* "netCDF4/_netCDF4.pyx":2009
- *                 grp = self.groups[oldname]
- *             except KeyError:
- *                 raise KeyError('%s not a valid group name' % oldname)             # <<<<<<<<<<<<<<
- *             ierr = nc_rename_grp(grp._grpid, newnamec)
- *             if ierr != NC_NOERR:
- */
-      __pyx_t_9 = __Pyx_PyString_Format(__pyx_kp_s_s_not_a_valid_group_name, __pyx_v_oldname); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2009; __pyx_clineno = __LINE__; goto __pyx_L5_except_error;}
-      __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2009; __pyx_clineno = __LINE__; goto __pyx_L5_except_error;}
-      __Pyx_GOTREF(__pyx_t_10);
-      PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_9);
-      __Pyx_GIVEREF(__pyx_t_9);
-      __pyx_t_9 = 0;
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_KeyError, __pyx_t_10, NULL); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2009; __pyx_clineno = __LINE__; goto __pyx_L5_except_error;}
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __Pyx_Raise(__pyx_t_9, 0, 0, 0);
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2009; __pyx_clineno = __LINE__; goto __pyx_L5_except_error;}
-    }
-    goto __pyx_L5_except_error;
-    __pyx_L5_except_error:;
-    __Pyx_XGIVEREF(__pyx_t_3);
-    __Pyx_XGIVEREF(__pyx_t_4);
-    __Pyx_XGIVEREF(__pyx_t_5);
-    __Pyx_ExceptionReset(__pyx_t_3, __pyx_t_4, __pyx_t_5);
-    goto __pyx_L1_error;
-    __pyx_L10_try_end:;
-  }
-
-  /* "netCDF4/_netCDF4.pyx":2010
- *             except KeyError:
- *                 raise KeyError('%s not a valid group name' % oldname)
- *             ierr = nc_rename_grp(grp._grpid, newnamec)             # <<<<<<<<<<<<<<
- *             if ierr != NC_NOERR:
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- */
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2010; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_8); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2010; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_v_ierr = nc_rename_grp(__pyx_t_6, __pyx_v_newnamec);
-
-  /* "netCDF4/_netCDF4.pyx":2011
- *                 raise KeyError('%s not a valid group name' % oldname)
- *             ierr = nc_rename_grp(grp._grpid, newnamec)
- *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             # remove old key from groups dict.
- */
-  __pyx_t_11 = ((__pyx_v_ierr != NC_NOERR) != 0);
-  if (__pyx_t_11) {
-
-    /* "netCDF4/_netCDF4.pyx":2012
- *             ierr = nc_rename_grp(grp._grpid, newnamec)
- *             if ierr != NC_NOERR:
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
- *             # remove old key from groups dict.
- *             self.groups.pop(oldname)
- */
-    __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_8 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2012; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2012; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_INCREF(__pyx_t_8);
-    PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_8);
-    __Pyx_GIVEREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_7, NULL); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2012; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_Raise(__pyx_t_8, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2012; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  }
-
-  /* "netCDF4/_netCDF4.pyx":2014
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             # remove old key from groups dict.
- *             self.groups.pop(oldname)             # <<<<<<<<<<<<<<
- *             # add new key.
+  /* "netCDF4/_netCDF4.pyx":2018
  *             self.groups[newname] = grp
- */
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->groups, __pyx_n_s_pop); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2014; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_1 = NULL;
-  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_7))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_7);
-    if (likely(__pyx_t_1)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-      __Pyx_INCREF(__pyx_t_1);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_7, function);
-    }
-  }
-  if (!__pyx_t_1) {
-    __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_v_oldname); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2014; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_8);
-  } else {
-    __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2014; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_9);
-    PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1); __Pyx_GIVEREF(__pyx_t_1); __pyx_t_1 = NULL;
-    __Pyx_INCREF(__pyx_v_oldname);
-    PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_v_oldname);
-    __Pyx_GIVEREF(__pyx_v_oldname);
-    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2014; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-  /* "netCDF4/_netCDF4.pyx":2016
- *             self.groups.pop(oldname)
- *             # add new key.
- *             self.groups[newname] = grp             # <<<<<<<<<<<<<<
  *         ELSE:
- *             msg = """
+ *             msg = """             # <<<<<<<<<<<<<<
+ * renameGroup method not enabled.  To enable, install Cython, make sure you have
+ * version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
  */
-  if (unlikely(PyObject_SetItem(__pyx_v_self->groups, __pyx_v_newname, __pyx_v_grp) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2016; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_INCREF(__pyx_kp_s_renameGroup_method_not_enabled);
+  __pyx_v_msg = __pyx_kp_s_renameGroup_method_not_enabled;
+
+  /* "netCDF4/_netCDF4.pyx":2021
+ * renameGroup method not enabled.  To enable, install Cython, make sure you have
+ * version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+ *             raise ValueError(msg)             # <<<<<<<<<<<<<<
+ * 
+ *     def set_auto_maskandscale(self, value):
+ */
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2021; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_INCREF(__pyx_v_msg);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_msg);
+  __Pyx_GIVEREF(__pyx_v_msg);
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2021; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2021; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "netCDF4/_netCDF4.pyx":1996
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -15643,19 +15186,12 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_58renameGroup(struct __pyx
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_AddTraceback("netCDF4._netCDF4.Dataset.renameGroup", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_bytestr);
-  __Pyx_XDECREF(__pyx_v_grp);
+  __Pyx_XDECREF(__pyx_v_msg);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -61714,8 +61250,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_4_2_1, __pyx_k_4_2_1, sizeof(__pyx_k_4_2_1), 0, 0, 1, 0},
   {&__pyx_kp_s_4m, __pyx_k_4m, sizeof(__pyx_k_4m), 0, 0, 1, 0},
   {&__pyx_n_s_AttributeError, __pyx_k_AttributeError, sizeof(__pyx_k_AttributeError), 0, 0, 1, 1},
-  {&__pyx_n_s_DAP2, __pyx_k_DAP2, sizeof(__pyx_k_DAP2), 0, 0, 1, 1},
-  {&__pyx_n_s_DAP4, __pyx_k_DAP4, sizeof(__pyx_k_DAP4), 0, 0, 1, 1},
   {&__pyx_n_s_Dimension, __pyx_k_Dimension, sizeof(__pyx_k_Dimension), 0, 0, 1, 1},
   {&__pyx_n_s_Dimension___init, __pyx_k_Dimension___init, sizeof(__pyx_k_Dimension___init), 0, 0, 1, 1},
   {&__pyx_n_s_Dimension___len, __pyx_k_Dimension___len, sizeof(__pyx_k_Dimension___len), 0, 0, 1, 1},
@@ -61724,8 +61258,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Dimension_object_no_longer_valid, __pyx_k_Dimension_object_no_longer_valid, sizeof(__pyx_k_Dimension_object_no_longer_valid), 0, 0, 1, 0},
   {&__pyx_n_s_FillValue, __pyx_k_FillValue, sizeof(__pyx_k_FillValue), 0, 0, 1, 1},
   {&__pyx_kp_s_FillValue_attribute_must_be_set, __pyx_k_FillValue_attribute_must_be_set, sizeof(__pyx_k_FillValue_attribute_must_be_set), 0, 0, 1, 0},
-  {&__pyx_n_s_HDF4, __pyx_k_HDF4, sizeof(__pyx_k_HDF4), 0, 0, 1, 1},
-  {&__pyx_n_s_HDF5, __pyx_k_HDF5, sizeof(__pyx_k_HDF5), 0, 0, 1, 1},
   {&__pyx_n_s_IOError, __pyx_k_IOError, sizeof(__pyx_k_IOError), 0, 0, 1, 1},
   {&__pyx_kp_s_Illegal_index, __pyx_k_Illegal_index, sizeof(__pyx_k_Illegal_index), 0, 0, 1, 0},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
@@ -61758,7 +61290,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_NUMCHARS, __pyx_k_NUMCHARS, sizeof(__pyx_k_NUMCHARS), 0, 0, 1, 1},
   {&__pyx_n_s_O, __pyx_k_O, sizeof(__pyx_k_O), 0, 0, 1, 1},
   {&__pyx_n_s_OrderedDict, __pyx_k_OrderedDict, sizeof(__pyx_k_OrderedDict), 0, 0, 1, 1},
-  {&__pyx_n_s_PNETCDF, __pyx_k_PNETCDF, sizeof(__pyx_k_PNETCDF), 0, 0, 1, 1},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_n_s_S, __pyx_k_S, sizeof(__pyx_k_S), 0, 0, 1, 1},
   {&__pyx_n_s_S1, __pyx_k_S1, sizeof(__pyx_k_S1), 0, 0, 1, 1},
@@ -61936,6 +61467,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_file_format, __pyx_k_file_format, sizeof(__pyx_k_file_format), 0, 0, 1, 1},
   {&__pyx_n_s_file_format_2, __pyx_k_file_format_2, sizeof(__pyx_k_file_format_2), 0, 0, 1, 1},
   {&__pyx_n_s_filename, __pyx_k_filename, sizeof(__pyx_k_filename), 0, 0, 1, 1},
+  {&__pyx_kp_s_filepath_method_not_enabled_To, __pyx_k_filepath_method_not_enabled_To, sizeof(__pyx_k_filepath_method_not_enabled_To), 0, 0, 1, 0},
   {&__pyx_n_s_files, __pyx_k_files, sizeof(__pyx_k_files), 0, 0, 1, 1},
   {&__pyx_n_s_files_2, __pyx_k_files_2, sizeof(__pyx_k_files_2), 0, 0, 1, 1},
   {&__pyx_n_s_fill_value, __pyx_k_fill_value, sizeof(__pyx_k_fill_value), 0, 0, 1, 1},
@@ -62130,6 +61662,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ref_date, __pyx_k_ref_date, sizeof(__pyx_k_ref_date), 0, 0, 1, 1},
   {&__pyx_n_s_ref_num, __pyx_k_ref_num, sizeof(__pyx_k_ref_num), 0, 0, 1, 1},
   {&__pyx_n_s_releasevers, __pyx_k_releasevers, sizeof(__pyx_k_releasevers), 0, 0, 1, 1},
+  {&__pyx_kp_s_renameGroup_method_not_enabled, __pyx_k_renameGroup_method_not_enabled, sizeof(__pyx_k_renameGroup_method_not_enabled), 0, 0, 1, 0},
   {&__pyx_n_s_replace, __pyx_k_replace, sizeof(__pyx_k_replace), 0, 0, 1, 1},
   {&__pyx_n_s_repr, __pyx_k_repr, sizeof(__pyx_k_repr), 0, 0, 1, 1},
   {&__pyx_kp_s_requires_numpy_version_1_0rc1_or, __pyx_k_requires_numpy_version_1_0rc1_or, sizeof(__pyx_k_requires_numpy_version_1_0rc1_or), 0, 0, 1, 0},
@@ -62141,7 +61674,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_s_is_one_of_the_reserved_attrib, __pyx_k_s_is_one_of_the_reserved_attrib, sizeof(__pyx_k_s_is_one_of_the_reserved_attrib), 0, 0, 1, 0},
   {&__pyx_kp_s_s_is_one_of_the_reserved_attrib_2, __pyx_k_s_is_one_of_the_reserved_attrib_2, sizeof(__pyx_k_s_is_one_of_the_reserved_attrib_2), 0, 0, 1, 0},
   {&__pyx_kp_s_s_not_a_valid_dimension_name, __pyx_k_s_not_a_valid_dimension_name, sizeof(__pyx_k_s_not_a_valid_dimension_name), 0, 0, 1, 0},
-  {&__pyx_kp_s_s_not_a_valid_group_name, __pyx_k_s_not_a_valid_group_name, sizeof(__pyx_k_s_not_a_valid_group_name), 0, 0, 1, 0},
   {&__pyx_kp_s_s_not_a_valid_variable_name, __pyx_k_s_not_a_valid_variable_name, sizeof(__pyx_k_s_not_a_valid_variable_name), 0, 0, 1, 0},
   {&__pyx_kp_s_s_s, __pyx_k_s_s, sizeof(__pyx_k_s_s), 0, 0, 1, 0},
   {&__pyx_kp_s_s_s_s, __pyx_k_s_s_s, sizeof(__pyx_k_s_s_s), 0, 0, 1, 0},
@@ -64612,7 +64144,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  * __has_nc_inq_path__ = HAS_NC_INQ_PATH
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_rename_grp, __pyx_int_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 828; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_rename_grp, __pyx_int_0) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 828; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "netCDF4/_netCDF4.pyx":829
  * __hdf5libversion__ = _gethdf5libversion()
@@ -64621,7 +64153,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
  * 
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_path, __pyx_int_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 829; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_path, __pyx_int_0) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 829; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "netCDF4/_netCDF4.pyx":830
  * __has_rename_grp__ = HAS_RENAME_GRP
@@ -64630,7 +64162,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  * 
  * 
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_format_extended, __pyx_int_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 830; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_format_extended, __pyx_int_0) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 830; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
   /* "netCDF4/_netCDF4.pyx":835
  * # numpy data type <--> netCDF 4 data type mapping.
