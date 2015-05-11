@@ -1,5 +1,5 @@
- version 1.1.8 (not yet released)
- ================================
+ version 1.1.8 (tag v1.1.8rel)
+ =============================
  * change minimum required numpy to 1.7.0, fix so all tests pass with 1.7.0.
    Added travis tests for minium required cython, numpy (issue #404).
  * enable abbreviations to time units specification, as allowed in CF (issue
