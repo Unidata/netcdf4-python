@@ -1843,12 +1843,23 @@ attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
-        self.variables[varname] = Variable(self, varname, datatype,
+        # if varname specified as a path, split out group names
+        nestedgroups = varname.split('/')
+        varname = nestedgroups[-1] # actual varname is last
+        group = self
+        # loop over group names, create parent groups if they do not already
+        # exist.
+        for g in nestedgroups[1:-1]:
+            if g in group.groups:
+                group = group.groups[g]
+            else:
+                group = group.createGroup(g)
+        group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
         fill_value=fill_value, chunk_cache=chunk_cache)
-        return self.variables[varname]
+        return group.variables[varname]
 
     def renameVariable(self, oldname, newname):
         """
