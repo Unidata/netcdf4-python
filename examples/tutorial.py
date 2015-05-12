@@ -11,8 +11,8 @@ rootgrp.close()
 rootgrp = Dataset('test.nc', 'a')
 fcstgrp = rootgrp.createGroup('forecasts')
 analgrp = rootgrp.createGroup('analyses')
-fcstgrp1 = fcstgrp.createGroup('model1')
-fcstgrp2 = fcstgrp.createGroup('model2')
+fcstgrp1 = rootgrp.createGroup('/forecasts/model1')
+fcstgrp2 = rootgrp.createGroup('/forecasts/model2')
 
 # walk the group tree using a Python generator.
 def walktree(top):
@@ -53,6 +53,11 @@ longitudes = rootgrp.createVariable('longitude','f4',('lon',))
 # this makes the compression 'lossy' (preserving a precision of 1/1000)
 # try it and see how much smaller the file gets.
 temp = rootgrp.createVariable('temp','f4',('time','level','lat','lon',),least_significant_digit=3)
+print(temp)
+# create variable in a group using a path.
+temp = rootgrp.createVariable('/forecasts/model1/temp','f4',('time','level','lat','lon',))
+print(rootgrp['/forecasts/model1']) # print the Group instance
+print(rootgrp['/forecasts/model1/temp']) # print the Variable instance
 
 # attributes.
 import time
@@ -74,8 +79,6 @@ print(rootgrp)
 print(rootgrp.__dict__)
 
 print(rootgrp.variables)
-
-print(rootgrp.variables['temp'])
 
 import numpy
 # no unlimited dimension, just assign to slice.

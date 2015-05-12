@@ -146,15 +146,22 @@ exist within directories in a unix filesystem. Each L{Group} instance
 has a C{'groups'} attribute dictionary containing all of the group
 instances contained within that group. Each L{Group} instance also has a
 C{'path'} attribute that contains a simulated unix directory path to
-that group.
+that group.  To simplify the creation of nested groups, you can
+use a unix-like path as an argument to L{createGroup<Dataset.createGroup>}.
+
+>>> fcstgrp1 = rootgrp.createGroup('/forecasts/model1')
+>>> fcstgrp2 = rootgrp.createGroup('/forecasts/model2')
+
+If any of the intermediate elements of the path do not exist, they are created,
+just as with the unix command C{'mkdir -p'}. If you try to create a group
+that already exists, no error will be raised, and the existing group will be 
+returned.
 
 Here's an example that shows how to navigate all the groups in a
 L{Dataset}. The function C{walktree} is a Python generator that is used
 to walk the directory tree. Note that printing the L{Dataset} or L{Group}
 object yields summary information about it's contents.
 
->>> fcstgrp1 = fcstgrp.createGroup('model1')
->>> fcstgrp2 = fcstgrp.createGroup('model2')
 >>> def walktree(top):
 >>>     values = top.groups.values()
 >>>     yield values
@@ -294,6 +301,43 @@ used later to access and set variable data and attributes.
 >>> # two dimensions unlimited.
 >>> temp = rootgrp.createVariable('temp','f4',('time','level','lat','lon',))
 
+To get summary info on a L{Variable} instance in an interactive session, just print it.
+
+>>> print temp
+<type 'netCDF4.Variable'>
+float32 temp(time, level, lat, lon)
+    least_significant_digit: 3
+    units: K
+unlimited dimensions: time, level
+current shape = (0, 0, 73, 144)
+>>>
+
+You can use a path to create a Variable inside a hierarchy of groups.
+
+>>> ftemp = rootgrp.createVariable('/forecasts/model1/temp','f4',('time','level','lat','lon',))
+
+If the intermediate groups do not yet exist, they will be created.
+
+You can also query a L{Dataset} or L{Group} instance directly to obtain L{Group} or 
+L{Variable} instances using paths.
+
+>>> print rootgrp['/forecasts/model1'] # a Group instance
+<type 'netCDF4._netCDF4.Group'>
+group /forecasts/model1:
+    dimensions(sizes):
+    variables(dimensions): float32 temp(time,level,lat,lon)
+    groups:
+>>>
+
+>>> print rootgrp['/forecasts/model1/temp'] # a Variable instance
+<type 'netCDF4._netCDF4.Variable'>
+float32 temp(time, level, lat, lon)
+path = /forecasts/model1
+unlimited dimensions: time, level
+current shape = (0, 0, 73, 144)
+filling on, default _FillValue of 9.96920996839e+36 used
+>>>
+
 All of the variables in the L{Dataset} or L{Group} are stored in a
 Python dictionary, in the same way as the dimensions:
 
@@ -303,17 +347,6 @@ OrderedDict([('time', <netCDF4.Variable object at 0x1b4ba70>),
              ('latitude', <netCDF4.Variable object at 0x1b4baf0>),
              ('longitude', <netCDF4.Variable object at 0x1b4bb30>),
              ('temp', <netCDF4.Variable object at 0x1b4bb70>)])
->>>
-
-To get summary info on a L{Variable} instance in an interactive session, just print it.
-
->>> print rootgrp.variables['temp']
-<type 'netCDF4.Variable'>
-float32 temp(time, level, lat, lon)
-    least_significant_digit: 3
-    units: K
-unlimited dimensions: time, level
-current shape = (0, 0, 73, 144)
 >>>
 
 L{Variable} names can be changed using the
