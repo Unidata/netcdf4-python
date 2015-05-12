@@ -1538,6 +1538,24 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
     def __exit__(self,atype,value,traceback):
         self.close()
 
+    def __getitem__(self, elem):
+        # return variable or group defined in relative path.
+        # split out group names in unix path.
+        nestedgroups = elem.split('/')
+        # last name in path, could be a variable or group
+        lastname = nestedgroups[-1] 
+        group = self
+        # iterate over groups in path.
+        for g in nestedgroups[1:-1]:
+            group = group.groups[g]
+        # return last one, either a group or a variable.
+        if lastname in group.groups:
+            return group.groups[lastname]
+        elif lastname in group.variables:
+            return group.variables[lastname]
+        else:
+            raise IndexError('%s not found in %s' % (lastname,group.path))
+
     def filepath(self):
         """
 filepath(self)
