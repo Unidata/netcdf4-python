@@ -1915,11 +1915,9 @@ The return value is a L{Group} class instance describing the new group."""
         # exist.
         for g in nestedgroups:
             if g in ['','.']: continue # skip leading slash or '.'
-            if g in group.groups:
-                group = group.groups[g]
-            else:
+            if g not in group.groups:
                 group.groups[g] = Group(group, g)
-                group = group.groups[g]
+            group = group.groups[g]
         # if group already exists, just return the group
         # (prior to 1.1.8, this would have raised an error)
         return group
