@@ -13,7 +13,7 @@
    a Group instance, and Dataset['/path/to/variable'] returns a Variable
    instance.  
  * change minimum required numpy to 1.7.0, fix so all tests pass with 1.7.0.
-   Added travis tests for minium required cython, numpy (issue #404).
+   Added travis tests for minimum required cython, numpy (issue #404).
  * enable abbreviations to time units specification, as allowed in CF (issue
    #402). Now, instead of just 'seconds' and 'seconds', 'secs', 'sec' and 's'
    are also allowed (similar to minutes, days and hours).
