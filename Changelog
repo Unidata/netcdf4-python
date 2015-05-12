@@ -1,5 +1,7 @@
  version 1.1.8 (tag v1.1.8rel)
  =============================
+ * v[...] now returns a numpy scalar array (not just a scalar) when
+   v is a scalar netcdf variable (issue #413).
  * unix-like paths can now be used in createVariable and createGroup.
    v = nc.createVariable('/path/to/var1',('xdim','ydim'),float)
    will create a Variable named 'var1', while also creating the Groups
