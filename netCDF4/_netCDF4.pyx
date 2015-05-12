@@ -452,6 +452,13 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).
 shape of fancy temp slice =  (3, 3, 36, 71)
 >>>
 
+B{Special note for scalar variables}: To extract data from a scalar variable
+C{v} with no associated dimensions, use an Ellipsis slice (C{v[...]}). The result
+will be a numpy scalar object.
+
+7) Dealing with time coordinates
+--------------------------------
+
 Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF and COARDS) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
@@ -485,7 +492,7 @@ A function called L{date2index} is also provided which returns the indices
 of a netCDF time variable corresponding to a sequence of datetime instances.
 
 
-7) Reading data from a multi-file netCDF dataset.
+8) Reading data from a multi-file netCDF dataset.
 -------------------------------------------------
 
 If you want to read data from a variable that spans multiple netCDF files,
@@ -523,7 +530,7 @@ Now read all the files back in at once with L{MFDataset}
 Note that MFDataset can only be used to read, not write, multi-file
 datasets.
 
-8) Efficient compression of netCDF variables
+9) Efficient compression of netCDF variables
 --------------------------------------------
 
 Data stored in netCDF 4 L{Variable} objects can be compressed and
@@ -576,8 +583,8 @@ and then
 
 and see how much smaller the resulting files are.
 
-9) Beyond homogenous arrays of a fixed type - compound data types
------------------------------------------------------------------
+10) Beyond homogenous arrays of a fixed type - compound data types
+------------------------------------------------------------------
 
 Compound data types map directly to numpy structured (a.k.a 'record'
 arrays).  Structured arrays are akin to C structs, or derived types
@@ -644,8 +651,8 @@ OrderedDict([('complex128', <netCDF4.CompoundType object at 0x1029eb7e8>)])
 <type 'netCDF4.CompoundType'>: name = 'complex128', numpy dtype = [(u'real','<f8'), (u'imag', '<f8')]
 >>>
 
-10) Variable-length (vlen) data types.
---------------------------------------
+11) Variable-length (vlen) data types
+-------------------------------------
 
 NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
 of variable length sequences having the same type. To create a variable-length
@@ -1755,6 +1762,12 @@ Creates a new variable with the given C{varname}, C{datatype}, and
 C{dimensions}. If dimensions are not given, the variable is assumed to be
 a scalar.
 
+If C{varname} is specified as a path, using forward slashes as in unix to
+separate components, then intermediate groups will be created as necessary 
+For example, C{createVariable('/GroupA/GroupB/VarC'),('x','y'),float)} will create groups C{GroupA}
+and C{GroupA/GroupB}, plus the variable C{GroupA/GroupB/VarC}, if the preceding
+groups don't already exist.
+
 The C{datatype} can be a numpy datatype object, or a string that describes
 a numpy dtype object (like the C{dtype.str} attribue of a numpy array).
 Supported specifiers include: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
@@ -1907,7 +1920,15 @@ createGroup(self, groupname)
 
 Creates a new L{Group} with the given C{groupname}.
 
-The return value is a L{Group} class instance describing the new group."""
+If C{groupname} is specified as a path, using forward slashes as in unix to
+separate components, then intermediate groups will be created as necessary 
+(analagous to C{mkdir -p} in unix).  For example,
+C{createGroup('/GroupA/GroupB/GroupC')} will create C{GroupA},
+C{GroupA/GroupB}, and C{GroupA/GroupB/GroupC}, if they don't already exist.
+If the specified path describes a group that already exists, no error is
+raised.
+
+The return value is a L{Group} class instance."""
         # if group specified as a path, split out group names
         nestedgroups = groupname.split('/')
         group = self
