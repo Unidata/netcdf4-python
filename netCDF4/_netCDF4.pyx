@@ -1919,9 +1919,10 @@ The return value is a L{Group} class instance describing the new group."""
                 group = group.groups[g]
             else:
                 group.groups[g] = Group(group, g)
+                group = group.groups[g]
         # if group already exists, just return the group
         # (prior to 1.1.8, this would have raised an error)
-        return group.groups[g]
+        return group
 
     def ncattrs(self):
         """
