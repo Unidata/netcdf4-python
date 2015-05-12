@@ -9,7 +9,7 @@ For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-p
 
 5/14/2015: Version 1.1.8 released. Unix-like paths can now be used in `createVariable` and `createGroup`.
 
-    v = nc.createVariable('/path/to/var1',('x',),float)
+    v = nc.createVariable('/path/to/var1',('xdim','ydim'),float)
 
 will create a variable named 'var1', while also creating the groups
 'path' and 'path/to' if they do not already exist.
