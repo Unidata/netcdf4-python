@@ -1,5 +1,16 @@
  version 1.1.8 (tag v1.1.8rel)
  =============================
+ * unix-like paths can now be used in createVariable and createGroup.
+   v = nc.createVariable('/path/to/variable',('x',),float)
+   will create a Variable named 'variable', while also creating the Groups
+   'path' and 'path/to' if they do not already exist.
+   Similarly, g = nc.createGroup('/path/to') acts like 'mkdir -p' in unix, creating
+   the Groups 'path' and '/path/to'.
+   Dataset.__getitem__ also added.  Dataset['/path/to'] returns
+   a Group instance, and Dataset['/path/to/variable'] returns a Variable
+   instance.  Users who relied on createGroup(groupname) failing when the
+   group already exists will have to modify their code, since createGroup
+   will now return the existing group instance.
  * change minimum required numpy to 1.7.0, fix so all tests pass with 1.7.0.
    Added travis tests for minium required cython, numpy (issue #404).
  * enable abbreviations to time units specification, as allowed in CF (issue
