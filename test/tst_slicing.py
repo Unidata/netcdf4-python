@@ -94,6 +94,7 @@ class VariablesTestCase(unittest.TestCase):
         v[...] = 10
         assert_array_equal(v[...], 10)
         assert_equal(v.shape, v[...].shape)
+        assert(type(v[...]) == np.ndarray)
         f.close()
 
     def test_issue259(self):
