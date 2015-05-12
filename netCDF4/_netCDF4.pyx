@@ -3239,9 +3239,9 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         if hasattr(data,'shape'):
             data = data[tuple(squeeze)]
         if hasattr(data,'ndim') and self.ndim == 0:
-            # Make sure a numpy scalar is returned instead of a 1-d array of
+            # Make sure a numpy scalar array is returned instead of a 1-d array of
             # length 1.
-            if data.ndim != 0: data = data[0]
+            if data.ndim != 0: data = numpy.asarray(data[0])
 
         # if auto_scale mode set to True, (through
         # a call to set_auto_scale or set_auto_maskandscale),
