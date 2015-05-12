@@ -1546,7 +1546,8 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
         lastname = nestedgroups[-1] 
         group = self
         # iterate over groups in path.
-        for g in nestedgroups[1:-1]:
+        for g in nestedgroups[:-1]:
+            if g in ['','.']: continue # skip leading slash or '.'
             group = group.groups[g]
         # return last one, either a group or a variable.
         if lastname in group.groups:
@@ -1861,17 +1862,16 @@ attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
-        # if varname specified as a path, split out group names
+        # if varname specified as a path, split out group names.
         nestedgroups = varname.split('/')
-        varname = nestedgroups[-1] # actual varname is last
-        group = self
-        # loop over group names, create parent groups if they do not already
-        # exist.
-        for g in nestedgroups[1:-1]:
-            if g in group.groups:
-                group = group.groups[g]
-            else:
-                group = group.createGroup(g)
+        varname = nestedgroups[-1] # actual varname is last.
+        # create parent groups (like mkdir -p).
+        if not nestedgroups[:-1]:
+            group = self
+        else:
+            group =\
+            self.createGroup('/'.join(nestedgroups[:-1]))
+        # create variable.
         group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
@@ -1908,8 +1908,20 @@ createGroup(self, groupname)
 Creates a new L{Group} with the given C{groupname}.
 
 The return value is a L{Group} class instance describing the new group."""
-        self.groups[groupname] = Group(self, groupname)
-        return self.groups[groupname]
+        # if group specified as a path, split out group names
+        nestedgroups = groupname.split('/')
+        group = self
+        # loop over group names, create parent groups if they do not already
+        # exist.
+        for g in nestedgroups:
+            if g in ['','.']: continue # skip leading slash or '.'
+            if g in group.groups:
+                group = group.groups[g]
+            else:
+                group.groups[g] = Group(group, g)
+        # if group already exists, just return the group
+        # (prior to 1.1.8, this would have raised an error)
+        return group.groups[g]
 
     def ncattrs(self):
         """
