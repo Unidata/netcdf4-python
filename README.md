@@ -19,11 +19,11 @@ Similarly,
     g = nc.createGroup('/path/to') 
 
 now acts like `mkdir -p` in unix, creating groups 'path' and '/path/to',
-if they don't already exist. Users who relied on `createGroup(groupname)`
+if they don't already exist. Users who relied on `nc.createGroup(groupname)`
 failing when the group already exists will have to modify their code, since 
-`createGroup` will now return the existing group instance.
-`Dataset.__getitem__` was also added.  If `ds` is the `Dataset` instance, `ds['/path/to']`
-now returns a group instance, and `ds['/path/to/var1']` now returns a variable instance.
+`nc.createGroup` will now return the existing group instance.
+`Dataset.__getitem__` was also added.  `nc['/path/to']`
+now returns a group instance, and `nc['/path/to/var1']` now returns a variable instance.
 
 3/19/2015: Version 1.1.7 released.  Global Interpreter Lock (GIL) now released when extension
 module calls C library for read operations.  This speeds up concurrent reads when using threads.

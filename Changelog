@@ -6,11 +6,11 @@
    'path' and 'path/to' if they do not already exist.
    Similarly, g = nc.createGroup('/path/to') acts like 'mkdir -p' in unix, creating
    the Groups 'path' and '/path/to', if they don't already exist.
-   Users who relied on createGroup(groupname) failing when the
-   group already exists will have to modify their code, since createGroup
+   Users who relied on nc.createGroup(groupname) failing when the
+   group already exists will have to modify their code, since nc.createGroup
    will now return the existing group instance.
-   Dataset.__getitem__ also added.  If ds is the Dataset instance, ds['/path/to'] returns
-   a Group instance, and ds['/path/to/var1'] returns a Variable
+   Dataset.__getitem__ also added.  nc['/path/to'] returns
+   a Group instance, and nc['/path/to/var1'] returns a Variable
    instance.  
  * change minimum required numpy to 1.7.0, fix so all tests pass with 1.7.0.
    Added travis tests for minimum required cython, numpy (issue #404).
