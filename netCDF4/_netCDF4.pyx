@@ -486,8 +486,8 @@ shape of fancy temp slice =  (3, 3, 36, 71)
 >>>
 
 B{Special note for scalar variables}: To extract data from a scalar variable
-C{v} with no associated dimensions, use an Ellipsis slice (C{v[...]}). The result
-will be a numpy scalar object.
+C{v} with no associated dimensions, use C{np.asarray(v)} or (C{v[...]}). The result
+will be a numpy scalar array.
 
 7) Dealing with time coordinates
 --------------------------------
