@@ -1582,12 +1582,12 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
         # return variable or group defined in relative path.
         # split out group names in unix path.
         elem = posixpath.normpath(elem)
-        nestedgroups = elem.split('/')
         # last name in path, could be a variable or group
-        lastname = posixpath.basename(elem)
+        dirname, lastname = posixpath.split(elem)
+        nestedgroups = dirname.split('/')
         group = self
         # iterate over groups in path.
-        for g in nestedgroups[:-1]:
+        for g in nestedgroups:
             if g: group = group.groups[g]
         # return last one, either a group or a variable.
         if lastname in group.groups:
@@ -1910,14 +1910,12 @@ instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
         # if varname specified as a path, split out group names.
         varname = posixpath.normpath(varname)
-        nestedgroups = varname.split('/')
-        varname = posixpath.basename(varname) # actual varname is last.
+        dirname, varname = posixpath.split(varname) # varname is last.
         # create parent groups (like mkdir -p).
-        if not nestedgroups[:-1]:
+        if not dirname:
             group = self
         else:
-            group =\
-            self.createGroup('/'.join(nestedgroups[:-1]))
+            group = self.createGroup(dirname)
         # create variable.
         group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
