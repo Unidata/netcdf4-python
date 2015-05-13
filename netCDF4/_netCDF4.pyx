@@ -1588,8 +1588,7 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
         group = self
         # iterate over groups in path.
         for g in nestedgroups[:-1]:
-            if g == '': continue
-            group = group.groups[g]
+            if g: group = group.groups[g]
         # return last one, either a group or a variable.
         if lastname in group.groups:
             return group.groups[lastname]
@@ -1971,7 +1970,7 @@ The return value is a L{Group} class instance."""
         # loop over group names, create parent groups if they do not already
         # exist.
         for g in nestedgroups:
-            if g == '': continue
+            if not g: continue
             if g not in group.groups:
                 group.groups[g] = Group(group, g)
             group = group.groups[g]
