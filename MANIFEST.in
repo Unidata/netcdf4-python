@@ -18,3 +18,7 @@ include netcdftime/__init__.py
 include netcdftime/_datetime.pyx
 include netcdftime/netcdftime.py
 include netcdftime/_datetime.c
+include netCDF4/__init__.py
+include netCDF4/_netCDF4.pyx
+include netCDF4/utils.py
+include netCDF4/_netCDF4.c
