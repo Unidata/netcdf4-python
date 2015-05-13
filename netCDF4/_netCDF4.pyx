@@ -146,15 +146,22 @@ exist within directories in a unix filesystem. Each L{Group} instance
 has a C{'groups'} attribute dictionary containing all of the group
 instances contained within that group. Each L{Group} instance also has a
 C{'path'} attribute that contains a simulated unix directory path to
-that group.
+that group.  To simplify the creation of nested groups, you can
+use a unix-like path as an argument to L{createGroup<Dataset.createGroup>}.
+
+>>> fcstgrp1 = rootgrp.createGroup('/forecasts/model1')
+>>> fcstgrp2 = rootgrp.createGroup('/forecasts/model2')
+
+If any of the intermediate elements of the path do not exist, they are created,
+just as with the unix command C{'mkdir -p'}. If you try to create a group
+that already exists, no error will be raised, and the existing group will be 
+returned.
 
 Here's an example that shows how to navigate all the groups in a
 L{Dataset}. The function C{walktree} is a Python generator that is used
 to walk the directory tree. Note that printing the L{Dataset} or L{Group}
 object yields summary information about it's contents.
 
->>> fcstgrp1 = fcstgrp.createGroup('model1')
->>> fcstgrp2 = fcstgrp.createGroup('model2')
 >>> def walktree(top):
 >>>     values = top.groups.values()
 >>>     yield values
@@ -294,6 +301,43 @@ used later to access and set variable data and attributes.
 >>> # two dimensions unlimited.
 >>> temp = rootgrp.createVariable('temp','f4',('time','level','lat','lon',))
 
+To get summary info on a L{Variable} instance in an interactive session, just print it.
+
+>>> print temp
+<type 'netCDF4.Variable'>
+float32 temp(time, level, lat, lon)
+    least_significant_digit: 3
+    units: K
+unlimited dimensions: time, level
+current shape = (0, 0, 73, 144)
+>>>
+
+You can use a path to create a Variable inside a hierarchy of groups.
+
+>>> ftemp = rootgrp.createVariable('/forecasts/model1/temp','f4',('time','level','lat','lon',))
+
+If the intermediate groups do not yet exist, they will be created.
+
+You can also query a L{Dataset} or L{Group} instance directly to obtain L{Group} or 
+L{Variable} instances using paths.
+
+>>> print rootgrp['/forecasts/model1'] # a Group instance
+<type 'netCDF4._netCDF4.Group'>
+group /forecasts/model1:
+    dimensions(sizes):
+    variables(dimensions): float32 temp(time,level,lat,lon)
+    groups:
+>>>
+
+>>> print rootgrp['/forecasts/model1/temp'] # a Variable instance
+<type 'netCDF4._netCDF4.Variable'>
+float32 temp(time, level, lat, lon)
+path = /forecasts/model1
+unlimited dimensions: time, level
+current shape = (0, 0, 73, 144)
+filling on, default _FillValue of 9.96920996839e+36 used
+>>>
+
 All of the variables in the L{Dataset} or L{Group} are stored in a
 Python dictionary, in the same way as the dimensions:
 
@@ -303,17 +347,6 @@ OrderedDict([('time', <netCDF4.Variable object at 0x1b4ba70>),
              ('latitude', <netCDF4.Variable object at 0x1b4baf0>),
              ('longitude', <netCDF4.Variable object at 0x1b4bb30>),
              ('temp', <netCDF4.Variable object at 0x1b4bb70>)])
->>>
-
-To get summary info on a L{Variable} instance in an interactive session, just print it.
-
->>> print rootgrp.variables['temp']
-<type 'netCDF4.Variable'>
-float32 temp(time, level, lat, lon)
-    least_significant_digit: 3
-    units: K
-unlimited dimensions: time, level
-current shape = (0, 0, 73, 144)
 >>>
 
 L{Variable} names can be changed using the
@@ -452,6 +485,13 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).
 shape of fancy temp slice =  (3, 3, 36, 71)
 >>>
 
+B{Special note for scalar variables}: To extract data from a scalar variable
+C{v} with no associated dimensions, use an Ellipsis slice (C{v[...]}). The result
+will be a numpy scalar object.
+
+7) Dealing with time coordinates
+--------------------------------
+
 Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF and COARDS) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
@@ -485,7 +525,7 @@ A function called L{date2index} is also provided which returns the indices
 of a netCDF time variable corresponding to a sequence of datetime instances.
 
 
-7) Reading data from a multi-file netCDF dataset.
+8) Reading data from a multi-file netCDF dataset.
 -------------------------------------------------
 
 If you want to read data from a variable that spans multiple netCDF files,
@@ -523,7 +563,7 @@ Now read all the files back in at once with L{MFDataset}
 Note that MFDataset can only be used to read, not write, multi-file
 datasets.
 
-8) Efficient compression of netCDF variables
+9) Efficient compression of netCDF variables
 --------------------------------------------
 
 Data stored in netCDF 4 L{Variable} objects can be compressed and
@@ -576,8 +616,8 @@ and then
 
 and see how much smaller the resulting files are.
 
-9) Beyond homogenous arrays of a fixed type - compound data types
------------------------------------------------------------------
+10) Beyond homogenous arrays of a fixed type - compound data types
+------------------------------------------------------------------
 
 Compound data types map directly to numpy structured (a.k.a 'record'
 arrays).  Structured arrays are akin to C structs, or derived types
@@ -644,8 +684,8 @@ OrderedDict([('complex128', <netCDF4.CompoundType object at 0x1029eb7e8>)])
 <type 'netCDF4.CompoundType'>: name = 'complex128', numpy dtype = [(u'real','<f8'), (u'imag', '<f8')]
 >>>
 
-10) Variable-length (vlen) data types.
---------------------------------------
+11) Variable-length (vlen) data types
+-------------------------------------
 
 NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
 of variable length sequences having the same type. To create a variable-length
@@ -1538,6 +1578,25 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
     def __exit__(self,atype,value,traceback):
         self.close()
 
+    def __getitem__(self, elem):
+        # return variable or group defined in relative path.
+        # split out group names in unix path.
+        elem = posixpath.normpath(elem)
+        # last name in path, could be a variable or group
+        dirname, lastname = posixpath.split(elem)
+        nestedgroups = dirname.split('/')
+        group = self
+        # iterate over groups in path.
+        for g in nestedgroups:
+            if g: group = group.groups[g]
+        # return last one, either a group or a variable.
+        if lastname in group.groups:
+            return group.groups[lastname]
+        elif lastname in group.variables:
+            return group.variables[lastname]
+        else:
+            raise IndexError('%s not found in %s' % (lastname,group.path))
+
     def filepath(self):
         """
 filepath(self)
@@ -1736,6 +1795,12 @@ Creates a new variable with the given C{varname}, C{datatype}, and
 C{dimensions}. If dimensions are not given, the variable is assumed to be
 a scalar.
 
+If C{varname} is specified as a path, using forward slashes as in unix to
+separate components, then intermediate groups will be created as necessary 
+For example, C{createVariable('/GroupA/GroupB/VarC'),('x','y'),float)} will create groups C{GroupA}
+and C{GroupA/GroupB}, plus the variable C{GroupA/GroupB/VarC}, if the preceding
+groups don't already exist.
+
 The C{datatype} can be a numpy datatype object, or a string that describes
 a numpy dtype object (like the C{dtype.str} attribue of a numpy array).
 Supported specifiers include: C{'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
@@ -1843,12 +1908,21 @@ attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
-        self.variables[varname] = Variable(self, varname, datatype,
+        # if varname specified as a path, split out group names.
+        varname = posixpath.normpath(varname)
+        dirname, varname = posixpath.split(varname) # varname is last.
+        # create parent groups (like mkdir -p).
+        if not dirname:
+            group = self
+        else:
+            group = self.createGroup(dirname)
+        # create variable.
+        group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
         fill_value=fill_value, chunk_cache=chunk_cache)
-        return self.variables[varname]
+        return group.variables[varname]
 
     def renameVariable(self, oldname, newname):
         """
@@ -1878,9 +1952,29 @@ createGroup(self, groupname)
 
 Creates a new L{Group} with the given C{groupname}.
 
-The return value is a L{Group} class instance describing the new group."""
-        self.groups[groupname] = Group(self, groupname)
-        return self.groups[groupname]
+If C{groupname} is specified as a path, using forward slashes as in unix to
+separate components, then intermediate groups will be created as necessary 
+(analagous to C{mkdir -p} in unix).  For example,
+C{createGroup('/GroupA/GroupB/GroupC')} will create C{GroupA},
+C{GroupA/GroupB}, and C{GroupA/GroupB/GroupC}, if they don't already exist.
+If the specified path describes a group that already exists, no error is
+raised.
+
+The return value is a L{Group} class instance."""
+        # if group specified as a path, split out group names
+        groupname = posixpath.normpath(groupname)
+        nestedgroups = groupname.split('/')
+        group = self
+        # loop over group names, create parent groups if they do not already
+        # exist.
+        for g in nestedgroups:
+            if not g: continue
+            if g not in group.groups:
+                group.groups[g] = Group(group, g)
+            group = group.groups[g]
+        # if group already exists, just return the group
+        # (prior to 1.1.8, this would have raised an error)
+        return group
 
     def ncattrs(self):
         """
@@ -3145,9 +3239,9 @@ rename a L{Variable} attribute named C{oldname} to C{newname}."""
         if hasattr(data,'shape'):
             data = data[tuple(squeeze)]
         if hasattr(data,'ndim') and self.ndim == 0:
-            # Make sure a numpy scalar is returned instead of a 1-d array of
+            # Make sure a numpy scalar array is returned instead of a 1-d array of
             # length 1.
-            if data.ndim != 0: data = data[0]
+            if data.ndim != 0: data = numpy.asarray(data[0])
 
         # if auto_scale mode set to True, (through
         # a call to set_auto_scale or set_auto_maskandscale),

@@ -7,23 +7,30 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+5/14/2015: Version 1.1.8 released. Unix-like paths can now be used in `createVariable` and `createGroup`.
+
+    v = nc.createVariable('/path/to/var1',('xdim','ydim'),float)
+
+will create a variable named 'var1', while also creating the groups
+'path' and 'path/to' if they do not already exist.
+
+Similarly, 
+
+    g = nc.createGroup('/path/to') 
+
+now acts like `mkdir -p` in unix, creating groups 'path' and '/path/to',
+if they don't already exist. Users who relied on `nc.createGroup(groupname)`
+failing when the group already exists will have to modify their code, since 
+`nc.createGroup` will now return the existing group instance.
+`Dataset.__getitem__` was also added.  `nc['/path/to']`
+now returns a group instance, and `nc['/path/to/var1']` now returns a variable instance.
+
 3/19/2015: Version 1.1.7 released.  Global Interpreter Lock (GIL) now released when extension
 module calls C library for read operations.  This speeds up concurrent reads when using threads.
 Users who wish to use netcdf4-python inside threads should read http://www.hdfgroup.org/hdf5-quest.html#gconc 
 regarding thread-safety in the HDF5 C library.  Fixes to `setup.py` now ensure that `pip install netCDF4`
 with `export USE_NCCONFIG=0` will use environment variables to find paths to libraries and include files,
 instead of relying exclusively on the nc-config utility.
-
-3/8/2015: Version 1.1.6 released.  Minor bug fixes for regressions introduced in 1.1.5, 
-including incorrect handling of UTC offsets in units string by `date2num`/`num2date`. 
-Datetime instances returned by `num2date` are now time-zone naive, so `python-dateutil`
-is no longer required.
-
-3/1/2015: Version 1.1.5 released.  Significant improvements to `netcdftime` and 
-`num2date`/`date2num` - accuracy is now between a millisecond and a microsecond depending
-on the time interval and calendar used. `use_ncconfig=True` is now the default
-in `setup.py`, so the utility `nc-config` is used to find the library and
-include file paths.  
 
 ## Quick Start
 * Clone GitHub repository (`git clone https://github.com/Unidata/netcdf4-python.git`), or get source tarball (or Windows binary installers) from [PyPI](https://pypi.python.org/pypi/netCDF4) (`pip install netCDF4`).

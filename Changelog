@@ -1,7 +1,21 @@
  version 1.1.8 (tag v1.1.8rel)
  =============================
+ * v[...] now returns a numpy scalar array (not just a scalar) when
+   v is a scalar netcdf variable (issue #413).
+ * unix-like paths can now be used in createVariable and createGroup.
+   v = nc.createVariable('/path/to/var1',('xdim','ydim'),float)
+   will create a Variable named 'var1', while also creating the Groups
+   'path' and 'path/to' if they do not already exist.
+   Similarly, g = nc.createGroup('/path/to') acts like 'mkdir -p' in unix, creating
+   the Groups 'path' and '/path/to', if they don't already exist.
+   Users who relied on nc.createGroup(groupname) failing when the
+   group already exists will have to modify their code, since nc.createGroup
+   will now return the existing group instance.
+   Dataset.__getitem__ also added.  nc['/path/to'] returns
+   a Group instance, and nc['/path/to/var1'] returns a Variable
+   instance.  
  * change minimum required numpy to 1.7.0, fix so all tests pass with 1.7.0.
-   Added travis tests for minium required cython, numpy (issue #404).
+   Added travis tests for minimum required cython, numpy (issue #404).
  * enable abbreviations to time units specification, as allowed in CF (issue
    #402). Now, instead of just 'seconds' and 'seconds', 'secs', 'sec' and 's'
    are also allowed (similar to minutes, days and hours).

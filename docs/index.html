@@ -255,7 +255,17 @@
       that group. Each <a href="netCDF4._netCDF4.Group-class.html" 
       class="link">Group</a> instance also has a <code>'path'</code> 
       attribute that contains a simulated unix directory path to that 
-      group.</p>
+      group.  To simplify the creation of nested groups, you can use a 
+      unix-like path as an argument to <a 
+      href="netCDF4._netCDF4.Dataset-class.html#createGroup" 
+      class="link">createGroup</a>.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>fcstgrp1 = rootgrp.createGroup(<span class="py-string">'/forecasts/model1'</span>)
+<span class="py-prompt">&gt;&gt;&gt; </span>fcstgrp2 = rootgrp.createGroup(<span class="py-string">'/forecasts/model2'</span>)</pre>
+      <p>If any of the intermediate elements of the path do not exist, they
+      are created, just as with the unix command <code>'mkdir -p'</code>. 
+      If you try to create a group that already exists, no error will be 
+      raised, and the existing group will be returned.</p>
       <p>Here's an example that shows how to navigate all the groups in a 
       <a href="netCDF4._netCDF4.Dataset-class.html" 
       class="link">Dataset</a>. The function <code>walktree</code> is a 
@@ -265,8 +275,6 @@
       href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
       object yields summary information about it's contents.</p>
 <pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span>fcstgrp1 = fcstgrp.createGroup(<span class="py-string">'model1'</span>)
-<span class="py-prompt">&gt;&gt;&gt; </span>fcstgrp2 = fcstgrp.createGroup(<span class="py-string">'model2'</span>)
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">def</span> <span class="py-defname">walktree</span>(top):
 <span class="py-prompt">&gt;&gt;&gt; </span>    <span class="py-builtin">values</span> = top.groups.values()
 <span class="py-prompt">&gt;&gt;&gt; </span>    yield <span class="py-builtin">values</span>
@@ -423,6 +431,48 @@
 <span class="py-prompt">&gt;&gt;&gt; </span>longitudes = rootgrp.createVariable(<span class="py-string">'longitude'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'lon'</span>,))
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-comment"># two dimensions unlimited.</span>
 <span class="py-prompt">&gt;&gt;&gt; </span>temp = rootgrp.createVariable(<span class="py-string">'temp'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'time'</span>,<span class="py-string">'level'</span>,<span class="py-string">'lat'</span>,<span class="py-string">'lon'</span>,))</pre>
+      <p>To get summary info on a <a 
+      href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
+      instance in an interactive session, just print it.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> temp
+<span class="py-output">&lt;type 'netCDF4.Variable'&gt;</span>
+<span class="py-output">float32 temp(time, level, lat, lon)</span>
+<span class="py-output">    least_significant_digit: 3</span>
+<span class="py-output">    units: K</span>
+<span class="py-output">unlimited dimensions: time, level</span>
+<span class="py-output">current shape = (0, 0, 73, 144)</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p>You can use a path to create a Variable inside a hierarchy of 
+      groups.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span>ftemp = rootgrp.createVariable(<span class="py-string">'/forecasts/model1/temp'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'time'</span>,<span class="py-string">'level'</span>,<span class="py-string">'lat'</span>,<span class="py-string">'lon'</span>,))</pre>
+      <p>If the intermediate groups do not yet exist, they will be 
+      created.</p>
+      <p>You can also query a <a href="netCDF4._netCDF4.Dataset-class.html"
+      class="link">Dataset</a> or <a 
+      href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+      instance directly to obtain <a 
+      href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> or <a
+      href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
+      instances using paths.</p>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp[<span class="py-string">'/forecasts/model1'</span>] <span class="py-comment"># a Group instance</span>
+<span class="py-output">&lt;type 'netCDF4._netCDF4.Group'&gt;</span>
+<span class="py-output">group /forecasts/model1:</span>
+<span class="py-output">    dimensions(sizes):</span>
+<span class="py-output">    variables(dimensions): float32 temp(time,level,lat,lon)</span>
+<span class="py-output">    groups:</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+<pre class="py-doctest">
+<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp[<span class="py-string">'/forecasts/model1/temp'</span>] <span class="py-comment"># a Variable instance</span>
+<span class="py-output">&lt;type 'netCDF4._netCDF4.Variable'&gt;</span>
+<span class="py-output">float32 temp(time, level, lat, lon)</span>
+<span class="py-output">path = /forecasts/model1</span>
+<span class="py-output">unlimited dimensions: time, level</span>
+<span class="py-output">current shape = (0, 0, 73, 144)</span>
+<span class="py-output">filling on, default _FillValue of 9.96920996839e+36 used</span>
+<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>All of the variables in the <a 
       href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
       or <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a>
@@ -435,18 +485,6 @@
 <span class="py-output">             ('latitude', &lt;netCDF4.Variable object at 0x1b4baf0&gt;),</span>
 <span class="py-output">             ('longitude', &lt;netCDF4.Variable object at 0x1b4bb30&gt;),</span>
 <span class="py-output">             ('temp', &lt;netCDF4.Variable object at 0x1b4bb70&gt;)])</span>
-<span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
-      <p>To get summary info on a <a 
-      href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
-      instance in an interactive session, just print it.</p>
-<pre class="py-doctest">
-<span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> rootgrp.variables[<span class="py-string">'temp'</span>]
-<span class="py-output">&lt;type 'netCDF4.Variable'&gt;</span>
-<span class="py-output">float32 temp(time, level, lat, lon)</span>
-<span class="py-output">    least_significant_digit: 3</span>
-<span class="py-output">    units: K</span>
-<span class="py-output">unlimited dimensions: time, level</span>
-<span class="py-output">current shape = (0, 0, 73, 144)</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p><a href="netCDF4._netCDF4.Variable-class.html" 
       class="link">Variable</a> names can be changed using the <a 
@@ -595,6 +633,11 @@
 <span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> <span class="py-string">'shape of fancy temp slice = '</span>,tempdat.shape
 <span class="py-output">shape of fancy temp slice =  (3, 3, 36, 71)</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
+      <p><b>Special note for scalar variables</b>: To extract data from a 
+      scalar variable <code>v</code> with no associated dimensions, use an 
+      Ellipsis slice (<code>v[...]</code>). The result will be a numpy 
+      scalar object.</p>
+    <h2 class="heading">7) Dealing with time coordinates</h2>
       <p>Time coordinate values pose a special challenge to netCDF users.  
       Most metadata standards (such as CF and COARDS) specify that time 
       should be measure relative to a fixed date using a certain calendar, 
@@ -634,7 +677,7 @@
       class="link">date2index</a> is also provided which returns the 
       indices of a netCDF time variable corresponding to a sequence of 
       datetime instances.</p>
-    <h2 class="heading">7) Reading data from a multi-file netCDF dataset.</h2>
+    <h2 class="heading">8) Reading data from a multi-file netCDF dataset.</h2>
       <p>If you want to read data from a variable that spans multiple 
       netCDF files, you can use the <a 
       href="netCDF4._netCDF4.MFDataset-class.html" 
@@ -674,7 +717,7 @@
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
       <p>Note that MFDataset can only be used to read, not write, 
       multi-file datasets.</p>
-    <h2 class="heading">8) Efficient compression of netCDF variables</h2>
+    <h2 class="heading">9) Efficient compression of netCDF variables</h2>
       <p>Data stored in netCDF 4 <a 
       href="netCDF4._netCDF4.Variable-class.html" class="link">Variable</a>
       objects can be compressed and decompressed on the fly. The parameters
@@ -730,7 +773,7 @@
 <pre class="py-doctest">
 <span class="py-prompt">&gt;&gt;&gt; </span>temp = dataset.createVariable(<span class="py-string">'temp'</span>,<span class="py-string">'f4'</span>,(<span class="py-string">'time'</span>,<span class="py-string">'level'</span>,<span class="py-string">'lat'</span>,<span class="py-string">'lon'</span>,),zlib=True,least_significant_digit=3)</pre>
       <p>and see how much smaller the resulting files are.</p>
-    <h2 class="heading">9) Beyond homogenous arrays of a fixed type - compound data types</h2>
+    <h2 class="heading">10) Beyond homogenous arrays of a fixed type - compound data types</h2>
       <p>Compound data types map directly to numpy structured (a.k.a 
       'record' arrays).  Structured arrays are akin to C structs, or 
       derived types in Fortran. They allow for the construction of 
@@ -802,7 +845,7 @@
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt; </span><span class="py-keyword">print</span> f.cmptypes[<span class="py-string">'complex128'</span>]
 <span class="py-output">&lt;type 'netCDF4.CompoundType'&gt;: name = 'complex128', numpy dtype = [(u'real','&lt;f8'), (u'imag', '&lt;f8')]</span>
 <span class="py-output"></span><span class="py-prompt">&gt;&gt;&gt;</span></pre>
-    <h2 class="heading">10) Variable-length (vlen) data types.</h2>
+    <h2 class="heading">11) Variable-length (vlen) data types</h2>
       <p>NetCDF 4 has support for variable-length or &quot;ragged&quot; 
       arrays.  These are arrays of variable length sequences having the 
       same type. To create a variable-length data type, use the <a 
@@ -937,7 +980,9 @@
     <span class="table-header">Classes</span></td>
 </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4._netCDF4.CompoundType-class.html" class="summary-name">CompoundType</a><br />
       A <a href="netCDF4._netCDF4.CompoundType-class.html" 
         class="link">CompoundType</a> instance is used to describe a 
@@ -945,38 +990,50 @@
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4._netCDF4.Dataset-class.html" class="summary-name">Dataset</a><br />
       Dataset(self, filename, mode=&quot;r&quot;, clobber=True, 
         diskless=False, persist=False, keepweakref=False, format='NETCDF4')
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4._netCDF4.Dimension-class.html" class="summary-name">Dimension</a><br />
       Dimension(self, group, name, size=None)
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4._netCDF4.Group-class.html" class="summary-name">Group</a><br />
       Group(self, parent, name)
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4._netCDF4.MFDataset-class.html" class="summary-name">MFDataset</a><br />
       MFDataset(self, files, check=False, aggdim=None, exclude=[])
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4._netCDF4.MFTime-class.html" class="summary-name">MFTime</a><br />
       MFTime(self, time, units=None)
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4._netCDF4.VLType-class.html" class="summary-name">VLType</a><br />
       A <a href="netCDF4._netCDF4.VLType-class.html" 
         class="link">VLType</a> instance is used to describe a variable 
@@ -984,7 +1041,9 @@
     </td>
   </tr>
 <tr>
-    <td class="summary" colspan="2">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
         <a href="netCDF4._netCDF4.Variable-class.html" class="summary-name">Variable</a><br />
       Variable(self, group, name, datatype, dimensions=(), zlib=False, 
         complevel=4, shuffle=True, fletcher32=False, contiguous=False, 
@@ -1179,7 +1238,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.13'"><code class="variable-quote">'</code><code class="variable-string">1.8.13</code><code class="variable-quote">'</code></code>
+        <a name="__hdf5libversion__"></a><span class="summary-name">__hdf5libversion__</span> = <code title="'1.8.14'"><code class="variable-quote">'</code><code class="variable-string">1.8.14</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -1651,8 +1710,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1
-    on Sat May  9 15:08:16 2015
+    Generated by Epydoc 3.0.1 on Tue May 12 15:08:44 2015
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
