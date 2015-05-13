@@ -1581,13 +1581,14 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
     def __getitem__(self, elem):
         # return variable or group defined in relative path.
         # split out group names in unix path.
+        elem = posixpath.normpath(elem)
         nestedgroups = elem.split('/')
         # last name in path, could be a variable or group
-        lastname = nestedgroups[-1] 
+        lastname = posixpath.basename(elem)
         group = self
         # iterate over groups in path.
         for g in nestedgroups[:-1]:
-            if g in ['','.']: continue # skip leading slash or '.'
+            if g == '': continue
             group = group.groups[g]
         # return last one, either a group or a variable.
         if lastname in group.groups:
@@ -1909,8 +1910,9 @@ the data the contains a reliable value.  assigned to the L{Variable}
 instance. If C{None}, the data is not truncated. The C{ndim} attribute
 is the number of variable dimensions."""
         # if varname specified as a path, split out group names.
+        varname = posixpath.normpath(varname)
         nestedgroups = varname.split('/')
-        varname = nestedgroups[-1] # actual varname is last.
+        varname = posixpath.basename(varname) # actual varname is last.
         # create parent groups (like mkdir -p).
         if not nestedgroups[:-1]:
             group = self
@@ -1963,12 +1965,13 @@ raised.
 
 The return value is a L{Group} class instance."""
         # if group specified as a path, split out group names
+        groupname = posixpath.normpath(groupname)
         nestedgroups = groupname.split('/')
         group = self
         # loop over group names, create parent groups if they do not already
         # exist.
         for g in nestedgroups:
-            if g in ['','.']: continue # skip leading slash or '.'
+            if g == '': continue
             if g not in group.groups:
                 group.groups[g] = Group(group, g)
             group = group.groups[g]
