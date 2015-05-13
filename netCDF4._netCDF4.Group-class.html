@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>netCDF4._netCDF4.Group</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="netCDF4._netCDF4-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >netcdf4-python</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;netCDF4 ::
+        <a href="netCDF4._netCDF4-module.html" onclick="show_private();">Module&nbsp;_netCDF4</a> ::
+        Class&nbsp;Group
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Group</h1><p class="nomargin-top"><span class="codelink"><a href="netCDF4._netCDF4-pysrc.html#Group">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+object --+    
+         |    
+   <a href="netCDF4._netCDF4.Dataset-class.html">Dataset</a> --+
+             |
+            <strong class="uidshort">Group</strong>
+</pre>
+
+<hr />
+<p>Group(self, parent, name)</p>
+  <p>Groups define a hierarchical namespace within a netCDF file. They are 
+  analagous to directories in a unix filesystem. Each <a 
+  href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> behaves 
+  like a <a href="netCDF4._netCDF4.Dataset-class.html" 
+  class="link">Dataset</a> within a Dataset, and can contain it's own 
+  variables, dimensions and attributes (and other Groups).</p>
+  <p><a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+  instances should be created using the <a 
+  href="netCDF4._netCDF4.Dataset-class.html#createGroup" 
+  class="link">createGroup</a> method of a <a 
+  href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+  instance, or another <a href="netCDF4._netCDF4.Group-class.html" 
+  class="link">Group</a> instance, not using this class directly.</p>
+  <p><b>Parameters:</b></p>
+  <p><b><code>parent</code></b> - <a 
+  href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> instance 
+  for the parent group.  If being created in the root group, use a <a 
+  href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> 
+  instance.</p>
+  <p><b><code>name</code></b> - Name of the group.</p>
+  <p><b>Returns:</b></p>
+  <p>a <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+  instance.  All further operations on the netCDF Group are accomplished 
+  via <a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+  instance methods.</p>
+  <p><a href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+  inherits from <a href="netCDF4._netCDF4.Dataset-class.html" 
+  class="link">Dataset</a>, so all the <a 
+  href="netCDF4._netCDF4.Dataset-class.html" class="link">Dataset</a> class
+  methods and variables are available to a <a 
+  href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> instance 
+  (except the <code>close</code> method).</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4._netCDF4.Group-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">parent</span>,
+        <span class="summary-sig-arg">name</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netCDF4._netCDF4-pysrc.html#Group.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">a new object with type S, a subtype of T</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4._netCDF4.Group-class.html#__new__" class="summary-sig-name">__new__</a>(<span class="summary-sig-arg">T</span>,
+        <span class="summary-sig-arg">S</span>,
+        <span class="summary-sig-arg">...</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netCDF4._netCDF4-pysrc.html#Group.__new__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="netCDF4._netCDF4.Group-class.html#close" class="summary-sig-name">close</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      overrides <a href="netCDF4._netCDF4.Dataset-class.html" 
+      class="link">Dataset</a> close method which does not apply to <a 
+      href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+      instances, raises IOError.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="netCDF4._netCDF4-pysrc.html#Group.close">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF4._netCDF4.Dataset-class.html">Dataset</a></code></b>:
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__delattr__">__delattr__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__enter__">__enter__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__exit__">__exit__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__getattr__">__getattr__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__getattribute__">__getattribute__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__getitem__">__getitem__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__repr__">__repr__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__setattr__">__setattr__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__unicode__">__unicode__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#createCompoundType">createCompoundType</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#createDimension">createDimension</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#createGroup">createGroup</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#createVLType">createVLType</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#createVariable">createVariable</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#delncattr">delncattr</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#filepath">filepath</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#getncattr">getncattr</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#ncattrs">ncattrs</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#renameAttribute">renameAttribute</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#renameDimension">renameDimension</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#renameGroup">renameGroup</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#renameVariable">renameVariable</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#set_auto_mask">set_auto_mask</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#set_auto_maskandscale">set_auto_maskandscale</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#set_auto_scale">set_auto_scale</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#set_fill_off">set_fill_off</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#set_fill_on">set_fill_on</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#setncattr">setncattr</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#setncatts">setncatts</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#sync">sync</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__format__</code>,
+      <code>__hash__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Variables</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF4._netCDF4.Dataset-class.html">Dataset</a></code></b>:
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#cmptypes">cmptypes</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#data_model">data_model</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#dimensions">dimensions</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#disk_format">disk_format</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#file_format">file_format</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#groups">groups</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#parent">parent</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#path">path</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#variables">variables</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#vltypes">vltypes</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="name"></a><span class="summary-name">name</span><br />
+      string name of Group instance
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="netCDF4._netCDF4.Dataset-class.html">Dataset</a></code></b>:
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#__orthogonal_indexing__">__orthogonal_indexing__</a></code>,
+      <code><a href="netCDF4._netCDF4.Dataset-class.html#keepweakref">keepweakref</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">parent</span>,
+        <span class="sig-arg">name</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netCDF4._netCDF4-pysrc.html#Group.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>x.__init__(...) initializes x; see help(type(x)) for signature</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__new__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__new__</span>(<span class="sig-arg">T</span>,
+        <span class="sig-arg">S</span>,
+        <span class="sig-arg">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netCDF4._netCDF4-pysrc.html#Group.__new__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Returns: a new object with type S, a subtype of T</dt>
+    <dt>Overrides:
+        object.__new__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="close"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">close</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="netCDF4._netCDF4-pysrc.html#Group.close">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>overrides <a href="netCDF4._netCDF4.Dataset-class.html" 
+  class="link">Dataset</a> close method which does not apply to <a 
+  href="netCDF4._netCDF4.Group-class.html" class="link">Group</a> 
+  instances, raises IOError.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="netCDF4._netCDF4.Dataset-class.html#close">Dataset.close</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="netCDF4._netCDF4-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >netcdf4-python</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed May 13 09:31:04 2015
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
