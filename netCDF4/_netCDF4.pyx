@@ -137,8 +137,8 @@ in a netCDF 3 file you will get an error message.
 >>> fcstgrp = rootgrp.createGroup('forecasts')
 >>> analgrp = rootgrp.createGroup('analyses')
 >>> print rootgrp.groups
-OrderedDict([('forecasts', <netCDF4.Group object at 0x1b4b7b0>),
-             ('analyses', <netCDF4.Group object at 0x1b4b970>)])
+OrderedDict([('forecasts', <netCDF4._netCDF4.Group object at 0x1b4b7b0>),
+             ('analyses', <netCDF4._netCDF4.Group object at 0x1b4b970>)])
 >>>
 
 Groups can exist within groups in a L{Dataset}, just as directories
@@ -172,27 +172,27 @@ object yields summary information about it's contents.
 >>> for children in walktree(rootgrp):
 >>>      for child in children:
 >>>          print child
-<type 'netCDF4.Dataset'>
+<type 'netCDF4._netCDF4.Dataset'>
 root group (NETCDF4 file format):
     dimensions:
     variables:
         groups: forecasts, analyses
-<type 'netCDF4.Group'>
+<type 'netCDF4._netCDF4.Group'>
 group /forecasts:
     dimensions:
     variables:
     groups: model1, model2
-<type 'netCDF4.Group'>
+<type 'netCDF4._netCDF4.Group'>
 group /analyses:
     dimensions:
     variables:
     groups:
-<type 'netCDF4.Group'>
+<type 'netCDF4._netCDF4.Group'>
 group /forecasts/model1:
     dimensions:
     variables:
     groups:
-<type 'netCDF4.Group'>
+<type 'netCDF4._netCDF4.Group'>
 group /forecasts/model2:
     dimensions:
     variables:
@@ -224,10 +224,10 @@ one, and it must be the first (leftmost) dimension of the variable.
 All of the L{Dimension} instances are stored in a python dictionary.
 
 >>> print rootgrp.dimensions
-OrderedDict([('level', <netCDF4.Dimension object at 0x1b48030>),
-             ('time', <netCDF4.Dimension object at 0x1b481c0>),
-             ('lat', <netCDF4.Dimension object at 0x1b480f8>),
-             ('lon', <netCDF4.Dimension object at 0x1b48a08>)])
+OrderedDict([('level', <netCDF4._netCDF4.Dimension object at 0x1b48030>),
+             ('time', <netCDF4._netCDF4.Dimension object at 0x1b481c0>),
+             ('lat', <netCDF4._netCDF4.Dimension object at 0x1b480f8>),
+             ('lon', <netCDF4._netCDF4.Dimension object at 0x1b48a08>)])
 >>>
 
 Calling the python C{len} function with a L{Dimension} instance returns
@@ -249,11 +249,11 @@ and whether it is unlimited.
 
 >>> for dimobj in rootgrp.dimensions.values():
 >>>    print dimobj
-<type 'netCDF4.Dimension'> (unlimited): name = 'level', size = 0
-<type 'netCDF4.Dimension'> (unlimited): name = 'time', size = 0
-<type 'netCDF4.Dimension'>: name = 'lat', size = 73
-<type 'netCDF4.Dimension'>: name = 'lon', size = 144
-<type 'netCDF4.Dimension'> (unlimited): name = 'time', size = 0
+<type 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'level', size = 0
+<type 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0
+<type 'netCDF4._netCDF4.Dimension'>: name = 'lat', size = 73
+<type 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144
+<type 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0
 >>>
 
 L{Dimension} names can be changed using the
@@ -304,7 +304,7 @@ used later to access and set variable data and attributes.
 To get summary info on a L{Variable} instance in an interactive session, just print it.
 
 >>> print temp
-<type 'netCDF4.Variable'>
+<type 'netCDF4._netCDF4.Variable'>
 float32 temp(time, level, lat, lon)
     least_significant_digit: 3
     units: K
@@ -667,12 +667,12 @@ Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:
 
 >>> print f
-<type 'netCDF4.Dataset'>
+<type 'netCDF4._netCDF4.Dataset'>
 root group (NETCDF4 file format):
     dimensions: x_dim
     variables: cmplx_var
     groups:
-<type 'netCDF4.Variable'>
+<type 'netCDF4._netCDF4.Variable'>
 >>> print f.variables['cmplx_var']
 compound cmplx_var(x_dim)
 compound data type: [('real', '<f8'), ('imag', '<f8')]
@@ -681,7 +681,7 @@ current shape = (3,)
 >>> print f.cmptypes
 OrderedDict([('complex128', <netCDF4.CompoundType object at 0x1029eb7e8>)])
 >>> print f.cmptypes['complex128']
-<type 'netCDF4.CompoundType'>: name = 'complex128', numpy dtype = [(u'real','<f8'), (u'imag', '<f8')]
+<type 'netCDF4._netCDF4.CompoundType'>: name = 'complex128', numpy dtype = [(u'real','<f8'), (u'imag', '<f8')]
 >>>
 
 11) Variable-length (vlen) data types
@@ -727,19 +727,19 @@ vlen variable =
  [[ 1  2  3  4  5  6  7  8  9 10] [ 1  2  3  4  5  6  7  8  9 10]
   [1 2 3 4 5 6 7 8]]]
 >>> print f
-<type 'netCDF4.Dataset'>
+<type 'netCDF4._netCDF4.Dataset'>
 root group (NETCDF4 file format):
     dimensions: x, y
     variables: phony_vlen_var
     groups:
 >>> print f.variables['phony_vlen_var']
-<type 'netCDF4.Variable'>
+<type 'netCDF4._netCDF4.Variable'>
 vlen phony_vlen_var(y, x)
 vlen data type: int32
 unlimited dimensions:
 current shape = (4, 3)
 >>> print f.VLtypes['phony_vlen']
-<type 'netCDF4.VLType'>: name = 'phony_vlen', numpy dtype = int32
+<type 'netCDF4._netCDF4.VLType'>: name = 'phony_vlen', numpy dtype = int32
 >>>
 
 Numpy object arrays containing python strings can also be written as vlen
@@ -766,13 +766,13 @@ variable-length string variable:
 [aDy29jPt jd7aplD b8t4RM jHh8hq KtaPWF9cQj Q1hHN5WoXSiT MMxsVeq td LUzvVTzj
  5DS9X8S]
 >>> print f
-<type 'netCDF4.Dataset'>
+<type 'netCDF4._netCDF4.Dataset'>
 root group (NETCDF4 file format):
     dimensions: x, y, z
     variables: phony_vlen_var, strvar
     groups:
 >>> print f.variables['strvar']
-<type 'netCDF4.Variable'>
+<type 'netCDF4._netCDF4.Variable'>
 vlen strvar(z)
 vlen data type: <type 'str'>
 unlimited dimensions:
