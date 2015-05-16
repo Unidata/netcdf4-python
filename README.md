@@ -33,7 +33,7 @@ with `export USE_NCCONFIG=0` will use environment variables to find paths to lib
 instead of relying exclusively on the nc-config utility.
 
 ## Quick Start
-* Clone GitHub repository (`git clone https://github.com/Unidata/netcdf4-python.git`), or get source tarball (or Windows binary installers) from [PyPI](https://pypi.python.org/pypi/netCDF4) (`pip install netCDF4`).
+* Clone GitHub repository (`git clone https://github.com/Unidata/netcdf4-python.git`), or get source tarball from [PyPI](https://pypi.python.org/pypi/netCDF4). Links to windows and macos x precompiled binary packages are also available on [PyPI](https://pypi.python.org/pypi/netCDF4).
 
 * Make sure [numpy](http://www.numpy.org/) (required) and [Cython](http://cython.org/) (recommended) are
   installed and you have [Python](https://www.python.org) 2.5 or newer.
