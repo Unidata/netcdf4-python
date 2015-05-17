@@ -79,39 +79,39 @@ Tutorial
 1) Creating/Opening/Closing a netCDF file
 -----------------------------------------
 
-To create a netCDF file from python, you simply call the L{Dataset}
+To create a netCDF file from python, you simply call the `netCDF4.Dataset`
 constructor. This is also the method used to open an existing netCDF
-file.  If the file is open for write access (C{w, r+} or C{a}), you may
+file.  If the file is open for write access (`w, r+` or `a`, you may
 write any type of data including new dimensions, groups, variables and
-attributes.  netCDF files come in several flavors (C{NETCDF3_CLASSIC,
-NETCDF3_64BIT, NETCDF4_CLASSIC}, and C{NETCDF4}). The first two flavors
-are supported by version 3 of the netCDF library. C{NETCDF4_CLASSIC}
+attributes.  netCDF files come in several flavors (`NETCDF3_CLASSIC,
+NETCDF3_64BIT, NETCDF4_CLASSIC`, and `NETCDF4`). The first two flavors
+are supported by version 3 of the netCDF library. `NETCDF4_CLASSIC`
 files use the version 4 disk format (HDF5), but do not use any features
 not found in the version 3 API. They can be read by netCDF 3 clients
 only if they have been relinked against the netCDF 4 library. They can
-also be read by HDF5 clients. C{NETCDF4} files use the version 4 disk
+also be read by HDF5 clients. `NETCDF4` files use the version 4 disk
 format (HDF5) and use the new features of the version 4 API.  The
-C{netCDF4} module can read and write files in any of these formats. When
-creating a new file, the format may be specified using the C{format}
-keyword in the C{Dataset} constructor.  The default format is
-C{NETCDF4}. To see how a given file is formatted, you can examine the
-C{data_model} L{Dataset} attribute.  Closing the netCDF file is
-accomplished via the L{close<Dataset.close>} method of the L{Dataset}
+`netCDF4` module can read and write files in any of these formats. When
+creating a new file, the format may be specified using the `format`
+keyword in the `Dataset` constructor.  The default format is
+`NETCDF4`. To see how a given file is formatted, you can examine the
+`data_model` attribute.  Closing the netCDF file is
+accomplished via the `netCDF4.Dataset.close` method of the `netCDF4.Dataset`
 instance.
 
 Here's an example:
 
->>> from netCDF4 import Dataset
->>> rootgrp = Dataset('test.nc', 'w', format='NETCDF4')
->>> print rootgrp.data_model
-NETCDF4
->>>
->>> rootgrp.close()
+    >>> from netCDF4 import Dataset
+    >>> rootgrp = Dataset('test.nc', 'w', format='NETCDF4')
+    >>> print rootgrp.data_model
+    NETCDF4
+    >>>
+    >>> rootgrp.close()
 
-Remote U{OPeNDAP<http://opendap.org>}-hosted datasets can be accessed for
-reading over http if a URL is provided to the L{Dataset} constructor instead of a
+Remote [OPeNDAP](http://opendap.org)-hosted datasets can be accessed for
+reading over http if a URL is provided to the `netCDF4.Dataset` constructor instead of a
 filename.  However, this requires that the netCDF library be built with
-OPenDAP support, via the C{--enable-dap} configure option (added in
+OPenDAP support, via the `--enable-dap` configure option (added in
 version 4.0.1).
 
 
@@ -1650,7 +1650,8 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         """
 close(self)
 
-Close the Dataset."""
+Close the Dataset.
+        """
         cdef int ierr
         ierr = nc_close(self._grpid)
         if ierr != NC_NOERR:
