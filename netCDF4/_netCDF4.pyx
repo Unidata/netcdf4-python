@@ -2,15 +2,14 @@
 Introduction
 ============
 
-Python interface to the netCDF version 4 library.  U{netCDF version 4
-<http://www.unidata.ucar.edu/software/netcdf/netcdf-4>} has many features
+Python interface to the netCDF version 4 library.  
+[netCDF version 4](http://www.unidata.ucar.edu/software/netcdf/netcdf-4) has many features
 not found in earlier versions of the library and is implemented on top of
-U{HDF5 <http://www.hdfgroup.org/HDF5>}. This module can read and write
+[HDF5](http://www.hdfgroup.org/HDF5). This module can read and write
 files in both the new netCDF 4 and the old netCDF 3 format, and can create
 files that are readable by HDF5 clients. The API modelled after
-U{Scientific.IO.NetCDF
-<http://dirac.cnrs-orleans.fr/plone/software/scientificpython/>}, and should be
-familiar to users of that module.
+[Scientific.IO.NetCDF](http://dirac.cnrs-orleans.fr/plone/software/scientificpython/),
+and should be familiar to users of that module.
 
 Most new features of netCDF 4 are implemented, such as multiple
 unlimited dimensions, groups and zlib data compression.  All the new
@@ -23,38 +22,38 @@ types) are not supported.
 Download
 ========
 
- - Latest bleeding-edge code from the U{github repository
-   <http://github.com/Unidata/netcdf4-python>}.
- - Latest U{releases <https://pypi.python.org/pypi/netCDF4>}
+ - Latest bleeding-edge code from the 
+   [github repository](http://github.com/Unidata/netcdf4-python).
+ - Latest [releases](https://pypi.python.org/pypi/netCDF4)
    (source code and windows installers).
 
 Requires
 ========
 
  - Python 2.5 or later (python 3 works too).
- - numpy array module U{http://numpy.scipy.org}, version 1.7.0 or later.
- - U{Cython <http://cython.org>}, version 0.19 or later, is optional - if it is installed setup.py will
+ - [numpy array module](http://numpy.scipy.org), version 1.7.0 or later.
+ - [Cython](http://cython.org), version 0.19 or later, is optional - if it is installed setup.py will
    use it to recompile the Cython source code into C, using conditional compilation
    to enable features in the netCDF API that have been added since version 4.1.1.  If
    Cython is not installed, these features (such as the ability to rename Group objects)
    will be disabled to preserve backward compatibility with older versions of the netCDF
    library.
- - For python < 2.7, the ordereddict module U{http://python.org/pypi/ordereddict}.
+ - For python < 2.7, the [ordereddict module](http://python.org/pypi/ordereddict).
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.8 or higher
- recommended) from U{ftp://ftp.hdfgroup.org/HDF5/current/src}.
- Be sure to build with 'C{--enable-hl --enable-shared}'.
- - U{Libcurl <http://curl.haxx.se/libcurl/>}, if you want
- U{OPeNDAP<http://opendap.org/>} support.
- - U{HDF4 <http://www.hdfgroup.org/products/hdf4/>}, if you want
+ recommended) from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
+ Be sure to build with `--enable-hl --enable-shared`.
+ - [Libcurl](http://curl.haxx.se/libcurl), if you want
+ [OPeNDAP](http://opendap.org) support.
+ - [HDF4](http://www.hdfgroup.org/products/hdf4), if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
- - The netCDF-4 C library from U{ftp://ftp.unidata.ucar.edu/pub/netcdf}.
+ - The netCDF-4 C library from [](ftp://ftp.unidata.ucar.edu/pub/netcdf).
  Version 4.1.1 or higher is required (4.2 or higher recommended).
- Be sure to build with 'C{--enable-netcdf-4 --enable-shared}', and set
- C{CPPFLAGS="-I $HDF5_DIR/include"} and C{LDFLAGS="-L $HDF5_DIR/lib"},
- where C{$HDF5_DIR} is the directory where HDF5 was installed.
- If you want U{OPeNDAP<http://opendap.org/>} support, add 'C{--enable-dap}'.
- If you want HDF4 SD support, add 'C{--enable-hdf4}' and add
- the location of the HDF4 headers and library to C{CPPFLAGS} and C{LDFLAGS}.
+ Be sure to build with `--enable-netcdf-4 --enable-shared`, and set
+ `CPPFLAGS="-I $HDF5_DIR/include"` and `LDFLAGS="-L $HDF5_DIR/lib"`,
+ where `$HDF5_DIR` is the directory where HDF5 was installed.
+ If you want [OPeNDAP](http://opendap.org) support, add `--enable-dap`.
+ If you want HDF4 SD support, add `--enable-hdf4` and add
+ the location of the HDF4 headers and library to `$CPPFLAGS` and `$LDFLAGS`.
 
 
 Install
@@ -62,17 +61,17 @@ Install
 
  - install the requisite python modules and C libraries (see above). It's
  easiest if all the C libs are built as shared libraries.
- - By default, the utility C{nc-config}, installed with netcdf 4.1.2 or higher,
+ - By default, the utility `nc-config`, installed with netcdf 4.1.2 or higher,
  will be run used to determine where all the dependencies live.
- - If C{nc-config} is not in your default C{PATH}, rename the
- file C{setup.cfg.template} to C{setup.cfg}, then edit
+ - If `nc-config` is not in your default `$PATH`, rename the
+ file `setup.cfg.template` to `setup.cfg`, then edit
  in a text editor (follow the instructions in the comments).
- In addition to specifying the path to C{nc-config},
+ In addition to specifying the path to `nc-config`,
  you can manually set the paths to all the libraries and their include files
- (in case C{nc-config} does not do the right thing).
- - run C{python setup.py build}, then C{python setup.py install} (as root if
+ (in case `nc-config` does not do the right thing).
+ - run `python setup.py build`, then `python setup.py install` (as root if
  necessary).
- - run the tests in the 'test' directory by running C{python run_all.py}.
+ - run the tests in the 'test' directory by running `python run_all.py`.
 
 Tutorial
 ========
