@@ -1351,31 +1351,28 @@ _private_atts =\
 
 cdef class Dataset:
     """
-Dataset(self, filename, mode="r", clobber=True, diskless=False, persist=False, keepweakref=False, format='NETCDF4')
+**`Dataset(self, filename, mode="r", clobber=True, diskless=False,
+persist=False, keepweakref=False, format='NETCDF4')`**
 
-A netCDF L{Dataset} is a collection of dimensions, groups, variables and
+A netCDF `netCDF4.Dataset` is a collection of dimensions, groups, variables and
 attributes. Together they describe the meaning of data and relations among
 data fields stored in a netCDF file.
 
-B{Parameters:}
+**`filename`**: Name of netCDF file to hold dataset.
 
-B{C{filename}} - Name of netCDF file to hold dataset.
-
-B{Keywords}:
-
-B{C{mode}} - access mode. C{r} means read-only; no data can be
-modified. C{w} means write; a new file is created, an existing file with
-the same name is deleted. C{a} and C{r+} mean append (in analogy with
+**`mode`**: access mode. `r` means read-only; no data can be
+modified. `w` means write; a new file is created, an existing file with
+the same name is deleted. `a` and `r+` mean append (in analogy with
 serial files); an existing file is opened for reading and writing.
-Appending C{s} to modes C{w}, C{r+} or C{a} will enable unbuffered shared
-access to C{NETCDF3_CLASSIC} or C{NETCDF3_64BIT} formatted files.
+Appending `s` to modes `w`, `r+` or `a` will enable unbuffered shared
+access to `NETCDF3_CLASSIC` or `NETCDF3_64BIT` formatted files.
 Unbuffered acesss may be useful even if you don't need shared
 access, since it may be faster for programs that don't access data
-sequentially. This option is ignored for C{NETCDF4} and C{NETCDF4_CLASSIC}
+sequentially. This option is ignored for `NETCDF4` and `NETCDF4_CLASSIC`
 formatted files.
 
-B{C{clobber}} - if C{True} (default), opening a file with C{mode='w'}
-will clobber an existing file with the same name.  if C{False}, an
+**`clobber`: if `True` (default), opening a file with `mode='w'`
+will clobber an existing file with the same name.  if `False`, an
 exception will be raised if a file with the same name already exists.
 
 B{C{format}} - underlying file format (one of C{'NETCDF4',
@@ -1475,6 +1472,12 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                  diskless=False, persist=False, keepweakref=False, **kwargs):
+        """
+        **`__init__(self, filename, mode="r", clobber=True, diskless=False,
+        persist=False, keepweakref=False, format='NETCDF4')`**
+
+        `netCDF4.Dataset` constructor.
+        """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
@@ -1774,7 +1777,7 @@ datatype."""
 
     def createVLType(self, datatype, datatype_name):
         """
-createVLType(self, datatype, datatype_name)
+**`createVLType(self, datatype, datatype_name)`**
 
 Creates a new VLEN data type named C{datatype_name} from a numpy
 dtype object C{datatype}.
