@@ -829,7 +829,6 @@ __version__ = "1.1.8"
 import posixpath
 import netcdftime
 import numpy
-import weakref
 import sys
 import warnings
 from glob import glob
@@ -1346,137 +1345,117 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','_isprimitive',
- 'file_format','_isvlen','_iscompound','_cmptype','_vltype','keepweakref','name','__orthogoral_indexing__']
-
+ 'file_format','_isvlen','_iscompound','_cmptype','_vltype','name','__orthogoral_indexing__']
+__pdoc__ = {}
 
 cdef class Dataset:
     """
-**`Dataset(self, filename, mode="r", clobber=True, diskless=False,
-persist=False, keepweakref=False, format='NETCDF4')`**
-
 A netCDF `netCDF4.Dataset` is a collection of dimensions, groups, variables and
 attributes. Together they describe the meaning of data and relations among
 data fields stored in a netCDF file.
 
-**`filename`**: Name of netCDF file to hold dataset.
-
-**`mode`**: access mode. `r` means read-only; no data can be
-modified. `w` means write; a new file is created, an existing file with
-the same name is deleted. `a` and `r+` mean append (in analogy with
-serial files); an existing file is opened for reading and writing.
-Appending `s` to modes `w`, `r+` or `a` will enable unbuffered shared
-access to `NETCDF3_CLASSIC` or `NETCDF3_64BIT` formatted files.
-Unbuffered acesss may be useful even if you don't need shared
-access, since it may be faster for programs that don't access data
-sequentially. This option is ignored for `NETCDF4` and `NETCDF4_CLASSIC`
-formatted files.
-
-**`clobber`: if `True` (default), opening a file with `mode='w'`
-will clobber an existing file with the same name.  if `False`, an
-exception will be raised if a file with the same name already exists.
-
-B{C{format}} - underlying file format (one of C{'NETCDF4',
-'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'} or C{'NETCDF3_64BIT'}.  Only
-relevant if C{mode = 'w'} (if C{mode = 'r','a'} or C{'r+'} the file format
-is automatically detected). Default C{'NETCDF4'}, which means the data is
-stored in an HDF5 file, using netCDF 4 API features.  Setting
-C{format='NETCDF4_CLASSIC'} will create an HDF5 file, using only netCDF 3
-compatibile API features. netCDF 3 clients must be recompiled and linked
-against the netCDF 4 library to read files in C{NETCDF4_CLASSIC} format.
-C{'NETCDF3_CLASSIC'} is the classic netCDF 3 file format that does not
-handle 2+ Gb files very well. C{'NETCDF3_64BIT'} is the 64-bit offset
-version of the netCDF 3 file format, which fully supports 2+ GB files, but
-is only compatible with clients linked against netCDF version 3.6.0 or
-later.
-
-C{diskless} - create diskless (in memory) file.  This is an experimental
-feature added to the C library after the netcdf-4.2 release.
-
-C{persist} - if diskless=True, persist file to disk when closed (default False).
-
-C{keepweakref} - if keepweakref=True, child Dimension and Variable instances will keep weak
-references to the parent Dataset or Group object.  Default is False, which
-means strong references will be kept.  Having Dimension and Variable instances
-keep a strong reference to the parent Dataset instance, which in turn keeps a
-reference to child Dimension and Variable instances, creates circular references.
-Circular references complicate garbage collection, which may mean increased
-memory usage for programs that create may Dataset instances with lots of
-Variables.  Setting keepweakref to True allows Dataset instances to be
-garbage collected as soon as they go out of scope, potential reducing memory
-usage.  However, in most cases this is not desirable, since the associated
-Variable instances may still be needed, but are rendered unusable when the
-parent Dataset instance is garbage collected.
-
-B{Returns:}
-
-a L{Dataset} instance.  All further operations on the netCDF
-Dataset are accomplised via L{Dataset} instance methods.
-
 A list of attribute names corresponding to global netCDF attributes
-defined for the L{Dataset} can be obtained with the L{ncattrs()} method.
+defined for the `netCDF4.Dataset` can be obtained with the
+`netCDF4.Dataset.ncattrs` method.
 These attributes can be created by assigning to an attribute of the
-L{Dataset} instance. A dictionary containing all the netCDF attribute
-name/value pairs is provided by the C{__dict__} attribute of a
-L{Dataset} instance.
+`netCDF4.Dataset` instance. A dictionary containing all the netCDF attribute
+name/value pairs is provided by the `__dict__` attribute of a
+`netCDF4.Dataset` instance.
 
-The instance variables C{dimensions, variables, groups,
-cmptypes, data_model, disk_format} and C{path} are read-only (and should not be modified by the
+The class variables `dimensions, variables, groups, cmptypes, vltypes,
+data_model, disk_format` and `path` are read-only (and should not be modified by the
 user).
-
-@ivar dimensions: The C{dimensions} dictionary maps the names of
-dimensions defined for the L{Group} or L{Dataset} to instances of the
-L{Dimension} class.
-
-@ivar variables: The C{variables} dictionary maps the names of variables
-defined for this L{Dataset} or L{Group} to instances of the L{Variable}
-class.
-
-@ivar groups: The groups dictionary maps the names of groups created for
-this L{Dataset} or L{Group} to instances of the L{Group} class (the
-L{Dataset} class is simply a special case of the L{Group} class which
-describes the root group in the netCDF file).
-
-@ivar cmptypes: The C{cmptypes} dictionary maps the names of
-compound types defined for the L{Group} or L{Dataset} to instances of the
-L{CompoundType} class.
-
-@ivar vltypes: The C{vltypes} dictionary maps the names of
-variable-length types defined for the L{Group} or L{Dataset} to instances of the
-L{VLType} class.
-
-@ivar data_model: The C{data_model} attribute describes the netCDF
-data model version, one of C{NETCDF3_CLASSIC}, C{NETCDF4},
-C{NETCDF4_CLASSIC} or C{NETCDF3_64BIT}.
-
-@ivar file_format: same as C{data_model}, retained for backwards
-compatibility.
-
-@ivar disk_format: The C{disk_format} attribute describes the underlying
-file format, one of C{NETCDF3}, C{HDF5}, C{HDF4},
-C{PNETCDF}, C{DAP2}, C{DAP4} or C{UNDEFINED}. Only available if using
-netcdf C library version >= 4.3.1, otherwise will always return C{UNDEFINED}.
-
-@ivar path: The C{path} attribute shows the location of the L{Group} in
-the L{Dataset} in a unix directory format (the names of groups in the
-hierarchy separated by backslashes). A L{Dataset} instance is the root
-group, so the path is simply C{'/'}.
-
-@ivar parent:  The C{parent} attribute is a reference to the parent
-L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
-    cdef object __weakref__
+"""
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
-    file_format, data_model, cmptypes, vltypes, keepweakref, \
-    __orthogonal_indexing__
+    file_format, data_model, cmptypes, vltypes, __orthogonal_indexing__
+    # Docstrings for class variables (used by pdoc).
+    __pdoc__['Dataset.dimensions']=\
+    """The `dimensions` dictionary maps the names of
+    dimensions defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
+    `netCDF4.Dimension` class."""
+    __pdoc__['Dataset.variables']=\
+    """The `variables` dictionary maps the names of variables
+    defined for this `netCDF4.Dataset` or `netCDF4.Group` to instances of the `netCDF4.Variable`
+    class."""
+    __pdoc__['Dataset.groups']=\
+    """The groups dictionary maps the names of groups created for
+    this `netCDF4.Dataset` or `netCDF4.Group` to instances of the `netCDF4.Group` class (the
+    `netCDF4.Dataset` class is simply a special case of the `netCDF4.Group` class which
+    describes the root group in the netCDF4.file)."""
+    __pdoc__['Dataset.cmptypes']=\
+    """The `cmptypes` dictionary maps the names of
+    compound types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
+    `netCDF4.CompoundType` class."""
+    __pdoc__['Dataset.vltypes']=\
+    """The `vltypes` dictionary maps the names of
+    variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
+    `netCDF4.VLType` class."""
+    __pdoc__['Dataset.data_model']=\
+    """`data_model` describes the netCDF
+    data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
+    `NETCDF4_CLASSIC` or `NETCDF3_64BIT`."""
+    __pdoc__['Dataset.file_format']=\
+    """same as `data_model`, retained for backwards compatibility."""
+    __pdoc__['Dataset.disk_format']=\
+    """`disk_format` describes the underlying
+    file format, one of `NETCDF3`, `HDF5`, `HDF4`,
+    `PNETCDF`, `DAP2`, `DAP4` or `UNDEFINED`. Only available if using
+    netcdf C library version >= 4.3.1, otherwise will always return
+    `UNDEFINED`."""
+    __pdoc__['Dataset.parent']=\
+    """`parent` is a reference to the parent
+    `netCDF4.Group` instance. `None` for a the root group or `netCDF4.Dataset` instance"""
+    __pdoc__['Dataset.path']=\
+    """`path` shows the location of the `netCDF4..Group` in
+    the `netCDF4..Dataset` in a unix directory format (the names of groups in the
+    hierarchy separated by backslashes). A `netCDF4..Dataset` instance is the root
+    group, so the path is simply `'/'`."""
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, keepweakref=False, **kwargs):
+                 diskless=False, persist=False, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
-        persist=False, keepweakref=False, format='NETCDF4')`**
+        persist=False, format='NETCDF4')`**
 
         `netCDF4.Dataset` constructor.
+
+        **`filename`**: Name of netCDF file to hold dataset.
+        
+        **`mode`**: access mode. `r` means read-only; no data can be
+        modified. `w` means write; a new file is created, an existing file with
+        the same name is deleted. `a` and `r+` mean append (in analogy with
+        serial files); an existing file is opened for reading and writing.
+        Appending `s` to modes `w`, `r+` or `a` will enable unbuffered shared
+        access to `NETCDF3_CLASSIC` or `NETCDF3_64BIT` formatted files.
+        Unbuffered acesss may be useful even if you don't need shared
+        access, since it may be faster for programs that don't access data
+        sequentially. This option is ignored for `NETCDF4` and `NETCDF4_CLASSIC`
+        formatted files.
+        
+        **`clobber`**: if `True` (default), opening a file with `mode='w'`
+        will clobber an existing file with the same name.  if `False`, an
+        exception will be raised if a file with the same name already exists.
+        
+        B{C{format}} - underlying file format (one of C{'NETCDF4',
+        'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'} or C{'NETCDF3_64BIT'}.  Only
+        relevant if C{mode = 'w'} (if C{mode = 'r','a'} or C{'r+'} the file format
+        is automatically detected). Default C{'NETCDF4'}, which means the data is
+        stored in an HDF5 file, using netCDF 4 API features.  Setting
+        C{format='NETCDF4_CLASSIC'} will create an HDF5 file, using only netCDF 3
+        compatibile API features. netCDF 3 clients must be recompiled and linked
+        against the netCDF 4 library to read files in C{NETCDF4_CLASSIC} format.
+        C{'NETCDF3_CLASSIC'} is the classic netCDF 3 file format that does not
+        handle 2+ Gb files very well. C{'NETCDF3_64BIT'} is the 64-bit offset
+        version of the netCDF 3 file format, which fully supports 2+ GB files, but
+        is only compatible with clients linked against netCDF version 3.6.0 or
+        later.
+        
+        C{diskless} - create diskless (in memory) file.  This is an experimental
+        feature added to the C library after the netcdf-4.2 release.
+        
+        C{persist} - if diskless=True, persist file to disk when closed (default False).
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
@@ -1561,7 +1540,6 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
         self._isopen = 1
         self.path = '/'
         self.parent = None
-        self.keepweakref = keepweakref
         # get compound and vlen types in the root Group.
         self.cmptypes, self.vltypes = _get_types(self)
         # get dimensions in the root group.
@@ -1601,7 +1579,7 @@ L{Group} instance. C{None} for a the root group or L{Dataset} instance"""
 
     def filepath(self):
         """
-filepath(self)
+**`filepath(self)`**
 
 Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf >= 4.1.2"""
@@ -2238,7 +2216,6 @@ method)."""
         # parent group.
         self.parent = parent
         # propagate weak reference setting from parent.
-        self.keepweakref = parent.keepweakref
         if 'id' in kwargs:
             self._grpid = kwargs['id']
             # get compound and vlen types in this Group.
@@ -2324,12 +2301,7 @@ determine if the dimension is unlimited"""
         cdef char *dimname
         cdef size_t lendim
         self._grpid = grp._grpid
-        # make a weakref to group to avoid circular ref (issue 218)
-        # keep strong reference the default behaviour (issue 251)
-        if grp.keepweakref:
-            self._grp = weakref.proxy(grp)
-        else:
-            self._grp = grp
+        self._grp = grp
         self._data_model = grp.data_model
         self._name = name
         if 'id' in kwargs:
@@ -2593,12 +2565,7 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
         if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
             dimensions = dimensions,
         self._grpid = grp._grpid
-        # make a weakref to group to avoid circular ref (issue 218)
-        # keep strong reference the default behaviour (issue 251)
-        if grp.keepweakref:
-            self._grp = weakref.proxy(grp)
-        else:
-            self._grp = grp
+        self._grp = grp
         # convert to a real numpy datatype object if necessary.
         if (not isinstance(datatype, CompoundType) and \
             not isinstance(datatype, VLType)) and \
