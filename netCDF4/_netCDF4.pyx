@@ -2,7 +2,8 @@
 Introduction
 ============
 
-Python interface to the netCDF version 4 library.  
+netcdf4-python is a Python interface to the netCDF C library.  
+
 [netCDF version 4](http://www.unidata.ucar.edu/software/netcdf/netcdf-4) has many features
 not found in earlier versions of the library and is implemented on top of
 [HDF5](http://www.hdfgroup.org/HDF5). This module can read and write
@@ -14,7 +15,7 @@ and should be familiar to users of that module.
 Most new features of netCDF 4 are implemented, such as multiple
 unlimited dimensions, groups and zlib data compression.  All the new
 numeric data types (such as 64 bit and unsigned integer types) are
-implemented. Compound and variable length (vlen) data types are supported,
+implemented. Compound (struct) and variable length (vlen) data types are supported,
 but the enum and opaque data types are not. Mixtures of compound and vlen
 data types (compound types containing vlens, and vlens containing compound
 types) are not supported.
@@ -102,10 +103,9 @@ instance.
 Here's an example:
 
     >>> from netCDF4 import Dataset
-    >>> rootgrp = Dataset('test.nc', 'w', format='NETCDF4')
+    >>> rootgrp = Dataset("test.nc", "w", format="NETCDF4")
     >>> print rootgrp.data_model
     NETCDF4
-    >>>
     >>> rootgrp.close()
 
 Remote [OPeNDAP](http://opendap.org)-hosted datasets can be accessed for
@@ -124,32 +124,33 @@ as containers for variables, dimensions and attributes, as well as other
 groups.  A `netCDF4.Dataset` defines creates a special group, called
 the 'root group', which is similar to the root directory in a unix
 filesystem.  To create `netCDF4.Group` instances, use the
-`netCDF4.createGroup<Dataset.createGroup>` method of a `netCDF4.Dataset` or `netCDF4.Group`
-instance. `netCDF4.createGroup<Dataset.createGroup>` takes a single argument, a
+`netCDF4.Dataset.createGroup` method of a `netCDF4.Dataset` or `netCDF4.Group`
+instance. `netCDF4.Dataset.createGroup` takes a single argument, a
 python string containing the name of the new group. The new `netCDF4.Group`
 instances contained within the root group can be accessed by name using
 the `groups` dictionary attribute of the `netCDF4.Dataset` instance.  Only
 `NETCDF4` formatted files support Groups, if you try to create a Group
 in a netCDF 3 file you will get an error message.
 
->>> rootgrp = Dataset('test.nc', 'a')
->>> fcstgrp = rootgrp.createGroup('forecasts')
->>> analgrp = rootgrp.createGroup('analyses')
->>> print rootgrp.groups
-OrderedDict([('forecasts', <netCDF4._netCDF4.Group object at 0x1b4b7b0>),
-             ('analyses', <netCDF4._netCDF4.Group object at 0x1b4b970>)])
->>>
+    >>> rootgrp = Dataset("test.nc", "a")
+    >>> fcstgrp = rootgrp.createGroup("forecasts")
+    >>> analgrp = rootgrp.createGroup("analyses")
+    >>> print rootgrp.groups
+    OrderedDict([("forecasts", 
+                  <netCDF4._netCDF4.Group object at 0x1b4b7b0>),
+                 ("analyses", 
+                  <netCDF4._netCDF4.Group object at 0x1b4b970>)])
 
 Groups can exist within groups in a `netCDF4.Dataset`, just as directories
 exist within directories in a unix filesystem. Each `netCDF4.Group` instance
-has a `'groups'` attribute dictionary containing all of the group
+has a `groups` attribute dictionary containing all of the group
 instances contained within that group. Each `netCDF4.Group` instance also has a
-`'path'` attribute that contains a simulated unix directory path to
+`path` attribute that contains a simulated unix directory path to
 that group.  To simplify the creation of nested groups, you can
-use a unix-like path as an argument to `netCDF4.createGroup<Dataset.createGroup>`.
+use a unix-like path as an argument to `netCDF4.Dataset.createGroup`.
 
->>> fcstgrp1 = rootgrp.createGroup('/forecasts/model1')
->>> fcstgrp2 = rootgrp.createGroup('/forecasts/model2')
+    >>> fcstgrp1 = rootgrp.createGroup("/forecasts/model1")
+    >>> fcstgrp2 = rootgrp.createGroup("/forecasts/model2")
 
 If any of the intermediate elements of the path do not exist, they are created,
 just as with the unix command `'mkdir -p'`. If you try to create a group
@@ -161,42 +162,41 @@ Here's an example that shows how to navigate all the groups in a
 to walk the directory tree. Note that printing the `netCDF4.Dataset` or `netCDF4.Group`
 object yields summary information about it's contents.
 
->>> def walktree(top):
->>>     values = top.groups.values()
->>>     yield values
->>>     for value in top.groups.values():
->>>         for children in walktree(value):
->>>             yield children
->>> print rootgrp
->>> for children in walktree(rootgrp):
->>>      for child in children:
->>>          print child
-<type 'netCDF4._netCDF4.Dataset'>
-root group (NETCDF4 file format):
-    dimensions:
-    variables:
+    >>> def walktree(top):
+    >>>     values = top.groups.values()
+    >>>     yield values
+    >>>     for value in top.groups.values():
+    >>>         for children in walktree(value):
+    >>>             yield children
+    >>> print rootgrp
+    >>> for children in walktree(rootgrp):
+    >>>      for child in children:
+    >>>          print child
+    <type "netCDF4._netCDF4.Dataset">
+    root group (NETCDF4 file format):
+        dimensions:
+        variables:
         groups: forecasts, analyses
-<type 'netCDF4._netCDF4.Group'>
-group /forecasts:
-    dimensions:
-    variables:
-    groups: model1, model2
-<type 'netCDF4._netCDF4.Group'>
-group /analyses:
-    dimensions:
-    variables:
-    groups:
-<type 'netCDF4._netCDF4.Group'>
-group /forecasts/model1:
-    dimensions:
-    variables:
-    groups:
-<type 'netCDF4._netCDF4.Group'>
-group /forecasts/model2:
-    dimensions:
-    variables:
-    groups:
->>>
+    <type "netCDF4._netCDF4.Group">
+    group /forecasts:
+        dimensions:
+        variables:
+        groups: model1, model2
+    <type "netCDF4._netCDF4.Group">
+    group /analyses:
+        dimensions:
+        variables:
+        groups:
+    <type "netCDF4._netCDF4.Group">
+    group /forecasts/model1:
+        dimensions:
+        variables:
+        groups:
+    <type "netCDF4._netCDF4.Group">
+    group /forecasts/model2:
+        dimensions:
+        variables:
+        groups:
 
 3) Dimensions in a netCDF file
 ------------------------------
@@ -205,7 +205,7 @@ netCDF defines the sizes of all variables in terms of dimensions, so
 before any variables can be created the dimensions they use must be
 created first. A special case, not often used in practice, is that of a
 scalar variable, which has no dimensions. A dimension is created using
-the `netCDF4.createDimension<Dataset.createDimension>` method of a `netCDF4.Dataset`
+the `netCDF4.Dataset.createDimension` method of a `netCDF4.Dataset`
 or `netCDF4.Group` instance. A Python string is used to set the name of the
 dimension, and an integer value is used to set the size. To create an
 unlimited dimension (a dimension that can be appended to), the size
@@ -214,49 +214,46 @@ value is set to `None` or 0. In this example, there both the `time` and
 dimension is a new netCDF 4 feature, in netCDF 3 files there may be only
 one, and it must be the first (leftmost) dimension of the variable.
 
->>> level = rootgrp.createDimension('level', None)
->>> time = rootgrp.createDimension('time', None)
->>> lat = rootgrp.createDimension('lat', 73)
->>> lon = rootgrp.createDimension('lon', 144)
+    >>> level = rootgrp.createDimension("level", None)
+    >>> time = rootgrp.createDimension("time", None)
+    >>> lat = rootgrp.createDimension("lat", 73)
+    >>> lon = rootgrp.createDimension("lon", 144)
 
 
 All of the `netCDF4.Dimension` instances are stored in a python dictionary.
 
->>> print rootgrp.dimensions
-OrderedDict([('level', <netCDF4._netCDF4.Dimension object at 0x1b48030>),
-             ('time', <netCDF4._netCDF4.Dimension object at 0x1b481c0>),
-             ('lat', <netCDF4._netCDF4.Dimension object at 0x1b480f8>),
-             ('lon', <netCDF4._netCDF4.Dimension object at 0x1b48a08>)])
->>>
+    >>> print rootgrp.dimensions
+    OrderedDict([("level", <netCDF4._netCDF4.Dimension object at 0x1b48030>),
+                 ("time", <netCDF4._netCDF4.Dimension object at 0x1b481c0>),
+                 ("lat", <netCDF4._netCDF4.Dimension object at 0x1b480f8>),
+                 ("lon", <netCDF4._netCDF4.Dimension object at 0x1b48a08>)])
 
 Calling the python `len` function with a `netCDF4.Dimension` instance returns
 the current size of that dimension.
-The `netCDF4.isunlimited<Dimension.isunlimited>` method of a `netCDF4.Dimension` instance
+The `netCDF4.Dimension.isunlimited` method of a `netCDF4.Dimension` instance
 can be used to determine if the dimensions is unlimited, or appendable.
 
->>> print len(lon)
-144
->>> print len.is_unlimited()
-False
->>> print time.is_unlimited()
-True
->>>
+    >>> print len(lon)
+    144
+    >>> print len.is_unlimited()
+    False
+    >>> print time.is_unlimited()
+    True
 
 Printing the `netCDF4.Dimension` object
 provides useful summary info, including the name and length of the dimension,
 and whether it is unlimited.
 
->>> for dimobj in rootgrp.dimensions.values():
->>>    print dimobj
-<type 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'level', size = 0
-<type 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0
-<type 'netCDF4._netCDF4.Dimension'>: name = 'lat', size = 73
-<type 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144
-<type 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0
->>>
+    >>> for dimobj in rootgrp.dimensions.values():
+    >>>    print dimobj
+    <type "netCDF4._netCDF4.Dimension"> (unlimited): name = "level", size = 0
+    <type "netCDF4._netCDF4.Dimension"> (unlimited): name = "time", size = 0
+    <type "netCDF4._netCDF4.Dimension">: name = "lat", size = 73
+    <type "netCDF4._netCDF4.Dimension">: name = "lon", size = 144
+    <type "netCDF4._netCDF4.Dimension"> (unlimited): name = "time", size = 0
 
 `netCDF4.Dimension` names can be changed using the
-`netCDF4.renameDimension<Dataset.renameDimension>` method of a `netCDF4.Dataset` or
+`netCDF4.Datatset.renameDimension` method of a `netCDF4.Dataset` or
 `netCDF4.Group` instance.
 
 4) Variables in a netCDF file
@@ -484,7 +481,7 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).
 shape of fancy temp slice =  (3, 3, 36, 71)
 >>>
 
-**Special note for scalar variables**: To extract data from a scalar variable
+***Special note for scalar variables***: To extract data from a scalar variable
 `v` with no associated dimensions, use `np.asarray(v)` or `v[...]`. The result
 will be a numpy scalar array.
 
@@ -1742,7 +1739,7 @@ createCompoundType(self, datatype, datatype_name)
 Creates a new compound data type named `datatype_name` from the numpy
 dtype object `datatype`.
 
-**Note**: If the new compound data type contains other compound data types
+***Attention***: If the new compound data type contains other compound data types
 (i.e. it is a 'nested' compound type, where not all of the elements
 are homogenous numeric data types), then the 'inner' compound types **must** be
 created first.
@@ -2105,7 +2102,7 @@ Call `netCDF4.set_auto_maskandscale` for all variables contained in this `netCDF
 **`True_or_False`** - Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.
 
-**Note**: Calling this function only affects existing variables. Variables created
+***Attention***: Calling this function only affects existing variables. Variables created
 after calling this function will follow the default behaviour.
         """
 
@@ -2128,7 +2125,7 @@ Call `netCDF4.set_auto_mask` for all variables contained in this `netCDF4.Datase
 **`True_or_False`** - Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.
 
-**Note**: Calling this function only affects existing variables. Variables created
+***Attention***: Calling this function only affects existing variables. Variables created
 after calling this function will follow the default behaviour.
         """
 
@@ -2150,7 +2147,7 @@ Call `netCDF4.set_auto_scale` for all variables contained in this `netCDF4.Datas
 **`True_or_False`** - Boolean determining if automatic variable scaling
 shall be applied for all variables.
 
-**Note**: Calling this function only affects existing variables. Variables created
+***Attention***: Calling this function only affects existing variables. Variables created
 after calling this function will follow the default behaviour.
         """
 
