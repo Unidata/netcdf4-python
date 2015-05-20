@@ -1397,7 +1397,7 @@ user).
     hierarchy separated by backslashes). A `netCDF4..Dataset` instance is the root
     group, so the path is simply `'/'`."""
     __pdoc__['Dataset.keepweakref']=\
-    """Child Dimension andn Variables objects only keep weak references to
+    """If `True`, child Dimension and Variables objects only keep weak references to
     parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
