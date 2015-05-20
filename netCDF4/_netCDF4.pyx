@@ -810,6 +810,7 @@ __version__ = "1.1.8"
 import posixpath
 import netcdftime
 import numpy
+import weakref
 import sys
 import warnings
 from glob import glob
@@ -1326,7 +1327,7 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','_isprimitive',
- 'file_format','_isvlen','_iscompound','_cmptype','_vltype','name','__orthogoral_indexing__']
+ 'file_format','_isvlen','_iscompound','_cmptype','_vltype','name','__orthogoral_indexing__','keepweakref']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -1347,10 +1348,12 @@ The class variables `dimensions, variables, groups, cmptypes, vltypes,
 data_model, disk_format` and `path` are read-only (and should not be modified by the
 user).
 """
+    cdef object __weakref__
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
-    file_format, data_model, cmptypes, vltypes, __orthogonal_indexing__
+    file_format, data_model, cmptypes, vltypes, __orthogonal_indexing__, \
+    keepweakref
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Dataset.dimensions']=\
     """The `dimensions` dictionary maps the names of
@@ -1393,12 +1396,15 @@ user).
     the `netCDF4..Dataset` in a unix directory format (the names of groups in the
     hierarchy separated by backslashes). A `netCDF4..Dataset` instance is the root
     group, so the path is simply `'/'`."""
+    __pdoc__['Dataset.keepweakref']=\
+    """Child Dimension andn Variables objects only keep weak references to
+    parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, **kwargs):
+                 diskless=False, persist=False, weakref=False, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
-        persist=False, format='NETCDF4')`**
+        persist=False, weakref=False, format='NETCDF4')`**
 
         `netCDF4.Dataset` constructor.
 
@@ -1439,6 +1445,19 @@ user).
         
         **`persist`**: if `diskless=True`, persist file to disk when closed
         (default `False`).
+
+        **`keepweakref`**: if `True`, child Dimension and Variable instances will keep weak
+        references to the parent Dataset or Group object.  Default is `False`, which
+        means strong references will be kept.  Having Dimension and Variable instances
+        keep a strong reference to the parent Dataset instance, which in turn keeps a
+        reference to child Dimension and Variable instances, creates circular references.
+        Circular references complicate garbage collection, which may mean increased
+        memory usage for programs that create may Dataset instances with lots of
+        Variables.  Setting `keepweakref=True` allows Dataset instances to be
+        garbage collected as soon as they go out of scope, potential reducing memory
+        usage.  However, in most cases this is not desirable, since the associated
+        Variable instances may still be needed, but are rendered unusable when the
+        parent Dataset instance is garbage collected.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
@@ -1523,6 +1542,7 @@ user).
         self._isopen = 1
         self.path = '/'
         self.parent = None
+        self.keepweakref = keepweakref
         # get compound and vlen types in the root Group.
         self.cmptypes, self.vltypes = _get_types(self)
         # get dimensions in the root group.
@@ -2187,6 +2207,7 @@ method)."""
         # parent group.
         self.parent = parent
         # propagate weak reference setting from parent.
+        self.keepweakref = parent.keepweakref
         if 'id' in kwargs:
             self._grpid = kwargs['id']
             # get compound and vlen types in this Group.
@@ -2270,7 +2291,12 @@ determine if the dimension is unlimited"""
         cdef char *dimname
         cdef size_t lendim
         self._grpid = grp._grpid
-        self._grp = grp
+        # make a weakref to group to avoid circular ref (issue 218)
+        # keep strong reference the default behaviour (issue 251)
+        if grp.keepweakref:
+            self._grp = weakref.proxy(grp)
+        else:
+            self._grp = grp
         self._data_model = grp.data_model
         self._name = name
         if 'id' in kwargs:
@@ -2546,7 +2572,12 @@ should not be modified by the user).
         if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
             dimensions = dimensions,
         self._grpid = grp._grpid
-        self._grp = grp
+        # make a weakref to group to avoid circular ref (issue 218)
+        # keep strong reference the default behaviour (issue 251)
+        if grp.keepweakref:
+            self._grp = weakref.proxy(grp)
+        else:
+            self._grp = grp
         # convert to a real numpy datatype object if necessary.
         if (not isinstance(datatype, CompoundType) and \
             not isinstance(datatype, VLType)) and \
