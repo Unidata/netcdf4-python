@@ -1401,7 +1401,7 @@ user).
     parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, weakref=False, **kwargs):
+                 diskless=False, persist=False, keepweakref=False, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, weakref=False, format='NETCDF4')`**
