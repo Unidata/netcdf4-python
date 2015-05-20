@@ -1874,7 +1874,7 @@ The return value is the `netCDF4.Variable` class instance describing the new
 variable.
 
 A list of names corresponding to netCDF variable attributes can be
-obtained with the `netCDF4.Variable` method `ncattrs()`. A dictionary
+obtained with the `netCDF4.Variable` method `netCDF4.Variable.ncattrs`. A dictionary
 containing all the netCDF attribute name/value pairs is provided by
 the `__dict__` attribute of a `netCDF4.Variable` instance.
 
@@ -4348,7 +4348,7 @@ convert a string array to a character array with one extra dimension
 
 **`a`**:  Input numpy string array with numpy datatype `'SN'` or `'UN'`, where N
 is the number of characters in each string.  Will be converted to
-an array of characters (datatype `'S1'` or `'U1'`) of shape `a.shape + (N,).`
+an array of characters (datatype `'S1'` or `'U1'`) of shape `a.shape + (N,)`.
 
 returns a numpy character array with datatype `'S1'` or `'U1'`
 and shape `a.shape + (N,)`, where N is the length of each string in a."""
@@ -4469,24 +4469,24 @@ and the `calendar` keyword. The returned datetime objects represent
 UTC with no time-zone offset, even if the specified
 `units` contain a time-zone offset.
 
-times: numeric time values.
+**`times`**: numeric time values.
 
-units: a string of the form `'**time units` since **reference time`**'
-describing the time units. **`time units`** can be days, hours, minutes,
-seconds, milliseconds or microseconds. **`reference time`** is the time
+**`units`**: a string of the form `<time units> since <reference time>`
+describing the time units. `<time units>` can be days, hours, minutes,
+seconds, milliseconds or microseconds. `<reference time>` is the time
 origin.  Accuracy is somewhere between a millisecond and a microsecond,
 depending on the time interval and the calendar used.
 
-calendar: describes the calendar used in the time calculations.
-All the values currently defined in the U{CF metadata convention
-<http://cf-pcmdi.llnl.gov/documents/cf-conventions/>` are supported.
+**`calendar`**: describes the calendar used in the time calculations.
+All the values currently defined in the 
+[CF metadata convention](http://cfconventions.org)
 Valid calendars `'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'`.
 Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 
-@return: a datetime instance, or an array of datetime instances.
+returns a datetime instance, or an array of datetime instances.
 
-The datetime instances returned are 'real' python datetime
+***Note***: The datetime instances returned are 'real' python datetime
 objects if `calendar='proleptic_gregorian'`, or
 `calendar = 'standard'` or `'gregorian'`
 and the date is after the breakpoint between the Julian and
@@ -4560,27 +4560,29 @@ def date2index(dates, nctime, calendar=None, select='exact'):
 
 Return indices of a netCDF time variable corresponding to the given dates.
 
-dates: A datetime object or a sequence of datetime objects.
+**`dates`**: A datetime object or a sequence of datetime objects.
 The datetime objects should not include a time-zone offset.
 
-nctime: A netCDF time variable object. The nctime object must have a
+**`nctime`**: A netCDF time variable object. The nctime object must have a
 `units` attribute.
 
-calendar: Describes the calendar used in the time calculation.
+**`calendar`**: describes the calendar used in the time calculations.
+All the values currently defined in the 
+[CF metadata convention](http://cfconventions.org)
 Valid calendars `'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'`.
-Default is `'standard'`, which is a mixed Julian/Gregorian calendar
+Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 If `calendar` is None, its value is given by `nctime.calendar` or
 `standard` if no such attribute exists.
 
-select: `'exact', 'before', 'after', 'nearest'`
+**`select`**: `'exact', 'before', 'after', 'nearest'`
 The index selection method. `exact` will return the indices perfectly
 matching the dates given. `before` and `after` will return the indices
 corresponding to the dates just before or just after the given dates if
 an exact match cannot be found. `nearest` will return the indices that
 correspond to the closest dates.
 
-@return: an index (indices) of the netCDF time variable corresponding
+returns an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
     """
     if calendar == None:
@@ -4598,70 +4600,63 @@ to the given datetime object(s).
 
 class MFDataset(Dataset):
     """
-MFDataset(self, files, check=False, aggdim=None, exclude=[])
-
 Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
 
 Datasets must be in `NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT`
 format (`NETCDF4` Datasets won't work).
 
-Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>` by Andre Gosselin.
+Adapted from [pycdf](http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 
-Example usage:
+Example usage (See `netCDF4.MFDataset.__init__` for more details):
 
->>> import numpy
->>> # create a series of netCDF files with a variable sharing
->>> # the same unlimited dimension.
->>> for nf in range(10):
->>>     f = Dataset('mftest%s.nc' % nf,'w')
->>>     f.createDimension('x',None)
->>>     x = f.createVariable('x','i',('x',))
->>>     x[0:10] = numpy.arange(nf*10,10*(nf+1))
->>>     f.close()
->>> # now read all those files in at once, in one Dataset.
->>> f = MFDataset('mftest*nc')
->>> print f.variables['x'][:]
-[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
- 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
- 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
- 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
+    >>> import numpy
+    >>> # create a series of netCDF files with a variable sharing
+    >>> # the same unlimited dimension.
+    >>> for nf in range(10):
+    >>>     f = Dataset("mftest%s.nc" % nf,"w")
+    >>>     f.createDimension("x",None)
+    >>>     x = f.createVariable("x","i",("x",))
+    >>>     x[0:10] = numpy.arange(nf*10,10*(nf+1))
+    >>>     f.close()
+    >>> # now read all those files in at once, in one Dataset.
+    >>> f = MFDataset("mftest*nc")
+    >>> print f.variables["x"][:]
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+     25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
+     50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
+     75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
     """
 
     def __init__(self, files, check=False, aggdim=None, exclude=[]):
         """
         **`__init__(self, files, check=False, aggdim=None, exclude=[])`**
-Open a Dataset spanning multiple files, making it look as if it was a
-single file. Variables in the list of files that share the same
-dimension (specified with the keyword `aggdim`) are aggregated. If
-`aggdim` is not specified, the unlimited is aggregated.  Currently,
-`aggdim` must be the leftmost (slowest varying) dimension of each
-of the variables to be aggregated.
 
-Adapted from U{pycdf <http://pysclint.sourceforge.net/pycdf>` by Andre Gosselin.
-
-Usage:
-
-nc = MFDataset(files, check=False, aggdim=None, exclude=[])
-
-files: either a sequence of netCDF files or a string with a
-wildcard (converted to a sorted list of files using glob)  The first file
-in the list will become the "master" file, defining all the
-variables with an aggregation dimension which may span
-subsequent files. Attribute access returns attributes only from "master"
-file. The files are always opened in read-only mode.
-
-check: True if you want to do consistency checking to ensure the
-correct variables structure for all of the netcdf files.  Checking makes
-the initialization of the MFDataset instance much slower. Default is
-False.
-
-aggdim: The name of the dimension to aggregate over (must
-be the leftmost dimension of each of the variables to be aggregated).
-If None (default), aggregate over the unlimited dimension.
-
-exclude: A list of variable names to exclude from aggregation.
-Default is an empty list.
+        Open a Dataset spanning multiple files, making it look as if it was a
+        single file. Variables in the list of files that share the same
+        dimension (specified with the keyword `aggdim`) are aggregated. If
+        `aggdim` is not specified, the unlimited is aggregated.  Currently,
+        `aggdim` must be the leftmost (slowest varying) dimension of each
+        of the variables to be aggregated.
+        
+        **`files`**: either a sequence of netCDF files or a string with a
+        wildcard (converted to a sorted list of files using glob)  The first file
+        in the list will become the "master" file, defining all the
+        variables with an aggregation dimension which may span
+        subsequent files. Attribute access returns attributes only from "master"
+        file. The files are always opened in read-only mode.
+        
+        **`check`**: True if you want to do consistency checking to ensure the
+        correct variables structure for all of the netcdf files.  Checking makes
+        the initialization of the MFDataset instance much slower. Default is
+        False.
+        
+        **`aggdim`**: The name of the dimension to aggregate over (must
+        be the leftmost dimension of each of the variables to be aggregated).
+        If None (default), aggregate over the unlimited dimension.
+        
+        **`exclude`**: A list of variable names to exclude from aggregation.
+        Default is an empty list.
        """
 
         # Open the master file in the base class, so that the CDFMF instance
@@ -5018,49 +5013,49 @@ class _Variable(object):
 
 class MFTime(_Variable):
     """
-MFTime(self, time, units=None)
-
 Class providing an interface to a MFDataset time Variable by imposing a unique common
 time unit to all files.
 
-Example usage:
+Example usage (See `netCDF4.MFTime.__init__` for more details):
 
->>> import numpy
->>> f1 = Dataset('mftest_1.nc','w', format='NETCDF4_CLASSIC')
->>> f2 = Dataset('mftest_2.nc','w', format='NETCDF4_CLASSIC')
->>> f1.createDimension('time',None)
->>> f2.createDimension('time',None)
->>> t1 = f1.createVariable('time','i',('time',))
->>> t2 = f2.createVariable('time','i',('time',))
->>> t1.units = 'days since 2000-01-01'
->>> t2.units = 'days since 2000-02-01'
->>> t1.calendar = 'standard'
->>> t2.calendar = 'standard'
->>> t1[:] = numpy.arange(31)
->>> t2[:] = numpy.arange(30)
->>> f1.close()
->>> f2.close()
->>> # Read the two files in at once, in one Dataset.
->>> f = MFDataset('mftest*nc')
->>> t = f.variables['time']
->>> print t.units
-days since 2000-01-01
->>> print t[32] # The value written in the file, inconsistent with the MF time units.
-1
->>> T = MFTime(t)
->>> print T[32]
-32
+    >>> import numpy
+    >>> f1 = Dataset("mftest_1.nc","w", format="NETCDF4_CLASSIC")
+    >>> f2 = Dataset("mftest_2.nc","w", format="NETCDF4_CLASSIC")
+    >>> f1.createDimension("time",None)
+    >>> f2.createDimension("time",None)
+    >>> t1 = f1.createVariable("time","i",("time",))
+    >>> t2 = f2.createVariable("time","i",("time",))
+    >>> t1.units = "days since 2000-01-01"
+    >>> t2.units = "days since 2000-02-01"
+    >>> t1.calendar = "standard"
+    >>> t2.calendar = "standard"
+    >>> t1[:] = numpy.arange(31)
+    >>> t2[:] = numpy.arange(30)
+    >>> f1.close()
+    >>> f2.close()
+    >>> # Read the two files in at once, in one Dataset.
+    >>> f = MFDataset("mftest*nc")
+    >>> t = f.variables["time"]
+    >>> print t.units
+    days since 2000-01-01
+    >>> print t[32] # The value written in the file, inconsistent with the MF time units.
+    1
+    >>> T = MFTime(t)
+    >>> print T[32]
+    32
     """
 
     def __init__(self, time, units=None):
         """
-Create a time Variable with units consistent across a multifile
-dataset.
+        **`__init__(self, time, units=None)`**
 
-**`time`**: Time variable from a `netCDF4.MFDataset`.
-
-**`units`**: Time units, for example, `days since 1979-01-01`. If None, use
-the units from the master variable.
+        Create a time Variable with units consistent across a multifile
+        dataset.
+        
+        **`time`**: Time variable from a `netCDF4.MFDataset`.
+        
+        **`units`**: Time units, for example, `days since 1979-01-01`. If None, use
+        the units from the master variable.
         """
         import datetime
         self.__time = time
