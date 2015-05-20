@@ -835,7 +835,7 @@ def _gethdf5libversion():
 
 def getlibversion():
     """
-getlibversion()
+**`getlibversion()`**
 
 returns a string describing the version of the netcdf library
 used to build the module, and when it was built.
@@ -1419,7 +1419,7 @@ user).
         will clobber an existing file with the same name.  if `False`, an
         exception will be raised if a file with the same name already exists.
         
-        **`format`** - underlying file format (one of `'NETCDF4',
+        **`format`**: underlying file format (one of `'NETCDF4',
         'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'` or `'NETCDF3_64BIT'`.  Only
         relevant if `mode = 'w'` (if `mode = 'r','a'` or `'r+'` the file format
         is automatically detected). Default `'NETCDF4'`, which means the data is
@@ -1433,10 +1433,12 @@ user).
         is only compatible with clients linked against netCDF version 3.6.0 or
         later.
         
-        `diskless` - create diskless (in memory) file.  This is an experimental
-        feature added to the C library after the netcdf-4.2 release.
+        **`diskless`**: If `True`, create diskless (in memory) file.  
+        This is an experimental feature added to the C library after the
+        netcdf-4.2 release.
         
-        `persist` - if diskless=True, persist file to disk when closed (default False).
+        **`persist`**: if `diskless=True`, persist file to disk when closed
+        (default `False`).
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
@@ -1610,7 +1612,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
     def close(self):
         """
-close(self)
+**`close(self)`**
 
 Close the Dataset.
         """
@@ -1628,7 +1630,7 @@ Close the Dataset.
 
     def sync(self):
         """
-sync(self)
+**`sync(self)`**
 
 Writes all buffered data in the `netCDF4.Dataset` to the disk file."""
         cdef int ierr
@@ -1646,7 +1648,7 @@ Writes all buffered data in the `netCDF4.Dataset` to the disk file."""
 
     def set_fill_on(self):
         """
-set_fill_on(self)
+**`set_fill_on(self)`**
 
 Sets the fill mode for a `netCDF4.Dataset` open for writing to `on`.
 
@@ -1664,7 +1666,7 @@ to."""
 
     def set_fill_off(self):
         """
-set_fill_off(self)
+**`set_fill_off(self)`**
 
 Sets the fill mode for a `netCDF4.Dataset` open for writing to `off`.
 
@@ -1678,7 +1680,7 @@ sure the data is actually written before being read."""
 
     def createDimension(self, dimname, size=None):
         """
-createDimension(self, dimname, size=None)
+**`createDimension(self, dimname, size=None)`**
 
 Creates a new dimension with the given `dimname` and `size`.
 
@@ -1688,13 +1690,13 @@ results in an unlimited dimension. The return value is the `netCDF4.Dimension`
 class instance describing the new dimension.  To determine the current
 maximum size of the dimension, use the `len` function on the `netCDF4.Dimension`
 instance. To determine if a dimension is 'unlimited', use the
-`isunlimited()` method of the `netCDF4.Dimension` instance."""
+`netCDF4.Dimension.isunlimited` method of the `netCDF4.Dimension` instance."""
         self.dimensions[dimname] = Dimension(self, dimname, size=size)
         return self.dimensions[dimname]
 
     def renameDimension(self, oldname, newname):
         """
-renameDimension(self, oldname, newname)
+**`renameDimension(self, oldname, newname)`**
 
 rename a `netCDF4.Dimension` named `oldname` to `newname`."""
         cdef char *namstring
@@ -1718,7 +1720,7 @@ rename a `netCDF4.Dimension` named `oldname` to `newname`."""
 
     def createCompoundType(self, datatype, datatype_name):
         """
-createCompoundType(self, datatype, datatype_name)
+**`createCompoundType(self, datatype, datatype_name)`**
 
 Creates a new compound data type named `datatype_name` from the numpy
 dtype object `datatype`.
@@ -1751,7 +1753,9 @@ datatype."""
             chunksizes=None, endian='native', least_significant_digit=None,
             fill_value=None, chunk_cache=None):
         """
-createVariable(self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, fill_value=None)
+**`createVariable(self, varname, datatype, dimensions=(), zlib=False,
+complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
+endian='native', least_significant_digit=None, fill_value=None)`**
 
 Creates a new variable with the given `varname`, `datatype`, and
 `dimensions`. If dimensions are not given, the variable is assumed to be
@@ -1779,7 +1783,7 @@ Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.
 
 `dimensions` must be a tuple containing dimension names (strings) that
-have been defined previously using `createDimension`. The default value
+have been defined previously using `netCDF4.createDimension`. The default value
 is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
@@ -1802,8 +1806,8 @@ a variable with an unlimited dimension will trigger an error.
 
 The optional keyword `chunksizes` can be used to manually specify the
 HDF5 chunksizes for each dimension of the variable. A detailed
-discussion of HDF chunking and I/O performance is available U{here
-<http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>`.
+discussion of HDF chunking and I/O performance is available
+[here](http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html).
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
 from the file.  `chunksizes` cannot be set if `contiguous=True`.
@@ -1831,7 +1835,7 @@ efficient compression. For example, if `least_significant_digit=1`,
 data will be quantized using `numpy.around(scale*data)/scale`, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
 retained (in this case bits=4). From
-U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml`:
+[](http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml):
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is `None`, or no
 quantization, or 'lossless' compression.
@@ -1888,7 +1892,7 @@ is the number of variable dimensions."""
 
     def renameVariable(self, oldname, newname):
         """
-renameVariable(self, oldname, newname)
+**`renameVariable(self, oldname, newname)`**
 
 rename a `netCDF4.Variable` named `oldname` to `newname`"""
         cdef char *namstring
@@ -1910,7 +1914,7 @@ rename a `netCDF4.Variable` named `oldname` to `newname`"""
 
     def createGroup(self, groupname):
         """
-createGroup(self, groupname)
+**`createGroup(self, groupname)`**
 
 Creates a new `netCDF4.Group` with the given `groupname`.
 
@@ -1940,28 +1944,28 @@ The return value is a `netCDF4.Group` class instance."""
 
     def ncattrs(self):
         """
-ncattrs(self)
+**`ncattrs(self)`**
 
 return netCDF global attribute names for this `netCDF4.Dataset` or `netCDF4.Group` in a list."""
         return _get_att_names(self._grpid, NC_GLOBAL)
 
     def setncattr(self,name,value):
         """
-setncattr(self,name,value)
+**`setncattr(self,name,value)`**
 
-set a netCDF dataset or group attribute using name,value pair.  Only use if you need to set a
-netCDF attribute with the same name as one of the reserved python
-attributes."""
+set a netCDF dataset or group attribute using name,value pair.
+Use if you need to set a netCDF attribute with the
+with the same name as one of the reserved python attributes."""
         if self.data_model != 'NETCDF4': self._redef()
         _set_att(self, NC_GLOBAL, name, value)
         if self.data_model !=  'NETCDF4': self._enddef()
 
     def setncatts(self,attdict):
         """
-setncatts(self,attdict)
+**`setncatts(self,attdict)`**
 
 set a bunch of netCDF dataset or group attributes at once using a python dictionary.
-This may be faster when setting a lot of attributes for a NETCDF3
+This may be faster when setting a lot of attributes for a `NETCDF3`
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute"""
         if self.data_model != 'NETCDF4': self._redef()
@@ -1971,11 +1975,11 @@ each attribute"""
 
     def getncattr(self,name):
         """
-getncattr(self,name)
+**`getncattr(self,name)`**
 
-retrievel a netCDF dataset or group attribute.  Only use if you need to set a
-netCDF attribute with the same name as one of the reserved python
-attributes."""
+retrievel a netCDF dataset or group attribute.
+Use if you need to get a netCDF attribute with the same 
+name as one of the reserved python attributes."""
         return _get_att(self, NC_GLOBAL, name)
 
     def __delattr__(self,name):
@@ -1988,9 +1992,9 @@ attributes."""
 
     def delncattr(self, name):
         """
-delncattr(self,name,value)
+**`delncattr(self,name,value)`**
 
-delete a netCDF dataset or group attribute.  Only use if you need to delete a
+delete a netCDF dataset or group attribute.  Use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
@@ -2035,7 +2039,7 @@ attributes."""
 
     def renameAttribute(self, oldname, newname):
         """
-renameAttribute(self, oldname, newname)
+**`renameAttribute(self, oldname, newname)`**
 
 rename a `netCDF4.Dataset` or `netCDF4.Group` attribute named `oldname` to `newname`."""
         cdef int ierr
@@ -2051,7 +2055,7 @@ rename a `netCDF4.Dataset` or `netCDF4.Group` attribute named `oldname` to `newn
 
     def renameGroup(self, oldname, newname):
         """
-renameGroup(self, oldname, newname)
+**`renameGroup(self, oldname, newname)`**
 
 rename a `netCDF4.Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)."""
         cdef int ierr
@@ -2078,12 +2082,12 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
     def set_auto_maskandscale(self, value):
         """
-set_auto_maskandscale(self, True_or_False)
+**`set_auto_maskandscale(self, True_or_False)`**
 
 Call `netCDF4.set_auto_maskandscale` for all variables contained in this `netCDF4.Dataset` or
 `netCDF4.Group`, as well as for all variables in all its subgroups.
 
-**`True_or_False`** - Boolean determining if automatic conversion to masked arrays
+**`True_or_False`**: Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.
 
 ***Attention***: Calling this function only affects existing variables. Variables created
@@ -2101,12 +2105,12 @@ after calling this function will follow the default behaviour.
 
     def set_auto_mask(self, value):
         """
-set_auto_mask(self, True_or_False)
+**`set_auto_mask(self, True_or_False)`**
 
 Call `netCDF4.set_auto_mask` for all variables contained in this `netCDF4.Dataset` or
 `netCDF4.Group`, as well as for all variables in all its subgroups.
 
-**`True_or_False`** - Boolean determining if automatic conversion to masked arrays
+**`True_or_False`**: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.
 
 ***Attention***: Calling this function only affects existing variables. Variables created
@@ -2123,12 +2127,12 @@ after calling this function will follow the default behaviour.
 
     def set_auto_scale(self, value):
         """
-set_auto_scale(self, True_or_False)
+**`set_auto_scale(self, True_or_False)`**
 
 Call `netCDF4.set_auto_scale` for all variables contained in this `netCDF4.Dataset` or
 `netCDF4.Group`, as well as for all variables in all its subgroups.
 
-**`True_or_False`** - Boolean determining if automatic variable scaling
+**`True_or_False`**: Boolean determining if automatic variable scaling
 shall be applied for all variables.
 
 ***Attention***: Calling this function only affects existing variables. Variables created
@@ -2231,31 +2235,35 @@ instances, raises IOError."""
 
 cdef class Dimension:
     """
-Dimension(self, group, name, size=None)
-
 A netCDF `netCDF4.Dimension` is used to describe the coordinates of a `netCDF4.Variable`.
-
-`netCDF4.Dimension` instances should be created using the
-`netCDF4.createDimension<Dataset.createDimension>` method of a `netCDF4.Group` or
-`netCDF4.Dataset` instance, not using this class directly.
-
-**`group`**: `netCDF4.Group` instance to associate with dimension.
-
-**`name`**: Name of the dimension.
-
-**`size`**: Size of the dimension. `None` or 0 means unlimited. (Default `None`).
-
-returns a `netCDF4.Dimension` instance.  All further operations on the netCDF Dimension
-are accomplised via `netCDF4.Dimension` instance methods.
 
 The current maximum size of a `netCDF4.Dimension` instance can be obtained by
 calling the python `len` function on the `netCDF4.Dimension` instance. The
-`isunlimited()` method of a `netCDF4.Dimension` instance can be used to
+`netCDF4.Dimension.isunlimited` method of a `netCDF4.Dimension` instance can be used to
 determine if the dimension is unlimited"""
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
+    # Docstrings for class variables (used by pdoc).
+    __pdoc__['Dimension.name']=\
+    """A string describing the name of the `netCDF4.Dimension` - used when creating a
+    `netCDF4.Variable` instance with `netCDF4.Dataset.createVariable`."""
 
     def __init__(self, grp, name, size=None, **kwargs):
+        """
+        **`__init__(self, group, name, size=None)`**
+
+        `netCDF4.Dimension` constructor.
+
+        **`group`**: `netCDF4.Group` instance to associate with dimension.
+        
+        **`name`**: Name of the dimension.
+        
+        **`size`**: Size of the dimension. `None` or 0 means unlimited. (Default `None`).
+
+        ***Attention***: `netCDF4.Dimension` instances should be created using the
+        `netCDF4.Dataset.createDimension` method of a `netCDF4.Group` or
+        `netCDF4.Dataset` instance, not using `netCDF4.Dimension.__init__` directly.
+        """
         cdef int ierr
         cdef char *dimname
         cdef size_t lendim
@@ -2322,14 +2330,14 @@ determine if the dimension is unlimited"""
 
     def group(self):
         """
-group(self)
+**`group(self)`**
 
 return the group that this `netCDF4.Dimension` is a member of."""
         return self._grp
 
     def isunlimited(self):
         """
-isunlimited(self)
+**`isunlimited(self)`**
 
 returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwise."""
         cdef int ierr, n, numunlimdims, ndims, nvars, ngatts, xdimid
