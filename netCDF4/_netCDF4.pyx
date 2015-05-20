@@ -1725,7 +1725,7 @@ rename a `netCDF4.Dimension` named `oldname` to `newname`."""
 Creates a new compound data type named `datatype_name` from the numpy
 dtype object `datatype`.
 
-***Attention***: If the new compound data type contains other compound data types
+***Note***: If the new compound data type contains other compound data types
 (i.e. it is a 'nested' compound type, where not all of the elements
 are homogenous numeric data types), then the 'inner' compound types **must** be
 created first.
@@ -2090,7 +2090,7 @@ Call `netCDF4.set_auto_maskandscale` for all variables contained in this `netCDF
 **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.
 
-***Attention***: Calling this function only affects existing variables. Variables created
+***Note***: Calling this function only affects existing variables. Variables created
 after calling this function will follow the default behaviour.
         """
 
@@ -2113,7 +2113,7 @@ Call `netCDF4.set_auto_mask` for all variables contained in this `netCDF4.Datase
 **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.
 
-***Attention***: Calling this function only affects existing variables. Variables created
+***Note***: Calling this function only affects existing variables. Variables created
 after calling this function will follow the default behaviour.
         """
 
@@ -2135,7 +2135,7 @@ Call `netCDF4.set_auto_scale` for all variables contained in this `netCDF4.Datas
 **`True_or_False`**: Boolean determining if automatic variable scaling
 shall be applied for all variables.
 
-***Attention***: Calling this function only affects existing variables. Variables created
+***Note***: Calling this function only affects existing variables. Variables created
 after calling this function will follow the default behaviour.
         """
 
@@ -2150,29 +2150,31 @@ after calling this function will follow the default behaviour.
 
 cdef class Group(Dataset):
     """
-Group(self, parent, name)
-
 Groups define a hierarchical namespace within a netCDF file. They are
 analagous to directories in a unix filesystem. Each `netCDF4.Group` behaves like
 a `netCDF4.Dataset` within a Dataset, and can contain it's own variables,
 dimensions and attributes (and other Groups).
 
-`netCDF4.Group` instances should be created using the
-`netCDF4.createGroup<Dataset.createGroup>` method of a `netCDF4.Dataset` instance, or
-another `netCDF4.Group` instance, not using this class directly.
-
-**`parent`**: `netCDF4.Group` instance for the parent group.  If being created
-in the root group, use a `netCDF4.Dataset` instance.
-
-**`name`**: - Name of the group.
-
-returns a `netCDF4.Group` instance.  All further operations on the netCDF
-Group are accomplished via `netCDF4.Group` instance methods.
-
 `netCDF4.Group` inherits from `netCDF4.Dataset`, so all the `netCDF4.Dataset` class methods and
 variables are available to a `netCDF4.Group` instance (except the `close`
 method)."""
+    # Docstrings for class variables (used by pdoc).
+    __pdoc__['Group.name']=\
+    """A string describing the name of the `netCDF4.Group`."""
     def __init__(self, parent, name, **kwargs):
+        """
+        **`__init__(self, parent, name)`**
+        `netCDF4.Group` constructor.
+        
+        **`parent`**: `netCDF4.Group` instance for the parent group.  If being created
+        in the root group, use a `netCDF4.Dataset` instance.
+        
+        **`name`**: - Name of the group.
+
+        **Note**: `netCDF4.Group` instances should be created using the
+        `netCDF4.Dataset.createGroup` method of a `netCDF4.Dataset` instance, or
+        another `netCDF4.Group` instance, not using this class directly.
+        """
         cdef int ierr
         cdef char *groupname
         # flag to indicate that Variables in this Group support orthogonal indexing.
@@ -2209,7 +2211,7 @@ method)."""
 
     def close(self):
         """
-close(self)
+**`close(self)`**
 
 overrides `netCDF4.Dataset` close method which does not apply to `netCDF4.Group`
 instances, raises IOError."""
@@ -2260,7 +2262,7 @@ determine if the dimension is unlimited"""
         
         **`size`**: Size of the dimension. `None` or 0 means unlimited. (Default `None`).
 
-        ***Attention***: `netCDF4.Dimension` instances should be created using the
+        ***Note***: `netCDF4.Dimension` instances should be created using the
         `netCDF4.Dataset.createDimension` method of a `netCDF4.Group` or
         `netCDF4.Dataset` instance, not using `netCDF4.Dimension.__init__` directly.
         """
@@ -2372,100 +2374,11 @@ returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwi
 
 cdef class Variable:
     """
-Variable(self, group, name, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None,fill_value=None)
-
 A netCDF `netCDF4.Variable` is used to read and write netCDF data.  They are
 analagous to numpy array objects.
 
-`netCDF4.Variable` instances should be created using the
-`netCDF4.createVariable<Dataset.createVariable>` method of a `netCDF4.Dataset` or
-`netCDF4.Group` instance, not using this class directly.
-
-**`group`**: `netCDF4.Group` or `netCDF4.Dataset` instance to associate with variable.
-
-**`name`**: Name of the variable.
-
-**`datatype`**: `netCDF4.Variable` data type. Can be specified by providing a
-numpy dtype object, or a string that describes a numpy dtype object.
-Supported values, corresponding to `str` attribute of numpy dtype
-objects, include `'f4'` (32-bit floating point), `'f8'` (64-bit floating
-point), `'i4'` (32-bit signed integer), `'i2'` (16-bit signed integer),
-`'i8'` (64-bit singed integer), `'i4'` (8-bit singed integer), `'i1'`
-(8-bit signed integer), `'u1'` (8-bit unsigned integer), `'u2'` (16-bit
-unsigned integer), `'u4'` (32-bit unsigned integer), `'u8'` (64-bit
-unsigned integer), or `'S1'` (single-character string).  From
-compatibility with Scientific.IO.NetCDF, the old Numeric single character
-typecodes can also be used (`'f'` instead of `'f4'`, `'d'` instead of
-`'f8'`, `'h'` or `'s'` instead of `'i2'`, `'b'` or `'B'` instead of
-`'i1'`, `'c'` instead of `'S1'`, and `'i'` or `'l'` instead of
-`'i4'`). `datatype` can also be a `netCDF4.CompoundType` instance
-(for a structured, or compound array), a `netCDF4.VLType` instance
-(for a variable-length array), or the python `str` builtin
-(for a variable-length string array). Numpy string and unicode datatypes with
-length greater than one are aliases for `str`.
-
-**`dimensions`** - a tuple containing the variable's dimension names
-(defined previously with `createDimension`). Default is an empty tuple
-which means the variable is a scalar (and therefore has no dimensions).
-
-**`zlib`** - if `True`, data assigned to the `netCDF4.Variable`
-instance is compressed on disk. Default `False`.
-
-**`complevel`** - the level of zlib compression to use (1 is the fastest,
-but poorest compression, 9 is the slowest but best compression). Default 4.
-Ignored if `zlib=False`.
-
-**`shuffle`** - if `True`, the HDF5 shuffle filter is applied
-to improve compression. Default `True`. Ignored if `zlib=False`.
-
-**`fletcher32`** - if `True` (default `False`), the Fletcher32 checksum
-algorithm is used for error detection.
-
-**`contiguous`** - if `True` (default `False`), the variable data is
-stored contiguously on disk.  Default `False`. Setting to `True` for
-a variable with an unlimited dimension will trigger an error.
-
-**`chunksizes`** - Can be used to specify the HDF5 chunksizes for each
-dimension of the variable. A detailed discussion of HDF chunking and I/O
-performance is available U{here
-<http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>`.
-Basically, you want the chunk size for each dimension to match as
-closely as possible the size of the data block that users will read
-from the file. `chunksizes` cannot be set if `contiguous=True`.
-
-**`endian`** - Can be used to control whether the
-data is stored in little or big endian format on disk. Possible
-values are `little, big` or `native` (default). The library
-will automatically handle endian conversions when the data is read,
-but if the data is always going to be read on a computer with the
-opposite format as the one used to create the file, there may be
-some performance advantage to be gained by setting the endian-ness.
-For netCDF 3 files (that don't use HDF5), only `endian='native'` is allowed.
-
-The `zlib, complevel, shuffle, fletcher32, contiguous` and {chunksizes`
-keywords are silently ignored for netCDF 3 files that do not use HDF5.
-
-**`least_significant_digit`** - If specified, variable data will be
-truncated (quantized). In conjunction with `zlib=True` this produces
-'lossy', but significantly more efficient compression. For example, if
-`least_significant_digit=1`, data will be quantized using
-around(scale*data)/scale, where scale = 2**bits, and bits is determined
-so that a precision of 0.1 is retained (in this case bits=4). Default is
-`None`, or no quantization.
-
-**`fill_value`** - If specified, the default netCDF `_FillValue` (the
-value that the variable gets filled with before any data is written to it)
-is replaced with this value.  If fill_value is set to `False`, then
-the variable is not pre-filled. The default netCDF fill values can be found
-in netCDF4.default_fillvals.
-
-**Returns:`
-
-a `netCDF4.Variable` instance.  All further operations on the netCDF Variable are
-accomplised via `netCDF4.Variable` instance methods.
-
 A list of attribute names corresponding to netCDF attributes defined for
-the variable can be obtained with the `ncattrs()` method. These
+the variable can be obtained with the `netCDF4.Variable.ncattrs` method. These
 attributes can be created by assigning to an attribute of the
 `netCDF4.Variable` instance. A dictionary containing all the netCDF attribute
 name/value pairs is provided by the `__dict__` attribute of a
@@ -2474,42 +2387,147 @@ name/value pairs is provided by the `__dict__` attribute of a
 The instance variables `dimensions, dtype, ndim, shape`
 and `least_significant_digit` are read-only (and
 should not be modified by the user).
-
-@ivar dimensions: A tuple containing the names of the dimensions
-associated with this variable.
-
-@ivar dtype: A numpy dtype object describing the variable's data type.
-
-@ivar ndim: The number of variable dimensions.
-
-@ivar shape: a tuple describing the current size of all the variable's
-dimensions.
-
-@ivar scale:  if True, `scale_factor` and `add_offset` are automatically
-applied. Default is `True`, can be reset using `netCDF4.set_auto_scale` and
-`netCDF4.set_auto_maskandscale` methods.
-
-@ivar mask:  if True, data is automatically converted to/from masked arrays
-when missing values or fill values are present. Default is `True`, can be
-reset using `netCDF4.set_auto_mask` and `netCDF4.set_auto_maskandscale` methods.
-
-@ivar least_significant_digit: Describes the power of ten of the smallest
-decimal place in the data the contains a reliable value.  Data is
-truncated to this decimal place when it is assigned to the `netCDF4.Variable`
-instance. If `None`, the data is not truncated. 
-
-@ivar __orthogonal_indexing__: Always `True`.  Indicates to client code
-that the object supports "orthogonal indexing", which means that slices
-that are 1d arrays or lists slice along each dimension independently.  This
-behavior is similar to Fortran or Matlab, but different than numpy."""
+    """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
     _isvlen, _grp, _cmptype, _vltype, __orthogonal_indexing__
+    # Docstrings for class variables (used by pdoc).
+    __pdoc__['Variable.dimensions'] = \
+    """A tuple containing the names of the
+    dimensions associated with this variable."""
+    __pdoc__['Variable.dtype'] = \
+    """A numpy dtype object describing the
+    variable's data type."""
+    __pdoc__['Variable.ndim'] = \
+    """The number of variable dimensions."""
+    __pdoc__['Variable.shape'] = \
+    """A tuple describing the current size of all
+    the variable's dimensions."""
+    __pdoc__['Variable.scale'] = \
+    """if True, `scale_factor` and `add_offset` are
+    applied. Default is `True`, can be reset using `netCDF4.set_auto_scale` and
+    `netCDF4.set_auto_maskandscale` methods."""
+    __pdoc__['Variable.mask'] = \
+    """If True, data is automatically converted to/from masked 
+    arrays when missing values or fill values are present. Default is `True`, can be
+    reset using `netCDF4.set_auto_mask` and `netCDF4.set_auto_maskandscale`
+    methods."""
+    __pdoc__['Variable.least_significant_digit'] = \
+    """Describes the power of ten of the 
+    smallest decimal place in the data the contains a reliable value.  Data is
+    truncated to this decimal place when it is assigned to the `netCDF4.Variable`
+    instance. If `None`, the data is not truncated."""
+    __pdoc__['Variable.__orthogonal_indexing__'] = \
+    """Always `True`.  Indicates to client code
+    that the object supports 'orthogonal indexing', which means that slices
+    that are 1d arrays or lists slice along each dimension independently.  This
+    behavior is similar to Fortran or Matlab, but different than numpy."""
+    __pdoc__['Variable.datatype'] = \
+     """numpy data type (for primitive data types) or VLType/CompoundType
+     instance (for compound or vlen data types)."""
+    __pdoc__['Variable.name'] = \
+    """String name."""
+    __pdoc__['Variable.shape'] = \
+    """A tuple with the current shape (length of all dimensions)."""
+    __pdoc__['Variable.size'] = \
+    """The number of stored elements."""
+    __pdoc__['Variable.dimension'] = \
+    """A tuple with the associated dimension names."""
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             fill_value=None, chunk_cache=None, **kwargs):
+        """
+        **`__init__(self, group, name, datatype, dimensions=(), zlib=False,
+        complevel=4, shuffle=True, fletcher32=False, contiguous=False,
+        chunksizes=None, endian='native',
+        least_significant_digit=None,fill_value=None)`**
+
+        `netCDF4.Variable` constructor.
+
+        **`group`**: `netCDF4.Group` or `netCDF4.Dataset` instance to associate with variable.
+        
+        **`name`**: Name of the variable.
+        
+        **`datatype`**: `netCDF4.Variable` data type. Can be specified by providing a
+        numpy dtype object, or a string that describes a numpy dtype object.
+        Supported values, corresponding to `str` attribute of numpy dtype
+        objects, include `'f4'` (32-bit floating point), `'f8'` (64-bit floating
+        point), `'i4'` (32-bit signed integer), `'i2'` (16-bit signed integer),
+        `'i8'` (64-bit singed integer), `'i4'` (8-bit singed integer), `'i1'`
+        (8-bit signed integer), `'u1'` (8-bit unsigned integer), `'u2'` (16-bit
+        unsigned integer), `'u4'` (32-bit unsigned integer), `'u8'` (64-bit
+        unsigned integer), or `'S1'` (single-character string).  From
+        compatibility with Scientific.IO.NetCDF, the old Numeric single character
+        typecodes can also be used (`'f'` instead of `'f4'`, `'d'` instead of
+        `'f8'`, `'h'` or `'s'` instead of `'i2'`, `'b'` or `'B'` instead of
+        `'i1'`, `'c'` instead of `'S1'`, and `'i'` or `'l'` instead of
+        `'i4'`). `datatype` can also be a `netCDF4.CompoundType` instance
+        (for a structured, or compound array), a `netCDF4.VLType` instance
+        (for a variable-length array), or the python `str` builtin
+        (for a variable-length string array). Numpy string and unicode datatypes with
+        length greater than one are aliases for `str`.
+        
+        **`dimensions`** - a tuple containing the variable's dimension names
+        (defined previously with `createDimension`). Default is an empty tuple
+        which means the variable is a scalar (and therefore has no dimensions).
+        
+        **`zlib`** - if `True`, data assigned to the `netCDF4.Variable`
+        instance is compressed on disk. Default `False`.
+        
+        **`complevel`** - the level of zlib compression to use (1 is the fastest,
+        but poorest compression, 9 is the slowest but best compression). Default 4.
+        Ignored if `zlib=False`.
+        
+        **`shuffle`** - if `True`, the HDF5 shuffle filter is applied
+        to improve compression. Default `True`. Ignored if `zlib=False`.
+        
+        **`fletcher32`** - if `True` (default `False`), the Fletcher32 checksum
+        algorithm is used for error detection.
+        
+        **`contiguous`** - if `True` (default `False`), the variable data is
+        stored contiguously on disk.  Default `False`. Setting to `True` for
+        a variable with an unlimited dimension will trigger an error.
+        
+        **`chunksizes`** - Can be used to specify the HDF5 chunksizes for each
+        dimension of the variable. A detailed discussion of HDF chunking and I/O
+        performance is available U{here
+        <http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>`.
+        Basically, you want the chunk size for each dimension to match as
+        closely as possible the size of the data block that users will read
+        from the file. `chunksizes` cannot be set if `contiguous=True`.
+        
+        **`endian`** - Can be used to control whether the
+        data is stored in little or big endian format on disk. Possible
+        values are `little, big` or `native` (default). The library
+        will automatically handle endian conversions when the data is read,
+        but if the data is always going to be read on a computer with the
+        opposite format as the one used to create the file, there may be
+        some performance advantage to be gained by setting the endian-ness.
+        For netCDF 3 files (that don't use HDF5), only `endian='native'` is allowed.
+        
+        The `zlib, complevel, shuffle, fletcher32, contiguous` and {chunksizes`
+        keywords are silently ignored for netCDF 3 files that do not use HDF5.
+        
+        **`least_significant_digit`** - If specified, variable data will be
+        truncated (quantized). In conjunction with `zlib=True` this produces
+        'lossy', but significantly more efficient compression. For example, if
+        `least_significant_digit=1`, data will be quantized using
+        around(scale*data)/scale, where scale = 2**bits, and bits is determined
+        so that a precision of 0.1 is retained (in this case bits=4). Default is
+        `None`, or no quantization.
+        
+        **`fill_value`** - If specified, the default netCDF `_FillValue` (the
+        value that the variable gets filled with before any data is written to it)
+        is replaced with this value.  If fill_value is set to `False`, then
+        the variable is not pre-filled. The default netCDF fill values can be found
+        in netCDF4.default_fillvals.
+
+        **Note**: `netCDF4.Variable` instances should be created using the
+        `netCDF4.Dataset.createVariable` method of a `netCDF4.Dataset` or
+        `netCDF4.Group` instance, not using this class directly.
+        """
         cdef int ierr, ndims, icontiguous, ideflate_level, numdims, _grpid
         cdef char *varname
         cdef nc_type xtype
@@ -2885,23 +2903,23 @@ behavior is similar to Fortran or Matlab, but different than numpy."""
 
     def group(self):
         """
-group(self)
+**`group(self)`**
 
 return the group that this `netCDF4.Variable` is a member of."""
         return self._grp
 
     def ncattrs(self):
         """
-ncattrs(self)
+**`ncattrs(self)`**
 
 return netCDF attribute names for this `netCDF4.Variable` in a list."""
         return _get_att_names(self._grpid, self._varid)
 
     def setncattr(self,name,value):
         """
-setncattr(self,name,value)
+**`setncattr(self,name,value)`**
 
-set a netCDF variable attribute using name,value pair.  Only use if you need to set a
+set a netCDF variable attribute using name,value pair.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
@@ -2910,10 +2928,10 @@ attributes."""
 
     def setncatts(self,attdict):
         """
-setncatts(self,attdict)
+**`setncatts(self,attdict)`**
 
 set a bunch of netCDF variable attributes at once using a python dictionary.
-This may be faster when setting a lot of attributes for a NETCDF3
+This may be faster when setting a lot of attributes for a `NETCDF3`
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute"""
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
@@ -2923,18 +2941,18 @@ each attribute"""
 
     def getncattr(self,name):
         """
-getncattr(self,name)
+**`getncattr(self,name)`**
 
-retrievel a netCDF variable attribute.  Only use if you need to set a
+retrievel a netCDF variable attribute.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         return _get_att(self._grp, self._varid, name)
 
     def delncattr(self, name):
         """
-delncattr(self,name,value)
+**`delncattr(self,name,value)`**
 
-delete a netCDF variable attribute.  Only use if you need to delete a
+delete a netCDF variable attribute.  Use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
@@ -2948,7 +2966,7 @@ attributes."""
 
     def filters(self):
         """
-filters(self)
+**`filters(self)`**
 
 return dictionary containing HDF5 filter parameters."""
         cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
@@ -2973,9 +2991,9 @@ return dictionary containing HDF5 filter parameters."""
 
     def endian(self):
         """
-endian(self)
+**`endian(self)`**
 
-return endian-ness (little,big,native) of variable (as stored in HDF5 file)."""
+return endian-ness (`little,big,native`) of variable (as stored in HDF5 file)."""
         cdef int ierr, iendian
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']:
             return 'native'
@@ -2992,7 +3010,7 @@ return endian-ness (little,big,native) of variable (as stored in HDF5 file)."""
 
     def chunking(self):
         """
-chunking(self)
+**`chunking(self)`**
 
 return variable chunking information.  If the dataset is
 defined to be contiguous (and hence there is no chunking) the word 'contiguous'
@@ -3018,7 +3036,7 @@ each dimension is returned."""
 
     def get_var_chunk_cache(self):
         """
-get_var_chunk_cache(self)
+**`get_var_chunk_cache(self)`**
 
 return variable chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for `nc_get_var_chunk_cache` for
@@ -3036,7 +3054,7 @@ details."""
 
     def set_var_chunk_cache(self,size=None,nelems=None,preemption=None):
         """
-set_var_chunk_cache(self,size=None,nelems=None,preemption=None)
+**`set_var_chunk_cache(self,size=None,nelems=None,preemption=None)`**
 
 change variable chunk cache settings.
 See netcdf C library documentation for `nc_set_var_chunk_cache` for
@@ -3117,7 +3135,7 @@ details."""
 
     def renameAttribute(self, oldname, newname):
         """
-renameAttribute(self, oldname, newname)
+**`renameAttribute(self, oldname, newname)`**
 
 rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         cdef int ierr
@@ -3506,27 +3524,27 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
     def assignValue(self,val):
         """
-assignValue(self, val)
+**`assignValue(self, val)`**
 
 assign a value to a scalar variable.  Provided for compatibility with
-Scientific.IO.NetCDF, can also be done by assigning to a slice ([:])."""
+Scientific.IO.NetCDF, can also be done by assigning to an Ellipsis slice ([...])."""
         if len(self.dimensions):
             raise IndexError('to assign values to a non-scalar variable, use a slice')
         self[:]=val
 
     def getValue(self):
         """
-getValue(self)
+**`getValue(self)`**
 
 get the value of a scalar variable.  Provided for compatibility with
-Scientific.IO.NetCDF, can also be done by slicing ([:])."""
+Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([...])."""
         if len(self.dimensions):
             raise IndexError('to retrieve values from a non-scalar variable, use slicing')
         return self[slice(None)]
 
     def set_auto_maskandscale(self,maskandscale):
         """
-set_auto_maskandscale(self,maskandscale)
+**`set_auto_maskandscale(self,maskandscale)`**
 
 turn on or off automatic conversion of variable data to and
 from masked arrays and automatic packing/unpacking of variable
@@ -3557,8 +3575,7 @@ is assumed zero.  If add_offset is present, but scale_factor is missing,
 scale_factor is assumed to be one.
 For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see
-U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
-<http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>`.
+[](http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml).
 
 The default value of `maskandscale` is `True`
 (automatic conversions are performed).
@@ -3572,7 +3589,7 @@ The default value of `maskandscale` is `True`
 
     def set_auto_scale(self,scale):
         """
-set_auto_scale(self,scale)
+**`set_auto_scale(self,scale)`**
 
 turn on or off automatic packing/unpacking of variable
 data using `scale_factor` and `add_offset` attributes.
@@ -3592,8 +3609,7 @@ is assumed zero.  If add_offset is present, but scale_factor is missing,
 scale_factor is assumed to be one.
 For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see
-U{http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml
-<http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml>`.
+[](http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml).
 
 The default value of `scale` is `True`
 (automatic conversions are performed).
@@ -3605,7 +3621,7 @@ The default value of `scale` is `True`
 
     def set_auto_mask(self,mask):
         """
-set_auto_mask(self,mask)
+**`set_auto_mask(self,mask)`**
 
 turn on or off automatic conversion of variable data to and
 from masked arrays .
