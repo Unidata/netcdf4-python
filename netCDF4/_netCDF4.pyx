@@ -2191,7 +2191,7 @@ method)."""
         
         **`name`**: - Name of the group.
 
-        **Note**: `netCDF4.Group` instances should be created using the
+        ***Note***: `netCDF4.Group` instances should be created using the
         `netCDF4.Dataset.createGroup` method of a `netCDF4.Dataset` instance, or
         another `netCDF4.Group` instance, not using this class directly.
         """
@@ -2550,7 +2550,7 @@ should not be modified by the user).
         the variable is not pre-filled. The default netCDF fill values can be found
         in netCDF4.default_fillvals.
 
-        **Note**: `netCDF4.Variable` instances should be created using the
+        ***Note***: `netCDF4.Variable` instances should be created using the
         `netCDF4.Dataset.createVariable` method of a `netCDF4.Dataset` or
         `netCDF4.Group` instance, not using this class directly.
         """
@@ -3938,45 +3938,45 @@ The default value of `mask` is `True`
 
 cdef class CompoundType:
     """
-A `netCDF4.CompoundType` instance is used to describe a compound data type.
+A `netCDF4.CompoundType` instance is used to describe a compound data
+type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
+a `netCDF4.Dataset` or `netCDF4.Group` instance.
 
-Constructor: `CompoundType(group, datatype, datatype_name)`
-
-@attention: When creating nested compound data types,
-the inner compound data types must already be associated with CompoundType
-instances (so create CompoundType instances for the innermost structures
-first).
-
-`netCDF4.CompoundType` instances should be created using the
-`netCDF4.createCompoundType<Dataset.createCompoundType>`
-method of a Dataset or `netCDF4.Group` instance, not using this class directly.
-
-**Parameters:`
-
-**`group`** - `netCDF4.Group` instance to associate with the compound datatype.
-
-**`datatype`** - A numpy dtype object describing a structured (a.k.a record)
-array.  Can be composed of homogeneous numeric or character data types, or
-other structured array data types.
-
-**`datatype_name`** - a Python string containing a description of the
-compound data type.
-
-**Returns:`
-
-a `netCDF4.CompoundType` instance, which can be passed to the `createVariable`
-method of a `netCDF4.Dataset` or `netCDF4.Group` instance.
+Compound data types map to numpy structured arrays.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
-
-@ivar dtype: A numpy dtype object describing the compound data type.
-
-@ivar name: A python string describing the compound type.
 """
     cdef public nc_type _nc_type
     cdef public dtype, name
+    __pdoc__['CompoundType.name'] = \
+    """String name."""
+    __pdoc__['CompoundType.dtype'] = \
+    """A numpy dtype object describing the compound data type."""
     def __init__(self, grp, object dt, object dtype_name, **kwargs):
+        """
+        ***`__init__(group, datatype, datatype_name)`***
+
+        CompoundType constructor.
+
+        **`group`**: `netCDF4.Group` instance to associate with the compound datatype.
+        
+        **`datatype`**: A numpy dtype object describing a structured (a.k.a record)
+        array.  Can be composed of homogeneous numeric or character data types, or
+        other structured array data types.
+        
+        **`datatype_name`**: a Python string containing a description of the
+        compound data type.
+
+        ***Note 1***: When creating nested compound data types,
+        the inner compound data types must already be associated with CompoundType
+        instances (so create CompoundType instances for the innermost structures
+        first).
+
+        ***Note 2***: `netCDF4.CompoundType` instances should be created using the
+        `netCDF4.Dataset.createCompoundType`
+        method of a Dataset or `netCDF4.Group` instance, not using this class directly.
+        """
         cdef nc_type xtype
         dt = numpy.dtype(dt,align=True)
         if 'typeid' in kwargs:
@@ -4168,39 +4168,37 @@ cdef _read_compound(group, nc_type xtype, endian=None):
 
 cdef class VLType:
     """
-A `netCDF4.VLType` instance is used to describe a variable length (VLEN) data type.
-
-Constructor: `VLType(group, datatype, datatype_name)`
-
-`netCDF4.VLType` instances should be created using the
-`netCDF4.createVLType<Dataset.createVLType>`
-method of a Dataset or `netCDF4.Group` instance, not using this class directly.
-
-**Parameters:`
-
-**`group`** - `netCDF4.Group` instance to associate with the VLEN datatype.
-
-**`datatype`** - An numpy dtype object describing a the component type for the
-variable length array.
-
-**`datatype_name`** - a Python string containing a description of the
-VLEN data type.
-
-**Returns:`
-
-a `netCDF4.VLType` instance, which can be passed to the `createVariable`
-method of a `netCDF4.Dataset` or `netCDF4.Group` instance.
+A `netCDF4.VLType` instance is used to describe a variable length (VLEN) data
+type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
+a `netCDF4.Dataset` or `netCDF4.Group` instance.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
-
-@ivar dtype: An object describing the VLEN type.
-
-@ivar name: A python string describing the VLEN type.
 """
     cdef public nc_type _nc_type
     cdef public dtype, name
+    __pdoc__['VLType.name'] = \
+    """String name."""
+    __pdoc__['VLType.dtype'] = \
+    """A numpy dtype object describing the component type for the VLEN."""
     def __init__(self, grp, object dt, object dtype_name, **kwargs):
+        """
+        **`__init__(group, datatype, datatype_name)``**
+
+        VLType constructor.
+
+        **`group`**: `netCDF4.Group` instance to associate with the VLEN datatype.
+        
+        **`datatype`**: An numpy dtype object describing a the component type for the
+        variable length array.
+        
+        **`datatype_name`**: a Python string containing a description of the
+        VLEN data type.
+
+        ***`Note`***: `netCDF4.VLType` instances should be created using the
+        `netCDF4.Dataset.createVLType`
+        method of a Dataset or `netCDF4.Group` instance, not using this class directly.
+        """
         cdef nc_type xtype
         if 'typeid' in kwargs:
             xtype = kwargs['typeid']
@@ -4321,21 +4319,21 @@ def _dateparse(timestr):
 
 def stringtoarr(string,NUMCHARS,dtype='S'):
     """
-stringtoarr(a, NUMCHARS,dtype='S')
+**`stringtoarr(a, NUMCHARS,dtype='S')`**
 
-convert a string to a character array of length NUMCHARS
+convert a string to a character array of length `NUMCHARS`
 
-a:  Input python string.
+**`a`**:  Input python string.
 
-NUMCHARS:  number of characters used to represent string
-(if len(a) < NUMCHARS, it will be padded on the right with blanks).
+**`NUMCHARS`**:  number of characters used to represent string
+(if len(a) < `NUMCHARS`, it will be padded on the right with blanks).
 
-dtype:  type of numpy array to return.  Default is 'S', which
-means an array of dtype 'S1' will be returned.  If dtype='U', a
-unicode array (dtype = 'U1') will be returned.
+**`dtype`**:  type of numpy array to return.  Default is `'S'`, which
+means an array of dtype `'S1'` will be returned.  If dtype=`'U'`, a
+unicode array (dtype = `'U1'`) will be returned.
 
-@return: A rank 1 numpy character array of length NUMCHARS with datatype 'S1'
-(default) or 'U1' (if dtype='U')"""
+returns a rank 1 numpy character array of length NUMCHARS with datatype `'S1'`
+(default) or `'U1'` (if dtype=`'U'`)"""
     if dtype not in ["S","U"]:
         raise ValueError("dtype must string or unicode ('S' or 'U')")
     arr = numpy.zeros(NUMCHARS,dtype+'1')
@@ -4344,16 +4342,16 @@ unicode array (dtype = 'U1') will be returned.
 
 def stringtochar(a):
     """
-stringtochar(a)
+**`stringtochar(a)`**
 
 convert a string array to a character array with one extra dimension
 
-a:  Input numpy string array with numpy datatype 'SN' or 'UN', where N
+**`a`**:  Input numpy string array with numpy datatype `'SN'` or `'UN'`, where N
 is the number of characters in each string.  Will be converted to
-an array of characters (datatype 'S1' or 'U1') of shape a.shape + (N,).
+an array of characters (datatype `'S1'` or `'U1'`) of shape `a.shape + (N,).`
 
-@return: A numpy character array with datatype 'S1' or 'U1'
-and shape a.shape + (N,), where N is the length of each string in a."""
+returns a numpy character array with datatype `'S1'` or `'U1'`
+and shape `a.shape + (N,)`, where N is the length of each string in a."""
     dtype = a.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
@@ -4363,16 +4361,16 @@ and shape a.shape + (N,), where N is the length of each string in a."""
 
 def chartostring(b):
     """
-chartostring(b)
+**`chartostring(b)`**
 
 convert a character array to a string array with one less dimension.
 
-b:  Input character array (numpy datatype 'S1' or 'U1').
+**`b`**:  Input character array (numpy datatype `'S1'` or `'U1'`).
 Will be converted to a array of strings, where each string has a fixed
-length of b.shape[-1] characters.
+length of `b.shape[-1]` characters.
 
-@return: A numpy string array with datatype 'SN' or 'UN' and shape b.shape[:-1],
-where N=b.shape[-1]."""
+returns a numpy string array with datatype `'SN'` or `'UN'` and shape
+`b.shape[:-1]` where where `N=b.shape[-1]`."""
     dtype = b.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
@@ -4384,7 +4382,7 @@ where N=b.shape[-1]."""
 
 def date2num(dates,units,calendar='standard'):
     """
-date2num(dates,units,calendar='standard')
+**`date2num(dates,units,calendar='standard')`**
 
 Return numeric time values given datetime objects. The units
 of the numeric time values are described by the `netCDF4.units` argument
@@ -4393,23 +4391,23 @@ be in UTC with no time-zone offset.  If there is a
 time-zone offset in `units`, it will be applied to the
 returned numeric values.
 
-dates: A datetime object or a sequence of datetime objects.
+**`dates`**: A datetime object or a sequence of datetime objects.
 The datetime objects should not include a time-zone offset.
 
-units: a string of the form `'**time units` since **reference time`**'
-describing the time units. **`time units`** can be days, hours, minutes,
-seconds, milliseconds or microseconds. **`reference time`** is the time
+**`units`**: a string of the form `<time units> since <reference time>`
+describing the time units. `<time units>` can be days, hours, minutes,
+seconds, milliseconds or microseconds. `<reference time>` is the time
 origin.  Accuracy is somewhere between a millisecond and a microsecond,
 depending on the time interval and the calendar used.
 
-calendar: describes the calendar used in the time calculations.
-All the values currently defined in the U{CF metadata convention
-<http://cf-pcmdi.llnl.gov/documents/cf-conventions/>` are supported.
+**`calendar`**: describes the calendar used in the time calculations.
+All the values currently defined in the 
+[CF metadata convention](http://cfconventions.org)
 Valid calendars `'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'`.
 Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 
-@return: a numeric time value, or an array of numeric time values.
+returns a numeric time value, or an array of numeric time values.
     """
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
@@ -4463,7 +4461,7 @@ Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 
 def num2date(times,units,calendar='standard'):
     """
-num2date(times,units,calendar='standard')
+**`num2date(times,units,calendar='standard')`**
 
 Return datetime objects given numeric time values. The units
 of the numeric time values are described by the `units` argument
@@ -4558,7 +4556,7 @@ contains one.
 
 def date2index(dates, nctime, calendar=None, select='exact'):
     """
-date2index(dates, nctime, calendar=None, select='exact')
+**`date2index(dates, nctime, calendar=None, select='exact')`**
 
 Return indices of a netCDF time variable corresponding to the given dates.
 
@@ -4632,6 +4630,7 @@ Example usage:
 
     def __init__(self, files, check=False, aggdim=None, exclude=[]):
         """
+        **`__init__(self, files, check=False, aggdim=None, exclude=[])`**
 Open a Dataset spanning multiple files, making it look as if it was a
 single file. Variables in the list of files that share the same
 dimension (specified with the keyword `aggdim`) are aggregated. If
