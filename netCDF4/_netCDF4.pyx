@@ -559,7 +559,7 @@ datasets.
 Data stored in netCDF 4 `netCDF4.Variable` objects can be compressed and
 decompressed on the fly. The parameters for the compression are
 determined by the `zlib`, `complevel` and `shuffle` keyword arguments
-to the `netCDF4.createVariable<Dataset.createVariable>` method. To turn on
+to the `netCDF4.Dataset.createVariable` method. To turn on
 compression, set `zlib=True`.  The `complevel` keyword regulates the
 speed and efficiency of the compression (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
@@ -582,7 +582,7 @@ If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
 0.1 degrees), you can dramatically improve zlib compression by
 quantizing (or truncating) the data using the `least_significant_digit`
-keyword argument to `netCDF4.createVariable<Dataset.createVariable>`. The least
+keyword argument to `netCDF4.Dataset.createVariable`. The least
 significant digit is the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
 precision of 0.1, then setting `least_significant_digit=1` will cause
@@ -731,7 +731,7 @@ Numpy object arrays containing python strings can also be written as vlen
 variables,  For vlen strings, you don't need to create a vlen data type.
 Instead, simply use the python `str` builtin (or a numpy string datatype
 with fixed length greater than 1) when calling the
-`netCDF4.createVariable<Dataset.createVariable>` method.
+`netCDF4.Dataset.createVariable` method.
 
     >>> z = f.createDimension("z",10)
     >>> strvar = rootgrp.createVariable("strvar", str, "z")
@@ -1362,7 +1362,7 @@ defined for this `netCDF4.Dataset` or `netCDF4.Group` to instances of the
 **`groups`**: The groups dictionary maps the names of groups created for
 this `netCDF4.Dataset` or `netCDF4.Group` to instances of the `netCDF4.Group` class (the
 `netCDF4.Dataset` class is simply a special case of the `netCDF4.Group` class which
-describes the root group in the netCDF4.file).
+describes the root group in the netCDF4 file).
 
 **`cmptypes`**: The `cmptypes` dictionary maps the names of
 compound types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
@@ -1389,8 +1389,8 @@ netcdf C library version >= 4.3.1, otherwise will always return
 instance.
 
 **`path`**: `path` shows the location of the `netCDF4.Group` in
-the `netCDF4..Dataset` in a unix directory format (the names of groups in the
-hierarchy separated by backslashes). A `netCDF4..Dataset` instance is the root
+the `netCDF4.Dataset` in a unix directory format (the names of groups in the
+hierarchy separated by backslashes). A `netCDF4.Dataset` instance is the root
 group, so the path is simply `'/'`.
 
 **`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak 
@@ -1415,7 +1415,7 @@ references to the parent Dataset or Group.
     """The groups dictionary maps the names of groups created for
     this `netCDF4.Dataset` or `netCDF4.Group` to instances of the `netCDF4.Group` class (the
     `netCDF4.Dataset` class is simply a special case of the `netCDF4.Group` class which
-    describes the root group in the netCDF4.file)."""
+    describes the root group in the netCDF4 file)."""
     __pdoc__['Dataset.cmptypes']=\
     """The `cmptypes` dictionary maps the names of
     compound types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
@@ -1441,8 +1441,8 @@ references to the parent Dataset or Group.
     `netCDF4.Group` instance. `None` for a the root group or `netCDF4.Dataset` instance"""
     __pdoc__['Dataset.path']=\
     """`path` shows the location of the `netCDF4.Group` in
-    the `netCDF4..Dataset` in a unix directory format (the names of groups in the
-    hierarchy separated by backslashes). A `netCDF4..Dataset` instance is the root
+    the `netCDF4.Dataset` in a unix directory format (the names of groups in the
+    hierarchy separated by backslashes). A `netCDF4.Dataset` instance is the root
     group, so the path is simply `'/'`."""
     __pdoc__['Dataset.keepweakref']=\
     """If `True`, child Dimension and Variables objects only keep weak references to
@@ -1851,7 +1851,7 @@ Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.
 
 `dimensions` must be a tuple containing dimension names (strings) that
-have been defined previously using `netCDF4.createDimension`. The default value
+have been defined previously using `netCDF4.Dataset.createDimension`. The default value
 is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
@@ -2152,7 +2152,7 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         """
 **`set_auto_maskandscale(self, True_or_False)`**
 
-Call `netCDF4.set_auto_maskandscale` for all variables contained in this `netCDF4.Dataset` or
+Call `netCDF4.Variable.set_auto_maskandscale` for all variables contained in this `netCDF4.Dataset` or
 `netCDF4.Group`, as well as for all variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
@@ -2175,7 +2175,7 @@ after calling this function will follow the default behaviour.
         """
 **`set_auto_mask(self, True_or_False)`**
 
-Call `netCDF4.set_auto_mask` for all variables contained in this `netCDF4.Dataset` or
+Call `netCDF4.Variable.set_auto_mask` for all variables contained in this `netCDF4.Dataset` or
 `netCDF4.Group`, as well as for all variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
@@ -2197,7 +2197,7 @@ after calling this function will follow the default behaviour.
         """
 **`set_auto_scale(self, True_or_False)`**
 
-Call `netCDF4.set_auto_scale` for all variables contained in this `netCDF4.Dataset` or
+Call `netCDF4.Variable.set_auto_scale` for all variables contained in this `netCDF4.Dataset` or
 `netCDF4.Group`, as well as for all variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic variable scaling
@@ -2313,7 +2313,7 @@ instances, raises IOError."""
 cdef class Dimension:
     """
 A netCDF `netCDF4.Dimension` is used to describe the coordinates of a `netCDF4.Variable`.
-See `netCDF4.Dimension.__init__ for more details.
+See `netCDF4.Dimension.__init__` for more details.
 
 The current maximum size of a `netCDF4.Dimension` instance can be obtained by
 calling the python `len` function on the `netCDF4.Dimension` instance. The
@@ -2485,12 +2485,12 @@ variable's data type.
 **`shape`**: A tuple with the current shape (length of all dimensions).
 
 **`scale`**: If True, `scale_factor` and `add_offset` are
-applied. Default is `True`, can be reset using `netCDF4.set_auto_scale` and
-`netCDF4.set_auto_maskandscale` methods.
+applied. Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
+`netCDF4.Variable.set_auto_maskandscale` methods.
 
 **`mask`**: If True, data is automatically converted to/from masked 
 arrays when missing values or fill values are present. Default is `True`, can be
-reset using `netCDF4.set_auto_mask` and `netCDF4.set_auto_maskandscale`
+reset using `netCDF4.Variable.set_auto_mask` and `netCDF4.Variable.set_auto_maskandscale`
 methods.
 
 **`least_significant_digit`**: Describes the power of ten of the 
@@ -2524,12 +2524,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     """The number of variable dimensions."""
     __pdoc__['Variable.scale'] = \
     """if True, `scale_factor` and `add_offset` are
-    applied. Default is `True`, can be reset using `netCDF4.set_auto_scale` and
-    `netCDF4.set_auto_maskandscale` methods."""
+    applied. Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
+    `netCDF4.Variable.set_auto_maskandscale` methods."""
     __pdoc__['Variable.mask'] = \
     """If True, data is automatically converted to/from masked 
     arrays when missing values or fill values are present. Default is `True`, can be
-    reset using `netCDF4.set_auto_mask` and `netCDF4.set_auto_maskandscale`
+    reset using `netCDF4.Variable.set_auto_mask` and `netCDF4.Variable.set_auto_maskandscale`
     methods."""
     __pdoc__['Variable.least_significant_digit'] = \
     """Describes the power of ten of the 
@@ -4066,7 +4066,7 @@ the user.
 
         ***Note 2***: `netCDF4.CompoundType` instances should be created using the
         `netCDF4.Dataset.createCompoundType`
-        method of a Dataset or `netCDF4.Group` instance, not using this class directly.
+        method of a `netCDF4.Dataset` or `netCDF4.Group` instance, not using this class directly.
         """
         cdef nc_type xtype
         dt = numpy.dtype(dt,align=True)
@@ -4275,7 +4275,7 @@ the user.
     """A numpy dtype object describing the component type for the VLEN."""
     def __init__(self, grp, object dt, object dtype_name, **kwargs):
         """
-        **`__init__(group, datatype, datatype_name)``**
+        **`__init__(group, datatype, datatype_name)`**
 
         VLType constructor.
 
@@ -4289,7 +4289,7 @@ the user.
 
         ***`Note`***: `netCDF4.VLType` instances should be created using the
         `netCDF4.Dataset.createVLType`
-        method of a Dataset or `netCDF4.Group` instance, not using this class directly.
+        method of a `netCDF4.Dataset` or `netCDF4.Group` instance, not using this class directly.
         """
         cdef nc_type xtype
         if 'typeid' in kwargs:
@@ -4580,7 +4580,7 @@ returns a datetime instance, or an array of datetime instances.
 
 ***Note***: The datetime instances returned are 'real' python datetime
 objects if `calendar='proleptic_gregorian'`, or
-`calendar = 'standard'` or `'gregorian'`
+`calendar='standard'` or `'gregorian'`
 and the date is after the breakpoint between the Julian and
 Gregorian calendars (1582-10-15). Otherwise, they are 'phony' datetime
 objects which support some but not all the methods of 'real' python

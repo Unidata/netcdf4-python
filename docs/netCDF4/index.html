@@ -1780,7 +1780,7 @@ datasets.</p>
 <p>Data stored in netCDF 4 <a href="#netCDF4.Variable"><code>Variable</code></a> objects can be compressed and
 decompressed on the fly. The parameters for the compression are
 determined by the <code>zlib</code>, <code>complevel</code> and <code>shuffle</code> keyword arguments
-to the <code>netCDF4.createVariable&lt;Dataset.createVariable&gt;</code> method. To turn on
+to the <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method. To turn on
 compression, set <code>zlib=True</code>.  The <code>complevel</code> keyword regulates the
 speed and efficiency of the compression (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
@@ -1802,7 +1802,7 @@ format is <code>NETCDF3_CLASSIC</code> or <code>NETCDF3_64BIT</code>,</p>
 example, it is temperature data that was measured with a precision of
 0.1 degrees), you can dramatically improve zlib compression by
 quantizing (or truncating) the data using the <code>least_significant_digit</code>
-keyword argument to <code>netCDF4.createVariable&lt;Dataset.createVariable&gt;</code>. The least
+keyword argument to <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a>. The least
 significant digit is the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
 precision of 0.1, then setting <code>least_significant_digit=1</code> will cause
@@ -1955,7 +1955,7 @@ In this case, they contain 1-D numpy <code>int32</code> arrays of random length 
 variables,  For vlen strings, you don't need to create a vlen data type.
 Instead, simply use the python <code>str</code> builtin (or a numpy string datatype
 with fixed length greater than 1) when calling the
-<code>netCDF4.createVariable&lt;Dataset.createVariable&gt;</code> method.</p>
+<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method.</p>
 <div class="codehilite"><pre>&gt;&gt;&gt; z = f.createDimension(&quot;z&quot;,10)
 &gt;&gt;&gt; strvar = rootgrp.createVariable(&quot;strvar&quot;, str, &quot;z&quot;)
 </pre></div>
@@ -2153,7 +2153,7 @@ Default is <code>'standard'</code>, which is a mixed Julian/Gregorian calendar.<
 <p>returns a datetime instance, or an array of datetime instances.</p>
 <p><strong><em>Note</em></strong>: The datetime instances returned are 'real' python datetime
 objects if <code>calendar='proleptic_gregorian'</code>, or
-<code>calendar = 'standard'</code> or <code>'gregorian'</code>
+<code>calendar='standard'</code> or <code>'gregorian'</code>
 and the date is after the breakpoint between the Julian and
 Gregorian calendars (1582-10-15). Otherwise, they are 'phony' datetime
 objects which support some but not all the methods of 'real' python
@@ -2281,7 +2281,7 @@ instances (so create CompoundType instances for the innermost structures
 first).</p>
 <p><strong><em>Note 2</em></strong>: <a href="#netCDF4.CompoundType"><code>CompoundType</code></a> instances should be created using the
 <a href="#netCDF4.Dataset.createCompoundType"><code>createCompoundType</code></a>
-method of a Dataset or <a href="#netCDF4.Group"><code>Group</code></a> instance, not using this class directly.</p></div>
+method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance, not using this class directly.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2316,7 +2316,7 @@ defined for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href=
 <p><strong><code>groups</code></strong>: The groups dictionary maps the names of groups created for
 this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> to instances of the <a href="#netCDF4.Group"><code>Group</code></a> class (the
 <a href="#netCDF4.Dataset"><code>Dataset</code></a> class is simply a special case of the <a href="#netCDF4.Group"><code>Group</code></a> class which
-describes the root group in the netCDF4.file).</p>
+describes the root group in the netCDF4 file).</p>
 <p><strong><code>cmptypes</code></strong>: The <code>cmptypes</code> dictionary maps the names of
 compound types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
 <a href="#netCDF4.CompoundType"><code>CompoundType</code></a> class.</p>
@@ -2336,8 +2336,8 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
 <a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for a the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a>
 instance.</p>
 <p><strong><code>path</code></strong>: <code>path</code> shows the location of the <a href="#netCDF4.Group"><code>Group</code></a> in
-the <code>netCDF4..Dataset</code> in a unix directory format (the names of groups in the
-hierarchy separated by backslashes). A <code>netCDF4..Dataset</code> instance is the root
+the <a href="#netCDF4.Dataset"><code>Dataset</code></a> in a unix directory format (the names of groups in the
+hierarchy separated by backslashes). A <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance is the root
 group, so the path is simply <code>'/'</code>.</p>
 <p><strong><code>keepweakref</code></strong>: If <code>True</code>, child Dimension and Variables objects only keep weak 
 references to the parent Dataset or Group.</p></div>
@@ -2426,7 +2426,7 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
     <div class="desc"><p>The groups dictionary maps the names of groups created for
 this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> to instances of the <a href="#netCDF4.Group"><code>Group</code></a> class (the
 <a href="#netCDF4.Dataset"><code>Dataset</code></a> class is simply a special case of the <a href="#netCDF4.Group"><code>Group</code></a> class which
-describes the root group in the netCDF4.file).</p></div>
+describes the root group in the netCDF4 file).</p></div>
   <div class="source_cont">
 </div>
 
@@ -2462,8 +2462,8 @@ the parent Dataset or Group.</p></div>
             
   
     <div class="desc"><p><code>path</code> shows the location of the <a href="#netCDF4.Group"><code>Group</code></a> in
-the <code>netCDF4..Dataset</code> in a unix directory format (the names of groups in the
-hierarchy separated by backslashes). A <code>netCDF4..Dataset</code> instance is the root
+the <a href="#netCDF4.Dataset"><code>Dataset</code></a> in a unix directory format (the names of groups in the
+hierarchy separated by backslashes). A <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance is the root
 group, so the path is simply <code>'/'</code>.</p></div>
   <div class="source_cont">
 </div>
@@ -2696,7 +2696,7 @@ length greater than one are aliases for <code>str</code>.</p>
 <p>Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.</p>
 <p><code>dimensions</code> must be a tuple containing dimension names (strings) that
-have been defined previously using <code>netCDF4.createDimension</code>. The default value
+have been defined previously using <a href="#netCDF4.Dataset.createDimension"><code>createDimension</code></a>. The default value
 is an empty tuple, which means the variable is a scalar.</p>
 <p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
 the netCDF file using gzip compression (default <code>False</code>).</p>
@@ -2921,7 +2921,7 @@ name as one of the reserved python attributes.</p></div>
     
   
     <div class="desc"><p><strong><code>set_auto_mask(self, True_or_False)</code></strong></p>
-<p>Call <code>netCDF4.set_auto_mask</code> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.</p>
@@ -2942,7 +2942,7 @@ after calling this function will follow the default behaviour.</p></div>
     
   
     <div class="desc"><p><strong><code>set_auto_maskandscale(self, True_or_False)</code></strong></p>
-<p>Call <code>netCDF4.set_auto_maskandscale</code> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.</p>
@@ -2963,7 +2963,7 @@ after calling this function will follow the default behaviour.</p></div>
     
   
     <div class="desc"><p><strong><code>set_auto_scale(self, True_or_False)</code></strong></p>
-<p>Call <code>netCDF4.set_auto_scale</code> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic variable scaling
 shall be applied for all variables.</p>
@@ -3077,14 +3077,14 @@ each attribute</p></div>
       
   
     <div class="desc"><p>A netCDF <a href="#netCDF4.Dimension"><code>Dimension</code></a> is used to describe the coordinates of a <a href="#netCDF4.Variable"><code>Variable</code></a>.
-See `netCDF4.Dimension.<strong>init</strong> for more details.</p>
-<p>The current maximum size of a <code>netCDF4.Dimension</code> instance can be obtained by
-calling the python <code>len</code> function on the <code>netCDF4.Dimension</code> instance. The
-<code>netCDF4.Dimension.isunlimited</code> method of a <code>netCDF4.Dimension</code> instance can be used to
+See <a href="#netCDF4.Dimension.__init__"><code>__init__</code></a> for more details.</p>
+<p>The current maximum size of a <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance can be obtained by
+calling the python <code>len</code> function on the <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance. The
+<a href="#netCDF4.Dimension.isunlimited"><code>isunlimited</code></a> method of a <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance can be used to
 determine if the dimension is unlimited.</p>
 <p>Read-only class variables:</p>
-<p><strong><code>name</code></strong>: String name, used when creating a <code>netCDF4.Variable</code> with
-<code>netCDF4.Dataset.createVariable</code>.</p></div>
+<p><strong><code>name</code></strong>: String name, used when creating a <a href="#netCDF4.Variable"><code>Variable</code></a> with
+<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3290,7 +3290,7 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
     <div class="desc inherited"><p>The groups dictionary maps the names of groups created for
 this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> to instances of the <a href="#netCDF4.Group"><code>Group</code></a> class (the
 <a href="#netCDF4.Dataset"><code>Dataset</code></a> class is simply a special case of the <a href="#netCDF4.Group"><code>Group</code></a> class which
-describes the root group in the netCDF4.file).</p></div>
+describes the root group in the netCDF4 file).</p></div>
   <div class="source_cont">
 </div>
 
@@ -3349,8 +3349,8 @@ the parent Dataset or Group.</p></div>
             
   
     <div class="desc inherited"><p><code>path</code> shows the location of the <a href="#netCDF4.Group"><code>Group</code></a> in
-the <code>netCDF4..Dataset</code> in a unix directory format (the names of groups in the
-hierarchy separated by backslashes). A <code>netCDF4..Dataset</code> instance is the root
+the <a href="#netCDF4.Dataset"><code>Dataset</code></a> in a unix directory format (the names of groups in the
+hierarchy separated by backslashes). A <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance is the root
 group, so the path is simply <code>'/'</code>.</p></div>
   <div class="source_cont">
 </div>
@@ -3581,7 +3581,7 @@ length greater than one are aliases for <code>str</code>.</p>
 <p>Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.</p>
 <p><code>dimensions</code> must be a tuple containing dimension names (strings) that
-have been defined previously using <code>netCDF4.createDimension</code>. The default value
+have been defined previously using <a href="#netCDF4.Dataset.createDimension"><code>createDimension</code></a>. The default value
 is an empty tuple, which means the variable is a scalar.</p>
 <p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
 the netCDF file using gzip compression (default <code>False</code>).</p>
@@ -3842,7 +3842,7 @@ name as one of the reserved python attributes.</p></div>
     
   
     <div class="desc inherited"><p><strong><code>set_auto_mask(self, True_or_False)</code></strong></p>
-<p>Call <code>netCDF4.set_auto_mask</code> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.</p>
@@ -3867,7 +3867,7 @@ after calling this function will follow the default behaviour.</p></div>
     
   
     <div class="desc inherited"><p><strong><code>set_auto_maskandscale(self, True_or_False)</code></strong></p>
-<p>Call <code>netCDF4.set_auto_maskandscale</code> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.</p>
@@ -3892,7 +3892,7 @@ after calling this function will follow the default behaviour.</p></div>
     
   
     <div class="desc inherited"><p><strong><code>set_auto_scale(self, True_or_False)</code></strong></p>
-<p>Call <code>netCDF4.set_auto_scale</code> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic variable scaling
 shall be applied for all variables.</p>
@@ -4158,7 +4158,7 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
     <div class="desc inherited"><p>The groups dictionary maps the names of groups created for
 this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> to instances of the <a href="#netCDF4.Group"><code>Group</code></a> class (the
 <a href="#netCDF4.Dataset"><code>Dataset</code></a> class is simply a special case of the <a href="#netCDF4.Group"><code>Group</code></a> class which
-describes the root group in the netCDF4.file).</p></div>
+describes the root group in the netCDF4 file).</p></div>
   <div class="source_cont">
 </div>
 
@@ -4206,8 +4206,8 @@ the parent Dataset or Group.</p></div>
             
   
     <div class="desc inherited"><p><code>path</code> shows the location of the <a href="#netCDF4.Group"><code>Group</code></a> in
-the <code>netCDF4..Dataset</code> in a unix directory format (the names of groups in the
-hierarchy separated by backslashes). A <code>netCDF4..Dataset</code> instance is the root
+the <a href="#netCDF4.Dataset"><code>Dataset</code></a> in a unix directory format (the names of groups in the
+hierarchy separated by backslashes). A <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance is the root
 group, so the path is simply <code>'/'</code>.</p></div>
   <div class="source_cont">
 </div>
@@ -4391,7 +4391,7 @@ length greater than one are aliases for <code>str</code>.</p>
 <p>Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.</p>
 <p><code>dimensions</code> must be a tuple containing dimension names (strings) that
-have been defined previously using <code>netCDF4.createDimension</code>. The default value
+have been defined previously using <a href="#netCDF4.Dataset.createDimension"><code>createDimension</code></a>. The default value
 is an empty tuple, which means the variable is a scalar.</p>
 <p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
 the netCDF file using gzip compression (default <code>False</code>).</p>
@@ -4632,7 +4632,7 @@ name as one of the reserved python attributes.</p></div>
     
   
     <div class="desc inherited"><p><strong><code>set_auto_mask(self, True_or_False)</code></strong></p>
-<p>Call <code>netCDF4.set_auto_mask</code> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.</p>
@@ -4657,7 +4657,7 @@ after calling this function will follow the default behaviour.</p></div>
     
   
     <div class="desc inherited"><p><strong><code>set_auto_maskandscale(self, True_or_False)</code></strong></p>
-<p>Call <code>netCDF4.set_auto_maskandscale</code> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.</p>
@@ -4682,7 +4682,7 @@ after calling this function will follow the default behaviour.</p></div>
     
   
     <div class="desc inherited"><p><strong><code>set_auto_scale(self, True_or_False)</code></strong></p>
-<p>Call <code>netCDF4.set_auto_scale</code> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic variable scaling
 shall be applied for all variables.</p>
@@ -5055,16 +5055,16 @@ the user.</p></div>
 
     
   
-    <div class="desc"><p><strong>`__init__(group, datatype, datatype_name)``</strong></p>
+    <div class="desc"><p><strong><code>__init__(group, datatype, datatype_name)</code></strong></p>
 <p>VLType constructor.</p>
-<p><strong><code>group</code></strong>: <code>netCDF4.Group</code> instance to associate with the VLEN datatype.</p>
+<p><strong><code>group</code></strong>: <a href="#netCDF4.Group"><code>Group</code></a> instance to associate with the VLEN datatype.</p>
 <p><strong><code>datatype</code></strong>: An numpy dtype object describing a the component type for the
 variable length array.</p>
 <p><strong><code>datatype_name</code></strong>: a Python string containing a description of the
 VLEN data type.</p>
-<p><strong><em><code>Note</code></em></strong>: <code>netCDF4.VLType</code> instances should be created using the
-<code>netCDF4.Dataset.createVLType</code>
-method of a Dataset or <code>netCDF4.Group</code> instance, not using this class directly.</p></div>
+<p><strong><em><code>Note</code></em></strong>: <a href="#netCDF4.VLType"><code>VLType</code></a> instances should be created using the
+<a href="#netCDF4.Dataset.createVLType"><code>createVLType</code></a>
+method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance, not using this class directly.</p></div>
   <div class="source_cont">
 </div>
 
@@ -5094,11 +5094,11 @@ variable's data type.</p>
 <p><strong><code>ndim</code></strong>: The number of variable dimensions.</p>
 <p><strong><code>shape</code></strong>: A tuple with the current shape (length of all dimensions).</p>
 <p><strong><code>scale</code></strong>: If True, <code>scale_factor</code> and <code>add_offset</code> are
-applied. Default is <code>True</code>, can be reset using <code>netCDF4.set_auto_scale</code> and
-<code>netCDF4.set_auto_maskandscale</code> methods.</p>
+applied. Default is <code>True</code>, can be reset using <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> and
+<a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> methods.</p>
 <p><strong><code>mask</code></strong>: If True, data is automatically converted to/from masked 
 arrays when missing values or fill values are present. Default is <code>True</code>, can be
-reset using <code>netCDF4.set_auto_mask</code> and <code>netCDF4.set_auto_maskandscale</code>
+reset using <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> and <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a>
 methods.</p>
 <p><strong><code>least_significant_digit</code></strong>: Describes the power of ten of the 
 smallest decimal place in the data the contains a reliable value.  Data is
@@ -5167,7 +5167,7 @@ variable's data type.</p></div>
   
     <div class="desc"><p>If True, data is automatically converted to/from masked 
 arrays when missing values or fill values are present. Default is <code>True</code>, can be
-reset using <code>netCDF4.set_auto_mask</code> and <code>netCDF4.set_auto_maskandscale</code>
+reset using <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> and <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a>
 methods.</p></div>
   <div class="source_cont">
 </div>
@@ -5202,8 +5202,8 @@ methods.</p></div>
             
   
     <div class="desc"><p>if True, <code>scale_factor</code> and <code>add_offset</code> are
-applied. Default is <code>True</code>, can be reset using <code>netCDF4.set_auto_scale</code> and
-<code>netCDF4.set_auto_maskandscale</code> methods.</p></div>
+applied. Default is <code>True</code>, can be reset using <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> and
+<a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> methods.</p></div>
   <div class="source_cont">
 </div>
 
