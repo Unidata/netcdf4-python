@@ -2017,14 +2017,13 @@ PERFORMANCE OF THIS SOFTWARE.</p>
       
   <div class="item">
     <div class="name def" id="netCDF4.chartostring">
-    <p>def <span class="ident">chartostring</span>(</p><p>...)</p>
+    <p>def <span class="ident">chartostring</span>(</p><p>b)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>chartostring(b)</code></strong></p>
-<p>convert a character array to a string array with one less dimension.</p>
+    <div class="desc"><p>convert a character array to a string array with one less dimension.</p>
 <p><strong><code>b</code></strong>:  Input character array (numpy datatype <code>'S1'</code> or <code>'U1'</code>).
 Will be converted to a array of strings, where each string has a fixed
 length of <code>b.shape[-1]</code> characters.</p>
@@ -2038,14 +2037,13 @@ length of <code>b.shape[-1]</code> characters.</p>
       
   <div class="item">
     <div class="name def" id="netCDF4.date2index">
-    <p>def <span class="ident">date2index</span>(</p><p>...)</p>
+    <p>def <span class="ident">date2index</span>(</p><p>dates, nctime, calendar=None, select=&#39;exact&#39;)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>date2index(dates, nctime, calendar=None, select='exact')</code></strong></p>
-<p>Return indices of a netCDF time variable corresponding to the given dates.</p>
+    <div class="desc"><p>Return indices of a netCDF time variable corresponding to the given dates.</p>
 <p><strong><code>dates</code></strong>: A datetime object or a sequence of datetime objects.
 The datetime objects should not include a time-zone offset.</p>
 <p><strong><code>nctime</code></strong>: A netCDF time variable object. The nctime object must have a
@@ -2074,14 +2072,13 @@ to the given datetime object(s).</p></div>
       
   <div class="item">
     <div class="name def" id="netCDF4.date2num">
-    <p>def <span class="ident">date2num</span>(</p><p>...)</p>
+    <p>def <span class="ident">date2num</span>(</p><p>dates,units,calendar=&#39;standard&#39;)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>date2num(dates,units,calendar='standard')</code></strong></p>
-<p>Return numeric time values given datetime objects. The units
+    <div class="desc"><p>Return numeric time values given datetime objects. The units
 of the numeric time values are described by the <code>netCDF4.units</code> argument
 and the <code>netCDF4.calendar</code> keyword. The datetime objects must
 be in UTC with no time-zone offset.  If there is a
@@ -2109,14 +2106,13 @@ Default is <code>'standard'</code>, which is a mixed Julian/Gregorian calendar.<
       
   <div class="item">
     <div class="name def" id="netCDF4.getlibversion">
-    <p>def <span class="ident">getlibversion</span>(</p><p>...)</p>
+    <p>def <span class="ident">getlibversion</span>(</p><p>)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>getlibversion()</code></strong></p>
-<p>returns a string describing the version of the netcdf library
+    <div class="desc"><p>returns a string describing the version of the netcdf library
 used to build the module, and when it was built.</p></div>
   <div class="source_cont">
 </div>
@@ -2126,14 +2122,13 @@ used to build the module, and when it was built.</p></div>
       
   <div class="item">
     <div class="name def" id="netCDF4.num2date">
-    <p>def <span class="ident">num2date</span>(</p><p>...)</p>
+    <p>def <span class="ident">num2date</span>(</p><p>times,units,calendar=&#39;standard&#39;)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>num2date(times,units,calendar='standard')</code></strong></p>
-<p>Return datetime objects given numeric time values. The units
+    <div class="desc"><p>Return datetime objects given numeric time values. The units
 of the numeric time values are described by the <code>units</code> argument
 and the <code>calendar</code> keyword. The returned datetime objects represent
 UTC with no time-zone offset, even if the specified
@@ -2168,14 +2163,13 @@ contains one.</p></div>
       
   <div class="item">
     <div class="name def" id="netCDF4.stringtoarr">
-    <p>def <span class="ident">stringtoarr</span>(</p><p>...)</p>
+    <p>def <span class="ident">stringtoarr</span>(</p><p>a, NUMCHARS,dtype=&#39;S&#39;)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>stringtoarr(a, NUMCHARS,dtype='S')</code></strong></p>
-<p>convert a string to a character array of length <code>NUMCHARS</code></p>
+    <div class="desc"><p>convert a string to a character array of length <code>NUMCHARS</code></p>
 <p><strong><code>a</code></strong>:  Input python string.</p>
 <p><strong><code>NUMCHARS</code></strong>:  number of characters used to represent string
 (if len(a) &lt; <code>NUMCHARS</code>, it will be padded on the right with blanks).</p>
@@ -2192,14 +2186,13 @@ unicode array (dtype = <code>'U1'</code>) will be returned.</p>
       
   <div class="item">
     <div class="name def" id="netCDF4.stringtochar">
-    <p>def <span class="ident">stringtochar</span>(</p><p>...)</p>
+    <p>def <span class="ident">stringtochar</span>(</p><p>a)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>stringtochar(a)</code></strong></p>
-<p>convert a string array to a character array with one extra dimension</p>
+    <div class="desc"><p>convert a string array to a character array with one extra dimension</p>
 <p><strong><code>a</code></strong>:  Input numpy string array with numpy datatype <code>'SN'</code> or <code>'UN'</code>, where N
 is the number of characters in each string.  Will be converted to
 an array of characters (datatype <code>'S1'</code> or <code>'U1'</code>) of shape <code>a.shape + (N,)</code>.</p>
@@ -2261,14 +2254,13 @@ the user.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.CompoundType.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>...)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>group, datatype, datatype_name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><em><code>__init__(group, datatype, datatype_name)</code></em></strong></p>
-<p>CompoundType constructor.</p>
+    <div class="desc"><p>CompoundType constructor.</p>
 <p><strong><code>group</code></strong>: <a href="#netCDF4.Group"><code>Group</code></a> instance to associate with the compound datatype.</p>
 <p><strong><code>datatype</code></strong>: A numpy dtype object describing a structured (a.k.a record)
 array.  Can be composed of homogeneous numeric or character data types, or
@@ -2499,15 +2491,13 @@ variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>...)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, filename, mode=&#34;r&#34;, clobber=True, diskless=False, persist=False, weakref=False, format=&#39;NETCDF4&#39;)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>__init__(self, filename, mode="r", clobber=True, diskless=False,
-persist=False, weakref=False, format='NETCDF4')</code></strong></p>
-<p><a href="#netCDF4.Dataset"><code>Dataset</code></a> constructor.</p>
+    <div class="desc"><p><a href="#netCDF4.Dataset"><code>Dataset</code></a> constructor.</p>
 <p><strong><code>filename</code></strong>: Name of netCDF file to hold dataset.</p>
 <p><strong><code>mode</code></strong>: access mode. <code>r</code> means read-only; no data can be
 modified. <code>w</code> means write; a new file is created, an existing file with
@@ -2560,14 +2550,13 @@ parent Dataset instance is garbage collected.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.close">
-    <p>def <span class="ident">close</span>(</p><p>...)</p>
+    <p>def <span class="ident">close</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>close(self)</code></strong></p>
-<p>Close the Dataset.</p></div>
+    <div class="desc"><p>Close the Dataset.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2576,14 +2565,13 @@ parent Dataset instance is garbage collected.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.createCompoundType">
-    <p>def <span class="ident">createCompoundType</span>(</p><p>...)</p>
+    <p>def <span class="ident">createCompoundType</span>(</p><p>self, datatype, datatype_name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>createCompoundType(self, datatype, datatype_name)</code></strong></p>
-<p>Creates a new compound data type named <code>datatype_name</code> from the numpy
+    <div class="desc"><p>Creates a new compound data type named <code>datatype_name</code> from the numpy
 dtype object <code>datatype</code>.</p>
 <p><strong><em>Note</em></strong>: If the new compound data type contains other compound data types
 (i.e. it is a 'nested' compound type, where not all of the elements
@@ -2599,14 +2587,13 @@ datatype.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.createDimension">
-    <p>def <span class="ident">createDimension</span>(</p><p>...)</p>
+    <p>def <span class="ident">createDimension</span>(</p><p>self, dimname, size=None)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>createDimension(self, dimname, size=None)</code></strong></p>
-<p>Creates a new dimension with the given <code>dimname</code> and <code>size</code>.</p>
+    <div class="desc"><p>Creates a new dimension with the given <code>dimname</code> and <code>size</code>.</p>
 <p><code>size</code> must be a positive integer or <code>None</code>, which stands for
 "unlimited" (default is <code>None</code>). Specifying a size of 0 also
 results in an unlimited dimension. The return value is the <a href="#netCDF4.Dimension"><code>Dimension</code></a>
@@ -2622,14 +2609,13 @@ instance. To determine if a dimension is 'unlimited', use the
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.createGroup">
-    <p>def <span class="ident">createGroup</span>(</p><p>...)</p>
+    <p>def <span class="ident">createGroup</span>(</p><p>self, groupname)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>createGroup(self, groupname)</code></strong></p>
-<p>Creates a new <a href="#netCDF4.Group"><code>Group</code></a> with the given <code>groupname</code>.</p>
+    <div class="desc"><p>Creates a new <a href="#netCDF4.Group"><code>Group</code></a> with the given <code>groupname</code>.</p>
 <p>If <code>groupname</code> is specified as a path, using forward slashes as in unix to
 separate components, then intermediate groups will be created as necessary 
 (analagous to <code>mkdir -p</code> in unix).  For example,
@@ -2646,14 +2632,13 @@ raised.</p>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.createVLType">
-    <p>def <span class="ident">createVLType</span>(</p><p>...)</p>
+    <p>def <span class="ident">createVLType</span>(</p><p>self, datatype, datatype_name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>createVLType(self, datatype, datatype_name)</code></strong></p>
-<p>Creates a new VLEN data type named <code>datatype_name</code> from a numpy
+    <div class="desc"><p>Creates a new VLEN data type named <code>datatype_name</code> from a numpy
 dtype object <code>datatype</code>.</p>
 <p>The return value is the <a href="#netCDF4.VLType"><code>VLType</code></a> class instance describing the new
 datatype.</p></div>
@@ -2665,16 +2650,13 @@ datatype.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.createVariable">
-    <p>def <span class="ident">createVariable</span>(</p><p>...)</p>
+    <p>def <span class="ident">createVariable</span>(</p><p>self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None, fill_value=None)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), zlib=False,
-complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-endian='native', least_significant_digit=None, fill_value=None)</code></strong></p>
-<p>Creates a new variable with the given <code>varname</code>, <code>datatype</code>, and
+    <div class="desc"><p>Creates a new variable with the given <code>varname</code>, <code>datatype</code>, and
 <code>dimensions</code>. If dimensions are not given, the variable is assumed to be
 a scalar.</p>
 <p>If <code>varname</code> is specified as a path, using forward slashes as in unix to
@@ -2729,7 +2711,7 @@ some performance advantage to be gained by setting the endian-ness.</p>
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 <p>The optional keyword <code>fill_value</code> can be used to override the default
 netCDF <code>_FillValue</code> (the value that the variable gets filled with before
-any data is written to it, defaults given in netCDF4.default_fillvals).
+any data is written to it, defaults given in <code>netCDF4.default_fillvals</code>).
 If fill_value is set to <code>False</code>, then the variable is not pre-filled.</p>
 <p>If the optional keyword parameter <code>least_significant_digit</code> is
 specified, variable data will be truncated (quantized). In conjunction
@@ -2781,14 +2763,13 @@ is the number of variable dimensions.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.delncattr">
-    <p>def <span class="ident">delncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">delncattr</span>(</p><p>self,name,value)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>delncattr(self,name,value)</code></strong></p>
-<p>delete a netCDF dataset or group attribute.  Use if you need to delete a
+    <div class="desc"><p>delete a netCDF dataset or group attribute.  Use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
   <div class="source_cont">
@@ -2799,14 +2780,13 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.filepath">
-    <p>def <span class="ident">filepath</span>(</p><p>...)</p>
+    <p>def <span class="ident">filepath</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>filepath(self)</code></strong></p>
-<p>Get the file system path (or the opendap URL) which was used to
+    <div class="desc"><p>Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
   <div class="source_cont">
 </div>
@@ -2816,14 +2796,13 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.getncattr">
-    <p>def <span class="ident">getncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">getncattr</span>(</p><p>self,name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>getncattr(self,name)</code></strong></p>
-<p>retrievel a netCDF dataset or group attribute.
+    <div class="desc"><p>retrievel a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes.</p></div>
   <div class="source_cont">
@@ -2834,14 +2813,13 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.ncattrs">
-    <p>def <span class="ident">ncattrs</span>(</p><p>...)</p>
+    <p>def <span class="ident">ncattrs</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>ncattrs(self)</code></strong></p>
-<p>return netCDF global attribute names for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> in a list.</p></div>
+    <div class="desc"><p>return netCDF global attribute names for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> in a list.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2850,14 +2828,13 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.renameAttribute">
-    <p>def <span class="ident">renameAttribute</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameAttribute</span>(</p><p>self, oldname, newname)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>renameAttribute(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
+    <div class="desc"><p>rename a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2866,14 +2843,13 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.renameDimension">
-    <p>def <span class="ident">renameDimension</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameDimension</span>(</p><p>self, oldname, newname)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>renameDimension(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Dimension"><code>Dimension</code></a> named <code>oldname</code> to <code>newname</code>.</p></div>
+    <div class="desc"><p>rename a <a href="#netCDF4.Dimension"><code>Dimension</code></a> named <code>oldname</code> to <code>newname</code>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2882,14 +2858,13 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.renameGroup">
-    <p>def <span class="ident">renameGroup</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameGroup</span>(</p><p>self, oldname, newname)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>renameGroup(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Group"><code>Group</code></a> named <code>oldname</code> to <code>newname</code> (requires netcdf &gt;= 4.3.1).</p></div>
+    <div class="desc"><p>rename a <a href="#netCDF4.Group"><code>Group</code></a> named <code>oldname</code> to <code>newname</code> (requires netcdf &gt;= 4.3.1).</p></div>
   <div class="source_cont">
 </div>
 
@@ -2898,14 +2873,13 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.renameVariable">
-    <p>def <span class="ident">renameVariable</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameVariable</span>(</p><p>self, oldname, newname)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>renameVariable(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Variable"><code>Variable</code></a> named <code>oldname</code> to <code>newname</code></p></div>
+    <div class="desc"><p>rename a <a href="#netCDF4.Variable"><code>Variable</code></a> named <code>oldname</code> to <code>newname</code></p></div>
   <div class="source_cont">
 </div>
 
@@ -2914,14 +2888,13 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.set_auto_mask">
-    <p>def <span class="ident">set_auto_mask</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_mask</span>(</p><p>self, True_or_False)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>set_auto_mask(self, True_or_False)</code></strong></p>
-<p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+    <div class="desc"><p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.</p>
@@ -2935,14 +2908,13 @@ after calling this function will follow the default behaviour.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.set_auto_maskandscale">
-    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>self, True_or_False)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>set_auto_maskandscale(self, True_or_False)</code></strong></p>
-<p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+    <div class="desc"><p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.</p>
@@ -2956,14 +2928,13 @@ after calling this function will follow the default behaviour.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.set_auto_scale">
-    <p>def <span class="ident">set_auto_scale</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_scale</span>(</p><p>self, True_or_False)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>set_auto_scale(self, True_or_False)</code></strong></p>
-<p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+    <div class="desc"><p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic variable scaling
 shall be applied for all variables.</p>
@@ -2977,14 +2948,13 @@ after calling this function will follow the default behaviour.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.set_fill_off">
-    <p>def <span class="ident">set_fill_off</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_fill_off</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>set_fill_off(self)</code></strong></p>
-<p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>off</code>.</p>
+    <div class="desc"><p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>off</code>.</p>
 <p>This will prevent the data from being pre-filled with fill values, which
 may result in some performance improvements. However, you must then make
 sure the data is actually written before being read.</p></div>
@@ -2996,14 +2966,13 @@ sure the data is actually written before being read.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.set_fill_on">
-    <p>def <span class="ident">set_fill_on</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_fill_on</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>set_fill_on(self)</code></strong></p>
-<p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>on</code>.</p>
+    <div class="desc"><p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>on</code>.</p>
 <p>This causes data to be pre-filled with fill values. The fill values can be
 controlled by the variable's <code>_Fill_Value</code> attribute, but is usually
 sufficient to the use the netCDF default <code>_Fill_Value</code> (defined
@@ -3019,14 +2988,13 @@ to.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.setncattr">
-    <p>def <span class="ident">setncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">setncattr</span>(</p><p>self,name,value)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>setncattr(self,name,value)</code></strong></p>
-<p>set a netCDF dataset or group attribute using name,value pair.
+    <div class="desc"><p>set a netCDF dataset or group attribute using name,value pair.
 Use if you need to set a netCDF attribute with the
 with the same name as one of the reserved python attributes.</p></div>
   <div class="source_cont">
@@ -3037,14 +3005,13 @@ with the same name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.setncatts">
-    <p>def <span class="ident">setncatts</span>(</p><p>...)</p>
+    <p>def <span class="ident">setncatts</span>(</p><p>self,attdict)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>setncatts(self,attdict)</code></strong></p>
-<p>set a bunch of netCDF dataset or group attributes at once using a python dictionary.
+    <div class="desc"><p>set a bunch of netCDF dataset or group attributes at once using a python dictionary.
 This may be faster when setting a lot of attributes for a <code>NETCDF3</code>
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute</p></div>
@@ -3056,14 +3023,13 @@ each attribute</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.sync">
-    <p>def <span class="ident">sync</span>(</p><p>...)</p>
+    <p>def <span class="ident">sync</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>sync(self)</code></strong></p>
-<p>Writes all buffered data in the <a href="#netCDF4.Dataset"><code>Dataset</code></a> to the disk file.</p></div>
+    <div class="desc"><p>Writes all buffered data in the <a href="#netCDF4.Dataset"><code>Dataset</code></a> to the disk file.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3112,14 +3078,13 @@ determine if the dimension is unlimited.</p>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dimension.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>...)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, group, name, size=None)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>__init__(self, group, name, size=None)</code></strong></p>
-<p><a href="#netCDF4.Dimension"><code>Dimension</code></a> constructor.</p>
+    <div class="desc"><p><a href="#netCDF4.Dimension"><code>Dimension</code></a> constructor.</p>
 <p><strong><code>group</code></strong>: <a href="#netCDF4.Group"><code>Group</code></a> instance to associate with dimension.</p>
 <p><strong><code>name</code></strong>: Name of the dimension.</p>
 <p><strong><code>size</code></strong>: Size of the dimension. <code>None</code> or 0 means unlimited. (Default <code>None</code>).</p>
@@ -3134,14 +3099,13 @@ determine if the dimension is unlimited.</p>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dimension.group">
-    <p>def <span class="ident">group</span>(</p><p>...)</p>
+    <p>def <span class="ident">group</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>group(self)</code></strong></p>
-<p>return the group that this <a href="#netCDF4.Dimension"><code>Dimension</code></a> is a member of.</p></div>
+    <div class="desc"><p>return the group that this <a href="#netCDF4.Dimension"><code>Dimension</code></a> is a member of.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3150,14 +3114,13 @@ determine if the dimension is unlimited.</p>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dimension.isunlimited">
-    <p>def <span class="ident">isunlimited</span>(</p><p>...)</p>
+    <p>def <span class="ident">isunlimited</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>isunlimited(self)</code></strong></p>
-<p>returns <code>True</code> if the <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance is unlimited, <code>False</code> otherwise.</p></div>
+    <div class="desc"><p>returns <code>True</code> if the <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance is unlimited, <code>False</code> otherwise.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3394,7 +3357,7 @@ variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>...)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, parent, name)</p>
     </div>
     
     <p class="inheritance">
@@ -3404,8 +3367,7 @@ variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code
 
     
   
-    <div class="desc"><p><strong><code>__init__(self, parent, name)</code></strong>
-<a href="#netCDF4.Group"><code>Group</code></a> constructor.</p>
+    <div class="desc"><p><a href="#netCDF4.Group"><code>Group</code></a> constructor.</p>
 <p><strong><code>parent</code></strong>: <a href="#netCDF4.Group"><code>Group</code></a> instance for the parent group.  If being created
 in the root group, use a <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance.</p>
 <p><strong><code>name</code></strong>: - Name of the group.</p>
@@ -3420,7 +3382,7 @@ another <a href="#netCDF4.Group"><code>Group</code></a> instance, not using this
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.close">
-    <p>def <span class="ident">close</span>(</p><p>...)</p>
+    <p>def <span class="ident">close</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -3430,8 +3392,7 @@ another <a href="#netCDF4.Group"><code>Group</code></a> instance, not using this
 
     
   
-    <div class="desc"><p><strong><code>close(self)</code></strong></p>
-<p>overrides <a href="#netCDF4.Dataset"><code>Dataset</code></a> close method which does not apply to <a href="#netCDF4.Group"><code>Group</code></a>
+    <div class="desc"><p>overrides <a href="#netCDF4.Dataset"><code>Dataset</code></a> close method which does not apply to <a href="#netCDF4.Group"><code>Group</code></a>
 instances, raises IOError.</p></div>
   <div class="source_cont">
 </div>
@@ -3441,7 +3402,7 @@ instances, raises IOError.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.createCompoundType">
-    <p>def <span class="ident">createCompoundType</span>(</p><p>...)</p>
+    <p>def <span class="ident">createCompoundType</span>(</p><p>self, datatype, datatype_name)</p>
     </div>
     
     <p class="inheritance">
@@ -3451,8 +3412,7 @@ instances, raises IOError.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>createCompoundType(self, datatype, datatype_name)</code></strong></p>
-<p>Creates a new compound data type named <code>datatype_name</code> from the numpy
+    <div class="desc inherited"><p>Creates a new compound data type named <code>datatype_name</code> from the numpy
 dtype object <code>datatype</code>.</p>
 <p><strong><em>Note</em></strong>: If the new compound data type contains other compound data types
 (i.e. it is a 'nested' compound type, where not all of the elements
@@ -3468,7 +3428,7 @@ datatype.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.createDimension">
-    <p>def <span class="ident">createDimension</span>(</p><p>...)</p>
+    <p>def <span class="ident">createDimension</span>(</p><p>self, dimname, size=None)</p>
     </div>
     
     <p class="inheritance">
@@ -3478,8 +3438,7 @@ datatype.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>createDimension(self, dimname, size=None)</code></strong></p>
-<p>Creates a new dimension with the given <code>dimname</code> and <code>size</code>.</p>
+    <div class="desc inherited"><p>Creates a new dimension with the given <code>dimname</code> and <code>size</code>.</p>
 <p><code>size</code> must be a positive integer or <code>None</code>, which stands for
 "unlimited" (default is <code>None</code>). Specifying a size of 0 also
 results in an unlimited dimension. The return value is the <a href="#netCDF4.Dimension"><code>Dimension</code></a>
@@ -3495,7 +3454,7 @@ instance. To determine if a dimension is 'unlimited', use the
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.createGroup">
-    <p>def <span class="ident">createGroup</span>(</p><p>...)</p>
+    <p>def <span class="ident">createGroup</span>(</p><p>self, groupname)</p>
     </div>
     
     <p class="inheritance">
@@ -3505,8 +3464,7 @@ instance. To determine if a dimension is 'unlimited', use the
 
     
   
-    <div class="desc inherited"><p><strong><code>createGroup(self, groupname)</code></strong></p>
-<p>Creates a new <a href="#netCDF4.Group"><code>Group</code></a> with the given <code>groupname</code>.</p>
+    <div class="desc inherited"><p>Creates a new <a href="#netCDF4.Group"><code>Group</code></a> with the given <code>groupname</code>.</p>
 <p>If <code>groupname</code> is specified as a path, using forward slashes as in unix to
 separate components, then intermediate groups will be created as necessary 
 (analagous to <code>mkdir -p</code> in unix).  For example,
@@ -3523,7 +3481,7 @@ raised.</p>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.createVLType">
-    <p>def <span class="ident">createVLType</span>(</p><p>...)</p>
+    <p>def <span class="ident">createVLType</span>(</p><p>self, datatype, datatype_name)</p>
     </div>
     
     <p class="inheritance">
@@ -3533,8 +3491,7 @@ raised.</p>
 
     
   
-    <div class="desc inherited"><p><strong><code>createVLType(self, datatype, datatype_name)</code></strong></p>
-<p>Creates a new VLEN data type named <code>datatype_name</code> from a numpy
+    <div class="desc inherited"><p>Creates a new VLEN data type named <code>datatype_name</code> from a numpy
 dtype object <code>datatype</code>.</p>
 <p>The return value is the <a href="#netCDF4.VLType"><code>VLType</code></a> class instance describing the new
 datatype.</p></div>
@@ -3546,7 +3503,7 @@ datatype.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.createVariable">
-    <p>def <span class="ident">createVariable</span>(</p><p>...)</p>
+    <p>def <span class="ident">createVariable</span>(</p><p>self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None, fill_value=None)</p>
     </div>
     
     <p class="inheritance">
@@ -3556,10 +3513,7 @@ datatype.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), zlib=False,
-complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-endian='native', least_significant_digit=None, fill_value=None)</code></strong></p>
-<p>Creates a new variable with the given <code>varname</code>, <code>datatype</code>, and
+    <div class="desc inherited"><p>Creates a new variable with the given <code>varname</code>, <code>datatype</code>, and
 <code>dimensions</code>. If dimensions are not given, the variable is assumed to be
 a scalar.</p>
 <p>If <code>varname</code> is specified as a path, using forward slashes as in unix to
@@ -3614,7 +3568,7 @@ some performance advantage to be gained by setting the endian-ness.</p>
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 <p>The optional keyword <code>fill_value</code> can be used to override the default
 netCDF <code>_FillValue</code> (the value that the variable gets filled with before
-any data is written to it, defaults given in netCDF4.default_fillvals).
+any data is written to it, defaults given in <code>netCDF4.default_fillvals</code>).
 If fill_value is set to <code>False</code>, then the variable is not pre-filled.</p>
 <p>If the optional keyword parameter <code>least_significant_digit</code> is
 specified, variable data will be truncated (quantized). In conjunction
@@ -3666,7 +3620,7 @@ is the number of variable dimensions.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.delncattr">
-    <p>def <span class="ident">delncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">delncattr</span>(</p><p>self,name,value)</p>
     </div>
     
     <p class="inheritance">
@@ -3676,8 +3630,7 @@ is the number of variable dimensions.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>delncattr(self,name,value)</code></strong></p>
-<p>delete a netCDF dataset or group attribute.  Use if you need to delete a
+    <div class="desc inherited"><p>delete a netCDF dataset or group attribute.  Use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
   <div class="source_cont">
@@ -3688,7 +3641,7 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.filepath">
-    <p>def <span class="ident">filepath</span>(</p><p>...)</p>
+    <p>def <span class="ident">filepath</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -3698,8 +3651,7 @@ attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>filepath(self)</code></strong></p>
-<p>Get the file system path (or the opendap URL) which was used to
+    <div class="desc inherited"><p>Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
   <div class="source_cont">
 </div>
@@ -3709,7 +3661,7 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.getncattr">
-    <p>def <span class="ident">getncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">getncattr</span>(</p><p>self,name)</p>
     </div>
     
     <p class="inheritance">
@@ -3719,8 +3671,7 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>getncattr(self,name)</code></strong></p>
-<p>retrievel a netCDF dataset or group attribute.
+    <div class="desc inherited"><p>retrievel a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes.</p></div>
   <div class="source_cont">
@@ -3731,7 +3682,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.ncattrs">
-    <p>def <span class="ident">ncattrs</span>(</p><p>...)</p>
+    <p>def <span class="ident">ncattrs</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -3741,8 +3692,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>ncattrs(self)</code></strong></p>
-<p>return netCDF global attribute names for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> in a list.</p></div>
+    <div class="desc inherited"><p>return netCDF global attribute names for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> in a list.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3751,7 +3701,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.renameAttribute">
-    <p>def <span class="ident">renameAttribute</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameAttribute</span>(</p><p>self, oldname, newname)</p>
     </div>
     
     <p class="inheritance">
@@ -3761,8 +3711,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>renameAttribute(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
+    <div class="desc inherited"><p>rename a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3771,7 +3720,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.renameDimension">
-    <p>def <span class="ident">renameDimension</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameDimension</span>(</p><p>self, oldname, newname)</p>
     </div>
     
     <p class="inheritance">
@@ -3781,8 +3730,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>renameDimension(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Dimension"><code>Dimension</code></a> named <code>oldname</code> to <code>newname</code>.</p></div>
+    <div class="desc inherited"><p>rename a <a href="#netCDF4.Dimension"><code>Dimension</code></a> named <code>oldname</code> to <code>newname</code>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3791,7 +3739,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.renameGroup">
-    <p>def <span class="ident">renameGroup</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameGroup</span>(</p><p>self, oldname, newname)</p>
     </div>
     
     <p class="inheritance">
@@ -3801,8 +3749,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>renameGroup(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Group"><code>Group</code></a> named <code>oldname</code> to <code>newname</code> (requires netcdf &gt;= 4.3.1).</p></div>
+    <div class="desc inherited"><p>rename a <a href="#netCDF4.Group"><code>Group</code></a> named <code>oldname</code> to <code>newname</code> (requires netcdf &gt;= 4.3.1).</p></div>
   <div class="source_cont">
 </div>
 
@@ -3811,7 +3758,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.renameVariable">
-    <p>def <span class="ident">renameVariable</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameVariable</span>(</p><p>self, oldname, newname)</p>
     </div>
     
     <p class="inheritance">
@@ -3821,8 +3768,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>renameVariable(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Variable"><code>Variable</code></a> named <code>oldname</code> to <code>newname</code></p></div>
+    <div class="desc inherited"><p>rename a <a href="#netCDF4.Variable"><code>Variable</code></a> named <code>oldname</code> to <code>newname</code></p></div>
   <div class="source_cont">
 </div>
 
@@ -3831,7 +3777,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.set_auto_mask">
-    <p>def <span class="ident">set_auto_mask</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_mask</span>(</p><p>self, True_or_False)</p>
     </div>
     
     <p class="inheritance">
@@ -3841,8 +3787,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_auto_mask(self, True_or_False)</code></strong></p>
-<p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.</p>
@@ -3856,7 +3801,7 @@ after calling this function will follow the default behaviour.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.set_auto_maskandscale">
-    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>self, True_or_False)</p>
     </div>
     
     <p class="inheritance">
@@ -3866,8 +3811,7 @@ after calling this function will follow the default behaviour.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_auto_maskandscale(self, True_or_False)</code></strong></p>
-<p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.</p>
@@ -3881,7 +3825,7 @@ after calling this function will follow the default behaviour.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.set_auto_scale">
-    <p>def <span class="ident">set_auto_scale</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_scale</span>(</p><p>self, True_or_False)</p>
     </div>
     
     <p class="inheritance">
@@ -3891,8 +3835,7 @@ after calling this function will follow the default behaviour.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_auto_scale(self, True_or_False)</code></strong></p>
-<p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic variable scaling
 shall be applied for all variables.</p>
@@ -3906,7 +3849,7 @@ after calling this function will follow the default behaviour.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.set_fill_off">
-    <p>def <span class="ident">set_fill_off</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_fill_off</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -3916,8 +3859,7 @@ after calling this function will follow the default behaviour.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_fill_off(self)</code></strong></p>
-<p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>off</code>.</p>
+    <div class="desc inherited"><p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>off</code>.</p>
 <p>This will prevent the data from being pre-filled with fill values, which
 may result in some performance improvements. However, you must then make
 sure the data is actually written before being read.</p></div>
@@ -3929,7 +3871,7 @@ sure the data is actually written before being read.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.set_fill_on">
-    <p>def <span class="ident">set_fill_on</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_fill_on</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -3939,8 +3881,7 @@ sure the data is actually written before being read.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_fill_on(self)</code></strong></p>
-<p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>on</code>.</p>
+    <div class="desc inherited"><p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>on</code>.</p>
 <p>This causes data to be pre-filled with fill values. The fill values can be
 controlled by the variable's <code>_Fill_Value</code> attribute, but is usually
 sufficient to the use the netCDF default <code>_Fill_Value</code> (defined
@@ -3956,7 +3897,7 @@ to.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.setncattr">
-    <p>def <span class="ident">setncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">setncattr</span>(</p><p>self,name,value)</p>
     </div>
     
     <p class="inheritance">
@@ -3966,8 +3907,7 @@ to.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>setncattr(self,name,value)</code></strong></p>
-<p>set a netCDF dataset or group attribute using name,value pair.
+    <div class="desc inherited"><p>set a netCDF dataset or group attribute using name,value pair.
 Use if you need to set a netCDF attribute with the
 with the same name as one of the reserved python attributes.</p></div>
   <div class="source_cont">
@@ -3978,7 +3918,7 @@ with the same name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.setncatts">
-    <p>def <span class="ident">setncatts</span>(</p><p>...)</p>
+    <p>def <span class="ident">setncatts</span>(</p><p>self,attdict)</p>
     </div>
     
     <p class="inheritance">
@@ -3988,8 +3928,7 @@ with the same name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>setncatts(self,attdict)</code></strong></p>
-<p>set a bunch of netCDF dataset or group attributes at once using a python dictionary.
+    <div class="desc inherited"><p>set a bunch of netCDF dataset or group attributes at once using a python dictionary.
 This may be faster when setting a lot of attributes for a <code>NETCDF3</code>
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute</p></div>
@@ -4001,7 +3940,7 @@ each attribute</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.sync">
-    <p>def <span class="ident">sync</span>(</p><p>...)</p>
+    <p>def <span class="ident">sync</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -4011,8 +3950,7 @@ each attribute</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>sync(self)</code></strong></p>
-<p>Writes all buffered data in the <a href="#netCDF4.Dataset"><code>Dataset</code></a> to the disk file.</p></div>
+    <div class="desc inherited"><p>Writes all buffered data in the <a href="#netCDF4.Dataset"><code>Dataset</code></a> to the disk file.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4251,7 +4189,7 @@ variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.createCompoundType">
-    <p>def <span class="ident">createCompoundType</span>(</p><p>...)</p>
+    <p>def <span class="ident">createCompoundType</span>(</p><p>self, datatype, datatype_name)</p>
     </div>
     
     <p class="inheritance">
@@ -4261,8 +4199,7 @@ variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code
 
     
   
-    <div class="desc inherited"><p><strong><code>createCompoundType(self, datatype, datatype_name)</code></strong></p>
-<p>Creates a new compound data type named <code>datatype_name</code> from the numpy
+    <div class="desc inherited"><p>Creates a new compound data type named <code>datatype_name</code> from the numpy
 dtype object <code>datatype</code>.</p>
 <p><strong><em>Note</em></strong>: If the new compound data type contains other compound data types
 (i.e. it is a 'nested' compound type, where not all of the elements
@@ -4278,7 +4215,7 @@ datatype.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.createDimension">
-    <p>def <span class="ident">createDimension</span>(</p><p>...)</p>
+    <p>def <span class="ident">createDimension</span>(</p><p>self, dimname, size=None)</p>
     </div>
     
     <p class="inheritance">
@@ -4288,8 +4225,7 @@ datatype.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>createDimension(self, dimname, size=None)</code></strong></p>
-<p>Creates a new dimension with the given <code>dimname</code> and <code>size</code>.</p>
+    <div class="desc inherited"><p>Creates a new dimension with the given <code>dimname</code> and <code>size</code>.</p>
 <p><code>size</code> must be a positive integer or <code>None</code>, which stands for
 "unlimited" (default is <code>None</code>). Specifying a size of 0 also
 results in an unlimited dimension. The return value is the <a href="#netCDF4.Dimension"><code>Dimension</code></a>
@@ -4305,7 +4241,7 @@ instance. To determine if a dimension is 'unlimited', use the
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.createGroup">
-    <p>def <span class="ident">createGroup</span>(</p><p>...)</p>
+    <p>def <span class="ident">createGroup</span>(</p><p>self, groupname)</p>
     </div>
     
     <p class="inheritance">
@@ -4315,8 +4251,7 @@ instance. To determine if a dimension is 'unlimited', use the
 
     
   
-    <div class="desc inherited"><p><strong><code>createGroup(self, groupname)</code></strong></p>
-<p>Creates a new <a href="#netCDF4.Group"><code>Group</code></a> with the given <code>groupname</code>.</p>
+    <div class="desc inherited"><p>Creates a new <a href="#netCDF4.Group"><code>Group</code></a> with the given <code>groupname</code>.</p>
 <p>If <code>groupname</code> is specified as a path, using forward slashes as in unix to
 separate components, then intermediate groups will be created as necessary 
 (analagous to <code>mkdir -p</code> in unix).  For example,
@@ -4333,7 +4268,7 @@ raised.</p>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.createVLType">
-    <p>def <span class="ident">createVLType</span>(</p><p>...)</p>
+    <p>def <span class="ident">createVLType</span>(</p><p>self, datatype, datatype_name)</p>
     </div>
     
     <p class="inheritance">
@@ -4343,8 +4278,7 @@ raised.</p>
 
     
   
-    <div class="desc inherited"><p><strong><code>createVLType(self, datatype, datatype_name)</code></strong></p>
-<p>Creates a new VLEN data type named <code>datatype_name</code> from a numpy
+    <div class="desc inherited"><p>Creates a new VLEN data type named <code>datatype_name</code> from a numpy
 dtype object <code>datatype</code>.</p>
 <p>The return value is the <a href="#netCDF4.VLType"><code>VLType</code></a> class instance describing the new
 datatype.</p></div>
@@ -4356,7 +4290,7 @@ datatype.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.createVariable">
-    <p>def <span class="ident">createVariable</span>(</p><p>...)</p>
+    <p>def <span class="ident">createVariable</span>(</p><p>self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None, fill_value=None)</p>
     </div>
     
     <p class="inheritance">
@@ -4366,10 +4300,7 @@ datatype.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), zlib=False,
-complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-endian='native', least_significant_digit=None, fill_value=None)</code></strong></p>
-<p>Creates a new variable with the given <code>varname</code>, <code>datatype</code>, and
+    <div class="desc inherited"><p>Creates a new variable with the given <code>varname</code>, <code>datatype</code>, and
 <code>dimensions</code>. If dimensions are not given, the variable is assumed to be
 a scalar.</p>
 <p>If <code>varname</code> is specified as a path, using forward slashes as in unix to
@@ -4424,7 +4355,7 @@ some performance advantage to be gained by setting the endian-ness.</p>
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 <p>The optional keyword <code>fill_value</code> can be used to override the default
 netCDF <code>_FillValue</code> (the value that the variable gets filled with before
-any data is written to it, defaults given in netCDF4.default_fillvals).
+any data is written to it, defaults given in <code>netCDF4.default_fillvals</code>).
 If fill_value is set to <code>False</code>, then the variable is not pre-filled.</p>
 <p>If the optional keyword parameter <code>least_significant_digit</code> is
 specified, variable data will be truncated (quantized). In conjunction
@@ -4476,7 +4407,7 @@ is the number of variable dimensions.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.delncattr">
-    <p>def <span class="ident">delncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">delncattr</span>(</p><p>self,name,value)</p>
     </div>
     
     <p class="inheritance">
@@ -4486,8 +4417,7 @@ is the number of variable dimensions.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>delncattr(self,name,value)</code></strong></p>
-<p>delete a netCDF dataset or group attribute.  Use if you need to delete a
+    <div class="desc inherited"><p>delete a netCDF dataset or group attribute.  Use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
   <div class="source_cont">
@@ -4498,7 +4428,7 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.filepath">
-    <p>def <span class="ident">filepath</span>(</p><p>...)</p>
+    <p>def <span class="ident">filepath</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -4508,8 +4438,7 @@ attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>filepath(self)</code></strong></p>
-<p>Get the file system path (or the opendap URL) which was used to
+    <div class="desc inherited"><p>Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
   <div class="source_cont">
 </div>
@@ -4519,7 +4448,7 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.getncattr">
-    <p>def <span class="ident">getncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">getncattr</span>(</p><p>self,name)</p>
     </div>
     
     <p class="inheritance">
@@ -4529,8 +4458,7 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>getncattr(self,name)</code></strong></p>
-<p>retrievel a netCDF dataset or group attribute.
+    <div class="desc inherited"><p>retrievel a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes.</p></div>
   <div class="source_cont">
@@ -4541,7 +4469,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.renameAttribute">
-    <p>def <span class="ident">renameAttribute</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameAttribute</span>(</p><p>self, oldname, newname)</p>
     </div>
     
     <p class="inheritance">
@@ -4551,8 +4479,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>renameAttribute(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
+    <div class="desc inherited"><p>rename a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4561,7 +4488,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.renameDimension">
-    <p>def <span class="ident">renameDimension</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameDimension</span>(</p><p>self, oldname, newname)</p>
     </div>
     
     <p class="inheritance">
@@ -4571,8 +4498,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>renameDimension(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Dimension"><code>Dimension</code></a> named <code>oldname</code> to <code>newname</code>.</p></div>
+    <div class="desc inherited"><p>rename a <a href="#netCDF4.Dimension"><code>Dimension</code></a> named <code>oldname</code> to <code>newname</code>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4581,7 +4507,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.renameGroup">
-    <p>def <span class="ident">renameGroup</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameGroup</span>(</p><p>self, oldname, newname)</p>
     </div>
     
     <p class="inheritance">
@@ -4591,8 +4517,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>renameGroup(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Group"><code>Group</code></a> named <code>oldname</code> to <code>newname</code> (requires netcdf &gt;= 4.3.1).</p></div>
+    <div class="desc inherited"><p>rename a <a href="#netCDF4.Group"><code>Group</code></a> named <code>oldname</code> to <code>newname</code> (requires netcdf &gt;= 4.3.1).</p></div>
   <div class="source_cont">
 </div>
 
@@ -4601,7 +4526,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.renameVariable">
-    <p>def <span class="ident">renameVariable</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameVariable</span>(</p><p>self, oldname, newname)</p>
     </div>
     
     <p class="inheritance">
@@ -4611,8 +4536,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>renameVariable(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Variable"><code>Variable</code></a> named <code>oldname</code> to <code>newname</code></p></div>
+    <div class="desc inherited"><p>rename a <a href="#netCDF4.Variable"><code>Variable</code></a> named <code>oldname</code> to <code>newname</code></p></div>
   <div class="source_cont">
 </div>
 
@@ -4621,7 +4545,7 @@ name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.set_auto_mask">
-    <p>def <span class="ident">set_auto_mask</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_mask</span>(</p><p>self, True_or_False)</p>
     </div>
     
     <p class="inheritance">
@@ -4631,8 +4555,7 @@ name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_auto_mask(self, True_or_False)</code></strong></p>
-<p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.</p>
@@ -4646,7 +4569,7 @@ after calling this function will follow the default behaviour.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.set_auto_maskandscale">
-    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>self, True_or_False)</p>
     </div>
     
     <p class="inheritance">
@@ -4656,8 +4579,7 @@ after calling this function will follow the default behaviour.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_auto_maskandscale(self, True_or_False)</code></strong></p>
-<p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.</p>
@@ -4671,7 +4593,7 @@ after calling this function will follow the default behaviour.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.set_auto_scale">
-    <p>def <span class="ident">set_auto_scale</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_scale</span>(</p><p>self, True_or_False)</p>
     </div>
     
     <p class="inheritance">
@@ -4681,8 +4603,7 @@ after calling this function will follow the default behaviour.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_auto_scale(self, True_or_False)</code></strong></p>
-<p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic variable scaling
 shall be applied for all variables.</p>
@@ -4696,7 +4617,7 @@ after calling this function will follow the default behaviour.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.set_fill_off">
-    <p>def <span class="ident">set_fill_off</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_fill_off</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -4706,8 +4627,7 @@ after calling this function will follow the default behaviour.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_fill_off(self)</code></strong></p>
-<p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>off</code>.</p>
+    <div class="desc inherited"><p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>off</code>.</p>
 <p>This will prevent the data from being pre-filled with fill values, which
 may result in some performance improvements. However, you must then make
 sure the data is actually written before being read.</p></div>
@@ -4719,7 +4639,7 @@ sure the data is actually written before being read.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.set_fill_on">
-    <p>def <span class="ident">set_fill_on</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_fill_on</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -4729,8 +4649,7 @@ sure the data is actually written before being read.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>set_fill_on(self)</code></strong></p>
-<p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>on</code>.</p>
+    <div class="desc inherited"><p>Sets the fill mode for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> open for writing to <code>on</code>.</p>
 <p>This causes data to be pre-filled with fill values. The fill values can be
 controlled by the variable's <code>_Fill_Value</code> attribute, but is usually
 sufficient to the use the netCDF default <code>_Fill_Value</code> (defined
@@ -4746,7 +4665,7 @@ to.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.setncattr">
-    <p>def <span class="ident">setncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">setncattr</span>(</p><p>self,name,value)</p>
     </div>
     
     <p class="inheritance">
@@ -4756,8 +4675,7 @@ to.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>setncattr(self,name,value)</code></strong></p>
-<p>set a netCDF dataset or group attribute using name,value pair.
+    <div class="desc inherited"><p>set a netCDF dataset or group attribute using name,value pair.
 Use if you need to set a netCDF attribute with the
 with the same name as one of the reserved python attributes.</p></div>
   <div class="source_cont">
@@ -4768,7 +4686,7 @@ with the same name as one of the reserved python attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.setncatts">
-    <p>def <span class="ident">setncatts</span>(</p><p>...)</p>
+    <p>def <span class="ident">setncatts</span>(</p><p>self,attdict)</p>
     </div>
     
     <p class="inheritance">
@@ -4778,8 +4696,7 @@ with the same name as one of the reserved python attributes.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>setncatts(self,attdict)</code></strong></p>
-<p>set a bunch of netCDF dataset or group attributes at once using a python dictionary.
+    <div class="desc inherited"><p>set a bunch of netCDF dataset or group attributes at once using a python dictionary.
 This may be faster when setting a lot of attributes for a <code>NETCDF3</code>
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute</p></div>
@@ -4791,7 +4708,7 @@ each attribute</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.sync">
-    <p>def <span class="ident">sync</span>(</p><p>...)</p>
+    <p>def <span class="ident">sync</span>(</p><p>self)</p>
     </div>
     
     <p class="inheritance">
@@ -4801,8 +4718,7 @@ each attribute</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>sync(self)</code></strong></p>
-<p>Writes all buffered data in the <a href="#netCDF4.Dataset"><code>Dataset</code></a> to the disk file.</p></div>
+    <div class="desc inherited"><p>Writes all buffered data in the <a href="#netCDF4.Dataset"><code>Dataset</code></a> to the disk file.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4812,7 +4728,7 @@ each attribute</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>...)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, files, check=False, aggdim=None, exclude=[])</p>
     </div>
     
     <p class="inheritance">
@@ -4822,8 +4738,7 @@ each attribute</p></div>
 
     
   
-    <div class="desc"><p><strong><code>__init__(self, files, check=False, aggdim=None, exclude=[])</code></strong></p>
-<p>Open a Dataset spanning multiple files, making it look as if it was a
+    <div class="desc"><p>Open a Dataset spanning multiple files, making it look as if it was a
 single file. Variables in the list of files that share the same
 dimension (specified with the keyword <code>aggdim</code>) are aggregated. If
 <code>aggdim</code> is not specified, the unlimited is aggregated.  Currently,
@@ -4862,8 +4777,7 @@ Default is an empty list.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>close(self)</code></strong></p>
-<p>Close the Dataset.</p></div>
+    <div class="desc inherited"><p>Close the Dataset.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4882,8 +4796,7 @@ Default is an empty list.</p></div>
 
     
   
-    <div class="desc inherited"><p><strong><code>ncattrs(self)</code></strong></p>
-<p>return netCDF global attribute names for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> in a list.</p></div>
+    <div class="desc inherited"><p>return netCDF global attribute names for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> in a list.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4940,14 +4853,13 @@ time unit to all files. </p>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFTime.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>...)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, time, units=None)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>__init__(self, time, units=None)</code></strong></p>
-<p>Create a time Variable with units consistent across a multifile
+    <div class="desc"><p>Create a time Variable with units consistent across a multifile
 dataset.</p>
 <p><strong><code>time</code></strong>: Time variable from a <a href="#netCDF4.MFDataset"><code>MFDataset</code></a>.</p>
 <p><strong><code>units</code></strong>: Time units, for example, <code>days since 1979-01-01</code>. If None, use
@@ -5049,14 +4961,13 @@ the user.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.VLType.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>...)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>group, datatype, datatype_name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>__init__(group, datatype, datatype_name)</code></strong></p>
-<p>VLType constructor.</p>
+    <div class="desc"><p>VLType constructor.</p>
 <p><strong><code>group</code></strong>: <a href="#netCDF4.Group"><code>Group</code></a> instance to associate with the VLEN datatype.</p>
 <p><strong><code>datatype</code></strong>: An numpy dtype object describing a the component type for the
 variable length array.</p>
@@ -5234,17 +5145,13 @@ applied. Default is <code>True</code>, can be reset using <a href="#netCDF4.Vari
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>...)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, group, name, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None,fill_value=None)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>__init__(self, group, name, datatype, dimensions=(), zlib=False,
-complevel=4, shuffle=True, fletcher32=False, contiguous=False,
-chunksizes=None, endian='native',
-least_significant_digit=None,fill_value=None)</code></strong></p>
-<p><a href="#netCDF4.Variable"><code>Variable</code></a> constructor.</p>
+    <div class="desc"><p><a href="#netCDF4.Variable"><code>Variable</code></a> constructor.</p>
 <p><strong><code>group</code></strong>: <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance to associate with variable.</p>
 <p><strong><code>name</code></strong>: Name of the variable.</p>
 <p><strong><code>datatype</code></strong>: <a href="#netCDF4.Variable"><code>Variable</code></a> data type. Can be specified by providing a
@@ -5308,7 +5215,7 @@ so that a precision of 0.1 is retained (in this case bits=4). Default is
 value that the variable gets filled with before any data is written to it)
 is replaced with this value.  If fill_value is set to <code>False</code>, then
 the variable is not pre-filled. The default netCDF fill values can be found
-in netCDF4.default_fillvals.</p>
+in <code>netCDF4.default_fillvals</code>.</p>
 <p><strong><em>Note</em></strong>: <a href="#netCDF4.Variable"><code>Variable</code></a> instances should be created using the
 <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a> instance, not using this class directly.</p></div>
@@ -5320,14 +5227,13 @@ in netCDF4.default_fillvals.</p>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.assignValue">
-    <p>def <span class="ident">assignValue</span>(</p><p>...)</p>
+    <p>def <span class="ident">assignValue</span>(</p><p>self, val)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>assignValue(self, val)</code></strong></p>
-<p>assign a value to a scalar variable.  Provided for compatibility with
+    <div class="desc"><p>assign a value to a scalar variable.  Provided for compatibility with
 Scientific.IO.NetCDF, can also be done by assigning to an Ellipsis slice ([...]).</p></div>
   <div class="source_cont">
 </div>
@@ -5337,14 +5243,13 @@ Scientific.IO.NetCDF, can also be done by assigning to an Ellipsis slice ([...])
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.chunking">
-    <p>def <span class="ident">chunking</span>(</p><p>...)</p>
+    <p>def <span class="ident">chunking</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>chunking(self)</code></strong></p>
-<p>return variable chunking information.  If the dataset is
+    <div class="desc"><p>return variable chunking information.  If the dataset is
 defined to be contiguous (and hence there is no chunking) the word 'contiguous'
 is returned.  Otherwise, a sequence with the chunksize for
 each dimension is returned.</p></div>
@@ -5356,14 +5261,13 @@ each dimension is returned.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.delncattr">
-    <p>def <span class="ident">delncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">delncattr</span>(</p><p>self,name,value)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>delncattr(self,name,value)</code></strong></p>
-<p>delete a netCDF variable attribute.  Use if you need to delete a
+    <div class="desc"><p>delete a netCDF variable attribute.  Use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
   <div class="source_cont">
@@ -5374,14 +5278,13 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.endian">
-    <p>def <span class="ident">endian</span>(</p><p>...)</p>
+    <p>def <span class="ident">endian</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>endian(self)</code></strong></p>
-<p>return endian-ness (<code>little,big,native</code>) of variable (as stored in HDF5 file).</p></div>
+    <div class="desc"><p>return endian-ness (<code>little,big,native</code>) of variable (as stored in HDF5 file).</p></div>
   <div class="source_cont">
 </div>
 
@@ -5390,14 +5293,13 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.filters">
-    <p>def <span class="ident">filters</span>(</p><p>...)</p>
+    <p>def <span class="ident">filters</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>filters(self)</code></strong></p>
-<p>return dictionary containing HDF5 filter parameters.</p></div>
+    <div class="desc"><p>return dictionary containing HDF5 filter parameters.</p></div>
   <div class="source_cont">
 </div>
 
@@ -5406,14 +5308,13 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.getValue">
-    <p>def <span class="ident">getValue</span>(</p><p>...)</p>
+    <p>def <span class="ident">getValue</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>getValue(self)</code></strong></p>
-<p>get the value of a scalar variable.  Provided for compatibility with
+    <div class="desc"><p>get the value of a scalar variable.  Provided for compatibility with
 Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([...]).</p></div>
   <div class="source_cont">
 </div>
@@ -5423,14 +5324,13 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([...]).</p><
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.get_var_chunk_cache">
-    <p>def <span class="ident">get_var_chunk_cache</span>(</p><p>...)</p>
+    <p>def <span class="ident">get_var_chunk_cache</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>get_var_chunk_cache(self)</code></strong></p>
-<p>return variable chunk cache information in a tuple (size,nelems,preemption).
+    <div class="desc"><p>return variable chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for <code>nc_get_var_chunk_cache</code> for
 details.</p></div>
   <div class="source_cont">
@@ -5441,14 +5341,13 @@ details.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.getncattr">
-    <p>def <span class="ident">getncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">getncattr</span>(</p><p>self,name)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>getncattr(self,name)</code></strong></p>
-<p>retrievel a netCDF variable attribute.  Use if you need to set a
+    <div class="desc"><p>retrievel a netCDF variable attribute.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
   <div class="source_cont">
@@ -5459,14 +5358,13 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.group">
-    <p>def <span class="ident">group</span>(</p><p>...)</p>
+    <p>def <span class="ident">group</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>group(self)</code></strong></p>
-<p>return the group that this <a href="#netCDF4.Variable"><code>Variable</code></a> is a member of.</p></div>
+    <div class="desc"><p>return the group that this <a href="#netCDF4.Variable"><code>Variable</code></a> is a member of.</p></div>
   <div class="source_cont">
 </div>
 
@@ -5475,14 +5373,13 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.ncattrs">
-    <p>def <span class="ident">ncattrs</span>(</p><p>...)</p>
+    <p>def <span class="ident">ncattrs</span>(</p><p>self)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>ncattrs(self)</code></strong></p>
-<p>return netCDF attribute names for this <a href="#netCDF4.Variable"><code>Variable</code></a> in a list.</p></div>
+    <div class="desc"><p>return netCDF attribute names for this <a href="#netCDF4.Variable"><code>Variable</code></a> in a list.</p></div>
   <div class="source_cont">
 </div>
 
@@ -5491,14 +5388,13 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.renameAttribute">
-    <p>def <span class="ident">renameAttribute</span>(</p><p>...)</p>
+    <p>def <span class="ident">renameAttribute</span>(</p><p>self, oldname, newname)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>renameAttribute(self, oldname, newname)</code></strong></p>
-<p>rename a <a href="#netCDF4.Variable"><code>Variable</code></a> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
+    <div class="desc"><p>rename a <a href="#netCDF4.Variable"><code>Variable</code></a> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -5507,14 +5403,13 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.set_auto_mask">
-    <p>def <span class="ident">set_auto_mask</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_mask</span>(</p><p>self,mask)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>set_auto_mask(self,mask)</code></strong></p>
-<p>turn on or off automatic conversion of variable data to and
+    <div class="desc"><p>turn on or off automatic conversion of variable data to and
 from masked arrays .</p>
 <p>If <code>mask</code> is set to <code>True</code>, when data is read from a variable
 it is converted to a masked array if any of the values are exactly
@@ -5535,14 +5430,13 @@ masked values by the fill_value of the masked array.</p>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.set_auto_maskandscale">
-    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>self,maskandscale)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>set_auto_maskandscale(self,maskandscale)</code></strong></p>
-<p>turn on or off automatic conversion of variable data to and
+    <div class="desc"><p>turn on or off automatic conversion of variable data to and
 from masked arrays and automatic packing/unpacking of variable
 data using <code>scale_factor</code> and <code>add_offset</code> attributes.</p>
 <p>If <code>maskandscale</code> is set to <code>True</code>, when data is read from a variable
@@ -5582,14 +5476,13 @@ used to provide simple compression, see the
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.set_auto_scale">
-    <p>def <span class="ident">set_auto_scale</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_auto_scale</span>(</p><p>self,scale)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>set_auto_scale(self,scale)</code></strong></p>
-<p>turn on or off automatic packing/unpacking of variable
+    <div class="desc"><p>turn on or off automatic packing/unpacking of variable
 data using <code>scale_factor</code> and <code>add_offset</code> attributes.</p>
 <p>If <code>scale</code> is set to <code>True</code>, and the variable has a
 <code>scale_factor</code> or an <code>add_offset</code> attribute, then data read
@@ -5619,14 +5512,13 @@ used to provide simple compression, see the
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.set_var_chunk_cache">
-    <p>def <span class="ident">set_var_chunk_cache</span>(</p><p>...)</p>
+    <p>def <span class="ident">set_var_chunk_cache</span>(</p><p>self,size=None,nelems=None,preemption=None)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>set_var_chunk_cache(self,size=None,nelems=None,preemption=None)</code></strong></p>
-<p>change variable chunk cache settings.
+    <div class="desc"><p>change variable chunk cache settings.
 See netcdf C library documentation for <code>nc_set_var_chunk_cache</code> for
 details.</p></div>
   <div class="source_cont">
@@ -5637,14 +5529,13 @@ details.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.setncattr">
-    <p>def <span class="ident">setncattr</span>(</p><p>...)</p>
+    <p>def <span class="ident">setncattr</span>(</p><p>self,name,value)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>setncattr(self,name,value)</code></strong></p>
-<p>set a netCDF variable attribute using name,value pair.  Use if you need to set a
+    <div class="desc"><p>set a netCDF variable attribute using name,value pair.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
   <div class="source_cont">
@@ -5655,14 +5546,13 @@ attributes.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.setncatts">
-    <p>def <span class="ident">setncatts</span>(</p><p>...)</p>
+    <p>def <span class="ident">setncatts</span>(</p><p>self,attdict)</p>
     </div>
     
 
     
   
-    <div class="desc"><p><strong><code>setncatts(self,attdict)</code></strong></p>
-<p>set a bunch of netCDF variable attributes at once using a python dictionary.
+    <div class="desc"><p>set a bunch of netCDF variable attributes at once using a python dictionary.
 This may be faster when setting a lot of attributes for a <code>NETCDF3</code>
 formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute</p></div>

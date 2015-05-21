@@ -1893,7 +1893,7 @@ keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword `fill_value` can be used to override the default
 netCDF `_FillValue` (the value that the variable gets filled with before
-any data is written to it, defaults given in netCDF4.default_fillvals).
+any data is written to it, defaults given in `netCDF4.default_fillvals`).
 If fill_value is set to `False`, then the variable is not pre-filled.
 
 If the optional keyword parameter `least_significant_digit` is
@@ -2639,7 +2639,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         value that the variable gets filled with before any data is written to it)
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
-        in netCDF4.default_fillvals.
+        in `netCDF4.default_fillvals`.
 
         ***Note***: `netCDF4.Variable` instances should be created using the
         `netCDF4.Dataset.createVariable` method of a `netCDF4.Dataset` or
