@@ -1334,7 +1334,8 @@ cdef class Dataset:
     """
 A netCDF `netCDF4.Dataset` is a collection of dimensions, groups, variables and
 attributes. Together they describe the meaning of data and relations among
-data fields stored in a netCDF file.
+data fields stored in a netCDF file. See `netCDF4.Dataset.__init__` for more
+details.
 
 A list of attribute names corresponding to global netCDF attributes
 defined for the `netCDF4.Dataset` can be obtained with the
@@ -1344,9 +1345,53 @@ These attributes can be created by assigning to an attribute of the
 name/value pairs is provided by the `__dict__` attribute of a
 `netCDF4.Dataset` instance.
 
-The class variables `dimensions, variables, groups, cmptypes, vltypes,
-data_model, disk_format` and `path` are read-only (and should not be modified by the
-user).
+The following class variables are read-only and should not be
+modified by the user.
+
+**`dimensions`**: The `dimensions` dictionary maps the names of
+dimensions defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
+`netCDF4.Dimension` class.
+
+**`variables`**: The `variables` dictionary maps the names of variables
+defined for this `netCDF4.Dataset` or `netCDF4.Group` to instances of the 
+`netCDF4.Variable` class.
+
+**`groups`**: The groups dictionary maps the names of groups created for
+this `netCDF4.Dataset` or `netCDF4.Group` to instances of the `netCDF4.Group` class (the
+`netCDF4.Dataset` class is simply a special case of the `netCDF4.Group` class which
+describes the root group in the netCDF4.file).
+
+**`cmptypes`**: The `cmptypes` dictionary maps the names of
+compound types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
+`netCDF4.CompoundType` class.
+
+**`vltypes`**: The `vltypes` dictionary maps the names of
+variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances 
+of the `netCDF4.VLType` class.
+
+**`data_model`**: `data_model` describes the netCDF
+data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
+`NETCDF4_CLASSIC` or `NETCDF3_64BIT`.
+
+**`file_format`**: same as `data_model`, retained for backwards compatibility.
+
+**`disk_format`**: `disk_format` describes the underlying
+file format, one of `NETCDF3`, `HDF5`, `HDF4`,
+`PNETCDF`, `DAP2`, `DAP4` or `UNDEFINED`. Only available if using
+netcdf C library version >= 4.3.1, otherwise will always return
+`UNDEFINED`.
+
+**`parent`**: `parent` is a reference to the parent
+`netCDF4.Group` instance. `None` for a the root group or `netCDF4.Dataset`
+instance.
+
+**`path`**: `path` shows the location of the `netCDF4.Group` in
+the `netCDF4..Dataset` in a unix directory format (the names of groups in the
+hierarchy separated by backslashes). A `netCDF4..Dataset` instance is the root
+group, so the path is simply `'/'`.
+
+**`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak 
+references to the parent Dataset or Group.
 """
     cdef object __weakref__
     cdef public int _grpid
@@ -1398,7 +1443,7 @@ user).
     group, so the path is simply `'/'`."""
     __pdoc__['Dataset.keepweakref']=\
     """If `True`, child Dimension and Variables objects only keep weak references to
-    parent Dataset or Group.""" 
+    the parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                  diskless=False, persist=False, keepweakref=False, **kwargs):
@@ -2173,11 +2218,17 @@ cdef class Group(Dataset):
 Groups define a hierarchical namespace within a netCDF file. They are
 analagous to directories in a unix filesystem. Each `netCDF4.Group` behaves like
 a `netCDF4.Dataset` within a Dataset, and can contain it's own variables,
-dimensions and attributes (and other Groups).
+dimensions and attributes (and other Groups). See `netCDF4.Group.__init__`
+for more details.
 
-`netCDF4.Group` inherits from `netCDF4.Dataset`, so all the `netCDF4.Dataset` class methods and
-variables are available to a `netCDF4.Group` instance (except the `close`
-method)."""
+`netCDF4.Group` inherits from `netCDF4.Dataset`, so all the 
+`netCDF4.Dataset` class methods and variables are available
+to a `netCDF4.Group` instance (except the `close` method).
+
+Additional read-only class variables:
+
+**`name`**: String describing the group name.
+"""
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Group.name']=\
     """A string describing the name of the `netCDF4.Group`."""
@@ -2259,11 +2310,18 @@ instances, raises IOError."""
 cdef class Dimension:
     """
 A netCDF `netCDF4.Dimension` is used to describe the coordinates of a `netCDF4.Variable`.
+See `netCDF4.Dimension.__init__ for more details.
 
 The current maximum size of a `netCDF4.Dimension` instance can be obtained by
 calling the python `len` function on the `netCDF4.Dimension` instance. The
 `netCDF4.Dimension.isunlimited` method of a `netCDF4.Dimension` instance can be used to
-determine if the dimension is unlimited"""
+determine if the dimension is unlimited.
+
+Read-only class variables:
+
+**`name`**: String name, used when creating a `netCDF4.Variable` with
+`netCDF4.Dataset.createVariable`.
+"""
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
     # Docstrings for class variables (used by pdoc).
@@ -2401,7 +2459,8 @@ returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwi
 cdef class Variable:
     """
 A netCDF `netCDF4.Variable` is used to read and write netCDF data.  They are
-analagous to numpy array objects.
+analagous to numpy array objects. See `netCDF4.Variable.__init__ for more
+details.
 
 A list of attribute names corresponding to netCDF attributes defined for
 the variable can be obtained with the `netCDF4.Variable.ncattrs` method. These
@@ -2410,9 +2469,7 @@ attributes can be created by assigning to an attribute of the
 name/value pairs is provided by the `__dict__` attribute of a
 `netCDF4.Variable` instance.
 
-The instance variables `dimensions, dtype, ndim, shape`
-and `least_significant_digit` are read-only (and
-should not be modified by the user).
+The following class variables are read-only:
     """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
