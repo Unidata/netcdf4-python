@@ -5296,7 +5296,7 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 For netCDF 3 files (that don't use HDF5), only <code>endian='native'</code> is allowed.</p>
-<p>The <code>zlib, complevel, shuffle, fletcher32, contiguous</code> and {chunksizes`
+<p>The <code>zlib, complevel, shuffle, fletcher32, contiguous</code> and <code>chunksizes</code>
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 <p><strong><code>least_significant_digit</code></strong>: If specified, variable data will be
 truncated (quantized). In conjunction with <code>zlib=True</code> this produces
@@ -5310,9 +5310,9 @@ value that the variable gets filled with before any data is written to it)
 is replaced with this value.  If fill_value is set to <code>False</code>, then
 the variable is not pre-filled. The default netCDF fill values can be found
 in netCDF4.default_fillvals.</p>
-<p><strong><em>Note</em></strong>: <code>netCDF4.Variable</code> instances should be created using the
-<code>netCDF4.Dataset.createVariable</code> method of a <code>netCDF4.Dataset</code> or
-<code>netCDF4.Group</code> instance, not using this class directly.</p></div>
+<p><strong><em>Note</em></strong>: <a href="#netCDF4.Variable"><code>Variable</code></a> instances should be created using the
+<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<a href="#netCDF4.Group"><code>Group</code></a> instance, not using this class directly.</p></div>
   <div class="source_cont">
 </div>
 

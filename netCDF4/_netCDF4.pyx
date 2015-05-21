@@ -2625,7 +2625,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         some performance advantage to be gained by setting the endian-ness.
         For netCDF 3 files (that don't use HDF5), only `endian='native'` is allowed.
         
-        The `zlib, complevel, shuffle, fletcher32, contiguous` and {chunksizes`
+        The `zlib, complevel, shuffle, fletcher32, contiguous` and `chunksizes`
         keywords are silently ignored for netCDF 3 files that do not use HDF5.
         
         **`least_significant_digit`**: If specified, variable data will be
