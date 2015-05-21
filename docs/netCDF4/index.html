@@ -1623,8 +1623,7 @@ OrderedDict([(u&quot;description&quot;, u&quot;bogus example script&quot;),
 <p>Attributes can be deleted from a netCDF <a href="#netCDF4.Dataset"><code>Dataset</code></a>, <a href="#netCDF4.Group"><code>Group</code></a> or
 <a href="#netCDF4.Variable"><code>Variable</code></a> using the python <code>del</code> statement (i.e. <code>del grp.foo</code>
 removes the attribute <code>foo</code> the the group <code>grp</code>).</p>
-<h2><div id='section6'>6) Writing data to and retrieving data from a netCDF</h2>
-<p>variable.</p>
+<h2><div id='section6'>6) Writing data to and retrieving data from a netCDF variable.</h2>
 <p>Now that you have a netCDF <a href="#netCDF4.Variable"><code>Variable</code></a> instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span>
@@ -1828,8 +1827,7 @@ sacrificed for the sake of disk space.</p>
 
 
 <p>and see how much smaller the resulting files are.</p>
-<h2><div id='section10'>10) Beyond homogenous arrays of a fixed type - compound</h2>
-<p>data types.</p>
+<h2><div id='section10'>10) Beyond homogenous arrays of a fixed type - compound data types.</h2>
 <p>Compound data types map directly to numpy structured (a.k.a 'record'
 arrays).  Structured arrays are akin to C structs, or derived types
 in Fortran. They allow for the construction of table-like structures

@@ -402,8 +402,7 @@ Attributes can be deleted from a netCDF `netCDF4.Dataset`, `netCDF4.Group` or
 `netCDF4.Variable` using the python `del` statement (i.e. `del grp.foo`
 removes the attribute `foo` the the group `grp`).
 
-## <div id='section6'>6) Writing data to and retrieving data from a netCDF
-variable.
+## <div id='section6'>6) Writing data to and retrieving data from a netCDF variable.
 
 Now that you have a netCDF `netCDF4.Variable` instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.
@@ -607,8 +606,7 @@ and then
 
 and see how much smaller the resulting files are.
 
-## <div id='section10'>10) Beyond homogenous arrays of a fixed type - compound
-data types.
+## <div id='section10'>10) Beyond homogenous arrays of a fixed type - compound data types.
 
 Compound data types map directly to numpy structured (a.k.a 'record'
 arrays).  Structured arrays are akin to C structs, or derived types
