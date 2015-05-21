@@ -77,12 +77,20 @@ Install
 Tutorial
 ========
 
-1. [Creating/Opening/Closing a netCDF file](#section1)
-2. [Groups in a netCDF file](#section2)
-3. [Dimensions in a netCDF file](#section3)
+1. [Creating/Opening/Closing a netCDF file.](#section1)
+2. [Groups in a netCDF file.](#section2)
+3. [Dimensions in a netCDF file.](#section3)
+4. [Variables in a netCDF file.](#section4)
+5. [Attributes in a netCDF file.](#section5)
+6. [Writing data to and retrieving data from a netCDF variable.](#section6)
+7. [Dealing with time coordinates.](#section7)
+8. [Reading data from a multi-file netCDF dataset.](#section8)
+9. [Efficient compression of netCDF variables.](#section9)
+10. [Beyond homogenous arrays of a fixed type - compound data types.](#section10)
+11. [Variable-length (vlen) data types.](#section11)
 
 
-## <div id='section1'>1) Creating/Opening/Closing a netCDF file
+## <div id='section1'>1) Creating/Opening/Closing a netCDF file.
 
 To create a netCDF file from python, you simply call the `netCDF4.Dataset`
 constructor. This is also the method used to open an existing netCDF
@@ -119,7 +127,7 @@ OPenDAP support, via the `--enable-dap` configure option (added in
 version 4.0.1).
 
 
-## <div id='section2'>2) Groups in a netCDF file
+## <div id='section2'>2) Groups in a netCDF file.
 
 netCDF version 4 added support for organizing data in hierarchical
 groups, which are analagous to directories in a filesystem. Groups serve
@@ -201,7 +209,7 @@ object yields summary information about it's contents.
         variables:
         groups:
 
-## <div id='section3'>3) Dimensions in a netCDF file
+## <div id='section3'>3) Dimensions in a netCDF file.
 
 netCDF defines the sizes of all variables in terms of dimensions, so
 before any variables can be created the dimensions they use must be
@@ -258,8 +266,7 @@ and whether it is unlimited.
 `netCDF4.Datatset.renameDimension` method of a `netCDF4.Dataset` or
 `netCDF4.Group` instance.
 
-4) Variables in a netCDF file
------------------------------
+## <div id='section4'>4) Variables in a netCDF file.
 
 netCDF variables behave much like python multidimensional array objects
 supplied by the [numpy module](http://numpy.scipy.org). However,
@@ -347,8 +354,7 @@ Python dictionary, in the same way as the dimensions:
 instance.
 
 
-5) Attributes in a netCDF file
-------------------------------
+## <div id='section5'>5) Attributes in a netCDF file.
 
 There are two types of attributes in a netCDF file, global and variable.
 Global attributes provide information about a group, or the entire
@@ -395,8 +401,8 @@ Attributes can be deleted from a netCDF `netCDF4.Dataset`, `netCDF4.Group` or
 `netCDF4.Variable` using the python `del` statement (i.e. `del grp.foo`
 removes the attribute `foo` the the group `grp`).
 
-6) Writing data to and retrieving data from a netCDF variable
--------------------------------------------------------------
+## <div id='section6'>6) Writing data to and retrieving data from a netCDF
+variable.
 
 Now that you have a netCDF `netCDF4.Variable` instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.
@@ -479,8 +485,7 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).
 `v` with no associated dimensions, use `np.asarray(v)` or `v[...]`. The result
 will be a numpy scalar array.
 
-7) Dealing with time coordinates
---------------------------------
+## <div id='section7'>7) Dealing with time coordinates.
 
 Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF and COARDS) specify that time should be
@@ -513,8 +518,7 @@ A function called `netCDF4.date2index` is also provided which returns the indice
 of a netCDF time variable corresponding to a sequence of datetime instances.
 
 
-8) Reading data from a multi-file netCDF dataset.
--------------------------------------------------
+## <div id='section8'>8) Reading data from a multi-file netCDF dataset.
 
 If you want to read data from a variable that spans multiple netCDF files,
 you can use the `netCDF4.MFDataset` class to read the data as if it were
@@ -550,8 +554,7 @@ Now read all the files back in at once with `netCDF4.MFDataset`
 Note that `netCDF4.MFDataset` can only be used to read, not write, multi-file
 datasets.
 
-9) Efficient compression of netCDF variables
---------------------------------------------
+## <div id='section9'>9) Efficient compression of netCDF variables.
 
 Data stored in netCDF 4 `netCDF4.Variable` objects can be compressed and
 decompressed on the fly. The parameters for the compression are
@@ -603,8 +606,8 @@ and then
 
 and see how much smaller the resulting files are.
 
-10) Beyond homogenous arrays of a fixed type - compound data types
-------------------------------------------------------------------
+## <div id='section10'>10) Beyond homogenous arrays of a fixed type - compound
+data types.
 
 Compound data types map directly to numpy structured (a.k.a 'record'
 arrays).  Structured arrays are akin to C structs, or derived types
@@ -669,8 +672,7 @@ objects gives useful summary information in an interactive session:
     >>> print f.cmptypes["complex128"]
     <type "netCDF4._netCDF4.CompoundType">: name = "complex128", numpy dtype = [(u"real","<f8"), (u"imag", "<f8")]
 
-11) Variable-length (vlen) data types
--------------------------------------
+## <div id='section11'>11) Variable-length (vlen) data types.
 
 NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
 of variable length sequences having the same type. To create a variable-length
