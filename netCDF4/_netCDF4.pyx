@@ -2463,7 +2463,7 @@ returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwi
 cdef class Variable:
     """
 A netCDF `netCDF4.Variable` is used to read and write netCDF data.  They are
-analagous to numpy array objects. See `netCDF4.Variable.__init__ for more
+analagous to numpy array objects. See `netCDF4.Variable.__init__` for more
 details.
 
 A list of attribute names corresponding to netCDF attributes defined for
@@ -2474,6 +2474,42 @@ name/value pairs is provided by the `__dict__` attribute of a
 `netCDF4.Variable` instance.
 
 The following class variables are read-only:
+
+**`dimensions`**: A tuple containing the names of the
+dimensions associated with this variable.
+
+**`dtype`**: A numpy dtype object describing the
+variable's data type.
+
+**`ndim`**: The number of variable dimensions.
+
+**`shape`**: A tuple with the current shape (length of all dimensions).
+
+**`scale`**: If True, `scale_factor` and `add_offset` are
+applied. Default is `True`, can be reset using `netCDF4.set_auto_scale` and
+`netCDF4.set_auto_maskandscale` methods.
+
+**`mask`**: If True, data is automatically converted to/from masked 
+arrays when missing values or fill values are present. Default is `True`, can be
+reset using `netCDF4.set_auto_mask` and `netCDF4.set_auto_maskandscale`
+methods.
+
+**`least_significant_digit`**: Describes the power of ten of the 
+smallest decimal place in the data the contains a reliable value.  Data is
+truncated to this decimal place when it is assigned to the `netCDF4.Variable`
+instance. If `None`, the data is not truncated.
+
+**`__orthogonal_indexing__`**: Always `True`.  Indicates to client code
+that the object supports 'orthogonal indexing', which means that slices
+that are 1d arrays or lists slice along each dimension independently.  This
+behavior is similar to Fortran or Matlab, but different than numpy.
+
+**`datatype`**: numpy data type (for primitive data types) or VLType/CompoundType
+ instance (for compound or vlen data types).
+
+**`name`**: String name.
+
+**`size`**: The number of stored elements.
     """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
@@ -2487,9 +2523,6 @@ The following class variables are read-only:
     variable's data type."""
     __pdoc__['Variable.ndim'] = \
     """The number of variable dimensions."""
-    __pdoc__['Variable.shape'] = \
-    """A tuple describing the current size of all
-    the variable's dimensions."""
     __pdoc__['Variable.scale'] = \
     """if True, `scale_factor` and `add_offset` are
     applied. Default is `True`, can be reset using `netCDF4.set_auto_scale` and
@@ -2518,8 +2551,6 @@ The following class variables are read-only:
     """A tuple with the current shape (length of all dimensions)."""
     __pdoc__['Variable.size'] = \
     """The number of stored elements."""
-    __pdoc__['Variable.dimension'] = \
-    """A tuple with the associated dimension names."""
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
@@ -4001,9 +4032,9 @@ cdef class CompoundType:
     """
 A `netCDF4.CompoundType` instance is used to describe a compound data
 type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
-a `netCDF4.Dataset` or `netCDF4.Group` instance.
-
+a `netCDF4.Dataset` or `netCDF4.Group` instance. 
 Compound data types map to numpy structured arrays.
+See `netCDF4.CompoundType.__init__` for more details.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
@@ -4231,7 +4262,8 @@ cdef class VLType:
     """
 A `netCDF4.VLType` instance is used to describe a variable length (VLEN) data
 type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
-a `netCDF4.Dataset` or `netCDF4.Group` instance.
+a `netCDF4.Dataset` or `netCDF4.Group` instance. See 
+`netCDF4.VLType.__init__` for more details.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
@@ -4663,7 +4695,6 @@ class MFDataset(Dataset):
     """
 Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
-
 Datasets must be in `NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT`
 format (`NETCDF4` Datasets won't work).
 
@@ -5075,7 +5106,7 @@ class _Variable(object):
 class MFTime(_Variable):
     """
 Class providing an interface to a MFDataset time Variable by imposing a unique common
-time unit to all files.
+time unit to all files. 
 
 Example usage (See `netCDF4.MFTime.__init__` for more details):
 

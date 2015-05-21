@@ -1298,7 +1298,20 @@ types) are not supported.</p>
 <li>run the tests in the 'test' directory by running <code>python run_all.py</code>.</li>
 </ul>
 <h1>Tutorial</h1>
-<h2>1) Creating/Opening/Closing a netCDF file</h2>
+<ol>
+<li><a href="#section1">Creating/Opening/Closing a netCDF file.</a></li>
+<li><a href="#section2">Groups in a netCDF file.</a></li>
+<li><a href="#section3">Dimensions in a netCDF file.</a></li>
+<li><a href="#section4">Variables in a netCDF file.</a></li>
+<li><a href="#section5">Attributes in a netCDF file.</a></li>
+<li><a href="#section6">Writing data to and retrieving data from a netCDF variable.</a></li>
+<li><a href="#section7">Dealing with time coordinates.</a></li>
+<li><a href="#section8">Reading data from a multi-file netCDF dataset.</a></li>
+<li><a href="#section9">Efficient compression of netCDF variables.</a></li>
+<li><a href="#section10">Beyond homogenous arrays of a fixed type - compound data types.</a></li>
+<li><a href="#section11">Variable-length (vlen) data types.</a></li>
+</ol>
+<h2><div id='section1'>1) Creating/Opening/Closing a netCDF file.</h2>
 <p>To create a netCDF file from python, you simply call the <a href="#netCDF4.Dataset"><code>Dataset</code></a>
 constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (<code>w, r+</code> or <code>a</code>, you may
@@ -1332,7 +1345,7 @@ reading over http if a URL is provided to the <a href="#netCDF4.Dataset"><code>D
 filename.  However, this requires that the netCDF library be built with
 OPenDAP support, via the <code>--enable-dap</code> configure option (added in
 version 4.0.1).</p>
-<h2>2) Groups in a netCDF file</h2>
+<h2><div id='section2'>2) Groups in a netCDF file.</h2>
 <p>netCDF version 4 added support for organizing data in hierarchical
 groups, which are analagous to directories in a filesystem. Groups serve
 as containers for variables, dimensions and attributes, as well as other
@@ -1415,7 +1428,7 @@ group /forecasts/model2:
 </pre></div>
 
 
-<h2>3) Dimensions in a netCDF file</h2>
+<h2><div id='section3'>3) Dimensions in a netCDF file.</h2>
 <p>netCDF defines the sizes of all variables in terms of dimensions, so
 before any variables can be created the dimensions they use must be
 created first. A special case, not often used in practice, is that of a
@@ -1473,7 +1486,7 @@ and whether it is unlimited.</p>
 <p><a href="#netCDF4.Dimension"><code>Dimension</code></a> names can be changed using the
 <code>netCDF4.Datatset.renameDimension</code> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a> instance.</p>
-<h2>4) Variables in a netCDF file</h2>
+<h2><div id='section4'>4) Variables in a netCDF file.</h2>
 <p>netCDF variables behave much like python multidimensional array objects
 supplied by the <a href="http://numpy.scipy.org">numpy module</a>. However,
 unlike numpy arrays, netCDF4 variables can be appended to along one or
@@ -1561,7 +1574,7 @@ OrderedDict([(&quot;time&quot;, &lt;netCDF4.Variable object at 0x1b4ba70&gt;),
 <p><a href="#netCDF4.Variable"><code>Variable</code></a> names can be changed using the
 <a href="#netCDF4.Dataset.renameVariable"><code>renameVariable</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a>
 instance.</p>
-<h2>5) Attributes in a netCDF file</h2>
+<h2><div id='section5'>5) Attributes in a netCDF file.</h2>
 <p>There are two types of attributes in a netCDF file, global and variable.
 Global attributes provide information about a group, or the entire
 dataset, as a whole. <a href="#netCDF4.Variable"><code>Variable</code></a> attributes provide information about
@@ -1609,7 +1622,8 @@ OrderedDict([(u&quot;description&quot;, u&quot;bogus example script&quot;),
 <p>Attributes can be deleted from a netCDF <a href="#netCDF4.Dataset"><code>Dataset</code></a>, <a href="#netCDF4.Group"><code>Group</code></a> or
 <a href="#netCDF4.Variable"><code>Variable</code></a> using the python <code>del</code> statement (i.e. <code>del grp.foo</code>
 removes the attribute <code>foo</code> the the group <code>grp</code>).</p>
-<h2>6) Writing data to and retrieving data from a netCDF variable</h2>
+<h2><div id='section6'>6) Writing data to and retrieving data from a netCDF</h2>
+<p>variable.</p>
 <p>Now that you have a netCDF <a href="#netCDF4.Variable"><code>Variable</code></a> instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span>
@@ -1695,7 +1709,7 @@ shape of fancy temp slice =  (3, 3, 36, 71)
 <p><strong><em>Special note for scalar variables</em></strong>: To extract data from a scalar variable
 <code>v</code> with no associated dimensions, use <code>np.asarray(v)</code> or <code>v[...]</code>. The result
 will be a numpy scalar array.</p>
-<h2>7) Dealing with time coordinates</h2>
+<h2><div id='section7'>7) Dealing with time coordinates.</h2>
 <p>Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF and COARDS) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
@@ -1726,7 +1740,7 @@ All the calendars currently defined in the
 <a href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/">CF metadata convention</a> are supported.
 A function called <a href="#netCDF4.date2index"><code>date2index</code></a> is also provided which returns the indices
 of a netCDF time variable corresponding to a sequence of datetime instances.</p>
-<h2>8) Reading data from a multi-file netCDF dataset.</h2>
+<h2><div id='section8'>8) Reading data from a multi-file netCDF dataset.</h2>
 <p>If you want to read data from a variable that spans multiple netCDF files,
 you can use the <a href="#netCDF4.MFDataset"><code>MFDataset</code></a> class to read the data as if it were
 contained in a single file. Instead of using a single filename to create
@@ -1762,7 +1776,7 @@ datasets are not supported).</p>
 
 <p>Note that <a href="#netCDF4.MFDataset"><code>MFDataset</code></a> can only be used to read, not write, multi-file
 datasets.</p>
-<h2>9) Efficient compression of netCDF variables</h2>
+<h2><div id='section9'>9) Efficient compression of netCDF variables.</h2>
 <p>Data stored in netCDF 4 <a href="#netCDF4.Variable"><code>Variable</code></a> objects can be compressed and
 decompressed on the fly. The parameters for the compression are
 determined by the <code>zlib</code>, <code>complevel</code> and <code>shuffle</code> keyword arguments
@@ -1813,7 +1827,8 @@ sacrificed for the sake of disk space.</p>
 
 
 <p>and see how much smaller the resulting files are.</p>
-<h2>10) Beyond homogenous arrays of a fixed type - compound data types</h2>
+<h2><div id='section10'>10) Beyond homogenous arrays of a fixed type - compound</h2>
+<p>data types.</p>
 <p>Compound data types map directly to numpy structured (a.k.a 'record'
 arrays).  Structured arrays are akin to C structs, or derived types
 in Fortran. They allow for the construction of table-like structures
@@ -1879,7 +1894,7 @@ OrderedDict([(&quot;complex128&quot;, &lt;netCDF4.CompoundType object at 0x1029e
 </pre></div>
 
 
-<h2>11) Variable-length (vlen) data types</h2>
+<h2><div id='section11'>11) Variable-length (vlen) data types.</h2>
 <p>NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
 of variable length sequences having the same type. To create a variable-length
 data type, use the <a href="#netCDF4.Dataset.createVLType"><code>createVLType</code></a> method
@@ -2205,8 +2220,9 @@ and shape <code>a.shape + (N,)</code>, where N is the length of each string in a
   
     <div class="desc"><p>A <a href="#netCDF4.CompoundType"><code>CompoundType</code></a> instance is used to describe a compound data
 type, and can be passed to the the <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of
-a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance.</p>
-<p>Compound data types map to numpy structured arrays.</p>
+a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance. 
+Compound data types map to numpy structured arrays.
+See <a href="#netCDF4.CompoundType.__init__"><code>__init__</code></a> for more details.</p>
 <p>The instance variables <code>dtype</code> and <code>name</code> should not be modified by
 the user.</p></div>
   <div class="source_cont">
@@ -2281,7 +2297,8 @@ method of a Dataset or <a href="#netCDF4.Group"><code>Group</code></a> instance,
   
     <div class="desc"><p>A netCDF <a href="#netCDF4.Dataset"><code>Dataset</code></a> is a collection of dimensions, groups, variables and
 attributes. Together they describe the meaning of data and relations among
-data fields stored in a netCDF file.</p>
+data fields stored in a netCDF file. See <a href="#netCDF4.Dataset.__init__"><code>__init__</code></a> for more
+details.</p>
 <p>A list of attribute names corresponding to global netCDF attributes
 defined for the <a href="#netCDF4.Dataset"><code>Dataset</code></a> can be obtained with the
 <a href="#netCDF4.Dataset.ncattrs"><code>ncattrs</code></a> method.
@@ -2289,9 +2306,42 @@ These attributes can be created by assigning to an attribute of the
 <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance. A dictionary containing all the netCDF attribute
 name/value pairs is provided by the <code>__dict__</code> attribute of a
 <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance.</p>
-<p>The class variables <code>dimensions, variables, groups, cmptypes, vltypes,
-data_model, disk_format</code> and <code>path</code> are read-only (and should not be modified by the
-user).</p></div>
+<p>The following class variables are read-only and should not be
+modified by the user.</p>
+<p><strong><code>dimensions</code></strong>: The <code>dimensions</code> dictionary maps the names of
+dimensions defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
+<a href="#netCDF4.Dimension"><code>Dimension</code></a> class.</p>
+<p><strong><code>variables</code></strong>: The <code>variables</code> dictionary maps the names of variables
+defined for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> to instances of the 
+<a href="#netCDF4.Variable"><code>Variable</code></a> class.</p>
+<p><strong><code>groups</code></strong>: The groups dictionary maps the names of groups created for
+this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> to instances of the <a href="#netCDF4.Group"><code>Group</code></a> class (the
+<a href="#netCDF4.Dataset"><code>Dataset</code></a> class is simply a special case of the <a href="#netCDF4.Group"><code>Group</code></a> class which
+describes the root group in the netCDF4.file).</p>
+<p><strong><code>cmptypes</code></strong>: The <code>cmptypes</code> dictionary maps the names of
+compound types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
+<a href="#netCDF4.CompoundType"><code>CompoundType</code></a> class.</p>
+<p><strong><code>vltypes</code></strong>: The <code>vltypes</code> dictionary maps the names of
+variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances 
+of the <a href="#netCDF4.VLType"><code>VLType</code></a> class.</p>
+<p><strong><code>data_model</code></strong>: <code>data_model</code> describes the netCDF
+data model version, one of <code>NETCDF3_CLASSIC</code>, <code>NETCDF4</code>,
+<code>NETCDF4_CLASSIC</code> or <code>NETCDF3_64BIT</code>.</p>
+<p><strong><code>file_format</code></strong>: same as <code>data_model</code>, retained for backwards compatibility.</p>
+<p><strong><code>disk_format</code></strong>: <code>disk_format</code> describes the underlying
+file format, one of <code>NETCDF3</code>, <code>HDF5</code>, <code>HDF4</code>,
+<code>PNETCDF</code>, <code>DAP2</code>, <code>DAP4</code> or <code>UNDEFINED</code>. Only available if using
+netcdf C library version &gt;= 4.3.1, otherwise will always return
+<code>UNDEFINED</code>.</p>
+<p><strong><code>parent</code></strong>: <code>parent</code> is a reference to the parent
+<a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for a the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a>
+instance.</p>
+<p><strong><code>path</code></strong>: <code>path</code> shows the location of the <a href="#netCDF4.Group"><code>Group</code></a> in
+the <code>netCDF4..Dataset</code> in a unix directory format (the names of groups in the
+hierarchy separated by backslashes). A <code>netCDF4..Dataset</code> instance is the root
+group, so the path is simply <code>'/'</code>.</p>
+<p><strong><code>keepweakref</code></strong>: If <code>True</code>, child Dimension and Variables objects only keep weak 
+references to the parent Dataset or Group.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2389,7 +2439,7 @@ describes the root group in the netCDF4.file).</p></div>
             
   
     <div class="desc"><p>If <code>True</code>, child Dimension and Variables objects only keep weak references to
-parent Dataset or Group.</p></div>
+the parent Dataset or Group.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2412,7 +2462,7 @@ parent Dataset or Group.</p></div>
 
             
   
-    <div class="desc"><p><code>path</code> shows the location of the <code>netCDF4..Group</code> in
+    <div class="desc"><p><code>path</code> shows the location of the <a href="#netCDF4.Group"><code>Group</code></a> in
 the <code>netCDF4..Dataset</code> in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A <code>netCDF4..Dataset</code> instance is the root
 group, so the path is simply <code>'/'</code>.</p></div>
@@ -3027,11 +3077,15 @@ each attribute</p></div>
       <p id="netCDF4.Dimension" class="name">class <span class="ident">Dimension</span></p>
       
   
-    <div class="desc"><p>A netCDF <a href="#netCDF4.Dimension"><code>Dimension</code></a> is used to describe the coordinates of a <a href="#netCDF4.Variable"><code>Variable</code></a>.</p>
-<p>The current maximum size of a <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance can be obtained by
-calling the python <code>len</code> function on the <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance. The
-<a href="#netCDF4.Dimension.isunlimited"><code>isunlimited</code></a> method of a <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance can be used to
-determine if the dimension is unlimited</p></div>
+    <div class="desc"><p>A netCDF <a href="#netCDF4.Dimension"><code>Dimension</code></a> is used to describe the coordinates of a <a href="#netCDF4.Variable"><code>Variable</code></a>.
+See `netCDF4.Dimension.<strong>init</strong> for more details.</p>
+<p>The current maximum size of a <code>netCDF4.Dimension</code> instance can be obtained by
+calling the python <code>len</code> function on the <code>netCDF4.Dimension</code> instance. The
+<code>netCDF4.Dimension.isunlimited</code> method of a <code>netCDF4.Dimension</code> instance can be used to
+determine if the dimension is unlimited.</p>
+<p>Read-only class variables:</p>
+<p><strong><code>name</code></strong>: String name, used when creating a <code>netCDF4.Variable</code> with
+<code>netCDF4.Dataset.createVariable</code>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3120,10 +3174,13 @@ determine if the dimension is unlimited</p></div>
     <div class="desc"><p>Groups define a hierarchical namespace within a netCDF file. They are
 analagous to directories in a unix filesystem. Each <a href="#netCDF4.Group"><code>Group</code></a> behaves like
 a <a href="#netCDF4.Dataset"><code>Dataset</code></a> within a Dataset, and can contain it's own variables,
-dimensions and attributes (and other Groups).</p>
-<p><a href="#netCDF4.Group"><code>Group</code></a> inherits from <a href="#netCDF4.Dataset"><code>Dataset</code></a>, so all the <a href="#netCDF4.Dataset"><code>Dataset</code></a> class methods and
-variables are available to a <a href="#netCDF4.Group"><code>Group</code></a> instance (except the <code>close</code>
-method).</p></div>
+dimensions and attributes (and other Groups). See <a href="#netCDF4.Group.__init__"><code>__init__</code></a>
+for more details.</p>
+<p><a href="#netCDF4.Group"><code>Group</code></a> inherits from <a href="#netCDF4.Dataset"><code>Dataset</code></a>, so all the 
+<a href="#netCDF4.Dataset"><code>Dataset</code></a> class methods and variables are available
+to a <a href="#netCDF4.Group"><code>Group</code></a> instance (except the <code>close</code> method).</p>
+<p>Additional read-only class variables:</p>
+<p><strong><code>name</code></strong>: String describing the group name.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3250,7 +3307,7 @@ describes the root group in the netCDF4.file).</p></div>
             
   
     <div class="desc inherited"><p>If <code>True</code>, child Dimension and Variables objects only keep weak references to
-parent Dataset or Group.</p></div>
+the parent Dataset or Group.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3292,7 +3349,7 @@ parent Dataset or Group.</p></div>
 
             
   
-    <div class="desc inherited"><p><code>path</code> shows the location of the <code>netCDF4..Group</code> in
+    <div class="desc inherited"><p><code>path</code> shows the location of the <a href="#netCDF4.Group"><code>Group</code></a> in
 the <code>netCDF4..Dataset</code> in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A <code>netCDF4..Dataset</code> instance is the root
 group, so the path is simply <code>'/'</code>.</p></div>
@@ -3970,8 +4027,8 @@ each attribute</p></div>
       
   
     <div class="desc"><p>Class for reading multi-file netCDF Datasets, making variables
-spanning multiple files appear as if they were in one file.</p>
-<p>Datasets must be in <code>NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT</code>
+spanning multiple files appear as if they were in one file.
+Datasets must be in <code>NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT</code>
 format (<code>NETCDF4</code> Datasets won't work).</p>
 <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf">pycdf</a> by Andre Gosselin.</p>
 <p>Example usage (See <a href="#netCDF4.MFDataset.__init__"><code>__init__</code></a> for more details):</p>
@@ -4118,7 +4175,7 @@ describes the root group in the netCDF4.file).</p></div>
             
   
     <div class="desc inherited"><p>If <code>True</code>, child Dimension and Variables objects only keep weak references to
-parent Dataset or Group.</p></div>
+the parent Dataset or Group.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4149,7 +4206,7 @@ parent Dataset or Group.</p></div>
 
             
   
-    <div class="desc inherited"><p><code>path</code> shows the location of the <code>netCDF4..Group</code> in
+    <div class="desc inherited"><p><code>path</code> shows the location of the <a href="#netCDF4.Group"><code>Group</code></a> in
 the <code>netCDF4..Dataset</code> in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A <code>netCDF4..Dataset</code> instance is the root
 group, so the path is simply <code>'/'</code>.</p></div>
@@ -4841,7 +4898,7 @@ Default is an empty list.</p></div>
       
   
     <div class="desc"><p>Class providing an interface to a MFDataset time Variable by imposing a unique common
-time unit to all files.</p>
+time unit to all files. </p>
 <p>Example usage (See <a href="#netCDF4.MFTime.__init__"><code>__init__</code></a> for more details):</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&quot;mftest_1.nc&quot;</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&quot;NETCDF4_CLASSIC&quot;</span><span class="p">)</span>
@@ -4952,7 +5009,8 @@ the units from the master variable.</p></div>
   
     <div class="desc"><p>A <a href="#netCDF4.VLType"><code>VLType</code></a> instance is used to describe a variable length (VLEN) data
 type, and can be passed to the the <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of
-a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance.</p>
+a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance. See 
+<a href="#netCDF4.VLType.__init__"><code>__init__</code></a> for more details.</p>
 <p>The instance variables <code>dtype</code> and <code>name</code> should not be modified by
 the user.</p></div>
   <div class="source_cont">
@@ -5021,16 +5079,40 @@ method of a Dataset or <code>netCDF4.Group</code> instance, not using this class
       
   
     <div class="desc"><p>A netCDF <a href="#netCDF4.Variable"><code>Variable</code></a> is used to read and write netCDF data.  They are
-analagous to numpy array objects.</p>
+analagous to numpy array objects. See <a href="#netCDF4.Variable.__init__"><code>__init__</code></a> for more
+details.</p>
 <p>A list of attribute names corresponding to netCDF attributes defined for
 the variable can be obtained with the <a href="#netCDF4.Variable.ncattrs"><code>ncattrs</code></a> method. These
 attributes can be created by assigning to an attribute of the
 <a href="#netCDF4.Variable"><code>Variable</code></a> instance. A dictionary containing all the netCDF attribute
 name/value pairs is provided by the <code>__dict__</code> attribute of a
 <a href="#netCDF4.Variable"><code>Variable</code></a> instance.</p>
-<p>The instance variables <code>dimensions, dtype, ndim, shape</code>
-and <code>least_significant_digit</code> are read-only (and
-should not be modified by the user).</p></div>
+<p>The following class variables are read-only:</p>
+<p><strong><code>dimensions</code></strong>: A tuple containing the names of the
+dimensions associated with this variable.</p>
+<p><strong><code>dtype</code></strong>: A numpy dtype object describing the
+variable's data type.</p>
+<p><strong><code>ndim</code></strong>: The number of variable dimensions.</p>
+<p><strong><code>shape</code></strong>: A tuple with the current shape (length of all dimensions).</p>
+<p><strong><code>scale</code></strong>: If True, <code>scale_factor</code> and <code>add_offset</code> are
+applied. Default is <code>True</code>, can be reset using <code>netCDF4.set_auto_scale</code> and
+<code>netCDF4.set_auto_maskandscale</code> methods.</p>
+<p><strong><code>mask</code></strong>: If True, data is automatically converted to/from masked 
+arrays when missing values or fill values are present. Default is <code>True</code>, can be
+reset using <code>netCDF4.set_auto_mask</code> and <code>netCDF4.set_auto_maskandscale</code>
+methods.</p>
+<p><strong><code>least_significant_digit</code></strong>: Describes the power of ten of the 
+smallest decimal place in the data the contains a reliable value.  Data is
+truncated to this decimal place when it is assigned to the <a href="#netCDF4.Variable"><code>Variable</code></a>
+instance. If <code>None</code>, the data is not truncated.</p>
+<p><strong><code>__orthogonal_indexing__</code></strong>: Always <code>True</code>.  Indicates to client code
+that the object supports 'orthogonal indexing', which means that slices
+that are 1d arrays or lists slice along each dimension independently.  This
+behavior is similar to Fortran or Matlab, but different than numpy.</p>
+<p><strong><code>datatype</code></strong>: numpy data type (for primitive data types) or VLType/CompoundType
+ instance (for compound or vlen data types).</p>
+<p><strong><code>name</code></strong>: String name.</p>
+<p><strong><code>size</code></strong>: The number of stored elements.</p></div>
   <div class="source_cont">
 </div>
 
