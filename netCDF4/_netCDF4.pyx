@@ -47,7 +47,8 @@ Requires
  [OPeNDAP](http://opendap.org) support.
  - [HDF4](http://www.hdfgroup.org/products/hdf4), if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
- - The netCDF-4 C library from [](ftp://ftp.unidata.ucar.edu/pub/netcdf).
+ - The netCDF-4 C library from 
+ [ftp://ftp.unidata.ucar.edu/pub/netcdf](ftp://ftp.unidata.ucar.edu/pub/netcdf).
  Version 4.1.1 or higher is required (4.2 or higher recommended).
  Be sure to build with `--enable-netcdf-4 --enable-shared`, and set
  `CPPFLAGS="-I $HDF5_DIR/include"` and `LDFLAGS="-L $HDF5_DIR/lib"`,
@@ -488,7 +489,7 @@ will be a numpy scalar array.
 ## <div id='section7'>7) Dealing with time coordinates.
 
 Time coordinate values pose a special challenge to netCDF users.  Most
-metadata standards (such as CF and COARDS) specify that time should be
+metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
 specified like `hours since YY:MM:DD hh-mm-ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
@@ -1903,8 +1904,8 @@ with `zlib=True` this produces 'lossy', but significantly more
 efficient compression. For example, if `least_significant_digit=1`,
 data will be quantized using `numpy.around(scale*data)/scale`, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4). From
-[](http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml):
+retained (in this case bits=4). From the 
+[PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml):
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is `None`, or no
 quantization, or 'lossless' compression.
@@ -3697,8 +3698,8 @@ If either scale_factor is present, but add_offset is missing, add_offset
 is assumed zero.  If add_offset is present, but scale_factor is missing,
 scale_factor is assumed to be one.
 For more information on how `scale_factor` and `add_offset` can be
-used to provide simple compression, see
-[](http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml).
+used to provide simple compression, see the
+[PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
 The default value of `maskandscale` is `True`
 (automatic conversions are performed).
@@ -3731,8 +3732,8 @@ If either scale_factor is present, but add_offset is missing, add_offset
 is assumed zero.  If add_offset is present, but scale_factor is missing,
 scale_factor is assumed to be one.
 For more information on how `scale_factor` and `add_offset` can be
-used to provide simple compression, see
-[](http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml).
+used to provide simple compression, see the
+[PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
 The default value of `scale` is `True`
 (automatic conversions are performed).

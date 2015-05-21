@@ -1272,7 +1272,8 @@ types) are not supported.</p>
  <a href="http://opendap.org">OPeNDAP</a> support.</li>
 <li><a href="http://www.hdfgroup.org/products/hdf4">HDF4</a>, if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.</li>
-<li>The netCDF-4 C library from <a href="ftp://ftp.unidata.ucar.edu/pub/netcdf"></a>.
+<li>The netCDF-4 C library from 
+ <a href="ftp://ftp.unidata.ucar.edu/pub/netcdf">ftp://ftp.unidata.ucar.edu/pub/netcdf</a>.
  Version 4.1.1 or higher is required (4.2 or higher recommended).
  Be sure to build with <code>--enable-netcdf-4 --enable-shared</code>, and set
  <code>CPPFLAGS="-I $HDF5_DIR/include"</code> and <code>LDFLAGS="-L $HDF5_DIR/lib"</code>,
@@ -1711,7 +1712,7 @@ shape of fancy temp slice =  (3, 3, 36, 71)
 will be a numpy scalar array.</p>
 <h2><div id='section7'>7) Dealing with time coordinates.</h2>
 <p>Time coordinate values pose a special challenge to netCDF users.  Most
-metadata standards (such as CF and COARDS) specify that time should be
+metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
 specified like <code>hours since YY:MM:DD hh-mm-ss</code>.  These units can be
 awkward to deal with, without a utility to convert the values to and
@@ -2738,8 +2739,8 @@ with <code>zlib=True</code> this produces 'lossy', but significantly more
 efficient compression. For example, if <code>least_significant_digit=1</code>,
 data will be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4). From
-<a href="http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml"></a>:
+retained (in this case bits=4). From the 
+<a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>:
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is <code>None</code>, or no
 quantization, or 'lossless' compression.</p>
@@ -3623,8 +3624,8 @@ with <code>zlib=True</code> this produces 'lossy', but significantly more
 efficient compression. For example, if <code>least_significant_digit=1</code>,
 data will be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4). From
-<a href="http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml"></a>:
+retained (in this case bits=4). From the 
+<a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>:
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is <code>None</code>, or no
 quantization, or 'lossless' compression.</p>
@@ -4433,8 +4434,8 @@ with <code>zlib=True</code> this produces 'lossy', but significantly more
 efficient compression. For example, if <code>least_significant_digit=1</code>,
 data will be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4). From
-<a href="http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml"></a>:
+retained (in this case bits=4). From the 
+<a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>:
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is <code>None</code>, or no
 quantization, or 'lossless' compression.</p>
@@ -5571,8 +5572,8 @@ from that variable is unpacked using::</p>
 is assumed zero.  If add_offset is present, but scale_factor is missing,
 scale_factor is assumed to be one.
 For more information on how <code>scale_factor</code> and <code>add_offset</code> can be
-used to provide simple compression, see
-<a href="http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml"></a>.</p>
+used to provide simple compression, see the
+<a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>.</p>
 <p>The default value of <code>maskandscale</code> is <code>True</code>
 (automatic conversions are performed).</p></div>
   <div class="source_cont">
@@ -5608,8 +5609,8 @@ from that variable is unpacked using::</p>
 is assumed zero.  If add_offset is present, but scale_factor is missing,
 scale_factor is assumed to be one.
 For more information on how <code>scale_factor</code> and <code>add_offset</code> can be
-used to provide simple compression, see
-<a href="http://www.cdc.noaa.gov/cdc/conventions/cdc_netcdf_standard.shtml"></a>.</p>
+used to provide simple compression, see the
+<a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>.</p>
 <p>The default value of <code>scale</code> is <code>True</code>
 (automatic conversions are performed).</p></div>
   <div class="source_cont">
