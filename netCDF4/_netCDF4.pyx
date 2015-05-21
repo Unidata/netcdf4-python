@@ -2587,36 +2587,36 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (for a variable-length string array). Numpy string and unicode datatypes with
         length greater than one are aliases for `str`.
         
-        **`dimensions`** - a tuple containing the variable's dimension names
+        **`dimensions`**: a tuple containing the variable's dimension names
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
         
-        **`zlib`** - if `True`, data assigned to the `netCDF4.Variable`
+        **`zlib`**: if `True`, data assigned to the `netCDF4.Variable`
         instance is compressed on disk. Default `False`.
         
-        **`complevel`** - the level of zlib compression to use (1 is the fastest,
+        **`complevel`**: the level of zlib compression to use (1 is the fastest,
         but poorest compression, 9 is the slowest but best compression). Default 4.
         Ignored if `zlib=False`.
         
-        **`shuffle`** - if `True`, the HDF5 shuffle filter is applied
+        **`shuffle`**: if `True`, the HDF5 shuffle filter is applied
         to improve compression. Default `True`. Ignored if `zlib=False`.
         
-        **`fletcher32`** - if `True` (default `False`), the Fletcher32 checksum
+        **`fletcher32`**: if `True` (default `False`), the Fletcher32 checksum
         algorithm is used for error detection.
         
-        **`contiguous`** - if `True` (default `False`), the variable data is
+        **`contiguous`**: if `True` (default `False`), the variable data is
         stored contiguously on disk.  Default `False`. Setting to `True` for
         a variable with an unlimited dimension will trigger an error.
         
-        **`chunksizes`** - Can be used to specify the HDF5 chunksizes for each
+        **`chunksizes`**: Can be used to specify the HDF5 chunksizes for each
         dimension of the variable. A detailed discussion of HDF chunking and I/O
-        performance is available U{here
-        <http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html>`.
+        performance is available
+        [here](http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html).
         Basically, you want the chunk size for each dimension to match as
         closely as possible the size of the data block that users will read
         from the file. `chunksizes` cannot be set if `contiguous=True`.
         
-        **`endian`** - Can be used to control whether the
+        **`endian`**: Can be used to control whether the
         data is stored in little or big endian format on disk. Possible
         values are `little, big` or `native` (default). The library
         will automatically handle endian conversions when the data is read,
@@ -2628,7 +2628,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         The `zlib, complevel, shuffle, fletcher32, contiguous` and {chunksizes`
         keywords are silently ignored for netCDF 3 files that do not use HDF5.
         
-        **`least_significant_digit`** - If specified, variable data will be
+        **`least_significant_digit`**: If specified, variable data will be
         truncated (quantized). In conjunction with `zlib=True` this produces
         'lossy', but significantly more efficient compression. For example, if
         `least_significant_digit=1`, data will be quantized using
@@ -2636,7 +2636,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         so that a precision of 0.1 is retained (in this case bits=4). Default is
         `None`, or no quantization.
         
-        **`fill_value`** - If specified, the default netCDF `_FillValue` (the
+        **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
         value that the variable gets filled with before any data is written to it)
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
