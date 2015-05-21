@@ -1392,7 +1392,7 @@ user).
     """`parent` is a reference to the parent
     `netCDF4.Group` instance. `None` for a the root group or `netCDF4.Dataset` instance"""
     __pdoc__['Dataset.path']=\
-    """`path` shows the location of the `netCDF4..Group` in
+    """`path` shows the location of the `netCDF4.Group` in
     the `netCDF4..Dataset` in a unix directory format (the names of groups in the
     hierarchy separated by backslashes). A `netCDF4..Dataset` instance is the root
     group, so the path is simply `'/'`."""
