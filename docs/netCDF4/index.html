@@ -5266,29 +5266,29 @@ typecodes can also be used (<code>'f'</code> instead of <code>'f4'</code>, <code
 (for a variable-length array), or the python <code>str</code> builtin
 (for a variable-length string array). Numpy string and unicode datatypes with
 length greater than one are aliases for <code>str</code>.</p>
-<p><strong><code>dimensions</code></strong> - a tuple containing the variable's dimension names
+<p><strong><code>dimensions</code></strong>: a tuple containing the variable's dimension names
 (defined previously with <code>createDimension</code>). Default is an empty tuple
 which means the variable is a scalar (and therefore has no dimensions).</p>
-<p><strong><code>zlib</code></strong> - if <code>True</code>, data assigned to the <a href="#netCDF4.Variable"><code>Variable</code></a>
+<p><strong><code>zlib</code></strong>: if <code>True</code>, data assigned to the <a href="#netCDF4.Variable"><code>Variable</code></a>
 instance is compressed on disk. Default <code>False</code>.</p>
-<p><strong><code>complevel</code></strong> - the level of zlib compression to use (1 is the fastest,
+<p><strong><code>complevel</code></strong>: the level of zlib compression to use (1 is the fastest,
 but poorest compression, 9 is the slowest but best compression). Default 4.
 Ignored if <code>zlib=False</code>.</p>
-<p><strong><code>shuffle</code></strong> - if <code>True</code>, the HDF5 shuffle filter is applied
+<p><strong><code>shuffle</code></strong>: if <code>True</code>, the HDF5 shuffle filter is applied
 to improve compression. Default <code>True</code>. Ignored if <code>zlib=False</code>.</p>
-<p><strong><code>fletcher32</code></strong> - if <code>True</code> (default <code>False</code>), the Fletcher32 checksum
+<p><strong><code>fletcher32</code></strong>: if <code>True</code> (default <code>False</code>), the Fletcher32 checksum
 algorithm is used for error detection.</p>
-<p><strong><code>contiguous</code></strong> - if <code>True</code> (default <code>False</code>), the variable data is
+<p><strong><code>contiguous</code></strong>: if <code>True</code> (default <code>False</code>), the variable data is
 stored contiguously on disk.  Default <code>False</code>. Setting to <code>True</code> for
 a variable with an unlimited dimension will trigger an error.</p>
-<p><strong><code>chunksizes</code></strong> - Can be used to specify the HDF5 chunksizes for each
+<p><strong><code>chunksizes</code></strong>: Can be used to specify the HDF5 chunksizes for each
 dimension of the variable. A detailed discussion of HDF chunking and I/O
-performance is available U{here
-<a href="http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html">http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html</a><code>.
+performance is available
+<a href="http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html">here</a>.
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
-from the file.</code>chunksizes<code>cannot be set if</code>contiguous=True`.</p>
-<p><strong><code>endian</code></strong> - Can be used to control whether the
+from the file. <code>chunksizes</code> cannot be set if <code>contiguous=True</code>.</p>
+<p><strong><code>endian</code></strong>: Can be used to control whether the
 data is stored in little or big endian format on disk. Possible
 values are <code>little, big</code> or <code>native</code> (default). The library
 will automatically handle endian conversions when the data is read,
@@ -5298,21 +5298,21 @@ some performance advantage to be gained by setting the endian-ness.
 For netCDF 3 files (that don't use HDF5), only <code>endian='native'</code> is allowed.</p>
 <p>The <code>zlib, complevel, shuffle, fletcher32, contiguous</code> and {chunksizes`
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
-<p><strong><code>least_significant_digit</code></strong> - If specified, variable data will be
+<p><strong><code>least_significant_digit</code></strong>: If specified, variable data will be
 truncated (quantized). In conjunction with <code>zlib=True</code> this produces
 'lossy', but significantly more efficient compression. For example, if
 <code>least_significant_digit=1</code>, data will be quantized using
 around(scale<em>data)/scale, where scale = 2</em>*bits, and bits is determined
 so that a precision of 0.1 is retained (in this case bits=4). Default is
 <code>None</code>, or no quantization.</p>
-<p><strong><code>fill_value</code></strong> - If specified, the default netCDF <code>_FillValue</code> (the
+<p><strong><code>fill_value</code></strong>:  If specified, the default netCDF <code>_FillValue</code> (the
 value that the variable gets filled with before any data is written to it)
 is replaced with this value.  If fill_value is set to <code>False</code>, then
 the variable is not pre-filled. The default netCDF fill values can be found
 in netCDF4.default_fillvals.</p>
-<p><strong><em>Note</em></strong>: <a href="#netCDF4.Variable"><code>Variable</code></a> instances should be created using the
-<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
-<a href="#netCDF4.Group"><code>Group</code></a> instance, not using this class directly.</p></div>
+<p><strong><em>Note</em></strong>: <code>netCDF4.Variable</code> instances should be created using the
+<code>netCDF4.Dataset.createVariable</code> method of a <code>netCDF4.Dataset</code> or
+<code>netCDF4.Group</code> instance, not using this class directly.</p></div>
   <div class="source_cont">
 </div>
 
