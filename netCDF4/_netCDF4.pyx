@@ -77,8 +77,12 @@ Install
 Tutorial
 ========
 
-1) Creating/Opening/Closing a netCDF file
------------------------------------------
+1. [Creating/Opening/Closing a netCDF file](#section1)
+2. [Groups in a netCDF file](#section2)
+3. [Dimensions in a netCDF file](#section3)
+
+
+## <div id='section1'>1) Creating/Opening/Closing a netCDF file
 
 To create a netCDF file from python, you simply call the `netCDF4.Dataset`
 constructor. This is also the method used to open an existing netCDF
@@ -115,8 +119,7 @@ OPenDAP support, via the `--enable-dap` configure option (added in
 version 4.0.1).
 
 
-2) Groups in a netCDF file
---------------------------
+## <div id='section2'>2) Groups in a netCDF file
 
 netCDF version 4 added support for organizing data in hierarchical
 groups, which are analagous to directories in a filesystem. Groups serve
@@ -198,8 +201,7 @@ object yields summary information about it's contents.
         variables:
         groups:
 
-3) Dimensions in a netCDF file
-------------------------------
+## <div id='section3'>3) Dimensions in a netCDF file
 
 netCDF defines the sizes of all variables in terms of dimensions, so
 before any variables can be created the dimensions they use must be
