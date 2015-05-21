@@ -4910,9 +4910,19 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
             return Dataset.__getattribute__(self, name)
 
     def ncattrs(self):
+        """
+        **`ncattrs(self)`**
+
+        return the netcdf attribute names from the master file.
+        """
         return self._cdf[0].__dict__.keys()
 
     def close(self):
+        """
+        **`close(self)`**
+
+        close all the open files.
+        """
         for dset in self._cdf:
             dset.close()
 
