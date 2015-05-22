@@ -1,3 +1,8 @@
+ since version 1.1.8
+ ===================
+ * translate docstrings from epydoc markup to markdown, so
+   pdoc can be used (epydoc is dead).
+
  version 1.1.8 (tag v1.1.8rel)
  =============================
  * v[...] now returns a numpy scalar array (not just a scalar) when
