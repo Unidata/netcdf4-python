@@ -863,6 +863,7 @@ table {
 .codehilite .err { border: 1px solid #FF0000 } /* Error */
 .codehilite .k { color: #008000; font-weight: bold } /* Keyword */
 .codehilite .o { color: #666666 } /* Operator */
+.codehilite .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
 .codehilite .cm { color: #408080; font-style: italic } /* Comment.Multiline */
 .codehilite .cp { color: #BC7A00 } /* Comment.Preproc */
 .codehilite .c1 { color: #408080; font-style: italic } /* Comment.Single */
@@ -1646,7 +1647,7 @@ into it? You can just treat it like an array and assign data to a slice.</p>
 <p>Unlike NumPy's array objects, netCDF <a href="#netCDF4.Variable"><code>Variable</code></a>
 objects with unlimited dimensions will grow along those dimensions if you
 assign data outside the currently defined range of indices.</p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># append along two unlimited dimensions by assigning to slice.</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># append along two unlimited dimensions by assigning to slice.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nlats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s">&quot;lat&quot;</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nlons</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s">&quot;lon&quot;</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">&quot;temp shape before adding data = &quot;</span><span class="p">,</span><span class="n">temp</span><span class="o">.</span><span class="n">shape</span>
@@ -1657,7 +1658,7 @@ assign data outside the currently defined range of indices.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">&quot;temp shape after adding data = &quot;</span><span class="p">,</span><span class="n">temp</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">temp</span> <span class="n">shape</span> <span class="n">after</span> <span class="n">adding</span> <span class="n">data</span> <span class="o">=</span>  <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">144</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># levels have grown, but no values yet assigned.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># levels have grown, but no values yet assigned.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">&quot;levels shape after adding pressure data = &quot;</span><span class="p">,</span><span class="n">levels</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">levels</span> <span class="n">shape</span> <span class="n">after</span> <span class="n">adding</span> <span class="n">pressure</span> <span class="n">data</span> <span class="o">=</span>  <span class="p">(</span><span class="mi">10</span><span class="p">,)</span>
 </pre></div>
@@ -1718,7 +1719,7 @@ awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The functione called <a href="#netCDF4.num2date"><code>num2date</code></a> and <a href="#netCDF4.date2num"><code>date2num</code></a> are
 provided with this package to do just that.  Here's an example of how they
 can be used:</p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># fill in times.</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># fill in times.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">num2date</span><span class="p">,</span> <span class="n">date2num</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">n</span><span class="o">*</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
@@ -3970,15 +3971,15 @@ format (<code>NETCDF4</code> Datasets won't work).</p>
 <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf">pycdf</a> by Andre Gosselin.</p>
 <p>Example usage (See <a href="#netCDF4.MFDataset.__init__"><code>__init__</code></a> for more details):</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># create a series of netCDF files with a variable sharing</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># the same unlimited dimension.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a series of netCDF files with a variable sharing</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># the same unlimited dimension.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">nf</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&quot;mftest</span><span class="si">%s</span><span class="s">.nc&quot;</span> <span class="o">%</span> <span class="n">nf</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="s">&quot;i&quot;</span><span class="p">,(</span><span class="s">&quot;x&quot;</span><span class="p">,))</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="n">nf</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="o">*</span><span class="p">(</span><span class="n">nf</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># now read all those files in at once, in one Dataset.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># now read all those files in at once, in one Dataset.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">MFDataset</span><span class="p">(</span><span class="s">&quot;mftest*nc&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">][:]</span>
 <span class="p">[</span> <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span>  <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="mi">18</span> <span class="mi">19</span> <span class="mi">20</span> <span class="mi">21</span> <span class="mi">22</span> <span class="mi">23</span> <span class="mi">24</span>
@@ -4827,12 +4828,12 @@ time unit to all files. </p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">t2</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f2</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Read the two files in at once, in one Dataset.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Read the two files in at once, in one Dataset.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">MFDataset</span><span class="p">(</span><span class="s">&quot;mftest*nc&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">t</span><span class="o">.</span><span class="n">units</span>
 <span class="n">days</span> <span class="n">since</span> <span class="mi">2000</span><span class="o">-</span><span class="mo">01</span><span class="o">-</span><span class="mo">01</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">t</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span> <span class="c"># The value written in the file, inconsistent with the MF time units.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">t</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span> <span class="c1"># The value written in the file, inconsistent with the MF time units.</span>
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">T</span> <span class="o">=</span> <span class="n">MFTime</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">T</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span>
