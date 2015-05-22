@@ -2,10 +2,10 @@ To update web docs at http://github.unidata.io/netcdf4-python:
 
 (in netcdf4-python github clone directory, after docs directory has been updated)
 
-tar up contents of docs dir (cd docs; tar -cvf ../../html.tar *; cd ..)
-git checkout gh-pages
-tar -xvf ../html.tar
-git add *html
-git commit 
-git push origin gh-pages
-git checkout master
+* git pull
+* copy docs/netCDF4/index.html up one level (cp docs/netCDF4/index.html ..)
+* git checkout gh-pages
+* cp ../index.html .
+* git commit index.html
+* git push origin gh-pages
+* git checkout master
