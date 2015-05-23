@@ -1,5 +1,5 @@
- version 1.1.8 (not yet tagged)
- ==============================
+ since version 1.1.8
+ ===================
  * translate docstrings from epydoc markup to markdown, so
    pdoc can be used (epydoc is dead).
 
