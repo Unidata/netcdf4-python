@@ -1,5 +1,5 @@
- since version 1.1.8
- ===================
+ version 1.1.9 (not yet tagged)
+ ==============================
  * fix for issue #420 - len(v) where v is a scalar variable returned
    unexpected IndexError, now returns "TypeError: len() on unsized object"
    (same as numpy does for len() on a scalar array).
