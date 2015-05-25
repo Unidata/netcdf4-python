@@ -842,7 +842,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.1.8"
+__version__ = "1.1.9"
 
 # Initialize numpy
 import posixpath
@@ -3676,7 +3676,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
 
     def __len__(self):
-        return self.shape[0]
+        if not self.shape:
+            raise TypeError('len() of unsized object')
+        else:
+            return self.shape[0]
 
 
     def assignValue(self,val):
@@ -5037,7 +5040,10 @@ class _Variable(object):
         ncdump_var.append('current size = %s\n' % repr(self.shape))
         return ''.join(ncdump_var)
     def __len__(self):
-        return self._shape()[0]
+        if not self._shape:
+            raise TypeError('len() of unsized object')
+        else:
+            return self._shape()[0]
     def _shape(self):
         recdimlen = len(self._dset.dimensions[self._recdimname])
         return (recdimlen,) + self._mastervar.shape[1:]
