@@ -95,7 +95,7 @@ Tutorial
 
 To create a netCDF file from python, you simply call the `netCDF4.Dataset`
 constructor. This is also the method used to open an existing netCDF
-file.  If the file is open for write access (`w, r+` or `a`), you may
+file.  If the file is open for write access (`mode='w', 'r+'` or `'a'`), you may
 write any type of data including new dimensions, groups, variables and
 attributes.  netCDF files come in several flavors (`NETCDF3_CLASSIC,
 NETCDF3_64BIT, NETCDF4_CLASSIC`, and `NETCDF4`). The first two flavors
