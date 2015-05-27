@@ -1315,7 +1315,7 @@ types) are not supported.</p>
 <h2><div id='section1'>1) Creating/Opening/Closing a netCDF file.</h2>
 <p>To create a netCDF file from python, you simply call the <a href="#netCDF4.Dataset"><code>Dataset</code></a>
 constructor. This is also the method used to open an existing netCDF
-file.  If the file is open for write access (<code>w, r+</code> or <code>a</code>, you may
+file.  If the file is open for write access (<code>mode='w', 'r+'</code> or <code>'a'</code>), you may
 write any type of data including new dimensions, groups, variables and
 attributes.  netCDF files come in several flavors (<code>NETCDF3_CLASSIC,
 NETCDF3_64BIT, NETCDF4_CLASSIC</code>, and <code>NETCDF4</code>). The first two flavors
