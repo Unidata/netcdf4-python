@@ -1,6 +1,7 @@
 from netcdftime import utime, JulianDayFromDate, DateFromJulianDay
 from netcdftime import datetime as datetimex
 from netCDF4 import Dataset, num2date, date2num, date2index
+import copy
 import numpy
 import random
 import sys
@@ -412,6 +413,9 @@ class netcdftimeTestCase(unittest.TestCase):
             self.assertEqual(d1, d2)
             self.assertEqual(num2date(d1, units, cap_cal),
                              num2date(d1, units, low_cal))
+        # issue 415
+        t = datetimex(2001, 12, 1, 2, 3, 4)
+        self.assertEqual(t, copy.deepcopy(t))
 
 class TestDate2index(unittest.TestCase):
 
