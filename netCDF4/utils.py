@@ -192,7 +192,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             except:
                 raise IndexError(IndexErrorMsg)
         ea = np.asarray(e)
-        try: # if possible, convert 1d array to scalar array
+        try: # if possible, convert 1d array to scalar array (issue #423)
             ea = np.asarray(np.asscalar(ea))
         except:
             pass
