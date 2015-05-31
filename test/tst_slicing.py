@@ -181,5 +181,28 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_almost_equal(cc,a[-1,3:,:6])
         f.close()
 
+    def test_issue423(self):
+        # check that dropping of singleton dimensions in slices
+        # is consistent with numpy.
+        f = Dataset(self.file,'w')
+        x = f.createDimension('x',10)
+        y = f.createDimension('y',10)
+        t = f.createDimension('t',None)
+        v = f.createVariable('v',np.float,('t','y','x'))
+        a = np.ones((10,10,10),np.float)
+        v[:] = a
+        f.close()
+        f = Dataset(self.file)
+        assert(v[0:9,5,4].shape == a[0:9,5,4].shape)
+        assert(v[((0, 1, 2, 3, 4, 5, 6, 7, 8), (5,), (4,))].shape ==\
+               a[((0, 1, 2, 3, 4, 5, 6, 7, 8), (5,), (4,))].shape)
+        assert(v[((0, 1, 2, 3, 4, 5, 6, 7, 8), slice(5, 6, None), \
+               slice(4, 5, None))].shape == \
+               a[((0, 1, 2, 3, 4, 5, 6, 7, 8), slice(5, 6, None), \
+               slice(4, 5, None))].shape)
+        assert(v[((0, 1, 2, 3, 4, 5, 6, 7, 8), 5, 4,)].shape == \
+               a[((0, 1, 2, 3, 4, 5, 6, 7, 8), 5, 4,)].shape)
+        f.close()
+
 if __name__ == '__main__':
     unittest.main()

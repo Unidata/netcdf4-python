@@ -192,6 +192,10 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             except:
                 raise IndexError(IndexErrorMsg)
         ea = np.asarray(e)
+        try: # if possible, convert 1d array to scalar array (issue #423)
+            ea = np.asarray(np.asscalar(ea))
+        except:
+            pass
         # Raise error if multidimensional indexing is used.
         if ea.ndim > 1:
             raise IndexError("Index cannot be multidimensional")
@@ -442,7 +446,7 @@ def ncinfo():
     usage = """
  Print summary information about a netCDF file.
 
- usage: %s [-h] [-g grp or --group=grp] [-v var or --variable=var] [-d dim or --dimension=dim] filename 
+ usage: %s [-h] [-g grp or --group=grp] [-v var or --variable=var] [-d dim or --dimension=dim] filename
 
  -h -- Print usage message.
  -g <group name> or --group=<group name> -- Print info for this group
@@ -519,7 +523,7 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
     if not quiet: sys.stdout.write('copying global attributes ..\n')
     #for attname in ncfile4.ncattrs():
     #    setattr(ncfile3,attname,getattr(ncfile4,attname))
-    ncfile3.setncatts(ncfile4.__dict__) 
+    ncfile3.setncatts(ncfile4.__dict__)
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile4.dimensions.items():
         if dim.isunlimited():
@@ -530,7 +534,7 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
             ncfile3.createDimension(dimname,len(dim))
     # create variables.
     for varname,ncvar in ncfile4.variables.items():
-        if not quiet: 
+        if not quiet:
             sys.stdout.write('copying variable %s\n' % varname)
         # is there an unlimited dimension?
         if unlimdimname and unlimdimname in ncvar.dimensions:
@@ -540,11 +544,11 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
         if hasattr(ncvar, '_FillValue'):
             FillValue = ncvar._FillValue
         else:
-            FillValue = None 
+            FillValue = None
         var = ncfile3.createVariable(varname,ncvar.dtype,ncvar.dimensions,fill_value=FillValue)
         # fill variable attributes.
     attdict = ncvar.__dict__
-    if '_FillValue' in attdict: 
+    if '_FillValue' in attdict:
         del attdict['_FillValue']
     var.setncatts(attdict)
     #for attname in ncvar.ncattrs():
@@ -555,11 +559,11 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
         # range to copy
         if nchunk:
             start = 0; stop = len(unlimdim); step = nchunk
-            if step < 1: 
+            if step < 1:
                 step = 1
             for n in range(start, stop, step):
                 nmax = n+nchunk
-                if nmax > len(unlimdim): 
+                if nmax > len(unlimdim):
                     nmax=len(unlimdim)
                 var[n:nmax] = ncvar[n:nmax]
         else:
@@ -580,8 +584,8 @@ def nc4tonc3():
  -o -- Overwite destination file (default is to raise an error if output file already exists).
  --quiet=(0|1)  -- if 1, don't print diagnostic information.
  --format -- netcdf3 format to use (NETCDF3_64BIT by default, can be set to NETCDF3_CLASSIC)
- --chunk=(integer) -- number of records along unlimited dimension to 
-     write at once.  Default 10.  Ignored if there is no unlimited 
+ --chunk=(integer) -- number of records along unlimited dimension to
+     write at once.  Default 10.  Ignored if there is no unlimited
      dimension.  chunk=0 means write all the data at once.
 \n""" % os.path.basename(sys.argv[0])
 
@@ -645,13 +649,13 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
     corresponding to the keys of the dict will be truncated to the decimal place
     specified by the values of the dict.  This improves compression by
     making it 'lossy'..
-    If vars is not None, only variable names in the list 
+    If vars is not None, only variable names in the list
     will be copied (plus all the dimension variables).
     The zlib, complevel and shuffle keywords control
     how the compression is done."""
 
     from netCDF4 import Dataset
-    
+
     ncfile3 = Dataset(filename3,'r')
     if classic:
         ncfile4 = Dataset(filename4,'w',clobber=clobber,format='NETCDF4_CLASSIC')
@@ -665,7 +669,7 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
     if not quiet: sys.stdout.write('copying global attributes ..\n')
     #for attname in ncfile3.ncattrs():
     #    setattr(ncfile4,attname,getattr(ncfile3,attname))
-    ncfile4.setncatts(ncfile3.__dict__) 
+    ncfile4.setncatts(ncfile3.__dict__)
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile3.dimensions.items():
         if dim.isunlimited():
@@ -713,16 +717,16 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
         if hasattr(ncvar, '_FillValue'):
             FillValue = ncvar._FillValue
         else:
-            FillValue = None 
+            FillValue = None
         var = ncfile4.createVariable(varname,datatype,ncvar.dimensions, fill_value=FillValue, least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
         # fill variable attributes.
         attdict = ncvar.__dict__
         if '_FillValue' in attdict: del attdict['_FillValue']
-        if dounpackshort and 'add_offset' in attdict: 
+        if dounpackshort and 'add_offset' in attdict:
             del attdict['add_offset']
-        if dounpackshort and 'scale_factor' in attdict: 
+        if dounpackshort and 'scale_factor' in attdict:
             del attdict['scale_factor']
-        if dounpackshort and 'missing_value' in attdict: 
+        if dounpackshort and 'missing_value' in attdict:
             attdict['missing_value']=mval
         var.setncatts(attdict)
         #for attname in ncvar.ncattrs():
@@ -800,12 +804,12 @@ def nc3tonc4():
      and 'temp' to 1. This can significantly improve compression. The default
      is not to quantize any of the variables.
  --quiet=(0|1)  -- if 1, don't print diagnostic information.
- --chunk=(integer) -- number of records along unlimited dimension to 
-     write at once.  Default 10.  Ignored if there is no unlimited 
+ --chunk=(integer) -- number of records along unlimited dimension to
+     write at once.  Default 10.  Ignored if there is no unlimited
      dimension.  chunk=0 means write all the data at once.
- --istart=(integer) -- number of record to start at along unlimited dimension. 
+ --istart=(integer) -- number of record to start at along unlimited dimension.
      Default 0.  Ignored if there is no unlimited dimension.
- --istop=(integer) -- number of record to stop at along unlimited dimension. 
+ --istop=(integer) -- number of record to stop at along unlimited dimension.
      Default -1.  Ignored if there is no unlimited dimension.
 \n""" % os.path.basename(sys.argv[0])
 
