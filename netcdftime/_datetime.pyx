@@ -73,6 +73,13 @@ and format.
             return PyObject_RichCompare(self_str, other_str, op)
         return NotImplemented
 
+    def __reduce__(self):
+        """special method that allows instance to be pickled"""
+        args = (self.year,self.month,self.day,self.hour,
+                self.minute,self.second,self.microsecond,
+                self.dayofwk,self.dayofyr)
+        return (self.__class__,args)
+
 
 _illegal_s = re.compile(r"((^|[^%])(%%)*%s)")
 
