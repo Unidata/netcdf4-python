@@ -1287,13 +1287,16 @@ cdef _get_vars(group):
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # get endian-ness of variable.
             endianness = None
-            with nogil:
-                ierr = nc_inq_var_endian(_grpid, varid, &iendian)
-            if ierr == NC_NOERR:
-                if iendian == NC_ENDIAN_LITTLE:
-                    endianness = '<'
-                elif iendian == NC_ENDIAN_BIG:
-                    endianness = '>'
+            # assume data returned by HDF4 lib has already been byte-swapped
+            # (if needed) so that it is in native endian format (issue #391).
+            if group.disk_format != 'HDF4':
+                with nogil:
+                    ierr = nc_inq_var_endian(_grpid, varid, &iendian)
+                if ierr == NC_NOERR:
+                    if iendian == NC_ENDIAN_LITTLE:
+                        endianness = '<'
+                    elif iendian == NC_ENDIAN_BIG:
+                        endianness = '>'
             # check to see if it is a supported user-defined type.
             try:
                 datatype = _nctonptype[xtype]

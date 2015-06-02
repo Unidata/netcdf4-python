@@ -1,5 +1,7 @@
  version 1.1.9 (not yet tagged)
  ==============================
+ * fix for issue #391 (data is already byte-swapped to native
+   endian format by the HDF4 library).
  * fix for issue #415 (copy.deepcopy does not work on
    netcdftime datetime object).
  * fix for issue #420 - len(v) where v is a scalar variable returned
