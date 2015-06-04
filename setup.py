@@ -353,7 +353,7 @@ else:
 cmdclass = {}
 netcdf4_src_root = osp.join('netCDF4', '_netCDF4')
 netcdf4_src_c = netcdf4_src_root + '.c'
-if has_cython and 'sdist' not in sys.argv[1:]:
+if has_cython and 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
     extensions = [Extension("netCDF4._netCDF4",
                             [netcdf4_src_root + '.pyx'],
