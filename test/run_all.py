@@ -18,6 +18,11 @@ if __netcdf4libversion__ < '4.2.1':
     test_files.remove('tst_diskless.py')
     sys.stdout.write('not running tst_diskless.py ...\n')
 
+# Don't run tests that require network connectivity
+if os.environ['NO_NET']:
+    test_files.remove('tst_dap.py');
+    sys.stdout.write('not running tst_dap.py ...\n')
+
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
 for f in test_files:
