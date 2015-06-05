@@ -19,7 +19,7 @@ if __netcdf4libversion__ < '4.2.1':
     sys.stdout.write('not running tst_diskless.py ...\n')
 
 # Don't run tests that require network connectivity
-if os.environ['NO_NET']:
+if os.getenv('NO_NET'):
     test_files.remove('tst_dap.py');
     sys.stdout.write('not running tst_dap.py ...\n')
 
