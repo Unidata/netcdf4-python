@@ -2,6 +2,7 @@ language: python
 env:
     global:
         - DEPENDS="numpy cython"
+        - NO_NET=1
 python:
   - "2.7"
   - "3.3"
