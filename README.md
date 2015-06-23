@@ -7,7 +7,7 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-5/14/2015: Version [1.1.8](https://github.com/Unidata/netcdf4-python/releases/tag/v1.1.8rel) released. Unix-like paths can now be used in `createVariable` and `createGroup`.
+5/14/2015: Version [1.1.8](https://pypi.python.org/pypi/netCDF4/1.1.8) released. Unix-like paths can now be used in `createVariable` and `createGroup`.
 ```python
     v = nc.createVariable('/path/to/var1', ('xdim', 'ydim'), float)
 ```
@@ -25,7 +25,7 @@ failing when the group already exists will have to modify their code, since
 `Dataset.__getitem__` was also added.  `nc['/path/to']`
 now returns a group instance, and `nc['/path/to/var1']` now returns a variable instance.
 
-3/19/2015: Version [1.1.7](https://github.com/Unidata/netcdf4-python/releases/tag/v1.1.7rel) released.  Global Interpreter Lock (GIL) now released when extension
+3/19/2015: Version [1.1.7](https://pypi.python.org/pypi/netCDF4/1.1.7) released.  Global Interpreter Lock (GIL) now released when extension
 module calls C library for read operations.  This speeds up concurrent reads when using threads.
 Users who wish to use netcdf4-python inside threads should read http://www.hdfgroup.org/hdf5-quest.html#gconc 
 regarding thread-safety in the HDF5 C library.  Fixes to `setup.py` now ensure that `pip install netCDF4`
