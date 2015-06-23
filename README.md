@@ -7,17 +7,17 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-5/14/2015: Version 1.1.8 released. Unix-like paths can now be used in `createVariable` and `createGroup`.
-
-    v = nc.createVariable('/path/to/var1',('xdim','ydim'),float)
-
+5/14/2015: Version [1.1.8](https://github.com/Unidata/netcdf4-python/releases/tag/v1.1.8rel) released. Unix-like paths can now be used in `createVariable` and `createGroup`.
+```python
+    v = nc.createVariable('/path/to/var1', ('xdim', 'ydim'), float)
+```
 will create a variable named 'var1', while also creating the groups
 'path' and 'path/to' if they do not already exist.
 
 Similarly, 
-
+```python
     g = nc.createGroup('/path/to') 
-
+```
 now acts like `mkdir -p` in unix, creating groups 'path' and '/path/to',
 if they don't already exist. Users who relied on `nc.createGroup(groupname)`
 failing when the group already exists will have to modify their code, since 
@@ -25,7 +25,7 @@ failing when the group already exists will have to modify their code, since
 `Dataset.__getitem__` was also added.  `nc['/path/to']`
 now returns a group instance, and `nc['/path/to/var1']` now returns a variable instance.
 
-3/19/2015: Version 1.1.7 released.  Global Interpreter Lock (GIL) now released when extension
+3/19/2015: Version [1.1.7](https://github.com/Unidata/netcdf4-python/releases/tag/v1.1.7rel) released.  Global Interpreter Lock (GIL) now released when extension
 module calls C library for read operations.  This speeds up concurrent reads when using threads.
 Users who wish to use netcdf4-python inside threads should read http://www.hdfgroup.org/hdf5-quest.html#gconc 
 regarding thread-safety in the HDF5 C library.  Fixes to `setup.py` now ensure that `pip install netCDF4`
@@ -33,7 +33,7 @@ with `export USE_NCCONFIG=0` will use environment variables to find paths to lib
 instead of relying exclusively on the nc-config utility.
 
 ## Quick Start
-* Clone GitHub repository (`git clone https://github.com/Unidata/netcdf4-python.git`), or get source tarball from [PyPI](https://pypi.python.org/pypi/netCDF4). Links to windows and macos x precompiled binary packages are also available on [PyPI](https://pypi.python.org/pypi/netCDF4).
+* Clone GitHub repository (`git clone https://github.com/Unidata/netcdf4-python.git`), or get source tarball from [PyPI](https://pypi.python.org/pypi/netCDF4). Links to Windows and OS X precompiled binary packages are also available on [PyPI](https://pypi.python.org/pypi/netCDF4).
 
 * Make sure [numpy](http://www.numpy.org/) (required) and [Cython](http://cython.org/) (recommended) are
   installed and you have [Python](https://www.python.org) 2.5 or newer.
