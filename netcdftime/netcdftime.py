@@ -119,6 +119,11 @@ def JulianDayFromDate(date, calendar='standard'):
     # adjust for Julian calendar if necessary
     jd = jd + B
 
+    # MC - Add a small offset (proportional to Julian date) for correct re-conversion.
+    eps = 2.22e-016 # ~ Fortran epsilon(1.0) in double precision
+    eps = np.maximum(eps*jd, eps)
+    jd += eps
+
     if isscalar:
         return jd[0]
     else:
@@ -246,7 +251,9 @@ def DateFromJulianDay(JD, calendar='standard'):
     # get the day (Z) and the fraction of the day (F)
     # add 0.000005 which is 452 ms in case of jd being after
     # second 23:59:59 of a day we want to round to the next day see issue #75
-    Z = np.atleast_1d(np.int32(np.round(julian + 0.00005)))
+    # MC - epsilon was already done in JulianDayFromDate
+    # Z = np.atleast_1d(np.int32(np.round(julian + 0.00005)))
+    Z = np.atleast_1d(np.int32(np.round(julian)))
     F = np.atleast_1d(julian + 0.5 - Z).astype(np.float64)
     if calendar in ['standard', 'gregorian']:
         # MC
@@ -313,14 +320,20 @@ def DateFromJulianDay(JD, calendar='standard'):
     inc_idx = np.where((leap == 1) & (month > 2))[0]
     dayofyr[inc_idx] = dayofyr[inc_idx] + leap[inc_idx]
 
-    eps = np.clip(
-        (1e-12 * np.abs(Z)).astype(np.float64), np.float64(1e-12), None)
+    # MC - epsilon was already done in JulianDayFromDate
+    # eps = np.clip(
+    #     (1e-12 * np.abs(Z)).astype(np.float64), np.float64(1e-12), None)
+    eps = 0.
     hour = np.clip((F * 24. + eps).astype(np.int64), 0, 23)
     F -= hour / 24.
     minute = np.clip((F * 1440. + eps).astype(np.int64), 0, 59)
     second = np.clip((F - minute / 1440.) * 86400., 0, None)
     # microseconds may not be accurate.
     microsecond = (second % 1)*1.e6
+    # MC - Substract the offset from JulianDayFromDate again
+    eps = 2.22e-016 # ~ Fortran epsilon(1.0) in double precision
+    eps = np.maximum(eps*julian, eps)
+    microsecond = np.clip(microsecond - eps*1e6*86400, 0, 999999)
 
     # convert year, month, day, hour, minute, second to int32
     year = year.astype(np.int32)
