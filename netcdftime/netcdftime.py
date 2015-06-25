@@ -33,6 +33,7 @@ ISO8601_REGEX = re.compile(r"(?P<year>[0-9]{1,4})(-(?P<month>[0-9]{1,2})(-(?P<da
 TIMEZONE_REGEX = re.compile(
     "(?P<prefix>[+-])(?P<hours>[0-9]{1,2}):(?P<minutes>[0-9]{1,2})")
 
+domc = True
 
 def JulianDayFromDate(date, calendar='standard'):
     """
@@ -119,10 +120,11 @@ def JulianDayFromDate(date, calendar='standard'):
     # adjust for Julian calendar if necessary
     jd = jd + B
 
-    # MC - Add a small offset (proportional to Julian date) for correct re-conversion.
-    eps = 2.22e-016 # ~ Fortran epsilon(1.0) in double precision
-    eps = np.maximum(eps*jd, eps)
-    jd += eps
+    if domc:
+        # MC - Add a small offset (proportional to Julian date) for correct re-conversion.
+        eps = 2.22e-016 # ~ Fortran epsilon(1.0) in double precision
+        eps = np.maximum(eps*jd, eps)
+        jd += eps
 
     if isscalar:
         return jd[0]
@@ -240,6 +242,7 @@ def DateFromJulianDay(JD, calendar='standard'):
 
     """
 
+    
     # based on redate.py by David Finlayson.
 
     julian = np.array(JD, dtype=float)
@@ -251,9 +254,11 @@ def DateFromJulianDay(JD, calendar='standard'):
     # get the day (Z) and the fraction of the day (F)
     # add 0.000005 which is 452 ms in case of jd being after
     # second 23:59:59 of a day we want to round to the next day see issue #75
-    # MC - epsilon was already done in JulianDayFromDate
-    # Z = np.atleast_1d(np.int32(np.round(julian + 0.00005)))
-    Z = np.atleast_1d(np.int32(np.round(julian)))
+    if domc:
+        # MC - epsilon was already done in JulianDayFromDate
+        Z = np.atleast_1d(np.int32(np.round(julian)))
+    else:
+        Z = np.atleast_1d(np.int32(np.round(julian + 0.00005)))
     F = np.atleast_1d(julian + 0.5 - Z).astype(np.float64)
     if calendar in ['standard', 'gregorian']:
         # MC
@@ -320,20 +325,28 @@ def DateFromJulianDay(JD, calendar='standard'):
     inc_idx = np.where((leap == 1) & (month > 2))[0]
     dayofyr[inc_idx] = dayofyr[inc_idx] + leap[inc_idx]
 
-    # MC - epsilon was already done in JulianDayFromDate
-    # eps = np.clip(
-    #     (1e-12 * np.abs(Z)).astype(np.float64), np.float64(1e-12), None)
-    eps = 0.
-    hour = np.clip((F * 24. + eps).astype(np.int64), 0, 23)
-    F -= hour / 24.
-    minute = np.clip((F * 1440. + eps).astype(np.int64), 0, 59)
-    second = np.clip((F - minute / 1440.) * 86400., 0, None)
-    # microseconds may not be accurate.
-    microsecond = (second % 1)*1.e6
-    # MC - Substract the offset from JulianDayFromDate again
-    eps = 2.22e-016 # ~ Fortran epsilon(1.0) in double precision
-    eps = np.maximum(eps*julian, eps)
-    microsecond = np.clip(microsecond - eps*1e6*86400, 0, 999999)
+    if domc:
+        # MC - Substract the offset from JulianDayFromDate from the microseconds
+        eps = 2.22e-016 # ~ Fortran epsilon(1.0) in double precision
+        eps = np.maximum(eps*julian, eps)
+        hour = np.clip((F * 24.).astype(np.int64), 0, 23)
+        F -= hour / 24.
+        minute = np.clip((F * 1440.).astype(np.int64), 0, 59)
+        # overestimation
+        second = np.clip((F - minute / 1440.) * 86400., 0, None)
+        # this would be an underestimation, which is undesireable for 0 microseconds
+        # second = np.clip((F - minute / 1440. - eps) * 86400., 0, None)
+        microsecond = (second % 1)*1.e6
+        microsecond = np.clip(microsecond - eps*86400.*1e6, 0, 999999)
+    else:
+        eps = np.clip(
+            (1e-12 * np.abs(Z)).astype(np.float64), np.float64(1e-12), None)
+        hour = np.clip((F * 24. + eps).astype(np.int64), 0, 23)
+        F -= hour / 24.
+        minute = np.clip((F * 1440. + eps).astype(np.int64), 0, 59)
+        second = np.clip((F - minute / 1440.) * 86400., 0, None)
+        # microseconds may not be accurate.
+        microsecond = (second % 1)*1.e6
 
     # convert year, month, day, hour, minute, second to int32
     year = year.astype(np.int32)
