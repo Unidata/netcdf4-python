@@ -181,5 +181,13 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_almost_equal(cc,a[-1,3:,:6])
         f.close()
 
+        def test_retain_single_dims(self):
+            f = Dataset(self.file, 'r')
+            v = f.variables['data']
+            keys = ((0, 1, 2, 3, 4, 5, 6, 7, 8), (5,), (4,))
+            shape = (9, 1, 1)
+            data = v[keys]
+            assert_equal(data.shape, shape)
+
 if __name__ == '__main__':
     unittest.main()
