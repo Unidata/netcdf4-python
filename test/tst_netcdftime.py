@@ -208,7 +208,7 @@ class netcdftimeTestCase(unittest.TestCase):
         assert_equal(numpy.around(t), 3600)
         # test fix for issue 75 (seconds hit 60 at end of month,
         # day goes out of range).
-        t = 733498.999999
+        t = 733498.9999999999 #MC < 1 microsecond wrong - old 733498.999999 is 8640 microseconds off the real 733499
         d = num2date(t, units='days since 0001-01-01 00:00:00')
         dateformat =  '%Y-%m-%d %H:%M:%S'
         assert_equal(d.strftime(dateformat), '2009-04-01 00:00:00')

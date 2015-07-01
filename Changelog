@@ -9,6 +9,8 @@
    (same as numpy does for len() on a scalar array).
  * translate docstrings from epydoc markup to markdown, so
    pdoc can be used (epydoc is dead).
+ * add small offset in conversion to Julian date for numerical
+   stability. Remove the offset in back conversion only from microseconds.
 
  version 1.1.8 (tag v1.1.8rel)
  =============================
