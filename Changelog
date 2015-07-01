@@ -10,7 +10,8 @@
  * translate docstrings from epydoc markup to markdown, so
    pdoc can be used (epydoc is dead).
  * add small offset in conversion to Julian date for numerical
-   stability. Remove the offset in back conversion only from microseconds.
+   stability (more accurate round trip calculations). This offset is removed
+   in back conversion only from microseconds. Pull request #433.
 
  version 1.1.8 (tag v1.1.8rel)
  =============================

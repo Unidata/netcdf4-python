@@ -118,8 +118,9 @@ def JulianDayFromDate(date, calendar='standard'):
     # adjust for Julian calendar if necessary
     jd = jd + B
 
-    # MC - Add a small offset (proportional to Julian date) for correct re-conversion.
+    # Add a small offset (proportional to Julian date) for correct re-conversion.
     # This is about 45 microseconds in 2000 for Julian date starting -4712.
+    # (pull request #433).
     eps = np.finfo(float).eps
     eps = np.maximum(eps*jd, eps)
     jd += eps
@@ -237,10 +238,8 @@ def DateFromJulianDay(JD, calendar='standard'):
 
     Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). Willmann-Bell,
     Virginia. p. 63
-
     """
 
-    
     # based on redate.py by David Finlayson.
 
     julian = np.array(JD, dtype=float)
@@ -319,17 +318,17 @@ def DateFromJulianDay(JD, calendar='standard'):
     inc_idx = np.where((leap == 1) & (month > 2))[0]
     dayofyr[inc_idx] = dayofyr[inc_idx] + leap[inc_idx]
 
-    # MC - Substract the offset from JulianDayFromDate from the microseconds
+    # Subtract the offset from JulianDayFromDate from the microseconds (pull
+    # request #433).
     eps = np.finfo(float).eps
     eps = np.maximum(eps*julian, eps)
     hour = np.clip((F * 24.).astype(np.int64), 0, 23)
     F   -= hour / 24.
     minute = np.clip((F * 1440.).astype(np.int64), 0, 59)
-    # overestimation due to added offset in JulianDayFromDate
+    # this is an overestimation due to added offset in JulianDayFromDate
     second = np.clip((F - minute / 1440.) * 86400., 0, None)
-    # this would underestimate, which is undesireable for 0 microseconds, which is the default
-    # second = np.clip((F - minute / 1440. - eps) * 86400., 0, None)
     microsecond = (second % 1)*1.e6
+    # remove the offset from the microsecond calculation.
     microsecond = np.clip(microsecond - eps*86400.*1e6, 0, 999999)
 
     # convert year, month, day, hour, minute, second to int32
