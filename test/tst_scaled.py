@@ -135,6 +135,38 @@ class SetAutoScaleTrue(SetAutoScaleTestBase):
         f.close()
 
 
+class WriteAutoScaleTest(SetAutoScaleTestBase):
+
+    def test_auto_scale_write(self):
+
+        """Testing automatic packing to all kinds of integer types"""
+        
+        for dtyp in ['u1', 'u2', 'u4', 'u8', 'i1', 'i2', 'i4', 'i8']:
+            data = np.random.rand(100)
+            f = Dataset(self.testfile, 'w')
+            f.createDimension('x')
+            #
+            # save auto_scaled
+            res = 1 << int(dtyp[1]) * 4
+            v = f.createVariable('v', dtyp, ('x',))
+            v.set_auto_scale(True)  # redundant
+            v.add_offset = np.min(data)
+            v.scale_factor = (np.max(data) - np.min(data)) / res
+            v[:] = data
+            f.close()
+            #
+            # read back
+            f = Dataset(self.testfile, 'r')
+            v = f.variables['v']
+            v.set_auto_scale(True)  # redundant
+            vdata = v[:]
+            # error normalized by scale factor
+            maxerrnorm = np.max(np.abs((data - vdata) / v.scale_factor))
+            # 1e-5 accounts for floating point errors
+            assert(maxerrnorm < 0.5 + 1e-5)
+            f.close()
+
+
 class GlobalSetAutoScaleTest(unittest.TestCase):
 
     def setUp(self):

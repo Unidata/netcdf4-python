@@ -12,6 +12,9 @@
  * add small offset in conversion to Julian date for numerical
    stability (more accurate round trip calculations). This offset is removed
    in back conversion only from microseconds. Pull request #433.
+ * add detection of unsigned integers to handling of automatic
+   packing (set_auto_scale and set_auto_maskandscale) when writing.
+   Pull request #435.
 
  version 1.1.8 (tag v1.1.8rel)
  =============================
