@@ -3586,7 +3586,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # assume it's a numpy or masked array if it has an 'ndim' attribute.
         if not hasattr(data,'ndim'):
             # if auto scaling is to be done, don't cast to an integer yet.
-            if self.scale and self.dtype.kind == 'i' and \
+            if self.scale and self.dtype.kind in 'iu' and \
                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
                 data = numpy.array(data,numpy.float)
             else:
@@ -3633,13 +3633,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # pack non-masked values using scale_factor and add_offset
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
                 data = (data - self.add_offset)/self.scale_factor
-                if self.dtype.kind == 'i': data = numpy.around(data)
+                if self.dtype.kind in 'iu': data = numpy.around(data)
             elif hasattr(self, 'scale_factor'):
                 data = data/self.scale_factor
-                if self.dtype.kind == 'i': data = numpy.around(data)
+                if self.dtype.kind in 'iu': data = numpy.around(data)
             elif hasattr(self, 'add_offset'):
                 data = data - self.add_offset
-                if self.dtype.kind == 'i': data = numpy.around(data)
+                if self.dtype.kind in 'iu': data = numpy.around(data)
             if ma.isMA(data):
                 # if underlying data in masked regions of masked array
                 # corresponds to missing values, don't fill masked array -
