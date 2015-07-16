@@ -141,30 +141,41 @@ class WriteAutoScaleTest(SetAutoScaleTestBase):
 
         """Testing automatic packing to all kinds of integer types"""
 
-        for dtyp in ['i2', 'i4']:
+        def packparams(dmax, dmin, dtyp):
+            kind = dtyp[0]
+            n = int(dtyp[1]) * 8
+            scale_factor = (dmax - dmin) / (2**n - 1)
+            if kind == 'i':
+                add_offset = dmin + 2**(n-1) * scale_factor
+            elif kind == 'u':
+                add_offset = dmin
+            else:
+                raise Exception
+            return((add_offset, scale_factor))
+
+        for dtyp in ['i1', 'i2', 'i4', 'u1', 'u2', 'u4']:
             np.random.seed(456)
             data = np.random.uniform(size=100)
             f = Dataset(self.testfile, 'w')
             f.createDimension('x')
             #
             # save auto_scaled
-            res = 1 << int(dtyp[1]) * 4
             v = f.createVariable('v', dtyp, ('x',))
             v.set_auto_scale(True)  # redundant
-            v.add_offset = np.min(data)
-            v.scale_factor = (np.max(data) - np.min(data)) / res
+            v.add_offset, v.scale_factor = packparams(
+                np.max(data), np.min(data), dtyp)
             v[:] = data
             f.close()
             #
             # read back
             f = Dataset(self.testfile, 'r')
             v = f.variables['v']
+            v.set_auto_mask(False)
             v.set_auto_scale(True)  # redundant
             vdata = v[:]
             # error normalized by scale factor
-            maxerrnorm = np.max(np.abs((data - vdata) / v.scale_factor))
+            maxerrnorm = np.max(np.abs((vdata - data) / v.scale_factor))
             # 1e-5 accounts for floating point errors
-            print("\n dtyp = {} maxerrnorm={}".format(dtyp, maxerrnorm))
             assert(maxerrnorm < 0.5 + 1e-5)
             f.close()
 
