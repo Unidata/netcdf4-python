@@ -141,7 +141,7 @@ class WriteAutoScaleTest(SetAutoScaleTestBase):
 
         """Testing automatic packing to all kinds of integer types"""
 
-        for dtyp in ['u2', 'u4', 'u8', 'i1', 'i2', 'i4', 'i8']:
+        for dtyp in ['i2', 'i4']:
             np.random.seed(456)
             data = np.random.uniform(size=100)
             f = Dataset(self.testfile, 'w')
