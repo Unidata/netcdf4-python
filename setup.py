@@ -301,8 +301,10 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         netCDF4_libdir = os.path.join(netCDF4_dir, 'lib')
 
     libs = ['netcdf','hdf5_hl','hdf5','z']
-    lib_dirs = [netCDF4_libdir,HDF5_libdir]
-    inc_dirs = [netCDF4_incdir,HDF5_incdir]
+    if netCDF4_libdir is not None: lib_dirs=[netCDF4_libdir]
+    if HDF5_libdir is not None: lib_dirs.append(HDF5_libdir)
+    if netCDF4_incdir is not None: inc_dirs=[netCDF4_incdir]
+    if HDF5_incdir is not None: inc_dirs.append(HDF5_incdir)
 
     # add szip to link if desired.
     if szip_libdir is None and szip_dir is not None:
