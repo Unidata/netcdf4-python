@@ -149,7 +149,7 @@ curl_incdir = os.environ.get('CURL_INCDIR')
 USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
 if USE_NCCONFIG is not None:
     USE_NCCONFIG = bool(int(USE_NCCONFIG))
-USE_SETUPCFG = os.environ.get('USE_NCCONFIG')
+USE_SETUPCFG = os.environ.get('USE_SETUPCFG')
 # override use of setup.cfg with env var.
 if USE_SETUPCFG is not None:
     USE_SETUPCFG = bool(int(USE_SETUPCFG))
