@@ -15,6 +15,10 @@
  * add detection of unsigned integers to handling of automatic
    packing (set_auto_scale and set_auto_maskandscale) when writing.
    Pull request #435.
+ * use USE_SETUPCFG env var to over-ride use of setup.cfg. If USE_SETUPCFG
+   evaluates to false, setup.cfg will not be used and all configuration 
+   variables can be set from environment variables.  Useful when using 'pip
+   install' and nc-config is broken (issue #438).  
 
  version 1.1.8 (tag v1.1.8rel)
  =============================

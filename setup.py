@@ -149,13 +149,22 @@ curl_incdir = os.environ.get('CURL_INCDIR')
 USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
 if USE_NCCONFIG is not None:
     USE_NCCONFIG = bool(int(USE_NCCONFIG))
+USE_SETUPCFG = os.environ.get('USE_SETUPCFG')
+# override use of setup.cfg with env var.
+if USE_SETUPCFG is not None:
+    USE_SETUPCFG = bool(int(USE_SETUPCFG))
+else:
+    USE_SETUPCFG = True
+
 
 setup_cfg = 'setup.cfg'
-# contents of setup.cfg will override env vars.
+# contents of setup.cfg will override env vars, unless
+# USE_SETUPCFG evaluates to True. Exception is use_ncconfig,
+# which does not take precedence ofver USE_NCCONFIG env var.
 ncconfig = None
 use_ncconfig = None
 use_cython = True
-if os.path.exists(setup_cfg):
+if USE_SETUPCFG and os.path.exists(setup_cfg):
     sys.stdout.write('reading from setup.cfg...\n')
     config = configparser.SafeConfigParser()
     config.read(setup_cfg)
@@ -292,8 +301,10 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         netCDF4_libdir = os.path.join(netCDF4_dir, 'lib')
 
     libs = ['netcdf','hdf5_hl','hdf5','z']
-    lib_dirs = [netCDF4_libdir,HDF5_libdir]
-    inc_dirs = [netCDF4_incdir,HDF5_incdir]
+    if netCDF4_libdir is not None: lib_dirs=[netCDF4_libdir]
+    if HDF5_libdir is not None: lib_dirs.append(HDF5_libdir)
+    if netCDF4_incdir is not None: inc_dirs=[netCDF4_incdir]
+    if HDF5_incdir is not None: inc_dirs.append(HDF5_incdir)
 
     # add szip to link if desired.
     if szip_libdir is None and szip_dir is not None:
