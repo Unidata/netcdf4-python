@@ -19,6 +19,7 @@
    evaluates to false, setup.cfg will not be used and all configuration 
    variables can be set from environment variables.  Useful when using 'pip
    install' and nc-config is broken (issue #438).  
+ * fix for integer overflow in date2index (issue #444).
 
  version 1.1.8 (tag v1.1.8rel)
  =============================
