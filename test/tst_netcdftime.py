@@ -601,15 +601,16 @@ class TestDate2index(unittest.TestCase):
             assert_equal(date, date2)
         f.close()
 
-    def issue444(self):
+    def test_issue444(self):
         # make sure integer overflow not causing error in
         # calculation of nearest index when sum of adjacent
         # time values won't fit in 32 bits.
         ntimes = 20
         f = Dataset(self.file, 'r')
         query_time = datetime(2037, 1, 3, 21, 12)
-        index = date2index(query_time, t, select='nearest')
+        index = date2index(query_time, f.variables['time3'], select='nearest')
         assert(index == 11)
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
