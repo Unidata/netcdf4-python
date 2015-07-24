@@ -601,7 +601,7 @@ class TestDate2index(unittest.TestCase):
             assert_equal(date, date2)
         f.close()
 
-    def issue444():
+    def issue444(self):
         # make sure integer overflow not causing error in
         # calculation of nearest index when sum of adjacent
         # time values won't fit in 32 bits.
