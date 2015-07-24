@@ -1,6 +1,6 @@
 from netcdftime import utime, JulianDayFromDate, DateFromJulianDay
 from netcdftime import datetime as datetimex
-from netCDF4 import Dataset, num2date, date2num, date2index
+from netCDF4 import Dataset, num2date, date2num, date2index, num2date
 import copy
 import numpy
 import random
@@ -8,7 +8,7 @@ import sys
 import unittest
 import os
 import tempfile
-from datetime import datetime
+from datetime import datetime, timedelta
 from numpy.testing import assert_almost_equal, assert_equal
 
 # test netcdftime module for netCDF time <--> python datetime conversions.
@@ -470,6 +470,16 @@ class TestDate2index(unittest.TestCase):
         time2.units = 'days since 1901-01-01'
         self.first_timestamp = datetime(2000, 1, 1)
         time2[0] = date2num(self.first_timestamp, time2.units)
+        ntimes = 21
+        f.createDimension("record", ntimes)
+        time3 = f.createVariable("time3", numpy.int32, ("record", ))
+        time3.units = "seconds since 1970-01-01 00:00:00"
+        date = datetime(2037,1,1,0)
+        dates = [date]
+        for ndate in range(ntimes-1):
+            date += (ndate+1)*timedelta(hours=1)
+            dates.append(date)
+        time3[:] = date2num(dates,time3.units)
         f.close()
 
     def tearDown(self):
@@ -590,6 +600,16 @@ class TestDate2index(unittest.TestCase):
         for date, date2 in zip(dates, dates2):
             assert_equal(date, date2)
         f.close()
+
+    def issue444():
+        # make sure integer overflow not causing error in
+        # calculation of nearest index when sum of adjacent
+        # time values won't fit in 32 bits.
+        ntimes = 20
+        f = Dataset(self.file, 'r')
+        query_time = datetime(2037, 1, 3, 21, 12)
+        index = date2index(query_time, t, select='nearest')
+        assert(index == 11)
 
 if __name__ == '__main__':
     unittest.main()
