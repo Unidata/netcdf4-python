@@ -1093,7 +1093,7 @@ def time2index(times, nctime, calendar=None, select='exact'):
 
         elif select == 'nearest':
             nearest_to_left = num[mismatch] < numpy.array(
-                [nctime[i - 1] + nctime[i] for i in index[mismatch]]) / 2.
+                [float(nctime[i - 1]) + float(nctime[i]) for i in index[mismatch]]) / 2.
             index[mismatch] = index[mismatch] - 1 * nearest_to_left
 
         else:
