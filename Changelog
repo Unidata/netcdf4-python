@@ -1,5 +1,5 @@
- version 1.1.9 (not yet tagged)
- ==============================
+ version 1.1.9 (tag v1.1.9rel)
+ =============================
  * fix for issue #391 (data is already byte-swapped to native
    endian format by the HDF4 library).
  * fix for issue #415 (copy.deepcopy does not work on
