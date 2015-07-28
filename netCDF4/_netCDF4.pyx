@@ -73,6 +73,17 @@ Install
  (in case `nc-config` does not do the right thing).
  - run `python setup.py build`, then `python setup.py install` (as root if
  necessary).
+ - [`pip install`](https://pip.pypa.io/en/latest/reference/pip_install.html) can
+   also be used, with library paths set with environment variables. To make
+   this work, the `USE_SETUPCFG` environment variable must be used to tell 
+   setup.py not to use `setup.cfg`.
+   For example, ``USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
+   HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install`` has been
+   shown to work on an Ubuntu/Debian linux system. Similarly, environment variables
+   (all capitalized) can be used to set the include and library paths for
+   `hdf5`, `netCDF4`, `hdf4`, `szip`, `jpeg`, `curl` and `zlib`. If the
+   libraries are installed in standard places (e.g. `/usr` or `/usr/local`), 
+   the environment variables do not need to be set.
  - run the tests in the 'test' directory by running `python run_all.py`.
 
 Tutorial
