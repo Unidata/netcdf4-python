@@ -900,6 +900,9 @@ def _parse_date(datestring):
     #    groups["fraction"] = 0
     # else:
     #    groups["fraction"] = int(float("0.%s" % groups["fraction"]) * 1e6)
+    if int(groups["year"]) == 0:
+        msg='zero not allowed as a reference year, does not exist in Julian or Gregorian calendars'
+        raise ValueError(msg)
     return int(groups["year"]), int(groups["month"]), int(groups["day"]),\
         int(groups["hour"]), int(groups["minute"]), int(groups["second"]),\
         tzoffset_mins
