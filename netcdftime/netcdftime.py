@@ -26,7 +26,7 @@ _calendars = ['standard', 'gregorian', 'proleptic_gregorian',
 __version__ = '1.4'
 
 # Adapted from http://delete.me.uk/2005/03/iso8601.html
-ISO8601_REGEX = re.compile(r"(?P<year>[0-9]{1,4})(-(?P<month>[0-9]{1,2})(-(?P<day>[0-9]{1,2})"
+ISO8601_REGEX = re.compile(r"(?P<year>[+-]?[0-9]{1,4})(-(?P<month>[0-9]{1,2})(-(?P<day>[0-9]{1,2})"
                            r"(((?P<separator1>.)(?P<hour>[0-9]{1,2}):(?P<minute>[0-9]{1,2})(:(?P<second>[0-9]{1,2})(\.(?P<fraction>[0-9]+))?)?)?"
                            r"((?P<separator2>.?)(?P<timezone>Z|(([-+])([0-9]{1,2}):([0-9]{1,2}))))?)?)?)?"
                            )
@@ -900,10 +900,14 @@ def _parse_date(datestring):
     #    groups["fraction"] = 0
     # else:
     #    groups["fraction"] = int(float("0.%s" % groups["fraction"]) * 1e6)
-    if int(groups["year"]) == 0:
+    iyear = int(groups["year"])
+    if iyear == 0:
         msg='zero not allowed as a reference year, does not exist in Julian or Gregorian calendars'
         raise ValueError(msg)
-    return int(groups["year"]), int(groups["month"]), int(groups["day"]),\
+    elif iyear < 0:
+        msg='negative reference year in time units, must be >= 1'
+        raise ValueError(msg)
+    return iyear, int(groups["month"]), int(groups["day"]),\
         int(groups["hour"]), int(groups["minute"]), int(groups["second"]),\
         tzoffset_mins
 
