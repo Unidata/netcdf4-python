@@ -1,6 +1,6 @@
  since version 1.1.9
  ===================
- * raise ValueError if year 0 used in time units string.
+ * raise ValueError if year 0 or negative year used in time units string.
    The year 0 does not exist in the Julian and Gregorian
    calendars (issue #442).
 
