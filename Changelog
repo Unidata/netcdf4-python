@@ -1,3 +1,9 @@
+ since version 1.1.9
+ ===================
+ * raise ValueError if year 0 or negative year used in time units string.
+   The year 0 does not exist in the Julian and Gregorian
+   calendars (issue #442).
+
  version 1.1.9 (tag v1.1.9rel)
  =============================
  * fix for issue #391 (data is already byte-swapped to native
