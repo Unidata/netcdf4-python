@@ -1739,6 +1739,14 @@ Close the Dataset.
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         self._isopen = 0 # indicates file already closed, checked by __dealloc__
 
+    def isopen(self):
+        """
+**`close(self)`**
+
+is the Dataset open or closed?
+        """
+        return bool(self._isopen)
+
     def __dealloc__(self):
         # close file when there are no references to object left
         cdef int ierr
