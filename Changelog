@@ -1,5 +1,5 @@
- since version 1.1.9
- ===================
+ version 1.2.0 (not yet released)
+ ================================
  * added 'isopen' Dataset method (issue #450).
  * raise ValueError if year 0 or negative year used in time units string.
    The year 0 does not exist in the Julian and Gregorian
