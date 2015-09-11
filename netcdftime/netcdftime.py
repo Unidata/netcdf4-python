@@ -1002,6 +1002,10 @@ def date2index(dates, nctime, calendar=None, select='exact'):
     an exact match cannot be found. C{nearest} will return the indices that
     correpond to the closest dates.
     """
+    try: 
+        nctime.units
+    except AttributeError:
+        raise AttributeError("netcdf time variable is missig a 'units' attribute")
     # Setting the calendar.
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
@@ -1036,6 +1040,10 @@ def time2index(times, nctime, calendar=None, select='exact'):
     an exact match cannot be found. C{nearest} will return the indices that
     correpond to the closest times.
     """
+    try: 
+        nctime.units
+    except AttributeError:
+        raise AttributeError("netcdf time variable is missig a 'units' attribute")
     # Setting the calendar.
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
