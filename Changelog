@@ -1,5 +1,6 @@
  version 1.2.0 (not yet released)
  ================================
+ * added 'get_variables_by_attributes' method (issue #454).
  * check for 'units' attribute in date2index (issue #453).
  * added 'isopen' Dataset method (issue #450).
  * raise ValueError if year 0 or negative year used in time units string.

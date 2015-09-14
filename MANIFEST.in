@@ -11,6 +11,7 @@ include examples/*py
 include examples/*ipynb
 include examples/README.md
 include test/*py
+include test/*nc
 include utils/nc3tonc4
 include utils/nc4tonc3
 include utils/ncinfo
