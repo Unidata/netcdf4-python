@@ -1005,7 +1005,7 @@ def date2index(dates, nctime, calendar=None, select='exact'):
     try: 
         nctime.units
     except AttributeError:
-        raise AttributeError("netcdf time variable is missig a 'units' attribute")
+        raise AttributeError("netcdf time variable is missing a 'units' attribute")
     # Setting the calendar.
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
@@ -1043,7 +1043,7 @@ def time2index(times, nctime, calendar=None, select='exact'):
     try: 
         nctime.units
     except AttributeError:
-        raise AttributeError("netcdf time variable is missig a 'units' attribute")
+        raise AttributeError("netcdf time variable is missing a 'units' attribute")
     # Setting the calendar.
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
