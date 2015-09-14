@@ -1079,7 +1079,9 @@ table {
     <li class="mono"><a href="#netCDF4.Dataset.createVariable">createVariable</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.delncattr">delncattr</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.filepath">filepath</a></li>
+    <li class="mono"><a href="#netCDF4.Dataset.get_variables_by_attributes">get_variables_by_attributes</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.getncattr">getncattr</a></li>
+    <li class="mono"><a href="#netCDF4.Dataset.isopen">isopen</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.ncattrs">ncattrs</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.renameAttribute">renameAttribute</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.renameDimension">renameDimension</a></li>
@@ -1121,7 +1123,9 @@ table {
     <li class="mono"><a href="#netCDF4.Group.createVariable">createVariable</a></li>
     <li class="mono"><a href="#netCDF4.Group.delncattr">delncattr</a></li>
     <li class="mono"><a href="#netCDF4.Group.filepath">filepath</a></li>
+    <li class="mono"><a href="#netCDF4.Group.get_variables_by_attributes">get_variables_by_attributes</a></li>
     <li class="mono"><a href="#netCDF4.Group.getncattr">getncattr</a></li>
+    <li class="mono"><a href="#netCDF4.Group.isopen">isopen</a></li>
     <li class="mono"><a href="#netCDF4.Group.ncattrs">ncattrs</a></li>
     <li class="mono"><a href="#netCDF4.Group.renameAttribute">renameAttribute</a></li>
     <li class="mono"><a href="#netCDF4.Group.renameDimension">renameDimension</a></li>
@@ -1150,7 +1154,9 @@ table {
     <li class="mono"><a href="#netCDF4.MFDataset.createVariable">createVariable</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.delncattr">delncattr</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.filepath">filepath</a></li>
+    <li class="mono"><a href="#netCDF4.MFDataset.get_variables_by_attributes">get_variables_by_attributes</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.getncattr">getncattr</a></li>
+    <li class="mono"><a href="#netCDF4.MFDataset.isopen">isopen</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.renameAttribute">renameAttribute</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.renameDimension">renameDimension</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.renameGroup">renameGroup</a></li>
@@ -2806,6 +2812,41 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.Dataset.get_variables_by_attributes">
+    <p>def <span class="ident">get_variables_by_attributes</span>(</p><p>...)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Returns a list of variables that match specific conditions.</p>
+<p>Can pass in key=value parameters and variables are returned that
+contain all of the matches. For example, </p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with x-axis attribute.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with matching &quot;standard_name&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;northward_sea_water_velocity&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Can pass in key=callable parameter and if the callable returns
+True.  The callable should accept a single parameter, the attribute
+value.  None is returned as the attribute value when the attribute
+does not exist on the variable., For example,</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get Axis variables</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;Z&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that don&#39;t have a &quot;axis&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that have a &quot;grid_mapping&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+</pre></div></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.Dataset.getncattr">
     <p>def <span class="ident">getncattr</span>(</p><p>self,name)</p>
     </div>
@@ -2816,6 +2857,21 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
     <div class="desc"><p>retrievel a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Dataset.isopen">
+    <p>def <span class="ident">isopen</span>(</p><p>...)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>is the Dataset open or closed?</p></div>
   <div class="source_cont">
 </div>
 
@@ -3671,6 +3727,45 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.Group.get_variables_by_attributes">
+    <p>def <span class="ident">get_variables_by_attributes</span>(</p><p>...)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.get_variables_by_attributes">get_variables_by_attributes</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>Returns a list of variables that match specific conditions.</p>
+<p>Can pass in key=value parameters and variables are returned that
+contain all of the matches. For example, </p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with x-axis attribute.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with matching &quot;standard_name&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;northward_sea_water_velocity&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Can pass in key=callable parameter and if the callable returns
+True.  The callable should accept a single parameter, the attribute
+value.  None is returned as the attribute value when the attribute
+does not exist on the variable., For example,</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get Axis variables</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;Z&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that don&#39;t have a &quot;axis&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that have a &quot;grid_mapping&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+</pre></div></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.Group.getncattr">
     <p>def <span class="ident">getncattr</span>(</p><p>self,name)</p>
     </div>
@@ -3685,6 +3780,25 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
     <div class="desc inherited"><p>retrievel a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Group.isopen">
+    <p>def <span class="ident">isopen</span>(</p><p>...)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.isopen">isopen</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>is the Dataset open or closed?</p></div>
   <div class="source_cont">
 </div>
 
@@ -4458,6 +4572,45 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.MFDataset.get_variables_by_attributes">
+    <p>def <span class="ident">get_variables_by_attributes</span>(</p><p>...)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.get_variables_by_attributes">get_variables_by_attributes</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>Returns a list of variables that match specific conditions.</p>
+<p>Can pass in key=value parameters and variables are returned that
+contain all of the matches. For example, </p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with x-axis attribute.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with matching &quot;standard_name&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;northward_sea_water_velocity&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Can pass in key=callable parameter and if the callable returns
+True.  The callable should accept a single parameter, the attribute
+value.  None is returned as the attribute value when the attribute
+does not exist on the variable., For example,</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get Axis variables</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;Z&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that don&#39;t have a &quot;axis&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that have a &quot;grid_mapping&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+</pre></div></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.MFDataset.getncattr">
     <p>def <span class="ident">getncattr</span>(</p><p>self,name)</p>
     </div>
@@ -4472,6 +4625,25 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
     <div class="desc inherited"><p>retrievel a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.MFDataset.isopen">
+    <p>def <span class="ident">isopen</span>(</p><p>...)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.isopen">isopen</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>is the Dataset open or closed?</p></div>
   <div class="source_cont">
 </div>
 
