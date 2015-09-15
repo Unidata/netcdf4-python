@@ -4786,6 +4786,10 @@ correspond to the closest dates.
 returns an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
     """
+    try: 
+        nctime.units
+    except AttributeError:
+        raise AttributeError("netcdf time variable is missing a 'units' attribute")
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
     calendar = calendar.lower()
