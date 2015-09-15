@@ -914,6 +914,15 @@ _nptonctype  = {'U1' : NC_CHAR,
                 'f4' : NC_FLOAT,
                 'f8' : NC_DOUBLE}
 
+_intnptonctype  = {'i1' : NC_BYTE,
+                   'u1' : NC_UBYTE,
+                   'i2' : NC_SHORT,
+                   'u2' : NC_USHORT,
+                   'i4' : NC_INT,
+                   'u4' : NC_UINT,
+                   'i8' : NC_INT64,
+                   'u8' : NC_UINT64}
+
 default_fillvals = {#'S1':NC_FILL_CHAR,
                      'U1':'\0',
                      'S1':'\0',
@@ -1158,6 +1167,7 @@ cdef _get_types(group):
     # create empty dictionary for CompoundType instances.
     cmptypes = OrderedDict()
     vltypes = OrderedDict()
+    enumtypes = OrderedDict()
     if ntypes > 0:
         for n from 0 <= n < ntypes:
             xtype = typeids[n]
@@ -1186,8 +1196,16 @@ cdef _get_types(group):
                     #print 'WARNING: unsupported VLEN type, skipping...'
                     continue
                 vltypes[name] = vltype
-                pass
-    return cmptypes, vltypes
+            elif classp == NC_ENUM: # an enum type
+                # read the Enum type info from the file,
+                # create a EnumType instance from it.
+                try:
+                    enumtype = _read_enum(group, xtype)
+                except KeyError:
+                    #print 'WARNING: unsupported Enum type, skipping...'
+                    continue
+                enumtypes[name] = enumtype
+    return cmptypes, vltypes, enumtypes
 
 cdef _get_dims(group):
     # Private function to create `netCDF4.Dimension` instances for all the
@@ -1378,7 +1396,7 @@ cdef _get_vars(group):
 
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
- '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','_isprimitive',
+ '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_iscompound','_cmptype','_vltype','name','__orthogoral_indexing__','keepweakref']
 __pdoc__ = {}
 
@@ -1421,6 +1439,10 @@ compound types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances
 variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances 
 of the `netCDF4.VLType` class.
 
+**`enumtypes`**: The `enumtypes` dictionary maps the names of
+Enum types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances 
+of the `netCDF4.EnumType` class.
+
 **`data_model`**: `data_model` describes the netCDF
 data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
 `NETCDF4_CLASSIC` or `NETCDF3_64BIT`.
@@ -1434,7 +1456,7 @@ netcdf C library version >= 4.3.1, otherwise will always return
 `UNDEFINED`.
 
 **`parent`**: `parent` is a reference to the parent
-`netCDF4.Group` instance. `None` for a the root group or `netCDF4.Dataset`
+`netCDF4.Group` instance. `None` for the root group or `netCDF4.Dataset`
 instance.
 
 **`path`**: `path` shows the location of the `netCDF4.Group` in
@@ -1449,7 +1471,7 @@ references to the parent Dataset or Group.
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
-    file_format, data_model, cmptypes, vltypes, __orthogonal_indexing__, \
+    file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
     keepweakref
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Dataset.dimensions']=\
@@ -1473,6 +1495,10 @@ references to the parent Dataset or Group.
     """The `vltypes` dictionary maps the names of
     variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
     `netCDF4.VLType` class."""
+    __pdoc__['Dataset.enumtypes']=\
+    """The `enumtypes` dictionary maps the names of
+    Enum types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
+    `netCDF4.EnumType` class."""
     __pdoc__['Dataset.data_model']=\
     """`data_model` describes the netCDF
     data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
@@ -1487,7 +1513,7 @@ references to the parent Dataset or Group.
     `UNDEFINED`."""
     __pdoc__['Dataset.parent']=\
     """`parent` is a reference to the parent
-    `netCDF4.Group` instance. `None` for a the root group or `netCDF4.Dataset` instance"""
+    `netCDF4.Group` instance. `None` for the root group or `netCDF4.Dataset` instance"""
     __pdoc__['Dataset.path']=\
     """`path` shows the location of the `netCDF4.Group` in
     the `netCDF4.Dataset` in a unix directory format (the names of groups in the
@@ -1640,8 +1666,8 @@ references to the parent Dataset or Group.
         self.path = '/'
         self.parent = None
         self.keepweakref = keepweakref
-        # get compound and vlen types in the root Group.
-        self.cmptypes, self.vltypes = _get_types(self)
+        # get compound, vlen and enum types in the root Group.
+        self.cmptypes, self.vltypes, self.enumtypes = _get_types(self)
         # get dimensions in the root group.
         self.dimensions = _get_dims(self)
         # get variables in the root Group.
@@ -1872,6 +1898,20 @@ The return value is the `netCDF4.VLType` class instance describing the new
 datatype."""
         self.vltypes[datatype_name] = VLType(self, datatype, datatype_name)
         return self.vltypes[datatype_name]
+
+    def createEnumType(self, datatype, datatype_name, enum_dict):
+        """
+**`createEnumType(self, datatype, datatype_name, enum_dict)`**
+
+Creates a new Enum data type named `datatype_name` from a numpy
+integer dtype object `datatype`, and a python dictionary
+defining the enum fields and values.
+
+The return value is the `netCDF4.EnumType` class instance describing the new
+datatype."""
+        self.enumtypes[datatype_name] = EnumType(self, datatype, datatype_name,
+                enum_dict)
+        return self.enumtypes[datatype_name]
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
@@ -2370,8 +2410,8 @@ Additional read-only class variables:
         self.keepweakref = parent.keepweakref
         if 'id' in kwargs:
             self._grpid = kwargs['id']
-            # get compound and vlen types in this Group.
-            self.cmptypes, self.vltypes = _get_types(self)
+            # get compound, vlen and enum types in this Group.
+            self.cmptypes, self.vltypes, self.enumtypes = _get_types(self)
             # get dimensions in this Group.
             self.dimensions = _get_dims(self)
             # get variables in this Group.
@@ -2386,6 +2426,7 @@ Additional read-only class variables:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             self.cmptypes = OrderedDict()
             self.vltypes = OrderedDict()
+            self.enumtypes = OrderedDict()
             self.dimensions = OrderedDict()
             self.variables = OrderedDict()
             self.groups = OrderedDict()
@@ -4390,7 +4431,7 @@ the user.
 
         **`group`**: `netCDF4.Group` instance to associate with the VLEN datatype.
         
-        **`datatype`**: An numpy dtype object describing a the component type for the
+        **`datatype`**: An numpy dtype object describing the component type for the
         variable length array.
         
         **`datatype_name`**: a Python string containing a description of the
@@ -4478,6 +4519,133 @@ cdef _read_vlen(group, nc_type xtype, endian=None):
         except KeyError:
             raise KeyError("unsupported component type for VLEN")
     return VLType(group, dt, name, typeid=xtype)
+
+# ENUM datatype support.
+
+cdef class EnumType:
+    """
+A `netCDF4.EnumType` instance is used to describe an Enum data
+type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
+a `netCDF4.Dataset` or `netCDF4.Group` instance. See 
+`netCDF4.EnumType.__init__` for more details.
+
+The instance variables `dtype` and `name` should not be modified by
+the user.
+"""
+    cdef public nc_type _nc_type
+    cdef public dtype, name
+    __pdoc__['EnumType.name'] = \
+    """String name."""
+    __pdoc__['EnumType.dtype'] = \
+    """A numpy integer dtype object describing the base type for the Enum."""
+    __pdoc__['EnumType.enum_dict'] = \
+    """A python dictionary describing the enum fields and values."""
+    def __init__(self, grp, object dt, object dtype_name, object enum_dict, **kwargs):
+        """
+        **`__init__(group, datatype, datatype_name)`**
+
+        EnumType constructor.
+
+        **`group`**: `netCDF4.Group` instance to associate with the VLEN datatype.
+        
+        **`datatype`**: An numpy integer dtype object describing the base type
+        for the Enum.
+        
+        **`datatype_name`**: a Python string containing a description of the
+        Enum data type.
+
+        **`enum_dict`**: a Python dictionary containing the Enum field/value
+        pairs.
+
+        ***`Note`***: `netCDF4.EnumType` instances should be created using the
+        `netCDF4.Dataset.createEnumType`
+        method of a `netCDF4.Dataset` or `netCDF4.Group` instance, not using this class directly.
+        """
+        cdef nc_type xtype
+        if 'typeid' in kwargs:
+            xtype = kwargs['typeid']
+        else:
+            xtype, dt = _def_enum(grp, dt, dtype_name, enum_dict)
+        self._nc_type = xtype
+        self.dtype = dt
+        self.name = dtype_name
+        self.enum_dict = enum_dict
+
+    def __repr__(self):
+        if python3:
+            return self.__unicode__()
+        else:
+            return unicode(self).encode(default_encoding)
+
+    def __unicode__(self):
+        return repr(type(self))+\
+        ": name = '%s', numpy dtype = %s, fields/values = %s\n",\
+        (self.name, self.dtype, self.enum_dict)
+
+cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
+    # private function used to construct a netCDF Enum data type
+    # from a numpy dtype object or python str object by EnumType.__init__.
+    cdef nc_type xtype, xtype_tmp
+    cdef int ierr, val
+    cdef char *namstring
+    bytestr = _strencode(dtype_name)
+    namstring = bytestr
+    dt = numpy.dtype(dt) # convert to numpy datatype.
+    if dt.str[1:] in _intnptonctype.keys():
+        # find netCDF primitive data type corresponding to
+        # specified numpy data type.
+        xtype_tmp = _intnptonctype[dt.str[1:]]
+        ierr = nc_def_enum(grp._grpid, xtype_tmp, namstring, &xtype);
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    else:
+        msg="unsupported datatype specified for Enum (must be integer)"
+        raise KeyError(msg)
+    # insert named members into enum type.
+    for field,value in enumerate(enum_dict):
+        bytestr = _strencode(field)
+        namstring = bytestr
+        val = value
+        ierr = nc_insert_enum(grp._grpid, xtype, namstring, &val)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    return xtype, dt
+
+cdef _read_enum(group, nc_type xtype, endian=None):
+    # read a Enum data type id from an existing file,
+    # construct a corresponding numpy dtype instance,
+    # then use that to create a EnumType instance.
+    # called by _get_types, _get_vars.
+    cdef int ierr, _grpid, nmem
+    cdef long long enum_val
+    cdef nc_type base_xtype
+    cdef char enum_namstring[NC_MAX_NAME+1]
+    cdef size_t nmembers
+    _grpid = group._grpid
+    # get name, datatype, and number of members.
+    with nogil:
+        ierr = nc_inq_enum(_grpid, xtype, enum_namstring, &base_xtype, NULL,\
+                &nmembers)
+    if ierr != NC_NOERR:
+        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    name = enum_namstring.decode(default_encoding,unicode_error)
+    try:
+        datatype = _nctonptype[base_xtype]
+        if endian is not None: datatype = endian + datatype
+        dt = numpy.dtype(datatype) # see if it is a primitive type
+    except KeyError:
+        raise KeyError("unsupported component type for VLEN")
+    # loop over members, build dict.
+    enum_dict = {}
+    for nmem from 0 <= nmem < nmembers:
+        with nogil:
+            ierr = nc_inq_enum_member(_grpid, xtype, nmem, \
+                                      enum_namstring, &enum_val)
+        if ierr != NC_NOERR:
+           raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        name = enum_namstring.decode(default_encoding,unicode_error)
+        enum_dict[name] = int(enum_val)
+    return EnumType(group, dt, name, enum_dict, typeid=xtype)
 
 cdef _strencode(pystr,encoding=None):
     # encode a string into bytes.  If already bytes, do nothing.
