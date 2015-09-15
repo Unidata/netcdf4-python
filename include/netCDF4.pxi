@@ -63,6 +63,7 @@ cdef extern from "netcdf.h":
         NC_VLEN # used internally for vlen types 
         NC_OPAQUE # used internally for opaque types 
         NC_COMPOUND # used internally for compound types 
+        NC_ENUM # used internally for enum types.
         # Use these 'mode' flags for nc_open.
         NC_NOWRITE # default is read only 
         NC_WRITE # read & write 
