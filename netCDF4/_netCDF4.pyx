@@ -3510,7 +3510,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if self.scale:
                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
                 warnings.warn(msg)
-        if self.mask and self._isprimitive:
+        if self.mask and (self._isprimitive or self._isenum):
             data = self._toma(data)
         if self.scale and self._isprimitive and valid_scaleoffset:
             # if variable has scale_factor and add_offset attributes, rescale.
@@ -3761,8 +3761,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # set_auto_mask or set_auto_maskandscale), perform
         # automatic conversion to masked array using
         # missing_value/_Fill_Value.
-        # ignore if not a primitive (not compound, vlen or enum) datatype.
-        if self.mask and self._isprimitive:
+        # ignore if not a primitive or enum data type (not compound or vlen).
+        if self.mask and (self._isprimitive or self._isenum):
             # use missing_value as fill value.
             # if no missing value set, use _FillValue.
             if hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):

@@ -35726,7 +35726,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
  *             if self.scale:
  *                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'             # <<<<<<<<<<<<<<
  *                 warnings.warn(msg)
- *         if self.mask and self._isprimitive:
+ *         if self.mask and (self._isprimitive or self._isenum):
  */
         __Pyx_INCREF(__pyx_kp_s_invalid_scale_factor_or_add_offs);
         __pyx_v_msg = __pyx_kp_s_invalid_scale_factor_or_add_offs;
@@ -35735,7 +35735,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
  *             if self.scale:
  *                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
  *                 warnings.warn(msg)             # <<<<<<<<<<<<<<
- *         if self.mask and self._isprimitive:
+ *         if self.mask and (self._isprimitive or self._isenum):
  *             data = self._toma(data)
  */
         __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3512; __pyx_clineno = __LINE__; goto __pyx_L33_except_error;}
@@ -35808,7 +35808,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
   /* "netCDF4/_netCDF4.pyx":3513
  *                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
  *                 warnings.warn(msg)
- *         if self.mask and self._isprimitive:             # <<<<<<<<<<<<<<
+ *         if self.mask and (self._isprimitive or self._isenum):             # <<<<<<<<<<<<<<
  *             data = self._toma(data)
  *         if self.scale and self._isprimitive and valid_scaleoffset:
  */
@@ -35819,13 +35819,19 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
     goto __pyx_L45_bool_binop_done;
   }
   __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isprimitive); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3513; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!__pyx_t_11) {
+  } else {
+    __pyx_t_14 = __pyx_t_11;
+    goto __pyx_L45_bool_binop_done;
+  }
+  __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isenum); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3513; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_14 = __pyx_t_11;
   __pyx_L45_bool_binop_done:;
   if (__pyx_t_14) {
 
     /* "netCDF4/_netCDF4.pyx":3514
  *                 warnings.warn(msg)
- *         if self.mask and self._isprimitive:
+ *         if self.mask and (self._isprimitive or self._isenum):
  *             data = self._toma(data)             # <<<<<<<<<<<<<<
  *         if self.scale and self._isprimitive and valid_scaleoffset:
  *             # if variable has scale_factor and add_offset attributes, rescale.
@@ -35863,14 +35869,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
     /* "netCDF4/_netCDF4.pyx":3513
  *                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
  *                 warnings.warn(msg)
- *         if self.mask and self._isprimitive:             # <<<<<<<<<<<<<<
+ *         if self.mask and (self._isprimitive or self._isenum):             # <<<<<<<<<<<<<<
  *             data = self._toma(data)
  *         if self.scale and self._isprimitive and valid_scaleoffset:
  */
   }
 
   /* "netCDF4/_netCDF4.pyx":3515
- *         if self.mask and self._isprimitive:
+ *         if self.mask and (self._isprimitive or self._isenum):
  *             data = self._toma(data)
  *         if self.scale and self._isprimitive and valid_scaleoffset:             # <<<<<<<<<<<<<<
  *             # if variable has scale_factor and add_offset attributes, rescale.
@@ -35880,17 +35886,17 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
   if (__pyx_t_11) {
   } else {
     __pyx_t_14 = __pyx_t_11;
-    goto __pyx_L48_bool_binop_done;
+    goto __pyx_L49_bool_binop_done;
   }
   __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isprimitive); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3515; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_11) {
   } else {
     __pyx_t_14 = __pyx_t_11;
-    goto __pyx_L48_bool_binop_done;
+    goto __pyx_L49_bool_binop_done;
   }
   __pyx_t_11 = (__pyx_v_valid_scaleoffset != 0);
   __pyx_t_14 = __pyx_t_11;
-  __pyx_L48_bool_binop_done:;
+  __pyx_L49_bool_binop_done:;
   if (__pyx_t_14) {
 
     /* "netCDF4/_netCDF4.pyx":3517
@@ -35905,14 +35911,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
     if (__pyx_t_9) {
     } else {
       __pyx_t_14 = __pyx_t_9;
-      goto __pyx_L52_bool_binop_done;
+      goto __pyx_L53_bool_binop_done;
     }
     __pyx_t_9 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_9 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3517; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_11 = (__pyx_t_9 != 0);
     if (__pyx_t_11) {
     } else {
       __pyx_t_14 = __pyx_t_11;
-      goto __pyx_L52_bool_binop_done;
+      goto __pyx_L53_bool_binop_done;
     }
 
     /* "netCDF4/_netCDF4.pyx":3518
@@ -35931,7 +35937,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
     if (!__pyx_t_11) {
     } else {
       __pyx_t_14 = __pyx_t_11;
-      goto __pyx_L52_bool_binop_done;
+      goto __pyx_L53_bool_binop_done;
     }
     __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_scale_factor); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3518; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
@@ -35940,7 +35946,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
     __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3518; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_14 = __pyx_t_11;
-    __pyx_L52_bool_binop_done:;
+    __pyx_L53_bool_binop_done:;
 
     /* "netCDF4/_netCDF4.pyx":3517
  *         if self.scale and self._isprimitive and valid_scaleoffset:
@@ -35979,7 +35985,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
  *             (self.add_offset != 0.0 or self.scale_factor != 1.0):
  *                 data = data*self.scale_factor + self.add_offset
  */
-      goto __pyx_L51;
+      goto __pyx_L52;
     }
 
     /* "netCDF4/_netCDF4.pyx":3521
@@ -35994,7 +36000,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
     if (__pyx_t_9) {
     } else {
       __pyx_t_14 = __pyx_t_9;
-      goto __pyx_L56_bool_binop_done;
+      goto __pyx_L57_bool_binop_done;
     }
     __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_scale_factor); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3521; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
@@ -36003,7 +36009,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
     __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_9 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3521; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_14 = __pyx_t_9;
-    __pyx_L56_bool_binop_done:;
+    __pyx_L57_bool_binop_done:;
     if (__pyx_t_14) {
 
       /* "netCDF4/_netCDF4.pyx":3522
@@ -36028,7 +36034,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
  *                 data = data*self.scale_factor
  *             # else if variable has only add_offset attributes, rescale.
  */
-      goto __pyx_L51;
+      goto __pyx_L52;
     }
 
     /* "netCDF4/_netCDF4.pyx":3524
@@ -36043,7 +36049,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
     if (__pyx_t_11) {
     } else {
       __pyx_t_14 = __pyx_t_11;
-      goto __pyx_L58_bool_binop_done;
+      goto __pyx_L59_bool_binop_done;
     }
     __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3524; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_4);
@@ -36052,7 +36058,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
     __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_11 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3524; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_14 = __pyx_t_11;
-    __pyx_L58_bool_binop_done:;
+    __pyx_L59_bool_binop_done:;
     if (__pyx_t_14) {
 
       /* "netCDF4/_netCDF4.pyx":3525
@@ -36078,10 +36084,10 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_42__getitem__(struct __py
  *         return data
  */
     }
-    __pyx_L51:;
+    __pyx_L52:;
 
     /* "netCDF4/_netCDF4.pyx":3515
- *         if self.mask and self._isprimitive:
+ *         if self.mask and (self._isprimitive or self._isenum):
  *             data = self._toma(data)
  *         if self.scale and self._isprimitive and valid_scaleoffset:             # <<<<<<<<<<<<<<
  *             # if variable has scale_factor and add_offset attributes, rescale.
@@ -40164,8 +40170,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
 
   /* "netCDF4/_netCDF4.pyx":3765
  *         # missing_value/_Fill_Value.
- *         # ignore if not a primitive (not compound, vlen or enum) datatype.
- *         if self.mask and self._isprimitive:             # <<<<<<<<<<<<<<
+ *         # ignore if not a primitive or enum data type (not compound or vlen).
+ *         if self.mask and (self._isprimitive or self._isenum):             # <<<<<<<<<<<<<<
  *             # use missing_value as fill value.
  *             # if no missing value set, use _FillValue.
  */
@@ -40176,6 +40182,12 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
     goto __pyx_L31_bool_binop_done;
   }
   __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isprimitive); if (unlikely(__pyx_t_8 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3765; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!__pyx_t_8) {
+  } else {
+    __pyx_t_3 = __pyx_t_8;
+    goto __pyx_L31_bool_binop_done;
+  }
+  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isenum); if (unlikely(__pyx_t_8 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3765; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_3 = __pyx_t_8;
   __pyx_L31_bool_binop_done:;
   if (__pyx_t_3) {
@@ -40192,12 +40204,12 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
     if (!__pyx_t_1) {
     } else {
       __pyx_t_3 = __pyx_t_1;
-      goto __pyx_L34_bool_binop_done;
+      goto __pyx_L35_bool_binop_done;
     }
     __pyx_t_1 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3768; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_8 = (__pyx_t_1 != 0);
     __pyx_t_3 = __pyx_t_8;
-    __pyx_L34_bool_binop_done:;
+    __pyx_L35_bool_binop_done:;
     if (__pyx_t_3) {
 
       /* "netCDF4/_netCDF4.pyx":3770
@@ -40283,8 +40295,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
 
     /* "netCDF4/_netCDF4.pyx":3765
  *         # missing_value/_Fill_Value.
- *         # ignore if not a primitive (not compound, vlen or enum) datatype.
- *         if self.mask and self._isprimitive:             # <<<<<<<<<<<<<<
+ *         # ignore if not a primitive or enum data type (not compound or vlen).
+ *         if self.mask and (self._isprimitive or self._isenum):             # <<<<<<<<<<<<<<
  *             # use missing_value as fill value.
  *             # if no missing value set, use _FillValue.
  */
@@ -40301,11 +40313,11 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
   if (__pyx_t_3) {
   } else {
     __pyx_t_8 = __pyx_t_3;
-    goto __pyx_L38_bool_binop_done;
+    goto __pyx_L39_bool_binop_done;
   }
   __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isprimitive); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3771; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_8 = __pyx_t_3;
-  __pyx_L38_bool_binop_done:;
+  __pyx_L39_bool_binop_done:;
   if (__pyx_t_8) {
 
     /* "netCDF4/_netCDF4.pyx":3773
@@ -40320,12 +40332,12 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
     if (__pyx_t_1) {
     } else {
       __pyx_t_8 = __pyx_t_1;
-      goto __pyx_L41_bool_binop_done;
+      goto __pyx_L42_bool_binop_done;
     }
     __pyx_t_1 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_1 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3773; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_t_3 = (__pyx_t_1 != 0);
     __pyx_t_8 = __pyx_t_3;
-    __pyx_L41_bool_binop_done:;
+    __pyx_L42_bool_binop_done:;
     if (__pyx_t_8) {
 
       /* "netCDF4/_netCDF4.pyx":3774
@@ -40403,7 +40415,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
  *                 data = (data - self.add_offset)/self.scale_factor
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
  */
-      goto __pyx_L40;
+      goto __pyx_L41;
     }
 
     /* "netCDF4/_netCDF4.pyx":3776
@@ -40486,7 +40498,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
  *                 data = data/self.scale_factor
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
  */
-      goto __pyx_L40;
+      goto __pyx_L41;
     }
 
     /* "netCDF4/_netCDF4.pyx":3779
@@ -40570,7 +40582,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
  */
     }
-    __pyx_L40:;
+    __pyx_L41:;
 
     /* "netCDF4/_netCDF4.pyx":3782
  *                 data = data - self.add_offset
@@ -40625,7 +40637,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
       if (__pyx_t_1) {
       } else {
         __pyx_t_3 = __pyx_t_1;
-        goto __pyx_L48_bool_binop_done;
+        goto __pyx_L49_bool_binop_done;
       }
 
       /* "netCDF4/_netCDF4.pyx":3787
@@ -40711,7 +40723,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
       __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3787; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_3 = __pyx_t_1;
-      __pyx_L48_bool_binop_done:;
+      __pyx_L49_bool_binop_done:;
 
       /* "netCDF4/_netCDF4.pyx":3786
  *                 # corresponds to missing values, don't fill masked array -
@@ -40741,7 +40753,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
  *                    numpy.all(numpy.in1d(data.data[data.mask],self.missing_value)):
  *                     data = data.data
  */
-        goto __pyx_L47;
+        goto __pyx_L48;
       }
 
       /* "netCDF4/_netCDF4.pyx":3790
@@ -40824,7 +40836,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
  *                             fillval = self.missing_value
  *                         else:
  */
-            goto __pyx_L51;
+            goto __pyx_L52;
           }
 
           /* "netCDF4/_netCDF4.pyx":3797
@@ -40857,7 +40869,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
             __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
             {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3798; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
-          __pyx_L51:;
+          __pyx_L52:;
 
           /* "netCDF4/_netCDF4.pyx":3799
  *                             msg="cannot assign fill_value for masked array when missing_value attribute is not a scalar"
@@ -40933,7 +40945,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
  *                         # if missing value is a scalar, use it as fill_value.
  *                         # if missing value is a vector, raise an exception
  */
-          goto __pyx_L50;
+          goto __pyx_L51;
         }
 
         /* "netCDF4/_netCDF4.pyx":3801
@@ -40966,7 +40978,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
  *                         fillval = self._FillValue
  *                     else:
  */
-          goto __pyx_L50;
+          goto __pyx_L51;
         }
 
         /* "netCDF4/_netCDF4.pyx":3804
@@ -40991,7 +41003,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
           __pyx_v_fillval = __pyx_t_9;
           __pyx_t_9 = 0;
         }
-        __pyx_L50:;
+        __pyx_L51:;
 
         /* "netCDF4/_netCDF4.pyx":3805
  *                     else:
@@ -41012,7 +41024,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
         __Pyx_DECREF_SET(__pyx_v_data, __pyx_t_14);
         __pyx_t_14 = 0;
       }
-      __pyx_L47:;
+      __pyx_L48:;
 
       /* "netCDF4/_netCDF4.pyx":3782
  *                 data = data - self.add_offset
@@ -41162,20 +41174,20 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
       __pyx_t_11 = Py_TYPE(__pyx_t_13)->tp_iternext;
       for (index=0; index < 4; index++) {
-        PyObject* item = __pyx_t_11(__pyx_t_13); if (unlikely(!item)) goto __pyx_L55_unpacking_failed;
+        PyObject* item = __pyx_t_11(__pyx_t_13); if (unlikely(!item)) goto __pyx_L56_unpacking_failed;
         __Pyx_GOTREF(item);
         *(temps[index]) = item;
       }
       if (__Pyx_IternextUnpackEndCheck(__pyx_t_11(__pyx_t_13), 4) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_t_11 = NULL;
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-      goto __pyx_L56_unpacking_done;
-      __pyx_L55_unpacking_failed:;
+      goto __pyx_L57_unpacking_done;
+      __pyx_L56_unpacking_failed:;
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __pyx_t_11 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
       {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3808; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_L56_unpacking_done:;
+      __pyx_L57_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_a, __pyx_t_2);
     __pyx_t_2 = 0;
@@ -41216,7 +41228,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
     __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_14); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3810; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     if (__pyx_t_3) {
-      goto __pyx_L53_continue;
+      goto __pyx_L54_continue;
     }
 
     /* "netCDF4/_netCDF4.pyx":3812
@@ -41293,7 +41305,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
  *                     dataput=numpy.array(dataput,'O')
  *                 else:
  */
-        goto __pyx_L59;
+        goto __pyx_L60;
       }
 
       /* "netCDF4/_netCDF4.pyx":3816
@@ -41341,7 +41353,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
         __Pyx_DECREF_SET(__pyx_v_dataput, __pyx_t_10);
         __pyx_t_10 = 0;
       }
-      __pyx_L59:;
+      __pyx_L60:;
 
       /* "netCDF4/_netCDF4.pyx":3812
  *             if dataput.size == 0: continue # nothing to write
@@ -41403,7 +41415,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_48__setitem__(struct __pyx_obj_
  *             dataput = data[tuple(i)]
  *             if dataput.size == 0: continue # nothing to write
  */
-    __pyx_L53_continue:;
+    __pyx_L54_continue:;
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 

@@ -15,6 +15,7 @@ u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5, u'Cumulonimbus': 1,
 u'Stratocumulus': 3} 
 datain = np.array([ENUM_DICT['Clear'],ENUM_DICT['Stratus'],ENUM_DICT['Cumulus'],\
                    ENUM_DICT['Missing'],ENUM_DICT['Cumulonimbus']],dtype=ENUM_BASETYPE)
+datain_masked = np.ma.masked_values(datain,ENUM_DICT['Missing'])
 
 
 class EnumTestCase(unittest.TestCase):
@@ -32,7 +33,7 @@ class EnumTestCase(unittest.TestCase):
         cloud_var =\
         f.createVariable(VAR_NAME,cloud_type,'time',\
                          fill_value=ENUM_DICT['Missing'])
-        cloud_var[:] = datain
+        cloud_var[:] = datain_masked
         f.close()
 
     def tearDown(self):
@@ -47,8 +48,13 @@ class EnumTestCase(unittest.TestCase):
         assert list(f.enumtypes.keys()) == [ENUM_NAME]
         assert f.enumtypes[ENUM_NAME].dtype == ENUM_BASETYPE
         assert v._FillValue == ENUM_DICT['Missing']
+        v.set_auto_mask(False)
         data = v[:]
         assert_array_equal(data, datain)
+        v.set_auto_mask(True) # check to see if auto masking works
+        data = v[:]
+        assert_array_equal(data, datain_masked)
+        assert_array_equal(data.mask, datain_masked.mask)
         f.close()
 
 if __name__ == '__main__':
