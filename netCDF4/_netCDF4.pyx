@@ -4645,7 +4645,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
     # then use that to create a EnumType instance.
     # called by _get_types, _get_vars.
     cdef int ierr, _grpid, nmem
-    cdef long long enum_val
+    cdef unsigned char enum_val
     cdef nc_type base_xtype
     cdef char enum_namstring[NC_MAX_NAME+1]
     cdef size_t nmembers
