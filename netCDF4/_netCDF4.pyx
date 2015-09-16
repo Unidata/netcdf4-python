@@ -3810,8 +3810,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if dataput.shape == ():
                 if self._isvlen:
                     dataput=numpy.array(dataput,'O')
-                elif self._isenum:
-                    dataput=numpy.array(dataput,dataput.dtype)
                 else:
                     dataput=numpy.array(dataput,dataput.dtype)
             self._put(dataput,a,b,c)
