@@ -3990,8 +3990,8 @@ The default value of `mask` is `True`
         if negstride:
             # reverse data along axes with negative strides.
             data = data[sl].copy() # make sure a copy is made.
-        if self._isprimitive or self._iscompound:
-            # primitive or compound data type.
+        if self._isprimitive or self._iscompound or self._isenum:
+            # primitive, enum or compound data type.
             # if data type of array doesn't match variable,
             # try to cast the data.
             if self.dtype != data.dtype:
