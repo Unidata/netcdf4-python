@@ -1026,13 +1026,19 @@ cdef _get_att(grp, int varid, name):
             att_type = NC_INT
         try:
             type_att = _nctonptype[att_type] # see if it is a primitive type
+            value_arr = numpy.empty(att_len,type_att)
         except KeyError:
             # check if it's a compound
             try:
                 type_att = _read_compound(grp, att_type)
+                value_arr = numpy.empty(att_len,type_att)
             except:
-                raise KeyError('attribute %s has unsupported datatype' % attname)
-        value_arr = numpy.empty(att_len,type_att)
+                # check if it's an enum
+                try:
+                    type_att = _read_enum(grp, att_type)
+                    value_arr = numpy.empty(att_len,type_att.dtype)
+                except:
+                    raise KeyError('attribute %s has unsupported datatype' % attname)
         with nogil:
             ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
         if ierr != NC_NOERR:
@@ -1353,6 +1359,13 @@ cdef _get_vars(group):
                         except KeyError:
                             #print "WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
                             continue
+                    elif classp == NC_ENUM:
+                        # create EnumType instance describing this compound type.
+                        try:
+                            datatype = _read_enum(group, xtype, endian=endianness)
+                        except KeyError:
+                            #print "WARNING: variable '%s' has unsupported Enum datatype, skipping .." % name
+                            continue
                     else:
                         #print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
                         continue
@@ -1398,7 +1411,7 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
- 'file_format','_isvlen','_iscompound','_cmptype','_vltype','name','__orthogoral_indexing__','keepweakref']
+ 'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','name','__orthogoral_indexing__','keepweakref']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -2660,7 +2673,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
-    _isvlen, _grp, _cmptype, _vltype, __orthogonal_indexing__
+    _isvlen, _isenum, _grp, _cmptype, _vltype, __orthogonal_indexing__
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
     """A tuple containing the names of the
@@ -2690,8 +2703,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     that are 1d arrays or lists slice along each dimension independently.  This
     behavior is similar to Fortran or Matlab, but different than numpy."""
     __pdoc__['Variable.datatype'] = \
-     """numpy data type (for primitive data types) or VLType/CompoundType
-     instance (for compound or vlen data types)."""
+     """numpy data type (for primitive data types) or
+     VLType/CompoundType/EnumType instance (for compound, vlen or enum
+     data types)."""
     __pdoc__['Variable.name'] = \
     """String name."""
     __pdoc__['Variable.shape'] = \
@@ -2848,6 +2862,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self._isprimitive = False
         self._iscompound = False
         self._isvlen = False
+        self._isenum = False
         if isinstance(datatype, CompoundType) or isinstance(datatype, VLType)\
                       or datatype == str:
             if isinstance(datatype, CompoundType):
@@ -2856,6 +2871,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             if isinstance(datatype, VLType) or datatype==str:
                 self._isvlen = True
                 self._vltype = datatype
+            if isinstance(datatype, EnumType):
+                self._isenum = True
+                self._enumtype = datatype
             if datatype==str:
                 if grp.data_model != 'NETCDF4':
                     raise ValueError(
@@ -3054,6 +3072,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         elif self._isvlen:
             ncdump_var.append('%s %s(%s)\n' %\
             ('vlen',self._name,', '.join(dimnames)))
+        elif self._isenum:
+            ncdump_var.append('%s %s(%s)\n' %\
+            ('enum',self._name,', '.join(dimnames)))
         else:
             ncdump_var.append('%s %s(%s)\n' %\
             (self.dtype,self._name,', '.join(dimnames)))
@@ -3062,6 +3083,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ncdump_var.append('compound data type: %s\n' % self.dtype)
         elif self._isvlen:
             ncdump_var.append('vlen data type: %s\n' % self.dtype)
+        elif self._isenum:
+            ncdump_var.append('enum data type: %s\n' % self.dtype)
         unlimdims = []
         for dimname in self.dimensions:
             dim = _find_dim(self._grp, dimname)
@@ -3137,12 +3160,16 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             raise AttributeError("name cannot be altered")
 
     property datatype:
-        """numpy data type (for primitive data types) or VLType/CompoundType instance (for compound or vlen data types)"""
+        """numpy data type (for primitive data types) or
+        VLType/CompoundType/EnumType instance 
+        (for compound, vlen  or enum data types)"""
         def __get__(self):
             if self._iscompound:
                 return self._cmptype
             elif self._isvlen:
                 return self._vltype
+            elif self._isenum:
+                return self._enumtype
             elif self._isprimitive:
                 return self.dtype
 
@@ -3471,7 +3498,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # set_auto_mask or set_auto_maskandscale), perform
         # automatic conversion to masked array using
         # missing_value/_Fill_Value.
-        # ignore for compound and vlen datatypes.
+        # ignore for compound, vlen or enum datatypes.
         try: # check to see if scale_factor and add_offset is valid (issue 176).
             if hasattr(self,'scale_factor'): float(self.scale_factor)
             if hasattr(self,'add_offset'): float(self.add_offset)
@@ -3732,7 +3759,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # set_auto_mask or set_auto_maskandscale), perform
         # automatic conversion to masked array using
         # missing_value/_Fill_Value.
-        # ignore if not a primitive (not compound or vlen) datatype.
+        # ignore if not a primitive (not compound, vlen or enum) datatype.
         if self.mask and self._isprimitive:
             # use missing_value as fill value.
             # if no missing value set, use _FillValue.
@@ -3783,6 +3810,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if dataput.shape == ():
                 if self._isvlen:
                     dataput=numpy.array(dataput,'O')
+                elif self._isenum:
+                    dataput=numpy.array(dataput,dataput.dtype)
                 else:
                     dataput=numpy.array(dataput,dataput.dtype)
             self._put(dataput,a,b,c)
