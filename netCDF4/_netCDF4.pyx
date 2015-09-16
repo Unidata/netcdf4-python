@@ -4630,7 +4630,8 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
         msg="unsupported datatype specified for Enum (must be integer)"
         raise KeyError(msg)
     # insert named members into enum type.
-    for field,value in enumerate(enum_dict):
+    for field in enum_dict:
+        value = enum_dict[field]
         bytestr = _strencode(field)
         namstring = bytestr
         val = value
