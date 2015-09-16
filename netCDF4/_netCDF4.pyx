@@ -1106,7 +1106,7 @@ cdef _get_full_format(int grpid):
     ELSE:
         return 'UNDEFINED'
 
-cdef _set_att(grp, int varid, name, value):
+cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
     # Private function to set an attribute name/value pair
     cdef int i, ierr, lenarr, n
     cdef char *attname
@@ -1150,7 +1150,7 @@ cdef _set_att(grp, int varid, name, value):
             xtype = _find_cmptype(grp,value_arr.dtype)
         elif value_arr.dtype.str[1:] not in _supportedtypes:
             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
-        else:
+        elif xtype == -99: # if xtype is not passed in as kwarg.
             xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
@@ -3021,7 +3021,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                     # cast fill_value to type of variable.
                     if self._isprimitive or self._isenum:
                         fillval = numpy.array(fill_value, self.dtype)
-                        _set_att(self._grp, self._varid, '_FillValue', fillval)
+                        _set_att(self._grp, self._varid, '_FillValue',\
+                                 fillval, xtype=xtype)
                     else:
                         raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
             if least_significant_digit is not None:
