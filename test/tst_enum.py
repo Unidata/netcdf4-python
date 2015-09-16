@@ -35,7 +35,7 @@ class EnumTestCase(unittest.TestCase):
         os.remove(self.file)
 
     def runTest(self):
-        """testing vlen variables"""
+        """testing enum data type"""
         f = Dataset(self.file, 'r')
         v = f.variables[VAR_NAME]
         assert v.datatype.enum_dict == ENUM_DICT
