@@ -2844,6 +2844,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ((datatype.kind == 'S' and datatype.itemsize > 1) or
               datatype.kind == 'U')):
             datatype = str
+            user_type = True
         # check if endian keyword consistent with datatype specification.
         dtype_endian = getattr(datatype,'byteorder',None)
         if dtype_endian == '=': dtype_endian='native'
