@@ -100,6 +100,7 @@ Tutorial
 9. [Efficient compression of netCDF variables.](#section9)
 10. [Beyond homogenous arrays of a fixed type - compound data types.](#section10)
 11. [Variable-length (vlen) data types.](#section11)
+12. [Enum data type.](#section12)
 
 
 ## <div id='section1'>1) Creating/Opening/Closing a netCDF file.
@@ -811,6 +812,60 @@ array is assigned to the vlen string variable.
 It is also possible to set contents of vlen string variables with numpy arrays
 of any string or unicode data type. Note, however, that accessing the contents
 of such variables will always return numpy arrays with dtype `object`.
+
+## <div id='section12'>12) Enum data type.
+
+netCDF4 has an enumerated data type, which is an integer datatype that is
+restricted to certain named values. Since Enums don't map directly to
+a numpy data type, they are read and written as integer arrays.
+
+Here's an example of using an Enum type to hold cloud type data. The
+The base integer data type and a python dictionary describing the allowed
+values and their names are used to define an Enum data type using
+`netCDF4.Dataset.createEnumType`.
+
+    :::python
+    >>> nc = Dataset('clouds.nc','w')
+    >>> # python dict with allowed values and their names.
+    >>> enum_dict = {u'Altocumulus': 7, u'Missing': 127, 
+    >>> u'Stratus': 2, u'Clear': 0,
+    >>> u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5,
+    >>> u'Cumulonimbus': 1, u'Stratocumulus': 3}
+    >>> # create the Enum type called 'cloud_t'.
+    >>> cloud_type = nc.createEnumType(numpy.uint8,'cloud_t',enum_dict)
+    >>> print cloud_type
+    <type 'netCDF4._netCDF4.EnumType'>: name = 'cloud_t',
+    numpy dtype = uint8, fields/values ={u'Cumulus': 4,
+    u'Altocumulus': 7, u'Missing': 127,
+    u'Stratus': 2, u'Clear': 0,
+    u'Cumulonimbus': 1, u'Stratocumulus': 3,
+    u'Nimbostratus': 6, u'Altostratus': 5}
+
+A new variable can be created in the usual way using this data type.
+Integer data is written to the variable that represents the named
+cloud types in enum_dict.
+
+    :::python
+    >>> time = nc.createDimension('time',None)
+    >>> # create a 1d variable of type 'cloud_type'.
+    >>> # The fill_value is set to the 'Missing' named value.
+    >>> cloud_var =
+    >>> nc.createVariable('primary_cloud',cloud_type,'time',
+    >>> fill_value=enum_dict['Missing'])
+    >>> # write some data to the variable.
+    >>> cloud_var[:] = [enum_dict['Clear'],enum_dict['Stratus'],
+    >>> enum_dict['Cumulus'],enum_dict['Missing'],
+    >>> enum_dict['Cumulonimbus']]
+    >>> print cloud_var
+    <type 'netCDF4._netCDF4.Variable'>
+    enum primary_cloud(time)
+        _FillValue: 127
+    enum data type: uint8
+    unlimited dimensions: time
+    current shape = (5,)
+    >>> print cloud_var[:]
+    [0 2 4 -- 1]
+    >>> nc.close()
 
 All of the code in this tutorial is available in `examples/tutorial.py`,
 Unit tests are in the `test` directory.
