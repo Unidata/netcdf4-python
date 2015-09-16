@@ -1197,6 +1197,7 @@ cdef _get_types(group):
                     continue
                 vltypes[name] = vltype
             elif classp == NC_ENUM: # an enum type
+                name = namstring.decode(default_encoding,unicode_error)
                 # read the Enum type info from the file,
                 # create a EnumType instance from it.
                 try:
@@ -4533,7 +4534,7 @@ The instance variables `dtype` and `name` should not be modified by
 the user.
 """
     cdef public nc_type _nc_type
-    cdef public dtype, name
+    cdef public dtype, name, enum_dict
     __pdoc__['EnumType.name'] = \
     """String name."""
     __pdoc__['EnumType.dtype'] = \
@@ -4579,7 +4580,7 @@ the user.
 
     def __unicode__(self):
         return repr(type(self))+\
-        ": name = '%s', numpy dtype = %s, fields/values = %s\n",\
+        ": name = '%s', numpy dtype = %s, fields/values =%s\n" %\
         (self.name, self.dtype, self.enum_dict)
 
 cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
