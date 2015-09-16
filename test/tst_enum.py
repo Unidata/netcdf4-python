@@ -23,6 +23,11 @@ class EnumTestCase(unittest.TestCase):
         self.file = FILE_NAME
         f = Dataset(self.file,'w')
         cloud_type = f.createEnumType(ENUM_BASETYPE,ENUM_NAME,ENUM_DICT)
+        # make sure KeyError raised if non-integer basetype used.
+        try:
+            cloud_typ2 = f.createEnumType(np.float32,ENUM_NAME,ENUM_DICT)
+        except KeyError:
+            pass
         f.createDimension('time',None)
         cloud_var =\
         f.createVariable(VAR_NAME,cloud_type,'time',\
