@@ -4119,7 +4119,7 @@ The default value of `mask` is `True`
                 startp[n] = start[n]
                 stridep[n] = stride[n]
                 sl.append(slice(None,None, 1))
-        if self._isprimitive or self._iscompound:
+        if self._isprimitive or self._iscompound or self._isenum:
             data = numpy.empty(shapeout, self.dtype)
             # strides all 1 or scalar variable, use get_vara (faster)
             if sum(stride) == ndims or ndims == 0:
@@ -4646,7 +4646,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
     # then use that to create a EnumType instance.
     # called by _get_types, _get_vars.
     cdef int ierr, _grpid, nmem
-    cdef unsigned char enum_val
+    cdef char enum_val
     cdef nc_type base_xtype
     cdef char enum_namstring[NC_MAX_NAME+1]
     cdef size_t nmembers
