@@ -1411,7 +1411,7 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
- 'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','name','__orthogoral_indexing__','keepweakref']
+ 'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name','__orthogoral_indexing__','keepweakref']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -2673,7 +2673,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
-    _isvlen, _isenum, _grp, _cmptype, _vltype, __orthogonal_indexing__
+    _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype, __orthogonal_indexing__
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
     """A tuple containing the names of the
@@ -2831,11 +2831,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             self._grp = weakref.proxy(grp)
         else:
             self._grp = grp
+        user_type = isinstance(datatype, CompoundType) or \
+                    isinstance(datatype, VLType) or \
+                    isinstance(datatype, EnumType) or \
+                    datatype == str
         # convert to a real numpy datatype object if necessary.
-        if (not isinstance(datatype, CompoundType) and \
-            not isinstance(datatype, VLType)) and \
-            datatype != str and \
-            type(datatype) != numpy.dtype:
+        if not user_type and type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
         # convert numpy string dtype with length > 1
         # or any numpy unicode dtype into str
@@ -2863,8 +2864,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self._iscompound = False
         self._isvlen = False
         self._isenum = False
-        if isinstance(datatype, CompoundType) or isinstance(datatype, VLType)\
-                      or datatype == str:
+        if user_type:
             if isinstance(datatype, CompoundType):
                 self._iscompound = True
                 self._cmptype = datatype
@@ -3019,7 +3019,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 else:
                     # cast fill_value to type of variable.
-                    if self._isprimitive:
+                    if self._isprimitive or self._isenum:
                         fillval = numpy.array(fill_value, self.dtype)
                         _set_att(self._grp, self._varid, '_FillValue', fillval)
                     else:
