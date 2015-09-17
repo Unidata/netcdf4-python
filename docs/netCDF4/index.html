@@ -1111,6 +1111,15 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#netCDF4.EnumType">EnumType</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#netCDF4.EnumType.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#netCDF4.Group">Group</a></span>
         
           
@@ -2391,7 +2400,7 @@ variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code
 of the <a href="#netCDF4.VLType"><code>VLType</code></a> class.</p>
 <p><strong><code>enumtypes</code></strong>: The <code>enumtypes</code> dictionary maps the names of
 Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances 
-of the <code>netCDF4.EnumType</code> class.</p>
+of the <a href="#netCDF4.EnumType"><code>EnumType</code></a> class.</p>
 <p><strong><code>data_model</code></strong>: <code>data_model</code> describes the netCDF
 data model version, one of <code>NETCDF3_CLASSIC</code>, <code>NETCDF4</code>,
 <code>NETCDF4_CLASSIC</code> or <code>NETCDF3_64BIT</code>.</p>
@@ -2483,7 +2492,7 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
   
     <div class="desc"><p>The <code>enumtypes</code> dictionary maps the names of
 Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
-<code>netCDF4.EnumType</code> class.</p></div>
+<a href="#netCDF4.EnumType"><code>EnumType</code></a> class.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2708,7 +2717,7 @@ instance. To determine if a dimension is 'unlimited', use the
     <div class="desc"><p>Creates a new Enum data type named <code>datatype_name</code> from a numpy
 integer dtype object <code>datatype</code>, and a python dictionary
 defining the enum fields and values.</p>
-<p>The return value is the <code>netCDF4.EnumType</code> class instance describing the new
+<p>The return value is the <a href="#netCDF4.EnumType"><code>EnumType</code></a> class instance describing the new
 datatype.</p></div>
   <div class="source_cont">
 </div>
@@ -3289,6 +3298,89 @@ determine if the dimension is unlimited.</p>
       </div>
       
       <div class="item">
+      <p id="netCDF4.EnumType" class="name">class <span class="ident">EnumType</span></p>
+      
+  
+    <div class="desc"><p>A <a href="#netCDF4.EnumType"><code>EnumType</code></a> instance is used to describe an Enum data
+type, and can be passed to the the <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of
+a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance. See 
+<a href="#netCDF4.EnumType.__init__"><code>__init__</code></a> for more details.</p>
+<p>The instance variables <code>dtype</code>, <code>name</code> and <code>enum_dict</code> should not be modified by
+the user.</p></div>
+  <div class="source_cont">
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#netCDF4.EnumType">EnumType</a></li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="netCDF4.EnumType.dtype" class="name">var <span class="ident">dtype</span></p>
+            
+
+            
+  
+    <div class="desc"><p>A numpy integer dtype object describing the base type for the Enum.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="netCDF4.EnumType.enum_dict" class="name">var <span class="ident">enum_dict</span></p>
+            
+
+            
+  
+    <div class="desc"><p>A python dictionary describing the enum fields and values.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="netCDF4.EnumType.name" class="name">var <span class="ident">name</span></p>
+            
+
+            
+  
+    <div class="desc"><p>String name.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Static methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.EnumType.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>group, datatype, datatype_name)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>EnumType constructor.</p>
+<p><strong><code>group</code></strong>: <a href="#netCDF4.Group"><code>Group</code></a> instance to associate with the VLEN datatype.</p>
+<p><strong><code>datatype</code></strong>: An numpy integer dtype object describing the base type
+for the Enum.</p>
+<p><strong><code>datatype_name</code></strong>: a Python string containing a description of the
+Enum data type.</p>
+<p><strong><code>enum_dict</code></strong>: a Python dictionary containing the Enum field/value
+pairs.</p>
+<p><strong><em><code>Note</code></em></strong>: <a href="#netCDF4.EnumType"><code>EnumType</code></a> instances should be created using the
+<a href="#netCDF4.Dataset.createEnumType"><code>createEnumType</code></a>
+method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance, not using this class directly.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="netCDF4.Group" class="name">class <span class="ident">Group</span></p>
       
   
@@ -3396,7 +3488,7 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
   
     <div class="desc inherited"><p>The <code>enumtypes</code> dictionary maps the names of
 Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
-<code>netCDF4.EnumType</code> class.</p></div>
+<a href="#netCDF4.EnumType"><code>EnumType</code></a> class.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3643,7 +3735,7 @@ instance. To determine if a dimension is 'unlimited', use the
     <div class="desc inherited"><p>Creates a new Enum data type named <code>datatype_name</code> from a numpy
 integer dtype object <code>datatype</code>, and a python dictionary
 defining the enum fields and values.</p>
-<p>The return value is the <code>netCDF4.EnumType</code> class instance describing the new
+<p>The return value is the <a href="#netCDF4.EnumType"><code>EnumType</code></a> class instance describing the new
 datatype.</p></div>
   <div class="source_cont">
 </div>
@@ -4337,7 +4429,7 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
   
     <div class="desc inherited"><p>The <code>enumtypes</code> dictionary maps the names of
 Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
-<code>netCDF4.EnumType</code> class.</p></div>
+<a href="#netCDF4.EnumType"><code>EnumType</code></a> class.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4528,7 +4620,7 @@ instance. To determine if a dimension is 'unlimited', use the
     <div class="desc inherited"><p>Creates a new Enum data type named <code>datatype_name</code> from a numpy
 integer dtype object <code>datatype</code>, and a python dictionary
 defining the enum fields and values.</p>
-<p>The return value is the <code>netCDF4.EnumType</code> class instance describing the new
+<p>The return value is the <a href="#netCDF4.EnumType"><code>EnumType</code></a> class instance describing the new
 datatype.</p></div>
   <div class="source_cont">
 </div>

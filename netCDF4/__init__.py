@@ -7,4 +7,4 @@ from ._netCDF4 import (__version__, __netcdf4libversion__, __hdf5libversion__,
                        __has_rename_grp__, __has_nc_inq_path__,
                        __has_nc_inq_format_extended__)
 __all__ =\
-['Dataset','Variable','Dimension','Group','MFDataset','MFTime','CompoundType','VLType','date2num','num2date','date2index','stringtochar','chartostring','stringtoarr','getlibversion']
+['Dataset','Variable','Dimension','Group','MFDataset','MFTime','CompoundType','VLType','date2num','num2date','date2index','stringtochar','chartostring','stringtoarr','getlibversion','EnumType']
