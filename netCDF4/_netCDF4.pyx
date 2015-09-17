@@ -3786,6 +3786,15 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             else:
                 data = numpy.array(data,self.dtype)
 
+        # for Enum variable, make sure data is valid.
+        if self._isenum:
+            test = numpy.zeros(data.shape,numpy.bool)
+            for val in self.datatype.enum_dict.values():
+                test += data == val
+            if not numpy.all(test):
+                msg="trying to assign illegal value to Enum variable"
+                raise ValueError(msg)
+
         start, count, stride, put_ind =\
         _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape,put=True)
         datashape = _out_array_shape(count)
