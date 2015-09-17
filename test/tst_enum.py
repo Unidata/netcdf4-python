@@ -34,6 +34,11 @@ class EnumTestCase(unittest.TestCase):
         f.createVariable(VAR_NAME,cloud_type,'time',\
                          fill_value=ENUM_DICT['Missing'])
         cloud_var[:] = datain_masked
+        # make sure ValueError raised if illegal value assigned to Enum var.
+        try:
+            cloud_var[cloud_var.shape[0]] = 99
+        except ValueError:
+            pass
         f.close()
 
     def tearDown(self):
