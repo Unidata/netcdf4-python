@@ -15,9 +15,10 @@ and should be familiar to users of that module.
 Most new features of netCDF 4 are implemented, such as multiple
 unlimited dimensions, groups and zlib data compression.  All the new
 numeric data types (such as 64 bit and unsigned integer types) are
-implemented. Compound (struct) and variable length (vlen) data types are supported,
-but the enum and opaque data types are not. Mixtures of compound and vlen
-data types (compound types containing vlens, and vlens containing compound
+implemented. Compound (struct), variable length (vlen) and
+enumerated (enum) data types are supported, but not the opaque data type.
+Mixtures of compound, vlen and enum data types (such as
+compound types containing enums, or vlens containing compound
 types) are not supported.
 
 Download
