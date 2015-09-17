@@ -1535,7 +1535,7 @@ group, so the path is simply `'/'`.
 
 **`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak 
 references to the parent Dataset or Group.
-"""
+    """
     cdef object __weakref__
     cdef public int _grpid
     cdef public int _isopen
@@ -2446,7 +2446,7 @@ to a `netCDF4.Group` instance (except the `close` method).
 Additional read-only class variables:
 
 **`name`**: String describing the group name.
-"""
+    """
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Group.name']=\
     """A string describing the name of the `netCDF4.Group`."""
@@ -2454,10 +2454,10 @@ Additional read-only class variables:
         """
         **`__init__(self, parent, name)`**
         `netCDF4.Group` constructor.
-        
+
         **`parent`**: `netCDF4.Group` instance for the parent group.  If being created
         in the root group, use a `netCDF4.Dataset` instance.
-        
+
         **`name`**: - Name of the group.
 
         ***Note***: `netCDF4.Group` instances should be created using the
@@ -2540,7 +2540,7 @@ Read-only class variables:
 
 **`name`**: String name, used when creating a `netCDF4.Variable` with
 `netCDF4.Dataset.createVariable`.
-"""
+    """
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
     # Docstrings for class variables (used by pdoc).
@@ -2555,9 +2555,9 @@ Read-only class variables:
         `netCDF4.Dimension` constructor.
 
         **`group`**: `netCDF4.Group` instance to associate with dimension.
-        
+
         **`name`**: Name of the dimension.
-        
+
         **`size`**: Size of the dimension. `None` or 0 means unlimited. (Default `None`).
 
         ***Note***: `netCDF4.Dimension` instances should be created using the
@@ -2781,9 +2781,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         `netCDF4.Variable` constructor.
 
         **`group`**: `netCDF4.Group` or `netCDF4.Dataset` instance to associate with variable.
-        
+
         **`name`**: Name of the variable.
-        
+
         **`datatype`**: `netCDF4.Variable` data type. Can be specified by providing a
         numpy dtype object, or a string that describes a numpy dtype object.
         Supported values, corresponding to `str` attribute of numpy dtype
@@ -4281,7 +4281,7 @@ See `netCDF4.CompoundType.__init__` for more details.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
-"""
+    """
     cdef public nc_type _nc_type
     cdef public dtype, name
     __pdoc__['CompoundType.name'] = \
@@ -4295,11 +4295,11 @@ the user.
         CompoundType constructor.
 
         **`group`**: `netCDF4.Group` instance to associate with the compound datatype.
-        
+
         **`datatype`**: A numpy dtype object describing a structured (a.k.a record)
         array.  Can be composed of homogeneous numeric or character data types, or
         other structured array data types.
-        
+
         **`datatype_name`**: a Python string containing a description of the
         compound data type.
 
@@ -4510,7 +4510,7 @@ a `netCDF4.Dataset` or `netCDF4.Group` instance. See
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
-"""
+    """
     cdef public nc_type _nc_type
     cdef public dtype, name
     __pdoc__['VLType.name'] = \
@@ -4524,10 +4524,10 @@ the user.
         VLType constructor.
 
         **`group`**: `netCDF4.Group` instance to associate with the VLEN datatype.
-        
+
         **`datatype`**: An numpy dtype object describing the component type for the
         variable length array.
-        
+
         **`datatype_name`**: a Python string containing a description of the
         VLEN data type.
 
@@ -4614,7 +4614,7 @@ cdef _read_vlen(group, nc_type xtype, endian=None):
             raise KeyError("unsupported component type for VLEN")
     return VLType(group, dt, name, typeid=xtype)
 
-# ENUM datatype support.
+# Enum datatype support.
 
 cdef class EnumType:
     """
@@ -4623,9 +4623,9 @@ type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
 a `netCDF4.Dataset` or `netCDF4.Group` instance. See 
 `netCDF4.EnumType.__init__` for more details.
 
-The instance variables `dtype` and `name` should not be modified by
+The instance variables `dtype`, `name` and `enum_dict` should not be modified by
 the user.
-"""
+    """
     cdef public nc_type _nc_type
     cdef public dtype, name, enum_dict
     __pdoc__['EnumType.name'] = \
@@ -4641,10 +4641,10 @@ the user.
         EnumType constructor.
 
         **`group`**: `netCDF4.Group` instance to associate with the VLEN datatype.
-        
+
         **`datatype`**: An numpy integer dtype object describing the base type
         for the Enum.
-        
+
         **`datatype_name`**: a Python string containing a description of the
         Enum data type.
 
