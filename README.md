@@ -7,7 +7,7 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-9/19/2015: New features in github master, which will be in the upcoming version 1.2.0 release.
+9/19/2015: New features in github master, which will be in the upcoming version 1.2.0 release:
 
 * [get_variables_by_attributes](http://unidata.github.io/netcdf4-python/#netCDF4.Dataset.get_variables_by_attributes) 
 ``Dataset`` and ``Group`` method for retrieving variables that have matching attributes.
