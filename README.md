@@ -14,6 +14,8 @@ For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-p
 
 * Support for [Enum](http://unidata.github.io/netcdf4-python/#section12) data types.
 
+* [isopen](http://unidata.github.io/netcdf4-python/#netCDF4.Dataset.isopen) `Dataset` method.
+
 7/28/2015: Version [1.1.9](https://pypi.python.org/pypi/netCDF4/1.1.9) bugfix release. 
 
 5/14/2015: Version [1.1.8](https://pypi.python.org/pypi/netCDF4/1.1.8) released. Unix-like paths can now be used in `createVariable` and `createGroup`.
