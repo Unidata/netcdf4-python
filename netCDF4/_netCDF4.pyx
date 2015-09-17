@@ -886,10 +886,8 @@ CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
 USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE."""
-__test__ = None
-del __test__ # hack so epydoc doesn't show __test__
 
-# Make changes to this file, not the c-wrappers that Pyrex generates.
+# Make changes to this file, not the c-wrappers that Cython generates.
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
@@ -1213,8 +1211,9 @@ cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
 cdef _get_types(group):
-    # Private function to create `netCDF4.CompoundType` or `netCDF4.VLType` instances for all the
-    # compound or VLEN types in a `netCDF4.Group` or `netCDF4.Dataset`.
+    # Private function to create `netCDF4.CompoundType`,
+    # `netCDF4.VLType` or `netCDF4.EnumType` instances for all the
+    # compound, VLEN or Enum types in a `netCDF4.Group` or `netCDF4.Dataset`.
     cdef int ierr, ntypes, classp, n, _grpid
     cdef nc_type xtype
     cdef nc_type typeids[NC_MAX_VARS]
