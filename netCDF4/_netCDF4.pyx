@@ -832,7 +832,7 @@ values and their names are used to define an Enum data type using
     :::python
     >>> nc = Dataset('clouds.nc','w')
     >>> # python dict with allowed values and their names.
-    >>> enum_dict = {u'Altocumulus': 7, u'Missing': 127, 
+    >>> enum_dict = {u'Altocumulus': 7, u'Missing': 255, 
     >>> u'Stratus': 2, u'Clear': 0,
     >>> u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5,
     >>> u'Cumulonimbus': 1, u'Stratocumulus': 3}
@@ -841,7 +841,7 @@ values and their names are used to define an Enum data type using
     >>> print cloud_type
     <type 'netCDF4._netCDF4.EnumType'>: name = 'cloud_t',
     numpy dtype = uint8, fields/values ={u'Cumulus': 4,
-    u'Altocumulus': 7, u'Missing': 127,
+    u'Altocumulus': 7, u'Missing': 255,
     u'Stratus': 2, u'Clear': 0,
     u'Cumulonimbus': 1, u'Stratocumulus': 3,
     u'Nimbostratus': 6, u'Altostratus': 5}
@@ -868,12 +868,12 @@ cloud types in enum_dict.
     >>> print cloud_var
     <type 'netCDF4._netCDF4.Variable'>
     enum primary_cloud(time)
-        _FillValue: 127
+        _FillValue: 255
     enum data type: uint8
     unlimited dimensions: time
     current shape = (5,)
     >>> print cloud_var.datatype.enum_dict
-    {u'Altocumulus': 7, u'Missing': 127, u'Stratus': 2,
+    {u'Altocumulus': 7, u'Missing': 255, u'Stratus': 2,
     u'Clear': 0, u'Nimbostratus': 6, u'Cumulus': 4,
     u'Altostratus': 5, u'Cumulonimbus': 1,
     u'Stratocumulus': 3}

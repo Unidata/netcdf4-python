@@ -284,7 +284,7 @@ f.close()
 # Enum type example.
 f = Dataset('clouds.nc','w')
 # python dict describing the allowed values and their names.
-enum_dict = {u'Altocumulus': 7, u'Missing': 127, u'Stratus': 2, u'Clear': 0,
+enum_dict = {u'Altocumulus': 7, u'Missing': 255, u'Stratus': 2, u'Clear': 0,
 u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5, u'Cumulonimbus': 1,
 u'Stratocumulus': 3}
 # create the Enum type called 'cloud_t'.
