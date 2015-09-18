@@ -1,4 +1,8 @@
 """
+Version 1.2.0
+-------------
+- - - 
+
 Introduction
 ============
 
@@ -15,9 +19,10 @@ and should be familiar to users of that module.
 Most new features of netCDF 4 are implemented, such as multiple
 unlimited dimensions, groups and zlib data compression.  All the new
 numeric data types (such as 64 bit and unsigned integer types) are
-implemented. Compound (struct) and variable length (vlen) data types are supported,
-but the enum and opaque data types are not. Mixtures of compound and vlen
-data types (compound types containing vlens, and vlens containing compound
+implemented. Compound (struct), variable length (vlen) and
+enumerated (enum) data types are supported, but not the opaque data type.
+Mixtures of compound, vlen and enum data types (such as
+compound types containing enums, or vlens containing compound
 types) are not supported.
 
 Download
@@ -77,8 +82,8 @@ Install
    also be used, with library paths set with environment variables. To make
    this work, the `USE_SETUPCFG` environment variable must be used to tell 
    setup.py not to use `setup.cfg`.
-   For example, ``USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
-   HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install`` has been
+   For example, `USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
+   HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install` has been
    shown to work on an Ubuntu/Debian linux system. Similarly, environment variables
    (all capitalized) can be used to set the include and library paths for
    `hdf5`, `netCDF4`, `hdf4`, `szip`, `jpeg`, `curl` and `zlib`. If the
@@ -100,6 +105,7 @@ Tutorial
 9. [Efficient compression of netCDF variables.](#section9)
 10. [Beyond homogenous arrays of a fixed type - compound data types.](#section10)
 11. [Variable-length (vlen) data types.](#section11)
+12. [Enum data type.](#section12)
 
 
 ## <div id='section1'>1) Creating/Opening/Closing a netCDF file.
@@ -812,6 +818,71 @@ It is also possible to set contents of vlen string variables with numpy arrays
 of any string or unicode data type. Note, however, that accessing the contents
 of such variables will always return numpy arrays with dtype `object`.
 
+## <div id='section12'>12) Enum data type.
+
+netCDF4 has an enumerated data type, which is an integer datatype that is
+restricted to certain named values. Since Enums don't map directly to
+a numpy data type, they are read and written as integer arrays.
+
+Here's an example of using an Enum type to hold cloud type data. The
+The base integer data type and a python dictionary describing the allowed
+values and their names are used to define an Enum data type using
+`netCDF4.Dataset.createEnumType`.
+
+    :::python
+    >>> nc = Dataset('clouds.nc','w')
+    >>> # python dict with allowed values and their names.
+    >>> enum_dict = {u'Altocumulus': 7, u'Missing': 255, 
+    >>> u'Stratus': 2, u'Clear': 0,
+    >>> u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5,
+    >>> u'Cumulonimbus': 1, u'Stratocumulus': 3}
+    >>> # create the Enum type called 'cloud_t'.
+    >>> cloud_type = nc.createEnumType(numpy.uint8,'cloud_t',enum_dict)
+    >>> print cloud_type
+    <type 'netCDF4._netCDF4.EnumType'>: name = 'cloud_t',
+    numpy dtype = uint8, fields/values ={u'Cumulus': 4,
+    u'Altocumulus': 7, u'Missing': 255,
+    u'Stratus': 2, u'Clear': 0,
+    u'Cumulonimbus': 1, u'Stratocumulus': 3,
+    u'Nimbostratus': 6, u'Altostratus': 5}
+
+A new variable can be created in the usual way using this data type.
+Integer data is written to the variable that represents the named
+cloud types in enum_dict. A `ValueError` will be raised if an attempt
+is made to write an integer value not associated with one of the
+specified names.
+
+    :::python
+    >>> time = nc.createDimension('time',None)
+    >>> # create a 1d variable of type 'cloud_type'.
+    >>> # The fill_value is set to the 'Missing' named value.
+    >>> cloud_var =
+    >>> nc.createVariable('primary_cloud',cloud_type,'time',
+    >>> fill_value=enum_dict['Missing'])
+    >>> # write some data to the variable.
+    >>> cloud_var[:] = [enum_dict['Clear'],enum_dict['Stratus'],
+    >>> enum_dict['Cumulus'],enum_dict['Missing'],
+    >>> enum_dict['Cumulonimbus']]
+    >>> nc.close()
+    >>> # reopen the file, read the data.
+    >>> nc = Dataset('clouds.nc')
+    >>> cloud_var = nc.variables['primary_cloud']
+    >>> print cloud_var
+    <type 'netCDF4._netCDF4.Variable'>
+    enum primary_cloud(time)
+        _FillValue: 255
+    enum data type: uint8
+    unlimited dimensions: time
+    current shape = (5,)
+    >>> print cloud_var.datatype.enum_dict
+    {u'Altocumulus': 7, u'Missing': 255, u'Stratus': 2,
+    u'Clear': 0, u'Nimbostratus': 6, u'Cumulus': 4,
+    u'Altostratus': 5, u'Cumulonimbus': 1,
+    u'Stratocumulus': 3}
+    >>> print cloud_var[:]
+    [0 2 4 -- 1]
+    >>> nc.close()
+
 All of the code in this tutorial is available in `examples/tutorial.py`,
 Unit tests are in the `test` directory.
 
@@ -830,11 +901,11 @@ EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, INDIRECT OR
 CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
 USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE."""
-__test__ = None
-del __test__ # hack so epydoc doesn't show __test__
+PERFORMANCE OF THIS SOFTWARE.
+- - -
+"""
 
-# Make changes to this file, not the c-wrappers that Pyrex generates.
+# Make changes to this file, not the c-wrappers that Cython generates.
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
@@ -913,6 +984,15 @@ _nptonctype  = {'U1' : NC_CHAR,
                 'u8' : NC_UINT64,
                 'f4' : NC_FLOAT,
                 'f8' : NC_DOUBLE}
+
+_intnptonctype  = {'i1' : NC_BYTE,
+                   'u1' : NC_UBYTE,
+                   'i2' : NC_SHORT,
+                   'u2' : NC_USHORT,
+                   'i4' : NC_INT,
+                   'u4' : NC_UINT,
+                   'i8' : NC_INT64,
+                   'u8' : NC_UINT64}
 
 default_fillvals = {#'S1':NC_FILL_CHAR,
                      'U1':'\0',
@@ -1017,13 +1097,19 @@ cdef _get_att(grp, int varid, name):
             att_type = NC_INT
         try:
             type_att = _nctonptype[att_type] # see if it is a primitive type
+            value_arr = numpy.empty(att_len,type_att)
         except KeyError:
             # check if it's a compound
             try:
                 type_att = _read_compound(grp, att_type)
+                value_arr = numpy.empty(att_len,type_att)
             except:
-                raise KeyError('attribute %s has unsupported datatype' % attname)
-        value_arr = numpy.empty(att_len,type_att)
+                # check if it's an enum
+                try:
+                    type_att = _read_enum(grp, att_type)
+                    value_arr = numpy.empty(att_len,type_att.dtype)
+                except:
+                    raise KeyError('attribute %s has unsupported datatype' % attname)
         with nogil:
             ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
         if ierr != NC_NOERR:
@@ -1091,7 +1177,7 @@ cdef _get_full_format(int grpid):
     ELSE:
         return 'UNDEFINED'
 
-cdef _set_att(grp, int varid, name, value):
+cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
     # Private function to set an attribute name/value pair
     cdef int i, ierr, lenarr, n
     cdef char *attname
@@ -1135,7 +1221,7 @@ cdef _set_att(grp, int varid, name, value):
             xtype = _find_cmptype(grp,value_arr.dtype)
         elif value_arr.dtype.str[1:] not in _supportedtypes:
             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
-        else:
+        elif xtype == -99: # if xtype is not passed in as kwarg.
             xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
@@ -1143,8 +1229,9 @@ cdef _set_att(grp, int varid, name, value):
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
 cdef _get_types(group):
-    # Private function to create `netCDF4.CompoundType` or `netCDF4.VLType` instances for all the
-    # compound or VLEN types in a `netCDF4.Group` or `netCDF4.Dataset`.
+    # Private function to create `netCDF4.CompoundType`,
+    # `netCDF4.VLType` or `netCDF4.EnumType` instances for all the
+    # compound, VLEN or Enum types in a `netCDF4.Group` or `netCDF4.Dataset`.
     cdef int ierr, ntypes, classp, n, _grpid
     cdef nc_type xtype
     cdef nc_type typeids[NC_MAX_VARS]
@@ -1158,6 +1245,7 @@ cdef _get_types(group):
     # create empty dictionary for CompoundType instances.
     cmptypes = OrderedDict()
     vltypes = OrderedDict()
+    enumtypes = OrderedDict()
     if ntypes > 0:
         for n from 0 <= n < ntypes:
             xtype = typeids[n]
@@ -1173,7 +1261,8 @@ cdef _get_types(group):
                 try:
                     cmptype = _read_compound(group, xtype)
                 except KeyError:
-                    #print 'WARNING: unsupported compound type, skipping...'
+                    msg='WARNING: unsupported Compound type, skipping...'
+                    warnings.warn(msg)
                     continue
                 cmptypes[name] = cmptype
             elif classp == NC_VLEN: # a vlen
@@ -1183,11 +1272,22 @@ cdef _get_types(group):
                 try:
                     vltype = _read_vlen(group, xtype)
                 except KeyError:
-                    #print 'WARNING: unsupported VLEN type, skipping...'
+                    msg='WARNING: unsupported VLEN type, skipping...'
+                    warnings.warn(msg)
                     continue
                 vltypes[name] = vltype
-                pass
-    return cmptypes, vltypes
+            elif classp == NC_ENUM: # an enum type
+                name = namstring.decode(default_encoding,unicode_error)
+                # read the Enum type info from the file,
+                # create a EnumType instance from it.
+                try:
+                    enumtype = _read_enum(group, xtype)
+                except KeyError:
+                    msg='WARNING: unsupported Enum type, skipping...'
+                    warnings.warn(msg)
+                    continue
+                enumtypes[name] = enumtype
+    return cmptypes, vltypes, enumtypes
 
 cdef _get_dims(group):
     # Private function to create `netCDF4.Dimension` instances for all the
@@ -1325,17 +1425,28 @@ cdef _get_vars(group):
                         try:
                             datatype = _read_compound(group, xtype, endian=endianness)
                         except KeyError:
-                            #print "WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
+                            msg="WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
+                            warnings.warn(msg)
                             continue
                     elif classp == NC_VLEN: # a compound type
                         # create VLType instance describing this compound type.
                         try:
                             datatype = _read_vlen(group, xtype, endian=endianness)
                         except KeyError:
-                            #print "WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
+                            msg="WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
+                            warnings.warn(msg)
+                            continue
+                    elif classp == NC_ENUM:
+                        # create EnumType instance describing this compound type.
+                        try:
+                            datatype = _read_enum(group, xtype, endian=endianness)
+                        except KeyError:
+                            msg="WARNING: variable '%s' has unsupported Enum datatype, skipping .." % name
+                            warnings.warn(msg)
                             continue
                     else:
-                        #print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
+                        msg="WARNING: variable '%s' has unsupported datatype, skipping .." % name
+                        warnings.warn(msg)
                         continue
             # get number of dimensions.
             with nogil:
@@ -1378,8 +1489,8 @@ cdef _get_vars(group):
 
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
- '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','_isprimitive',
- 'file_format','_isvlen','_iscompound','_cmptype','_vltype','name','__orthogoral_indexing__','keepweakref']
+ '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
+ 'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name','__orthogoral_indexing__','keepweakref']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -1421,6 +1532,10 @@ compound types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances
 variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances 
 of the `netCDF4.VLType` class.
 
+**`enumtypes`**: The `enumtypes` dictionary maps the names of
+Enum types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances 
+of the `netCDF4.EnumType` class.
+
 **`data_model`**: `data_model` describes the netCDF
 data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
 `NETCDF4_CLASSIC` or `NETCDF3_64BIT`.
@@ -1434,7 +1549,7 @@ netcdf C library version >= 4.3.1, otherwise will always return
 `UNDEFINED`.
 
 **`parent`**: `parent` is a reference to the parent
-`netCDF4.Group` instance. `None` for a the root group or `netCDF4.Dataset`
+`netCDF4.Group` instance. `None` for the root group or `netCDF4.Dataset`
 instance.
 
 **`path`**: `path` shows the location of the `netCDF4.Group` in
@@ -1444,12 +1559,12 @@ group, so the path is simply `'/'`.
 
 **`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak 
 references to the parent Dataset or Group.
-"""
+    """
     cdef object __weakref__
     cdef public int _grpid
     cdef public int _isopen
     cdef public groups, dimensions, variables, disk_format, path, parent,\
-    file_format, data_model, cmptypes, vltypes, __orthogonal_indexing__, \
+    file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
     keepweakref
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Dataset.dimensions']=\
@@ -1473,6 +1588,10 @@ references to the parent Dataset or Group.
     """The `vltypes` dictionary maps the names of
     variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
     `netCDF4.VLType` class."""
+    __pdoc__['Dataset.enumtypes']=\
+    """The `enumtypes` dictionary maps the names of
+    Enum types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
+    `netCDF4.EnumType` class."""
     __pdoc__['Dataset.data_model']=\
     """`data_model` describes the netCDF
     data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
@@ -1487,7 +1606,7 @@ references to the parent Dataset or Group.
     `UNDEFINED`."""
     __pdoc__['Dataset.parent']=\
     """`parent` is a reference to the parent
-    `netCDF4.Group` instance. `None` for a the root group or `netCDF4.Dataset` instance"""
+    `netCDF4.Group` instance. `None` for the root group or `netCDF4.Dataset` instance"""
     __pdoc__['Dataset.path']=\
     """`path` shows the location of the `netCDF4.Group` in
     the `netCDF4.Dataset` in a unix directory format (the names of groups in the
@@ -1640,8 +1759,8 @@ references to the parent Dataset or Group.
         self.path = '/'
         self.parent = None
         self.keepweakref = keepweakref
-        # get compound and vlen types in the root Group.
-        self.cmptypes, self.vltypes = _get_types(self)
+        # get compound, vlen and enum types in the root Group.
+        self.cmptypes, self.vltypes, self.enumtypes = _get_types(self)
         # get dimensions in the root group.
         self.dimensions = _get_dims(self)
         # get variables in the root Group.
@@ -1872,6 +1991,20 @@ The return value is the `netCDF4.VLType` class instance describing the new
 datatype."""
         self.vltypes[datatype_name] = VLType(self, datatype, datatype_name)
         return self.vltypes[datatype_name]
+
+    def createEnumType(self, datatype, datatype_name, enum_dict):
+        """
+**`createEnumType(self, datatype, datatype_name, enum_dict)`**
+
+Creates a new Enum data type named `datatype_name` from a numpy
+integer dtype object `datatype`, and a python dictionary
+defining the enum fields and values.
+
+The return value is the `netCDF4.EnumType` class instance describing the new
+datatype."""
+        self.enumtypes[datatype_name] = EnumType(self, datatype, datatype_name,
+                enum_dict)
+        return self.enumtypes[datatype_name]
 
     def createVariable(self, varname, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
@@ -2337,7 +2470,7 @@ to a `netCDF4.Group` instance (except the `close` method).
 Additional read-only class variables:
 
 **`name`**: String describing the group name.
-"""
+    """
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Group.name']=\
     """A string describing the name of the `netCDF4.Group`."""
@@ -2345,10 +2478,10 @@ Additional read-only class variables:
         """
         **`__init__(self, parent, name)`**
         `netCDF4.Group` constructor.
-        
+
         **`parent`**: `netCDF4.Group` instance for the parent group.  If being created
         in the root group, use a `netCDF4.Dataset` instance.
-        
+
         **`name`**: - Name of the group.
 
         ***Note***: `netCDF4.Group` instances should be created using the
@@ -2370,8 +2503,8 @@ Additional read-only class variables:
         self.keepweakref = parent.keepweakref
         if 'id' in kwargs:
             self._grpid = kwargs['id']
-            # get compound and vlen types in this Group.
-            self.cmptypes, self.vltypes = _get_types(self)
+            # get compound, vlen and enum types in this Group.
+            self.cmptypes, self.vltypes, self.enumtypes = _get_types(self)
             # get dimensions in this Group.
             self.dimensions = _get_dims(self)
             # get variables in this Group.
@@ -2386,6 +2519,7 @@ Additional read-only class variables:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             self.cmptypes = OrderedDict()
             self.vltypes = OrderedDict()
+            self.enumtypes = OrderedDict()
             self.dimensions = OrderedDict()
             self.variables = OrderedDict()
             self.groups = OrderedDict()
@@ -2430,7 +2564,7 @@ Read-only class variables:
 
 **`name`**: String name, used when creating a `netCDF4.Variable` with
 `netCDF4.Dataset.createVariable`.
-"""
+    """
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
     # Docstrings for class variables (used by pdoc).
@@ -2445,9 +2579,9 @@ Read-only class variables:
         `netCDF4.Dimension` constructor.
 
         **`group`**: `netCDF4.Group` instance to associate with dimension.
-        
+
         **`name`**: Name of the dimension.
-        
+
         **`size`**: Size of the dimension. `None` or 0 means unlimited. (Default `None`).
 
         ***Note***: `netCDF4.Dimension` instances should be created using the
@@ -2618,7 +2752,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
-    _isvlen, _grp, _cmptype, _vltype, __orthogonal_indexing__
+    _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype, __orthogonal_indexing__
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
     """A tuple containing the names of the
@@ -2648,8 +2782,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     that are 1d arrays or lists slice along each dimension independently.  This
     behavior is similar to Fortran or Matlab, but different than numpy."""
     __pdoc__['Variable.datatype'] = \
-     """numpy data type (for primitive data types) or VLType/CompoundType
-     instance (for compound or vlen data types)."""
+     """numpy data type (for primitive data types) or
+     VLType/CompoundType/EnumType instance (for compound, vlen or enum
+     data types)."""
     __pdoc__['Variable.name'] = \
     """String name."""
     __pdoc__['Variable.shape'] = \
@@ -2670,9 +2805,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         `netCDF4.Variable` constructor.
 
         **`group`**: `netCDF4.Group` or `netCDF4.Dataset` instance to associate with variable.
-        
+
         **`name`**: Name of the variable.
-        
+
         **`datatype`**: `netCDF4.Variable` data type. Can be specified by providing a
         numpy dtype object, or a string that describes a numpy dtype object.
         Supported values, corresponding to `str` attribute of numpy dtype
@@ -2775,11 +2910,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             self._grp = weakref.proxy(grp)
         else:
             self._grp = grp
+        user_type = isinstance(datatype, CompoundType) or \
+                    isinstance(datatype, VLType) or \
+                    isinstance(datatype, EnumType) or \
+                    datatype == str
         # convert to a real numpy datatype object if necessary.
-        if (not isinstance(datatype, CompoundType) and \
-            not isinstance(datatype, VLType)) and \
-            datatype != str and \
-            type(datatype) != numpy.dtype:
+        if not user_type and type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
         # convert numpy string dtype with length > 1
         # or any numpy unicode dtype into str
@@ -2787,6 +2923,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ((datatype.kind == 'S' and datatype.itemsize > 1) or
               datatype.kind == 'U')):
             datatype = str
+            user_type = True
         # check if endian keyword consistent with datatype specification.
         dtype_endian = getattr(datatype,'byteorder',None)
         if dtype_endian == '=': dtype_endian='native'
@@ -2806,14 +2943,17 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self._isprimitive = False
         self._iscompound = False
         self._isvlen = False
-        if isinstance(datatype, CompoundType) or isinstance(datatype, VLType)\
-                      or datatype == str:
+        self._isenum = False
+        if user_type:
             if isinstance(datatype, CompoundType):
                 self._iscompound = True
                 self._cmptype = datatype
             if isinstance(datatype, VLType) or datatype==str:
                 self._isvlen = True
                 self._vltype = datatype
+            if isinstance(datatype, EnumType):
+                self._isenum = True
+                self._enumtype = datatype
             if datatype==str:
                 if grp.data_model != 'NETCDF4':
                     raise ValueError(
@@ -2959,9 +3099,10 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 else:
                     # cast fill_value to type of variable.
-                    if self._isprimitive:
+                    if self._isprimitive or self._isenum:
                         fillval = numpy.array(fill_value, self.dtype)
-                        _set_att(self._grp, self._varid, '_FillValue', fillval)
+                        _set_att(self._grp, self._varid, '_FillValue',\
+                                 fillval, xtype=xtype)
                     else:
                         raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
             if least_significant_digit is not None:
@@ -3012,6 +3153,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         elif self._isvlen:
             ncdump_var.append('%s %s(%s)\n' %\
             ('vlen',self._name,', '.join(dimnames)))
+        elif self._isenum:
+            ncdump_var.append('%s %s(%s)\n' %\
+            ('enum',self._name,', '.join(dimnames)))
         else:
             ncdump_var.append('%s %s(%s)\n' %\
             (self.dtype,self._name,', '.join(dimnames)))
@@ -3020,6 +3164,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ncdump_var.append('compound data type: %s\n' % self.dtype)
         elif self._isvlen:
             ncdump_var.append('vlen data type: %s\n' % self.dtype)
+        elif self._isenum:
+            ncdump_var.append('enum data type: %s\n' % self.dtype)
         unlimdims = []
         for dimname in self.dimensions:
             dim = _find_dim(self._grp, dimname)
@@ -3095,12 +3241,16 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             raise AttributeError("name cannot be altered")
 
     property datatype:
-        """numpy data type (for primitive data types) or VLType/CompoundType instance (for compound or vlen data types)"""
+        """numpy data type (for primitive data types) or
+        VLType/CompoundType/EnumType instance 
+        (for compound, vlen  or enum data types)"""
         def __get__(self):
             if self._iscompound:
                 return self._cmptype
             elif self._isvlen:
                 return self._vltype
+            elif self._isenum:
+                return self._enumtype
             elif self._isprimitive:
                 return self.dtype
 
@@ -3429,7 +3579,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # set_auto_mask or set_auto_maskandscale), perform
         # automatic conversion to masked array using
         # missing_value/_Fill_Value.
-        # ignore for compound and vlen datatypes.
+        # ignore for compound, vlen or enum datatypes.
         try: # check to see if scale_factor and add_offset is valid (issue 176).
             if hasattr(self,'scale_factor'): float(self.scale_factor)
             if hasattr(self,'add_offset'): float(self.add_offset)
@@ -3439,7 +3589,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if self.scale:
                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
                 warnings.warn(msg)
-        if self.mask and self._isprimitive:
+        if self.mask and (self._isprimitive or self._isenum):
             data = self._toma(data)
         if self.scale and self._isprimitive and valid_scaleoffset:
             # if variable has scale_factor and add_offset attributes, rescale.
@@ -3660,6 +3810,15 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             else:
                 data = numpy.array(data,self.dtype)
 
+        # for Enum variable, make sure data is valid.
+        if self._isenum:
+            test = numpy.zeros(data.shape,numpy.bool)
+            for val in self.datatype.enum_dict.values():
+                test += data == val
+            if not numpy.all(test):
+                msg="trying to assign illegal value to Enum variable"
+                raise ValueError(msg)
+
         start, count, stride, put_ind =\
         _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape,put=True)
         datashape = _out_array_shape(count)
@@ -3690,8 +3849,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # set_auto_mask or set_auto_maskandscale), perform
         # automatic conversion to masked array using
         # missing_value/_Fill_Value.
-        # ignore if not a primitive (not compound or vlen) datatype.
-        if self.mask and self._isprimitive:
+        # ignore if not a primitive or enum data type (not compound or vlen).
+        if self.mask and (self._isprimitive or self._isenum):
             # use missing_value as fill value.
             # if no missing value set, use _FillValue.
             if hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
@@ -3921,8 +4080,8 @@ The default value of `mask` is `True`
         if negstride:
             # reverse data along axes with negative strides.
             data = data[sl].copy() # make sure a copy is made.
-        if self._isprimitive or self._iscompound:
-            # primitive or compound data type.
+        if self._isprimitive or self._iscompound or self._isenum:
+            # primitive, enum or compound data type.
             # if data type of array doesn't match variable,
             # try to cast the data.
             if self.dtype != data.dtype:
@@ -4050,7 +4209,7 @@ The default value of `mask` is `True`
                 startp[n] = start[n]
                 stridep[n] = stride[n]
                 sl.append(slice(None,None, 1))
-        if self._isprimitive or self._iscompound:
+        if self._isprimitive or self._iscompound or self._isenum:
             data = numpy.empty(shapeout, self.dtype)
             # strides all 1 or scalar variable, use get_vara (faster)
             if sum(stride) == ndims or ndims == 0:
@@ -4146,7 +4305,7 @@ See `netCDF4.CompoundType.__init__` for more details.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
-"""
+    """
     cdef public nc_type _nc_type
     cdef public dtype, name
     __pdoc__['CompoundType.name'] = \
@@ -4160,11 +4319,11 @@ the user.
         CompoundType constructor.
 
         **`group`**: `netCDF4.Group` instance to associate with the compound datatype.
-        
+
         **`datatype`**: A numpy dtype object describing a structured (a.k.a record)
         array.  Can be composed of homogeneous numeric or character data types, or
         other structured array data types.
-        
+
         **`datatype_name`**: a Python string containing a description of the
         compound data type.
 
@@ -4375,7 +4534,7 @@ a `netCDF4.Dataset` or `netCDF4.Group` instance. See
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
-"""
+    """
     cdef public nc_type _nc_type
     cdef public dtype, name
     __pdoc__['VLType.name'] = \
@@ -4389,10 +4548,10 @@ the user.
         VLType constructor.
 
         **`group`**: `netCDF4.Group` instance to associate with the VLEN datatype.
-        
-        **`datatype`**: An numpy dtype object describing a the component type for the
+
+        **`datatype`**: An numpy dtype object describing the component type for the
         variable length array.
-        
+
         **`datatype_name`**: a Python string containing a description of the
         VLEN data type.
 
@@ -4478,6 +4637,134 @@ cdef _read_vlen(group, nc_type xtype, endian=None):
         except KeyError:
             raise KeyError("unsupported component type for VLEN")
     return VLType(group, dt, name, typeid=xtype)
+
+# Enum datatype support.
+
+cdef class EnumType:
+    """
+A `netCDF4.EnumType` instance is used to describe an Enum data
+type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
+a `netCDF4.Dataset` or `netCDF4.Group` instance. See 
+`netCDF4.EnumType.__init__` for more details.
+
+The instance variables `dtype`, `name` and `enum_dict` should not be modified by
+the user.
+    """
+    cdef public nc_type _nc_type
+    cdef public dtype, name, enum_dict
+    __pdoc__['EnumType.name'] = \
+    """String name."""
+    __pdoc__['EnumType.dtype'] = \
+    """A numpy integer dtype object describing the base type for the Enum."""
+    __pdoc__['EnumType.enum_dict'] = \
+    """A python dictionary describing the enum fields and values."""
+    def __init__(self, grp, object dt, object dtype_name, object enum_dict, **kwargs):
+        """
+        **`__init__(group, datatype, datatype_name, enum_dict)`**
+
+        EnumType constructor.
+
+        **`group`**: `netCDF4.Group` instance to associate with the VLEN datatype.
+
+        **`datatype`**: An numpy integer dtype object describing the base type
+        for the Enum.
+
+        **`datatype_name`**: a Python string containing a description of the
+        Enum data type.
+
+        **`enum_dict`**: a Python dictionary containing the Enum field/value
+        pairs.
+
+        ***`Note`***: `netCDF4.EnumType` instances should be created using the
+        `netCDF4.Dataset.createEnumType`
+        method of a `netCDF4.Dataset` or `netCDF4.Group` instance, not using this class directly.
+        """
+        cdef nc_type xtype
+        if 'typeid' in kwargs:
+            xtype = kwargs['typeid']
+        else:
+            xtype, dt = _def_enum(grp, dt, dtype_name, enum_dict)
+        self._nc_type = xtype
+        self.dtype = dt
+        self.name = dtype_name
+        self.enum_dict = enum_dict
+
+    def __repr__(self):
+        if python3:
+            return self.__unicode__()
+        else:
+            return unicode(self).encode(default_encoding)
+
+    def __unicode__(self):
+        return repr(type(self))+\
+        ": name = '%s', numpy dtype = %s, fields/values =%s\n" %\
+        (self.name, self.dtype, self.enum_dict)
+
+cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
+    # private function used to construct a netCDF Enum data type
+    # from a numpy dtype object or python str object by EnumType.__init__.
+    cdef nc_type xtype, xtype_tmp
+    cdef int ierr, val
+    cdef char *namstring
+    bytestr = _strencode(dtype_name)
+    namstring = bytestr
+    dt = numpy.dtype(dt) # convert to numpy datatype.
+    if dt.str[1:] in _intnptonctype.keys():
+        # find netCDF primitive data type corresponding to
+        # specified numpy data type.
+        xtype_tmp = _intnptonctype[dt.str[1:]]
+        ierr = nc_def_enum(grp._grpid, xtype_tmp, namstring, &xtype);
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    else:
+        msg="unsupported datatype specified for Enum (must be integer)"
+        raise KeyError(msg)
+    # insert named members into enum type.
+    for field in enum_dict:
+        value = enum_dict[field]
+        bytestr = _strencode(field)
+        namstring = bytestr
+        val = value
+        ierr = nc_insert_enum(grp._grpid, xtype, namstring, &val)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    return xtype, dt
+
+cdef _read_enum(group, nc_type xtype, endian=None):
+    # read a Enum data type id from an existing file,
+    # construct a corresponding numpy dtype instance,
+    # then use that to create a EnumType instance.
+    # called by _get_types, _get_vars.
+    cdef int ierr, _grpid, nmem
+    cdef char enum_val
+    cdef nc_type base_xtype
+    cdef char enum_namstring[NC_MAX_NAME+1]
+    cdef size_t nmembers
+    _grpid = group._grpid
+    # get name, datatype, and number of members.
+    with nogil:
+        ierr = nc_inq_enum(_grpid, xtype, enum_namstring, &base_xtype, NULL,\
+                &nmembers)
+    if ierr != NC_NOERR:
+        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    name = enum_namstring.decode(default_encoding,unicode_error)
+    try:
+        datatype = _nctonptype[base_xtype]
+        if endian is not None: datatype = endian + datatype
+        dt = numpy.dtype(datatype) # see if it is a primitive type
+    except KeyError:
+        raise KeyError("unsupported component type for VLEN")
+    # loop over members, build dict.
+    enum_dict = {}
+    for nmem from 0 <= nmem < nmembers:
+        with nogil:
+            ierr = nc_inq_enum_member(_grpid, xtype, nmem, \
+                                      enum_namstring, &enum_val)
+        if ierr != NC_NOERR:
+           raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        name = enum_namstring.decode(default_encoding,unicode_error)
+        enum_dict[name] = int(enum_val)
+    return EnumType(group, dt, name, enum_dict, typeid=xtype)
 
 cdef _strencode(pystr,encoding=None):
     # encode a string into bytes.  If already bytes, do nothing.

@@ -4,12 +4,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Introduction
+    <meta name="description" content="Version 1.2.0
+-------------
+- - - 
+
+Introduction
 ============
 
-netcdf4-python is a Python interface to the netCDF C library.  
-
-[netCDF ..." />
+netcdf4-python is a Python interface ..." />
 
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300' rel='stylesheet' type='text/css'>
   
@@ -1074,6 +1076,7 @@ table {
     <li class="mono"><a href="#netCDF4.Dataset.close">close</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.createCompoundType">createCompoundType</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.createDimension">createDimension</a></li>
+    <li class="mono"><a href="#netCDF4.Dataset.createEnumType">createEnumType</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.createGroup">createGroup</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.createVLType">createVLType</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.createVariable">createVariable</a></li>
@@ -1110,6 +1113,15 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#netCDF4.EnumType">EnumType</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#netCDF4.EnumType.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#netCDF4.Group">Group</a></span>
         
           
@@ -1118,6 +1130,7 @@ table {
     <li class="mono"><a href="#netCDF4.Group.close">close</a></li>
     <li class="mono"><a href="#netCDF4.Group.createCompoundType">createCompoundType</a></li>
     <li class="mono"><a href="#netCDF4.Group.createDimension">createDimension</a></li>
+    <li class="mono"><a href="#netCDF4.Group.createEnumType">createEnumType</a></li>
     <li class="mono"><a href="#netCDF4.Group.createGroup">createGroup</a></li>
     <li class="mono"><a href="#netCDF4.Group.createVLType">createVLType</a></li>
     <li class="mono"><a href="#netCDF4.Group.createVariable">createVariable</a></li>
@@ -1149,6 +1162,7 @@ table {
   <ul>
     <li class="mono"><a href="#netCDF4.MFDataset.createCompoundType">createCompoundType</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.createDimension">createDimension</a></li>
+    <li class="mono"><a href="#netCDF4.MFDataset.createEnumType">createEnumType</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.createGroup">createGroup</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.createVLType">createVLType</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.createVariable">createVariable</a></li>
@@ -1237,7 +1251,9 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h1>Introduction</h1>
+  <h2>Version 1.2.0</h2>
+<hr />
+<h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
 <p><a href="http://www.unidata.ucar.edu/software/netcdf/netcdf-4">netCDF version 4</a> has many features
 not found in earlier versions of the library and is implemented on top of
@@ -1249,9 +1265,10 @@ and should be familiar to users of that module.</p>
 <p>Most new features of netCDF 4 are implemented, such as multiple
 unlimited dimensions, groups and zlib data compression.  All the new
 numeric data types (such as 64 bit and unsigned integer types) are
-implemented. Compound (struct) and variable length (vlen) data types are supported,
-but the enum and opaque data types are not. Mixtures of compound and vlen
-data types (compound types containing vlens, and vlens containing compound
+implemented. Compound (struct), variable length (vlen) and
+enumerated (enum) data types are supported, but not the opaque data type.
+Mixtures of compound, vlen and enum data types (such as
+compound types containing enums, or vlens containing compound
 types) are not supported.</p>
 <h1>Download</h1>
 <ul>
@@ -1328,9 +1345,10 @@ types) are not supported.</p>
 <li><a href="#section9">Efficient compression of netCDF variables.</a></li>
 <li><a href="#section10">Beyond homogenous arrays of a fixed type - compound data types.</a></li>
 <li><a href="#section11">Variable-length (vlen) data types.</a></li>
+<li><a href="#section12">Enum data type.</a></li>
 </ol>
 <h2><div id='section1'>1) Creating/Opening/Closing a netCDF file.</h2>
-<p>To create a netCDF file from python, you simply call the <code>netCDF4.Dataset</code>
+<p>To create a netCDF file from python, you simply call the <a href="#netCDF4.Dataset"><code>Dataset</code></a>
 constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (<code>mode='w', 'r+'</code> or <code>'a'</code>), you may
 write any type of data including new dimensions, groups, variables and
@@ -1347,7 +1365,7 @@ creating a new file, the format may be specified using the <code>format</code>
 keyword in the <code>Dataset</code> constructor.  The default format is
 <code>NETCDF4</code>. To see how a given file is formatted, you can examine the
 <code>data_model</code> attribute.  Closing the netCDF file is
-accomplished via the <code>netCDF4.Dataset.close</code> method of the <code>netCDF4.Dataset</code>
+accomplished via the <a href="#netCDF4.Dataset.close"><code>close</code></a> method of the <a href="#netCDF4.Dataset"><code>Dataset</code></a>
 instance.</p>
 <p>Here's an example:</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span>
@@ -1359,7 +1377,7 @@ instance.</p>
 
 
 <p>Remote <a href="http://opendap.org">OPeNDAP</a>-hosted datasets can be accessed for
-reading over http if a URL is provided to the <code>netCDF4.Dataset</code> constructor instead of a
+reading over http if a URL is provided to the <a href="#netCDF4.Dataset"><code>Dataset</code></a> constructor instead of a
 filename.  However, this requires that the netCDF library be built with
 OPenDAP support, via the <code>--enable-dap</code> configure option (added in
 version 4.0.1).</p>
@@ -1367,14 +1385,14 @@ version 4.0.1).</p>
 <p>netCDF version 4 added support for organizing data in hierarchical
 groups, which are analagous to directories in a filesystem. Groups serve
 as containers for variables, dimensions and attributes, as well as other
-groups.  A <code>netCDF4.Dataset</code> defines creates a special group, called
+groups.  A <a href="#netCDF4.Dataset"><code>Dataset</code></a> defines creates a special group, called
 the 'root group', which is similar to the root directory in a unix
-filesystem.  To create <code>netCDF4.Group</code> instances, use the
-<code>netCDF4.Dataset.createGroup</code> method of a <code>netCDF4.Dataset</code> or <code>netCDF4.Group</code>
-instance. <code>netCDF4.Dataset.createGroup</code> takes a single argument, a
-python string containing the name of the new group. The new <code>netCDF4.Group</code>
+filesystem.  To create <a href="#netCDF4.Group"><code>Group</code></a> instances, use the
+<a href="#netCDF4.Dataset.createGroup"><code>createGroup</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a>
+instance. <a href="#netCDF4.Dataset.createGroup"><code>createGroup</code></a> takes a single argument, a
+python string containing the name of the new group. The new <a href="#netCDF4.Group"><code>Group</code></a>
 instances contained within the root group can be accessed by name using
-the <code>groups</code> dictionary attribute of the <code>netCDF4.Dataset</code> instance.  Only
+the <code>groups</code> dictionary attribute of the <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance.  Only
 <code>NETCDF4</code> formatted files support Groups, if you try to create a Group
 in a netCDF 3 file you will get an error message.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">rootgrp</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&quot;test.nc&quot;</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">)</span>
@@ -1388,13 +1406,13 @@ in a netCDF 3 file you will get an error message.</p>
 </pre></div>
 
 
-<p>Groups can exist within groups in a <code>netCDF4.Dataset</code>, just as directories
-exist within directories in a unix filesystem. Each <code>netCDF4.Group</code> instance
+<p>Groups can exist within groups in a <a href="#netCDF4.Dataset"><code>Dataset</code></a>, just as directories
+exist within directories in a unix filesystem. Each <a href="#netCDF4.Group"><code>Group</code></a> instance
 has a <code>groups</code> attribute dictionary containing all of the group
-instances contained within that group. Each <code>netCDF4.Group</code> instance also has a
+instances contained within that group. Each <a href="#netCDF4.Group"><code>Group</code></a> instance also has a
 <code>path</code> attribute that contains a simulated unix directory path to
 that group.  To simplify the creation of nested groups, you can
-use a unix-like path as an argument to <code>netCDF4.Dataset.createGroup</code>.</p>
+use a unix-like path as an argument to <a href="#netCDF4.Dataset.createGroup"><code>createGroup</code></a>.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">fcstgrp1</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s">&quot;/forecasts/model1&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">fcstgrp2</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s">&quot;/forecasts/model2&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1405,8 +1423,8 @@ just as with the unix command <code>'mkdir -p'</code>. If you try to create a gr
 that already exists, no error will be raised, and the existing group will be 
 returned.</p>
 <p>Here's an example that shows how to navigate all the groups in a
-<code>netCDF4.Dataset</code>. The function <code>walktree</code> is a Python generator that is used
-to walk the directory tree. Note that printing the <code>netCDF4.Dataset</code> or <code>netCDF4.Group</code>
+<a href="#netCDF4.Dataset"><code>Dataset</code></a>. The function <code>walktree</code> is a Python generator that is used
+to walk the directory tree. Note that printing the <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a>
 object yields summary information about it's contents.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">walktree</span><span class="p">(</span><span class="n">top</span><span class="p">):</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">values</span> <span class="o">=</span> <span class="n">top</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
@@ -1451,8 +1469,8 @@ object yields summary information about it's contents.</p>
 before any variables can be created the dimensions they use must be
 created first. A special case, not often used in practice, is that of a
 scalar variable, which has no dimensions. A dimension is created using
-the <code>netCDF4.Dataset.createDimension</code> method of a <code>netCDF4.Dataset</code>
-or <code>netCDF4.Group</code> instance. A Python string is used to set the name of the
+the <a href="#netCDF4.Dataset.createDimension"><code>createDimension</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a>
+or <a href="#netCDF4.Group"><code>Group</code></a> instance. A Python string is used to set the name of the
 dimension, and an integer value is used to set the size. To create an
 unlimited dimension (a dimension that can be appended to), the size
 value is set to <code>None</code> or 0. In this example, there both the <code>time</code> and
@@ -1466,7 +1484,7 @@ one, and it must be the first (leftmost) dimension of the variable.</p>
 </pre></div>
 
 
-<p>All of the <code>netCDF4.Dimension</code> instances are stored in a python dictionary.</p>
+<p>All of the <a href="#netCDF4.Dimension"><code>Dimension</code></a> instances are stored in a python dictionary.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span>
 <span class="n">OrderedDict</span><span class="p">([(</span><span class="s">&quot;level&quot;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dimension</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x1b48030</span><span class="o">&gt;</span><span class="p">),</span>
              <span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dimension</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x1b481c0</span><span class="o">&gt;</span><span class="p">),</span>
@@ -1475,9 +1493,9 @@ one, and it must be the first (leftmost) dimension of the variable.</p>
 </pre></div>
 
 
-<p>Calling the python <code>len</code> function with a <code>netCDF4.Dimension</code> instance returns
+<p>Calling the python <code>len</code> function with a <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance returns
 the current size of that dimension.
-The <code>netCDF4.Dimension.isunlimited</code> method of a <code>netCDF4.Dimension</code> instance
+The <a href="#netCDF4.Dimension.isunlimited"><code>isunlimited</code></a> method of a <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance
 can be used to determine if the dimensions is unlimited, or appendable.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
 <span class="mi">144</span>
@@ -1488,7 +1506,7 @@ can be used to determine if the dimensions is unlimited, or appendable.</p>
 </pre></div>
 
 
-<p>Printing the <code>netCDF4.Dimension</code> object
+<p>Printing the <a href="#netCDF4.Dimension"><code>Dimension</code></a> object
 provides useful summary info, including the name and length of the dimension,
 and whether it is unlimited.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">dimobj</span> <span class="ow">in</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -1501,20 +1519,20 @@ and whether it is unlimited.</p>
 </pre></div>
 
 
-<p><code>netCDF4.Dimension</code> names can be changed using the
-<code>netCDF4.Datatset.renameDimension</code> method of a <code>netCDF4.Dataset</code> or
-<code>netCDF4.Group</code> instance.</p>
+<p><a href="#netCDF4.Dimension"><code>Dimension</code></a> names can be changed using the
+<code>netCDF4.Datatset.renameDimension</code> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<a href="#netCDF4.Group"><code>Group</code></a> instance.</p>
 <h2><div id='section4'>4) Variables in a netCDF file.</h2>
 <p>netCDF variables behave much like python multidimensional array objects
 supplied by the <a href="http://numpy.scipy.org">numpy module</a>. However,
 unlike numpy arrays, netCDF4 variables can be appended to along one or
 more 'unlimited' dimensions. To create a netCDF variable, use the
-<code>netCDF4.Dataset.createVariable</code> method of a <code>netCDF4.Dataset</code> or
-<code>netCDF4.Group</code> instance. The <code>netCDF4.Dataset.createVariable</code> method
+<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<a href="#netCDF4.Group"><code>Group</code></a> instance. The <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method
 has two mandatory arguments, the variable name (a Python string), and
 the variable datatype. The variable's dimensions are given by a tuple
 containing the dimension names (defined previously with
-<code>netCDF4.Dataset.createDimension</code>). To create a scalar
+<a href="#netCDF4.Dataset.createDimension"><code>createDimension</code></a>). To create a scalar
 variable, simply leave out the dimensions keyword. The variable
 primitive datatypes correspond to the dtype attribute of a numpy array.
 You can specify the datatype as a numpy dtype object, or anything that
@@ -1531,8 +1549,8 @@ single-character typecodes (<code>'f'</code>,<code>'d'</code>,<code>'h'</code>,
 will also work. The unsigned integer types and the 64-bit integer type
 can only be used if the file format is <code>NETCDF4</code>.</p>
 <p>The dimensions themselves are usually also defined as variables, called
-coordinate variables. The <code>netCDF4.Dataset.createVariable</code>
-method returns an instance of the <code>netCDF4.Variable</code> class whose methods can be
+coordinate variables. The <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a>
+method returns an instance of the <a href="#netCDF4.Variable"><code>Variable</code></a> class whose methods can be
 used later to access and set variable data and attributes.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">times</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="s">&quot;f8&quot;</span><span class="p">,(</span><span class="s">&quot;time&quot;</span><span class="p">,))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">levels</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;level&quot;</span><span class="p">,</span><span class="s">&quot;i4&quot;</span><span class="p">,(</span><span class="s">&quot;level&quot;</span><span class="p">,))</span>
@@ -1543,7 +1561,7 @@ used later to access and set variable data and attributes.</p>
 </pre></div>
 
 
-<p>To get summary info on a <code>netCDF4.Variable</code> instance in an interactive session, just print it.</p>
+<p>To get summary info on a <a href="#netCDF4.Variable"><code>Variable</code></a> instance in an interactive session, just print it.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">temp</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s">&quot;netCDF4._netCDF4.Variable&quot;</span><span class="o">&gt;</span>
 <span class="n">float32</span> <span class="n">temp</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
@@ -1560,8 +1578,8 @@ used later to access and set variable data and attributes.</p>
 
 
 <p>If the intermediate groups do not yet exist, they will be created.</p>
-<p>You can also query a <code>netCDF4.Dataset</code> or <code>netCDF4.Group</code> instance directly to obtain <code>netCDF4.Group</code> or 
-<code>netCDF4.Variable</code> instances using paths.</p>
+<p>You can also query a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance directly to obtain <a href="#netCDF4.Group"><code>Group</code></a> or 
+<a href="#netCDF4.Variable"><code>Variable</code></a> instances using paths.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="p">[</span><span class="s">&quot;/forecasts/model1&quot;</span><span class="p">]</span> <span class="c"># a Group instance</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s">&quot;netCDF4._netCDF4.Group&quot;</span><span class="o">&gt;</span>
 <span class="n">group</span> <span class="o">/</span><span class="n">forecasts</span><span class="o">/</span><span class="n">model1</span><span class="p">:</span>
@@ -1578,7 +1596,7 @@ used later to access and set variable data and attributes.</p>
 </pre></div>
 
 
-<p>All of the variables in the <code>netCDF4.Dataset</code> or <code>netCDF4.Group</code> are stored in a
+<p>All of the variables in the <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> are stored in a
 Python dictionary, in the same way as the dimensions:</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">variables</span>
 <span class="n">OrderedDict</span><span class="p">([(</span><span class="s">&quot;time&quot;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">netCDF4</span><span class="o">.</span><span class="n">Variable</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x1b4ba70</span><span class="o">&gt;</span><span class="p">),</span>
@@ -1589,16 +1607,16 @@ Python dictionary, in the same way as the dimensions:</p>
 </pre></div>
 
 
-<p><code>netCDF4.Variable</code> names can be changed using the
-<code>netCDF4.Dataset.renameVariable</code> method of a <code>netCDF4.Dataset</code>
+<p><a href="#netCDF4.Variable"><code>Variable</code></a> names can be changed using the
+<a href="#netCDF4.Dataset.renameVariable"><code>renameVariable</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a>
 instance.</p>
 <h2><div id='section5'>5) Attributes in a netCDF file.</h2>
 <p>There are two types of attributes in a netCDF file, global and variable.
 Global attributes provide information about a group, or the entire
-dataset, as a whole. <code>netCDF4.Variable</code> attributes provide information about
+dataset, as a whole. <a href="#netCDF4.Variable"><code>Variable</code></a> attributes provide information about
 one of the variables in a group. Global attributes are set by assigning
-values to <code>netCDF4.Dataset</code> or <code>netCDF4.Group</code> instance variables. <code>netCDF4.Variable</code>
-attributes are set by assigning values to <code>netCDF4.Variable</code> instances
+values to <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance variables. <a href="#netCDF4.Variable"><code>Variable</code></a>
+attributes are set by assigning values to <a href="#netCDF4.Variable"><code>Variable</code></a> instances
 variables. Attributes can be strings, numbers or sequences. Returning to
 our example,</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
@@ -1614,8 +1632,8 @@ our example,</p>
 </pre></div>
 
 
-<p>The <code>netCDF4.Dataset.ncattrs</code> method of a <code>netCDF4.Dataset</code>, <code>netCDF4.Group</code> or
-<code>netCDF4.Variable</code> instance can be used to retrieve the names of all the netCDF
+<p>The <a href="#netCDF4.Dataset.ncattrs"><code>ncattrs</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a>, <a href="#netCDF4.Group"><code>Group</code></a> or
+<a href="#netCDF4.Variable"><code>Variable</code></a> instance can be used to retrieve the names of all the netCDF
 attributes. This method is provided as a convenience, since using the
 built-in <code>dir</code> Python function will return a bunch of private methods
 and attributes that cannot (or should not) be modified by the user.</p>
@@ -1627,7 +1645,7 @@ and attributes that cannot (or should not) be modified by the user.</p>
 </pre></div>
 
 
-<p>The <code>__dict__</code> attribute of a <code>netCDF4.Dataset</code>, <code>netCDF4.Group</code> or <code>netCDF4.Variable</code>
+<p>The <code>__dict__</code> attribute of a <a href="#netCDF4.Dataset"><code>Dataset</code></a>, <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Variable"><code>Variable</code></a>
 instance provides all the netCDF attribute name/value pairs in a python
 dictionary:</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">__dict__</span>
@@ -1637,11 +1655,11 @@ dictionary:</p>
 </pre></div>
 
 
-<p>Attributes can be deleted from a netCDF <code>netCDF4.Dataset</code>, <code>netCDF4.Group</code> or
-<code>netCDF4.Variable</code> using the python <code>del</code> statement (i.e. <code>del grp.foo</code>
+<p>Attributes can be deleted from a netCDF <a href="#netCDF4.Dataset"><code>Dataset</code></a>, <a href="#netCDF4.Group"><code>Group</code></a> or
+<a href="#netCDF4.Variable"><code>Variable</code></a> using the python <code>del</code> statement (i.e. <code>del grp.foo</code>
 removes the attribute <code>foo</code> the the group <code>grp</code>).</p>
 <h2><div id='section6'>6) Writing data to and retrieving data from a netCDF variable.</h2>
-<p>Now that you have a netCDF <code>netCDF4.Variable</code> instance, how do you put data
+<p>Now that you have a netCDF <a href="#netCDF4.Variable"><code>Variable</code></a> instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">lats</span> <span class="o">=</span>  <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span><span class="mi">91</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
@@ -1660,7 +1678,7 @@ into it? You can just treat it like an array and assign data to a slice.</p>
 </pre></div>
 
 
-<p>Unlike NumPy's array objects, netCDF <code>netCDF4.Variable</code>
+<p>Unlike NumPy's array objects, netCDF <a href="#netCDF4.Variable"><code>Variable</code></a>
 objects with unlimited dimensions will grow along those dimensions if you
 assign data outside the currently defined range of indices.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># append along two unlimited dimensions by assigning to slice.</span>
@@ -1732,7 +1750,7 @@ metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
 specified like <code>hours since YY:MM:DD hh-mm-ss</code>.  These units can be
 awkward to deal with, without a utility to convert the values to and
-from calendar dates.  The functione called <code>netCDF4.num2date</code> and <code>netCDF4.date2num</code> are
+from calendar dates.  The functione called <a href="#netCDF4.num2date"><code>num2date</code></a> and <a href="#netCDF4.date2num"><code>date2num</code></a> are
 provided with this package to do just that.  Here's an example of how they
 can be used:</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># fill in times.</span>
@@ -1751,17 +1769,17 @@ can be used:</p>
 </pre></div>
 
 
-<p><code>netCDF4.num2date</code> converts numeric values of time in the specified <code>units</code>
-and <code>calendar</code> to datetime objects, and <code>netCDF4.date2num</code> does the reverse.
+<p><a href="#netCDF4.num2date"><code>num2date</code></a> converts numeric values of time in the specified <code>units</code>
+and <code>calendar</code> to datetime objects, and <a href="#netCDF4.date2num"><code>date2num</code></a> does the reverse.
 All the calendars currently defined in the
 <a href="http://cf-pcmdi.llnl.gov/documents/cf-conventions/">CF metadata convention</a> are supported.
-A function called <code>netCDF4.date2index</code> is also provided which returns the indices
+A function called <a href="#netCDF4.date2index"><code>date2index</code></a> is also provided which returns the indices
 of a netCDF time variable corresponding to a sequence of datetime instances.</p>
 <h2><div id='section8'>8) Reading data from a multi-file netCDF dataset.</h2>
 <p>If you want to read data from a variable that spans multiple netCDF files,
-you can use the <code>netCDF4.MFDataset</code> class to read the data as if it were
+you can use the <a href="#netCDF4.MFDataset"><code>MFDataset</code></a> class to read the data as if it were
 contained in a single file. Instead of using a single filename to create
-a <code>netCDF4.Dataset</code> instance, create a <code>netCDF4.MFDataset</code> instance with either a list
+a <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance, create a <a href="#netCDF4.MFDataset"><code>MFDataset</code></a> instance with either a list
 of filenames, or a string with a wildcard (which is then converted to
 a sorted list of files using the python glob module).
 Variables in the list of files that share the same unlimited
@@ -1780,7 +1798,7 @@ datasets are not supported).</p>
 </pre></div>
 
 
-<p>Now read all the files back in at once with <code>netCDF4.MFDataset</code></p>
+<p>Now read all the files back in at once with <a href="#netCDF4.MFDataset"><code>MFDataset</code></a></p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">MFDataset</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">MFDataset</span><span class="p">(</span><span class="s">&quot;mftest*nc&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">][:]</span>
@@ -1791,13 +1809,13 @@ datasets are not supported).</p>
 </pre></div>
 
 
-<p>Note that <code>netCDF4.MFDataset</code> can only be used to read, not write, multi-file
+<p>Note that <a href="#netCDF4.MFDataset"><code>MFDataset</code></a> can only be used to read, not write, multi-file
 datasets.</p>
 <h2><div id='section9'>9) Efficient compression of netCDF variables.</h2>
-<p>Data stored in netCDF 4 <code>netCDF4.Variable</code> objects can be compressed and
+<p>Data stored in netCDF 4 <a href="#netCDF4.Variable"><code>Variable</code></a> objects can be compressed and
 decompressed on the fly. The parameters for the compression are
 determined by the <code>zlib</code>, <code>complevel</code> and <code>shuffle</code> keyword arguments
-to the <code>netCDF4.Dataset.createVariable</code> method. To turn on
+to the <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method. To turn on
 compression, set <code>zlib=True</code>.  The <code>complevel</code> keyword regulates the
 speed and efficiency of the compression (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
@@ -1806,12 +1824,12 @@ off the HDF5 shuffle filter, which de-interlaces a block of data before
 compression by reordering the bytes.  The shuffle filter can
 significantly improve compression ratios, and is on by default.  Setting
 <code>fletcher32</code> keyword argument to
-<code>netCDF4.Dataset.createVariable</code> to <code>True</code> (it's <code>False</code> by
+<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> to <code>True</code> (it's <code>False</code> by
 default) enables the Fletcher32 checksum algorithm for error detection.
 It's also possible to set the HDF5 chunking parameters and endian-ness
 of the binary data stored in the HDF5 file with the <code>chunksizes</code>
 and <code>endian</code> keyword arguments to
-<code>netCDF4.Dataset.createVariable</code>.  These keyword arguments only
+<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a>.  These keyword arguments only
 are relevant for <code>NETCDF4</code> and <code>NETCDF4_CLASSIC</code> files (where the
 underlying file format is HDF5) and are silently ignored if the file
 format is <code>NETCDF3_CLASSIC</code> or <code>NETCDF3_64BIT</code>,</p>
@@ -1819,7 +1837,7 @@ format is <code>NETCDF3_CLASSIC</code> or <code>NETCDF3_64BIT</code>,</p>
 example, it is temperature data that was measured with a precision of
 0.1 degrees), you can dramatically improve zlib compression by
 quantizing (or truncating) the data using the <code>least_significant_digit</code>
-keyword argument to <code>netCDF4.Dataset.createVariable</code>. The least
+keyword argument to <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a>. The least
 significant digit is the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
 precision of 0.1, then setting <code>least_significant_digit=1</code> will cause
@@ -1855,7 +1873,7 @@ location for scattered (point) data. You can then access all the
 information for a point by reading one variable, instead of reading
 different parameters from different variables.  Compound data types
 are created from the corresponding numpy data type using the
-<code>netCDF4.Dataset.createCompoundType</code> method of a <code>netCDF4.Dataset</code> or <code>netCDF4.Group</code> instance.
+<a href="#netCDF4.Dataset.createCompoundType"><code>createCompoundType</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance.
 Since there is no native complex data type in netcdf, compound types are handy
 for storing numpy complex arrays.  Here's an example:</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&quot;complex.nc&quot;</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
@@ -1888,7 +1906,7 @@ for storing numpy complex arrays.  Here's an example:</p>
 
 
 <p>Compound types can be nested, but you must create the 'inner'
-ones first. All of the compound types defined for a <code>netCDF4.Dataset</code> or <code>netCDF4.Group</code> are stored in a
+ones first. All of the compound types defined for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> are stored in a
 Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">f</span>
@@ -1913,8 +1931,8 @@ objects gives useful summary information in an interactive session:</p>
 <h2><div id='section11'>11) Variable-length (vlen) data types.</h2>
 <p>NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
 of variable length sequences having the same type. To create a variable-length
-data type, use the <code>netCDF4.Dataset.createVLType</code> method
-method of a <code>netCDF4.Dataset</code> or <code>netCDF4.Group</code> instance.</p>
+data type, use the <a href="#netCDF4.Dataset.createVLType"><code>createVLType</code></a> method
+method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&quot;tst_vlen.nc&quot;</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vlen_t</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createVLType</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="s">&quot;phony_vlen&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1972,7 +1990,7 @@ In this case, they contain 1-D numpy <code>int32</code> arrays of random length 
 variables,  For vlen strings, you don't need to create a vlen data type.
 Instead, simply use the python <code>str</code> builtin (or a numpy string datatype
 with fixed length greater than 1) when calling the
-<code>netCDF4.Dataset.createVariable</code> method.</p>
+<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">z</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">strvar</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;strvar&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="s">&quot;z&quot;</span><span class="p">)</span>
 </pre></div>
@@ -2008,6 +2026,69 @@ array is assigned to the vlen string variable.</p>
 <p>It is also possible to set contents of vlen string variables with numpy arrays
 of any string or unicode data type. Note, however, that accessing the contents
 of such variables will always return numpy arrays with dtype <code>object</code>.</p>
+<h2><div id='section12'>12) Enum data type.</h2>
+<p>netCDF4 has an enumerated data type, which is an integer datatype that is
+restricted to certain named values. Since Enums don't map directly to
+a numpy data type, they are read and written as integer arrays.</p>
+<p>Here's an example of using an Enum type to hold cloud type data. The
+The base integer data type and a python dictionary describing the allowed
+values and their names are used to define an Enum data type using
+<a href="#netCDF4.Dataset.createEnumType"><code>createEnumType</code></a>.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;clouds.nc&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># python dict with allowed values and their names.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">u&#39;Altocumulus&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">u&#39;Missing&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;Stratus&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">u&#39;Clear&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;Nimbostratus&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">u&#39;Cumulus&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">u&#39;Altostratus&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;Cumulonimbus&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;Stratocumulus&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># create the Enum type called &#39;cloud_t&#39;.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_type</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createEnumType</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span><span class="s">&#39;cloud_t&#39;</span><span class="p">,</span><span class="n">enum_dict</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">cloud_type</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;netCDF4._netCDF4.EnumType&#39;</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;cloud_t&#39;</span><span class="p">,</span>
+<span class="n">numpy</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">uint8</span><span class="p">,</span> <span class="n">fields</span><span class="o">/</span><span class="n">values</span> <span class="o">=</span><span class="p">{</span><span class="s">u&#39;Cumulus&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="s">u&#39;Altocumulus&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">u&#39;Missing&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span>
+<span class="s">u&#39;Stratus&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">u&#39;Clear&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="s">u&#39;Cumulonimbus&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;Stratocumulus&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="s">u&#39;Nimbostratus&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">u&#39;Altostratus&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+</pre></div>
+
+
+<p>A new variable can be created in the usual way using this data type.
+Integer data is written to the variable that represents the named
+cloud types in enum_dict. A <code>ValueError</code> will be raised if an attempt
+is made to write an integer value not associated with one of the
+specified names.</p>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">time</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># create a 1d variable of type &#39;cloud_type&#39;.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># The fill_value is set to the &#39;Missing&#39; named value.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_var</span> <span class="o">=</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;primary_cloud&#39;</span><span class="p">,</span><span class="n">cloud_type</span><span class="p">,</span><span class="s">&#39;time&#39;</span><span class="p">,</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Missing&#39;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># write some data to the variable.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Clear&#39;</span><span class="p">],</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Stratus&#39;</span><span class="p">],</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Cumulus&#39;</span><span class="p">],</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Missing&#39;</span><span class="p">],</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Cumulonimbus&#39;</span><span class="p">]]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># reopen the file, read the data.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;clouds.nc&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&#39;primary_cloud&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">cloud_var</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;netCDF4._netCDF4.Variable&#39;</span><span class="o">&gt;</span>
+<span class="n">enum</span> <span class="n">primary_cloud</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+    <span class="n">_FillValue</span><span class="p">:</span> <span class="mi">255</span>
+<span class="n">enum</span> <span class="n">data</span> <span class="nb">type</span><span class="p">:</span> <span class="n">uint8</span>
+<span class="n">unlimited</span> <span class="n">dimensions</span><span class="p">:</span> <span class="n">time</span>
+<span class="n">current</span> <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">cloud_var</span><span class="o">.</span><span class="n">datatype</span><span class="o">.</span><span class="n">enum_dict</span>
+<span class="p">{</span><span class="s">u&#39;Altocumulus&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">u&#39;Missing&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span> <span class="s">u&#39;Stratus&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="s">u&#39;Clear&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">u&#39;Nimbostratus&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">u&#39;Cumulus&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="s">u&#39;Altostratus&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">u&#39;Cumulonimbus&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="s">u&#39;Stratocumulus&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">cloud_var</span><span class="p">[:]</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">2</span> <span class="mi">4</span> <span class="o">--</span> <span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+
 <p>All of the code in this tutorial is available in <code>examples/tutorial.py</code>,
 Unit tests are in the <code>test</code> directory.</p>
 <p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#46;&#115;&#46;&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;&#111;&#97;&#97;&#46;&#103;&#111;&#118;">&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#46;&#115;&#46;&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;&#111;&#97;&#97;&#46;&#103;&#111;&#118;</a></p>
@@ -2024,6 +2105,7 @@ CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
 USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.</p>
+<hr />
   
 
   </header>
@@ -2332,6 +2414,9 @@ compound types defined for the <a href="#netCDF4.Group"><code>Group</code></a> o
 <p><strong><code>vltypes</code></strong>: The <code>vltypes</code> dictionary maps the names of
 variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances 
 of the <a href="#netCDF4.VLType"><code>VLType</code></a> class.</p>
+<p><strong><code>enumtypes</code></strong>: The <code>enumtypes</code> dictionary maps the names of
+Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances 
+of the <a href="#netCDF4.EnumType"><code>EnumType</code></a> class.</p>
 <p><strong><code>data_model</code></strong>: <code>data_model</code> describes the netCDF
 data model version, one of <code>NETCDF3_CLASSIC</code>, <code>NETCDF4</code>,
 <code>NETCDF4_CLASSIC</code> or <code>NETCDF3_64BIT</code>.</p>
@@ -2342,7 +2427,7 @@ file format, one of <code>NETCDF3</code>, <code>HDF5</code>, <code>HDF4</code>,
 netcdf C library version &gt;= 4.3.1, otherwise will always return
 <code>UNDEFINED</code>.</p>
 <p><strong><code>parent</code></strong>: <code>parent</code> is a reference to the parent
-<a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for a the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a>
+<a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a>
 instance.</p>
 <p><strong><code>path</code></strong>: <code>path</code> shows the location of the <a href="#netCDF4.Group"><code>Group</code></a> in
 the <a href="#netCDF4.Dataset"><code>Dataset</code></a> in a unix directory format (the names of groups in the
@@ -2416,6 +2501,19 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
 
             </div>
             <div class="item">
+            <p id="netCDF4.Dataset.enumtypes" class="name">var <span class="ident">enumtypes</span></p>
+            
+
+            
+  
+    <div class="desc"><p>The <code>enumtypes</code> dictionary maps the names of
+Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
+<a href="#netCDF4.EnumType"><code>EnumType</code></a> class.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
             <p id="netCDF4.Dataset.file_format" class="name">var <span class="ident">file_format</span></p>
             
 
@@ -2459,7 +2557,7 @@ the parent Dataset or Group.</p></div>
             
   
     <div class="desc"><p><code>parent</code> is a reference to the parent
-<a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for a the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance</p></div>
+<a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance</p></div>
   <div class="source_cont">
 </div>
 
@@ -2618,6 +2716,25 @@ class instance describing the new dimension.  To determine the current
 maximum size of the dimension, use the <code>len</code> function on the <a href="#netCDF4.Dimension"><code>Dimension</code></a>
 instance. To determine if a dimension is 'unlimited', use the
 <a href="#netCDF4.Dimension.isunlimited"><code>isunlimited</code></a> method of the <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Dataset.createEnumType">
+    <p>def <span class="ident">createEnumType</span>(</p><p>self, datatype, datatype_name, enum_dict)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Creates a new Enum data type named <code>datatype_name</code> from a numpy
+integer dtype object <code>datatype</code>, and a python dictionary
+defining the enum fields and values.</p>
+<p>The return value is the <a href="#netCDF4.EnumType"><code>EnumType</code></a> class instance describing the new
+datatype.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3197,6 +3314,89 @@ determine if the dimension is unlimited.</p>
       </div>
       
       <div class="item">
+      <p id="netCDF4.EnumType" class="name">class <span class="ident">EnumType</span></p>
+      
+  
+    <div class="desc"><p>A <a href="#netCDF4.EnumType"><code>EnumType</code></a> instance is used to describe an Enum data
+type, and can be passed to the the <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of
+a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance. See 
+<a href="#netCDF4.EnumType.__init__"><code>__init__</code></a> for more details.</p>
+<p>The instance variables <code>dtype</code>, <code>name</code> and <code>enum_dict</code> should not be modified by
+the user.</p></div>
+  <div class="source_cont">
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#netCDF4.EnumType">EnumType</a></li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="netCDF4.EnumType.dtype" class="name">var <span class="ident">dtype</span></p>
+            
+
+            
+  
+    <div class="desc"><p>A numpy integer dtype object describing the base type for the Enum.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="netCDF4.EnumType.enum_dict" class="name">var <span class="ident">enum_dict</span></p>
+            
+
+            
+  
+    <div class="desc"><p>A python dictionary describing the enum fields and values.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="netCDF4.EnumType.name" class="name">var <span class="ident">name</span></p>
+            
+
+            
+  
+    <div class="desc"><p>String name.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Static methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.EnumType.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>group, datatype, datatype_name, enum_dict)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>EnumType constructor.</p>
+<p><strong><code>group</code></strong>: <a href="#netCDF4.Group"><code>Group</code></a> instance to associate with the VLEN datatype.</p>
+<p><strong><code>datatype</code></strong>: An numpy integer dtype object describing the base type
+for the Enum.</p>
+<p><strong><code>datatype_name</code></strong>: a Python string containing a description of the
+Enum data type.</p>
+<p><strong><code>enum_dict</code></strong>: a Python dictionary containing the Enum field/value
+pairs.</p>
+<p><strong><em><code>Note</code></em></strong>: <a href="#netCDF4.EnumType"><code>EnumType</code></a> instances should be created using the
+<a href="#netCDF4.Dataset.createEnumType"><code>createEnumType</code></a>
+method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance, not using this class directly.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="netCDF4.Group" class="name">class <span class="ident">Group</span></p>
       
   
@@ -3293,6 +3493,23 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
 
             </div>
             <div class="item">
+            <p id="netCDF4.Group.enumtypes" class="name">var <span class="ident">enumtypes</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.enumtypes">enumtypes</a></code>
+    </p>
+
+            
+  
+    <div class="desc inherited"><p>The <code>enumtypes</code> dictionary maps the names of
+Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
+<a href="#netCDF4.EnumType"><code>EnumType</code></a> class.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
             <p id="netCDF4.Group.file_format" class="name">var <span class="ident">file_format</span></p>
             
     <p class="inheritance">
@@ -3363,7 +3580,7 @@ the parent Dataset or Group.</p></div>
             
   
     <div class="desc inherited"><p><code>parent</code> is a reference to the parent
-<a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for a the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance</p></div>
+<a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance</p></div>
   <div class="source_cont">
 </div>
 
@@ -3513,6 +3730,29 @@ class instance describing the new dimension.  To determine the current
 maximum size of the dimension, use the <code>len</code> function on the <a href="#netCDF4.Dimension"><code>Dimension</code></a>
 instance. To determine if a dimension is 'unlimited', use the
 <a href="#netCDF4.Dimension.isunlimited"><code>isunlimited</code></a> method of the <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Group.createEnumType">
+    <p>def <span class="ident">createEnumType</span>(</p><p>self, datatype, datatype_name, enum_dict)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.createEnumType">createEnumType</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>Creates a new Enum data type named <code>datatype_name</code> from a numpy
+integer dtype object <code>datatype</code>, and a python dictionary
+defining the enum fields and values.</p>
+<p>The return value is the <a href="#netCDF4.EnumType"><code>EnumType</code></a> class instance describing the new
+datatype.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4194,6 +4434,23 @@ netcdf C library version &gt;= 4.3.1, otherwise will always return
 
             </div>
             <div class="item">
+            <p id="netCDF4.MFDataset.enumtypes" class="name">var <span class="ident">enumtypes</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.enumtypes">enumtypes</a></code>
+    </p>
+
+            
+  
+    <div class="desc inherited"><p>The <code>enumtypes</code> dictionary maps the names of
+Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
+<a href="#netCDF4.EnumType"><code>EnumType</code></a> class.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
             <p id="netCDF4.MFDataset.file_format" class="name">var <span class="ident">file_format</span></p>
             
     <p class="inheritance">
@@ -4253,7 +4510,7 @@ the parent Dataset or Group.</p></div>
             
   
     <div class="desc inherited"><p><code>parent</code> is a reference to the parent
-<a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for a the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance</p></div>
+<a href="#netCDF4.Group"><code>Group</code></a> instance. <code>None</code> for the root group or <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance</p></div>
   <div class="source_cont">
 </div>
 
@@ -4358,6 +4615,29 @@ class instance describing the new dimension.  To determine the current
 maximum size of the dimension, use the <code>len</code> function on the <a href="#netCDF4.Dimension"><code>Dimension</code></a>
 instance. To determine if a dimension is 'unlimited', use the
 <a href="#netCDF4.Dimension.isunlimited"><code>isunlimited</code></a> method of the <a href="#netCDF4.Dimension"><code>Dimension</code></a> instance.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.MFDataset.createEnumType">
+    <p>def <span class="ident">createEnumType</span>(</p><p>self, datatype, datatype_name, enum_dict)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.createEnumType">createEnumType</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>Creates a new Enum data type named <code>datatype_name</code> from a numpy
+integer dtype object <code>datatype</code>, and a python dictionary
+defining the enum fields and values.</p>
+<p>The return value is the <a href="#netCDF4.EnumType"><code>EnumType</code></a> class instance describing the new
+datatype.</p></div>
   <div class="source_cont">
 </div>
 
@@ -5152,7 +5432,7 @@ the user.</p></div>
   
     <div class="desc"><p>VLType constructor.</p>
 <p><strong><code>group</code></strong>: <a href="#netCDF4.Group"><code>Group</code></a> instance to associate with the VLEN datatype.</p>
-<p><strong><code>datatype</code></strong>: An numpy dtype object describing a the component type for the
+<p><strong><code>datatype</code></strong>: An numpy dtype object describing the component type for the
 variable length array.</p>
 <p><strong><code>datatype_name</code></strong>: a Python string containing a description of the
 VLEN data type.</p>
@@ -5223,8 +5503,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.</p>
 
             
   
-    <div class="desc"><p>numpy data type (for primitive data types) or VLType/CompoundType
-instance (for compound or vlen data types).</p></div>
+    <div class="desc"><p>numpy data type (for primitive data types) or
+VLType/CompoundType/EnumType instance (for compound, vlen or enum
+data types).</p></div>
   <div class="source_cont">
 </div>
 

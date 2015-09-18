@@ -280,3 +280,29 @@ print('variable-length string variable:\n',strvar[:])
 print(f)
 print(f.variables['strvar'])
 f.close()
+
+# Enum type example.
+f = Dataset('clouds.nc','w')
+# python dict describing the allowed values and their names.
+enum_dict = {u'Altocumulus': 7, u'Missing': 255, u'Stratus': 2, u'Clear': 0,
+u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5, u'Cumulonimbus': 1,
+u'Stratocumulus': 3}
+# create the Enum type called 'cloud_t'.
+cloud_type = f.createEnumType(numpy.uint8,'cloud_t',enum_dict)
+print(cloud_type)
+time = f.createDimension('time',None)
+# create a 1d variable of type 'cloud_type' called 'primary_clouds'.
+# The fill_value is set to the 'Missing' named value.
+cloud_var = f.createVariable('primary_cloud',cloud_type,'time',\
+fill_value=enum_dict['Missing'])
+# write some data to the variable.
+cloud_var[:] = [enum_dict['Clear'],enum_dict['Stratus'],enum_dict['Cumulus'],\
+                enum_dict['Missing'],enum_dict['Cumulonimbus']]
+# close file, reopen it.
+f.close()
+f = Dataset('clouds.nc')
+cloud_var = f.variables['primary_cloud']
+print(cloud_var)
+print(cloud_var.datatype.enum_dict)
+print(cloud_var[:])
+f.close()
