@@ -4660,7 +4660,7 @@ the user.
     """A python dictionary describing the enum fields and values."""
     def __init__(self, grp, object dt, object dtype_name, object enum_dict, **kwargs):
         """
-        **`__init__(group, datatype, datatype_name)`**
+        **`__init__(group, datatype, datatype_name, enum_dict)`**
 
         EnumType constructor.
 
