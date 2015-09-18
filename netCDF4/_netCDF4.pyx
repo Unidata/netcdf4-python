@@ -861,6 +861,15 @@ cloud types in enum_dict.
     >>> cloud_var[:] = [enum_dict['Clear'],enum_dict['Stratus'],
     >>> enum_dict['Cumulus'],enum_dict['Missing'],
     >>> enum_dict['Cumulonimbus']]
+    >>> nc.close()
+    >>> # reopen the file, read the data.
+    >>> nc = Dataset('clouds.nc')
+    >>> print nc.enumtypes['cloud_t'].enum_dict
+    {u'Altocumulus': 7, u'Missing': 127, u'Stratus': 2,
+    u'Clear': 0, u'Nimbostratus': 6, u'Cumulus': 4,
+    u'Altostratus': 5, u'Cumulonimbus': 1,
+    u'Stratocumulus': 3}
+    >>> cloud_var = nc.variables['primary_cloud']
     >>> print cloud_var
     <type 'netCDF4._netCDF4.Variable'>
     enum primary_cloud(time)

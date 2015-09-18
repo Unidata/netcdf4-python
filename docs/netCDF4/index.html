@@ -4,12 +4,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Introduction
+    <meta name="description" content="Version 1.2.0
+-------------
+- - - 
+
+Introduction
 ============
 
-netcdf4-python is a Python interface to the netCDF C library.  
-
-[netCDF ..." />
+netcdf4-python is a Python interface ..." />
 
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300' rel='stylesheet' type='text/css'>
   
@@ -1249,7 +1251,9 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h1>Introduction</h1>
+  <h2>Version 1.2.0</h2>
+<hr />
+<h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
 <p><a href="http://www.unidata.ucar.edu/software/netcdf/netcdf-4">netCDF version 4</a> has many features
 not found in earlier versions of the library and is implemented on top of
@@ -2061,6 +2065,15 @@ cloud types in enum_dict.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Clear&#39;</span><span class="p">],</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Stratus&#39;</span><span class="p">],</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Cumulus&#39;</span><span class="p">],</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Missing&#39;</span><span class="p">],</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Cumulonimbus&#39;</span><span class="p">]]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># reopen the file, read the data.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;clouds.nc&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">nc</span><span class="o">.</span><span class="n">enumtypes</span><span class="p">[</span><span class="s">&#39;cloud_t&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">enum_dict</span>
+<span class="p">{</span><span class="s">u&#39;Altocumulus&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">u&#39;Missing&#39;</span><span class="p">:</span> <span class="mi">127</span><span class="p">,</span> <span class="s">u&#39;Stratus&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="s">u&#39;Clear&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">u&#39;Nimbostratus&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">u&#39;Cumulus&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="s">u&#39;Altostratus&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s">u&#39;Cumulonimbus&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="s">u&#39;Stratocumulus&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&#39;primary_cloud&#39;</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">cloud_var</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;netCDF4._netCDF4.Variable&#39;</span><span class="o">&gt;</span>
 <span class="n">enum</span> <span class="n">primary_cloud</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
@@ -2090,6 +2103,7 @@ CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
 USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.</p>
+<hr />
   
 
   </header>
