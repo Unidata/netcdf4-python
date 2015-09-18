@@ -286,7 +286,7 @@ f = Dataset('clouds.nc','w')
 # python dict describing the allowed values and their names.
 enum_dict = {u'Altocumulus': 7, u'Missing': 127, u'Stratus': 2, u'Clear': 0,
 u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5, u'Cumulonimbus': 1,
-u'Stratocumulus': 3} 
+u'Stratocumulus': 3}
 # create the Enum type called 'cloud_t'.
 cloud_type = f.createEnumType(numpy.uint8,'cloud_t',enum_dict)
 print(cloud_type)
@@ -298,6 +298,11 @@ fill_value=enum_dict['Missing'])
 # write some data to the variable.
 cloud_var[:] = [enum_dict['Clear'],enum_dict['Stratus'],enum_dict['Cumulus'],\
                 enum_dict['Missing'],enum_dict['Cumulonimbus']]
+# close file, reopen it.
+f.close()
+f = Dataset('clouds.nc')
+print(f.enumtypes['cloud_t'].enum_dict)
+cloud_var = f.variables['primary_cloud']
 print(cloud_var)
 print(cloud_var[:])
 f.close()
