@@ -52960,12 +52960,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__read_vlen(PyObject *__pyx_v_group, 
  *     """A python dictionary describing the enum fields and values."""
  *     def __init__(self, grp, object dt, object dtype_name, object enum_dict, **kwargs):             # <<<<<<<<<<<<<<
  *         """
- *         **`__init__(group, datatype, datatype_name)`**
+ *         **`__init__(group, datatype, datatype_name, enum_dict)`**
  */
 
 /* Python wrapper */
 static int __pyx_pw_7netCDF4_8_netCDF4_8EnumType_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7netCDF4_8_netCDF4_8EnumType___init__[] = "\n        **`__init__(group, datatype, datatype_name)`**\n\n        EnumType constructor.\n\n        **`group`**: `netCDF4.Group` instance to associate with the VLEN datatype.\n\n        **`datatype`**: An numpy integer dtype object describing the base type\n        for the Enum.\n\n        **`datatype_name`**: a Python string containing a description of the\n        Enum data type.\n\n        **`enum_dict`**: a Python dictionary containing the Enum field/value\n        pairs.\n\n        ***`Note`***: `netCDF4.EnumType` instances should be created using the\n        `netCDF4.Dataset.createEnumType`\n        method of a `netCDF4.Dataset` or `netCDF4.Group` instance, not using this class directly.\n        ";
+static char __pyx_doc_7netCDF4_8_netCDF4_8EnumType___init__[] = "\n        **`__init__(group, datatype, datatype_name, enum_dict)`**\n\n        EnumType constructor.\n\n        **`group`**: `netCDF4.Group` instance to associate with the VLEN datatype.\n\n        **`datatype`**: An numpy integer dtype object describing the base type\n        for the Enum.\n\n        **`datatype_name`**: a Python string containing a description of the\n        Enum data type.\n\n        **`enum_dict`**: a Python dictionary containing the Enum field/value\n        pairs.\n\n        ***`Note`***: `netCDF4.EnumType` instances should be created using the\n        `netCDF4.Dataset.createEnumType`\n        method of a `netCDF4.Dataset` or `netCDF4.Group` instance, not using this class directly.\n        ";
 #if CYTHON_COMPILING_IN_CPYTHON
 struct wrapperbase __pyx_wrapperbase_7netCDF4_8_netCDF4_8EnumType___init__;
 #endif
@@ -53224,7 +53224,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8EnumType___init__(struct __pyx_obj_7netC
  *     """A python dictionary describing the enum fields and values."""
  *     def __init__(self, grp, object dt, object dtype_name, object enum_dict, **kwargs):             # <<<<<<<<<<<<<<
  *         """
- *         **`__init__(group, datatype, datatype_name)`**
+ *         **`__init__(group, datatype, datatype_name, enum_dict)`**
  */
 
   /* function exit code */
