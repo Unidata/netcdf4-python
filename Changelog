@@ -1,5 +1,8 @@
  version 1.2.0 (not yet released)
  ================================
+ * warnings now issued if file being read contains unsupported
+   variables or data types (they were previously being silently
+   skipped).
  * added 'get_variables_by_attributes' method (issue #454).
  * check for 'units' attribute in date2index (issue #453).
  * added support for enum types (issue #452).
