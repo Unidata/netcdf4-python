@@ -2054,7 +2054,9 @@ values and their names are used to define an Enum data type using
 
 <p>A new variable can be created in the usual way using this data type.
 Integer data is written to the variable that represents the named
-cloud types in enum_dict.</p>
+cloud types in enum_dict. A <code>ValueError</code> will be raised if an attempt
+is made to write an integer value not associated with one of the
+specified names.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">time</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c"># create a 1d variable of type &#39;cloud_type&#39;.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c"># The fill_value is set to the &#39;Missing&#39; named value.</span>

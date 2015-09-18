@@ -848,7 +848,9 @@ values and their names are used to define an Enum data type using
 
 A new variable can be created in the usual way using this data type.
 Integer data is written to the variable that represents the named
-cloud types in enum_dict.
+cloud types in enum_dict. A `ValueError` will be raised if an attempt
+is made to write an integer value not associated with one of the
+specified names.
 
     :::python
     >>> time = nc.createDimension('time',None)
