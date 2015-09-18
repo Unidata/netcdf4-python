@@ -1250,7 +1250,8 @@ cdef _get_types(group):
                 try:
                     cmptype = _read_compound(group, xtype)
                 except KeyError:
-                    #print 'WARNING: unsupported compound type, skipping...'
+                    msg='WARNING: unsupported Compound type, skipping...'
+                    warnings.warn(msg)
                     continue
                 cmptypes[name] = cmptype
             elif classp == NC_VLEN: # a vlen
@@ -1260,7 +1261,8 @@ cdef _get_types(group):
                 try:
                     vltype = _read_vlen(group, xtype)
                 except KeyError:
-                    #print 'WARNING: unsupported VLEN type, skipping...'
+                    msg='WARNING: unsupported VLEN type, skipping...'
+                    warnings.warn(msg)
                     continue
                 vltypes[name] = vltype
             elif classp == NC_ENUM: # an enum type
@@ -1270,7 +1272,8 @@ cdef _get_types(group):
                 try:
                     enumtype = _read_enum(group, xtype)
                 except KeyError:
-                    #print 'WARNING: unsupported Enum type, skipping...'
+                    msg='WARNING: unsupported Enum type, skipping...'
+                    warnings.warn(msg)
                     continue
                 enumtypes[name] = enumtype
     return cmptypes, vltypes, enumtypes
@@ -1411,24 +1414,28 @@ cdef _get_vars(group):
                         try:
                             datatype = _read_compound(group, xtype, endian=endianness)
                         except KeyError:
-                            #print "WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
+                            msg="WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
+                            warnings.warn(msg)
                             continue
                     elif classp == NC_VLEN: # a compound type
                         # create VLType instance describing this compound type.
                         try:
                             datatype = _read_vlen(group, xtype, endian=endianness)
                         except KeyError:
-                            #print "WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
+                            msg="WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
+                            warnings.warn(msg)
                             continue
                     elif classp == NC_ENUM:
                         # create EnumType instance describing this compound type.
                         try:
                             datatype = _read_enum(group, xtype, endian=endianness)
                         except KeyError:
-                            #print "WARNING: variable '%s' has unsupported Enum datatype, skipping .." % name
+                            msg="WARNING: variable '%s' has unsupported Enum datatype, skipping .." % name
+                            warnings.warn(msg)
                             continue
                     else:
-                        #print "WARNING: variable '%s' has unsupported datatype, skipping .." % name
+                        msg="WARNING: variable '%s' has unsupported datatype, skipping .." % name
+                        warnings.warn(msg)
                         continue
             # get number of dimensions.
             with nogil:
