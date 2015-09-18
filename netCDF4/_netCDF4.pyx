@@ -864,11 +864,6 @@ cloud types in enum_dict.
     >>> nc.close()
     >>> # reopen the file, read the data.
     >>> nc = Dataset('clouds.nc')
-    >>> print nc.enumtypes['cloud_t'].enum_dict
-    {u'Altocumulus': 7, u'Missing': 127, u'Stratus': 2,
-    u'Clear': 0, u'Nimbostratus': 6, u'Cumulus': 4,
-    u'Altostratus': 5, u'Cumulonimbus': 1,
-    u'Stratocumulus': 3}
     >>> cloud_var = nc.variables['primary_cloud']
     >>> print cloud_var
     <type 'netCDF4._netCDF4.Variable'>
@@ -877,6 +872,11 @@ cloud types in enum_dict.
     enum data type: uint8
     unlimited dimensions: time
     current shape = (5,)
+    >>> print cloud_var.datatype.enum_dict
+    {u'Altocumulus': 7, u'Missing': 127, u'Stratus': 2,
+    u'Clear': 0, u'Nimbostratus': 6, u'Cumulus': 4,
+    u'Altostratus': 5, u'Cumulonimbus': 1,
+    u'Stratocumulus': 3}
     >>> print cloud_var[:]
     [0 2 4 -- 1]
     >>> nc.close()

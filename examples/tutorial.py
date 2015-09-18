@@ -301,8 +301,8 @@ cloud_var[:] = [enum_dict['Clear'],enum_dict['Stratus'],enum_dict['Cumulus'],\
 # close file, reopen it.
 f.close()
 f = Dataset('clouds.nc')
-print(f.enumtypes['cloud_t'].enum_dict)
 cloud_var = f.variables['primary_cloud']
 print(cloud_var)
+print(cloud_var.datatype.enum_dict)
 print(cloud_var[:])
 f.close()
