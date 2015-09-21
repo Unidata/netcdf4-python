@@ -824,7 +824,7 @@ netCDF4 has an enumerated data type, which is an integer datatype that is
 restricted to certain named values. Since Enums don't map directly to
 a numpy data type, they are read and written as integer arrays.
 
-Here's an example of using an Enum type to hold cloud type data. The
+Here's an example of using an Enum type to hold cloud type data. 
 The base integer data type and a python dictionary describing the allowed
 values and their names are used to define an Enum data type using
 `netCDF4.Dataset.createEnumType`.
