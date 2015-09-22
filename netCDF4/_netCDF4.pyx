@@ -8,12 +8,12 @@ Introduction
 
 netcdf4-python is a Python interface to the netCDF C library.  
 
-[netCDF version 4](http://www.unidata.ucar.edu/software/netcdf/netcdf-4) has many features
+[netCDF](http://www.unidata.ucar.edu/software/netcdf/) version 4 has many features
 not found in earlier versions of the library and is implemented on top of
 [HDF5](http://www.hdfgroup.org/HDF5). This module can read and write
 files in both the new netCDF 4 and the old netCDF 3 format, and can create
 files that are readable by HDF5 clients. The API modelled after
-[Scientific.IO.NetCDF](http://dirac.cnrs-orleans.fr/plone/software/scientificpython/),
+[Scientific.IO.NetCDF](http://dirac.cnrs-orleans.fr/ScientificPython/),
 and should be familiar to users of that module.
 
 Most new features of netCDF 4 are implemented, such as multiple
@@ -553,7 +553,7 @@ can be used:
 `netCDF4.num2date` converts numeric values of time in the specified `units`
 and `calendar` to datetime objects, and `netCDF4.date2num` does the reverse.
 All the calendars currently defined in the
-[CF metadata convention](http://cf-pcmdi.llnl.gov/documents/cf-conventions/) are supported.
+[CF metadata convention](http://cfconventions.org) are supported.
 A function called `netCDF4.date2index` is also provided which returns the indices
 of a netCDF time variable corresponding to a sequence of datetime instances.
 
