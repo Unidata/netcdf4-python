@@ -1,5 +1,5 @@
- version 1.2.0 (not yet released)
- ================================
+ version 1.2.0 (tag v1.2.0rel)
+ =============================
  * Fixes to setup.py for building on windows (issue #460).
  * warnings now issued if file being read contains unsupported
    variables or data types (they were previously being silently
