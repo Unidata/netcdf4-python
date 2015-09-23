@@ -1,5 +1,6 @@
  version 1.2.0 (not yet released)
  ================================
+ * Fixes to setup.py for building on windows (issue #460).
  * warnings now issued if file being read contains unsupported
    variables or data types (they were previously being silently
    skipped).

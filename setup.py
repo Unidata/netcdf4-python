@@ -300,7 +300,10 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
     if netCDF4_libdir is None and netCDF4_dir is not None:
         netCDF4_libdir = os.path.join(netCDF4_dir, 'lib')
 
-    libs = ['netcdf','hdf5_hl','hdf5','z']
+    if sys.platform=='win32':
+        libs = ['netcdf','hdf5_hl','hdf5','zlib']
+    else:
+        libs = ['netcdf','hdf5_hl','hdf5','z']
     if netCDF4_libdir is not None: lib_dirs=[netCDF4_libdir]
     if HDF5_libdir is not None: lib_dirs.append(HDF5_libdir)
     if netCDF4_incdir is not None: inc_dirs=[netCDF4_incdir]
@@ -344,6 +347,11 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         lib_dirs.append(curl_libdir)
         inc_dirs.append(curl_incdir)
 
+if sys.platform=='win32':
+    runtime_lib_dirs = []
+else:
+    runtime_lib_dirs = lib_dirs
+
 # Do not require numpy for just querying the package
 # Taken from the h5py setup file.
 if any('--' + opt in sys.argv for opt in Distribution.display_option_names +
@@ -371,7 +379,7 @@ if has_cython and 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
                             libraries=libs,
                             library_dirs=lib_dirs,
                             include_dirs=inc_dirs,
-                            runtime_library_dirs=lib_dirs),
+                            runtime_library_dirs=runtime_lib_dirs),
                   Extension('netcdftime._datetime', ['netcdftime/_datetime.pyx'])]
     # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
     # run for build *and* install (issue #263). Otherwise 'pip install' will
@@ -407,7 +415,7 @@ else:
                             libraries=libs,
                             library_dirs=lib_dirs,
                             include_dirs=inc_dirs,
-                            runtime_library_dirs=lib_dirs),
+                            runtime_library_dirs=runtime_lib_dirs),
                   Extension('netcdftime._datetime', ['netcdftime/_datetime.c'])]
     ext_modules = extensions
 
