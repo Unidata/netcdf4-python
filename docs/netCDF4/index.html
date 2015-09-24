@@ -2946,16 +2946,16 @@ contain all of the matches. For example, </p>
 </pre></div>
 
 
-<p>Can pass in key=callable parameter and if the callable returns
-True.  The callable should accept a single parameter, the attribute
-value.  None is returned as the attribute value when the attribute
-does not exist on the variable., For example,</p>
+<p>Can pass in key=callable parameter and variables are returned if the
+callable returns True.  The callable should accept a single parameter,
+the attribute value.  None is given as the attribute value when the
+attribute does not exist on the variable. For example,</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get Axis variables</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;Z&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that don&#39;t have a &quot;axis&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that have a &quot;grid_mapping&quot; attribute</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that have a &quot;grid_mapping&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">grid_mapping</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
 </pre></div></div>
   <div class="source_cont">
 </div>
@@ -3988,16 +3988,16 @@ contain all of the matches. For example, </p>
 </pre></div>
 
 
-<p>Can pass in key=callable parameter and if the callable returns
-True.  The callable should accept a single parameter, the attribute
-value.  None is returned as the attribute value when the attribute
-does not exist on the variable., For example,</p>
+<p>Can pass in key=callable parameter and variables are returned if the
+callable returns True.  The callable should accept a single parameter,
+the attribute value.  None is given as the attribute value when the
+attribute does not exist on the variable. For example,</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get Axis variables</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;Z&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that don&#39;t have a &quot;axis&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that have a &quot;grid_mapping&quot; attribute</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that have a &quot;grid_mapping&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">grid_mapping</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
 </pre></div></div>
   <div class="source_cont">
 </div>
@@ -4873,16 +4873,16 @@ contain all of the matches. For example, </p>
 </pre></div>
 
 
-<p>Can pass in key=callable parameter and if the callable returns
-True.  The callable should accept a single parameter, the attribute
-value.  None is returned as the attribute value when the attribute
-does not exist on the variable., For example,</p>
+<p>Can pass in key=callable parameter and variables are returned if the
+callable returns True.  The callable should accept a single parameter,
+the attribute value.  None is given as the attribute value when the
+attribute does not exist on the variable. For example,</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get Axis variables</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;Z&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that don&#39;t have a &quot;axis&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variable that have a &quot;grid_mapping&quot; attribute</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that have a &quot;grid_mapping&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">grid_mapping</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
 </pre></div></div>
   <div class="source_cont">
 </div>
