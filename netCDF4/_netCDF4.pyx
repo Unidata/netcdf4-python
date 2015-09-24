@@ -103,7 +103,7 @@ Tutorial
 7. [Dealing with time coordinates.](#section7)
 8. [Reading data from a multi-file netCDF dataset.](#section8)
 9. [Efficient compression of netCDF variables.](#section9)
-10. [Beyond homogenous arrays of a fixed type - compound data types.](#section10)
+10. [Beyond homogeneous arrays of a fixed type - compound data types.](#section10)
 11. [Variable-length (vlen) data types.](#section11)
 12. [Enum data type.](#section12)
 
@@ -651,7 +651,7 @@ and then
 
 and see how much smaller the resulting files are.
 
-## <div id='section10'>10) Beyond homogenous arrays of a fixed type - compound data types.
+## <div id='section10'>10) Beyond homogeneous arrays of a fixed type - compound data types.
 
 Compound data types map directly to numpy structured (a.k.a 'record'
 arrays).  Structured arrays are akin to C structs, or derived types
@@ -1971,7 +1971,7 @@ dtype object `datatype`.
 
 ***Note***: If the new compound data type contains other compound data types
 (i.e. it is a 'nested' compound type, where not all of the elements
-are homogenous numeric data types), then the 'inner' compound types **must** be
+are homogeneous numeric data types), then the 'inner' compound types **must** be
 created first.
 
 The return value is the `netCDF4.CompoundType` class instance describing the new

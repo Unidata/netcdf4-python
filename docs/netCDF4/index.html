@@ -1343,7 +1343,7 @@ types) are not supported.</p>
 <li><a href="#section7">Dealing with time coordinates.</a></li>
 <li><a href="#section8">Reading data from a multi-file netCDF dataset.</a></li>
 <li><a href="#section9">Efficient compression of netCDF variables.</a></li>
-<li><a href="#section10">Beyond homogenous arrays of a fixed type - compound data types.</a></li>
+<li><a href="#section10">Beyond homogeneous arrays of a fixed type - compound data types.</a></li>
 <li><a href="#section11">Variable-length (vlen) data types.</a></li>
 <li><a href="#section12">Enum data type.</a></li>
 </ol>
@@ -1862,7 +1862,7 @@ sacrificed for the sake of disk space.</p>
 
 
 <p>and see how much smaller the resulting files are.</p>
-<h2><div id='section10'>10) Beyond homogenous arrays of a fixed type - compound data types.</h2>
+<h2><div id='section10'>10) Beyond homogeneous arrays of a fixed type - compound data types.</h2>
 <p>Compound data types map directly to numpy structured (a.k.a 'record'
 arrays).  Structured arrays are akin to C structs, or derived types
 in Fortran. They allow for the construction of table-like structures
@@ -2690,7 +2690,7 @@ parent Dataset instance is garbage collected.</p></div>
 dtype object <code>datatype</code>.</p>
 <p><strong><em>Note</em></strong>: If the new compound data type contains other compound data types
 (i.e. it is a 'nested' compound type, where not all of the elements
-are homogenous numeric data types), then the 'inner' compound types <strong>must</strong> be
+are homogeneous numeric data types), then the 'inner' compound types <strong>must</strong> be
 created first.</p>
 <p>The return value is the <a href="#netCDF4.CompoundType"><code>CompoundType</code></a> class instance describing the new
 datatype.</p></div>
@@ -3700,7 +3700,7 @@ instances, raises IOError.</p></div>
 dtype object <code>datatype</code>.</p>
 <p><strong><em>Note</em></strong>: If the new compound data type contains other compound data types
 (i.e. it is a 'nested' compound type, where not all of the elements
-are homogenous numeric data types), then the 'inner' compound types <strong>must</strong> be
+are homogeneous numeric data types), then the 'inner' compound types <strong>must</strong> be
 created first.</p>
 <p>The return value is the <a href="#netCDF4.CompoundType"><code>CompoundType</code></a> class instance describing the new
 datatype.</p></div>
@@ -4585,7 +4585,7 @@ variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code
 dtype object <code>datatype</code>.</p>
 <p><strong><em>Note</em></strong>: If the new compound data type contains other compound data types
 (i.e. it is a 'nested' compound type, where not all of the elements
-are homogenous numeric data types), then the 'inner' compound types <strong>must</strong> be
+are homogeneous numeric data types), then the 'inner' compound types <strong>must</strong> be
 created first.</p>
 <p>The return value is the <a href="#netCDF4.CompoundType"><code>CompoundType</code></a> class instance describing the new
 datatype.</p></div>
