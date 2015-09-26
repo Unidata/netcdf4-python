@@ -192,6 +192,7 @@ class VariablesTestCase(unittest.TestCase):
         shape = (9,)
         data = v[keys]
         assert_equal(data.shape, shape)
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
