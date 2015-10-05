@@ -127,10 +127,10 @@ class TestgetStartCountStride(unittest.TestCase):
         assert_equal(put_ind, -1)
 
         # test conversion of a integer index array to a slice
-        elem = (np.array([0]))
+        elem = (np.array([0,1]))
         start, count, stride, put_ind = _StartCountStride(elem, (10,))
         assert_equal(start, 0)
-        assert_equal(count, 1)
+        assert_equal(count, 2)
         assert_equal(stride, 1)
         assert_equal(put_ind[:,0], slice(None,None,None))
 
