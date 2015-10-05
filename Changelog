@@ -1,3 +1,10 @@
+ since version 1.2.0
+ ===================
+ * add the capability to slice variables with unsorted integer sequences,
+   or integer sequences with duplicates (issue #467). This was done
+   by converting boolean array slices to integer array slices, instead
+   of the other way around.
+
  version 1.2.0 (tag v1.2.0rel)
  =============================
  * Fixes to setup.py for building on windows (issue #460).
