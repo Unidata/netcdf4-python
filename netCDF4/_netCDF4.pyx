@@ -1,5 +1,5 @@
 """
-Version 1.2.0
+Version 1.2.1
 -------------
 - - - 
 
@@ -502,7 +502,8 @@ Similarly, a netCDF variable of shape `(2,3,4,5)` indexed
 with `[0, array([True, False, True]), array([False, True, True, True]), :]`
 would return a `(2, 3, 5)` array. In NumPy, this would raise an error since
 it would be equivalent to `[0, [0,1], [1,2,3], :]`. When slicing with integer
-sequences, the indices must be sorted in increasing order and contain no duplicates.
+sequences, the indices ***need not be sorted*** and ***may contain
+duplicates*** (both of these are new features in version 1.2.1).
 While this behaviour may cause some confusion for those used to NumPy's 'fancy indexing' rules,
 it provides a very powerful way to extract data from multidimensional netCDF
 variables by using logical operations on the dimension arrays to create slices.
@@ -924,7 +925,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 # Initialize numpy
 import posixpath
