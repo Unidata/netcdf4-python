@@ -289,20 +289,7 @@ Boolean array must have the same shape as the data along this dimension."""
     # number of times the _get method will be called.
     sdim = []; ind_dim = None
     for i, e in enumerate(elem):
-        # integer index array
-        # If multiple sequences are used, they must have the same length.
-        #if np.iterable(e):
-        #    if ind_dim is None:
-        #        sdim.append(np.alen(e))
-        #        ind_dim = i
-        #    elif np.alen(e) == 1 or np.alen(e) == sdim[ind_dim]:
-        #        sdim.append(1)
-        #    else:
-        #        raise IndexError("Indice mismatch. Indices must have the same length.")
-        ## Scalar int or slice, just a single _get call
-        #else:
-        #    sdim.append(1)
-        # at this stage e is a slice, a scalar integer, or a 1d boolean array.
+        # at this stage e is a slice, a scalar integer, or a 1d integer array.
         # integer array:  _get call for each True value
         if np.iterable(e):
             sdim.append(np.alen(e))
@@ -367,14 +354,6 @@ Boolean array must have the same shape as the data along this dimension."""
 
         #    ITERABLE    #
         elif np.iterable(e) and np.array(e).dtype.kind in 'i':  # Sequence of integers
-            #start[...,i] = np.apply_along_axis(lambda x: np.array(e)*x, ind_dim, np.ones(sdim[:-1]))
-            #if i == ind_dim:
-            #    indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, ind_dim, np.ones(sdim[:-1], int))
-            #else:
-            #    indices[...,i] = -1
-            #count[...,i] = 1
-            #stride[...,i] = 1
-
             start[...,i] = np.apply_along_axis(lambda x: e*x, i, np.ones(sdim[:-1]))
             indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
 
