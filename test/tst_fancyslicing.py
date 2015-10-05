@@ -130,7 +130,8 @@ class VariablesTestCase(unittest.TestCase):
         v1 = v[:,[1],:]; v2 = v[:,[3],:]; v3 = v[:,[2],:]
         vcheck = np.concatenate((v1,v2,v3),axis=1)
         assert_array_equal(vcheck,v[:,[1,3,2],:])
-        vcheck = np.concatenate((v1,v2,v2),axis=1)
+        vcheck = np.concatenate((v1,v3,v3),axis=1)
+        assert_array_equal(vcheck,v[:,[1,2,2],:])
 
         # Ellipse
         assert_array_equal(v[...,::2],self.data[..., ::2])
