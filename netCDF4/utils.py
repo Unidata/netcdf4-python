@@ -12,6 +12,8 @@ if python3:
     # no unicode type in python 3, use bytes instead when testing
     # for a string-like object
     unicode = str
+else:
+    range = xrange
 try:
     bytes
 except NameError:
@@ -160,8 +162,6 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     # by Andre Gosselin..
     # Modified by David Huard to handle efficiently fancy indexing with
     # sequences of integers or booleans.
-
-    if not python3: range = xrange
 
     nDims = len(shape)
     if nDims == 0:
