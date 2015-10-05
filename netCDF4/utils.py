@@ -161,6 +161,8 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     # Modified by David Huard to handle efficiently fancy indexing with
     # sequences of integers or booleans.
 
+    if not python3: range = xrange
+
     nDims = len(shape)
     if nDims == 0:
         nDims = 1
@@ -271,6 +273,8 @@ Boolean array must have the same shape as the data along this dimension."""
                 newElem.append(slice(start,stop,step))
             else:
                 newElem.append(e)
+        elif np.iterable(e) and len(e) == 1:
+            newElem.append(slice(e[0], e[0] + 1, 1))
         else:
             newElem.append(e)
     elem = newElem
