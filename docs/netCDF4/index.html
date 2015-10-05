@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Version 1.2.0
+    <meta name="description" content="Version 1.2.1
 -------------
 - - - 
 
@@ -1251,7 +1251,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h2>Version 1.2.0</h2>
+  <h2>Version 1.2.1</h2>
 <hr />
 <h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
@@ -1724,7 +1724,8 @@ Similarly, a netCDF variable of shape <code>(2,3,4,5)</code> indexed
 with <code>[0, array([True, False, True]), array([False, True, True, True]), :]</code>
 would return a <code>(2, 3, 5)</code> array. In NumPy, this would raise an error since
 it would be equivalent to <code>[0, [0,1], [1,2,3], :]</code>. When slicing with integer
-sequences, the indices must be sorted in increasing order and contain no duplicates.
+sequences, the indices <strong><em>need not be sorted</em></strong> and <strong><em>may contain
+duplicates</em></strong> (both of these are new features in version 1.2.1).
 While this behaviour may cause some confusion for those used to NumPy's 'fancy indexing' rules,
 it provides a very powerful way to extract data from multidimensional netCDF
 variables by using logical operations on the dimension arrays to create slices.</p>
