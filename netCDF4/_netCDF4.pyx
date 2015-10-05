@@ -3788,6 +3788,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                     self._assign_vlen(elem, data)
                     return
                 elif data.dtype.kind in ['S', 'U']:
+                    if ma.isMA(data):
+                        msg='masked arrays cannot be assigned by VLEN str slices'
+                        raise TypeError(msg)
                     data = data.astype(object)
                 elif data.dtype.kind != 'O':
                     msg = ('only numpy string, unicode or object arrays can '
