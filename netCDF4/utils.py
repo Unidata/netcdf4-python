@@ -287,7 +287,7 @@ Boolean array must have the same shape as the data along this dimension."""
     # Compute the dimensions of the start, count, stride and indices arrays.
     # The number of elements in the first n dimensions corresponds to the
     # number of times the _get method will be called.
-    sdim = []; ind_dim = None
+    sdim = []
     for i, e in enumerate(elem):
         # at this stage e is a slice, a scalar integer, or a 1d integer array.
         # integer array:  _get call for each True value
