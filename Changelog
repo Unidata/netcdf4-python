@@ -2,8 +2,8 @@
  ================================
  * add the capability to slice variables with unsorted integer sequences,
    or integer sequences with duplicates (issue #467). This was done
-   by converting boolean array slices to integer array slices, instead
-   of the other way around.
+   by converting boolean array slices to integer array slices internally,
+   instead of the other way around.
  * raise TypeError if masked array assigned to a VLEN str variable slice
    (issue #464).
 
