@@ -1,5 +1,5 @@
- since version 1.2.0
- ===================
+ version 1.2.1 (not yet released)
+ ================================
  * add the capability to slice variables with unsorted integer sequences,
    or integer sequences with duplicates (issue #467). This was done
    by converting boolean array slices to integer array slices, instead
