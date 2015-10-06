@@ -4804,9 +4804,15 @@ def _dateparse(timestr):
     isostring = timestr[n:]
     year, month, day, hour, minute, second, utc_offset =\
         _parse_date( isostring.strip() )
-    basedate = datetime(year, month, day, hour, minute, second)
-    # add utc_offset to basedate time instance (which is timezone naive)
-    basedate += timedelta(days=utc_offset/1440.)
+    if year >= MINYEAR:
+        basedate = datetime(year, month, day, hour, minute, second)
+        # add utc_offset to basedate time instance (which is timezone naive)
+        basedate += timedelta(days=utc_offset/1440.)
+    else:
+        if not utc_offset:
+            basedate = netcdftime.datetime(year, month, day, hour, minute, second)
+        else:
+            raise ValueError('cannot use utc_offset for reference years <= 0')
     return basedate
 
 def stringtoarr(string,NUMCHARS,dtype='S'):
@@ -4901,8 +4907,17 @@ Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 
 returns a numeric time value, or an array of numeric time values.
     """
+    calendar = calendar.lower()
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
+    # real-world calendars limited to positive reference years.
+    if calendar in ['julian', 'standard', 'gregorian', 'proleptic_gregorian']:
+        if basedate.year == 0:
+            msg='zero not allowed as a reference year, does not exist in Julian or Gregorian calendars'
+            raise ValueError(msg)
+        elif basedate.year < 0:
+            msg='negative reference year in time units, must be >= 1'
+            raise ValueError(msg)
 
     if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
        (calendar in ['gregorian','standard'] and basedate > gregorian):
@@ -4991,6 +5006,14 @@ contains one.
     calendar = calendar.lower()
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
+    # real-world calendars limited to positive reference years.
+    if calendar in ['julian', 'standard', 'gregorian', 'proleptic_gregorian']:
+        if basedate.year == 0:
+            msg='zero not allowed as a reference year, does not exist in Julian or Gregorian calendars'
+            raise ValueError(msg)
+        elif basedate.year < 0:
+            msg='negative reference year in time units, must be >= 1'
+            raise ValueError(msg)
 
     if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
        (calendar in ['gregorian','standard'] and basedate > gregorian):
@@ -5085,6 +5108,14 @@ to the given datetime object(s).
         calendar = getattr(nctime, 'calendar', 'standard')
     calendar = calendar.lower()
     basedate = _dateparse(nctime.units)
+    # real-world calendars limited to positive reference years.
+    if calendar in ['julian', 'standard', 'gregorian', 'proleptic_gregorian']:
+        if basedate.year == 0:
+            msg='zero not allowed as a reference year, does not exist in Julian or Gregorian calendars'
+            raise ValueError(msg)
+        elif basedate.year < 0:
+            msg='negative reference year in time units, must be >= 1'
+            raise ValueError(msg)
 
     if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
        (calendar in ['gregorian','standard'] and basedate > gregorian):

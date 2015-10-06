@@ -417,6 +417,21 @@ class netcdftimeTestCase(unittest.TestCase):
         t = datetimex(2001, 12, 1, 2, 3, 4)
         self.assertEqual(t, copy.deepcopy(t))
 
+        # issue 442
+        units = "days since 0000-01-01 00:00:00"
+        # this should fail (year zero not allowed with real-world calendars)
+        try:
+            date2num(datetime(1, 1, 1), units, calendar='standard')
+        except ValueError:
+            pass
+        # this should not fail (year zero allowed in 'fake' calendars)
+        t = date2num(datetime(1, 1, 1), units, calendar='360_day')
+        self.assertEqual(t, 360)
+        d = num2date(t, units, calendar='360_day')
+        self.assertEqual(d, datetimex(1,1,1))
+        d = num2date(0, units, calendar='360_day')
+        self.assertEqual(d, datetimex(0,1,1))
+
 class TestDate2index(unittest.TestCase):
 
     class TestTime:
