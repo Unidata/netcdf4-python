@@ -12,6 +12,8 @@ if python3:
     # no unicode type in python 3, use bytes instead when testing
     # for a string-like object
     unicode = str
+else:
+    range = xrange
 try:
     bytes
 except NameError:
@@ -178,7 +180,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     else:   # Convert single index to sequence
         elem = [elem]
 
-    # replace sequence of integer indices with boolean arrays
+    # replace boolean arrays with sequences of integers.
     newElem = []
     IndexErrorMsg=\
     "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
@@ -208,38 +210,29 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
                 unlim = False
         else:
             unlim = False
+        # convert boolean index to integer array.
+        if np.iterable(ea) and ea.dtype.kind =='b':
+            # check that boolen array not too long
+            if not unlim and shape[i] != len(ea):
+                msg="""
+Boolean array must have the same shape as the data along this dimension."""
+                raise IndexError(msg)
+            ea = np.flatnonzero(ea)
         # an iterable (non-scalar) integer array.
         if np.iterable(ea) and ea.dtype.kind == 'i':
             # convert negative indices in 1d array to positive ones.
             ea = np.where(ea < 0, ea + shape[i], ea)
             if np.any(ea < 0):
                 raise IndexErro("integer index out of range")
-            if not np.all(np.diff(ea) > 0): # same but cheaper than np.all(np.unique(ea) == ea)
-                # raise an error when new indexing behavior is different
-                # (i.e. when integer sequence not sorted, or there are
-                # duplicate indices in the sequence)
-                msg = "integer sequences in slices must be sorted and cannot have duplicates"
-                raise IndexError(msg)
-            # convert to boolean array.
-            # if unlim, let boolean array be longer than current dimension
+            # if unlim, let integer index be longer than current dimension
             # length.
-            elen = shape[i]
-            if unlim:
-                elen = max(ea.max()+1,elen)
-            else:
+            if ea.shape != (0,):
+                elen = shape[i]
+                if unlim:
+                    elen = max(ea.max()+1,elen)
                 if ea.max()+1 > elen:
                     msg="integer index exceeds dimension size"
                     raise IndexError(msg)
-            eb = np.zeros(elen,np.bool)
-            eb[ea] = True
-            newElem.append(eb)
-        # an iterable (non-scalar) boolean array
-        elif np.iterable(ea) and ea.dtype.kind =='b':
-            # check that boolen array not too long
-            if not unlim and shape[i] != len(ea):
-                msg="""
-Boolean array must have the same shape as the data along this dimension."""
-                raise IndexError(msg)
             newElem.append(ea)
         # integer scalar
         elif ea.dtype.kind == 'i':
@@ -255,7 +248,7 @@ Boolean array must have the same shape as the data along this dimension."""
                 raise IndexError(IndexErrorMsg)
     elem = newElem
 
-    # replace Ellipsis and boolean arrays with slice objects, if possible.
+    # replace Ellipsis and integer arrays with slice objects, if possible.
     hasEllipsis = False
     newElem = []
     for e in elem:
@@ -267,22 +260,21 @@ Boolean array must have the same shape as the data along this dimension."""
             # The ellipsis stands for the missing dimensions.
             newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
             hasEllipsis = True
-        # Replace boolean array with slice object if possible.
-        elif ea.dtype.kind == 'b':
-            if ea.any():
-                indices = np.flatnonzero(ea)
-                start = indices[0]
-                stop = indices[-1] + 1
-                if len(indices) >= 2:
-                    step = indices[1] - indices[0]
-                else:
-                    step = None
-                if np.array_equal(indices, np.arange(start, stop, step)):
-                    newElem.append(slice(start, stop, step))
-                else:
-                    newElem.append(ea)
+        # Replace sequence of indices with slice object if possible.
+        elif np.iterable(e) and len(e) > 1:
+            start = e[0]
+            stop = e[-1]+1
+            step = e[1]-e[0]
+            try:
+                ee = range(start,stop,step)
+            except ValueError: # start, stop or step is not valid for a range
+                ee = False
+            if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
+                newElem.append(slice(start,stop,step))
             else:
-                newElem.append(slice(0, 0))
+                newElem.append(e)
+        elif np.iterable(e) and len(e) == 1:
+            newElem.append(slice(e[0], e[0] + 1, 1))
         else:
             newElem.append(e)
     elem = newElem
@@ -301,10 +293,10 @@ Boolean array must have the same shape as the data along this dimension."""
     # number of times the _get method will be called.
     sdim = []
     for i, e in enumerate(elem):
-        # at this stage e is a slice, a scalar integer, or a 1d boolean array.
-        # Booleans --- _get call for each True value
-        if np.asarray(e).dtype.kind == 'b':
-            sdim.append(e.sum())
+        # at this stage e is a slice, a scalar integer, or a 1d integer array.
+        # integer array:  _get call for each True value
+        if np.iterable(e):
+            sdim.append(np.alen(e))
         # Scalar int or slice, just a single _get call
         else:
             sdim.append(1)
@@ -364,15 +356,13 @@ Boolean array must have the same shape as the data along this dimension."""
             stride[...,i] = inc
             indices[...,i] = slice(None)
 
-        #    BOOLEAN ITERABLE    #
-        elif ea.dtype.kind == 'b':
-            e = np.arange(len(e))[e] # convert to integer array
+        #    ITERABLE    #
+        elif np.iterable(e) and np.array(e).dtype.kind in 'i':  # Sequence of integers
             start[...,i] = np.apply_along_axis(lambda x: e*x, i, np.ones(sdim[:-1]))
             indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
 
             count[...,i] = 1
             stride[...,i] = 1
-
 
         #   all that's left is SCALAR INTEGER    #
         else:
@@ -442,7 +432,7 @@ def ncinfo():
     usage = """
  Print summary information about a netCDF file.
 
- usage: %s [-h] [-g grp or --group=grp] [-v var or --variable=var] [-d dim or --dimension=dim] filename 
+ usage: %s [-h] [-g grp or --group=grp] [-v var or --variable=var] [-d dim or --dimension=dim] filename
 
  -h -- Print usage message.
  -g <group name> or --group=<group name> -- Print info for this group
@@ -519,7 +509,7 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
     if not quiet: sys.stdout.write('copying global attributes ..\n')
     #for attname in ncfile4.ncattrs():
     #    setattr(ncfile3,attname,getattr(ncfile4,attname))
-    ncfile3.setncatts(ncfile4.__dict__) 
+    ncfile3.setncatts(ncfile4.__dict__)
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile4.dimensions.items():
         if dim.isunlimited():
@@ -530,7 +520,7 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
             ncfile3.createDimension(dimname,len(dim))
     # create variables.
     for varname,ncvar in ncfile4.variables.items():
-        if not quiet: 
+        if not quiet:
             sys.stdout.write('copying variable %s\n' % varname)
         # is there an unlimited dimension?
         if unlimdimname and unlimdimname in ncvar.dimensions:
@@ -540,11 +530,11 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
         if hasattr(ncvar, '_FillValue'):
             FillValue = ncvar._FillValue
         else:
-            FillValue = None 
+            FillValue = None
         var = ncfile3.createVariable(varname,ncvar.dtype,ncvar.dimensions,fill_value=FillValue)
         # fill variable attributes.
     attdict = ncvar.__dict__
-    if '_FillValue' in attdict: 
+    if '_FillValue' in attdict:
         del attdict['_FillValue']
     var.setncatts(attdict)
     #for attname in ncvar.ncattrs():
@@ -555,11 +545,11 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
         # range to copy
         if nchunk:
             start = 0; stop = len(unlimdim); step = nchunk
-            if step < 1: 
+            if step < 1:
                 step = 1
             for n in range(start, stop, step):
                 nmax = n+nchunk
-                if nmax > len(unlimdim): 
+                if nmax > len(unlimdim):
                     nmax=len(unlimdim)
                 var[n:nmax] = ncvar[n:nmax]
         else:
@@ -580,8 +570,8 @@ def nc4tonc3():
  -o -- Overwite destination file (default is to raise an error if output file already exists).
  --quiet=(0|1)  -- if 1, don't print diagnostic information.
  --format -- netcdf3 format to use (NETCDF3_64BIT by default, can be set to NETCDF3_CLASSIC)
- --chunk=(integer) -- number of records along unlimited dimension to 
-     write at once.  Default 10.  Ignored if there is no unlimited 
+ --chunk=(integer) -- number of records along unlimited dimension to
+     write at once.  Default 10.  Ignored if there is no unlimited
      dimension.  chunk=0 means write all the data at once.
 \n""" % os.path.basename(sys.argv[0])
 
@@ -645,13 +635,13 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
     corresponding to the keys of the dict will be truncated to the decimal place
     specified by the values of the dict.  This improves compression by
     making it 'lossy'..
-    If vars is not None, only variable names in the list 
+    If vars is not None, only variable names in the list
     will be copied (plus all the dimension variables).
     The zlib, complevel and shuffle keywords control
     how the compression is done."""
 
     from netCDF4 import Dataset
-    
+
     ncfile3 = Dataset(filename3,'r')
     if classic:
         ncfile4 = Dataset(filename4,'w',clobber=clobber,format='NETCDF4_CLASSIC')
@@ -665,7 +655,7 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
     if not quiet: sys.stdout.write('copying global attributes ..\n')
     #for attname in ncfile3.ncattrs():
     #    setattr(ncfile4,attname,getattr(ncfile3,attname))
-    ncfile4.setncatts(ncfile3.__dict__) 
+    ncfile4.setncatts(ncfile3.__dict__)
     if not quiet: sys.stdout.write('copying dimensions ..\n')
     for dimname,dim in ncfile3.dimensions.items():
         if dim.isunlimited():
@@ -713,16 +703,16 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
         if hasattr(ncvar, '_FillValue'):
             FillValue = ncvar._FillValue
         else:
-            FillValue = None 
+            FillValue = None
         var = ncfile4.createVariable(varname,datatype,ncvar.dimensions, fill_value=FillValue, least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
         # fill variable attributes.
         attdict = ncvar.__dict__
         if '_FillValue' in attdict: del attdict['_FillValue']
-        if dounpackshort and 'add_offset' in attdict: 
+        if dounpackshort and 'add_offset' in attdict:
             del attdict['add_offset']
-        if dounpackshort and 'scale_factor' in attdict: 
+        if dounpackshort and 'scale_factor' in attdict:
             del attdict['scale_factor']
-        if dounpackshort and 'missing_value' in attdict: 
+        if dounpackshort and 'missing_value' in attdict:
             attdict['missing_value']=mval
         var.setncatts(attdict)
         #for attname in ncvar.ncattrs():
@@ -800,12 +790,12 @@ def nc3tonc4():
      and 'temp' to 1. This can significantly improve compression. The default
      is not to quantize any of the variables.
  --quiet=(0|1)  -- if 1, don't print diagnostic information.
- --chunk=(integer) -- number of records along unlimited dimension to 
-     write at once.  Default 10.  Ignored if there is no unlimited 
+ --chunk=(integer) -- number of records along unlimited dimension to
+     write at once.  Default 10.  Ignored if there is no unlimited
      dimension.  chunk=0 means write all the data at once.
- --istart=(integer) -- number of record to start at along unlimited dimension. 
+ --istart=(integer) -- number of record to start at along unlimited dimension.
      Default 0.  Ignored if there is no unlimited dimension.
- --istop=(integer) -- number of record to stop at along unlimited dimension. 
+ --istop=(integer) -- number of record to stop at along unlimited dimension.
      Default -1.  Ignored if there is no unlimited dimension.
 \n""" % os.path.basename(sys.argv[0])
 

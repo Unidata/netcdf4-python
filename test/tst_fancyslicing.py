@@ -125,15 +125,13 @@ class VariablesTestCase(unittest.TestCase):
             False,False,False])
         assert_array_equal(v[:,iby,ibz],self.data[:,0:1,1:2])
 
-        # test to see that illegal integer sequences raise an IndexError
-        try:
-            v[:,[1,3,2],:] # unsorted indices
-            v[:,[1,2,2],:] # duplicate index
-        except IndexError:
-            pass
-        else:
-            msg='did not catch error for unsorted and/or duplicate indices'
-            raise IndexError(msg)
+        # check slicing with unsorted integer sequences
+        # and integer sequences with duplicate elements.
+        v1 = v[:,[1],:]; v2 = v[:,[3],:]; v3 = v[:,[2],:]
+        vcheck = np.concatenate((v1,v2,v3),axis=1)
+        assert_array_equal(vcheck,v[:,[1,3,2],:])
+        vcheck = np.concatenate((v1,v3,v3),axis=1)
+        assert_array_equal(vcheck,v[:,[1,2,2],:])
 
         # Ellipse
         assert_array_equal(v[...,::2],self.data[..., ::2])
