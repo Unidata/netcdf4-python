@@ -6,6 +6,8 @@
    instead of the other way around.
  * raise TypeError if masked array assigned to a VLEN str variable slice
    (issue #464).
+ * Allow non-positive reference years in non-real-world calendars
+   (issue #442).
 
  version 1.2.0 (tag v1.2.0rel)
  =============================

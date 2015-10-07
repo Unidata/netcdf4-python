@@ -23,7 +23,7 @@ _units = microsec_units+millisec_units+sec_units+min_units+hr_units+day_units
 _calendars = ['standard', 'gregorian', 'proleptic_gregorian',
               'noleap', 'julian', 'all_leap', '365_day', '366_day', '360_day']
 
-__version__ = '1.4'
+__version__ = '1.4.1'
 
 # Adapted from http://delete.me.uk/2005/03/iso8601.html
 ISO8601_REGEX = re.compile(r"(?P<year>[+-]?[0-9]{1,4})(-(?P<month>[0-9]{1,2})(-(?P<day>[0-9]{1,2})"
@@ -664,6 +664,14 @@ units to datetime objects.
             raise ValueError(
                 "calendar must be one of %s, got '%s'" % (str(_calendars), calendar))
         units, tzoffset, self.origin = _dateparse(unit_string)
+        # real-world calendars limited to positive reference years.
+        if self.calendar in ['julian', 'standard', 'gregorian', 'proleptic_gregorian']:
+            if self.origin.year == 0:
+                msg='zero not allowed as a reference year, does not exist in Julian or Gregorian calendars'
+                raise ValueError(msg)
+            elif self.origin.year < 0:
+                msg='negative reference year in time units, must be >= 1'
+                raise ValueError(msg)
         self.tzoffset = tzoffset  # time zone offset in minutes
         self.units = units
         self.unit_string = unit_string
@@ -901,12 +909,6 @@ def _parse_date(datestring):
     # else:
     #    groups["fraction"] = int(float("0.%s" % groups["fraction"]) * 1e6)
     iyear = int(groups["year"])
-    if iyear == 0:
-        msg='zero not allowed as a reference year, does not exist in Julian or Gregorian calendars'
-        raise ValueError(msg)
-    elif iyear < 0:
-        msg='negative reference year in time units, must be >= 1'
-        raise ValueError(msg)
     return iyear, int(groups["month"]), int(groups["day"]),\
         int(groups["hour"]), int(groups["minute"]), int(groups["second"]),\
         tzoffset_mins
@@ -1002,7 +1004,7 @@ def date2index(dates, nctime, calendar=None, select='exact'):
     an exact match cannot be found. C{nearest} will return the indices that
     correpond to the closest dates.
     """
-    try: 
+    try:
         nctime.units
     except AttributeError:
         raise AttributeError("netcdf time variable is missing a 'units' attribute")
@@ -1040,7 +1042,7 @@ def time2index(times, nctime, calendar=None, select='exact'):
     an exact match cannot be found. C{nearest} will return the indices that
     correpond to the closest times.
     """
-    try: 
+    try:
         nctime.units
     except AttributeError:
         raise AttributeError("netcdf time variable is missing a 'units' attribute")
