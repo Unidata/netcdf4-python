@@ -16,6 +16,7 @@ VAR1_NAME = 'ragged'
 VAR2_NAME = 'strings'
 VAR3_NAME = 'strings_alt'
 VAR4_NAME = 'string_scalar'
+VAR5_NAME = 'vlen_scalar'
 data = np.empty(nlats*nlons,object)
 datas = np.empty(nlats*nlons,object)
 nn = 0
@@ -42,12 +43,14 @@ class VariablesTestCase(unittest.TestCase):
         strings_alt = f.createVariable(VAR3_NAME, datas.astype(str).dtype,
                                        (DIM2_NAME, DIM1_NAME))
         string_scalar = f.createVariable(VAR4_NAME,str,())
+        vlen_scalar = f.createVariable(VAR5_NAME,vlen_t,())
         ragged[:] = data
         ragged[-1,-1] = data[-1,-1]
         strings[:] = datas
         strings[-2,-2] = datas[-2,-2]
         strings_alt[:] = datas.astype(str)
         string_scalar[...] = 'foo'  #issue458
+        vlen_scalar[...] = np.array([1,2,3],np.int16)
         f.close()
 
     def tearDown(self):
@@ -63,6 +66,7 @@ class VariablesTestCase(unittest.TestCase):
         assert list(f.vltypes.keys()) == [VL_NAME]
         assert f.vltypes[VL_NAME].dtype == VL_BASETYPE
         assert f.variables['string_scalar'][...] == 'foo'
+        assert_array_equal(f.variables['vlen_scalar'][...],np.array([1,2,3],np.int16))
         data2 = v[:]
         data2s = vs[:]
         for i in range(nlons):
