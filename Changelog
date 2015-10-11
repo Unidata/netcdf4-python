@@ -6,6 +6,7 @@
    instead of the other way around.
  * raise TypeError if masked array assigned to a VLEN str variable slice
    (issue #464).
+ * Ellipsis now can be used with scalar VLEN variables (issue #458).
  * Allow non-positive reference years in non-real-world calendars
    (issue #442).
 
