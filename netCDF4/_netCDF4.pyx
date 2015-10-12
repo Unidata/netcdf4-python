@@ -3810,8 +3810,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 if not hasattr(data,'ndim') or data.dtype.kind != 'O':
                     # issue 458, allow Ellipsis to be used for scalar var
                     if type(elem) == type(Ellipsis) and not\
-                       len(self.dimensions):
-                       elem = 0
+                       len(self.dimensions): elem = 0
                     self._assign_vlen(elem, data)
                     return
 
