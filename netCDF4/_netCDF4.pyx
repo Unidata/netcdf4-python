@@ -3563,7 +3563,11 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 data = datout
             else:
                 shape = getattr(data[tuple(i)], 'shape', ())
-                data[tuple(i)] = datout.reshape(shape)
+                if self._isvlen and not len(self.dimensions):
+                    # special case of scalar VLEN
+                    data[0] = datout
+                else:
+                    data[tuple(i)] = datout.reshape(shape)
 
         # Remove extra singleton dimensions.
         if hasattr(data,'shape'):
@@ -3785,6 +3789,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # assume it is a python string and raise an error
                 # if it is an array, but not an object array.
                 if not hasattr(data,'ndim'):
+                    # issue 458, allow Ellipsis to be used for scalar var
+                    if type(elem) == type(Ellipsis) and not\
+                       len(self.dimensions): elem = 0
                     self._assign_vlen(elem, data)
                     return
                 elif data.dtype.kind in ['S', 'U']:
@@ -3801,6 +3808,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # not an object array, assume it represents a single element
                 # of the vlen var.
                 if not hasattr(data,'ndim') or data.dtype.kind != 'O':
+                    # issue 458, allow Ellipsis to be used for scalar var
+                    if type(elem) == type(Ellipsis) and not\
+                       len(self.dimensions): elem = 0
                     self._assign_vlen(elem, data)
                     return
 
