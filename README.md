@@ -7,6 +7,9 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+10/15/2015: Version [1.2.1](https://pypi.python.org/pypi/netCDF4/1.2.1) released. Adds the ability
+to slice Variables with unsorted integer sequences, and integer sequences with duplicates.
+
 9/23/2015: Version [1.2.0](https://pypi.python.org/pypi/netCDF4/1.2.0) released. New features:
 
 * [get_variables_by_attributes](http://unidata.github.io/netcdf4-python/#netCDF4.Dataset.get_variables_by_attributes) 
