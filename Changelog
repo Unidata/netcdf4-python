@@ -1,3 +1,7 @@
+ since version 1.2.1
+ ===================
+ * fix bug in nc3tonc4 with --unpackshort=1 is used (issue 474).
+
  version 1.2.1 (tag v1.2.1rel)
  =============================
  * add the capability to slice variables with unsorted integer sequences,
