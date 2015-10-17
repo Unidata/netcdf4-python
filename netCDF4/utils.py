@@ -735,7 +735,7 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
                     if dounpackshort:
                         tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
                         if hasattr(ncvar,'missing_value'):
-                            tmpdata = numpy.where(idata == ncvar.missing_value, mval, tmpdata)
+                            tmpdata = np.where(idata == ncvar.missing_value, mval, tmpdata)
                     else:
                         tmpdata = idata
                     var[n-istart:nmax-istart] = tmpdata
@@ -744,7 +744,7 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
                 if dounpackshort:
                     tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
                     if hasattr(ncvar,'missing_value'):
-                        tmpdata = numpy.where(idata == ncvar.missing_value, mval, tmpdata)
+                        tmpdata = np.where(idata == ncvar.missing_value, mval, tmpdata)
                 else:
                     tmpdata = idata
                 var[0:len(unlimdim)] = tmpdata
@@ -753,7 +753,7 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
             if dounpackshort:
                 tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
                 if hasattr(ncvar,'missing_value'):
-                    tmpdata = numpy.where(idata == ncvar.missing_value, mval, tmpdata)
+                    tmpdata = np.where(idata == ncvar.missing_value, mval, tmpdata)
             else:
                 tmpdata = idata
             var[:] = tmpdata
