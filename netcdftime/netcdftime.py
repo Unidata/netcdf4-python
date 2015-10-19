@@ -112,7 +112,6 @@ def JulianDayFromDate(date, calendar='standard'):
         #     raise ValueError(
         #         'impossible date (falls in gap between end of Julian calendar and beginning of Gregorian calendar')
         if np.any((jd >= 2299160.5) & (jd < 2299170.5)): # missing days in Gregorian calendar
-            print(date, calendar, jd)
             raise ValueError(
                 'impossible date (falls in gap between end of Julian calendar and beginning of Gregorian calendar')
         B = np.zeros(len(jd))             # 1582 October 5 (Julian Calendar)

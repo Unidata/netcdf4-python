@@ -1,6 +1,7 @@
  since version 1.2.1
  ===================
  * fix bug in nc3tonc4 with --unpackshort=1 (issue 474).
+ * dates do not have to be contiguous, i.e. can be before and after the missing dates in Gregorian calendar
 
  version 1.2.1 (tag v1.2.1rel)
  =============================
