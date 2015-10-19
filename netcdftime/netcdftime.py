@@ -86,7 +86,9 @@ def JulianDayFromDate(date, calendar='standard'):
     month[month_lt_3] = month[month_lt_3] + 12
     year[month_lt_3] = year[month_lt_3] - 1
 
-    A = np.int64(year / 100)
+    # MC - assure array
+    # A = np.int64(year / 100)
+    A = (year / 100).astype(np.int64)
 
     # MC
     # jd = int(365.25 * (year + 4716)) + int(30.6001 * (month + 1)) + \
@@ -98,15 +100,25 @@ def JulianDayFromDate(date, calendar='standard'):
     # the Julian to Gregorian Calendar
     # here assumed to have occurred the day after 1582 October 4
     if calendar in ['standard', 'gregorian']:
-        if np.min(jd) >= 2299170.5:
-            # 1582 October 15 (Gregorian Calendar)
-            B = 2 - A + np.int32(A / 4)
-        elif np.max(jd) < 2299160.5:
-            # 1582 October 5 (Julian Calendar)
-            B = np.zeros(len(jd))
-        else:
+        # MC - do not have to be contiguous dates
+        # if np.min(jd) >= 2299170.5:
+        #     # 1582 October 15 (Gregorian Calendar)
+        #     B = 2 - A + np.int32(A / 4)
+        # elif np.max(jd) < 2299160.5:
+        #     # 1582 October 5 (Julian Calendar)
+        #     B = np.zeros(len(jd))
+        # else:
+        #     print(date, calendar, jd)
+        #     raise ValueError(
+        #         'impossible date (falls in gap between end of Julian calendar and beginning of Gregorian calendar')
+        if np.any((jd >= 2299160.5) & (jd < 2299170.5)): # missing days in Gregorian calendar
+            print(date, calendar, jd)
             raise ValueError(
                 'impossible date (falls in gap between end of Julian calendar and beginning of Gregorian calendar')
+        B = np.zeros(len(jd))             # 1582 October 5 (Julian Calendar)
+        ii = np.where(jd >= 2299170.5)[0] # 1582 October 15 (Gregorian Calendar)
+        if ii.size>0:
+            B[ii] = 2 - A[ii] + np.int32(A[ii] / 4)
     elif calendar == 'proleptic_gregorian':
         B = 2 - A + np.int32(A / 4)
     elif calendar == 'julian':
