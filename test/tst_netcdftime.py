@@ -432,6 +432,24 @@ class netcdftimeTestCase(unittest.TestCase):
         d = num2date(0, units, calendar='360_day')
         self.assertEqual(d, datetimex(0,1,1))
 
+        # list around missing dates in Gregorian calendar
+        # scalar
+        units = 'days since 0001-01-01 12:00:00'
+        t1 = date2num(datetime(1582, 10, 4), units, calendar='gregorian')
+        t2 = date2num(datetime(1582, 10, 15), units, calendar='gregorian')
+        self.assertEqual(t1+1, t2)
+        # list
+        t1, t2 = date2num([datetime(1582, 10, 4), datetime(1582, 10, 15)], units, calendar='gregorian')
+        self.assertEqual(t1+1, t2)
+        t1, t2 = date2num([datetime(1582, 10, 4), datetime(1582, 10, 15)], units, calendar='standard')
+        self.assertEqual(t1+1, t2)
+        # this should fail: days missing in Gregorian calendar
+        try:
+            t1, t2, t3 = date2num([datetime(1582, 10, 4), datetime(1582, 10, 10), datetime(1582, 10, 15)], units, calendar='standard')
+        except ValueError:
+            pass
+
+
 class TestDate2index(unittest.TestCase):
 
     class TestTime:
