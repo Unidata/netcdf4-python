@@ -1,5 +1,7 @@
- since version 1.2.1
- ===================
+ version 1.2.2 (not yet released)
+ ================================
+ * add 'size' attribute to Dimension (same as len(d), where
+   d is a Dimension instance, issue #477).
  * fix bug in nc3tonc4 with --unpackshort=1 (issue #474).
  * dates do not have to be contiguous, i.e. can be before and after the 
    missing dates in Gregorian calendar (pull request #476).

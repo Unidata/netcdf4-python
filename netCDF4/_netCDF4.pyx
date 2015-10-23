@@ -1,5 +1,5 @@
 """
-Version 1.2.1
+Version 1.2.2
 -------------
 - - - 
 
@@ -925,7 +925,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 
 # Initialize numpy
 import posixpath
@@ -2565,6 +2565,9 @@ Read-only class variables:
 
 **`name`**: String name, used when creating a `netCDF4.Variable` with
 `netCDF4.Dataset.createVariable`.
+
+**`size`**: Current `netCDF4.Dimension` size (same as `len(d)`, where `d` is a
+`netCDF4.Dimension` instance).
     """
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
@@ -2633,6 +2636,13 @@ Read-only class variables:
             return self._getname()
         def __set__(self,value):
             raise AttributeError("name cannot be altered")
+
+    property size:
+        """current size of Dimension (calls `len` on Dimension instance)"""
+        def __get__(self):
+            return len(self)
+        def __set__(self,value):
+            raise AttributeError("size cannot be altered")
 
     def __repr__(self):
         if python3:
