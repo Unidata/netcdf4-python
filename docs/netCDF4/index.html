@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Version 1.2.1
+    <meta name="description" content="Version 1.2.2
 -------------
 - - - 
 
@@ -865,6 +865,7 @@ table {
 .codehilite .err { border: 1px solid #FF0000 } /* Error */
 .codehilite .k { color: #008000; font-weight: bold } /* Keyword */
 .codehilite .o { color: #666666 } /* Operator */
+.codehilite .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
 .codehilite .cm { color: #408080; font-style: italic } /* Comment.Multiline */
 .codehilite .cp { color: #BC7A00 } /* Comment.Preproc */
 .codehilite .c1 { color: #408080; font-style: italic } /* Comment.Single */
@@ -1251,7 +1252,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h2>Version 1.2.1</h2>
+  <h2>Version 1.2.2</h2>
 <hr />
 <h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
@@ -1556,7 +1557,7 @@ used later to access and set variable data and attributes.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">levels</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;level&quot;</span><span class="p">,</span><span class="s">&quot;i4&quot;</span><span class="p">,(</span><span class="s">&quot;level&quot;</span><span class="p">,))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">latitudes</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;latitude&quot;</span><span class="p">,</span><span class="s">&quot;f4&quot;</span><span class="p">,(</span><span class="s">&quot;lat&quot;</span><span class="p">,))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">longitudes</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;longitude&quot;</span><span class="p">,</span><span class="s">&quot;f4&quot;</span><span class="p">,(</span><span class="s">&quot;lon&quot;</span><span class="p">,))</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># two dimensions unlimited</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># two dimensions unlimited</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;temp&quot;</span><span class="p">,</span><span class="s">&quot;f4&quot;</span><span class="p">,(</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="s">&quot;level&quot;</span><span class="p">,</span><span class="s">&quot;lat&quot;</span><span class="p">,</span><span class="s">&quot;lon&quot;</span><span class="p">,))</span>
 </pre></div>
 
@@ -1580,13 +1581,13 @@ used later to access and set variable data and attributes.</p>
 <p>If the intermediate groups do not yet exist, they will be created.</p>
 <p>You can also query a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance directly to obtain <a href="#netCDF4.Group"><code>Group</code></a> or 
 <a href="#netCDF4.Variable"><code>Variable</code></a> instances using paths.</p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="p">[</span><span class="s">&quot;/forecasts/model1&quot;</span><span class="p">]</span> <span class="c"># a Group instance</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="p">[</span><span class="s">&quot;/forecasts/model1&quot;</span><span class="p">]</span> <span class="c1"># a Group instance</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s">&quot;netCDF4._netCDF4.Group&quot;</span><span class="o">&gt;</span>
 <span class="n">group</span> <span class="o">/</span><span class="n">forecasts</span><span class="o">/</span><span class="n">model1</span><span class="p">:</span>
     <span class="n">dimensions</span><span class="p">(</span><span class="n">sizes</span><span class="p">):</span>
     <span class="n">variables</span><span class="p">(</span><span class="n">dimensions</span><span class="p">):</span> <span class="n">float32</span> <span class="n">temp</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="n">level</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">)</span>
     <span class="n">groups</span><span class="p">:</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="p">[</span><span class="s">&quot;/forecasts/model1/temp&quot;</span><span class="p">]</span> <span class="c"># a Variable instance</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="p">[</span><span class="s">&quot;/forecasts/model1/temp&quot;</span><span class="p">]</span> <span class="c1"># a Variable instance</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s">&quot;netCDF4._netCDF4.Variable&quot;</span><span class="o">&gt;</span>
 <span class="n">float32</span> <span class="n">temp</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 <span class="n">path</span> <span class="o">=</span> <span class="o">/</span><span class="n">forecasts</span><span class="o">/</span><span class="n">model1</span>
@@ -1681,7 +1682,7 @@ into it? You can just treat it like an array and assign data to a slice.</p>
 <p>Unlike NumPy's array objects, netCDF <a href="#netCDF4.Variable"><code>Variable</code></a>
 objects with unlimited dimensions will grow along those dimensions if you
 assign data outside the currently defined range of indices.</p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># append along two unlimited dimensions by assigning to slice.</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># append along two unlimited dimensions by assigning to slice.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nlats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s">&quot;lat&quot;</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nlons</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s">&quot;lon&quot;</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">&quot;temp shape before adding data = &quot;</span><span class="p">,</span><span class="n">temp</span><span class="o">.</span><span class="n">shape</span>
@@ -1692,7 +1693,7 @@ assign data outside the currently defined range of indices.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">&quot;temp shape after adding data = &quot;</span><span class="p">,</span><span class="n">temp</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">temp</span> <span class="n">shape</span> <span class="n">after</span> <span class="n">adding</span> <span class="n">data</span> <span class="o">=</span>  <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">144</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># levels have grown, but no values yet assigned.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># levels have grown, but no values yet assigned.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="s">&quot;levels shape after adding pressure data = &quot;</span><span class="p">,</span><span class="n">levels</span><span class="o">.</span><span class="n">shape</span>
 <span class="n">levels</span> <span class="n">shape</span> <span class="n">after</span> <span class="n">adding</span> <span class="n">pressure</span> <span class="n">data</span> <span class="o">=</span>  <span class="p">(</span><span class="mi">10</span><span class="p">,)</span>
 </pre></div>
@@ -1701,7 +1702,7 @@ assign data outside the currently defined range of indices.</p>
 <p>Note that the size of the levels variable grows when data is appended
 along the <code>level</code> dimension of the variable <code>temp</code>, even though no
 data has yet been assigned to levels.</p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># now, assign data to levels dimension variable.</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># now, assign data to levels dimension variable.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">levels</span><span class="p">[:]</span> <span class="o">=</span>  <span class="p">[</span><span class="mf">1000.</span><span class="p">,</span><span class="mf">850.</span><span class="p">,</span><span class="mf">700.</span><span class="p">,</span><span class="mf">500.</span><span class="p">,</span><span class="mf">300.</span><span class="p">,</span><span class="mf">250.</span><span class="p">,</span><span class="mf">200.</span><span class="p">,</span><span class="mf">150.</span><span class="p">,</span><span class="mf">100.</span><span class="p">,</span><span class="mf">50.</span><span class="p">]</span>
 </pre></div>
 
@@ -1754,7 +1755,7 @@ awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The functione called <a href="#netCDF4.num2date"><code>num2date</code></a> and <a href="#netCDF4.date2num"><code>date2num</code></a> are
 provided with this package to do just that.  Here's an example of how they
 can be used:</p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># fill in times.</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># fill in times.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">num2date</span><span class="p">,</span> <span class="n">date2num</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">n</span><span class="o">*</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
@@ -1878,30 +1879,30 @@ are created from the corresponding numpy data type using the
 Since there is no native complex data type in netcdf, compound types are handy
 for storing numpy complex arrays.  Here's an example:</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&quot;complex.nc&quot;</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span> <span class="c"># length of 1-d complex array</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># create sample complex data.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1"># length of 1-d complex array</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create sample complex data.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">datac</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1j</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">size</span><span class="p">)))</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># create complex128 compound data type.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create complex128 compound data type.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">complex128</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s">&quot;real&quot;</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">),(</span><span class="s">&quot;imag&quot;</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">complex128_t</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createCompoundType</span><span class="p">(</span><span class="n">complex128</span><span class="p">,</span><span class="s">&quot;complex128&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># create a variable with this data type, write some data to it.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a variable with this data type, write some data to it.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&quot;x_dim&quot;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;cmplx_var&quot;</span><span class="p">,</span><span class="n">complex128_t</span><span class="p">,</span><span class="s">&quot;x_dim&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">complex128</span><span class="p">)</span> <span class="c"># numpy structured array</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">complex128</span><span class="p">)</span> <span class="c1"># numpy structured array</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">data</span><span class="p">[</span><span class="s">&quot;real&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datac</span><span class="o">.</span><span class="n">real</span><span class="p">;</span> <span class="n">data</span><span class="p">[</span><span class="s">&quot;imag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datac</span><span class="o">.</span><span class="n">imag</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span> <span class="c"># write numpy structured array to netcdf compound var</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># close and reopen the file, check the contents.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span> <span class="c1"># write numpy structured array to netcdf compound var</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># close and reopen the file, check the contents.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">();</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&quot;complex.nc&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&quot;cmplx_var&quot;</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">datain</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:]</span> <span class="c"># read in all the data into a numpy structured array</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># create an empty numpy complex array</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datain</span> <span class="o">=</span> <span class="n">v</span><span class="p">[:]</span> <span class="c1"># read in all the data into a numpy structured array</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create an empty numpy complex array</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">datac2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">datain</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># .. fill it with contents of structured array.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># .. fill it with contents of structured array.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">datac2</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">datain</span><span class="p">[</span><span class="s">&quot;real&quot;</span><span class="p">];</span> <span class="n">datac2</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="n">datain</span><span class="p">[</span><span class="s">&quot;imag&quot;</span><span class="p">]</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">datac</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span><span class="n">datac</span> <span class="c"># original data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">datac</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span><span class="n">datac</span> <span class="c1"># original data</span>
 <span class="n">complex128</span> <span class="p">[</span> <span class="mf">0.54030231</span><span class="o">+</span><span class="mf">0.84147098j</span> <span class="o">-</span><span class="mf">0.84147098</span><span class="o">+</span><span class="mf">0.54030231j</span>  <span class="o">-</span><span class="mf">0.54030231</span><span class="o">-</span><span class="mf">0.84147098j</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">datac2</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span><span class="n">datac2</span> <span class="c"># data from file</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">datac2</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span><span class="n">datac2</span> <span class="c1"># data from file</span>
 <span class="n">complex128</span> <span class="p">[</span> <span class="mf">0.54030231</span><span class="o">+</span><span class="mf">0.84147098j</span> <span class="o">-</span><span class="mf">0.84147098</span><span class="o">+</span><span class="mf">0.54030231j</span>  <span class="o">-</span><span class="mf">0.54030231</span><span class="o">-</span><span class="mf">0.84147098j</span><span class="p">]</span>
 </pre></div>
 
@@ -2036,12 +2037,12 @@ The base integer data type and a python dictionary describing the allowed
 values and their names are used to define an Enum data type using
 <a href="#netCDF4.Dataset.createEnumType"><code>createEnumType</code></a>.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;clouds.nc&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># python dict with allowed values and their names.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># python dict with allowed values and their names.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">u&#39;Altocumulus&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s">u&#39;Missing&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span> 
 <span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;Stratus&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">u&#39;Clear&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;Nimbostratus&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s">u&#39;Cumulus&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">u&#39;Altostratus&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="s">u&#39;Cumulonimbus&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;Stratocumulus&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># create the Enum type called &#39;cloud_t&#39;.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create the Enum type called &#39;cloud_t&#39;.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_type</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createEnumType</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span><span class="s">&#39;cloud_t&#39;</span><span class="p">,</span><span class="n">enum_dict</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">cloud_type</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;netCDF4._netCDF4.EnumType&#39;</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;cloud_t&#39;</span><span class="p">,</span>
@@ -2059,17 +2060,17 @@ cloud types in enum_dict. A <code>ValueError</code> will be raised if an attempt
 is made to write an integer value not associated with one of the
 specified names.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">time</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># create a 1d variable of type &#39;cloud_type&#39;.</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># The fill_value is set to the &#39;Missing&#39; named value.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a 1d variable of type &#39;cloud_type&#39;.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># The fill_value is set to the &#39;Missing&#39; named value.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_var</span> <span class="o">=</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;primary_cloud&#39;</span><span class="p">,</span><span class="n">cloud_type</span><span class="p">,</span><span class="s">&#39;time&#39;</span><span class="p">,</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Missing&#39;</span><span class="p">])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># write some data to the variable.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># write some data to the variable.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Clear&#39;</span><span class="p">],</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Stratus&#39;</span><span class="p">],</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Cumulus&#39;</span><span class="p">],</span><span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Missing&#39;</span><span class="p">],</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span><span class="p">[</span><span class="s">&#39;Cumulonimbus&#39;</span><span class="p">]]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># reopen the file, read the data.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># reopen the file, read the data.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;clouds.nc&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&#39;primary_cloud&#39;</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">cloud_var</span>
@@ -2940,9 +2941,9 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
     <div class="desc"><p>Returns a list of variables that match specific conditions.</p>
 <p>Can pass in key=value parameters and variables are returned that
 contain all of the matches. For example, </p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with x-axis attribute.</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with x-axis attribute.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with matching &quot;standard_name&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with matching &quot;standard_name&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;northward_sea_water_velocity&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -2951,11 +2952,11 @@ contain all of the matches. For example, </p>
 callable returns True.  The callable should accept a single parameter,
 the attribute value.  None is given as the attribute value when the
 attribute does not exist on the variable. For example,</p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get Axis variables</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get Axis variables</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;Z&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that have a &quot;grid_mapping&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables that have a &quot;grid_mapping&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">grid_mapping</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
 </pre></div></div>
   <div class="source_cont">
@@ -3235,7 +3236,9 @@ calling the python <code>len</code> function on the <a href="#netCDF4.Dimension"
 determine if the dimension is unlimited.</p>
 <p>Read-only class variables:</p>
 <p><strong><code>name</code></strong>: String name, used when creating a <a href="#netCDF4.Variable"><code>Variable</code></a> with
-<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a>.</p></div>
+<a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a>.</p>
+<p><strong><code>size</code></strong>: Current <a href="#netCDF4.Dimension"><code>Dimension</code></a> size (same as <code>len(d)</code>, where <code>d</code> is a
+<a href="#netCDF4.Dimension"><code>Dimension</code></a> instance).</p></div>
   <div class="source_cont">
 </div>
 
@@ -3255,6 +3258,16 @@ determine if the dimension is unlimited.</p>
   
     <div class="desc"><p>A string describing the name of the <a href="#netCDF4.Dimension"><code>Dimension</code></a> - used when creating a
 <a href="#netCDF4.Variable"><code>Variable</code></a> instance with <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a>.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="netCDF4.Dimension.size" class="name">var <span class="ident">size</span></p>
+            
+
+            
+  
   <div class="source_cont">
 </div>
 
@@ -3982,9 +3995,9 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
     <div class="desc inherited"><p>Returns a list of variables that match specific conditions.</p>
 <p>Can pass in key=value parameters and variables are returned that
 contain all of the matches. For example, </p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with x-axis attribute.</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with x-axis attribute.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with matching &quot;standard_name&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with matching &quot;standard_name&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;northward_sea_water_velocity&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -3993,11 +4006,11 @@ contain all of the matches. For example, </p>
 callable returns True.  The callable should accept a single parameter,
 the attribute value.  None is given as the attribute value when the
 attribute does not exist on the variable. For example,</p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get Axis variables</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get Axis variables</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;Z&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that have a &quot;grid_mapping&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables that have a &quot;grid_mapping&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">grid_mapping</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
 </pre></div></div>
   <div class="source_cont">
@@ -4336,15 +4349,15 @@ format (<code>NETCDF4</code> Datasets won't work).</p>
 <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf">pycdf</a> by Andre Gosselin.</p>
 <p>Example usage (See <a href="#netCDF4.MFDataset.__init__"><code>__init__</code></a> for more details):</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># create a series of netCDF files with a variable sharing</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># the same unlimited dimension.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a series of netCDF files with a variable sharing</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># the same unlimited dimension.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">nf</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&quot;mftest</span><span class="si">%s</span><span class="s">.nc&quot;</span> <span class="o">%</span> <span class="n">nf</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span><span class="s">&quot;i&quot;</span><span class="p">,(</span><span class="s">&quot;x&quot;</span><span class="p">,))</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nf</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="o">*</span><span class="p">(</span><span class="n">nf</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span>     <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># now read all those files in at once, in one Dataset.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># now read all those files in at once, in one Dataset.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">MFDataset</span><span class="p">(</span><span class="s">&quot;mftest*nc&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">][:]</span>
 <span class="p">[</span> <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span>  <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="mi">18</span> <span class="mi">19</span> <span class="mi">20</span> <span class="mi">21</span> <span class="mi">22</span> <span class="mi">23</span> <span class="mi">24</span>
@@ -4867,9 +4880,9 @@ open/create the Dataset. Requires netcdf &gt;= 4.1.2</p></div>
     <div class="desc inherited"><p>Returns a list of variables that match specific conditions.</p>
 <p>Can pass in key=value parameters and variables are returned that
 contain all of the matches. For example, </p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with x-axis attribute.</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with x-axis attribute.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables with matching &quot;standard_name&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with matching &quot;standard_name&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">standard_name</span><span class="o">=</span><span class="s">&#39;northward_sea_water_velocity&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -4878,11 +4891,11 @@ contain all of the matches. For example, </p>
 callable returns True.  The callable should accept a single parameter,
 the attribute value.  None is given as the attribute value when the
 attribute does not exist on the variable. For example,</p>
-<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># Get Axis variables</span>
+<div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get Axis variables</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">,</span> <span class="s">&#39;Y&#39;</span><span class="p">,</span> <span class="s">&#39;Z&#39;</span><span class="p">,</span> <span class="s">&#39;T&#39;</span><span class="p">])</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Get variables that have a &quot;grid_mapping&quot; attribute</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables that have a &quot;grid_mapping&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">grid_mapping</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
 </pre></div></div>
   <div class="source_cont">
@@ -5291,12 +5304,12 @@ time unit to all files. </p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">t2</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f2</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c"># Read the two files in at once, in one Dataset.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Read the two files in at once, in one Dataset.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">MFDataset</span><span class="p">(</span><span class="s">&quot;mftest*nc&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">t</span><span class="o">.</span><span class="n">units</span>
 <span class="n">days</span> <span class="n">since</span> <span class="mi">2000</span><span class="o">-</span><span class="mo">01</span><span class="o">-</span><span class="mo">01</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">t</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span> <span class="c"># The value written in the file, inconsistent with the MF time units.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">t</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span> <span class="c1"># The value written in the file, inconsistent with the MF time units.</span>
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">T</span> <span class="o">=</span> <span class="n">MFTime</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">T</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span>
@@ -6036,7 +6049,7 @@ each attribute</p></div>
   <footer id="footer">
     <p>
       Documentation generated by
-      <a href="https://github.com/BurntSushi/pdoc">pdoc 0.3.1</a>
+      <a href="https://github.com/BurntSushi/pdoc">pdoc 0.3.2.dev16</a>
     </p>
 
     <p>pdoc is in the public domain with the
