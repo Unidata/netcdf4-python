@@ -270,9 +270,9 @@ can be used to determine if the dimensions is unlimited, or appendable.
     :::python
     >>> print len(lon)
     144
-    >>> print len.is_unlimited()
+    >>> print len.isunlimited()
     False
-    >>> print time.is_unlimited()
+    >>> print time.isunlimited()
     True
 
 Printing the `netCDF4.Dimension` object
@@ -2994,6 +2994,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ndims = len(dimensions)
             # find dimension ids.
             if ndims:
+                dims = []
                 for n from 0 <= n < ndims:
                     dimname = dimensions[n]
                     # look for dimension in this group, and if not
@@ -3002,6 +3003,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                     if dim is None:
                         raise KeyError("dimension %s not defined in group %s or any group in it's family tree" % (dimname, grp.path))
                     dimids[n] = dim._dimid
+                    dims.append(dim)
             # go into define mode if it's a netCDF 3 compatible
             # file format.  Be careful to exit define mode before
             # any exceptions are raised.
@@ -3070,6 +3072,10 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             raise ValueError('chunksizes must be a sequence with the same length as dimensions')
                         chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
                         for n from 0 <= n < ndims:
+                            if not dims[n].isunlimited() and \
+                               chunksizes[n] > dims[n].size:
+                                msg = 'chunksize cannot exceed dimension size'
+                                #raise ValueError(msg)
                             chunksizesp[n] = chunksizes[n]
                     if chunksizes is not None or contiguous:
                         ierr = nc_def_var_chunking(self._grpid, self._varid, icontiguous, chunksizesp)
