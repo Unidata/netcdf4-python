@@ -3075,7 +3075,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             if not dims[n].isunlimited() and \
                                chunksizes[n] > dims[n].size:
                                 msg = 'chunksize cannot exceed dimension size'
-                                #raise ValueError(msg)
+                                raise ValueError(msg)
                             chunksizesp[n] = chunksizes[n]
                     if chunksizes is not None or contiguous:
                         ierr = nc_def_var_chunking(self._grpid, self._varid, icontiguous, chunksizesp)
