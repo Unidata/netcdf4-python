@@ -1,5 +1,7 @@
  version 1.2.2 (not yet released)
  ================================
+ * make sure chunksize does not exceed dimension size
+   (for non-unlimited dimensions) on variable creation (issue #480).
  * add 'size' attribute to Dimension (same as len(d), where
    d is a Dimension instance, issue #477).
  * fix bug in nc3tonc4 with --unpackshort=1 (issue #474).
