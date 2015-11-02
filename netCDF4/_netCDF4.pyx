@@ -969,6 +969,7 @@ __hdf5libversion__ = _gethdf5libversion()
 __has_rename_grp__ = HAS_RENAME_GRP
 __has_nc_inq_path__ = HAS_NC_INQ_PATH
 __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
+__has_cdf5__ = HAS_CDF5_FORMAT
 
 
 # numpy data type <--> netCDF 4 data type mapping.
@@ -994,6 +995,24 @@ _intnptonctype  = {'i1' : NC_BYTE,
                    'u4' : NC_UINT,
                    'i8' : NC_INT64,
                    'u8' : NC_UINT64}
+
+_format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
+                 'NETCDF4_CLASSIC' : NC_FORMAT_NETCDF4_CLASSIC,
+                 'NETCDF4'         : NC_FORMAT_NETCDF4}
+_reverse_format_dict = {NC_FORMAT_CLASSIC         : 'NETCDF3_CLASSIC',
+                        NC_FORMAT_NETCDF4_CLASSIC : 'NETCDF4_CLASSIC',
+                        NC_FORMAT_NETCDF4         : 'NETCDF4'}
+IF HAS_CDF5_FORMAT:
+    # NETCDF3_64BIT deprecated, saved for compatibility.
+    # use NETCDF3_64BIT_OFFSET instead.
+    _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
+    _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT_OFFSET
+    _format_dict['NETCDF3_64BIT_DATA'] = NC_FORMAT_64BIT_DATA
+    _reverse_format_dict[NC_FORMAT_64BIT_DATA] = 'NETCDF3_64BIT_DATA'
+    _reverse_format_dict[NC_FORMAT_64BIT_OFFSET] = 'NETCDF3_64BIT_OFFSET'
+ELSE:
+    _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
+    _reverse_format_dict[NC_FORMAT_64BIT] = 'NETCDF3_64BIT'
 
 default_fillvals = {#'S1':NC_FILL_CHAR,
                      'U1':'\0',
@@ -1126,16 +1145,9 @@ cdef _get_att(grp, int varid, name):
 
 def _set_default_format(object format='NETCDF4'):
     # Private function to set the netCDF file format
-    if format == 'NETCDF4':
-        nc_set_default_format(NC_FORMAT_NETCDF4, NULL)
-    elif format == 'NETCDF4_CLASSIC':
-        nc_set_default_format(NC_FORMAT_NETCDF4_CLASSIC, NULL)
-    elif format == 'NETCDF3_64BIT':
-        nc_set_default_format(NC_FORMAT_64BIT, NULL)
-    elif format == 'NETCDF3_CLASSIC':
-        nc_set_default_format(NC_FORMAT_CLASSIC, NULL)
-    else:
-        raise ValueError("format must be 'NETCDF4', 'NETCDF4_CLASSIC', 'NETCDF3_64BIT', or 'NETCDF3_CLASSIC', got '%s'" % format)
+    if format not in _format_dict:
+        raise ValueError("unrecognized format requested")
+    nc_set_default_format(_format_dict[format], NULL)
 
 cdef _get_format(int grpid):
     # Private function to get the netCDF file format
@@ -1144,14 +1156,9 @@ cdef _get_format(int grpid):
         ierr = nc_inq_format(grpid, &formatp)
     if ierr != NC_NOERR:
         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-    if formatp == NC_FORMAT_NETCDF4:
-        return 'NETCDF4'
-    elif formatp == NC_FORMAT_NETCDF4_CLASSIC:
-        return 'NETCDF4_CLASSIC'
-    elif formatp == NC_FORMAT_64BIT:
-        return 'NETCDF3_64BIT'
-    elif formatp == NC_FORMAT_CLASSIC:
-        return 'NETCDF3_CLASSIC'
+    if formatp not in _reverse_format_dict:
+        raise ValueError('format not supported by python interface')
+    return _reverse_format_dict[formatp]
 
 cdef _get_full_format(int grpid):
     # Private function to get the underlying disk format
