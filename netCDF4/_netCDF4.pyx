@@ -973,7 +973,6 @@ __has_cdf5__ = HAS_CDF5_FORMAT
 
 
 # numpy data type <--> netCDF 4 data type mapping.
-
 _nptonctype  = {'U1' : NC_CHAR,
                 'S1' : NC_CHAR,
                 'i1' : NC_BYTE,
@@ -987,6 +986,7 @@ _nptonctype  = {'U1' : NC_CHAR,
                 'f4' : NC_FLOAT,
                 'f8' : NC_DOUBLE}
 
+# just integer types.
 _intnptonctype  = {'i1' : NC_BYTE,
                    'u1' : NC_UBYTE,
                    'i2' : NC_SHORT,
@@ -996,24 +996,24 @@ _intnptonctype  = {'i1' : NC_BYTE,
                    'i8' : NC_INT64,
                    'u8' : NC_UINT64}
 
+# create dictionary mapping string identifiers to netcdf format codes
 _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
                  'NETCDF4_CLASSIC' : NC_FORMAT_NETCDF4_CLASSIC,
                  'NETCDF4'         : NC_FORMAT_NETCDF4}
-_reverse_format_dict = {NC_FORMAT_CLASSIC         : 'NETCDF3_CLASSIC',
-                        NC_FORMAT_NETCDF4_CLASSIC : 'NETCDF4_CLASSIC',
-                        NC_FORMAT_NETCDF4         : 'NETCDF4'}
 IF HAS_CDF5_FORMAT:
     # NETCDF3_64BIT deprecated, saved for compatibility.
     # use NETCDF3_64BIT_OFFSET instead.
-    _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT_OFFSET
     _format_dict['NETCDF3_64BIT_DATA'] = NC_FORMAT_64BIT_DATA
-    _reverse_format_dict[NC_FORMAT_64BIT_DATA] = 'NETCDF3_64BIT_DATA'
-    _reverse_format_dict[NC_FORMAT_64BIT_OFFSET] = 'NETCDF3_64BIT_OFFSET'
 ELSE:
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
-    _reverse_format_dict[NC_FORMAT_64BIT] = 'NETCDF3_64BIT'
+# invert dictionary mapping
+_reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())
+IF HAS_CDF5_FORMAT:
+    # add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET
+    _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
 
+# default fill_value to numpy datatype mapping.
 default_fillvals = {#'S1':NC_FILL_CHAR,
                      'U1':'\0',
                      'S1':'\0',
@@ -1028,6 +1028,7 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
                      'f4':NC_FILL_FLOAT,
                      'f8':NC_FILL_DOUBLE}
 
+# logical for native endian type.
 is_native_little = numpy.dtype('<f4').byteorder == '='
 is_native_big = numpy.dtype('>f4').byteorder == '='
 
