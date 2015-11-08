@@ -973,8 +973,7 @@ __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
 
 # numpy data type <--> netCDF 4 data type mapping.
 
-_nptonctype  = {'U1' : NC_CHAR,
-                'S1' : NC_CHAR,
+_nptonctype  = {'S1' : NC_CHAR,
                 'i1' : NC_BYTE,
                 'u1' : NC_UBYTE,
                 'i2' : NC_SHORT,
@@ -996,7 +995,6 @@ _intnptonctype  = {'i1' : NC_BYTE,
                    'u8' : NC_UINT64}
 
 default_fillvals = {#'S1':NC_FILL_CHAR,
-                     'U1':'\0',
                      'S1':'\0',
                      'i1':NC_FILL_BYTE,
                      'u1':NC_FILL_UBYTE,
