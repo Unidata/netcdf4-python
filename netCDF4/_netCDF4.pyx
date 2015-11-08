@@ -973,8 +973,7 @@ __has_cdf5__ = HAS_CDF5_FORMAT
 
 
 # numpy data type <--> netCDF 4 data type mapping.
-_nptonctype  = {'U1' : NC_CHAR,
-                'S1' : NC_CHAR,
+_nptonctype  = {'S1' : NC_CHAR,
                 'i1' : NC_BYTE,
                 'u1' : NC_UBYTE,
                 'i2' : NC_SHORT,
@@ -1015,7 +1014,6 @@ IF HAS_CDF5_FORMAT:
 
 # default fill_value to numpy datatype mapping.
 default_fillvals = {#'S1':NC_FILL_CHAR,
-                     'U1':'\0',
                      'S1':'\0',
                      'i1':NC_FILL_BYTE,
                      'u1':NC_FILL_UBYTE,
