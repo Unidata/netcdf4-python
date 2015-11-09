@@ -136,6 +136,8 @@ cdef extern from "netcdf.h":
         # the nc_set_default_format function.
         NC_FORMAT_CLASSIC 
         NC_FORMAT_64BIT   
+        NC_FORMAT_64BIT_OFFSET
+        NC_FORMAT_64BIT_DATA
         NC_FORMAT_NETCDF4 
         NC_FORMAT_NETCDF4_CLASSIC  
         NC_FORMAT_NC3
