@@ -71,6 +71,7 @@ def check_api(inc_dirs):
     has_rename_grp = False
     has_nc_inq_path = False
     has_nc_inq_format_extended = False
+    has_cdf5_format = False
     for d in inc_dirs:
         try:
             f = open(os.path.join(d,'netcdf.h'),**open_kwargs)
@@ -83,8 +84,11 @@ def check_api(inc_dirs):
                 has_nc_inq_path = True
             if line.startswith('nc_inq_format_extended'):
                 has_nc_inq_format_extended = True
+            if line.startswith('#define NC_FORMAT_64BIT_DATA'):
+                has_cdf5_format = True
         break
-    return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended
+    return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended,\
+           has_cdf5_format
 
 def getnetcdfvers(libdirs):
     """
@@ -387,7 +391,8 @@ if has_cython and 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     if len(sys.argv) >= 2 and os.path.exists(netcdf4_src_c):
         os.remove(netcdf4_src_c)
     # this determines whether renameGroup and filepath methods will work.
-    has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended = check_api(inc_dirs)
+    has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
+    has_cdf5_format = check_api(inc_dirs)
     f = open(osp.join('include', 'constants.pyx'),'w')
     if has_rename_grp:
         sys.stdout.write('netcdf lib has group rename capability\n')
@@ -407,6 +412,12 @@ if has_cython and 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     else:
         sys.stdout.write('netcdf lib does not have nc_inq_format_extended function\n')
         f.write('DEF HAS_NC_INQ_FORMAT_EXTENDED = 0\n')
+    if has_cdf5_format:
+        sys.stdout.write('netcdf lib has cdf-5 format capability\n')
+        f.write('DEF HAS_CDF5_FORMAT = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have cdf-5 format capability\n')
+        f.write('DEF HAS_CDF5_FORMAT = 0\n')
     f.close()
     ext_modules = cythonize(extensions, include_path=['include'])
 else:
