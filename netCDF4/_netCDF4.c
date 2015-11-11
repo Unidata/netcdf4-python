@@ -5932,7 +5932,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             # write null byte
  *             lenarr=1; datstring = '\x00'             # <<<<<<<<<<<<<<
  *         if value_arr.dtype.char == 'U' and not is_netcdf3:
- *             # check to see if attribute already
+ *             # check to see if attribute already exists
  */
       __pyx_v_lenarr = 1;
       __pyx_v_datstring = __pyx_k_;
@@ -5950,8 +5950,8 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             # write null byte
  *             lenarr=1; datstring = '\x00'
  *         if value_arr.dtype.char == 'U' and not is_netcdf3:             # <<<<<<<<<<<<<<
- *             # check to see if attribute already
- *             # exists, if so delete it and re-create it
+ *             # check to see if attribute already exists
+ *             # and is NC_CHAR, if so delete it and re-create it
  */
     __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1220; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
@@ -5972,7 +5972,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     if (__pyx_t_7) {
 
       /* "netCDF4/_netCDF4.pyx":1224
- *             # exists, if so delete it and re-create it
+ *             # and is NC_CHAR, if so delete it and re-create it
  *             # (workaround for issue #485).
  *             ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)             # <<<<<<<<<<<<<<
  *             if ierr == NC_NOERR and att_type == NC_CHAR:
@@ -6083,8 +6083,8 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             # write null byte
  *             lenarr=1; datstring = '\x00'
  *         if value_arr.dtype.char == 'U' and not is_netcdf3:             # <<<<<<<<<<<<<<
- *             # check to see if attribute already
- *             # exists, if so delete it and re-create it
+ *             # check to see if attribute already exists
+ *             # and is NC_CHAR, if so delete it and re-create it
  */
       goto __pyx_L14;
     }

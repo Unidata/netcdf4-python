@@ -1218,8 +1218,8 @@ cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
             # write null byte
             lenarr=1; datstring = '\x00'
         if value_arr.dtype.char == 'U' and not is_netcdf3:
-            # check to see if attribute already
-            # exists, if so delete it and re-create it
+            # check to see if attribute already exists
+            # and is NC_CHAR, if so delete it and re-create it
             # (workaround for issue #485).
             ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
             if ierr == NC_NOERR and att_type == NC_CHAR:
