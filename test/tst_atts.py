@@ -81,6 +81,9 @@ class VariablesTestCase(unittest.TestCase):
         v1.floatatt = FLOATATT
         v1.seqatt = SEQATT
         v1.stringseqatt = STRINGSEQATT
+        # issue 485
+        f.foo = NP.array('bar','S')
+        f.foo = NP.array('bar','U')
         f.close()
 
     def tearDown(self):
