@@ -5975,7 +5975,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             # exists, if so delete it and re-create it
  *             # (workaround for issue #485).
  *             ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)             # <<<<<<<<<<<<<<
- *             if ierr == NC_NOERR:
+ *             if ierr == NC_NOERR and att_type == NC_CHAR:
  *                 ierr = nc_del_att(grp._grpid, varid, attname)
  */
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1224; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
@@ -5987,16 +5987,24 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
       /* "netCDF4/_netCDF4.pyx":1225
  *             # (workaround for issue #485).
  *             ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
- *             if ierr == NC_NOERR:             # <<<<<<<<<<<<<<
+ *             if ierr == NC_NOERR and att_type == NC_CHAR:             # <<<<<<<<<<<<<<
  *                 ierr = nc_del_att(grp._grpid, varid, attname)
  *                 if ierr != NC_NOERR:
  */
-      __pyx_t_7 = ((__pyx_v_ierr == NC_NOERR) != 0);
+      __pyx_t_8 = ((__pyx_v_ierr == NC_NOERR) != 0);
+      if (__pyx_t_8) {
+      } else {
+        __pyx_t_7 = __pyx_t_8;
+        goto __pyx_L18_bool_binop_done;
+      }
+      __pyx_t_8 = ((__pyx_v_att_type == NC_CHAR) != 0);
+      __pyx_t_7 = __pyx_t_8;
+      __pyx_L18_bool_binop_done:;
       if (__pyx_t_7) {
 
         /* "netCDF4/_netCDF4.pyx":1226
  *             ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
- *             if ierr == NC_NOERR:
+ *             if ierr == NC_NOERR and att_type == NC_CHAR:
  *                 ierr = nc_del_att(grp._grpid, varid, attname)             # <<<<<<<<<<<<<<
  *                 if ierr != NC_NOERR:
  *                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -6008,7 +6016,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
         __pyx_v_ierr = nc_del_att(__pyx_t_6, __pyx_v_varid, __pyx_v_attname);
 
         /* "netCDF4/_netCDF4.pyx":1227
- *             if ierr == NC_NOERR:
+ *             if ierr == NC_NOERR and att_type == NC_CHAR:
  *                 ierr = nc_del_att(grp._grpid, varid, attname)
  *                 if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
  *                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -6041,7 +6049,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1228; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
           /* "netCDF4/_netCDF4.pyx":1227
- *             if ierr == NC_NOERR:
+ *             if ierr == NC_NOERR and att_type == NC_CHAR:
  *                 ierr = nc_del_att(grp._grpid, varid, attname)
  *                 if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
  *                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -6052,7 +6060,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
         /* "netCDF4/_netCDF4.pyx":1225
  *             # (workaround for issue #485).
  *             ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
- *             if ierr == NC_NOERR:             # <<<<<<<<<<<<<<
+ *             if ierr == NC_NOERR and att_type == NC_CHAR:             # <<<<<<<<<<<<<<
  *                 ierr = nc_del_att(grp._grpid, varid, attname)
  *                 if ierr != NC_NOERR:
  */
@@ -6189,7 +6197,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             xtype = _find_cmptype(grp,value_arr.dtype)
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:
  */
-      goto __pyx_L20;
+      goto __pyx_L22;
     }
 
     /* "netCDF4/_netCDF4.pyx":1239
@@ -6299,7 +6307,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *         lenarr = PyArray_SIZE(value_arr)
  */
     }
-    __pyx_L20:;
+    __pyx_L22:;
 
     /* "netCDF4/_netCDF4.pyx":1243
  *         elif xtype == -99: # if xtype is not passed in as kwarg.

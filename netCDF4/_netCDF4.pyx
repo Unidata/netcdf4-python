@@ -1222,7 +1222,7 @@ cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
             # exists, if so delete it and re-create it
             # (workaround for issue #485).
             ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
-            if ierr == NC_NOERR:
+            if ierr == NC_NOERR and att_type == NC_CHAR:
                 ierr = nc_del_att(grp._grpid, varid, attname)
                 if ierr != NC_NOERR:
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
