@@ -1,7 +1,7 @@
  version 1.2.2 (not yet released)
  ================================
  * if trying to write a unicode attribute, check to see if it exists
-   first, and if so, delete it and recreate it.  Workaround for C
+   first and is NC_CHAR, and if so, delete it and recreate it.  Workaround for C
    lib bug discovered in issue #485.
  * support for NETCDF3_64BIT_DATA format supported in netcdf-c 4.4.0.
    Similar to NETCDF3_64BIT (now NETCDF3_64BIT_OFFSET), but includes
