@@ -1187,6 +1187,8 @@ cdef _get_full_format(int grpid):
 cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
     # Private function to set an attribute name/value pair
     cdef int i, ierr, lenarr, n
+    cdef size_t att_len
+    cdef nc_type att_type
     cdef char *attname
     cdef char *datstring
     cdef ndarray value_arr
@@ -1216,6 +1218,14 @@ cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
             # write null byte
             lenarr=1; datstring = '\x00'
         if value_arr.dtype.char == 'U' and not is_netcdf3:
+            # check to see if attribute already
+            # exists, if so delete it and re-create it
+            # (workaround for issue #485).
+            ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
+            if ierr == NC_NOERR:
+                ierr = nc_del_att(grp._grpid, varid, attname)
+                if ierr != NC_NOERR:
+                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # a unicode string, use put_att_string (if NETCDF4 file).
             ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
         else:
