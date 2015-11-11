@@ -970,7 +970,9 @@ __has_rename_grp__ = HAS_RENAME_GRP
 __has_nc_inq_path__ = HAS_NC_INQ_PATH
 __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
 __has_cdf5__ = HAS_CDF5_FORMAT
-
+_needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
+               (__netcdf4libversion__.startswith("4.4.0") and \
+               str(NC_VERSION_NOTE) == "-development")
 
 # numpy data type <--> netCDF 4 data type mapping.
 _nptonctype  = {'S1' : NC_CHAR,
@@ -1220,12 +1222,15 @@ cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
         if value_arr.dtype.char == 'U' and not is_netcdf3:
             # check to see if attribute already exists
             # and is NC_CHAR, if so delete it and re-create it
-            # (workaround for issue #485).
-            ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
-            if ierr == NC_NOERR and att_type == NC_CHAR:
-                ierr = nc_del_att(grp._grpid, varid, attname)
-                if ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            # (workaround for issue #485). Fixed in C library
+            # with commit 473259b7728120bb281c52359b1af50cca2fcb72,
+            # which was included in 4.4.0-RC5.
+            if _needsworkaround_issue485:
+                ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
+                if ierr == NC_NOERR and att_type == NC_CHAR:
+                    ierr = nc_del_att(grp._grpid, varid, attname)
+                    if ierr != NC_NOERR:
+                        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # a unicode string, use put_att_string (if NETCDF4 file).
             ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
         else:
