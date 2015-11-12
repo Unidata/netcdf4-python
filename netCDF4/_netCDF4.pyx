@@ -972,7 +972,7 @@ __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
 __has_cdf5__ = HAS_CDF5_FORMAT
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
-               str(NC_VERSION_NOTE) == "-development")
+                "-development" in __netcdf4libversion__)
 
 # numpy data type <--> netCDF 4 data type mapping.
 _nptonctype  = {'S1' : NC_CHAR,

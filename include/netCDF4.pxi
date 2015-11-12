@@ -15,12 +15,12 @@ cdef extern from "H5public.h":
         H5_VERS_RELEASE
  
 # netcdf version info.
-cdef extern from "netcdf_meta.h":
-    cdef char *NC_VERSION_NOTE
-    cdef enum:
-        NC_VERSION_MAJOR
-        NC_VERSION_MINOR
-        NC_VERSION_PATCH
+#cdef extern from "netcdf_meta.h":
+#    cdef char *NC_VERSION_NOTE
+#    cdef enum:
+#        NC_VERSION_MAJOR
+#        NC_VERSION_MINOR
+#        NC_VERSION_PATCH
 
 cdef extern from *:
     ctypedef char* const_char_ptr "const char*"
