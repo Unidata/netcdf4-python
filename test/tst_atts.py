@@ -81,6 +81,10 @@ class VariablesTestCase(unittest.TestCase):
         v1.floatatt = FLOATATT
         v1.seqatt = SEQATT
         v1.stringseqatt = STRINGSEQATT
+        # issue #485 (triggers segfault in C lib 
+        # with version 1.2.1 without pull request #486)
+        f.foo = NP.array('bar','S')
+        f.foo = NP.array('bar','U')
         f.close()
 
     def tearDown(self):
