@@ -1256,14 +1256,20 @@ cdef _get_types(group):
     # compound, VLEN or Enum types in a `netCDF4.Group` or `netCDF4.Dataset`.
     cdef int ierr, ntypes, classp, n, _grpid
     cdef nc_type xtype
-    cdef nc_type typeids[NC_MAX_VARS]
+    cdef nc_type *typeids
     cdef char namstring[NC_MAX_NAME+1]
     _grpid = group._grpid
     # get the number of user defined types in this group.
     with nogil:
-        ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
+        ierr = nc_inq_typeids(_grpid, &ntypes, NULL)
     if ierr != NC_NOERR:
         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    if ntypes > 0:
+        typeids = <nc_type *>malloc(sizeof(nc_type) * ntypes)
+        with nogil:
+            ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
     # create empty dictionary for CompoundType instances.
     cmptypes = OrderedDict()
     vltypes = OrderedDict()
@@ -1309,6 +1315,7 @@ cdef _get_types(group):
                     warnings.warn(msg)
                     continue
                 enumtypes[name] = enumtype
+        free(typeids)
     return cmptypes, vltypes, enumtypes
 
 cdef _get_dims(group):
