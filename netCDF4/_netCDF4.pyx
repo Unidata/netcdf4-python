@@ -1836,8 +1836,11 @@ Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf >= 4.1.2"""
         cdef int ierr
         cdef size_t pathlen
-        cdef char path[NC_MAX_NAME + 1]
+        cdef char *path
         IF HAS_NC_INQ_PATH:
+            with nogil:
+                ierr = nc_inq_path(self._grpid, &pathlen, NULL)
+            path = <char *>malloc(sizeof(char) * pathlen)
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, path)
             return path.decode('ascii')
