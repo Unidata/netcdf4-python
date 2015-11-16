@@ -1,5 +1,10 @@
  version 1.2.2 (not yet released)
  ================================
+ * don't use hardwired NC_MAX_DIMS or NC_MAX_VARS internally to allocate space
+   for dimension or variable ids.  Instead, find out the number of dims
+   and vars and use malloc.  NC_MAX_NAME is still used to allocate space
+   for attribute and variable names, since there is no obvious way to
+   determine the length of these names.
  * if trying to write a unicode attribute, check to see if it exists
    first and is NC_CHAR, and if so, delete it and recreate it.  Workaround for C
    lib bug discovered in issue #485.

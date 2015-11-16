@@ -1256,14 +1256,20 @@ cdef _get_types(group):
     # compound, VLEN or Enum types in a `netCDF4.Group` or `netCDF4.Dataset`.
     cdef int ierr, ntypes, classp, n, _grpid
     cdef nc_type xtype
-    cdef nc_type typeids[NC_MAX_VARS]
+    cdef nc_type *typeids
     cdef char namstring[NC_MAX_NAME+1]
     _grpid = group._grpid
     # get the number of user defined types in this group.
     with nogil:
-        ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
+        ierr = nc_inq_typeids(_grpid, &ntypes, NULL)
     if ierr != NC_NOERR:
         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    if ntypes > 0:
+        typeids = <nc_type *>malloc(sizeof(nc_type) * ntypes)
+        with nogil:
+            ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
     # create empty dictionary for CompoundType instances.
     cmptypes = OrderedDict()
     vltypes = OrderedDict()
@@ -1309,13 +1315,14 @@ cdef _get_types(group):
                     warnings.warn(msg)
                     continue
                 enumtypes[name] = enumtype
+        free(typeids)
     return cmptypes, vltypes, enumtypes
 
 cdef _get_dims(group):
     # Private function to create `netCDF4.Dimension` instances for all the
     # dimensions in a `netCDF4.Group` or Dataset
     cdef int ierr, numdims, n, _grpid
-    cdef int dimids[NC_MAX_DIMS]
+    cdef int *dimids
     cdef char namstring[NC_MAX_NAME+1]
     # get number of dimensions in this Group.
     _grpid = group._grpid
@@ -1326,6 +1333,7 @@ cdef _get_dims(group):
     # create empty dictionary for dimensions.
     dimensions = OrderedDict()
     if numdims > 0:
+        dimids = <int *>malloc(sizeof(int) * numdims)
         if group.data_model == 'NETCDF4':
             with nogil:
                 ierr = nc_inq_dimids(_grpid, &numdims, dimids, 0)
@@ -1341,6 +1349,7 @@ cdef _get_dims(group):
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             name = namstring.decode(default_encoding,unicode_error)
             dimensions[name] = Dimension(group, name, id=dimids[n])
+        free(dimids)
     return dimensions
 
 cdef _get_grps(group):
@@ -1378,8 +1387,7 @@ cdef _get_vars(group):
     # variables in a `netCDF4.Group` or Dataset
     cdef int ierr, numvars, n, nn, numdims, varid, classp, iendian, _grpid
     cdef int *varids
-    cdef int dim_sizes[NC_MAX_DIMS]
-    cdef int dimids[NC_MAX_DIMS]
+    cdef int *dimids
     cdef nc_type xtype
     cdef char namstring[NC_MAX_NAME+1]
     cdef char namstring_cmp[NC_MAX_NAME+1]
@@ -1475,6 +1483,7 @@ cdef _get_vars(group):
                 ierr = nc_inq_varndims(_grpid, varid, &numdims)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            dimids = <int *>malloc(sizeof(int) * numdims)
             # get dimension ids.
             with nogil:
                 ierr = nc_inq_vardimid(_grpid, varid, dimids)
@@ -1496,6 +1505,7 @@ cdef _get_vars(group):
                             found = True
                             break
                     grp = grp.parent
+            free(dimids)
             # create new variable instance.
             if endianness == '>':
                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
@@ -1826,8 +1836,11 @@ Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf >= 4.1.2"""
         cdef int ierr
         cdef size_t pathlen
-        cdef char path[NC_MAX_NAME + 1]
+        cdef char *path
         IF HAS_NC_INQ_PATH:
+            with nogil:
+                ierr = nc_inq_path(self._grpid, &pathlen, NULL)
+            path = <char *>malloc(sizeof(char) * pathlen)
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, path)
             return path.decode('ascii')
@@ -2702,7 +2715,7 @@ return the group that this `netCDF4.Dimension` is a member of."""
 
 returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwise."""
         cdef int ierr, n, numunlimdims, ndims, nvars, ngatts, xdimid
-        cdef int unlimdimids[NC_MAX_DIMS]
+        cdef int *unlimdimids
         if self._data_model == 'NETCDF4':
             ierr = nc_inq_unlimdims(self._grpid, &numunlimdims, NULL)
             if ierr != NC_NOERR:
@@ -2710,6 +2723,7 @@ returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwi
             if numunlimdims == 0:
                 return False
             else:
+                unlimdimids = <int *>malloc(sizeof(int) * numunlimdims)
                 dimid = self._dimid
                 with nogil:
                     ierr = nc_inq_unlimdims(self._grpid, &numunlimdims, unlimdimids)
@@ -2718,6 +2732,7 @@ returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwi
                 unlimdim_ids = []
                 for n from 0 <= n < numunlimdims:
                     unlimdim_ids.append(unlimdimids[n])
+                free(unlimdimids)
                 if dimid in unlimdim_ids:
                     return True
                 else:
@@ -2921,7 +2936,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef int ierr, ndims, icontiguous, ideflate_level, numdims, _grpid
         cdef char *varname
         cdef nc_type xtype
-        cdef int dimids[NC_MAX_DIMS]
+        cdef int *dimids
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
@@ -3016,6 +3031,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # find dimension ids.
             if ndims:
                 dims = []
+                dimids = <int *>malloc(sizeof(int) * ndims)
                 for n from 0 <= n < ndims:
                     dimname = dimensions[n]
                     # look for dimension in this group, and if not
@@ -3033,6 +3049,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             if ndims:
                 ierr = nc_def_var(self._grpid, varname, xtype, ndims,
                                   dimids, &self._varid)
+                free(dimids)
             else: # a scalar variable.
                 ierr = nc_def_var(self._grpid, varname, xtype, ndims,
                                   NULL, &self._varid)
@@ -3238,12 +3255,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # Private method to get variables's dimension names
         cdef int ierr, numdims, n, nn
         cdef char namstring[NC_MAX_NAME+1]
-        cdef int dimids[NC_MAX_DIMS]
+        cdef int *dimids
         # get number of dimensions for this variable.
         with nogil:
             ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        dimids = <int *>malloc(sizeof(int) * numdims)
         # get dimension ids.
         with nogil:
             ierr = nc_inq_vardimid(self._grpid, self._varid, dimids)
@@ -3258,6 +3276,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             name = namstring.decode(default_encoding,unicode_error)
             dimensions = dimensions + (name,)
+        free(dimids)
         return dimensions
 
     def _getname(self):
@@ -3744,8 +3763,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
     def _assign_vlen(self, elem, data):
         """private method to assign data to a single item in a VLEN variable"""
-        cdef size_t startp[NC_MAX_DIMS]
-        cdef size_t countp[NC_MAX_DIMS]
+        cdef size_t *startp
+        cdef size_t *countp
         cdef int ndims, n
         cdef nc_vlen_t *vldata
         cdef char **strdata
@@ -3788,6 +3807,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         else:
             start = [elem]
         count = [1]*ndims
+        startp = <size_t *>malloc(sizeof(size_t) * ndims)
+        countp = <size_t *>malloc(sizeof(size_t) * ndims)
         for n from 0 <= n < ndims:
             startp[n] = start[n]
             countp[n] = count[n]
@@ -3812,6 +3833,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             free(vldata)
+        free(startp)
+        free(countp)
 
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable
@@ -4090,9 +4113,9 @@ The default value of `mask` is `True`
         """Private method to put data into a netCDF variable"""
         cdef int ierr, ndims
         cdef npy_intp totelem
-        cdef size_t startp[NC_MAX_DIMS]
-        cdef size_t countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef size_t *startp
+        cdef size_t *countp
+        cdef ptrdiff_t *stridep
         cdef char **strdata
         cdef void* elptr
         cdef char* databuff
@@ -4108,6 +4131,9 @@ The default value of `mask` is `True`
         totelem = 1
         negstride = 0
         sl = []
+        startp = <size_t *>malloc(sizeof(size_t) * ndims)
+        countp = <size_t *>malloc(sizeof(size_t) * ndims)
+        stridep = <ptrdiff_t *>malloc(sizeof(ptrdiff_t) * ndims)
         for n from 0 <= n < ndims:
             count[n] = abs(count[n]) # make -1 into +1
             countp[n] = count[n]
@@ -4219,13 +4245,16 @@ The default value of `mask` is `True`
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # free the pointer array.
                 free(vldata)
+        free(startp)
+        free(countp)
+        free(stridep)
 
     def _get(self,start,count,stride):
         """Private method to retrieve data from a netCDF variable"""
         cdef int ierr, ndims
-        cdef size_t startp[NC_MAX_DIMS]
-        cdef size_t countp[NC_MAX_DIMS]
-        cdef ptrdiff_t stridep[NC_MAX_DIMS]
+        cdef size_t *startp
+        cdef size_t *countp
+        cdef ptrdiff_t *stridep
         cdef ndarray data, dataarr
         cdef void *elptr
         cdef char **strdata
@@ -4246,6 +4275,9 @@ The default value of `mask` is `True`
         # fill up startp,countp,stridep.
         negstride = 0
         sl = []
+        startp = <size_t *>malloc(sizeof(size_t) * ndims)
+        countp = <size_t *>malloc(sizeof(size_t) * ndims)
+        stridep = <ptrdiff_t *>malloc(sizeof(ptrdiff_t) * ndims)
         for n from 0 <= n < ndims:
             count[n] = abs(count[n]) # make -1 into +1
             countp[n] = count[n]
@@ -4334,6 +4366,9 @@ The default value of `mask` is `True`
                 data = numpy.reshape(data, shapeout)
                 # free the pointer array.
                 free(vldata)
+        free(startp)
+        free(countp)
+        free(stridep)
         if negstride:
             # reverse data along axes with negative strides.
             data = data[sl].copy() # make a copy so data is contiguous.
@@ -4415,7 +4450,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
     cdef size_t offset, size
     cdef char *namstring
     cdef char *nested_namstring
-    cdef int dim_sizes[NC_MAX_DIMS]
+    cdef int *dim_sizes
     bytestr = _strencode(dtype_name)
     namstring = bytestr
     size = dt.itemsize
@@ -4455,6 +4490,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             else: # array compound element
                 ndims = len(format.shape)
+                dim_sizes = <int *>malloc(sizeof(int) * ndims)
                 for n from 0 <= n < ndims:
                     dim_sizes[n] = format.shape[n]
                 if format.subdtype[0].str[1] != 'V': # primitive type.
@@ -4477,6 +4513,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
                                                     ndims,dim_sizes)
                     if ierr != NC_NOERR:
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                free(dim_sizes)
     return xtype
 
 cdef _find_cmptype(grp, dtype):
@@ -4514,7 +4551,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
     cdef int ierr, nf, numdims, ndim, classp, _grpid
     cdef size_t nfields, offset
     cdef nc_type field_typeid
-    cdef int dim_sizes[NC_MAX_DIMS]
+    cdef int *dim_sizes
     cdef char field_namstring[NC_MAX_NAME+1]
     cdef char cmp_namstring[NC_MAX_NAME+1]
     # get name and number of fields.
@@ -4537,6 +4574,18 @@ cdef _read_compound(group, nc_type xtype, endian=None):
                                          &offset,
                                          &field_typeid,
                                          &numdims,
+                                         NULL)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        dim_sizes = <int *>malloc(sizeof(int) * numdims)
+        with nogil:
+            ierr = nc_inq_compound_field(_grpid,
+                                         xtype,
+                                         nf,
+                                         field_namstring,
+                                         &offset,
+                                         &field_typeid,
+                                         &numdims,
                                          dim_sizes)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -4548,6 +4597,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
         if numdims != 0:
             for ndim from 0 <= ndim < numdims:
                 field_shape = field_shape + (dim_sizes[ndim],)
+        free(dim_sizes)
         # check to see if this field is a nested compound type.
         try:
             field_type =  _nctonptype[field_typeid]
@@ -4643,7 +4693,6 @@ cdef _def_vlen(grp, object dt, object dtype_name):
     cdef size_t offset, size
     cdef char *namstring
     cdef char *nested_namstring
-    cdef int dim_sizes[NC_MAX_DIMS]
     if dt == str: # python string, use NC_STRING
         xtype = NC_STRING
         # dtype_name ignored
