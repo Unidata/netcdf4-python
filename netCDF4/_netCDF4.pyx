@@ -1656,7 +1656,8 @@ references to the parent Dataset or Group.
 
         `netCDF4.Dataset` constructor.
 
-        **`filename`**: Name of netCDF file to hold dataset.
+        **`filename`**: Name of netCDF file to hold dataset. Can also
+	be a python 3 pathlib instance or the URL of an OpenDAP dataset.
         
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
@@ -1715,7 +1716,7 @@ references to the parent Dataset or Group.
         if diskless and __netcdf4libversion__ < '4.2.1':
             #diskless = False # don't raise error, instead silently ignore
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
-        bytestr = _strencode(filename)
+        bytestr = _strencode(str(filename))
         path = bytestr
         if mode == 'w':
             _set_default_format(format=format)
