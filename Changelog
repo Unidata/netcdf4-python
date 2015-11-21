@@ -1,5 +1,7 @@
  version 1.2.2 (not yet released)
  ================================
+ * invoke str on filename argument to Dataset constructor, so pathlib 
+   instances can be used (issue #489).
  * don't use hardwired NC_MAX_DIMS or NC_MAX_VARS internally to allocate space
    for dimension or variable ids.  Instead, find out the number of dims
    and vars and use malloc.  NC_MAX_NAME is still used to allocate space
