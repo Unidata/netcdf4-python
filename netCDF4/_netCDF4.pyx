@@ -4369,9 +4369,10 @@ The default value of `mask` is `True`
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
                 # free vlen data internally allocated in netcdf C lib.
+                # (tst_vlen.py fails with this line uncommented)
                 #ierr = nc_free_vlens(totelem, vldata)
                 # free the pointer array.
-                free(vldata)
+                #free(vldata)
         free(startp)
         free(countp)
         free(stridep)
