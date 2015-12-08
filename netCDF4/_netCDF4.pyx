@@ -1109,6 +1109,7 @@ cdef _get_att(grp, int varid, name):
             with nogil:
                 ierr = nc_get_att_string(_grpid, varid, attname, &stratt)
             pstring = stratt.decode(default_encoding,unicode_error).replace('\x00','')
+            ierr = nc_free_string(1, &stratt) # free memory in netcdf C lib
             return pstring
         else:
             raise KeyError('vlen string array attributes not supported')
@@ -4338,6 +4339,8 @@ The default value of `mask` is `True`
                     data[i] = strdata[i].decode(default_encoding)
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
+                # free string data internally allocated in netcdf C lib
+                ierr = nc_free_string(totelem, strdata)
                 free(strdata)
             else:
                 # regular vlen
@@ -4365,6 +4368,8 @@ The default value of `mask` is `True`
                     data[i] = dataarr
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
+                # free vlen data internally allocated in netcdf C lib.
+                #ierr = nc_free_vlens(totelem, vldata)
                 # free the pointer array.
                 free(vldata)
         free(startp)
