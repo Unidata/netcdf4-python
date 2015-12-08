@@ -1,5 +1,7 @@
  version 1.2.2 (not yet released)
  ================================
+ * free string pointers internally allocated in netcdf-c using 
+   nc_free_string (issue #495).
  * invoke str on filename argument to Dataset constructor, so pathlib 
    instances can be used (issue #489).
  * don't use hardwired NC_MAX_DIMS or NC_MAX_VARS internally to allocate space
