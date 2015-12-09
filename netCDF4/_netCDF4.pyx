@@ -937,6 +937,7 @@ import warnings
 from glob import glob
 from numpy import ma
 from numpy import __version__ as _npversion
+from libc.string cimport memcpy
 if _npversion.split('.')[0] < '1':
     raise ImportError('requires numpy version 1.0rc1 or later')
 import_array()
@@ -1109,6 +1110,7 @@ cdef _get_att(grp, int varid, name):
             with nogil:
                 ierr = nc_get_att_string(_grpid, varid, attname, &stratt)
             pstring = stratt.decode(default_encoding,unicode_error).replace('\x00','')
+            ierr = nc_free_string(1, &stratt) # free memory in netcdf C lib
             return pstring
         else:
             raise KeyError('vlen string array attributes not supported')
@@ -4338,6 +4340,9 @@ The default value of `mask` is `True`
                     data[i] = strdata[i].decode(default_encoding)
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
+                # free string data internally allocated in netcdf C lib
+                ierr = nc_free_string(totelem, strdata)
+                # free the pointer array
                 free(strdata)
             else:
                 # regular vlen
@@ -4361,11 +4366,14 @@ The default value of `mask` is `True`
                 for i from 0<=i<totelem:
                     arrlen  = vldata[i].len
                     dataarr = numpy.empty(arrlen, self.dtype)
-                    dataarr.data = <char *>vldata[i].p
+                    #dataarr.data = <char *>vldata[i].p
+                    memcpy(<void*>dataarr.data, vldata[i].p, dataarr.nbytes)
                     data[i] = dataarr
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
-                # free the pointer array.
+                # free vlen data internally allocated in netcdf C lib
+                ierr = nc_free_vlens(totelem, vldata)
+                # free the pointer array
                 free(vldata)
         free(startp)
         free(countp)
