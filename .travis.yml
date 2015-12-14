@@ -11,7 +11,7 @@ addons:
 
 env:
   global:
-    - DEPENDS="numpy cython"
+    - DEPENDS="numpy cython ordereddict"
     - NO_NET=1
 
 python:
@@ -30,7 +30,7 @@ matrix:
     # Test without Cython installed.
     - python: 2.6
       env:
-        - DEPENDS="numpy ordereddict==1.1"
+        - DEPENDS="numpy ordereddict"
 
 notifications:
   email: false
