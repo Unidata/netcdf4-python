@@ -15,18 +15,20 @@ env:
     - NO_NET=1
 
 python:
+  - "2.6"
   - "2.7"
   - "3.3"
   - "3.4"
+  - "3.5"
 
 matrix:
   include:
     # Absolute minimum dependencies.
-    - python: 2.7
+    - python: 2.6
       env:
         - DEPENDS="numpy==1.7.0 cython==0.19"
     # Test without Cython installed.
-    - python: 2.7
+    - python: 2.6
       env:
         - DEPENDS="numpy"
 

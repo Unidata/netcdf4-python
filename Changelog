@@ -1,5 +1,6 @@
  version 1.2.2 (not yet released)
  ================================
+ * fix failing tests on python 2.6 (issue #497).
  * Potential memory leaks fixed by freeing string pointers internally allocated 
    in netcdf-c using nc_free_string. Also use nc_free_vlens to free space allocated
    for vlens inside netcdf-c (issue #495).
