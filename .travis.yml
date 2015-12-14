@@ -26,11 +26,11 @@ matrix:
     # Absolute minimum dependencies.
     - python: 2.6
       env:
-        - DEPENDS="numpy==1.7.0 cython==0.19"
+        - DEPENDS="numpy==1.7.0 cython==0.19 ordereddict==1.1"
     # Test without Cython installed.
     - python: 2.6
       env:
-        - DEPENDS="numpy"
+        - DEPENDS="numpy ordereddict==1.1"
 
 notifications:
   email: false
