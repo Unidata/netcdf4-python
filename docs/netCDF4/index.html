@@ -1280,7 +1280,7 @@ types) are not supported.</p>
 </ul>
 <h1>Requires</h1>
 <ul>
-<li>Python 2.5 or later (python 3 works too).</li>
+<li>Python 2.6 or later (python 3 works too).</li>
 <li><a href="http://numpy.scipy.org">numpy array module</a>, version 1.7.0 or later.</li>
 <li><a href="http://cython.org">Cython</a>, version 0.19 or later, is optional - if it is installed setup.py will
    use it to recompile the Cython source code into C, using conditional compilation
@@ -1500,9 +1500,9 @@ The <a href="#netCDF4.Dimension.isunlimited"><code>isunlimited</code></a> method
 can be used to determine if the dimensions is unlimited, or appendable.</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
 <span class="mi">144</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="nb">len</span><span class="o">.</span><span class="n">is_unlimited</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="nb">len</span><span class="o">.</span><span class="n">isunlimited</span><span class="p">()</span>
 <span class="bp">False</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">time</span><span class="o">.</span><span class="n">is_unlimited</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">time</span><span class="o">.</span><span class="n">isunlimited</span><span class="p">()</span>
 <span class="bp">True</span>
 </pre></div>
 
@@ -2615,7 +2615,8 @@ variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code
     
   
     <div class="desc"><p><a href="#netCDF4.Dataset"><code>Dataset</code></a> constructor.</p>
-<p><strong><code>filename</code></strong>: Name of netCDF file to hold dataset.</p>
+<p><strong><code>filename</code></strong>: Name of netCDF file to hold dataset. Can also
+be a python 3 pathlib instance or the URL of an OpenDAP dataset.</p>
 <p><strong><code>mode</code></strong>: access mode. <code>r</code> means read-only; no data can be
 modified. <code>w</code> means write; a new file is created, an existing file with
 the same name is deleted. <code>a</code> and <code>r+</code> mean append (in analogy with
