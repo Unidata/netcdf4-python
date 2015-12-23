@@ -1686,6 +1686,7 @@ references to the parent Dataset or Group.
         
         **`format`**: underlying file format (one of `'NETCDF4',
         'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
+        `'NETCDF3_64BIT_DATA'`.
         Only relevant if `mode = 'w'` (if `mode = 'r','a'` or `'r+'` the file format
         is automatically detected). Default `'NETCDF4'`, which means the data is
         stored in an HDF5 file, using netCDF 4 API features.  Setting
@@ -1693,10 +1694,10 @@ references to the parent Dataset or Group.
         compatibile API features. netCDF 3 clients must be recompiled and linked
         against the netCDF 4 library to read files in `NETCDF4_CLASSIC` format.
         `'NETCDF3_CLASSIC'` is the classic netCDF 3 file format that does not
-        handle 2+ Gb files very well. `'NETCDF3_64BIT_OFFSET'` is the 64-bit offset
+        handle 2+ Gb files. `'NETCDF3_64BIT_OFFSET'` is the 64-bit offset
         version of the netCDF 3 file format, which fully supports 2+ GB files, but
         is only compatible with clients linked against netCDF version 3.6.0 or
-        later. 'NETCDF3_64BIT_DATA'` is the 64-bit data version of the netCDF 3
+        later. `'NETCDF3_64BIT_DATA'` is the 64-bit data version of the netCDF 3
         file format, which supports 64-bit dimension sizes and unsigned
         integer data types, but is only compatible with clients linked against
         netCDF version 4.4.0 or later.
