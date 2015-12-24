@@ -114,10 +114,17 @@ To create a netCDF file from python, you simply call the `netCDF4.Dataset`
 constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (`mode='w', 'r+'` or `'a'`), you may
 write any type of data including new dimensions, groups, variables and
-attributes.  netCDF files come in several flavors (`NETCDF3_CLASSIC,
-NETCDF3_64BIT, NETCDF4_CLASSIC`, and `NETCDF4`). The first two flavors
-are supported by version 3 of the netCDF library. `NETCDF4_CLASSIC`
-files use the version 4 disk format (HDF5), but do not use any features
+attributes.  netCDF files come in five flavors (`NETCDF3_CLASSIC,
+NETCDF3_64BIT_OFFSET, NETCDF3_64BIT_DATA, NETCDF4_CLASSIC`, and `NETCDF4`). 
+`NETCDF3_CLASSIC` was the original netcdf binary format, and was limited 
+to file sizes less than 2 Gb. `NETCDF3_64BIT_OFFSET` was introduced
+in version 3.6.0 of the library, and extended the original binary format
+to allow for file sizes greater than 2 Gb. 
+`NETCDF3_64BIT_DATA` is a new format that requires version 4.4.0 of
+the C library - it extends the `NETCDF3_64BIT_OFFSET` binary format to
+allow for unsigned integer data types and 64-bit dimension sizes.
+`NETCDF3_64BIT` is an alias for `NETCDF3_64BIT_OFFSET`.
+`NETCDF4_CLASSIC` files use the version 4 disk format (HDF5), but omits features
 not found in the version 3 API. They can be read by netCDF 3 clients
 only if they have been relinked against the netCDF 4 library. They can
 also be read by HDF5 clients. `NETCDF4` files use the version 4 disk
@@ -571,7 +578,7 @@ Variables in the list of files that share the same unlimited
 dimension are aggregated together, and can be sliced across multiple
 files.  To illustrate this, let's first create a bunch of netCDF files with
 the same variable (with the same unlimited dimension).  The files
-must in be in `NETCDF3_64BIT`, `NETCDF3_CLASSIC` or
+must in be in `NETCDF3_64BIT_OFFSET`, `NETCDF3_64BIT_DATA`, `NETCDF3_CLASSIC` or
 `NETCDF4_CLASSIC format` (`NETCDF4` formatted multi-file
 datasets are not supported).
 
@@ -619,7 +626,7 @@ and `endian` keyword arguments to
 `netCDF4.Dataset.createVariable`.  These keyword arguments only
 are relevant for `NETCDF4` and `NETCDF4_CLASSIC` files (where the
 underlying file format is HDF5) and are silently ignored if the file
-format is `NETCDF3_CLASSIC` or `NETCDF3_64BIT`,
+format is `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`.
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
@@ -1011,9 +1018,11 @@ ELSE:
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
 # invert dictionary mapping
 _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())
+# add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET)
 IF HAS_CDF5_FORMAT:
-    # add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
+ELSE:
+    _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT
 
 # default fill_value to numpy datatype mapping.
 default_fillvals = {#'S1':NC_FILL_CHAR,
@@ -1572,7 +1581,7 @@ of the `netCDF4.EnumType` class.
 
 **`data_model`**: `data_model` describes the netCDF
 data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
-`NETCDF4_CLASSIC` or `NETCDF3_64BIT`.
+`NETCDF4_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`.
 
 **`file_format`**: same as `data_model`, retained for backwards compatibility.
 
@@ -1629,7 +1638,7 @@ references to the parent Dataset or Group.
     __pdoc__['Dataset.data_model']=\
     """`data_model` describes the netCDF
     data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
-    `NETCDF4_CLASSIC` or `NETCDF3_64BIT`."""
+    `NETCDF4_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`."""
     __pdoc__['Dataset.file_format']=\
     """same as `data_model`, retained for backwards compatibility."""
     __pdoc__['Dataset.disk_format']=\
@@ -1666,7 +1675,8 @@ references to the parent Dataset or Group.
         the same name is deleted. `a` and `r+` mean append (in analogy with
         serial files); an existing file is opened for reading and writing.
         Appending `s` to modes `w`, `r+` or `a` will enable unbuffered shared
-        access to `NETCDF3_CLASSIC` or `NETCDF3_64BIT` formatted files.
+        access to `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or
+        `NETCDF3_64BIT_DATA` formatted files.
         Unbuffered acesss may be useful even if you don't need shared
         access, since it may be faster for programs that don't access data
         sequentially. This option is ignored for `NETCDF4` and `NETCDF4_CLASSIC`
@@ -1677,18 +1687,22 @@ references to the parent Dataset or Group.
         exception will be raised if a file with the same name already exists.
         
         **`format`**: underlying file format (one of `'NETCDF4',
-        'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'` or `'NETCDF3_64BIT'`.  Only
-        relevant if `mode = 'w'` (if `mode = 'r','a'` or `'r+'` the file format
+        'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
+        `'NETCDF3_64BIT_DATA'`.
+        Only relevant if `mode = 'w'` (if `mode = 'r','a'` or `'r+'` the file format
         is automatically detected). Default `'NETCDF4'`, which means the data is
         stored in an HDF5 file, using netCDF 4 API features.  Setting
         `format='NETCDF4_CLASSIC'` will create an HDF5 file, using only netCDF 3
         compatibile API features. netCDF 3 clients must be recompiled and linked
         against the netCDF 4 library to read files in `NETCDF4_CLASSIC` format.
         `'NETCDF3_CLASSIC'` is the classic netCDF 3 file format that does not
-        handle 2+ Gb files very well. `'NETCDF3_64BIT'` is the 64-bit offset
+        handle 2+ Gb files. `'NETCDF3_64BIT_OFFSET'` is the 64-bit offset
         version of the netCDF 3 file format, which fully supports 2+ GB files, but
         is only compatible with clients linked against netCDF version 3.6.0 or
-        later.
+        later. `'NETCDF3_64BIT_DATA'` is the 64-bit data version of the netCDF 3
+        file format, which supports 64-bit dimension sizes and unsigned
+        integer data types, but is only compatible with clients linked against
+        netCDF version 4.4.0 or later.
         
         **`diskless`**: If `True`, create diskless (in memory) file.  
         This is an experimental feature added to the C library after the
@@ -1742,7 +1756,7 @@ references to the parent Dataset or Group.
             # for issue 170 (nc_open'ing a DAP dataset after switching
             # format to NETCDF4). This bug should be fixed in version
             # 4.3.0 of the netcdf library (add a version check here?).
-            _set_default_format(format='NETCDF3_64BIT')
+            _set_default_format(format='NETCDF3_64BIT_OFFSET')
         elif mode == 'r':
             if diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
@@ -5234,8 +5248,8 @@ class MFDataset(Dataset):
     """
 Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
-Datasets must be in `NETCDF4_CLASSIC, NETCDF3_CLASSIC or NETCDF3_64BIT`
-format (`NETCDF4` Datasets won't work).
+Datasets must be in `NETCDF4_CLASSIC, NETCDF3_CLASSIC, NETCDF3_64BIT_OFFSET
+or NETCDF3_64BIT_DATA` format (`NETCDF4` Datasets won't work).
 
 Adapted from [pycdf](http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 
@@ -5427,7 +5441,7 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         self._disk_format = []
         for dset in self._cdf:
             if dset.file_format == 'NETCDF4' or dset.data_model == 'NETCDF4':
-                raise ValueError('MFNetCDF4 only works with NETCDF3_CLASSIC, NETCDF3_64BIT and NETCDF4_CLASSIC formatted files, not NETCDF4')
+                raise ValueError('MFNetCDF4 only works with NETCDF3_* and NETCDF4_CLASSIC formatted files, not NETCDF4')
             self._file_format.append(dset.file_format)
             self._data_model.append(dset.data_model)
             self._disk_format.append(dset.disk_format)
