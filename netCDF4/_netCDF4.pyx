@@ -1018,9 +1018,11 @@ ELSE:
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
 # invert dictionary mapping
 _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())
+# add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET)
 IF HAS_CDF5_FORMAT:
-    # add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
+ELSE:
+    _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT
 
 # default fill_value to numpy datatype mapping.
 default_fillvals = {#'S1':NC_FILL_CHAR,
