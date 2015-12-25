@@ -122,7 +122,7 @@ in version 3.6.0 of the library, and extended the original binary format
 to allow for file sizes greater than 2 Gb. 
 `NETCDF3_64BIT_DATA` is a new format that requires version 4.4.0 of
 the C library - it extends the `NETCDF3_64BIT_OFFSET` binary format to
-allow for unsigned integer data types and 64-bit dimension sizes.
+allow for unsigned/64 bit integer data types and 64-bit dimension sizes.
 `NETCDF3_64BIT` is an alias for `NETCDF3_64BIT_OFFSET`.
 `NETCDF4_CLASSIC` files use the version 4 disk format (HDF5), but omits features
 not found in the version 3 API. They can be read by netCDF 3 clients
@@ -1700,8 +1700,8 @@ references to the parent Dataset or Group.
         version of the netCDF 3 file format, which fully supports 2+ GB files, but
         is only compatible with clients linked against netCDF version 3.6.0 or
         later. `'NETCDF3_64BIT_DATA'` is the 64-bit data version of the netCDF 3
-        file format, which supports 64-bit dimension sizes and unsigned
-        integer data types, but is only compatible with clients linked against
+        file format, which supports 64-bit dimension sizes plus unsigned and
+        64 bit integer data types, but is only compatible with clients linked against
         netCDF version 4.4.0 or later.
         
         **`diskless`**: If `True`, create diskless (in memory) file.  
