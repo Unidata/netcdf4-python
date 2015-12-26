@@ -579,7 +579,7 @@ dimension are aggregated together, and can be sliced across multiple
 files.  To illustrate this, let's first create a bunch of netCDF files with
 the same variable (with the same unlimited dimension).  The files
 must in be in `NETCDF3_64BIT_OFFSET`, `NETCDF3_64BIT_DATA`, `NETCDF3_CLASSIC` or
-`NETCDF4_CLASSIC format` (`NETCDF4` formatted multi-file
+`NETCDF4_CLASSIC` format (`NETCDF4` formatted multi-file
 datasets are not supported).
 
     :::python
