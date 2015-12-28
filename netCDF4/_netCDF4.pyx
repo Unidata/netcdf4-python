@@ -2470,7 +2470,7 @@ contain all of the matches. For example,
     >>> # Get variables with x-axis attribute.
     >>> vs = nc.get_variables_by_attributes(axis='X')
     >>> # Get variables with matching "standard_name" attribute
-    >>> nc.get_variables_by_attributes(standard_name='northward_sea_water_velocity')
+    >>> vs = nc.get_variables_by_attributes(standard_name='northward_sea_water_velocity')
 
 Can pass in key=callable parameter and variables are returned if the
 callable returns True.  The callable should accept a single parameter,
