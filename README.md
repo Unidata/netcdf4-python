@@ -7,7 +7,7 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-1/1/2016: Version [1.2.2](https://pypi.python.org/pypi/netCDF4/1.2.1) released. Mostly bugfixes, but with two new features.
+1/1/2016: Version [1.2.2](https://pypi.python.org/pypi/netCDF4/1.2.2) released. Mostly bugfixes, but with two new features.
 
 * support for the new ``NETCDF3_64BIT_DATA`` format introduced in netcdf-c 4.4.0.
 Similar to ``NETCDF3_64BIT`` (now ``NETCDF3_64BIT_OFFSET``), but includes
