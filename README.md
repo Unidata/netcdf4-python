@@ -7,6 +7,18 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+1/1/2016: Version [1.2.2](https://pypi.python.org/pypi/netCDF4/1.2.1) released. Mostly bugfixes, but with two new features.
+
+* support for ``NETCDF3_64BIT_DATA format11 supported in netcdf-c 4.4.0.
+Similar to ``NETCDF3_64BIT`` (now ``NETCDF3_64BIT_OFFSET``), but includes
+64 bit dimensions and sizes, plus unsigned and 64 bit integer
+data types.
+
+* Dimension objects now have a ``size`` attribute, which is the current length
+of the dimension (same as invoking ``len`` on the Dimension instance).
+
+The minimum required python version has now been increased from 2.5 to 2.6.
+
 10/15/2015: Version [1.2.1](https://pypi.python.org/pypi/netCDF4/1.2.1) released. Adds the ability
 to slice Variables with unsorted integer sequences, and integer sequences with duplicates.
 
