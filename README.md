@@ -9,7 +9,7 @@ For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-p
 
 1/1/2016: Version [1.2.2](https://pypi.python.org/pypi/netCDF4/1.2.1) released. Mostly bugfixes, but with two new features.
 
-* support for ``NETCDF3_64BIT_DATA format11 supported in netcdf-c 4.4.0.
+* support for ``NETCDF3_64BIT_DATA`` format11 supported in netcdf-c 4.4.0.
 Similar to ``NETCDF3_64BIT`` (now ``NETCDF3_64BIT_OFFSET``), but includes
 64 bit dimensions and sizes, plus unsigned and 64 bit integer
 data types.
