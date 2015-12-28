@@ -11,7 +11,7 @@ For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-p
 
 * support for the new ``NETCDF3_64BIT_DATA`` format introduced in netcdf-c 4.4.0.
 Similar to ``NETCDF3_64BIT`` (now ``NETCDF3_64BIT_OFFSET``), but includes
-64 bit dimension sizes, plus unsigned and 64 bit integer data types.
+64 bit dimension sizes (> 2 billion), plus unsigned and 64 bit integer data types.
 Does not use HDF5 as the underlying storage format.
 
 * Dimension objects now have a ``size`` attribute, which is the current length
