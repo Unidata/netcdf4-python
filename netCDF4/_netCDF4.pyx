@@ -3937,6 +3937,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         stride = stride.reshape((-1, self.ndim or 1))
         put_ind = put_ind.reshape((-1, self.ndim or 1))
 
+        # quantize data if least_significant_digit attribute
+        # exists (improves compression).
         if self._has_lsd:
             data = _quantize(data,self.least_significant_digit)
         # if auto_scale mode set to True, (through
