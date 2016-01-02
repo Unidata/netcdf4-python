@@ -3572,6 +3572,7 @@ details."""
                 "'%s' is one of the reserved attributes %s, cannot rebind. Use setncattr instead." % (name, tuple(_private_atts)))
             else:
                 self.__dict__[name]=value
+        if name == 'least_significant_digit': self._has_lsd = True
 
     def __getattr__(self,name):
         # if name in _private_atts, it is stored at the python
