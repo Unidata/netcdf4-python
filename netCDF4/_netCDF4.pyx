@@ -3010,7 +3010,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self._iscompound = False
         self._isvlen = False
         self._isenum = False
-        self._has_lsd = False
         if user_type:
             if isinstance(datatype, CompoundType):
                 self._iscompound = True
@@ -3182,7 +3181,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
             if least_significant_digit is not None:
                 self.least_significant_digit = least_significant_digit
-                self._has_lsd = True
             # leave define mode if not a NETCDF4 format file.
             if grp.data_model != 'NETCDF4': grp._enddef()
         # count how many unlimited dimensions there are.
@@ -3202,7 +3200,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # add_offset, and converting to/from masked arrays is True.
         self.scale = True
         self.mask = True
-        if not self._has_lsd and 'least_significant_digit' in self.ncattrs():
+        if 'least_significant_digit' in self.ncattrs():
             self._has_lsd = True
 
     def __array__(self):
@@ -3572,7 +3570,6 @@ details."""
                 "'%s' is one of the reserved attributes %s, cannot rebind. Use setncattr instead." % (name, tuple(_private_atts)))
             else:
                 self.__dict__[name]=value
-        if name == 'least_significant_digit': self._has_lsd = True
 
     def __getattr__(self,name):
         # if name in _private_atts, it is stored at the python
