@@ -1533,7 +1533,8 @@ cdef _get_vars(group):
 _private_atts =\
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
- 'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name','__orthogoral_indexing__','keepweakref']
+ 'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
+ '__orthogoral_indexing__','keepweakref','_has_lsd']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -2816,7 +2817,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
-    _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype, __orthogonal_indexing__
+    _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
+    __orthogonal_indexing__, _has_lsd
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
     """A tuple containing the names of the
@@ -3198,6 +3200,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # add_offset, and converting to/from masked arrays is True.
         self.scale = True
         self.mask = True
+        if 'least_significant_digit' in self.ncattrs():
+            self._has_lsd = True
 
     def __array__(self):
         # numpy special method that returns a numpy array.
@@ -3931,7 +3935,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         stride = stride.reshape((-1, self.ndim or 1))
         put_ind = put_ind.reshape((-1, self.ndim or 1))
 
-        if 'least_significant_digit' in self.ncattrs():
+        # quantize data if least_significant_digit attribute
+        # exists (improves compression).
+        if self._has_lsd:
             data = _quantize(data,self.least_significant_digit)
         # if auto_scale mode set to True, (through
         # a call to set_auto_scale or set_auto_maskandscale),

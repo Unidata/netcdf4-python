@@ -13,7 +13,7 @@ n4dim = 144
 ntrials = 10
 sys.stdout.write('reading and writing a %s by %s by %s by %s random array ..\n'%(n1dim,n2dim,n3dim,n4dim))
 sys.stdout.write('(average of %s trials)\n' % ntrials)
-array = netCDF4._quantize(uniform(size=(n1dim,n2dim,n3dim,n4dim)),4)
+array = netCDF4.utils._quantize(uniform(size=(n1dim,n2dim,n3dim,n4dim)),4)
 
 
 def write_netcdf(filename,zlib=False,shuffle=False,complevel=6):
