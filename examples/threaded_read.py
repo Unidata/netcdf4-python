@@ -1,8 +1,9 @@
+from __future__ import print_function
 from netCDF4 import Dataset
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 import numpy as np
 import threading
-import Queue
+import queue
 import time
 
 # demonstrate reading of different files from different threads.
@@ -28,7 +29,7 @@ for i in range(nfiles):
     nc.close()
 
 # Queue them up
-items = Queue.Queue()
+items = queue.Queue()
 for data,fname in zip(datal,fnames):
     items.put(fname)
 
@@ -51,7 +52,7 @@ start = time.time()
 for i in range(nfiles):
     get_data(serial=i)
 end = time.time()
-print 'no threads, time = ',end - start
+print('no threads, time = ',end - start)
 
 # with threading.
 start = time.time()
@@ -59,4 +60,4 @@ for i in range(nfiles):
     threading.Thread(target=get_data).start()
 items.join()
 end = time.time()
-print 'with threading, time = ',end - start
+print('with threading, time = ',end - start)
