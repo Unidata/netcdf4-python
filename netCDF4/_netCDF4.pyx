@@ -1854,14 +1854,16 @@ Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf >= 4.1.2"""
         cdef int ierr
         cdef size_t pathlen
-        cdef char *path
+        cdef char *c_path
         IF HAS_NC_INQ_PATH:
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
-            path = <char *>malloc(sizeof(char) * pathlen)
+            c_path = <char *>malloc(sizeof(char) * pathlen)
             with nogil:
-                ierr = nc_inq_path(self._grpid, &pathlen, path)
-            return path.decode('ascii')
+                ierr = nc_inq_path(self._grpid, &pathlen, c_path)
+            py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
+            free(c_path)
+            return py_path.decode('ascii')
         ELSE:
             msg = """
 filepath method not enabled.  To enable, install Cython, make sure you have
