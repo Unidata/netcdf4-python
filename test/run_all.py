@@ -17,6 +17,9 @@ else:
 if __netcdf4libversion__ < '4.2.1':
     test_files.remove('tst_diskless.py')
     sys.stdout.write('not running tst_diskless.py ...\n')
+if __netcdf4libversion__ < '4.1.2':
+    test_files.remove('tst_filepath.py')
+    sys.stdout.write('not running tst_filepath.py ...\n')
 
 # Don't run tests that require network connectivity
 if os.getenv('NO_NET'):
