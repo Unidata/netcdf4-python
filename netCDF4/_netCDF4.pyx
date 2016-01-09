@@ -945,6 +945,7 @@ from glob import glob
 from numpy import ma
 from numpy import __version__ as _npversion
 from libc.string cimport memcpy
+from libc.stdlib cimport malloc, free
 if _npversion.split('.')[0] < '1':
     raise ImportError('requires numpy version 1.0rc1 or later')
 import_array()
@@ -1859,10 +1860,14 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
             c_path = <char *>malloc(sizeof(char) * pathlen)
-            with nogil:
-                ierr = nc_inq_path(self._grpid, &pathlen, c_path)
-            py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
-            free(c_path)
+            if not c_path:
+                raise MemoryError()
+            try:
+                with nogil:
+                    ierr = nc_inq_path(self._grpid, &pathlen, c_path)
+                py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
+            finally:
+                free(c_path)
             return py_path.decode('ascii')
         ELSE:
             msg = """

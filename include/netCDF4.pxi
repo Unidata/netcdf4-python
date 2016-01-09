@@ -2,8 +2,6 @@
 cdef extern from "stdlib.h":
     ctypedef long size_t
     ctypedef long ptrdiff_t
-    void *malloc(size_t size)
-    void free(void *ptr)
 
 # hdf5 version info.
 cdef extern from "H5public.h":
