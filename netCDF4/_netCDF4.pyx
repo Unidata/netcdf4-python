@@ -1859,12 +1859,16 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
         IF HAS_NC_INQ_PATH:
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
+            if ierr != NC_NOERR:
+                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             c_path = <char *>malloc(sizeof(char) * pathlen)
             if not c_path:
                 raise MemoryError()
             try:
                 with nogil:
                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)
+                if ierr != NC_NOERR:
+                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
             finally:
                 free(c_path)
