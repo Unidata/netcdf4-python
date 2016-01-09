@@ -1,6 +1,8 @@
  since version 1.2.2 release
  ===========================
  * expose netcdftime.__version__ (issue #504).
+ * use PyMem_Malloc/Free instead of malloc/free in Dataset.filepath
+   to avoid mysterious segfaults on CentOS6 (issue #506).
 
  version 1.2.2 (tag v1.2.2rel)
  =============================
