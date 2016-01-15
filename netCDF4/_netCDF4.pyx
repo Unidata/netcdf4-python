@@ -943,11 +943,8 @@ import sys
 import warnings
 from glob import glob
 from numpy import ma
-from numpy import __version__ as _npversion
 from libc.string cimport memcpy
 from libc.stdlib cimport malloc, free
-if _npversion.split('.')[0] < '1':
-    raise ImportError('requires numpy version 1.0rc1 or later')
 import_array()
 include "netCDF4.pxi"
 include "constants.pyx"
