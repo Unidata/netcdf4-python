@@ -1,6 +1,9 @@
  since version 1.2.2 release
  ===========================
  * expose netcdftime.__version__ (issue #504).
+ * fix potential memory leak in Dataset.filepath in attempt to fix
+   mysterious segfaults on CentOS6 (issue #506). Segfaults still 
+   can apparently still occur on systems like CentOS6 with old versions of glibc.
 
  version 1.2.2 (tag v1.2.2rel)
  =============================

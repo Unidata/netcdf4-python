@@ -945,6 +945,7 @@ from glob import glob
 from numpy import ma
 from numpy import __version__ as _npversion
 from libc.string cimport memcpy
+from libc.stdlib cimport malloc, free
 if _npversion.split('.')[0] < '1':
     raise ImportError('requires numpy version 1.0rc1 or later')
 import_array()
@@ -1854,14 +1855,24 @@ Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf >= 4.1.2"""
         cdef int ierr
         cdef size_t pathlen
-        cdef char *path
+        cdef char *c_path
         IF HAS_NC_INQ_PATH:
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
-            path = <char *>malloc(sizeof(char) * pathlen)
-            with nogil:
-                ierr = nc_inq_path(self._grpid, &pathlen, path)
-            return path.decode('ascii')
+            if ierr != NC_NOERR:
+                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            c_path = <char *>malloc(sizeof(char) * pathlen)
+            if not c_path:
+                raise MemoryError()
+            try:
+                with nogil:
+                    ierr = nc_inq_path(self._grpid, &pathlen, c_path)
+                if ierr != NC_NOERR:
+                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
+            finally:
+                free(c_path)
+            return py_path.decode('ascii')
         ELSE:
             msg = """
 filepath method not enabled.  To enable, install Cython, make sure you have
