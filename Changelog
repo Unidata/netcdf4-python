@@ -1,5 +1,7 @@
- since version 1.2.2 release
+ version 1.2.3 (not yet released)
  ===========================
+ * add test/tst_cdf5.py and test/tst_filepath.py (to test new
+   NETCDF3_64BIT_DATA format and filepath Dataset method).
  * expose netcdftime.__version__ (issue #504).
  * fix potential memory leak in Dataset.filepath in attempt to fix
    mysterious segfaults on CentOS6 (issue #506). Segfaults  
