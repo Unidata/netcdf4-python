@@ -65,6 +65,9 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         doh2 = file.createVariable('packeddata3','i2','n')
         doh2.add_offset = 1.
         doh2[0] = 1.
+        # added test for issue 515
+        file.createDimension('x',1)
+        v = file.createVariable('v',NP.float,'x',fill_value=-9999)
         file.close()
 
     def tearDown(self):
@@ -103,6 +106,8 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         assert(datapacked3[:].dtype == NP.float)
         # added to test fix to issue 46 (result before r865 was 10)
         assert_array_equal(datapacked2[0],11)
+        # added test for issue 515
+        assert(file['v'][0] is NP.ma.masked)
         file.close()
 
 if __name__ == '__main__':

@@ -3788,6 +3788,11 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # otherwise _FillValue.
         if fill_value is not None:
             data = ma.masked_array(data,mask=totalmask,fill_value=fill_value)
+            # issue 515 scalar array with mask=True should be converted
+            # to numpy.ma.MaskedConstant to be consistent with slicing
+            # behavior of masked arrays.
+            if data.shape == () and data.mask.all():
+                data = data[...]
         return data
 
     def _assign_vlen(self, elem, data):
