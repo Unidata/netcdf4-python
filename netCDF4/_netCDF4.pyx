@@ -4058,7 +4058,9 @@ is set to the missing_value attribute (if it exists), otherwise
 the netCDF _FillValue attribute (which has a default value
 for each data type).  When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
-masked values by the fill_value of the masked array.
+masked values by the missing_value attribute of the variable (if it
+exists).  If the variable has no missing_value attribute, the _FillValue
+is used instead.
 
 If `maskandscale` is set to `True`, and the variable has a
 `scale_factor` or an `add_offset` attribute, then data read
@@ -4134,7 +4136,9 @@ is set to the missing_value attribute (if it exists), otherwise
 the netCDF _FillValue attribute (which has a default value
 for each data type).  When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
-masked values by the fill_value of the masked array.
+masked values by the missing_value attribute of the variable (if it
+exists).  If the variable has no missing_value attribute, the _FillValue
+is used instead.
 
 The default value of `mask` is `True`
 (automatic conversions are performed).
