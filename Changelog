@@ -1,5 +1,7 @@
  version 1.2.3 (not yet released)
  ===========================
+ * add the capability in setup.py to use pkg-config instead of
+   nc-config (pull request #518).
  * make sure slices which return scalar masked arrays
    are consistent with numpy.ma (issue #515).
  * add test/tst_cdf5.py and test/tst_filepath.py (to test new
