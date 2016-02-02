@@ -498,6 +498,9 @@ def ncinfo():
 def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NETCDF3_64BIT'):
     """convert a netcdf 4 file (filename4) in NETCDF4_CLASSIC format
     to a netcdf 3 file (filename3) in NETCDF3_64BIT format."""
+
+    from netCDF4 import Dataset
+
     ncfile4 = Dataset(filename4,'r')
     if ncfile4.file_format != 'NETCDF4_CLASSIC':
         raise IOError('input file must be in NETCDF4_CLASSIC format')
