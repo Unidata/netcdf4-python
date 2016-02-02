@@ -533,30 +533,30 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
             FillValue = None
         var = ncfile3.createVariable(varname,ncvar.dtype,ncvar.dimensions,fill_value=FillValue)
         # fill variable attributes.
-    attdict = ncvar.__dict__
-    if '_FillValue' in attdict:
-        del attdict['_FillValue']
-    var.setncatts(attdict)
-    #for attname in ncvar.ncattrs():
-    #    if attname == '_FillValue': continue
-    #    setattr(var,attname,getattr(ncvar,attname))
-    # fill variables with data.
-    if hasunlimdim: # has an unlim dim, loop over unlim dim index.
-        # range to copy
-        if nchunk:
-            start = 0; stop = len(unlimdim); step = nchunk
-            if step < 1:
-                step = 1
-            for n in range(start, stop, step):
-                nmax = n+nchunk
-                if nmax > len(unlimdim):
-                    nmax=len(unlimdim)
-                var[n:nmax] = ncvar[n:nmax]
-        else:
-            var[0:len(unlimdim)] = ncvar[:]
-    else: # no unlim dim or 1-d variable, just copy all data at once.
-        var[:] = ncvar[:]
-    ncfile3.sync() # flush data to disk
+        attdict = ncvar.__dict__
+        if '_FillValue' in attdict:
+            del attdict['_FillValue']
+        var.setncatts(attdict)
+        #for attname in ncvar.ncattrs():
+        #    if attname == '_FillValue': continue
+        #    setattr(var,attname,getattr(ncvar,attname))
+        # fill variables with data.
+        if hasunlimdim: # has an unlim dim, loop over unlim dim index.
+            # range to copy
+            if nchunk:
+                start = 0; stop = len(unlimdim); step = nchunk
+                if step < 1:
+                    step = 1
+                for n in range(start, stop, step):
+                    nmax = n+nchunk
+                    if nmax > len(unlimdim):
+                        nmax=len(unlimdim)
+                    var[n:nmax] = ncvar[n:nmax]
+            else:
+                var[0:len(unlimdim)] = ncvar[:]
+        else: # no unlim dim or 1-d variable, just copy all data at once.
+            var[:] = ncvar[:]
+        ncfile3.sync() # flush data to disk
     # close files.
     ncfile3.close()
     ncfile4.close()
