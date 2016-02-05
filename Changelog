@@ -1,6 +1,6 @@
  version 1.2.3 (not yet released)
  ===========================
- * fix indentation bug in nc4tonc3 utility (issue #519).
+ * fix failing test with numpy 1.11 (issue #521).
  * add the capability in setup.py to use pkg-config instead of
    nc-config (pull request #518).
  * make sure slices which return scalar masked arrays
