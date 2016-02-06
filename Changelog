@@ -1,6 +1,6 @@
  version 1.2.3 (not yet released)
  ===========================
- * fix failing test with numpy 1.11 (issue #521).
+ * fix failing tests with numpy 1.11 (issues #521 and #522).
  * add the capability in setup.py to use pkg-config instead of
    nc-config (pull request #518).
  * make sure slices which return scalar masked arrays
