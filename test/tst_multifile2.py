@@ -30,7 +30,7 @@ class VariablesTestCase(unittest.TestCase):
             dat = f.createVariable('data','i',('x','y','z',))
             dat.long_name = 'phony data'
             dat.missing_value = missval
-            nx1 = nfile*ninc; nx2 = ninc*(nfile+1)
+            nx1 = int(nfile*ninc); nx2 = int(ninc*(nfile+1))
             #x[0:ninc] = np.arange(nfile*ninc,ninc*(nfile+1))
             x[:] = np.arange(nfile*ninc,ninc*(nfile+1))
             #dat[0:ninc] = data[nx1:nx2]
