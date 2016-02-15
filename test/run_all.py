@@ -20,7 +20,7 @@ if __netcdf4libversion__ < '4.2.1':
 if __netcdf4libversion__ < '4.1.2':
     test_files.remove('tst_filepath.py')
     sys.stdout.write('not running tst_filepath.py ...\n')
-if __netcdf4libversion__ < '4.4.0':
+if __netcdf4libversion__ < '4.4.0' or sys.maxsize < 2**32:
     test_files.remove('tst_cdf5.py')
     sys.stdout.write('not running tst_cdf5.py ...\n')
 
