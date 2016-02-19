@@ -3808,7 +3808,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         if not self._isvlen:
             raise TypeError('_assign_vlen method only for use with VLEN variables')
         ndims = self.ndim
-        msg="single element VLEN slices must be specified by integers only"
+        msg="data can only be assigned to VLEN variables using integer indices"
         # check to see that elem is a tuple of integers.
         # handle negative integers.
         if isinstance(elem, int):
