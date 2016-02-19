@@ -2,8 +2,7 @@
  ===========================
  * make sure NC_CHAR attributes are returned as ascii strings (python 2)
    or bytes (python 3), not unicode strings (issue #529).
-   Note: on python 3, attributes that are bytes are written as
-   NC_CHAR.
+   **This could break some code that assumes attributes are always strings**
  * fix failing tests with numpy 1.11 (issues #521 and #522).
  * fix indentation bug in nc4tonc3 utility (issue #519).
  * add the capability in setup.py to use pkg-config instead of
