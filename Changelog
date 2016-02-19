@@ -1,5 +1,7 @@
  version 1.2.3 (not yet released)
  ===========================
+ * make sure ascii string attributes are returned as ascii strings,
+   not unicode strings (issue #529).
  * fix failing tests with numpy 1.11 (issues #521 and #522).
  * fix indentation bug in nc4tonc3 utility (issue #519).
  * add the capability in setup.py to use pkg-config instead of

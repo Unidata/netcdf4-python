@@ -1111,6 +1111,8 @@ cdef _get_att(grp, int varid, name):
         else:
             pstring =\
             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
+            # issue529: convert to ascii string
+            pstring = pstring.encode('ascii')
         return pstring
     elif att_type == NC_STRING:
         if att_len == 1:
