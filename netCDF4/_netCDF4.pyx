@@ -1111,8 +1111,8 @@ cdef _get_att(grp, int varid, name):
         else:
             pstring =\
             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
-            # issue529: convert to ascii string
-            pstring = pstring.encode('ascii')
+            # issue529: convert to ascii string (if possible)
+            pstring = maybe_encode(pstring)
         return pstring
     elif att_type == NC_STRING:
         if att_len == 1:
@@ -4914,6 +4914,11 @@ cdef _read_enum(group, nc_type xtype, endian=None):
         enum_dict[name] = int(enum_val)
     return EnumType(group, dt, name, enum_dict, typeid=xtype)
 
+def maybe_encode(string, encoding='ascii'):
+    try:
+        return string.encode(encoding)
+    except UnicodeEncodeError:
+        return string
 cdef _strencode(pystr,encoding=None):
     # encode a string into bytes.  If already bytes, do nothing.
     # uses default_encoding module variable for default encoding.
