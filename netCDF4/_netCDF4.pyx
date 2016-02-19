@@ -2503,10 +2503,10 @@ attribute does not exist on the variable. For example,
             var = self.variables[vname]
             for k, v in kwargs.items():
                 if callable(v):
-                    has_value_flag = v(getattr(var, k, None))
+                    has_value_flag = v(_bytes_to_str(getattr(var, k, None)))
                     if has_value_flag is False:
                         break
-                elif hasattr(var, k) and getattr(var, k) == v:
+                elif hasattr(var, k) and _bytes_to_str(getattr(var, k)) == v:
                     has_value_flag = True
                 else:
                     has_value_flag = False
@@ -4920,6 +4920,15 @@ def _encode_ascii(string, encoding='ascii'):
         return string.encode(encoding)
     except UnicodeEncodeError:
         return string
+
+def _bytes_to_str(b):
+    # if python 3 and b is a bytes object, convert bytes to ascii string.
+    # otherwise do nothing.
+    if python3 and type(b) == bytes:
+        return str(b,encoding='ascii')
+    else:
+        return b
+
 cdef _strencode(pystr,encoding=None):
     # encode a string into bytes.  If already bytes, do nothing.
     # uses default_encoding module variable for default encoding.
@@ -4945,6 +4954,7 @@ def _dateparse(timestr):
     return a datetime instance"""
     # same as version in netcdftime, but returns a timezone naive
     # python datetime instance with the utc_offset included.
+    timestr = _bytes_to_str(timestr) # make sure it's a string
     timestr_split = timestr.split()
     units = timestr_split[0].lower()
     if timestr_split[1].lower() != 'since':
@@ -5057,6 +5067,7 @@ Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 
 returns a numeric time value, or an array of numeric time values.
     """
+    units = _bytes_to_str(units); calendar = _bytes_to_str(calendar)
     calendar = calendar.lower()
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
@@ -5153,6 +5164,7 @@ datetime objects. The datetime instances
 do not contain a time-zone offset, even if the specified `units`
 contains one.
     """
+    units = _bytes_to_str(units); calendar = _bytes_to_str(calendar)
     calendar = calendar.lower()
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
@@ -5256,8 +5268,9 @@ to the given datetime object(s).
         raise AttributeError("netcdf time variable is missing a 'units' attribute")
     if calendar == None:
         calendar = getattr(nctime, 'calendar', 'standard')
+    calendar = _bytes_to_str(calendar)
     calendar = calendar.lower()
-    basedate = _dateparse(nctime.units)
+    basedate = _dateparse(_bytes_to_str(nctime.units))
     # real-world calendars limited to positive reference years.
     if calendar in ['julian', 'standard', 'gregorian', 'proleptic_gregorian']:
         if basedate.year == 0:
