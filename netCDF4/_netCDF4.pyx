@@ -4925,7 +4925,7 @@ def _bytes_to_str(b):
     # if python 3 and b is a bytes object, convert bytes to ascii string.
     # otherwise do nothing.
     if python3 and type(b) == bytes:
-        return str(b,encoding='ascii')
+        return str(b, encoding='ascii')
     else:
         return b
 
@@ -5067,7 +5067,8 @@ Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 
 returns a numeric time value, or an array of numeric time values.
     """
-    units = _bytes_to_str(units); calendar = _bytes_to_str(calendar)
+    units = _bytes_to_str(units)
+    calendar = _bytes_to_str(calendar)
     calendar = calendar.lower()
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
