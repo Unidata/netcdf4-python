@@ -7,8 +7,6 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 from numpy.random.mtrand import uniform
 import netCDF4
 
-python3 = sys.version_info[0] > 2
-
 # test primitive data types.
 
 # create an n1dim by n2dim random ranarr.
@@ -80,7 +78,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
             assert(v._FillValue == u'Z') # python 2
         # issue 273 (setting _FillValue to null byte manually)
         v2 = file.variables['issue273']
-        if python3:
+        if type(v2._FillValue) == bytes:
             assert(v2._FillValue == b'\x00') # python 3
         else:
             assert(v2._FillValue == u'') # python 2

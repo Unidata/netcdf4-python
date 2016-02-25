@@ -46,14 +46,14 @@ class VariablesTestCase(unittest.TestCase):
         """testing multi-file dataset access"""
         # specify the aggregation dim (not necessarily unlimited)
         f = MFDataset(self.files,aggdim='x',check=True)
-        assert f.history == b'created today'
+        assert f.history == 'created today'
         assert_array_equal(np.arange(0,nx),f.variables['x'][:])
         varin = f.variables['data']
         datin = varin[:]
         assert_array_equal(datin.mask,data.mask)
         varin.set_auto_maskandscale(False)
         data2 = data.filled()
-        assert varin.long_name == b'phony data'
+        assert varin.long_name == 'phony data'
         assert len(varin) == nx
         assert varin.shape == (nx,ydim,zdim)
         assert varin.dimensions == ('x','y','z')
