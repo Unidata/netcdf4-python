@@ -44,14 +44,14 @@ class VariablesTestCase(unittest.TestCase):
     def runTest(self):
         """testing multi-file dataset access"""
         f = MFDataset(self.files,check=True)
-        assert f.history == 'created today'
+        assert f.history == b'created today'
         assert_array_equal(np.arange(0,nx),f.variables['x'][:])
         varin = f.variables['data']
         datin = varin[:]
         assert_array_equal(datin.mask,data.mask)
         varin.set_auto_maskandscale(False)
         data2 = data.filled()
-        assert varin.long_name == 'phony data'
+        assert varin.long_name == b'phony data'
         assert len(varin) == nx
         assert varin.shape == (nx,ydim,zdim)
         assert varin.dimensions == ('x','y','z')
