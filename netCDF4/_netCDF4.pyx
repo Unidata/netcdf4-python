@@ -2296,7 +2296,7 @@ with the same name as one of the reserved python attributes."""
 **`setncattr_string(self,name,value)`**
 
 set a netCDF dataset or group string attribute using name,value pair.
-Use if you need to ensure that of netCDF attribute is created with type
+Use if you need to ensure that a netCDF attribute is created with type
 `NC_STRING` if the file format is `NETCDF4`."""
         cdef nc_type xtype
         xtype=-99
@@ -3421,7 +3421,7 @@ attributes."""
 **`setncattr_string(self,name,value)`**
 
 set a netCDF variable string attribute using name,value pair.
-Use if you need to ensure that of netCDF attribute is created with type
+Use if you need to ensure that a netCDF attribute is created with type
 `NC_STRING` if the file format is `NETCDF4`."""
         cdef nc_type xtype
         xtype=-99

@@ -17403,7 +17403,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_48setncattr(struct __pyx_o
 
 /* Python wrapper */
 static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_51setncattr_string(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7netCDF4_8_netCDF4_7Dataset_50setncattr_string[] = "\n**`setncattr_string(self,name,value)`**\n\nset a netCDF dataset or group string attribute using name,value pair.\nUse if you need to ensure that of netCDF attribute is created with type\n`NC_STRING` if the file format is `NETCDF4`.";
+static char __pyx_doc_7netCDF4_8_netCDF4_7Dataset_50setncattr_string[] = "\n**`setncattr_string(self,name,value)`**\n\nset a netCDF dataset or group string attribute using name,value pair.\nUse if you need to ensure that a netCDF attribute is created with type\n`NC_STRING` if the file format is `NETCDF4`.";
 static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_51setncattr_string(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_name = 0;
   PyObject *__pyx_v_value = 0;
@@ -32827,7 +32827,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_16setncattr(struct __pyx_
 
 /* Python wrapper */
 static PyObject *__pyx_pw_7netCDF4_8_netCDF4_8Variable_19setncattr_string(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7netCDF4_8_netCDF4_8Variable_18setncattr_string[] = "\n**`setncattr_string(self,name,value)`**\n\nset a netCDF variable string attribute using name,value pair.\nUse if you need to ensure that of netCDF attribute is created with type\n`NC_STRING` if the file format is `NETCDF4`.";
+static char __pyx_doc_7netCDF4_8_netCDF4_8Variable_18setncattr_string[] = "\n**`setncattr_string(self,name,value)`**\n\nset a netCDF variable string attribute using name,value pair.\nUse if you need to ensure that a netCDF attribute is created with type\n`NC_STRING` if the file format is `NETCDF4`.";
 static PyObject *__pyx_pw_7netCDF4_8_netCDF4_8Variable_19setncattr_string(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_name = 0;
   PyObject *__pyx_v_value = 0;
