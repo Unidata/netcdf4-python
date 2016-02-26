@@ -1096,6 +1096,7 @@ table {
     <li class="mono"><a href="#netCDF4.Dataset.set_fill_off">set_fill_off</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.set_fill_on">set_fill_on</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.setncattr">setncattr</a></li>
+    <li class="mono"><a href="#netCDF4.Dataset.setncattr_string">setncattr_string</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.setncatts">setncatts</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.sync">sync</a></li>
   </ul>
@@ -1150,6 +1151,7 @@ table {
     <li class="mono"><a href="#netCDF4.Group.set_fill_off">set_fill_off</a></li>
     <li class="mono"><a href="#netCDF4.Group.set_fill_on">set_fill_on</a></li>
     <li class="mono"><a href="#netCDF4.Group.setncattr">setncattr</a></li>
+    <li class="mono"><a href="#netCDF4.Group.setncattr_string">setncattr_string</a></li>
     <li class="mono"><a href="#netCDF4.Group.setncatts">setncatts</a></li>
     <li class="mono"><a href="#netCDF4.Group.sync">sync</a></li>
   </ul>
@@ -1181,6 +1183,7 @@ table {
     <li class="mono"><a href="#netCDF4.MFDataset.set_fill_off">set_fill_off</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.set_fill_on">set_fill_on</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.setncattr">setncattr</a></li>
+    <li class="mono"><a href="#netCDF4.MFDataset.setncattr_string">setncattr_string</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.setncatts">setncatts</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.sync">sync</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.__init__">__init__</a></li>
@@ -1232,6 +1235,7 @@ table {
     <li class="mono"><a href="#netCDF4.Variable.set_auto_scale">set_auto_scale</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_var_chunk_cache">set_var_chunk_cache</a></li>
     <li class="mono"><a href="#netCDF4.Variable.setncattr">setncattr</a></li>
+    <li class="mono"><a href="#netCDF4.Variable.setncattr_string">setncattr_string</a></li>
     <li class="mono"><a href="#netCDF4.Variable.setncatts">setncatts</a></li>
   </ul>
 
@@ -3202,6 +3206,23 @@ with the same name as one of the reserved python attributes.</p></div>
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.Dataset.setncattr_string">
+    <p>def <span class="ident">setncattr_string</span>(</p><p>self,name,value)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>set a netCDF dataset or group string attribute using name,value pair.
+Use if you need to ensure that of netCDF attribute is created with type
+<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.Dataset.setncatts">
     <p>def <span class="ident">setncatts</span>(</p><p>self,attdict)</p>
     </div>
@@ -4308,6 +4329,27 @@ with the same name as one of the reserved python attributes.</p></div>
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.Group.setncattr_string">
+    <p>def <span class="ident">setncattr_string</span>(</p><p>self,name,value)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.setncattr_string">setncattr_string</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>set a netCDF dataset or group string attribute using name,value pair.
+Use if you need to ensure that of netCDF attribute is created with type
+<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.Group.setncatts">
     <p>def <span class="ident">setncatts</span>(</p><p>self,attdict)</p>
     </div>
@@ -5174,6 +5216,27 @@ with the same name as one of the reserved python attributes.</p></div>
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.MFDataset.setncattr_string">
+    <p>def <span class="ident">setncattr_string</span>(</p><p>self,name,value)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.setncattr_string">setncattr_string</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>set a netCDF dataset or group string attribute using name,value pair.
+Use if you need to ensure that of netCDF attribute is created with type
+<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.MFDataset.setncatts">
     <p>def <span class="ident">setncatts</span>(</p><p>self,attdict)</p>
     </div>
@@ -6032,6 +6095,23 @@ details.</p></div>
     <div class="desc"><p>set a netCDF variable attribute using name,value pair.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Variable.setncattr_string">
+    <p>def <span class="ident">setncattr_string</span>(</p><p>self,name,value)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>set a netCDF variable string attribute using name,value pair.
+Use if you need to ensure that of netCDF attribute is created with type
+<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.</p></div>
   <div class="source_cont">
 </div>
 
