@@ -1240,8 +1240,18 @@ cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
                     ierr = nc_del_att(grp._grpid, varid, attname)
                     if ierr != NC_NOERR:
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            # a unicode string, use put_att_string (if NETCDF4 file).
-            ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
+            # try to convert to ascii string, write as NC_CHAR 
+            # else it's a unicode string, write as NC_STRING (if NETCDF4)
+            try:
+                if python3:
+                    str(dats,encoding='ascii')
+                else:
+                    dats = dats.encode('ascii')
+                lenarr = len(dats)
+                datstring = dats
+                ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
+            except UnicodeDecodeError:
+                ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
         else:
             ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
