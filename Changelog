@@ -1,9 +1,11 @@
  version 1.2.3 (not yet released)
- ===========================
+ ================================
  * try to avoid writing NC_STRING attributes if possible, by
    trying to convert unicode strings to ascii and write as NC_CHAR (issue
    #529).  This preserves compatibility with clients (like Matlab) that
-   can't deal with NC_STRING attributes.
+   can't deal with NC_STRING attributes. a 'setncattr_string' method
+   was added for Dataset and Variable to that users can force attributes
+   to be written as NC_STRING if necessary.
  * fix failing tests with numpy 1.11 (issues #521 and #522).
  * fix indentation bug in nc4tonc3 utility (issue #519).
  * add the capability in setup.py to use pkg-config instead of
