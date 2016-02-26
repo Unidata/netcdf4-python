@@ -137,7 +137,7 @@ class VariablesTestCase(unittest.TestCase):
         assert v.getncattr('ndim') == 'three'
         assert v.getncattr('foo') == 1
         assert v.getncattr('bar') == 2
-        # check type of attributes using ncdump
+        # check type of attributes using ncdump (issue #529)
         dep=subprocess.Popen(['ncdump','-h',FILE_NAME],stdout=subprocess.PIPE).communicate()[0]
         try: # python 2
             ncdump_output = dep.split('\n')
