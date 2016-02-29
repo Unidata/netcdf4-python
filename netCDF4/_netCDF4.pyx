@@ -1244,10 +1244,10 @@ cdef _set_att(grp, int varid, name, value,\
             # try to convert to ascii string, write as NC_CHAR 
             # else it's a unicode string, write as NC_STRING (if NETCDF4)
             try:
-                if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")
+                if force_ncstring: raise UnicodeError
                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
-            except UnicodeDecodeError:
+            except UnicodeError:
                 ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
         else:
             ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
