@@ -92,6 +92,7 @@ class VariablesTestCase(unittest.TestCase):
         f.charatt = u'foo' # will be written as NC_CHAR
         f.setncattr_string('stringatt','bar') # NC_STRING
         f.cafe = u'caf\xe9' # NC_STRING
+        f.batt = u'caf\xe9'.encode('utf-8') #NC_CHAR
         v.setncattr_string('stringatt','bar') # NC_STRING
         f.close()
 
@@ -148,6 +149,7 @@ class VariablesTestCase(unittest.TestCase):
             if "stringatt" in line: assert line.startswith('string')
             if "charatt" in line: assert line.startswith(':')
             if "cafe" in line: assert line.startswith('string')
+            if "batt" in line: assert line.startswith(':')
         # check attributes in subgroup.
         # global attributes.
         for key,val in ATTDICT.items():
