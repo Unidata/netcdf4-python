@@ -1245,10 +1245,7 @@ cdef _set_att(grp, int varid, name, value,\
             # else it's a unicode string, write as NC_STRING (if NETCDF4)
             try:
                 if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")
-                if python3:
-                    str(dats,encoding='ascii')
-                else:
-                    dats = dats.encode('ascii')
+                dats = _to_ascii(dats) # try to encode bytes as ascii string
                 lenarr = len(dats)
                 datstring = dats
                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
@@ -4961,6 +4958,13 @@ cdef _strencode(pystr,encoding=None):
         return pystr.encode(encoding)
     except (AttributeError, UnicodeDecodeError):
         return pystr # already bytes or unicode?
+
+def _to_ascii(bytestr):
+    # encode a byte string to an ascii encoded string.
+    if python3:
+        return str(bytestr,encoding='ascii')
+    else:
+        return bytestr.encode('ascii')
 
 #----------------------------------------
 # extra utilities (formerly in utils.pyx)
