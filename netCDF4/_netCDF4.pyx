@@ -1246,8 +1246,6 @@ cdef _set_att(grp, int varid, name, value,\
             try:
                 if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")
                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
-                lenarr = len(dats)
-                datstring = dats
                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
             except UnicodeDecodeError:
                 ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
