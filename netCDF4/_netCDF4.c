@@ -5588,6 +5588,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
   PyObject *__pyx_v_is_netcdf3 = NULL;
   PyObject *__pyx_v_dats = NULL;
   PyObject *__pyx_v_value_arr1 = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_dats_ascii = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6156,7 +6157,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             # else it's a unicode string, write as NC_STRING (if NETCDF4)
  *             try:             # <<<<<<<<<<<<<<
  *                 if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")
- *                 dats = _to_ascii(dats) # try to encode bytes as ascii string
+ *                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  */
       {
         __Pyx_ExceptionSave(&__pyx_t_11, &__pyx_t_12, &__pyx_t_13);
@@ -6169,7 +6170,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             # else it's a unicode string, write as NC_STRING (if NETCDF4)
  *             try:
  *                 if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")             # <<<<<<<<<<<<<<
- *                 dats = _to_ascii(dats) # try to encode bytes as ascii string
+ *                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  *                 lenarr = len(dats)
  */
           __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_force_ncstring); if (unlikely(__pyx_t_7 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1247; __pyx_clineno = __LINE__; goto __pyx_L23_error;}
@@ -6184,7 +6185,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           /* "netCDF4/_netCDF4.pyx":1248
  *             try:
  *                 if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")
- *                 dats = _to_ascii(dats) # try to encode bytes as ascii string             # <<<<<<<<<<<<<<
+ *                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string             # <<<<<<<<<<<<<<
  *                 lenarr = len(dats)
  *                 datstring = dats
  */
@@ -6215,12 +6216,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
             __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           }
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-          __Pyx_DECREF_SET(__pyx_v_dats, __pyx_t_1);
+          __pyx_v_dats_ascii = __pyx_t_1;
           __pyx_t_1 = 0;
 
           /* "netCDF4/_netCDF4.pyx":1249
  *                 if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")
- *                 dats = _to_ascii(dats) # try to encode bytes as ascii string
+ *                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  *                 lenarr = len(dats)             # <<<<<<<<<<<<<<
  *                 datstring = dats
  *                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
@@ -6229,7 +6230,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           __pyx_v_lenarr = __pyx_t_10;
 
           /* "netCDF4/_netCDF4.pyx":1250
- *                 dats = _to_ascii(dats) # try to encode bytes as ascii string
+ *                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  *                 lenarr = len(dats)
  *                 datstring = dats             # <<<<<<<<<<<<<<
  *                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
@@ -6256,7 +6257,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             # else it's a unicode string, write as NC_STRING (if NETCDF4)
  *             try:             # <<<<<<<<<<<<<<
  *                 if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")
- *                 dats = _to_ascii(dats) # try to encode bytes as ascii string
+ *                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  */
         }
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -6309,7 +6310,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             # else it's a unicode string, write as NC_STRING (if NETCDF4)
  *             try:             # <<<<<<<<<<<<<<
  *                 if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")
- *                 dats = _to_ascii(dats) # try to encode bytes as ascii string
+ *                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  */
         __Pyx_XGIVEREF(__pyx_t_11);
         __Pyx_XGIVEREF(__pyx_t_12);
@@ -6645,6 +6646,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
   __Pyx_XDECREF(__pyx_v_is_netcdf3);
   __Pyx_XDECREF(__pyx_v_dats);
   __Pyx_XDECREF(__pyx_v_value_arr1);
+  __Pyx_XDECREF(__pyx_v_dats_ascii);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -74626,7 +74628,7 @@ static int __Pyx_InitCachedConstants(void) {
  *             # else it's a unicode string, write as NC_STRING (if NETCDF4)
  *             try:
  *                 if force_ncstring: raise UnicodeDecodeError("",b"",1,1,"")             # <<<<<<<<<<<<<<
- *                 dats = _to_ascii(dats) # try to encode bytes as ascii string
+ *                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  *                 lenarr = len(dats)
  */
   __pyx_tuple__11 = PyTuple_Pack(5, __pyx_kp_s__2, __pyx_kp_b__2, __pyx_int_1, __pyx_int_1, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
