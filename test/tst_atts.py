@@ -1,4 +1,5 @@
 import math
+import subprocess
 import sys
 import unittest
 import os
@@ -81,10 +82,18 @@ class VariablesTestCase(unittest.TestCase):
         v1.floatatt = FLOATATT
         v1.seqatt = SEQATT
         v1.stringseqatt = STRINGSEQATT
-        # issue #485 (triggers segfault in C lib 
+        # issue #485 (triggers segfault in C lib
         # with version 1.2.1 without pull request #486)
         f.foo = NP.array('bar','S')
         f.foo = NP.array('bar','U')
+        # issue #529 write string attribute as NC_CHAR unless
+        # it can't be decoded to ascii.  Add setncattr_string
+        # method to force NC_STRING.
+        f.charatt = u'foo' # will be written as NC_CHAR
+        f.setncattr_string('stringatt','bar') # NC_STRING
+        f.cafe = u'caf\xe9' # NC_STRING
+        f.batt = u'caf\xe9'.encode('utf-8') #NC_CHAR
+        v.setncattr_string('stringatt','bar') # NC_STRING
         f.close()
 
     def tearDown(self):
@@ -129,6 +138,18 @@ class VariablesTestCase(unittest.TestCase):
         assert v.getncattr('ndim') == 'three'
         assert v.getncattr('foo') == 1
         assert v.getncattr('bar') == 2
+        # check type of attributes using ncdump (issue #529)
+        dep=subprocess.Popen(['ncdump','-h',FILE_NAME],stdout=subprocess.PIPE).communicate()[0]
+        try: # python 2
+            ncdump_output = dep.split('\n')
+        except TypeError: # python 3
+            ncdump_output = str(dep,encoding='utf-8').split('\n')
+        for line in ncdump_output:
+            line = line.strip('\t\n\r')
+            if "stringatt" in line: assert line.startswith('string')
+            if "charatt" in line: assert line.startswith(':')
+            if "cafe" in line: assert line.startswith('string')
+            if "batt" in line: assert line.startswith(':')
         # check attributes in subgroup.
         # global attributes.
         for key,val in ATTDICT.items():

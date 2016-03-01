@@ -1195,7 +1195,8 @@ cdef _get_full_format(int grpid):
     ELSE:
         return 'UNDEFINED'
 
-cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
+cdef _set_att(grp, int varid, name, value,\
+              nc_type xtype=-99, force_ncstring=False):
     # Private function to set an attribute name/value pair
     cdef int i, ierr, lenarr, n
     cdef size_t att_len
@@ -1228,7 +1229,7 @@ cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
         if lenarr == 0:
             # write null byte
             lenarr=1; datstring = '\x00'
-        if value_arr.dtype.char == 'U' and not is_netcdf3:
+        if (force_ncstring or value_arr.dtype.char == 'U') and not is_netcdf3:
             # check to see if attribute already exists
             # and is NC_CHAR, if so delete it and re-create it
             # (workaround for issue #485). Fixed in C library
@@ -1240,8 +1241,14 @@ cdef _set_att(grp, int varid, name, value, nc_type xtype=-99):
                     ierr = nc_del_att(grp._grpid, varid, attname)
                     if ierr != NC_NOERR:
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            # a unicode string, use put_att_string (if NETCDF4 file).
-            ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
+            # try to convert to ascii string, write as NC_CHAR 
+            # else it's a unicode string, write as NC_STRING (if NETCDF4)
+            try:
+                if force_ncstring: raise UnicodeError
+                dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
+                ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
+            except UnicodeError:
+                ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
         else:
             ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
@@ -2278,6 +2285,20 @@ with the same name as one of the reserved python attributes."""
         if self.data_model != 'NETCDF4': self._redef()
         _set_att(self, NC_GLOBAL, name, value)
         if self.data_model !=  'NETCDF4': self._enddef()
+
+    def setncattr_string(self,name,value):
+        """
+**`setncattr_string(self,name,value)`**
+
+set a netCDF dataset or group string attribute using name,value pair.
+Use if you need to ensure that a netCDF attribute is created with type
+`NC_STRING` if the file format is `NETCDF4`."""
+        cdef nc_type xtype
+        xtype=-99
+        if self.data_model != 'NETCDF4':
+            msg='file format does not support NC_STRING attributes'
+            raise IOError(msg)
+        _set_att(self, NC_GLOBAL, name, str(value), xtype=xtype, force_ncstring=True)
 
     def setncatts(self,attdict):
         """
@@ -3389,6 +3410,20 @@ attributes."""
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
         _set_att(self._grp, self._varid, name, value)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
+
+    def setncattr_string(self,name,value):
+        """
+**`setncattr_string(self,name,value)`**
+
+set a netCDF variable string attribute using name,value pair.
+Use if you need to ensure that a netCDF attribute is created with type
+`NC_STRING` if the file format is `NETCDF4`."""
+        cdef nc_type xtype
+        xtype=-99
+        if self._grp.data_model != 'NETCDF4':
+            msg='file format does not support NC_STRING attributes'
+            raise IOError(msg)
+        _set_att(self._grp, self._varid, name, str(value), xtype=xtype, force_ncstring=True)
 
     def setncatts(self,attdict):
         """
@@ -4921,6 +4956,13 @@ cdef _strencode(pystr,encoding=None):
         return pystr.encode(encoding)
     except (AttributeError, UnicodeDecodeError):
         return pystr # already bytes or unicode?
+
+def _to_ascii(bytestr):
+    # encode a byte string to an ascii encoded string.
+    if python3:
+        return str(bytestr,encoding='ascii')
+    else:
+        return bytestr.encode('ascii')
 
 #----------------------------------------
 # extra utilities (formerly in utils.pyx)
