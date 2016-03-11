@@ -1,0 +1,88 @@
+environment:
+
+  CONDA_INSTALL_LOCN: "C:\\conda"
+
+  # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+  # /E:ON and /V:ON options are not enabled in the batch script interpreter
+  # See: http://stackoverflow.com/a/13751649/163740
+  CMD_IN_ENV: "cmd /E:ON /V:ON /C obvci_appveyor_python_build_env.cmd"
+
+  # Workaround for https://github.com/conda/conda-build/issues/636
+  PYTHONIOENCODING: "UTF-8"
+  PYTHONUNBUFFERED: "1"
+
+  # We set a default Python version for the miniconda that is to be installed.
+  # This can be overridden in the matrix definition where appropriate.
+  CONDA_PY: "27"
+
+  matrix:
+    - TARGET_ARCH: x86
+      CONDA_NPY: 110
+      CONDA_PY: 27
+    - TARGET_ARCH: x64
+      CONDA_NPY: 110
+      CONDA_PY: 27
+
+    - TARGET_ARCH: x86
+      CONDA_NPY: 19
+      CONDA_PY: 27
+    - TARGET_ARCH: x64
+      CONDA_NPY: 19
+      CONDA_PY: 27
+
+    - TARGET_ARCH: x86
+      CONDA_NPY: 110
+      CONDA_PY: 34
+    - TARGET_ARCH: x64
+      CONDA_NPY: 110
+      CONDA_PY: 34
+
+    - TARGET_ARCH: x86
+      CONDA_NPY: 19
+      CONDA_PY: 34
+    - TARGET_ARCH: x64
+      CONDA_NPY: 19
+      CONDA_PY: 34
+
+    - TARGET_ARCH: x86
+      CONDA_NPY: 110
+      CONDA_PY: 35
+    - TARGET_ARCH: x64
+      CONDA_NPY: 110
+      CONDA_PY: 35
+
+    - TARGET_ARCH: x86
+      CONDA_NPY: 19
+      CONDA_PY: 35
+    - TARGET_ARCH: x64
+      CONDA_NPY: 19
+      CONDA_PY: 35
+
+platform:
+    - x64
+
+install:
+    # Set the CONDA_NPY, although it has no impact on the actual build.
+    # We need this because of a test within conda-build.
+    - cmd: set CONDA_NPY=19
+
+    # Use the pre-installed Miniconda for the desired arch.
+    - ps: if($env:TARGET_ARCH -eq 'x86')
+            {$root = "C:\Miniconda"}
+          else
+            {$root = "C:\Miniconda-x64"}
+          $env:path="$root;$root\Scripts;$root\Library\bin;$($env:path)"
+
+    # Update conda.
+    - cmd: conda update --yes --quiet conda
+
+    # Conda build tools.
+    - cmd: conda install --yes --quiet obvious-ci --channel conda-forge
+    - cmd: obvci_install_conda_build_tools.py
+    - cmd: conda info
+
+# Skip .NET project specific build phase.
+build: off
+
+test_script:
+    - "%CMD_IN_ENV% conda build conda.recipe --quiet"
