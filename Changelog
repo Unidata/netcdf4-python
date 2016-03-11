@@ -1,5 +1,5 @@
- version 1.2.3 (not yet released)
- ================================
+ version 1.2.3 (tag v1.2.3rel)
+==============================
  * try to avoid writing NC_STRING attributes if possible, by
    trying to convert unicode strings to ascii and write as NC_CHAR (issue
    #529).  This preserves compatibility with clients (like Matlab) that

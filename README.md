@@ -7,6 +7,13 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+3/10/2106: Version [1.2.3](https://pypi.python.org/pypi/netCDF4/1.2.3) released. Various bug fixes.
+All text attributes are know written as type ``NC_CHAR``, unless they contain unicode characters that
+cannot be encoded in ascii, in which case they are written as ``NC_STRING``.  Previously,
+all unicode strings were written as ``NC_STRING``. This change preserves compatibility
+with clients, like Matlab, that can't deal with ``NC_STRING`` attributes. 
+A ``setncattr_string`` method was added to force attributes to be written as ``NC_STRING``.
+
 1/1/2016: Version [1.2.2](https://pypi.python.org/pypi/netCDF4/1.2.2) released. Mostly bugfixes, but with two new features.
 
 * support for the new ``NETCDF3_64BIT_DATA`` format introduced in netcdf-c 4.4.0.
