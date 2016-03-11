@@ -156,7 +156,7 @@ version 4.0.1).
 ## <div id='section2'>2) Groups in a netCDF file.
 
 netCDF version 4 added support for organizing data in hierarchical
-groups, which are analagous to directories in a filesystem. Groups serve
+groups, which are analogous to directories in a filesystem. Groups serve
 as containers for variables, dimensions and attributes, as well as other
 groups.  A `netCDF4.Dataset` defines creates a special group, called
 the 'root group', which is similar to the root directory in a unix
@@ -2246,7 +2246,7 @@ Creates a new `netCDF4.Group` with the given `groupname`.
 
 If `groupname` is specified as a path, using forward slashes as in unix to
 separate components, then intermediate groups will be created as necessary 
-(analagous to `mkdir -p` in unix).  For example,
+(analogous to `mkdir -p` in unix).  For example,
 `createGroup('/GroupA/GroupB/GroupC')` will create `GroupA`,
 `GroupA/GroupB`, and `GroupA/GroupB/GroupC`, if they don't already exist.
 If the specified path describes a group that already exists, no error is
@@ -2540,7 +2540,7 @@ attribute does not exist on the variable. For example,
 cdef class Group(Dataset):
     """
 Groups define a hierarchical namespace within a netCDF file. They are
-analagous to directories in a unix filesystem. Each `netCDF4.Group` behaves like
+analogous to directories in a unix filesystem. Each `netCDF4.Group` behaves like
 a `netCDF4.Dataset` within a Dataset, and can contain it's own variables,
 dimensions and attributes (and other Groups). See `netCDF4.Group.__init__`
 for more details.
@@ -2796,7 +2796,7 @@ returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwi
 cdef class Variable:
     """
 A netCDF `netCDF4.Variable` is used to read and write netCDF data.  They are
-analagous to numpy array objects. See `netCDF4.Variable.__init__` for more
+analogous to numpy array objects. See `netCDF4.Variable.__init__` for more
 details.
 
 A list of attribute names corresponding to netCDF attributes defined for
