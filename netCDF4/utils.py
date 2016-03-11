@@ -570,7 +570,7 @@ def nc4tonc3():
 
  usage: %s [-h] [-o] [--chunk] netcdf4filename netcdf3filename
  -h -- Print usage message.
- -o -- Overwite destination file (default is to raise an error if output file already exists).
+ -o -- Overwrite destination file (default is to raise an error if output file already exists).
  --quiet=(0|1)  -- if 1, don't print diagnostic information.
  --format -- netcdf3 format to use (NETCDF3_64BIT by default, can be set to NETCDF3_CLASSIC)
  --chunk=(integer) -- number of records along unlimited dimension to
@@ -775,7 +775,7 @@ def nc3tonc4():
 
  usage: %s [-h] [-o] [--vars=var1,var2,..] [--zlib=(0|1)] [--complevel=(1-9)] [--shuffle=(0|1)] [--fletcher32=(0|1)] [--unpackshort=(0|1)] [--quantize=var1=n1,var2=n2,..] netcdf3filename netcdf4filename
  -h -- Print usage message.
- -o -- Overwite destination file (default is to raise an error if output file already exists).
+ -o -- Overwrite destination file (default is to raise an error if output file already exists).
  --vars -- comma separated list of variable names to copy (default is to copy
     all variables)
  --classic=(0|1) -- use NETCDF4_CLASSIC format instead of NETCDF4 (default 1)
