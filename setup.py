@@ -241,14 +241,19 @@ if USE_NCCONFIG:
 else:
     retcode = 1
 
-if not retcode:
+try:
+    HAS_PKG_CONFIG = subprocess.call(['pkg-config','--libs', 'hdf5'], stdout=subprocess.PIPE) == 0
+except OSError:
+    HAS_PKG_CONFIG = False
+
+if not retcode: # Try nc-config.
     sys.stdout.write('using nc-config ...\n')
     dep=subprocess.Popen([ncconfig,'--libs'],stdout=subprocess.PIPE).communicate()[0]
     libs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l' ]
     lib_dirs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-L' ]
     dep=subprocess.Popen([ncconfig,'--cflags'],stdout=subprocess.PIPE).communicate()[0]
     inc_dirs = [str(i[2:].decode()) for i in dep.split() if i[0:2].decode() == '-I']
-elif subprocess.call(['pkg-config','--libs', 'hdf5'],stdout=subprocess.PIPE) == 0:
+elif HAS_PKG_CONFIG: # Try pkg-config.
     sys.stdout.write('using pkg-config ...\n')
     dep=subprocess.Popen(['pkg-config','--libs','netcdf'],stdout=subprocess.PIPE).communicate()[0]
     libs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l' ]
@@ -260,8 +265,7 @@ elif subprocess.call(['pkg-config','--libs', 'hdf5'],stdout=subprocess.PIPE) == 
     lib_dirs.extend([str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-L' ])
     dep=subprocess.Popen(['pkg-config','--cflags', 'hdf5'],stdout=subprocess.PIPE).communicate()[0]
     inc_dirs.extend([str(i[2:].decode()) for i in dep.split() if i[0:2].decode() == '-I'])
-
-# if nc-config and pkg-config both didn't work (it won't on windows), fall back on brute force method
+# If nc-config and pkg-config both didn't work (it won't on Windows), fall back on brute force method.
 else:
     dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
 
