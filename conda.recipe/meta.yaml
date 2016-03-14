@@ -1,0 +1,44 @@
+{% set version = "dev" %}
+
+package:
+    name: netcdf4
+    version: {{ version }}
+
+source:
+    path: ../
+
+build:
+    number: 0
+    entry_points:
+        - ncinfo = netCDF4.utils:ncinfo
+        - nc4tonc3 = netCDF4.utils:nc4tonc3
+        - nc3tonc4 = netCDF4.utils:nc3tonc4
+
+requirements:
+    build:
+        - python
+        - setuptools
+        - numpy x.x
+        - cython
+        - hdf5
+        - libnetcdf
+    run:
+        - python
+        - setuptools
+        - numpy x.x
+        - hdf5
+        - libnetcdf
+
+test:
+    imports:
+        - netCDF4
+        - netcdftime
+    commands:
+        - ncinfo -h
+        - nc4tonc3 -h
+        - nc3tonc4 -h
+
+about:
+    home: http://github.com/Unidata/netcdf4-python
+    license: OSI Approved
+    summary: Provides an object-oriented python interface to the netCDF version 4 library.
