@@ -19,43 +19,17 @@ environment:
     - TARGET_ARCH: x86
       CONDA_NPY: 110
       CONDA_PY: 27
+
     - TARGET_ARCH: x64
       CONDA_NPY: 110
       CONDA_PY: 27
 
     - TARGET_ARCH: x86
-      CONDA_NPY: 19
-      CONDA_PY: 27
-    - TARGET_ARCH: x64
-      CONDA_NPY: 19
-      CONDA_PY: 27
-
-    - TARGET_ARCH: x86
-      CONDA_NPY: 110
-      CONDA_PY: 34
-    - TARGET_ARCH: x64
-      CONDA_NPY: 110
-      CONDA_PY: 34
-
-    - TARGET_ARCH: x86
-      CONDA_NPY: 19
-      CONDA_PY: 34
-    - TARGET_ARCH: x64
-      CONDA_NPY: 19
-      CONDA_PY: 34
-
-    - TARGET_ARCH: x86
-      CONDA_NPY: 110
-      CONDA_PY: 35
-    - TARGET_ARCH: x64
       CONDA_NPY: 110
       CONDA_PY: 35
 
-    - TARGET_ARCH: x86
-      CONDA_NPY: 19
-      CONDA_PY: 35
     - TARGET_ARCH: x64
-      CONDA_NPY: 19
+      CONDA_NPY: 110
       CONDA_PY: 35
 
 platform:
