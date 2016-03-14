@@ -1,10 +1,13 @@
 recursive-include docs *
 recursive-include man *
 recursive-include include *
+recursive-include conda.recipe
 include MANIFEST.in
 include README.md
 include COPYING
 include Changelog
+include appveyor.yml
+include .travis.yml
 include setup.cfg
 include setup.cfg.template
 include examples/*py
