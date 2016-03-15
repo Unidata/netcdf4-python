@@ -1,6 +1,9 @@
+ since version 1.2.3.1
+======================
+ * add AppVeyor automated windows tests (pull request #540).
+
  version 1.2.3.1 (tag v1.2.3.1rel)
 ==================================
- * add AppVeyor automated windows tests (pull request #540).
  * fix bug in setup.py (pull request #539, introduced in issue #518).
 
  version 1.2.3 (tag v1.2.3rel)
