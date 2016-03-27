@@ -14,7 +14,7 @@ except ImportError: # or else use drop-in substitute
     from ordereddict import OrderedDict
 
 # test attribute creation.
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 VAR_NAME="dummy_var"
 GROUP_NAME = "dummy_group"
 DIM1_NAME="x"

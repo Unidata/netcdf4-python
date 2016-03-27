@@ -15,7 +15,7 @@ n1dim = 4
 n2dim = 10
 n3dim = 8
 ranarr = 100.*uniform(size=(n1dim,n2dim,n3dim))
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
 class UnlimdimTestCase(unittest.TestCase):
 

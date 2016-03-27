@@ -7,8 +7,8 @@ import netCDF4
 
 # test group creation.
 
-FILE_NAME1 = tempfile.mktemp(".nc")
-FILE_NAME2 = tempfile.mktemp(".nc")
+FILE_NAME1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 DYNASTY=u"Tudor"
 HENRY_VII=u"Henry_VII"
 MARGARET=u"Margaret"

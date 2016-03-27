@@ -8,7 +8,7 @@ ndim = 100000
 ndim2 = 100
 chunk1 = 10; chunk2 = ndim2
 nfiles = 7
-files = [tempfile.mktemp(".nc") for nfile in range(nfiles)]
+files = [tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name for nfile in range(nfiles)]
 array = uniform(size=(ndim,))
 array2 = uniform(size=(ndim,ndim2))
 lsd = 3

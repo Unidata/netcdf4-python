@@ -19,7 +19,7 @@ to be checked.)
 See test2unlim below for an example.
 """
 
-file_name = tempfile.mktemp(".nc")
+file_name = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 xdim=9; ydim=10; zdim=11
 i = np.array([2,5,7],'i4')
 i2 = np.array([0,8],'i4')

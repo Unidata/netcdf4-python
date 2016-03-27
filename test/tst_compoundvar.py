@@ -9,7 +9,7 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 
 # test compound data types.
 
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 #FILE_NAME = 'test.nc'
 DIM_NAME = 'phony_dim'
 GROUP_NAME = 'phony_group'

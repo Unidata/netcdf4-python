@@ -2,7 +2,7 @@ from netCDF4 import Dataset
 import tempfile, unittest, os
 import numpy as np
 
-file_name = tempfile.mktemp(".nc")
+file_name = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 xdim=None; ydim=121; zdim=169
 datashape = (ydim,zdim)
 data = np.ones(datashape,dtype=np.float)

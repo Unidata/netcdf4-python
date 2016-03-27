@@ -506,7 +506,7 @@ class TestDate2index(unittest.TestCase):
         self.standardtime = self.TestTime(datetime(1950, 1, 1), 366, 24,
                                           'hours since 1900-01-01', 'standard')
 
-        self.file = tempfile.mktemp(".nc")
+        self.file = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
         f = Dataset(self.file, 'w')
         f.createDimension('time', None)
         time = f.createVariable('time', float, ('time',))

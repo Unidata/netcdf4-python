@@ -15,7 +15,7 @@ class SetAutoMaskTestBase(unittest.TestCase):
 
     def setUp(self):
 
-        self.testfile = tempfile.mktemp(".nc")
+        self.testfile = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
         self.fillval = default_fillvals["i2"]
         self.v    = np.array([self.fillval, 5, 4, -9999], dtype = "i2")
@@ -137,7 +137,7 @@ class GlobalSetAutoMaskTest(unittest.TestCase):
 
     def setUp(self):
 
-        self.testfile = tempfile.mktemp(".nc")
+        self.testfile = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
         f = Dataset(self.testfile, 'w')
 

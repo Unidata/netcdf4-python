@@ -4,7 +4,7 @@ import sys, unittest, os, tempfile
 
 netCDF4.default_encoding = 'utf-8'
 
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 ATT1 = u'\u03a0\u03a3\u03a9'
 ATT2 = u'x\xb0'
 ATT3 = [u'\u03a0',u'\u03a3',u'\u03a9']

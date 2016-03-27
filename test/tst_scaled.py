@@ -16,7 +16,7 @@ class SetAutoScaleTestBase(unittest.TestCase):
 
     def setUp(self):
 
-        self.testfile = tempfile.mktemp(".nc")
+        self.testfile = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
         self.fillval = default_fillvals["i2"]
         self.missing_value = -9999
@@ -184,7 +184,7 @@ class GlobalSetAutoScaleTest(unittest.TestCase):
 
     def setUp(self):
 
-        self.testfile = tempfile.mktemp(".nc")
+        self.testfile = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
         f = Dataset(self.testfile, 'w')
 

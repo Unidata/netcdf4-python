@@ -12,9 +12,9 @@ seterr(over='ignore') # don't print warning for overflow errors
 # test automatic conversion of masked arrays, and
 # packing/unpacking of short ints.
 
-FILE_NAME1 = tempfile.mktemp(".nc")
-FILE_NAME2 = tempfile.mktemp(".nc")
-FILE_NAME3 = tempfile.mktemp(".nc")
+FILE_NAME1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+FILE_NAME3 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 datacheck1 =\
 ma.array([0,5000.0,4000.0,0],dtype=np.float,mask=[True,False,False,True])
 datacheck2 =\

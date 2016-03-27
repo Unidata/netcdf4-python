@@ -9,7 +9,7 @@ import netCDF4
 # in createVariable and createGroups (added in 1.1.8).
 # also test Dataset.__getitem__, also added in 1.1.8.
 
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
 class Groups2TestCase(unittest.TestCase):
 

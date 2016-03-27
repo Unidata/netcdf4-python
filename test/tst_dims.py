@@ -6,7 +6,7 @@ import numpy as NP
 from numpy.random.mtrand import uniform
 import netCDF4
 
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 LAT_NAME="lat"
 LAT_LEN = 25
 LAT_LENG = 50

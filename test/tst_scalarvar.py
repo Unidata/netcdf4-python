@@ -10,7 +10,7 @@ import math
 VAR_NAME='temp'
 VAR_TYPE='f4'
 VAR_VAL=math.pi
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 GROUP_NAME = 'subgroup'
 
 # test scalar variable creation and retrieval.

@@ -4,8 +4,8 @@ import unittest, os, tempfile
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 
 data = np.arange(12,dtype='f4').reshape(3,4)
-FILE_NAME = tempfile.mktemp(".nc")
-FILE_NAME2 = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
 def create_file(file,format,data):
     import warnings

@@ -8,7 +8,7 @@ import tempfile, unittest, os, datetime
 nx=100; ydim=5; zdim=1
 nfiles = 10
 ninc = nx/nfiles
-files = [tempfile.mktemp(".nc") for nfile in range(nfiles)]
+files = [tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name for nfile in range(nfiles)]
 data = randint(0,10,size=(nx,ydim,zdim))
 missval = 99
 data[::10] = missval
@@ -66,7 +66,7 @@ class NonuniformTimeTestCase(unittest.TestCase):
     ninc = 365
     def setUp(self):
 
-        self.files = [tempfile.mktemp(".nc") for nfile in range(2)]
+        self.files = [tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name for nfile in range(2)]
         for nfile,file in enumerate(self.files):
             f = Dataset(file,'w',format='NETCDF4_CLASSIC')
             f.createDimension('time',None)

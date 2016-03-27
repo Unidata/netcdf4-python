@@ -10,7 +10,7 @@ import netCDF4
 # test primitive data types.
 
 # create an n1dim by n2dim random ranarr.
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 n1dim = 5
 n2dim = 10
 ranarr = 100.*uniform(size=(n1dim,n2dim))
