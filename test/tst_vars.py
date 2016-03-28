@@ -9,7 +9,7 @@ import netCDF4
 
 # test variable creation.
 
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 VAR_DOUBLE_NAME="dummy_var"
 VAR_SHORT_NAME='dummy_var_short'
 VARNAMES = sorted([VAR_DOUBLE_NAME,VAR_SHORT_NAME])

@@ -12,7 +12,7 @@ import netCDF4
 # packing/unpacking of short ints.
 
 # create an n1dim by n2dim random ranarr.
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 ndim = 10
 ranarr = 100.*uniform(size=(ndim))
 ranarr2 = 100.*uniform(size=(ndim))

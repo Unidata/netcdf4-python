@@ -12,8 +12,8 @@ n2dim = 73
 n3dim = 144
 ranarr = 100.*uniform(size=(n1dim,n2dim,n3dim))
 ranarr2 = 100.*uniform(size=(n1dim,n2dim,n3dim))
-FILE_NAME = tempfile.mktemp(".nc")
-FILE_NAME2 = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=True).name
+FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
 class DisklessTestCase(unittest.TestCase):
 

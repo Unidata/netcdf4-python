@@ -9,7 +9,7 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 
 # test compound attributes.
 
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 DIM_NAME = 'time'
 VAR_NAME = 'wind'
 VAR_NAME2 = 'forecast_wind'

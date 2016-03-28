@@ -5,7 +5,7 @@ assert_array_almost_equal
 import tempfile, unittest, os, random
 import numpy as np
 
-file_name = tempfile.mktemp(".nc")
+file_name = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 xdim=9; ydim=10; zdim=11
 #seed(9) # fix seed
 data = randint(0,10,size=(xdim,ydim,zdim)).astype('u1')

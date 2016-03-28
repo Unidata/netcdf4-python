@@ -6,7 +6,7 @@ from netCDF4 import Dataset
 import numpy as np
 from numpy.testing import assert_array_equal
 
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 ENUM_NAME = 'cloud_t'
 ENUM_BASETYPE = np.int8
 VAR_NAME = 'primary_cloud'

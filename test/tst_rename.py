@@ -9,7 +9,7 @@ from netCDF4 import __has_rename_grp__
 # test changing dimension, variable names
 # and deleting attributes.
 
-FILE_NAME = tempfile.mktemp(".nc")
+FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 LAT_NAME="lat"
 LON_NAME="lon"
 LON_NAME2 = "longitude"
