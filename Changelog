@@ -1,5 +1,7 @@
  since version 1.2.3.1
 ======================
+ * Use NamedTemporaryFile instead of deprecated mktemp in tests
+   (pull request #543). 
  * add AppVeyor automated windows tests (pull request #540).
 
  version 1.2.3.1 (tag v1.2.3.1rel)
