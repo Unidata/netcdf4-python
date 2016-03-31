@@ -2089,7 +2089,7 @@ a scalar.
 
 If `varname` is specified as a path, using forward slashes as in unix to
 separate components, then intermediate groups will be created as necessary 
-For example, `createVariable('/GroupA/GroupB/VarC'),('x','y'),float)` will create groups `GroupA`
+For example, `createVariable('/GroupA/GroupB/VarC', float, ('x','y'))` will create groups `GroupA`
 and `GroupA/GroupB`, plus the variable `GroupA/GroupB/VarC`, if the preceding
 groups don't already exist.
 
