@@ -1072,13 +1072,13 @@ cdef _get_att_names(int grpid, int varid):
         with nogil:
             ierr = nc_inq_varnatts(grpid, varid, &numatts)
     if ierr != NC_NOERR:
-        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
     attslist = []
     for n from 0 <= n < numatts:
         with nogil:
             ierr = nc_inq_attname(grpid, varid, n, namstring)
         if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
         attslist.append(namstring.decode(default_encoding,unicode_error))
     return attslist
 
@@ -1798,7 +1798,7 @@ references to the parent Dataset or Group.
         else:
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
         if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            raise IOError((<char *>nc_strerror(ierr)).decode('ascii'))
         # data model and file format attributes
         self.data_model = _get_format(grpid)
         # data_model attribute used to be file_format (versions < 1.0.8), retain
@@ -3461,7 +3461,7 @@ attributes."""
         ierr = nc_del_att(self._grpid, self._varid, attname)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
         if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def filters(self):
         """
@@ -3646,7 +3646,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         newnamec = bytestr
         ierr = nc_rename_att(self._grpid, self._varid, oldnamec, newnamec)
         if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def __getitem__(self, elem):
         # This special method is used to index the netCDF variable
