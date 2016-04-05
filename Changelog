@@ -1,5 +1,8 @@
  version 1.2.4 (not yet released)
 =================================
+ * raise AttributeError instead of RuntimeError when attribute operation
+   fails.  raise IOError instead of RuntimeError when nc_create or 
+   nc_open fails (issue #546).
  * Use NamedTemporaryFile instead of deprecated mktemp in tests
    (pull request #543). 
  * add AppVeyor automated windows tests (pull request #540).
