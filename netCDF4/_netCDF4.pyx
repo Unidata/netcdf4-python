@@ -2345,7 +2345,7 @@ attributes."""
         ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
         if self.data_model != 'NETCDF4': self._enddef()
         if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def __setattr__(self,name,value):
         # if name in _private_atts, it is stored at the python
