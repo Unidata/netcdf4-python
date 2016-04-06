@@ -3461,7 +3461,7 @@ attributes."""
         ierr = nc_del_att(self._grpid, self._varid, attname)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
         if ierr != NC_NOERR:
-            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
 
     def filters(self):
         """
