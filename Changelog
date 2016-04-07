@@ -1,5 +1,7 @@
  version 1.2.4 (not yet released)
 =================================
+ * raise warning for HDF5 1.10.x (issue #549), since backwards 
+   incompatible files may be created.
  * raise AttributeError instead of RuntimeError when attribute operation
    fails.  raise IOError instead of RuntimeError when nc_create or 
    nc_open fails (issue #546).
