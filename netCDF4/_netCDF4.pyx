@@ -47,9 +47,9 @@ Requires
  - For python < 2.7, the [ordereddict module](http://python.org/pypi/ordereddict).
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
- ***Version 1.10.x is not recommended, since there were changes to the format
- specification that can cause the resulting files to be unreadable by
- clients that use earlier versions of HDF5.***
+ ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
+ otherwise resulting files may be unreadable by clients using earlier
+ versions of HDF5.  For netCDF < 4.4.1, HDF5 version 1.8.x is recommended.***,
  Be sure to build with `--enable-hl --enable-shared`.
  - [Libcurl](http://curl.haxx.se/libcurl), if you want
  [OPeNDAP](http://opendap.org) support.
@@ -984,11 +984,13 @@ _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                 "-development" in __netcdf4libversion__)
 
 # issue warning for hdf5 1.10 (issue #549)
-if __hdf5libversion__.startswith("1.10"):
+if __netcdf4libversion__[0:5] < "4.4.1" and\
+   __hdf5libversion__.startswith("1.10"):
     msg = """
-WARNING: Backwards incompatible files will be created with HDF5 1.10.x.
-Downgrading to HDF5 version 1.8.x is highly recommended (see https://github.com/Unidata/netcdf-c/issues/250)
-    """
+WARNING: Backwards incompatible files will be created with HDF5 1.10.x 
+and netCDF < 4.4.1. Upgrading to netCDF4 >= 4.4.1 or downgrading to 
+to HDF5 version 1.8.x is highly recommended 
+(see https://github.com/Unidata/netcdf-c/issues/250)."""
     warnings.warn(msg)
 
 # numpy data type <--> netCDF 4 data type mapping.
