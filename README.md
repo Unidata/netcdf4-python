@@ -8,6 +8,11 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+4/11/2016: Version [1.2.3](https://pypi.python.org/pypi/netCDF4/1.2.4) released. 
+No new features or significant bug fixes.  Build instructions updated and warning issued
+to deal with potential backwards incompatibility introduced when using HDF5 1.10.x
+(see [Unidata/netcdf-c/issue#250](https://github.com/Unidata/netcdf-c/issues/250)).
+
 3/10/2016: Version [1.2.3](https://pypi.python.org/pypi/netCDF4/1.2.3) released. Various bug fixes.
 All text attributes in ``NETCDF4`` formatted files are now written as type ``NC_CHAR``, unless they contain unicode characters that
 cannot be encoded in ascii, in which case they are written as ``NC_STRING``.  Previously,
