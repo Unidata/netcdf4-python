@@ -49,7 +49,7 @@ Requires
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
  otherwise resulting files may be unreadable by clients using earlier
- versions of HDF5.  For netCDF < 4.4.1, HDF5 version 1.8.x is recommended.***,
+ versions of HDF5.  For netCDF < 4.4.1, HDF5 version 1.8.x is recommended.***
  Be sure to build with `--enable-hl --enable-shared`.
  - [Libcurl](http://curl.haxx.se/libcurl), if you want
  [OPeNDAP](http://opendap.org) support.
