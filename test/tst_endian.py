@@ -6,6 +6,7 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 data = np.arange(12,dtype='f4').reshape(3,4)
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+FILE_NAME3 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
 def create_file(file,format,data):
     import warnings
@@ -22,9 +23,33 @@ def create_file(file,format,data):
     bb = dataset.createVariable('big-big', '>f4', dims)
     ll[:] = little
     lb[:] = big
-    bl[:] = little
-    bb[:] = big
+    lb[:] = data
+    bl[:] = data
+    bb[:] = data
     dataset.close()
+
+def check_byteswap(file, data):
+    # on little endian platforms, data is byteswapped internally
+    # before writing to a big endian variable.  The byteswap was
+    # initially done in place, which caused the numpy array to
+    # be modified in the calling program.  Pull request #?
+    # changed the byteswap to a copy, and this test checks
+    # to make sure the input numpy array is not modified.
+    dataset = netCDF4.Dataset(file,'w')
+    dataset.createDimension('time', None)
+    dataset.createDimension('space', 4)
+    dims = ('time', 'space')
+    bl = dataset.createVariable('big-little', np.float32, dims, endian='big')
+    data2 = data.copy()
+    bl[:] = data
+    dataset.close()
+    f = netCDF4.Dataset(file)
+    bl = f.variables['big-little'][:]
+    # check data.
+    assert_array_almost_equal(data, data2)
+    assert_array_almost_equal(bl, data)
+    f.close()
+
 
 def check_data(file, data):
     f = netCDF4.Dataset(file)
@@ -67,8 +92,8 @@ def issue310(file):
 
 def issue346(file):
     # create a big and a little endian variable
-    xb = np.arange(10, dtype='>i4')
-    xl = np.arange(xb.size, dtype='<i4')
+    xb = np.arange(10, dtype='>f4')
+    xl = np.arange(xb.size, dtype='<f4')
     nc = netCDF4.Dataset(file, mode='w')
     nc.createDimension('x', size=xb.size)
     vb=nc.createVariable('xb', xb.dtype, ('x'),
@@ -90,16 +115,19 @@ class EndianTestCase(unittest.TestCase):
     def setUp(self):
         create_file(FILE_NAME,'NETCDF4_CLASSIC',data); self.file=FILE_NAME
         create_file(FILE_NAME2,'NETCDF3_CLASSIC',data); self.file2=FILE_NAME2
+        self.file3 = FILE_NAME3
 
     def tearDown(self):
         # Remove the temporary files
         os.remove(self.file)
         os.remove(self.file2)
+        os.remove(self.file3)
 
     def runTest(self):
         """testing endian conversion capability"""
         check_data(self.file, data)
         check_data(self.file2, data)
+        check_byteswap(self.file3, data)
         issue310(self.file)
         issue346(self.file2)
 

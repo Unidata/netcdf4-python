@@ -1,5 +1,7 @@
  version 1.2.4 (not yet released)
 =================================
+ * don't byteswap data in place (make a copy instead) when writing
+   out to a variable with endian-ness different than numpy array.
  * raise AttributeError instead of RuntimeError when attribute operation
    fails.  raise IOError instead of RuntimeError when nc_create or 
    nc_open fails (issue #546).

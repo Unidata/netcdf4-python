@@ -4242,19 +4242,19 @@ The default value of `mask` is `True`
             # variable.
             if self.endian() == 'native':
                 if is_native_little and data.dtype.byteorder == '>':
-                    data.byteswap(True)
+                    data = data.byteswap()
                 if is_native_big and data.dtype.byteorder == '<':
-                    data.byteswap(True)
+                    data = data.byteswap()
             if self.endian() == 'big':
                 if is_native_big and data.dtype.byteorder not in ['=','|']:
-                    data.byteswap(True)
+                    data = data.byteswap()
                 if is_native_little and data.dtype.byteorder == '=':
-                    data.byteswap(True)
+                    data = data.byteswap()
             if self.endian() == 'little':
                 if is_native_little and data.dtype.byteorder not in ['=','|']:
-                    data.byteswap(True)
+                    data = data.byteswap()
                 if is_native_big and data.dtype.byteorder == '=':
-                    data.byteswap(True)
+                    data = data.byteswap()
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
                 ierr = nc_put_vara(self._grpid, self._varid,
