@@ -80,7 +80,7 @@ def issue310(file):
     var_big_endian[0]=np.pi
     var_big_endian[1]=mval
     var_native_endian = nc.createVariable(\
-             'obs_native_endian', 'f8', ('obs', ),\
+             'obs_native_endian', '<f8', ('obs', ),\
              endian='native',fill_value=fval)
     var_native_endian.missing_value = mval
     var_native_endian[0]=np.pi
