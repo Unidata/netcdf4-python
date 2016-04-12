@@ -1,7 +1,9 @@
  version 1.2.4 (not yet released)
 =================================
- * don't byteswap data in place (make a copy instead) when writing
-   out to a variable with endian-ness different than numpy array.
+ * Fix for issue #554.  It is now ensured that data is in native endian
+   byte order before passing to netcdf-c library.  Data read from variable
+   with non-native byte order is also byte-swapped, so that dtype remains
+   consistent with netcdf variable.  Behavior now consistent with h5py.
  * raise AttributeError instead of RuntimeError when attribute operation
    fails.  raise IOError instead of RuntimeError when nc_create or 
    nc_open fails (issue #546).

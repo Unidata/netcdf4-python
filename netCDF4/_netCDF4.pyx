@@ -3764,10 +3764,11 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         if hasattr(self, '_FillValue'):
             fval = numpy.array(self._FillValue, self.dtype)
             # byte swap the _FillValue if endian-ness of the variable
-            # is not native.
-            if (self.endian() == 'big' and is_native_little) or\
-               (self.endian() == 'little' and is_native_big):
-                fval.byteswap(True)
+            # is not native - in fixing issue #554  (pull request #555)
+            # discovered this is apparently not needed.
+            #if (self.endian() == 'big' and is_native_little) or\
+            #   (self.endian() == 'little' and is_native_big):
+            #    fval.byteswap(True)
             # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
@@ -4238,23 +4239,32 @@ The default value of `mask` is `True`
             # try to cast the data.
             if self.dtype != data.dtype:
                 data = data.astype(self.dtype) # cast data, if necessary.
+            # byte-swap data in numpy array so that is has native
+            # endian byte order (this is what netcdf-c expects - 
+            # issue #554, pull request #555)
+            if is_native_little and data.dtype.byteorder == '>':
+                #print 'native little, data big, byteswapping ...'
+                data = data.byteswap()
+            if is_native_big and data.dtype.byteorder == '<':
+                #print 'native big, data little, byteswapping ...'
+                data = data.byteswap()
             # make sure byte-order of data matches byte-order of netcdf
-            # variable.
-            if self.endian() == 'native':
-                if is_native_little and data.dtype.byteorder == '>':
-                    data = data.byteswap()
-                if is_native_big and data.dtype.byteorder == '<':
-                    data = data.byteswap()
-            if self.endian() == 'big':
-                if is_native_big and data.dtype.byteorder not in ['=','|']:
-                    data = data.byteswap()
-                if is_native_little and data.dtype.byteorder == '=':
-                    data = data.byteswap()
-            if self.endian() == 'little':
-                if is_native_little and data.dtype.byteorder not in ['=','|']:
-                    data = data.byteswap()
-                if is_native_big and data.dtype.byteorder == '=':
-                    data = data.byteswap()
+            # variable (this code existed before pull request #555).
+            #if self.endian() == 'native':
+            #    if is_native_little and data.dtype.byteorder == '>':
+            #        data = data.byteswap()
+            #    if is_native_big and data.dtype.byteorder == '<':
+            #        data = data.byteswap()
+            #if self.endian() == 'big':
+            #    if is_native_big and data.dtype.byteorder not in ['=','|']:
+            #        data = data.byteswap()
+            #    if is_native_little and data.dtype.byteorder == '=':
+            #        data = data.byteswap()
+            #if self.endian() == 'little':
+            #    if is_native_little and data.dtype.byteorder not in ['=','|']:
+            #        data = data.byteswap()
+            #    if is_native_big and data.dtype.byteorder == '=':
+            #        data = data.byteswap()
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
                 ierr = nc_put_vara(self._grpid, self._varid,
@@ -4453,6 +4463,12 @@ The default value of `mask` is `True`
         if negstride:
             # reverse data along axes with negative strides.
             data = data[sl].copy() # make a copy so data is contiguous.
+        # byteswap data if variable has non-native endian byte order.
+        # (pull request #555, necessary so that numpy dtype can still
+        # reflect byte order of variable).
+        if (self.endian() == 'big' and is_native_little) or\
+           (self.endian() == 'little' and is_native_big):
+               data.byteswap(True)
         if not self.dimensions:
             return data[0] # a scalar
         elif squeeze_out:
