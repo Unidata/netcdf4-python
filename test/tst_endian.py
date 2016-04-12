@@ -28,10 +28,10 @@ def create_file(file,format,data):
     dataset.close()
 
 def check_byteswap(file, data):
-    # on little endian platforms, data is byteswapped internally
-    # before writing to a big endian variable.  The byteswap was
+    # byteswapping is done internally to native endian format
+    # when numpy array has non-native byte order.  The byteswap was
     # initially done in place, which caused the numpy array to
-    # be modified in the calling program.  Pull request #?
+    # be modified in the calling program.  Pull request #555
     # changed the byteswap to a copy, and this test checks
     # to make sure the input numpy array is not modified.
     dataset = netCDF4.Dataset(file,'w')
@@ -80,7 +80,7 @@ def issue310(file):
     var_big_endian[0]=np.pi
     var_big_endian[1]=mval
     var_native_endian = nc.createVariable(\
-             'obs_native_endian', '<f8', ('obs', ),\
+             'obs_native_endian', 'f8', ('obs', ),\
              endian='native',fill_value=fval)
     var_native_endian.missing_value = mval
     var_native_endian[0]=np.pi
@@ -91,8 +91,8 @@ def issue310(file):
 
 def issue346(file):
     # create a big and a little endian variable
-    xb = np.arange(10, dtype='>f4')
-    xl = np.arange(xb.size, dtype='<f4')
+    xb = np.arange(10, dtype='>i4')
+    xl = np.arange(xb.size, dtype='<i4')
     nc = netCDF4.Dataset(file, mode='w')
     nc.createDimension('x', size=xb.size)
     vb=nc.createVariable('xb', xb.dtype, ('x'),
