@@ -23,9 +23,8 @@ def create_file(file,format,data):
     bb = dataset.createVariable('big-big', '>f4', dims)
     ll[:] = little
     lb[:] = big
-    lb[:] = data
-    bl[:] = data
-    bb[:] = data
+    bl[:] = little
+    bb[:] = big
     dataset.close()
 
 def check_byteswap(file, data):
