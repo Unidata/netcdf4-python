@@ -83,10 +83,10 @@ def issue310(file):
     # NOTE: missing_value  be written in same byte order
     # as variable, or masked array won't be masked correctly
     # when data is read in.
-    var_big_endian.missing_value = np.array(mval).byteswap(True)
+    var_big_endian.missing_value = mval
     var_big_endian[0]=np.pi
     var_big_endian[1]=mval
-    var_big_endian2.missing_value = np.array(mval).byteswap(True)
+    var_big_endian2.missing_value = mval
     var_big_endian2[0]=np.pi
     var_big_endian2[1]=mval
     var_native_endian = nc.createVariable(\
