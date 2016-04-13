@@ -76,7 +76,10 @@ def issue310(file):
     var_big_endian = nc.createVariable(\
             'obs_big_endian', '>f8', ('obs', ),\
             endian=endian,fill_value=fval)
-    var_big_endian.missing_value = mval
+    # NOTE: missing_value  be written in same byte order
+    # as variable, or masked array won't be masked correctly
+    # when data is read in.
+    var_big_endian.missing_value = np.array(mval).byteswap(True)
     var_big_endian[0]=np.pi
     var_big_endian[1]=mval
     var_native_endian = nc.createVariable(\

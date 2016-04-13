@@ -1457,16 +1457,13 @@ cdef _get_vars(group):
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # get endian-ness of variable.
             endianness = None
-            # assume data returned by HDF4 lib has already been byte-swapped
-            # (if needed) so that it is in native endian format (issue #391).
-            if group.disk_format != 'HDF4':
-                with nogil:
-                    ierr = nc_inq_var_endian(_grpid, varid, &iendian)
-                if ierr == NC_NOERR:
-                    if iendian == NC_ENDIAN_LITTLE:
-                        endianness = '<'
-                    elif iendian == NC_ENDIAN_BIG:
-                        endianness = '>'
+            with nogil:
+                ierr = nc_inq_var_endian(_grpid, varid, &iendian)
+            if ierr == NC_NOERR:
+                if iendian == NC_ENDIAN_LITTLE:
+                    endianness = '<'
+                elif iendian == NC_ENDIAN_BIG:
+                    endianness = '>'
             # check to see if it is a supported user-defined type.
             try:
                 datatype = _nctonptype[xtype]
@@ -3749,10 +3746,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         totalmask = numpy.zeros(data.shape, numpy.bool)
         fill_value = None
         if hasattr(self, 'missing_value'):
+            # note: missing_value has to have same endian-ness as variable
+            # or this won't work.
             mval = numpy.array(self.missing_value, self.dtype)
-            if (self.endian() == 'big' and is_native_little) or\
-               (self.endian() == 'little' and is_native_big):
-                mval.byteswap(True) # in-place byteswap
             if mval.shape == (): # mval a scalar.
                 hasmval = data==mval
                 # is scalar missing value a NaN?
@@ -3776,12 +3772,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 totalmask += mask
         if hasattr(self, '_FillValue'):
             fval = numpy.array(self._FillValue, self.dtype)
-            # byte swap the _FillValue if endian-ness of the variable
-            # is not native - in fixing issue #554  (pull request #555)
-            # discovered this is no longer needed.
-            #if (self.endian() == 'big' and is_native_little) or\
-            #   (self.endian() == 'little' and is_native_big):
-            #    fval.byteswap(True)
             # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
