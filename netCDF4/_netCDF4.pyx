@@ -3739,7 +3739,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             mval = numpy.array(self.missing_value, self.dtype)
             if (self.endian() == 'big' and is_native_little) or\
                (self.endian() == 'little' and is_native_big):
-                mval.byteswap(True)
+                mval.byteswap(True) # in-place byteswap
             if mval.shape == (): # mval a scalar.
                 hasmval = data==mval
                 # is scalar missing value a NaN?
@@ -3765,7 +3765,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             fval = numpy.array(self._FillValue, self.dtype)
             # byte swap the _FillValue if endian-ness of the variable
             # is not native - in fixing issue #554  (pull request #555)
-            # discovered this is apparently not needed.
+            # discovered this is no longer needed.
             #if (self.endian() == 'big' and is_native_little) or\
             #   (self.endian() == 'little' and is_native_big):
             #    fval.byteswap(True)
@@ -3809,7 +3809,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # is not native.
                 if (self.endian() == 'big' and is_native_little) or\
                    (self.endian() == 'little' and is_native_big):
-                    fillval.byteswap(True)
+                    fillval.byteswap(True) # in-place byteswap
                 has_fillval = data == fillval
                 # if data is an array scalar, has_fillval will be a boolean.
                 # in that case convert to an array.
@@ -4242,29 +4242,9 @@ The default value of `mask` is `True`
             # byte-swap data in numpy array so that is has native
             # endian byte order (this is what netcdf-c expects - 
             # issue #554, pull request #555)
-            if is_native_little and data.dtype.byteorder == '>':
-                #print 'native little, data big, byteswapping ...'
-                data = data.byteswap()
-            if is_native_big and data.dtype.byteorder == '<':
-                #print 'native big, data little, byteswapping ...'
-                data = data.byteswap()
-            # make sure byte-order of data matches byte-order of netcdf
-            # variable (this code existed before pull request #555).
-            #if self.endian() == 'native':
-            #    if is_native_little and data.dtype.byteorder == '>':
-            #        data = data.byteswap()
-            #    if is_native_big and data.dtype.byteorder == '<':
-            #        data = data.byteswap()
-            #if self.endian() == 'big':
-            #    if is_native_big and data.dtype.byteorder not in ['=','|']:
-            #        data = data.byteswap()
-            #    if is_native_little and data.dtype.byteorder == '=':
-            #        data = data.byteswap()
-            #if self.endian() == 'little':
-            #    if is_native_little and data.dtype.byteorder not in ['=','|']:
-            #        data = data.byteswap()
-            #    if is_native_big and data.dtype.byteorder == '=':
-            #        data = data.byteswap()
+            if (is_native_little and data.dtype.byteorder == '>') or\
+               (is_native_big and data.dtype.byteorder == '<'):
+                data = data.byteswap() # don't do in-place, make a copy
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
                 ierr = nc_put_vara(self._grpid, self._varid,
@@ -4468,7 +4448,7 @@ The default value of `mask` is `True`
         # reflect byte order of variable).
         if (self.endian() == 'big' and is_native_little) or\
            (self.endian() == 'little' and is_native_big):
-               data.byteswap(True)
+               data.byteswap(True) # in-place byteswap
         if not self.dimensions:
             return data[0] # a scalar
         elif squeeze_out:
