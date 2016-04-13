@@ -4443,9 +4443,11 @@ The default value of `mask` is `True`
         if negstride:
             # reverse data along axes with negative strides.
             data = data[sl].copy() # make a copy so data is contiguous.
-        # byteswap data if variable has non-native endian byte order.
-        # (pull request #555, necessary so that numpy dtype can still
-        # reflect byte order of variable).
+        # netcdf-c always returns data in native byte order,
+        # regardless of variable endian-ness. Here we swap the 
+        # bytes if the variable dtype is not native endian, so the
+        # dtype of the returned numpy array matches the variable dtype.
+        # (pull request #555, issue #554).
         if (self.endian() == 'big' and is_native_little) or\
            (self.endian() == 'little' and is_native_big):
                data.byteswap(True) # in-place byteswap
