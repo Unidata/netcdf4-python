@@ -76,12 +76,19 @@ def issue310(file):
     var_big_endian = nc.createVariable(\
             'obs_big_endian', '>f8', ('obs', ),\
             endian=endian,fill_value=fval)
+    # use default _FillValue
+    var_big_endian2 = nc.createVariable(\
+            'obs_big_endian2', '>f8', ('obs', ),\
+            endian=endian)
     # NOTE: missing_value  be written in same byte order
     # as variable, or masked array won't be masked correctly
     # when data is read in.
     var_big_endian.missing_value = np.array(mval).byteswap(True)
     var_big_endian[0]=np.pi
     var_big_endian[1]=mval
+    var_big_endian2.missing_value = np.array(mval).byteswap(True)
+    var_big_endian2[0]=np.pi
+    var_big_endian2[1]=mval
     var_native_endian = nc.createVariable(\
              'obs_native_endian', '<f8', ('obs', ),\
              endian='native',fill_value=fval)
@@ -90,6 +97,8 @@ def issue310(file):
     var_native_endian[1]=mval
     assert_array_almost_equal(var_native_endian[:].filled(),
                               var_big_endian[:].filled())
+    assert_array_almost_equal(var_big_endian[:].filled(),
+                              var_big_endian2[:].filled())
     nc.close()
 
 def issue346(file):

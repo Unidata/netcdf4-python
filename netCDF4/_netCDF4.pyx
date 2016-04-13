@@ -3808,11 +3808,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # value unless a _FillValue attribute is set explicitly."
             if no_fill != 1 and self.dtype.str[1:] not in ['u1','i1']:
                 fillval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
-                # byte swap the _FillValue if endian-ness of the variable
-                # is not native.
-                if (self.endian() == 'big' and is_native_little) or\
-                   (self.endian() == 'little' and is_native_big):
-                    fillval.byteswap(True) # in-place byteswap
                 has_fillval = data == fillval
                 # if data is an array scalar, has_fillval will be a boolean.
                 # in that case convert to an array.
