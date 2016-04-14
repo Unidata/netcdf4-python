@@ -9,7 +9,8 @@
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
 4/11/2016: Version [1.2.4](https://pypi.python.org/pypi/netCDF4/1.2.4) released. 
-No new features or significant bug fixes.  Build instructions updated and warning issued
+Bugs in handling of variables with specified non-native "endian-ness" (byte-order) fixed ([issue #554]
+(https://github.com/Unidata/netcdf4-python/issues/554)).  Build instructions updated and warning issued
 to deal with potential backwards incompatibility introduced when using HDF5 1.10.x
 (see [Unidata/netcdf-c/issue#250](https://github.com/Unidata/netcdf-c/issues/250)).
 
