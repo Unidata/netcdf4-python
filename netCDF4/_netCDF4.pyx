@@ -1457,16 +1457,13 @@ cdef _get_vars(group):
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # get endian-ness of variable.
             endianness = None
-            # assume data returned by HDF4 lib has already been byte-swapped
-            # (if needed) so that it is in native endian format (issue #391).
-            if group.disk_format != 'HDF4':
-                with nogil:
-                    ierr = nc_inq_var_endian(_grpid, varid, &iendian)
-                if ierr == NC_NOERR:
-                    if iendian == NC_ENDIAN_LITTLE:
-                        endianness = '<'
-                    elif iendian == NC_ENDIAN_BIG:
-                        endianness = '>'
+            with nogil:
+                ierr = nc_inq_var_endian(_grpid, varid, &iendian)
+            if ierr == NC_NOERR:
+                if iendian == NC_ENDIAN_LITTLE:
+                    endianness = '<'
+                elif iendian == NC_ENDIAN_BIG:
+                    endianness = '>'
             # check to see if it is a supported user-defined type.
             try:
                 datatype = _nctonptype[xtype]
@@ -3606,7 +3603,7 @@ details."""
         # level and not in the netCDF file.
         if name not in _private_atts:
             # if setting _FillValue or missing_value, make sure value
-            # has same type as variable.
+            # has same type and byte order as variable.
             if name == '_FillValue':
                 msg='_FillValue attribute must be set when variable is '+\
                 'created (using fill_value keyword to createVariable)'
@@ -3618,7 +3615,11 @@ details."""
                 #    "VLEN or compound variable"
                 #    raise AttributeError(msg)
             elif name == 'missing_value' and self._isprimitive:
-                value = numpy.array(value, self.dtype)
+                if (is_native_little and self.endian() == 'big') or\
+                   (is_native_big and self.endian() == 'little'):
+                    value = numpy.array(value, self.dtype).byteswap(True)
+                else:
+                    value = numpy.array(value, self.dtype)
             self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
@@ -3749,10 +3750,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         totalmask = numpy.zeros(data.shape, numpy.bool)
         fill_value = None
         if hasattr(self, 'missing_value'):
+            # note: missing_value has to have same endian-ness as variable
+            # or this won't work.
             mval = numpy.array(self.missing_value, self.dtype)
-            if (self.endian() == 'big' and is_native_little) or\
-               (self.endian() == 'little' and is_native_big):
-                mval.byteswap(True)
             if mval.shape == (): # mval a scalar.
                 hasmval = data==mval
                 # is scalar missing value a NaN?
@@ -3776,11 +3776,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 totalmask += mask
         if hasattr(self, '_FillValue'):
             fval = numpy.array(self._FillValue, self.dtype)
-            # byte swap the _FillValue if endian-ness of the variable
-            # is not native.
-            if (self.endian() == 'big' and is_native_little) or\
-               (self.endian() == 'little' and is_native_big):
-                fval.byteswap(True)
             # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
@@ -3817,11 +3812,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # value unless a _FillValue attribute is set explicitly."
             if no_fill != 1 and self.dtype.str[1:] not in ['u1','i1']:
                 fillval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
-                # byte swap the _FillValue if endian-ness of the variable
-                # is not native.
-                if (self.endian() == 'big' and is_native_little) or\
-                   (self.endian() == 'little' and is_native_big):
-                    fillval.byteswap(True)
                 has_fillval = data == fillval
                 # if data is an array scalar, has_fillval will be a boolean.
                 # in that case convert to an array.
@@ -4251,23 +4241,12 @@ The default value of `mask` is `True`
             # try to cast the data.
             if self.dtype != data.dtype:
                 data = data.astype(self.dtype) # cast data, if necessary.
-            # make sure byte-order of data matches byte-order of netcdf
-            # variable.
-            if self.endian() == 'native':
-                if is_native_little and data.dtype.byteorder == '>':
-                    data.byteswap(True)
-                if is_native_big and data.dtype.byteorder == '<':
-                    data.byteswap(True)
-            if self.endian() == 'big':
-                if is_native_big and data.dtype.byteorder not in ['=','|']:
-                    data.byteswap(True)
-                if is_native_little and data.dtype.byteorder == '=':
-                    data.byteswap(True)
-            if self.endian() == 'little':
-                if is_native_little and data.dtype.byteorder not in ['=','|']:
-                    data.byteswap(True)
-                if is_native_big and data.dtype.byteorder == '=':
-                    data.byteswap(True)
+            # byte-swap data in numpy array so that is has native
+            # endian byte order (this is what netcdf-c expects - 
+            # issue #554, pull request #555)
+            if (is_native_little and data.dtype.byteorder == '>') or\
+               (is_native_big and data.dtype.byteorder == '<'):
+                data = data.byteswap() # don't do in-place, make a copy
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
                 ierr = nc_put_vara(self._grpid, self._varid,
@@ -4466,6 +4445,14 @@ The default value of `mask` is `True`
         if negstride:
             # reverse data along axes with negative strides.
             data = data[sl].copy() # make a copy so data is contiguous.
+        # netcdf-c always returns data in native byte order,
+        # regardless of variable endian-ness. Here we swap the 
+        # bytes if the variable dtype is not native endian, so the
+        # dtype of the returned numpy array matches the variable dtype.
+        # (pull request #555, issue #554).
+        if (self.endian() == 'big' and is_native_little) or\
+           (self.endian() == 'little' and is_native_big):
+               data.byteswap(True) # in-place byteswap
         if not self.dimensions:
             return data[0] # a scalar
         elif squeeze_out:

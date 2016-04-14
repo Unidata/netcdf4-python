@@ -1,5 +1,9 @@
  version 1.2.4 (tag v1.2.4rel)
 ==============================
+ * Fix for issue #554.  It is now ensured that data is in native endian
+   byte order before passing to netcdf-c library.  Data read from variable
+   with non-native byte order is also byte-swapped, so that dtype remains
+   consistent with netcdf variable.  Behavior now consistent with h5py.
  * raise warning for HDF5 1.10.x (issue #549), since backwards 
    incompatible files may be created.
  * raise AttributeError instead of RuntimeError when attribute operation
