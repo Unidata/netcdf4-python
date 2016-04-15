@@ -4,6 +4,8 @@ import sys
 import unittest
 import os
 import tempfile
+import warnings
+
 import numpy as NP
 from numpy.random.mtrand import uniform
 import netCDF4
@@ -143,6 +145,8 @@ class VariablesTestCase(unittest.TestCase):
             nc_proc = subprocess.Popen(
                 ['ncdump', '-h', FILE_NAME], stdout=subprocess.PIPE)
         except OSError:
+            warnings.warn('"ncdump" not on system path; cannot test '
+                          'read of some attributes')
             pass
         else:  # We do have ncdump output
             dep = nc_proc.communicate()[0]
