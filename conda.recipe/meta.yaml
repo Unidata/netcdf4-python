@@ -18,15 +18,16 @@ requirements:
     build:
         - python
         - setuptools
-        - numpy x.x
         - cython
-        - hdf5
+        - numpy x.x
+        - msinttypes  # [win and py<35]
+        - hdf5 1.8.15.1
         - libnetcdf
     run:
         - python
         - setuptools
         - numpy x.x
-        - hdf5
+        - hdf5 1.8.15.1
         - libnetcdf
 
 test:
