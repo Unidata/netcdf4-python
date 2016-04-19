@@ -1,0 +1,23 @@
+* create a release branch ('vX.Y.Zrel').  In the release branch...
+* make sure version number in setup.py and netCDF4/_netCDF4.pyx are up to date
+  (in _netCDF4.pyx, change 'Version' in first line of docstring at top of file,
+   and __version__ variable). If netcdftime module has any updates,
+  increment __version__ in netcdftime/netcdftime.py. Regenerate netcdftime/_datetime.c
+  from _datetime.pyx as needed.
+* make sure include/constants.pyx has all zeros, then generate C source by 
+  running 'cython -I../include _netCDF4.pyx' in the netCDF4 directory.
+* update Changelog and README.md as needed. 
+* commit and push all of the above changes.
+* install the module (python setup.py install), then run 'sh create_docs.sh'
+  to update html docs.  Commit and push the update to docs/netCDF4/index.html.
+* create a pull request for the release branch.
+* After release branch has been merged, tag a release
+   git tag -a vX.Y.Zrel -m "version X.Y.Z release"
+   git push origin --tags
+* push an empty commit to the netcdf4-python-wheels repo to trigger new builds.
+* update the pypi entry, upload the macosx wheels and the windows wheels
+  from Christoph Gohkle's site.  Lastly, create a source tarball using
+  'python setup.py sdist' and upload to pypi.
+* update web docs by copying docs/netCDF4/index.html somewhere, switch
+  to the gh-pages branch, copy the index.html file back, commit and push
+  the updated index.html file (see README.gh-pages).
