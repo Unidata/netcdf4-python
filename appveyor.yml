@@ -17,19 +17,19 @@ environment:
 
   matrix:
     - TARGET_ARCH: x86
-      CONDA_NPY: 110
+      CONDA_NPY: 111
       CONDA_PY: 27
 
     - TARGET_ARCH: x64
-      CONDA_NPY: 110
+      CONDA_NPY: 111
       CONDA_PY: 27
 
     - TARGET_ARCH: x86
-      CONDA_NPY: 110
+      CONDA_NPY: 111
       CONDA_PY: 35
 
     - TARGET_ARCH: x64
-      CONDA_NPY: 110
+      CONDA_NPY: 111
       CONDA_PY: 35
 
 platform:
@@ -61,7 +61,8 @@ install:
     - cmd: conda update --yes --quiet conda
 
     # Conda build tools.
-    - cmd: conda install --yes --quiet obvious-ci --channel conda-forge
+    - cmd: conda config --add channels conda-forge --force
+    - cmd: conda install --yes --quiet obvious-ci
     - cmd: obvci_install_conda_build_tools.py
     - cmd: conda info
 

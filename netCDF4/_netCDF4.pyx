@@ -320,7 +320,7 @@ You can specify the datatype as a numpy dtype object, or anything that
 can be converted to a numpy dtype object.  Valid datatype specifiers
 include: `'f4'` (32-bit floating point), `'f8'` (64-bit floating
 point), `'i4'` (32-bit signed integer), `'i2'` (16-bit signed
-integer), `'i8'` (64-bit singed integer), `'i1'` (8-bit signed
+integer), `'i8'` (64-bit signed integer), `'i1'` (8-bit signed
 integer), `'u1'` (8-bit unsigned integer), `'u2'` (16-bit unsigned
 integer), `'u4'` (32-bit unsigned integer), `'u8'` (64-bit unsigned
 integer), or `'S1'` (single-character string).  The old Numeric
@@ -2918,7 +2918,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         Supported values, corresponding to `str` attribute of numpy dtype
         objects, include `'f4'` (32-bit floating point), `'f8'` (64-bit floating
         point), `'i4'` (32-bit signed integer), `'i2'` (16-bit signed integer),
-        `'i8'` (64-bit singed integer), `'i4'` (8-bit singed integer), `'i1'`
+        `'i8'` (64-bit signed integer), `'i4'` (8-bit signed integer), `'i1'`
         (8-bit signed integer), `'u1'` (8-bit unsigned integer), `'u2'` (16-bit
         unsigned integer), `'u4'` (32-bit unsigned integer), `'u8'` (64-bit
         unsigned integer), or `'S1'` (single-character string).  From
