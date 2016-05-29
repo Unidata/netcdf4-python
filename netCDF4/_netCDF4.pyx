@@ -161,7 +161,7 @@ version 4.0.1).
 netCDF version 4 added support for organizing data in hierarchical
 groups, which are analogous to directories in a filesystem. Groups serve
 as containers for variables, dimensions and attributes, as well as other
-groups.  A `netCDF4.Dataset` defines creates a special group, called
+groups.  A `netCDF4.Dataset` creates a special group, called
 the 'root group', which is similar to the root directory in a unix
 filesystem.  To create `netCDF4.Group` instances, use the
 `netCDF4.Dataset.createGroup` method of a `netCDF4.Dataset` or `netCDF4.Group`
