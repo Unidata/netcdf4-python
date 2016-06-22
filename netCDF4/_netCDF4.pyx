@@ -664,8 +664,8 @@ and see how much smaller the resulting files are.
 
 ## <div id='section10'>10) Beyond homogeneous arrays of a fixed type - compound data types.
 
-Compound data types map directly to numpy structured (a.k.a 'record'
-arrays).  Structured arrays are akin to C structs, or derived types
+Compound data types map directly to numpy structured (a.k.a 'record')
+arrays.  Structured arrays are akin to C structs, or derived types
 in Fortran. They allow for the construction of table-like structures
 composed of combinations of other data types, including other
 compound types. Compound types might be useful for representing multiple
