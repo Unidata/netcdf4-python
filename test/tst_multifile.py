@@ -44,6 +44,7 @@ class VariablesTestCase(unittest.TestCase):
     def runTest(self):
         """testing multi-file dataset access"""
         f = MFDataset(self.files,check=True)
+        f.set_auto_maskandscale(True) # issue570
         assert f.history == 'created today'
         assert_array_equal(np.arange(0,nx),f.variables['x'][:])
         varin = f.variables['data']

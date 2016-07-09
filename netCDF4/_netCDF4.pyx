@@ -1,5 +1,5 @@
 """
-Version 1.2.4
+Version 1.2.5
 -------------
 - - - 
 
@@ -935,7 +935,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.4"
+__version__ = "1.2.5"
 
 # Initialize numpy
 import posixpath
@@ -5537,6 +5537,46 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         """
         return self._cdf[0].__dict__.keys()
 
+    def set_auto_maskandscale(self, value):
+        """
+        **`set_auto_maskandscale(self, True_or_False)`**
+        
+        Call `Variable.set_auto_maskandscale` for all variables contained in this
+        `MFDataset`.
+        
+        **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
+        and variable scaling shall be applied for all variables.
+        """
+
+        for var in self.variables.values():
+            var.set_auto_maskandscale(value)
+
+    def set_auto_mask(self, value):
+        """
+        **`set_auto_mask(self, True_or_False)`**
+        
+        Call `Variable.set_auto_mask` for all variables contained in this `MFDataset`.
+        
+        **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
+        shall be applied for all variables.
+        """
+
+        for var in self.variables.values():
+            var.set_auto_mask(value)
+
+    def set_auto_scale(self, value):
+        """
+        **`set_auto_scale(self, True_or_False)`**
+        
+        Call `Variable.set_auto_scale` for all variables contained in this `MFDataset`.
+        
+        **`True_or_False`**: Boolean determining if automatic variable scaling
+        shall be applied for all variables.
+        """
+
+        for var in self.variables.values():
+            var.set_auto_scale(value)
+
     def close(self):
         """
         **`close(self)`**
@@ -5631,6 +5671,12 @@ class _Variable(object):
     def set_auto_maskandscale(self,val):
         for v in self._recVar:
             v.set_auto_maskandscale(val)
+    def set_auto_mask(self,val):
+        for v in self._recVar:
+            v.set_auto_mask(val)
+    def set_auto_scale(self,val):
+        for v in self._recVar:
+            v.set_auto_scale(val)
     def __getitem__(self, elem):
         """Get records from a concatenated set of variables."""
 
