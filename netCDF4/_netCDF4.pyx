@@ -1734,7 +1734,7 @@ references to the parent Dataset or Group.
         reference to child Dimension and Variable instances, creates circular references.
         Circular references complicate garbage collection, which may mean increased
         memory usage for programs that create may Dataset instances with lots of
-        Variables. IT also will result in the Dataset object never being deleted, which
+        Variables. It also will result in the Dataset object never being deleted, which
         means it may keep open files alive as well. Setting `keepweakref=True` allows
         Dataset instances to be garbage collected as soon as they go out of scope, potentially
         reducing memory usage and open file handles.  However, in many cases this is not
