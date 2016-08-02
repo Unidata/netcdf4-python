@@ -3754,7 +3754,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # note: missing_value has to have same endian-ness as variable
             # or this won't work.
             mval = numpy.array(self.missing_value, self.dtype)
-            # set data outside valid_min,valid_max to missing.
+            # create mask from missing values. 
+            mvalmask = numpy.zeros(data.shape, numpy.bool)
+            # set mask=True for data outside valid_min,valid_max.
             validmin = None; validmax = None
             # if valid_range exists use that, otherwise
             # look for valid_min, valid_max.  No special
@@ -3768,36 +3770,31 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                     validmin = numpy.array(self.valid_min, self.dtype)
                 if hasattr(self, 'valid_max'):
                     validmax = numpy.array(self.valid_max, self.dtype)
-            if mval.shape != (): # mval a vector, use first element
-                mval0 = mval[0]
-            else:
-                mval0 = mval
             if validmin is not None:
-                data = numpy.where(data < validmin, mval0, data)
+                mvalmask += data < validmin
             if validmax is not None:
-                data = numpy.where(data > validmax, mval0, data)
-            # create mask from missing values. 
+                mvalmask += data > validmax
             if mval.shape == (): # mval a scalar.
-                hasmval = data==mval
+                mvalmask += data==mval
                 # is scalar missing value a NaN?
                 try:
                     mvalisnan = numpy.isnan(mval)
                 except TypeError: # isnan fails on some dtypes (issue 206)
                     mvalisnan = False
             else: # mval a vector.
-                hasmval = numpy.zeros(data.shape, numpy.bool)
                 for m in mval:
                     m =  numpy.array(m)
-                    hasmval += data == m
+                    mvalmask += data == m
             if mval.shape == () and mvalisnan:
-                mask = numpy.isnan(data)
-            elif hasmval.any():
-                mask = hasmval
+                mask = mvalmask + numpy.isnan(data)
+            elif mvalmask.any():
+                mask = mvalmask
             else:
                 mask = None
             if mask is not None:
                 fill_value = mval
                 totalmask += mask
+        # set mask=True for missing data
         if hasattr(self, '_FillValue'):
             fval = numpy.array(self._FillValue, self.dtype)
             # is _FillValue a NaN?
