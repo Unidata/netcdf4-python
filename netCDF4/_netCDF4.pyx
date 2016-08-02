@@ -3775,21 +3775,19 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if validmax is not None:
                 mvalmask += data > validmax
             if mval.shape == (): # mval a scalar.
+                mval = [mval] # make into iterable.
+            for m in mval:
                 # is scalar missing value a NaN?
                 try:
-                    mvalisnan = numpy.isnan(mval)
+                    mvalisnan = numpy.isnan(m)
                 except TypeError: # isnan fails on some dtypes (issue 206)
                     mvalisnan = False
                 if mvalisnan: 
                     mvalmask += numpy.isnan(data)
                 else:
                     mvalmask += data==mval
-            else: # mval a vector.
-                for m in mval:
-                    m =  numpy.array(m)
-                    mvalmask += data == m
             if mvalmask.any():
-                fill_value = mval
+                fill_value = mval[0]
                 totalmask += mvalmask
         # set mask=True for missing data
         if hasattr(self, '_FillValue'):
