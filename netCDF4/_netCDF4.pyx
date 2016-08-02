@@ -3756,6 +3756,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             mval = numpy.array(self.missing_value, self.dtype)
             # set data outside valid_min,valid_max to missing.
             validmin = None; validmax = None
+            # if valid_range exists use that, otherwise
+            # look for valid_min, valid_max.  No special
+            # treatment of byte data as described at
+            # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
             if hasattr(self, 'valid_range'):
                 validmin = numpy.array(self.valid_range[0], self.dtype)
                 validmax = numpy.array(self.valid_range[1], self.dtype)
