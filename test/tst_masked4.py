@@ -83,6 +83,11 @@ class SetValidMinMax(unittest.TestCase):
         assert_array_almost_equal(v2, self.v_scaled)
         self.assert_(np.all(self.v_ma.mask == v.mask))
         self.assert_(np.all(self.v_ma.mask == v2.mask))
+        # check that underlying data is same as in netcdf file
+        v = f.variables['v']
+        v.set_auto_scale(False) 
+        v = v[:]
+        self.assert_(np.all(self.v == v.data))
 
         f.close()
 
