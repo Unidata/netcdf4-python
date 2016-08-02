@@ -3766,7 +3766,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             else:
                 if hasattr(self, 'valid_min'):
                     validmin = numpy.array(self.valid_min, self.dtype)
-                elif hasattr(self, 'valid_max'):
+                if hasattr(self, 'valid_max'):
                     validmax = numpy.array(self.valid_max, self.dtype)
             if mval.shape != (): # mval a vector, use first element
                 mval0 = mval[0]
