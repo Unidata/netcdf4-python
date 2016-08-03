@@ -3,8 +3,8 @@
  * Add MFDataset.set_auto_maskandscale (plus set_auto_scale, set_auto_mask).
    Fixes issue #570.
  * Use valid_min/valid_max/valid_range attributes when defining mask
-   (issue #576).  Values outside the valid range are set to missing_value
-   before defining mask.
+   (issue #576).  Values outside the valid range are considered to
+   be missing when defining the mask.
 
  version 1.2.4 (tag v1.2.4rel)
 ==============================
