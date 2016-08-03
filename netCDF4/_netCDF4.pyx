@@ -3763,7 +3763,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # look for valid_min, valid_max.  No special
             # treatment of byte data as described at
             # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
-            if hasattr(self, 'valid_range'):
+            if hasattr(self, 'valid_range') and len(self.valid_range) == 2:
                 validmin = numpy.array(self.valid_range[0], self.dtype)
                 validmax = numpy.array(self.valid_range[1], self.dtype)
             else:
@@ -3771,6 +3771,24 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                     validmin = numpy.array(self.valid_min, self.dtype)
                 if hasattr(self, 'valid_max'):
                     validmax = numpy.array(self.valid_max, self.dtype)
+            # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
+            # "If the data type is byte and _FillValue 
+            # is not explicitly defined,
+            # then the valid range should include all possible values.
+            # Otherwise, the valid range should exclude the _FillValue
+            # (whether defined explicitly or by default) as follows. 
+            # If the _FillValue is positive then it defines a valid maximum,
+            #  otherwise it defines a valid minimum."
+            byte_type = self.dtype.str[1:] in ['u1','i1']
+            if hasattr(self, '_FillValue'):
+                fval = numpy.array(self._FillValue, self.dtype)
+            else:
+                fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
+                if byte_type: fval = 0.
+            if validmin is None and fval < 0:
+                validmin  = fval
+            elif validmax is None and fval > 0:
+                validmax = fval
             if validmin is not None:
                 mvalmask += data < validmin
             if validmax is not None:

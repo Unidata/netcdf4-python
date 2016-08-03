@@ -31,6 +31,7 @@ class SetValidMinMax(unittest.TestCase):
         _ = f.createDimension('x', None)
         v = f.createVariable('v', "i2", 'x')
         v2 = f.createVariable('v2', "i2", 'x')
+        v3 = f.createVariable('v3', "i2", 'x', fill_value=self.valid_min)
 
         v.missing_value = np.array(32767, v.dtype)
         v.valid_min = np.array(self.valid_min, v.dtype)
@@ -48,6 +49,15 @@ class SetValidMinMax(unittest.TestCase):
         v2[1] = self.v[1]
         v2[2] = self.v[2]
         v2[3] = self.valid_range[1]+1
+
+        v3.missing_value = np.array(32767, v.dtype)
+        v3.valid_max = np.array(self.valid_max, v.dtype)
+
+        # _FillValue should act as valid_min
+        v3[0] = v3._FillValue-1
+        v3[1] = self.v[1]
+        v3[2] = self.v[2]
+        v3[3] = self.valid_max+1
 
         f.close()
 
@@ -73,6 +83,7 @@ class SetValidMinMax(unittest.TestCase):
         f = Dataset(self.testfile, "r")
         v = f.variables["v"][:]
         v2 = f.variables["v2"][:]
+        v3 = f.variables["v3"][:]
         self.assertEqual(v.dtype, "f8")
         self.assert_(isinstance(v, np.ndarray))
         self.assert_(isinstance(v, ma.core.MaskedArray))
@@ -83,6 +94,7 @@ class SetValidMinMax(unittest.TestCase):
         assert_array_almost_equal(v2, self.v_scaled)
         self.assert_(np.all(self.v_ma.mask == v.mask))
         self.assert_(np.all(self.v_ma.mask == v2.mask))
+        self.assert_(np.all(self.v_ma.mask == v3.mask))
         # check that underlying data is same as in netcdf file
         v = f.variables['v']
         v.set_auto_scale(False) 
