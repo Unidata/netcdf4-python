@@ -3757,6 +3757,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # create mask from missing values. 
             mvalmask = numpy.zeros(data.shape, numpy.bool)
             # set mask=True for data outside valid_min,valid_max.
+            # (issue #576)
             validmin = None; validmax = None
             # if valid_range exists use that, otherwise
             # look for valid_min, valid_max.  No special
@@ -3787,6 +3788,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 else:
                     mvalmask += data==mval
             if mvalmask.any():
+                # set fill_value for masked array 
+                # to missing_value (or 1st element
+                # if missing_value is a vector).
                 fill_value = mval[0]
                 totalmask += mvalmask
         # set mask=True for missing data
