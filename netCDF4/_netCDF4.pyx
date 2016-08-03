@@ -3212,9 +3212,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         if grp.data_model != 'NETCDF4': grp._enddef()
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 else:
-                    # cast fill_value to type of variable.
+                    # cast fill_value to type/endian-ness of variable.
                     if self._isprimitive or self._isenum:
                         fillval = numpy.array(fill_value, self.dtype)
+                        if (is_native_little and self.endian() == 'big') or\
+                           (is_native_big and self.endian() == 'little'):
+                            fillval = fillval.byteswap(True)
                         _set_att(self._grp, self._varid, '_FillValue',\
                                  fillval, xtype=xtype)
                     else:
