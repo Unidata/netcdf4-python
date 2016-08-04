@@ -3787,10 +3787,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 fval = numpy.array(self._FillValue, self.dtype)
             else:
                 fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
-                if byte_type: fval = 0.
-            if validmin is None and fval < 0:
-                validmin  = fval
-            elif validmax is None and fval > 0:
+                if byte_type: fval = None
+            if validmin is None and (fval is not None and fval <= 0):
+                validmin = fval
+            elif validmax is None and (fval is not None and fval > 0):
                 validmax = fval
             if validmin is not None:
                 mvalmask += data < validmin
