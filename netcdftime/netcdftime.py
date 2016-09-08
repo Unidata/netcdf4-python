@@ -870,6 +870,8 @@ units to datetime objects.
                 date = _DateFrom360Day(jd)
         if isscalar:
             return date
+        elif ismasked:
+            return numpy.reshape(numpy.ma.array(date, mask=mask), shape)
         else:
             return numpy.reshape(numpy.array(date), shape)
 
