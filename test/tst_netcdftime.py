@@ -463,6 +463,16 @@ class netcdftimeTestCase(unittest.TestCase):
         except ValueError:
             pass
 
+        # Test masked array support
+        import numpy as np
+        unit_a = 'days since 1990-01-01 00:00:00'
+        unit_b = 'days since 1989-01-01 00:00:00'
+        dt = num2date(np.ma.array(range(5), mask=[False, True, False, True, False]), units=unit_a)
+        new_masked_array = date2num(dt, unit_b)
+        assert hasattr(new_masked_array, 'mask')
+        wanted = np.ma.array([0, None, 2, None, 4], mask=[False, True, False, True, False]) + 365
+        np.testing.assert_array_almost_equal(new_masked_array, wanted)
+
 
 class TestDate2index(unittest.TestCase):
 

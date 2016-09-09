@@ -532,6 +532,19 @@ def _dateparse(timestr):
     return units, utc_offset, datetime(year, month, day, hour, minute, second)
 
 
+def _apply_method_over_array(arr, method, *args, **kwargs):
+    if hasattr(arr, 'mask'):
+        result = []
+        for i, masked in zip(arr.flat, arr.mask.flat):
+            if masked:
+                result.append(None)
+            else:
+                result.append(method(i, *args, **kwargs))
+    else:
+        result = method(arr.flat)
+    return result
+
+
 class utime:
 
     """
@@ -725,15 +738,30 @@ units to datetime objects.
             date[0]
         except:
             isscalar = True
+        ismasked = False
+        if hasattr(date, 'mask'):
+            mask = date.mask
+            ismasked = True
         if not isscalar:
             date = numpy.array(date)
             shape = date.shape
         if self.calendar in ['julian', 'standard', 'gregorian', 'proleptic_gregorian']:
             if isscalar:
-                jdelta = JulianDayFromDate(date, self.calendar) - self._jd0
+                if ismasked and mask.item():
+                    jdelta = None
+                else:
+                    jdelta = JulianDayFromDate(date, self.calendar) - self._jd0
             else:
-                jdelta = JulianDayFromDate(
-                    date.flat, self.calendar) - self._jd0
+                jdelta = _apply_method_over_array(date, DateFromJulianDay, self.calendar) - self._jd0
+                # if ismasked:
+                #     date = []
+                #     for d, m in zip(date.flat, mask.flat):
+                #         if not m:
+                #             date.append(DateFromJulianDay(d, self.calendar)) - self._jd0
+                #         else:
+                #             date.append(None)
+                # else:
+                #     jdelta = JulianDayFromDate(date.flat, self.calendar) - self._jd0
         elif self.calendar in ['noleap', '365_day']:
             if isscalar:
                 if date.month == 2 and date.day == 29:
@@ -784,6 +812,8 @@ units to datetime objects.
             raise ValueError('unsupported time units')
         if isscalar:
             return jdelta
+        elif ismasked:
+            return numpy.reshape(numpy.ma.array(jdelta, mask=mask), shape)
         else:
             return numpy.reshape(jdelta, shape)
 
