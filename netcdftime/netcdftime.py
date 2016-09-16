@@ -393,7 +393,10 @@ days. Julian Day is a fractional day with a resolution of approximately 0.1 seco
     # based on redate.py by David Finlayson.
 
     if JD < 0:
-        raise ValueError('Julian Day must be positive')
+        year_offset = -int(JD) / 365 + 1
+        JD += year_offset * 365
+    else:
+        year_offset = 0
 
     dayofwk = int(math.fmod(int(JD + 1.5), 7))
     (F, Z) = math.modf(JD + 0.5)
@@ -428,7 +431,17 @@ days. Julian Day is a fractional day with a resolution of approximately 0.1 seco
     (sfrac, seconds) = math.modf(mfrac * 60.0)
     microseconds = sfrac*1.e6
 
-    return datetime(year, month, int(days), int(hours), int(minutes),
+    if year_offset > 0:
+        # correct dayofwk
+
+        # 365 mod 7 = 1, so the day of the week changes by one day for
+        # every year in year_offset
+        dayofwk -= int(math.fmod(year_offset, 7))
+
+        if dayofwk < 0:
+            dayofwk += 7
+
+    return datetime(year - year_offset, month, int(days), int(hours), int(minutes),
             int(seconds), int(microseconds),dayofwk, dayofyr)
 
 
@@ -495,7 +508,10 @@ Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
     """
 
     if JD < 0:
-        raise ValueError('Julian Day must be positive')
+        year_offset = -int(JD) / 360 + 1
+        JD += year_offset * 360
+    else:
+        year_offset = 0
 
     #jd = int(360. * (year + 4716)) + int(30. * (month - 1)) + day
     (F, Z) = math.modf(JD)
@@ -511,7 +527,7 @@ Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
     (sfrac, seconds) = math.modf(mfrac * 60.0)
     microseconds = sfrac*1.e6
 
-    return datetime(year, month, int(days), int(hours), int(minutes),
+    return datetime(year - year_offset, month, int(days), int(hours), int(minutes),
             int(seconds), int(microseconds), -1, dayofyr)
 
 
