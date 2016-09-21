@@ -659,5 +659,45 @@ class TestDate2index(unittest.TestCase):
         assert(index == 11)
         f.close()
 
+class issue584TestCase(unittest.TestCase):
+    """Regression tests for issue #584."""
+    converters = None
+
+    def setUp(self):
+        self.converters = {"360_day" : utime("days since 1-1-1", "360_day"),
+                           "365_day" : utime("days since 1-1-1", "365_day")}
+
+    def test_roundtrip(self):
+        "Test roundtrip conversion (num2date <-> date2num) using 360_day and 365_day calendars."
+
+        # Pick a date and time outside of the range of the Julian calendar.
+        date = datetimex(-5000, 1, 1, 12)
+
+        for calendar in ["360_day", "365_day"]:
+            converter = self.converters[calendar]
+            self.assertEqual(date, converter.num2date(converter.date2num(date)))
+
+    def test_dayofwk(self):
+        "Test computation of dayofwk in the 365_day calendar."
+
+        converter = self.converters["365_day"]
+
+        # Pick the date corresponding to the Julian day of 1.0 to test
+        # the transision from positive to negative Julian days.
+        julian_day = converter.date2num(datetimex(-4712, 1, 2, 12))
+
+        old_date = converter.num2date(julian_day)
+        for delta_year in xrange(1, 101): # 100 years cover several 7-year cycles
+            date = converter.num2date(julian_day - delta_year * 365)
+
+            # test that the day of the week changes by one every year (except
+            # for wrapping around every 7 years, of course)
+            if date.dayofwk == 6:
+                self.assertEqual(old_date.dayofwk, 0)
+            else:
+                self.assertEqual(old_date.dayofwk - date.dayofwk, 1)
+
+            old_date = date
+
 if __name__ == '__main__':
     unittest.main()
