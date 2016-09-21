@@ -687,7 +687,7 @@ class issue584TestCase(unittest.TestCase):
         julian_day = converter.date2num(datetimex(-4712, 1, 2, 12))
 
         old_date = converter.num2date(julian_day)
-        for delta_year in xrange(1, 101): # 100 years cover several 7-year cycles
+        for delta_year in range(1, 101): # 100 years cover several 7-year cycles
             date = converter.num2date(julian_day - delta_year * 365)
 
             # test that the day of the week changes by one every year (except

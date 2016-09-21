@@ -393,7 +393,7 @@ days. Julian Day is a fractional day with a resolution of approximately 0.1 seco
     # based on redate.py by David Finlayson.
 
     if JD < 0:
-        year_offset = -int(JD) / 365 + 1
+        year_offset = int(-JD) // 365 + 1
         JD += year_offset * 365
     else:
         year_offset = 0
@@ -508,7 +508,7 @@ Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
     """
 
     if JD < 0:
-        year_offset = -int(JD) / 360 + 1
+        year_offset = int(-JD) // 360 + 1
         JD += year_offset * 360
     else:
         year_offset = 0
