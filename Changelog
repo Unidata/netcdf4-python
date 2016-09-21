@@ -5,6 +5,8 @@
  * Use valid_min/valid_max/valid_range attributes when defining mask
    (issue #576).  Values outside the valid range are considered to
    be missing when defining the mask.
+ * Fix for issue #584 (add support for dates before -4712-1-1 in 360_day
+   and 365_day calendars to netcdftime.utime).
 
  version 1.2.4 (tag v1.2.4rel)
 ==============================
