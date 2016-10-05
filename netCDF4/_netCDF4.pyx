@@ -5124,8 +5124,7 @@ The datetime objects should not include a time-zone offset.
 **`units`**: a string of the form `<time units> since <reference time>`
 describing the time units. `<time units>` can be days, hours, minutes,
 seconds, milliseconds or microseconds. `<reference time>` is the time
-origin.  Accuracy is somewhere between a millisecond and a microsecond,
-depending on the time interval and the calendar used.
+origin.  
 
 **`calendar`**: describes the calendar used in the time calculations.
 All the values currently defined in the 
@@ -5134,7 +5133,8 @@ Valid calendars `'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'`.
 Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 
-returns a numeric time value, or an array of numeric time values.
+returns a numeric time value, or an array of numeric time values 
+with approximately millisecond accuracy.
     """
     calendar = calendar.lower()
     basedate = _dateparse(units)
@@ -5210,8 +5210,7 @@ UTC with no time-zone offset, even if the specified
 **`units`**: a string of the form `<time units> since <reference time>`
 describing the time units. `<time units>` can be days, hours, minutes,
 seconds, milliseconds or microseconds. `<reference time>` is the time
-origin.  Accuracy is somewhere between a millisecond and a microsecond,
-depending on the time interval and the calendar used.
+origin.
 
 **`calendar`**: describes the calendar used in the time calculations.
 All the values currently defined in the 
@@ -5220,7 +5219,8 @@ Valid calendars `'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'`.
 Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 
-returns a datetime instance, or an array of datetime instances.
+returns a datetime instance, or an array of datetime instances with
+approximately millisecond accuracy.
 
 ***Note***: The datetime instances returned are 'real' python datetime
 objects if `calendar='proleptic_gregorian'`, or
