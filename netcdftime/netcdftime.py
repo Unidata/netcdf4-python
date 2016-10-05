@@ -726,7 +726,7 @@ units to datetime objects.
         If there is a time-zone offset implied by L{unit_string}, it will
         be applied to the returned numeric values.
 
-        Resolution is between a millisecond and a microsecond.
+        Resolution is approximately a millisecond.
 
         If C{calendar = 'standard'} or C{'gregorian'} (indicating
         that the mixed Julian/Gregorian calendar is to be used), an
@@ -811,7 +811,7 @@ units to datetime objects.
         dates are in UTC with no offset, even if L{unit_string} contains
         a time zone offset from UTC.
 
-        Resolution is between a millisecond and a microsecond.
+        Resolution is approximately a millisecond.
 
         Works for scalars, sequences and numpy arrays.
         Returns a scalar if input is a scalar, else returns a numpy array.
