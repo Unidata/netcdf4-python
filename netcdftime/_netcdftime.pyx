@@ -1287,7 +1287,7 @@ and format.
             delta = self
             utime = date.utime
         else:
-            raise TypeError("incompatible netcdftime.datetime.__add__() arguments")
+            return NotImplemented
         return utime.num2date(utime.date2num(date) + total_seconds(delta))
 
     def __sub__(self, other):
@@ -1305,7 +1305,7 @@ and format.
                 # datetime - timedelta
                 return utime.num2date(utime.date2num(self) - total_seconds(other))
             else:
-                raise TypeError("incompatible netcdftime.datetime.__sub__() arguments")
+                return NotImplemented
         else:
             if isinstance(self, real_datetime):
                 # real_datetime - datetime
@@ -1313,7 +1313,7 @@ and format.
                     raise ValueError("cannot compute the time difference between dates with different calendars")
                 return self - other._to_real_datetime()
             else:
-                raise TypeError("incompatible netcdftime.datetime.__sub__() arguments")
+                return NotImplemented
 
 _illegal_s = re.compile(r"((^|[^%])(%%)*%s)")
 
