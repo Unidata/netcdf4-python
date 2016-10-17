@@ -1186,8 +1186,8 @@ and format.
     """
     cdef readonly int year, month, day, hour, minute, dayofwk, dayofyr
     cdef readonly int second, microsecond
-    cdef str _calendar
     cdef object _utime
+    cdef readonly str calendar
 
     def __init__(self, year, month, day, hour=0, minute=0, second=0,
                  microsecond=0,dayofwk=-1, dayofyr=1, calendar="standard"):
@@ -1202,10 +1202,10 @@ and format.
         self.dayofyr = dayofyr
         self.second = second
         self.microsecond = microsecond
-        self._calendar = calendar
         # Can't initialize _utime here: utime creates a datetime instance (origin).
         # This avoids an unbounded recursion.
         self._utime = None
+        self.calendar = calendar
 
     @property
     def format(self):
@@ -1268,13 +1268,9 @@ and format.
         return (self.__class__,args)
 
     @property
-    def calendar(self):
-        return self._calendar
-
-    @property
     def utime(self):
         if self._utime is None:
-            self._utime = utime("seconds since 1-1-1", self._calendar)
+            self._utime = utime("seconds since 1-1-1", self.calendar)
         return self._utime
 
     def __add__(self, other):
