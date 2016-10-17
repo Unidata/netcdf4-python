@@ -8,8 +8,11 @@ import numpy as np
 import math
 import numpy
 import re
+
 from datetime import datetime as real_datetime
+from datetime import timedelta
 import time                     # strftime
+
 try:
     from itertools import izip as zip
 except ImportError:  # python 3.x
@@ -374,14 +377,14 @@ def DateFromJulianDay(JD, calendar='standard'):
     else:
         # or else, return a 'datetime-like' instance.
         if not isscalar:
-            return np.array([datetime(*args)
+            return np.array([datetime(*args, calendar)
                              for args in
                              zip(year, month, day, hour, minute,
                                  second, microsecond, dayofwk, dayofyr)])
         else:
             return datetime(year[0], month[0], day[0], hour[0],
                             minute[0], second[0], microsecond[0], dayofwk[0],
-                            dayofyr[0])
+                            dayofyr[0], calendar)
 
 
 def _DateFromNoLeapDay(JD):
@@ -444,7 +447,7 @@ days. Julian Day is a fractional day with a resolution of approximately 0.1 seco
             dayofwk += 7
 
     return datetime(year - year_offset, month, int(days), int(hours), int(minutes),
-            int(seconds), int(microseconds),dayofwk, dayofyr)
+                    int(seconds), int(microseconds),dayofwk, dayofyr, "365_day")
 
 
 def _DateFromAllLeap(JD):
@@ -497,7 +500,7 @@ Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
     microseconds = sfrac*1.e6
 
     return datetime(year, month, int(days), int(hours), int(minutes),
-            int(seconds), int(microseconds),dayofwk, dayofyr)
+                    int(seconds), int(microseconds),dayofwk, dayofyr, "366_day")
 
 
 def _DateFrom360Day(JD):
@@ -530,7 +533,7 @@ Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
     microseconds = sfrac*1.e6
 
     return datetime(year - year_offset, month, int(days), int(hours), int(minutes),
-            int(seconds), int(microseconds), -1, dayofyr)
+                    int(seconds), int(microseconds), -1, dayofyr, "360_day")
 
 
 def _dateparse(timestr):
@@ -547,7 +550,7 @@ def _dateparse(timestr):
     n = timestr.find('since') + 6
     year, month, day, hour, minute, second, utc_offset = _parse_date(
         timestr[n:].strip())
-    return units, utc_offset, datetime(year, month, day, hour, minute, second)
+    return units, utc_offset, datetime(year, month, day, hour, minute, second, calendar="standard")
 
 
 class utime:
@@ -1177,9 +1180,11 @@ and format.
     """
     cdef readonly int year, month, day, hour, minute, dayofwk, dayofyr
     cdef readonly int second, microsecond
+    cdef str _calendar
+    cdef object _utime
 
     def __init__(self, year, month, day, hour=0, minute=0, second=0,
-                 microsecond=0,dayofwk=-1, dayofyr=1):
+                 microsecond=0,dayofwk=-1, dayofyr=1, calendar="standard"):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
 
         self.year = year
@@ -1191,10 +1196,14 @@ and format.
         self.dayofyr = dayofyr
         self.second = second
         self.microsecond = microsecond
+        self._calendar = calendar
+        # Can't initialize _utime here: utime creates a datetime instance (origin).
+        # This avoids an unbounded recursion.
+        self._utime = None
 
-    property format:
-        def __get__(self):
-            return '%Y-%m-%d %H:%M:%S'
+    @property
+    def format(self):
+        return '%Y-%m-%d %H:%M:%S'
 
     def strftime(self, format=None):
         if format is None:
@@ -1234,6 +1243,53 @@ and format.
                 self.dayofwk,self.dayofyr)
         return (self.__class__,args)
 
+    @property
+    def calendar(self):
+        return self._calendar
+
+    @property
+    def utime(self):
+        if self._utime is None:
+            self._utime = utime("seconds since 1-1-1", self._calendar)
+        return self._utime
+
+    def __add__(self, other):
+        if isinstance(self, datetime) and isinstance(other, timedelta):
+            date = self
+            delta = other
+            utime = date.utime
+        elif isinstance(self, timedelta) and isinstance(other, datetime):
+            date = other
+            delta = self
+            utime = date.utime
+        else:
+            raise TypeError("incompatible netcdftime.datetime.__add__() arguments")
+        return utime.num2date(utime.date2num(date) + delta.total_seconds())
+
+    def __sub__(self, other):
+        if isinstance(self, datetime): # left arg is a datetime instance
+            utime = self.utime
+            if isinstance(other, datetime):
+                # datetime - datetime
+                return timedelta(seconds=utime.date2num(self) - utime.date2num(other))
+            elif isinstance(other, real_datetime):
+                # datetime - real_datetime
+                if self.calendar not in ("standard", "gregorian"):
+                    raise ValueError("cannot compute the time difference between dates with different calendars")
+                return self._to_real_datetime() - other
+            elif isinstance(other, timedelta):
+                # datetime - timedelta
+                return utime.num2date(utime.date2num(self) - other.total_seconds())
+            else:
+                raise TypeError("incompatible netcdftime.datetime.__sub__() arguments")
+        else:
+            if isinstance(self, real_datetime):
+                # real_datetime - datetime
+                if other.calendar not in ("standard", "gregorian"):
+                    raise ValueError("cannot compute the time difference between dates with different calendars")
+                return self - other._to_real_datetime()
+            else:
+                raise TypeError("incompatible netcdftime.datetime.__sub__() arguments")
 
 _illegal_s = re.compile(r"((^|[^%])(%%)*%s)")
 
