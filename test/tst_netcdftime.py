@@ -752,6 +752,17 @@ class issue593TestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             print(self.real_date2 - self.date1)
 
+    def test_replace(self):
+        self.assertEqual(self.date1.replace(year=4000).year, 4000)
+        self.assertEqual(self.date1.replace(month=3).month, 3)
+        self.assertEqual(self.date1.replace(day=3).day, 3)
+        self.assertEqual(self.date1.replace(hour=3).hour, 3)
+        self.assertEqual(self.date1.replace(minute=3).minute, 3)
+        self.assertEqual(self.date1.replace(second=3).second, 3)
+        self.assertEqual(self.date1.replace(microsecond=3).microsecond, 3)
+        self.assertEqual(self.date1.replace(dayofwk=3).dayofwk, 3)
+        self.assertEqual(self.date1.replace(dayofyr=3).dayofyr, 3)
+        self.assertEqual(self.date1.replace(calendar="standard").calendar, "standard")
 
 if __name__ == '__main__':
     unittest.main()

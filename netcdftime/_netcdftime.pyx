@@ -1210,6 +1210,24 @@ and format.
             format = self.format
         return _strftime(self, format)
 
+    def replace(self, **kwargs):
+        "Return datetime with new specified fields."
+        args = {"year": self.year,
+                "month": self.month,
+                "day": self.day,
+                "hour": self.hour,
+                "minute": self.minute,
+                "second": self.second,
+                "microsecond": self.microsecond,
+                "dayofwk": self.dayofwk,
+                "dayofyr": self.dayofyr,
+                "calendar": self.calendar}
+
+        for name, value in kwargs.items():
+            args[name] = value
+
+        return datetime(**args)
+
     def timetuple(self):
         return (self.year, self.month, self.day, self.hour,
                 self.minute, self.second, self.dayofwk, self.dayofyr, -1)
