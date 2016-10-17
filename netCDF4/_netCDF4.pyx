@@ -918,6 +918,8 @@ PERFORMANCE OF THIS SOFTWARE.
 
 # Make changes to this file, not the c-wrappers that Cython generates.
 
+from cpython.mem cimport PyMem_Malloc, PyMem_Free
+
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr)
@@ -1100,7 +1102,6 @@ cdef _get_att(grp, int varid, name):
     cdef int ierr, n, _grpid
     cdef size_t att_len
     cdef char *attname
-    cdef char *stratt
     cdef nc_type att_type
     cdef ndarray value_arr
     bytestr = _strencode(name)
@@ -1126,14 +1127,26 @@ cdef _get_att(grp, int varid, name):
             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
         return pstring
     elif att_type == NC_STRING:
-        if att_len == 1:
+        values = <char**>PyMem_Malloc(sizeof(char*) * att_len)
+        if not values:
+            raise MemoryError()
+        try:
             with nogil:
-                ierr = nc_get_att_string(_grpid, varid, attname, &stratt)
-            pstring = stratt.decode(default_encoding,unicode_error).replace('\x00','')
-            ierr = nc_free_string(1, &stratt) # free memory in netcdf C lib
-            return pstring
+                ierr = nc_get_att_string(_grpid, varid, attname, values)
+            if ierr != NC_NOERR:
+                raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            try:
+                result = [values[j].decode(default_encoding,unicode_error).replace('\x00','')
+                          for j in range(att_len)]
+            finally:
+                ierr = nc_free_string(att_len, values) # free memory in netcdf C lib
+        finally:
+            PyMem_Free(values)
+
+        if len(result) == 1:
+            return result[0]
         else:
-            raise KeyError('vlen string array attributes not supported')
+            return result
     else:
     # a regular numeric or compound type.
         if att_type == NC_LONG:
