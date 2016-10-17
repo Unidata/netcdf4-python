@@ -699,5 +699,59 @@ class issue584TestCase(unittest.TestCase):
 
             old_date = date
 
+class issue593TestCase(unittest.TestCase):
+    def setUp(self):
+        self.date1 = datetimex(-5000, 1, 2, 12, calendar="365_day")
+        self.date2 = datetimex(-5000, 1, 3, 12, calendar="365_day")
+        self.real_date1 = datetimex(1969,  7, 20, 12, calendar="standard")
+        self.real_date2 = datetime(1969,  7, 21, 12)
+        self.delta = timedelta(hours=25)
+
+    def test_add(self):
+        next_day = self.date1 + self.delta
+        self.assertEqual(next_day.day ,self.date1.day + 1)
+
+        next_day = self.delta + self.date1
+        self.assertEqual(next_day.day ,self.date1.day + 1)
+
+        with self.assertRaises(TypeError):
+            print(self.date1 + 1)
+
+        with self.assertRaises(TypeError):
+            print(1 + self.date1)
+
+    def test_sub(self):
+        # subtracting a timedelta
+        previous_day = self.date1 - self.delta
+        self.assertEqual(previous_day.day, self.date1.day - 1)
+
+        # sutracting two netcdftime.datetime instances
+        delta = self.date2 - self.date1
+        # date1 and date2 are exactly one day apart
+        self.assertEqual(delta.total_seconds(), 86400)
+
+        # subtracting netcdftime.datetime from datetime.datetime
+        delta = self.real_date2 - self.real_date1
+        # real_date2 and real_date1 are exactly one day apart
+        self.assertEqual(delta.total_seconds(), 86400)
+
+        # subtracting datetime.datetime from netcdftime.datetime
+        delta = self.real_date1 - self.real_date2
+        # real_date2 and real_date1 are exactly one day apart
+        self.assertEqual(delta.total_seconds(), -86400)
+
+        with self.assertRaises(TypeError):
+            print(self.date1 - 1)
+
+        with self.assertRaises(TypeError):
+            print(1 - self.date1)
+
+        with self.assertRaises(ValueError):
+            print(self.date1 - self.real_date2)
+
+        with self.assertRaises(ValueError):
+            print(self.real_date2 - self.date1)
+
+
 if __name__ == '__main__':
     unittest.main()
