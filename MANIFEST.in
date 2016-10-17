@@ -19,9 +19,8 @@ include utils/nc3tonc4
 include utils/nc4tonc3
 include utils/ncinfo
 include netcdftime/__init__.py
-include netcdftime/_datetime.pyx
-include netcdftime/netcdftime.py
-include netcdftime/_datetime.c
+include netcdftime/_netcdftime.pyx
+include netcdftime/_netcdftime.c
 include netCDF4/__init__.py
 include netCDF4/_netCDF4.pyx
 include netCDF4/utils.py

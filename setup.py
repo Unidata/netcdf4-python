@@ -401,7 +401,7 @@ if has_cython and 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
                             library_dirs=lib_dirs,
                             include_dirs=inc_dirs,
                             runtime_library_dirs=runtime_lib_dirs),
-                  Extension('netcdftime._datetime', ['netcdftime/_datetime.pyx'])]
+                  Extension('netcdftime._netcdftime', ['netcdftime/_netcdftime.pyx'])]
     # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
     # run for build *and* install (issue #263). Otherwise 'pip install' will
     # not regenerate netCDF4.c, even if the C lib supports the new features.
@@ -444,7 +444,7 @@ else:
                             library_dirs=lib_dirs,
                             include_dirs=inc_dirs,
                             runtime_library_dirs=runtime_lib_dirs),
-                  Extension('netcdftime._datetime', ['netcdftime/_datetime.c'])]
+                  Extension('netcdftime._netcdftime', ['netcdftime/_netcdftime.c'])]
     ext_modules = extensions
 
 setup(name = "netCDF4",
