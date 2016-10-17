@@ -377,7 +377,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     else:
         # or else, return a 'datetime-like' instance.
         if not isscalar:
-            return np.array([datetime(*args, calendar)
+            return np.array([datetime(*args, calendar=calendar)
                              for args in
                              zip(year, month, day, hour, minute,
                                  second, microsecond, dayofwk, dayofyr)])
