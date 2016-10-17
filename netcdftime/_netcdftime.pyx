@@ -1162,6 +1162,12 @@ cdef _toscalar(a):
     else:
         return a
 
+cdef total_seconds(td):
+    """
+Equivalent to td.total_seconds() on Python >= 2.7. See
+https://docs.python.org/2/library/datetime.html#datetime.timedelta.total_seconds
+    """
+    return (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
 
 cdef class datetime(object):
 
@@ -1282,7 +1288,7 @@ and format.
             utime = date.utime
         else:
             raise TypeError("incompatible netcdftime.datetime.__add__() arguments")
-        return utime.num2date(utime.date2num(date) + delta.total_seconds())
+        return utime.num2date(utime.date2num(date) + total_seconds(delta))
 
     def __sub__(self, other):
         if isinstance(self, datetime): # left arg is a datetime instance
@@ -1297,7 +1303,7 @@ and format.
                 return self._to_real_datetime() - other
             elif isinstance(other, timedelta):
                 # datetime - timedelta
-                return utime.num2date(utime.date2num(self) - other.total_seconds())
+                return utime.num2date(utime.date2num(self) - total_seconds(other))
             else:
                 raise TypeError("incompatible netcdftime.datetime.__sub__() arguments")
         else:
