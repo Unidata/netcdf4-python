@@ -147,7 +147,7 @@ def JulianDayFromDate(date, calendar='standard'):
         return jd
 
 
-def _NoLeapDayFromDate(date):
+cdef _NoLeapDayFromDate(date):
     """
 
 creates a Julian Day for a calendar with no leap years from a datetime
@@ -176,7 +176,7 @@ instance.  Returns the fractional Julian Day (resolution approx 0.1 second).
     return jd
 
 
-def _AllLeapFromDate(date):
+cdef _AllLeapFromDate(date):
     """
 
 creates a Julian Day for a calendar where all years have 366 days from
@@ -206,7 +206,7 @@ Returns the fractional Julian Day (resolution approx 0.1 second).
     return jd
 
 
-def _360DayFromDate(date):
+cdef _360DayFromDate(date):
     """
 
 creates a Julian Day for a calendar where all months have 30 daysfrom
@@ -387,7 +387,7 @@ def DateFromJulianDay(JD, calendar='standard'):
                             dayofyr[0], calendar)
 
 
-def _DateFromNoLeapDay(JD):
+cdef _DateFromNoLeapDay(JD):
     """
 
 returns a 'datetime-like' object given Julian Day for a calendar with no leap
@@ -450,7 +450,7 @@ days. Julian Day is a fractional day with a resolution of approximately 0.1 seco
                     int(seconds), int(microseconds),dayofwk, dayofyr, "365_day")
 
 
-def _DateFromAllLeap(JD):
+cdef _DateFromAllLeap(JD):
     """
 
 returns a 'datetime-like' object given Julian Day for a calendar where all
@@ -503,7 +503,7 @@ Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
                     int(seconds), int(microseconds),dayofwk, dayofyr, "366_day")
 
 
-def _DateFrom360Day(JD):
+cdef _DateFrom360Day(JD):
     """
 
 returns a 'datetime-like' object given Julian Day for a calendar where all
@@ -536,7 +536,7 @@ Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
                     int(seconds), int(microseconds), -1, dayofyr, "360_day")
 
 
-def _dateparse(timestr):
+cdef _dateparse(timestr):
     """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss
     return a tuple (units,utc_offset, datetimeinstance)"""
     timestr_split = timestr.split()
@@ -895,7 +895,7 @@ units to datetime objects.
             return numpy.reshape(numpy.array(date), shape)
 
 
-def _parse_timezone(tzstring):
+cdef _parse_timezone(tzstring):
     """Parses ISO 8601 time zone specs into tzinfo offsets
 
     Adapted from pyiso8601 (http://code.google.com/p/pyiso8601/)
@@ -915,7 +915,7 @@ def _parse_timezone(tzstring):
     return minutes + hours * 60.
 
 
-def _parse_date(datestring):
+cpdef _parse_date(datestring):
     """Parses ISO 8601 dates into datetime objects
 
     The timezone is parsed from the date string, assuming UTC
@@ -945,7 +945,7 @@ def _parse_date(datestring):
         int(groups["hour"]), int(groups["minute"]), int(groups["second"]),\
         tzoffset_mins
 
-def _check_index(indices, times, nctime, calendar, select):
+cdef _check_index(indices, times, nctime, calendar, select):
     """Return True if the time indices given correspond to the given times,
     False otherwise.
 
@@ -1156,7 +1156,7 @@ def time2index(times, nctime, calendar=None, select='exact'):
     return _toscalar(index)
 
 
-def _toscalar(a):
+cdef _toscalar(a):
     if a.shape in [(), (1,)]:
         return a.item()
     else:
@@ -1294,7 +1294,7 @@ and format.
 _illegal_s = re.compile(r"((^|[^%])(%%)*%s)")
 
 
-def _findall(text, substr):
+cdef _findall(text, substr):
     # Also finds overlaps
     sites = []
     i = 0
@@ -1311,7 +1311,7 @@ def _findall(text, substr):
 # calendar.  ;)
 
 
-def _strftime(dt, fmt):
+cdef _strftime(dt, fmt):
     if _illegal_s.search(fmt):
         raise TypeError("This strftime implementation does not handle %s")
     # don't use strftime method at all.
