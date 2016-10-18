@@ -772,6 +772,29 @@ class DateTime(unittest.TestCase):
                          calendar="360_day")
         self.assertEqual(date, pickle.loads(pickle.dumps(date)))
 
+    def test_richcmp(self):
+        # compare datetime and datetime
+        self.assertEqual(self.date1 == self.date1, True)
+        self.assertEqual(self.date1 == self.date2, False)
+        self.assertEqual(self.date1 < self.date2, True)
+        self.assertEqual(self.date1 < self.date1, False)
+        self.assertEqual(self.date2 > self.date1, True)
+        self.assertEqual(self.date1 > self.date2, False)
+        # compare real_datetime and datetime
+        self.assertEqual(self.real_date2 > self.real_date1, True)
+        # compare datetime and real_datetime
+        self.assertEqual(self.real_date1 > self.real_date2, False)
+        # compare two datetime instances with different calendars
+        with self.assertRaises(TypeError):
+            self.date1 > self.real_date1
+        # compare a datetime instance with a non-standard calendar to real_datetime
+        with self.assertRaises(TypeError):
+            self.date2 > self.real_date2
+        with self.assertRaises(TypeError):
+            self.real_date2 > self.date2
+        # compare a datetime instance to something other than a datetime
+        with self.assertRaises(TypeError):
+            self.date1 > 0
 
 if __name__ == '__main__':
     unittest.main()

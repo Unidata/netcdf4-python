@@ -1162,6 +1162,15 @@ cdef _toscalar(a):
     else:
         return a
 
+cdef to_tuple(td):
+    "Convert a datetime instance into a tuple of integers (for comparisons)."
+    return (td.year, td.month, td.day, td.hour, td.minute,
+            td.second, td.microsecond)
+
+cdef datetime_richcmp(a, b, int op):
+    "Compare two datetime instances, assuming that they are comparable."
+    return PyObject_RichCompare(to_tuple(a), to_tuple(b), op)
+
 cdef total_seconds(td):
     """
 Equivalent to td.total_seconds() on Python >= 2.7. See
@@ -1254,11 +1263,24 @@ and format.
         return hash(d)
 
     def __richcmp__(self, other, int op):
-        if hasattr(other, 'strftime'):
-            self_str = self.strftime('%Y-%m-%d %H:%M:%S')
-            other_str = other.strftime('%Y-%m-%d %H:%M:%S')
-            return PyObject_RichCompare(self_str, other_str, op)
-        return NotImplemented
+        if isinstance(other, datetime):
+            # comparing two datetime instances
+            if self.calendar == other.calendar:
+                return datetime_richcmp(self, other, op)
+            else:
+                # Note: it *is* possible to compare datetime
+                # instances that use difference calendars by using
+                # utime.date2num(), but this implementation does
+                # not attempt it.
+                raise TypeError("cannot compare {} and {} (different calendars)".format(self, other))
+        elif isinstance(other, real_datetime):
+            # comparing datetime and real_datetime
+            if self.calendar in ("standard", "gregorian"):
+                return datetime_richcmp(self, other, op)
+            else:
+                raise TypeError("cannot compare {} and {} (different calendars)".format(self, other))
+        else:
+            raise TypeError("cannot compare {} and {}".format(self, other))
 
     def __reduce__(self):
         """special method that allows instance to be pickled"""
