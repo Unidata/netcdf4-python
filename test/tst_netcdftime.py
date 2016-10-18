@@ -699,7 +699,7 @@ class issue584TestCase(unittest.TestCase):
 
             old_date = date
 
-class issue593TestCase(unittest.TestCase):
+class DateTime(unittest.TestCase):
     def setUp(self):
         self.date1 = datetimex(-5000, 1, 2, 12, calendar="365_day")
         self.date2 = datetimex(-5000, 1, 3, 12, calendar="365_day")
