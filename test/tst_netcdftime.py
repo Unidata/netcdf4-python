@@ -709,10 +709,10 @@ class DateTime(unittest.TestCase):
 
     def test_add(self):
         next_day = self.date1 + self.delta
-        self.assertEqual(next_day.day ,self.date1.day + 1)
+        self.assertEqual(next_day.day, self.date1.day + 1)
 
         next_day = self.delta + self.date1
-        self.assertEqual(next_day.day ,self.date1.day + 1)
+        self.assertEqual(next_day.day, self.date1.day + 1)
 
         with self.assertRaises(TypeError):
             self.date1 + 1
