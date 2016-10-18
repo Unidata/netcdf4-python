@@ -715,10 +715,10 @@ class DateTime(unittest.TestCase):
         self.assertEqual(next_day.day ,self.date1.day + 1)
 
         with self.assertRaises(TypeError):
-            print(self.date1 + 1)
+            self.date1 + 1
 
         with self.assertRaises(TypeError):
-            print(1 + self.date1)
+            1 + self.date1
 
     def test_sub(self):
         # subtracting a timedelta
@@ -741,16 +741,16 @@ class DateTime(unittest.TestCase):
         self.assertEqual(delta.total_seconds(), -86400)
 
         with self.assertRaises(TypeError):
-            print(self.date1 - 1)
+            self.date1 - 1
 
         with self.assertRaises(TypeError):
-            print(1 - self.date1)
+            1 - self.date1
 
         with self.assertRaises(ValueError):
-            print(self.date1 - self.real_date2)
+            self.date1 - self.real_date2
 
         with self.assertRaises(ValueError):
-            print(self.real_date2 - self.date1)
+            self.real_date2 - self.date1
 
     def test_replace(self):
         self.assertEqual(self.date1.replace(year=4000).year, 4000)
