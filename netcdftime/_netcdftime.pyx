@@ -1262,10 +1262,10 @@ and format.
 
     def __reduce__(self):
         """special method that allows instance to be pickled"""
-        args = (self.year,self.month,self.day,self.hour,
-                self.minute,self.second,self.microsecond,
-                self.dayofwk,self.dayofyr)
-        return (self.__class__,args)
+        args = (self.year, self.month, self.day, self.hour,
+                self.minute, self.second, self.microsecond,
+                self.dayofwk, self.dayofyr, self.calendar)
+        return (self.__class__, args)
 
     @property
     def utime(self):
