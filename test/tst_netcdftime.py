@@ -764,5 +764,14 @@ class DateTime(unittest.TestCase):
         self.assertEqual(self.date1.replace(dayofyr=3).dayofyr, 3)
         self.assertEqual(self.date1.replace(calendar="standard").calendar, "standard")
 
+    def test_pickling(self):
+        "Test reversibility of pickling."
+        import pickle
+
+        date = datetimex(year=1, month=2, day=3, hour=4, minute=5, second=6, microsecond=7,
+                         calendar="360_day")
+        self.assertEqual(date, pickle.loads(pickle.dumps(date)))
+
+
 if __name__ == '__main__':
     unittest.main()
