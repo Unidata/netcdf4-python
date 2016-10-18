@@ -1277,21 +1277,21 @@ and format.
         if isinstance(self, datetime) and isinstance(other, timedelta):
             date = self
             delta = other
-            utime = date.utime
+            converter = date.utime
         elif isinstance(self, timedelta) and isinstance(other, datetime):
             date = other
             delta = self
-            utime = date.utime
+            converter = date.utime
         else:
             return NotImplemented
-        return utime.num2date(utime.date2num(date) + total_seconds(delta))
+        return converter.num2date(converter.date2num(date) + total_seconds(delta))
 
     def __sub__(self, other):
         if isinstance(self, datetime): # left arg is a datetime instance
-            utime = self.utime
+            converter = self.utime
             if isinstance(other, datetime):
                 # datetime - datetime
-                return timedelta(seconds=utime.date2num(self) - utime.date2num(other))
+                return timedelta(seconds=converter.date2num(self) - converter.date2num(other))
             elif isinstance(other, real_datetime):
                 # datetime - real_datetime
                 if self.calendar not in ("standard", "gregorian"):
@@ -1299,7 +1299,7 @@ and format.
                 return self._to_real_datetime() - other
             elif isinstance(other, timedelta):
                 # datetime - timedelta
-                return utime.num2date(utime.date2num(self) - total_seconds(other))
+                return converter.num2date(converter.date2num(self) - total_seconds(other))
             else:
                 return NotImplemented
         else:
