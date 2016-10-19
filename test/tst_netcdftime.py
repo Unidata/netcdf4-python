@@ -442,9 +442,9 @@ class netcdftimeTestCase(unittest.TestCase):
         t = date2num(datetime(1, 1, 1), units, calendar='360_day')
         self.assertEqual(t, 360)
         d = num2date(t, units, calendar='360_day')
-        self.assertEqual(d, datetimex(1,1,1))
+        self.assertEqual(d, datetimex(1,1,1,calendar="360_day"))
         d = num2date(0, units, calendar='360_day')
-        self.assertEqual(d, datetimex(0,1,1))
+        self.assertEqual(d, datetimex(0,1,1,calendar="360_day"))
 
         # list around missing dates in Gregorian calendar
         # scalar
@@ -670,10 +670,10 @@ class issue584TestCase(unittest.TestCase):
     def test_roundtrip(self):
         "Test roundtrip conversion (num2date <-> date2num) using 360_day and 365_day calendars."
 
-        # Pick a date and time outside of the range of the Julian calendar.
-        date = datetimex(-5000, 1, 1, 12)
-
         for calendar in ["360_day", "365_day"]:
+            # Pick a date and time outside of the range of the Julian calendar.
+            date = datetimex(-5000, 1, 1, 12, calendar=calendar)
+
             converter = self.converters[calendar]
             self.assertEqual(date, converter.num2date(converter.date2num(date)))
 
@@ -774,16 +774,16 @@ class DateTime(unittest.TestCase):
 
     def test_richcmp(self):
         # compare datetime and datetime
-        self.assertEqual(self.date1 == self.date1, True)
-        self.assertEqual(self.date1 == self.date2, False)
-        self.assertEqual(self.date1 < self.date2, True)
-        self.assertEqual(self.date1 < self.date1, False)
-        self.assertEqual(self.date2 > self.date1, True)
-        self.assertEqual(self.date1 > self.date2, False)
+        self.assertTrue(self.date1 == self.date1)
+        self.assertFalse(self.date1 == self.date2)
+        self.assertTrue(self.date1 < self.date2)
+        self.assertFalse(self.date1 < self.date1)
+        self.assertTrue(self.date2 > self.date1)
+        self.assertFalse(self.date1 > self.date2)
         # compare real_datetime and datetime
-        self.assertEqual(self.real_date2 > self.real_date1, True)
+        self.assertTrue(self.real_date2 > self.real_date1)
         # compare datetime and real_datetime
-        self.assertEqual(self.real_date1 > self.real_date2, False)
+        self.assertFalse(self.real_date1 > self.real_date2)
         # compare two datetime instances with different calendars
         with self.assertRaises(TypeError):
             self.date1 > self.real_date1
