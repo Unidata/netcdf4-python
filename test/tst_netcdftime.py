@@ -44,7 +44,7 @@ class netcdftimeTestCase(unittest.TestCase):
         # check attributes.
         self.assertTrue(self.cdftime_mixed.units == 'hours')
         self.assertTrue(
-            repr(self.cdftime_mixed.origin) == '   1-01-01 00:00:00')
+            str(self.cdftime_mixed.origin) == '   1-01-01 00:00:00')
         self.assertTrue(
             self.cdftime_mixed.unit_string == 'hours since 0001-01-01 00:00:00')
         self.assertTrue(self.cdftime_mixed.calendar == 'standard')
@@ -83,7 +83,7 @@ class netcdftimeTestCase(unittest.TestCase):
         self.assertTrue(d_check == ''.join(d2))
         # test proleptic gregorian calendar.
         self.assertTrue(self.cdftime_pg.units == 'seconds')
-        self.assertTrue(repr(self.cdftime_pg.origin) == '   1-01-01 00:00:00')
+        self.assertTrue(str(self.cdftime_pg.origin) == '   1-01-01 00:00:00')
         self.assertTrue(
             self.cdftime_pg.unit_string == 'seconds since 0001-01-01 00:00:00')
         self.assertTrue(self.cdftime_pg.calendar == 'proleptic_gregorian')
@@ -103,7 +103,7 @@ class netcdftimeTestCase(unittest.TestCase):
             ValueError, utime, 'days since 1600-02-29 00:00:00', calendar='noleap')
         self.assertTrue(self.cdftime_noleap.units == 'days')
         self.assertTrue(
-            repr(self.cdftime_noleap.origin) == '1600-02-28 00:00:00')
+            str(self.cdftime_noleap.origin) == '1600-02-28 00:00:00')
         self.assertTrue(
             self.cdftime_noleap.unit_string == 'days since 1600-02-28 00:00:00')
         self.assertTrue(self.cdftime_noleap.calendar == 'noleap')
@@ -130,7 +130,7 @@ class netcdftimeTestCase(unittest.TestCase):
         # check all_leap calendar.
         self.assertTrue(self.cdftime_leap.units == 'days')
         self.assertTrue(
-            repr(self.cdftime_leap.origin) == '1600-02-29 00:00:00')
+            str(self.cdftime_leap.origin) == '1600-02-29 00:00:00')
         self.assertTrue(
             self.cdftime_leap.unit_string == 'days since 1600-02-29 00:00:00')
         self.assertTrue(self.cdftime_leap.calendar == 'all_leap')
@@ -159,7 +159,7 @@ class netcdftimeTestCase(unittest.TestCase):
         # check 360_day calendar.
         self.assertTrue(self.cdftime_360day.units == 'days')
         self.assertTrue(
-            repr(self.cdftime_360day.origin) == '1600-02-30 00:00:00')
+            str(self.cdftime_360day.origin) == '1600-02-30 00:00:00')
         self.assertTrue(
             self.cdftime_360day.unit_string == 'days since 1600-02-30 00:00:00')
         self.assertTrue(self.cdftime_360day.calendar == '360_day')
@@ -286,7 +286,7 @@ class netcdftimeTestCase(unittest.TestCase):
 
         # Check leading white space
         self.assertEqual(
-            repr(self.cdftime_leading_space.origin), ' 850-01-01 00:00:00')
+            str(self.cdftime_leading_space.origin), ' 850-01-01 00:00:00')
 
         #issue 330
         units = "seconds since 1970-01-01T00:00:00Z"

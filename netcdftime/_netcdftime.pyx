@@ -1253,6 +1253,11 @@ and format.
                              self.microsecond)
 
     def __repr__(self):
+        return "{}.{}{}".format(self.__class__.__module__,
+                                self.__class__.__name__,
+                                self._getstate())
+
+    def __str__(self):
         return self.strftime(self.format)
 
     def __hash__(self):
@@ -1282,12 +1287,14 @@ and format.
         else:
             raise TypeError("cannot compare {} and {}".format(self, other))
 
-    def __reduce__(self):
-        """special method that allows instance to be pickled"""
-        args = (self.year, self.month, self.day, self.hour,
+    def _getstate(self):
+        return (self.year, self.month, self.day, self.hour,
                 self.minute, self.second, self.microsecond,
                 self.dayofwk, self.dayofyr, self.calendar)
-        return (self.__class__, args)
+
+    def __reduce__(self):
+        """special method that allows instance to be pickled"""
+        return (self.__class__, self._getstate())
 
     @property
     def utime(self):
