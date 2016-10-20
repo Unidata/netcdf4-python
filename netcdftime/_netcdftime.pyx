@@ -1162,10 +1162,11 @@ cdef _toscalar(a):
     else:
         return a
 
-cdef to_tuple(td):
-    "Convert a datetime instance into a tuple of integers (for comparisons)."
-    return (td.year, td.month, td.day, td.hour, td.minute,
-            td.second, td.microsecond)
+cdef to_tuple(dt):
+    """Convert a datetime instance into a tuple of integers. Elements go
+    in the order of decreasing significance."""
+    return (dt.year, dt.month, dt.day, dt.hour, dt.minute,
+            dt.second, dt.microsecond)
 
 cdef datetime_richcmp(a, b, int op):
     "Compare two datetime instances, assuming that they are comparable."
@@ -1198,8 +1199,8 @@ and format.
     cdef object _utime
     cdef readonly str calendar
 
-    def __init__(self, year, month, day, hour=0, minute=0, second=0,
-                 microsecond=0,dayofwk=-1, dayofyr=1, calendar="standard"):
+    def __init__(self, int year, int month, int day, int hour=0, int minute=0, int second=0,
+                 int microsecond=0, int dayofwk=-1, int dayofyr=1, str calendar="standard"):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
 
         self.year = year
@@ -1247,7 +1248,7 @@ and format.
         return (self.year, self.month, self.day, self.hour,
                 self.minute, self.second, self.dayofwk, self.dayofyr, -1)
 
-    def _to_real_datetime(self):
+    cpdef _to_real_datetime(self):
         return real_datetime(self.year, self.month, self.day,
                              self.hour, self.minute, self.second,
                              self.microsecond)
@@ -1287,7 +1288,7 @@ and format.
         else:
             raise TypeError("cannot compare {} and {}".format(self, other))
 
-    def _getstate(self):
+    cpdef _getstate(self):
         return (self.year, self.month, self.day, self.hour,
                 self.minute, self.second, self.microsecond,
                 self.dayofwk, self.dayofyr, self.calendar)
@@ -1360,7 +1361,7 @@ cdef _findall(text, substr):
 # calendar.  ;)
 
 
-cdef _strftime(dt, fmt):
+cdef _strftime(datetime dt, fmt):
     if _illegal_s.search(fmt):
         raise TypeError("This strftime implementation does not handle %s")
     # don't use strftime method at all.
