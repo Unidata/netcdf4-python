@@ -1164,13 +1164,11 @@ cdef _toscalar(a):
 
 cdef to_tuple(dt):
     """Convert a datetime instance into a tuple of integers. Elements go
-    in the order of decreasing significance."""
+    in the order of decreasing significance, making it easy to compare
+    datetime instances. Parts of the state that don't affect ordering
+    are omitted. Compare to datetime.timetuple()."""
     return (dt.year, dt.month, dt.day, dt.hour, dt.minute,
             dt.second, dt.microsecond)
-
-cdef datetime_richcmp(a, b, int op):
-    "Compare two datetime instances, assuming that they are comparable."
-    return PyObject_RichCompare(to_tuple(a), to_tuple(b), op)
 
 cdef total_seconds(td):
     """
@@ -1178,6 +1176,12 @@ Equivalent to td.total_seconds() on Python >= 2.7. See
 https://docs.python.org/2/library/datetime.html#datetime.timedelta.total_seconds
     """
     return (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
+
+# a cache of converters (utime instances) for different calendars
+cdef dict _converters
+_converters = {}
+for calendar in _calendars:
+    _converters[calendar] = utime("seconds since 1-1-1", calendar)
 
 cdef class datetime(object):
 
@@ -1196,8 +1200,10 @@ and format.
     """
     cdef readonly int year, month, day, hour, minute, dayofwk, dayofyr
     cdef readonly int second, microsecond
-    cdef object _utime
     cdef readonly str calendar
+
+    cdef readonly bint calendar_is_gregorian
+    cdef datetime (*_add_timedelta)(datetime, object)
 
     def __init__(self, int year, int month, int day, int hour=0, int minute=0, int second=0,
                  int microsecond=0, int dayofwk=-1, int dayofyr=1, str calendar="standard"):
@@ -1212,10 +1218,25 @@ and format.
         self.dayofyr = dayofyr
         self.second = second
         self.microsecond = microsecond
-        # Can't initialize _utime here: utime creates a datetime instance (origin).
-        # This avoids an unbounded recursion.
-        self._utime = None
         self.calendar = calendar
+
+        if calendar in ("365_day", "noleap"):
+            self._add_timedelta = add_timedelta_365_day
+        elif calendar in ("366_day", "all_leap"):
+            self._add_timedelta = add_timedelta_366_day
+        elif calendar == "360_day":
+            self._add_timedelta = add_timedelta_360_day
+        elif calendar == "proleptic_gregorian":
+            self._add_timedelta = add_timedelta_proleptic_gregorian
+        elif calendar == "julian":
+            self._add_timedelta = add_timedelta_julian
+        elif calendar in ("standard", "gregorian"):
+            self._add_timedelta = add_timedelta_gregorian
+
+        if calendar in ("standard", "gregorian", "proleptic_gregorian"):
+            self.calendar_is_gregorian = True
+        else:
+            self.calendar_is_gregorian = False
 
     @property
     def format(self):
@@ -1272,7 +1293,7 @@ and format.
         if isinstance(other, datetime):
             # comparing two datetime instances
             if self.calendar == other.calendar:
-                return datetime_richcmp(self, other, op)
+                return PyObject_RichCompare(to_tuple(self), to_tuple(other), op)
             else:
                 # Note: it *is* possible to compare datetime
                 # instances that use difference calendars by using
@@ -1281,10 +1302,9 @@ and format.
                 raise TypeError("cannot compare {} and {} (different calendars)".format(self, other))
         elif isinstance(other, real_datetime):
             # comparing datetime and real_datetime
-            if self.calendar in ("standard", "gregorian"):
-                return datetime_richcmp(self, other, op)
-            else:
+            if not self.calendar_is_gregorian:
                 raise TypeError("cannot compare {} and {} (different calendars)".format(self, other))
+            return PyObject_RichCompare(to_tuple(self), to_tuple(other), op)
         else:
             raise TypeError("cannot compare {} and {}".format(self, other))
 
@@ -1297,45 +1317,46 @@ and format.
         """special method that allows instance to be pickled"""
         return (self.__class__, self._getstate())
 
-    @property
-    def utime(self):
-        if self._utime is None:
-            self._utime = utime("seconds since 1-1-1", self.calendar)
-        return self._utime
+    cpdef add_timedelta(self, delta):
+        "Add timedelta delta to a datetime."
+        if self._add_timedelta != NULL:
+            return self._add_timedelta(self, delta)
+        else:
+            converter = _converters[self.calendar]
+            return converter.num2date(converter.date2num(self) + total_seconds(delta))
 
     def __add__(self, other):
+        cdef datetime date
         if isinstance(self, datetime) and isinstance(other, timedelta):
             date = self
             delta = other
-            converter = date.utime
         elif isinstance(self, timedelta) and isinstance(other, datetime):
             date = other
             delta = self
-            converter = date.utime
         else:
             return NotImplemented
-        return converter.num2date(converter.date2num(date) + total_seconds(delta))
+        return date.add_timedelta(delta)
 
     def __sub__(self, other):
         if isinstance(self, datetime): # left arg is a datetime instance
-            converter = self.utime
+            converter = _converters[self.calendar]
             if isinstance(other, datetime):
                 # datetime - datetime
                 return timedelta(seconds=converter.date2num(self) - converter.date2num(other))
             elif isinstance(other, real_datetime):
                 # datetime - real_datetime
-                if self.calendar not in ("standard", "gregorian"):
+                if not self.calendar_is_gregorian:
                     raise ValueError("cannot compute the time difference between dates with different calendars")
                 return self._to_real_datetime() - other
             elif isinstance(other, timedelta):
                 # datetime - timedelta
-                return converter.num2date(converter.date2num(self) - total_seconds(other))
+                return self.add_timedelta(-other)
             else:
                 return NotImplemented
         else:
             if isinstance(self, real_datetime):
                 # real_datetime - datetime
-                if other.calendar not in ("standard", "gregorian"):
+                if not other.calendar_is_gregorian:
                     raise ValueError("cannot compute the time difference between dates with different calendars")
                 return self - other._to_real_datetime()
             else:
@@ -1394,3 +1415,178 @@ cdef _strftime(datetime dt, fmt):
     for site in sites:
         s = s[:site] + syear + s[site + 4:]
     return s
+
+cdef bint is_leap_julian(int year):
+    "Return 1 if year is a leap year in the Julian calendar, 0 otherwise."
+    cdef int y
+    y = year if year > 0 else year + 1
+    return (y % 4) == 0
+
+cdef bint is_leap_gregorian(int year):
+    "Return 1 if year is a leap year in the Gregorian calendar, 0 otherwise."
+    cdef int y
+    y = year if year > 0 else year + 1
+    return (((y % 4) == 0) and ((y % 100) != 0)) or ((y % 400) == 0)
+
+cdef bint is_leap_mixed(int year):
+    return (year > 1582 and is_leap_gregorian(year)) or (year < 1582 and is_leap_julian(year))
+
+cdef bint all_leap(int year):
+    "Return True for all years."
+    return True
+
+cdef bint no_leap(int year):
+    "Return False for all years."
+    return False
+
+# numbers of days per month for calendars supported by add_timedelta(...)
+cdef int[13] month_lengths_365_day, month_lengths_366_day
+#                      Dummy Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+month_lengths_365_day = [-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+month_lengths_366_day = [-1, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+cdef int* month_lengths(bint (*is_leap)(int), int year):
+    if is_leap(year):
+        return month_lengths_366_day
+    else:
+        return month_lengths_365_day
+
+cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), int n_invalid_dates):
+    cdef int microsecond, second, minute, hour, day, month, year
+    cdef int delta_microseconds, delta_seconds, delta_days
+    cdef int* month_length
+    cdef int extra_days
+
+    # extract these inputs here to avoid type conversion in the code below
+    delta_microseconds = delta.microseconds
+    delta_seconds = delta.seconds
+    delta_days = delta.days
+
+    # shift microseconds, seconds, days
+    microsecond = dt.microsecond + delta_microseconds
+    second = dt.second + delta_seconds
+    minute = dt.minute
+    hour = dt.hour
+    day = dt.day
+    month = dt.month
+    year = dt.year
+
+    # validate inputs:
+    if year == 0:
+        raise ValueError("invalid year in {}".format(dt))
+
+    month_length = month_lengths(is_leap, year)
+
+    if month < 1 or month > 12:
+        raise ValueError("invalid month in {}".format(dt))
+
+    if day < 1 or day > month_length[month]:
+        raise ValueError("invalid day number in {}".format(dt))
+
+    if n_invalid_dates > 0 and year == 1582 and month == 10 and day > 4 and day < 15:
+        raise ValueError("{} is not present in the mixed Julian/Gregorian calendar".format(dt))
+
+    # Normalize microseconds, seconds, minutes, hours.
+    second += microsecond // 1000000
+    microsecond = microsecond % 1000000
+    minute += second // 60
+    second = second % 60
+    hour += minute // 60
+    minute = minute % 60
+    extra_days = hour // 24
+    hour = hour % 24
+
+    delta_days += extra_days
+
+    while delta_days < 0:
+        if year == 1582 and month == 10 and day > 14 and day + delta_days < 15:
+            delta_days -= n_invalid_dates    # skip over invalid dates
+        if day + delta_days < 1:
+            delta_days += day
+            # decrement month
+            month -= 1
+            if month < 1:
+                month = 12
+                year -= 1
+                if year == 0:
+                    year = -1
+                month_length = month_lengths(is_leap, year)
+            day = month_length[month]
+        else:
+            day += delta_days
+            delta_days = 0
+
+    while delta_days > 0:
+        if year == 1582 and month == 10 and day < 5 and day + delta_days > 4:
+            delta_days += n_invalid_dates    # skip over invalid dates
+        if day + delta_days > month_length[month]:
+            delta_days -= month_length[month] - (day - 1)
+            # increment month
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+                if year == 0:
+                    year = 1
+                month_length = month_lengths(is_leap, year)
+            day = 1
+        else:
+            day += delta_days
+            delta_days = 0
+
+    return datetime(year, month, day, hour, minute, second, microsecond, -1, 1, dt.calendar)
+
+cdef datetime add_timedelta_360_day(datetime dt, delta):
+    cdef int microsecond, second, minute, hour, day, month, year
+    cdef int delta_microseconds, delta_seconds, delta_days
+
+    assert dt.month >= 1 and dt.month <= 12
+    assert dt.year != 0
+
+    # extract these inputs here to avoid type conversion in the code below
+    delta_microseconds = delta.microseconds
+    delta_seconds = delta.seconds
+    delta_days = delta.days
+
+    # shift microseconds, seconds, days
+    microsecond = dt.microsecond + delta_microseconds
+    second = dt.second + delta_seconds
+    minute = dt.minute
+    hour = dt.hour
+    day = dt.day + delta_days
+    month = dt.month
+    year = dt.year
+
+    # Normalize microseconds, seconds, minutes, hours, days, and months.
+    second += microsecond // 1000000
+    microsecond = microsecond % 1000000
+    minute += second // 60
+    second = second % 60
+    hour += minute // 60
+    minute = minute % 60
+    day += hour // 24
+    hour = hour % 24
+    # day and month are counted from 1; all months have 30 days
+    month += (day - 1) // 30
+    day = (day - 1) % 30 + 1
+    # all years have 12 months
+    year += (month - 1) // 12
+    month = (month - 1) % 12 + 1
+
+    return datetime(year, month, day, hour, minute, second, microsecond,
+                    -1, 1, dt.calendar)
+
+cdef datetime add_timedelta_365_day(datetime dt, delta):
+    return add_timedelta(dt, delta, no_leap, 0)
+
+cdef datetime add_timedelta_366_day(datetime dt, delta):
+    return add_timedelta(dt, delta, all_leap, 0)
+
+cdef datetime add_timedelta_julian(datetime dt, delta):
+    return add_timedelta(dt, delta, is_leap_julian, 0)
+
+cdef datetime add_timedelta_proleptic_gregorian(datetime dt, delta):
+    return add_timedelta(dt, delta, is_leap_gregorian, 0)
+
+cdef datetime add_timedelta_gregorian(datetime dt, delta):
+    return add_timedelta(dt, delta, is_leap_mixed, 10)
