@@ -1240,7 +1240,7 @@ and format.
             self.calendar = "gregorian"
             self._add_timedelta = add_timedelta_gregorian
         else:
-            raise ValueError("unsupported calendar: {}".format(calendar))
+            raise ValueError("unsupported calendar: {0}".format(calendar))
 
         if calendar in ("standard", "gregorian", "proleptic_gregorian"):
             self.calendar_is_gregorian = True
@@ -1284,9 +1284,9 @@ and format.
                              self.microsecond)
 
     def __repr__(self):
-        return "{}.{}{}".format(self.__class__.__module__,
-                                self.__class__.__name__,
-                                self._getstate())
+        return "{0}.{1}{2}".format(self.__class__.__module__,
+                                   self.__class__.__name__,
+                                   self._getstate())
 
     def __str__(self):
         return self.strftime(self.format)
@@ -1311,14 +1311,14 @@ and format.
                 # instances that use difference calendars by using
                 # utime.date2num(), but this implementation does
                 # not attempt it.
-                raise TypeError("cannot compare {} and {} (different calendars)".format(dt, dt_other))
+                raise TypeError("cannot compare {0} and {1} (different calendars)".format(dt, dt_other))
         elif isinstance(other, real_datetime):
             # comparing datetime and real_datetime
             if not dt.calendar_is_gregorian:
-                raise TypeError("cannot compare {} and {} (different calendars)".format(self, other))
+                raise TypeError("cannot compare {0} and {1} (different calendars)".format(self, other))
             return PyObject_RichCompare(to_tuple(dt), to_tuple(other), op)
         else:
-            raise TypeError("cannot compare {} and {}".format(self, other))
+            raise TypeError("cannot compare {0} and {1}".format(self, other))
 
     cdef _getstate(self):
         return (self.year, self.month, self.day, self.hour,
@@ -1493,18 +1493,18 @@ cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), bint julia
 
     # validate inputs:
     if year == 0:
-        raise ValueError("invalid year in {}".format(dt))
+        raise ValueError("invalid year in {0}".format(dt))
 
     month_length = month_lengths(is_leap, year)
 
     if month < 1 or month > 12:
-        raise ValueError("invalid month in {}".format(dt))
+        raise ValueError("invalid month in {0}".format(dt))
 
     if day < 1 or day > month_length[month]:
-        raise ValueError("invalid day number in {}".format(dt))
+        raise ValueError("invalid day number in {0}".format(dt))
 
     if julian_gregorian_mixed and year == 1582 and month == 10 and day > 4 and day < 15:
-        raise ValueError("{} is not present in the mixed Julian/Gregorian calendar".format(dt))
+        raise ValueError("{0} is not present in the mixed Julian/Gregorian calendar".format(dt))
 
     n_invalid_dates = 10 if julian_gregorian_mixed else 0
 

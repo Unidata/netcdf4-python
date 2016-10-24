@@ -751,20 +751,26 @@ class DateTime(unittest.TestCase):
         previous_day = self.date1_365_day - self.delta
         self.assertEqual(previous_day.day, self.date1_365_day.day - 1)
 
+        def total_seconds(td):
+            """Equivalent to td.total_seconds() on Python >= 2.7. See
+            https://docs.python.org/2/library/datetime.html#datetime.timedelta.total_seconds
+            """
+            return (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
+
         # sutracting two netcdftime.datetime instances
         delta = self.date2_365_day - self.date1_365_day
         # date1 and date2 are exactly one day apart
-        self.assertEqual(delta.total_seconds(), 86400)
+        self.assertEqual(total_seconds(delta), 86400)
 
         # subtracting netcdftime.datetime from datetime.datetime
         delta = self.datetime_date1 - self.date3_gregorian
         # real_date2 and real_date1 are exactly one day apart
-        self.assertEqual(delta.total_seconds(), 86400)
+        self.assertEqual(total_seconds(delta), 86400)
 
         # subtracting datetime.datetime from netcdftime.datetime
         delta = self.date3_gregorian - self.datetime_date1
         # real_date2 and real_date1 are exactly one day apart
-        self.assertEqual(delta.total_seconds(), -86400)
+        self.assertEqual(total_seconds(delta), -86400)
 
         # Test the Julian/Gregorian transition.
         self.assertEqual(self.date5_gregorian - self.delta,
