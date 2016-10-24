@@ -1317,14 +1317,6 @@ and format.
         """special method that allows instance to be pickled"""
         return (self.__class__, self._getstate())
 
-    cpdef add_timedelta(self, delta):
-        "Add timedelta delta to a datetime."
-        if self._add_timedelta != NULL:
-            return self._add_timedelta(self, delta)
-        else:
-            converter = _converters[self.calendar]
-            return converter.num2date(converter.date2num(self) + total_seconds(delta))
-
     def __add__(self, other):
         cdef datetime date
         if isinstance(self, datetime) and isinstance(other, timedelta):
