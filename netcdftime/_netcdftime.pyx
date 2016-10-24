@@ -1202,7 +1202,15 @@ and format.
     cdef readonly int second, microsecond
     cdef readonly str calendar
 
+    # Python's datetime.datetime uses the proleptic Gregorian
+    # calendar. This boolean is used to decide whether a
+    # netcdftime.datetime instance is comparambe to datetime.datetime.
     cdef readonly bint calendar_is_gregorian
+
+    # The pointer to a function used by __add__() and __sub() for
+    # datetime + timedelta computations. This allows us to check the
+    # calendar once (in __init__()) instead of doing it every time
+    # __add__() and __sub__ are called.
     cdef datetime (*_add_timedelta)(datetime, object)
 
     def __init__(self, int year, int month, int day, int hour=0, int minute=0, int second=0,
@@ -1221,9 +1229,9 @@ and format.
         self.calendar = calendar
 
         if calendar in ("365_day", "noleap"):
-            self._add_timedelta = add_timedelta_365_day
+            self._add_timedelta = add_timedelta_no_leap
         elif calendar in ("366_day", "all_leap"):
-            self._add_timedelta = add_timedelta_366_day
+            self._add_timedelta = add_timedelta_all_leap
         elif calendar == "360_day":
             self._add_timedelta = add_timedelta_360_day
         elif calendar == "proleptic_gregorian":
@@ -1232,6 +1240,8 @@ and format.
             self._add_timedelta = add_timedelta_julian
         elif calendar in ("standard", "gregorian"):
             self._add_timedelta = add_timedelta_gregorian
+        else:
+            raise ValueError("unsupported calendar: {}".format(calendar))
 
         if calendar in ("standard", "gregorian", "proleptic_gregorian"):
             self.calendar_is_gregorian = True
@@ -1308,7 +1318,7 @@ and format.
         else:
             raise TypeError("cannot compare {} and {}".format(self, other))
 
-    cpdef _getstate(self):
+    cdef _getstate(self):
         return (self.year, self.month, self.day, self.hour,
                 self.minute, self.second, self.microsecond,
                 self.dayofwk, self.dayofyr, self.calendar)
@@ -1414,14 +1424,14 @@ cdef bint is_leap_julian(int year):
     y = year if year > 0 else year + 1
     return (y % 4) == 0
 
-cdef bint is_leap_gregorian(int year):
+cdef bint is_leap_proleptic_gregorian(int year):
     "Return 1 if year is a leap year in the Gregorian calendar, 0 otherwise."
     cdef int y
     y = year if year > 0 else year + 1
     return (((y % 4) == 0) and ((y % 100) != 0)) or ((y % 400) == 0)
 
-cdef bint is_leap_mixed(int year):
-    return (year > 1582 and is_leap_gregorian(year)) or (year < 1582 and is_leap_julian(year))
+cdef bint is_leap_gregorian(int year):
+    return (year > 1582 and is_leap_proleptic_gregorian(year)) or (year < 1582 and is_leap_julian(year))
 
 cdef bint all_leap(int year):
     "Return True for all years."
@@ -1443,11 +1453,25 @@ cdef int* month_lengths(bint (*is_leap)(int), int year):
     else:
         return month_lengths_365_day
 
-cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), int n_invalid_dates):
+# Add a datetime.timedelta to a netcdftime.datetime instance. Uses
+# integer arithmetic to avoid rounding errors and preserve
+# microsecond accuracy.
+#
+# The argument is_leap is the pointer to a function returning 1 for leap years and 0 otherwise.
+#
+# This implementation supports 365_day (no_leap), 366_day (all_leap),
+# julian, proleptic_gregorian, and the mixed Julian/Gregorian
+# (standard, gregorian) calendars by using different is_leap and
+# julian_gregorian_mixed arguments.
+#
+# The date of the transition from the Julian to Gregorian calendar and
+# the number of invalid dates are hard-wired (1582-10-4 is the last day
+# of the Julian calendar, after which follows 1582-10-15).
+cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), bint julian_gregorian_mixed):
     cdef int microsecond, second, minute, hour, day, month, year
     cdef int delta_microseconds, delta_seconds, delta_days
     cdef int* month_length
-    cdef int extra_days
+    cdef int extra_days, n_invalid_dates
 
     # extract these inputs here to avoid type conversion in the code below
     delta_microseconds = delta.microseconds
@@ -1475,8 +1499,10 @@ cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), int n_inva
     if day < 1 or day > month_length[month]:
         raise ValueError("invalid day number in {}".format(dt))
 
-    if n_invalid_dates > 0 and year == 1582 and month == 10 and day > 4 and day < 15:
+    if julian_gregorian_mixed and year == 1582 and month == 10 and day > 4 and day < 15:
         raise ValueError("{} is not present in the mixed Julian/Gregorian calendar".format(dt))
+
+    n_invalid_dates = 10 if julian_gregorian_mixed else 0
 
     # Normalize microseconds, seconds, minutes, hours.
     second += microsecond // 1000000
@@ -1528,6 +1554,12 @@ cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), int n_inva
 
     return datetime(year, month, day, hour, minute, second, microsecond, -1, 1, dt.calendar)
 
+# Add a datetime.timedelta to a netcdftime.datetime instance with the 360_day calendar.
+#
+# Assumes that the 360_day calendar (unlike the rest of supported
+# calendars) has the year 0. Also, there are no leap years and all
+# months are 30 days long, so we can compute month and year by using
+# "//" and "%".
 cdef datetime add_timedelta_360_day(datetime dt, delta):
     cdef int microsecond, second, minute, hour, day, month, year
     cdef int delta_microseconds, delta_seconds, delta_days
@@ -1568,17 +1600,17 @@ cdef datetime add_timedelta_360_day(datetime dt, delta):
     return datetime(year, month, day, hour, minute, second, microsecond,
                     -1, 1, dt.calendar)
 
-cdef datetime add_timedelta_365_day(datetime dt, delta):
-    return add_timedelta(dt, delta, no_leap, 0)
+cdef datetime add_timedelta_no_leap(datetime dt, delta):
+    return add_timedelta(dt, delta, no_leap, False)
 
-cdef datetime add_timedelta_366_day(datetime dt, delta):
-    return add_timedelta(dt, delta, all_leap, 0)
+cdef datetime add_timedelta_all_leap(datetime dt, delta):
+    return add_timedelta(dt, delta, all_leap, False)
 
 cdef datetime add_timedelta_julian(datetime dt, delta):
-    return add_timedelta(dt, delta, is_leap_julian, 0)
+    return add_timedelta(dt, delta, is_leap_julian, False)
 
 cdef datetime add_timedelta_proleptic_gregorian(datetime dt, delta):
-    return add_timedelta(dt, delta, is_leap_gregorian, 0)
+    return add_timedelta(dt, delta, is_leap_proleptic_gregorian, False)
 
 cdef datetime add_timedelta_gregorian(datetime dt, delta):
-    return add_timedelta(dt, delta, is_leap_mixed, 10)
+    return add_timedelta(dt, delta, is_leap_gregorian, True)
