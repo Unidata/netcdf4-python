@@ -1449,9 +1449,13 @@ cdef bint no_leap(int year):
 
 # numbers of days per month for calendars supported by add_timedelta(...)
 cdef int[13] month_lengths_365_day, month_lengths_366_day
-#                      Dummy Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
-month_lengths_365_day = [-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-month_lengths_366_day = [-1, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+#                  Dummy Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+for j,N in enumerate([-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]):
+    month_lengths_365_day[j] = N
+
+#                  Dummy Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+for j,N in enumerate([-1, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]):
+    month_lengths_366_day[j] = N
 
 cdef int* month_lengths(bint (*is_leap)(int), int year):
     if is_leap(year):
