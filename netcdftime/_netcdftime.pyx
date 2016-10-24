@@ -1347,6 +1347,8 @@ and format.
             dt = self
             if isinstance(other, datetime):
                 # datetime - datetime
+                if dt.calendar != other.calendar:
+                    raise ValueError("cannot compute the time difference between dates with different calendars")
                 converter = _converters[dt.calendar]
                 return timedelta(seconds=converter.date2num(dt) - converter.date2num(other))
             elif isinstance(other, real_datetime):
