@@ -1221,9 +1221,14 @@ and format.
         self.microsecond = microsecond
         self.calendar = calendar
 
+        # initialize self._add_timedelta and choose a specific calendar
+        # name in cases when two are allowed (this simplifies
+        # __richcmp__).
         if calendar in ("365_day", "noleap"):
+            self.calendar = "365_day"
             self._add_timedelta = add_timedelta_no_leap
         elif calendar in ("366_day", "all_leap"):
+            self.calendar = "366_day"
             self._add_timedelta = add_timedelta_all_leap
         elif calendar == "360_day":
             self._add_timedelta = add_timedelta_360_day
@@ -1232,6 +1237,7 @@ and format.
         elif calendar == "julian":
             self._add_timedelta = add_timedelta_julian
         elif calendar in ("standard", "gregorian"):
+            self.calendar = "gregorian"
             self._add_timedelta = add_timedelta_gregorian
         else:
             raise ValueError("unsupported calendar: {}".format(calendar))
@@ -1293,21 +1299,24 @@ and format.
         return hash(d)
 
     def __richcmp__(self, other, int op):
+        cdef datetime dt, dt_other
+        dt = self
         if isinstance(other, datetime):
+            dt_other = other
             # comparing two datetime instances
-            if self.calendar == other.calendar:
-                return PyObject_RichCompare(to_tuple(self), to_tuple(other), op)
+            if dt.calendar == dt_other.calendar:
+                return PyObject_RichCompare(to_tuple(dt), to_tuple(dt_other), op)
             else:
                 # Note: it *is* possible to compare datetime
                 # instances that use difference calendars by using
                 # utime.date2num(), but this implementation does
                 # not attempt it.
-                raise TypeError("cannot compare {} and {} (different calendars)".format(self, other))
+                raise TypeError("cannot compare {} and {} (different calendars)".format(dt, dt_other))
         elif isinstance(other, real_datetime):
             # comparing datetime and real_datetime
-            if not self.calendar_is_gregorian:
+            if not dt.calendar_is_gregorian:
                 raise TypeError("cannot compare {} and {} (different calendars)".format(self, other))
-            return PyObject_RichCompare(to_tuple(self), to_tuple(other), op)
+            return PyObject_RichCompare(to_tuple(dt), to_tuple(other), op)
         else:
             raise TypeError("cannot compare {} and {}".format(self, other))
 
@@ -1321,31 +1330,33 @@ and format.
         return (self.__class__, self._getstate())
 
     def __add__(self, other):
-        cdef datetime date
+        cdef datetime dt
         if isinstance(self, datetime) and isinstance(other, timedelta):
-            date = self
+            dt = self
             delta = other
         elif isinstance(self, timedelta) and isinstance(other, datetime):
-            date = other
+            dt = other
             delta = self
         else:
             return NotImplemented
-        return date.add_timedelta(delta)
+        return dt._add_timedelta(dt, delta)
 
     def __sub__(self, other):
+        cdef datetime dt
         if isinstance(self, datetime): # left arg is a datetime instance
-            converter = _converters[self.calendar]
+            dt = self
             if isinstance(other, datetime):
                 # datetime - datetime
-                return timedelta(seconds=converter.date2num(self) - converter.date2num(other))
+                converter = _converters[dt.calendar]
+                return timedelta(seconds=converter.date2num(dt) - converter.date2num(other))
             elif isinstance(other, real_datetime):
                 # datetime - real_datetime
-                if not self.calendar_is_gregorian:
+                if not dt.calendar_is_gregorian:
                     raise ValueError("cannot compute the time difference between dates with different calendars")
-                return self._to_real_datetime() - other
+                return dt._to_real_datetime() - other
             elif isinstance(other, timedelta):
                 # datetime - timedelta
-                return self.add_timedelta(-other)
+                return dt._add_timedelta(dt, -other)
             else:
                 return NotImplemented
         else:
