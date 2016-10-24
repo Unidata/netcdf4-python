@@ -701,68 +701,144 @@ class issue584TestCase(unittest.TestCase):
 
 class DateTime(unittest.TestCase):
     def setUp(self):
-        self.date1 = datetimex(-5000, 1, 2, 12, calendar="365_day")
-        self.date2 = datetimex(-5000, 1, 3, 12, calendar="365_day")
-        self.real_date1 = datetimex(1969,  7, 20, 12, calendar="standard")
-        self.real_date2 = datetime(1969,  7, 21, 12)
+        self.date1_365_day = datetimex(-5000, 1, 2, 12, calendar="365_day")
+        self.date2_365_day = datetimex(-5000, 1, 3, 12, calendar="365_day")
+        self.date3_gregorian = datetimex(1969,  7, 20, 12, calendar="gregorian")
+
+        # last day of the Julian calendar in the mixed Julian/Gregorian calendar
+        self.date4_gregorian = datetimex(1582, 10, 4, calendar="gregorian")
+        # first day of the Gregorian calendar in the mixed Julian/Gregorian calendar
+        self.date5_gregorian = datetimex(1582, 10, 15, calendar="gregorian")
+
+        self.date6_proleptic_gregorian = datetimex(1582, 10, 15, calendar="proleptic_gregorian")
+
+        self.date7_360_day = datetimex(2000, 1, 1, calendar="360_day")
+
+        self.date8_julian = datetimex(1582, 10, 4, calendar="julian")
+
+        # a datetime.datetime instance (proleptic Gregorian calendar)
+        self.datetime_date1 = datetime(1969,  7, 21, 12)
+
         self.delta = timedelta(hours=25)
 
     def test_add(self):
-        next_day = self.date1 + self.delta
-        self.assertEqual(next_day.day, self.date1.day + 1)
+        dt = self.date1_365_day
+        # datetime + timedelta
+        self.assertEqual(dt + self.delta, # add 25 hours
+                         dt.replace(day=dt.day + 1, hour=dt.hour + 1))
 
-        next_day = self.delta + self.date1
-        self.assertEqual(next_day.day, self.date1.day + 1)
+        # timedelta + datetime
+        self.assertEqual(self.delta + dt, # add 25 hours
+                         dt.replace(day=dt.day + 1, hour=dt.hour + 1))
 
-        with self.assertRaises(TypeError):
-            self.date1 + 1
+        # test the Julian/Gregorian transition
+        self.assertEqual(self.date4_gregorian + self.delta,
+                         datetimex(1582, 10, 15, 1, calendar="gregorian"))
 
-        with self.assertRaises(TypeError):
-            1 + self.date1
+        # The Julian calendar has no invalid dates
+        self.assertEqual(self.date8_julian + self.delta,
+                         datetimex(1582, 10, 5, 1, calendar="julian"))
+
+        # Test going over the year boundary.
+        self.assertEqual(datetimex(2000, 11, 1, calendar="gregorian") + timedelta(days=30 + 31),
+                         datetimex(2001, 1, 1, calendar="gregorian"))
+
+        # Year 2000 is a leap year.
+        self.assertEqual(datetimex(2000, 1, 1, calendar="gregorian") + timedelta(days=31 + 29),
+                         datetimex(2000, 3, 1, calendar="gregorian"))
+
+        # Test the 366_day calendar.
+        self.assertEqual(datetimex(1, 1, 1, calendar="all_leap") + timedelta(days=366 * 10 + 31),
+                         datetimex(11, 2, 1, calendar="all_leap"))
+
+        # The Gregorian calendar has no year zero.
+        self.assertEqual(datetimex(-1, 12, 31, calendar="gregorian") + self.delta,
+                         datetimex(1, 1, 1, 1, calendar="gregorian"))
+
+        def invalid_add_1():
+            self.date1_365_day + 1
+
+        def invalid_add_2():
+            1 + self.date1_365_day
+
+        for func in [invalid_add_1, invalid_add_2]:
+            self.assertRaises(TypeError, func)
 
     def test_sub(self):
         # subtracting a timedelta
-        previous_day = self.date1 - self.delta
-        self.assertEqual(previous_day.day, self.date1.day - 1)
+        previous_day = self.date1_365_day - self.delta
+        self.assertEqual(previous_day.day, self.date1_365_day.day - 1)
 
         # sutracting two netcdftime.datetime instances
-        delta = self.date2 - self.date1
+        delta = self.date2_365_day - self.date1_365_day
         # date1 and date2 are exactly one day apart
         self.assertEqual(delta.total_seconds(), 86400)
 
         # subtracting netcdftime.datetime from datetime.datetime
-        delta = self.real_date2 - self.real_date1
+        delta = self.datetime_date1 - self.date3_gregorian
         # real_date2 and real_date1 are exactly one day apart
         self.assertEqual(delta.total_seconds(), 86400)
 
         # subtracting datetime.datetime from netcdftime.datetime
-        delta = self.real_date1 - self.real_date2
+        delta = self.date3_gregorian - self.datetime_date1
         # real_date2 and real_date1 are exactly one day apart
         self.assertEqual(delta.total_seconds(), -86400)
 
-        with self.assertRaises(TypeError):
-            self.date1 - 1
+        # Test the Julian/Gregorian transition.
+        self.assertEqual(self.date5_gregorian - self.delta,
+                         datetimex(1582, 10, 3, 23, calendar="gregorian"))
 
-        with self.assertRaises(TypeError):
-            1 - self.date1
+        # The proleptic Gregorian calendar does not have invalid dates.
+        dt = self.date6_proleptic_gregorian
+        self.assertEqual(dt - self.delta,
+                         datetimex(1582, 10, 13, 23, calendar=dt.calendar))
 
-        with self.assertRaises(ValueError):
-            self.date1 - self.real_date2
+        # The Gregorian calendar has no year zero.
+        self.assertEqual(datetimex(1, 1, 1, calendar="gregorian") - self.delta,
+                         datetimex(-1, 12, 30, 23, calendar="gregorian"))
 
-        with self.assertRaises(ValueError):
-            self.real_date2 - self.date1
+        # The 360_day calendar has year zero.
+        dt = self.date7_360_day
+        self.assertEqual(dt - timedelta(days=2000 * 360),
+                         datetimex(0, 1, 1, calendar=dt.calendar))
+
+        # Test going over the year boundary.
+        self.assertEqual(datetimex(2000, 3, 1, calendar="gregorian") - timedelta(days=29 + 31 + 31),
+                         datetimex(1999, 12, 1, calendar="gregorian"))
+
+        # Year 2000 is a leap year.
+        self.assertEqual(datetimex(2000, 3, 1, calendar="gregorian") - self.delta,
+                         datetimex(2000, 2, 28, 23, calendar="gregorian"))
+
+        def invalid_sub_1():
+            self.date1_365_day - 1
+
+        def invalid_sub_2():
+            1 - self.date1_365_day
+
+        def invalid_sub_3():
+            self.date1_365_day - self.datetime_date1
+
+        def invalid_sub_4():
+            self.datetime_date1 - self.date1_365_day
+
+        for func in [invalid_sub_1, invalid_sub_2]:
+            self.assertRaises(TypeError, func)
+
+        for func in [invalid_sub_3, invalid_sub_4]:
+            self.assertRaises(ValueError, func)
 
     def test_replace(self):
-        self.assertEqual(self.date1.replace(year=4000).year, 4000)
-        self.assertEqual(self.date1.replace(month=3).month, 3)
-        self.assertEqual(self.date1.replace(day=3).day, 3)
-        self.assertEqual(self.date1.replace(hour=3).hour, 3)
-        self.assertEqual(self.date1.replace(minute=3).minute, 3)
-        self.assertEqual(self.date1.replace(second=3).second, 3)
-        self.assertEqual(self.date1.replace(microsecond=3).microsecond, 3)
-        self.assertEqual(self.date1.replace(dayofwk=3).dayofwk, 3)
-        self.assertEqual(self.date1.replace(dayofyr=3).dayofyr, 3)
-        self.assertEqual(self.date1.replace(calendar="standard").calendar, "standard")
+        self.assertEqual(self.date1_365_day.replace(year=4000).year, 4000)
+        self.assertEqual(self.date1_365_day.replace(month=3).month, 3)
+        self.assertEqual(self.date1_365_day.replace(day=3).day, 3)
+        self.assertEqual(self.date1_365_day.replace(hour=3).hour, 3)
+        self.assertEqual(self.date1_365_day.replace(minute=3).minute, 3)
+        self.assertEqual(self.date1_365_day.replace(second=3).second, 3)
+        self.assertEqual(self.date1_365_day.replace(microsecond=3).microsecond, 3)
+        self.assertEqual(self.date1_365_day.replace(dayofwk=3).dayofwk, 3)
+        self.assertEqual(self.date1_365_day.replace(dayofyr=3).dayofyr, 3)
+        self.assertEqual(self.date1_365_day.replace(calendar="gregorian").calendar, "gregorian")
 
     def test_pickling(self):
         "Test reversibility of pickling."
@@ -772,29 +848,64 @@ class DateTime(unittest.TestCase):
                          calendar="360_day")
         self.assertEqual(date, pickle.loads(pickle.dumps(date)))
 
+    def test_misc(self):
+        "Miscellaneous tests."
+        # make sure repr succeeds
+        repr(self.date1_365_day)
+
+        # make sure strftime without a format string works
+        self.assertEqual(self.date3_gregorian.strftime(None),
+                         "1969-07-20 12:00:00")
+
+        def invalid_calendar():
+            datetimex(2000, 1, 1, calendar="invalid")
+
+        def invalid_year():
+            datetimex(0, 1, 1, calendar="gregorian") + self.delta
+
+        def invalid_month():
+            datetimex(1, 13, 1, calendar="gregorian") + self.delta
+
+        def invalid_day():
+            datetimex(1, 1, 32, calendar="gregorian") + self.delta
+
+        def invalid_gregorian_date():
+            datetimex(1582, 10, 5, calendar="gregorian") + self.delta
+
+        for func in [invalid_calendar, invalid_year, invalid_month, invalid_day, invalid_gregorian_date]:
+            self.assertRaises(ValueError, func)
+
     def test_richcmp(self):
         # compare datetime and datetime
-        self.assertTrue(self.date1 == self.date1)
-        self.assertFalse(self.date1 == self.date2)
-        self.assertTrue(self.date1 < self.date2)
-        self.assertFalse(self.date1 < self.date1)
-        self.assertTrue(self.date2 > self.date1)
-        self.assertFalse(self.date1 > self.date2)
+        self.assertTrue(self.date1_365_day == self.date1_365_day)
+        self.assertFalse(self.date1_365_day == self.date2_365_day)
+        self.assertTrue(self.date1_365_day < self.date2_365_day)
+        self.assertFalse(self.date1_365_day < self.date1_365_day)
+        self.assertTrue(self.date2_365_day > self.date1_365_day)
+        self.assertFalse(self.date1_365_day > self.date2_365_day)
         # compare real_datetime and datetime
-        self.assertTrue(self.real_date2 > self.real_date1)
+        self.assertTrue(self.datetime_date1 > self.date3_gregorian)
         # compare datetime and real_datetime
-        self.assertFalse(self.real_date1 > self.real_date2)
-        # compare two datetime instances with different calendars
-        with self.assertRaises(TypeError):
-            self.date1 > self.real_date1
-        # compare a datetime instance with a non-standard calendar to real_datetime
-        with self.assertRaises(TypeError):
-            self.date2 > self.real_date2
-        with self.assertRaises(TypeError):
-            self.real_date2 > self.date2
-        # compare a datetime instance to something other than a datetime
-        with self.assertRaises(TypeError):
-            self.date1 > 0
+        self.assertFalse(self.date3_gregorian > self.datetime_date1)
+
+        def not_comparable_1():
+            "compare two datetime instances with different calendars"
+            self.date1_365_day > self.date3_gregorian
+
+        def not_comparable_2():
+            "compare a datetime instance with a non-standard calendar to real_datetime"
+            self.date2_365_day > self.datetime_date1
+
+        def not_comparable_3():
+            "compare datetime.datetime to netcdftime.datetime with a non-gregorian calendar"
+            self.datetime_date1 > self.date2_365_day
+
+        def not_comparable_4():
+            "compare a datetime instance to something other than a datetime"
+            self.date1_365_day > 0
+
+        for func in [not_comparable_1, not_comparable_2, not_comparable_3, not_comparable_4]:
+            self.assertRaises(TypeError, func)
 
 if __name__ == '__main__':
     unittest.main()
