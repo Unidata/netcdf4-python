@@ -810,10 +810,13 @@ class DateTime(unittest.TestCase):
         def invalid_sub_4():
             self.datetime_date1 - self.date1_365_day
 
+        def invalid_sub_5():
+            self.date3_gregorian - self.date1_365_day
+
         for func in [invalid_sub_1, invalid_sub_2]:
             self.assertRaises(TypeError, func)
 
-        for func in [invalid_sub_3, invalid_sub_4]:
+        for func in [invalid_sub_3, invalid_sub_4, invalid_sub_5]:
             self.assertRaises(ValueError, func)
 
     def test_replace(self):
