@@ -1569,7 +1569,6 @@ cdef datetime add_timedelta_360_day(datetime dt, delta):
     cdef int delta_microseconds, delta_seconds, delta_days
 
     assert dt.month >= 1 and dt.month <= 12
-    assert dt.year != 0
 
     # extract these inputs here to avoid type conversion in the code below
     delta_microseconds = delta.microseconds
