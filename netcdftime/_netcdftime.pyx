@@ -1170,13 +1170,6 @@ cdef to_tuple(dt):
     return (dt.year, dt.month, dt.day, dt.hour, dt.minute,
             dt.second, dt.microsecond)
 
-cdef total_seconds(td):
-    """
-Equivalent to td.total_seconds() on Python >= 2.7. See
-https://docs.python.org/2/library/datetime.html#datetime.timedelta.total_seconds
-    """
-    return (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
-
 # a cache of converters (utime instances) for different calendars
 cdef dict _converters
 _converters = {}
