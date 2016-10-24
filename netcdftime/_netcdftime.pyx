@@ -42,7 +42,7 @@ def JulianDayFromDate(date, calendar='standard'):
     """
 
     creates a Julian Day from a 'datetime-like' object.  Returns the fractional
-    Julian Day (resolution approx 0.1 second).
+    Julian Day (approximately millisecond accuracy).
 
     if calendar='standard' or 'gregorian' (default), Julian day follows Julian
     Calendar on and before 1582-10-5, Gregorian calendar after 1582-10-15.
@@ -151,7 +151,7 @@ cdef _NoLeapDayFromDate(date):
     """
 
 creates a Julian Day for a calendar with no leap years from a datetime
-instance.  Returns the fractional Julian Day (resolution approx 0.1 second).
+instance.  Returns the fractional Julian Day (approximately millisecond accuracy).
 
     """
 
@@ -181,7 +181,7 @@ cdef _AllLeapFromDate(date):
 
 creates a Julian Day for a calendar where all years have 366 days from
 a 'datetime-like' object.
-Returns the fractional Julian Day (resolution approx 0.1 second).
+Returns the fractional Julian Day (approximately millisecond accuracy).
 
     """
 
@@ -211,7 +211,7 @@ cdef _360DayFromDate(date):
 
 creates a Julian Day for a calendar where all months have 30 daysfrom
 a 'datetime-like' object.
-Returns the fractional Julian Day (resolution approx 0.1 second).
+Returns the fractional Julian Day (approximately millisecond accuracy).
 
     """
 
@@ -234,7 +234,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     """
 
     returns a 'datetime-like' object given Julian Day. Julian Day is a
-    fractional day with a resolution of approximately 0.1 seconds.
+    fractional day with approximately millisecond accuracy.
 
     if calendar='standard' or 'gregorian' (default), Julian day follows Julian
     Calendar on and before 1582-10-5, Gregorian calendar after  1582-10-15.
@@ -391,7 +391,7 @@ cdef _DateFromNoLeapDay(JD):
     """
 
 returns a 'datetime-like' object given Julian Day for a calendar with no leap
-days. Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
+days. Julian Day is a fractional day with approximately millisecond accuracy.
 
     """
 
@@ -455,7 +455,7 @@ cdef _DateFromAllLeap(JD):
 
 returns a 'datetime-like' object given Julian Day for a calendar where all
 years have 366 days.
-Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
+Julian Day is a fractional day with approximately millisecond accuracy.
 
     """
 
@@ -508,7 +508,7 @@ cdef _DateFrom360Day(JD):
 
 returns a 'datetime-like' object given Julian Day for a calendar where all
 months have 30 days.
-Julian Day is a fractional day with a resolution of approximately 0.1 seconds.
+Julian Day is a fractional day with approximately millisecond accuracy.
 
     """
 
@@ -622,18 +622,18 @@ Example usage:
 >>> cdftime = utime('hours since 0001-01-01 00:00:00')
 >>> date = datetime.now()
 >>> print date
-2006-03-17 16:04:02.561678
+2016-10-05 08:46:27.245015
 >>>
 >>> t = cdftime.date2num(date)
 >>> print t
-17577328.0672
+17669840.7742
 >>>
 >>> date = cdftime.num2date(t)
 >>> print date
-2006-03-17 16:04:02
+2016-10-05 08:46:27.244996
 >>>
 
-The resolution of the transformation operation is approximately 0.1 seconds.
+The resolution of the transformation operation is approximately a millisecond.
 
 Warning:  Dates between 1582-10-5 and 1582-10-15 do not exist in the
 C{'standard'} or C{'gregorian'} calendars.  An exception will be raised if you pass
@@ -731,7 +731,7 @@ units to datetime objects.
         If there is a time-zone offset implied by L{unit_string}, it will
         be applied to the returned numeric values.
 
-        Resolution is approximately 0.1 seconds.
+        Resolution is approximately a millisecond.
 
         If C{calendar = 'standard'} or C{'gregorian'} (indicating
         that the mixed Julian/Gregorian calendar is to be used), an
@@ -816,7 +816,7 @@ units to datetime objects.
         dates are in UTC with no offset, even if L{unit_string} contains
         a time zone offset from UTC.
 
-        Resolution is approximately 0.1 seconds.
+        Resolution is approximately a millisecond.
 
         Works for scalars, sequences and numpy arrays.
         Returns a scalar if input is a scalar, else returns a numpy array.
