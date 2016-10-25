@@ -7,6 +7,13 @@
    be missing when defining the mask.
  * Fix for issue #584 (add support for dates before -4712-1-1 in 360_day
    and 365_day calendars to netcdftime.utime).
+ * Fix for issue #593: add support for datetime.timedelta operations
+   (adding and subtracting timedelta, subtracting two datetime
+   instances to compute time duration between them), implement
+   datetime.replace() and datetime.__str__(). datetime.__repr__()
+   includes the full state of an instance. Add datetime.calendar.
+   datetime comparison operators have full accuracy now. Update
+   datetime.__hash__() to include datetime.calendar.
 
  version 1.2.4 (tag v1.2.4rel)
 ==============================
