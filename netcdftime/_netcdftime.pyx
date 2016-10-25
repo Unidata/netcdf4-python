@@ -209,7 +209,7 @@ Returns the fractional Julian Day (approximately millisecond accuracy).
 cdef _360DayFromDate(date):
     """
 
-creates a Julian Day for a calendar where all months have 30 daysfrom
+creates a Julian Day for a calendar where all months have 30 days from
 a 'datetime-like' object.
 Returns the fractional Julian Day (approximately millisecond accuracy).
 
@@ -903,7 +903,7 @@ cdef _parse_timezone(tzstring):
     if tzstring == "Z":
         return 0
     # This isn't strictly correct, but it's common to encounter dates without
-    # timezones so I'll assume the default (which defaults to UTC).
+    # time zones so I'll assume the default (which defaults to UTC).
     if tzstring is None:
         return 0
     m = TIMEZONE_REGEX.match(tzstring)
@@ -1034,7 +1034,7 @@ def date2index(dates, nctime, calendar=None, select='exact'):
     matching the dates given. C{before} and C{after} will return the indices
     corresponding to the dates just before or just after the given dates if
     an exact match cannot be found. C{nearest} will return the indices that
-    correpond to the closest dates.
+    correspond to the closest dates.
     """
     try:
         nctime.units
@@ -1072,7 +1072,7 @@ def time2index(times, nctime, calendar=None, select='exact'):
     matching the times given. C{before} and C{after} will return the indices
     corresponding to the times just before or just after the given times if
     an exact match cannot be found. C{nearest} will return the indices that
-    correpond to the closest times.
+    correspond to the closest times.
     """
     try:
         nctime.units
@@ -1181,15 +1181,18 @@ cdef class datetime(object):
     """
 Phony datetime object which mimics the python datetime object,
 but allows for dates that don't exist in the proleptic gregorian calendar.
-Doesn't do timedelta operations, doesn't overload + and -.
 
-Has strftime, timetuple and __repr__ methods.  The format
-of the string produced by __repr__ is controlled by self.format
-(default %Y-%m-%d %H:%M:%S). Does support comparisons with other
-phony datetime and with datetime.datetime objects.
+Supports timedelta operations by overloading + and -.
 
-Instance variables are year,month,day,hour,minute,second,dayofwk,dayofyr
-and format.
+Has strftime, timetuple, replace, __repr__, and __str__ methods. The
+format of the string produced by __str__ is controlled by self.format
+(default %Y-%m-%d %H:%M:%S). Supports comparisons with other phony
+datetime instances using the same calendar; comparison with
+datetime.datetime instances is possible for netcdftime.datetime
+instances using 'gregorian' and 'proleptic_gregorian' calendars.
+
+Instance variables are year,month,day,hour,minute,second,microsecond,dayofwk,dayofyr,
+format, and calendar.
     """
     cdef readonly int year, month, day, hour, minute, dayofwk, dayofyr
     cdef readonly int second, microsecond
@@ -1197,10 +1200,10 @@ and format.
 
     # Python's datetime.datetime uses the proleptic Gregorian
     # calendar. This boolean is used to decide whether a
-    # netcdftime.datetime instance is comparambe to datetime.datetime.
+    # netcdftime.datetime instance is comparable to datetime.datetime.
     cdef readonly bint calendar_is_gregorian
 
-    # The pointer to a function used by __add__() and __sub() for
+    # The pointer to a function used by __add__() and __sub__() for
     # datetime + timedelta computations. This allows us to check the
     # calendar once (in __init__()) instead of doing it every time
     # __add__() and __sub__ are called.
