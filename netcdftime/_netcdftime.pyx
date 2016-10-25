@@ -1163,7 +1163,7 @@ cdef _toscalar(a):
         return a
 
 cdef to_tuple(dt):
-    """Convert a datetime instance into a tuple of integers. Elements go
+    """Turn a datetime.datetime instance into a tuple of integers. Elements go
     in the order of decreasing significance, making it easy to compare
     datetime instances. Parts of the state that don't affect ordering
     are omitted. Compare to datetime.timetuple()."""
@@ -1301,6 +1301,10 @@ format, and calendar.
             return hash(self.timetuple())
         return hash(d)
 
+    cdef to_tuple(self):
+        return (self.year, self.month, self.day, self.hour, self.minute,
+                self.second, self.microsecond)
+
     def __richcmp__(self, other, int op):
         cdef datetime dt, dt_other
         dt = self
@@ -1308,7 +1312,7 @@ format, and calendar.
             dt_other = other
             # comparing two datetime instances
             if dt.calendar == dt_other.calendar:
-                return PyObject_RichCompare(to_tuple(dt), to_tuple(dt_other), op)
+                return PyObject_RichCompare(dt.to_tuple(), dt_other.to_tuple(), op)
             else:
                 # Note: it *is* possible to compare datetime
                 # instances that use difference calendars by using
@@ -1319,7 +1323,7 @@ format, and calendar.
             # comparing datetime and real_datetime
             if not dt.calendar_is_gregorian:
                 raise TypeError("cannot compare {0} and {1} (different calendars)".format(self, other))
-            return PyObject_RichCompare(to_tuple(dt), to_tuple(other), op)
+            return PyObject_RichCompare(dt.to_tuple(), to_tuple(other), op)
         else:
             raise TypeError("cannot compare {0} and {1}".format(self, other))
 
