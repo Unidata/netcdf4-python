@@ -246,7 +246,7 @@ class netcdftimeTestCase(unittest.TestCase):
         d2 = datetime(1995, 1, 1)
         d3 = datetimex(2001, 2, 30)
         assert hash(d1) == hash(d1)
-        assert hash(d1) != hash(d2) # represent the same date, but are *not* the same object
+        assert hash(d1) == hash(d2)
         assert hash(d1) != hash(d3)
         assert hash(d3) == hash(d3)
 
