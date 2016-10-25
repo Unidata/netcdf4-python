@@ -1295,11 +1295,7 @@ format, and calendar.
         return self.strftime(self.format)
 
     def __hash__(self):
-        try:
-            d = self._to_real_datetime()
-        except ValueError:
-            return hash(self.timetuple())
-        return hash(d)
+        return hash(self._getstate())
 
     def __richcmp__(self, other, int op):
         cdef datetime dt, dt_other
