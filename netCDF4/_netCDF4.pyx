@@ -1876,7 +1876,7 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            c_path = <char *>malloc(sizeof(char) * pathlen)
+            c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
             if not c_path:
                 raise MemoryError()
             try:
