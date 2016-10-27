@@ -362,29 +362,32 @@ def DateFromJulianDay(JD, calendar='standard'):
         JD[0]
     except:
         isscalar = True
-    # return a 'real' datetime instance if calendar is gregorian.
-    if calendar in 'proleptic_gregorian' or \
-            (calendar in ['standard', 'gregorian'] and len(ind_before) == 0):
-        if not isscalar:
-            return np.array([real_datetime(*args)
-                             for args in
-                             zip(year, month, day, hour, minute, second,
-                                 microsecond)])
 
+    if calendar in 'proleptic_gregorian':
+        # FIXME: datetime.datetime does not support years < 1
+        datetime_type = real_datetime
+    elif calendar in ('standard', 'gregorian'):
+        # return a 'real' datetime instance if calendar is proleptic
+        # Gregorian or Gregorian and all dates are after the
+        # Julian/Gregorian transition
+        if len(ind_before) == 0:
+            datetime_type = real_datetime
         else:
-            return real_datetime(year[0], month[0], day[0], hour[0],
-                                 minute[0], second[0], microsecond[0])
+            datetime_type = DatetimeGregorian
+    elif calendar == "julian":
+        datetime_type = DatetimeJulian
     else:
-        # or else, return a 'datetime-like' instance.
-        if not isscalar:
-            return np.array([datetime(*args, calendar=calendar)
-                             for args in
-                             zip(year, month, day, hour, minute,
-                                 second, microsecond, dayofwk, dayofyr)])
-        else:
-            return datetime(year[0], month[0], day[0], hour[0],
-                            minute[0], second[0], microsecond[0], dayofwk[0],
-                            dayofyr[0], calendar)
+        raise ValueError("unsupported calendar: {0}".format(calendar))
+
+    if not isscalar:
+        return np.array([datetime_type(*args)
+                         for args in
+                         zip(year, month, day, hour, minute, second,
+                             microsecond)])
+
+    else:
+        return datetime_type(year[0], month[0], day[0], hour[0],
+                             minute[0], second[0], microsecond[0])
 
 
 cdef _DateFromNoLeapDay(JD):
@@ -446,8 +449,8 @@ days. Julian Day is a fractional day with approximately millisecond accuracy.
         if dayofwk < 0:
             dayofwk += 7
 
-    return datetime(year - year_offset, month, int(days), int(hours), int(minutes),
-                    int(seconds), int(microseconds),dayofwk, dayofyr, "365_day")
+    return DatetimeNoLeap(year - year_offset, month, int(days), int(hours), int(minutes),
+                          int(seconds), int(microseconds),dayofwk, dayofyr)
 
 
 cdef _DateFromAllLeap(JD):
@@ -499,8 +502,8 @@ Julian Day is a fractional day with approximately millisecond accuracy.
     (sfrac, seconds) = math.modf(mfrac * 60.0)
     microseconds = sfrac*1.e6
 
-    return datetime(year, month, int(days), int(hours), int(minutes),
-                    int(seconds), int(microseconds),dayofwk, dayofyr, "366_day")
+    return DatetimeAllLeap(year, month, int(days), int(hours), int(minutes),
+                           int(seconds), int(microseconds),dayofwk, dayofyr)
 
 
 cdef _DateFrom360Day(JD):
@@ -532,8 +535,8 @@ Julian Day is a fractional day with approximately millisecond accuracy.
     (sfrac, seconds) = math.modf(mfrac * 60.0)
     microseconds = sfrac*1.e6
 
-    return datetime(year - year_offset, month, int(days), int(hours), int(minutes),
-                    int(seconds), int(microseconds), -1, dayofyr, "360_day")
+    return Datetime360Day(year - year_offset, month, int(days), int(hours), int(minutes),
+                          int(seconds), int(microseconds), -1, dayofyr)
 
 
 cdef _dateparse(timestr):
@@ -550,7 +553,7 @@ cdef _dateparse(timestr):
     n = timestr.find('since') + 6
     year, month, day, hour, minute, second, utc_offset = _parse_date(
         timestr[n:].strip())
-    return units, utc_offset, datetime(year, month, day, hour, minute, second, calendar="standard")
+    return units, utc_offset, datetime(year, month, day, hour, minute, second)
 
 
 class utime:
@@ -1200,17 +1203,12 @@ format, and calendar.
 
     # Python's datetime.datetime uses the proleptic Gregorian
     # calendar. This boolean is used to decide whether a
-    # netcdftime.datetime instance is comparable to datetime.datetime.
-    cdef readonly bint calendar_is_gregorian
-
-    # The pointer to a function used by __add__() and __sub__() for
-    # datetime + timedelta computations. This allows us to check the
-    # calendar once (in __init__()) instead of doing it every time
-    # __add__() and __sub__ are called.
-    cdef datetime (*_add_timedelta)(datetime, object)
+    # netcdftime.datetime instance can be converted to
+    # datetime.datetime.
+    cdef readonly bint datetime_compatible
 
     def __init__(self, int year, int month, int day, int hour=0, int minute=0, int second=0,
-                 int microsecond=0, int dayofwk=-1, int dayofyr=1, str calendar="standard"):
+                 int microsecond=0, int dayofwk=-1, int dayofyr=1):
         """dayofyr set to 1 by default - otherwise time.strftime will complain"""
 
         self.year = year
@@ -1222,33 +1220,9 @@ format, and calendar.
         self.dayofyr = dayofyr
         self.second = second
         self.microsecond = microsecond
-        self.calendar = calendar
+        self.calendar = ""
 
-        # initialize self._add_timedelta and choose a specific calendar
-        # name in cases when two are allowed (this simplifies
-        # __richcmp__).
-        if calendar in ("365_day", "noleap"):
-            self.calendar = "365_day"
-            self._add_timedelta = add_timedelta_no_leap
-        elif calendar in ("366_day", "all_leap"):
-            self.calendar = "366_day"
-            self._add_timedelta = add_timedelta_all_leap
-        elif calendar == "360_day":
-            self._add_timedelta = add_timedelta_360_day
-        elif calendar == "proleptic_gregorian":
-            self._add_timedelta = add_timedelta_proleptic_gregorian
-        elif calendar == "julian":
-            self._add_timedelta = add_timedelta_julian
-        elif calendar in ("standard", "gregorian"):
-            self.calendar = "gregorian"
-            self._add_timedelta = add_timedelta_gregorian
-        else:
-            raise ValueError("unsupported calendar: {0}".format(calendar))
-
-        if calendar in ("standard", "gregorian", "proleptic_gregorian"):
-            self.calendar_is_gregorian = True
-        else:
-            self.calendar_is_gregorian = False
+        self.datetime_compatible = True
 
     @property
     def format(self):
@@ -1269,13 +1243,12 @@ format, and calendar.
                 "second": self.second,
                 "microsecond": self.microsecond,
                 "dayofwk": self.dayofwk,
-                "dayofyr": self.dayofyr,
-                "calendar": self.calendar}
+                "dayofyr": self.dayofyr}
 
         for name, value in kwargs.items():
             args[name] = value
 
-        return datetime(**args)
+        return self.__class__(**args)
 
     def timetuple(self):
         return (self.year, self.month, self.day, self.hour,
@@ -1318,23 +1291,26 @@ format, and calendar.
                 # instances that use difference calendars by using
                 # utime.date2num(), but this implementation does
                 # not attempt it.
-                raise TypeError("cannot compare {0} and {1} (different calendars)".format(dt, dt_other))
+                raise TypeError("cannot compare {0!r} and {1!r} (different calendars)".format(dt, dt_other))
         elif isinstance(other, real_datetime):
             # comparing datetime and real_datetime
-            if not dt.calendar_is_gregorian:
-                raise TypeError("cannot compare {0} and {1} (different calendars)".format(self, other))
+            if not dt.datetime_compatible:
+                raise TypeError("cannot compare {0!r} and {1!r} (different calendars)".format(self, other))
             return PyObject_RichCompare(dt.to_tuple(), to_tuple(other), op)
         else:
-            raise TypeError("cannot compare {0} and {1}".format(self, other))
+            raise TypeError("cannot compare {0!r} and {1!r}".format(self, other))
 
     cdef _getstate(self):
         return (self.year, self.month, self.day, self.hour,
                 self.minute, self.second, self.microsecond,
-                self.dayofwk, self.dayofyr, self.calendar)
+                self.dayofwk, self.dayofyr)
 
     def __reduce__(self):
         """special method that allows instance to be pickled"""
         return (self.__class__, self._getstate())
+
+    cdef _add_timedelta(self, other):
+        return NotImplemented
 
     def __add__(self, other):
         cdef datetime dt
@@ -1346,7 +1322,7 @@ format, and calendar.
             delta = self
         else:
             return NotImplemented
-        return dt._add_timedelta(dt, delta)
+        return dt._add_timedelta(delta)
 
     def __sub__(self, other):
         cdef datetime dt
@@ -1356,26 +1332,89 @@ format, and calendar.
                 # datetime - datetime
                 if dt.calendar != other.calendar:
                     raise ValueError("cannot compute the time difference between dates with different calendars")
+                if dt.calendar == "":
+                    raise ValueError("cannot compute the time difference between dates that are not calendar-aware")
                 converter = _converters[dt.calendar]
                 return timedelta(seconds=converter.date2num(dt) - converter.date2num(other))
             elif isinstance(other, real_datetime):
                 # datetime - real_datetime
-                if not dt.calendar_is_gregorian:
+                if not dt.datetime_compatible:
                     raise ValueError("cannot compute the time difference between dates with different calendars")
                 return dt._to_real_datetime() - other
             elif isinstance(other, timedelta):
                 # datetime - timedelta
-                return dt._add_timedelta(dt, -other)
+                return dt._add_timedelta(-other)
             else:
                 return NotImplemented
         else:
             if isinstance(self, real_datetime):
                 # real_datetime - datetime
-                if not other.calendar_is_gregorian:
+                if not other.datetime_compatible:
                     raise ValueError("cannot compute the time difference between dates with different calendars")
                 return self - other._to_real_datetime()
             else:
                 return NotImplemented
+
+cdef class DatetimeNoLeap(datetime):
+    def __init__(self, *args, **kwargs):
+        datetime.__init__(self, *args, **kwargs)
+        self.calendar = "noleap"
+        self.datetime_compatible = False
+
+    cdef _add_timedelta(self, delta):
+        return DatetimeNoLeap(*add_timedelta(self, delta, no_leap, False))
+
+cdef class DatetimeAllLeap(datetime):
+    def __init__(self, *args, **kwargs):
+        datetime.__init__(self, *args, **kwargs)
+        self.calendar = "all_leap"
+        self.datetime_compatible = False
+
+    cdef _add_timedelta(self, delta):
+        return DatetimeAllLeap(*add_timedelta(self, delta, all_leap, False))
+
+cdef class Datetime360Day(datetime):
+    def __init__(self, *args, **kwargs):
+        datetime.__init__(self, *args, **kwargs)
+        self.calendar = "360_day"
+        self.datetime_compatible = False
+
+    cdef _add_timedelta(self, delta):
+        return Datetime360Day(*add_timedelta_360_day(self, delta))
+
+cdef class DatetimeJulian(datetime):
+    def __init__(self, *args, **kwargs):
+        datetime.__init__(self, *args, **kwargs)
+        self.calendar = "julian"
+        self.datetime_compatible = False
+
+    cdef _add_timedelta(self, delta):
+        return DatetimeJulian(*add_timedelta(self, delta, is_leap_julian, False))
+
+cdef class DatetimeGregorian(datetime):
+    def __init__(self, *args, **kwargs):
+        datetime.__init__(self, *args, **kwargs)
+        self.calendar = "gregorian"
+
+        # dates after 1582-10-15 can be converted to and compared to
+        # proleptic Gregorian dates
+        if self.to_tuple() >= (1582, 10, 15, 0, 0, 0, 0):
+            self.datetime_compatible = True
+        else:
+            self.datetime_compatible = False
+
+    cdef _add_timedelta(self, delta):
+        return DatetimeGregorian(*add_timedelta(self, delta, is_leap_gregorian, True))
+
+cdef class DatetimeProlepticGregorian(datetime):
+    def __init__(self, *args, **kwargs):
+        datetime.__init__(self, *args, **kwargs)
+        self.calendar = "proleptic_gregorian"
+        self.datetime_compatible = True
+
+    cdef _add_timedelta(self, delta):
+        return DatetimeProlepticGregorian(*add_timedelta(self, delta,
+                                                         is_leap_proleptic_gregorian, False))
 
 _illegal_s = re.compile(r"((^|[^%])(%%)*%s)")
 
@@ -1484,7 +1523,7 @@ cdef int* month_lengths(bint (*is_leap)(int), int year):
 # The date of the transition from the Julian to Gregorian calendar and
 # the number of invalid dates are hard-wired (1582-10-4 is the last day
 # of the Julian calendar, after which follows 1582-10-15).
-cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), bint julian_gregorian_mixed):
+cdef tuple add_timedelta(datetime dt, delta, bint (*is_leap)(int), bint julian_gregorian_mixed):
     cdef int microsecond, second, minute, hour, day, month, year
     cdef int delta_microseconds, delta_seconds, delta_days
     cdef int* month_length
@@ -1506,18 +1545,18 @@ cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), bint julia
 
     # validate inputs:
     if year == 0:
-        raise ValueError("invalid year in {0}".format(dt))
+        raise ValueError("invalid year in {0!r}".format(dt))
 
     month_length = month_lengths(is_leap, year)
 
     if month < 1 or month > 12:
-        raise ValueError("invalid month in {0}".format(dt))
+        raise ValueError("invalid month in {0!r}".format(dt))
 
     if day < 1 or day > month_length[month]:
-        raise ValueError("invalid day number in {0}".format(dt))
+        raise ValueError("invalid day number in {0!r}".format(dt))
 
     if julian_gregorian_mixed and year == 1582 and month == 10 and day > 4 and day < 15:
-        raise ValueError("{0} is not present in the mixed Julian/Gregorian calendar".format(dt))
+        raise ValueError("{0!r} is not present in the mixed Julian/Gregorian calendar".format(dt))
 
     n_invalid_dates = 10 if julian_gregorian_mixed else 0
 
@@ -1569,7 +1608,7 @@ cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), bint julia
             day += delta_days
             delta_days = 0
 
-    return datetime(year, month, day, hour, minute, second, microsecond, -1, 1, dt.calendar)
+    return (year, month, day, hour, minute, second, microsecond, -1, 1)
 
 # Add a datetime.timedelta to a netcdftime.datetime instance with the 360_day calendar.
 #
@@ -1577,7 +1616,7 @@ cdef datetime add_timedelta(datetime dt, delta, bint (*is_leap)(int), bint julia
 # calendars) has the year 0. Also, there are no leap years and all
 # months are 30 days long, so we can compute month and year by using
 # "//" and "%".
-cdef datetime add_timedelta_360_day(datetime dt, delta):
+cdef tuple add_timedelta_360_day(datetime dt, delta):
     cdef int microsecond, second, minute, hour, day, month, year
     cdef int delta_microseconds, delta_seconds, delta_days
 
@@ -1613,20 +1652,4 @@ cdef datetime add_timedelta_360_day(datetime dt, delta):
     year += (month - 1) // 12
     month = (month - 1) % 12 + 1
 
-    return datetime(year, month, day, hour, minute, second, microsecond,
-                    -1, 1, dt.calendar)
-
-cdef datetime add_timedelta_no_leap(datetime dt, delta):
-    return add_timedelta(dt, delta, no_leap, False)
-
-cdef datetime add_timedelta_all_leap(datetime dt, delta):
-    return add_timedelta(dt, delta, all_leap, False)
-
-cdef datetime add_timedelta_julian(datetime dt, delta):
-    return add_timedelta(dt, delta, is_leap_julian, False)
-
-cdef datetime add_timedelta_proleptic_gregorian(datetime dt, delta):
-    return add_timedelta(dt, delta, is_leap_proleptic_gregorian, False)
-
-cdef datetime add_timedelta_gregorian(datetime dt, delta):
-    return add_timedelta(dt, delta, is_leap_gregorian, True)
+    return (year, month, day, hour, minute, second, microsecond, -1, 1)

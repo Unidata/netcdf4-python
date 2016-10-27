@@ -1,5 +1,7 @@
 from netcdftime import utime, JulianDayFromDate, DateFromJulianDay
 from netcdftime import datetime as datetimex
+from netcdftime import DatetimeNoLeap, DatetimeAllLeap, Datetime360Day, DatetimeJulian, \
+    DatetimeGregorian, DatetimeProlepticGregorian
 from netCDF4 import Dataset, num2date, date2num, date2index, num2date
 import copy
 import numpy
@@ -229,8 +231,18 @@ class netcdftimeTestCase(unittest.TestCase):
             d) - self.cdftime_mixed.date2num(d) == 6)
 
         # Check comparisons with Python datetime types
-        d1 = num2date(0, 'days since 1000-01-01', 'standard')
+
+        # Note that d1 has to use the proleptic Gregorian calendar to
+        # be comparable to d2: datetime.datetime uses the proleptic
+        # Gregorian calendar and year 1000 is before the
+        # Julian/Gregorian transition (1582-10-15).
+        d1 = num2date(0, 'days since 1000-01-01', 'proleptic_gregorian')
+
         d2 = datetime(2000, 1, 1)
+
+        # The date d3 is well after the Julian/Gregorian transition
+        # and so this Gregorian date can be compared to the proleptic
+        # Gregorian date d2.
         d3 = num2date(0, 'days since 3000-01-01', 'standard')
         assert d1 < d2
         assert d2 < d3
@@ -424,9 +436,9 @@ class netcdftimeTestCase(unittest.TestCase):
         t = date2num(datetime(1, 1, 1), units, calendar='360_day')
         self.assertEqual(t, 360)
         d = num2date(t, units, calendar='360_day')
-        self.assertEqual(d, datetimex(1,1,1,calendar="360_day"))
+        self.assertEqual(d, Datetime360Day(1,1,1))
         d = num2date(0, units, calendar='360_day')
-        self.assertEqual(d, datetimex(0,1,1,calendar="360_day"))
+        self.assertEqual(d, Datetime360Day(0,1,1))
 
         # list around missing dates in Gregorian calendar
         # scalar
@@ -647,22 +659,22 @@ class issue584TestCase(unittest.TestCase):
 
     def setUp(self):
         self.converters = {"360_day" : utime("days since 1-1-1", "360_day"),
-                           "365_day" : utime("days since 1-1-1", "365_day")}
+                           "noleap" : utime("days since 1-1-1", "365_day")}
 
     def test_roundtrip(self):
         "Test roundtrip conversion (num2date <-> date2num) using 360_day and 365_day calendars."
 
-        for calendar in ["360_day", "365_day"]:
+        for datetime_class in [Datetime360Day, DatetimeNoLeap]:
             # Pick a date and time outside of the range of the Julian calendar.
-            date = datetimex(-5000, 1, 1, 12, calendar=calendar)
+            date = datetime_class(-5000, 1, 1, 12)
 
-            converter = self.converters[calendar]
+            converter = self.converters[date.calendar]
             self.assertEqual(date, converter.num2date(converter.date2num(date)))
 
     def test_dayofwk(self):
         "Test computation of dayofwk in the 365_day calendar."
 
-        converter = self.converters["365_day"]
+        converter = self.converters["noleap"]
 
         # Pick the date corresponding to the Julian day of 1.0 to test
         # the transision from positive to negative Julian days.
@@ -683,20 +695,20 @@ class issue584TestCase(unittest.TestCase):
 
 class DateTime(unittest.TestCase):
     def setUp(self):
-        self.date1_365_day = datetimex(-5000, 1, 2, 12, calendar="365_day")
-        self.date2_365_day = datetimex(-5000, 1, 3, 12, calendar="365_day")
-        self.date3_gregorian = datetimex(1969,  7, 20, 12, calendar="gregorian")
+        self.date1_365_day = DatetimeNoLeap(-5000, 1, 2, 12)
+        self.date2_365_day = DatetimeNoLeap(-5000, 1, 3, 12)
+        self.date3_gregorian = DatetimeGregorian(1969,  7, 20, 12)
 
         # last day of the Julian calendar in the mixed Julian/Gregorian calendar
-        self.date4_gregorian = datetimex(1582, 10, 4, calendar="gregorian")
+        self.date4_gregorian = DatetimeGregorian(1582, 10, 4)
         # first day of the Gregorian calendar in the mixed Julian/Gregorian calendar
-        self.date5_gregorian = datetimex(1582, 10, 15, calendar="gregorian")
+        self.date5_gregorian = DatetimeGregorian(1582, 10, 15)
 
-        self.date6_proleptic_gregorian = datetimex(1582, 10, 15, calendar="proleptic_gregorian")
+        self.date6_proleptic_gregorian = DatetimeProlepticGregorian(1582, 10, 15)
 
-        self.date7_360_day = datetimex(2000, 1, 1, calendar="360_day")
+        self.date7_360_day = Datetime360Day(2000, 1, 1)
 
-        self.date8_julian = datetimex(1582, 10, 4, calendar="julian")
+        self.date8_julian = DatetimeJulian(1582, 10, 4)
 
         # a datetime.datetime instance (proleptic Gregorian calendar)
         self.datetime_date1 = datetime(1969,  7, 21, 12)
@@ -715,27 +727,27 @@ class DateTime(unittest.TestCase):
 
         # test the Julian/Gregorian transition
         self.assertEqual(self.date4_gregorian + self.delta,
-                         datetimex(1582, 10, 15, 1, calendar="gregorian"))
+                         DatetimeGregorian(1582, 10, 15, 1))
 
         # The Julian calendar has no invalid dates
         self.assertEqual(self.date8_julian + self.delta,
-                         datetimex(1582, 10, 5, 1, calendar="julian"))
+                         DatetimeJulian(1582, 10, 5, 1))
 
         # Test going over the year boundary.
-        self.assertEqual(datetimex(2000, 11, 1, calendar="gregorian") + timedelta(days=30 + 31),
-                         datetimex(2001, 1, 1, calendar="gregorian"))
+        self.assertEqual(DatetimeGregorian(2000, 11, 1) + timedelta(days=30 + 31),
+                         DatetimeGregorian(2001, 1, 1))
 
         # Year 2000 is a leap year.
-        self.assertEqual(datetimex(2000, 1, 1, calendar="gregorian") + timedelta(days=31 + 29),
-                         datetimex(2000, 3, 1, calendar="gregorian"))
+        self.assertEqual(DatetimeGregorian(2000, 1, 1) + timedelta(days=31 + 29),
+                         DatetimeGregorian(2000, 3, 1))
 
         # Test the 366_day calendar.
-        self.assertEqual(datetimex(1, 1, 1, calendar="all_leap") + timedelta(days=366 * 10 + 31),
-                         datetimex(11, 2, 1, calendar="all_leap"))
+        self.assertEqual(DatetimeAllLeap(1, 1, 1) + timedelta(days=366 * 10 + 31),
+                         DatetimeAllLeap(11, 2, 1))
 
         # The Gregorian calendar has no year zero.
-        self.assertEqual(datetimex(-1, 12, 31, calendar="gregorian") + self.delta,
-                         datetimex(1, 1, 1, 1, calendar="gregorian"))
+        self.assertEqual(DatetimeGregorian(-1, 12, 31) + self.delta,
+                         DatetimeGregorian(1, 1, 1, 1))
 
         def invalid_add_1():
             self.date1_365_day + 1
@@ -774,29 +786,28 @@ class DateTime(unittest.TestCase):
 
         # Test the Julian/Gregorian transition.
         self.assertEqual(self.date5_gregorian - self.delta,
-                         datetimex(1582, 10, 3, 23, calendar="gregorian"))
+                         DatetimeGregorian(1582, 10, 3, 23))
 
         # The proleptic Gregorian calendar does not have invalid dates.
-        dt = self.date6_proleptic_gregorian
-        self.assertEqual(dt - self.delta,
-                         datetimex(1582, 10, 13, 23, calendar=dt.calendar))
+        self.assertEqual(self.date6_proleptic_gregorian - self.delta,
+                         DatetimeProlepticGregorian(1582, 10, 13, 23))
 
         # The Gregorian calendar has no year zero.
-        self.assertEqual(datetimex(1, 1, 1, calendar="gregorian") - self.delta,
-                         datetimex(-1, 12, 30, 23, calendar="gregorian"))
+        self.assertEqual(DatetimeGregorian(1, 1, 1) - self.delta,
+                         DatetimeGregorian(-1, 12, 30, 23))
 
         # The 360_day calendar has year zero.
-        dt = self.date7_360_day
-        self.assertEqual(dt - timedelta(days=2000 * 360),
-                         datetimex(0, 1, 1, calendar=dt.calendar))
+
+        self.assertEqual(self.date7_360_day - timedelta(days=2000 * 360),
+                         Datetime360Day(0, 1, 1))
 
         # Test going over the year boundary.
-        self.assertEqual(datetimex(2000, 3, 1, calendar="gregorian") - timedelta(days=29 + 31 + 31),
-                         datetimex(1999, 12, 1, calendar="gregorian"))
+        self.assertEqual(DatetimeGregorian(2000, 3, 1) - timedelta(days=29 + 31 + 31),
+                         DatetimeGregorian(1999, 12, 1))
 
         # Year 2000 is a leap year.
-        self.assertEqual(datetimex(2000, 3, 1, calendar="gregorian") - self.delta,
-                         datetimex(2000, 2, 28, 23, calendar="gregorian"))
+        self.assertEqual(DatetimeGregorian(2000, 3, 1) - self.delta,
+                         DatetimeGregorian(2000, 2, 28, 23))
 
         def invalid_sub_1():
             self.date1_365_day - 1
@@ -829,14 +840,12 @@ class DateTime(unittest.TestCase):
         self.assertEqual(self.date1_365_day.replace(microsecond=3).microsecond, 3)
         self.assertEqual(self.date1_365_day.replace(dayofwk=3).dayofwk, 3)
         self.assertEqual(self.date1_365_day.replace(dayofyr=3).dayofyr, 3)
-        self.assertEqual(self.date1_365_day.replace(calendar="gregorian").calendar, "gregorian")
 
     def test_pickling(self):
         "Test reversibility of pickling."
         import pickle
 
-        date = datetimex(year=1, month=2, day=3, hour=4, minute=5, second=6, microsecond=7,
-                         calendar="360_day")
+        date = Datetime360Day(year=1, month=2, day=3, hour=4, minute=5, second=6, microsecond=7)
         self.assertEqual(date, pickle.loads(pickle.dumps(date)))
 
     def test_misc(self):
@@ -848,22 +857,19 @@ class DateTime(unittest.TestCase):
         self.assertEqual(self.date3_gregorian.strftime(None),
                          "1969-07-20 12:00:00")
 
-        def invalid_calendar():
-            datetimex(2000, 1, 1, calendar="invalid")
-
         def invalid_year():
-            datetimex(0, 1, 1, calendar="gregorian") + self.delta
+            DatetimeGregorian(0, 1, 1) + self.delta
 
         def invalid_month():
-            datetimex(1, 13, 1, calendar="gregorian") + self.delta
+            DatetimeGregorian(1, 13, 1) + self.delta
 
         def invalid_day():
-            datetimex(1, 1, 32, calendar="gregorian") + self.delta
+            DatetimeGregorian(1, 1, 32) + self.delta
 
         def invalid_gregorian_date():
-            datetimex(1582, 10, 5, calendar="gregorian") + self.delta
+            DatetimeGregorian(1582, 10, 5) + self.delta
 
-        for func in [invalid_calendar, invalid_year, invalid_month, invalid_day, invalid_gregorian_date]:
+        for func in [invalid_year, invalid_month, invalid_day, invalid_gregorian_date]:
             self.assertRaises(ValueError, func)
 
     def test_richcmp(self):
