@@ -1221,12 +1221,27 @@ cdef _get_full_format(int grpid):
     ELSE:
         return 'UNDEFINED'
 
+cdef issue485_workaround(int grpid, int varid, char* attname):
+    # check to see if attribute already exists
+    # and is NC_CHAR, if so delete it and re-create it
+    # (workaround for issue #485). Fixed in C library
+    # with commit 473259b7728120bb281c52359b1af50cca2fcb72,
+    # which was included in 4.4.0-RC5.
+    cdef nc_type att_type
+    cdef size_t att_len
+
+    if not _needsworkaround_issue485:
+        return
+    ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
+    if ierr == NC_NOERR and att_type == NC_CHAR:
+        ierr = nc_del_att(grpid, varid, attname)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+
 cdef _set_att(grp, int varid, name, value,\
               nc_type xtype=-99, force_ncstring=False):
     # Private function to set an attribute name/value pair
-    cdef int i, ierr, lenarr, n
-    cdef size_t att_len
-    cdef nc_type att_type
+    cdef int ierr, lenarr
     cdef char *attname
     cdef char *datstring
     cdef ndarray value_arr
@@ -1256,24 +1271,14 @@ cdef _set_att(grp, int varid, name, value,\
             # write null byte
             lenarr=1; datstring = '\x00'
         if (force_ncstring or value_arr.dtype.char == 'U') and not is_netcdf3:
-            # check to see if attribute already exists
-            # and is NC_CHAR, if so delete it and re-create it
-            # (workaround for issue #485). Fixed in C library
-            # with commit 473259b7728120bb281c52359b1af50cca2fcb72,
-            # which was included in 4.4.0-RC5.
-            if _needsworkaround_issue485:
-                ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
-                if ierr == NC_NOERR and att_type == NC_CHAR:
-                    ierr = nc_del_att(grp._grpid, varid, attname)
-                    if ierr != NC_NOERR:
-                        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            # try to convert to ascii string, write as NC_CHAR 
+            # try to convert to ascii string, write as NC_CHAR
             # else it's a unicode string, write as NC_STRING (if NETCDF4)
             try:
                 if force_ncstring: raise UnicodeError
                 dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
             except UnicodeError:
+                issue485_workaround(grp._grpid, varid, attname)
                 ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
         else:
             ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
