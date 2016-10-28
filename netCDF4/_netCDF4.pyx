@@ -1244,6 +1244,7 @@ cdef _set_att(grp, int varid, name, value,\
     cdef int ierr, lenarr
     cdef char *attname
     cdef char *datstring
+    cdef char **string_ptrs
     cdef ndarray value_arr
     bytestr = _strencode(name)
     attname = bytestr
@@ -1258,30 +1259,46 @@ cdef _set_att(grp, int varid, name, value,\
         value_arr = value_arr.astype('i4')
     # if array contains ascii strings, write a text attribute (stored as bytes).
     # if array contains unicode strings, and data model is NETCDF4, 
-    # write as a string.  string arrays are concatenated into a single string.
+    # write as a string.
     if value_arr.dtype.char in ['S','U']:
-        if not value_arr.shape:
-            dats = _strencode(value_arr.item())
-        else:
-            value_arr1 = value_arr.ravel()
-            dats = _strencode(''.join(value_arr1.tolist()))
-        lenarr = len(dats)
-        datstring = dats
-        if lenarr == 0:
-            # write null byte
-            lenarr=1; datstring = '\x00'
-        if (force_ncstring or value_arr.dtype.char == 'U') and not is_netcdf3:
-            # try to convert to ascii string, write as NC_CHAR
-            # else it's a unicode string, write as NC_STRING (if NETCDF4)
+        if not is_netcdf3 and force_ncstring and value_arr.size > 1:
+            N = value_arr.size
+            string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
+            if not string_ptrs:
+                raise MemoryError()
             try:
-                if force_ncstring: raise UnicodeError
-                dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
-                ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
-            except UnicodeError:
+                strings = [_strencode(s) for s in value_arr.flat]
+                for j in range(N):
+                    if len(strings[j]) == 0:
+                        strings[j] = '\x00'
+                    string_ptrs[j] = strings[j]
                 issue485_workaround(grp._grpid, varid, attname)
-                ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
+                ierr = nc_put_att_string(grp._grpid, varid, attname, N, string_ptrs)
+            finally:
+                PyMem_Free(string_ptrs)
         else:
-            ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
+            if not value_arr.shape:
+                dats = _strencode(value_arr.item())
+            else:
+                value_arr1 = value_arr.ravel()
+                dats = _strencode(''.join(value_arr1.tolist()))
+            lenarr = len(dats)
+            datstring = dats
+            if lenarr == 0:
+                # write null byte
+                lenarr=1; datstring = '\x00'
+            if (force_ncstring or value_arr.dtype.char == 'U') and not is_netcdf3:
+                # try to convert to ascii string, write as NC_CHAR
+                # else it's a unicode string, write as NC_STRING (if NETCDF4)
+                try:
+                    if force_ncstring: raise UnicodeError
+                    dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
+                    ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
+                except UnicodeError:
+                    issue485_workaround(grp._grpid, varid, attname)
+                    ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
+            else:
+                ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
     # a 'regular' array type ('f4','i4','f8' etc)
