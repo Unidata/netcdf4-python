@@ -2344,7 +2344,7 @@ Use if you need to ensure that a netCDF attribute is created with type
         if self.data_model != 'NETCDF4':
             msg='file format does not support NC_STRING attributes'
             raise IOError(msg)
-        _set_att(self, NC_GLOBAL, name, str(value), xtype=xtype, force_ncstring=True)
+        _set_att(self, NC_GLOBAL, name, value, xtype=xtype, force_ncstring=True)
 
     def setncatts(self,attdict):
         """
@@ -3472,7 +3472,7 @@ Use if you need to ensure that a netCDF attribute is created with type
         if self._grp.data_model != 'NETCDF4':
             msg='file format does not support NC_STRING attributes'
             raise IOError(msg)
-        _set_att(self._grp, self._varid, name, str(value), xtype=xtype, force_ncstring=True)
+        _set_att(self._grp, self._varid, name, value, xtype=xtype, force_ncstring=True)
 
     def setncatts(self,attdict):
         """
