@@ -1195,22 +1195,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(
 static CYTHON_INLINE PyObject* __Pyx_PyBytes_Join(PyObject* sep, PyObject* values);
 #endif
 
-/* decode_c_bytes.proto */
-static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
-         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
-
-/* decode_bytes.proto */
-static CYTHON_INLINE PyObject* __Pyx_decode_bytes(
-         PyObject* string, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
-    return __Pyx_decode_c_bytes(
-        PyBytes_AS_STRING(string), PyBytes_GET_SIZE(string),
-        start, stop, encoding, errors, decode_func);
-}
-
 /* KeywordStringCheck.proto */
 static CYTHON_INLINE int __Pyx_CheckKeywordStrings(PyObject *kwdict, const char* function_name, int kw_allowed);
 
@@ -1737,10 +1721,6 @@ static const char __pyx_k_var[] = "var";
 static const char __pyx_k_vid[] = "vid";
 static const char __pyx_k_zip[] = "zip";
 static const char __pyx_k_1_10[] = "1.10";
-static const char __pyx_k_DAP2[] = "DAP2";
-static const char __pyx_k_DAP4[] = "DAP4";
-static const char __pyx_k_HDF4[] = "HDF4";
-static const char __pyx_k_HDF5[] = "HDF5";
 static const char __pyx_k_args[] = "args";
 static const char __pyx_k_bool[] = "bool";
 static const char __pyx_k_cdfm[] = "cdfm";
@@ -1906,7 +1886,6 @@ static const char __pyx_k_IOError[] = "IOError";
 static const char __pyx_k_MINYEAR[] = "MINYEAR";
 static const char __pyx_k_NETCDF3[] = "NETCDF3";
 static const char __pyx_k_NETCDF4[] = "NETCDF4";
-static const char __pyx_k_PNETCDF[] = "PNETCDF";
 static const char __pyx_k_asarray[] = "asarray";
 static const char __pyx_k_bytestr[] = "bytestr";
 static const char __pyx_k_cdfTLen[] = "_cdfTLen";
@@ -2185,7 +2164,6 @@ static const char __pyx_k_CompoundType_dtype[] = "CompoundType.dtype";
 static const char __pyx_k_Dataset_data_model[] = "Dataset.data_model";
 static const char __pyx_k_Dataset_dimensions[] = "Dataset.dimensions";
 static const char __pyx_k_EnumType_enum_dict[] = "EnumType.enum_dict";
-static const char __pyx_k_NETCDF3_64BIT_DATA[] = "NETCDF3_64BIT_DATA";
 static const char __pyx_k_UnicodeDecodeError[] = "UnicodeDecodeError";
 static const char __pyx_k_Variable___getattr[] = "_Variable.__getattr__";
 static const char __pyx_k_Variable___getitem[] = "_Variable.__getitem__";
@@ -2221,7 +2199,6 @@ static const char __pyx_k_unlimited_name_s_size_s[] = " (unlimited): name = '%s'
 static const char __pyx_k_MFDataset___getattribute[] = "MFDataset.__getattribute__";
 static const char __pyx_k_MFDataset_set_auto_scale[] = "MFDataset.set_auto_scale";
 static const char __pyx_k_needsworkaround_issue485[] = "_needsworkaround_issue485";
-static const char __pyx_k_s_not_a_valid_group_name[] = "%s not a valid group name";
 static const char __pyx_k_unlimited_dimensions_s_2[] = "unlimited dimensions = %s\n";
 static const char __pyx_k_has_nc_inq_format_extended[] = "__has_nc_inq_format_extended__";
 static const char __pyx_k_s_not_a_valid_variable_name[] = "%s not a valid variable name";
@@ -2233,7 +2210,9 @@ static const char __pyx_k_unrecognized_format_requested[] = "unrecognized format
 static const char __pyx_k_Variable___orthogonal_indexing[] = "Variable.__orthogonal_indexing__";
 static const char __pyx_k_Variable_set_auto_maskandscale[] = "_Variable.set_auto_maskandscale";
 static const char __pyx_k_WARNING_Backwards_incompatible[] = "\nWARNING: Backwards incompatible files will be created with HDF5 1.10.x \nand netCDF < 4.4.1. Upgrading to netCDF4 >= 4.4.1 or downgrading to \nto HDF5 version 1.8.x is highly recommended \n(see https://github.com/Unidata/netcdf-c/issues/250).";
+static const char __pyx_k_filepath_method_not_enabled_To[] = "\nfilepath method not enabled.  To enable, install Cython, make sure you have\nversion 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python.";
 static const char __pyx_k_path_shows_the_location_of_the[] = "`path` shows the location of the `netCDF4.Group` in\n    the `netCDF4.Dataset` in a unix directory format (the names of groups in the\n    hierarchy separated by backslashes). A `netCDF4.Dataset` instance is the root\n    group, so the path is simply `'/'`.";
+static const char __pyx_k_renameGroup_method_not_enabled[] = "\nrenameGroup method not enabled.  To enable, install Cython, make sure you have\nversion 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python.";
 static const char __pyx_k_A_numpy_dtype_object_describing[] = "A numpy dtype object describing the\n    variable's data type.";
 static const char __pyx_k_A_string_describing_the_name_of[] = "A string describing the name of the `netCDF4.Group`.";
 static const char __pyx_k_A_tuple_containing_the_names_of[] = "A tuple containing the names of the\n    dimensions associated with this variable.";
@@ -2365,8 +2344,6 @@ static PyObject *__pyx_kp_s_Class_for_reading_multi_file_ne;
 static PyObject *__pyx_kp_s_Class_providing_an_interface_to;
 static PyObject *__pyx_kp_s_CompoundType_dtype;
 static PyObject *__pyx_kp_s_CompoundType_name;
-static PyObject *__pyx_n_s_DAP2;
-static PyObject *__pyx_n_s_DAP4;
 static PyObject *__pyx_kp_s_Dataset_cmptypes;
 static PyObject *__pyx_kp_s_Dataset_data_model;
 static PyObject *__pyx_kp_s_Dataset_dimensions;
@@ -2395,8 +2372,6 @@ static PyObject *__pyx_kp_s_EnumType_name;
 static PyObject *__pyx_n_s_FillValue;
 static PyObject *__pyx_kp_s_FillValue_attribute_must_be_set;
 static PyObject *__pyx_kp_s_Group_name;
-static PyObject *__pyx_n_s_HDF4;
-static PyObject *__pyx_n_s_HDF5;
 static PyObject *__pyx_n_s_IOError;
 static PyObject *__pyx_kp_s_If_True_child_Dimension_and_Vari;
 static PyObject *__pyx_kp_s_If_True_data_is_automatically_co;
@@ -2427,7 +2402,6 @@ static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_n_s_NC_DISKLESS;
 static PyObject *__pyx_n_s_NETCDF3;
 static PyObject *__pyx_n_s_NETCDF3_64BIT;
-static PyObject *__pyx_n_s_NETCDF3_64BIT_DATA;
 static PyObject *__pyx_n_s_NETCDF3_64BIT_OFFSET;
 static PyObject *__pyx_n_s_NETCDF3_CLASSIC;
 static PyObject *__pyx_n_s_NETCDF4;
@@ -2435,7 +2409,6 @@ static PyObject *__pyx_n_s_NETCDF4_CLASSIC;
 static PyObject *__pyx_n_s_NUMCHARS;
 static PyObject *__pyx_n_s_O;
 static PyObject *__pyx_n_s_OrderedDict;
-static PyObject *__pyx_n_s_PNETCDF;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_S;
 static PyObject *__pyx_n_s_S1;
@@ -2661,6 +2634,7 @@ static PyObject *__pyx_n_s_file_format;
 static PyObject *__pyx_n_s_file_format_2;
 static PyObject *__pyx_kp_s_file_format_does_not_support_NC;
 static PyObject *__pyx_n_s_filename;
+static PyObject *__pyx_kp_s_filepath_method_not_enabled_To;
 static PyObject *__pyx_n_s_files;
 static PyObject *__pyx_n_s_files_2;
 static PyObject *__pyx_n_s_fill_value;
@@ -2877,6 +2851,7 @@ static PyObject *__pyx_n_s_redef;
 static PyObject *__pyx_n_s_ref_date;
 static PyObject *__pyx_n_s_ref_num;
 static PyObject *__pyx_n_s_releasevers;
+static PyObject *__pyx_kp_s_renameGroup_method_not_enabled;
 static PyObject *__pyx_n_s_replace;
 static PyObject *__pyx_n_s_repr;
 static PyObject *__pyx_n_s_reshape;
@@ -2888,7 +2863,6 @@ static PyObject *__pyx_n_s_s_2;
 static PyObject *__pyx_kp_s_s_is_one_of_the_reserved_attrib;
 static PyObject *__pyx_kp_s_s_is_one_of_the_reserved_attrib_2;
 static PyObject *__pyx_kp_s_s_not_a_valid_dimension_name;
-static PyObject *__pyx_kp_s_s_not_a_valid_group_name;
 static PyObject *__pyx_kp_s_s_not_a_valid_variable_name;
 static PyObject *__pyx_kp_s_s_not_found_in_s;
 static PyObject *__pyx_kp_s_s_s;
@@ -3042,7 +3016,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_2__enter__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_4__exit__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_atype, CYTHON_UNUSED PyObject *__pyx_v_value, CYTHON_UNUSED PyObject *__pyx_v_traceback); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_elem); /* proto */
-static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_8filepath(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_8filepath(CYTHON_UNUSED struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_14close(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self); /* proto */
@@ -3071,7 +3045,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_58delncattr(struct __pyx_o
 static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_60__setattr__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_name, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_62__getattr__(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_name); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_64renameAttribute(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_oldname, PyObject *__pyx_v_newname); /* proto */
-static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_66renameGroup(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_oldname, PyObject *__pyx_v_newname); /* proto */
+static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_66renameGroup(CYTHON_UNUSED struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_oldname, CYTHON_UNUSED PyObject *__pyx_v_newname); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_68set_auto_maskandscale(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_70set_auto_mask(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_72set_auto_scale(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
@@ -6282,314 +6256,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
  *     cdef int ierr, formatp, modep
  */
 
-static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_full_format(int __pyx_v_grpid) {
-  int __pyx_v_ierr;
-  int __pyx_v_formatp;
-  int __pyx_v_modep;
+static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_full_format(CYTHON_UNUSED int __pyx_v_grpid) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  char *__pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("_get_full_format", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1203
- *     cdef int ierr, formatp, modep
- *     IF HAS_NC_INQ_FORMAT_EXTENDED:
- *         with nogil:             # <<<<<<<<<<<<<<
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
- *         if ierr != NC_NOERR:
- */
-  {
-      #ifdef WITH_THREAD
-      PyThreadState *_save;
-      Py_UNBLOCK_THREADS
-      #endif
-      /*try:*/ {
-
-        /* "netCDF4/_netCDF4.pyx":1204
- *     IF HAS_NC_INQ_FORMAT_EXTENDED:
- *         with nogil:
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)             # <<<<<<<<<<<<<<
- *         if ierr != NC_NOERR:
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- */
-        __pyx_v_ierr = nc_inq_format_extended(__pyx_v_grpid, (&__pyx_v_formatp), (&__pyx_v_modep));
-      }
-
-      /* "netCDF4/_netCDF4.pyx":1203
- *     cdef int ierr, formatp, modep
- *     IF HAS_NC_INQ_FORMAT_EXTENDED:
- *         with nogil:             # <<<<<<<<<<<<<<
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
- *         if ierr != NC_NOERR:
- */
-      /*finally:*/ {
-        /*normal exit:*/{
-          #ifdef WITH_THREAD
-          Py_BLOCK_THREADS
-          #endif
-          goto __pyx_L5;
-        }
-        __pyx_L5:;
-      }
-  }
-
-  /* "netCDF4/_netCDF4.pyx":1205
- *         with nogil:
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
- *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *         if formatp == NC_FORMAT_NC3:
- */
-  __pyx_t_1 = ((__pyx_v_ierr != NC_NOERR) != 0);
-  if (__pyx_t_1) {
-
-    /* "netCDF4/_netCDF4.pyx":1206
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
- *         if ierr != NC_NOERR:
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
- *         if formatp == NC_FORMAT_NC3:
- *             return 'NETCDF3'
- */
-    __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1206, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1206, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_INCREF(__pyx_t_3);
-    __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1206, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_Raise(__pyx_t_3, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1206, __pyx_L1_error)
-
-    /* "netCDF4/_netCDF4.pyx":1205
- *         with nogil:
- *             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
- *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *         if formatp == NC_FORMAT_NC3:
- */
-  }
-
-  /* "netCDF4/_netCDF4.pyx":1207
- *         if ierr != NC_NOERR:
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *         if formatp == NC_FORMAT_NC3:             # <<<<<<<<<<<<<<
- *             return 'NETCDF3'
- *         elif formatp == NC_FORMAT_NC_HDF5:
- */
-  switch (__pyx_v_formatp) {
-    case NC_FORMAT_NC3:
-
-    /* "netCDF4/_netCDF4.pyx":1208
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *         if formatp == NC_FORMAT_NC3:
- *             return 'NETCDF3'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_NC_HDF5:
- *             return 'HDF5'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_NETCDF3);
-    __pyx_r = __pyx_n_s_NETCDF3;
-    goto __pyx_L0;
-
-    /* "netCDF4/_netCDF4.pyx":1207
- *         if ierr != NC_NOERR:
- *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *         if formatp == NC_FORMAT_NC3:             # <<<<<<<<<<<<<<
- *             return 'NETCDF3'
- *         elif formatp == NC_FORMAT_NC_HDF5:
- */
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1209
- *         if formatp == NC_FORMAT_NC3:
- *             return 'NETCDF3'
- *         elif formatp == NC_FORMAT_NC_HDF5:             # <<<<<<<<<<<<<<
- *             return 'HDF5'
- *         elif formatp == NC_FORMAT_NC_HDF4:
- */
-    case NC_FORMAT_NC_HDF5:
-
-    /* "netCDF4/_netCDF4.pyx":1210
- *             return 'NETCDF3'
- *         elif formatp == NC_FORMAT_NC_HDF5:
- *             return 'HDF5'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_NC_HDF4:
- *             return 'HDF4'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_HDF5);
-    __pyx_r = __pyx_n_s_HDF5;
-    goto __pyx_L0;
-
-    /* "netCDF4/_netCDF4.pyx":1209
- *         if formatp == NC_FORMAT_NC3:
- *             return 'NETCDF3'
- *         elif formatp == NC_FORMAT_NC_HDF5:             # <<<<<<<<<<<<<<
- *             return 'HDF5'
- *         elif formatp == NC_FORMAT_NC_HDF4:
- */
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1211
- *         elif formatp == NC_FORMAT_NC_HDF5:
- *             return 'HDF5'
- *         elif formatp == NC_FORMAT_NC_HDF4:             # <<<<<<<<<<<<<<
- *             return 'HDF4'
- *         elif formatp == NC_FORMAT_PNETCDF:
- */
-    case NC_FORMAT_NC_HDF4:
-
-    /* "netCDF4/_netCDF4.pyx":1212
- *             return 'HDF5'
- *         elif formatp == NC_FORMAT_NC_HDF4:
- *             return 'HDF4'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_PNETCDF:
- *             return 'PNETCDF'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_HDF4);
-    __pyx_r = __pyx_n_s_HDF4;
-    goto __pyx_L0;
-
-    /* "netCDF4/_netCDF4.pyx":1211
- *         elif formatp == NC_FORMAT_NC_HDF5:
- *             return 'HDF5'
- *         elif formatp == NC_FORMAT_NC_HDF4:             # <<<<<<<<<<<<<<
- *             return 'HDF4'
- *         elif formatp == NC_FORMAT_PNETCDF:
- */
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1213
- *         elif formatp == NC_FORMAT_NC_HDF4:
- *             return 'HDF4'
- *         elif formatp == NC_FORMAT_PNETCDF:             # <<<<<<<<<<<<<<
- *             return 'PNETCDF'
- *         elif formatp == NC_FORMAT_DAP2:
- */
-    case NC_FORMAT_PNETCDF:
-
-    /* "netCDF4/_netCDF4.pyx":1214
- *             return 'HDF4'
- *         elif formatp == NC_FORMAT_PNETCDF:
- *             return 'PNETCDF'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_DAP2:
- *             return 'DAP2'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_PNETCDF);
-    __pyx_r = __pyx_n_s_PNETCDF;
-    goto __pyx_L0;
-
-    /* "netCDF4/_netCDF4.pyx":1213
- *         elif formatp == NC_FORMAT_NC_HDF4:
- *             return 'HDF4'
- *         elif formatp == NC_FORMAT_PNETCDF:             # <<<<<<<<<<<<<<
- *             return 'PNETCDF'
- *         elif formatp == NC_FORMAT_DAP2:
- */
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1215
- *         elif formatp == NC_FORMAT_PNETCDF:
- *             return 'PNETCDF'
- *         elif formatp == NC_FORMAT_DAP2:             # <<<<<<<<<<<<<<
- *             return 'DAP2'
- *         elif formatp == NC_FORMAT_DAP4:
- */
-    case NC_FORMAT_DAP2:
-
-    /* "netCDF4/_netCDF4.pyx":1216
- *             return 'PNETCDF'
- *         elif formatp == NC_FORMAT_DAP2:
- *             return 'DAP2'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_DAP4:
- *             return 'DAP4'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_DAP2);
-    __pyx_r = __pyx_n_s_DAP2;
-    goto __pyx_L0;
-
-    /* "netCDF4/_netCDF4.pyx":1215
- *         elif formatp == NC_FORMAT_PNETCDF:
- *             return 'PNETCDF'
- *         elif formatp == NC_FORMAT_DAP2:             # <<<<<<<<<<<<<<
- *             return 'DAP2'
- *         elif formatp == NC_FORMAT_DAP4:
- */
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1217
- *         elif formatp == NC_FORMAT_DAP2:
- *             return 'DAP2'
- *         elif formatp == NC_FORMAT_DAP4:             # <<<<<<<<<<<<<<
- *             return 'DAP4'
- *         elif formatp == NC_FORMAT_UNDEFINED:
- */
-    case NC_FORMAT_DAP4:
-
-    /* "netCDF4/_netCDF4.pyx":1218
- *             return 'DAP2'
- *         elif formatp == NC_FORMAT_DAP4:
- *             return 'DAP4'             # <<<<<<<<<<<<<<
- *         elif formatp == NC_FORMAT_UNDEFINED:
- *             return 'UNDEFINED'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_DAP4);
-    __pyx_r = __pyx_n_s_DAP4;
-    goto __pyx_L0;
-
-    /* "netCDF4/_netCDF4.pyx":1217
- *         elif formatp == NC_FORMAT_DAP2:
- *             return 'DAP2'
- *         elif formatp == NC_FORMAT_DAP4:             # <<<<<<<<<<<<<<
- *             return 'DAP4'
- *         elif formatp == NC_FORMAT_UNDEFINED:
- */
-    break;
-
-    /* "netCDF4/_netCDF4.pyx":1219
- *         elif formatp == NC_FORMAT_DAP4:
- *             return 'DAP4'
- *         elif formatp == NC_FORMAT_UNDEFINED:             # <<<<<<<<<<<<<<
+  /* "netCDF4/_netCDF4.pyx":1222
  *             return 'UNDEFINED'
  *     ELSE:
+ *         return 'UNDEFINED'             # <<<<<<<<<<<<<<
+ * 
+ * cdef issue485_workaround(int grpid, int varid, char* attname):
  */
-    case NC_FORMAT_UNDEFINED:
-
-    /* "netCDF4/_netCDF4.pyx":1220
- *             return 'DAP4'
- *         elif formatp == NC_FORMAT_UNDEFINED:
- *             return 'UNDEFINED'             # <<<<<<<<<<<<<<
- *     ELSE:
- *         return 'UNDEFINED'
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_n_s_UNDEFINED);
-    __pyx_r = __pyx_n_s_UNDEFINED;
-    goto __pyx_L0;
-
-    /* "netCDF4/_netCDF4.pyx":1219
- *         elif formatp == NC_FORMAT_DAP4:
- *             return 'DAP4'
- *         elif formatp == NC_FORMAT_UNDEFINED:             # <<<<<<<<<<<<<<
- *             return 'UNDEFINED'
- *     ELSE:
- */
-    break;
-    default: break;
-  }
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_n_s_UNDEFINED);
+  __pyx_r = __pyx_n_s_UNDEFINED;
+  goto __pyx_L0;
 
   /* "netCDF4/_netCDF4.pyx":1199
  *     return _reverse_format_dict[formatp]
@@ -6600,13 +6282,6 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_full_format(int __pyx_v_grpid) 
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("netCDF4._netCDF4._get_full_format", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -14887,317 +14562,42 @@ static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_9filepath(PyObject *__pyx_
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_8filepath(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self) {
-  int __pyx_v_ierr;
-  size_t __pyx_v_pathlen;
-  char *__pyx_v_c_path;
-  PyObject *__pyx_v_py_path = NULL;
+static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_8filepath(CYTHON_UNUSED struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self) {
+  PyObject *__pyx_v_msg = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  char *__pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  char const *__pyx_t_7;
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  PyObject *__pyx_t_10 = NULL;
-  PyObject *__pyx_t_11 = NULL;
-  PyObject *__pyx_t_12 = NULL;
-  PyObject *__pyx_t_13 = NULL;
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("filepath", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1910
- *         cdef char *c_path
- *         IF HAS_NC_INQ_PATH:
- *             with nogil:             # <<<<<<<<<<<<<<
- *                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
- *             if ierr != NC_NOERR:
- */
-  {
-      #ifdef WITH_THREAD
-      PyThreadState *_save;
-      Py_UNBLOCK_THREADS
-      #endif
-      /*try:*/ {
-
-        /* "netCDF4/_netCDF4.pyx":1911
- *         IF HAS_NC_INQ_PATH:
- *             with nogil:
- *                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)             # <<<<<<<<<<<<<<
- *             if ierr != NC_NOERR:
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- */
-        __pyx_v_ierr = nc_inq_path(__pyx_v_self->_grpid, (&__pyx_v_pathlen), NULL);
-      }
-
-      /* "netCDF4/_netCDF4.pyx":1910
- *         cdef char *c_path
- *         IF HAS_NC_INQ_PATH:
- *             with nogil:             # <<<<<<<<<<<<<<
- *                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
- *             if ierr != NC_NOERR:
- */
-      /*finally:*/ {
-        /*normal exit:*/{
-          #ifdef WITH_THREAD
-          Py_BLOCK_THREADS
-          #endif
-          goto __pyx_L5;
-        }
-        __pyx_L5:;
-      }
-  }
-
-  /* "netCDF4/_netCDF4.pyx":1912
- *             with nogil:
- *                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
- *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
- */
-  __pyx_t_1 = ((__pyx_v_ierr != NC_NOERR) != 0);
-  if (__pyx_t_1) {
-
-    /* "netCDF4/_netCDF4.pyx":1913
- *                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
- *             if ierr != NC_NOERR:
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
- *             c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
- *             if not c_path:
- */
-    __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1913, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1913, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_INCREF(__pyx_t_3);
-    __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1913, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_Raise(__pyx_t_3, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1913, __pyx_L1_error)
-
-    /* "netCDF4/_netCDF4.pyx":1912
- *             with nogil:
- *                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
- *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
- */
-  }
-
-  /* "netCDF4/_netCDF4.pyx":1914
- *             if ierr != NC_NOERR:
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             c_path = <char *>malloc(sizeof(char) * (pathlen + 1))             # <<<<<<<<<<<<<<
- *             if not c_path:
- *                 raise MemoryError()
- */
-  __pyx_v_c_path = ((char *)malloc(((sizeof(char)) * (__pyx_v_pathlen + 1))));
-
-  /* "netCDF4/_netCDF4.pyx":1915
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
- *             if not c_path:             # <<<<<<<<<<<<<<
- *                 raise MemoryError()
- *             try:
- */
-  __pyx_t_1 = ((!(__pyx_v_c_path != 0)) != 0);
-  if (__pyx_t_1) {
-
-    /* "netCDF4/_netCDF4.pyx":1916
- *             c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
- *             if not c_path:
- *                 raise MemoryError()             # <<<<<<<<<<<<<<
- *             try:
- *                 with nogil:
- */
-    PyErr_NoMemory(); __PYX_ERR(0, 1916, __pyx_L1_error)
-
-    /* "netCDF4/_netCDF4.pyx":1915
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
- *             if not c_path:             # <<<<<<<<<<<<<<
- *                 raise MemoryError()
- *             try:
- */
-  }
-
-  /* "netCDF4/_netCDF4.pyx":1917
- *             if not c_path:
- *                 raise MemoryError()
- *             try:             # <<<<<<<<<<<<<<
- *                 with nogil:
- *                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)
- */
-  /*try:*/ {
-
-    /* "netCDF4/_netCDF4.pyx":1918
- *                 raise MemoryError()
- *             try:
- *                 with nogil:             # <<<<<<<<<<<<<<
- *                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)
- *                 if ierr != NC_NOERR:
- */
-    {
-        #ifdef WITH_THREAD
-        PyThreadState *_save;
-        Py_UNBLOCK_THREADS
-        #endif
-        /*try:*/ {
-
-          /* "netCDF4/_netCDF4.pyx":1919
- *             try:
- *                 with nogil:
- *                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)             # <<<<<<<<<<<<<<
- *                 if ierr != NC_NOERR:
- *                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- */
-          __pyx_v_ierr = nc_inq_path(__pyx_v_self->_grpid, (&__pyx_v_pathlen), __pyx_v_c_path);
-        }
-
-        /* "netCDF4/_netCDF4.pyx":1918
- *                 raise MemoryError()
- *             try:
- *                 with nogil:             # <<<<<<<<<<<<<<
- *                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)
- *                 if ierr != NC_NOERR:
- */
-        /*finally:*/ {
-          /*normal exit:*/{
-            #ifdef WITH_THREAD
-            Py_BLOCK_THREADS
-            #endif
-            goto __pyx_L13;
-          }
-          __pyx_L13:;
-        }
-    }
-
-    /* "netCDF4/_netCDF4.pyx":1920
- *                 with nogil:
- *                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)
- *                 if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
- */
-    __pyx_t_1 = ((__pyx_v_ierr != NC_NOERR) != 0);
-    if (__pyx_t_1) {
-
-      /* "netCDF4/_netCDF4.pyx":1921
- *                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)
- *                 if ierr != NC_NOERR:
- *                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
- *                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
- *             finally:
- */
-      __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-      __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1921, __pyx_L9_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1921, __pyx_L9_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_GIVEREF(__pyx_t_3);
-      PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1921, __pyx_L9_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_Raise(__pyx_t_3, 0, 0, 0);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __PYX_ERR(0, 1921, __pyx_L9_error)
-
-      /* "netCDF4/_netCDF4.pyx":1920
- *                 with nogil:
- *                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)
- *                 if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
- */
-    }
-
-    /* "netCDF4/_netCDF4.pyx":1922
- *                 if ierr != NC_NOERR:
- *                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string             # <<<<<<<<<<<<<<
- *             finally:
- *                 free(c_path)
- */
-    __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(__pyx_v_c_path + 0, __pyx_v_pathlen - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1922, __pyx_L9_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_v_py_path = ((PyObject*)__pyx_t_3);
-    __pyx_t_3 = 0;
-  }
-
-  /* "netCDF4/_netCDF4.pyx":1924
- *                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
- *             finally:
- *                 free(c_path)             # <<<<<<<<<<<<<<
+  /* "netCDF4/_netCDF4.pyx":1927
  *             return py_path.decode('ascii')
  *         ELSE:
+ *             msg = """             # <<<<<<<<<<<<<<
+ * filepath method not enabled.  To enable, install Cython, make sure you have
+ * version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
  */
-  /*finally:*/ {
-    /*normal exit:*/{
-      free(__pyx_v_c_path);
-      goto __pyx_L10;
-    }
-    /*exception exit:*/{
-      __Pyx_PyThreadState_declare
-      __pyx_L9_error:;
-      __pyx_t_8 = 0; __pyx_t_9 = 0; __pyx_t_10 = 0; __pyx_t_11 = 0; __pyx_t_12 = 0; __pyx_t_13 = 0;
-      __Pyx_PyThreadState_assign
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (PY_MAJOR_VERSION >= 3) __Pyx_ExceptionSwap(&__pyx_t_11, &__pyx_t_12, &__pyx_t_13);
-      if ((PY_MAJOR_VERSION < 3) || unlikely(__Pyx_GetException(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10) < 0)) __Pyx_ErrFetch(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10);
-      __Pyx_XGOTREF(__pyx_t_8);
-      __Pyx_XGOTREF(__pyx_t_9);
-      __Pyx_XGOTREF(__pyx_t_10);
-      __Pyx_XGOTREF(__pyx_t_11);
-      __Pyx_XGOTREF(__pyx_t_12);
-      __Pyx_XGOTREF(__pyx_t_13);
-      __pyx_t_5 = __pyx_lineno; __pyx_t_6 = __pyx_clineno; __pyx_t_7 = __pyx_filename;
-      {
-        free(__pyx_v_c_path);
-      }
-      __Pyx_PyThreadState_assign
-      if (PY_MAJOR_VERSION >= 3) {
-        __Pyx_XGIVEREF(__pyx_t_11);
-        __Pyx_XGIVEREF(__pyx_t_12);
-        __Pyx_XGIVEREF(__pyx_t_13);
-        __Pyx_ExceptionReset(__pyx_t_11, __pyx_t_12, __pyx_t_13);
-      }
-      __Pyx_XGIVEREF(__pyx_t_8);
-      __Pyx_XGIVEREF(__pyx_t_9);
-      __Pyx_XGIVEREF(__pyx_t_10);
-      __Pyx_ErrRestore(__pyx_t_8, __pyx_t_9, __pyx_t_10);
-      __pyx_t_8 = 0; __pyx_t_9 = 0; __pyx_t_10 = 0; __pyx_t_11 = 0; __pyx_t_12 = 0; __pyx_t_13 = 0;
-      __pyx_lineno = __pyx_t_5; __pyx_clineno = __pyx_t_6; __pyx_filename = __pyx_t_7;
-      goto __pyx_L1_error;
-    }
-    __pyx_L10:;
-  }
+  __Pyx_INCREF(__pyx_kp_s_filepath_method_not_enabled_To);
+  __pyx_v_msg = __pyx_kp_s_filepath_method_not_enabled_To;
 
-  /* "netCDF4/_netCDF4.pyx":1925
- *             finally:
- *                 free(c_path)
- *             return py_path.decode('ascii')             # <<<<<<<<<<<<<<
- *         ELSE:
- *             msg = """
+  /* "netCDF4/_netCDF4.pyx":1930
+ * filepath method not enabled.  To enable, install Cython, make sure you have
+ * version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+ *             raise ValueError(msg)             # <<<<<<<<<<<<<<
+ * 
+ *     def __repr__(self):
  */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_decode_bytes(__pyx_v_py_path, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1925, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
-  goto __pyx_L0;
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1930, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_INCREF(__pyx_v_msg);
+  __Pyx_GIVEREF(__pyx_v_msg);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_msg);
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1930, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __PYX_ERR(0, 1930, __pyx_L1_error)
 
   /* "netCDF4/_netCDF4.pyx":1900
  *             raise IndexError('%s not found in %s' % (lastname,group.path))
@@ -15209,12 +14609,11 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_8filepath(struct __pyx_obj
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_AddTraceback("netCDF4._netCDF4.Dataset.filepath", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_py_path);
+  __Pyx_XDECREF(__pyx_v_msg);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -21411,8 +20810,8 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_64renameAttribute(struct _
 static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_67renameGroup(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static char __pyx_doc_7netCDF4_8_netCDF4_7Dataset_66renameGroup[] = "\n**`renameGroup(self, oldname, newname)`**\n\nrename a `netCDF4.Group` named `oldname` to `newname` (requires netcdf >= 4.3.1).";
 static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_67renameGroup(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_oldname = 0;
-  PyObject *__pyx_v_newname = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_oldname = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_newname = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("renameGroup (wrapper)", 0);
@@ -21466,264 +20865,42 @@ static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_67renameGroup(PyObject *__
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_66renameGroup(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, PyObject *__pyx_v_oldname, PyObject *__pyx_v_newname) {
-  int __pyx_v_ierr;
-  char *__pyx_v_newnamec;
-  PyObject *__pyx_v_bytestr = NULL;
-  PyObject *__pyx_v_grp = NULL;
+static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_66renameGroup(CYTHON_UNUSED struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_oldname, CYTHON_UNUSED PyObject *__pyx_v_newname) {
+  PyObject *__pyx_v_msg = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  char *__pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  PyObject *__pyx_t_10 = NULL;
-  int __pyx_t_11;
+  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("renameGroup", 0);
 
-  /* "netCDF4/_netCDF4.pyx":2450
- *         cdef char *newnamec
- *         IF HAS_RENAME_GRP:
- *             bytestr = _strencode(newname)             # <<<<<<<<<<<<<<
- *             newnamec = bytestr
- *             try:
- */
-  __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_v_newname, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2450, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_bytestr = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "netCDF4/_netCDF4.pyx":2451
- *         IF HAS_RENAME_GRP:
- *             bytestr = _strencode(newname)
- *             newnamec = bytestr             # <<<<<<<<<<<<<<
- *             try:
- *                 grp = self.groups[oldname]
- */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_bytestr); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 2451, __pyx_L1_error)
-  __pyx_v_newnamec = __pyx_t_2;
-
-  /* "netCDF4/_netCDF4.pyx":2452
- *             bytestr = _strencode(newname)
- *             newnamec = bytestr
- *             try:             # <<<<<<<<<<<<<<
- *                 grp = self.groups[oldname]
- *             except KeyError:
- */
-  {
-    __Pyx_PyThreadState_declare
-    __Pyx_PyThreadState_assign
-    __Pyx_ExceptionSave(&__pyx_t_3, &__pyx_t_4, &__pyx_t_5);
-    __Pyx_XGOTREF(__pyx_t_3);
-    __Pyx_XGOTREF(__pyx_t_4);
-    __Pyx_XGOTREF(__pyx_t_5);
-    /*try:*/ {
-
-      /* "netCDF4/_netCDF4.pyx":2453
- *             newnamec = bytestr
- *             try:
- *                 grp = self.groups[oldname]             # <<<<<<<<<<<<<<
- *             except KeyError:
- *                 raise KeyError('%s not a valid group name' % oldname)
- */
-      __pyx_t_1 = PyObject_GetItem(__pyx_v_self->groups, __pyx_v_oldname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2453, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_v_grp = __pyx_t_1;
-      __pyx_t_1 = 0;
-
-      /* "netCDF4/_netCDF4.pyx":2452
- *             bytestr = _strencode(newname)
- *             newnamec = bytestr
- *             try:             # <<<<<<<<<<<<<<
- *                 grp = self.groups[oldname]
- *             except KeyError:
- */
-    }
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    goto __pyx_L10_try_end;
-    __pyx_L3_error:;
-    __Pyx_PyThreadState_assign
-    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "netCDF4/_netCDF4.pyx":2454
- *             try:
- *                 grp = self.groups[oldname]
- *             except KeyError:             # <<<<<<<<<<<<<<
- *                 raise KeyError('%s not a valid group name' % oldname)
- *             ierr = nc_rename_grp(grp._grpid, newnamec)
- */
-    __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
-    if (__pyx_t_6) {
-      __Pyx_AddTraceback("netCDF4._netCDF4.Dataset.renameGroup", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_7, &__pyx_t_8) < 0) __PYX_ERR(0, 2454, __pyx_L5_except_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GOTREF(__pyx_t_8);
-
-      /* "netCDF4/_netCDF4.pyx":2455
- *                 grp = self.groups[oldname]
- *             except KeyError:
- *                 raise KeyError('%s not a valid group name' % oldname)             # <<<<<<<<<<<<<<
- *             ierr = nc_rename_grp(grp._grpid, newnamec)
- *             if ierr != NC_NOERR:
- */
-      __pyx_t_9 = __Pyx_PyString_Format(__pyx_kp_s_s_not_a_valid_group_name, __pyx_v_oldname); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 2455, __pyx_L5_except_error)
-      __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 2455, __pyx_L5_except_error)
-      __Pyx_GOTREF(__pyx_t_10);
-      __Pyx_GIVEREF(__pyx_t_9);
-      PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_9);
-      __pyx_t_9 = 0;
-      __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_KeyError, __pyx_t_10, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 2455, __pyx_L5_except_error)
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __Pyx_Raise(__pyx_t_9, 0, 0, 0);
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __PYX_ERR(0, 2455, __pyx_L5_except_error)
-    }
-    goto __pyx_L5_except_error;
-    __pyx_L5_except_error:;
-
-    /* "netCDF4/_netCDF4.pyx":2452
- *             bytestr = _strencode(newname)
- *             newnamec = bytestr
- *             try:             # <<<<<<<<<<<<<<
- *                 grp = self.groups[oldname]
- *             except KeyError:
- */
-    __Pyx_PyThreadState_assign
-    __Pyx_XGIVEREF(__pyx_t_3);
-    __Pyx_XGIVEREF(__pyx_t_4);
-    __Pyx_XGIVEREF(__pyx_t_5);
-    __Pyx_ExceptionReset(__pyx_t_3, __pyx_t_4, __pyx_t_5);
-    goto __pyx_L1_error;
-    __pyx_L10_try_end:;
-  }
-
-  /* "netCDF4/_netCDF4.pyx":2456
- *             except KeyError:
- *                 raise KeyError('%s not a valid group name' % oldname)
- *             ierr = nc_rename_grp(grp._grpid, newnamec)             # <<<<<<<<<<<<<<
- *             if ierr != NC_NOERR:
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- */
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 2456, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_8); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 2456, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_v_ierr = nc_rename_grp(__pyx_t_6, __pyx_v_newnamec);
-
-  /* "netCDF4/_netCDF4.pyx":2457
- *                 raise KeyError('%s not a valid group name' % oldname)
- *             ierr = nc_rename_grp(grp._grpid, newnamec)
- *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             # remove old key from groups dict.
- */
-  __pyx_t_11 = ((__pyx_v_ierr != NC_NOERR) != 0);
-  if (__pyx_t_11) {
-
-    /* "netCDF4/_netCDF4.pyx":2458
- *             ierr = nc_rename_grp(grp._grpid, newnamec)
- *             if ierr != NC_NOERR:
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
- *             # remove old key from groups dict.
- *             self.groups.pop(oldname)
- */
-    __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_8 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 2458, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 2458, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_INCREF(__pyx_t_8);
-    __Pyx_GIVEREF(__pyx_t_8);
-    PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_8);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_7, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 2458, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_Raise(__pyx_t_8, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __PYX_ERR(0, 2458, __pyx_L1_error)
-
-    /* "netCDF4/_netCDF4.pyx":2457
- *                 raise KeyError('%s not a valid group name' % oldname)
- *             ierr = nc_rename_grp(grp._grpid, newnamec)
- *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             # remove old key from groups dict.
- */
-  }
-
-  /* "netCDF4/_netCDF4.pyx":2460
- *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
- *             # remove old key from groups dict.
- *             self.groups.pop(oldname)             # <<<<<<<<<<<<<<
- *             # add new key.
+  /* "netCDF4/_netCDF4.pyx":2464
  *             self.groups[newname] = grp
- */
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->groups, __pyx_n_s_pop); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 2460, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_1 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_7);
-    if (likely(__pyx_t_1)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-      __Pyx_INCREF(__pyx_t_1);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_7, function);
-    }
-  }
-  if (!__pyx_t_1) {
-    __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_v_oldname); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 2460, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-  } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_7)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_v_oldname};
-      __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 2460, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_GOTREF(__pyx_t_8);
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_v_oldname};
-      __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 2460, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_GOTREF(__pyx_t_8);
-    } else
-    #endif
-    {
-      __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 2460, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_1); __pyx_t_1 = NULL;
-      __Pyx_INCREF(__pyx_v_oldname);
-      __Pyx_GIVEREF(__pyx_v_oldname);
-      PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_v_oldname);
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 2460, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    }
-  }
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-
-  /* "netCDF4/_netCDF4.pyx":2462
- *             self.groups.pop(oldname)
- *             # add new key.
- *             self.groups[newname] = grp             # <<<<<<<<<<<<<<
  *         ELSE:
- *             msg = """
+ *             msg = """             # <<<<<<<<<<<<<<
+ * renameGroup method not enabled.  To enable, install Cython, make sure you have
+ * version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
  */
-  if (unlikely(PyObject_SetItem(__pyx_v_self->groups, __pyx_v_newname, __pyx_v_grp) < 0)) __PYX_ERR(0, 2462, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_kp_s_renameGroup_method_not_enabled);
+  __pyx_v_msg = __pyx_kp_s_renameGroup_method_not_enabled;
+
+  /* "netCDF4/_netCDF4.pyx":2467
+ * renameGroup method not enabled.  To enable, install Cython, make sure you have
+ * version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+ *             raise ValueError(msg)             # <<<<<<<<<<<<<<
+ * 
+ *     def set_auto_maskandscale(self, value):
+ */
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2467, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_INCREF(__pyx_v_msg);
+  __Pyx_GIVEREF(__pyx_v_msg);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_msg);
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2467, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __PYX_ERR(0, 2467, __pyx_L1_error)
 
   /* "netCDF4/_netCDF4.pyx":2442
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
@@ -21734,19 +20911,12 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_66renameGroup(struct __pyx
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_2);
   __Pyx_AddTraceback("netCDF4._netCDF4.Dataset.renameGroup", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_bytestr);
-  __Pyx_XDECREF(__pyx_v_grp);
+  __Pyx_XDECREF(__pyx_v_msg);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -80562,8 +79732,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Class_providing_an_interface_to, __pyx_k_Class_providing_an_interface_to, sizeof(__pyx_k_Class_providing_an_interface_to), 0, 0, 1, 0},
   {&__pyx_kp_s_CompoundType_dtype, __pyx_k_CompoundType_dtype, sizeof(__pyx_k_CompoundType_dtype), 0, 0, 1, 0},
   {&__pyx_kp_s_CompoundType_name, __pyx_k_CompoundType_name, sizeof(__pyx_k_CompoundType_name), 0, 0, 1, 0},
-  {&__pyx_n_s_DAP2, __pyx_k_DAP2, sizeof(__pyx_k_DAP2), 0, 0, 1, 1},
-  {&__pyx_n_s_DAP4, __pyx_k_DAP4, sizeof(__pyx_k_DAP4), 0, 0, 1, 1},
   {&__pyx_kp_s_Dataset_cmptypes, __pyx_k_Dataset_cmptypes, sizeof(__pyx_k_Dataset_cmptypes), 0, 0, 1, 0},
   {&__pyx_kp_s_Dataset_data_model, __pyx_k_Dataset_data_model, sizeof(__pyx_k_Dataset_data_model), 0, 0, 1, 0},
   {&__pyx_kp_s_Dataset_dimensions, __pyx_k_Dataset_dimensions, sizeof(__pyx_k_Dataset_dimensions), 0, 0, 1, 0},
@@ -80592,8 +79760,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_FillValue, __pyx_k_FillValue, sizeof(__pyx_k_FillValue), 0, 0, 1, 1},
   {&__pyx_kp_s_FillValue_attribute_must_be_set, __pyx_k_FillValue_attribute_must_be_set, sizeof(__pyx_k_FillValue_attribute_must_be_set), 0, 0, 1, 0},
   {&__pyx_kp_s_Group_name, __pyx_k_Group_name, sizeof(__pyx_k_Group_name), 0, 0, 1, 0},
-  {&__pyx_n_s_HDF4, __pyx_k_HDF4, sizeof(__pyx_k_HDF4), 0, 0, 1, 1},
-  {&__pyx_n_s_HDF5, __pyx_k_HDF5, sizeof(__pyx_k_HDF5), 0, 0, 1, 1},
   {&__pyx_n_s_IOError, __pyx_k_IOError, sizeof(__pyx_k_IOError), 0, 0, 1, 1},
   {&__pyx_kp_s_If_True_child_Dimension_and_Vari, __pyx_k_If_True_child_Dimension_and_Vari, sizeof(__pyx_k_If_True_child_Dimension_and_Vari), 0, 0, 1, 0},
   {&__pyx_kp_s_If_True_data_is_automatically_co, __pyx_k_If_True_data_is_automatically_co, sizeof(__pyx_k_If_True_data_is_automatically_co), 0, 0, 1, 0},
@@ -80624,7 +79790,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_NC_DISKLESS, __pyx_k_NC_DISKLESS, sizeof(__pyx_k_NC_DISKLESS), 0, 0, 1, 1},
   {&__pyx_n_s_NETCDF3, __pyx_k_NETCDF3, sizeof(__pyx_k_NETCDF3), 0, 0, 1, 1},
   {&__pyx_n_s_NETCDF3_64BIT, __pyx_k_NETCDF3_64BIT, sizeof(__pyx_k_NETCDF3_64BIT), 0, 0, 1, 1},
-  {&__pyx_n_s_NETCDF3_64BIT_DATA, __pyx_k_NETCDF3_64BIT_DATA, sizeof(__pyx_k_NETCDF3_64BIT_DATA), 0, 0, 1, 1},
   {&__pyx_n_s_NETCDF3_64BIT_OFFSET, __pyx_k_NETCDF3_64BIT_OFFSET, sizeof(__pyx_k_NETCDF3_64BIT_OFFSET), 0, 0, 1, 1},
   {&__pyx_n_s_NETCDF3_CLASSIC, __pyx_k_NETCDF3_CLASSIC, sizeof(__pyx_k_NETCDF3_CLASSIC), 0, 0, 1, 1},
   {&__pyx_n_s_NETCDF4, __pyx_k_NETCDF4, sizeof(__pyx_k_NETCDF4), 0, 0, 1, 1},
@@ -80632,7 +79797,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_NUMCHARS, __pyx_k_NUMCHARS, sizeof(__pyx_k_NUMCHARS), 0, 0, 1, 1},
   {&__pyx_n_s_O, __pyx_k_O, sizeof(__pyx_k_O), 0, 0, 1, 1},
   {&__pyx_n_s_OrderedDict, __pyx_k_OrderedDict, sizeof(__pyx_k_OrderedDict), 0, 0, 1, 1},
-  {&__pyx_n_s_PNETCDF, __pyx_k_PNETCDF, sizeof(__pyx_k_PNETCDF), 0, 0, 1, 1},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_n_s_S, __pyx_k_S, sizeof(__pyx_k_S), 0, 0, 1, 1},
   {&__pyx_n_s_S1, __pyx_k_S1, sizeof(__pyx_k_S1), 0, 0, 1, 1},
@@ -80858,6 +80022,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_file_format_2, __pyx_k_file_format_2, sizeof(__pyx_k_file_format_2), 0, 0, 1, 1},
   {&__pyx_kp_s_file_format_does_not_support_NC, __pyx_k_file_format_does_not_support_NC, sizeof(__pyx_k_file_format_does_not_support_NC), 0, 0, 1, 0},
   {&__pyx_n_s_filename, __pyx_k_filename, sizeof(__pyx_k_filename), 0, 0, 1, 1},
+  {&__pyx_kp_s_filepath_method_not_enabled_To, __pyx_k_filepath_method_not_enabled_To, sizeof(__pyx_k_filepath_method_not_enabled_To), 0, 0, 1, 0},
   {&__pyx_n_s_files, __pyx_k_files, sizeof(__pyx_k_files), 0, 0, 1, 1},
   {&__pyx_n_s_files_2, __pyx_k_files_2, sizeof(__pyx_k_files_2), 0, 0, 1, 1},
   {&__pyx_n_s_fill_value, __pyx_k_fill_value, sizeof(__pyx_k_fill_value), 0, 0, 1, 1},
@@ -81074,6 +80239,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ref_date, __pyx_k_ref_date, sizeof(__pyx_k_ref_date), 0, 0, 1, 1},
   {&__pyx_n_s_ref_num, __pyx_k_ref_num, sizeof(__pyx_k_ref_num), 0, 0, 1, 1},
   {&__pyx_n_s_releasevers, __pyx_k_releasevers, sizeof(__pyx_k_releasevers), 0, 0, 1, 1},
+  {&__pyx_kp_s_renameGroup_method_not_enabled, __pyx_k_renameGroup_method_not_enabled, sizeof(__pyx_k_renameGroup_method_not_enabled), 0, 0, 1, 0},
   {&__pyx_n_s_replace, __pyx_k_replace, sizeof(__pyx_k_replace), 0, 0, 1, 1},
   {&__pyx_n_s_repr, __pyx_k_repr, sizeof(__pyx_k_repr), 0, 0, 1, 1},
   {&__pyx_n_s_reshape, __pyx_k_reshape, sizeof(__pyx_k_reshape), 0, 0, 1, 1},
@@ -81085,7 +80251,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_s_is_one_of_the_reserved_attrib, __pyx_k_s_is_one_of_the_reserved_attrib, sizeof(__pyx_k_s_is_one_of_the_reserved_attrib), 0, 0, 1, 0},
   {&__pyx_kp_s_s_is_one_of_the_reserved_attrib_2, __pyx_k_s_is_one_of_the_reserved_attrib_2, sizeof(__pyx_k_s_is_one_of_the_reserved_attrib_2), 0, 0, 1, 0},
   {&__pyx_kp_s_s_not_a_valid_dimension_name, __pyx_k_s_not_a_valid_dimension_name, sizeof(__pyx_k_s_not_a_valid_dimension_name), 0, 0, 1, 0},
-  {&__pyx_kp_s_s_not_a_valid_group_name, __pyx_k_s_not_a_valid_group_name, sizeof(__pyx_k_s_not_a_valid_group_name), 0, 0, 1, 0},
   {&__pyx_kp_s_s_not_a_valid_variable_name, __pyx_k_s_not_a_valid_variable_name, sizeof(__pyx_k_s_not_a_valid_variable_name), 0, 0, 1, 0},
   {&__pyx_kp_s_s_not_found_in_s, __pyx_k_s_not_found_in_s, sizeof(__pyx_k_s_not_found_in_s), 0, 0, 1, 0},
   {&__pyx_kp_s_s_s, __pyx_k_s_s, sizeof(__pyx_k_s_s), 0, 0, 1, 0},
@@ -83814,7 +82979,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  * __has_nc_inq_path__ = HAS_NC_INQ_PATH
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_rename_grp, __pyx_int_1) < 0) __PYX_ERR(0, 980, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_rename_grp, __pyx_int_0) < 0) __PYX_ERR(0, 980, __pyx_L1_error)
 
   /* "netCDF4/_netCDF4.pyx":981
  * __hdf5libversion__ = _gethdf5libversion()
@@ -83823,7 +82988,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
  * __has_cdf5__ = HAS_CDF5_FORMAT
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_path, __pyx_int_1) < 0) __PYX_ERR(0, 981, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_path, __pyx_int_0) < 0) __PYX_ERR(0, 981, __pyx_L1_error)
 
   /* "netCDF4/_netCDF4.pyx":982
  * __has_rename_grp__ = HAS_RENAME_GRP
@@ -83832,7 +82997,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  * __has_cdf5__ = HAS_CDF5_FORMAT
  * _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_format_extended, __pyx_int_1) < 0) __PYX_ERR(0, 982, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_format_extended, __pyx_int_0) < 0) __PYX_ERR(0, 982, __pyx_L1_error)
 
   /* "netCDF4/_netCDF4.pyx":983
  * __has_nc_inq_path__ = HAS_NC_INQ_PATH
@@ -83841,7 +83006,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  * _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
  *                (__netcdf4libversion__.startswith("4.4.0") and \
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_cdf5, __pyx_int_1) < 0) __PYX_ERR(0, 983, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_cdf5, __pyx_int_0) < 0) __PYX_ERR(0, 983, __pyx_L1_error)
 
   /* "netCDF4/_netCDF4.pyx":984
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
@@ -84315,33 +83480,18 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_format_dict, __pyx_t_1) < 0) __PYX_ERR(0, 1022, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1028
- *     # NETCDF3_64BIT deprecated, saved for compatibility.
- *     # use NETCDF3_64BIT_OFFSET instead.
- *     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT_OFFSET             # <<<<<<<<<<<<<<
+  /* "netCDF4/_netCDF4.pyx":1031
  *     _format_dict['NETCDF3_64BIT_DATA'] = NC_FORMAT_64BIT_DATA
  * ELSE:
+ *     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT             # <<<<<<<<<<<<<<
+ * # invert dictionary mapping
+ * _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FORMAT_64BIT_OFFSET); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1028, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FORMAT_64BIT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1031, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1028, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1031, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (unlikely(PyObject_SetItem(__pyx_t_2, __pyx_n_s_NETCDF3_64BIT_OFFSET, __pyx_t_1) < 0)) __PYX_ERR(0, 1028, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "netCDF4/_netCDF4.pyx":1029
- *     # use NETCDF3_64BIT_OFFSET instead.
- *     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT_OFFSET
- *     _format_dict['NETCDF3_64BIT_DATA'] = NC_FORMAT_64BIT_DATA             # <<<<<<<<<<<<<<
- * ELSE:
- *     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
- */
-  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FORMAT_64BIT_DATA); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1029, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1029, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (unlikely(PyObject_SetItem(__pyx_t_2, __pyx_n_s_NETCDF3_64BIT_DATA, __pyx_t_1) < 0)) __PYX_ERR(0, 1029, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_2, __pyx_n_s_NETCDF3_64BIT, __pyx_t_1) < 0)) __PYX_ERR(0, 1031, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -84360,18 +83510,18 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reverse_format_dict, __pyx_t_2) < 0) __PYX_ERR(0, 1033, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1036
- * # add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET)
- * IF HAS_CDF5_FORMAT:
- *     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET             # <<<<<<<<<<<<<<
+  /* "netCDF4/_netCDF4.pyx":1038
+ *     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
  * ELSE:
- *     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT
+ *     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT             # <<<<<<<<<<<<<<
+ * 
+ * # default fill_value to numpy datatype mapping.
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_64BIT_OFFSET); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1036, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_64BIT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1038, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1036, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1038, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_NETCDF3_64BIT, __pyx_t_2) < 0)) __PYX_ERR(0, 1036, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_NETCDF3_64BIT_OFFSET, __pyx_t_2) < 0)) __PYX_ERR(0, 1038, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
@@ -87355,33 +86505,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyBytes_Join(PyObject* sep, PyObject* value
     return PyObject_CallMethodObjArgs(sep, __pyx_n_s_join, values, NULL);
 }
 #endif
-
-/* decode_c_bytes */
-          static CYTHON_INLINE PyObject* __Pyx_decode_c_bytes(
-         const char* cstring, Py_ssize_t length, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
-    if (unlikely((start < 0) | (stop < 0))) {
-        if (start < 0) {
-            start += length;
-            if (start < 0)
-                start = 0;
-        }
-        if (stop < 0)
-            stop += length;
-    }
-    if (stop > length)
-        stop = length;
-    length = stop - start;
-    if (unlikely(length <= 0))
-        return PyUnicode_FromUnicode(NULL, 0);
-    cstring += start;
-    if (decode_func) {
-        return decode_func(cstring, length, errors);
-    } else {
-        return PyUnicode_Decode(cstring, length, encoding, errors);
-    }
-}
 
 /* KeywordStringCheck */
           static CYTHON_INLINE int __Pyx_CheckKeywordStrings(
