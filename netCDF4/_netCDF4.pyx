@@ -1270,7 +1270,7 @@ cdef _set_att(grp, int varid, name, value,\
                 strings = [_strencode(s) for s in value_arr.flat]
                 for j in range(N):
                     if len(strings[j]) == 0:
-                        strings[j] = '\x00'
+                        strings[j] = _strencode('\x00')
                     string_ptrs[j] = strings[j]
                 issue485_workaround(grp._grpid, varid, attname)
                 ierr = nc_put_att_string(grp._grpid, varid, attname, N, string_ptrs)
