@@ -756,7 +756,7 @@ in python as object arrays (arrays of dtype `object`). These are arrays whose
 elements are Python object pointers, and can contain any type of python object.
 For this application, they must contain 1-D numpy arrays all of the same type
 but of varying length.
-In this case, they contain 1-D numpy `int32` arrays of random length betwee
+In this case, they contain 1-D numpy `int32` arrays of random length between
 1 and 10.
 
     :::python
@@ -1728,7 +1728,7 @@ references to the parent Dataset or Group.
         Appending `s` to modes `w`, `r+` or `a` will enable unbuffered shared
         access to `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or
         `NETCDF3_64BIT_DATA` formatted files.
-        Unbuffered acesss may be useful even if you don't need shared
+        Unbuffered access may be useful even if you don't need shared
         access, since it may be faster for programs that don't access data
         sequentially. This option is ignored for `NETCDF4` and `NETCDF4_CLASSIC`
         formatted files.
@@ -1744,7 +1744,7 @@ references to the parent Dataset or Group.
         is automatically detected). Default `'NETCDF4'`, which means the data is
         stored in an HDF5 file, using netCDF 4 API features.  Setting
         `format='NETCDF4_CLASSIC'` will create an HDF5 file, using only netCDF 3
-        compatibile API features. netCDF 3 clients must be recompiled and linked
+        compatible API features. netCDF 3 clients must be recompiled and linked
         against the netCDF 4 library to read files in `NETCDF4_CLASSIC` format.
         `'NETCDF3_CLASSIC'` is the classic netCDF 3 file format that does not
         handle 2+ Gb files. `'NETCDF3_64BIT_OFFSET'` is the 64-bit offset
@@ -2014,7 +2014,7 @@ This causes data to be pre-filled with fill values. The fill values can be
 controlled by the variable's `_Fill_Value` attribute, but is usually
 sufficient to the use the netCDF default `_Fill_Value` (defined
 separately for each variable type). The default behavior of the netCDF
-library correspongs to `set_fill_on`.  Data which are equal to the
+library corresponds to `set_fill_on`.  Data which are equal to the
 `_Fill_Value` indicate that the variable was created, but never written
 to."""
         cdef int ierr, oldmode
@@ -2140,7 +2140,7 @@ and `GroupA/GroupB`, plus the variable `GroupA/GroupB/VarC`, if the preceding
 groups don't already exist.
 
 The `datatype` can be a numpy datatype object, or a string that describes
-a numpy dtype object (like the `dtype.str` attribue of a numpy array).
+a numpy dtype object (like the `dtype.str` attribute of a numpy array).
 Supported specifiers include: `'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
@@ -2339,7 +2339,7 @@ with the same name as one of the reserved python attributes."""
 set a netCDF dataset or group string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
 `NC_STRING` if the file format is `NETCDF4`.
-Use if you need to set an attirbute to an array of variable-length strings."""
+Use if you need to set an attribute to an array of variable-length strings."""
         cdef nc_type xtype
         xtype=-99
         if self.data_model != 'NETCDF4':
@@ -2364,7 +2364,7 @@ each attribute"""
         """
 **`getncattr(self,name)`**
 
-retrievel a netCDF dataset or group attribute.
+retrieve a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes."""
         return _get_att(self, NC_GLOBAL, name)
@@ -3468,7 +3468,7 @@ attributes."""
 set a netCDF variable string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
 `NC_STRING` if the file format is `NETCDF4`.
-Use if you need to set an attirbute to an array of variable-length strings."""
+Use if you need to set an attribute to an array of variable-length strings."""
         cdef nc_type xtype
         xtype=-99
         if self._grp.data_model != 'NETCDF4':
@@ -3493,7 +3493,7 @@ each attribute"""
         """
 **`getncattr(self,name)`**
 
-retrievel a netCDF variable attribute.  Use if you need to set a
+retrieve a netCDF variable attribute.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         return _get_att(self._grp, self._varid, name)
@@ -5494,7 +5494,7 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
             dims = v.dimensions
             shape = v.shape
             dtype = v.dtype
-            # Be carefull: we may deal with a scalar (dimensionless) variable.
+            # Be careful: we may deal with a scalar (dimensionless) variable.
             # Unlimited dimension always occupies index 0.
             if (len(dims) > 0 and aggDimName == dims[0]):
                 masterRecVar[vName] = (dims, shape, dtype)
@@ -5556,7 +5556,7 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
                                        "master %s (%s) and extension %s (%s)" %
                                        (v, master, masterType, f, extType))
 
-                    # Everythig ok.
+                    # Everything ok.
                     vInst = part.variables[v]
                     cdfRecVar[v].append(vInst)
                 else:
