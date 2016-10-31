@@ -1180,22 +1180,10 @@ for calendar in _calendars:
     _converters[calendar] = utime("seconds since 1-1-1", calendar)
 
 cdef class datetime(object):
-
     """
-Phony datetime object which mimics the python datetime object,
-but allows for dates that don't exist in the proleptic gregorian calendar.
-
-Supports timedelta operations by overloading + and -.
-
-Has strftime, timetuple, replace, __repr__, and __str__ methods. The
-format of the string produced by __str__ is controlled by self.format
-(default %Y-%m-%d %H:%M:%S). Supports comparisons with other phony
-datetime instances using the same calendar; comparison with
-datetime.datetime instances is possible for netcdftime.datetime
-instances using 'gregorian' and 'proleptic_gregorian' calendars.
-
-Instance variables are year,month,day,hour,minute,second,microsecond,dayofwk,dayofyr,
-format, and calendar.
+The base class implementing most methods of datetime classes that
+mimic datetime.datetime but support calendars other than the proleptic
+Gregorial calendar.
     """
     cdef readonly int year, month, day, hour, minute, dayofwk, dayofyr
     cdef readonly int second, microsecond
@@ -1356,6 +1344,10 @@ format, and calendar.
                 return NotImplemented
 
 cdef class DatetimeNoLeap(datetime):
+    """
+Phony datetime object which mimics the python datetime object,
+but uses the "noleap" ("365_day") calendar.
+    """
     def __init__(self, *args, **kwargs):
         datetime.__init__(self, *args, **kwargs)
         self.calendar = "noleap"
@@ -1365,6 +1357,10 @@ cdef class DatetimeNoLeap(datetime):
         return DatetimeNoLeap(*add_timedelta(self, delta, no_leap, False))
 
 cdef class DatetimeAllLeap(datetime):
+    """
+Phony datetime object which mimics the python datetime object,
+but uses the "all_leap" ("366_day") calendar.
+    """
     def __init__(self, *args, **kwargs):
         datetime.__init__(self, *args, **kwargs)
         self.calendar = "all_leap"
@@ -1374,6 +1370,10 @@ cdef class DatetimeAllLeap(datetime):
         return DatetimeAllLeap(*add_timedelta(self, delta, all_leap, False))
 
 cdef class Datetime360Day(datetime):
+    """
+Phony datetime object which mimics the python datetime object,
+but uses the "360_day" calendar.
+    """
     def __init__(self, *args, **kwargs):
         datetime.__init__(self, *args, **kwargs)
         self.calendar = "360_day"
@@ -1383,6 +1383,10 @@ cdef class Datetime360Day(datetime):
         return Datetime360Day(*add_timedelta_360_day(self, delta))
 
 cdef class DatetimeJulian(datetime):
+    """
+Phony datetime object which mimics the python datetime object,
+but uses the "julian" calendar.
+    """
     def __init__(self, *args, **kwargs):
         datetime.__init__(self, *args, **kwargs)
         self.calendar = "julian"
@@ -1392,6 +1396,18 @@ cdef class DatetimeJulian(datetime):
         return DatetimeJulian(*add_timedelta(self, delta, is_leap_julian, False))
 
 cdef class DatetimeGregorian(datetime):
+    """
+Phony datetime object which mimics the python datetime object,
+but uses the mixed Julian-Gregorian ("standard", "gregorian") calendar.
+
+The last date of the Julian calendar is 1582-10-4, which is followed
+by 1582-10-15, using the Gregorian calendar.
+
+Instances using the date after 1582-10-15 can be compared to
+datetime.datetime instances and used to compute time differences
+(datetime.timedelta) by subtracting a DatetimeGregorian instance from
+a datetime.datetime instance or vice versa.
+    """
     def __init__(self, *args, **kwargs):
         datetime.__init__(self, *args, **kwargs)
         self.calendar = "gregorian"
@@ -1407,6 +1423,22 @@ cdef class DatetimeGregorian(datetime):
         return DatetimeGregorian(*add_timedelta(self, delta, is_leap_gregorian, True))
 
 cdef class DatetimeProlepticGregorian(datetime):
+    """
+Phony datetime object which mimics the python datetime object,
+but allows for dates that don't exist in the proleptic gregorian calendar.
+
+Supports timedelta operations by overloading + and -.
+
+Has strftime, timetuple, replace, __repr__, and __str__ methods. The
+format of the string produced by __str__ is controlled by self.format
+(default %Y-%m-%d %H:%M:%S). Supports comparisons with other phony
+datetime instances using the same calendar; comparison with
+datetime.datetime instances is possible for netcdftime.datetime
+instances using 'gregorian' and 'proleptic_gregorian' calendars.
+
+Instance variables are year,month,day,hour,minute,second,microsecond,dayofwk,dayofyr,
+format, and calendar.
+    """
     def __init__(self, *args, **kwargs):
         datetime.__init__(self, *args, **kwargs)
         self.calendar = "proleptic_gregorian"
