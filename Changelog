@@ -15,6 +15,9 @@
    datetime comparison operators have full accuracy now.
  * Fix for issue #585 by increasing the size of the buffer used to store the
    filepath.
+ * Fix for issue #592: Add support for string array attributes. (When
+   reading, a vlen string array attribute is returned as a list of
+   strings. To write, use var.setncattr_string("name", ["two", "strings"]).)
 
  version 1.2.4 (tag v1.2.4rel)
 ==============================

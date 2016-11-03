@@ -756,7 +756,7 @@ in python as object arrays (arrays of dtype `object`). These are arrays whose
 elements are Python object pointers, and can contain any type of python object.
 For this application, they must contain 1-D numpy arrays all of the same type
 but of varying length.
-In this case, they contain 1-D numpy `int32` arrays of random length betwee
+In this case, they contain 1-D numpy `int32` arrays of random length between
 1 and 10.
 
     :::python
@@ -917,6 +917,8 @@ PERFORMANCE OF THIS SOFTWARE.
 """
 
 # Make changes to this file, not the c-wrappers that Cython generates.
+
+from cpython.mem cimport PyMem_Malloc, PyMem_Free
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
@@ -1100,7 +1102,6 @@ cdef _get_att(grp, int varid, name):
     cdef int ierr, n, _grpid
     cdef size_t att_len
     cdef char *attname
-    cdef char *stratt
     cdef nc_type att_type
     cdef ndarray value_arr
     bytestr = _strencode(name)
@@ -1126,14 +1127,26 @@ cdef _get_att(grp, int varid, name):
             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
         return pstring
     elif att_type == NC_STRING:
-        if att_len == 1:
+        values = <char**>PyMem_Malloc(sizeof(char*) * att_len)
+        if not values:
+            raise MemoryError()
+        try:
             with nogil:
-                ierr = nc_get_att_string(_grpid, varid, attname, &stratt)
-            pstring = stratt.decode(default_encoding,unicode_error).replace('\x00','')
-            ierr = nc_free_string(1, &stratt) # free memory in netcdf C lib
-            return pstring
+                ierr = nc_get_att_string(_grpid, varid, attname, values)
+            if ierr != NC_NOERR:
+                raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            try:
+                result = [values[j].decode(default_encoding,unicode_error).replace('\x00','')
+                          for j in range(att_len)]
+            finally:
+                ierr = nc_free_string(att_len, values) # free memory in netcdf C lib
+        finally:
+            PyMem_Free(values)
+
+        if len(result) == 1:
+            return result[0]
         else:
-            raise KeyError('vlen string array attributes not supported')
+            return result
     else:
     # a regular numeric or compound type.
         if att_type == NC_LONG:
@@ -1208,14 +1221,30 @@ cdef _get_full_format(int grpid):
     ELSE:
         return 'UNDEFINED'
 
+cdef issue485_workaround(int grpid, int varid, char* attname):
+    # check to see if attribute already exists
+    # and is NC_CHAR, if so delete it and re-create it
+    # (workaround for issue #485). Fixed in C library
+    # with commit 473259b7728120bb281c52359b1af50cca2fcb72,
+    # which was included in 4.4.0-RC5.
+    cdef nc_type att_type
+    cdef size_t att_len
+
+    if not _needsworkaround_issue485:
+        return
+    ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
+    if ierr == NC_NOERR and att_type == NC_CHAR:
+        ierr = nc_del_att(grpid, varid, attname)
+        if ierr != NC_NOERR:
+            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+
 cdef _set_att(grp, int varid, name, value,\
               nc_type xtype=-99, force_ncstring=False):
     # Private function to set an attribute name/value pair
-    cdef int i, ierr, lenarr, n
-    cdef size_t att_len
-    cdef nc_type att_type
+    cdef int ierr, lenarr
     cdef char *attname
     cdef char *datstring
+    cdef char **string_ptrs
     cdef ndarray value_arr
     bytestr = _strencode(name)
     attname = bytestr
@@ -1230,40 +1259,46 @@ cdef _set_att(grp, int varid, name, value,\
         value_arr = value_arr.astype('i4')
     # if array contains ascii strings, write a text attribute (stored as bytes).
     # if array contains unicode strings, and data model is NETCDF4, 
-    # write as a string.  string arrays are concatenated into a single string.
+    # write as a string.
     if value_arr.dtype.char in ['S','U']:
-        if not value_arr.shape:
-            dats = _strencode(value_arr.item())
-        else:
-            value_arr1 = value_arr.ravel()
-            dats = _strencode(''.join(value_arr1.tolist()))
-        lenarr = len(dats)
-        datstring = dats
-        if lenarr == 0:
-            # write null byte
-            lenarr=1; datstring = '\x00'
-        if (force_ncstring or value_arr.dtype.char == 'U') and not is_netcdf3:
-            # check to see if attribute already exists
-            # and is NC_CHAR, if so delete it and re-create it
-            # (workaround for issue #485). Fixed in C library
-            # with commit 473259b7728120bb281c52359b1af50cca2fcb72,
-            # which was included in 4.4.0-RC5.
-            if _needsworkaround_issue485:
-                ierr = nc_inq_att(grp._grpid, varid, attname, &att_type, &att_len)
-                if ierr == NC_NOERR and att_type == NC_CHAR:
-                    ierr = nc_del_att(grp._grpid, varid, attname)
-                    if ierr != NC_NOERR:
-                        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            # try to convert to ascii string, write as NC_CHAR 
-            # else it's a unicode string, write as NC_STRING (if NETCDF4)
+        if not is_netcdf3 and force_ncstring and value_arr.size > 1:
+            N = value_arr.size
+            string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
+            if not string_ptrs:
+                raise MemoryError()
             try:
-                if force_ncstring: raise UnicodeError
-                dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
-                ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
-            except UnicodeError:
-                ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
+                strings = [_strencode(s) for s in value_arr.flat]
+                for j in range(N):
+                    if len(strings[j]) == 0:
+                        strings[j] = _strencode('\x00')
+                    string_ptrs[j] = strings[j]
+                issue485_workaround(grp._grpid, varid, attname)
+                ierr = nc_put_att_string(grp._grpid, varid, attname, N, string_ptrs)
+            finally:
+                PyMem_Free(string_ptrs)
         else:
-            ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
+            if not value_arr.shape:
+                dats = _strencode(value_arr.item())
+            else:
+                value_arr1 = value_arr.ravel()
+                dats = _strencode(''.join(value_arr1.tolist()))
+            lenarr = len(dats)
+            datstring = dats
+            if lenarr == 0:
+                # write null byte
+                lenarr=1; datstring = '\x00'
+            if (force_ncstring or value_arr.dtype.char == 'U') and not is_netcdf3:
+                # try to convert to ascii string, write as NC_CHAR
+                # else it's a unicode string, write as NC_STRING (if NETCDF4)
+                try:
+                    if force_ncstring: raise UnicodeError
+                    dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
+                    ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
+                except UnicodeError:
+                    issue485_workaround(grp._grpid, varid, attname)
+                    ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
+            else:
+                ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
     # a 'regular' array type ('f4','i4','f8' etc)
@@ -1693,7 +1728,7 @@ references to the parent Dataset or Group.
         Appending `s` to modes `w`, `r+` or `a` will enable unbuffered shared
         access to `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or
         `NETCDF3_64BIT_DATA` formatted files.
-        Unbuffered acesss may be useful even if you don't need shared
+        Unbuffered access may be useful even if you don't need shared
         access, since it may be faster for programs that don't access data
         sequentially. This option is ignored for `NETCDF4` and `NETCDF4_CLASSIC`
         formatted files.
@@ -1709,7 +1744,7 @@ references to the parent Dataset or Group.
         is automatically detected). Default `'NETCDF4'`, which means the data is
         stored in an HDF5 file, using netCDF 4 API features.  Setting
         `format='NETCDF4_CLASSIC'` will create an HDF5 file, using only netCDF 3
-        compatibile API features. netCDF 3 clients must be recompiled and linked
+        compatible API features. netCDF 3 clients must be recompiled and linked
         against the netCDF 4 library to read files in `NETCDF4_CLASSIC` format.
         `'NETCDF3_CLASSIC'` is the classic netCDF 3 file format that does not
         handle 2+ Gb files. `'NETCDF3_64BIT_OFFSET'` is the 64-bit offset
@@ -1979,7 +2014,7 @@ This causes data to be pre-filled with fill values. The fill values can be
 controlled by the variable's `_Fill_Value` attribute, but is usually
 sufficient to the use the netCDF default `_Fill_Value` (defined
 separately for each variable type). The default behavior of the netCDF
-library correspongs to `set_fill_on`.  Data which are equal to the
+library corresponds to `set_fill_on`.  Data which are equal to the
 `_Fill_Value` indicate that the variable was created, but never written
 to."""
         cdef int ierr, oldmode
@@ -2105,7 +2140,7 @@ and `GroupA/GroupB`, plus the variable `GroupA/GroupB/VarC`, if the preceding
 groups don't already exist.
 
 The `datatype` can be a numpy datatype object, or a string that describes
-a numpy dtype object (like the `dtype.str` attribue of a numpy array).
+a numpy dtype object (like the `dtype.str` attribute of a numpy array).
 Supported specifiers include: `'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
@@ -2303,13 +2338,14 @@ with the same name as one of the reserved python attributes."""
 
 set a netCDF dataset or group string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
-`NC_STRING` if the file format is `NETCDF4`."""
+`NC_STRING` if the file format is `NETCDF4`.
+Use if you need to set an attribute to an array of variable-length strings."""
         cdef nc_type xtype
         xtype=-99
         if self.data_model != 'NETCDF4':
             msg='file format does not support NC_STRING attributes'
             raise IOError(msg)
-        _set_att(self, NC_GLOBAL, name, str(value), xtype=xtype, force_ncstring=True)
+        _set_att(self, NC_GLOBAL, name, value, xtype=xtype, force_ncstring=True)
 
     def setncatts(self,attdict):
         """
@@ -2328,7 +2364,7 @@ each attribute"""
         """
 **`getncattr(self,name)`**
 
-retrievel a netCDF dataset or group attribute.
+retrieve a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes."""
         return _get_att(self, NC_GLOBAL, name)
@@ -3431,13 +3467,14 @@ attributes."""
 
 set a netCDF variable string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
-`NC_STRING` if the file format is `NETCDF4`."""
+`NC_STRING` if the file format is `NETCDF4`.
+Use if you need to set an attribute to an array of variable-length strings."""
         cdef nc_type xtype
         xtype=-99
         if self._grp.data_model != 'NETCDF4':
             msg='file format does not support NC_STRING attributes'
             raise IOError(msg)
-        _set_att(self._grp, self._varid, name, str(value), xtype=xtype, force_ncstring=True)
+        _set_att(self._grp, self._varid, name, value, xtype=xtype, force_ncstring=True)
 
     def setncatts(self,attdict):
         """
@@ -3456,7 +3493,7 @@ each attribute"""
         """
 **`getncattr(self,name)`**
 
-retrievel a netCDF variable attribute.  Use if you need to set a
+retrieve a netCDF variable attribute.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         return _get_att(self._grp, self._varid, name)
@@ -5457,7 +5494,7 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
             dims = v.dimensions
             shape = v.shape
             dtype = v.dtype
-            # Be carefull: we may deal with a scalar (dimensionless) variable.
+            # Be careful: we may deal with a scalar (dimensionless) variable.
             # Unlimited dimension always occupies index 0.
             if (len(dims) > 0 and aggDimName == dims[0]):
                 masterRecVar[vName] = (dims, shape, dtype)
@@ -5519,7 +5556,7 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
                                        "master %s (%s) and extension %s (%s)" %
                                        (v, master, masterType, f, extType))
 
-                    # Everythig ok.
+                    # Everything ok.
                     vInst = part.variables[v]
                     cdfRecVar[v].append(vInst)
                 else:

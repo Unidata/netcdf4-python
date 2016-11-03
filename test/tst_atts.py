@@ -30,7 +30,7 @@ EMPTYSTRATT = ''
 INTATT = 1
 FLOATATT = math.pi
 SEQATT = NP.arange(10)
-STRINGSEQATT = ['mary ','had ','a ','little ','lamb']
+STRINGSEQATT = ['mary ','','had ','a ','little ','lamb',]
 ATTDICT = {'stratt':STRATT,'floatatt':FLOATATT,'seqatt':SEQATT,
            'stringseqatt':''.join(STRINGSEQATT),
            'emptystratt':EMPTYSTRATT,'intatt':INTATT}
@@ -51,6 +51,7 @@ class VariablesTestCase(unittest.TestCase):
         f.seqatt = SEQATT
         # sequences of strings converted to a single string.
         f.stringseqatt = STRINGSEQATT
+        f.setncattr_string('stringseqatt_array',STRINGSEQATT) # array of NC_STRING
         g = f.createGroup(GROUP_NAME)
         f.createDimension(DIM1_NAME, DIM1_LEN)
         f.createDimension(DIM2_NAME, DIM2_LEN)
@@ -65,6 +66,7 @@ class VariablesTestCase(unittest.TestCase):
         g.floatatt = FLOATATT
         g.seqatt = SEQATT
         g.stringseqatt = STRINGSEQATT
+        g.setncattr_string('stringseqatt_array',STRINGSEQATT) # array of NC_STRING
         v = f.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         # try to set a variable attribute with one of the reserved names.
         v.setncattr('ndim','three')
@@ -77,6 +79,7 @@ class VariablesTestCase(unittest.TestCase):
         v.floatatt = FLOATATT
         v.seqatt = SEQATT
         v.stringseqatt = STRINGSEQATT
+        v.setncattr_string('stringseqatt_array',STRINGSEQATT) # array of NC_STRING
         v1 = g.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         v1.stratt = STRATT
         v1.emptystratt = EMPTYSTRATT
@@ -84,6 +87,7 @@ class VariablesTestCase(unittest.TestCase):
         v1.floatatt = FLOATATT
         v1.seqatt = SEQATT
         v1.stringseqatt = STRINGSEQATT
+        v1.setncattr_string('stringseqatt_array',STRINGSEQATT) # array of NC_STRING
         # issue #485 (triggers segfault in C lib
         # with version 1.2.1 without pull request #486)
         f.foo = NP.array('bar','S')
@@ -123,6 +127,7 @@ class VariablesTestCase(unittest.TestCase):
         assert f.emptystratt == EMPTYSTRATT
         assert f.seqatt.tolist() == SEQATT.tolist()
         assert f.stringseqatt == ''.join(STRINGSEQATT)
+        assert f.stringseqatt_array == STRINGSEQATT
         assert f.getncattr('file_format') == 'netcdf4_format'
         # variable attributes.
         # check __dict__ method for accessing all netCDF attributes.
@@ -137,6 +142,7 @@ class VariablesTestCase(unittest.TestCase):
         assert v.stratt == STRATT
         assert v.seqatt.tolist() == SEQATT.tolist()
         assert v.stringseqatt == ''.join(STRINGSEQATT)
+        assert v.stringseqatt_array == STRINGSEQATT
         assert v.getncattr('ndim') == 'three'
         assert v.getncattr('foo') == 1
         assert v.getncattr('bar') == 2
@@ -173,6 +179,7 @@ class VariablesTestCase(unittest.TestCase):
         assert g.emptystratt == EMPTYSTRATT
         assert g.seqatt.tolist() == SEQATT.tolist()
         assert g.stringseqatt == ''.join(STRINGSEQATT)
+        assert g.stringseqatt_array == STRINGSEQATT
         for key,val in ATTDICT.items():
             if type(val) == NP.ndarray:
                 assert v1.__dict__[key].tolist() == val.tolist()
@@ -184,6 +191,7 @@ class VariablesTestCase(unittest.TestCase):
         assert v1.emptystratt == EMPTYSTRATT
         assert v1.seqatt.tolist() == SEQATT.tolist()
         assert v1.stringseqatt == ''.join(STRINGSEQATT)
+        assert v1.stringseqatt_array == STRINGSEQATT
         assert getattr(v1,'nonexistantatt',None) == None
         f.close()
 
