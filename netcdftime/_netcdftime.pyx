@@ -324,7 +324,7 @@ def DateFromJulianDay(JD, calendar='standard'):
     month[month > 12] = month[month > 12] - 12
     year = C - 4715
     year[month > 2] = year[month > 2] - 1
-    year[year <= 0] = year[year <= 0] - 1 
+    year[year <= 0] = year[year <= 0] - 1
 
     # a leap year?
     leap = np.zeros(len(year),dtype=dayofyr.dtype)
