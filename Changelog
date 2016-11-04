@@ -18,6 +18,9 @@
  * Fix for issue #592: Add support for string array attributes. (When
    reading, a vlen string array attribute is returned as a list of
    strings. To write, use var.setncattr_string("name", ["two", "strings"]).)
+ * Fix for issue #596 - julian day calculations wrong for negative years,
+   caused incorrect rountrip num2date(date2num(date)) roundtrip for dates with year
+   < 0.
 
  version 1.2.4 (tag v1.2.4rel)
 ==============================
