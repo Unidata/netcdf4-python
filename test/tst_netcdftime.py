@@ -456,6 +456,19 @@ class netcdftimeTestCase(unittest.TestCase):
             t1, t2, t3 = date2num([datetime(1582, 10, 4), datetime(1582, 10, 10), datetime(1582, 10, 15)], units, calendar='standard')
         except ValueError:
             pass
+        # test fix for issue #596 - julian day calculations wrong for negative years,
+        # caused incorrect rountrip num2date(date2num(date)) roundtrip for dates with year
+        # < 0.
+        u = utime("seconds since 1-1-1",calendar='julian')
+        date1 = datetimex(-1, 1, 1)
+        date2 = u.num2date(u.date2num(date1))
+        assert (date2.year == date1.year)
+        assert (date2.month == date1.month)
+        assert (date2.day == date1.day)
+        assert (date2.hour == date1.hour)
+        assert (date2.minute == date1.minute)
+        assert (date2.second == date1.second)
+        assert_almost_equal(JulianDayFromDate(date1), 1721057.5)
 
 
 class TestDate2index(unittest.TestCase):
