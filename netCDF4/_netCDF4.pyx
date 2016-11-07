@@ -5706,6 +5706,10 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         ncdump.append('    groups = %s\n' % str(grpnames))
         return ''.join(ncdump)
 
+    def __reduce__(self):
+        # raise error is user tries to pickle a MFDataset object.
+        raise NotImplementedError('MFDataset is not picklable')
+
 class _Dimension(object):
     def __init__(self, dimname, dim, dimlens, dimtotlen):
         self.dimlens = dimlens
@@ -5720,9 +5724,6 @@ class _Dimension(object):
             return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
         else:
             return repr(type(self))+": name = '%s', size = %s\n" % (self._name,len(self))
-    def __reduce__(self):
-        # raise error is user tries to pickle a MFDataset object.
-        raise NotImplementedError('MFDataset is not picklable')
 
 class _Variable(object):
     def __init__(self, dset, varname, var, recdimname):
