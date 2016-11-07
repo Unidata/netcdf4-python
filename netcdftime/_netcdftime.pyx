@@ -368,7 +368,10 @@ def DateFromJulianDay(JD, calendar='standard'):
 
     if calendar in 'proleptic_gregorian':
         # FIXME: datetime.datetime does not support years < 1
-        datetime_type = real_datetime
+        if year < 0:
+            datetime_type = DatetimeProlepticGregorian
+        else:
+            datetime_type = real_datetime
     elif calendar in ('standard', 'gregorian'):
         # return a 'real' datetime instance if calendar is proleptic
         # Gregorian or Gregorian and all dates are after the

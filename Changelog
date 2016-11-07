@@ -21,6 +21,7 @@
  * Fix for issue #596 - julian day calculations wrong for negative years,
    caused incorrect rountrip num2date(date2num(date)) roundtrip for dates with year
    < 0.
+ * Make sure negative years work in utime.num2date (issue #596).
 
  version 1.2.4 (tag v1.2.4rel)
 ==============================
