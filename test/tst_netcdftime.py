@@ -469,6 +469,13 @@ class netcdftimeTestCase(unittest.TestCase):
         assert (date2.minute == date1.minute)
         assert (date2.second == date1.second)
         assert_almost_equal(JulianDayFromDate(date1), 1721057.5)
+        # issue 596 - negative years fail in utime.num2date
+        u = utime("seconds since 1-1-1", "proleptic_gregorian")
+        d = u.num2date(u.date2num(datetimex(-1, 1, 1)))
+        assert (d.year == -1)
+        assert (d.month == 1)
+        assert (d.day == 1)
+        assert (d.hour == 0)
 
 
 class TestDate2index(unittest.TestCase):

@@ -21,6 +21,7 @@
  * Fix for issue #596 - julian day calculations wrong for negative years,
    caused incorrect rountrip num2date(date2num(date)) roundtrip for dates with year
    < 0.
+ * Make sure negative years work in utime.num2date (issue #596).
  * raise NotImplementedError when trying to pickle Dataset, Variable,
    CompoundType, VLType, EnumType and MFDataset (issue #602).
 
