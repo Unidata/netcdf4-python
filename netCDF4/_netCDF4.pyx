@@ -1986,6 +1986,10 @@ is the Dataset open or closed?
         if self._isopen:
             ierr = nc_close(self._grpid)
 
+    def __reduce__(self):
+        # raise error is user tries to pickle a Dataset object.
+        raise NotImplementedError('Dataset is not picklable')
+
     def sync(self):
         """
 **`sync(self)`**
@@ -4542,6 +4546,10 @@ The default value of `mask` is `True`
         else:
             return data
 
+    def __reduce__(self):
+        # raise error is user tries to pickle a Variable object.
+        raise NotImplementedError('Variable is not picklable')
+
 # Compound datatype support.
 
 cdef class CompoundType:
@@ -4604,6 +4612,10 @@ the user.
     def __unicode__(self):
         return repr(type(self))+": name = '%s', numpy dtype = %s\n" %\
         (self.name,self.dtype)
+
+    def __reduce__(self):
+        # raise error is user tries to pickle a CompoundType object.
+        raise NotImplementedError('CompoundType is not picklable')
 
 cdef _def_compound(grp, object dt, object dtype_name):
     # private function used to construct a netcdf compound data type
@@ -4848,6 +4860,10 @@ the user.
             return repr(type(self))+": name = '%s', numpy dtype = %s\n" %\
             (self.name, self.dtype)
 
+    def __reduce__(self):
+        # raise error is user tries to pickle a VLType object.
+        raise NotImplementedError('VLType is not picklable')
+
 cdef _def_vlen(grp, object dt, object dtype_name):
     # private function used to construct a netcdf VLEN data type
     # from a numpy dtype object or python str object by VLType.__init__.
@@ -4962,6 +4978,10 @@ the user.
         return repr(type(self))+\
         ": name = '%s', numpy dtype = %s, fields/values =%s\n" %\
         (self.name, self.dtype, self.enum_dict)
+
+    def __reduce__(self):
+        # raise error is user tries to pickle a EnumType object.
+        raise NotImplementedError('EnumType is not picklable')
 
 cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
     # private function used to construct a netCDF Enum data type
@@ -5685,6 +5705,10 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         ncdump.append('    variables = %s\n' % str(varnames))
         ncdump.append('    groups = %s\n' % str(grpnames))
         return ''.join(ncdump)
+
+    def __reduce__(self):
+        # raise error is user tries to pickle a MFDataset object.
+        raise NotImplementedError('MFDataset is not picklable')
 
 class _Dimension(object):
     def __init__(self, dimname, dim, dimlens, dimtotlen):
