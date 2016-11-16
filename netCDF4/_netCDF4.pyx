@@ -4498,6 +4498,9 @@ The default value of `mask` is `True`
                 # regular vlen
                 # allocate struct array to hold vlen data.
                 vldata = <nc_vlen_t *>malloc(totelem*sizeof(nc_vlen_t))
+                for i in range(totelem):
+                    vldata[i].len = 0
+                    vldata[i].p = <void*>0
                 # strides all 1 or scalar variable, use get_vara (faster)
                 if sum(stride) == ndims or ndims == 0:
                     with nogil:
