@@ -133,5 +133,31 @@ class TestObjectArrayIndexing(unittest.TestCase):
         assert fancy_indexed[2] == 'abcdef'
         f.close()
 
+class VlenAppendTestCase(unittest.TestCase):
+    def setUp(self):
+        self.file = FILE_NAME
+        f = Dataset(self.file, 'w')
+        vlen_type = f.createVLType(np.float64, 'vltest')
+        f.createDimension('x', None)
+        v = f.createVariable('vl', vlen_type, 'x')
+        w = f.createVariable('vl2', np.float64, 'x')
+        f.close()
+
+    def tearDown(self):
+        # Remove the temporary files
+        os.remove(self.file)
+
+    def runTest(self):
+        """testing appending to vlen variables (issue #527)."""
+        f = Dataset(self.file, 'a')
+        w = f.variables["vl2"]
+        v = f.variables["vl"]
+        w[0:3] = np.arange(3, dtype=np.float64)
+        v[0]                    # sometimes crashes
+        v[0].tolist()           # sometimes crashes
+        v[0].size               # BOOM!
+        f.close()
+
+
 if __name__ == '__main__':
     unittest.main()
