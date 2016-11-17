@@ -31,6 +31,7 @@ notifications:
 before_install:
   - sudo add-apt-repository ppa:heiko-klein/netcdf -y
   - sudo apt-get update -q
+  - sudo apt-get install libhdf5-serial-dev
   - sudo apt-get install netcdf-bin
   - sudo apt-get install libnetcdf-dev
   - sudo apt-get install libnetcdfc7
