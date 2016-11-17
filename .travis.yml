@@ -1,13 +1,7 @@
 language: python
 
-sudo: false
-
-addons:
-  apt:
-    packages:
-      - libhdf5-serial-dev
-      - netcdf-bin
-      - libnetcdf-dev
+dist: trusty
+sudo: required
 
 env:
   global:
@@ -35,6 +29,11 @@ notifications:
   email: false
 
 before_install:
+  - sudo add-apt-repository ppa:heiko-klein/netcdf
+  - sudo apt-get update -q
+  - sudo apt-get install netcdf-bin
+  - sudo apt-get install libnetcdf-dev
+  - sudo apt-get install libnetcdfc7
   - pip install $DEPENDS
 
 install:
