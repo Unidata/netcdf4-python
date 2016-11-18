@@ -20,6 +20,13 @@ matrix:
     - python: 2.6
       env:
         - DEPENDS="numpy==1.7.0 cython==0.19 ordereddict==1.1"
+      before_install: # override default and install netcdf 4.1.3
+        - sudo apt-get update -q
+        - sudo apt-get install libhdf5-serial-dev
+        - sudo apt-get install netcdf-bin
+        - sudo apt-get install libnetcdf-dev
+        - sudo apt-get install libnetcdfc7
+        - pip install $DEPENDS
     # Test without Cython installed.
     - python: 2.6
       env:
@@ -30,7 +37,7 @@ notifications:
 
 before_install:
 # uncommenting next line gets netcdf 4.3.3.1 instead of 4.1.3
-# - sudo add-apt-repository ppa:heiko-klein/netcdf -y
+  - sudo add-apt-repository ppa:heiko-klein/netcdf -y
   - sudo apt-get update -q
   - sudo apt-get install libhdf5-serial-dev
   - sudo apt-get install netcdf-bin
