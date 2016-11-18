@@ -1,5 +1,10 @@
 import glob, os, sys, unittest, netCDF4
 from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__version__
+try:
+    from Cython.Build import cythonize
+    has_cython = True
+except ImportError:
+    has_cython = False
 
 # can also just run
 # python -m unittest discover . 'tst*py'
@@ -28,6 +33,13 @@ if __netcdf4libversion__ < '4.4.0' or sys.maxsize < 2**32:
 if os.getenv('NO_NET'):
     test_files.remove('tst_dap.py');
     sys.stdout.write('not running tst_dap.py ...\n')
+# if cython not installed, don't try to run tests
+# with optional features.
+if not has_cython and 'tst_filepath.py' in test_files:
+    test_files.remove('tst_filepath.py')
+if not has_cython and 'tst_cdf5.py' in test_files:
+    test_files.remove('tst_cdf5.py')
+
 
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
