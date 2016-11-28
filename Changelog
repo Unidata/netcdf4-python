@@ -1,5 +1,5 @@
- version 1.2.5 (not yet released)
-=================================
+ version 1.2.5 (tag v1.2.5rel)
+==============================
  * Add MFDataset.set_auto_maskandscale (plus set_auto_scale, set_auto_mask).
    Fixes issue #570.
  * Use valid_min/valid_max/valid_range attributes when defining mask
