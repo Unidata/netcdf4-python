@@ -2,8 +2,8 @@
 * make sure version number in setup.py and netCDF4/_netCDF4.pyx are up to date
   (in _netCDF4.pyx, change 'Version' in first line of docstring at top of file,
    and __version__ variable). If netcdftime module has any updates,
-  increment __version__ in netcdftime/netcdftime.py. Regenerate netcdftime/_datetime.c
-  from _datetime.pyx as needed.
+  increment __version__ in netcdftime/_netcdftime.pyx. Regenerate netcdftime/_netcdftime.c
+  from _netcdftime.pyx as needed.
 * make sure include/constants.pyx has all zeros, then generate C source by 
   running 'cython -I../include _netCDF4.pyx' in the netCDF4 directory.
 * update Changelog and README.md as needed. 
