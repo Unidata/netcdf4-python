@@ -8,6 +8,9 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+12/1/2016: Version [1.2.5](https://pypi.python.org/pypi/netCDF4/1.2.5) released.
+See the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog) for changes.
+
 4/15/2016: Version [1.2.4](https://pypi.python.org/pypi/netCDF4/1.2.4) released. 
 Bugs in handling of variables with specified non-native "endian-ness" (byte-order) fixed ([issue #554]
 (https://github.com/Unidata/netcdf4-python/issues/554)).  Build instructions updated and warning issued
