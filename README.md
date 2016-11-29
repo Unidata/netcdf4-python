@@ -8,7 +8,7 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-12/1/2016: Version [1.2.5](https://pypi.python.org/pypi/netCDF4/1.2.5) released.
+12/1/2016: Version [1.2.5](https://github.com/Unidata/netcdf4-python/releases/tag/v1.2.5rel) released.
 See the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog) for changes.
 
 4/15/2016: Version [1.2.4](https://pypi.python.org/pypi/netCDF4/1.2.4) released. 
