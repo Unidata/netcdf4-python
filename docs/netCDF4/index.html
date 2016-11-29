@@ -1973,7 +1973,7 @@ in python as object arrays (arrays of dtype <code>object</code>). These are arra
 elements are Python object pointers, and can contain any type of python object.
 For this application, they must contain 1-D numpy arrays all of the same type
 but of varying length.
-In this case, they contain 1-D numpy <code>int32</code> arrays of random length betwee
+In this case, they contain 1-D numpy <code>int32</code> arrays of random length between
 1 and 10.</p>
 <div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">random</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="nb">object</span><span class="p">)</span>
@@ -2641,7 +2641,7 @@ serial files); an existing file is opened for reading and writing.
 Appending <code>s</code> to modes <code>w</code>, <code>r+</code> or <code>a</code> will enable unbuffered shared
 access to <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code> or
 <code>NETCDF3_64BIT_DATA</code> formatted files.
-Unbuffered acesss may be useful even if you don't need shared
+Unbuffered access may be useful even if you don't need shared
 access, since it may be faster for programs that don't access data
 sequentially. This option is ignored for <code>NETCDF4</code> and <code>NETCDF4_CLASSIC</code>
 formatted files.</p>
@@ -2655,7 +2655,7 @@ Only relevant if <code>mode = 'w'</code> (if <code>mode = 'r','a'</code> or <cod
 is automatically detected). Default <code>'NETCDF4'</code>, which means the data is
 stored in an HDF5 file, using netCDF 4 API features.  Setting
 <code>format='NETCDF4_CLASSIC'</code> will create an HDF5 file, using only netCDF 3
-compatibile API features. netCDF 3 clients must be recompiled and linked
+compatible API features. netCDF 3 clients must be recompiled and linked
 against the netCDF 4 library to read files in <code>NETCDF4_CLASSIC</code> format.
 <code>'NETCDF3_CLASSIC'</code> is the classic netCDF 3 file format that does not
 handle 2+ Gb files. <code>'NETCDF3_64BIT_OFFSET'</code> is the 64-bit offset
@@ -2825,7 +2825,7 @@ For example, <code>createVariable('/GroupA/GroupB/VarC', float, ('x','y'))</code
 and <code>GroupA/GroupB</code>, plus the variable <code>GroupA/GroupB/VarC</code>, if the preceding
 groups don't already exist.</p>
 <p>The <code>datatype</code> can be a numpy datatype object, or a string that describes
-a numpy dtype object (like the <code>dtype.str</code> attribue of a numpy array).
+a numpy dtype object (like the <code>dtype.str</code> attribute of a numpy array).
 Supported specifiers include: <code>'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
@@ -2997,7 +2997,7 @@ attribute does not exist on the variable. For example,</p>
 
     
   
-    <div class="desc"><p>retrievel a netCDF dataset or group attribute.
+    <div class="desc"><p>retrieve a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes.</p></div>
   <div class="source_cont">
@@ -3187,7 +3187,7 @@ sure the data is actually written before being read.</p></div>
 controlled by the variable's <code>_Fill_Value</code> attribute, but is usually
 sufficient to the use the netCDF default <code>_Fill_Value</code> (defined
 separately for each variable type). The default behavior of the netCDF
-library correspongs to <code>set_fill_on</code>.  Data which are equal to the
+library corresponds to <code>set_fill_on</code>.  Data which are equal to the
 <code>_Fill_Value</code> indicate that the variable was created, but never written
 to.</p></div>
   <div class="source_cont">
@@ -3223,7 +3223,8 @@ with the same name as one of the reserved python attributes.</p></div>
   
     <div class="desc"><p>set a netCDF dataset or group string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
-<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.</p></div>
+<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.
+Use if you need to set an attribute to an array of variable-length strings.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3884,7 +3885,7 @@ For example, <code>createVariable('/GroupA/GroupB/VarC', float, ('x','y'))</code
 and <code>GroupA/GroupB</code>, plus the variable <code>GroupA/GroupB/VarC</code>, if the preceding
 groups don't already exist.</p>
 <p>The <code>datatype</code> can be a numpy datatype object, or a string that describes
-a numpy dtype object (like the <code>dtype.str</code> attribue of a numpy array).
+a numpy dtype object (like the <code>dtype.str</code> attribute of a numpy array).
 Supported specifiers include: <code>'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
@@ -4072,7 +4073,7 @@ attribute does not exist on the variable. For example,</p>
 
     
   
-    <div class="desc inherited"><p>retrievel a netCDF dataset or group attribute.
+    <div class="desc inherited"><p>retrieve a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes.</p></div>
   <div class="source_cont">
@@ -4306,7 +4307,7 @@ sure the data is actually written before being read.</p></div>
 controlled by the variable's <code>_Fill_Value</code> attribute, but is usually
 sufficient to the use the netCDF default <code>_Fill_Value</code> (defined
 separately for each variable type). The default behavior of the netCDF
-library correspongs to <code>set_fill_on</code>.  Data which are equal to the
+library corresponds to <code>set_fill_on</code>.  Data which are equal to the
 <code>_Fill_Value</code> indicate that the variable was created, but never written
 to.</p></div>
   <div class="source_cont">
@@ -4350,7 +4351,8 @@ with the same name as one of the reserved python attributes.</p></div>
   
     <div class="desc inherited"><p>set a netCDF dataset or group string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
-<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.</p></div>
+<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.
+Use if you need to set an attribute to an array of variable-length strings.</p></div>
   <div class="source_cont">
 </div>
 
@@ -4790,7 +4792,7 @@ For example, <code>createVariable('/GroupA/GroupB/VarC', float, ('x','y'))</code
 and <code>GroupA/GroupB</code>, plus the variable <code>GroupA/GroupB/VarC</code>, if the preceding
 groups don't already exist.</p>
 <p>The <code>datatype</code> can be a numpy datatype object, or a string that describes
-a numpy dtype object (like the <code>dtype.str</code> attribue of a numpy array).
+a numpy dtype object (like the <code>dtype.str</code> attribute of a numpy array).
 Supported specifiers include: <code>'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
@@ -4978,7 +4980,7 @@ attribute does not exist on the variable. For example,</p>
 
     
   
-    <div class="desc inherited"><p>retrievel a netCDF dataset or group attribute.
+    <div class="desc inherited"><p>retrieve a netCDF dataset or group attribute.
 Use if you need to get a netCDF attribute with the same 
 name as one of the reserved python attributes.</p></div>
   <div class="source_cont">
@@ -5121,7 +5123,7 @@ sure the data is actually written before being read.</p></div>
 controlled by the variable's <code>_Fill_Value</code> attribute, but is usually
 sufficient to the use the netCDF default <code>_Fill_Value</code> (defined
 separately for each variable type). The default behavior of the netCDF
-library correspongs to <code>set_fill_on</code>.  Data which are equal to the
+library corresponds to <code>set_fill_on</code>.  Data which are equal to the
 <code>_Fill_Value</code> indicate that the variable was created, but never written
 to.</p></div>
   <div class="source_cont">
@@ -5165,7 +5167,8 @@ with the same name as one of the reserved python attributes.</p></div>
   
     <div class="desc inherited"><p>set a netCDF dataset or group string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
-<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.</p></div>
+<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.
+Use if you need to set an attribute to an array of variable-length strings.</p></div>
   <div class="source_cont">
 </div>
 
@@ -5928,7 +5931,7 @@ details.</p></div>
 
     
   
-    <div class="desc"><p>retrievel a netCDF variable attribute.  Use if you need to set a
+    <div class="desc"><p>retrieve a netCDF variable attribute.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
   <div class="source_cont">
@@ -6143,7 +6146,8 @@ attributes.</p></div>
   
     <div class="desc"><p>set a netCDF variable string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
-<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.</p></div>
+<code>NC_STRING</code> if the file format is <code>NETCDF4</code>.
+Use if you need to set an attribute to an array of variable-length strings.</p></div>
   <div class="source_cont">
 </div>
 
@@ -6177,7 +6181,7 @@ each attribute</p></div>
   <footer id="footer">
     <p>
       Documentation generated by
-      <a href="https://github.com/BurntSushi/pdoc">pdoc 0.3.2.dev29</a>
+      <a href="https://github.com/BurntSushi/pdoc">pdoc 0.3.2.dev16</a>
     </p>
 
     <p>pdoc is in the public domain with the
