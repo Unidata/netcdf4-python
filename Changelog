@@ -1,3 +1,10 @@
+since version 1.2.5
+====================
+ * make get_variables_by_attributes work in MFDataset (issue #610)
+   The hack is also applied for set_auto_maskandscale, set_auto_scale,
+   set_automask, so these don't have to be duplicated in MFDataset (pull
+   request #571).
+
  version 1.2.5 (tag v1.2.5rel)
 ==============================
  * Add MFDataset.set_auto_maskandscale (plus set_auto_scale, set_auto_mask).
