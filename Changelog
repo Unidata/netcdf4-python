@@ -1,3 +1,7 @@
+version 1.2.6 (unreleased)
+==============================
+ * added 'get_variables_by_attributes' method to MFDataset (pr #611).
+
  version 1.2.5 (tag v1.2.5rel)
 ==============================
  * Add MFDataset.set_auto_maskandscale (plus set_auto_scale, set_auto_mask).

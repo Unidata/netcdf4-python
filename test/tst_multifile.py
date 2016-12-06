@@ -62,6 +62,13 @@ class VariablesTestCase(unittest.TestCase):
         assert getattr(varin,'nonexistantatt',None) == None
         f.close()
 
+    def test_get_by_mfdataset(self):
+        """testing multi-file get_variables_by_attributes."""
+        f = MFDataset(self.files,check=True)
+        assert f.get_variables_by_attributes(axis='T') == []
+        f.get_variables_by_attributes(units='zlotys')[0] == f['x']
+        f.close()
+
 
 class NonuniformTimeTestCase(unittest.TestCase):
     ninc = 365
