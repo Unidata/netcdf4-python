@@ -3269,7 +3269,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         fillval = numpy.array(fill_value, self.dtype)
                         if (is_native_little and self.endian() == 'big') or\
                            (is_native_big and self.endian() == 'little'):
-                            fillval = fillval.byteswap(True)
+                            fillval.byteswap(True)
                         _set_att(self._grp, self._varid, '_FillValue',\
                                  fillval, xtype=xtype)
                     else:
@@ -3672,11 +3672,12 @@ details."""
                 #    "VLEN or compound variable"
                 #    raise AttributeError(msg)
             elif name in ['valid_min','valid_max','valid_range','missing_value'] and self._isprimitive:
+                # make sure these attributes written in same endian-ness 
+                # and data type as variable.
+                value = numpy.array(value, self.dtype)
                 if (is_native_little and self.endian() == 'big') or\
                    (is_native_big and self.endian() == 'little'):
-                    value = numpy.array(value, self.dtype).byteswap(True)
-                else:
-                    value = numpy.array(value, self.dtype)
+                    value.byteswap(True)
             self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
