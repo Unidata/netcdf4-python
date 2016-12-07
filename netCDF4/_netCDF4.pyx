@@ -2485,7 +2485,11 @@ and variable scaling shall be applied for all variables.
 after calling this function will follow the default behaviour.
         """
 
-        for var in self.variables.values():
+        # this is a hack to make inheritance work in MFDataset
+        # (which stores variables in _vars)
+        _vars = self.variables
+        if _vars is None: _vars = self._vars
+        for var in _vars.values():
             var.set_auto_maskandscale(value)
 
         for groups in _walk_grps(self):
@@ -2530,7 +2534,11 @@ shall be applied for all variables.
 after calling this function will follow the default behaviour.
         """
 
-        for var in self.variables.values():
+        # this is a hack to make inheritance work in MFDataset
+        # (which stores variables in _vars)
+        _vars = self.variables
+        if _vars is None: _vars = self._vars
+        for var in _vars.values():
             var.set_auto_scale(value)
 
         for groups in _walk_grps(self):
@@ -2569,8 +2577,12 @@ attribute does not exist on the variable. For example,
         vs = []
 
         has_value_flag  = False
-        for vname in self.variables:
-            var = self.variables[vname]
+        # this is a hack to make inheritance work in MFDataset
+        # (which stores variables in _vars)
+        _vars = self.variables
+        if _vars is None: _vars = self._vars
+        for vname in _vars:
+            var = _vars[vname]
             for k, v in kwargs.items():
                 if callable(v):
                     has_value_flag = v(getattr(var, k, None))
@@ -2583,7 +2595,7 @@ attribute does not exist on the variable. For example,
                     break
 
             if has_value_flag is True:
-                vs.append(self.variables[vname])
+                vs.append(_vars[vname])
 
         return vs
 
@@ -3257,7 +3269,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         fillval = numpy.array(fill_value, self.dtype)
                         if (is_native_little and self.endian() == 'big') or\
                            (is_native_big and self.endian() == 'little'):
-                            fillval = fillval.byteswap(True)
+                            fillval.byteswap(True)
                         _set_att(self._grp, self._varid, '_FillValue',\
                                  fillval, xtype=xtype)
                     else:
@@ -3660,11 +3672,12 @@ details."""
                 #    "VLEN or compound variable"
                 #    raise AttributeError(msg)
             elif name in ['valid_min','valid_max','valid_range','missing_value'] and self._isprimitive:
+                # make sure these attributes written in same endian-ness 
+                # and data type as variable.
+                value = numpy.array(value, self.dtype)
                 if (is_native_little and self.endian() == 'big') or\
                    (is_native_big and self.endian() == 'little'):
-                    value = numpy.array(value, self.dtype).byteswap(True)
-                else:
-                    value = numpy.array(value, self.dtype)
+                    value.byteswap(True)
             self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
@@ -5641,46 +5654,6 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         return the netcdf attribute names from the master file.
         """
         return self._cdf[0].__dict__.keys()
-
-    def set_auto_maskandscale(self, value):
-        """
-        **`set_auto_maskandscale(self, True_or_False)`**
-        
-        Call `Variable.set_auto_maskandscale` for all variables contained in this
-        `MFDataset`.
-        
-        **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
-        and variable scaling shall be applied for all variables.
-        """
-
-        for var in self.variables.values():
-            var.set_auto_maskandscale(value)
-
-    def set_auto_mask(self, value):
-        """
-        **`set_auto_mask(self, True_or_False)`**
-        
-        Call `Variable.set_auto_mask` for all variables contained in this `MFDataset`.
-        
-        **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
-        shall be applied for all variables.
-        """
-
-        for var in self.variables.values():
-            var.set_auto_mask(value)
-
-    def set_auto_scale(self, value):
-        """
-        **`set_auto_scale(self, True_or_False)`**
-        
-        Call `Variable.set_auto_scale` for all variables contained in this `MFDataset`.
-        
-        **`True_or_False`**: Boolean determining if automatic variable scaling
-        shall be applied for all variables.
-        """
-
-        for var in self.variables.values():
-            var.set_auto_scale(value)
 
     def close(self):
         """
