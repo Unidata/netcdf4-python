@@ -1,5 +1,5 @@
 """
-Version 1.2.5
+Version 1.2.6
 -------------
 - - - 
 
@@ -937,7 +937,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.5"
+__version__ = "1.2.6"
 
 # Initialize numpy
 import posixpath
@@ -4041,9 +4041,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                     self._assign_vlen(elem, data)
                     return
 
-        # A numpy array (or an object supporting the buffer interface) is needed.
+        # A numpy or masked array (or an object supporting the buffer interface) is needed.
         # Convert if necessary.
-        if not (hasattr(data,'data') and isinstance(data.data,buffer)):
+        if not ma.isMA(data) and not (hasattr(data,'data') and isinstance(data.data,buffer)):
             # if auto scaling is to be done, don't cast to an integer yet.
             if self.scale and self.dtype.kind in 'iu' and \
                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
