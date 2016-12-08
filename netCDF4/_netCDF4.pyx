@@ -4998,8 +4998,9 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
     # private function used to construct a netCDF Enum data type
     # from a numpy dtype object or python str object by EnumType.__init__.
     cdef nc_type xtype, xtype_tmp
-    cdef int ierr, val
+    cdef int ierr
     cdef char *namstring
+    cdef ndarray value_arr
     bytestr = _strencode(dtype_name)
     namstring = bytestr
     dt = numpy.dtype(dt) # convert to numpy datatype.
@@ -5015,11 +5016,10 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
         raise KeyError(msg)
     # insert named members into enum type.
     for field in enum_dict:
-        value = enum_dict[field]
+        value_arr = numpy.array(enum_dict[field],dt)
         bytestr = _strencode(field)
         namstring = bytestr
-        val = value
-        ierr = nc_insert_enum(grp._grpid, xtype, namstring, &val)
+        ierr = nc_insert_enum(grp._grpid, xtype, namstring, value_arr.data)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
     return xtype, dt
