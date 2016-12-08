@@ -101,11 +101,10 @@ class CompoundAlignTestCase(unittest.TestCase):
         assert new_cells.shape == cells.shape 
         assert new_cells.dtype.names == cells.dtype.names
         for name in cells.dtype.names:
-            assert cells[name].dtype == new_cells[name].dtype
+            assert cells[name].dtype.name == new_cells[name].dtype.name
             assert cells[name].shape == new_cells[name].shape
             assert_array_equal(cells[name],new_cells[name])
         f.close()
 
 if __name__ == '__main__':
     unittest.main()
-
