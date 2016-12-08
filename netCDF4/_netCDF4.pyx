@@ -3264,12 +3264,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         if grp.data_model != 'NETCDF4': grp._enddef()
                         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 else:
-                    # cast fill_value to type/endian-ness of variable.
+                    # cast fill_value to type of variable.
+                    # also make sure it is written in native byte order
+                    # (the same as the data)
                     if self._isprimitive or self._isenum:
                         fillval = numpy.array(fill_value, self.dtype)
-                        if (is_native_little and self.endian() == 'big') or\
-                           (is_native_big and self.endian() == 'little'):
-                            fillval.byteswap(True)
+                        if not fillval.dtype.isnative: fillval.byteswap(True)
                         _set_att(self._grp, self._varid, '_FillValue',\
                                  fillval, xtype=xtype)
                     else:
@@ -3672,12 +3672,11 @@ details."""
                 #    "VLEN or compound variable"
                 #    raise AttributeError(msg)
             elif name in ['valid_min','valid_max','valid_range','missing_value'] and self._isprimitive:
-                # make sure these attributes written in same endian-ness 
-                # and data type as variable.
+                # make sure these attributes written in same data type as variable.
+                # also make sure it is written in native byte order
+                # (the same as the data)
                 value = numpy.array(value, self.dtype)
-                if (is_native_little and self.endian() == 'big') or\
-                   (is_native_big and self.endian() == 'little'):
-                    value.byteswap(True)
+                if not value.dtype.isnative: value.byteswap(True)
             self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
@@ -3808,9 +3807,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         totalmask = numpy.zeros(data.shape, numpy.bool)
         fill_value = None
         if hasattr(self, 'missing_value'):
-            # note: missing_value has to have same endian-ness as variable
-            # or this won't work.
             mval = numpy.array(self.missing_value, self.dtype)
+            # byteswap missing_value if endian-ness of array is not native
+            #if self.dtype.isnative: mval.byteswap(True)
             # create mask from missing values. 
             mvalmask = numpy.zeros(data.shape, numpy.bool)
             # set mask=True for data outside valid_min,valid_max.
@@ -3842,6 +3841,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             else:
                 fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
                 if byte_type: fval = None
+            # byteswap _FillValue if endian-ness of array is not native
+            #if self.dtype.isnative: fval.byteswap(True)
             if validmin is None and (fval is not None and fval <= 0):
                 validmin = fval
             elif validmax is None and (fval is not None and fval > 0):
@@ -4343,9 +4344,11 @@ The default value of `mask` is `True`
             # byte-swap data in numpy array so that is has native
             # endian byte order (this is what netcdf-c expects - 
             # issue #554, pull request #555)
-            if (is_native_little and data.dtype.byteorder == '>') or\
-               (is_native_big and data.dtype.byteorder == '<'):
-                data = data.byteswap() # don't do in-place, make a copy
+            if not data.dtype.isnative:
+                data = data.byteswap()
+            #if (is_native_little and data.dtype.byteorder == '>') or\
+            #   (is_native_big and data.dtype.byteorder == '<'):
+            #    data = data.byteswap() # don't do in-place, make a copy
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
                 ierr = nc_put_vara(self._grpid, self._varid,
@@ -4552,9 +4555,11 @@ The default value of `mask` is `True`
         # bytes if the variable dtype is not native endian, so the
         # dtype of the returned numpy array matches the variable dtype.
         # (pull request #555, issue #554).
-        if (self.endian() == 'big' and is_native_little) or\
-           (self.endian() == 'little' and is_native_big):
-               data.byteswap(True) # in-place byteswap
+        if not data.dtype.isnative:
+            data.byteswap(True) # in-place byteswap
+        #if (self.endian() == 'big' and is_native_little) or\
+        #   (self.endian() == 'little' and is_native_big):
+        #       data.byteswap(True) # in-place byteswap
         if not self.dimensions:
             return data[0] # a scalar
         elif squeeze_out:
