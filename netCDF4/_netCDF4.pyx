@@ -3808,8 +3808,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         fill_value = None
         if hasattr(self, 'missing_value'):
             mval = numpy.array(self.missing_value, self.dtype)
-            # byteswap missing_value if endian-ness of array is not native
-            #if self.dtype.isnative: mval.byteswap(True)
             # create mask from missing values. 
             mvalmask = numpy.zeros(data.shape, numpy.bool)
             # set mask=True for data outside valid_min,valid_max.
@@ -3841,8 +3839,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             else:
                 fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
                 if byte_type: fval = None
-            # byteswap _FillValue if endian-ness of array is not native
-            #if self.dtype.isnative: fval.byteswap(True)
             if validmin is None and (fval is not None and fval <= 0):
                 validmin = fval
             elif validmax is None and (fval is not None and fval > 0):
@@ -4346,9 +4342,6 @@ The default value of `mask` is `True`
             # issue #554, pull request #555)
             if not data.dtype.isnative:
                 data = data.byteswap()
-            #if (is_native_little and data.dtype.byteorder == '>') or\
-            #   (is_native_big and data.dtype.byteorder == '<'):
-            #    data = data.byteswap() # don't do in-place, make a copy
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
                 ierr = nc_put_vara(self._grpid, self._varid,
@@ -4557,9 +4550,6 @@ The default value of `mask` is `True`
         # (pull request #555, issue #554).
         if not data.dtype.isnative:
             data.byteswap(True) # in-place byteswap
-        #if (self.endian() == 'big' and is_native_little) or\
-        #   (self.endian() == 'little' and is_native_big):
-        #       data.byteswap(True) # in-place byteswap
         if not self.dimensions:
             return data[0] # a scalar
         elif squeeze_out:
