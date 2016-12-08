@@ -4015,7 +4015,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # for string vars, if data is not an array
                 # assume it is a python string and raise an error
                 # if it is an array, but not an object array.
-                if not hasattr(data,'ndim'):
+                if not isinstance(data, numpy.ndarray):
                     # issue 458, allow Ellipsis to be used for scalar var
                     if type(elem) == type(Ellipsis) and not\
                        len(self.dimensions): elem = 0
@@ -4034,16 +4034,16 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # for non-string vlen arrays, if data is not multi-dim, or
                 # not an object array, assume it represents a single element
                 # of the vlen var.
-                if not hasattr(data,'ndim') or data.dtype.kind != 'O':
+                if not isinstance(data, numpy.ndarray) or data.dtype.kind != 'O':
                     # issue 458, allow Ellipsis to be used for scalar var
                     if type(elem) == type(Ellipsis) and not\
                        len(self.dimensions): elem = 0
                     self._assign_vlen(elem, data)
                     return
 
-        # A numpy array is needed. Convert if necessary.
-        # assume it's a numpy or masked array if it has an 'ndim' attribute.
-        if not hasattr(data,'ndim'):
+        # A numpy array (or an object supporting the buffer interface) is needed.
+        # Convert if necessary.
+        if not (hasattr(data,'data') and isinstance(data.data,buffer)):
             # if auto scaling is to be done, don't cast to an integer yet.
             if self.scale and self.dtype.kind in 'iu' and \
                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
