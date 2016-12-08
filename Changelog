@@ -1,8 +1,8 @@
 since version 1.2.5
 ====================
  * fix some test failures on big endian PPC64 that were due to 
-   errors in byte-swapping logic. tst_enum.py is still failing
-   on PPC64.
+   errors in byte-swapping logic. Also fixed bug in enum
+   code exposed on PPC64 (issue #608).
  * make get_variables_by_attributes work in MFDataset (issue #610)
    The hack is also applied for set_auto_maskandscale, set_auto_scale,
    set_automask, so these don't have to be duplicated in MFDataset (pull
