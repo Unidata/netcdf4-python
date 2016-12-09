@@ -1,5 +1,8 @@
  version 1.2.6 (not yet released)
 ==================================
+ * fix some test failures on big endian PPC64 that were due to 
+   errors in byte-swapping logic. Also fixed bug in enum
+   code exposed on PPC64 (issue #608).
  * remove support for python 2.6 (it probably still will work for a while
    though).
  * Sometimes checking that data being assigned to a variable has
