@@ -36,7 +36,7 @@ Download
 Requires
 ========
 
- - Python 2.6 or later (python 3 works too).
+ - Python 2.7 or later (python 3 works too).
  - [numpy array module](http://numpy.scipy.org), version 1.7.0 or later.
  - [Cython](http://cython.org), version 0.19 or later, is optional - if it is installed setup.py will
    use it to recompile the Cython source code into C, using conditional compilation

@@ -1,5 +1,7 @@
  version 1.2.6 (not yet released)
 ==================================
+ * remove support for python 2.6 (it probably still will work for a while
+   though).
  * Sometimes checking that data being assigned to a variable has
    an 'ndim' attribute is not sufficient, instead check to see that
    the object supports the buffer interface (issue #613).
