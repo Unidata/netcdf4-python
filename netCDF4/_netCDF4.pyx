@@ -1066,6 +1066,8 @@ default_encoding = 'utf-8'
 # can be set to 'strict' or 'ignore'.
 unicode_error = 'replace'
 python3 = sys.version_info[0] > 2
+if python3:
+    buffer = memoryview
 
 _nctonptype = {}
 for _key,_value in _nptonctype.items():
