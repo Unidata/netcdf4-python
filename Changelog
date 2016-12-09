@@ -1,8 +1,13 @@
-since version 1.2.5
-====================
+ version 1.2.6 (not yet released)
+==================================
  * fix some test failures on big endian PPC64 that were due to 
    errors in byte-swapping logic. Also fixed bug in enum
    code exposed on PPC64 (issue #608).
+ * remove support for python 2.6 (it probably still will work for a while
+   though).
+ * Sometimes checking that data being assigned to a variable has
+   an 'ndim' attribute is not sufficient, instead check to see that
+   the object supports the buffer interface (issue #613).
  * make get_variables_by_attributes work in MFDataset (issue #610)
    The hack is also applied for set_auto_maskandscale, set_auto_scale,
    set_automask, so these don't have to be duplicated in MFDataset (pull
