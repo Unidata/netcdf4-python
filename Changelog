@@ -1,5 +1,5 @@
- version 1.2.6 (not yet released)
-==================================
+ version 1.2.6 (tag v1.2.6rel)
+==============================
  * fix some test failures on big endian PPC64 that were due to 
    errors in byte-swapping logic. Also fixed bug in enum
    code exposed on PPC64 (issue #608).
