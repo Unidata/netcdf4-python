@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Version 1.2.5
+    <meta name="description" content="Version 1.2.6
 -------------
 - - - 
 
@@ -1179,6 +1179,9 @@ table {
     <li class="mono"><a href="#netCDF4.MFDataset.renameDimension">renameDimension</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.renameGroup">renameGroup</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.renameVariable">renameVariable</a></li>
+    <li class="mono"><a href="#netCDF4.MFDataset.set_auto_mask">set_auto_mask</a></li>
+    <li class="mono"><a href="#netCDF4.MFDataset.set_auto_maskandscale">set_auto_maskandscale</a></li>
+    <li class="mono"><a href="#netCDF4.MFDataset.set_auto_scale">set_auto_scale</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.set_fill_off">set_fill_off</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.set_fill_on">set_fill_on</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.setncattr">setncattr</a></li>
@@ -1188,9 +1191,6 @@ table {
     <li class="mono"><a href="#netCDF4.MFDataset.__init__">__init__</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.close">close</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.ncattrs">ncattrs</a></li>
-    <li class="mono"><a href="#netCDF4.MFDataset.set_auto_mask">set_auto_mask</a></li>
-    <li class="mono"><a href="#netCDF4.MFDataset.set_auto_maskandscale">set_auto_maskandscale</a></li>
-    <li class="mono"><a href="#netCDF4.MFDataset.set_auto_scale">set_auto_scale</a></li>
   </ul>
 
         </li>
@@ -1259,7 +1259,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h2>Version 1.2.5</h2>
+  <h2>Version 1.2.6</h2>
 <hr />
 <h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
@@ -1287,7 +1287,7 @@ types) are not supported.</p>
 </ul>
 <h1>Requires</h1>
 <ul>
-<li>Python 2.6 or later (python 3 works too).</li>
+<li>Python 2.7 or later (python 3 works too).</li>
 <li><a href="http://numpy.scipy.org">numpy array module</a>, version 1.7.0 or later.</li>
 <li><a href="http://cython.org">Cython</a>, version 0.19 or later, is optional - if it is installed setup.py will
    use it to recompile the Cython source code into C, using conditional compilation
@@ -5085,6 +5085,78 @@ name as one of the reserved python attributes.</p></div>
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.MFDataset.set_auto_mask">
+    <p>def <span class="ident">set_auto_mask</span>(</p><p>self, True_or_False)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.set_auto_mask">set_auto_mask</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
+<p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
+shall be applied for all variables.</p>
+<p><strong><em>Note</em></strong>: Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.MFDataset.set_auto_maskandscale">
+    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>self, True_or_False)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.set_auto_maskandscale">set_auto_maskandscale</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
+<p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
+and variable scaling shall be applied for all variables.</p>
+<p><strong><em>Note</em></strong>: Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.MFDataset.set_auto_scale">
+    <p>def <span class="ident">set_auto_scale</span>(</p><p>self, True_or_False)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.set_auto_scale">set_auto_scale</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
+<a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
+<p><strong><code>True_or_False</code></strong>: Boolean determining if automatic variable scaling
+shall be applied for all variables.</p>
+<p><strong><em>Note</em></strong>: Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.MFDataset.set_fill_off">
     <p>def <span class="ident">set_fill_off</span>(</p><p>self)</p>
     </div>
@@ -5288,70 +5360,6 @@ Default is an empty list.</p></div>
     
   
     <div class="desc"><p>return the netcdf attribute names from the master file.</p></div>
-  <div class="source_cont">
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="netCDF4.MFDataset.set_auto_mask">
-    <p>def <span class="ident">set_auto_mask</span>(</p><p>self, True_or_False)</p>
-    </div>
-    
-    <p class="inheritance">
-     <strong>Inheritance:</strong>
-       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.set_auto_mask">set_auto_mask</a></code>
-    </p>
-
-    
-  
-    <div class="desc"><p>Call <code>Variable.set_auto_mask</code> for all variables contained in this <code>MFDataset</code>.</p>
-<p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
-shall be applied for all variables.</p></div>
-  <div class="source_cont">
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="netCDF4.MFDataset.set_auto_maskandscale">
-    <p>def <span class="ident">set_auto_maskandscale</span>(</p><p>self, True_or_False)</p>
-    </div>
-    
-    <p class="inheritance">
-     <strong>Inheritance:</strong>
-       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.set_auto_maskandscale">set_auto_maskandscale</a></code>
-    </p>
-
-    
-  
-    <div class="desc"><p>Call <code>Variable.set_auto_maskandscale</code> for all variables contained in this
-<code>MFDataset</code>.</p>
-<p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
-and variable scaling shall be applied for all variables.</p></div>
-  <div class="source_cont">
-</div>
-
-  </div>
-  
-            
-  <div class="item">
-    <div class="name def" id="netCDF4.MFDataset.set_auto_scale">
-    <p>def <span class="ident">set_auto_scale</span>(</p><p>self, True_or_False)</p>
-    </div>
-    
-    <p class="inheritance">
-     <strong>Inheritance:</strong>
-       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.set_auto_scale">set_auto_scale</a></code>
-    </p>
-
-    
-  
-    <div class="desc"><p>Call <code>Variable.set_auto_scale</code> for all variables contained in this <code>MFDataset</code>.</p>
-<p><strong><code>True_or_False</code></strong>: Boolean determining if automatic variable scaling
-shall be applied for all variables.</p></div>
   <div class="source_cont">
 </div>
 
