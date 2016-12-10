@@ -8,7 +8,7 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-12/10/2016: Version [1.2.6](https://github.com/Unidata/netcdf4-python/releases/tag/v1.2.6rel) released. 
+12/10/2016: Version [1.2.6](https://pypi.python.org/pypi/netCDF4/1.2.6) released. 
 Bug fixes for Enum data type, and _FillValue/missing_value usage when data is stored
 in non-native endian format. Add get_variables_by_attributes to MFDataset. Support for python 2.6 removed.
 
