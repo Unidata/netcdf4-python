@@ -44,7 +44,6 @@ Requires
    Cython is not installed, these features (such as the ability to rename Group objects)
    will be disabled to preserve backward compatibility with older versions of the netCDF
    library.
- - For python < 2.7, the [ordereddict module](http://python.org/pypi/ordereddict).
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
@@ -55,8 +54,8 @@ Requires
  [OPeNDAP](http://opendap.org) support.
  - [HDF4](http://www.hdfgroup.org/products/hdf4), if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
- - The netCDF-4 C library from 
- [ftp://ftp.unidata.ucar.edu/pub/netcdf](ftp://ftp.unidata.ucar.edu/pub/netcdf).
+ - The netCDF-4 C library from the [github releases
+   page](https://github.com/Unidata/netcdf-c/releases). 
  Version 4.1.1 or higher is required (4.2 or higher recommended).
  Be sure to build with `--enable-netcdf-4 --enable-shared`, and set
  `CPPFLAGS="-I $HDF5_DIR/include"` and `LDFLAGS="-L $HDF5_DIR/lib"`,
