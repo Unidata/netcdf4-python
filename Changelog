@@ -1,5 +1,5 @@
- since version 1.2.6 release
-============================
+ version 1.2.7 (not yet released)
+=================================
  * fix for issue #624 (error in conversion to masked array when variableslice
    returns a scalar).
 
