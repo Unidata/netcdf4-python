@@ -1,7 +1,9 @@
  version 1.2.7 (not yet released)
 =================================
  * fix for issue #624 (error in conversion to masked array when variableslice
-   returns a scalar).
+   returns a scalar). This is a regression introduced in 1.2.5 associated
+   with support for vector missing_values. Test (tst_masked5.py) added for
+   vector missing_values.
 
  version 1.2.6 (tag v1.2.6rel)
 ==============================
