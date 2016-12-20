@@ -3859,7 +3859,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 if mvalisnan: 
                     mvalmask += numpy.isnan(data)
                 else:
-                    mvalmask += data==mval
+                    mvalmask += data==m
             if mvalmask.any():
                 # set fill_value for masked array 
                 # to missing_value (or 1st element
