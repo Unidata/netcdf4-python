@@ -32,10 +32,6 @@ environment:
       CONDA_NPY: 111
       CONDA_PY: 35
 
-    - TARGET_ARCH: x64
-      CONDA_NPY: 111
-      CONDA_PY: 36
-
 platform:
     - x64
 
