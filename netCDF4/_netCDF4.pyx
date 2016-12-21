@@ -1122,7 +1122,7 @@ cdef _get_att(grp, int varid, name):
         if name == '_FillValue' and python3:
             # make sure _FillValue for character arrays is a byte on python 3
             # (issue 271).
-            pstring = bytes(value_arr)
+            pstring = value_arr.tostring()
         else:
             pstring =\
             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
