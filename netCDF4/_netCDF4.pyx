@@ -1,5 +1,5 @@
 """
-Version 1.2.6
+Version 1.2.7
 -------------
 - - - 
 
@@ -936,7 +936,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.6"
+__version__ = "1.2.7"
 
 # Initialize numpy
 import posixpath
@@ -1122,7 +1122,7 @@ cdef _get_att(grp, int varid, name):
         if name == '_FillValue' and python3:
             # make sure _FillValue for character arrays is a byte on python 3
             # (issue 271).
-            pstring = bytes(value_arr)
+            pstring = value_arr.tostring()
         else:
             pstring =\
             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
@@ -3859,7 +3859,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 if mvalisnan: 
                     mvalmask += numpy.isnan(data)
                 else:
-                    mvalmask += data==mval
+                    mvalmask += data==m
             if mvalmask.any():
                 # set fill_value for masked array 
                 # to missing_value (or 1st element
