@@ -5,7 +5,7 @@
    with support for vector missing_values. Test (tst_masked5.py) added for
    vector missing_values.
  * fix for python 3.6 compatibility (error retrieving character _FillValue attribute,
-   issue #626).
+   issue #626). Test with python 3.6 using travis CI.
 
  version 1.2.6 (tag v1.2.6rel)
 ==============================
