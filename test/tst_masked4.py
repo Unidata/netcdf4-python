@@ -85,21 +85,21 @@ class SetValidMinMax(unittest.TestCase):
         v2 = f.variables["v2"][:]
         v3 = f.variables["v3"][:]
         self.assertEqual(v.dtype, "f8")
-        self.assert_(isinstance(v, np.ndarray))
-        self.assert_(isinstance(v, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v, np.ndarray))
+        self.assertTrue(isinstance(v, ma.core.MaskedArray))
         assert_array_almost_equal(v, self.v_scaled)
         self.assertEqual(v2.dtype, "f8")
-        self.assert_(isinstance(v2, np.ndarray))
-        self.assert_(isinstance(v2, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v2, np.ndarray))
+        self.assertTrue(isinstance(v2, ma.core.MaskedArray))
         assert_array_almost_equal(v2, self.v_scaled)
-        self.assert_(np.all(self.v_ma.mask == v.mask))
-        self.assert_(np.all(self.v_ma.mask == v2.mask))
-        self.assert_(np.all(self.v_ma.mask == v3.mask))
+        self.assertTrue(np.all(self.v_ma.mask == v.mask))
+        self.assertTrue(np.all(self.v_ma.mask == v2.mask))
+        self.assertTrue(np.all(self.v_ma.mask == v3.mask))
         # check that underlying data is same as in netcdf file
         v = f.variables['v']
         v.set_auto_scale(False) 
         v = v[:]
-        self.assert_(np.all(self.v == v.data))
+        self.assertTrue(np.all(self.v == v.data))
 
         f.close()
 

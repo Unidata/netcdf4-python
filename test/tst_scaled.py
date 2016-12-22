@@ -62,8 +62,8 @@ class SetAutoScaleFalse(SetAutoScaleTestBase):
         v = f.variables["v"][:]
 
         self.assertEqual(v.dtype, "i2")
-        self.assert_(isinstance(v, np.ndarray))
-        self.assert_(not isinstance(v, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v, np.ndarray))
+        self.assertTrue(not isinstance(v, ma.core.MaskedArray))
         assert_array_almost_equal(v, self.v)
 
         f.close()
@@ -87,8 +87,8 @@ class SetAutoScaleFalse(SetAutoScaleTestBase):
         v_ma = f.variables["v"][:]
 
         self.assertEqual(v_ma.dtype, "i2")
-        self.assert_(isinstance(v_ma, np.ndarray))
-        self.assert_(isinstance(v_ma, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v_ma, np.ndarray))
+        self.assertTrue(isinstance(v_ma, ma.core.MaskedArray))
         assert_array_almost_equal(v_ma, self.v_ma)
 
         f.close()
@@ -106,8 +106,8 @@ class SetAutoScaleTrue(SetAutoScaleTestBase):
         v_scaled = f.variables['v'][:]
 
         self.assertEqual(v_scaled.dtype, "f8")
-        self.assert_(isinstance(v_scaled, np.ndarray))
-        self.assert_(not isinstance(v_scaled, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v_scaled, np.ndarray))
+        self.assertTrue(not isinstance(v_scaled, ma.core.MaskedArray))
         assert_array_almost_equal(v_scaled, self.v_scaled)
         f.close()
 
@@ -129,8 +129,8 @@ class SetAutoScaleTrue(SetAutoScaleTestBase):
         v_ma_scaled = f.variables['v'][:]
 
         self.assertEqual(v_ma_scaled.dtype, "f8")
-        self.assert_(isinstance(v_ma_scaled, np.ndarray))
-        self.assert_(isinstance(v_ma_scaled, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v_ma_scaled, np.ndarray))
+        self.assertTrue(isinstance(v_ma_scaled, ma.core.MaskedArray))
         assert_array_almost_equal(v_ma_scaled, self.v_ma_scaled)
         f.close()
 

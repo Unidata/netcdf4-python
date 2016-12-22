@@ -58,8 +58,8 @@ class SetAutoMaskFalse(SetAutoMaskTestBase):
         v = f.variables["v"][:]
 
         self.assertEqual(v.dtype, "i2")
-        self.assert_(isinstance(v, np.ndarray))
-        self.assert_(not isinstance(v, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v, np.ndarray))
+        self.assertTrue(not isinstance(v, ma.core.MaskedArray))
         assert_array_almost_equal(v, self.v)
 
         f.close()
@@ -84,8 +84,8 @@ class SetAutoMaskFalse(SetAutoMaskTestBase):
         v = f.variables["v"][:]
 
         self.assertEqual(v.dtype, "f8")
-        self.assert_(isinstance(v, np.ndarray))
-        self.assert_(not isinstance(v, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v, np.ndarray))
+        self.assertTrue(not isinstance(v, ma.core.MaskedArray))
         assert_array_almost_equal(v, self.v_scaled)
 
         f.close()
@@ -103,8 +103,8 @@ class SetAutoMaskTrue(SetAutoMaskTestBase):
         v_ma = f.variables['v'][:]
 
         self.assertEqual(v_ma.dtype, "i2")
-        self.assert_(isinstance(v_ma, np.ndarray))
-        self.assert_(isinstance(v_ma, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v_ma, np.ndarray))
+        self.assertTrue(isinstance(v_ma, ma.core.MaskedArray))
         assert_array_almost_equal(v_ma, self.v_ma)
         f.close()
 
@@ -127,8 +127,8 @@ class SetAutoMaskTrue(SetAutoMaskTestBase):
         v_ma = f.variables['v'][:]
 
         self.assertEqual(v_ma.dtype, "f8")
-        self.assert_(isinstance(v_ma, np.ndarray))
-        self.assert_(isinstance(v_ma, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v_ma, np.ndarray))
+        self.assertTrue(isinstance(v_ma, ma.core.MaskedArray))
         assert_array_almost_equal(v_ma, self.v_ma_scaled)
         f.close()
 
