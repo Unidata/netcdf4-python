@@ -26,11 +26,11 @@ environment:
 
     - TARGET_ARCH: x86
       CONDA_NPY: 111
-      CONDA_PY: 36
+      CONDA_PY: 35
 
     - TARGET_ARCH: x64
       CONDA_NPY: 111
-      CONDA_PY: 36
+      CONDA_PY: 35
 
 platform:
     - x64
