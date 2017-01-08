@@ -9,6 +9,6 @@ nc = netCDF4.Dataset(url)
 assert nc.filepath() == url
 
 # Run the unittests.
-test_dir = os.path.join(os.environ['SRC_DIR'], 'test')
+test_dir = os.path.join('test')
 os.chdir(test_dir)
 os.system('python run_all.py')

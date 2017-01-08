@@ -1,37 +1,23 @@
 environment:
 
-  CONDA_INSTALL_LOCN: "C:\\conda"
-
   # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
   # /E:ON and /V:ON options are not enabled in the batch script interpreter
   # See: http://stackoverflow.com/a/13751649/163740
   CMD_IN_ENV: "cmd /E:ON /V:ON /C obvci_appveyor_python_build_env.cmd"
 
-  # Workaround for https://github.com/conda/conda-build/issues/636
-  PYTHONIOENCODING: "UTF-8"
-  PYTHONUNBUFFERED: "1"
-
-  # We set a default Python version for the miniconda that is to be installed.
-  # This can be overridden in the matrix definition where appropriate.
-  CONDA_PY: "27"
-
   matrix:
-    - TARGET_ARCH: x86
-      CONDA_NPY: 111
-      CONDA_PY: 27
-
     - TARGET_ARCH: x64
       CONDA_NPY: 111
       CONDA_PY: 27
-
-    - TARGET_ARCH: x86
-      CONDA_NPY: 111
-      CONDA_PY: 35
+      CONDA_INSTALL_LOCN: C:\\Miniconda-x64
 
     - TARGET_ARCH: x64
       CONDA_NPY: 111
-      CONDA_PY: 35
+      CONDA_PY: 36
+      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
 
+# We always use a 64-bit machine, but can build x86 distributions
+# with the TARGET_ARCH variable.
 platform:
     - x64
 
@@ -46,23 +32,21 @@ install:
          Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
            throw "There are newer queued builds for this pull request, failing early." }
 
-    # Set the CONDA_NPY, although it has no impact on the actual build.
-    # We need this because of a test within conda-build.
-    - cmd: set CONDA_NPY=19
-
-    # Use the pre-installed Miniconda for the desired arch.
-    - ps: if($env:TARGET_ARCH -eq 'x86')
-            {$root = "C:\Miniconda"}
-          else
-            {$root = "C:\Miniconda-x64"}
-          $env:path="$root;$root\Scripts;$root\Library\bin;$($env:path)"
-
-    # Update conda.
+    # Add path, activate `conda` and update conda.
+    - cmd: set "PATH=%CONDA_INSTALL_LOCN%\\Scripts;%CONDA_INSTALL_LOCN%\\Library\\bin;%PATH%"
     - cmd: conda update --yes --quiet conda
+    - cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
+
+    - cmd: set PYTHONUNBUFFERED=1
+
+    # Ensure defaults and conda-forge channels are present.
+    - cmd: conda config --set show_channel_urls true
+    - cmd: conda config --remove channels defaults
+    - cmd: conda config --add channels defaults
+    - cmd: conda config --add channels conda-forge
 
     # Conda build tools.
-    - cmd: conda config --add channels conda-forge --force
-    - cmd: conda install --yes --quiet obvious-ci
+    - cmd: conda install -n root --quiet --yes obvious-ci
     - cmd: obvci_install_conda_build_tools.py
     - cmd: conda info
 
