@@ -8,7 +8,7 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-1/8/2017: Version [1.2.7](https://github.com/Unidata/netcdf4-python/releases/tag/v1.2.7rel) released. 
+1/8/2017: Version [1.2.7](https://pypi.python.org/pypi/netCDF4/1.2.7) released. 
 Python 3.6 compatibility, and fix for vector missing_values.
 
 12/10/2016: Version [1.2.6](https://pypi.python.org/pypi/netCDF4/1.2.6) released. 
