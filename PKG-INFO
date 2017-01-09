@@ -1,17 +1,47 @@
-Metadata-Version: 1.0
+Metadata-Version: 1.1
 Name: netCDF4
-Version: 0.5
-Summary: netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements many of the new features, and can read netCDF files created with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module
-Home-page: http://www.cdc.noaa.gov/people/jeffrey.s.whitaker/python/netCDF4.html
+Version: 1.2.7
 Author: Jeff Whitaker
-Author-email: jeffrey.s.whitaker@noaa.gov
-License: ['OSI Approved']
-Download-URL: http://www.cdc.noaa.gov/people/jeffrey.s.whitaker/python/netCDF4-0.4.4.tar.gz
-Description: UNKNOWN
+Author-email: jeffrey s whitaker at noaa gov
+Home-page: https://github.com/Unidata/netcdf4-python
+Summary: python/numpy interface to netCDF  library (versions 3 and 4)
+License: OSI Approved
+Description: netCDF version 4 has many features not found in earlier versions of the library
+        and is implemented on
+        top of HDF5. This module can read and write files in both the new netCDF 4 and
+        the old netCDF 3
+        format, and can create files that are readable by HDF5 clients. The API modelled
+        after
+        Scientific.IO.NetCDF, and should be familiar to users of that module.
+        
+        Most new features of netCDF 4 are implemented, such as multiple unlimited
+        dimensions, groups and zlib data compression. All the new numeric data types
+        (such as 64 bit and unsigned integer types) are implemented. Compound,
+        variable length (vlen), and enumerated (enum) data types are supported, but
+        the opaque type is not. Mixtures of compound, vlen and/or enum data types are not supported.
+        
+        This project has a `Github repository
+        <https://github.com/Unidata/netcdf4-python>`_ where you may access
+        the most
+        up-to-date source.
+        
+        `Documentation
+        <http://unidata.github.io/netcdf4-python>`_
+        
+        `Changelog
+        <https://github.com/Unidata/netcdf4-python/blob/master/Changelog>`_
+        
+        Also available in the `Anaconda scientific python distribution <https://store.continuum.io/cshop/anaconda/>`_
+        
+        Download source tarball and binary wheels below...
+Keywords: numpy netcdf data science network oceanography meteorology climate
 Platform: any
-Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Science/Research
-Classifier: License :: OSI Approved
-Classifier: Topic :: Software Development :: Libraries :: Python Modules
-Classifier: Topic :: System :: Archiving :: Compression
-Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Topic :: Scientific/Engineering
+
