@@ -15,6 +15,8 @@
    git tag -a vX.Y.Zrel -m "version X.Y.Z release"
    git push origin --tags
 * push an empty commit to the netcdf4-python-wheels repo to trigger new builds.
+  You will likely want to edit the .travis.yml file at 
+  https://github.com/MacPython/netcdf4-python-wheels to specify the BUILD_COMMIT before triggering a build.
 * update the pypi entry, upload the macosx wheels and the windows wheels
   from Christoph Gohkle's site.  Lastly, create a source tarball using
   'python setup.py sdist' and upload to pypi.
