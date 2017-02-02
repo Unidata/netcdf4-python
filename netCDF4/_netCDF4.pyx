@@ -337,8 +337,8 @@ used later to access and set variable data and attributes.
     :::python
     >>> times = rootgrp.createVariable("time","f8",("time",))
     >>> levels = rootgrp.createVariable("level","i4",("level",))
-    >>> latitudes = rootgrp.createVariable("latitude","f4",("lat",))
-    >>> longitudes = rootgrp.createVariable("longitude","f4",("lon",))
+    >>> latitudes = rootgrp.createVariable("lat","f4",("lat",))
+    >>> longitudes = rootgrp.createVariable("lon","f4",("lon",))
     >>> # two dimensions unlimited
     >>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",))
 
@@ -385,8 +385,8 @@ Python dictionary, in the same way as the dimensions:
     >>> print rootgrp.variables
     OrderedDict([("time", <netCDF4.Variable object at 0x1b4ba70>),
                  ("level", <netCDF4.Variable object at 0x1b4bab0>),
-                 ("latitude", <netCDF4.Variable object at 0x1b4baf0>),
-                 ("longitude", <netCDF4.Variable object at 0x1b4bb30>),
+                 ("lat", <netCDF4.Variable object at 0x1b4baf0>),
+                 ("lon", <netCDF4.Variable object at 0x1b4bb30>),
                  ("temp", <netCDF4.Variable object at 0x1b4bb70>)])
 
 `netCDF4.Variable` names can be changed using the
