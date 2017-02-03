@@ -46,8 +46,8 @@ print(time)
 # variables.
 times = rootgrp.createVariable('time','f8',('time',))
 levels = rootgrp.createVariable('level','i4',('level',))
-latitudes = rootgrp.createVariable('latitude','f4',('lat',))
-longitudes = rootgrp.createVariable('longitude','f4',('lon',))
+latitudes = rootgrp.createVariable('lat','f4',('lat',))
+longitudes = rootgrp.createVariable('lon','f4',('lon',))
 # 2 unlimited dimensions.
 #temp = rootgrp.createVariable('temp','f4',('time','level','lat','lon',))
 # this makes the compression 'lossy' (preserving a precision of 1/1000)
