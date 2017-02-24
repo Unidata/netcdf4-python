@@ -539,7 +539,7 @@ will be a numpy scalar array.
 Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
-specified like `hours since YY:MM:DD hh:mm:ss`.  These units can be
+specified like `hours since YY-MM-DD hh:mm:ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called `netCDF4.num2date` and `netCDF4.date2num` are
 provided with this package to do just that.  Here's an example of how they
@@ -1284,7 +1284,6 @@ cdef _set_att(grp, int varid, name, value,\
                 value_arr1 = value_arr.ravel()
                 dats = _strencode(''.join(value_arr1.tolist()))
             lenarr = len(dats)
-            print 'attname,lenarr = ',attname,lenarr
             datstring = dats
             if lenarr == 0:
                 # write null byte
@@ -1295,14 +1294,11 @@ cdef _set_att(grp, int varid, name, value,\
                 try:
                     if force_ncstring: raise UnicodeError
                     dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
-                    print 'write as text 2'
                     ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
                 except UnicodeError:
                     issue485_workaround(grp._grpid, varid, attname)
-                    print 'write as string'
                     ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
             else:
-                print 'write as text 1'
                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
