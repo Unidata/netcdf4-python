@@ -539,7 +539,7 @@ will be a numpy scalar array.
 Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
-specified like `hours since YY:MM:DD hh-mm-ss`.  These units can be
+specified like `hours since YY-MM-DD hh:mm:ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called `netCDF4.num2date` and `netCDF4.date2num` are
 provided with this package to do just that.  Here's an example of how they
