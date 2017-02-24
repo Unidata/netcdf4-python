@@ -1766,7 +1766,7 @@ will be a numpy scalar array.</p>
 <p>Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
-specified like <code>hours since YY:MM:DD hh:mm:ss</code>.  These units can be
+specified like <code>hours since YY-MM-DD hh:mm:ss</code>.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called <a href="#netCDF4.num2date"><code>num2date</code></a> and <a href="#netCDF4.date2num"><code>date2num</code></a> are
 provided with this package to do just that.  Here's an example of how they
