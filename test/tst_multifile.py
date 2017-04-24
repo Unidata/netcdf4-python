@@ -5,7 +5,7 @@ from numpy.testing import assert_array_equal, assert_equal
 from numpy import ma
 import tempfile, unittest, os, datetime
 
-nx=100; ydim=5; zdim=1
+nx=100; ydim=5; zdim=10
 nfiles = 10
 ninc = nx/nfiles
 files = [tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name for nfile in range(nfiles)]
