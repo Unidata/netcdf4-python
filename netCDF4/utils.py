@@ -683,7 +683,7 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
         ncvar = ncfile3.variables[varname]
         if not quiet: sys.stdout.write('copying variable %s\n' % varname)
         # quantize data?
-        if lsd_dict is not None and lsd_dict.has_key(varname):
+        if lsd_dict is not None and varname in lsd_dict:
             lsd = lsd_dict[varname]
             if not quiet: sys.stdout.write('truncating to least_significant_digit = %d\n'%lsd)
         else:
