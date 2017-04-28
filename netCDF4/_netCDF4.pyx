@@ -981,6 +981,7 @@ __has_rename_grp__ = HAS_RENAME_GRP
 __has_nc_inq_path__ = HAS_NC_INQ_PATH
 __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
 __has_cdf5__ = HAS_CDF5_FORMAT
+__has_nc_open_mem__ = HAS_NC_OPEN_MEM
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
@@ -1581,6 +1582,10 @@ cdef _get_vars(group):
         free(varids) # free pointer holding variable ids.
     return variables
 
+cdef _ensure_nc_success(ierr, err_cls=RuntimeError):
+    if ierr != NC_NOERR:
+        raise err_cls((<char *>nc_strerror(ierr)).decode('ascii'))
+
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
 
@@ -1826,12 +1831,18 @@ references to the parent Dataset or Group.
             _set_default_format(format='NETCDF3_64BIT_OFFSET')
         elif mode == 'r':
             if memory is not None:
-                # Store reference to memory
-                result = PyObject_GetBuffer(memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS)
-                if result != 0:
-                    raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
+                IF HAS_NC_OPEN_MEM:
+                    # Store reference to memory
+                    result = PyObject_GetBuffer(memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS)
+                    if result != 0:
+                        raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
 
-                ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
+                    ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
+                ELSE:
+                    msg = """
+        nc_open_mem method not enabled.  To enable, install Cython, make sure you have
+        version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+                    raise ValueError(msg)
             elif diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
             else:
@@ -1865,8 +1876,9 @@ references to the parent Dataset or Group.
                     ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
         else:
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
-        if ierr != NC_NOERR:
-            raise IOError((<char *>nc_strerror(ierr)).decode('ascii'))
+
+        _ensure_nc_success(ierr, IOError)
+
         # data model and file format attributes
         self.data_model = _get_format(grpid)
         # data_model attribute used to be file_format (versions < 1.0.8), retain
@@ -1931,16 +1943,16 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
         IF HAS_NC_INQ_PATH:
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
+
             c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
             if not c_path:
                 raise MemoryError()
             try:
                 with nogil:
                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)
-                if ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
+
                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
             finally:
                 free(c_path)
@@ -1988,13 +2000,13 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
 Close the Dataset.
         """
-        cdef int ierr
-        ierr = nc_close(self._grpid)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        self._isopen = 0 # indicates file already closed, checked by __dealloc__
+        _ensure_nc_success(nc_close(self._grpid))
+
         if self._buffer.buf:
-            PyBuffer_Release(&self._buffer)
+            _ensure_nc_success(PyBuffer_Release(&self._buffer))
+            self._buffer.buf = NULL
+
+        self._isopen = 0 # indicates file already closed, checked by __dealloc__
 
     def isopen(self):
         """
@@ -2019,10 +2031,7 @@ is the Dataset open or closed?
 **`sync(self)`**
 
 Writes all buffered data in the `netCDF4.Dataset` to the disk file."""
-        cdef int ierr
-        ierr = nc_sync(self._grpid)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(nc_sync(self._grpid))
 
     def _redef(self):
         cdef int ierr
@@ -2045,10 +2054,8 @@ separately for each variable type). The default behavior of the netCDF
 library corresponds to `set_fill_on`.  Data which are equal to the
 `_Fill_Value` indicate that the variable was created, but never written
 to."""
-        cdef int ierr, oldmode
-        ierr = nc_set_fill (self._grpid, NC_FILL, &oldmode)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        cdef int oldmode
+        _ensure_nc_success(nc_set_fill(self._grpid, NC_FILL, &oldmode))
 
     def set_fill_off(self):
         """
@@ -2059,10 +2066,8 @@ Sets the fill mode for a `netCDF4.Dataset` open for writing to `off`.
 This will prevent the data from being pre-filled with fill values, which
 may result in some performance improvements. However, you must then make
 sure the data is actually written before being read."""
-        cdef int ierr, oldmode
-        ierr = nc_set_fill (self._grpid, NC_NOFILL, &oldmode)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        cdef int oldmode
+        _ensure_nc_success(nc_set_fill(self._grpid, NC_NOFILL, &oldmode))
 
     def createDimension(self, dimname, size=None):
         """
@@ -2095,8 +2100,8 @@ rename a `netCDF4.Dimension` named `oldname` to `newname`."""
             raise KeyError('%s not a valid dimension name' % oldname)
         ierr = nc_rename_dim(self._grpid, dim._dimid, namstring)
         if self.data_model != 'NETCDF4': self._enddef()
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+
+        _ensure_nc_success(ierr)
         # remove old key from dimensions dict.
         self.dimensions.pop(oldname)
         # add new key.
@@ -2305,8 +2310,8 @@ rename a `netCDF4.Variable` named `oldname` to `newname`"""
         if self.data_model != 'NETCDF4': self._redef()
         ierr = nc_rename_var(self._grpid, var._varid, namstring)
         if self.data_model != 'NETCDF4': self._enddef()
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+
+        _ensure_nc_success(ierr)
         # remove old key from dimensions dict.
         self.variables.pop(oldname)
         # add new key.
@@ -2419,8 +2424,7 @@ attributes."""
         if self.data_model != 'NETCDF4': self._redef()
         ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
         if self.data_model != 'NETCDF4': self._enddef()
-        if ierr != NC_NOERR:
-            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
 
     def __setattr__(self,name,value):
         # if name in _private_atts, it is stored at the python
@@ -2457,23 +2461,19 @@ attributes."""
 **`renameAttribute(self, oldname, newname)`**
 
 rename a `netCDF4.Dataset` or `netCDF4.Group` attribute named `oldname` to `newname`."""
-        cdef int ierr
         cdef char *oldnamec
         cdef char *newnamec
         bytestr = _strencode(oldname)
         oldnamec = bytestr
         bytestr = _strencode(newname)
         newnamec = bytestr
-        ierr = nc_rename_att(self._grpid, NC_GLOBAL, oldnamec, newnamec)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(nc_rename_att(self._grpid, NC_GLOBAL, oldnamec, newnamec))
 
     def renameGroup(self, oldname, newname):
         """
 **`renameGroup(self, oldname, newname)`**
 
 rename a `netCDF4.Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)."""
-        cdef int ierr
         cdef char *newnamec
         IF HAS_RENAME_GRP:
             bytestr = _strencode(newname)
@@ -2482,9 +2482,7 @@ rename a `netCDF4.Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)
                 grp = self.groups[oldname]
             except KeyError:
                 raise KeyError('%s not a valid group name' % oldname)
-            ierr = nc_rename_grp(grp._grpid, newnamec)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(nc_rename_grp(grp._grpid, newnamec))
             # remove old key from groups dict.
             self.groups.pop(oldname)
             # add new key.
@@ -2657,7 +2655,6 @@ Additional read-only class variables:
         `netCDF4.Dataset.createGroup` method of a `netCDF4.Dataset` instance, or
         another `netCDF4.Group` instance, not using this class directly.
         """
-        cdef int ierr
         cdef char *groupname
         # flag to indicate that Variables in this Group support orthogonal indexing.
         self.__orthogonal_indexing__ = True
@@ -2683,9 +2680,7 @@ Additional read-only class variables:
         else:
             bytestr = _strencode(name)
             groupname = bytestr
-            ierr = nc_def_grp(parent._grpid, groupname, &self._grpid)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(nc_def_grp(parent._grpid, groupname, &self._grpid))
             self.cmptypes = OrderedDict()
             self.vltypes = OrderedDict()
             self.enumtypes = OrderedDict()
@@ -2703,12 +2698,11 @@ instances, raises IOError."""
 
     def _getname(self):
         # private method to get name associated with instance.
-        cdef int err
+        cdef int ierr
         cdef char namstring[NC_MAX_NAME+1]
         with nogil:
             ierr = nc_inq_grpname(self._grpid, namstring)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         return namstring.decode(default_encoding,unicode_error)
 
     property name:
