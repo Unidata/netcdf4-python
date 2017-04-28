@@ -1,5 +1,5 @@
 """
-Version 1.2.7
+Version 1.2.8a0
 -------------
 - - - 
 
@@ -918,6 +918,7 @@ PERFORMANCE OF THIS SOFTWARE.
 # Make changes to this file, not the c-wrappers that Cython generates.
 
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
+from cpython.buffer cimport PyObject_GetBuffer, PyBuffer_Release, PyBUF_SIMPLE, PyBUF_ANY_CONTIGUOUS
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
@@ -936,7 +937,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.7"
+__version__ = "1.2.8a0"
 
 # Initialize numpy
 import posixpath
@@ -1054,9 +1055,11 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
 is_native_little = numpy.dtype('<f4').byteorder == '='
 is_native_big = numpy.dtype('>f4').byteorder == '='
 
-# hard code this here, instead of importing from netcdf.h
+# hard code these here, instead of importing from netcdf.h
 # so it will compile with versions <= 4.2.
 NC_DISKLESS = 0x0008
+NC_INMEMORY = 0x8000
+
 # encoding used to convert strings to bytes when writing text data
 # to the netcdf file, and for converting bytes to strings when reading
 # from the netcdf file.
@@ -1658,6 +1661,7 @@ references to the parent Dataset or Group.
     cdef object __weakref__
     cdef public int _grpid
     cdef public int _isopen
+    cdef Py_buffer _buffer
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
     keepweakref
@@ -1712,7 +1716,7 @@ references to the parent Dataset or Group.
     the parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, keepweakref=False, **kwargs):
+                 diskless=False, persist=False, keepweakref=False, memory=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, format='NETCDF4')`**
@@ -1776,10 +1780,16 @@ references to the parent Dataset or Group.
         reducing memory usage and open file handles.  However, in many cases this is not
         desirable, since the associated Variable instances may still be needed, but are
         rendered unusable when the parent Dataset instance is garbage collected.
+        
+        **`memory`**: if not `None`, open file with contents taken from this block of memory.
+        Must be a sequence of bytes.  Note this only works with "r" mode.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
+
+        self._buffer.buf = NULL
+
         # flag to indicate that Variables in this Dataset support orthogonal indexing.
         self.__orthogonal_indexing__ = True
         if diskless and __netcdf4libversion__ < '4.2.1':
@@ -1787,6 +1797,10 @@ references to the parent Dataset or Group.
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
         bytestr = _strencode(str(filename))
         path = bytestr
+
+        if memory is not None and (mode != 'r' or type(memory) != bytes):
+            raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
+
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
@@ -1811,7 +1825,14 @@ references to the parent Dataset or Group.
             # 4.3.0 of the netcdf library (add a version check here?).
             _set_default_format(format='NETCDF3_64BIT_OFFSET')
         elif mode == 'r':
-            if diskless:
+            if memory is not None:
+                # Store reference to memory
+                result = PyObject_GetBuffer(memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS)
+                if result != 0:
+                    raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
+
+                ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
+            elif diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_NOWRITE, &grpid)
@@ -1972,6 +1993,8 @@ Close the Dataset.
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
         self._isopen = 0 # indicates file already closed, checked by __dealloc__
+        if self._buffer.buf:
+            PyBuffer_Release(&self._buffer)
 
     def isopen(self):
         """
