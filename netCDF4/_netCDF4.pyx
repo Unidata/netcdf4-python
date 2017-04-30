@@ -1993,13 +1993,11 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         ncdump.append('    groups: %s\n' % ', '.join(grpnames))
         return ''.join(ncdump)
 
-    def close(self):
-        """
-**`close(self)`**
+    def _close(self, check_err):
+        cdef int ierr = nc_close(self._grpid)
 
-Close the Dataset.
-        """
-        _ensure_nc_success(nc_close(self._grpid))
+        if check_err:
+            _ensure_nc_success(ierr)
 
         self._isopen = 0 # indicates file already closed, checked by __dealloc__
 
@@ -2007,6 +2005,15 @@ Close the Dataset.
         # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
         # view.obj is checked, ref on obj is decremented and obj will be null'd out
         PyBuffer_Release(&self._buffer)
+
+
+    def close(self):
+        """
+**`close(self)`**
+
+Close the Dataset.
+        """
+        self._close(True)
 
     def isopen(self):
         """
@@ -2018,9 +2025,8 @@ is the Dataset open or closed?
 
     def __dealloc__(self):
         # close file when there are no references to object left
-        cdef int ierr
         if self._isopen:
-            ierr = nc_close(self._grpid)
+           self._close(False)
 
     def __reduce__(self):
         # raise error is user tries to pickle a Dataset object.
