@@ -1587,11 +1587,11 @@ cdef _ensure_nc_success(ierr, err_cls=RuntimeError):
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
 
-_private_atts =\
+_private_atts = \
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd']
+ '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer']
 __pdoc__ = {}
 
 cdef class Dataset:
