@@ -1999,14 +1999,14 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
 Close the Dataset.
         """
-        try:
-            _ensure_nc_success(nc_close(self._grpid))
+        _ensure_nc_success(nc_close(self._grpid))
 
-            self._isopen = 0 # indicates file already closed, checked by __dealloc__
-        finally:
-            # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
-            # view.obj is checked, ref on obj is decremented and obj will be null'd out
-            PyBuffer_Release(&self._buffer)
+        self._isopen = 0 # indicates file already closed, checked by __dealloc__
+
+        # Only release buffer if close succeeded
+        # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
+        # view.obj is checked, ref on obj is decremented and obj will be null'd out
+        PyBuffer_Release(&self._buffer)
 
     def isopen(self):
         """

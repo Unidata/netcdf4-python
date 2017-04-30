@@ -16175,98 +16175,39 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_14close(struct __pyx_obj_7
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  char const *__pyx_t_5;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  PyObject *__pyx_t_10 = NULL;
-  PyObject *__pyx_t_11 = NULL;
   __Pyx_RefNannySetupContext("close", 0);
 
   /* "netCDF4/_netCDF4.pyx":2002
  * Close the Dataset.
  *         """
- *         try:             # <<<<<<<<<<<<<<
- *             _ensure_nc_success(nc_close(self._grpid))
+ *         _ensure_nc_success(nc_close(self._grpid))             # <<<<<<<<<<<<<<
  * 
+ *         self._isopen = 0 # indicates file already closed, checked by __dealloc__
  */
-  /*try:*/ {
+  __pyx_t_1 = __Pyx_PyInt_From_int(nc_close(__pyx_v_self->_grpid)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2002, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(__pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2002, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":2003
- *         """
- *         try:
- *             _ensure_nc_success(nc_close(self._grpid))             # <<<<<<<<<<<<<<
+  /* "netCDF4/_netCDF4.pyx":2004
+ *         _ensure_nc_success(nc_close(self._grpid))
  * 
- *             self._isopen = 0 # indicates file already closed, checked by __dealloc__
- */
-    __pyx_t_1 = __Pyx_PyInt_From_int(nc_close(__pyx_v_self->_grpid)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2003, __pyx_L4_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(__pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2003, __pyx_L4_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-    /* "netCDF4/_netCDF4.pyx":2005
- *             _ensure_nc_success(nc_close(self._grpid))
+ *         self._isopen = 0 # indicates file already closed, checked by __dealloc__             # <<<<<<<<<<<<<<
  * 
- *             self._isopen = 0 # indicates file already closed, checked by __dealloc__             # <<<<<<<<<<<<<<
- *         finally:
- *             # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
+ *         # Only release buffer if close succeeded
  */
-    __pyx_v_self->_isopen = 0;
-  }
+  __pyx_v_self->_isopen = 0;
 
   /* "netCDF4/_netCDF4.pyx":2009
- *             # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
- *             # view.obj is checked, ref on obj is decremented and obj will be null'd out
- *             PyBuffer_Release(&self._buffer)             # <<<<<<<<<<<<<<
+ *         # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
+ *         # view.obj is checked, ref on obj is decremented and obj will be null'd out
+ *         PyBuffer_Release(&self._buffer)             # <<<<<<<<<<<<<<
  * 
  *     def isopen(self):
  */
-  /*finally:*/ {
-    /*normal exit:*/{
-      PyBuffer_Release((&__pyx_v_self->_buffer));
-      goto __pyx_L5;
-    }
-    /*exception exit:*/{
-      __Pyx_PyThreadState_declare
-      __pyx_L4_error:;
-      __pyx_t_6 = 0; __pyx_t_7 = 0; __pyx_t_8 = 0; __pyx_t_9 = 0; __pyx_t_10 = 0; __pyx_t_11 = 0;
-      __Pyx_PyThreadState_assign
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (PY_MAJOR_VERSION >= 3) __Pyx_ExceptionSwap(&__pyx_t_9, &__pyx_t_10, &__pyx_t_11);
-      if ((PY_MAJOR_VERSION < 3) || unlikely(__Pyx_GetException(&__pyx_t_6, &__pyx_t_7, &__pyx_t_8) < 0)) __Pyx_ErrFetch(&__pyx_t_6, &__pyx_t_7, &__pyx_t_8);
-      __Pyx_XGOTREF(__pyx_t_6);
-      __Pyx_XGOTREF(__pyx_t_7);
-      __Pyx_XGOTREF(__pyx_t_8);
-      __Pyx_XGOTREF(__pyx_t_9);
-      __Pyx_XGOTREF(__pyx_t_10);
-      __Pyx_XGOTREF(__pyx_t_11);
-      __pyx_t_3 = __pyx_lineno; __pyx_t_4 = __pyx_clineno; __pyx_t_5 = __pyx_filename;
-      {
-        PyBuffer_Release((&__pyx_v_self->_buffer));
-      }
-      __Pyx_PyThreadState_assign
-      if (PY_MAJOR_VERSION >= 3) {
-        __Pyx_XGIVEREF(__pyx_t_9);
-        __Pyx_XGIVEREF(__pyx_t_10);
-        __Pyx_XGIVEREF(__pyx_t_11);
-        __Pyx_ExceptionReset(__pyx_t_9, __pyx_t_10, __pyx_t_11);
-      }
-      __Pyx_XGIVEREF(__pyx_t_6);
-      __Pyx_XGIVEREF(__pyx_t_7);
-      __Pyx_XGIVEREF(__pyx_t_8);
-      __Pyx_ErrRestore(__pyx_t_6, __pyx_t_7, __pyx_t_8);
-      __pyx_t_6 = 0; __pyx_t_7 = 0; __pyx_t_8 = 0; __pyx_t_9 = 0; __pyx_t_10 = 0; __pyx_t_11 = 0;
-      __pyx_lineno = __pyx_t_3; __pyx_clineno = __pyx_t_4; __pyx_filename = __pyx_t_5;
-      goto __pyx_L1_error;
-    }
-    __pyx_L5:;
-  }
+  PyBuffer_Release((&__pyx_v_self->_buffer));
 
   /* "netCDF4/_netCDF4.pyx":1996
  *         return ''.join(ncdump)
@@ -16291,7 +16232,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_14close(struct __pyx_obj_7
 }
 
 /* "netCDF4/_netCDF4.pyx":2011
- *             PyBuffer_Release(&self._buffer)
+ *         PyBuffer_Release(&self._buffer)
  * 
  *     def isopen(self):             # <<<<<<<<<<<<<<
  *         """
@@ -16338,7 +16279,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_16isopen(struct __pyx_obj_
   goto __pyx_L0;
 
   /* "netCDF4/_netCDF4.pyx":2011
- *             PyBuffer_Release(&self._buffer)
+ *         PyBuffer_Release(&self._buffer)
  * 
  *     def isopen(self):             # <<<<<<<<<<<<<<
  *         """
