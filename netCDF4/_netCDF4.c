@@ -652,7 +652,7 @@ struct __pyx_opt_args_7netCDF4_8_netCDF4__strencode;
 struct __pyx_defaults;
 typedef struct __pyx_defaults __pyx_defaults;
 
-/* "netCDF4/_netCDF4.pyx":1246
+/* "netCDF4/_netCDF4.pyx":1245
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  * 
  * cdef _set_att(grp, int varid, name, value,\             # <<<<<<<<<<<<<<
@@ -665,7 +665,7 @@ struct __pyx_opt_args_7netCDF4_8_netCDF4__set_att {
   PyObject *force_ncstring;
 };
 
-/* "netCDF4/_netCDF4.pyx":1585
+/* "netCDF4/_netCDF4.pyx":1584
  *     return variables
  * 
  * cdef _ensure_nc_success(ierr, err_cls=RuntimeError):             # <<<<<<<<<<<<<<
@@ -728,7 +728,7 @@ struct __pyx_defaults {
   PyObject *__pyx_arg_exclude;
 };
 
-/* "netCDF4/_netCDF4.pyx":1599
+/* "netCDF4/_netCDF4.pyx":1598
  * __pdoc__ = {}
  * 
  * cdef class Dataset:             # <<<<<<<<<<<<<<
@@ -862,7 +862,7 @@ struct __pyx_obj_7netCDF4_8_netCDF4_EnumType {
 };
 
 
-/* "netCDF4/_netCDF4.pyx":1034
+/* "netCDF4/_netCDF4.pyx":1033
  *     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
  * # invert dictionary mapping
  * _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())             # <<<<<<<<<<<<<<
@@ -3579,7 +3579,7 @@ static PyObject *__pyx_codeobj__204;
 static PyObject *__pyx_codeobj__207;
 static PyObject *__pyx_gb_7netCDF4_8_netCDF4_24generator(__pyx_CoroutineObject *__pyx_generator, PyObject *__pyx_sent_value); /* proto */
 
-/* "netCDF4/_netCDF4.pyx":1034
+/* "netCDF4/_netCDF4.pyx":1033
  *     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
  * # invert dictionary mapping
  * _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())             # <<<<<<<<<<<<<<
@@ -3596,12 +3596,12 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_22genexpr(CYTHON_UNUSED PyObject *_
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_7netCDF4_8_netCDF4___pyx_scope_struct__genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 1034, __pyx_L1_error)
+    __PYX_ERR(0, 1033, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_7netCDF4_8_netCDF4_24generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_genexpr, __pyx_n_s_netCDF4__netCDF4); if (unlikely(!gen)) __PYX_ERR(0, 1034, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_7netCDF4_8_netCDF4_24generator, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_genexpr, __pyx_n_s_netCDF4__netCDF4); if (unlikely(!gen)) __PYX_ERR(0, 1033, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -3637,17 +3637,17 @@ static PyObject *__pyx_gb_7netCDF4_8_netCDF4_24generator(__pyx_CoroutineObject *
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1034, __pyx_L1_error)
-  __pyx_r = PyDict_New(); if (unlikely(!__pyx_r)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 1033, __pyx_L1_error)
+  __pyx_r = PyDict_New(); if (unlikely(!__pyx_r)) __PYX_ERR(0, 1033, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_r);
   __pyx_t_2 = 0;
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1033, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (unlikely(__pyx_t_5 == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%s'", "iteritems");
-    __PYX_ERR(0, 1034, __pyx_L1_error)
+    __PYX_ERR(0, 1033, __pyx_L1_error)
   }
-  __pyx_t_6 = __Pyx_dict_iterator(__pyx_t_5, 0, __pyx_n_s_iteritems, (&__pyx_t_3), (&__pyx_t_4)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_dict_iterator(__pyx_t_5, 0, __pyx_n_s_iteritems, (&__pyx_t_3), (&__pyx_t_4)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1033, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_XDECREF(__pyx_t_1);
@@ -3656,7 +3656,7 @@ static PyObject *__pyx_gb_7netCDF4_8_netCDF4_24generator(__pyx_CoroutineObject *
   while (1) {
     __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_3, &__pyx_t_2, &__pyx_t_6, &__pyx_t_5, NULL, __pyx_t_4);
     if (unlikely(__pyx_t_7 == 0)) break;
-    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 1034, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 1033, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_k);
@@ -3667,7 +3667,7 @@ static PyObject *__pyx_gb_7netCDF4_8_netCDF4_24generator(__pyx_CoroutineObject *
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_v, __pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_5);
     __pyx_t_5 = 0;
-    if (unlikely(PyDict_SetItem(__pyx_r, (PyObject*)__pyx_cur_scope->__pyx_v_v, (PyObject*)__pyx_cur_scope->__pyx_v_k))) __PYX_ERR(0, 1034, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_r, (PyObject*)__pyx_cur_scope->__pyx_v_v, (PyObject*)__pyx_cur_scope->__pyx_v_k))) __PYX_ERR(0, 1033, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
@@ -3688,7 +3688,7 @@ static PyObject *__pyx_gb_7netCDF4_8_netCDF4_24generator(__pyx_CoroutineObject *
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":959
+/* "netCDF4/_netCDF4.pyx":958
  * # check for required version of netcdf-4 and hdf5.
  * 
  * def _gethdf5libversion():             # <<<<<<<<<<<<<<
@@ -3725,7 +3725,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("_gethdf5libversion", 0);
 
-  /* "netCDF4/_netCDF4.pyx":960
+  /* "netCDF4/_netCDF4.pyx":959
  * 
  * def _gethdf5libversion():
  *     majorvers = H5_VERS_MAJOR             # <<<<<<<<<<<<<<
@@ -3734,7 +3734,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
  */
   __pyx_v_majorvers = H5_VERS_MAJOR;
 
-  /* "netCDF4/_netCDF4.pyx":961
+  /* "netCDF4/_netCDF4.pyx":960
  * def _gethdf5libversion():
  *     majorvers = H5_VERS_MAJOR
  *     minorvers = H5_VERS_MINOR             # <<<<<<<<<<<<<<
@@ -3743,7 +3743,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
  */
   __pyx_v_minorvers = H5_VERS_MINOR;
 
-  /* "netCDF4/_netCDF4.pyx":962
+  /* "netCDF4/_netCDF4.pyx":961
  *     majorvers = H5_VERS_MAJOR
  *     minorvers = H5_VERS_MINOR
  *     releasevers = H5_VERS_RELEASE             # <<<<<<<<<<<<<<
@@ -3752,30 +3752,30 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
  */
   __pyx_v_releasevers = H5_VERS_RELEASE;
 
-  /* "netCDF4/_netCDF4.pyx":963
+  /* "netCDF4/_netCDF4.pyx":962
  *     minorvers = H5_VERS_MINOR
  *     releasevers = H5_VERS_RELEASE
  *     patchstring = H5_VERS_SUBRELEASE.decode('ascii')             # <<<<<<<<<<<<<<
  *     if not patchstring:
  *         return '%d.%d.%d' % (majorvers,minorvers,releasevers)
  */
-  __pyx_t_1 = __Pyx_decode_c_string(H5_VERS_SUBRELEASE, 0, strlen(H5_VERS_SUBRELEASE), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 963, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_c_string(H5_VERS_SUBRELEASE, 0, strlen(H5_VERS_SUBRELEASE), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 962, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_patchstring = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":964
+  /* "netCDF4/_netCDF4.pyx":963
  *     releasevers = H5_VERS_RELEASE
  *     patchstring = H5_VERS_SUBRELEASE.decode('ascii')
  *     if not patchstring:             # <<<<<<<<<<<<<<
  *         return '%d.%d.%d' % (majorvers,minorvers,releasevers)
  *     else:
  */
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_patchstring); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 964, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_patchstring); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 963, __pyx_L1_error)
   __pyx_t_3 = ((!__pyx_t_2) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":965
+    /* "netCDF4/_netCDF4.pyx":964
  *     patchstring = H5_VERS_SUBRELEASE.decode('ascii')
  *     if not patchstring:
  *         return '%d.%d.%d' % (majorvers,minorvers,releasevers)             # <<<<<<<<<<<<<<
@@ -3783,13 +3783,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
  *         return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_majorvers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 965, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_majorvers); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 964, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_minorvers); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 965, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_minorvers); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 964, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_releasevers); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 965, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_releasevers); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 964, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 965, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 964, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
@@ -3800,14 +3800,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
     __pyx_t_1 = 0;
     __pyx_t_4 = 0;
     __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_d_d_d, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 965, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_d_d_d, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 964, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_r = __pyx_t_5;
     __pyx_t_5 = 0;
     goto __pyx_L0;
 
-    /* "netCDF4/_netCDF4.pyx":964
+    /* "netCDF4/_netCDF4.pyx":963
  *     releasevers = H5_VERS_RELEASE
  *     patchstring = H5_VERS_SUBRELEASE.decode('ascii')
  *     if not patchstring:             # <<<<<<<<<<<<<<
@@ -3816,7 +3816,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":967
+  /* "netCDF4/_netCDF4.pyx":966
  *         return '%d.%d.%d' % (majorvers,minorvers,releasevers)
  *     else:
  *         return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)             # <<<<<<<<<<<<<<
@@ -3825,13 +3825,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_majorvers); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 967, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_majorvers); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 966, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_minorvers); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 967, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_minorvers); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 966, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_releasevers); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 967, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_releasevers); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 966, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = PyTuple_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 967, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 966, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_5);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_5);
@@ -3845,7 +3845,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
     __pyx_t_5 = 0;
     __pyx_t_6 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_d_d_d_s, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 967, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_d_d_d_s, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 966, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_r = __pyx_t_4;
@@ -3853,7 +3853,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
     goto __pyx_L0;
   }
 
-  /* "netCDF4/_netCDF4.pyx":959
+  /* "netCDF4/_netCDF4.pyx":958
  * # check for required version of netcdf-4 and hdf5.
  * 
  * def _gethdf5libversion():             # <<<<<<<<<<<<<<
@@ -3876,7 +3876,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4__gethdf5libversion(CYTHON_UNUSED Py
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":969
+/* "netCDF4/_netCDF4.pyx":968
  *         return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
  * 
  * def getlibversion():             # <<<<<<<<<<<<<<
@@ -3906,7 +3906,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_2getlibversion(CYTHON_UNUSED PyObje
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("getlibversion", 0);
 
-  /* "netCDF4/_netCDF4.pyx":976
+  /* "netCDF4/_netCDF4.pyx":975
  * used to build the module, and when it was built.
  *     """
  *     return (<char *>nc_inq_libvers()).decode('ascii')             # <<<<<<<<<<<<<<
@@ -3915,14 +3915,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_2getlibversion(CYTHON_UNUSED PyObje
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = ((char *)nc_inq_libvers());
-  __pyx_t_2 = __Pyx_decode_c_string(__pyx_t_1, 0, strlen(__pyx_t_1), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 976, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_c_string(__pyx_t_1, 0, strlen(__pyx_t_1), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 975, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":969
+  /* "netCDF4/_netCDF4.pyx":968
  *         return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
  * 
  * def getlibversion():             # <<<<<<<<<<<<<<
@@ -3941,7 +3941,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_2getlibversion(CYTHON_UNUSED PyObje
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1084
+/* "netCDF4/_netCDF4.pyx":1083
  * # internal C functions.
  * 
  * cdef _get_att_names(int grpid, int varid):             # <<<<<<<<<<<<<<
@@ -3970,7 +3970,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
   int __pyx_t_11;
   __Pyx_RefNannySetupContext("_get_att_names", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1088
+  /* "netCDF4/_netCDF4.pyx":1087
  *     cdef int ierr, numatts, n
  *     cdef char namstring[NC_MAX_NAME+1]
  *     if varid == NC_GLOBAL:             # <<<<<<<<<<<<<<
@@ -3980,7 +3980,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
   __pyx_t_1 = ((__pyx_v_varid == NC_GLOBAL) != 0);
   if (__pyx_t_1) {
 
-    /* "netCDF4/_netCDF4.pyx":1089
+    /* "netCDF4/_netCDF4.pyx":1088
  *     cdef char namstring[NC_MAX_NAME+1]
  *     if varid == NC_GLOBAL:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -3994,7 +3994,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
         #endif
         /*try:*/ {
 
-          /* "netCDF4/_netCDF4.pyx":1090
+          /* "netCDF4/_netCDF4.pyx":1089
  *     if varid == NC_GLOBAL:
  *         with nogil:
  *             ierr = nc_inq_natts(grpid, &numatts)             # <<<<<<<<<<<<<<
@@ -4004,7 +4004,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
           __pyx_v_ierr = nc_inq_natts(__pyx_v_grpid, (&__pyx_v_numatts));
         }
 
-        /* "netCDF4/_netCDF4.pyx":1089
+        /* "netCDF4/_netCDF4.pyx":1088
  *     cdef char namstring[NC_MAX_NAME+1]
  *     if varid == NC_GLOBAL:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4022,7 +4022,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
         }
     }
 
-    /* "netCDF4/_netCDF4.pyx":1088
+    /* "netCDF4/_netCDF4.pyx":1087
  *     cdef int ierr, numatts, n
  *     cdef char namstring[NC_MAX_NAME+1]
  *     if varid == NC_GLOBAL:             # <<<<<<<<<<<<<<
@@ -4032,7 +4032,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
     goto __pyx_L3;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1092
+  /* "netCDF4/_netCDF4.pyx":1091
  *             ierr = nc_inq_natts(grpid, &numatts)
  *     else:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4047,7 +4047,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
         #endif
         /*try:*/ {
 
-          /* "netCDF4/_netCDF4.pyx":1093
+          /* "netCDF4/_netCDF4.pyx":1092
  *     else:
  *         with nogil:
  *             ierr = nc_inq_varnatts(grpid, varid, &numatts)             # <<<<<<<<<<<<<<
@@ -4057,7 +4057,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
           __pyx_v_ierr = nc_inq_varnatts(__pyx_v_grpid, __pyx_v_varid, (&__pyx_v_numatts));
         }
 
-        /* "netCDF4/_netCDF4.pyx":1092
+        /* "netCDF4/_netCDF4.pyx":1091
  *             ierr = nc_inq_natts(grpid, &numatts)
  *     else:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4077,7 +4077,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
   }
   __pyx_L3:;
 
-  /* "netCDF4/_netCDF4.pyx":1094
+  /* "netCDF4/_netCDF4.pyx":1093
  *         with nogil:
  *             ierr = nc_inq_varnatts(grpid, varid, &numatts)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4087,7 +4087,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
   __pyx_t_1 = ((__pyx_v_ierr != NC_NOERR) != 0);
   if (__pyx_t_1) {
 
-    /* "netCDF4/_netCDF4.pyx":1095
+    /* "netCDF4/_netCDF4.pyx":1094
  *             ierr = nc_inq_varnatts(grpid, varid, &numatts)
  *     if ierr != NC_NOERR:
  *         raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -4095,22 +4095,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
  *     for n from 0 <= n < numatts:
  */
     __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1095, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1094, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1095, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1094, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1095, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1094, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1095, __pyx_L1_error)
+    __PYX_ERR(0, 1094, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1094
+    /* "netCDF4/_netCDF4.pyx":1093
  *         with nogil:
  *             ierr = nc_inq_varnatts(grpid, varid, &numatts)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4119,19 +4119,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1096
+  /* "netCDF4/_netCDF4.pyx":1095
  *     if ierr != NC_NOERR:
  *         raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     attslist = []             # <<<<<<<<<<<<<<
  *     for n from 0 <= n < numatts:
  *         with nogil:
  */
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1096, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1095, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_attslist = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1097
+  /* "netCDF4/_netCDF4.pyx":1096
  *         raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     attslist = []
  *     for n from 0 <= n < numatts:             # <<<<<<<<<<<<<<
@@ -4141,7 +4141,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
   __pyx_t_5 = __pyx_v_numatts;
   for (__pyx_v_n = 0; __pyx_v_n < __pyx_t_5; __pyx_v_n++) {
 
-    /* "netCDF4/_netCDF4.pyx":1098
+    /* "netCDF4/_netCDF4.pyx":1097
  *     attslist = []
  *     for n from 0 <= n < numatts:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4155,7 +4155,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
         #endif
         /*try:*/ {
 
-          /* "netCDF4/_netCDF4.pyx":1099
+          /* "netCDF4/_netCDF4.pyx":1098
  *     for n from 0 <= n < numatts:
  *         with nogil:
  *             ierr = nc_inq_attname(grpid, varid, n, namstring)             # <<<<<<<<<<<<<<
@@ -4165,7 +4165,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
           __pyx_v_ierr = nc_inq_attname(__pyx_v_grpid, __pyx_v_varid, __pyx_v_n, __pyx_v_namstring);
         }
 
-        /* "netCDF4/_netCDF4.pyx":1098
+        /* "netCDF4/_netCDF4.pyx":1097
  *     attslist = []
  *     for n from 0 <= n < numatts:
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4183,7 +4183,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
         }
     }
 
-    /* "netCDF4/_netCDF4.pyx":1100
+    /* "netCDF4/_netCDF4.pyx":1099
  *         with nogil:
  *             ierr = nc_inq_attname(grpid, varid, n, namstring)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4193,7 +4193,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
     __pyx_t_1 = ((__pyx_v_ierr != NC_NOERR) != 0);
     if (__pyx_t_1) {
 
-      /* "netCDF4/_netCDF4.pyx":1101
+      /* "netCDF4/_netCDF4.pyx":1100
  *             ierr = nc_inq_attname(grpid, varid, n, namstring)
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -4201,22 +4201,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
  *     return attslist
  */
       __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-      __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1101, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1100, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1101, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1100, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1101, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1100, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __PYX_ERR(0, 1101, __pyx_L1_error)
+      __PYX_ERR(0, 1100, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1100
+      /* "netCDF4/_netCDF4.pyx":1099
  *         with nogil:
  *             ierr = nc_inq_attname(grpid, varid, n, namstring)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4225,21 +4225,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1102
+    /* "netCDF4/_netCDF4.pyx":1101
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         attslist.append(namstring.decode(default_encoding,unicode_error))             # <<<<<<<<<<<<<<
  *     return attslist
  * 
  */
-    __pyx_t_4 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1102, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1102, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1102, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1102, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     __pyx_t_9 = 0;
@@ -4256,7 +4256,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_4, __pyx_t_7};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1102, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1101, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -4266,7 +4266,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_4, __pyx_t_7};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1102, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1101, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -4274,7 +4274,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
     } else
     #endif
     {
-      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1102, __pyx_L1_error)
+      __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1101, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       if (__pyx_t_8) {
         __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -4285,16 +4285,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
       PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_7);
       __pyx_t_4 = 0;
       __pyx_t_7 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1102, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1101, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_attslist, __pyx_t_3); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 1102, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyList_Append(__pyx_v_attslist, __pyx_t_3); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 1101, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1103
+  /* "netCDF4/_netCDF4.pyx":1102
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         attslist.append(namstring.decode(default_encoding,unicode_error))
  *     return attslist             # <<<<<<<<<<<<<<
@@ -4306,7 +4306,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
   __pyx_r = __pyx_v_attslist;
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":1084
+  /* "netCDF4/_netCDF4.pyx":1083
  * # internal C functions.
  * 
  * cdef _get_att_names(int grpid, int varid):             # <<<<<<<<<<<<<<
@@ -4331,7 +4331,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att_names(int __pyx_v_grpid, in
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1105
+/* "netCDF4/_netCDF4.pyx":1104
  *     return attslist
  * 
  * cdef _get_att(grp, int varid, name):             # <<<<<<<<<<<<<<
@@ -4387,42 +4387,42 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
   PyObject *__pyx_t_31 = NULL;
   __Pyx_RefNannySetupContext("_get_att", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1112
+  /* "netCDF4/_netCDF4.pyx":1111
  *     cdef nc_type att_type
  *     cdef ndarray value_arr
  *     bytestr = _strencode(name)             # <<<<<<<<<<<<<<
  *     attname = bytestr
  *     _grpid = grp._grpid
  */
-  __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_v_name, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1112, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_v_name, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_bytestr = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1113
+  /* "netCDF4/_netCDF4.pyx":1112
  *     cdef ndarray value_arr
  *     bytestr = _strencode(name)
  *     attname = bytestr             # <<<<<<<<<<<<<<
  *     _grpid = grp._grpid
  *     with nogil:
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_bytestr); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 1113, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_bytestr); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 1112, __pyx_L1_error)
   __pyx_v_attname = __pyx_t_2;
 
-  /* "netCDF4/_netCDF4.pyx":1114
+  /* "netCDF4/_netCDF4.pyx":1113
  *     bytestr = _strencode(name)
  *     attname = bytestr
  *     _grpid = grp._grpid             # <<<<<<<<<<<<<<
  *     with nogil:
  *         ierr = nc_inq_att(_grpid, varid, attname, &att_type, &att_len)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1114, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1114, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1113, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__grpid = __pyx_t_3;
 
-  /* "netCDF4/_netCDF4.pyx":1115
+  /* "netCDF4/_netCDF4.pyx":1114
  *     attname = bytestr
  *     _grpid = grp._grpid
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -4436,7 +4436,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       #endif
       /*try:*/ {
 
-        /* "netCDF4/_netCDF4.pyx":1116
+        /* "netCDF4/_netCDF4.pyx":1115
  *     _grpid = grp._grpid
  *     with nogil:
  *         ierr = nc_inq_att(_grpid, varid, attname, &att_type, &att_len)             # <<<<<<<<<<<<<<
@@ -4446,7 +4446,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         __pyx_v_ierr = nc_inq_att(__pyx_v__grpid, __pyx_v_varid, __pyx_v_attname, (&__pyx_v_att_type), (&__pyx_v_att_len));
       }
 
-      /* "netCDF4/_netCDF4.pyx":1115
+      /* "netCDF4/_netCDF4.pyx":1114
  *     attname = bytestr
  *     _grpid = grp._grpid
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -4464,7 +4464,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       }
   }
 
-  /* "netCDF4/_netCDF4.pyx":1117
+  /* "netCDF4/_netCDF4.pyx":1116
  *     with nogil:
  *         ierr = nc_inq_att(_grpid, varid, attname, &att_type, &att_len)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4474,7 +4474,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
   __pyx_t_4 = ((__pyx_v_ierr != NC_NOERR) != 0);
   if (__pyx_t_4) {
 
-    /* "netCDF4/_netCDF4.pyx":1118
+    /* "netCDF4/_netCDF4.pyx":1117
  *         ierr = nc_inq_att(_grpid, varid, attname, &att_type, &att_len)
  *     if ierr != NC_NOERR:
  *         raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -4482,22 +4482,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  *     if att_type == NC_CHAR:
  */
     __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1118, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1117, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1118, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1117, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1118, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1117, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 1118, __pyx_L1_error)
+    __PYX_ERR(0, 1117, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1117
+    /* "netCDF4/_netCDF4.pyx":1116
  *     with nogil:
  *         ierr = nc_inq_att(_grpid, varid, attname, &att_type, &att_len)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4506,7 +4506,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1120
+  /* "netCDF4/_netCDF4.pyx":1119
  *         raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     # attribute is a character or string ...
  *     if att_type == NC_CHAR:             # <<<<<<<<<<<<<<
@@ -4516,19 +4516,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
   switch (__pyx_v_att_type) {
     case NC_CHAR:
 
-    /* "netCDF4/_netCDF4.pyx":1121
+    /* "netCDF4/_netCDF4.pyx":1120
  *     # attribute is a character or string ...
  *     if att_type == NC_CHAR:
  *         value_arr = numpy.empty(att_len,'S1')             # <<<<<<<<<<<<<<
  *         with nogil:
  *             ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)
  */
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1121, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_empty); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1121, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_empty); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyInt_FromSize_t(__pyx_v_att_len); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1121, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_FromSize_t(__pyx_v_att_len); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __pyx_t_7 = NULL;
     __pyx_t_3 = 0;
@@ -4545,7 +4545,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_5, __pyx_n_s_S1};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1121, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1120, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -4554,14 +4554,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
       PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_5, __pyx_n_s_S1};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1121, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1120, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     } else
     #endif
     {
-      __pyx_t_8 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1121, __pyx_L1_error)
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       if (__pyx_t_7) {
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -4572,16 +4572,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       __Pyx_GIVEREF(__pyx_n_s_S1);
       PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_3, __pyx_n_s_S1);
       __pyx_t_5 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1121, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1121, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1120, __pyx_L1_error)
     __pyx_v_value_arr = ((PyArrayObject *)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1122
+    /* "netCDF4/_netCDF4.pyx":1121
  *     if att_type == NC_CHAR:
  *         value_arr = numpy.empty(att_len,'S1')
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4595,7 +4595,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         #endif
         /*try:*/ {
 
-          /* "netCDF4/_netCDF4.pyx":1123
+          /* "netCDF4/_netCDF4.pyx":1122
  *         value_arr = numpy.empty(att_len,'S1')
  *         with nogil:
  *             ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)             # <<<<<<<<<<<<<<
@@ -4605,7 +4605,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           __pyx_v_ierr = nc_get_att_text(__pyx_v__grpid, __pyx_v_varid, __pyx_v_attname, ((char *)__pyx_v_value_arr->data));
         }
 
-        /* "netCDF4/_netCDF4.pyx":1122
+        /* "netCDF4/_netCDF4.pyx":1121
  *     if att_type == NC_CHAR:
  *         value_arr = numpy.empty(att_len,'S1')
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4623,7 +4623,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         }
     }
 
-    /* "netCDF4/_netCDF4.pyx":1124
+    /* "netCDF4/_netCDF4.pyx":1123
  *         with nogil:
  *             ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4633,7 +4633,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     __pyx_t_4 = ((__pyx_v_ierr != NC_NOERR) != 0);
     if (__pyx_t_4) {
 
-      /* "netCDF4/_netCDF4.pyx":1125
+      /* "netCDF4/_netCDF4.pyx":1124
  *             ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -4641,22 +4641,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  *             # make sure _FillValue for character arrays is a byte on python 3
  */
       __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-      __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1125, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1124, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1125, __pyx_L1_error)
+      __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1124, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_INCREF(__pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1125, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1124, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_Raise(__pyx_t_1, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __PYX_ERR(0, 1125, __pyx_L1_error)
+      __PYX_ERR(0, 1124, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1124
+      /* "netCDF4/_netCDF4.pyx":1123
  *         with nogil:
  *             ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4665,35 +4665,35 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1126
+    /* "netCDF4/_netCDF4.pyx":1125
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         if name == '_FillValue' and python3:             # <<<<<<<<<<<<<<
  *             # make sure _FillValue for character arrays is a byte on python 3
  *             # (issue 271).
  */
-    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_v_name, __pyx_n_s_FillValue, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1126, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_v_name, __pyx_n_s_FillValue, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1125, __pyx_L1_error)
     if (__pyx_t_9) {
     } else {
       __pyx_t_4 = __pyx_t_9;
       goto __pyx_L12_bool_binop_done;
     }
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_python3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1126, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_python3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1125, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1126, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1125, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_4 = __pyx_t_9;
     __pyx_L12_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "netCDF4/_netCDF4.pyx":1129
+      /* "netCDF4/_netCDF4.pyx":1128
  *             # make sure _FillValue for character arrays is a byte on python 3
  *             # (issue 271).
  *             pstring = value_arr.tostring()             # <<<<<<<<<<<<<<
  *         else:
  *             pstring =\
  */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_tostring); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1129, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_tostring); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1128, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __pyx_t_8 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -4706,17 +4706,17 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         }
       }
       if (__pyx_t_8) {
-        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1129, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1128, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       } else {
-        __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1129, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1128, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_v_pstring = __pyx_t_1;
       __pyx_t_1 = 0;
 
-      /* "netCDF4/_netCDF4.pyx":1126
+      /* "netCDF4/_netCDF4.pyx":1125
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         if name == '_FillValue' and python3:             # <<<<<<<<<<<<<<
@@ -4726,7 +4726,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       goto __pyx_L11;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1132
+    /* "netCDF4/_netCDF4.pyx":1131
  *         else:
  *             pstring =\
  *             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')             # <<<<<<<<<<<<<<
@@ -4734,7 +4734,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  *     elif att_type == NC_STRING:
  */
     /*else*/ {
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_tostring); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1132, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_tostring); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __pyx_t_5 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
@@ -4747,19 +4747,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         }
       }
       if (__pyx_t_5) {
-        __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1132, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1131, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       } else {
-        __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1132, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1131, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_decode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1132, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_decode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1132, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1132, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_7 = NULL;
       __pyx_t_3 = 0;
@@ -4776,7 +4776,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_8)) {
         PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_6, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1132, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1131, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -4786,7 +4786,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
         PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_6, __pyx_t_5};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1132, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1131, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -4794,7 +4794,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       } else
       #endif
       {
-        __pyx_t_10 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1132, __pyx_L1_error)
+        __pyx_t_10 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         if (__pyx_t_7) {
           __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -4805,15 +4805,15 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_3, __pyx_t_5);
         __pyx_t_6 = 0;
         __pyx_t_5 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1132, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1132, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1132, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __pyx_v_pstring = __pyx_t_1;
@@ -4821,7 +4821,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     }
     __pyx_L11:;
 
-    /* "netCDF4/_netCDF4.pyx":1133
+    /* "netCDF4/_netCDF4.pyx":1132
  *             pstring =\
  *             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
  *         return pstring             # <<<<<<<<<<<<<<
@@ -4833,7 +4833,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     __pyx_r = __pyx_v_pstring;
     goto __pyx_L0;
 
-    /* "netCDF4/_netCDF4.pyx":1120
+    /* "netCDF4/_netCDF4.pyx":1119
  *         raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     # attribute is a character or string ...
  *     if att_type == NC_CHAR:             # <<<<<<<<<<<<<<
@@ -4842,7 +4842,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     break;
 
-    /* "netCDF4/_netCDF4.pyx":1134
+    /* "netCDF4/_netCDF4.pyx":1133
  *             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
  *         return pstring
  *     elif att_type == NC_STRING:             # <<<<<<<<<<<<<<
@@ -4851,7 +4851,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     case NC_STRING:
 
-    /* "netCDF4/_netCDF4.pyx":1135
+    /* "netCDF4/_netCDF4.pyx":1134
  *         return pstring
  *     elif att_type == NC_STRING:
  *         values = <char**>PyMem_Malloc(sizeof(char*) * att_len)             # <<<<<<<<<<<<<<
@@ -4860,7 +4860,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     __pyx_v_values = ((char **)PyMem_Malloc(((sizeof(char *)) * __pyx_v_att_len)));
 
-    /* "netCDF4/_netCDF4.pyx":1136
+    /* "netCDF4/_netCDF4.pyx":1135
  *     elif att_type == NC_STRING:
  *         values = <char**>PyMem_Malloc(sizeof(char*) * att_len)
  *         if not values:             # <<<<<<<<<<<<<<
@@ -4870,16 +4870,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     __pyx_t_4 = ((!(__pyx_v_values != 0)) != 0);
     if (__pyx_t_4) {
 
-      /* "netCDF4/_netCDF4.pyx":1137
+      /* "netCDF4/_netCDF4.pyx":1136
  *         values = <char**>PyMem_Malloc(sizeof(char*) * att_len)
  *         if not values:
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  *         try:
  *             with nogil:
  */
-      PyErr_NoMemory(); __PYX_ERR(0, 1137, __pyx_L1_error)
+      PyErr_NoMemory(); __PYX_ERR(0, 1136, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1136
+      /* "netCDF4/_netCDF4.pyx":1135
  *     elif att_type == NC_STRING:
  *         values = <char**>PyMem_Malloc(sizeof(char*) * att_len)
  *         if not values:             # <<<<<<<<<<<<<<
@@ -4888,7 +4888,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1138
+    /* "netCDF4/_netCDF4.pyx":1137
  *         if not values:
  *             raise MemoryError()
  *         try:             # <<<<<<<<<<<<<<
@@ -4897,7 +4897,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     /*try:*/ {
 
-      /* "netCDF4/_netCDF4.pyx":1139
+      /* "netCDF4/_netCDF4.pyx":1138
  *             raise MemoryError()
  *         try:
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -4911,7 +4911,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1140
+            /* "netCDF4/_netCDF4.pyx":1139
  *         try:
  *             with nogil:
  *                 ierr = nc_get_att_string(_grpid, varid, attname, values)             # <<<<<<<<<<<<<<
@@ -4921,7 +4921,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
             __pyx_v_ierr = nc_get_att_string(__pyx_v__grpid, __pyx_v_varid, __pyx_v_attname, __pyx_v_values);
           }
 
-          /* "netCDF4/_netCDF4.pyx":1139
+          /* "netCDF4/_netCDF4.pyx":1138
  *             raise MemoryError()
  *         try:
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -4939,7 +4939,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1141
+      /* "netCDF4/_netCDF4.pyx":1140
  *             with nogil:
  *                 ierr = nc_get_att_string(_grpid, varid, attname, values)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4949,7 +4949,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       __pyx_t_4 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_4) {
 
-        /* "netCDF4/_netCDF4.pyx":1142
+        /* "netCDF4/_netCDF4.pyx":1141
  *                 ierr = nc_get_att_string(_grpid, varid, attname, values)
  *             if ierr != NC_NOERR:
  *                 raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -4957,22 +4957,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  *                 result = [values[j].decode(default_encoding,unicode_error).replace('\x00','')
  */
         __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1142, __pyx_L16_error)
+        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1141, __pyx_L16_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1142, __pyx_L16_error)
+        __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1141, __pyx_L16_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1142, __pyx_L16_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1141, __pyx_L16_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_Raise(__pyx_t_1, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 1142, __pyx_L16_error)
+        __PYX_ERR(0, 1141, __pyx_L16_error)
 
-        /* "netCDF4/_netCDF4.pyx":1141
+        /* "netCDF4/_netCDF4.pyx":1140
  *             with nogil:
  *                 ierr = nc_get_att_string(_grpid, varid, attname, values)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -4981,7 +4981,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1143
+      /* "netCDF4/_netCDF4.pyx":1142
  *             if ierr != NC_NOERR:
  *                 raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             try:             # <<<<<<<<<<<<<<
@@ -4990,17 +4990,17 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
       /*try:*/ {
 
-        /* "netCDF4/_netCDF4.pyx":1144
+        /* "netCDF4/_netCDF4.pyx":1143
  *                 raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             try:
  *                 result = [values[j].decode(default_encoding,unicode_error).replace('\x00','')             # <<<<<<<<<<<<<<
  *                           for j in range(att_len)]
  *             finally:
  */
-        __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1144, __pyx_L23_error)
+        __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1143, __pyx_L23_error)
         __Pyx_GOTREF(__pyx_t_1);
 
-        /* "netCDF4/_netCDF4.pyx":1145
+        /* "netCDF4/_netCDF4.pyx":1144
  *             try:
  *                 result = [values[j].decode(default_encoding,unicode_error).replace('\x00','')
  *                           for j in range(att_len)]             # <<<<<<<<<<<<<<
@@ -5011,21 +5011,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
           __pyx_v_j = __pyx_t_12;
 
-          /* "netCDF4/_netCDF4.pyx":1144
+          /* "netCDF4/_netCDF4.pyx":1143
  *                 raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             try:
  *                 result = [values[j].decode(default_encoding,unicode_error).replace('\x00','')             # <<<<<<<<<<<<<<
  *                           for j in range(att_len)]
  *             finally:
  */
-          __pyx_t_10 = __Pyx_PyBytes_FromString((__pyx_v_values[__pyx_v_j])); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1144, __pyx_L23_error)
+          __pyx_t_10 = __Pyx_PyBytes_FromString((__pyx_v_values[__pyx_v_j])); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1143, __pyx_L23_error)
           __Pyx_GOTREF(__pyx_t_10);
-          __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_decode); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1144, __pyx_L23_error)
+          __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_decode); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1143, __pyx_L23_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-          __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1144, __pyx_L23_error)
+          __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1143, __pyx_L23_error)
           __Pyx_GOTREF(__pyx_t_10);
-          __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1144, __pyx_L23_error)
+          __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1143, __pyx_L23_error)
           __Pyx_GOTREF(__pyx_t_6);
           __pyx_t_7 = NULL;
           __pyx_t_3 = 0;
@@ -5042,7 +5042,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           #if CYTHON_FAST_PYCALL
           if (PyFunction_Check(__pyx_t_5)) {
             PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_10, __pyx_t_6};
-            __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1144, __pyx_L23_error)
+            __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1143, __pyx_L23_error)
             __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
             __Pyx_GOTREF(__pyx_t_8);
             __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
@@ -5052,7 +5052,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           #if CYTHON_FAST_PYCCALL
           if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
             PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_10, __pyx_t_6};
-            __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1144, __pyx_L23_error)
+            __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1143, __pyx_L23_error)
             __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
             __Pyx_GOTREF(__pyx_t_8);
             __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
@@ -5060,7 +5060,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           } else
           #endif
           {
-            __pyx_t_13 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1144, __pyx_L23_error)
+            __pyx_t_13 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1143, __pyx_L23_error)
             __Pyx_GOTREF(__pyx_t_13);
             if (__pyx_t_7) {
               __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -5071,25 +5071,25 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
             PyTuple_SET_ITEM(__pyx_t_13, 1+__pyx_t_3, __pyx_t_6);
             __pyx_t_10 = 0;
             __pyx_t_6 = 0;
-            __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_13, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1144, __pyx_L23_error)
+            __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_13, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1143, __pyx_L23_error)
             __Pyx_GOTREF(__pyx_t_8);
             __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
           }
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-          __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_replace); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1144, __pyx_L23_error)
+          __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_replace); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1143, __pyx_L23_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-          __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1144, __pyx_L23_error)
+          __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1143, __pyx_L23_error)
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 1144, __pyx_L23_error)
+          if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 1143, __pyx_L23_error)
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         }
         __pyx_v_result = ((PyObject*)__pyx_t_1);
         __pyx_t_1 = 0;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1147
+      /* "netCDF4/_netCDF4.pyx":1146
  *                           for j in range(att_len)]
  *             finally:
  *                 ierr = nc_free_string(att_len, values) # free memory in netcdf C lib             # <<<<<<<<<<<<<<
@@ -5144,7 +5144,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       }
     }
 
-    /* "netCDF4/_netCDF4.pyx":1149
+    /* "netCDF4/_netCDF4.pyx":1148
  *                 ierr = nc_free_string(att_len, values) # free memory in netcdf C lib
  *         finally:
  *             PyMem_Free(values)             # <<<<<<<<<<<<<<
@@ -5198,18 +5198,18 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       __pyx_L17:;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1151
+    /* "netCDF4/_netCDF4.pyx":1150
  *             PyMem_Free(values)
  * 
  *         if len(result) == 1:             # <<<<<<<<<<<<<<
  *             return result[0]
  *         else:
  */
-    __pyx_t_23 = PyList_GET_SIZE(__pyx_v_result); if (unlikely(__pyx_t_23 == -1)) __PYX_ERR(0, 1151, __pyx_L1_error)
+    __pyx_t_23 = PyList_GET_SIZE(__pyx_v_result); if (unlikely(__pyx_t_23 == -1)) __PYX_ERR(0, 1150, __pyx_L1_error)
     __pyx_t_4 = ((__pyx_t_23 == 1) != 0);
     if (__pyx_t_4) {
 
-      /* "netCDF4/_netCDF4.pyx":1152
+      /* "netCDF4/_netCDF4.pyx":1151
  * 
  *         if len(result) == 1:
  *             return result[0]             # <<<<<<<<<<<<<<
@@ -5217,13 +5217,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  *             return result
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_result, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1152, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_result, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1151, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_r = __pyx_t_1;
       __pyx_t_1 = 0;
       goto __pyx_L0;
 
-      /* "netCDF4/_netCDF4.pyx":1151
+      /* "netCDF4/_netCDF4.pyx":1150
  *             PyMem_Free(values)
  * 
  *         if len(result) == 1:             # <<<<<<<<<<<<<<
@@ -5232,7 +5232,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1154
+    /* "netCDF4/_netCDF4.pyx":1153
  *             return result[0]
  *         else:
  *             return result             # <<<<<<<<<<<<<<
@@ -5246,7 +5246,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       goto __pyx_L0;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1134
+    /* "netCDF4/_netCDF4.pyx":1133
  *             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
  *         return pstring
  *     elif att_type == NC_STRING:             # <<<<<<<<<<<<<<
@@ -5256,7 +5256,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     break;
     default:
 
-    /* "netCDF4/_netCDF4.pyx":1157
+    /* "netCDF4/_netCDF4.pyx":1156
  *     else:
  *     # a regular numeric or compound type.
  *         if att_type == NC_LONG:             # <<<<<<<<<<<<<<
@@ -5266,7 +5266,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     __pyx_t_4 = ((__pyx_v_att_type == NC_LONG) != 0);
     if (__pyx_t_4) {
 
-      /* "netCDF4/_netCDF4.pyx":1158
+      /* "netCDF4/_netCDF4.pyx":1157
  *     # a regular numeric or compound type.
  *         if att_type == NC_LONG:
  *             att_type = NC_INT             # <<<<<<<<<<<<<<
@@ -5275,7 +5275,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
       __pyx_v_att_type = NC_INT;
 
-      /* "netCDF4/_netCDF4.pyx":1157
+      /* "netCDF4/_netCDF4.pyx":1156
  *     else:
  *     # a regular numeric or compound type.
  *         if att_type == NC_LONG:             # <<<<<<<<<<<<<<
@@ -5284,7 +5284,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1159
+    /* "netCDF4/_netCDF4.pyx":1158
  *         if att_type == NC_LONG:
  *             att_type = NC_INT
  *         try:             # <<<<<<<<<<<<<<
@@ -5300,34 +5300,34 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       __Pyx_XGOTREF(__pyx_t_18);
       /*try:*/ {
 
-        /* "netCDF4/_netCDF4.pyx":1160
+        /* "netCDF4/_netCDF4.pyx":1159
  *             att_type = NC_INT
  *         try:
  *             type_att = _nctonptype[att_type] # see if it is a primitive type             # <<<<<<<<<<<<<<
  *             value_arr = numpy.empty(att_len,type_att)
  *         except KeyError:
  */
-        __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_nctonptype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1160, __pyx_L33_error)
+        __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_nctonptype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1159, __pyx_L33_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_att_type, nc_type, 1, __Pyx_PyInt_From_nc_type, 0, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1160, __pyx_L33_error)
+        __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_att_type, nc_type, 1, __Pyx_PyInt_From_nc_type, 0, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1159, __pyx_L33_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_v_type_att = __pyx_t_8;
         __pyx_t_8 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1161
+        /* "netCDF4/_netCDF4.pyx":1160
  *         try:
  *             type_att = _nctonptype[att_type] # see if it is a primitive type
  *             value_arr = numpy.empty(att_len,type_att)             # <<<<<<<<<<<<<<
  *         except KeyError:
  *             # check if it's a compound
  */
-        __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1161, __pyx_L33_error)
+        __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1160, __pyx_L33_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1161, __pyx_L33_error)
+        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1160, __pyx_L33_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_att_len); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1161, __pyx_L33_error)
+        __pyx_t_1 = __Pyx_PyInt_FromSize_t(__pyx_v_att_len); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1160, __pyx_L33_error)
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_13 = NULL;
         __pyx_t_3 = 0;
@@ -5344,7 +5344,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[3] = {__pyx_t_13, __pyx_t_1, __pyx_v_type_att};
-          __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1161, __pyx_L33_error)
+          __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1160, __pyx_L33_error)
           __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -5353,14 +5353,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
           PyObject *__pyx_temp[3] = {__pyx_t_13, __pyx_t_1, __pyx_v_type_att};
-          __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1161, __pyx_L33_error)
+          __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1160, __pyx_L33_error)
           __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         } else
         #endif
         {
-          __pyx_t_6 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1161, __pyx_L33_error)
+          __pyx_t_6 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1160, __pyx_L33_error)
           __Pyx_GOTREF(__pyx_t_6);
           if (__pyx_t_13) {
             __Pyx_GIVEREF(__pyx_t_13); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_13); __pyx_t_13 = NULL;
@@ -5371,16 +5371,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           __Pyx_GIVEREF(__pyx_v_type_att);
           PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_3, __pyx_v_type_att);
           __pyx_t_1 = 0;
-          __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1161, __pyx_L33_error)
+          __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1160, __pyx_L33_error)
           __Pyx_GOTREF(__pyx_t_8);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        if (!(likely(((__pyx_t_8) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_8, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1161, __pyx_L33_error)
+        if (!(likely(((__pyx_t_8) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_8, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1160, __pyx_L33_error)
         __pyx_v_value_arr = ((PyArrayObject *)__pyx_t_8);
         __pyx_t_8 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1159
+        /* "netCDF4/_netCDF4.pyx":1158
  *         if att_type == NC_LONG:
  *             att_type = NC_INT
  *         try:             # <<<<<<<<<<<<<<
@@ -5402,7 +5402,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-      /* "netCDF4/_netCDF4.pyx":1162
+      /* "netCDF4/_netCDF4.pyx":1161
  *             type_att = _nctonptype[att_type] # see if it is a primitive type
  *             value_arr = numpy.empty(att_len,type_att)
  *         except KeyError:             # <<<<<<<<<<<<<<
@@ -5412,12 +5412,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       __pyx_t_3 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
       if (__pyx_t_3) {
         __Pyx_AddTraceback("netCDF4._netCDF4._get_att", __pyx_clineno, __pyx_lineno, __pyx_filename);
-        if (__Pyx_GetException(&__pyx_t_8, &__pyx_t_5, &__pyx_t_6) < 0) __PYX_ERR(0, 1162, __pyx_L35_except_error)
+        if (__Pyx_GetException(&__pyx_t_8, &__pyx_t_5, &__pyx_t_6) < 0) __PYX_ERR(0, 1161, __pyx_L35_except_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GOTREF(__pyx_t_6);
 
-        /* "netCDF4/_netCDF4.pyx":1164
+        /* "netCDF4/_netCDF4.pyx":1163
  *         except KeyError:
  *             # check if it's a compound
  *             try:             # <<<<<<<<<<<<<<
@@ -5433,31 +5433,31 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           __Pyx_XGOTREF(__pyx_t_21);
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1165
+            /* "netCDF4/_netCDF4.pyx":1164
  *             # check if it's a compound
  *             try:
  *                 type_att = _read_compound(grp, att_type)             # <<<<<<<<<<<<<<
  *                 value_arr = numpy.empty(att_len,type_att)
  *             except:
  */
-            __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__read_compound(__pyx_v_grp, __pyx_v_att_type, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1165, __pyx_L43_error)
+            __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__read_compound(__pyx_v_grp, __pyx_v_att_type, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1164, __pyx_L43_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_XDECREF_SET(__pyx_v_type_att, __pyx_t_1);
             __pyx_t_1 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1166
+            /* "netCDF4/_netCDF4.pyx":1165
  *             try:
  *                 type_att = _read_compound(grp, att_type)
  *                 value_arr = numpy.empty(att_len,type_att)             # <<<<<<<<<<<<<<
  *             except:
  *                 # check if it's an enum
  */
-            __pyx_t_13 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1166, __pyx_L43_error)
+            __pyx_t_13 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1165, __pyx_L43_error)
             __Pyx_GOTREF(__pyx_t_13);
-            __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_empty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1166, __pyx_L43_error)
+            __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_empty); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1165, __pyx_L43_error)
             __Pyx_GOTREF(__pyx_t_10);
             __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-            __pyx_t_13 = __Pyx_PyInt_FromSize_t(__pyx_v_att_len); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1166, __pyx_L43_error)
+            __pyx_t_13 = __Pyx_PyInt_FromSize_t(__pyx_v_att_len); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1165, __pyx_L43_error)
             __Pyx_GOTREF(__pyx_t_13);
             __pyx_t_7 = NULL;
             __pyx_t_3 = 0;
@@ -5474,7 +5474,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
             #if CYTHON_FAST_PYCALL
             if (PyFunction_Check(__pyx_t_10)) {
               PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_13, __pyx_v_type_att};
-              __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1166, __pyx_L43_error)
+              __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1165, __pyx_L43_error)
               __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
@@ -5483,14 +5483,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
             #if CYTHON_FAST_PYCCALL
             if (__Pyx_PyFastCFunction_Check(__pyx_t_10)) {
               PyObject *__pyx_temp[3] = {__pyx_t_7, __pyx_t_13, __pyx_v_type_att};
-              __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1166, __pyx_L43_error)
+              __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1165, __pyx_L43_error)
               __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
             } else
             #endif
             {
-              __pyx_t_24 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 1166, __pyx_L43_error)
+              __pyx_t_24 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_24)) __PYX_ERR(0, 1165, __pyx_L43_error)
               __Pyx_GOTREF(__pyx_t_24);
               if (__pyx_t_7) {
                 __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_24, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -5501,16 +5501,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
               __Pyx_GIVEREF(__pyx_v_type_att);
               PyTuple_SET_ITEM(__pyx_t_24, 1+__pyx_t_3, __pyx_v_type_att);
               __pyx_t_13 = 0;
-              __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_24, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1166, __pyx_L43_error)
+              __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_24, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1165, __pyx_L43_error)
               __Pyx_GOTREF(__pyx_t_1);
               __Pyx_DECREF(__pyx_t_24); __pyx_t_24 = 0;
             }
             __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-            if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1166, __pyx_L43_error)
+            if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1165, __pyx_L43_error)
             __Pyx_XDECREF_SET(__pyx_v_value_arr, ((PyArrayObject *)__pyx_t_1));
             __pyx_t_1 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1164
+            /* "netCDF4/_netCDF4.pyx":1163
  *         except KeyError:
  *             # check if it's a compound
  *             try:             # <<<<<<<<<<<<<<
@@ -5530,7 +5530,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
           __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":1167
+          /* "netCDF4/_netCDF4.pyx":1166
  *                 type_att = _read_compound(grp, att_type)
  *                 value_arr = numpy.empty(att_len,type_att)
  *             except:             # <<<<<<<<<<<<<<
@@ -5539,12 +5539,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
           /*except:*/ {
             __Pyx_AddTraceback("netCDF4._netCDF4._get_att", __pyx_clineno, __pyx_lineno, __pyx_filename);
-            if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_10, &__pyx_t_24) < 0) __PYX_ERR(0, 1167, __pyx_L45_except_error)
+            if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_10, &__pyx_t_24) < 0) __PYX_ERR(0, 1166, __pyx_L45_except_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_GOTREF(__pyx_t_10);
             __Pyx_GOTREF(__pyx_t_24);
 
-            /* "netCDF4/_netCDF4.pyx":1169
+            /* "netCDF4/_netCDF4.pyx":1168
  *             except:
  *                 # check if it's an enum
  *                 try:             # <<<<<<<<<<<<<<
@@ -5560,33 +5560,33 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
               __Pyx_XGOTREF(__pyx_t_27);
               /*try:*/ {
 
-                /* "netCDF4/_netCDF4.pyx":1170
+                /* "netCDF4/_netCDF4.pyx":1169
  *                 # check if it's an enum
  *                 try:
  *                     type_att = _read_enum(grp, att_type)             # <<<<<<<<<<<<<<
  *                     value_arr = numpy.empty(att_len,type_att.dtype)
  *                 except:
  */
-                __pyx_t_13 = __pyx_f_7netCDF4_8_netCDF4__read_enum(__pyx_v_grp, __pyx_v_att_type, NULL); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1170, __pyx_L53_error)
+                __pyx_t_13 = __pyx_f_7netCDF4_8_netCDF4__read_enum(__pyx_v_grp, __pyx_v_att_type, NULL); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1169, __pyx_L53_error)
                 __Pyx_GOTREF(__pyx_t_13);
                 __Pyx_XDECREF_SET(__pyx_v_type_att, __pyx_t_13);
                 __pyx_t_13 = 0;
 
-                /* "netCDF4/_netCDF4.pyx":1171
+                /* "netCDF4/_netCDF4.pyx":1170
  *                 try:
  *                     type_att = _read_enum(grp, att_type)
  *                     value_arr = numpy.empty(att_len,type_att.dtype)             # <<<<<<<<<<<<<<
  *                 except:
  *                     raise KeyError('attribute %s has unsupported datatype' % attname)
  */
-                __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1171, __pyx_L53_error)
+                __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1170, __pyx_L53_error)
                 __Pyx_GOTREF(__pyx_t_7);
-                __pyx_t_28 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_empty); if (unlikely(!__pyx_t_28)) __PYX_ERR(0, 1171, __pyx_L53_error)
+                __pyx_t_28 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_empty); if (unlikely(!__pyx_t_28)) __PYX_ERR(0, 1170, __pyx_L53_error)
                 __Pyx_GOTREF(__pyx_t_28);
                 __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-                __pyx_t_7 = __Pyx_PyInt_FromSize_t(__pyx_v_att_len); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1171, __pyx_L53_error)
+                __pyx_t_7 = __Pyx_PyInt_FromSize_t(__pyx_v_att_len); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1170, __pyx_L53_error)
                 __Pyx_GOTREF(__pyx_t_7);
-                __pyx_t_29 = __Pyx_PyObject_GetAttrStr(__pyx_v_type_att, __pyx_n_s_dtype); if (unlikely(!__pyx_t_29)) __PYX_ERR(0, 1171, __pyx_L53_error)
+                __pyx_t_29 = __Pyx_PyObject_GetAttrStr(__pyx_v_type_att, __pyx_n_s_dtype); if (unlikely(!__pyx_t_29)) __PYX_ERR(0, 1170, __pyx_L53_error)
                 __Pyx_GOTREF(__pyx_t_29);
                 __pyx_t_30 = NULL;
                 __pyx_t_3 = 0;
@@ -5603,7 +5603,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
                 #if CYTHON_FAST_PYCALL
                 if (PyFunction_Check(__pyx_t_28)) {
                   PyObject *__pyx_temp[3] = {__pyx_t_30, __pyx_t_7, __pyx_t_29};
-                  __pyx_t_13 = __Pyx_PyFunction_FastCall(__pyx_t_28, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1171, __pyx_L53_error)
+                  __pyx_t_13 = __Pyx_PyFunction_FastCall(__pyx_t_28, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1170, __pyx_L53_error)
                   __Pyx_XDECREF(__pyx_t_30); __pyx_t_30 = 0;
                   __Pyx_GOTREF(__pyx_t_13);
                   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -5613,7 +5613,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
                 #if CYTHON_FAST_PYCCALL
                 if (__Pyx_PyFastCFunction_Check(__pyx_t_28)) {
                   PyObject *__pyx_temp[3] = {__pyx_t_30, __pyx_t_7, __pyx_t_29};
-                  __pyx_t_13 = __Pyx_PyCFunction_FastCall(__pyx_t_28, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1171, __pyx_L53_error)
+                  __pyx_t_13 = __Pyx_PyCFunction_FastCall(__pyx_t_28, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1170, __pyx_L53_error)
                   __Pyx_XDECREF(__pyx_t_30); __pyx_t_30 = 0;
                   __Pyx_GOTREF(__pyx_t_13);
                   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -5621,7 +5621,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
                 } else
                 #endif
                 {
-                  __pyx_t_31 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_31)) __PYX_ERR(0, 1171, __pyx_L53_error)
+                  __pyx_t_31 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_31)) __PYX_ERR(0, 1170, __pyx_L53_error)
                   __Pyx_GOTREF(__pyx_t_31);
                   if (__pyx_t_30) {
                     __Pyx_GIVEREF(__pyx_t_30); PyTuple_SET_ITEM(__pyx_t_31, 0, __pyx_t_30); __pyx_t_30 = NULL;
@@ -5632,16 +5632,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
                   PyTuple_SET_ITEM(__pyx_t_31, 1+__pyx_t_3, __pyx_t_29);
                   __pyx_t_7 = 0;
                   __pyx_t_29 = 0;
-                  __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_28, __pyx_t_31, NULL); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1171, __pyx_L53_error)
+                  __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_28, __pyx_t_31, NULL); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1170, __pyx_L53_error)
                   __Pyx_GOTREF(__pyx_t_13);
                   __Pyx_DECREF(__pyx_t_31); __pyx_t_31 = 0;
                 }
                 __Pyx_DECREF(__pyx_t_28); __pyx_t_28 = 0;
-                if (!(likely(((__pyx_t_13) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_13, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1171, __pyx_L53_error)
+                if (!(likely(((__pyx_t_13) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_13, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1170, __pyx_L53_error)
                 __Pyx_XDECREF_SET(__pyx_v_value_arr, ((PyArrayObject *)__pyx_t_13));
                 __pyx_t_13 = 0;
 
-                /* "netCDF4/_netCDF4.pyx":1169
+                /* "netCDF4/_netCDF4.pyx":1168
  *             except:
  *                 # check if it's an enum
  *                 try:             # <<<<<<<<<<<<<<
@@ -5662,7 +5662,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
               __Pyx_XDECREF(__pyx_t_28); __pyx_t_28 = 0;
               __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
 
-              /* "netCDF4/_netCDF4.pyx":1172
+              /* "netCDF4/_netCDF4.pyx":1171
  *                     type_att = _read_enum(grp, att_type)
  *                     value_arr = numpy.empty(att_len,type_att.dtype)
  *                 except:             # <<<<<<<<<<<<<<
@@ -5671,38 +5671,38 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
               /*except:*/ {
                 __Pyx_AddTraceback("netCDF4._netCDF4._get_att", __pyx_clineno, __pyx_lineno, __pyx_filename);
-                if (__Pyx_GetException(&__pyx_t_13, &__pyx_t_28, &__pyx_t_31) < 0) __PYX_ERR(0, 1172, __pyx_L55_except_error)
+                if (__Pyx_GetException(&__pyx_t_13, &__pyx_t_28, &__pyx_t_31) < 0) __PYX_ERR(0, 1171, __pyx_L55_except_error)
                 __Pyx_GOTREF(__pyx_t_13);
                 __Pyx_GOTREF(__pyx_t_28);
                 __Pyx_GOTREF(__pyx_t_31);
 
-                /* "netCDF4/_netCDF4.pyx":1173
+                /* "netCDF4/_netCDF4.pyx":1172
  *                     value_arr = numpy.empty(att_len,type_att.dtype)
  *                 except:
  *                     raise KeyError('attribute %s has unsupported datatype' % attname)             # <<<<<<<<<<<<<<
  *         with nogil:
  *             ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
  */
-                __pyx_t_29 = __Pyx_PyBytes_FromString(__pyx_v_attname); if (unlikely(!__pyx_t_29)) __PYX_ERR(0, 1173, __pyx_L55_except_error)
+                __pyx_t_29 = __Pyx_PyBytes_FromString(__pyx_v_attname); if (unlikely(!__pyx_t_29)) __PYX_ERR(0, 1172, __pyx_L55_except_error)
                 __Pyx_GOTREF(__pyx_t_29);
-                __pyx_t_7 = __Pyx_PyString_Format(__pyx_kp_s_attribute_s_has_unsupported_data, __pyx_t_29); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1173, __pyx_L55_except_error)
+                __pyx_t_7 = __Pyx_PyString_Format(__pyx_kp_s_attribute_s_has_unsupported_data, __pyx_t_29); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1172, __pyx_L55_except_error)
                 __Pyx_GOTREF(__pyx_t_7);
                 __Pyx_DECREF(__pyx_t_29); __pyx_t_29 = 0;
-                __pyx_t_29 = PyTuple_New(1); if (unlikely(!__pyx_t_29)) __PYX_ERR(0, 1173, __pyx_L55_except_error)
+                __pyx_t_29 = PyTuple_New(1); if (unlikely(!__pyx_t_29)) __PYX_ERR(0, 1172, __pyx_L55_except_error)
                 __Pyx_GOTREF(__pyx_t_29);
                 __Pyx_GIVEREF(__pyx_t_7);
                 PyTuple_SET_ITEM(__pyx_t_29, 0, __pyx_t_7);
                 __pyx_t_7 = 0;
-                __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_KeyError, __pyx_t_29, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1173, __pyx_L55_except_error)
+                __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_KeyError, __pyx_t_29, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1172, __pyx_L55_except_error)
                 __Pyx_GOTREF(__pyx_t_7);
                 __Pyx_DECREF(__pyx_t_29); __pyx_t_29 = 0;
                 __Pyx_Raise(__pyx_t_7, 0, 0, 0);
                 __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-                __PYX_ERR(0, 1173, __pyx_L55_except_error)
+                __PYX_ERR(0, 1172, __pyx_L55_except_error)
               }
               __pyx_L55_except_error:;
 
-              /* "netCDF4/_netCDF4.pyx":1169
+              /* "netCDF4/_netCDF4.pyx":1168
  *             except:
  *                 # check if it's an enum
  *                 try:             # <<<<<<<<<<<<<<
@@ -5724,7 +5724,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           }
           __pyx_L45_except_error:;
 
-          /* "netCDF4/_netCDF4.pyx":1164
+          /* "netCDF4/_netCDF4.pyx":1163
  *         except KeyError:
  *             # check if it's a compound
  *             try:             # <<<<<<<<<<<<<<
@@ -5753,7 +5753,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       goto __pyx_L35_except_error;
       __pyx_L35_except_error:;
 
-      /* "netCDF4/_netCDF4.pyx":1159
+      /* "netCDF4/_netCDF4.pyx":1158
  *         if att_type == NC_LONG:
  *             att_type = NC_INT
  *         try:             # <<<<<<<<<<<<<<
@@ -5775,7 +5775,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       __pyx_L40_try_end:;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1174
+    /* "netCDF4/_netCDF4.pyx":1173
  *                 except:
  *                     raise KeyError('attribute %s has unsupported datatype' % attname)
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -5789,7 +5789,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         #endif
         /*try:*/ {
 
-          /* "netCDF4/_netCDF4.pyx":1175
+          /* "netCDF4/_netCDF4.pyx":1174
  *                     raise KeyError('attribute %s has unsupported datatype' % attname)
  *         with nogil:
  *             ierr = nc_get_att(_grpid, varid, attname, value_arr.data)             # <<<<<<<<<<<<<<
@@ -5799,7 +5799,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
           __pyx_v_ierr = nc_get_att(__pyx_v__grpid, __pyx_v_varid, __pyx_v_attname, __pyx_v_value_arr->data);
         }
 
-        /* "netCDF4/_netCDF4.pyx":1174
+        /* "netCDF4/_netCDF4.pyx":1173
  *                 except:
  *                     raise KeyError('attribute %s has unsupported datatype' % attname)
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -5817,7 +5817,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         }
     }
 
-    /* "netCDF4/_netCDF4.pyx":1176
+    /* "netCDF4/_netCDF4.pyx":1175
  *         with nogil:
  *             ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -5827,7 +5827,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     __pyx_t_4 = ((__pyx_v_ierr != NC_NOERR) != 0);
     if (__pyx_t_4) {
 
-      /* "netCDF4/_netCDF4.pyx":1177
+      /* "netCDF4/_netCDF4.pyx":1176
  *             ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -5835,22 +5835,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  *             # return a scalar for a scalar array
  */
       __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-      __pyx_t_6 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1177, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1176, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1177, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1176, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_6);
       PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1177, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1176, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_Raise(__pyx_t_6, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __PYX_ERR(0, 1177, __pyx_L1_error)
+      __PYX_ERR(0, 1176, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1176
+      /* "netCDF4/_netCDF4.pyx":1175
  *         with nogil:
  *             ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -5859,22 +5859,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1178
+    /* "netCDF4/_netCDF4.pyx":1177
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         if value_arr.shape == ():             # <<<<<<<<<<<<<<
  *             # return a scalar for a scalar array
  *             return value_arr.item()
  */
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_shape); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1178, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_shape); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1177, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_5 = PyObject_RichCompare(__pyx_t_6, __pyx_empty_tuple, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1178, __pyx_L1_error)
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_6, __pyx_empty_tuple, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1177, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 1178, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 1177, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_4) {
 
-      /* "netCDF4/_netCDF4.pyx":1180
+      /* "netCDF4/_netCDF4.pyx":1179
  *         if value_arr.shape == ():
  *             # return a scalar for a scalar array
  *             return value_arr.item()             # <<<<<<<<<<<<<<
@@ -5882,7 +5882,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  *             # return a scalar for a single element array
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_item); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1180, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_item); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1179, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __pyx_t_8 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -5895,10 +5895,10 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
         }
       }
       if (__pyx_t_8) {
-        __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1180, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1179, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       } else {
-        __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1180, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1179, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -5906,7 +5906,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
       __pyx_t_5 = 0;
       goto __pyx_L0;
 
-      /* "netCDF4/_netCDF4.pyx":1178
+      /* "netCDF4/_netCDF4.pyx":1177
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         if value_arr.shape == ():             # <<<<<<<<<<<<<<
@@ -5915,7 +5915,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1181
+    /* "netCDF4/_netCDF4.pyx":1180
  *             # return a scalar for a scalar array
  *             return value_arr.item()
  *         elif att_len == 1:             # <<<<<<<<<<<<<<
@@ -5925,7 +5925,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     __pyx_t_4 = ((__pyx_v_att_len == 1) != 0);
     if (__pyx_t_4) {
 
-      /* "netCDF4/_netCDF4.pyx":1183
+      /* "netCDF4/_netCDF4.pyx":1182
  *         elif att_len == 1:
  *             # return a scalar for a single element array
  *             return value_arr[0]             # <<<<<<<<<<<<<<
@@ -5933,13 +5933,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  *             return value_arr
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_5 = __Pyx_GetItemInt(((PyObject *)__pyx_v_value_arr), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1183, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_GetItemInt(((PyObject *)__pyx_v_value_arr), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1182, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_r = __pyx_t_5;
       __pyx_t_5 = 0;
       goto __pyx_L0;
 
-      /* "netCDF4/_netCDF4.pyx":1181
+      /* "netCDF4/_netCDF4.pyx":1180
  *             # return a scalar for a scalar array
  *             return value_arr.item()
  *         elif att_len == 1:             # <<<<<<<<<<<<<<
@@ -5948,7 +5948,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1185
+    /* "netCDF4/_netCDF4.pyx":1184
  *             return value_arr[0]
  *         else:
  *             return value_arr             # <<<<<<<<<<<<<<
@@ -5964,7 +5964,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
     break;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1105
+  /* "netCDF4/_netCDF4.pyx":1104
  *     return attslist
  * 
  * cdef _get_att(grp, int varid, name):             # <<<<<<<<<<<<<<
@@ -5999,7 +5999,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_att(PyObject *__pyx_v_grp, int 
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1187
+/* "netCDF4/_netCDF4.pyx":1186
  *             return value_arr
  * 
  * def _set_default_format(object format='NETCDF4'):             # <<<<<<<<<<<<<<
@@ -6036,7 +6036,7 @@ static PyObject *__pyx_pw_7netCDF4_8_netCDF4_5_set_default_format(PyObject *__py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_set_default_format") < 0)) __PYX_ERR(0, 1187, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_set_default_format") < 0)) __PYX_ERR(0, 1186, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6049,7 +6049,7 @@ static PyObject *__pyx_pw_7netCDF4_8_netCDF4_5_set_default_format(PyObject *__py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_set_default_format", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1187, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_set_default_format", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1186, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("netCDF4._netCDF4._set_default_format", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6072,34 +6072,34 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_4_set_default_format(CYTHON_UNUSED 
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("_set_default_format", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1189
+  /* "netCDF4/_netCDF4.pyx":1188
  * def _set_default_format(object format='NETCDF4'):
  *     # Private function to set the netCDF file format
  *     if format not in _format_dict:             # <<<<<<<<<<<<<<
  *         raise ValueError("unrecognized format requested")
  *     nc_set_default_format(_format_dict[format], NULL)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1189, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_v_format, __pyx_t_1, Py_NE)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1189, __pyx_L1_error)
+  __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_v_format, __pyx_t_1, Py_NE)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1188, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1190
+    /* "netCDF4/_netCDF4.pyx":1189
  *     # Private function to set the netCDF file format
  *     if format not in _format_dict:
  *         raise ValueError("unrecognized format requested")             # <<<<<<<<<<<<<<
  *     nc_set_default_format(_format_dict[format], NULL)
  * 
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1190, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1189, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 1190, __pyx_L1_error)
+    __PYX_ERR(0, 1189, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1189
+    /* "netCDF4/_netCDF4.pyx":1188
  * def _set_default_format(object format='NETCDF4'):
  *     # Private function to set the netCDF file format
  *     if format not in _format_dict:             # <<<<<<<<<<<<<<
@@ -6108,23 +6108,23 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_4_set_default_format(CYTHON_UNUSED 
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1191
+  /* "netCDF4/_netCDF4.pyx":1190
  *     if format not in _format_dict:
  *         raise ValueError("unrecognized format requested")
  *     nc_set_default_format(_format_dict[format], NULL)             # <<<<<<<<<<<<<<
  * 
  * cdef _get_format(int grpid):
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1191, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1190, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = PyObject_GetItem(__pyx_t_1, __pyx_v_format); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1191, __pyx_L1_error)
+  __pyx_t_4 = PyObject_GetItem(__pyx_t_1, __pyx_v_format); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1190, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1191, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1190, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   nc_set_default_format(__pyx_t_5, NULL);
 
-  /* "netCDF4/_netCDF4.pyx":1187
+  /* "netCDF4/_netCDF4.pyx":1186
  *             return value_arr
  * 
  * def _set_default_format(object format='NETCDF4'):             # <<<<<<<<<<<<<<
@@ -6146,7 +6146,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_4_set_default_format(CYTHON_UNUSED 
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1193
+/* "netCDF4/_netCDF4.pyx":1192
  *     nc_set_default_format(_format_dict[format], NULL)
  * 
  * cdef _get_format(int grpid):             # <<<<<<<<<<<<<<
@@ -6166,7 +6166,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("_get_format", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1196
+  /* "netCDF4/_netCDF4.pyx":1195
  *     # Private function to get the netCDF file format
  *     cdef int ierr, formatp
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -6180,7 +6180,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
       #endif
       /*try:*/ {
 
-        /* "netCDF4/_netCDF4.pyx":1197
+        /* "netCDF4/_netCDF4.pyx":1196
  *     cdef int ierr, formatp
  *     with nogil:
  *         ierr = nc_inq_format(grpid, &formatp)             # <<<<<<<<<<<<<<
@@ -6190,7 +6190,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
         __pyx_v_ierr = nc_inq_format(__pyx_v_grpid, (&__pyx_v_formatp));
       }
 
-      /* "netCDF4/_netCDF4.pyx":1196
+      /* "netCDF4/_netCDF4.pyx":1195
  *     # Private function to get the netCDF file format
  *     cdef int ierr, formatp
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -6208,7 +6208,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
       }
   }
 
-  /* "netCDF4/_netCDF4.pyx":1198
+  /* "netCDF4/_netCDF4.pyx":1197
  *     with nogil:
  *         ierr = nc_inq_format(grpid, &formatp)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -6218,7 +6218,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
   __pyx_t_1 = ((__pyx_v_ierr != NC_NOERR) != 0);
   if (__pyx_t_1) {
 
-    /* "netCDF4/_netCDF4.pyx":1199
+    /* "netCDF4/_netCDF4.pyx":1198
  *         ierr = nc_inq_format(grpid, &formatp)
  *     if ierr != NC_NOERR:
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -6226,22 +6226,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
  *         raise ValueError('format not supported by python interface')
  */
     __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1199, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1199, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1199, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1199, __pyx_L1_error)
+    __PYX_ERR(0, 1198, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1198
+    /* "netCDF4/_netCDF4.pyx":1197
  *     with nogil:
  *         ierr = nc_inq_format(grpid, &formatp)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -6250,37 +6250,37 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1200
+  /* "netCDF4/_netCDF4.pyx":1199
  *     if ierr != NC_NOERR:
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     if formatp not in _reverse_format_dict:             # <<<<<<<<<<<<<<
  *         raise ValueError('format not supported by python interface')
  *     return _reverse_format_dict[formatp]
  */
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_formatp); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1200, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_formatp); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_reverse_format_dict); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1200, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_reverse_format_dict); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_4, Py_NE)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1200, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_4, Py_NE)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1199, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_5 = (__pyx_t_1 != 0);
   if (__pyx_t_5) {
 
-    /* "netCDF4/_netCDF4.pyx":1201
+    /* "netCDF4/_netCDF4.pyx":1200
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     if formatp not in _reverse_format_dict:
  *         raise ValueError('format not supported by python interface')             # <<<<<<<<<<<<<<
  *     return _reverse_format_dict[formatp]
  * 
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1201, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1200, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 1201, __pyx_L1_error)
+    __PYX_ERR(0, 1200, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1200
+    /* "netCDF4/_netCDF4.pyx":1199
  *     if ierr != NC_NOERR:
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     if formatp not in _reverse_format_dict:             # <<<<<<<<<<<<<<
@@ -6289,7 +6289,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1202
+  /* "netCDF4/_netCDF4.pyx":1201
  *     if formatp not in _reverse_format_dict:
  *         raise ValueError('format not supported by python interface')
  *     return _reverse_format_dict[formatp]             # <<<<<<<<<<<<<<
@@ -6297,16 +6297,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
  * cdef _get_full_format(int grpid):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_reverse_format_dict); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1202, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_reverse_format_dict); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1201, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, __pyx_v_formatp, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1202, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_4, __pyx_v_formatp, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1201, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":1193
+  /* "netCDF4/_netCDF4.pyx":1192
  *     nc_set_default_format(_format_dict[format], NULL)
  * 
  * cdef _get_format(int grpid):             # <<<<<<<<<<<<<<
@@ -6326,7 +6326,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_format(int __pyx_v_grpid) {
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1204
+/* "netCDF4/_netCDF4.pyx":1203
  *     return _reverse_format_dict[formatp]
  * 
  * cdef _get_full_format(int grpid):             # <<<<<<<<<<<<<<
@@ -6339,7 +6339,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_full_format(CYTHON_UNUSED int _
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_get_full_format", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1227
+  /* "netCDF4/_netCDF4.pyx":1226
  *             return 'UNDEFINED'
  *     ELSE:
  *         return 'UNDEFINED'             # <<<<<<<<<<<<<<
@@ -6351,7 +6351,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_full_format(CYTHON_UNUSED int _
   __pyx_r = __pyx_n_s_UNDEFINED;
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":1204
+  /* "netCDF4/_netCDF4.pyx":1203
  *     return _reverse_format_dict[formatp]
  * 
  * cdef _get_full_format(int grpid):             # <<<<<<<<<<<<<<
@@ -6366,7 +6366,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_full_format(CYTHON_UNUSED int _
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1229
+/* "netCDF4/_netCDF4.pyx":1228
  *         return 'UNDEFINED'
  * 
  * cdef issue485_workaround(int grpid, int varid, char* attname):             # <<<<<<<<<<<<<<
@@ -6387,21 +6387,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("issue485_workaround", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1238
+  /* "netCDF4/_netCDF4.pyx":1237
  *     cdef size_t att_len
  * 
  *     if not _needsworkaround_issue485:             # <<<<<<<<<<<<<<
  *         return
  *     ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_needsworkaround_issue485); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1238, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_needsworkaround_issue485); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1237, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1238, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1237, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((!__pyx_t_2) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1239
+    /* "netCDF4/_netCDF4.pyx":1238
  * 
  *     if not _needsworkaround_issue485:
  *         return             # <<<<<<<<<<<<<<
@@ -6412,7 +6412,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "netCDF4/_netCDF4.pyx":1238
+    /* "netCDF4/_netCDF4.pyx":1237
  *     cdef size_t att_len
  * 
  *     if not _needsworkaround_issue485:             # <<<<<<<<<<<<<<
@@ -6421,7 +6421,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1240
+  /* "netCDF4/_netCDF4.pyx":1239
  *     if not _needsworkaround_issue485:
  *         return
  *     ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)             # <<<<<<<<<<<<<<
@@ -6430,7 +6430,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
  */
   __pyx_v_ierr = nc_inq_att(__pyx_v_grpid, __pyx_v_varid, __pyx_v_attname, (&__pyx_v_att_type), (&__pyx_v_att_len));
 
-  /* "netCDF4/_netCDF4.pyx":1241
+  /* "netCDF4/_netCDF4.pyx":1240
  *         return
  *     ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
  *     if ierr == NC_NOERR and att_type == NC_CHAR:             # <<<<<<<<<<<<<<
@@ -6448,7 +6448,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1242
+    /* "netCDF4/_netCDF4.pyx":1241
  *     ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
  *     if ierr == NC_NOERR and att_type == NC_CHAR:
  *         ierr = nc_del_att(grpid, varid, attname)             # <<<<<<<<<<<<<<
@@ -6457,7 +6457,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
  */
     __pyx_v_ierr = nc_del_att(__pyx_v_grpid, __pyx_v_varid, __pyx_v_attname);
 
-    /* "netCDF4/_netCDF4.pyx":1243
+    /* "netCDF4/_netCDF4.pyx":1242
  *     if ierr == NC_NOERR and att_type == NC_CHAR:
  *         ierr = nc_del_att(grpid, varid, attname)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -6467,7 +6467,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
     __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
     if (__pyx_t_3) {
 
-      /* "netCDF4/_netCDF4.pyx":1244
+      /* "netCDF4/_netCDF4.pyx":1243
  *         ierr = nc_del_att(grpid, varid, attname)
  *         if ierr != NC_NOERR:
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -6475,22 +6475,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
  * cdef _set_att(grp, int varid, name, value,\
  */
       __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-      __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1244, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1243, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1244, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1243, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1244, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1243, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_Raise(__pyx_t_1, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __PYX_ERR(0, 1244, __pyx_L1_error)
+      __PYX_ERR(0, 1243, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1243
+      /* "netCDF4/_netCDF4.pyx":1242
  *     if ierr == NC_NOERR and att_type == NC_CHAR:
  *         ierr = nc_del_att(grpid, varid, attname)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -6499,7 +6499,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1241
+    /* "netCDF4/_netCDF4.pyx":1240
  *         return
  *     ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
  *     if ierr == NC_NOERR and att_type == NC_CHAR:             # <<<<<<<<<<<<<<
@@ -6508,7 +6508,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1229
+  /* "netCDF4/_netCDF4.pyx":1228
  *         return 'UNDEFINED'
  * 
  * cdef issue485_workaround(int grpid, int varid, char* attname):             # <<<<<<<<<<<<<<
@@ -6530,7 +6530,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1246
+/* "netCDF4/_netCDF4.pyx":1245
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  * 
  * cdef _set_att(grp, int varid, name, value,\             # <<<<<<<<<<<<<<
@@ -6541,7 +6541,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4_issue485_workaround(int __pyx_v_grpi
 static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int __pyx_v_varid, PyObject *__pyx_v_name, PyObject *__pyx_v_value, struct __pyx_opt_args_7netCDF4_8_netCDF4__set_att *__pyx_optional_args) {
   nc_type __pyx_v_xtype = ((nc_type)-99);
 
-  /* "netCDF4/_netCDF4.pyx":1247
+  /* "netCDF4/_netCDF4.pyx":1246
  * 
  * cdef _set_att(grp, int varid, name, value,\
  *               nc_type xtype=-99, force_ncstring=False):             # <<<<<<<<<<<<<<
@@ -6599,38 +6599,38 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     }
   }
 
-  /* "netCDF4/_netCDF4.pyx":1254
+  /* "netCDF4/_netCDF4.pyx":1253
  *     cdef char **string_ptrs
  *     cdef ndarray value_arr
  *     bytestr = _strencode(name)             # <<<<<<<<<<<<<<
  *     attname = bytestr
  *     # put attribute value into a numpy array.
  */
-  __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_v_name, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1254, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_v_name, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_bytestr = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1255
+  /* "netCDF4/_netCDF4.pyx":1254
  *     cdef ndarray value_arr
  *     bytestr = _strencode(name)
  *     attname = bytestr             # <<<<<<<<<<<<<<
  *     # put attribute value into a numpy array.
  *     value_arr = numpy.array(value)
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_bytestr); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 1255, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_bytestr); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 1254, __pyx_L1_error)
   __pyx_v_attname = __pyx_t_2;
 
-  /* "netCDF4/_netCDF4.pyx":1257
+  /* "netCDF4/_netCDF4.pyx":1256
  *     attname = bytestr
  *     # put attribute value into a numpy array.
  *     value_arr = numpy.array(value)             # <<<<<<<<<<<<<<
  *     # if array is 64 bit integers or
  *     # if 64-bit datatype not supported, cast to 32 bit integers.
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1257, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1257, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -6644,13 +6644,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1257, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_value); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1256, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_value};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1257, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1256, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -6658,57 +6658,57 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_value};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1257, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1256, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1257, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1256, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_INCREF(__pyx_v_value);
       __Pyx_GIVEREF(__pyx_v_value);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_value);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1257, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1256, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1257, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1256, __pyx_L1_error)
   __pyx_v_value_arr = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1260
+  /* "netCDF4/_netCDF4.pyx":1259
  *     # if array is 64 bit integers or
  *     # if 64-bit datatype not supported, cast to 32 bit integers.
  *     fmt = _get_format(grp._grpid)             # <<<<<<<<<<<<<<
  *     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1260, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1259, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1260, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1259, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__get_format(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1260, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__get_format(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1259, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_fmt = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1261
+  /* "netCDF4/_netCDF4.pyx":1260
  *     # if 64-bit datatype not supported, cast to 32 bit integers.
  *     fmt = _get_format(grp._grpid)
  *     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'             # <<<<<<<<<<<<<<
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
  *        is_netcdf3):
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_fmt, __pyx_n_s_startswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1261, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_fmt, __pyx_n_s_startswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1261, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 1261, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 1260, __pyx_L1_error)
   if (!__pyx_t_7) {
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
@@ -6717,7 +6717,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     goto __pyx_L3_bool_binop_done;
   }
-  __pyx_t_5 = PyObject_RichCompare(__pyx_v_fmt, __pyx_n_s_NETCDF4_CLASSIC, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1261, __pyx_L1_error)
+  __pyx_t_5 = PyObject_RichCompare(__pyx_v_fmt, __pyx_n_s_NETCDF4_CLASSIC, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1260, __pyx_L1_error)
   __Pyx_INCREF(__pyx_t_5);
   __pyx_t_1 = __pyx_t_5;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -6725,31 +6725,31 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
   __pyx_v_is_netcdf3 = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1262
+  /* "netCDF4/_netCDF4.pyx":1261
  *     fmt = _get_format(grp._grpid)
  *     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\             # <<<<<<<<<<<<<<
  *        is_netcdf3):
  *         value_arr = value_arr.astype('i4')
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1262, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_str); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1262, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_str); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_5, 1, 0, NULL, NULL, &__pyx_slice__8, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1262, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_5, 1, 0, NULL, NULL, &__pyx_slice__8, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_8 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_i8, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1262, __pyx_L1_error)
+  __pyx_t_8 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_i8, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1261, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_8) {
   } else {
     __pyx_t_7 = __pyx_t_8;
     goto __pyx_L6_bool_binop_done;
   }
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_supportedtypes); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1262, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_supportedtypes); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_n_s_i8, __pyx_t_1, Py_NE)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1262, __pyx_L1_error)
+  __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_n_s_i8, __pyx_t_1, Py_NE)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1261, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_9 = (__pyx_t_8 != 0);
   if (!__pyx_t_9) {
@@ -6758,18 +6758,18 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     goto __pyx_L6_bool_binop_done;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1263
+  /* "netCDF4/_netCDF4.pyx":1262
  *     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
  *        is_netcdf3):             # <<<<<<<<<<<<<<
  *         value_arr = value_arr.astype('i4')
  *     # if array contains ascii strings, write a text attribute (stored as bytes).
  */
-  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_is_netcdf3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1263, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_is_netcdf3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1262, __pyx_L1_error)
   __pyx_t_7 = __pyx_t_9;
   __pyx_L6_bool_binop_done:;
 
-  /* "netCDF4/_netCDF4.pyx":1262
+  /* "netCDF4/_netCDF4.pyx":1261
  *     fmt = _get_format(grp._grpid)
  *     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\             # <<<<<<<<<<<<<<
@@ -6778,23 +6778,23 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  */
   if (__pyx_t_7) {
 
-    /* "netCDF4/_netCDF4.pyx":1264
+    /* "netCDF4/_netCDF4.pyx":1263
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
  *        is_netcdf3):
  *         value_arr = value_arr.astype('i4')             # <<<<<<<<<<<<<<
  *     # if array contains ascii strings, write a text attribute (stored as bytes).
  *     # if array contains unicode strings, and data model is NETCDF4,
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_astype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1264, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_astype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1263, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1264, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1263, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1264, __pyx_L1_error)
+    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_7netCDF4_8_netCDF4_ndarray))))) __PYX_ERR(0, 1263, __pyx_L1_error)
     __Pyx_DECREF_SET(__pyx_v_value_arr, ((PyArrayObject *)__pyx_t_5));
     __pyx_t_5 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1262
+    /* "netCDF4/_netCDF4.pyx":1261
  *     fmt = _get_format(grp._grpid)
  *     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\             # <<<<<<<<<<<<<<
@@ -6803,90 +6803,90 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1268
+  /* "netCDF4/_netCDF4.pyx":1267
  *     # if array contains unicode strings, and data model is NETCDF4,
  *     # write as a string.
  *     if value_arr.dtype.char in ['S','U']:             # <<<<<<<<<<<<<<
  *         if not is_netcdf3 and force_ncstring and value_arr.size > 1:
  *             N = value_arr.size
  */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1268, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_char); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1268, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_char); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_S, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1268, __pyx_L1_error)
+  __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_S, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1267, __pyx_L1_error)
   if (!__pyx_t_9) {
   } else {
     __pyx_t_7 = __pyx_t_9;
     goto __pyx_L10_bool_binop_done;
   }
-  __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_U, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1268, __pyx_L1_error)
+  __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_U, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1267, __pyx_L1_error)
   __pyx_t_7 = __pyx_t_9;
   __pyx_L10_bool_binop_done:;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_9 = (__pyx_t_7 != 0);
   if (__pyx_t_9) {
 
-    /* "netCDF4/_netCDF4.pyx":1269
+    /* "netCDF4/_netCDF4.pyx":1268
  *     # write as a string.
  *     if value_arr.dtype.char in ['S','U']:
  *         if not is_netcdf3 and force_ncstring and value_arr.size > 1:             # <<<<<<<<<<<<<<
  *             N = value_arr.size
  *             string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
  */
-    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_is_netcdf3); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 1269, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_v_is_netcdf3); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 1268, __pyx_L1_error)
     __pyx_t_8 = ((!__pyx_t_7) != 0);
     if (__pyx_t_8) {
     } else {
       __pyx_t_9 = __pyx_t_8;
       goto __pyx_L13_bool_binop_done;
     }
-    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_force_ncstring); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1269, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_force_ncstring); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1268, __pyx_L1_error)
     if (__pyx_t_8) {
     } else {
       __pyx_t_9 = __pyx_t_8;
       goto __pyx_L13_bool_binop_done;
     }
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1269, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1268, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyObject_RichCompare(__pyx_t_1, __pyx_int_1, Py_GT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1269, __pyx_L1_error)
+    __pyx_t_5 = PyObject_RichCompare(__pyx_t_1, __pyx_int_1, Py_GT); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1268, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1269, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1268, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __pyx_t_9 = __pyx_t_8;
     __pyx_L13_bool_binop_done:;
     if (__pyx_t_9) {
 
-      /* "netCDF4/_netCDF4.pyx":1270
+      /* "netCDF4/_netCDF4.pyx":1269
  *     if value_arr.dtype.char in ['S','U']:
  *         if not is_netcdf3 and force_ncstring and value_arr.size > 1:
  *             N = value_arr.size             # <<<<<<<<<<<<<<
  *             string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
  *             if not string_ptrs:
  */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_size); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1270, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_size); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_v_N = __pyx_t_5;
       __pyx_t_5 = 0;
 
-      /* "netCDF4/_netCDF4.pyx":1271
+      /* "netCDF4/_netCDF4.pyx":1270
  *         if not is_netcdf3 and force_ncstring and value_arr.size > 1:
  *             N = value_arr.size
  *             string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))             # <<<<<<<<<<<<<<
  *             if not string_ptrs:
  *                 raise MemoryError()
  */
-      __pyx_t_5 = __Pyx_PyInt_FromSize_t((sizeof(char *))); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1271, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyInt_FromSize_t((sizeof(char *))); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1270, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_1 = PyNumber_Multiply(__pyx_v_N, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1271, __pyx_L1_error)
+      __pyx_t_1 = PyNumber_Multiply(__pyx_v_N, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1270, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_10 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_10 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 1271, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_10 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 1270, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_v_string_ptrs = ((char **)PyMem_Malloc(__pyx_t_10));
 
-      /* "netCDF4/_netCDF4.pyx":1272
+      /* "netCDF4/_netCDF4.pyx":1271
  *             N = value_arr.size
  *             string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
  *             if not string_ptrs:             # <<<<<<<<<<<<<<
@@ -6896,16 +6896,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
       __pyx_t_9 = ((!(__pyx_v_string_ptrs != 0)) != 0);
       if (__pyx_t_9) {
 
-        /* "netCDF4/_netCDF4.pyx":1273
+        /* "netCDF4/_netCDF4.pyx":1272
  *             string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
  *             if not string_ptrs:
  *                 raise MemoryError()             # <<<<<<<<<<<<<<
  *             try:
  *                 strings = [_strencode(s) for s in value_arr.flat]
  */
-        PyErr_NoMemory(); __PYX_ERR(0, 1273, __pyx_L1_error)
+        PyErr_NoMemory(); __PYX_ERR(0, 1272, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1272
+        /* "netCDF4/_netCDF4.pyx":1271
  *             N = value_arr.size
  *             string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
  *             if not string_ptrs:             # <<<<<<<<<<<<<<
@@ -6914,7 +6914,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1274
+      /* "netCDF4/_netCDF4.pyx":1273
  *             if not string_ptrs:
  *                 raise MemoryError()
  *             try:             # <<<<<<<<<<<<<<
@@ -6923,24 +6923,24 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  */
       /*try:*/ {
 
-        /* "netCDF4/_netCDF4.pyx":1275
+        /* "netCDF4/_netCDF4.pyx":1274
  *                 raise MemoryError()
  *             try:
  *                 strings = [_strencode(s) for s in value_arr.flat]             # <<<<<<<<<<<<<<
  *                 for j in range(N):
  *                     if len(strings[j]) == 0:
  */
-        __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1275, __pyx_L18_error)
+        __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1274, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_flat); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1275, __pyx_L18_error)
+        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_flat); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1274, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_5);
         if (likely(PyList_CheckExact(__pyx_t_5)) || PyTuple_CheckExact(__pyx_t_5)) {
           __pyx_t_4 = __pyx_t_5; __Pyx_INCREF(__pyx_t_4); __pyx_t_11 = 0;
           __pyx_t_12 = NULL;
         } else {
-          __pyx_t_11 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1275, __pyx_L18_error)
+          __pyx_t_11 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1274, __pyx_L18_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_12 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1275, __pyx_L18_error)
+          __pyx_t_12 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1274, __pyx_L18_error)
         }
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         for (;;) {
@@ -6948,17 +6948,17 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
             if (likely(PyList_CheckExact(__pyx_t_4))) {
               if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_4)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_5 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_5); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1275, __pyx_L18_error)
+              __pyx_t_5 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_5); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1274, __pyx_L18_error)
               #else
-              __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1275, __pyx_L18_error)
+              __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1274, __pyx_L18_error)
               __Pyx_GOTREF(__pyx_t_5);
               #endif
             } else {
               if (__pyx_t_11 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_5); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1275, __pyx_L18_error)
+              __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_5); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1274, __pyx_L18_error)
               #else
-              __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1275, __pyx_L18_error)
+              __pyx_t_5 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1274, __pyx_L18_error)
               __Pyx_GOTREF(__pyx_t_5);
               #endif
             }
@@ -6968,7 +6968,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
               PyObject* exc_type = PyErr_Occurred();
               if (exc_type) {
                 if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                else __PYX_ERR(0, 1275, __pyx_L18_error)
+                else __PYX_ERR(0, 1274, __pyx_L18_error)
               }
               break;
             }
@@ -6976,37 +6976,37 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           }
           __Pyx_XDECREF_SET(__pyx_v_s, __pyx_t_5);
           __pyx_t_5 = 0;
-          __pyx_t_5 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_v_s, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1275, __pyx_L18_error)
+          __pyx_t_5 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_v_s, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1274, __pyx_L18_error)
           __Pyx_GOTREF(__pyx_t_5);
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 1275, __pyx_L18_error)
+          if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 1274, __pyx_L18_error)
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __pyx_v_strings = ((PyObject*)__pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1276
+        /* "netCDF4/_netCDF4.pyx":1275
  *             try:
  *                 strings = [_strencode(s) for s in value_arr.flat]
  *                 for j in range(N):             # <<<<<<<<<<<<<<
  *                     if len(strings[j]) == 0:
  *                         strings[j] = _strencode('\x00')
  */
-        __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1276, __pyx_L18_error)
+        __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1275, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_INCREF(__pyx_v_N);
         __Pyx_GIVEREF(__pyx_v_N);
         PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_N);
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1276, __pyx_L18_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1275, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
           __pyx_t_1 = __pyx_t_4; __Pyx_INCREF(__pyx_t_1); __pyx_t_11 = 0;
           __pyx_t_12 = NULL;
         } else {
-          __pyx_t_11 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1276, __pyx_L18_error)
+          __pyx_t_11 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1275, __pyx_L18_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1276, __pyx_L18_error)
+          __pyx_t_12 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 1275, __pyx_L18_error)
         }
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         for (;;) {
@@ -7014,17 +7014,17 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
             if (likely(PyList_CheckExact(__pyx_t_1))) {
               if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_1)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_4); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1276, __pyx_L18_error)
+              __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_4); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1275, __pyx_L18_error)
               #else
-              __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1276, __pyx_L18_error)
+              __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1275, __pyx_L18_error)
               __Pyx_GOTREF(__pyx_t_4);
               #endif
             } else {
               if (__pyx_t_11 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-              __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_4); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1276, __pyx_L18_error)
+              __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_11); __Pyx_INCREF(__pyx_t_4); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 1275, __pyx_L18_error)
               #else
-              __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1276, __pyx_L18_error)
+              __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1275, __pyx_L18_error)
               __Pyx_GOTREF(__pyx_t_4);
               #endif
             }
@@ -7034,7 +7034,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
               PyObject* exc_type = PyErr_Occurred();
               if (exc_type) {
                 if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                else __PYX_ERR(0, 1276, __pyx_L18_error)
+                else __PYX_ERR(0, 1275, __pyx_L18_error)
               }
               break;
             }
@@ -7043,33 +7043,33 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           __Pyx_XDECREF_SET(__pyx_v_j, __pyx_t_4);
           __pyx_t_4 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":1277
+          /* "netCDF4/_netCDF4.pyx":1276
  *                 strings = [_strencode(s) for s in value_arr.flat]
  *                 for j in range(N):
  *                     if len(strings[j]) == 0:             # <<<<<<<<<<<<<<
  *                         strings[j] = _strencode('\x00')
  *                     string_ptrs[j] = strings[j]
  */
-          __pyx_t_4 = PyObject_GetItem(__pyx_v_strings, __pyx_v_j); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1277, __pyx_L18_error)
+          __pyx_t_4 = PyObject_GetItem(__pyx_v_strings, __pyx_v_j); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1276, __pyx_L18_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_13 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1277, __pyx_L18_error)
+          __pyx_t_13 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1276, __pyx_L18_error)
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           __pyx_t_9 = ((__pyx_t_13 == 0) != 0);
           if (__pyx_t_9) {
 
-            /* "netCDF4/_netCDF4.pyx":1278
+            /* "netCDF4/_netCDF4.pyx":1277
  *                 for j in range(N):
  *                     if len(strings[j]) == 0:
  *                         strings[j] = _strencode('\x00')             # <<<<<<<<<<<<<<
  *                     string_ptrs[j] = strings[j]
  *                 issue485_workaround(grp._grpid, varid, attname)
  */
-            __pyx_t_4 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_kp_s_, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1278, __pyx_L18_error)
+            __pyx_t_4 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_kp_s_, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1277, __pyx_L18_error)
             __Pyx_GOTREF(__pyx_t_4);
-            if (unlikely(PyObject_SetItem(__pyx_v_strings, __pyx_v_j, __pyx_t_4) < 0)) __PYX_ERR(0, 1278, __pyx_L18_error)
+            if (unlikely(PyObject_SetItem(__pyx_v_strings, __pyx_v_j, __pyx_t_4) < 0)) __PYX_ERR(0, 1277, __pyx_L18_error)
             __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1277
+            /* "netCDF4/_netCDF4.pyx":1276
  *                 strings = [_strencode(s) for s in value_arr.flat]
  *                 for j in range(N):
  *                     if len(strings[j]) == 0:             # <<<<<<<<<<<<<<
@@ -7078,21 +7078,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  */
           }
 
-          /* "netCDF4/_netCDF4.pyx":1279
+          /* "netCDF4/_netCDF4.pyx":1278
  *                     if len(strings[j]) == 0:
  *                         strings[j] = _strencode('\x00')
  *                     string_ptrs[j] = strings[j]             # <<<<<<<<<<<<<<
  *                 issue485_workaround(grp._grpid, varid, attname)
  *                 ierr = nc_put_att_string(grp._grpid, varid, attname, N, string_ptrs)
  */
-          __pyx_t_4 = PyObject_GetItem(__pyx_v_strings, __pyx_v_j); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1279, __pyx_L18_error)
+          __pyx_t_4 = PyObject_GetItem(__pyx_v_strings, __pyx_v_j); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1278, __pyx_L18_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_t_4); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 1279, __pyx_L18_error)
-          __pyx_t_13 = __Pyx_PyIndex_AsSsize_t(__pyx_v_j); if (unlikely((__pyx_t_13 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 1279, __pyx_L18_error)
+          __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_t_4); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 1278, __pyx_L18_error)
+          __pyx_t_13 = __Pyx_PyIndex_AsSsize_t(__pyx_v_j); if (unlikely((__pyx_t_13 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 1278, __pyx_L18_error)
           (__pyx_v_string_ptrs[__pyx_t_13]) = __pyx_t_2;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":1276
+          /* "netCDF4/_netCDF4.pyx":1275
  *             try:
  *                 strings = [_strencode(s) for s in value_arr.flat]
  *                 for j in range(N):             # <<<<<<<<<<<<<<
@@ -7102,37 +7102,37 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
         }
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1280
+        /* "netCDF4/_netCDF4.pyx":1279
  *                         strings[j] = _strencode('\x00')
  *                     string_ptrs[j] = strings[j]
  *                 issue485_workaround(grp._grpid, varid, attname)             # <<<<<<<<<<<<<<
  *                 ierr = nc_put_att_string(grp._grpid, varid, attname, N, string_ptrs)
  *             finally:
  */
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1280, __pyx_L18_error)
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1279, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1280, __pyx_L18_error)
+        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1279, __pyx_L18_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4_issue485_workaround(__pyx_t_6, __pyx_v_varid, __pyx_v_attname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1280, __pyx_L18_error)
+        __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4_issue485_workaround(__pyx_t_6, __pyx_v_varid, __pyx_v_attname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1279, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1281
+        /* "netCDF4/_netCDF4.pyx":1280
  *                     string_ptrs[j] = strings[j]
  *                 issue485_workaround(grp._grpid, varid, attname)
  *                 ierr = nc_put_att_string(grp._grpid, varid, attname, N, string_ptrs)             # <<<<<<<<<<<<<<
  *             finally:
  *                 PyMem_Free(string_ptrs)
  */
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1281, __pyx_L18_error)
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1280, __pyx_L18_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1281, __pyx_L18_error)
+        __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1280, __pyx_L18_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_10 = __Pyx_PyInt_As_size_t(__pyx_v_N); if (unlikely((__pyx_t_10 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 1281, __pyx_L18_error)
+        __pyx_t_10 = __Pyx_PyInt_As_size_t(__pyx_v_N); if (unlikely((__pyx_t_10 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 1280, __pyx_L18_error)
         __pyx_v_ierr = nc_put_att_string(__pyx_t_6, __pyx_v_varid, __pyx_v_attname, __pyx_t_10, __pyx_v_string_ptrs);
       }
 
-      /* "netCDF4/_netCDF4.pyx":1283
+      /* "netCDF4/_netCDF4.pyx":1282
  *                 ierr = nc_put_att_string(grp._grpid, varid, attname, N, string_ptrs)
  *             finally:
  *                 PyMem_Free(string_ptrs)             # <<<<<<<<<<<<<<
@@ -7183,7 +7183,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
         __pyx_L19:;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1269
+      /* "netCDF4/_netCDF4.pyx":1268
  *     # write as a string.
  *     if value_arr.dtype.char in ['S','U']:
  *         if not is_netcdf3 and force_ncstring and value_arr.size > 1:             # <<<<<<<<<<<<<<
@@ -7193,7 +7193,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
       goto __pyx_L12;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1285
+    /* "netCDF4/_netCDF4.pyx":1284
  *                 PyMem_Free(string_ptrs)
  *         else:
  *             if not value_arr.shape:             # <<<<<<<<<<<<<<
@@ -7201,21 +7201,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             else:
  */
     /*else*/ {
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_shape); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1285, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_shape); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1284, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1285, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1284, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_8 = ((!__pyx_t_9) != 0);
       if (__pyx_t_8) {
 
-        /* "netCDF4/_netCDF4.pyx":1286
+        /* "netCDF4/_netCDF4.pyx":1285
  *         else:
  *             if not value_arr.shape:
  *                 dats = _strencode(value_arr.item())             # <<<<<<<<<<<<<<
  *             else:
  *                 value_arr1 = value_arr.ravel()
  */
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_item); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1286, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_item); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1285, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __pyx_t_5 = NULL;
         if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -7228,20 +7228,20 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           }
         }
         if (__pyx_t_5) {
-          __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1286, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1285, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         } else {
-          __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1286, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1285, __pyx_L1_error)
         }
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __pyx_t_4 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1286, __pyx_L1_error)
+        __pyx_t_4 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1285, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_v_dats = __pyx_t_4;
         __pyx_t_4 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1285
+        /* "netCDF4/_netCDF4.pyx":1284
  *                 PyMem_Free(string_ptrs)
  *         else:
  *             if not value_arr.shape:             # <<<<<<<<<<<<<<
@@ -7251,7 +7251,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
         goto __pyx_L27;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1288
+      /* "netCDF4/_netCDF4.pyx":1287
  *                 dats = _strencode(value_arr.item())
  *             else:
  *                 value_arr1 = value_arr.ravel()             # <<<<<<<<<<<<<<
@@ -7259,7 +7259,37 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             lenarr = len(dats)
  */
       /*else*/ {
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_ravel); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1288, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_ravel); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1287, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_5 = NULL;
+        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+          __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
+          if (likely(__pyx_t_5)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+            __Pyx_INCREF(__pyx_t_5);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_1, function);
+          }
+        }
+        if (__pyx_t_5) {
+          __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1287, __pyx_L1_error)
+          __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        } else {
+          __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1287, __pyx_L1_error)
+        }
+        __Pyx_GOTREF(__pyx_t_4);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_v_value_arr1 = __pyx_t_4;
+        __pyx_t_4 = 0;
+
+        /* "netCDF4/_netCDF4.pyx":1288
+ *             else:
+ *                 value_arr1 = value_arr.ravel()
+ *                 dats = _strencode(''.join(value_arr1.tolist()))             # <<<<<<<<<<<<<<
+ *             lenarr = len(dats)
+ *             datstring = dats
+ */
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_value_arr1, __pyx_n_s_tolist); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1288, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_5 = NULL;
         if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -7279,40 +7309,10 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
         }
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_v_value_arr1 = __pyx_t_4;
-        __pyx_t_4 = 0;
-
-        /* "netCDF4/_netCDF4.pyx":1289
- *             else:
- *                 value_arr1 = value_arr.ravel()
- *                 dats = _strencode(''.join(value_arr1.tolist()))             # <<<<<<<<<<<<<<
- *             lenarr = len(dats)
- *             datstring = dats
- */
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_value_arr1, __pyx_n_s_tolist); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1289, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = NULL;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-          __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
-          if (likely(__pyx_t_5)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-            __Pyx_INCREF(__pyx_t_5);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_1, function);
-          }
-        }
-        if (__pyx_t_5) {
-          __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1289, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        } else {
-          __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1289, __pyx_L1_error)
-        }
-        __Pyx_GOTREF(__pyx_t_4);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyString_Join(__pyx_kp_s__2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1289, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyString_Join(__pyx_kp_s__2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1288, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __pyx_t_4 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1289, __pyx_L1_error)
+        __pyx_t_4 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1288, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __pyx_v_dats = __pyx_t_4;
@@ -7320,27 +7320,27 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
       }
       __pyx_L27:;
 
-      /* "netCDF4/_netCDF4.pyx":1290
+      /* "netCDF4/_netCDF4.pyx":1289
  *                 value_arr1 = value_arr.ravel()
  *                 dats = _strencode(''.join(value_arr1.tolist()))
  *             lenarr = len(dats)             # <<<<<<<<<<<<<<
  *             datstring = dats
  *             if lenarr == 0:
  */
-      __pyx_t_11 = PyObject_Length(__pyx_v_dats); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 1290, __pyx_L1_error)
+      __pyx_t_11 = PyObject_Length(__pyx_v_dats); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 1289, __pyx_L1_error)
       __pyx_v_lenarr = __pyx_t_11;
 
-      /* "netCDF4/_netCDF4.pyx":1291
+      /* "netCDF4/_netCDF4.pyx":1290
  *                 dats = _strencode(''.join(value_arr1.tolist()))
  *             lenarr = len(dats)
  *             datstring = dats             # <<<<<<<<<<<<<<
  *             if lenarr == 0:
  *                 # write null byte
  */
-      __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_dats); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 1291, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_dats); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 1290, __pyx_L1_error)
       __pyx_v_datstring = __pyx_t_2;
 
-      /* "netCDF4/_netCDF4.pyx":1292
+      /* "netCDF4/_netCDF4.pyx":1291
  *             lenarr = len(dats)
  *             datstring = dats
  *             if lenarr == 0:             # <<<<<<<<<<<<<<
@@ -7350,7 +7350,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
       __pyx_t_8 = ((__pyx_v_lenarr == 0) != 0);
       if (__pyx_t_8) {
 
-        /* "netCDF4/_netCDF4.pyx":1294
+        /* "netCDF4/_netCDF4.pyx":1293
  *             if lenarr == 0:
  *                 # write null byte
  *                 lenarr=1; datstring = '\x00'             # <<<<<<<<<<<<<<
@@ -7360,7 +7360,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
         __pyx_v_lenarr = 1;
         __pyx_v_datstring = ((char *)"\000");
 
-        /* "netCDF4/_netCDF4.pyx":1292
+        /* "netCDF4/_netCDF4.pyx":1291
  *             lenarr = len(dats)
  *             datstring = dats
  *             if lenarr == 0:             # <<<<<<<<<<<<<<
@@ -7369,24 +7369,24 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1295
+      /* "netCDF4/_netCDF4.pyx":1294
  *                 # write null byte
  *                 lenarr=1; datstring = '\x00'
  *             if (force_ncstring or value_arr.dtype.char == 'U') and not is_netcdf3:             # <<<<<<<<<<<<<<
  *                 # try to convert to ascii string, write as NC_CHAR
  *                 # else it's a unicode string, write as NC_STRING (if NETCDF4)
  */
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_force_ncstring); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1295, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_force_ncstring); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1294, __pyx_L1_error)
       if (!__pyx_t_9) {
       } else {
         goto __pyx_L31_next_and;
       }
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1295, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1294, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_char); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1295, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_char); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1294, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_U, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1295, __pyx_L1_error)
+      __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_U, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1294, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (__pyx_t_9) {
       } else {
@@ -7394,13 +7394,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
         goto __pyx_L30_bool_binop_done;
       }
       __pyx_L31_next_and:;
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_is_netcdf3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1295, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_is_netcdf3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1294, __pyx_L1_error)
       __pyx_t_7 = ((!__pyx_t_9) != 0);
       __pyx_t_8 = __pyx_t_7;
       __pyx_L30_bool_binop_done:;
       if (__pyx_t_8) {
 
-        /* "netCDF4/_netCDF4.pyx":1298
+        /* "netCDF4/_netCDF4.pyx":1297
  *                 # try to convert to ascii string, write as NC_CHAR
  *                 # else it's a unicode string, write as NC_STRING (if NETCDF4)
  *                 try:             # <<<<<<<<<<<<<<
@@ -7416,27 +7416,27 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           __Pyx_XGOTREF(__pyx_t_19);
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1299
+            /* "netCDF4/_netCDF4.pyx":1298
  *                 # else it's a unicode string, write as NC_STRING (if NETCDF4)
  *                 try:
  *                     if force_ncstring: raise UnicodeError             # <<<<<<<<<<<<<<
  *                     dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  *                     ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
  */
-            __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_force_ncstring); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1299, __pyx_L33_error)
+            __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_force_ncstring); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1298, __pyx_L33_error)
             if (__pyx_t_8) {
               __Pyx_Raise(__pyx_builtin_UnicodeError, 0, 0, 0);
-              __PYX_ERR(0, 1299, __pyx_L33_error)
+              __PYX_ERR(0, 1298, __pyx_L33_error)
             }
 
-            /* "netCDF4/_netCDF4.pyx":1300
+            /* "netCDF4/_netCDF4.pyx":1299
  *                 try:
  *                     if force_ncstring: raise UnicodeError
  *                     dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string             # <<<<<<<<<<<<<<
  *                     ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
  *                 except UnicodeError:
  */
-            __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_to_ascii); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1300, __pyx_L33_error)
+            __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_to_ascii); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1299, __pyx_L33_error)
             __Pyx_GOTREF(__pyx_t_4);
             __pyx_t_5 = NULL;
             if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -7449,13 +7449,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
               }
             }
             if (!__pyx_t_5) {
-              __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_dats); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1300, __pyx_L33_error)
+              __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_dats); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1299, __pyx_L33_error)
               __Pyx_GOTREF(__pyx_t_1);
             } else {
               #if CYTHON_FAST_PYCALL
               if (PyFunction_Check(__pyx_t_4)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_dats};
-                __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1300, __pyx_L33_error)
+                __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1299, __pyx_L33_error)
                 __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                 __Pyx_GOTREF(__pyx_t_1);
               } else
@@ -7463,19 +7463,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
               #if CYTHON_FAST_PYCCALL
               if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_dats};
-                __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1300, __pyx_L33_error)
+                __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1299, __pyx_L33_error)
                 __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                 __Pyx_GOTREF(__pyx_t_1);
               } else
               #endif
               {
-                __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1300, __pyx_L33_error)
+                __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1299, __pyx_L33_error)
                 __Pyx_GOTREF(__pyx_t_3);
                 __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5); __pyx_t_5 = NULL;
                 __Pyx_INCREF(__pyx_v_dats);
                 __Pyx_GIVEREF(__pyx_v_dats);
                 PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_v_dats);
-                __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1300, __pyx_L33_error)
+                __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1299, __pyx_L33_error)
                 __Pyx_GOTREF(__pyx_t_1);
                 __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
               }
@@ -7484,20 +7484,20 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
             __pyx_v_dats_ascii = __pyx_t_1;
             __pyx_t_1 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1301
+            /* "netCDF4/_netCDF4.pyx":1300
  *                     if force_ncstring: raise UnicodeError
  *                     dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  *                     ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)             # <<<<<<<<<<<<<<
  *                 except UnicodeError:
  *                     issue485_workaround(grp._grpid, varid, attname)
  */
-            __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1301, __pyx_L33_error)
+            __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1300, __pyx_L33_error)
             __Pyx_GOTREF(__pyx_t_1);
-            __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1301, __pyx_L33_error)
+            __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1300, __pyx_L33_error)
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             __pyx_v_ierr = nc_put_att_text(__pyx_t_14, __pyx_v_varid, __pyx_v_attname, __pyx_v_lenarr, __pyx_v_datstring);
 
-            /* "netCDF4/_netCDF4.pyx":1298
+            /* "netCDF4/_netCDF4.pyx":1297
  *                 # try to convert to ascii string, write as NC_CHAR
  *                 # else it's a unicode string, write as NC_STRING (if NETCDF4)
  *                 try:             # <<<<<<<<<<<<<<
@@ -7516,7 +7516,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":1302
+          /* "netCDF4/_netCDF4.pyx":1301
  *                     dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
  *                     ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
  *                 except UnicodeError:             # <<<<<<<<<<<<<<
@@ -7526,36 +7526,36 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           __pyx_t_14 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_UnicodeError);
           if (__pyx_t_14) {
             __Pyx_AddTraceback("netCDF4._netCDF4._set_att", __pyx_clineno, __pyx_lineno, __pyx_filename);
-            if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_4, &__pyx_t_3) < 0) __PYX_ERR(0, 1302, __pyx_L35_except_error)
+            if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_4, &__pyx_t_3) < 0) __PYX_ERR(0, 1301, __pyx_L35_except_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_GOTREF(__pyx_t_4);
             __Pyx_GOTREF(__pyx_t_3);
 
-            /* "netCDF4/_netCDF4.pyx":1303
+            /* "netCDF4/_netCDF4.pyx":1302
  *                     ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
  *                 except UnicodeError:
  *                     issue485_workaround(grp._grpid, varid, attname)             # <<<<<<<<<<<<<<
  *                     ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
  *             else:
  */
-            __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1303, __pyx_L35_except_error)
+            __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1302, __pyx_L35_except_error)
             __Pyx_GOTREF(__pyx_t_5);
-            __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1303, __pyx_L35_except_error)
+            __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1302, __pyx_L35_except_error)
             __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-            __pyx_t_5 = __pyx_f_7netCDF4_8_netCDF4_issue485_workaround(__pyx_t_14, __pyx_v_varid, __pyx_v_attname); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1303, __pyx_L35_except_error)
+            __pyx_t_5 = __pyx_f_7netCDF4_8_netCDF4_issue485_workaround(__pyx_t_14, __pyx_v_varid, __pyx_v_attname); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1302, __pyx_L35_except_error)
             __Pyx_GOTREF(__pyx_t_5);
             __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1304
+            /* "netCDF4/_netCDF4.pyx":1303
  *                 except UnicodeError:
  *                     issue485_workaround(grp._grpid, varid, attname)
  *                     ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)             # <<<<<<<<<<<<<<
  *             else:
  *                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
  */
-            __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1304, __pyx_L35_except_error)
+            __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1303, __pyx_L35_except_error)
             __Pyx_GOTREF(__pyx_t_5);
-            __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1304, __pyx_L35_except_error)
+            __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1303, __pyx_L35_except_error)
             __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
             __pyx_v_ierr = nc_put_att_string(__pyx_t_14, __pyx_v_varid, __pyx_v_attname, 1, (&__pyx_v_datstring));
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -7566,7 +7566,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           goto __pyx_L35_except_error;
           __pyx_L35_except_error:;
 
-          /* "netCDF4/_netCDF4.pyx":1298
+          /* "netCDF4/_netCDF4.pyx":1297
  *                 # try to convert to ascii string, write as NC_CHAR
  *                 # else it's a unicode string, write as NC_STRING (if NETCDF4)
  *                 try:             # <<<<<<<<<<<<<<
@@ -7588,7 +7588,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
           __pyx_L40_try_end:;
         }
 
-        /* "netCDF4/_netCDF4.pyx":1295
+        /* "netCDF4/_netCDF4.pyx":1294
  *                 # write null byte
  *                 lenarr=1; datstring = '\x00'
  *             if (force_ncstring or value_arr.dtype.char == 'U') and not is_netcdf3:             # <<<<<<<<<<<<<<
@@ -7598,7 +7598,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
         goto __pyx_L29;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1306
+      /* "netCDF4/_netCDF4.pyx":1305
  *                     ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
  *             else:
  *                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)             # <<<<<<<<<<<<<<
@@ -7606,9 +7606,9 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  */
       /*else*/ {
-        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1306, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1305, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1306, __pyx_L1_error)
+        __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1305, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_v_ierr = nc_put_att_text(__pyx_t_14, __pyx_v_varid, __pyx_v_attname, __pyx_v_lenarr, __pyx_v_datstring);
       }
@@ -7616,7 +7616,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     }
     __pyx_L12:;
 
-    /* "netCDF4/_netCDF4.pyx":1307
+    /* "netCDF4/_netCDF4.pyx":1306
  *             else:
  *                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -7626,7 +7626,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     __pyx_t_8 = ((__pyx_v_ierr != NC_NOERR) != 0);
     if (__pyx_t_8) {
 
-      /* "netCDF4/_netCDF4.pyx":1308
+      /* "netCDF4/_netCDF4.pyx":1307
  *                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -7634,22 +7634,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *     else:
  */
       __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-      __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1308, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1307, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1308, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1307, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1308, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1307, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __PYX_ERR(0, 1308, __pyx_L1_error)
+      __PYX_ERR(0, 1307, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1307
+      /* "netCDF4/_netCDF4.pyx":1306
  *             else:
  *                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -7658,7 +7658,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1268
+    /* "netCDF4/_netCDF4.pyx":1267
  *     # if array contains unicode strings, and data model is NETCDF4,
  *     # write as a string.
  *     if value_arr.dtype.char in ['S','U']:             # <<<<<<<<<<<<<<
@@ -7668,7 +7668,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     goto __pyx_L9;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1311
+  /* "netCDF4/_netCDF4.pyx":1310
  *     # a 'regular' array type ('f4','i4','f8' etc)
  *     else:
  *         if value_arr.dtype.kind == 'V': # compound attribute.             # <<<<<<<<<<<<<<
@@ -7676,32 +7676,32 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1311, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1310, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_kind); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1311, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_kind); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1310, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_8 = (__Pyx_PyString_Equals(__pyx_t_4, __pyx_n_s_V, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1311, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PyString_Equals(__pyx_t_4, __pyx_n_s_V, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1310, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_8) {
 
-      /* "netCDF4/_netCDF4.pyx":1312
+      /* "netCDF4/_netCDF4.pyx":1311
  *     else:
  *         if value_arr.dtype.kind == 'V': # compound attribute.
  *             xtype = _find_cmptype(grp,value_arr.dtype)             # <<<<<<<<<<<<<<
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:
  *             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1312, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1311, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__find_cmptype(__pyx_v_grp, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1312, __pyx_L1_error)
+      __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__find_cmptype(__pyx_v_grp, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1311, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_22 = __Pyx_PyInt_As_nc_type(__pyx_t_3); if (unlikely((__pyx_t_22 == ((nc_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 1312, __pyx_L1_error)
+      __pyx_t_22 = __Pyx_PyInt_As_nc_type(__pyx_t_3); if (unlikely((__pyx_t_22 == ((nc_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 1311, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_v_xtype = __pyx_t_22;
 
-      /* "netCDF4/_netCDF4.pyx":1311
+      /* "netCDF4/_netCDF4.pyx":1310
  *     # a 'regular' array type ('f4','i4','f8' etc)
  *     else:
  *         if value_arr.dtype.kind == 'V': # compound attribute.             # <<<<<<<<<<<<<<
@@ -7711,47 +7711,47 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
       goto __pyx_L45;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1313
+    /* "netCDF4/_netCDF4.pyx":1312
  *         if value_arr.dtype.kind == 'V': # compound attribute.
  *             xtype = _find_cmptype(grp,value_arr.dtype)
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:             # <<<<<<<<<<<<<<
  *             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
  *         elif xtype == -99: # if xtype is not passed in as kwarg.
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1313, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1312, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_str); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1313, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_str); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1312, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_4, 1, 0, NULL, NULL, &__pyx_slice__10, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1313, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_4, 1, 0, NULL, NULL, &__pyx_slice__10, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1312, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_supportedtypes); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1313, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_supportedtypes); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1312, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_4, Py_NE)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1313, __pyx_L1_error)
+    __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_t_4, Py_NE)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1312, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_7 = (__pyx_t_8 != 0);
     if (__pyx_t_7) {
 
-      /* "netCDF4/_netCDF4.pyx":1314
+      /* "netCDF4/_netCDF4.pyx":1313
  *             xtype = _find_cmptype(grp,value_arr.dtype)
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:
  *             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])             # <<<<<<<<<<<<<<
  *         elif xtype == -99: # if xtype is not passed in as kwarg.
  *             xtype = _nptonctype[value_arr.dtype.str[1:]]
  */
-      __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_supportedtypes); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1314, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_supportedtypes); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1313, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1314, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1313, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1314, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1313, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_1, 1, 0, NULL, NULL, &__pyx_slice__11, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1314, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_t_1, 1, 0, NULL, NULL, &__pyx_slice__11, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1313, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1314, __pyx_L1_error)
+      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1313, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_4);
       PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_4);
@@ -7759,14 +7759,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
       PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_3);
       __pyx_t_4 = 0;
       __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_illegal_data_type_for_attribute, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1314, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_illegal_data_type_for_attribute, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1313, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_Raise(__pyx_builtin_TypeError, __pyx_t_3, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __PYX_ERR(0, 1314, __pyx_L1_error)
+      __PYX_ERR(0, 1313, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1313
+      /* "netCDF4/_netCDF4.pyx":1312
  *         if value_arr.dtype.kind == 'V': # compound attribute.
  *             xtype = _find_cmptype(grp,value_arr.dtype)
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:             # <<<<<<<<<<<<<<
@@ -7775,7 +7775,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1315
+    /* "netCDF4/_netCDF4.pyx":1314
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:
  *             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
  *         elif xtype == -99: # if xtype is not passed in as kwarg.             # <<<<<<<<<<<<<<
@@ -7785,32 +7785,32 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     __pyx_t_7 = ((__pyx_v_xtype == -99L) != 0);
     if (__pyx_t_7) {
 
-      /* "netCDF4/_netCDF4.pyx":1316
+      /* "netCDF4/_netCDF4.pyx":1315
  *             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
  *         elif xtype == -99: # if xtype is not passed in as kwarg.
  *             xtype = _nptonctype[value_arr.dtype.str[1:]]             # <<<<<<<<<<<<<<
  *         lenarr = PyArray_SIZE(value_arr)
  *         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
  */
-      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_nptonctype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1316, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_nptonctype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1315, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1316, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_value_arr), __pyx_n_s_dtype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1315, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_str); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1316, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_str); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1315, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_4, 1, 0, NULL, NULL, &__pyx_slice__12, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1316, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_t_4, 1, 0, NULL, NULL, &__pyx_slice__12, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1315, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = PyObject_GetItem(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1316, __pyx_L1_error)
+      __pyx_t_4 = PyObject_GetItem(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1315, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_22 = __Pyx_PyInt_As_nc_type(__pyx_t_4); if (unlikely((__pyx_t_22 == ((nc_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 1316, __pyx_L1_error)
+      __pyx_t_22 = __Pyx_PyInt_As_nc_type(__pyx_t_4); if (unlikely((__pyx_t_22 == ((nc_type)-1)) && PyErr_Occurred())) __PYX_ERR(0, 1315, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_v_xtype = __pyx_t_22;
 
-      /* "netCDF4/_netCDF4.pyx":1315
+      /* "netCDF4/_netCDF4.pyx":1314
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:
  *             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
  *         elif xtype == -99: # if xtype is not passed in as kwarg.             # <<<<<<<<<<<<<<
@@ -7820,7 +7820,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     }
     __pyx_L45:;
 
-    /* "netCDF4/_netCDF4.pyx":1317
+    /* "netCDF4/_netCDF4.pyx":1316
  *         elif xtype == -99: # if xtype is not passed in as kwarg.
  *             xtype = _nptonctype[value_arr.dtype.str[1:]]
  *         lenarr = PyArray_SIZE(value_arr)             # <<<<<<<<<<<<<<
@@ -7829,20 +7829,20 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  */
     __pyx_v_lenarr = PyArray_SIZE(__pyx_v_value_arr);
 
-    /* "netCDF4/_netCDF4.pyx":1318
+    /* "netCDF4/_netCDF4.pyx":1317
  *             xtype = _nptonctype[value_arr.dtype.str[1:]]
  *         lenarr = PyArray_SIZE(value_arr)
  *         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)             # <<<<<<<<<<<<<<
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1318, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_grpid); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1317, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1318, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1317, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_ierr = nc_put_att(__pyx_t_14, __pyx_v_varid, __pyx_v_attname, __pyx_v_xtype, __pyx_v_lenarr, __pyx_v_value_arr->data);
 
-    /* "netCDF4/_netCDF4.pyx":1319
+    /* "netCDF4/_netCDF4.pyx":1318
  *         lenarr = PyArray_SIZE(value_arr)
  *         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -7852,7 +7852,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
     __pyx_t_7 = ((__pyx_v_ierr != NC_NOERR) != 0);
     if (__pyx_t_7) {
 
-      /* "netCDF4/_netCDF4.pyx":1320
+      /* "netCDF4/_netCDF4.pyx":1319
  *         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
  *         if ierr != NC_NOERR:
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -7860,22 +7860,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
  * cdef _get_types(group):
  */
       __pyx_t_2 = ((char *)nc_strerror(__pyx_v_ierr));
-      __pyx_t_4 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1320, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_decode_c_string(__pyx_t_2, 0, strlen(__pyx_t_2), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1319, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1320, __pyx_L1_error)
+      __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1319, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_4);
       PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_4);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1320, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_AttributeError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1319, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_Raise(__pyx_t_4, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __PYX_ERR(0, 1320, __pyx_L1_error)
+      __PYX_ERR(0, 1319, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1319
+      /* "netCDF4/_netCDF4.pyx":1318
  *         lenarr = PyArray_SIZE(value_arr)
  *         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -7886,7 +7886,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
   }
   __pyx_L9:;
 
-  /* "netCDF4/_netCDF4.pyx":1246
+  /* "netCDF4/_netCDF4.pyx":1245
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  * 
  * cdef _set_att(grp, int varid, name, value,\             # <<<<<<<<<<<<<<
@@ -7921,7 +7921,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__set_att(PyObject *__pyx_v_grp, int 
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1322
+/* "netCDF4/_netCDF4.pyx":1321
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  * 
  * cdef _get_types(group):             # <<<<<<<<<<<<<<
@@ -7964,20 +7964,20 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
   PyObject *__pyx_t_14 = NULL;
   __Pyx_RefNannySetupContext("_get_types", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1330
+  /* "netCDF4/_netCDF4.pyx":1329
  *     cdef nc_type *typeids
  *     cdef char namstring[NC_MAX_NAME+1]
  *     _grpid = group._grpid             # <<<<<<<<<<<<<<
  *     # get the number of user defined types in this group.
  *     with nogil:
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1330, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1329, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1330, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1329, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__grpid = __pyx_t_2;
 
-  /* "netCDF4/_netCDF4.pyx":1332
+  /* "netCDF4/_netCDF4.pyx":1331
  *     _grpid = group._grpid
  *     # get the number of user defined types in this group.
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -7991,7 +7991,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
       #endif
       /*try:*/ {
 
-        /* "netCDF4/_netCDF4.pyx":1333
+        /* "netCDF4/_netCDF4.pyx":1332
  *     # get the number of user defined types in this group.
  *     with nogil:
  *         ierr = nc_inq_typeids(_grpid, &ntypes, NULL)             # <<<<<<<<<<<<<<
@@ -8001,7 +8001,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         __pyx_v_ierr = nc_inq_typeids(__pyx_v__grpid, (&__pyx_v_ntypes), NULL);
       }
 
-      /* "netCDF4/_netCDF4.pyx":1332
+      /* "netCDF4/_netCDF4.pyx":1331
  *     _grpid = group._grpid
  *     # get the number of user defined types in this group.
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -8019,7 +8019,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
       }
   }
 
-  /* "netCDF4/_netCDF4.pyx":1334
+  /* "netCDF4/_netCDF4.pyx":1333
  *     with nogil:
  *         ierr = nc_inq_typeids(_grpid, &ntypes, NULL)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -8029,7 +8029,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
   __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1335
+    /* "netCDF4/_netCDF4.pyx":1334
  *         ierr = nc_inq_typeids(_grpid, &ntypes, NULL)
  *     if ierr != NC_NOERR:
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -8037,22 +8037,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  *         typeids = <nc_type *>malloc(sizeof(nc_type) * ntypes)
  */
     __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1335, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1334, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1335, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1334, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1335, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1334, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 1335, __pyx_L1_error)
+    __PYX_ERR(0, 1334, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1334
+    /* "netCDF4/_netCDF4.pyx":1333
  *     with nogil:
  *         ierr = nc_inq_typeids(_grpid, &ntypes, NULL)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -8061,7 +8061,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1336
+  /* "netCDF4/_netCDF4.pyx":1335
  *     if ierr != NC_NOERR:
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     if ntypes > 0:             # <<<<<<<<<<<<<<
@@ -8071,7 +8071,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
   __pyx_t_3 = ((__pyx_v_ntypes > 0) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1337
+    /* "netCDF4/_netCDF4.pyx":1336
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     if ntypes > 0:
  *         typeids = <nc_type *>malloc(sizeof(nc_type) * ntypes)             # <<<<<<<<<<<<<<
@@ -8080,7 +8080,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
     __pyx_v_typeids = ((nc_type *)malloc(((sizeof(nc_type)) * __pyx_v_ntypes)));
 
-    /* "netCDF4/_netCDF4.pyx":1338
+    /* "netCDF4/_netCDF4.pyx":1337
  *     if ntypes > 0:
  *         typeids = <nc_type *>malloc(sizeof(nc_type) * ntypes)
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -8094,7 +8094,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         #endif
         /*try:*/ {
 
-          /* "netCDF4/_netCDF4.pyx":1339
+          /* "netCDF4/_netCDF4.pyx":1338
  *         typeids = <nc_type *>malloc(sizeof(nc_type) * ntypes)
  *         with nogil:
  *             ierr = nc_inq_typeids(_grpid, &ntypes, typeids)             # <<<<<<<<<<<<<<
@@ -8104,7 +8104,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __pyx_v_ierr = nc_inq_typeids(__pyx_v__grpid, (&__pyx_v_ntypes), __pyx_v_typeids);
         }
 
-        /* "netCDF4/_netCDF4.pyx":1338
+        /* "netCDF4/_netCDF4.pyx":1337
  *     if ntypes > 0:
  *         typeids = <nc_type *>malloc(sizeof(nc_type) * ntypes)
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -8122,7 +8122,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         }
     }
 
-    /* "netCDF4/_netCDF4.pyx":1340
+    /* "netCDF4/_netCDF4.pyx":1339
  *         with nogil:
  *             ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -8132,7 +8132,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
     __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
     if (__pyx_t_3) {
 
-      /* "netCDF4/_netCDF4.pyx":1341
+      /* "netCDF4/_netCDF4.pyx":1340
  *             ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
  *         if ierr != NC_NOERR:
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -8140,22 +8140,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  *     cmptypes = OrderedDict()
  */
       __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-      __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1341, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1340, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1341, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1340, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1341, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1340, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_Raise(__pyx_t_1, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __PYX_ERR(0, 1341, __pyx_L1_error)
+      __PYX_ERR(0, 1340, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1340
+      /* "netCDF4/_netCDF4.pyx":1339
  *         with nogil:
  *             ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -8164,7 +8164,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1336
+    /* "netCDF4/_netCDF4.pyx":1335
  *     if ierr != NC_NOERR:
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     if ntypes > 0:             # <<<<<<<<<<<<<<
@@ -8173,12 +8173,42 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1343
+  /* "netCDF4/_netCDF4.pyx":1342
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     # create empty dictionary for CompoundType instances.
  *     cmptypes = OrderedDict()             # <<<<<<<<<<<<<<
  *     vltypes = OrderedDict()
  *     enumtypes = OrderedDict()
+ */
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1342, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
+    if (likely(__pyx_t_6)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+      __Pyx_INCREF(__pyx_t_6);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_5, function);
+    }
+  }
+  if (__pyx_t_6) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1342, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  } else {
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1342, __pyx_L1_error)
+  }
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_v_cmptypes = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "netCDF4/_netCDF4.pyx":1343
+ *     # create empty dictionary for CompoundType instances.
+ *     cmptypes = OrderedDict()
+ *     vltypes = OrderedDict()             # <<<<<<<<<<<<<<
+ *     enumtypes = OrderedDict()
+ *     if ntypes > 0:
  */
   __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -8200,15 +8230,15 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_v_cmptypes = __pyx_t_1;
+  __pyx_v_vltypes = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "netCDF4/_netCDF4.pyx":1344
- *     # create empty dictionary for CompoundType instances.
  *     cmptypes = OrderedDict()
- *     vltypes = OrderedDict()             # <<<<<<<<<<<<<<
- *     enumtypes = OrderedDict()
+ *     vltypes = OrderedDict()
+ *     enumtypes = OrderedDict()             # <<<<<<<<<<<<<<
  *     if ntypes > 0:
+ *         for n from 0 <= n < ntypes:
  */
   __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1344, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -8230,40 +8260,10 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_v_vltypes = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "netCDF4/_netCDF4.pyx":1345
- *     cmptypes = OrderedDict()
- *     vltypes = OrderedDict()
- *     enumtypes = OrderedDict()             # <<<<<<<<<<<<<<
- *     if ntypes > 0:
- *         for n from 0 <= n < ntypes:
- */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1345, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_6);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
-    }
-  }
-  if (__pyx_t_6) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1345, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1345, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_enumtypes = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1346
+  /* "netCDF4/_netCDF4.pyx":1345
  *     vltypes = OrderedDict()
  *     enumtypes = OrderedDict()
  *     if ntypes > 0:             # <<<<<<<<<<<<<<
@@ -8273,7 +8273,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
   __pyx_t_3 = ((__pyx_v_ntypes > 0) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1347
+    /* "netCDF4/_netCDF4.pyx":1346
  *     enumtypes = OrderedDict()
  *     if ntypes > 0:
  *         for n from 0 <= n < ntypes:             # <<<<<<<<<<<<<<
@@ -8283,7 +8283,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
     __pyx_t_2 = __pyx_v_ntypes;
     for (__pyx_v_n = 0; __pyx_v_n < __pyx_t_2; __pyx_v_n++) {
 
-      /* "netCDF4/_netCDF4.pyx":1348
+      /* "netCDF4/_netCDF4.pyx":1347
  *     if ntypes > 0:
  *         for n from 0 <= n < ntypes:
  *             xtype = typeids[n]             # <<<<<<<<<<<<<<
@@ -8292,7 +8292,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
       __pyx_v_xtype = (__pyx_v_typeids[__pyx_v_n]);
 
-      /* "netCDF4/_netCDF4.pyx":1349
+      /* "netCDF4/_netCDF4.pyx":1348
  *         for n from 0 <= n < ntypes:
  *             xtype = typeids[n]
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -8306,7 +8306,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1350
+            /* "netCDF4/_netCDF4.pyx":1349
  *             xtype = typeids[n]
  *             with nogil:
  *                 ierr = nc_inq_user_type(_grpid, xtype, namstring,             # <<<<<<<<<<<<<<
@@ -8316,7 +8316,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
             __pyx_v_ierr = nc_inq_user_type(__pyx_v__grpid, __pyx_v_xtype, __pyx_v_namstring, NULL, NULL, NULL, (&__pyx_v_classp));
           }
 
-          /* "netCDF4/_netCDF4.pyx":1349
+          /* "netCDF4/_netCDF4.pyx":1348
  *         for n from 0 <= n < ntypes:
  *             xtype = typeids[n]
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -8334,7 +8334,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1352
+      /* "netCDF4/_netCDF4.pyx":1351
  *                 ierr = nc_inq_user_type(_grpid, xtype, namstring,
  *                                         NULL,NULL,NULL,&classp)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -8344,7 +8344,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
       __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_3) {
 
-        /* "netCDF4/_netCDF4.pyx":1353
+        /* "netCDF4/_netCDF4.pyx":1352
  *                                         NULL,NULL,NULL,&classp)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -8352,22 +8352,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  *                 name = namstring.decode(default_encoding,unicode_error)
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1353, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1352, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1353, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1352, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1353, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1352, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_Raise(__pyx_t_1, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 1353, __pyx_L1_error)
+        __PYX_ERR(0, 1352, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1352
+        /* "netCDF4/_netCDF4.pyx":1351
  *                 ierr = nc_inq_user_type(_grpid, xtype, namstring,
  *                                         NULL,NULL,NULL,&classp)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -8376,7 +8376,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1354
+      /* "netCDF4/_netCDF4.pyx":1353
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             if classp == NC_COMPOUND: # a compound             # <<<<<<<<<<<<<<
@@ -8386,21 +8386,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
       switch (__pyx_v_classp) {
         case NC_COMPOUND:
 
-        /* "netCDF4/_netCDF4.pyx":1355
+        /* "netCDF4/_netCDF4.pyx":1354
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             if classp == NC_COMPOUND: # a compound
  *                 name = namstring.decode(default_encoding,unicode_error)             # <<<<<<<<<<<<<<
  *                 # read the compound type info from the file,
  *                 # create a CompoundType instance from it.
  */
-        __pyx_t_5 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1355, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1354, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1355, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1354, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1355, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1354, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1355, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1354, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __pyx_t_8 = NULL;
         __pyx_t_9 = 0;
@@ -8417,7 +8417,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_6)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-          __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1355, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1354, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -8427,7 +8427,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-          __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1355, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1354, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -8435,7 +8435,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         } else
         #endif
         {
-          __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1355, __pyx_L1_error)
+          __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1354, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_10);
           if (__pyx_t_8) {
             __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -8446,7 +8446,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_7);
           __pyx_t_5 = 0;
           __pyx_t_7 = 0;
-          __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1355, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1354, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
         }
@@ -8454,7 +8454,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1358
+        /* "netCDF4/_netCDF4.pyx":1357
  *                 # read the compound type info from the file,
  *                 # create a CompoundType instance from it.
  *                 try:             # <<<<<<<<<<<<<<
@@ -8470,19 +8470,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __Pyx_XGOTREF(__pyx_t_13);
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1359
+            /* "netCDF4/_netCDF4.pyx":1358
  *                 # create a CompoundType instance from it.
  *                 try:
  *                     cmptype = _read_compound(group, xtype)             # <<<<<<<<<<<<<<
  *                 except KeyError:
  *                     msg='WARNING: unsupported Compound type, skipping...'
  */
-            __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__read_compound(__pyx_v_group, __pyx_v_xtype, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1359, __pyx_L21_error)
+            __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__read_compound(__pyx_v_group, __pyx_v_xtype, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1358, __pyx_L21_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_XDECREF_SET(__pyx_v_cmptype, __pyx_t_1);
             __pyx_t_1 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1358
+            /* "netCDF4/_netCDF4.pyx":1357
  *                 # read the compound type info from the file,
  *                 # create a CompoundType instance from it.
  *                 try:             # <<<<<<<<<<<<<<
@@ -8503,7 +8503,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":1360
+          /* "netCDF4/_netCDF4.pyx":1359
  *                 try:
  *                     cmptype = _read_compound(group, xtype)
  *                 except KeyError:             # <<<<<<<<<<<<<<
@@ -8513,12 +8513,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
           if (__pyx_t_9) {
             __Pyx_AddTraceback("netCDF4._netCDF4._get_types", __pyx_clineno, __pyx_lineno, __pyx_filename);
-            if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_6, &__pyx_t_10) < 0) __PYX_ERR(0, 1360, __pyx_L23_except_error)
+            if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_6, &__pyx_t_10) < 0) __PYX_ERR(0, 1359, __pyx_L23_except_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_GOTREF(__pyx_t_10);
 
-            /* "netCDF4/_netCDF4.pyx":1361
+            /* "netCDF4/_netCDF4.pyx":1360
  *                     cmptype = _read_compound(group, xtype)
  *                 except KeyError:
  *                     msg='WARNING: unsupported Compound type, skipping...'             # <<<<<<<<<<<<<<
@@ -8528,16 +8528,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
             __Pyx_INCREF(__pyx_kp_s_WARNING_unsupported_Compound_typ);
             __Pyx_XDECREF_SET(__pyx_v_msg, __pyx_kp_s_WARNING_unsupported_Compound_typ);
 
-            /* "netCDF4/_netCDF4.pyx":1362
+            /* "netCDF4/_netCDF4.pyx":1361
  *                 except KeyError:
  *                     msg='WARNING: unsupported Compound type, skipping...'
  *                     warnings.warn(msg)             # <<<<<<<<<<<<<<
  *                     continue
  *                 cmptypes[name] = cmptype
  */
-            __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1362, __pyx_L23_except_error)
+            __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1361, __pyx_L23_except_error)
             __Pyx_GOTREF(__pyx_t_5);
-            __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_warn); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1362, __pyx_L23_except_error)
+            __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_warn); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1361, __pyx_L23_except_error)
             __Pyx_GOTREF(__pyx_t_8);
             __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
             __pyx_t_5 = NULL;
@@ -8551,13 +8551,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
               }
             }
             if (!__pyx_t_5) {
-              __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_msg); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1362, __pyx_L23_except_error)
+              __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_msg); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1361, __pyx_L23_except_error)
               __Pyx_GOTREF(__pyx_t_7);
             } else {
               #if CYTHON_FAST_PYCALL
               if (PyFunction_Check(__pyx_t_8)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_msg};
-                __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1362, __pyx_L23_except_error)
+                __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1361, __pyx_L23_except_error)
                 __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                 __Pyx_GOTREF(__pyx_t_7);
               } else
@@ -8565,19 +8565,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
               #if CYTHON_FAST_PYCCALL
               if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_msg};
-                __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1362, __pyx_L23_except_error)
+                __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1361, __pyx_L23_except_error)
                 __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                 __Pyx_GOTREF(__pyx_t_7);
               } else
               #endif
               {
-                __pyx_t_14 = PyTuple_New(1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1362, __pyx_L23_except_error)
+                __pyx_t_14 = PyTuple_New(1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1361, __pyx_L23_except_error)
                 __Pyx_GOTREF(__pyx_t_14);
                 __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_5); __pyx_t_5 = NULL;
                 __Pyx_INCREF(__pyx_v_msg);
                 __Pyx_GIVEREF(__pyx_v_msg);
                 PyTuple_SET_ITEM(__pyx_t_14, 0+1, __pyx_v_msg);
-                __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_14, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1362, __pyx_L23_except_error)
+                __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_14, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1361, __pyx_L23_except_error)
                 __Pyx_GOTREF(__pyx_t_7);
                 __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
               }
@@ -8585,7 +8585,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
             __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
             __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1363
+            /* "netCDF4/_netCDF4.pyx":1362
  *                     msg='WARNING: unsupported Compound type, skipping...'
  *                     warnings.warn(msg)
  *                     continue             # <<<<<<<<<<<<<<
@@ -8602,7 +8602,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           goto __pyx_L23_except_error;
           __pyx_L23_except_error:;
 
-          /* "netCDF4/_netCDF4.pyx":1358
+          /* "netCDF4/_netCDF4.pyx":1357
  *                 # read the compound type info from the file,
  *                 # create a CompoundType instance from it.
  *                 try:             # <<<<<<<<<<<<<<
@@ -8625,16 +8625,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __pyx_L28_try_end:;
         }
 
-        /* "netCDF4/_netCDF4.pyx":1364
+        /* "netCDF4/_netCDF4.pyx":1363
  *                     warnings.warn(msg)
  *                     continue
  *                 cmptypes[name] = cmptype             # <<<<<<<<<<<<<<
  *             elif classp == NC_VLEN: # a vlen
  *                 name = namstring.decode(default_encoding,unicode_error)
  */
-        if (unlikely(PyObject_SetItem(__pyx_v_cmptypes, __pyx_v_name, __pyx_v_cmptype) < 0)) __PYX_ERR(0, 1364, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_v_cmptypes, __pyx_v_name, __pyx_v_cmptype) < 0)) __PYX_ERR(0, 1363, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1354
+        /* "netCDF4/_netCDF4.pyx":1353
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             if classp == NC_COMPOUND: # a compound             # <<<<<<<<<<<<<<
@@ -8643,7 +8643,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
         break;
 
-        /* "netCDF4/_netCDF4.pyx":1365
+        /* "netCDF4/_netCDF4.pyx":1364
  *                     continue
  *                 cmptypes[name] = cmptype
  *             elif classp == NC_VLEN: # a vlen             # <<<<<<<<<<<<<<
@@ -8652,21 +8652,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
         case NC_VLEN:
 
-        /* "netCDF4/_netCDF4.pyx":1366
+        /* "netCDF4/_netCDF4.pyx":1365
  *                 cmptypes[name] = cmptype
  *             elif classp == NC_VLEN: # a vlen
  *                 name = namstring.decode(default_encoding,unicode_error)             # <<<<<<<<<<<<<<
  *                 # read the VLEN type info from the file,
  *                 # create a VLType instance from it.
  */
-        __pyx_t_6 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1366, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1365, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_decode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1366, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_decode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1365, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1366, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1365, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1366, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1365, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __pyx_t_8 = NULL;
         __pyx_t_9 = 0;
@@ -8683,7 +8683,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_1)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_6, __pyx_t_7};
-          __pyx_t_10 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1366, __pyx_L1_error)
+          __pyx_t_10 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1365, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_10);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -8693,7 +8693,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_6, __pyx_t_7};
-          __pyx_t_10 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1366, __pyx_L1_error)
+          __pyx_t_10 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1365, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_10);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -8701,7 +8701,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         } else
         #endif
         {
-          __pyx_t_14 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1366, __pyx_L1_error)
+          __pyx_t_14 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1365, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_14);
           if (__pyx_t_8) {
             __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -8712,7 +8712,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           PyTuple_SET_ITEM(__pyx_t_14, 1+__pyx_t_9, __pyx_t_7);
           __pyx_t_6 = 0;
           __pyx_t_7 = 0;
-          __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_14, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1366, __pyx_L1_error)
+          __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_14, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1365, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_10);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         }
@@ -8720,7 +8720,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_10);
         __pyx_t_10 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1369
+        /* "netCDF4/_netCDF4.pyx":1368
  *                 # read the VLEN type info from the file,
  *                 # create a VLType instance from it.
  *                 try:             # <<<<<<<<<<<<<<
@@ -8736,19 +8736,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __Pyx_XGOTREF(__pyx_t_11);
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1370
+            /* "netCDF4/_netCDF4.pyx":1369
  *                 # create a VLType instance from it.
  *                 try:
  *                     vltype = _read_vlen(group, xtype)             # <<<<<<<<<<<<<<
  *                 except KeyError:
  *                     msg='WARNING: unsupported VLEN type, skipping...'
  */
-            __pyx_t_10 = __pyx_f_7netCDF4_8_netCDF4__read_vlen(__pyx_v_group, __pyx_v_xtype, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1370, __pyx_L31_error)
+            __pyx_t_10 = __pyx_f_7netCDF4_8_netCDF4__read_vlen(__pyx_v_group, __pyx_v_xtype, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1369, __pyx_L31_error)
             __Pyx_GOTREF(__pyx_t_10);
             __Pyx_XDECREF_SET(__pyx_v_vltype, __pyx_t_10);
             __pyx_t_10 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1369
+            /* "netCDF4/_netCDF4.pyx":1368
  *                 # read the VLEN type info from the file,
  *                 # create a VLType instance from it.
  *                 try:             # <<<<<<<<<<<<<<
@@ -8770,7 +8770,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
           __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":1371
+          /* "netCDF4/_netCDF4.pyx":1370
  *                 try:
  *                     vltype = _read_vlen(group, xtype)
  *                 except KeyError:             # <<<<<<<<<<<<<<
@@ -8780,12 +8780,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
           if (__pyx_t_9) {
             __Pyx_AddTraceback("netCDF4._netCDF4._get_types", __pyx_clineno, __pyx_lineno, __pyx_filename);
-            if (__Pyx_GetException(&__pyx_t_10, &__pyx_t_1, &__pyx_t_14) < 0) __PYX_ERR(0, 1371, __pyx_L33_except_error)
+            if (__Pyx_GetException(&__pyx_t_10, &__pyx_t_1, &__pyx_t_14) < 0) __PYX_ERR(0, 1370, __pyx_L33_except_error)
             __Pyx_GOTREF(__pyx_t_10);
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_GOTREF(__pyx_t_14);
 
-            /* "netCDF4/_netCDF4.pyx":1372
+            /* "netCDF4/_netCDF4.pyx":1371
  *                     vltype = _read_vlen(group, xtype)
  *                 except KeyError:
  *                     msg='WARNING: unsupported VLEN type, skipping...'             # <<<<<<<<<<<<<<
@@ -8795,16 +8795,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
             __Pyx_INCREF(__pyx_kp_s_WARNING_unsupported_VLEN_type_sk);
             __Pyx_XDECREF_SET(__pyx_v_msg, __pyx_kp_s_WARNING_unsupported_VLEN_type_sk);
 
-            /* "netCDF4/_netCDF4.pyx":1373
+            /* "netCDF4/_netCDF4.pyx":1372
  *                 except KeyError:
  *                     msg='WARNING: unsupported VLEN type, skipping...'
  *                     warnings.warn(msg)             # <<<<<<<<<<<<<<
  *                     continue
  *                 vltypes[name] = vltype
  */
-            __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1373, __pyx_L33_except_error)
+            __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1372, __pyx_L33_except_error)
             __Pyx_GOTREF(__pyx_t_6);
-            __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_warn); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1373, __pyx_L33_except_error)
+            __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_warn); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1372, __pyx_L33_except_error)
             __Pyx_GOTREF(__pyx_t_8);
             __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
             __pyx_t_6 = NULL;
@@ -8818,13 +8818,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
               }
             }
             if (!__pyx_t_6) {
-              __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_msg); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1373, __pyx_L33_except_error)
+              __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_msg); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1372, __pyx_L33_except_error)
               __Pyx_GOTREF(__pyx_t_7);
             } else {
               #if CYTHON_FAST_PYCALL
               if (PyFunction_Check(__pyx_t_8)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_v_msg};
-                __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1373, __pyx_L33_except_error)
+                __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1372, __pyx_L33_except_error)
                 __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
                 __Pyx_GOTREF(__pyx_t_7);
               } else
@@ -8832,19 +8832,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
               #if CYTHON_FAST_PYCCALL
               if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_v_msg};
-                __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1373, __pyx_L33_except_error)
+                __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1372, __pyx_L33_except_error)
                 __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
                 __Pyx_GOTREF(__pyx_t_7);
               } else
               #endif
               {
-                __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1373, __pyx_L33_except_error)
+                __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1372, __pyx_L33_except_error)
                 __Pyx_GOTREF(__pyx_t_5);
                 __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6); __pyx_t_6 = NULL;
                 __Pyx_INCREF(__pyx_v_msg);
                 __Pyx_GIVEREF(__pyx_v_msg);
                 PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_msg);
-                __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_5, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1373, __pyx_L33_except_error)
+                __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_5, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1372, __pyx_L33_except_error)
                 __Pyx_GOTREF(__pyx_t_7);
                 __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
               }
@@ -8852,7 +8852,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
             __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
             __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1374
+            /* "netCDF4/_netCDF4.pyx":1373
  *                     msg='WARNING: unsupported VLEN type, skipping...'
  *                     warnings.warn(msg)
  *                     continue             # <<<<<<<<<<<<<<
@@ -8869,7 +8869,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           goto __pyx_L33_except_error;
           __pyx_L33_except_error:;
 
-          /* "netCDF4/_netCDF4.pyx":1369
+          /* "netCDF4/_netCDF4.pyx":1368
  *                 # read the VLEN type info from the file,
  *                 # create a VLType instance from it.
  *                 try:             # <<<<<<<<<<<<<<
@@ -8892,16 +8892,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __pyx_L38_try_end:;
         }
 
-        /* "netCDF4/_netCDF4.pyx":1375
+        /* "netCDF4/_netCDF4.pyx":1374
  *                     warnings.warn(msg)
  *                     continue
  *                 vltypes[name] = vltype             # <<<<<<<<<<<<<<
  *             elif classp == NC_ENUM: # an enum type
  *                 name = namstring.decode(default_encoding,unicode_error)
  */
-        if (unlikely(PyObject_SetItem(__pyx_v_vltypes, __pyx_v_name, __pyx_v_vltype) < 0)) __PYX_ERR(0, 1375, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_v_vltypes, __pyx_v_name, __pyx_v_vltype) < 0)) __PYX_ERR(0, 1374, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1365
+        /* "netCDF4/_netCDF4.pyx":1364
  *                     continue
  *                 cmptypes[name] = cmptype
  *             elif classp == NC_VLEN: # a vlen             # <<<<<<<<<<<<<<
@@ -8910,7 +8910,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
         break;
 
-        /* "netCDF4/_netCDF4.pyx":1376
+        /* "netCDF4/_netCDF4.pyx":1375
  *                     continue
  *                 vltypes[name] = vltype
  *             elif classp == NC_ENUM: # an enum type             # <<<<<<<<<<<<<<
@@ -8919,21 +8919,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
         case NC_ENUM:
 
-        /* "netCDF4/_netCDF4.pyx":1377
+        /* "netCDF4/_netCDF4.pyx":1376
  *                 vltypes[name] = vltype
  *             elif classp == NC_ENUM: # an enum type
  *                 name = namstring.decode(default_encoding,unicode_error)             # <<<<<<<<<<<<<<
  *                 # read the Enum type info from the file,
  *                 # create a EnumType instance from it.
  */
-        __pyx_t_1 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1377, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1376, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1377, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1376, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1377, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1376, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1377, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1376, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __pyx_t_8 = NULL;
         __pyx_t_9 = 0;
@@ -8950,7 +8950,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_10)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_1, __pyx_t_7};
-          __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1377, __pyx_L1_error)
+          __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1376, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -8960,7 +8960,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_10)) {
           PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_1, __pyx_t_7};
-          __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1377, __pyx_L1_error)
+          __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1376, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -8968,7 +8968,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1377, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1376, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           if (__pyx_t_8) {
             __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -8979,7 +8979,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_9, __pyx_t_7);
           __pyx_t_1 = 0;
           __pyx_t_7 = 0;
-          __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_5, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1377, __pyx_L1_error)
+          __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_5, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1376, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -8987,7 +8987,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
         __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_14);
         __pyx_t_14 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1380
+        /* "netCDF4/_netCDF4.pyx":1379
  *                 # read the Enum type info from the file,
  *                 # create a EnumType instance from it.
  *                 try:             # <<<<<<<<<<<<<<
@@ -9003,19 +9003,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __Pyx_XGOTREF(__pyx_t_13);
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1381
+            /* "netCDF4/_netCDF4.pyx":1380
  *                 # create a EnumType instance from it.
  *                 try:
  *                     enumtype = _read_enum(group, xtype)             # <<<<<<<<<<<<<<
  *                 except KeyError:
  *                     msg='WARNING: unsupported Enum type, skipping...'
  */
-            __pyx_t_14 = __pyx_f_7netCDF4_8_netCDF4__read_enum(__pyx_v_group, __pyx_v_xtype, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1381, __pyx_L41_error)
+            __pyx_t_14 = __pyx_f_7netCDF4_8_netCDF4__read_enum(__pyx_v_group, __pyx_v_xtype, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 1380, __pyx_L41_error)
             __Pyx_GOTREF(__pyx_t_14);
             __Pyx_XDECREF_SET(__pyx_v_enumtype, __pyx_t_14);
             __pyx_t_14 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1380
+            /* "netCDF4/_netCDF4.pyx":1379
  *                 # read the Enum type info from the file,
  *                 # create a EnumType instance from it.
  *                 try:             # <<<<<<<<<<<<<<
@@ -9037,7 +9037,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
           __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":1382
+          /* "netCDF4/_netCDF4.pyx":1381
  *                 try:
  *                     enumtype = _read_enum(group, xtype)
  *                 except KeyError:             # <<<<<<<<<<<<<<
@@ -9047,12 +9047,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
           if (__pyx_t_9) {
             __Pyx_AddTraceback("netCDF4._netCDF4._get_types", __pyx_clineno, __pyx_lineno, __pyx_filename);
-            if (__Pyx_GetException(&__pyx_t_14, &__pyx_t_10, &__pyx_t_5) < 0) __PYX_ERR(0, 1382, __pyx_L43_except_error)
+            if (__Pyx_GetException(&__pyx_t_14, &__pyx_t_10, &__pyx_t_5) < 0) __PYX_ERR(0, 1381, __pyx_L43_except_error)
             __Pyx_GOTREF(__pyx_t_14);
             __Pyx_GOTREF(__pyx_t_10);
             __Pyx_GOTREF(__pyx_t_5);
 
-            /* "netCDF4/_netCDF4.pyx":1383
+            /* "netCDF4/_netCDF4.pyx":1382
  *                     enumtype = _read_enum(group, xtype)
  *                 except KeyError:
  *                     msg='WARNING: unsupported Enum type, skipping...'             # <<<<<<<<<<<<<<
@@ -9062,16 +9062,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
             __Pyx_INCREF(__pyx_kp_s_WARNING_unsupported_Enum_type_sk);
             __Pyx_XDECREF_SET(__pyx_v_msg, __pyx_kp_s_WARNING_unsupported_Enum_type_sk);
 
-            /* "netCDF4/_netCDF4.pyx":1384
+            /* "netCDF4/_netCDF4.pyx":1383
  *                 except KeyError:
  *                     msg='WARNING: unsupported Enum type, skipping...'
  *                     warnings.warn(msg)             # <<<<<<<<<<<<<<
  *                     continue
  *                 enumtypes[name] = enumtype
  */
-            __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1384, __pyx_L43_except_error)
+            __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1383, __pyx_L43_except_error)
             __Pyx_GOTREF(__pyx_t_1);
-            __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_warn); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1384, __pyx_L43_except_error)
+            __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_warn); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1383, __pyx_L43_except_error)
             __Pyx_GOTREF(__pyx_t_8);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             __pyx_t_1 = NULL;
@@ -9085,13 +9085,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
               }
             }
             if (!__pyx_t_1) {
-              __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_msg); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1384, __pyx_L43_except_error)
+              __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_msg); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1383, __pyx_L43_except_error)
               __Pyx_GOTREF(__pyx_t_7);
             } else {
               #if CYTHON_FAST_PYCALL
               if (PyFunction_Check(__pyx_t_8)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_v_msg};
-                __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1384, __pyx_L43_except_error)
+                __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1383, __pyx_L43_except_error)
                 __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
                 __Pyx_GOTREF(__pyx_t_7);
               } else
@@ -9099,19 +9099,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
               #if CYTHON_FAST_PYCCALL
               if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
                 PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_v_msg};
-                __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1384, __pyx_L43_except_error)
+                __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1383, __pyx_L43_except_error)
                 __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
                 __Pyx_GOTREF(__pyx_t_7);
               } else
               #endif
               {
-                __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1384, __pyx_L43_except_error)
+                __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1383, __pyx_L43_except_error)
                 __Pyx_GOTREF(__pyx_t_6);
                 __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1); __pyx_t_1 = NULL;
                 __Pyx_INCREF(__pyx_v_msg);
                 __Pyx_GIVEREF(__pyx_v_msg);
                 PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_msg);
-                __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_6, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1384, __pyx_L43_except_error)
+                __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_6, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1383, __pyx_L43_except_error)
                 __Pyx_GOTREF(__pyx_t_7);
                 __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
               }
@@ -9119,7 +9119,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
             __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
             __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1385
+            /* "netCDF4/_netCDF4.pyx":1384
  *                     msg='WARNING: unsupported Enum type, skipping...'
  *                     warnings.warn(msg)
  *                     continue             # <<<<<<<<<<<<<<
@@ -9136,7 +9136,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           goto __pyx_L43_except_error;
           __pyx_L43_except_error:;
 
-          /* "netCDF4/_netCDF4.pyx":1380
+          /* "netCDF4/_netCDF4.pyx":1379
  *                 # read the Enum type info from the file,
  *                 # create a EnumType instance from it.
  *                 try:             # <<<<<<<<<<<<<<
@@ -9159,16 +9159,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
           __pyx_L48_try_end:;
         }
 
-        /* "netCDF4/_netCDF4.pyx":1386
+        /* "netCDF4/_netCDF4.pyx":1385
  *                     warnings.warn(msg)
  *                     continue
  *                 enumtypes[name] = enumtype             # <<<<<<<<<<<<<<
  *         free(typeids)
  *     return cmptypes, vltypes, enumtypes
  */
-        if (unlikely(PyObject_SetItem(__pyx_v_enumtypes, __pyx_v_name, __pyx_v_enumtype) < 0)) __PYX_ERR(0, 1386, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_v_enumtypes, __pyx_v_name, __pyx_v_enumtype) < 0)) __PYX_ERR(0, 1385, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1376
+        /* "netCDF4/_netCDF4.pyx":1375
  *                     continue
  *                 vltypes[name] = vltype
  *             elif classp == NC_ENUM: # an enum type             # <<<<<<<<<<<<<<
@@ -9181,7 +9181,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
       __pyx_L13_continue:;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1387
+    /* "netCDF4/_netCDF4.pyx":1386
  *                     continue
  *                 enumtypes[name] = enumtype
  *         free(typeids)             # <<<<<<<<<<<<<<
@@ -9190,7 +9190,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
     free(__pyx_v_typeids);
 
-    /* "netCDF4/_netCDF4.pyx":1346
+    /* "netCDF4/_netCDF4.pyx":1345
  *     vltypes = OrderedDict()
  *     enumtypes = OrderedDict()
  *     if ntypes > 0:             # <<<<<<<<<<<<<<
@@ -9199,7 +9199,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1388
+  /* "netCDF4/_netCDF4.pyx":1387
  *                 enumtypes[name] = enumtype
  *         free(typeids)
  *     return cmptypes, vltypes, enumtypes             # <<<<<<<<<<<<<<
@@ -9207,7 +9207,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
  * cdef _get_dims(group):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1388, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1387, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(__pyx_v_cmptypes);
   __Pyx_GIVEREF(__pyx_v_cmptypes);
@@ -9222,7 +9222,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
   __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":1322
+  /* "netCDF4/_netCDF4.pyx":1321
  *             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  * 
  * cdef _get_types(group):             # <<<<<<<<<<<<<<
@@ -9255,7 +9255,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_types(PyObject *__pyx_v_group) 
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1390
+/* "netCDF4/_netCDF4.pyx":1389
  *     return cmptypes, vltypes, enumtypes
  * 
  * cdef _get_dims(group):             # <<<<<<<<<<<<<<
@@ -9286,20 +9286,20 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
   PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("_get_dims", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1397
+  /* "netCDF4/_netCDF4.pyx":1396
  *     cdef char namstring[NC_MAX_NAME+1]
  *     # get number of dimensions in this Group.
  *     _grpid = group._grpid             # <<<<<<<<<<<<<<
  *     with nogil:
  *         ierr = nc_inq_ndims(_grpid, &numdims)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1397, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1396, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1397, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1396, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__grpid = __pyx_t_2;
 
-  /* "netCDF4/_netCDF4.pyx":1398
+  /* "netCDF4/_netCDF4.pyx":1397
  *     # get number of dimensions in this Group.
  *     _grpid = group._grpid
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -9313,7 +9313,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       #endif
       /*try:*/ {
 
-        /* "netCDF4/_netCDF4.pyx":1399
+        /* "netCDF4/_netCDF4.pyx":1398
  *     _grpid = group._grpid
  *     with nogil:
  *         ierr = nc_inq_ndims(_grpid, &numdims)             # <<<<<<<<<<<<<<
@@ -9323,7 +9323,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
         __pyx_v_ierr = nc_inq_ndims(__pyx_v__grpid, (&__pyx_v_numdims));
       }
 
-      /* "netCDF4/_netCDF4.pyx":1398
+      /* "netCDF4/_netCDF4.pyx":1397
  *     # get number of dimensions in this Group.
  *     _grpid = group._grpid
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -9341,7 +9341,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       }
   }
 
-  /* "netCDF4/_netCDF4.pyx":1400
+  /* "netCDF4/_netCDF4.pyx":1399
  *     with nogil:
  *         ierr = nc_inq_ndims(_grpid, &numdims)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -9351,7 +9351,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
   __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1401
+    /* "netCDF4/_netCDF4.pyx":1400
  *         ierr = nc_inq_ndims(_grpid, &numdims)
  *     if ierr != NC_NOERR:
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -9359,22 +9359,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
  *     dimensions = OrderedDict()
  */
     __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1401, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1400, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1401, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1400, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1401, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1400, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 1401, __pyx_L1_error)
+    __PYX_ERR(0, 1400, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1400
+    /* "netCDF4/_netCDF4.pyx":1399
  *     with nogil:
  *         ierr = nc_inq_ndims(_grpid, &numdims)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -9383,14 +9383,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1403
+  /* "netCDF4/_netCDF4.pyx":1402
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     # create empty dictionary for dimensions.
  *     dimensions = OrderedDict()             # <<<<<<<<<<<<<<
  *     if numdims > 0:
  *         dimids = <int *>malloc(sizeof(int) * numdims)
  */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1403, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1402, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
@@ -9403,17 +9403,17 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
     }
   }
   if (__pyx_t_6) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1403, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1402, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1403, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1402, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_dimensions = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1404
+  /* "netCDF4/_netCDF4.pyx":1403
  *     # create empty dictionary for dimensions.
  *     dimensions = OrderedDict()
  *     if numdims > 0:             # <<<<<<<<<<<<<<
@@ -9423,7 +9423,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
   __pyx_t_3 = ((__pyx_v_numdims > 0) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1405
+    /* "netCDF4/_netCDF4.pyx":1404
  *     dimensions = OrderedDict()
  *     if numdims > 0:
  *         dimids = <int *>malloc(sizeof(int) * numdims)             # <<<<<<<<<<<<<<
@@ -9432,20 +9432,20 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
  */
     __pyx_v_dimids = ((int *)malloc(((sizeof(int)) * __pyx_v_numdims)));
 
-    /* "netCDF4/_netCDF4.pyx":1406
+    /* "netCDF4/_netCDF4.pyx":1405
  *     if numdims > 0:
  *         dimids = <int *>malloc(sizeof(int) * numdims)
  *         if group.data_model == 'NETCDF4':             # <<<<<<<<<<<<<<
  *             with nogil:
  *                 ierr = nc_inq_dimids(_grpid, &numdims, dimids, 0)
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_data_model); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1406, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_data_model); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1405, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_NETCDF4, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 1406, __pyx_L1_error)
+    __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_NETCDF4, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 1405, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_3) {
 
-      /* "netCDF4/_netCDF4.pyx":1407
+      /* "netCDF4/_netCDF4.pyx":1406
  *         dimids = <int *>malloc(sizeof(int) * numdims)
  *         if group.data_model == 'NETCDF4':
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -9459,7 +9459,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1408
+            /* "netCDF4/_netCDF4.pyx":1407
  *         if group.data_model == 'NETCDF4':
  *             with nogil:
  *                 ierr = nc_inq_dimids(_grpid, &numdims, dimids, 0)             # <<<<<<<<<<<<<<
@@ -9469,7 +9469,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
             __pyx_v_ierr = nc_inq_dimids(__pyx_v__grpid, (&__pyx_v_numdims), __pyx_v_dimids, 0);
           }
 
-          /* "netCDF4/_netCDF4.pyx":1407
+          /* "netCDF4/_netCDF4.pyx":1406
  *         dimids = <int *>malloc(sizeof(int) * numdims)
  *         if group.data_model == 'NETCDF4':
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -9487,7 +9487,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1409
+      /* "netCDF4/_netCDF4.pyx":1408
  *             with nogil:
  *                 ierr = nc_inq_dimids(_grpid, &numdims, dimids, 0)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -9497,7 +9497,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_3) {
 
-        /* "netCDF4/_netCDF4.pyx":1410
+        /* "netCDF4/_netCDF4.pyx":1409
  *                 ierr = nc_inq_dimids(_grpid, &numdims, dimids, 0)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -9505,22 +9505,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
  *             for n from 0 <= n < numdims:
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1410, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1409, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1410, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1409, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1410, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1409, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_Raise(__pyx_t_1, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 1410, __pyx_L1_error)
+        __PYX_ERR(0, 1409, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1409
+        /* "netCDF4/_netCDF4.pyx":1408
  *             with nogil:
  *                 ierr = nc_inq_dimids(_grpid, &numdims, dimids, 0)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -9529,7 +9529,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1406
+      /* "netCDF4/_netCDF4.pyx":1405
  *     if numdims > 0:
  *         dimids = <int *>malloc(sizeof(int) * numdims)
  *         if group.data_model == 'NETCDF4':             # <<<<<<<<<<<<<<
@@ -9539,7 +9539,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       goto __pyx_L8;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1412
+    /* "netCDF4/_netCDF4.pyx":1411
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         else:
  *             for n from 0 <= n < numdims:             # <<<<<<<<<<<<<<
@@ -9550,7 +9550,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       __pyx_t_2 = __pyx_v_numdims;
       for (__pyx_v_n = 0; __pyx_v_n < __pyx_t_2; __pyx_v_n++) {
 
-        /* "netCDF4/_netCDF4.pyx":1413
+        /* "netCDF4/_netCDF4.pyx":1412
  *         else:
  *             for n from 0 <= n < numdims:
  *                 dimids[n] = n             # <<<<<<<<<<<<<<
@@ -9562,7 +9562,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
     }
     __pyx_L8:;
 
-    /* "netCDF4/_netCDF4.pyx":1414
+    /* "netCDF4/_netCDF4.pyx":1413
  *             for n from 0 <= n < numdims:
  *                 dimids[n] = n
  *         for n from 0 <= n < numdims:             # <<<<<<<<<<<<<<
@@ -9572,7 +9572,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
     __pyx_t_2 = __pyx_v_numdims;
     for (__pyx_v_n = 0; __pyx_v_n < __pyx_t_2; __pyx_v_n++) {
 
-      /* "netCDF4/_netCDF4.pyx":1415
+      /* "netCDF4/_netCDF4.pyx":1414
  *                 dimids[n] = n
  *         for n from 0 <= n < numdims:
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -9586,7 +9586,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1416
+            /* "netCDF4/_netCDF4.pyx":1415
  *         for n from 0 <= n < numdims:
  *             with nogil:
  *                 ierr = nc_inq_dimname(_grpid, dimids[n], namstring)             # <<<<<<<<<<<<<<
@@ -9596,7 +9596,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
             __pyx_v_ierr = nc_inq_dimname(__pyx_v__grpid, (__pyx_v_dimids[__pyx_v_n]), __pyx_v_namstring);
           }
 
-          /* "netCDF4/_netCDF4.pyx":1415
+          /* "netCDF4/_netCDF4.pyx":1414
  *                 dimids[n] = n
  *         for n from 0 <= n < numdims:
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -9614,7 +9614,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1417
+      /* "netCDF4/_netCDF4.pyx":1416
  *             with nogil:
  *                 ierr = nc_inq_dimname(_grpid, dimids[n], namstring)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -9624,7 +9624,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_3) {
 
-        /* "netCDF4/_netCDF4.pyx":1418
+        /* "netCDF4/_netCDF4.pyx":1417
  *                 ierr = nc_inq_dimname(_grpid, dimids[n], namstring)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -9632,22 +9632,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
  *             dimensions[name] = Dimension(group, name, id=dimids[n])
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1418, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1417, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1418, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1417, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1418, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1417, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_Raise(__pyx_t_1, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 1418, __pyx_L1_error)
+        __PYX_ERR(0, 1417, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1417
+        /* "netCDF4/_netCDF4.pyx":1416
  *             with nogil:
  *                 ierr = nc_inq_dimname(_grpid, dimids[n], namstring)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -9656,21 +9656,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1419
+      /* "netCDF4/_netCDF4.pyx":1418
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             name = namstring.decode(default_encoding,unicode_error)             # <<<<<<<<<<<<<<
  *             dimensions[name] = Dimension(group, name, id=dimids[n])
  *         free(dimids)
  */
-      __pyx_t_5 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1419, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1418, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1419, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1418, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1419, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1418, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1419, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1418, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_8 = NULL;
       __pyx_t_9 = 0;
@@ -9687,7 +9687,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1419, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1418, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -9697,7 +9697,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1419, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1418, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -9705,7 +9705,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       } else
       #endif
       {
-        __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1419, __pyx_L1_error)
+        __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1418, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         if (__pyx_t_8) {
           __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -9716,7 +9716,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
         PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_7);
         __pyx_t_5 = 0;
         __pyx_t_7 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1419, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1418, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
@@ -9724,14 +9724,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "netCDF4/_netCDF4.pyx":1420
+      /* "netCDF4/_netCDF4.pyx":1419
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             name = namstring.decode(default_encoding,unicode_error)
  *             dimensions[name] = Dimension(group, name, id=dimids[n])             # <<<<<<<<<<<<<<
  *         free(dimids)
  *     return dimensions
  */
-      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1420, __pyx_L1_error)
+      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1419, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_v_group);
       __Pyx_GIVEREF(__pyx_v_group);
@@ -9739,21 +9739,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
       __Pyx_INCREF(__pyx_v_name);
       __Pyx_GIVEREF(__pyx_v_name);
       PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_name);
-      __pyx_t_6 = PyDict_New(); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1420, __pyx_L1_error)
+      __pyx_t_6 = PyDict_New(); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1419, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_10 = __Pyx_PyInt_From_int((__pyx_v_dimids[__pyx_v_n])); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1420, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyInt_From_int((__pyx_v_dimids[__pyx_v_n])); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1419, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
-      if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_id, __pyx_t_10) < 0) __PYX_ERR(0, 1420, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_id, __pyx_t_10) < 0) __PYX_ERR(0, 1419, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __pyx_t_10 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Dimension), __pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1420, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Dimension), __pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1419, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(PyObject_SetItem(__pyx_v_dimensions, __pyx_v_name, __pyx_t_10) < 0)) __PYX_ERR(0, 1420, __pyx_L1_error)
+      if (unlikely(PyObject_SetItem(__pyx_v_dimensions, __pyx_v_name, __pyx_t_10) < 0)) __PYX_ERR(0, 1419, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1421
+    /* "netCDF4/_netCDF4.pyx":1420
  *             name = namstring.decode(default_encoding,unicode_error)
  *             dimensions[name] = Dimension(group, name, id=dimids[n])
  *         free(dimids)             # <<<<<<<<<<<<<<
@@ -9762,7 +9762,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
  */
     free(__pyx_v_dimids);
 
-    /* "netCDF4/_netCDF4.pyx":1404
+    /* "netCDF4/_netCDF4.pyx":1403
  *     # create empty dictionary for dimensions.
  *     dimensions = OrderedDict()
  *     if numdims > 0:             # <<<<<<<<<<<<<<
@@ -9771,7 +9771,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1422
+  /* "netCDF4/_netCDF4.pyx":1421
  *             dimensions[name] = Dimension(group, name, id=dimids[n])
  *         free(dimids)
  *     return dimensions             # <<<<<<<<<<<<<<
@@ -9783,7 +9783,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
   __pyx_r = __pyx_v_dimensions;
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":1390
+  /* "netCDF4/_netCDF4.pyx":1389
  *     return cmptypes, vltypes, enumtypes
  * 
  * cdef _get_dims(group):             # <<<<<<<<<<<<<<
@@ -9809,7 +9809,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_dims(PyObject *__pyx_v_group) {
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1424
+/* "netCDF4/_netCDF4.pyx":1423
  *     return dimensions
  * 
  * cdef _get_grps(group):             # <<<<<<<<<<<<<<
@@ -9840,20 +9840,20 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
   PyObject *__pyx_t_10 = NULL;
   __Pyx_RefNannySetupContext("_get_grps", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1431
+  /* "netCDF4/_netCDF4.pyx":1430
  *     cdef char namstring[NC_MAX_NAME+1]
  *     # get number of groups in this Group.
  *     _grpid = group._grpid             # <<<<<<<<<<<<<<
  *     with nogil:
  *         ierr = nc_inq_grps(_grpid, &numgrps, NULL)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1431, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1430, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1431, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1430, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__grpid = __pyx_t_2;
 
-  /* "netCDF4/_netCDF4.pyx":1432
+  /* "netCDF4/_netCDF4.pyx":1431
  *     # get number of groups in this Group.
  *     _grpid = group._grpid
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -9867,7 +9867,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
       #endif
       /*try:*/ {
 
-        /* "netCDF4/_netCDF4.pyx":1433
+        /* "netCDF4/_netCDF4.pyx":1432
  *     _grpid = group._grpid
  *     with nogil:
  *         ierr = nc_inq_grps(_grpid, &numgrps, NULL)             # <<<<<<<<<<<<<<
@@ -9877,7 +9877,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
         __pyx_v_ierr = nc_inq_grps(__pyx_v__grpid, (&__pyx_v_numgrps), NULL);
       }
 
-      /* "netCDF4/_netCDF4.pyx":1432
+      /* "netCDF4/_netCDF4.pyx":1431
  *     # get number of groups in this Group.
  *     _grpid = group._grpid
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -9895,7 +9895,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
       }
   }
 
-  /* "netCDF4/_netCDF4.pyx":1434
+  /* "netCDF4/_netCDF4.pyx":1433
  *     with nogil:
  *         ierr = nc_inq_grps(_grpid, &numgrps, NULL)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -9905,7 +9905,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
   __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1435
+    /* "netCDF4/_netCDF4.pyx":1434
  *         ierr = nc_inq_grps(_grpid, &numgrps, NULL)
  *     if ierr != NC_NOERR:
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -9913,22 +9913,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
  *     groups = OrderedDict()
  */
     __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1435, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1434, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1435, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1434, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1435, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1434, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 1435, __pyx_L1_error)
+    __PYX_ERR(0, 1434, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1434
+    /* "netCDF4/_netCDF4.pyx":1433
  *     with nogil:
  *         ierr = nc_inq_grps(_grpid, &numgrps, NULL)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -9937,14 +9937,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1437
+  /* "netCDF4/_netCDF4.pyx":1436
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     # create dictionary containing `netCDF4.Group` instances for groups in this group
  *     groups = OrderedDict()             # <<<<<<<<<<<<<<
  *     if numgrps > 0:
  *         grpids = <int *>malloc(sizeof(int) * numgrps)
  */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1437, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1436, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
@@ -9957,17 +9957,17 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
     }
   }
   if (__pyx_t_6) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1437, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1436, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1437, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1436, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_groups = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1438
+  /* "netCDF4/_netCDF4.pyx":1437
  *     # create dictionary containing `netCDF4.Group` instances for groups in this group
  *     groups = OrderedDict()
  *     if numgrps > 0:             # <<<<<<<<<<<<<<
@@ -9977,7 +9977,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
   __pyx_t_3 = ((__pyx_v_numgrps > 0) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1439
+    /* "netCDF4/_netCDF4.pyx":1438
  *     groups = OrderedDict()
  *     if numgrps > 0:
  *         grpids = <int *>malloc(sizeof(int) * numgrps)             # <<<<<<<<<<<<<<
@@ -9986,7 +9986,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
  */
     __pyx_v_grpids = ((int *)malloc(((sizeof(int)) * __pyx_v_numgrps)));
 
-    /* "netCDF4/_netCDF4.pyx":1440
+    /* "netCDF4/_netCDF4.pyx":1439
  *     if numgrps > 0:
  *         grpids = <int *>malloc(sizeof(int) * numgrps)
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -10000,7 +10000,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
         #endif
         /*try:*/ {
 
-          /* "netCDF4/_netCDF4.pyx":1441
+          /* "netCDF4/_netCDF4.pyx":1440
  *         grpids = <int *>malloc(sizeof(int) * numgrps)
  *         with nogil:
  *             ierr = nc_inq_grps(_grpid, NULL, grpids)             # <<<<<<<<<<<<<<
@@ -10010,7 +10010,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
           __pyx_v_ierr = nc_inq_grps(__pyx_v__grpid, NULL, __pyx_v_grpids);
         }
 
-        /* "netCDF4/_netCDF4.pyx":1440
+        /* "netCDF4/_netCDF4.pyx":1439
  *     if numgrps > 0:
  *         grpids = <int *>malloc(sizeof(int) * numgrps)
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -10028,7 +10028,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
         }
     }
 
-    /* "netCDF4/_netCDF4.pyx":1442
+    /* "netCDF4/_netCDF4.pyx":1441
  *         with nogil:
  *             ierr = nc_inq_grps(_grpid, NULL, grpids)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10038,7 +10038,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
     __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
     if (__pyx_t_3) {
 
-      /* "netCDF4/_netCDF4.pyx":1443
+      /* "netCDF4/_netCDF4.pyx":1442
  *             ierr = nc_inq_grps(_grpid, NULL, grpids)
  *         if ierr != NC_NOERR:
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -10046,22 +10046,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
  *             with nogil:
  */
       __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-      __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1443, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1442, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1443, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1442, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1443, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1442, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_Raise(__pyx_t_1, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __PYX_ERR(0, 1443, __pyx_L1_error)
+      __PYX_ERR(0, 1442, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1442
+      /* "netCDF4/_netCDF4.pyx":1441
  *         with nogil:
  *             ierr = nc_inq_grps(_grpid, NULL, grpids)
  *         if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10070,7 +10070,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1444
+    /* "netCDF4/_netCDF4.pyx":1443
  *         if ierr != NC_NOERR:
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         for n from 0 <= n < numgrps:             # <<<<<<<<<<<<<<
@@ -10080,7 +10080,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
     __pyx_t_2 = __pyx_v_numgrps;
     for (__pyx_v_n = 0; __pyx_v_n < __pyx_t_2; __pyx_v_n++) {
 
-      /* "netCDF4/_netCDF4.pyx":1445
+      /* "netCDF4/_netCDF4.pyx":1444
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         for n from 0 <= n < numgrps:
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -10094,7 +10094,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1446
+            /* "netCDF4/_netCDF4.pyx":1445
  *         for n from 0 <= n < numgrps:
  *             with nogil:
  *                 ierr = nc_inq_grpname(grpids[n], namstring)             # <<<<<<<<<<<<<<
@@ -10104,7 +10104,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
             __pyx_v_ierr = nc_inq_grpname((__pyx_v_grpids[__pyx_v_n]), __pyx_v_namstring);
           }
 
-          /* "netCDF4/_netCDF4.pyx":1445
+          /* "netCDF4/_netCDF4.pyx":1444
  *             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         for n from 0 <= n < numgrps:
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -10122,7 +10122,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1447
+      /* "netCDF4/_netCDF4.pyx":1446
  *             with nogil:
  *                 ierr = nc_inq_grpname(grpids[n], namstring)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10132,7 +10132,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
       __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_3) {
 
-        /* "netCDF4/_netCDF4.pyx":1448
+        /* "netCDF4/_netCDF4.pyx":1447
  *                 ierr = nc_inq_grpname(grpids[n], namstring)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -10140,22 +10140,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
  *             groups[name] = Group(group, name, id=grpids[n])
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1448, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1447, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1448, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1447, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1448, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1447, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_Raise(__pyx_t_1, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 1448, __pyx_L1_error)
+        __PYX_ERR(0, 1447, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1447
+        /* "netCDF4/_netCDF4.pyx":1446
  *             with nogil:
  *                 ierr = nc_inq_grpname(grpids[n], namstring)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10164,21 +10164,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1449
+      /* "netCDF4/_netCDF4.pyx":1448
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             name = namstring.decode(default_encoding,unicode_error)             # <<<<<<<<<<<<<<
  *             groups[name] = Group(group, name, id=grpids[n])
  *         free(grpids)
  */
-      __pyx_t_5 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1449, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1448, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1449, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1448, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1449, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1448, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1449, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1448, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_8 = NULL;
       __pyx_t_9 = 0;
@@ -10195,7 +10195,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1449, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1448, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -10205,7 +10205,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1449, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1448, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -10213,7 +10213,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
       } else
       #endif
       {
-        __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1449, __pyx_L1_error)
+        __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1448, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         if (__pyx_t_8) {
           __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -10224,7 +10224,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
         PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_7);
         __pyx_t_5 = 0;
         __pyx_t_7 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1449, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1448, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
@@ -10232,14 +10232,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
       __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "netCDF4/_netCDF4.pyx":1450
+      /* "netCDF4/_netCDF4.pyx":1449
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             name = namstring.decode(default_encoding,unicode_error)
  *             groups[name] = Group(group, name, id=grpids[n])             # <<<<<<<<<<<<<<
  *         free(grpids)
  *     return groups
  */
-      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1450, __pyx_L1_error)
+      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1449, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_v_group);
       __Pyx_GIVEREF(__pyx_v_group);
@@ -10247,21 +10247,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
       __Pyx_INCREF(__pyx_v_name);
       __Pyx_GIVEREF(__pyx_v_name);
       PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_name);
-      __pyx_t_6 = PyDict_New(); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1450, __pyx_L1_error)
+      __pyx_t_6 = PyDict_New(); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1449, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_10 = __Pyx_PyInt_From_int((__pyx_v_grpids[__pyx_v_n])); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1450, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyInt_From_int((__pyx_v_grpids[__pyx_v_n])); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1449, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
-      if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_id, __pyx_t_10) < 0) __PYX_ERR(0, 1450, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_id, __pyx_t_10) < 0) __PYX_ERR(0, 1449, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __pyx_t_10 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Group), __pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1450, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Group), __pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1449, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(PyObject_SetItem(__pyx_v_groups, __pyx_v_name, __pyx_t_10) < 0)) __PYX_ERR(0, 1450, __pyx_L1_error)
+      if (unlikely(PyObject_SetItem(__pyx_v_groups, __pyx_v_name, __pyx_t_10) < 0)) __PYX_ERR(0, 1449, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1451
+    /* "netCDF4/_netCDF4.pyx":1450
  *             name = namstring.decode(default_encoding,unicode_error)
  *             groups[name] = Group(group, name, id=grpids[n])
  *         free(grpids)             # <<<<<<<<<<<<<<
@@ -10270,7 +10270,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
  */
     free(__pyx_v_grpids);
 
-    /* "netCDF4/_netCDF4.pyx":1438
+    /* "netCDF4/_netCDF4.pyx":1437
  *     # create dictionary containing `netCDF4.Group` instances for groups in this group
  *     groups = OrderedDict()
  *     if numgrps > 0:             # <<<<<<<<<<<<<<
@@ -10279,7 +10279,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1452
+  /* "netCDF4/_netCDF4.pyx":1451
  *             groups[name] = Group(group, name, id=grpids[n])
  *         free(grpids)
  *     return groups             # <<<<<<<<<<<<<<
@@ -10291,7 +10291,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
   __pyx_r = __pyx_v_groups;
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":1424
+  /* "netCDF4/_netCDF4.pyx":1423
  *     return dimensions
  * 
  * cdef _get_grps(group):             # <<<<<<<<<<<<<<
@@ -10317,7 +10317,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_grps(PyObject *__pyx_v_group) {
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1454
+/* "netCDF4/_netCDF4.pyx":1453
  *     return groups
  * 
  * cdef _get_vars(group):             # <<<<<<<<<<<<<<
@@ -10382,20 +10382,20 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
   int __pyx_t_28;
   __Pyx_RefNannySetupContext("_get_vars", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1464
+  /* "netCDF4/_netCDF4.pyx":1463
  *     cdef char namstring_cmp[NC_MAX_NAME+1]
  *     # get number of variables in this Group.
  *     _grpid = group._grpid             # <<<<<<<<<<<<<<
  *     with nogil:
  *         ierr = nc_inq_nvars(_grpid, &numvars)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1464, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1463, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1464, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1463, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__grpid = __pyx_t_2;
 
-  /* "netCDF4/_netCDF4.pyx":1465
+  /* "netCDF4/_netCDF4.pyx":1464
  *     # get number of variables in this Group.
  *     _grpid = group._grpid
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -10409,7 +10409,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       #endif
       /*try:*/ {
 
-        /* "netCDF4/_netCDF4.pyx":1466
+        /* "netCDF4/_netCDF4.pyx":1465
  *     _grpid = group._grpid
  *     with nogil:
  *         ierr = nc_inq_nvars(_grpid, &numvars)             # <<<<<<<<<<<<<<
@@ -10419,7 +10419,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         __pyx_v_ierr = nc_inq_nvars(__pyx_v__grpid, (&__pyx_v_numvars));
       }
 
-      /* "netCDF4/_netCDF4.pyx":1465
+      /* "netCDF4/_netCDF4.pyx":1464
  *     # get number of variables in this Group.
  *     _grpid = group._grpid
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -10437,7 +10437,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       }
   }
 
-  /* "netCDF4/_netCDF4.pyx":1467
+  /* "netCDF4/_netCDF4.pyx":1466
  *     with nogil:
  *         ierr = nc_inq_nvars(_grpid, &numvars)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10447,7 +10447,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
   __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1468
+    /* "netCDF4/_netCDF4.pyx":1467
  *         ierr = nc_inq_nvars(_grpid, &numvars)
  *     if ierr != NC_NOERR:
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -10455,22 +10455,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  *     variables = OrderedDict()
  */
     __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1468, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1467, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1468, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1467, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1468, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1467, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 1468, __pyx_L1_error)
+    __PYX_ERR(0, 1467, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1467
+    /* "netCDF4/_netCDF4.pyx":1466
  *     with nogil:
  *         ierr = nc_inq_nvars(_grpid, &numvars)
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10479,14 +10479,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1470
+  /* "netCDF4/_netCDF4.pyx":1469
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     # create empty dictionary for variables.
  *     variables = OrderedDict()             # <<<<<<<<<<<<<<
  *     if numvars > 0:
  *         # get variable ids.
  */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1470, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1469, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
@@ -10499,17 +10499,17 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
     }
   }
   if (__pyx_t_6) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1470, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1469, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1470, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1469, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_variables = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1471
+  /* "netCDF4/_netCDF4.pyx":1470
  *     # create empty dictionary for variables.
  *     variables = OrderedDict()
  *     if numvars > 0:             # <<<<<<<<<<<<<<
@@ -10519,7 +10519,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
   __pyx_t_3 = ((__pyx_v_numvars > 0) != 0);
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1473
+    /* "netCDF4/_netCDF4.pyx":1472
  *     if numvars > 0:
  *         # get variable ids.
  *         varids = <int *>malloc(sizeof(int) * numvars)             # <<<<<<<<<<<<<<
@@ -10528,20 +10528,20 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
     __pyx_v_varids = ((int *)malloc(((sizeof(int)) * __pyx_v_numvars)));
 
-    /* "netCDF4/_netCDF4.pyx":1474
+    /* "netCDF4/_netCDF4.pyx":1473
  *         # get variable ids.
  *         varids = <int *>malloc(sizeof(int) * numvars)
  *         if group.data_model == 'NETCDF4':             # <<<<<<<<<<<<<<
  *             with nogil:
  *                 ierr = nc_inq_varids(_grpid, &numvars, varids)
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_data_model); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1474, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_data_model); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1473, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_NETCDF4, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 1474, __pyx_L1_error)
+    __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_NETCDF4, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 1473, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_3) {
 
-      /* "netCDF4/_netCDF4.pyx":1475
+      /* "netCDF4/_netCDF4.pyx":1474
  *         varids = <int *>malloc(sizeof(int) * numvars)
  *         if group.data_model == 'NETCDF4':
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -10555,7 +10555,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1476
+            /* "netCDF4/_netCDF4.pyx":1475
  *         if group.data_model == 'NETCDF4':
  *             with nogil:
  *                 ierr = nc_inq_varids(_grpid, &numvars, varids)             # <<<<<<<<<<<<<<
@@ -10565,7 +10565,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             __pyx_v_ierr = nc_inq_varids(__pyx_v__grpid, (&__pyx_v_numvars), __pyx_v_varids);
           }
 
-          /* "netCDF4/_netCDF4.pyx":1475
+          /* "netCDF4/_netCDF4.pyx":1474
  *         varids = <int *>malloc(sizeof(int) * numvars)
  *         if group.data_model == 'NETCDF4':
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -10583,7 +10583,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1477
+      /* "netCDF4/_netCDF4.pyx":1476
  *             with nogil:
  *                 ierr = nc_inq_varids(_grpid, &numvars, varids)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10593,7 +10593,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_3) {
 
-        /* "netCDF4/_netCDF4.pyx":1478
+        /* "netCDF4/_netCDF4.pyx":1477
  *                 ierr = nc_inq_varids(_grpid, &numvars, varids)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -10601,22 +10601,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  *             for n from 0 <= n < numvars:
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1478, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1477, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1478, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1477, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1478, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1477, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_Raise(__pyx_t_1, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 1478, __pyx_L1_error)
+        __PYX_ERR(0, 1477, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1477
+        /* "netCDF4/_netCDF4.pyx":1476
  *             with nogil:
  *                 ierr = nc_inq_varids(_grpid, &numvars, varids)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10625,7 +10625,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1474
+      /* "netCDF4/_netCDF4.pyx":1473
  *         # get variable ids.
  *         varids = <int *>malloc(sizeof(int) * numvars)
  *         if group.data_model == 'NETCDF4':             # <<<<<<<<<<<<<<
@@ -10635,7 +10635,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       goto __pyx_L8;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1480
+    /* "netCDF4/_netCDF4.pyx":1479
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *         else:
  *             for n from 0 <= n < numvars:             # <<<<<<<<<<<<<<
@@ -10646,7 +10646,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __pyx_t_2 = __pyx_v_numvars;
       for (__pyx_v_n = 0; __pyx_v_n < __pyx_t_2; __pyx_v_n++) {
 
-        /* "netCDF4/_netCDF4.pyx":1481
+        /* "netCDF4/_netCDF4.pyx":1480
  *         else:
  *             for n from 0 <= n < numvars:
  *                 varids[n] = n             # <<<<<<<<<<<<<<
@@ -10658,7 +10658,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
     }
     __pyx_L8:;
 
-    /* "netCDF4/_netCDF4.pyx":1483
+    /* "netCDF4/_netCDF4.pyx":1482
  *                 varids[n] = n
  *         # loop over variables.
  *         for n from 0 <= n < numvars:             # <<<<<<<<<<<<<<
@@ -10668,7 +10668,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
     __pyx_t_2 = __pyx_v_numvars;
     for (__pyx_v_n = 0; __pyx_v_n < __pyx_t_2; __pyx_v_n++) {
 
-      /* "netCDF4/_netCDF4.pyx":1484
+      /* "netCDF4/_netCDF4.pyx":1483
  *         # loop over variables.
  *         for n from 0 <= n < numvars:
  *             varid = varids[n]             # <<<<<<<<<<<<<<
@@ -10677,7 +10677,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       __pyx_v_varid = (__pyx_v_varids[__pyx_v_n]);
 
-      /* "netCDF4/_netCDF4.pyx":1486
+      /* "netCDF4/_netCDF4.pyx":1485
  *             varid = varids[n]
  *             # get variable name.
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -10691,7 +10691,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1487
+            /* "netCDF4/_netCDF4.pyx":1486
  *             # get variable name.
  *             with nogil:
  *                 ierr = nc_inq_varname(_grpid, varid, namstring)             # <<<<<<<<<<<<<<
@@ -10701,7 +10701,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             __pyx_v_ierr = nc_inq_varname(__pyx_v__grpid, __pyx_v_varid, __pyx_v_namstring);
           }
 
-          /* "netCDF4/_netCDF4.pyx":1486
+          /* "netCDF4/_netCDF4.pyx":1485
  *             varid = varids[n]
  *             # get variable name.
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -10719,7 +10719,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1488
+      /* "netCDF4/_netCDF4.pyx":1487
  *             with nogil:
  *                 ierr = nc_inq_varname(_grpid, varid, namstring)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10729,7 +10729,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_3) {
 
-        /* "netCDF4/_netCDF4.pyx":1489
+        /* "netCDF4/_netCDF4.pyx":1488
  *                 ierr = nc_inq_varname(_grpid, varid, namstring)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -10737,22 +10737,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  *             if ierr != NC_NOERR:
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1489, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1488, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1489, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1488, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1489, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1488, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_Raise(__pyx_t_1, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 1489, __pyx_L1_error)
+        __PYX_ERR(0, 1488, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1488
+        /* "netCDF4/_netCDF4.pyx":1487
  *             with nogil:
  *                 ierr = nc_inq_varname(_grpid, varid, namstring)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10761,21 +10761,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1490
+      /* "netCDF4/_netCDF4.pyx":1489
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             name = namstring.decode(default_encoding,unicode_error)             # <<<<<<<<<<<<<<
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  */
-      __pyx_t_5 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1490, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_FromString(__pyx_v_namstring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1489, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1490, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1489, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1490, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1489, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1490, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_unicode_error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1489, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_t_8 = NULL;
       __pyx_t_9 = 0;
@@ -10792,7 +10792,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1490, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1489, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -10802,7 +10802,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_7};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1490, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1489, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -10810,7 +10810,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       } else
       #endif
       {
-        __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1490, __pyx_L1_error)
+        __pyx_t_10 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1489, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         if (__pyx_t_8) {
           __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -10821,7 +10821,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_9, __pyx_t_7);
         __pyx_t_5 = 0;
         __pyx_t_7 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1490, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1489, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
@@ -10829,7 +10829,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "netCDF4/_netCDF4.pyx":1491
+      /* "netCDF4/_netCDF4.pyx":1490
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             name = namstring.decode(default_encoding,unicode_error)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10839,7 +10839,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_3) {
 
-        /* "netCDF4/_netCDF4.pyx":1492
+        /* "netCDF4/_netCDF4.pyx":1491
  *             name = namstring.decode(default_encoding,unicode_error)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -10847,22 +10847,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  *             with nogil:
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1492, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1491, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1492, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1491, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1492, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1491, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_Raise(__pyx_t_1, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 1492, __pyx_L1_error)
+        __PYX_ERR(0, 1491, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1491
+        /* "netCDF4/_netCDF4.pyx":1490
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             name = namstring.decode(default_encoding,unicode_error)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10871,7 +10871,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1494
+      /* "netCDF4/_netCDF4.pyx":1493
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             # get variable type.
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -10885,7 +10885,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1495
+            /* "netCDF4/_netCDF4.pyx":1494
  *             # get variable type.
  *             with nogil:
  *                 ierr = nc_inq_vartype(_grpid, varid, &xtype)             # <<<<<<<<<<<<<<
@@ -10895,7 +10895,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             __pyx_v_ierr = nc_inq_vartype(__pyx_v__grpid, __pyx_v_varid, (&__pyx_v_xtype));
           }
 
-          /* "netCDF4/_netCDF4.pyx":1494
+          /* "netCDF4/_netCDF4.pyx":1493
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             # get variable type.
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -10913,7 +10913,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1496
+      /* "netCDF4/_netCDF4.pyx":1495
  *             with nogil:
  *                 ierr = nc_inq_vartype(_grpid, varid, &xtype)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10923,7 +10923,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __pyx_t_3 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_3) {
 
-        /* "netCDF4/_netCDF4.pyx":1497
+        /* "netCDF4/_netCDF4.pyx":1496
  *                 ierr = nc_inq_vartype(_grpid, varid, &xtype)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -10931,22 +10931,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  *             endianness = None
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1497, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1496, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1497, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1496, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1497, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1496, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_Raise(__pyx_t_1, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 1497, __pyx_L1_error)
+        __PYX_ERR(0, 1496, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1496
+        /* "netCDF4/_netCDF4.pyx":1495
  *             with nogil:
  *                 ierr = nc_inq_vartype(_grpid, varid, &xtype)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -10955,7 +10955,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1499
+      /* "netCDF4/_netCDF4.pyx":1498
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             # get endian-ness of variable.
  *             endianness = None             # <<<<<<<<<<<<<<
@@ -10965,7 +10965,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __Pyx_INCREF(Py_None);
       __Pyx_XDECREF_SET(__pyx_v_endianness, Py_None);
 
-      /* "netCDF4/_netCDF4.pyx":1500
+      /* "netCDF4/_netCDF4.pyx":1499
  *             # get endian-ness of variable.
  *             endianness = None
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -10979,7 +10979,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1501
+            /* "netCDF4/_netCDF4.pyx":1500
  *             endianness = None
  *             with nogil:
  *                 ierr = nc_inq_var_endian(_grpid, varid, &iendian)             # <<<<<<<<<<<<<<
@@ -10989,7 +10989,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             __pyx_v_ierr = nc_inq_var_endian(__pyx_v__grpid, __pyx_v_varid, (&__pyx_v_iendian));
           }
 
-          /* "netCDF4/_netCDF4.pyx":1500
+          /* "netCDF4/_netCDF4.pyx":1499
  *             # get endian-ness of variable.
  *             endianness = None
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -11007,7 +11007,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1502
+      /* "netCDF4/_netCDF4.pyx":1501
  *             with nogil:
  *                 ierr = nc_inq_var_endian(_grpid, varid, &iendian)
  *             if ierr == NC_NOERR:             # <<<<<<<<<<<<<<
@@ -11017,7 +11017,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __pyx_t_3 = ((__pyx_v_ierr == NC_NOERR) != 0);
       if (__pyx_t_3) {
 
-        /* "netCDF4/_netCDF4.pyx":1503
+        /* "netCDF4/_netCDF4.pyx":1502
  *                 ierr = nc_inq_var_endian(_grpid, varid, &iendian)
  *             if ierr == NC_NOERR:
  *                 if iendian == NC_ENDIAN_LITTLE:             # <<<<<<<<<<<<<<
@@ -11027,7 +11027,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         switch (__pyx_v_iendian) {
           case NC_ENDIAN_LITTLE:
 
-          /* "netCDF4/_netCDF4.pyx":1504
+          /* "netCDF4/_netCDF4.pyx":1503
  *             if ierr == NC_NOERR:
  *                 if iendian == NC_ENDIAN_LITTLE:
  *                     endianness = '<'             # <<<<<<<<<<<<<<
@@ -11037,7 +11037,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           __Pyx_INCREF(__pyx_kp_s__13);
           __Pyx_DECREF_SET(__pyx_v_endianness, __pyx_kp_s__13);
 
-          /* "netCDF4/_netCDF4.pyx":1503
+          /* "netCDF4/_netCDF4.pyx":1502
  *                 ierr = nc_inq_var_endian(_grpid, varid, &iendian)
  *             if ierr == NC_NOERR:
  *                 if iendian == NC_ENDIAN_LITTLE:             # <<<<<<<<<<<<<<
@@ -11046,7 +11046,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
           break;
 
-          /* "netCDF4/_netCDF4.pyx":1505
+          /* "netCDF4/_netCDF4.pyx":1504
  *                 if iendian == NC_ENDIAN_LITTLE:
  *                     endianness = '<'
  *                 elif iendian == NC_ENDIAN_BIG:             # <<<<<<<<<<<<<<
@@ -11055,7 +11055,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
           case NC_ENDIAN_BIG:
 
-          /* "netCDF4/_netCDF4.pyx":1506
+          /* "netCDF4/_netCDF4.pyx":1505
  *                     endianness = '<'
  *                 elif iendian == NC_ENDIAN_BIG:
  *                     endianness = '>'             # <<<<<<<<<<<<<<
@@ -11065,7 +11065,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           __Pyx_INCREF(__pyx_kp_s__14);
           __Pyx_DECREF_SET(__pyx_v_endianness, __pyx_kp_s__14);
 
-          /* "netCDF4/_netCDF4.pyx":1505
+          /* "netCDF4/_netCDF4.pyx":1504
  *                 if iendian == NC_ENDIAN_LITTLE:
  *                     endianness = '<'
  *                 elif iendian == NC_ENDIAN_BIG:             # <<<<<<<<<<<<<<
@@ -11076,7 +11076,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           default: break;
         }
 
-        /* "netCDF4/_netCDF4.pyx":1502
+        /* "netCDF4/_netCDF4.pyx":1501
  *             with nogil:
  *                 ierr = nc_inq_var_endian(_grpid, varid, &iendian)
  *             if ierr == NC_NOERR:             # <<<<<<<<<<<<<<
@@ -11085,7 +11085,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1508
+      /* "netCDF4/_netCDF4.pyx":1507
  *                     endianness = '>'
  *             # check to see if it is a supported user-defined type.
  *             try:             # <<<<<<<<<<<<<<
@@ -11101,22 +11101,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         __Pyx_XGOTREF(__pyx_t_13);
         /*try:*/ {
 
-          /* "netCDF4/_netCDF4.pyx":1509
+          /* "netCDF4/_netCDF4.pyx":1508
  *             # check to see if it is a supported user-defined type.
  *             try:
  *                 datatype = _nctonptype[xtype]             # <<<<<<<<<<<<<<
  *                 if endianness is not None:
  *                     datatype = endianness + datatype
  */
-          __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_nctonptype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1509, __pyx_L36_error)
+          __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_nctonptype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1508, __pyx_L36_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_xtype, nc_type, 1, __Pyx_PyInt_From_nc_type, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1509, __pyx_L36_error)
+          __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_xtype, nc_type, 1, __Pyx_PyInt_From_nc_type, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1508, __pyx_L36_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __Pyx_XDECREF_SET(__pyx_v_datatype, __pyx_t_6);
           __pyx_t_6 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":1510
+          /* "netCDF4/_netCDF4.pyx":1509
  *             try:
  *                 datatype = _nctonptype[xtype]
  *                 if endianness is not None:             # <<<<<<<<<<<<<<
@@ -11127,19 +11127,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           __pyx_t_14 = (__pyx_t_3 != 0);
           if (__pyx_t_14) {
 
-            /* "netCDF4/_netCDF4.pyx":1511
+            /* "netCDF4/_netCDF4.pyx":1510
  *                 datatype = _nctonptype[xtype]
  *                 if endianness is not None:
  *                     datatype = endianness + datatype             # <<<<<<<<<<<<<<
  *             except KeyError:
  *                 if xtype == NC_STRING:
  */
-            __pyx_t_6 = PyNumber_Add(__pyx_v_endianness, __pyx_v_datatype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1511, __pyx_L36_error)
+            __pyx_t_6 = PyNumber_Add(__pyx_v_endianness, __pyx_v_datatype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1510, __pyx_L36_error)
             __Pyx_GOTREF(__pyx_t_6);
             __Pyx_DECREF_SET(__pyx_v_datatype, __pyx_t_6);
             __pyx_t_6 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1510
+            /* "netCDF4/_netCDF4.pyx":1509
  *             try:
  *                 datatype = _nctonptype[xtype]
  *                 if endianness is not None:             # <<<<<<<<<<<<<<
@@ -11148,7 +11148,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
           }
 
-          /* "netCDF4/_netCDF4.pyx":1508
+          /* "netCDF4/_netCDF4.pyx":1507
  *                     endianness = '>'
  *             # check to see if it is a supported user-defined type.
  *             try:             # <<<<<<<<<<<<<<
@@ -11169,7 +11169,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1512
+        /* "netCDF4/_netCDF4.pyx":1511
  *                 if endianness is not None:
  *                     datatype = endianness + datatype
  *             except KeyError:             # <<<<<<<<<<<<<<
@@ -11179,12 +11179,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
         if (__pyx_t_9) {
           __Pyx_AddTraceback("netCDF4._netCDF4._get_vars", __pyx_clineno, __pyx_lineno, __pyx_filename);
-          if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_1, &__pyx_t_10) < 0) __PYX_ERR(0, 1512, __pyx_L38_except_error)
+          if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_1, &__pyx_t_10) < 0) __PYX_ERR(0, 1511, __pyx_L38_except_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_GOTREF(__pyx_t_1);
           __Pyx_GOTREF(__pyx_t_10);
 
-          /* "netCDF4/_netCDF4.pyx":1513
+          /* "netCDF4/_netCDF4.pyx":1512
  *                     datatype = endianness + datatype
  *             except KeyError:
  *                 if xtype == NC_STRING:             # <<<<<<<<<<<<<<
@@ -11194,7 +11194,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           __pyx_t_14 = ((__pyx_v_xtype == NC_STRING) != 0);
           if (__pyx_t_14) {
 
-            /* "netCDF4/_netCDF4.pyx":1514
+            /* "netCDF4/_netCDF4.pyx":1513
  *             except KeyError:
  *                 if xtype == NC_STRING:
  *                     datatype = str             # <<<<<<<<<<<<<<
@@ -11204,7 +11204,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             __Pyx_INCREF(((PyObject *)(&PyString_Type)));
             __Pyx_XDECREF_SET(__pyx_v_datatype, ((PyObject *)(&PyString_Type)));
 
-            /* "netCDF4/_netCDF4.pyx":1513
+            /* "netCDF4/_netCDF4.pyx":1512
  *                     datatype = endianness + datatype
  *             except KeyError:
  *                 if xtype == NC_STRING:             # <<<<<<<<<<<<<<
@@ -11214,7 +11214,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             goto __pyx_L47;
           }
 
-          /* "netCDF4/_netCDF4.pyx":1516
+          /* "netCDF4/_netCDF4.pyx":1515
  *                     datatype = str
  *                 else:
  *                     with nogil:             # <<<<<<<<<<<<<<
@@ -11229,7 +11229,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 #endif
                 /*try:*/ {
 
-                  /* "netCDF4/_netCDF4.pyx":1517
+                  /* "netCDF4/_netCDF4.pyx":1516
  *                 else:
  *                     with nogil:
  *                         ierr = nc_inq_user_type(_grpid, xtype, namstring_cmp,             # <<<<<<<<<<<<<<
@@ -11239,7 +11239,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                   __pyx_v_ierr = nc_inq_user_type(__pyx_v__grpid, __pyx_v_xtype, __pyx_v_namstring_cmp, NULL, NULL, NULL, (&__pyx_v_classp));
                 }
 
-                /* "netCDF4/_netCDF4.pyx":1516
+                /* "netCDF4/_netCDF4.pyx":1515
  *                     datatype = str
  *                 else:
  *                     with nogil:             # <<<<<<<<<<<<<<
@@ -11257,7 +11257,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 }
             }
 
-            /* "netCDF4/_netCDF4.pyx":1519
+            /* "netCDF4/_netCDF4.pyx":1518
  *                         ierr = nc_inq_user_type(_grpid, xtype, namstring_cmp,
  *                                                 NULL, NULL, NULL, &classp)
  *                     if classp == NC_COMPOUND: # a compound type             # <<<<<<<<<<<<<<
@@ -11267,7 +11267,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             switch (__pyx_v_classp) {
               case NC_COMPOUND:
 
-              /* "netCDF4/_netCDF4.pyx":1521
+              /* "netCDF4/_netCDF4.pyx":1520
  *                     if classp == NC_COMPOUND: # a compound type
  *                         # create CompoundType instance describing this compound type.
  *                         try:             # <<<<<<<<<<<<<<
@@ -11283,7 +11283,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __Pyx_XGOTREF(__pyx_t_17);
                 /*try:*/ {
 
-                  /* "netCDF4/_netCDF4.pyx":1522
+                  /* "netCDF4/_netCDF4.pyx":1521
  *                         # create CompoundType instance describing this compound type.
  *                         try:
  *                             datatype = _read_compound(group, xtype, endian=endianness)             # <<<<<<<<<<<<<<
@@ -11292,12 +11292,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
                   __pyx_t_18.__pyx_n = 1;
                   __pyx_t_18.endian = __pyx_v_endianness;
-                  __pyx_t_7 = __pyx_f_7netCDF4_8_netCDF4__read_compound(__pyx_v_group, __pyx_v_xtype, &__pyx_t_18); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1522, __pyx_L53_error)
+                  __pyx_t_7 = __pyx_f_7netCDF4_8_netCDF4__read_compound(__pyx_v_group, __pyx_v_xtype, &__pyx_t_18); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1521, __pyx_L53_error)
                   __Pyx_GOTREF(__pyx_t_7);
                   __Pyx_XDECREF_SET(__pyx_v_datatype, __pyx_t_7);
                   __pyx_t_7 = 0;
 
-                  /* "netCDF4/_netCDF4.pyx":1521
+                  /* "netCDF4/_netCDF4.pyx":1520
  *                     if classp == NC_COMPOUND: # a compound type
  *                         # create CompoundType instance describing this compound type.
  *                         try:             # <<<<<<<<<<<<<<
@@ -11315,7 +11315,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                 __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-                /* "netCDF4/_netCDF4.pyx":1523
+                /* "netCDF4/_netCDF4.pyx":1522
  *                         try:
  *                             datatype = _read_compound(group, xtype, endian=endianness)
  *                         except KeyError:             # <<<<<<<<<<<<<<
@@ -11325,33 +11325,33 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
                 if (__pyx_t_9) {
                   __Pyx_AddTraceback("netCDF4._netCDF4._get_vars", __pyx_clineno, __pyx_lineno, __pyx_filename);
-                  if (__Pyx_GetException(&__pyx_t_7, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 1523, __pyx_L55_except_error)
+                  if (__Pyx_GetException(&__pyx_t_7, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 1522, __pyx_L55_except_error)
                   __Pyx_GOTREF(__pyx_t_7);
                   __Pyx_GOTREF(__pyx_t_5);
                   __Pyx_GOTREF(__pyx_t_8);
 
-                  /* "netCDF4/_netCDF4.pyx":1524
+                  /* "netCDF4/_netCDF4.pyx":1523
  *                             datatype = _read_compound(group, xtype, endian=endianness)
  *                         except KeyError:
  *                             msg="WARNING: variable '%s' has unsupported compound datatype, skipping .." % name             # <<<<<<<<<<<<<<
  *                             warnings.warn(msg)
  *                             continue
  */
-                  __pyx_t_19 = __Pyx_PyString_Format(__pyx_kp_s_WARNING_variable_s_has_unsupport, __pyx_v_name); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1524, __pyx_L55_except_error)
+                  __pyx_t_19 = __Pyx_PyString_Format(__pyx_kp_s_WARNING_variable_s_has_unsupport, __pyx_v_name); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1523, __pyx_L55_except_error)
                   __Pyx_GOTREF(__pyx_t_19);
                   __Pyx_XDECREF_SET(__pyx_v_msg, ((PyObject*)__pyx_t_19));
                   __pyx_t_19 = 0;
 
-                  /* "netCDF4/_netCDF4.pyx":1525
+                  /* "netCDF4/_netCDF4.pyx":1524
  *                         except KeyError:
  *                             msg="WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
  *                             warnings.warn(msg)             # <<<<<<<<<<<<<<
  *                             continue
  *                     elif classp == NC_VLEN: # a compound type
  */
-                  __pyx_t_20 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 1525, __pyx_L55_except_error)
+                  __pyx_t_20 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 1524, __pyx_L55_except_error)
                   __Pyx_GOTREF(__pyx_t_20);
-                  __pyx_t_21 = __Pyx_PyObject_GetAttrStr(__pyx_t_20, __pyx_n_s_warn); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 1525, __pyx_L55_except_error)
+                  __pyx_t_21 = __Pyx_PyObject_GetAttrStr(__pyx_t_20, __pyx_n_s_warn); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 1524, __pyx_L55_except_error)
                   __Pyx_GOTREF(__pyx_t_21);
                   __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
                   __pyx_t_20 = NULL;
@@ -11365,13 +11365,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                     }
                   }
                   if (!__pyx_t_20) {
-                    __pyx_t_19 = __Pyx_PyObject_CallOneArg(__pyx_t_21, __pyx_v_msg); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1525, __pyx_L55_except_error)
+                    __pyx_t_19 = __Pyx_PyObject_CallOneArg(__pyx_t_21, __pyx_v_msg); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1524, __pyx_L55_except_error)
                     __Pyx_GOTREF(__pyx_t_19);
                   } else {
                     #if CYTHON_FAST_PYCALL
                     if (PyFunction_Check(__pyx_t_21)) {
                       PyObject *__pyx_temp[2] = {__pyx_t_20, __pyx_v_msg};
-                      __pyx_t_19 = __Pyx_PyFunction_FastCall(__pyx_t_21, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1525, __pyx_L55_except_error)
+                      __pyx_t_19 = __Pyx_PyFunction_FastCall(__pyx_t_21, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1524, __pyx_L55_except_error)
                       __Pyx_XDECREF(__pyx_t_20); __pyx_t_20 = 0;
                       __Pyx_GOTREF(__pyx_t_19);
                     } else
@@ -11379,19 +11379,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                     #if CYTHON_FAST_PYCCALL
                     if (__Pyx_PyFastCFunction_Check(__pyx_t_21)) {
                       PyObject *__pyx_temp[2] = {__pyx_t_20, __pyx_v_msg};
-                      __pyx_t_19 = __Pyx_PyCFunction_FastCall(__pyx_t_21, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1525, __pyx_L55_except_error)
+                      __pyx_t_19 = __Pyx_PyCFunction_FastCall(__pyx_t_21, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1524, __pyx_L55_except_error)
                       __Pyx_XDECREF(__pyx_t_20); __pyx_t_20 = 0;
                       __Pyx_GOTREF(__pyx_t_19);
                     } else
                     #endif
                     {
-                      __pyx_t_22 = PyTuple_New(1+1); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 1525, __pyx_L55_except_error)
+                      __pyx_t_22 = PyTuple_New(1+1); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 1524, __pyx_L55_except_error)
                       __Pyx_GOTREF(__pyx_t_22);
                       __Pyx_GIVEREF(__pyx_t_20); PyTuple_SET_ITEM(__pyx_t_22, 0, __pyx_t_20); __pyx_t_20 = NULL;
                       __Pyx_INCREF(__pyx_v_msg);
                       __Pyx_GIVEREF(__pyx_v_msg);
                       PyTuple_SET_ITEM(__pyx_t_22, 0+1, __pyx_v_msg);
-                      __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_21, __pyx_t_22, NULL); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1525, __pyx_L55_except_error)
+                      __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_21, __pyx_t_22, NULL); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1524, __pyx_L55_except_error)
                       __Pyx_GOTREF(__pyx_t_19);
                       __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
                     }
@@ -11399,7 +11399,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                   __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
                   __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
 
-                  /* "netCDF4/_netCDF4.pyx":1526
+                  /* "netCDF4/_netCDF4.pyx":1525
  *                             msg="WARNING: variable '%s' has unsupported compound datatype, skipping .." % name
  *                             warnings.warn(msg)
  *                             continue             # <<<<<<<<<<<<<<
@@ -11416,7 +11416,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 goto __pyx_L55_except_error;
                 __pyx_L55_except_error:;
 
-                /* "netCDF4/_netCDF4.pyx":1521
+                /* "netCDF4/_netCDF4.pyx":1520
  *                     if classp == NC_COMPOUND: # a compound type
  *                         # create CompoundType instance describing this compound type.
  *                         try:             # <<<<<<<<<<<<<<
@@ -11439,7 +11439,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __pyx_L60_try_end:;
               }
 
-              /* "netCDF4/_netCDF4.pyx":1519
+              /* "netCDF4/_netCDF4.pyx":1518
  *                         ierr = nc_inq_user_type(_grpid, xtype, namstring_cmp,
  *                                                 NULL, NULL, NULL, &classp)
  *                     if classp == NC_COMPOUND: # a compound type             # <<<<<<<<<<<<<<
@@ -11448,7 +11448,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
               break;
 
-              /* "netCDF4/_netCDF4.pyx":1527
+              /* "netCDF4/_netCDF4.pyx":1526
  *                             warnings.warn(msg)
  *                             continue
  *                     elif classp == NC_VLEN: # a compound type             # <<<<<<<<<<<<<<
@@ -11457,7 +11457,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
               case NC_VLEN:
 
-              /* "netCDF4/_netCDF4.pyx":1529
+              /* "netCDF4/_netCDF4.pyx":1528
  *                     elif classp == NC_VLEN: # a compound type
  *                         # create VLType instance describing this compound type.
  *                         try:             # <<<<<<<<<<<<<<
@@ -11473,7 +11473,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __Pyx_XGOTREF(__pyx_t_15);
                 /*try:*/ {
 
-                  /* "netCDF4/_netCDF4.pyx":1530
+                  /* "netCDF4/_netCDF4.pyx":1529
  *                         # create VLType instance describing this compound type.
  *                         try:
  *                             datatype = _read_vlen(group, xtype, endian=endianness)             # <<<<<<<<<<<<<<
@@ -11482,12 +11482,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
                   __pyx_t_23.__pyx_n = 1;
                   __pyx_t_23.endian = __pyx_v_endianness;
-                  __pyx_t_8 = __pyx_f_7netCDF4_8_netCDF4__read_vlen(__pyx_v_group, __pyx_v_xtype, &__pyx_t_23); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1530, __pyx_L63_error)
+                  __pyx_t_8 = __pyx_f_7netCDF4_8_netCDF4__read_vlen(__pyx_v_group, __pyx_v_xtype, &__pyx_t_23); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1529, __pyx_L63_error)
                   __Pyx_GOTREF(__pyx_t_8);
                   __Pyx_XDECREF_SET(__pyx_v_datatype, __pyx_t_8);
                   __pyx_t_8 = 0;
 
-                  /* "netCDF4/_netCDF4.pyx":1529
+                  /* "netCDF4/_netCDF4.pyx":1528
  *                     elif classp == NC_VLEN: # a compound type
  *                         # create VLType instance describing this compound type.
  *                         try:             # <<<<<<<<<<<<<<
@@ -11509,7 +11509,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                 __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-                /* "netCDF4/_netCDF4.pyx":1531
+                /* "netCDF4/_netCDF4.pyx":1530
  *                         try:
  *                             datatype = _read_vlen(group, xtype, endian=endianness)
  *                         except KeyError:             # <<<<<<<<<<<<<<
@@ -11519,33 +11519,33 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
                 if (__pyx_t_9) {
                   __Pyx_AddTraceback("netCDF4._netCDF4._get_vars", __pyx_clineno, __pyx_lineno, __pyx_filename);
-                  if (__Pyx_GetException(&__pyx_t_8, &__pyx_t_5, &__pyx_t_7) < 0) __PYX_ERR(0, 1531, __pyx_L65_except_error)
+                  if (__Pyx_GetException(&__pyx_t_8, &__pyx_t_5, &__pyx_t_7) < 0) __PYX_ERR(0, 1530, __pyx_L65_except_error)
                   __Pyx_GOTREF(__pyx_t_8);
                   __Pyx_GOTREF(__pyx_t_5);
                   __Pyx_GOTREF(__pyx_t_7);
 
-                  /* "netCDF4/_netCDF4.pyx":1532
+                  /* "netCDF4/_netCDF4.pyx":1531
  *                             datatype = _read_vlen(group, xtype, endian=endianness)
  *                         except KeyError:
  *                             msg="WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name             # <<<<<<<<<<<<<<
  *                             warnings.warn(msg)
  *                             continue
  */
-                  __pyx_t_19 = __Pyx_PyString_Format(__pyx_kp_s_WARNING_variable_s_has_unsupport_2, __pyx_v_name); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1532, __pyx_L65_except_error)
+                  __pyx_t_19 = __Pyx_PyString_Format(__pyx_kp_s_WARNING_variable_s_has_unsupport_2, __pyx_v_name); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1531, __pyx_L65_except_error)
                   __Pyx_GOTREF(__pyx_t_19);
                   __Pyx_XDECREF_SET(__pyx_v_msg, ((PyObject*)__pyx_t_19));
                   __pyx_t_19 = 0;
 
-                  /* "netCDF4/_netCDF4.pyx":1533
+                  /* "netCDF4/_netCDF4.pyx":1532
  *                         except KeyError:
  *                             msg="WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
  *                             warnings.warn(msg)             # <<<<<<<<<<<<<<
  *                             continue
  *                     elif classp == NC_ENUM:
  */
-                  __pyx_t_21 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 1533, __pyx_L65_except_error)
+                  __pyx_t_21 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 1532, __pyx_L65_except_error)
                   __Pyx_GOTREF(__pyx_t_21);
-                  __pyx_t_22 = __Pyx_PyObject_GetAttrStr(__pyx_t_21, __pyx_n_s_warn); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 1533, __pyx_L65_except_error)
+                  __pyx_t_22 = __Pyx_PyObject_GetAttrStr(__pyx_t_21, __pyx_n_s_warn); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 1532, __pyx_L65_except_error)
                   __Pyx_GOTREF(__pyx_t_22);
                   __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
                   __pyx_t_21 = NULL;
@@ -11559,13 +11559,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                     }
                   }
                   if (!__pyx_t_21) {
-                    __pyx_t_19 = __Pyx_PyObject_CallOneArg(__pyx_t_22, __pyx_v_msg); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1533, __pyx_L65_except_error)
+                    __pyx_t_19 = __Pyx_PyObject_CallOneArg(__pyx_t_22, __pyx_v_msg); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1532, __pyx_L65_except_error)
                     __Pyx_GOTREF(__pyx_t_19);
                   } else {
                     #if CYTHON_FAST_PYCALL
                     if (PyFunction_Check(__pyx_t_22)) {
                       PyObject *__pyx_temp[2] = {__pyx_t_21, __pyx_v_msg};
-                      __pyx_t_19 = __Pyx_PyFunction_FastCall(__pyx_t_22, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1533, __pyx_L65_except_error)
+                      __pyx_t_19 = __Pyx_PyFunction_FastCall(__pyx_t_22, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1532, __pyx_L65_except_error)
                       __Pyx_XDECREF(__pyx_t_21); __pyx_t_21 = 0;
                       __Pyx_GOTREF(__pyx_t_19);
                     } else
@@ -11573,19 +11573,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                     #if CYTHON_FAST_PYCCALL
                     if (__Pyx_PyFastCFunction_Check(__pyx_t_22)) {
                       PyObject *__pyx_temp[2] = {__pyx_t_21, __pyx_v_msg};
-                      __pyx_t_19 = __Pyx_PyCFunction_FastCall(__pyx_t_22, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1533, __pyx_L65_except_error)
+                      __pyx_t_19 = __Pyx_PyCFunction_FastCall(__pyx_t_22, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1532, __pyx_L65_except_error)
                       __Pyx_XDECREF(__pyx_t_21); __pyx_t_21 = 0;
                       __Pyx_GOTREF(__pyx_t_19);
                     } else
                     #endif
                     {
-                      __pyx_t_20 = PyTuple_New(1+1); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 1533, __pyx_L65_except_error)
+                      __pyx_t_20 = PyTuple_New(1+1); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 1532, __pyx_L65_except_error)
                       __Pyx_GOTREF(__pyx_t_20);
                       __Pyx_GIVEREF(__pyx_t_21); PyTuple_SET_ITEM(__pyx_t_20, 0, __pyx_t_21); __pyx_t_21 = NULL;
                       __Pyx_INCREF(__pyx_v_msg);
                       __Pyx_GIVEREF(__pyx_v_msg);
                       PyTuple_SET_ITEM(__pyx_t_20, 0+1, __pyx_v_msg);
-                      __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_22, __pyx_t_20, NULL); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1533, __pyx_L65_except_error)
+                      __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_22, __pyx_t_20, NULL); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1532, __pyx_L65_except_error)
                       __Pyx_GOTREF(__pyx_t_19);
                       __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
                     }
@@ -11593,7 +11593,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                   __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
                   __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
 
-                  /* "netCDF4/_netCDF4.pyx":1534
+                  /* "netCDF4/_netCDF4.pyx":1533
  *                             msg="WARNING: variable '%s' has unsupported VLEN datatype, skipping .." % name
  *                             warnings.warn(msg)
  *                             continue             # <<<<<<<<<<<<<<
@@ -11610,7 +11610,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 goto __pyx_L65_except_error;
                 __pyx_L65_except_error:;
 
-                /* "netCDF4/_netCDF4.pyx":1529
+                /* "netCDF4/_netCDF4.pyx":1528
  *                     elif classp == NC_VLEN: # a compound type
  *                         # create VLType instance describing this compound type.
  *                         try:             # <<<<<<<<<<<<<<
@@ -11633,7 +11633,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __pyx_L70_try_end:;
               }
 
-              /* "netCDF4/_netCDF4.pyx":1527
+              /* "netCDF4/_netCDF4.pyx":1526
  *                             warnings.warn(msg)
  *                             continue
  *                     elif classp == NC_VLEN: # a compound type             # <<<<<<<<<<<<<<
@@ -11642,7 +11642,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
               break;
 
-              /* "netCDF4/_netCDF4.pyx":1535
+              /* "netCDF4/_netCDF4.pyx":1534
  *                             warnings.warn(msg)
  *                             continue
  *                     elif classp == NC_ENUM:             # <<<<<<<<<<<<<<
@@ -11651,7 +11651,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
               case NC_ENUM:
 
-              /* "netCDF4/_netCDF4.pyx":1537
+              /* "netCDF4/_netCDF4.pyx":1536
  *                     elif classp == NC_ENUM:
  *                         # create EnumType instance describing this compound type.
  *                         try:             # <<<<<<<<<<<<<<
@@ -11667,7 +11667,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __Pyx_XGOTREF(__pyx_t_17);
                 /*try:*/ {
 
-                  /* "netCDF4/_netCDF4.pyx":1538
+                  /* "netCDF4/_netCDF4.pyx":1537
  *                         # create EnumType instance describing this compound type.
  *                         try:
  *                             datatype = _read_enum(group, xtype, endian=endianness)             # <<<<<<<<<<<<<<
@@ -11676,12 +11676,12 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
                   __pyx_t_24.__pyx_n = 1;
                   __pyx_t_24.endian = __pyx_v_endianness;
-                  __pyx_t_7 = __pyx_f_7netCDF4_8_netCDF4__read_enum(__pyx_v_group, __pyx_v_xtype, &__pyx_t_24); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1538, __pyx_L73_error)
+                  __pyx_t_7 = __pyx_f_7netCDF4_8_netCDF4__read_enum(__pyx_v_group, __pyx_v_xtype, &__pyx_t_24); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1537, __pyx_L73_error)
                   __Pyx_GOTREF(__pyx_t_7);
                   __Pyx_XDECREF_SET(__pyx_v_datatype, __pyx_t_7);
                   __pyx_t_7 = 0;
 
-                  /* "netCDF4/_netCDF4.pyx":1537
+                  /* "netCDF4/_netCDF4.pyx":1536
  *                     elif classp == NC_ENUM:
  *                         # create EnumType instance describing this compound type.
  *                         try:             # <<<<<<<<<<<<<<
@@ -11703,7 +11703,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                 __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-                /* "netCDF4/_netCDF4.pyx":1539
+                /* "netCDF4/_netCDF4.pyx":1538
  *                         try:
  *                             datatype = _read_enum(group, xtype, endian=endianness)
  *                         except KeyError:             # <<<<<<<<<<<<<<
@@ -11713,33 +11713,33 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __pyx_t_9 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
                 if (__pyx_t_9) {
                   __Pyx_AddTraceback("netCDF4._netCDF4._get_vars", __pyx_clineno, __pyx_lineno, __pyx_filename);
-                  if (__Pyx_GetException(&__pyx_t_7, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 1539, __pyx_L75_except_error)
+                  if (__Pyx_GetException(&__pyx_t_7, &__pyx_t_5, &__pyx_t_8) < 0) __PYX_ERR(0, 1538, __pyx_L75_except_error)
                   __Pyx_GOTREF(__pyx_t_7);
                   __Pyx_GOTREF(__pyx_t_5);
                   __Pyx_GOTREF(__pyx_t_8);
 
-                  /* "netCDF4/_netCDF4.pyx":1540
+                  /* "netCDF4/_netCDF4.pyx":1539
  *                             datatype = _read_enum(group, xtype, endian=endianness)
  *                         except KeyError:
  *                             msg="WARNING: variable '%s' has unsupported Enum datatype, skipping .." % name             # <<<<<<<<<<<<<<
  *                             warnings.warn(msg)
  *                             continue
  */
-                  __pyx_t_19 = __Pyx_PyString_Format(__pyx_kp_s_WARNING_variable_s_has_unsupport_3, __pyx_v_name); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1540, __pyx_L75_except_error)
+                  __pyx_t_19 = __Pyx_PyString_Format(__pyx_kp_s_WARNING_variable_s_has_unsupport_3, __pyx_v_name); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1539, __pyx_L75_except_error)
                   __Pyx_GOTREF(__pyx_t_19);
                   __Pyx_XDECREF_SET(__pyx_v_msg, ((PyObject*)__pyx_t_19));
                   __pyx_t_19 = 0;
 
-                  /* "netCDF4/_netCDF4.pyx":1541
+                  /* "netCDF4/_netCDF4.pyx":1540
  *                         except KeyError:
  *                             msg="WARNING: variable '%s' has unsupported Enum datatype, skipping .." % name
  *                             warnings.warn(msg)             # <<<<<<<<<<<<<<
  *                             continue
  *                     else:
  */
-                  __pyx_t_22 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 1541, __pyx_L75_except_error)
+                  __pyx_t_22 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 1540, __pyx_L75_except_error)
                   __Pyx_GOTREF(__pyx_t_22);
-                  __pyx_t_20 = __Pyx_PyObject_GetAttrStr(__pyx_t_22, __pyx_n_s_warn); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 1541, __pyx_L75_except_error)
+                  __pyx_t_20 = __Pyx_PyObject_GetAttrStr(__pyx_t_22, __pyx_n_s_warn); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 1540, __pyx_L75_except_error)
                   __Pyx_GOTREF(__pyx_t_20);
                   __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
                   __pyx_t_22 = NULL;
@@ -11753,13 +11753,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                     }
                   }
                   if (!__pyx_t_22) {
-                    __pyx_t_19 = __Pyx_PyObject_CallOneArg(__pyx_t_20, __pyx_v_msg); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1541, __pyx_L75_except_error)
+                    __pyx_t_19 = __Pyx_PyObject_CallOneArg(__pyx_t_20, __pyx_v_msg); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1540, __pyx_L75_except_error)
                     __Pyx_GOTREF(__pyx_t_19);
                   } else {
                     #if CYTHON_FAST_PYCALL
                     if (PyFunction_Check(__pyx_t_20)) {
                       PyObject *__pyx_temp[2] = {__pyx_t_22, __pyx_v_msg};
-                      __pyx_t_19 = __Pyx_PyFunction_FastCall(__pyx_t_20, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1541, __pyx_L75_except_error)
+                      __pyx_t_19 = __Pyx_PyFunction_FastCall(__pyx_t_20, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1540, __pyx_L75_except_error)
                       __Pyx_XDECREF(__pyx_t_22); __pyx_t_22 = 0;
                       __Pyx_GOTREF(__pyx_t_19);
                     } else
@@ -11767,19 +11767,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                     #if CYTHON_FAST_PYCCALL
                     if (__Pyx_PyFastCFunction_Check(__pyx_t_20)) {
                       PyObject *__pyx_temp[2] = {__pyx_t_22, __pyx_v_msg};
-                      __pyx_t_19 = __Pyx_PyCFunction_FastCall(__pyx_t_20, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1541, __pyx_L75_except_error)
+                      __pyx_t_19 = __Pyx_PyCFunction_FastCall(__pyx_t_20, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1540, __pyx_L75_except_error)
                       __Pyx_XDECREF(__pyx_t_22); __pyx_t_22 = 0;
                       __Pyx_GOTREF(__pyx_t_19);
                     } else
                     #endif
                     {
-                      __pyx_t_21 = PyTuple_New(1+1); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 1541, __pyx_L75_except_error)
+                      __pyx_t_21 = PyTuple_New(1+1); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 1540, __pyx_L75_except_error)
                       __Pyx_GOTREF(__pyx_t_21);
                       __Pyx_GIVEREF(__pyx_t_22); PyTuple_SET_ITEM(__pyx_t_21, 0, __pyx_t_22); __pyx_t_22 = NULL;
                       __Pyx_INCREF(__pyx_v_msg);
                       __Pyx_GIVEREF(__pyx_v_msg);
                       PyTuple_SET_ITEM(__pyx_t_21, 0+1, __pyx_v_msg);
-                      __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_20, __pyx_t_21, NULL); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1541, __pyx_L75_except_error)
+                      __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_20, __pyx_t_21, NULL); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1540, __pyx_L75_except_error)
                       __Pyx_GOTREF(__pyx_t_19);
                       __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
                     }
@@ -11787,7 +11787,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                   __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
                   __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
 
-                  /* "netCDF4/_netCDF4.pyx":1542
+                  /* "netCDF4/_netCDF4.pyx":1541
  *                             msg="WARNING: variable '%s' has unsupported Enum datatype, skipping .." % name
  *                             warnings.warn(msg)
  *                             continue             # <<<<<<<<<<<<<<
@@ -11804,7 +11804,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 goto __pyx_L75_except_error;
                 __pyx_L75_except_error:;
 
-                /* "netCDF4/_netCDF4.pyx":1537
+                /* "netCDF4/_netCDF4.pyx":1536
  *                     elif classp == NC_ENUM:
  *                         # create EnumType instance describing this compound type.
  *                         try:             # <<<<<<<<<<<<<<
@@ -11827,7 +11827,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 __pyx_L80_try_end:;
               }
 
-              /* "netCDF4/_netCDF4.pyx":1535
+              /* "netCDF4/_netCDF4.pyx":1534
  *                             warnings.warn(msg)
  *                             continue
  *                     elif classp == NC_ENUM:             # <<<<<<<<<<<<<<
@@ -11837,28 +11837,28 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
               break;
               default:
 
-              /* "netCDF4/_netCDF4.pyx":1544
+              /* "netCDF4/_netCDF4.pyx":1543
  *                             continue
  *                     else:
  *                         msg="WARNING: variable '%s' has unsupported datatype, skipping .." % name             # <<<<<<<<<<<<<<
  *                         warnings.warn(msg)
  *                         continue
  */
-              __pyx_t_8 = __Pyx_PyString_Format(__pyx_kp_s_WARNING_variable_s_has_unsupport_4, __pyx_v_name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1544, __pyx_L38_except_error)
+              __pyx_t_8 = __Pyx_PyString_Format(__pyx_kp_s_WARNING_variable_s_has_unsupport_4, __pyx_v_name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1543, __pyx_L38_except_error)
               __Pyx_GOTREF(__pyx_t_8);
               __Pyx_XDECREF_SET(__pyx_v_msg, ((PyObject*)__pyx_t_8));
               __pyx_t_8 = 0;
 
-              /* "netCDF4/_netCDF4.pyx":1545
+              /* "netCDF4/_netCDF4.pyx":1544
  *                     else:
  *                         msg="WARNING: variable '%s' has unsupported datatype, skipping .." % name
  *                         warnings.warn(msg)             # <<<<<<<<<<<<<<
  *                         continue
  *             # get number of dimensions.
  */
-              __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1545, __pyx_L38_except_error)
+              __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 1544, __pyx_L38_except_error)
               __Pyx_GOTREF(__pyx_t_5);
-              __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_warn); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1545, __pyx_L38_except_error)
+              __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_warn); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1544, __pyx_L38_except_error)
               __Pyx_GOTREF(__pyx_t_7);
               __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
               __pyx_t_5 = NULL;
@@ -11872,13 +11872,13 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 }
               }
               if (!__pyx_t_5) {
-                __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_v_msg); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1545, __pyx_L38_except_error)
+                __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_v_msg); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1544, __pyx_L38_except_error)
                 __Pyx_GOTREF(__pyx_t_8);
               } else {
                 #if CYTHON_FAST_PYCALL
                 if (PyFunction_Check(__pyx_t_7)) {
                   PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_msg};
-                  __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1545, __pyx_L38_except_error)
+                  __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1544, __pyx_L38_except_error)
                   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                   __Pyx_GOTREF(__pyx_t_8);
                 } else
@@ -11886,19 +11886,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 #if CYTHON_FAST_PYCCALL
                 if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
                   PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_msg};
-                  __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1545, __pyx_L38_except_error)
+                  __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1544, __pyx_L38_except_error)
                   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                   __Pyx_GOTREF(__pyx_t_8);
                 } else
                 #endif
                 {
-                  __pyx_t_19 = PyTuple_New(1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1545, __pyx_L38_except_error)
+                  __pyx_t_19 = PyTuple_New(1+1); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 1544, __pyx_L38_except_error)
                   __Pyx_GOTREF(__pyx_t_19);
                   __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_19, 0, __pyx_t_5); __pyx_t_5 = NULL;
                   __Pyx_INCREF(__pyx_v_msg);
                   __Pyx_GIVEREF(__pyx_v_msg);
                   PyTuple_SET_ITEM(__pyx_t_19, 0+1, __pyx_v_msg);
-                  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_19, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1545, __pyx_L38_except_error)
+                  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_19, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1544, __pyx_L38_except_error)
                   __Pyx_GOTREF(__pyx_t_8);
                   __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
                 }
@@ -11906,7 +11906,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
               __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
               __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-              /* "netCDF4/_netCDF4.pyx":1546
+              /* "netCDF4/_netCDF4.pyx":1545
  *                         msg="WARNING: variable '%s' has unsupported datatype, skipping .." % name
  *                         warnings.warn(msg)
  *                         continue             # <<<<<<<<<<<<<<
@@ -11931,7 +11931,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         goto __pyx_L38_except_error;
         __pyx_L38_except_error:;
 
-        /* "netCDF4/_netCDF4.pyx":1508
+        /* "netCDF4/_netCDF4.pyx":1507
  *                     endianness = '>'
  *             # check to see if it is a supported user-defined type.
  *             try:             # <<<<<<<<<<<<<<
@@ -11960,7 +11960,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         __pyx_L43_try_end:;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1548
+      /* "netCDF4/_netCDF4.pyx":1547
  *                         continue
  *             # get number of dimensions.
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -11974,7 +11974,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1549
+            /* "netCDF4/_netCDF4.pyx":1548
  *             # get number of dimensions.
  *             with nogil:
  *                 ierr = nc_inq_varndims(_grpid, varid, &numdims)             # <<<<<<<<<<<<<<
@@ -11984,7 +11984,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             __pyx_v_ierr = nc_inq_varndims(__pyx_v__grpid, __pyx_v_varid, (&__pyx_v_numdims));
           }
 
-          /* "netCDF4/_netCDF4.pyx":1548
+          /* "netCDF4/_netCDF4.pyx":1547
  *                         continue
  *             # get number of dimensions.
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -12002,7 +12002,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1550
+      /* "netCDF4/_netCDF4.pyx":1549
  *             with nogil:
  *                 ierr = nc_inq_varndims(_grpid, varid, &numdims)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -12012,7 +12012,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __pyx_t_14 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_14) {
 
-        /* "netCDF4/_netCDF4.pyx":1551
+        /* "netCDF4/_netCDF4.pyx":1550
  *                 ierr = nc_inq_varndims(_grpid, varid, &numdims)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -12020,22 +12020,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  *             # get dimension ids.
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_10 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1551, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1550, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1551, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1550, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_INCREF(__pyx_t_10);
         __Pyx_GIVEREF(__pyx_t_10);
         PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_10);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1551, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1550, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_Raise(__pyx_t_10, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __PYX_ERR(0, 1551, __pyx_L1_error)
+        __PYX_ERR(0, 1550, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1550
+        /* "netCDF4/_netCDF4.pyx":1549
  *             with nogil:
  *                 ierr = nc_inq_varndims(_grpid, varid, &numdims)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -12044,7 +12044,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1552
+      /* "netCDF4/_netCDF4.pyx":1551
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             dimids = <int *>malloc(sizeof(int) * numdims)             # <<<<<<<<<<<<<<
@@ -12053,7 +12053,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       __pyx_v_dimids = ((int *)malloc(((sizeof(int)) * __pyx_v_numdims)));
 
-      /* "netCDF4/_netCDF4.pyx":1554
+      /* "netCDF4/_netCDF4.pyx":1553
  *             dimids = <int *>malloc(sizeof(int) * numdims)
  *             # get dimension ids.
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -12067,7 +12067,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           #endif
           /*try:*/ {
 
-            /* "netCDF4/_netCDF4.pyx":1555
+            /* "netCDF4/_netCDF4.pyx":1554
  *             # get dimension ids.
  *             with nogil:
  *                 ierr = nc_inq_vardimid(_grpid, varid, dimids)             # <<<<<<<<<<<<<<
@@ -12077,7 +12077,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             __pyx_v_ierr = nc_inq_vardimid(__pyx_v__grpid, __pyx_v_varid, __pyx_v_dimids);
           }
 
-          /* "netCDF4/_netCDF4.pyx":1554
+          /* "netCDF4/_netCDF4.pyx":1553
  *             dimids = <int *>malloc(sizeof(int) * numdims)
  *             # get dimension ids.
  *             with nogil:             # <<<<<<<<<<<<<<
@@ -12095,7 +12095,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1556
+      /* "netCDF4/_netCDF4.pyx":1555
  *             with nogil:
  *                 ierr = nc_inq_vardimid(_grpid, varid, dimids)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -12105,7 +12105,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __pyx_t_14 = ((__pyx_v_ierr != NC_NOERR) != 0);
       if (__pyx_t_14) {
 
-        /* "netCDF4/_netCDF4.pyx":1557
+        /* "netCDF4/_netCDF4.pyx":1556
  *                 ierr = nc_inq_vardimid(_grpid, varid, dimids)
  *             if ierr != NC_NOERR:
  *                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
@@ -12113,22 +12113,22 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  *             # if not found in current group, look in parents.
  */
         __pyx_t_4 = ((char *)nc_strerror(__pyx_v_ierr));
-        __pyx_t_10 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1557, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_decode_c_string(__pyx_t_4, 0, strlen(__pyx_t_4), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1556, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
-        __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1557, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1556, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_INCREF(__pyx_t_10);
         __Pyx_GIVEREF(__pyx_t_10);
         PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_10);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1557, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1556, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_Raise(__pyx_t_10, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __PYX_ERR(0, 1557, __pyx_L1_error)
+        __PYX_ERR(0, 1556, __pyx_L1_error)
 
-        /* "netCDF4/_netCDF4.pyx":1556
+        /* "netCDF4/_netCDF4.pyx":1555
  *             with nogil:
  *                 ierr = nc_inq_vardimid(_grpid, varid, dimids)
  *             if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -12137,19 +12137,19 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       }
 
-      /* "netCDF4/_netCDF4.pyx":1563
+      /* "netCDF4/_netCDF4.pyx":1562
  *             # and so does it's parent - can a variable in grp1
  *             # use the 'foo' dimension from the parent?
  *             dimensions = []             # <<<<<<<<<<<<<<
  *             for nn from 0 <= nn < numdims:
  *                 grp = group
  */
-      __pyx_t_10 = PyList_New(0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1563, __pyx_L1_error)
+      __pyx_t_10 = PyList_New(0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1562, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_XDECREF_SET(__pyx_v_dimensions, ((PyObject*)__pyx_t_10));
       __pyx_t_10 = 0;
 
-      /* "netCDF4/_netCDF4.pyx":1564
+      /* "netCDF4/_netCDF4.pyx":1563
  *             # use the 'foo' dimension from the parent?
  *             dimensions = []
  *             for nn from 0 <= nn < numdims:             # <<<<<<<<<<<<<<
@@ -12159,7 +12159,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
       __pyx_t_9 = __pyx_v_numdims;
       for (__pyx_v_nn = 0; __pyx_v_nn < __pyx_t_9; __pyx_v_nn++) {
 
-        /* "netCDF4/_netCDF4.pyx":1565
+        /* "netCDF4/_netCDF4.pyx":1564
  *             dimensions = []
  *             for nn from 0 <= nn < numdims:
  *                 grp = group             # <<<<<<<<<<<<<<
@@ -12169,7 +12169,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         __Pyx_INCREF(__pyx_v_group);
         __Pyx_XDECREF_SET(__pyx_v_grp, __pyx_v_group);
 
-        /* "netCDF4/_netCDF4.pyx":1566
+        /* "netCDF4/_netCDF4.pyx":1565
  *             for nn from 0 <= nn < numdims:
  *                 grp = group
  *                 found = False             # <<<<<<<<<<<<<<
@@ -12178,7 +12178,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
         __pyx_v_found = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1567
+        /* "netCDF4/_netCDF4.pyx":1566
  *                 grp = group
  *                 found = False
  *                 while not found:             # <<<<<<<<<<<<<<
@@ -12189,16 +12189,16 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           __pyx_t_14 = ((!(__pyx_v_found != 0)) != 0);
           if (!__pyx_t_14) break;
 
-          /* "netCDF4/_netCDF4.pyx":1568
+          /* "netCDF4/_netCDF4.pyx":1567
  *                 found = False
  *                 while not found:
  *                     for key, value in grp.dimensions.items():             # <<<<<<<<<<<<<<
  *                         if value._dimid == dimids[nn]:
  *                             dimensions.append(key)
  */
-          __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_dimensions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1568, __pyx_L1_error)
+          __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_dimensions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1567, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_items); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1568, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_items); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1567, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           __pyx_t_1 = NULL;
@@ -12212,10 +12212,10 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             }
           }
           if (__pyx_t_1) {
-            __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1568, __pyx_L1_error)
+            __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1567, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
           } else {
-            __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1568, __pyx_L1_error)
+            __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1567, __pyx_L1_error)
           }
           __Pyx_GOTREF(__pyx_t_10);
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -12223,9 +12223,9 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             __pyx_t_6 = __pyx_t_10; __Pyx_INCREF(__pyx_t_6); __pyx_t_25 = 0;
             __pyx_t_26 = NULL;
           } else {
-            __pyx_t_25 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1568, __pyx_L1_error)
+            __pyx_t_25 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1567, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_6);
-            __pyx_t_26 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 1568, __pyx_L1_error)
+            __pyx_t_26 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_26)) __PYX_ERR(0, 1567, __pyx_L1_error)
           }
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
           for (;;) {
@@ -12233,17 +12233,17 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
               if (likely(PyList_CheckExact(__pyx_t_6))) {
                 if (__pyx_t_25 >= PyList_GET_SIZE(__pyx_t_6)) break;
                 #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                __pyx_t_10 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_25); __Pyx_INCREF(__pyx_t_10); __pyx_t_25++; if (unlikely(0 < 0)) __PYX_ERR(0, 1568, __pyx_L1_error)
+                __pyx_t_10 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_25); __Pyx_INCREF(__pyx_t_10); __pyx_t_25++; if (unlikely(0 < 0)) __PYX_ERR(0, 1567, __pyx_L1_error)
                 #else
-                __pyx_t_10 = PySequence_ITEM(__pyx_t_6, __pyx_t_25); __pyx_t_25++; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1568, __pyx_L1_error)
+                __pyx_t_10 = PySequence_ITEM(__pyx_t_6, __pyx_t_25); __pyx_t_25++; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1567, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_10);
                 #endif
               } else {
                 if (__pyx_t_25 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
                 #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-                __pyx_t_10 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_25); __Pyx_INCREF(__pyx_t_10); __pyx_t_25++; if (unlikely(0 < 0)) __PYX_ERR(0, 1568, __pyx_L1_error)
+                __pyx_t_10 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_25); __Pyx_INCREF(__pyx_t_10); __pyx_t_25++; if (unlikely(0 < 0)) __PYX_ERR(0, 1567, __pyx_L1_error)
                 #else
-                __pyx_t_10 = PySequence_ITEM(__pyx_t_6, __pyx_t_25); __pyx_t_25++; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1568, __pyx_L1_error)
+                __pyx_t_10 = PySequence_ITEM(__pyx_t_6, __pyx_t_25); __pyx_t_25++; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1567, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_10);
                 #endif
               }
@@ -12253,7 +12253,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
                 PyObject* exc_type = PyErr_Occurred();
                 if (exc_type) {
                   if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                  else __PYX_ERR(0, 1568, __pyx_L1_error)
+                  else __PYX_ERR(0, 1567, __pyx_L1_error)
                 }
                 break;
               }
@@ -12269,7 +12269,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
               if (unlikely(size != 2)) {
                 if (size > 2) __Pyx_RaiseTooManyValuesError(2);
                 else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-                __PYX_ERR(0, 1568, __pyx_L1_error)
+                __PYX_ERR(0, 1567, __pyx_L1_error)
               }
               #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
               if (likely(PyTuple_CheckExact(sequence))) {
@@ -12282,15 +12282,15 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
               __Pyx_INCREF(__pyx_t_1);
               __Pyx_INCREF(__pyx_t_8);
               #else
-              __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1568, __pyx_L1_error)
+              __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1567, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_1);
-              __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1568, __pyx_L1_error)
+              __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1567, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_8);
               #endif
               __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
             } else {
               Py_ssize_t index = -1;
-              __pyx_t_7 = PyObject_GetIter(__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1568, __pyx_L1_error)
+              __pyx_t_7 = PyObject_GetIter(__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1567, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_7);
               __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
               __pyx_t_27 = Py_TYPE(__pyx_t_7)->tp_iternext;
@@ -12298,7 +12298,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
               __Pyx_GOTREF(__pyx_t_1);
               index = 1; __pyx_t_8 = __pyx_t_27(__pyx_t_7); if (unlikely(!__pyx_t_8)) goto __pyx_L101_unpacking_failed;
               __Pyx_GOTREF(__pyx_t_8);
-              if (__Pyx_IternextUnpackEndCheck(__pyx_t_27(__pyx_t_7), 2) < 0) __PYX_ERR(0, 1568, __pyx_L1_error)
+              if (__Pyx_IternextUnpackEndCheck(__pyx_t_27(__pyx_t_7), 2) < 0) __PYX_ERR(0, 1567, __pyx_L1_error)
               __pyx_t_27 = NULL;
               __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
               goto __pyx_L102_unpacking_done;
@@ -12306,7 +12306,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
               __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
               __pyx_t_27 = NULL;
               if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-              __PYX_ERR(0, 1568, __pyx_L1_error)
+              __PYX_ERR(0, 1567, __pyx_L1_error)
               __pyx_L102_unpacking_done:;
             }
             __Pyx_XDECREF_SET(__pyx_v_key, __pyx_t_1);
@@ -12314,34 +12314,34 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
             __Pyx_XDECREF_SET(__pyx_v_value, __pyx_t_8);
             __pyx_t_8 = 0;
 
-            /* "netCDF4/_netCDF4.pyx":1569
+            /* "netCDF4/_netCDF4.pyx":1568
  *                 while not found:
  *                     for key, value in grp.dimensions.items():
  *                         if value._dimid == dimids[nn]:             # <<<<<<<<<<<<<<
  *                             dimensions.append(key)
  *                             found = True
  */
-            __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_value, __pyx_n_s_dimid); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1569, __pyx_L1_error)
+            __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_value, __pyx_n_s_dimid); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1568, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_10);
-            __pyx_t_8 = __Pyx_PyInt_From_int((__pyx_v_dimids[__pyx_v_nn])); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1569, __pyx_L1_error)
+            __pyx_t_8 = __Pyx_PyInt_From_int((__pyx_v_dimids[__pyx_v_nn])); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1568, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_8);
-            __pyx_t_1 = PyObject_RichCompare(__pyx_t_10, __pyx_t_8, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1569, __pyx_L1_error)
+            __pyx_t_1 = PyObject_RichCompare(__pyx_t_10, __pyx_t_8, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1568, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
             __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-            __pyx_t_14 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_14 < 0)) __PYX_ERR(0, 1569, __pyx_L1_error)
+            __pyx_t_14 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_14 < 0)) __PYX_ERR(0, 1568, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             if (__pyx_t_14) {
 
-              /* "netCDF4/_netCDF4.pyx":1570
+              /* "netCDF4/_netCDF4.pyx":1569
  *                     for key, value in grp.dimensions.items():
  *                         if value._dimid == dimids[nn]:
  *                             dimensions.append(key)             # <<<<<<<<<<<<<<
  *                             found = True
  *                             break
  */
-              __pyx_t_28 = __Pyx_PyList_Append(__pyx_v_dimensions, __pyx_v_key); if (unlikely(__pyx_t_28 == -1)) __PYX_ERR(0, 1570, __pyx_L1_error)
+              __pyx_t_28 = __Pyx_PyList_Append(__pyx_v_dimensions, __pyx_v_key); if (unlikely(__pyx_t_28 == -1)) __PYX_ERR(0, 1569, __pyx_L1_error)
 
-              /* "netCDF4/_netCDF4.pyx":1571
+              /* "netCDF4/_netCDF4.pyx":1570
  *                         if value._dimid == dimids[nn]:
  *                             dimensions.append(key)
  *                             found = True             # <<<<<<<<<<<<<<
@@ -12350,7 +12350,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
               __pyx_v_found = 1;
 
-              /* "netCDF4/_netCDF4.pyx":1572
+              /* "netCDF4/_netCDF4.pyx":1571
  *                             dimensions.append(key)
  *                             found = True
  *                             break             # <<<<<<<<<<<<<<
@@ -12359,7 +12359,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
               goto __pyx_L100_break;
 
-              /* "netCDF4/_netCDF4.pyx":1569
+              /* "netCDF4/_netCDF4.pyx":1568
  *                 while not found:
  *                     for key, value in grp.dimensions.items():
  *                         if value._dimid == dimids[nn]:             # <<<<<<<<<<<<<<
@@ -12368,7 +12368,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
             }
 
-            /* "netCDF4/_netCDF4.pyx":1568
+            /* "netCDF4/_netCDF4.pyx":1567
  *                 found = False
  *                 while not found:
  *                     for key, value in grp.dimensions.items():             # <<<<<<<<<<<<<<
@@ -12379,21 +12379,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
           __pyx_L100_break:;
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":1573
+          /* "netCDF4/_netCDF4.pyx":1572
  *                             found = True
  *                             break
  *                     grp = grp.parent             # <<<<<<<<<<<<<<
  *             free(dimids)
  *             # create new variable instance.
  */
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_parent); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1573, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_parent); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1572, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_DECREF_SET(__pyx_v_grp, __pyx_t_6);
           __pyx_t_6 = 0;
         }
       }
 
-      /* "netCDF4/_netCDF4.pyx":1574
+      /* "netCDF4/_netCDF4.pyx":1573
  *                             break
  *                     grp = grp.parent
  *             free(dimids)             # <<<<<<<<<<<<<<
@@ -12402,24 +12402,24 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
       free(__pyx_v_dimids);
 
-      /* "netCDF4/_netCDF4.pyx":1576
+      /* "netCDF4/_netCDF4.pyx":1575
  *             free(dimids)
  *             # create new variable instance.
  *             if endianness == '>':             # <<<<<<<<<<<<<<
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
  *             elif endianness == '<':
  */
-      __pyx_t_14 = (__Pyx_PyString_Equals(__pyx_v_endianness, __pyx_kp_s__14, Py_EQ)); if (unlikely(__pyx_t_14 < 0)) __PYX_ERR(0, 1576, __pyx_L1_error)
+      __pyx_t_14 = (__Pyx_PyString_Equals(__pyx_v_endianness, __pyx_kp_s__14, Py_EQ)); if (unlikely(__pyx_t_14 < 0)) __PYX_ERR(0, 1575, __pyx_L1_error)
       if (__pyx_t_14) {
 
-        /* "netCDF4/_netCDF4.pyx":1577
+        /* "netCDF4/_netCDF4.pyx":1576
  *             # create new variable instance.
  *             if endianness == '>':
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')             # <<<<<<<<<<<<<<
  *             elif endianness == '<':
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='little')
  */
-        __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1577, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1576, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_INCREF(__pyx_v_group);
         __Pyx_GIVEREF(__pyx_v_group);
@@ -12433,21 +12433,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         __Pyx_INCREF(__pyx_v_dimensions);
         __Pyx_GIVEREF(__pyx_v_dimensions);
         PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_v_dimensions);
-        __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1577, __pyx_L1_error)
+        __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1576, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_varid); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1577, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_varid); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1576, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_id, __pyx_t_8) < 0) __PYX_ERR(0, 1577, __pyx_L1_error)
+        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_id, __pyx_t_8) < 0) __PYX_ERR(0, 1576, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_endian, __pyx_n_s_big) < 0) __PYX_ERR(0, 1577, __pyx_L1_error)
-        __pyx_t_8 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Variable), __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1577, __pyx_L1_error)
+        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_endian, __pyx_n_s_big) < 0) __PYX_ERR(0, 1576, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Variable), __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1576, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        if (unlikely(PyObject_SetItem(__pyx_v_variables, __pyx_v_name, __pyx_t_8) < 0)) __PYX_ERR(0, 1577, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_v_variables, __pyx_v_name, __pyx_t_8) < 0)) __PYX_ERR(0, 1576, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1576
+        /* "netCDF4/_netCDF4.pyx":1575
  *             free(dimids)
  *             # create new variable instance.
  *             if endianness == '>':             # <<<<<<<<<<<<<<
@@ -12457,24 +12457,24 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         goto __pyx_L104;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1578
+      /* "netCDF4/_netCDF4.pyx":1577
  *             if endianness == '>':
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
  *             elif endianness == '<':             # <<<<<<<<<<<<<<
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='little')
  *             else:
  */
-      __pyx_t_14 = (__Pyx_PyString_Equals(__pyx_v_endianness, __pyx_kp_s__13, Py_EQ)); if (unlikely(__pyx_t_14 < 0)) __PYX_ERR(0, 1578, __pyx_L1_error)
+      __pyx_t_14 = (__Pyx_PyString_Equals(__pyx_v_endianness, __pyx_kp_s__13, Py_EQ)); if (unlikely(__pyx_t_14 < 0)) __PYX_ERR(0, 1577, __pyx_L1_error)
       if (__pyx_t_14) {
 
-        /* "netCDF4/_netCDF4.pyx":1579
+        /* "netCDF4/_netCDF4.pyx":1578
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
  *             elif endianness == '<':
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='little')             # <<<<<<<<<<<<<<
  *             else:
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid)
  */
-        __pyx_t_8 = PyTuple_New(4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1579, __pyx_L1_error)
+        __pyx_t_8 = PyTuple_New(4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1578, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_INCREF(__pyx_v_group);
         __Pyx_GIVEREF(__pyx_v_group);
@@ -12488,21 +12488,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         __Pyx_INCREF(__pyx_v_dimensions);
         __Pyx_GIVEREF(__pyx_v_dimensions);
         PyTuple_SET_ITEM(__pyx_t_8, 3, __pyx_v_dimensions);
-        __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1579, __pyx_L1_error)
+        __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1578, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_varid); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1579, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_varid); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1578, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_id, __pyx_t_6) < 0) __PYX_ERR(0, 1579, __pyx_L1_error)
+        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_id, __pyx_t_6) < 0) __PYX_ERR(0, 1578, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_endian, __pyx_n_s_little) < 0) __PYX_ERR(0, 1579, __pyx_L1_error)
-        __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Variable), __pyx_t_8, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1579, __pyx_L1_error)
+        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_endian, __pyx_n_s_little) < 0) __PYX_ERR(0, 1578, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Variable), __pyx_t_8, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1578, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        if (unlikely(PyObject_SetItem(__pyx_v_variables, __pyx_v_name, __pyx_t_6) < 0)) __PYX_ERR(0, 1579, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_v_variables, __pyx_v_name, __pyx_t_6) < 0)) __PYX_ERR(0, 1578, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":1578
+        /* "netCDF4/_netCDF4.pyx":1577
  *             if endianness == '>':
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
  *             elif endianness == '<':             # <<<<<<<<<<<<<<
@@ -12512,7 +12512,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         goto __pyx_L104;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1581
+      /* "netCDF4/_netCDF4.pyx":1580
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='little')
  *             else:
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid)             # <<<<<<<<<<<<<<
@@ -12520,7 +12520,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  *     return variables
  */
       /*else*/ {
-        __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1581, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1580, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_INCREF(__pyx_v_group);
         __Pyx_GIVEREF(__pyx_v_group);
@@ -12534,24 +12534,24 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
         __Pyx_INCREF(__pyx_v_dimensions);
         __Pyx_GIVEREF(__pyx_v_dimensions);
         PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_v_dimensions);
-        __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1581, __pyx_L1_error)
+        __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1580, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_varid); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1581, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_varid); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1580, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_id, __pyx_t_8) < 0) __PYX_ERR(0, 1581, __pyx_L1_error)
+        if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_id, __pyx_t_8) < 0) __PYX_ERR(0, 1580, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        __pyx_t_8 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Variable), __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1581, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7netCDF4_8_netCDF4_Variable), __pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1580, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        if (unlikely(PyObject_SetItem(__pyx_v_variables, __pyx_v_name, __pyx_t_8) < 0)) __PYX_ERR(0, 1581, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_v_variables, __pyx_v_name, __pyx_t_8) < 0)) __PYX_ERR(0, 1580, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       }
       __pyx_L104:;
       __pyx_L15_continue:;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1582
+    /* "netCDF4/_netCDF4.pyx":1581
  *             else:
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid)
  *         free(varids) # free pointer holding variable ids.             # <<<<<<<<<<<<<<
@@ -12560,7 +12560,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
     free(__pyx_v_varids);
 
-    /* "netCDF4/_netCDF4.pyx":1471
+    /* "netCDF4/_netCDF4.pyx":1470
  *     # create empty dictionary for variables.
  *     variables = OrderedDict()
  *     if numvars > 0:             # <<<<<<<<<<<<<<
@@ -12569,7 +12569,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1583
+  /* "netCDF4/_netCDF4.pyx":1582
  *                 variables[name] = Variable(group, name, datatype, dimensions, id=varid)
  *         free(varids) # free pointer holding variable ids.
  *     return variables             # <<<<<<<<<<<<<<
@@ -12581,7 +12581,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
   __pyx_r = __pyx_v_variables;
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":1454
+  /* "netCDF4/_netCDF4.pyx":1453
  *     return groups
  * 
  * cdef _get_vars(group):             # <<<<<<<<<<<<<<
@@ -12618,7 +12618,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__get_vars(PyObject *__pyx_v_group) {
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1585
+/* "netCDF4/_netCDF4.pyx":1584
  *     return variables
  * 
  * cdef _ensure_nc_success(ierr, err_cls=RuntimeError):             # <<<<<<<<<<<<<<
@@ -12645,31 +12645,31 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(PyObject *__pyx_v
     }
   }
 
-  /* "netCDF4/_netCDF4.pyx":1586
+  /* "netCDF4/_netCDF4.pyx":1585
  * 
  * cdef _ensure_nc_success(ierr, err_cls=RuntimeError):
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
  *         raise err_cls((<char *>nc_strerror(ierr)).decode('ascii'))
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(NC_NOERR); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1586, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(NC_NOERR); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1585, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_ierr, __pyx_t_1, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1586, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_v_ierr, __pyx_t_1, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1585, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 1586, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 1585, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_3) {
 
-    /* "netCDF4/_netCDF4.pyx":1587
+    /* "netCDF4/_netCDF4.pyx":1586
  * cdef _ensure_nc_success(ierr, err_cls=RuntimeError):
  *     if ierr != NC_NOERR:
  *         raise err_cls((<char *>nc_strerror(ierr)).decode('ascii'))             # <<<<<<<<<<<<<<
  * 
  * # these are class attributes that
  */
-    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_ierr); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1587, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_ierr); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1586, __pyx_L1_error)
     __pyx_t_5 = ((char *)nc_strerror(__pyx_t_4));
-    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_5, 0, strlen(__pyx_t_5), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1587, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_decode_c_string(__pyx_t_5, 0, strlen(__pyx_t_5), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1586, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_v_err_cls);
     __pyx_t_6 = __pyx_v_err_cls; __pyx_t_7 = NULL;
@@ -12683,14 +12683,14 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(PyObject *__pyx_v
       }
     }
     if (!__pyx_t_7) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1587, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1586, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_1};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1587, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1586, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -12699,21 +12699,21 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(PyObject *__pyx_v
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_1};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1587, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1586, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       } else
       #endif
       {
-        __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1587, __pyx_L1_error)
+        __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1586, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7); __pyx_t_7 = NULL;
         __Pyx_INCREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1587, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1586, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       }
@@ -12721,9 +12721,9 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(PyObject *__pyx_v
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 1587, __pyx_L1_error)
+    __PYX_ERR(0, 1586, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1586
+    /* "netCDF4/_netCDF4.pyx":1585
  * 
  * cdef _ensure_nc_success(ierr, err_cls=RuntimeError):
  *     if ierr != NC_NOERR:             # <<<<<<<<<<<<<<
@@ -12732,7 +12732,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(PyObject *__pyx_v
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1585
+  /* "netCDF4/_netCDF4.pyx":1584
  *     return variables
  * 
  * cdef _ensure_nc_success(ierr, err_cls=RuntimeError):             # <<<<<<<<<<<<<<
@@ -12757,7 +12757,7 @@ static PyObject *__pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(PyObject *__pyx_v
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1723
+/* "netCDF4/_netCDF4.pyx":1722
  *     the parent Dataset or Group."""
  * 
  *     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',             # <<<<<<<<<<<<<<
@@ -12793,7 +12793,7 @@ static int __pyx_pw_7netCDF4_8_netCDF4_7Dataset_1__init__(PyObject *__pyx_v_self
     values[2] = ((PyObject *)Py_True);
     values[3] = ((PyObject *)__pyx_n_s_NETCDF4);
 
-    /* "netCDF4/_netCDF4.pyx":1724
+    /* "netCDF4/_netCDF4.pyx":1723
  * 
  *     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
  *                  diskless=False, persist=False, keepweakref=False, memory=None, **kwargs):             # <<<<<<<<<<<<<<
@@ -12861,7 +12861,7 @@ static int __pyx_pw_7netCDF4_8_netCDF4_7Dataset_1__init__(PyObject *__pyx_v_self
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 1723, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_kwargs, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 1722, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -12888,7 +12888,7 @@ static int __pyx_pw_7netCDF4_8_netCDF4_7Dataset_1__init__(PyObject *__pyx_v_self
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1723, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1722, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
   __Pyx_AddTraceback("netCDF4._netCDF4.Dataset.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -12897,7 +12897,7 @@ static int __pyx_pw_7netCDF4_8_netCDF4_7Dataset_1__init__(PyObject *__pyx_v_self
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(((struct __pyx_obj_7netCDF4_8_netCDF4_Dataset *)__pyx_v_self), __pyx_v_filename, __pyx_v_mode, __pyx_v_clobber, __pyx_v_format, __pyx_v_diskless, __pyx_v_persist, __pyx_v_keepweakref, __pyx_v_memory, __pyx_v_kwargs);
 
-  /* "netCDF4/_netCDF4.pyx":1723
+  /* "netCDF4/_netCDF4.pyx":1722
  *     the parent Dataset or Group."""
  * 
  *     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',             # <<<<<<<<<<<<<<
@@ -12933,16 +12933,16 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   PyObject *(*__pyx_t_12)(PyObject *);
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1796
+  /* "netCDF4/_netCDF4.pyx":1795
  *         cdef char namstring[NC_MAX_NAME+1]
  * 
- *         self._buffer.buf = NULL             # <<<<<<<<<<<<<<
+ *         memset(&self._buffer, 0, sizeof(self._buffer))             # <<<<<<<<<<<<<<
  * 
  *         # flag to indicate that Variables in this Dataset support orthogonal indexing.
  */
-  __pyx_v_self->_buffer.buf = NULL;
+  memset((&__pyx_v_self->_buffer), 0, (sizeof(__pyx_v_self->_buffer)));
 
-  /* "netCDF4/_netCDF4.pyx":1799
+  /* "netCDF4/_netCDF4.pyx":1798
  * 
  *         # flag to indicate that Variables in this Dataset support orthogonal indexing.
  *         self.__orthogonal_indexing__ = True             # <<<<<<<<<<<<<<
@@ -12955,54 +12955,54 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __Pyx_DECREF(__pyx_v_self->__orthogonal_indexing__);
   __pyx_v_self->__orthogonal_indexing__ = Py_True;
 
-  /* "netCDF4/_netCDF4.pyx":1800
+  /* "netCDF4/_netCDF4.pyx":1799
  *         # flag to indicate that Variables in this Dataset support orthogonal indexing.
  *         self.__orthogonal_indexing__ = True
  *         if diskless and __netcdf4libversion__ < '4.2.1':             # <<<<<<<<<<<<<<
  *             #diskless = False # don't raise error, instead silently ignore
  *             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
  */
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1800, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1799, __pyx_L1_error)
   if (__pyx_t_2) {
   } else {
     __pyx_t_1 = __pyx_t_2;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1800, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1799, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_3, __pyx_kp_s_4_2_1, Py_LT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1800, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_3, __pyx_kp_s_4_2_1, Py_LT); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1799, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1800, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1799, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_1 = __pyx_t_2;
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "netCDF4/_netCDF4.pyx":1802
+    /* "netCDF4/_netCDF4.pyx":1801
  *         if diskless and __netcdf4libversion__ < '4.2.1':
  *             #diskless = False # don't raise error, instead silently ignore
  *             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)             # <<<<<<<<<<<<<<
  *         bytestr = _strencode(str(filename))
  *         path = bytestr
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1802, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1801, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_diskless_mode_requires_netcdf_li, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1802, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_diskless_mode_requires_netcdf_li, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1801, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1802, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1801, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1802, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1801, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1802, __pyx_L1_error)
+    __PYX_ERR(0, 1801, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1800
+    /* "netCDF4/_netCDF4.pyx":1799
  *         # flag to indicate that Variables in this Dataset support orthogonal indexing.
  *         self.__orthogonal_indexing__ = True
  *         if diskless and __netcdf4libversion__ < '4.2.1':             # <<<<<<<<<<<<<<
@@ -13011,38 +13011,38 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1803
+  /* "netCDF4/_netCDF4.pyx":1802
  *             #diskless = False # don't raise error, instead silently ignore
  *             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
  *         bytestr = _strencode(str(filename))             # <<<<<<<<<<<<<<
  *         path = bytestr
  * 
  */
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1803, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1802, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_filename);
   __Pyx_GIVEREF(__pyx_v_filename);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_filename);
-  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1803, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)(&PyString_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1802, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1803, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__strencode(__pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1802, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_bytestr = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1804
+  /* "netCDF4/_netCDF4.pyx":1803
  *             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
  *         bytestr = _strencode(str(filename))
  *         path = bytestr             # <<<<<<<<<<<<<<
  * 
  *         if memory is not None and (mode != 'r' or type(memory) != bytes):
  */
-  __pyx_t_5 = __Pyx_PyObject_AsString(__pyx_v_bytestr); if (unlikely((!__pyx_t_5) && PyErr_Occurred())) __PYX_ERR(0, 1804, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_AsString(__pyx_v_bytestr); if (unlikely((!__pyx_t_5) && PyErr_Occurred())) __PYX_ERR(0, 1803, __pyx_L1_error)
   __pyx_v_path = __pyx_t_5;
 
-  /* "netCDF4/_netCDF4.pyx":1806
+  /* "netCDF4/_netCDF4.pyx":1805
  *         path = bytestr
  * 
  *         if memory is not None and (mode != 'r' or type(memory) != bytes):             # <<<<<<<<<<<<<<
@@ -13056,33 +13056,33 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     __pyx_t_1 = __pyx_t_6;
     goto __pyx_L7_bool_binop_done;
   }
-  __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_r, Py_NE)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1806, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_r, Py_NE)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1805, __pyx_L1_error)
   if (!__pyx_t_6) {
   } else {
     __pyx_t_1 = __pyx_t_6;
     goto __pyx_L7_bool_binop_done;
   }
-  __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_memory)), ((PyObject *)(&PyBytes_Type)), Py_NE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1806, __pyx_L1_error)
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1806, __pyx_L1_error)
+  __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_memory)), ((PyObject *)(&PyBytes_Type)), Py_NE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1805, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1805, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_1 = __pyx_t_6;
   __pyx_L7_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "netCDF4/_netCDF4.pyx":1807
+    /* "netCDF4/_netCDF4.pyx":1806
  * 
  *         if memory is not None and (mode != 'r' or type(memory) != bytes):
  *             raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')             # <<<<<<<<<<<<<<
  * 
  *         if mode == 'w':
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1807, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1806, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 1807, __pyx_L1_error)
+    __PYX_ERR(0, 1806, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1806
+    /* "netCDF4/_netCDF4.pyx":1805
  *         path = bytestr
  * 
  *         if memory is not None and (mode != 'r' or type(memory) != bytes):             # <<<<<<<<<<<<<<
@@ -13091,84 +13091,84 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1809
+  /* "netCDF4/_netCDF4.pyx":1808
  *             raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
  * 
  *         if mode == 'w':             # <<<<<<<<<<<<<<
  *             _set_default_format(format=format)
  *             if clobber:
  */
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_w, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1809, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_w, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1808, __pyx_L1_error)
   if (__pyx_t_1) {
 
-    /* "netCDF4/_netCDF4.pyx":1810
+    /* "netCDF4/_netCDF4.pyx":1809
  * 
  *         if mode == 'w':
  *             _set_default_format(format=format)             # <<<<<<<<<<<<<<
  *             if clobber:
  *                 if diskless:
  */
-    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_set_default_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1810, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_set_default_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1809, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1810, __pyx_L1_error)
+    __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1809, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_format, __pyx_v_format) < 0) __PYX_ERR(0, 1810, __pyx_L1_error)
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1810, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_format, __pyx_v_format) < 0) __PYX_ERR(0, 1809, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1809, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1811
+    /* "netCDF4/_netCDF4.pyx":1810
  *         if mode == 'w':
  *             _set_default_format(format=format)
  *             if clobber:             # <<<<<<<<<<<<<<
  *                 if diskless:
  *                     if persist:
  */
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_clobber); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1811, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_clobber); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1810, __pyx_L1_error)
     if (__pyx_t_1) {
 
-      /* "netCDF4/_netCDF4.pyx":1812
+      /* "netCDF4/_netCDF4.pyx":1811
  *             _set_default_format(format=format)
  *             if clobber:
  *                 if diskless:             # <<<<<<<<<<<<<<
  *                     if persist:
  *                         ierr = nc_create(path, NC_WRITE | NC_CLOBBER | NC_DISKLESS , &grpid)
  */
-      __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1812, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1811, __pyx_L1_error)
       if (__pyx_t_1) {
 
-        /* "netCDF4/_netCDF4.pyx":1813
+        /* "netCDF4/_netCDF4.pyx":1812
  *             if clobber:
  *                 if diskless:
  *                     if persist:             # <<<<<<<<<<<<<<
  *                         ierr = nc_create(path, NC_WRITE | NC_CLOBBER | NC_DISKLESS , &grpid)
  *                     else:
  */
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_persist); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1813, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_persist); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1812, __pyx_L1_error)
         if (__pyx_t_1) {
 
-          /* "netCDF4/_netCDF4.pyx":1814
+          /* "netCDF4/_netCDF4.pyx":1813
  *                 if diskless:
  *                     if persist:
  *                         ierr = nc_create(path, NC_WRITE | NC_CLOBBER | NC_DISKLESS , &grpid)             # <<<<<<<<<<<<<<
  *                     else:
  *                         ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
  */
-          __pyx_t_7 = __Pyx_PyInt_From_int((NC_WRITE | NC_CLOBBER)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1814, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyInt_From_int((NC_WRITE | NC_CLOBBER)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1813, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
-          __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1814, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1813, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_3 = PyNumber_Or(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1814, __pyx_L1_error)
+          __pyx_t_3 = PyNumber_Or(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1813, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1814, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1813, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __pyx_v_ierr = nc_create(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
 
-          /* "netCDF4/_netCDF4.pyx":1813
+          /* "netCDF4/_netCDF4.pyx":1812
  *             if clobber:
  *                 if diskless:
  *                     if persist:             # <<<<<<<<<<<<<<
@@ -13178,7 +13178,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
           goto __pyx_L13;
         }
 
-        /* "netCDF4/_netCDF4.pyx":1816
+        /* "netCDF4/_netCDF4.pyx":1815
  *                         ierr = nc_create(path, NC_WRITE | NC_CLOBBER | NC_DISKLESS , &grpid)
  *                     else:
  *                         ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)             # <<<<<<<<<<<<<<
@@ -13186,21 +13186,21 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  *                     ierr = nc_create(path, NC_CLOBBER, &grpid)
  */
         /*else*/ {
-          __pyx_t_3 = __Pyx_PyInt_From_int(NC_CLOBBER); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1816, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyInt_From_int(NC_CLOBBER); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1815, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1816, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1815, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_7 = PyNumber_Or(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1816, __pyx_L1_error)
+          __pyx_t_7 = PyNumber_Or(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1815, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1816, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1815, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           __pyx_v_ierr = nc_create(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
         }
         __pyx_L13:;
 
-        /* "netCDF4/_netCDF4.pyx":1812
+        /* "netCDF4/_netCDF4.pyx":1811
  *             _set_default_format(format=format)
  *             if clobber:
  *                 if diskless:             # <<<<<<<<<<<<<<
@@ -13210,7 +13210,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
         goto __pyx_L12;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1818
+      /* "netCDF4/_netCDF4.pyx":1817
  *                         ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
  *                 else:
  *                     ierr = nc_create(path, NC_CLOBBER, &grpid)             # <<<<<<<<<<<<<<
@@ -13222,7 +13222,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
       }
       __pyx_L12:;
 
-      /* "netCDF4/_netCDF4.pyx":1811
+      /* "netCDF4/_netCDF4.pyx":1810
  *         if mode == 'w':
  *             _set_default_format(format=format)
  *             if clobber:             # <<<<<<<<<<<<<<
@@ -13232,7 +13232,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
       goto __pyx_L11;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1820
+    /* "netCDF4/_netCDF4.pyx":1819
  *                     ierr = nc_create(path, NC_CLOBBER, &grpid)
  *             else:
  *                 if diskless:             # <<<<<<<<<<<<<<
@@ -13240,39 +13240,39 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  *                         ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
  */
     /*else*/ {
-      __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1820, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1819, __pyx_L1_error)
       if (__pyx_t_1) {
 
-        /* "netCDF4/_netCDF4.pyx":1821
+        /* "netCDF4/_netCDF4.pyx":1820
  *             else:
  *                 if diskless:
  *                     if persist:             # <<<<<<<<<<<<<<
  *                         ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
  *                     else:
  */
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_persist); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1821, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_persist); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1820, __pyx_L1_error)
         if (__pyx_t_1) {
 
-          /* "netCDF4/_netCDF4.pyx":1822
+          /* "netCDF4/_netCDF4.pyx":1821
  *                 if diskless:
  *                     if persist:
  *                         ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER | NC_DISKLESS , &grpid)             # <<<<<<<<<<<<<<
  *                     else:
  *                         ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
  */
-          __pyx_t_7 = __Pyx_PyInt_From_int((NC_WRITE | NC_NOCLOBBER)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1822, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyInt_From_int((NC_WRITE | NC_NOCLOBBER)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1821, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
-          __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1822, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1821, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_3 = PyNumber_Or(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1822, __pyx_L1_error)
+          __pyx_t_3 = PyNumber_Or(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1821, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1822, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1821, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __pyx_v_ierr = nc_create(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
 
-          /* "netCDF4/_netCDF4.pyx":1821
+          /* "netCDF4/_netCDF4.pyx":1820
  *             else:
  *                 if diskless:
  *                     if persist:             # <<<<<<<<<<<<<<
@@ -13282,7 +13282,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
           goto __pyx_L15;
         }
 
-        /* "netCDF4/_netCDF4.pyx":1824
+        /* "netCDF4/_netCDF4.pyx":1823
  *                         ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
  *                     else:
  *                         ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)             # <<<<<<<<<<<<<<
@@ -13290,21 +13290,21 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  *                     ierr = nc_create(path, NC_NOCLOBBER, &grpid)
  */
         /*else*/ {
-          __pyx_t_3 = __Pyx_PyInt_From_int(NC_NOCLOBBER); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1824, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_PyInt_From_int(NC_NOCLOBBER); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1823, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1824, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1823, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_7 = PyNumber_Or(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1824, __pyx_L1_error)
+          __pyx_t_7 = PyNumber_Or(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1823, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1824, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1823, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           __pyx_v_ierr = nc_create(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
         }
         __pyx_L15:;
 
-        /* "netCDF4/_netCDF4.pyx":1820
+        /* "netCDF4/_netCDF4.pyx":1819
  *                     ierr = nc_create(path, NC_CLOBBER, &grpid)
  *             else:
  *                 if diskless:             # <<<<<<<<<<<<<<
@@ -13314,7 +13314,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
         goto __pyx_L14;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1826
+      /* "netCDF4/_netCDF4.pyx":1825
  *                         ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
  *                 else:
  *                     ierr = nc_create(path, NC_NOCLOBBER, &grpid)             # <<<<<<<<<<<<<<
@@ -13328,25 +13328,25 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     }
     __pyx_L11:;
 
-    /* "netCDF4/_netCDF4.pyx":1831
+    /* "netCDF4/_netCDF4.pyx":1830
  *             # format to NETCDF4). This bug should be fixed in version
  *             # 4.3.0 of the netcdf library (add a version check here?).
  *             _set_default_format(format='NETCDF3_64BIT_OFFSET')             # <<<<<<<<<<<<<<
  *         elif mode == 'r':
  *             if memory is not None:
  */
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_set_default_format); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1831, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_set_default_format); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1830, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1831, __pyx_L1_error)
+    __pyx_t_4 = PyDict_New(); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1830, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_format, __pyx_n_s_NETCDF3_64BIT_OFFSET) < 0) __PYX_ERR(0, 1831, __pyx_L1_error)
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1831, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_format, __pyx_n_s_NETCDF3_64BIT_OFFSET) < 0) __PYX_ERR(0, 1830, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1830, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1809
+    /* "netCDF4/_netCDF4.pyx":1808
  *             raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
  * 
  *         if mode == 'w':             # <<<<<<<<<<<<<<
@@ -13356,17 +13356,17 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     goto __pyx_L10;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1832
+  /* "netCDF4/_netCDF4.pyx":1831
  *             # 4.3.0 of the netcdf library (add a version check here?).
  *             _set_default_format(format='NETCDF3_64BIT_OFFSET')
  *         elif mode == 'r':             # <<<<<<<<<<<<<<
  *             if memory is not None:
  *                 IF HAS_NC_OPEN_MEM:
  */
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_r, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1832, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_r, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1831, __pyx_L1_error)
   if (__pyx_t_1) {
 
-    /* "netCDF4/_netCDF4.pyx":1833
+    /* "netCDF4/_netCDF4.pyx":1832
  *             _set_default_format(format='NETCDF3_64BIT_OFFSET')
  *         elif mode == 'r':
  *             if memory is not None:             # <<<<<<<<<<<<<<
@@ -13377,7 +13377,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     __pyx_t_6 = (__pyx_t_1 != 0);
     if (__pyx_t_6) {
 
-      /* "netCDF4/_netCDF4.pyx":1842
+      /* "netCDF4/_netCDF4.pyx":1841
  *                     ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
  *                 ELSE:
  *                     msg = """             # <<<<<<<<<<<<<<
@@ -13387,26 +13387,26 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
       __Pyx_INCREF(__pyx_kp_s_nc_open_mem_method_not_enabled);
       __pyx_v_msg = __pyx_kp_s_nc_open_mem_method_not_enabled;
 
-      /* "netCDF4/_netCDF4.pyx":1845
+      /* "netCDF4/_netCDF4.pyx":1844
  *         nc_open_mem method not enabled.  To enable, install Cython, make sure you have
  *         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
  *                     raise ValueError(msg)             # <<<<<<<<<<<<<<
  *             elif diskless:
  *                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
  */
-      __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1845, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1844, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_v_msg);
       __Pyx_GIVEREF(__pyx_v_msg);
       PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_msg);
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1845, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1844, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_Raise(__pyx_t_4, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __PYX_ERR(0, 1845, __pyx_L1_error)
+      __PYX_ERR(0, 1844, __pyx_L1_error)
 
-      /* "netCDF4/_netCDF4.pyx":1833
+      /* "netCDF4/_netCDF4.pyx":1832
  *             _set_default_format(format='NETCDF3_64BIT_OFFSET')
  *         elif mode == 'r':
  *             if memory is not None:             # <<<<<<<<<<<<<<
@@ -13415,36 +13415,36 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  */
     }
 
-    /* "netCDF4/_netCDF4.pyx":1846
+    /* "netCDF4/_netCDF4.pyx":1845
  *         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
  *                     raise ValueError(msg)
  *             elif diskless:             # <<<<<<<<<<<<<<
  *                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
  *             else:
  */
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1846, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1845, __pyx_L1_error)
     if (__pyx_t_6) {
 
-      /* "netCDF4/_netCDF4.pyx":1847
+      /* "netCDF4/_netCDF4.pyx":1846
  *                     raise ValueError(msg)
  *             elif diskless:
  *                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)             # <<<<<<<<<<<<<<
  *             else:
  *                 ierr = nc_open(path, NC_NOWRITE, &grpid)
  */
-      __pyx_t_4 = __Pyx_PyInt_From_int(NC_NOWRITE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1847, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_From_int(NC_NOWRITE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1846, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1847, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1846, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_7 = PyNumber_Or(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1847, __pyx_L1_error)
+      __pyx_t_7 = PyNumber_Or(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1846, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1847, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1846, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_v_ierr = nc_open(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
 
-      /* "netCDF4/_netCDF4.pyx":1846
+      /* "netCDF4/_netCDF4.pyx":1845
  *         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
  *                     raise ValueError(msg)
  *             elif diskless:             # <<<<<<<<<<<<<<
@@ -13454,7 +13454,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
       goto __pyx_L16;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1849
+    /* "netCDF4/_netCDF4.pyx":1848
  *                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
  *             else:
  *                 ierr = nc_open(path, NC_NOWRITE, &grpid)             # <<<<<<<<<<<<<<
@@ -13466,7 +13466,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     }
     __pyx_L16:;
 
-    /* "netCDF4/_netCDF4.pyx":1832
+    /* "netCDF4/_netCDF4.pyx":1831
  *             # 4.3.0 of the netcdf library (add a version check here?).
  *             _set_default_format(format='NETCDF3_64BIT_OFFSET')
  *         elif mode == 'r':             # <<<<<<<<<<<<<<
@@ -13476,54 +13476,54 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     goto __pyx_L10;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1850
+  /* "netCDF4/_netCDF4.pyx":1849
  *             else:
  *                 ierr = nc_open(path, NC_NOWRITE, &grpid)
  *         elif mode == 'r+' or mode == 'a':             # <<<<<<<<<<<<<<
  *             if diskless:
  *                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
  */
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_kp_s_r_2, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1850, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_kp_s_r_2, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1849, __pyx_L1_error)
   if (!__pyx_t_1) {
   } else {
     __pyx_t_6 = __pyx_t_1;
     goto __pyx_L17_bool_binop_done;
   }
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_a, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1850, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_a, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1849, __pyx_L1_error)
   __pyx_t_6 = __pyx_t_1;
   __pyx_L17_bool_binop_done:;
   if (__pyx_t_6) {
 
-    /* "netCDF4/_netCDF4.pyx":1851
+    /* "netCDF4/_netCDF4.pyx":1850
  *                 ierr = nc_open(path, NC_NOWRITE, &grpid)
  *         elif mode == 'r+' or mode == 'a':
  *             if diskless:             # <<<<<<<<<<<<<<
  *                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
  *             else:
  */
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1851, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1850, __pyx_L1_error)
     if (__pyx_t_6) {
 
-      /* "netCDF4/_netCDF4.pyx":1852
+      /* "netCDF4/_netCDF4.pyx":1851
  *         elif mode == 'r+' or mode == 'a':
  *             if diskless:
  *                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)             # <<<<<<<<<<<<<<
  *             else:
  *                 ierr = nc_open(path, NC_WRITE, &grpid)
  */
-      __pyx_t_7 = __Pyx_PyInt_From_int(NC_WRITE); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1852, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyInt_From_int(NC_WRITE); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1851, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1852, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1851, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyNumber_Or(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1852, __pyx_L1_error)
+      __pyx_t_4 = PyNumber_Or(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1851, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1852, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1851, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_v_ierr = nc_open(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
 
-      /* "netCDF4/_netCDF4.pyx":1851
+      /* "netCDF4/_netCDF4.pyx":1850
  *                 ierr = nc_open(path, NC_NOWRITE, &grpid)
  *         elif mode == 'r+' or mode == 'a':
  *             if diskless:             # <<<<<<<<<<<<<<
@@ -13533,7 +13533,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
       goto __pyx_L19;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1854
+    /* "netCDF4/_netCDF4.pyx":1853
  *                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
  *             else:
  *                 ierr = nc_open(path, NC_WRITE, &grpid)             # <<<<<<<<<<<<<<
@@ -13545,7 +13545,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     }
     __pyx_L19:;
 
-    /* "netCDF4/_netCDF4.pyx":1850
+    /* "netCDF4/_netCDF4.pyx":1849
  *             else:
  *                 ierr = nc_open(path, NC_NOWRITE, &grpid)
  *         elif mode == 'r+' or mode == 'a':             # <<<<<<<<<<<<<<
@@ -13555,54 +13555,54 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     goto __pyx_L10;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1855
+  /* "netCDF4/_netCDF4.pyx":1854
  *             else:
  *                 ierr = nc_open(path, NC_WRITE, &grpid)
  *         elif mode == 'as' or mode == 'r+s':             # <<<<<<<<<<<<<<
  *             if diskless:
  *                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
  */
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_as, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1855, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_as, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1854, __pyx_L1_error)
   if (!__pyx_t_1) {
   } else {
     __pyx_t_6 = __pyx_t_1;
     goto __pyx_L20_bool_binop_done;
   }
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_kp_s_r_s, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1855, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_kp_s_r_s, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 1854, __pyx_L1_error)
   __pyx_t_6 = __pyx_t_1;
   __pyx_L20_bool_binop_done:;
   if (__pyx_t_6) {
 
-    /* "netCDF4/_netCDF4.pyx":1856
+    /* "netCDF4/_netCDF4.pyx":1855
  *                 ierr = nc_open(path, NC_WRITE, &grpid)
  *         elif mode == 'as' or mode == 'r+s':
  *             if diskless:             # <<<<<<<<<<<<<<
  *                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
  *             else:
  */
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1856, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1855, __pyx_L1_error)
     if (__pyx_t_6) {
 
-      /* "netCDF4/_netCDF4.pyx":1857
+      /* "netCDF4/_netCDF4.pyx":1856
  *         elif mode == 'as' or mode == 'r+s':
  *             if diskless:
  *                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)             # <<<<<<<<<<<<<<
  *             else:
  *                 ierr = nc_open(path, NC_SHARE, &grpid)
  */
-      __pyx_t_4 = __Pyx_PyInt_From_int(NC_SHARE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1857, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_From_int(NC_SHARE); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1856, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1857, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1856, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_7 = PyNumber_Or(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1857, __pyx_L1_error)
+      __pyx_t_7 = PyNumber_Or(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1856, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1857, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1856, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_v_ierr = nc_open(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
 
-      /* "netCDF4/_netCDF4.pyx":1856
+      /* "netCDF4/_netCDF4.pyx":1855
  *                 ierr = nc_open(path, NC_WRITE, &grpid)
  *         elif mode == 'as' or mode == 'r+s':
  *             if diskless:             # <<<<<<<<<<<<<<
@@ -13612,7 +13612,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
       goto __pyx_L22;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1859
+    /* "netCDF4/_netCDF4.pyx":1858
  *                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
  *             else:
  *                 ierr = nc_open(path, NC_SHARE, &grpid)             # <<<<<<<<<<<<<<
@@ -13624,7 +13624,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     }
     __pyx_L22:;
 
-    /* "netCDF4/_netCDF4.pyx":1855
+    /* "netCDF4/_netCDF4.pyx":1854
  *             else:
  *                 ierr = nc_open(path, NC_WRITE, &grpid)
  *         elif mode == 'as' or mode == 'r+s':             # <<<<<<<<<<<<<<
@@ -13634,66 +13634,66 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     goto __pyx_L10;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1860
+  /* "netCDF4/_netCDF4.pyx":1859
  *             else:
  *                 ierr = nc_open(path, NC_SHARE, &grpid)
  *         elif mode == 'ws':             # <<<<<<<<<<<<<<
  *             if clobber:
  *                 if diskless:
  */
-  __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_ws, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1860, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_ws, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1859, __pyx_L1_error)
   if (__pyx_t_6) {
 
-    /* "netCDF4/_netCDF4.pyx":1861
+    /* "netCDF4/_netCDF4.pyx":1860
  *                 ierr = nc_open(path, NC_SHARE, &grpid)
  *         elif mode == 'ws':
  *             if clobber:             # <<<<<<<<<<<<<<
  *                 if diskless:
  *                     if persist:
  */
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_clobber); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1861, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_clobber); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1860, __pyx_L1_error)
     if (__pyx_t_6) {
 
-      /* "netCDF4/_netCDF4.pyx":1862
+      /* "netCDF4/_netCDF4.pyx":1861
  *         elif mode == 'ws':
  *             if clobber:
  *                 if diskless:             # <<<<<<<<<<<<<<
  *                     if persist:
  *                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
  */
-      __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1862, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1861, __pyx_L1_error)
       if (__pyx_t_6) {
 
-        /* "netCDF4/_netCDF4.pyx":1863
+        /* "netCDF4/_netCDF4.pyx":1862
  *             if clobber:
  *                 if diskless:
  *                     if persist:             # <<<<<<<<<<<<<<
  *                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
  *                     else:
  */
-        __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_persist); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1863, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_persist); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1862, __pyx_L1_error)
         if (__pyx_t_6) {
 
-          /* "netCDF4/_netCDF4.pyx":1864
+          /* "netCDF4/_netCDF4.pyx":1863
  *                 if diskless:
  *                     if persist:
  *                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)             # <<<<<<<<<<<<<<
  *                     else:
  *                         ierr = nc_create(path, NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
  */
-          __pyx_t_7 = __Pyx_PyInt_From_int(((NC_WRITE | NC_SHARE) | NC_CLOBBER)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1864, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyInt_From_int(((NC_WRITE | NC_SHARE) | NC_CLOBBER)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1863, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
-          __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1864, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1863, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_4 = PyNumber_Or(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1864, __pyx_L1_error)
+          __pyx_t_4 = PyNumber_Or(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1863, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1864, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1863, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           __pyx_v_ierr = nc_create(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
 
-          /* "netCDF4/_netCDF4.pyx":1863
+          /* "netCDF4/_netCDF4.pyx":1862
  *             if clobber:
  *                 if diskless:
  *                     if persist:             # <<<<<<<<<<<<<<
@@ -13703,7 +13703,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
           goto __pyx_L25;
         }
 
-        /* "netCDF4/_netCDF4.pyx":1866
+        /* "netCDF4/_netCDF4.pyx":1865
  *                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
  *                     else:
  *                         ierr = nc_create(path, NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)             # <<<<<<<<<<<<<<
@@ -13711,21 +13711,21 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  *                     ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)
  */
         /*else*/ {
-          __pyx_t_4 = __Pyx_PyInt_From_int((NC_SHARE | NC_CLOBBER)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1866, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyInt_From_int((NC_SHARE | NC_CLOBBER)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1865, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1866, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1865, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_7 = PyNumber_Or(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1866, __pyx_L1_error)
+          __pyx_t_7 = PyNumber_Or(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1865, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1866, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1865, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           __pyx_v_ierr = nc_create(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
         }
         __pyx_L25:;
 
-        /* "netCDF4/_netCDF4.pyx":1862
+        /* "netCDF4/_netCDF4.pyx":1861
  *         elif mode == 'ws':
  *             if clobber:
  *                 if diskless:             # <<<<<<<<<<<<<<
@@ -13735,7 +13735,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
         goto __pyx_L24;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1868
+      /* "netCDF4/_netCDF4.pyx":1867
  *                         ierr = nc_create(path, NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
  *                 else:
  *                     ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)             # <<<<<<<<<<<<<<
@@ -13747,7 +13747,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
       }
       __pyx_L24:;
 
-      /* "netCDF4/_netCDF4.pyx":1861
+      /* "netCDF4/_netCDF4.pyx":1860
  *                 ierr = nc_open(path, NC_SHARE, &grpid)
  *         elif mode == 'ws':
  *             if clobber:             # <<<<<<<<<<<<<<
@@ -13757,7 +13757,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
       goto __pyx_L23;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1870
+    /* "netCDF4/_netCDF4.pyx":1869
  *                     ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)
  *             else:
  *                 if diskless:             # <<<<<<<<<<<<<<
@@ -13765,39 +13765,39 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  *                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
  */
     /*else*/ {
-      __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1870, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_diskless); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1869, __pyx_L1_error)
       if (__pyx_t_6) {
 
-        /* "netCDF4/_netCDF4.pyx":1871
+        /* "netCDF4/_netCDF4.pyx":1870
  *             else:
  *                 if diskless:
  *                     if persist:             # <<<<<<<<<<<<<<
  *                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
  *                     else:
  */
-        __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_persist); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1871, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_v_persist); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1870, __pyx_L1_error)
         if (__pyx_t_6) {
 
-          /* "netCDF4/_netCDF4.pyx":1872
+          /* "netCDF4/_netCDF4.pyx":1871
  *                 if diskless:
  *                     if persist:
  *                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)             # <<<<<<<<<<<<<<
  *                     else:
  *                         ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
  */
-          __pyx_t_7 = __Pyx_PyInt_From_int(((NC_WRITE | NC_SHARE) | NC_NOCLOBBER)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1872, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyInt_From_int(((NC_WRITE | NC_SHARE) | NC_NOCLOBBER)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1871, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
-          __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1872, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1871, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_4 = PyNumber_Or(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1872, __pyx_L1_error)
+          __pyx_t_4 = PyNumber_Or(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1871, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1872, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1871, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           __pyx_v_ierr = nc_create(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
 
-          /* "netCDF4/_netCDF4.pyx":1871
+          /* "netCDF4/_netCDF4.pyx":1870
  *             else:
  *                 if diskless:
  *                     if persist:             # <<<<<<<<<<<<<<
@@ -13807,7 +13807,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
           goto __pyx_L27;
         }
 
-        /* "netCDF4/_netCDF4.pyx":1874
+        /* "netCDF4/_netCDF4.pyx":1873
  *                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
  *                     else:
  *                         ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)             # <<<<<<<<<<<<<<
@@ -13815,21 +13815,21 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  *                     ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
  */
         /*else*/ {
-          __pyx_t_4 = __Pyx_PyInt_From_int((NC_SHARE | NC_NOCLOBBER)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1874, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyInt_From_int((NC_SHARE | NC_NOCLOBBER)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1873, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1874, __pyx_L1_error)
+          __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_NC_DISKLESS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1873, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_7 = PyNumber_Or(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1874, __pyx_L1_error)
+          __pyx_t_7 = PyNumber_Or(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1873, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1874, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1873, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
           __pyx_v_ierr = nc_create(__pyx_v_path, __pyx_t_8, (&__pyx_v_grpid));
         }
         __pyx_L27:;
 
-        /* "netCDF4/_netCDF4.pyx":1870
+        /* "netCDF4/_netCDF4.pyx":1869
  *                     ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)
  *             else:
  *                 if diskless:             # <<<<<<<<<<<<<<
@@ -13839,7 +13839,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
         goto __pyx_L26;
       }
 
-      /* "netCDF4/_netCDF4.pyx":1876
+      /* "netCDF4/_netCDF4.pyx":1875
  *                         ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
  *                 else:
  *                     ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)             # <<<<<<<<<<<<<<
@@ -13853,7 +13853,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     }
     __pyx_L23:;
 
-    /* "netCDF4/_netCDF4.pyx":1860
+    /* "netCDF4/_netCDF4.pyx":1859
  *             else:
  *                 ierr = nc_open(path, NC_SHARE, &grpid)
  *         elif mode == 'ws':             # <<<<<<<<<<<<<<
@@ -13863,7 +13863,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     goto __pyx_L10;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1878
+  /* "netCDF4/_netCDF4.pyx":1877
  *                     ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
  *         else:
  *             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)             # <<<<<<<<<<<<<<
@@ -13871,46 +13871,46 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  *         _ensure_nc_success(ierr, IOError)
  */
   /*else*/ {
-    __pyx_t_7 = __Pyx_PyString_Format(__pyx_kp_s_mode_must_be_w_r_a_or_r_got_s, __pyx_v_mode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1878, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyString_Format(__pyx_kp_s_mode_must_be_w_r_a_or_r_got_s, __pyx_v_mode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1877, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1878, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1877, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_7);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_7);
     __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1878, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_3, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1877, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_Raise(__pyx_t_7, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __PYX_ERR(0, 1878, __pyx_L1_error)
+    __PYX_ERR(0, 1877, __pyx_L1_error)
   }
   __pyx_L10:;
 
-  /* "netCDF4/_netCDF4.pyx":1880
+  /* "netCDF4/_netCDF4.pyx":1879
  *             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
  * 
  *         _ensure_nc_success(ierr, IOError)             # <<<<<<<<<<<<<<
  * 
  *         # data model and file format attributes
  */
-  __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_ierr); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1880, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_ierr); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1879, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_9.__pyx_n = 1;
   __pyx_t_9.err_cls = __pyx_builtin_IOError;
-  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(__pyx_t_7, &__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1880, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(__pyx_t_7, &__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1879, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1883
+  /* "netCDF4/_netCDF4.pyx":1882
  * 
  *         # data model and file format attributes
  *         self.data_model = _get_format(grpid)             # <<<<<<<<<<<<<<
  *         # data_model attribute used to be file_format (versions < 1.0.8), retain
  *         # file_format for backwards compatibility.
  */
-  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_format(__pyx_v_grpid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1883, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_format(__pyx_v_grpid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1882, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->data_model);
@@ -13918,7 +13918,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __pyx_v_self->data_model = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1886
+  /* "netCDF4/_netCDF4.pyx":1885
  *         # data_model attribute used to be file_format (versions < 1.0.8), retain
  *         # file_format for backwards compatibility.
  *         self.file_format = self.data_model             # <<<<<<<<<<<<<<
@@ -13933,14 +13933,14 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __pyx_v_self->file_format = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1887
+  /* "netCDF4/_netCDF4.pyx":1886
  *         # file_format for backwards compatibility.
  *         self.file_format = self.data_model
  *         self.disk_format = _get_full_format(grpid)             # <<<<<<<<<<<<<<
  *         # diskless read access only works with NETCDF_CLASSIC (for now)
  *         #ncopen = mode.startswith('a') or mode.startswith('r')
  */
-  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_full_format(__pyx_v_grpid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1887, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_full_format(__pyx_v_grpid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1886, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->disk_format);
@@ -13948,7 +13948,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __pyx_v_self->disk_format = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1892
+  /* "netCDF4/_netCDF4.pyx":1891
  *         #if diskless and self.data_model != 'NETCDF3_CLASSIC' and ncopen:
  *         #    raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
  *         self._grpid = grpid             # <<<<<<<<<<<<<<
@@ -13957,7 +13957,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  */
   __pyx_v_self->_grpid = __pyx_v_grpid;
 
-  /* "netCDF4/_netCDF4.pyx":1893
+  /* "netCDF4/_netCDF4.pyx":1892
  *         #    raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
  *         self._grpid = grpid
  *         self._isopen = 1             # <<<<<<<<<<<<<<
@@ -13966,7 +13966,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  */
   __pyx_v_self->_isopen = 1;
 
-  /* "netCDF4/_netCDF4.pyx":1894
+  /* "netCDF4/_netCDF4.pyx":1893
  *         self._grpid = grpid
  *         self._isopen = 1
  *         self.path = '/'             # <<<<<<<<<<<<<<
@@ -13979,7 +13979,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __Pyx_DECREF(__pyx_v_self->path);
   __pyx_v_self->path = __pyx_kp_s__17;
 
-  /* "netCDF4/_netCDF4.pyx":1895
+  /* "netCDF4/_netCDF4.pyx":1894
  *         self._isopen = 1
  *         self.path = '/'
  *         self.parent = None             # <<<<<<<<<<<<<<
@@ -13992,7 +13992,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __Pyx_DECREF(__pyx_v_self->parent);
   __pyx_v_self->parent = Py_None;
 
-  /* "netCDF4/_netCDF4.pyx":1896
+  /* "netCDF4/_netCDF4.pyx":1895
  *         self.path = '/'
  *         self.parent = None
  *         self.keepweakref = keepweakref             # <<<<<<<<<<<<<<
@@ -14005,14 +14005,14 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __Pyx_DECREF(__pyx_v_self->keepweakref);
   __pyx_v_self->keepweakref = __pyx_v_keepweakref;
 
-  /* "netCDF4/_netCDF4.pyx":1898
+  /* "netCDF4/_netCDF4.pyx":1897
  *         self.keepweakref = keepweakref
  *         # get compound, vlen and enum types in the root Group.
  *         self.cmptypes, self.vltypes, self.enumtypes = _get_types(self)             # <<<<<<<<<<<<<<
  *         # get dimensions in the root group.
  *         self.dimensions = _get_dims(self)
  */
-  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_types(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1898, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_types(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1897, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   if ((likely(PyTuple_CheckExact(__pyx_t_3))) || (PyList_CheckExact(__pyx_t_3))) {
     PyObject* sequence = __pyx_t_3;
@@ -14024,7 +14024,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     if (unlikely(size != 3)) {
       if (size > 3) __Pyx_RaiseTooManyValuesError(3);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 1898, __pyx_L1_error)
+      __PYX_ERR(0, 1897, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -14040,17 +14040,17 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     __Pyx_INCREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_t_10);
     #else
-    __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1898, __pyx_L1_error)
+    __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1897, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1898, __pyx_L1_error)
+    __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1897, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_10 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1898, __pyx_L1_error)
+    __pyx_t_10 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1897, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     #endif
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_11 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1898, __pyx_L1_error)
+    __pyx_t_11 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1897, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_12 = Py_TYPE(__pyx_t_11)->tp_iternext;
@@ -14060,7 +14060,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     __Pyx_GOTREF(__pyx_t_4);
     index = 2; __pyx_t_10 = __pyx_t_12(__pyx_t_11); if (unlikely(!__pyx_t_10)) goto __pyx_L28_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_10);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_12(__pyx_t_11), 3) < 0) __PYX_ERR(0, 1898, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_12(__pyx_t_11), 3) < 0) __PYX_ERR(0, 1897, __pyx_L1_error)
     __pyx_t_12 = NULL;
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     goto __pyx_L29_unpacking_done;
@@ -14068,7 +14068,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __pyx_t_12 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 1898, __pyx_L1_error)
+    __PYX_ERR(0, 1897, __pyx_L1_error)
     __pyx_L29_unpacking_done:;
   }
   __Pyx_GIVEREF(__pyx_t_7);
@@ -14087,14 +14087,14 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __pyx_v_self->enumtypes = __pyx_t_10;
   __pyx_t_10 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1900
+  /* "netCDF4/_netCDF4.pyx":1899
  *         self.cmptypes, self.vltypes, self.enumtypes = _get_types(self)
  *         # get dimensions in the root group.
  *         self.dimensions = _get_dims(self)             # <<<<<<<<<<<<<<
  *         # get variables in the root Group.
  *         self.variables = _get_vars(self)
  */
-  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_dims(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1900, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_dims(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1899, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->dimensions);
@@ -14102,14 +14102,14 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __pyx_v_self->dimensions = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1902
+  /* "netCDF4/_netCDF4.pyx":1901
  *         self.dimensions = _get_dims(self)
  *         # get variables in the root Group.
  *         self.variables = _get_vars(self)             # <<<<<<<<<<<<<<
  *         # get groups in the root Group.
  *         if self.data_model == 'NETCDF4':
  */
-  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_vars(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1902, __pyx_L1_error)
+  __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_vars(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1901, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->variables);
@@ -14117,24 +14117,24 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __pyx_v_self->variables = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1904
+  /* "netCDF4/_netCDF4.pyx":1903
  *         self.variables = _get_vars(self)
  *         # get groups in the root Group.
  *         if self.data_model == 'NETCDF4':             # <<<<<<<<<<<<<<
  *             self.groups = _get_grps(self)
  *         else:
  */
-  __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_v_self->data_model, __pyx_n_s_NETCDF4, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1904, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PyString_Equals(__pyx_v_self->data_model, __pyx_n_s_NETCDF4, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 1903, __pyx_L1_error)
   if (__pyx_t_6) {
 
-    /* "netCDF4/_netCDF4.pyx":1905
+    /* "netCDF4/_netCDF4.pyx":1904
  *         # get groups in the root Group.
  *         if self.data_model == 'NETCDF4':
  *             self.groups = _get_grps(self)             # <<<<<<<<<<<<<<
  *         else:
  *             self.groups = OrderedDict()
  */
-    __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_grps(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1905, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_7netCDF4_8_netCDF4__get_grps(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1904, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_3);
     __Pyx_GOTREF(__pyx_v_self->groups);
@@ -14142,7 +14142,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     __pyx_v_self->groups = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1904
+    /* "netCDF4/_netCDF4.pyx":1903
  *         self.variables = _get_vars(self)
  *         # get groups in the root Group.
  *         if self.data_model == 'NETCDF4':             # <<<<<<<<<<<<<<
@@ -14152,7 +14152,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
     goto __pyx_L30;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1907
+  /* "netCDF4/_netCDF4.pyx":1906
  *             self.groups = _get_grps(self)
  *         else:
  *             self.groups = OrderedDict()             # <<<<<<<<<<<<<<
@@ -14160,7 +14160,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  *     # these allow Dataset objects to be used via a "with" statement.
  */
   /*else*/ {
-    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1907, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1906, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
@@ -14173,10 +14173,10 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
       }
     }
     if (__pyx_t_4) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1907, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1906, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
-      __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1907, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1906, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
@@ -14188,7 +14188,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   }
   __pyx_L30:;
 
-  /* "netCDF4/_netCDF4.pyx":1723
+  /* "netCDF4/_netCDF4.pyx":1722
  *     the parent Dataset or Group."""
  * 
  *     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',             # <<<<<<<<<<<<<<
@@ -14214,7 +14214,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1910
+/* "netCDF4/_netCDF4.pyx":1909
  * 
  *     # these allow Dataset objects to be used via a "with" statement.
  *     def __enter__(self):             # <<<<<<<<<<<<<<
@@ -14240,7 +14240,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_2__enter__(struct __pyx_ob
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__enter__", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1911
+  /* "netCDF4/_netCDF4.pyx":1910
  *     # these allow Dataset objects to be used via a "with" statement.
  *     def __enter__(self):
  *         return self             # <<<<<<<<<<<<<<
@@ -14252,7 +14252,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_2__enter__(struct __pyx_ob
   __pyx_r = ((PyObject *)__pyx_v_self);
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":1910
+  /* "netCDF4/_netCDF4.pyx":1909
  * 
  *     # these allow Dataset objects to be used via a "with" statement.
  *     def __enter__(self):             # <<<<<<<<<<<<<<
@@ -14267,7 +14267,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_2__enter__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1912
+/* "netCDF4/_netCDF4.pyx":1911
  *     def __enter__(self):
  *         return self
  *     def __exit__(self,atype,value,traceback):             # <<<<<<<<<<<<<<
@@ -14305,16 +14305,16 @@ static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_5__exit__(PyObject *__pyx_
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 1); __PYX_ERR(0, 1912, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 1); __PYX_ERR(0, 1911, __pyx_L3_error)
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_traceback)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 2); __PYX_ERR(0, 1912, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, 2); __PYX_ERR(0, 1911, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__exit__") < 0)) __PYX_ERR(0, 1912, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__exit__") < 0)) __PYX_ERR(0, 1911, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -14329,7 +14329,7 @@ static PyObject *__pyx_pw_7netCDF4_8_netCDF4_7Dataset_5__exit__(PyObject *__pyx_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1912, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__exit__", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 1911, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("netCDF4._netCDF4.Dataset.__exit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -14350,14 +14350,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_4__exit__(struct __pyx_obj
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__exit__", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1913
+  /* "netCDF4/_netCDF4.pyx":1912
  *         return self
  *     def __exit__(self,atype,value,traceback):
  *         self.close()             # <<<<<<<<<<<<<<
  * 
  *     def __getitem__(self, elem):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_close); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1913, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_close); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1912, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -14370,16 +14370,16 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_4__exit__(struct __pyx_obj
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1913, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1912, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1913, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1912, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1912
+  /* "netCDF4/_netCDF4.pyx":1911
  *     def __enter__(self):
  *         return self
  *     def __exit__(self,atype,value,traceback):             # <<<<<<<<<<<<<<
@@ -14402,7 +14402,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_4__exit__(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1915
+/* "netCDF4/_netCDF4.pyx":1914
  *         self.close()
  * 
  *     def __getitem__(self, elem):             # <<<<<<<<<<<<<<
@@ -14443,16 +14443,16 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
   __Pyx_RefNannySetupContext("__getitem__", 0);
   __Pyx_INCREF(__pyx_v_elem);
 
-  /* "netCDF4/_netCDF4.pyx":1918
+  /* "netCDF4/_netCDF4.pyx":1917
  *         # return variable or group defined in relative path.
  *         # split out group names in unix path.
  *         elem = posixpath.normpath(elem)             # <<<<<<<<<<<<<<
  *         # last name in path, could be a variable or group
  *         dirname, lastname = posixpath.split(elem)
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_posixpath); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1918, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_posixpath); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1917, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_normpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1918, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_normpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1917, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -14466,13 +14466,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_elem); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1918, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_elem); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1917, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_elem};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1918, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1917, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -14480,19 +14480,19 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_elem};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1918, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1917, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1918, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1917, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
       __Pyx_INCREF(__pyx_v_elem);
       __Pyx_GIVEREF(__pyx_v_elem);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_elem);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1918, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1917, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -14501,16 +14501,16 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
   __Pyx_DECREF_SET(__pyx_v_elem, __pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1920
+  /* "netCDF4/_netCDF4.pyx":1919
  *         elem = posixpath.normpath(elem)
  *         # last name in path, could be a variable or group
  *         dirname, lastname = posixpath.split(elem)             # <<<<<<<<<<<<<<
  *         nestedgroups = dirname.split('/')
  *         group = self
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_posixpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1920, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_posixpath); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1919, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_split); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1920, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_split); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1919, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -14524,13 +14524,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_elem); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1920, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_elem); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1919, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_elem};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1920, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1919, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -14538,19 +14538,19 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_elem};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1920, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1919, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1920, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1919, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_INCREF(__pyx_v_elem);
       __Pyx_GIVEREF(__pyx_v_elem);
       PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_v_elem);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1920, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1919, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
@@ -14566,7 +14566,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 1920, __pyx_L1_error)
+      __PYX_ERR(0, 1919, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -14579,15 +14579,15 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     __Pyx_INCREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_t_2);
     #else
-    __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1920, __pyx_L1_error)
+    __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1919, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1920, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1919, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1920, __pyx_L1_error)
+    __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1919, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext;
@@ -14595,7 +14595,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     __Pyx_GOTREF(__pyx_t_4);
     index = 1; __pyx_t_2 = __pyx_t_5(__pyx_t_3); if (unlikely(!__pyx_t_2)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_2);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_3), 2) < 0) __PYX_ERR(0, 1920, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_3), 2) < 0) __PYX_ERR(0, 1919, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     goto __pyx_L4_unpacking_done;
@@ -14603,7 +14603,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 1920, __pyx_L1_error)
+    __PYX_ERR(0, 1919, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_dirname = __pyx_t_4;
@@ -14611,22 +14611,22 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
   __pyx_v_lastname = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1921
+  /* "netCDF4/_netCDF4.pyx":1920
  *         # last name in path, could be a variable or group
  *         dirname, lastname = posixpath.split(elem)
  *         nestedgroups = dirname.split('/')             # <<<<<<<<<<<<<<
  *         group = self
  *         # iterate over groups in path.
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dirname, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1921, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dirname, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1920, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1921, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1920, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_nestedgroups = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1922
+  /* "netCDF4/_netCDF4.pyx":1921
  *         dirname, lastname = posixpath.split(elem)
  *         nestedgroups = dirname.split('/')
  *         group = self             # <<<<<<<<<<<<<<
@@ -14636,7 +14636,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
   __Pyx_INCREF(((PyObject *)__pyx_v_self));
   __pyx_v_group = ((PyObject *)__pyx_v_self);
 
-  /* "netCDF4/_netCDF4.pyx":1924
+  /* "netCDF4/_netCDF4.pyx":1923
  *         group = self
  *         # iterate over groups in path.
  *         for g in nestedgroups:             # <<<<<<<<<<<<<<
@@ -14647,26 +14647,26 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     __pyx_t_2 = __pyx_v_nestedgroups; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
     __pyx_t_7 = NULL;
   } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_nestedgroups); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1924, __pyx_L1_error)
+    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_nestedgroups); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1923, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1924, __pyx_L1_error)
+    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1923, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_7)) {
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 1924, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 1923, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1924, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1923, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 1924, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 1923, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1924, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1923, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -14676,7 +14676,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1924, __pyx_L1_error)
+          else __PYX_ERR(0, 1923, __pyx_L1_error)
         }
         break;
       }
@@ -14685,25 +14685,25 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     __Pyx_XDECREF_SET(__pyx_v_g, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1925
+    /* "netCDF4/_netCDF4.pyx":1924
  *         # iterate over groups in path.
  *         for g in nestedgroups:
  *             if g: group = group.groups[g]             # <<<<<<<<<<<<<<
  *         # return last one, either a group or a variable.
  *         if lastname in group.groups:
  */
-    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_g); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1925, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_g); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1924, __pyx_L1_error)
     if (__pyx_t_8) {
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_groups); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1925, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_groups); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1924, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = PyObject_GetItem(__pyx_t_1, __pyx_v_g); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1925, __pyx_L1_error)
+      __pyx_t_4 = PyObject_GetItem(__pyx_t_1, __pyx_v_g); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1924, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF_SET(__pyx_v_group, __pyx_t_4);
       __pyx_t_4 = 0;
     }
 
-    /* "netCDF4/_netCDF4.pyx":1924
+    /* "netCDF4/_netCDF4.pyx":1923
  *         group = self
  *         # iterate over groups in path.
  *         for g in nestedgroups:             # <<<<<<<<<<<<<<
@@ -14713,21 +14713,21 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1927
+  /* "netCDF4/_netCDF4.pyx":1926
  *             if g: group = group.groups[g]
  *         # return last one, either a group or a variable.
  *         if lastname in group.groups:             # <<<<<<<<<<<<<<
  *             return group.groups[lastname]
  *         elif lastname in group.variables:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_groups); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1927, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_groups); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1926, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_v_lastname, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1927, __pyx_L1_error)
+  __pyx_t_8 = (__Pyx_PySequence_ContainsTF(__pyx_v_lastname, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 1926, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_9 = (__pyx_t_8 != 0);
   if (__pyx_t_9) {
 
-    /* "netCDF4/_netCDF4.pyx":1928
+    /* "netCDF4/_netCDF4.pyx":1927
  *         # return last one, either a group or a variable.
  *         if lastname in group.groups:
  *             return group.groups[lastname]             # <<<<<<<<<<<<<<
@@ -14735,16 +14735,16 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
  *             return group.variables[lastname]
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_groups); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1928, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_groups); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1927, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_v_lastname); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1928, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetItem(__pyx_t_2, __pyx_v_lastname); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1927, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "netCDF4/_netCDF4.pyx":1927
+    /* "netCDF4/_netCDF4.pyx":1926
  *             if g: group = group.groups[g]
  *         # return last one, either a group or a variable.
  *         if lastname in group.groups:             # <<<<<<<<<<<<<<
@@ -14753,21 +14753,21 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1929
+  /* "netCDF4/_netCDF4.pyx":1928
  *         if lastname in group.groups:
  *             return group.groups[lastname]
  *         elif lastname in group.variables:             # <<<<<<<<<<<<<<
  *             return group.variables[lastname]
  *         else:
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_variables); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1929, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_variables); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1928, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_9 = (__Pyx_PySequence_ContainsTF(__pyx_v_lastname, __pyx_t_4, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1929, __pyx_L1_error)
+  __pyx_t_9 = (__Pyx_PySequence_ContainsTF(__pyx_v_lastname, __pyx_t_4, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 1928, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_8 = (__pyx_t_9 != 0);
   if (__pyx_t_8) {
 
-    /* "netCDF4/_netCDF4.pyx":1930
+    /* "netCDF4/_netCDF4.pyx":1929
  *             return group.groups[lastname]
  *         elif lastname in group.variables:
  *             return group.variables[lastname]             # <<<<<<<<<<<<<<
@@ -14775,16 +14775,16 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
  *             raise IndexError('%s not found in %s' % (lastname,group.path))
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_variables); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1930, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_variables); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1929, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = PyObject_GetItem(__pyx_t_4, __pyx_v_lastname); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1930, __pyx_L1_error)
+    __pyx_t_2 = PyObject_GetItem(__pyx_t_4, __pyx_v_lastname); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1929, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "netCDF4/_netCDF4.pyx":1929
+    /* "netCDF4/_netCDF4.pyx":1928
  *         if lastname in group.groups:
  *             return group.groups[lastname]
  *         elif lastname in group.variables:             # <<<<<<<<<<<<<<
@@ -14793,7 +14793,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1932
+  /* "netCDF4/_netCDF4.pyx":1931
  *             return group.variables[lastname]
  *         else:
  *             raise IndexError('%s not found in %s' % (lastname,group.path))             # <<<<<<<<<<<<<<
@@ -14801,9 +14801,9 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
  *     def filepath(self):
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_path); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1932, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_group, __pyx_n_s_path); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1931, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1932, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1931, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_v_lastname);
     __Pyx_GIVEREF(__pyx_v_lastname);
@@ -14811,23 +14811,23 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyString_Format(__pyx_kp_s_s_not_found_in_s, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1932, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyString_Format(__pyx_kp_s_s_not_found_in_s, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1931, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1932, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1931, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_IndexError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1932, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_IndexError, __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1931, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 1932, __pyx_L1_error)
+    __PYX_ERR(0, 1931, __pyx_L1_error)
   }
 
-  /* "netCDF4/_netCDF4.pyx":1915
+  /* "netCDF4/_netCDF4.pyx":1914
  *         self.close()
  * 
  *     def __getitem__(self, elem):             # <<<<<<<<<<<<<<
@@ -14855,7 +14855,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6__getitem__(struct __pyx_
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1934
+/* "netCDF4/_netCDF4.pyx":1933
  *             raise IndexError('%s not found in %s' % (lastname,group.path))
  * 
  *     def filepath(self):             # <<<<<<<<<<<<<<
@@ -14885,7 +14885,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_8filepath(CYTHON_UNUSED st
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("filepath", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1961
+  /* "netCDF4/_netCDF4.pyx":1960
  *             return py_path.decode('ascii')
  *         ELSE:
  *             msg = """             # <<<<<<<<<<<<<<
@@ -14895,26 +14895,26 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_8filepath(CYTHON_UNUSED st
   __Pyx_INCREF(__pyx_kp_s_filepath_method_not_enabled_To);
   __pyx_v_msg = __pyx_kp_s_filepath_method_not_enabled_To;
 
-  /* "netCDF4/_netCDF4.pyx":1964
+  /* "netCDF4/_netCDF4.pyx":1963
  * filepath method not enabled.  To enable, install Cython, make sure you have
  * version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
  *             raise ValueError(msg)             # <<<<<<<<<<<<<<
  * 
  *     def __repr__(self):
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1964, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1963, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_msg);
   __Pyx_GIVEREF(__pyx_v_msg);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_msg);
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1964, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1963, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_Raise(__pyx_t_2, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __PYX_ERR(0, 1964, __pyx_L1_error)
+  __PYX_ERR(0, 1963, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":1934
+  /* "netCDF4/_netCDF4.pyx":1933
  *             raise IndexError('%s not found in %s' % (lastname,group.path))
  * 
  *     def filepath(self):             # <<<<<<<<<<<<<<
@@ -14934,7 +14934,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_8filepath(CYTHON_UNUSED st
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1966
+/* "netCDF4/_netCDF4.pyx":1965
  *             raise ValueError(msg)
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -14966,20 +14966,20 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1967
+  /* "netCDF4/_netCDF4.pyx":1966
  * 
  *     def __repr__(self):
  *         if python3:             # <<<<<<<<<<<<<<
  *             return self.__unicode__()
  *         else:
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_python3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1967, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_python3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1966, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1967, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1966, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "netCDF4/_netCDF4.pyx":1968
+    /* "netCDF4/_netCDF4.pyx":1967
  *     def __repr__(self):
  *         if python3:
  *             return self.__unicode__()             # <<<<<<<<<<<<<<
@@ -14987,7 +14987,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
  *             return unicode(self).encode(default_encoding)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1968, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1967, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -15000,10 +15000,10 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
       }
     }
     if (__pyx_t_4) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1968, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1967, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
-      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1968, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1967, __pyx_L1_error)
     }
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -15011,7 +15011,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "netCDF4/_netCDF4.pyx":1967
+    /* "netCDF4/_netCDF4.pyx":1966
  * 
  *     def __repr__(self):
  *         if python3:             # <<<<<<<<<<<<<<
@@ -15020,7 +15020,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1970
+  /* "netCDF4/_netCDF4.pyx":1969
  *             return self.__unicode__()
  *         else:
  *             return unicode(self).encode(default_encoding)             # <<<<<<<<<<<<<<
@@ -15029,18 +15029,18 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1970, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1969, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(((PyObject *)__pyx_v_self));
     __Pyx_GIVEREF(((PyObject *)__pyx_v_self));
     PyTuple_SET_ITEM(__pyx_t_3, 0, ((PyObject *)__pyx_v_self));
-    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)(&PyUnicode_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1970, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)(&PyUnicode_Type)), __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1969, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_encode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1970, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_encode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1969, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1970, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1969, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -15053,14 +15053,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
       }
     }
     if (!__pyx_t_5) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1970, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1969, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_4};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1970, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1969, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -15069,20 +15069,20 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_4};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1970, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1969, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else
       #endif
       {
-        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1970, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1969, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
         __Pyx_GIVEREF(__pyx_t_4);
         PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_4);
         __pyx_t_4 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1970, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1969, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       }
@@ -15093,7 +15093,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
     goto __pyx_L0;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1966
+  /* "netCDF4/_netCDF4.pyx":1965
  *             raise ValueError(msg)
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -15116,7 +15116,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_10__repr__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1972
+/* "netCDF4/_netCDF4.pyx":1971
  *             return unicode(self).encode(default_encoding)
  * 
  *     def __unicode__(self):             # <<<<<<<<<<<<<<
@@ -15164,16 +15164,16 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
   int __pyx_t_13;
   __Pyx_RefNannySetupContext("__unicode__", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1973
+  /* "netCDF4/_netCDF4.pyx":1972
  * 
  *     def __unicode__(self):
  *         ncdump = ['%r\n' % type(self)]             # <<<<<<<<<<<<<<
  *         dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
  *         for dimname in self.dimensions.keys()])
  */
-  __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_r_3, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1973, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_r_3, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self)))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1972, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1973, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1972, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -15181,24 +15181,24 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
   __pyx_v_ncdump = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1974
+  /* "netCDF4/_netCDF4.pyx":1973
  *     def __unicode__(self):
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\             # <<<<<<<<<<<<<<
  *         for dimname in self.dimensions.keys()])
  *         varnames = tuple(\
  */
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1974, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1973, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "netCDF4/_netCDF4.pyx":1975
+  /* "netCDF4/_netCDF4.pyx":1974
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
  *         for dimname in self.dimensions.keys()])             # <<<<<<<<<<<<<<
  *         varnames = tuple(\
  *         [_tostr(self.variables[varname].dtype)+' \033[4m'+_tostr(varname)+'\033[0m'+
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->dimensions, __pyx_n_s_keys); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1975, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->dimensions, __pyx_n_s_keys); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1974, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -15211,10 +15211,10 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     }
   }
   if (__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1975, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1974, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1975, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1974, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -15222,9 +15222,9 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1975, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1974, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1975, __pyx_L1_error)
+    __pyx_t_6 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1974, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -15232,17 +15232,17 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1975, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1974, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1975, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1974, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1975, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1974, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1975, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1974, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -15252,7 +15252,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1975, __pyx_L1_error)
+          else __PYX_ERR(0, 1974, __pyx_L1_error)
         }
         break;
       }
@@ -15261,14 +15261,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     __Pyx_XDECREF_SET(__pyx_v_dimname, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1974
+    /* "netCDF4/_netCDF4.pyx":1973
  *     def __unicode__(self):
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\             # <<<<<<<<<<<<<<
  *         for dimname in self.dimensions.keys()])
  *         varnames = tuple(\
  */
-    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1974, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1973, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -15281,13 +15281,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       }
     }
     if (!__pyx_t_7) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_dimname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1974, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_dimname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1973, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_v_dimname};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1974, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1973, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_1);
       } else
@@ -15295,41 +15295,41 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_v_dimname};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1974, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1973, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_1);
       } else
       #endif
       {
-        __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1974, __pyx_L1_error)
+        __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1973, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_7); __pyx_t_7 = NULL;
         __Pyx_INCREF(__pyx_v_dimname);
         __Pyx_GIVEREF(__pyx_v_dimname);
         PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_v_dimname);
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1974, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1973, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyObject_GetItem(__pyx_v_self->dimensions, __pyx_v_dimname); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1974, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetItem(__pyx_v_self->dimensions, __pyx_v_dimname); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1973, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_9 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 1974, __pyx_L1_error)
+    __pyx_t_9 = PyObject_Length(__pyx_t_4); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 1973, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyInt_FromSsize_t(__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1974, __pyx_L1_error)
+    __pyx_t_4 = PyInt_FromSsize_t(__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1973, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_8 = __Pyx_PyString_Format(__pyx_kp_s_s, __pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1974, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyString_Format(__pyx_kp_s_s, __pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1973, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyNumber_Add(__pyx_t_1, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1974, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Add(__pyx_t_1, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1973, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 1974, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 1973, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1975
+    /* "netCDF4/_netCDF4.pyx":1974
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
  *         for dimname in self.dimensions.keys()])             # <<<<<<<<<<<<<<
@@ -15339,37 +15339,37 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1974
+  /* "netCDF4/_netCDF4.pyx":1973
  *     def __unicode__(self):
  *         ncdump = ['%r\n' % type(self)]
  *         dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\             # <<<<<<<<<<<<<<
  *         for dimname in self.dimensions.keys()])
  *         varnames = tuple(\
  */
-  __pyx_t_3 = PyList_AsTuple(((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1974, __pyx_L1_error)
+  __pyx_t_3 = PyList_AsTuple(((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1973, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_dimnames = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1977
+  /* "netCDF4/_netCDF4.pyx":1976
  *         for dimname in self.dimensions.keys()])
  *         varnames = tuple(\
  *         [_tostr(self.variables[varname].dtype)+' \033[4m'+_tostr(varname)+'\033[0m'+             # <<<<<<<<<<<<<<
  *         (((_tostr(self.variables[varname].dimensions)
  *         .replace("u'",""))\
  */
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1977, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1976, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "netCDF4/_netCDF4.pyx":1982
+  /* "netCDF4/_netCDF4.pyx":1981
  *         .replace("'",""))\
  *         .replace(", ",","))\
  *         .replace(",)",")") for varname in self.variables.keys()])             # <<<<<<<<<<<<<<
  *         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
  *         if self.path == '/':
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->variables, __pyx_n_s_keys); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1982, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->variables, __pyx_n_s_keys); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1981, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_8 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -15382,10 +15382,10 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     }
   }
   if (__pyx_t_8) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1982, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1981, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1982, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1981, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -15393,9 +15393,9 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     __pyx_t_4 = __pyx_t_2; __Pyx_INCREF(__pyx_t_4); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1982, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1981, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1982, __pyx_L1_error)
+    __pyx_t_6 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1981, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
@@ -15403,17 +15403,17 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       if (likely(PyList_CheckExact(__pyx_t_4))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_4)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1982, __pyx_L1_error)
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1981, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1982, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1981, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1982, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1981, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1982, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_4, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1981, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         #endif
       }
@@ -15423,7 +15423,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1982, __pyx_L1_error)
+          else __PYX_ERR(0, 1981, __pyx_L1_error)
         }
         break;
       }
@@ -15432,18 +15432,18 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     __Pyx_XDECREF_SET(__pyx_v_varname, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1977
+    /* "netCDF4/_netCDF4.pyx":1976
  *         for dimname in self.dimensions.keys()])
  *         varnames = tuple(\
  *         [_tostr(self.variables[varname].dtype)+' \033[4m'+_tostr(varname)+'\033[0m'+             # <<<<<<<<<<<<<<
  *         (((_tostr(self.variables[varname].dimensions)
  *         .replace("u'",""))\
  */
-    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1977, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1976, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_1 = PyObject_GetItem(__pyx_v_self->variables, __pyx_v_varname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1977, __pyx_L1_error)
+    __pyx_t_1 = PyObject_GetItem(__pyx_v_self->variables, __pyx_v_varname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1976, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_dtype); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1977, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_dtype); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1976, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -15457,14 +15457,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       }
     }
     if (!__pyx_t_1) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1977, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1976, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_2);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_8)) {
         PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_t_7};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1977, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1976, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -15473,29 +15473,29 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
         PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_t_7};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1977, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1976, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       } else
       #endif
       {
-        __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1977, __pyx_L1_error)
+        __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1976, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_1); __pyx_t_1 = NULL;
         __Pyx_GIVEREF(__pyx_t_7);
         PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_t_7);
         __pyx_t_7 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1977, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1976, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = PyNumber_Add(__pyx_t_2, __pyx_kp_s_4m); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1977, __pyx_L1_error)
+    __pyx_t_8 = PyNumber_Add(__pyx_t_2, __pyx_kp_s_4m); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1976, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1977, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1976, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __pyx_t_7 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
@@ -15508,13 +15508,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       }
     }
     if (!__pyx_t_7) {
-      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_v_varname); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1977, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_v_varname); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1976, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_10)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_v_varname};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1977, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1976, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else
@@ -15522,44 +15522,44 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_10)) {
         PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_v_varname};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1977, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1976, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_GOTREF(__pyx_t_2);
       } else
       #endif
       {
-        __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1977, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_New(1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1976, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_7); __pyx_t_7 = NULL;
         __Pyx_INCREF(__pyx_v_varname);
         __Pyx_GIVEREF(__pyx_v_varname);
         PyTuple_SET_ITEM(__pyx_t_1, 0+1, __pyx_v_varname);
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1977, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1976, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = PyNumber_Add(__pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1977, __pyx_L1_error)
+    __pyx_t_10 = PyNumber_Add(__pyx_t_8, __pyx_t_2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1976, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_Add(__pyx_t_10, __pyx_kp_s_0m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1977, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Add(__pyx_t_10, __pyx_kp_s_0m); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1976, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1978
+    /* "netCDF4/_netCDF4.pyx":1977
  *         varnames = tuple(\
  *         [_tostr(self.variables[varname].dtype)+' \033[4m'+_tostr(varname)+'\033[0m'+
  *         (((_tostr(self.variables[varname].dimensions)             # <<<<<<<<<<<<<<
  *         .replace("u'",""))\
  *         .replace("'",""))\
  */
-    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1978, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1977, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_1 = PyObject_GetItem(__pyx_v_self->variables, __pyx_v_varname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1978, __pyx_L1_error)
+    __pyx_t_1 = PyObject_GetItem(__pyx_v_self->variables, __pyx_v_varname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1977, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_dimensions); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1978, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_dimensions); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1977, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -15573,14 +15573,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       }
     }
     if (!__pyx_t_1) {
-      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1978, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1977, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_10);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_8)) {
         PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_t_7};
-        __pyx_t_10 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1978, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1977, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -15589,97 +15589,97 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_8)) {
         PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_t_7};
-        __pyx_t_10 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1978, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyCFunction_FastCall(__pyx_t_8, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1977, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       } else
       #endif
       {
-        __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1978, __pyx_L1_error)
+        __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1977, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_1); __pyx_t_1 = NULL;
         __Pyx_GIVEREF(__pyx_t_7);
         PyTuple_SET_ITEM(__pyx_t_11, 0+1, __pyx_t_7);
         __pyx_t_7 = 0;
-        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_11, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1978, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_11, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1977, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1979
+    /* "netCDF4/_netCDF4.pyx":1978
  *         [_tostr(self.variables[varname].dtype)+' \033[4m'+_tostr(varname)+'\033[0m'+
  *         (((_tostr(self.variables[varname].dimensions)
  *         .replace("u'",""))\             # <<<<<<<<<<<<<<
  *         .replace("'",""))\
  *         .replace(", ",","))\
  */
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1979, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1978, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1979, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1978, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1980
+    /* "netCDF4/_netCDF4.pyx":1979
  *         (((_tostr(self.variables[varname].dimensions)
  *         .replace("u'",""))\
  *         .replace("'",""))\             # <<<<<<<<<<<<<<
  *         .replace(", ",","))\
  *         .replace(",)",")") for varname in self.variables.keys()])
  */
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1980, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1979, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1980, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1979, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1981
+    /* "netCDF4/_netCDF4.pyx":1980
  *         .replace("u'",""))\
  *         .replace("'",""))\
  *         .replace(", ",","))\             # <<<<<<<<<<<<<<
  *         .replace(",)",")") for varname in self.variables.keys()])
  *         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
  */
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1981, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1980, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1981, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1980, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1982
+    /* "netCDF4/_netCDF4.pyx":1981
  *         .replace("'",""))\
  *         .replace(", ",","))\
  *         .replace(",)",")") for varname in self.variables.keys()])             # <<<<<<<<<<<<<<
  *         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
  *         if self.path == '/':
  */
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1982, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_replace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1981, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1982, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1981, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1977
+    /* "netCDF4/_netCDF4.pyx":1976
  *         for dimname in self.dimensions.keys()])
  *         varnames = tuple(\
  *         [_tostr(self.variables[varname].dtype)+' \033[4m'+_tostr(varname)+'\033[0m'+             # <<<<<<<<<<<<<<
  *         (((_tostr(self.variables[varname].dimensions)
  *         .replace("u'",""))\
  */
-    __pyx_t_8 = PyNumber_Add(__pyx_t_2, __pyx_t_10); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1977, __pyx_L1_error)
+    __pyx_t_8 = PyNumber_Add(__pyx_t_2, __pyx_t_10); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1976, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 1977, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 1976, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1982
+    /* "netCDF4/_netCDF4.pyx":1981
  *         .replace("'",""))\
  *         .replace(", ",","))\
  *         .replace(",)",")") for varname in self.variables.keys()])             # <<<<<<<<<<<<<<
@@ -15689,29 +15689,29 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1976
+  /* "netCDF4/_netCDF4.pyx":1975
  *         dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
  *         for dimname in self.dimensions.keys()])
  *         varnames = tuple(\             # <<<<<<<<<<<<<<
  *         [_tostr(self.variables[varname].dtype)+' \033[4m'+_tostr(varname)+'\033[0m'+
  *         (((_tostr(self.variables[varname].dimensions)
  */
-  __pyx_t_4 = PyList_AsTuple(((PyObject*)__pyx_t_3)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1976, __pyx_L1_error)
+  __pyx_t_4 = PyList_AsTuple(((PyObject*)__pyx_t_3)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1975, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_varnames = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1983
+  /* "netCDF4/_netCDF4.pyx":1982
  *         .replace(", ",","))\
  *         .replace(",)",")") for varname in self.variables.keys()])
  *         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])             # <<<<<<<<<<<<<<
  *         if self.path == '/':
  *             ncdump.append('root group (%s data model, file format %s):\n' %
  */
-  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1983, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1982, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->groups, __pyx_n_s_keys); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1983, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->groups, __pyx_n_s_keys); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1982, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_10 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
@@ -15724,10 +15724,10 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     }
   }
   if (__pyx_t_10) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1983, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1982, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   } else {
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1983, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1982, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -15735,9 +15735,9 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     __pyx_t_8 = __pyx_t_3; __Pyx_INCREF(__pyx_t_8); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1983, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_8 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1982, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_6 = Py_TYPE(__pyx_t_8)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1983, __pyx_L1_error)
+    __pyx_t_6 = Py_TYPE(__pyx_t_8)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1982, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   for (;;) {
@@ -15745,17 +15745,17 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       if (likely(PyList_CheckExact(__pyx_t_8))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_8)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1983, __pyx_L1_error)
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_8, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1982, __pyx_L1_error)
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_8, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1983, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_8, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1982, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_8)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1983, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_8, __pyx_t_5); __Pyx_INCREF(__pyx_t_3); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1982, __pyx_L1_error)
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_8, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1983, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_8, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1982, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       }
@@ -15765,7 +15765,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1983, __pyx_L1_error)
+          else __PYX_ERR(0, 1982, __pyx_L1_error)
         }
         break;
       }
@@ -15773,7 +15773,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     }
     __Pyx_XDECREF_SET(__pyx_v_grpname, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1983, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_tostr); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1982, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __pyx_t_2 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
@@ -15786,13 +15786,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       }
     }
     if (!__pyx_t_2) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_v_grpname); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1983, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_v_grpname); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1982, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_10)) {
         PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_grpname};
-        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1983, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1982, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else
@@ -15800,52 +15800,52 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_10)) {
         PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_grpname};
-        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1983, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1982, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_3);
       } else
       #endif
       {
-        __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1983, __pyx_L1_error)
+        __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1982, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_2); __pyx_t_2 = NULL;
         __Pyx_INCREF(__pyx_v_grpname);
         __Pyx_GIVEREF(__pyx_v_grpname);
         PyTuple_SET_ITEM(__pyx_t_11, 0+1, __pyx_v_grpname);
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_11, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1983, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_11, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1982, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_3))) __PYX_ERR(0, 1983, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_3))) __PYX_ERR(0, 1982, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_8 = PyList_AsTuple(((PyObject*)__pyx_t_4)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1983, __pyx_L1_error)
+  __pyx_t_8 = PyList_AsTuple(((PyObject*)__pyx_t_4)); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1982, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_grpnames = ((PyObject*)__pyx_t_8);
   __pyx_t_8 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1984
+  /* "netCDF4/_netCDF4.pyx":1983
  *         .replace(",)",")") for varname in self.variables.keys()])
  *         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
  *         if self.path == '/':             # <<<<<<<<<<<<<<
  *             ncdump.append('root group (%s data model, file format %s):\n' %
  *                     (self.data_model, self.disk_format))
  */
-  __pyx_t_12 = (__Pyx_PyString_Equals(__pyx_v_self->path, __pyx_kp_s__17, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 1984, __pyx_L1_error)
+  __pyx_t_12 = (__Pyx_PyString_Equals(__pyx_v_self->path, __pyx_kp_s__17, Py_EQ)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 1983, __pyx_L1_error)
   if (__pyx_t_12) {
 
-    /* "netCDF4/_netCDF4.pyx":1986
+    /* "netCDF4/_netCDF4.pyx":1985
  *         if self.path == '/':
  *             ncdump.append('root group (%s data model, file format %s):\n' %
  *                     (self.data_model, self.disk_format))             # <<<<<<<<<<<<<<
  *         else:
  *             ncdump.append('group %s:\n' % self.path)
  */
-    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1986, __pyx_L1_error)
+    __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1985, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_INCREF(__pyx_v_self->data_model);
     __Pyx_GIVEREF(__pyx_v_self->data_model);
@@ -15854,20 +15854,20 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     __Pyx_GIVEREF(__pyx_v_self->disk_format);
     PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_v_self->disk_format);
 
-    /* "netCDF4/_netCDF4.pyx":1985
+    /* "netCDF4/_netCDF4.pyx":1984
  *         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
  *         if self.path == '/':
  *             ncdump.append('root group (%s data model, file format %s):\n' %             # <<<<<<<<<<<<<<
  *                     (self.data_model, self.disk_format))
  *         else:
  */
-    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_root_group_s_data_model_file_for, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1985, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_root_group_s_data_model_file_for, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1984, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_4); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1985, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_4); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1984, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1984
+    /* "netCDF4/_netCDF4.pyx":1983
  *         .replace(",)",")") for varname in self.variables.keys()])
  *         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
  *         if self.path == '/':             # <<<<<<<<<<<<<<
@@ -15877,7 +15877,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     goto __pyx_L9;
   }
 
-  /* "netCDF4/_netCDF4.pyx":1988
+  /* "netCDF4/_netCDF4.pyx":1987
  *                     (self.data_model, self.disk_format))
  *         else:
  *             ncdump.append('group %s:\n' % self.path)             # <<<<<<<<<<<<<<
@@ -15885,31 +15885,31 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
  *                 self.ncattrs()]
  */
   /*else*/ {
-    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_group_s, __pyx_v_self->path); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1988, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_group_s, __pyx_v_self->path); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1987, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_4); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1988, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_4); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1987, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __pyx_L9:;
 
-  /* "netCDF4/_netCDF4.pyx":1989
+  /* "netCDF4/_netCDF4.pyx":1988
  *         else:
  *             ncdump.append('group %s:\n' % self.path)
  *         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\             # <<<<<<<<<<<<<<
  *                 self.ncattrs()]
  *         ncdump = ncdump + attrs
  */
-  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1989, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1988, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "netCDF4/_netCDF4.pyx":1990
+  /* "netCDF4/_netCDF4.pyx":1989
  *             ncdump.append('group %s:\n' % self.path)
  *         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
  *                 self.ncattrs()]             # <<<<<<<<<<<<<<
  *         ncdump = ncdump + attrs
  *         ncdump.append('    dimensions(sizes): %s\n' % ', '.join(dimnames))
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_ncattrs); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1990, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_ncattrs); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1989, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_10 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -15922,10 +15922,10 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     }
   }
   if (__pyx_t_10) {
-    __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_10); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1990, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_10); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1989, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   } else {
-    __pyx_t_8 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1990, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1989, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -15933,9 +15933,9 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     __pyx_t_3 = __pyx_t_8; __Pyx_INCREF(__pyx_t_3); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1990, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1989, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1990, __pyx_L1_error)
+    __pyx_t_6 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1989, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   for (;;) {
@@ -15943,17 +15943,17 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_8 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_8); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1990, __pyx_L1_error)
+        __pyx_t_8 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_8); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1989, __pyx_L1_error)
         #else
-        __pyx_t_8 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1990, __pyx_L1_error)
+        __pyx_t_8 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1989, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_8); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1990, __pyx_L1_error)
+        __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_8); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 1989, __pyx_L1_error)
         #else
-        __pyx_t_8 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1990, __pyx_L1_error)
+        __pyx_t_8 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1989, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         #endif
       }
@@ -15963,7 +15963,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1990, __pyx_L1_error)
+          else __PYX_ERR(0, 1989, __pyx_L1_error)
         }
         break;
       }
@@ -15972,14 +15972,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     __Pyx_XDECREF_SET(__pyx_v_name, __pyx_t_8);
     __pyx_t_8 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1989
+    /* "netCDF4/_netCDF4.pyx":1988
  *         else:
  *             ncdump.append('group %s:\n' % self.path)
  *         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\             # <<<<<<<<<<<<<<
  *                 self.ncattrs()]
  *         ncdump = ncdump + attrs
  */
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getncattr); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1989, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getncattr); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1988, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __pyx_t_11 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_10))) {
@@ -15992,13 +15992,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       }
     }
     if (!__pyx_t_11) {
-      __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_v_name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1989, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_v_name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1988, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_10)) {
         PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_v_name};
-        __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1989, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1988, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_GOTREF(__pyx_t_8);
       } else
@@ -16006,25 +16006,25 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_10)) {
         PyObject *__pyx_temp[2] = {__pyx_t_11, __pyx_v_name};
-        __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1989, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyCFunction_FastCall(__pyx_t_10, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1988, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_GOTREF(__pyx_t_8);
       } else
       #endif
       {
-        __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1989, __pyx_L1_error)
+        __pyx_t_2 = PyTuple_New(1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1988, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_11); __pyx_t_11 = NULL;
         __Pyx_INCREF(__pyx_v_name);
         __Pyx_GIVEREF(__pyx_v_name);
         PyTuple_SET_ITEM(__pyx_t_2, 0+1, __pyx_v_name);
-        __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_2, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1989, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_2, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1988, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1989, __pyx_L1_error)
+    __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 1988, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_INCREF(__pyx_v_name);
     __Pyx_GIVEREF(__pyx_v_name);
@@ -16032,74 +16032,74 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
     __Pyx_GIVEREF(__pyx_t_8);
     PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_t_8);
     __pyx_t_8 = 0;
-    __pyx_t_8 = __Pyx_PyString_Format(__pyx_kp_s_s_s, __pyx_t_10); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1989, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyString_Format(__pyx_kp_s_s_s, __pyx_t_10); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 1988, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 1989, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 1988, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_attrs = ((PyObject*)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1991
+  /* "netCDF4/_netCDF4.pyx":1990
  *         attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
  *                 self.ncattrs()]
  *         ncdump = ncdump + attrs             # <<<<<<<<<<<<<<
  *         ncdump.append('    dimensions(sizes): %s\n' % ', '.join(dimnames))
  *         ncdump.append('    variables(dimensions): %s\n' % ', '.join(varnames))
  */
-  __pyx_t_4 = PyNumber_Add(__pyx_v_ncdump, __pyx_v_attrs); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1991, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Add(__pyx_v_ncdump, __pyx_v_attrs); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1990, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF_SET(__pyx_v_ncdump, ((PyObject*)__pyx_t_4));
   __pyx_t_4 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1992
+  /* "netCDF4/_netCDF4.pyx":1991
  *                 self.ncattrs()]
  *         ncdump = ncdump + attrs
  *         ncdump.append('    dimensions(sizes): %s\n' % ', '.join(dimnames))             # <<<<<<<<<<<<<<
  *         ncdump.append('    variables(dimensions): %s\n' % ', '.join(varnames))
  *         ncdump.append('    groups: %s\n' % ', '.join(grpnames))
  */
-  __pyx_t_4 = __Pyx_PyString_Join(__pyx_kp_s__22, __pyx_v_dimnames); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1992, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyString_Join(__pyx_kp_s__22, __pyx_v_dimnames); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1991, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_dimensions_sizes_s, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1992, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_dimensions_sizes_s, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1991, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1992, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1991, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1993
+  /* "netCDF4/_netCDF4.pyx":1992
  *         ncdump = ncdump + attrs
  *         ncdump.append('    dimensions(sizes): %s\n' % ', '.join(dimnames))
  *         ncdump.append('    variables(dimensions): %s\n' % ', '.join(varnames))             # <<<<<<<<<<<<<<
  *         ncdump.append('    groups: %s\n' % ', '.join(grpnames))
  *         return ''.join(ncdump)
  */
-  __pyx_t_3 = __Pyx_PyString_Join(__pyx_kp_s__22, __pyx_v_varnames); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1993, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyString_Join(__pyx_kp_s__22, __pyx_v_varnames); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1992, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_variables_dimensions_s, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1993, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_variables_dimensions_s, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1992, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_4); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1993, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_4); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1992, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1994
+  /* "netCDF4/_netCDF4.pyx":1993
  *         ncdump.append('    dimensions(sizes): %s\n' % ', '.join(dimnames))
  *         ncdump.append('    variables(dimensions): %s\n' % ', '.join(varnames))
  *         ncdump.append('    groups: %s\n' % ', '.join(grpnames))             # <<<<<<<<<<<<<<
  *         return ''.join(ncdump)
  * 
  */
-  __pyx_t_4 = __Pyx_PyString_Join(__pyx_kp_s__22, __pyx_v_grpnames); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1994, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyString_Join(__pyx_kp_s__22, __pyx_v_grpnames); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 1993, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_groups_s, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1994, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_groups_s, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1993, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1994, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyList_Append(__pyx_v_ncdump, __pyx_t_3); if (unlikely(__pyx_t_13 == -1)) __PYX_ERR(0, 1993, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1995
+  /* "netCDF4/_netCDF4.pyx":1994
  *         ncdump.append('    variables(dimensions): %s\n' % ', '.join(varnames))
  *         ncdump.append('    groups: %s\n' % ', '.join(grpnames))
  *         return ''.join(ncdump)             # <<<<<<<<<<<<<<
@@ -16107,13 +16107,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
  *     def close(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyString_Join(__pyx_kp_s__2, __pyx_v_ncdump); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1995, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyString_Join(__pyx_kp_s__2, __pyx_v_ncdump); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1994, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "netCDF4/_netCDF4.pyx":1972
+  /* "netCDF4/_netCDF4.pyx":1971
  *             return unicode(self).encode(default_encoding)
  * 
  *     def __unicode__(self):             # <<<<<<<<<<<<<<
@@ -16148,7 +16148,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_12__unicode__(struct __pyx
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1997
+/* "netCDF4/_netCDF4.pyx":1996
  *         return ''.join(ncdump)
  * 
  *     def close(self):             # <<<<<<<<<<<<<<
@@ -16176,74 +16176,99 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_14close(struct __pyx_obj_7
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   int __pyx_t_3;
+  int __pyx_t_4;
+  char const *__pyx_t_5;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_10 = NULL;
+  PyObject *__pyx_t_11 = NULL;
   __Pyx_RefNannySetupContext("close", 0);
 
-  /* "netCDF4/_netCDF4.pyx":2003
+  /* "netCDF4/_netCDF4.pyx":2002
  * Close the Dataset.
  *         """
- *         _ensure_nc_success(nc_close(self._grpid))             # <<<<<<<<<<<<<<
+ *         try:             # <<<<<<<<<<<<<<
+ *             _ensure_nc_success(nc_close(self._grpid))
  * 
- *         if self._buffer.buf:
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(nc_close(__pyx_v_self->_grpid)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2003, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(__pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2003, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  /*try:*/ {
 
-  /* "netCDF4/_netCDF4.pyx":2005
- *         _ensure_nc_success(nc_close(self._grpid))
+    /* "netCDF4/_netCDF4.pyx":2003
+ *         """
+ *         try:
+ *             _ensure_nc_success(nc_close(self._grpid))             # <<<<<<<<<<<<<<
  * 
- *         if self._buffer.buf:             # <<<<<<<<<<<<<<
- *             _ensure_nc_success(PyBuffer_Release(&self._buffer))
- *             self._buffer.buf = NULL
+ *             self._isopen = 0 # indicates file already closed, checked by __dealloc__
  */
-  __pyx_t_3 = (__pyx_v_self->_buffer.buf != 0);
-  if (__pyx_t_3) {
-
-    /* "netCDF4/_netCDF4.pyx":2006
- * 
- *         if self._buffer.buf:
- *             _ensure_nc_success(PyBuffer_Release(&self._buffer))             # <<<<<<<<<<<<<<
- *             self._buffer.buf = NULL
- * 
- */
-    __pyx_t_2 = __Pyx_void_to_None(PyBuffer_Release((&__pyx_v_self->_buffer))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2006, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(__pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2006, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(nc_close(__pyx_v_self->_grpid)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2003, __pyx_L4_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = __pyx_f_7netCDF4_8_netCDF4__ensure_nc_success(__pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2003, __pyx_L4_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "netCDF4/_netCDF4.pyx":2007
- *         if self._buffer.buf:
- *             _ensure_nc_success(PyBuffer_Release(&self._buffer))
- *             self._buffer.buf = NULL             # <<<<<<<<<<<<<<
- * 
- *         self._isopen = 0 # indicates file already closed, checked by __dealloc__
- */
-    __pyx_v_self->_buffer.buf = NULL;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
     /* "netCDF4/_netCDF4.pyx":2005
- *         _ensure_nc_success(nc_close(self._grpid))
+ *             _ensure_nc_success(nc_close(self._grpid))
  * 
- *         if self._buffer.buf:             # <<<<<<<<<<<<<<
- *             _ensure_nc_success(PyBuffer_Release(&self._buffer))
- *             self._buffer.buf = NULL
+ *             self._isopen = 0 # indicates file already closed, checked by __dealloc__             # <<<<<<<<<<<<<<
+ *         finally:
+ *             # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
  */
+    __pyx_v_self->_isopen = 0;
   }
 
   /* "netCDF4/_netCDF4.pyx":2009
- *             self._buffer.buf = NULL
- * 
- *         self._isopen = 0 # indicates file already closed, checked by __dealloc__             # <<<<<<<<<<<<<<
+ *             # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
+ *             # view.obj is checked, ref on obj is decremented and obj will be null'd out
+ *             PyBuffer_Release(&self._buffer)             # <<<<<<<<<<<<<<
  * 
  *     def isopen(self):
  */
-  __pyx_v_self->_isopen = 0;
+  /*finally:*/ {
+    /*normal exit:*/{
+      PyBuffer_Release((&__pyx_v_self->_buffer));
+      goto __pyx_L5;
+    }
+    /*exception exit:*/{
+      __Pyx_PyThreadState_declare
+      __pyx_L4_error:;
+      __pyx_t_6 = 0; __pyx_t_7 = 0; __pyx_t_8 = 0; __pyx_t_9 = 0; __pyx_t_10 = 0; __pyx_t_11 = 0;
+      __Pyx_PyThreadState_assign
+      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+      if (PY_MAJOR_VERSION >= 3) __Pyx_ExceptionSwap(&__pyx_t_9, &__pyx_t_10, &__pyx_t_11);
+      if ((PY_MAJOR_VERSION < 3) || unlikely(__Pyx_GetException(&__pyx_t_6, &__pyx_t_7, &__pyx_t_8) < 0)) __Pyx_ErrFetch(&__pyx_t_6, &__pyx_t_7, &__pyx_t_8);
+      __Pyx_XGOTREF(__pyx_t_6);
+      __Pyx_XGOTREF(__pyx_t_7);
+      __Pyx_XGOTREF(__pyx_t_8);
+      __Pyx_XGOTREF(__pyx_t_9);
+      __Pyx_XGOTREF(__pyx_t_10);
+      __Pyx_XGOTREF(__pyx_t_11);
+      __pyx_t_3 = __pyx_lineno; __pyx_t_4 = __pyx_clineno; __pyx_t_5 = __pyx_filename;
+      {
+        PyBuffer_Release((&__pyx_v_self->_buffer));
+      }
+      __Pyx_PyThreadState_assign
+      if (PY_MAJOR_VERSION >= 3) {
+        __Pyx_XGIVEREF(__pyx_t_9);
+        __Pyx_XGIVEREF(__pyx_t_10);
+        __Pyx_XGIVEREF(__pyx_t_11);
+        __Pyx_ExceptionReset(__pyx_t_9, __pyx_t_10, __pyx_t_11);
+      }
+      __Pyx_XGIVEREF(__pyx_t_6);
+      __Pyx_XGIVEREF(__pyx_t_7);
+      __Pyx_XGIVEREF(__pyx_t_8);
+      __Pyx_ErrRestore(__pyx_t_6, __pyx_t_7, __pyx_t_8);
+      __pyx_t_6 = 0; __pyx_t_7 = 0; __pyx_t_8 = 0; __pyx_t_9 = 0; __pyx_t_10 = 0; __pyx_t_11 = 0;
+      __pyx_lineno = __pyx_t_3; __pyx_clineno = __pyx_t_4; __pyx_filename = __pyx_t_5;
+      goto __pyx_L1_error;
+    }
+    __pyx_L5:;
+  }
 
-  /* "netCDF4/_netCDF4.pyx":1997
+  /* "netCDF4/_netCDF4.pyx":1996
  *         return ''.join(ncdump)
  * 
  *     def close(self):             # <<<<<<<<<<<<<<
@@ -16266,7 +16291,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_14close(struct __pyx_obj_7
 }
 
 /* "netCDF4/_netCDF4.pyx":2011
- *         self._isopen = 0 # indicates file already closed, checked by __dealloc__
+ *             PyBuffer_Release(&self._buffer)
  * 
  *     def isopen(self):             # <<<<<<<<<<<<<<
  *         """
@@ -16313,7 +16338,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_16isopen(struct __pyx_obj_
   goto __pyx_L0;
 
   /* "netCDF4/_netCDF4.pyx":2011
- *         self._isopen = 0 # indicates file already closed, checked by __dealloc__
+ *             PyBuffer_Release(&self._buffer)
  * 
  *     def isopen(self):             # <<<<<<<<<<<<<<
  *         """
@@ -23187,7 +23212,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_76get_variables_by_attribu
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1667
+/* "netCDF4/_netCDF4.pyx":1666
  *     """
  *     cdef object __weakref__
  *     cdef public int _grpid             # <<<<<<<<<<<<<<
@@ -23214,7 +23239,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_6_grpid___get__(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1667, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_grpid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1666, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -23249,7 +23274,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_6_grpid_2__set__(struct __pyx_ob
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1667, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1666, __pyx_L1_error)
   __pyx_v_self->_grpid = __pyx_t_1;
 
   /* function exit code */
@@ -23263,7 +23288,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_6_grpid_2__set__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1668
+/* "netCDF4/_netCDF4.pyx":1667
  *     cdef object __weakref__
  *     cdef public int _grpid
  *     cdef public int _isopen             # <<<<<<<<<<<<<<
@@ -23290,7 +23315,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_7Dataset_7_isopen___get__(struct __
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_isopen); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1668, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_isopen); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1667, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -23325,7 +23350,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_7_isopen_2__set__(struct __pyx_o
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1668, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 1667, __pyx_L1_error)
   __pyx_v_self->_isopen = __pyx_t_1;
 
   /* function exit code */
@@ -23339,7 +23364,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_7_isopen_2__set__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1670
+/* "netCDF4/_netCDF4.pyx":1669
  *     cdef public int _isopen
  *     cdef Py_buffer _buffer
  *     cdef public groups, dimensions, variables, disk_format, path, parent,\             # <<<<<<<<<<<<<<
@@ -23869,7 +23894,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_6parent_4__del__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1671
+/* "netCDF4/_netCDF4.pyx":1670
  *     cdef Py_buffer _buffer
  *     cdef public groups, dimensions, variables, disk_format, path, parent,\
  *     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \             # <<<<<<<<<<<<<<
@@ -24399,7 +24424,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_23__orthogonal_indexing___4__del
   return __pyx_r;
 }
 
-/* "netCDF4/_netCDF4.pyx":1672
+/* "netCDF4/_netCDF4.pyx":1671
  *     cdef public groups, dimensions, variables, disk_format, path, parent,\
  *     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
  *     keepweakref             # <<<<<<<<<<<<<<
@@ -80037,19 +80062,19 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(0, 929, __pyx_L1_error)
-  __pyx_builtin_memoryview = __Pyx_GetBuiltinName(__pyx_n_s_memoryview); if (!__pyx_builtin_memoryview) __PYX_ERR(0, 1073, __pyx_L1_error)
-  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 1585, __pyx_L1_error)
+  __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(0, 928, __pyx_L1_error)
+  __pyx_builtin_memoryview = __Pyx_GetBuiltinName(__pyx_n_s_memoryview); if (!__pyx_builtin_memoryview) __PYX_ERR(0, 1072, __pyx_L1_error)
+  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 1584, __pyx_L1_error)
   __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 5702, __pyx_L1_error)
-  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 1095, __pyx_L1_error)
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 1137, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 1145, __pyx_L1_error)
-  __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(0, 1162, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 1190, __pyx_L1_error)
-  __pyx_builtin_UnicodeError = __Pyx_GetBuiltinName(__pyx_n_s_UnicodeError); if (!__pyx_builtin_UnicodeError) __PYX_ERR(0, 1299, __pyx_L1_error)
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 1314, __pyx_L1_error)
-  __pyx_builtin_IOError = __Pyx_GetBuiltinName(__pyx_n_s_IOError); if (!__pyx_builtin_IOError) __PYX_ERR(0, 1880, __pyx_L1_error)
-  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 1932, __pyx_L1_error)
+  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 1094, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 1136, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 1144, __pyx_L1_error)
+  __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(0, 1161, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 1189, __pyx_L1_error)
+  __pyx_builtin_UnicodeError = __Pyx_GetBuiltinName(__pyx_n_s_UnicodeError); if (!__pyx_builtin_UnicodeError) __PYX_ERR(0, 1298, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 1313, __pyx_L1_error)
+  __pyx_builtin_IOError = __Pyx_GetBuiltinName(__pyx_n_s_IOError); if (!__pyx_builtin_IOError) __PYX_ERR(0, 1879, __pyx_L1_error)
+  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 1931, __pyx_L1_error)
   __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(0, 2027, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 3758, __pyx_L1_error)
   __pyx_builtin_Ellipsis = __Pyx_GetBuiltinName(__pyx_n_s_Ellipsis); if (!__pyx_builtin_Ellipsis) __PYX_ERR(0, 4035, __pyx_L1_error)
@@ -80064,179 +80089,179 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "netCDF4/_netCDF4.pyx":1132
+  /* "netCDF4/_netCDF4.pyx":1131
  *         else:
  *             pstring =\
  *             value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')             # <<<<<<<<<<<<<<
  *         return pstring
  *     elif att_type == NC_STRING:
  */
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_kp_s_, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 1132, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_kp_s_, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 1131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "netCDF4/_netCDF4.pyx":1144
+  /* "netCDF4/_netCDF4.pyx":1143
  *                 raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *             try:
  *                 result = [values[j].decode(default_encoding,unicode_error).replace('\x00','')             # <<<<<<<<<<<<<<
  *                           for j in range(att_len)]
  *             finally:
  */
-  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_kp_s_, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 1144, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_kp_s_, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 1143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "netCDF4/_netCDF4.pyx":1190
+  /* "netCDF4/_netCDF4.pyx":1189
  *     # Private function to set the netCDF file format
  *     if format not in _format_dict:
  *         raise ValueError("unrecognized format requested")             # <<<<<<<<<<<<<<
  *     nc_set_default_format(_format_dict[format], NULL)
  * 
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_unrecognized_format_requested); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 1190, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_unrecognized_format_requested); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 1189, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "netCDF4/_netCDF4.pyx":1201
+  /* "netCDF4/_netCDF4.pyx":1200
  *         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
  *     if formatp not in _reverse_format_dict:
  *         raise ValueError('format not supported by python interface')             # <<<<<<<<<<<<<<
  *     return _reverse_format_dict[formatp]
  * 
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_format_not_supported_by_python_i); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 1201, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_format_not_supported_by_python_i); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 1200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "netCDF4/_netCDF4.pyx":1261
+  /* "netCDF4/_netCDF4.pyx":1260
  *     # if 64-bit datatype not supported, cast to 32 bit integers.
  *     fmt = _get_format(grp._grpid)
  *     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'             # <<<<<<<<<<<<<<
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
  *        is_netcdf3):
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_n_s_NETCDF3); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 1261, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_n_s_NETCDF3); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 1260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "netCDF4/_netCDF4.pyx":1262
+  /* "netCDF4/_netCDF4.pyx":1261
  *     fmt = _get_format(grp._grpid)
  *     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\             # <<<<<<<<<<<<<<
  *        is_netcdf3):
  *         value_arr = value_arr.astype('i4')
  */
-  __pyx_slice__8 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__8)) __PYX_ERR(0, 1262, __pyx_L1_error)
+  __pyx_slice__8 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__8)) __PYX_ERR(0, 1261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__8);
   __Pyx_GIVEREF(__pyx_slice__8);
 
-  /* "netCDF4/_netCDF4.pyx":1264
+  /* "netCDF4/_netCDF4.pyx":1263
  *     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
  *        is_netcdf3):
  *         value_arr = value_arr.astype('i4')             # <<<<<<<<<<<<<<
  *     # if array contains ascii strings, write a text attribute (stored as bytes).
  *     # if array contains unicode strings, and data model is NETCDF4,
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_n_s_i4); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 1264, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_n_s_i4); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 1263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "netCDF4/_netCDF4.pyx":1313
+  /* "netCDF4/_netCDF4.pyx":1312
  *         if value_arr.dtype.kind == 'V': # compound attribute.
  *             xtype = _find_cmptype(grp,value_arr.dtype)
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:             # <<<<<<<<<<<<<<
  *             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
  *         elif xtype == -99: # if xtype is not passed in as kwarg.
  */
-  __pyx_slice__10 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__10)) __PYX_ERR(0, 1313, __pyx_L1_error)
+  __pyx_slice__10 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__10)) __PYX_ERR(0, 1312, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__10);
   __Pyx_GIVEREF(__pyx_slice__10);
 
-  /* "netCDF4/_netCDF4.pyx":1314
+  /* "netCDF4/_netCDF4.pyx":1313
  *             xtype = _find_cmptype(grp,value_arr.dtype)
  *         elif value_arr.dtype.str[1:] not in _supportedtypes:
  *             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])             # <<<<<<<<<<<<<<
  *         elif xtype == -99: # if xtype is not passed in as kwarg.
  *             xtype = _nptonctype[value_arr.dtype.str[1:]]
  */
-  __pyx_slice__11 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__11)) __PYX_ERR(0, 1314, __pyx_L1_error)
+  __pyx_slice__11 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__11)) __PYX_ERR(0, 1313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__11);
   __Pyx_GIVEREF(__pyx_slice__11);
 
-  /* "netCDF4/_netCDF4.pyx":1316
+  /* "netCDF4/_netCDF4.pyx":1315
  *             raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
  *         elif xtype == -99: # if xtype is not passed in as kwarg.
  *             xtype = _nptonctype[value_arr.dtype.str[1:]]             # <<<<<<<<<<<<<<
  *         lenarr = PyArray_SIZE(value_arr)
  *         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
  */
-  __pyx_slice__12 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__12)) __PYX_ERR(0, 1316, __pyx_L1_error)
+  __pyx_slice__12 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__12)) __PYX_ERR(0, 1315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__12);
   __Pyx_GIVEREF(__pyx_slice__12);
 
-  /* "netCDF4/_netCDF4.pyx":1807
+  /* "netCDF4/_netCDF4.pyx":1806
  * 
  *         if memory is not None and (mode != 'r' or type(memory) != bytes):
  *             raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')             # <<<<<<<<<<<<<<
  * 
  *         if mode == 'w':
  */
-  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_s_memory_mode_only_works_with_r_mo); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 1807, __pyx_L1_error)
+  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_s_memory_mode_only_works_with_r_mo); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 1806, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__16);
   __Pyx_GIVEREF(__pyx_tuple__16);
 
-  /* "netCDF4/_netCDF4.pyx":1921
+  /* "netCDF4/_netCDF4.pyx":1920
  *         # last name in path, could be a variable or group
  *         dirname, lastname = posixpath.split(elem)
  *         nestedgroups = dirname.split('/')             # <<<<<<<<<<<<<<
  *         group = self
  *         # iterate over groups in path.
  */
-  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s__17); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 1921, __pyx_L1_error)
+  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s__17); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 1920, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
 
-  /* "netCDF4/_netCDF4.pyx":1979
+  /* "netCDF4/_netCDF4.pyx":1978
  *         [_tostr(self.variables[varname].dtype)+' \033[4m'+_tostr(varname)+'\033[0m'+
  *         (((_tostr(self.variables[varname].dimensions)
  *         .replace("u'",""))\             # <<<<<<<<<<<<<<
  *         .replace("'",""))\
  *         .replace(", ",","))\
  */
-  __pyx_tuple__19 = PyTuple_Pack(2, __pyx_kp_s_u, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 1979, __pyx_L1_error)
+  __pyx_tuple__19 = PyTuple_Pack(2, __pyx_kp_s_u, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 1978, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__19);
   __Pyx_GIVEREF(__pyx_tuple__19);
 
-  /* "netCDF4/_netCDF4.pyx":1980
+  /* "netCDF4/_netCDF4.pyx":1979
  *         (((_tostr(self.variables[varname].dimensions)
  *         .replace("u'",""))\
  *         .replace("'",""))\             # <<<<<<<<<<<<<<
  *         .replace(", ",","))\
  *         .replace(",)",")") for varname in self.variables.keys()])
  */
-  __pyx_tuple__21 = PyTuple_Pack(2, __pyx_kp_s__20, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 1980, __pyx_L1_error)
+  __pyx_tuple__21 = PyTuple_Pack(2, __pyx_kp_s__20, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 1979, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__21);
   __Pyx_GIVEREF(__pyx_tuple__21);
 
-  /* "netCDF4/_netCDF4.pyx":1981
+  /* "netCDF4/_netCDF4.pyx":1980
  *         .replace("u'",""))\
  *         .replace("'",""))\
  *         .replace(", ",","))\             # <<<<<<<<<<<<<<
  *         .replace(",)",")") for varname in self.variables.keys()])
  *         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
  */
-  __pyx_tuple__24 = PyTuple_Pack(2, __pyx_kp_s__22, __pyx_kp_s__23); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 1981, __pyx_L1_error)
+  __pyx_tuple__24 = PyTuple_Pack(2, __pyx_kp_s__22, __pyx_kp_s__23); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 1980, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
 
-  /* "netCDF4/_netCDF4.pyx":1982
+  /* "netCDF4/_netCDF4.pyx":1981
  *         .replace("'",""))\
  *         .replace(", ",","))\
  *         .replace(",)",")") for varname in self.variables.keys()])             # <<<<<<<<<<<<<<
  *         grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
  *         if self.path == '/':
  */
-  __pyx_tuple__27 = PyTuple_Pack(2, __pyx_kp_s__25, __pyx_kp_s__26); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 1982, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(2, __pyx_kp_s__25, __pyx_kp_s__26); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 1981, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
 
@@ -81316,104 +81341,104 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__130);
   __Pyx_GIVEREF(__pyx_tuple__130);
 
-  /* "netCDF4/_netCDF4.pyx":933
+  /* "netCDF4/_netCDF4.pyx":932
  *         from ordereddict import OrderedDict
  *     except ImportError:
  *         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')             # <<<<<<<<<<<<<<
  * try:
  *     from itertools import izip as zip
  */
-  __pyx_tuple__131 = PyTuple_Pack(1, __pyx_kp_s_please_install_ordereddict_https); if (unlikely(!__pyx_tuple__131)) __PYX_ERR(0, 933, __pyx_L1_error)
+  __pyx_tuple__131 = PyTuple_Pack(1, __pyx_kp_s_please_install_ordereddict_https); if (unlikely(!__pyx_tuple__131)) __PYX_ERR(0, 932, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__131);
   __Pyx_GIVEREF(__pyx_tuple__131);
 
-  /* "netCDF4/_netCDF4.pyx":959
+  /* "netCDF4/_netCDF4.pyx":958
  * # check for required version of netcdf-4 and hdf5.
  * 
  * def _gethdf5libversion():             # <<<<<<<<<<<<<<
  *     majorvers = H5_VERS_MAJOR
  *     minorvers = H5_VERS_MINOR
  */
-  __pyx_tuple__132 = PyTuple_Pack(4, __pyx_n_s_majorvers, __pyx_n_s_minorvers, __pyx_n_s_releasevers, __pyx_n_s_patchstring); if (unlikely(!__pyx_tuple__132)) __PYX_ERR(0, 959, __pyx_L1_error)
+  __pyx_tuple__132 = PyTuple_Pack(4, __pyx_n_s_majorvers, __pyx_n_s_minorvers, __pyx_n_s_releasevers, __pyx_n_s_patchstring); if (unlikely(!__pyx_tuple__132)) __PYX_ERR(0, 958, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__132);
   __Pyx_GIVEREF(__pyx_tuple__132);
-  __pyx_codeobj__133 = (PyObject*)__Pyx_PyCode_New(0, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__132, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_amohr_dev_thehesiod_netcd, __pyx_n_s_gethdf5libversion, 959, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__133)) __PYX_ERR(0, 959, __pyx_L1_error)
+  __pyx_codeobj__133 = (PyObject*)__Pyx_PyCode_New(0, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__132, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_amohr_dev_thehesiod_netcd, __pyx_n_s_gethdf5libversion, 958, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__133)) __PYX_ERR(0, 958, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":969
+  /* "netCDF4/_netCDF4.pyx":968
  *         return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
  * 
  * def getlibversion():             # <<<<<<<<<<<<<<
  *     """
  * **`getlibversion()`**
  */
-  __pyx_codeobj__134 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_amohr_dev_thehesiod_netcd, __pyx_n_s_getlibversion, 969, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__134)) __PYX_ERR(0, 969, __pyx_L1_error)
+  __pyx_codeobj__134 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_amohr_dev_thehesiod_netcd, __pyx_n_s_getlibversion, 968, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__134)) __PYX_ERR(0, 968, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":986
+  /* "netCDF4/_netCDF4.pyx":985
  * __has_nc_open_mem__ = HAS_NC_OPEN_MEM
  * _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
  *                (__netcdf4libversion__.startswith("4.4.0") and \             # <<<<<<<<<<<<<<
  *                 "-development" in __netcdf4libversion__)
  * 
  */
-  __pyx_tuple__135 = PyTuple_Pack(1, __pyx_kp_s_4_4_0); if (unlikely(!__pyx_tuple__135)) __PYX_ERR(0, 986, __pyx_L1_error)
+  __pyx_tuple__135 = PyTuple_Pack(1, __pyx_kp_s_4_4_0); if (unlikely(!__pyx_tuple__135)) __PYX_ERR(0, 985, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__135);
   __Pyx_GIVEREF(__pyx_tuple__135);
 
-  /* "netCDF4/_netCDF4.pyx":990
+  /* "netCDF4/_netCDF4.pyx":989
  * 
  * # issue warning for hdf5 1.10 (issue #549)
  * if __netcdf4libversion__[0:5] < "4.4.1" and\             # <<<<<<<<<<<<<<
  *    __hdf5libversion__.startswith("1.10"):
  *     msg = """
  */
-  __pyx_slice__136 = PySlice_New(__pyx_int_0, __pyx_int_5, Py_None); if (unlikely(!__pyx_slice__136)) __PYX_ERR(0, 990, __pyx_L1_error)
+  __pyx_slice__136 = PySlice_New(__pyx_int_0, __pyx_int_5, Py_None); if (unlikely(!__pyx_slice__136)) __PYX_ERR(0, 989, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__136);
   __Pyx_GIVEREF(__pyx_slice__136);
 
-  /* "netCDF4/_netCDF4.pyx":991
+  /* "netCDF4/_netCDF4.pyx":990
  * # issue warning for hdf5 1.10 (issue #549)
  * if __netcdf4libversion__[0:5] < "4.4.1" and\
  *    __hdf5libversion__.startswith("1.10"):             # <<<<<<<<<<<<<<
  *     msg = """
  * WARNING: Backwards incompatible files will be created with HDF5 1.10.x
  */
-  __pyx_tuple__137 = PyTuple_Pack(1, __pyx_kp_s_1_10); if (unlikely(!__pyx_tuple__137)) __PYX_ERR(0, 991, __pyx_L1_error)
+  __pyx_tuple__137 = PyTuple_Pack(1, __pyx_kp_s_1_10); if (unlikely(!__pyx_tuple__137)) __PYX_ERR(0, 990, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__137);
   __Pyx_GIVEREF(__pyx_tuple__137);
 
-  /* "netCDF4/_netCDF4.pyx":1056
+  /* "netCDF4/_netCDF4.pyx":1055
  * 
  * # logical for native endian type.
  * is_native_little = numpy.dtype('<f4').byteorder == '='             # <<<<<<<<<<<<<<
  * is_native_big = numpy.dtype('>f4').byteorder == '='
  * 
  */
-  __pyx_tuple__138 = PyTuple_Pack(1, __pyx_kp_s_f4_2); if (unlikely(!__pyx_tuple__138)) __PYX_ERR(0, 1056, __pyx_L1_error)
+  __pyx_tuple__138 = PyTuple_Pack(1, __pyx_kp_s_f4_2); if (unlikely(!__pyx_tuple__138)) __PYX_ERR(0, 1055, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__138);
   __Pyx_GIVEREF(__pyx_tuple__138);
 
-  /* "netCDF4/_netCDF4.pyx":1057
+  /* "netCDF4/_netCDF4.pyx":1056
  * # logical for native endian type.
  * is_native_little = numpy.dtype('<f4').byteorder == '='
  * is_native_big = numpy.dtype('>f4').byteorder == '='             # <<<<<<<<<<<<<<
  * 
  * # hard code these here, instead of importing from netcdf.h
  */
-  __pyx_tuple__139 = PyTuple_Pack(1, __pyx_kp_s_f4_3); if (unlikely(!__pyx_tuple__139)) __PYX_ERR(0, 1057, __pyx_L1_error)
+  __pyx_tuple__139 = PyTuple_Pack(1, __pyx_kp_s_f4_3); if (unlikely(!__pyx_tuple__139)) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__139);
   __Pyx_GIVEREF(__pyx_tuple__139);
 
-  /* "netCDF4/_netCDF4.pyx":1187
+  /* "netCDF4/_netCDF4.pyx":1186
  *             return value_arr
  * 
  * def _set_default_format(object format='NETCDF4'):             # <<<<<<<<<<<<<<
  *     # Private function to set the netCDF file format
  *     if format not in _format_dict:
  */
-  __pyx_tuple__140 = PyTuple_Pack(1, __pyx_n_s_format); if (unlikely(!__pyx_tuple__140)) __PYX_ERR(0, 1187, __pyx_L1_error)
+  __pyx_tuple__140 = PyTuple_Pack(1, __pyx_n_s_format); if (unlikely(!__pyx_tuple__140)) __PYX_ERR(0, 1186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__140);
   __Pyx_GIVEREF(__pyx_tuple__140);
-  __pyx_codeobj__141 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__140, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_amohr_dev_thehesiod_netcd, __pyx_n_s_set_default_format, 1187, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__141)) __PYX_ERR(0, 1187, __pyx_L1_error)
+  __pyx_codeobj__141 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__140, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_amohr_dev_thehesiod_netcd, __pyx_n_s_set_default_format, 1186, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__141)) __PYX_ERR(0, 1186, __pyx_L1_error)
 
   /* "netCDF4/_netCDF4.pyx":5091
  *         return pystr # already bytes or unicode?
@@ -81956,11 +81981,11 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   /*--- Function export code ---*/
   /*--- Type init code ---*/
   __pyx_ptype_7netCDF4_8_netCDF4_ndarray = __Pyx_ImportType("numpy", "ndarray", sizeof(PyArrayObject), 0); if (unlikely(!__pyx_ptype_7netCDF4_8_netCDF4_ndarray)) __PYX_ERR(1, 724, __pyx_L1_error)
-  if (PyType_Ready(&__pyx_type_7netCDF4_8_netCDF4_Dataset) < 0) __PYX_ERR(0, 1599, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7netCDF4_8_netCDF4_Dataset) < 0) __PYX_ERR(0, 1598, __pyx_L1_error)
   __pyx_type_7netCDF4_8_netCDF4_Dataset.tp_print = 0;
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_7netCDF4_8_netCDF4_Dataset, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 1599, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_7netCDF4_8_netCDF4_Dataset, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 1598, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
       __pyx_wrapperbase_7netCDF4_8_netCDF4_7Dataset___init__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_7netCDF4_8_netCDF4_7Dataset___init__.doc = __pyx_doc_7netCDF4_8_netCDF4_7Dataset___init__;
@@ -81968,7 +81993,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     }
   }
   #endif
-  if (PyObject_SetAttrString(__pyx_m, "Dataset", (PyObject *)&__pyx_type_7netCDF4_8_netCDF4_Dataset) < 0) __PYX_ERR(0, 1599, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "Dataset", (PyObject *)&__pyx_type_7netCDF4_8_netCDF4_Dataset) < 0) __PYX_ERR(0, 1598, __pyx_L1_error)
   if (__pyx_type_7netCDF4_8_netCDF4_Dataset.tp_weaklistoffset == 0) __pyx_type_7netCDF4_8_netCDF4_Dataset.tp_weaklistoffset = offsetof(struct __pyx_obj_7netCDF4_8_netCDF4_Dataset, __weakref__);
   __pyx_ptype_7netCDF4_8_netCDF4_Dataset = &__pyx_type_7netCDF4_8_netCDF4_Dataset;
   __pyx_type_7netCDF4_8_netCDF4_Group.tp_base = __pyx_ptype_7netCDF4_8_netCDF4_Dataset;
@@ -82057,7 +82082,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   #endif
   if (PyObject_SetAttrString(__pyx_m, "EnumType", (PyObject *)&__pyx_type_7netCDF4_8_netCDF4_EnumType) < 0) __PYX_ERR(0, 4951, __pyx_L1_error)
   __pyx_ptype_7netCDF4_8_netCDF4_EnumType = &__pyx_type_7netCDF4_8_netCDF4_EnumType;
-  if (PyType_Ready(&__pyx_type_7netCDF4_8_netCDF4___pyx_scope_struct__genexpr) < 0) __PYX_ERR(0, 1034, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_7netCDF4_8_netCDF4___pyx_scope_struct__genexpr) < 0) __PYX_ERR(0, 1033, __pyx_L1_error)
   __pyx_type_7netCDF4_8_netCDF4___pyx_scope_struct__genexpr.tp_print = 0;
   __pyx_ptype_7netCDF4_8_netCDF4___pyx_scope_struct__genexpr = &__pyx_type_7netCDF4_8_netCDF4___pyx_scope_struct__genexpr;
   /*--- Type import code ---*/
@@ -82068,14 +82093,14 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "netCDF4/_netCDF4.pyx":924
+  /* "netCDF4/_netCDF4.pyx":923
  * 
  * # pure python utilities
  * from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,             # <<<<<<<<<<<<<<
  *                     _out_array_shape, _sortbylist, _tostr)
  * # try to use built-in ordered dict in python >= 2.7
  */
-  __pyx_t_1 = PyList_New(7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 924, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_StartCountStride);
   __Pyx_GIVEREF(__pyx_n_s_StartCountStride);
@@ -82098,40 +82123,40 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   __Pyx_INCREF(__pyx_n_s_tostr);
   __Pyx_GIVEREF(__pyx_n_s_tostr);
   PyList_SET_ITEM(__pyx_t_1, 6, __pyx_n_s_tostr);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_utils, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 924, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_utils, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_StartCountStride); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 924, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_StartCountStride); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_StartCountStride, __pyx_t_1) < 0) __PYX_ERR(0, 924, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_StartCountStride, __pyx_t_1) < 0) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_quantize); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 924, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_quantize); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_quantize, __pyx_t_1) < 0) __PYX_ERR(0, 924, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_quantize, __pyx_t_1) < 0) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_find_dim); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 924, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_find_dim); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_find_dim, __pyx_t_1) < 0) __PYX_ERR(0, 924, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_find_dim, __pyx_t_1) < 0) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_walk_grps); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 924, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_walk_grps); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_walk_grps, __pyx_t_1) < 0) __PYX_ERR(0, 924, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_walk_grps, __pyx_t_1) < 0) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_out_array_shape); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 924, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_out_array_shape); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_out_array_shape, __pyx_t_1) < 0) __PYX_ERR(0, 925, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_out_array_shape, __pyx_t_1) < 0) __PYX_ERR(0, 924, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_sortbylist); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 924, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_sortbylist); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sortbylist, __pyx_t_1) < 0) __PYX_ERR(0, 925, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sortbylist, __pyx_t_1) < 0) __PYX_ERR(0, 924, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_tostr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 924, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_tostr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 923, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_tostr, __pyx_t_1) < 0) __PYX_ERR(0, 925, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_tostr, __pyx_t_1) < 0) __PYX_ERR(0, 924, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":927
+  /* "netCDF4/_netCDF4.pyx":926
  *                     _out_array_shape, _sortbylist, _tostr)
  * # try to use built-in ordered dict in python >= 2.7
  * try:             # <<<<<<<<<<<<<<
@@ -82147,28 +82172,28 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     __Pyx_XGOTREF(__pyx_t_5);
     /*try:*/ {
 
-      /* "netCDF4/_netCDF4.pyx":928
+      /* "netCDF4/_netCDF4.pyx":927
  * # try to use built-in ordered dict in python >= 2.7
  * try:
  *     from collections import OrderedDict             # <<<<<<<<<<<<<<
  * except ImportError: # or else use drop-in substitute
  *     try:
  */
-      __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 928, __pyx_L2_error)
+      __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 927, __pyx_L2_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_INCREF(__pyx_n_s_OrderedDict);
       __Pyx_GIVEREF(__pyx_n_s_OrderedDict);
       PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_OrderedDict);
-      __pyx_t_1 = __Pyx_Import(__pyx_n_s_collections, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 928, __pyx_L2_error)
+      __pyx_t_1 = __Pyx_Import(__pyx_n_s_collections, __pyx_t_2, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 927, __pyx_L2_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 928, __pyx_L2_error)
+      __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 927, __pyx_L2_error)
       __Pyx_GOTREF(__pyx_t_2);
-      if (PyDict_SetItem(__pyx_d, __pyx_n_s_OrderedDict, __pyx_t_2) < 0) __PYX_ERR(0, 928, __pyx_L2_error)
+      if (PyDict_SetItem(__pyx_d, __pyx_n_s_OrderedDict, __pyx_t_2) < 0) __PYX_ERR(0, 927, __pyx_L2_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "netCDF4/_netCDF4.pyx":927
+      /* "netCDF4/_netCDF4.pyx":926
  *                     _out_array_shape, _sortbylist, _tostr)
  * # try to use built-in ordered dict in python >= 2.7
  * try:             # <<<<<<<<<<<<<<
@@ -82185,7 +82210,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":929
+    /* "netCDF4/_netCDF4.pyx":928
  * try:
  *     from collections import OrderedDict
  * except ImportError: # or else use drop-in substitute             # <<<<<<<<<<<<<<
@@ -82195,12 +82220,12 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_ImportError);
     if (__pyx_t_6) {
       __Pyx_AddTraceback("netCDF4._netCDF4", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_2, &__pyx_t_7) < 0) __PYX_ERR(0, 929, __pyx_L4_except_error)
+      if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_2, &__pyx_t_7) < 0) __PYX_ERR(0, 928, __pyx_L4_except_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "netCDF4/_netCDF4.pyx":930
+      /* "netCDF4/_netCDF4.pyx":929
  *     from collections import OrderedDict
  * except ImportError: # or else use drop-in substitute
  *     try:             # <<<<<<<<<<<<<<
@@ -82216,28 +82241,28 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
         __Pyx_XGOTREF(__pyx_t_10);
         /*try:*/ {
 
-          /* "netCDF4/_netCDF4.pyx":931
+          /* "netCDF4/_netCDF4.pyx":930
  * except ImportError: # or else use drop-in substitute
  *     try:
  *         from ordereddict import OrderedDict             # <<<<<<<<<<<<<<
  *     except ImportError:
  *         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
  */
-          __pyx_t_11 = PyList_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 931, __pyx_L12_error)
+          __pyx_t_11 = PyList_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 930, __pyx_L12_error)
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_INCREF(__pyx_n_s_OrderedDict);
           __Pyx_GIVEREF(__pyx_n_s_OrderedDict);
           PyList_SET_ITEM(__pyx_t_11, 0, __pyx_n_s_OrderedDict);
-          __pyx_t_12 = __Pyx_Import(__pyx_n_s_ordereddict, __pyx_t_11, -1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 931, __pyx_L12_error)
+          __pyx_t_12 = __Pyx_Import(__pyx_n_s_ordereddict, __pyx_t_11, -1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 930, __pyx_L12_error)
           __Pyx_GOTREF(__pyx_t_12);
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-          __pyx_t_11 = __Pyx_ImportFrom(__pyx_t_12, __pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 931, __pyx_L12_error)
+          __pyx_t_11 = __Pyx_ImportFrom(__pyx_t_12, __pyx_n_s_OrderedDict); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 930, __pyx_L12_error)
           __Pyx_GOTREF(__pyx_t_11);
-          if (PyDict_SetItem(__pyx_d, __pyx_n_s_OrderedDict, __pyx_t_11) < 0) __PYX_ERR(0, 931, __pyx_L12_error)
+          if (PyDict_SetItem(__pyx_d, __pyx_n_s_OrderedDict, __pyx_t_11) < 0) __PYX_ERR(0, 930, __pyx_L12_error)
           __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-          /* "netCDF4/_netCDF4.pyx":930
+          /* "netCDF4/_netCDF4.pyx":929
  *     from collections import OrderedDict
  * except ImportError: # or else use drop-in substitute
  *     try:             # <<<<<<<<<<<<<<
@@ -82254,7 +82279,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
         __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-        /* "netCDF4/_netCDF4.pyx":932
+        /* "netCDF4/_netCDF4.pyx":931
  *     try:
  *         from ordereddict import OrderedDict
  *     except ImportError:             # <<<<<<<<<<<<<<
@@ -82264,28 +82289,28 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
         __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_ImportError);
         if (__pyx_t_6) {
           __Pyx_AddTraceback("netCDF4._netCDF4", __pyx_clineno, __pyx_lineno, __pyx_filename);
-          if (__Pyx_GetException(&__pyx_t_12, &__pyx_t_11, &__pyx_t_13) < 0) __PYX_ERR(0, 932, __pyx_L14_except_error)
+          if (__Pyx_GetException(&__pyx_t_12, &__pyx_t_11, &__pyx_t_13) < 0) __PYX_ERR(0, 931, __pyx_L14_except_error)
           __Pyx_GOTREF(__pyx_t_12);
           __Pyx_GOTREF(__pyx_t_11);
           __Pyx_GOTREF(__pyx_t_13);
 
-          /* "netCDF4/_netCDF4.pyx":933
+          /* "netCDF4/_netCDF4.pyx":932
  *         from ordereddict import OrderedDict
  *     except ImportError:
  *         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')             # <<<<<<<<<<<<<<
  * try:
  *     from itertools import izip as zip
  */
-          __pyx_t_14 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__131, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 933, __pyx_L14_except_error)
+          __pyx_t_14 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__131, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 932, __pyx_L14_except_error)
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_Raise(__pyx_t_14, 0, 0, 0);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-          __PYX_ERR(0, 933, __pyx_L14_except_error)
+          __PYX_ERR(0, 932, __pyx_L14_except_error)
         }
         goto __pyx_L14_except_error;
         __pyx_L14_except_error:;
 
-        /* "netCDF4/_netCDF4.pyx":930
+        /* "netCDF4/_netCDF4.pyx":929
  *     from collections import OrderedDict
  * except ImportError: # or else use drop-in substitute
  *     try:             # <<<<<<<<<<<<<<
@@ -82308,7 +82333,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     goto __pyx_L4_except_error;
     __pyx_L4_except_error:;
 
-    /* "netCDF4/_netCDF4.pyx":927
+    /* "netCDF4/_netCDF4.pyx":926
  *                     _out_array_shape, _sortbylist, _tostr)
  * # try to use built-in ordered dict in python >= 2.7
  * try:             # <<<<<<<<<<<<<<
@@ -82330,7 +82355,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     __pyx_L9_try_end:;
   }
 
-  /* "netCDF4/_netCDF4.pyx":934
+  /* "netCDF4/_netCDF4.pyx":933
  *     except ImportError:
  *         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
  * try:             # <<<<<<<<<<<<<<
@@ -82346,28 +82371,28 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "netCDF4/_netCDF4.pyx":935
+      /* "netCDF4/_netCDF4.pyx":934
  *         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
  * try:
  *     from itertools import izip as zip             # <<<<<<<<<<<<<<
  * except ImportError:
  *     # python3: zip is already python2's itertools.izip
  */
-      __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 935, __pyx_L22_error)
+      __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 934, __pyx_L22_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_INCREF(__pyx_n_s_izip);
       __Pyx_GIVEREF(__pyx_n_s_izip);
       PyList_SET_ITEM(__pyx_t_7, 0, __pyx_n_s_izip);
-      __pyx_t_2 = __Pyx_Import(__pyx_n_s_itertools, __pyx_t_7, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 935, __pyx_L22_error)
+      __pyx_t_2 = __Pyx_Import(__pyx_n_s_itertools, __pyx_t_7, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 934, __pyx_L22_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_izip); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 935, __pyx_L22_error)
+      __pyx_t_7 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_izip); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 934, __pyx_L22_error)
       __Pyx_GOTREF(__pyx_t_7);
-      if (PyDict_SetItem(__pyx_d, __pyx_n_s_zip, __pyx_t_7) < 0) __PYX_ERR(0, 935, __pyx_L22_error)
+      if (PyDict_SetItem(__pyx_d, __pyx_n_s_zip, __pyx_t_7) < 0) __PYX_ERR(0, 934, __pyx_L22_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "netCDF4/_netCDF4.pyx":934
+      /* "netCDF4/_netCDF4.pyx":933
  *     except ImportError:
  *         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
  * try:             # <<<<<<<<<<<<<<
@@ -82389,7 +82414,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":936
+    /* "netCDF4/_netCDF4.pyx":935
  * try:
  *     from itertools import izip as zip
  * except ImportError:             # <<<<<<<<<<<<<<
@@ -82404,7 +82429,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     goto __pyx_L24_except_error;
     __pyx_L24_except_error:;
 
-    /* "netCDF4/_netCDF4.pyx":934
+    /* "netCDF4/_netCDF4.pyx":933
  *     except ImportError:
  *         raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
  * try:             # <<<<<<<<<<<<<<
@@ -82426,131 +82451,131 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     __pyx_L29_try_end:;
   }
 
-  /* "netCDF4/_netCDF4.pyx":940
+  /* "netCDF4/_netCDF4.pyx":939
  *     pass
  * 
  * __version__ = "1.2.8a0"             # <<<<<<<<<<<<<<
  * 
  * # Initialize numpy
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_1_2_8a0) < 0) __PYX_ERR(0, 940, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_version, __pyx_kp_s_1_2_8a0) < 0) __PYX_ERR(0, 939, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":943
+  /* "netCDF4/_netCDF4.pyx":942
  * 
  * # Initialize numpy
  * import posixpath             # <<<<<<<<<<<<<<
  * import netcdftime
  * import numpy
  */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_posixpath, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 943, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_posixpath, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 942, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_posixpath, __pyx_t_2) < 0) __PYX_ERR(0, 943, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_posixpath, __pyx_t_2) < 0) __PYX_ERR(0, 942, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":944
+  /* "netCDF4/_netCDF4.pyx":943
  * # Initialize numpy
  * import posixpath
  * import netcdftime             # <<<<<<<<<<<<<<
  * import numpy
  * import weakref
  */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_netcdftime, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 944, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_netcdftime, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 943, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_netcdftime, __pyx_t_2) < 0) __PYX_ERR(0, 944, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_netcdftime, __pyx_t_2) < 0) __PYX_ERR(0, 943, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":945
+  /* "netCDF4/_netCDF4.pyx":944
  * import posixpath
  * import netcdftime
  * import numpy             # <<<<<<<<<<<<<<
  * import weakref
  * import sys
  */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 945, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 944, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_numpy, __pyx_t_2) < 0) __PYX_ERR(0, 945, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_numpy, __pyx_t_2) < 0) __PYX_ERR(0, 944, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":946
+  /* "netCDF4/_netCDF4.pyx":945
  * import netcdftime
  * import numpy
  * import weakref             # <<<<<<<<<<<<<<
  * import sys
  * import warnings
  */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_weakref, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 946, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_weakref, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 945, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_weakref, __pyx_t_2) < 0) __PYX_ERR(0, 946, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_weakref, __pyx_t_2) < 0) __PYX_ERR(0, 945, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":947
+  /* "netCDF4/_netCDF4.pyx":946
  * import numpy
  * import weakref
  * import sys             # <<<<<<<<<<<<<<
  * import warnings
  * from glob import glob
  */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_sys, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 947, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_sys, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 946, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sys, __pyx_t_2) < 0) __PYX_ERR(0, 947, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sys, __pyx_t_2) < 0) __PYX_ERR(0, 946, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":948
+  /* "netCDF4/_netCDF4.pyx":947
  * import weakref
  * import sys
  * import warnings             # <<<<<<<<<<<<<<
  * from glob import glob
  * from numpy import ma
  */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_warnings, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 948, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_warnings, 0, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 947, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_warnings, __pyx_t_2) < 0) __PYX_ERR(0, 948, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_warnings, __pyx_t_2) < 0) __PYX_ERR(0, 947, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":949
+  /* "netCDF4/_netCDF4.pyx":948
  * import sys
  * import warnings
  * from glob import glob             # <<<<<<<<<<<<<<
  * from numpy import ma
- * from libc.string cimport memcpy
+ * from libc.string cimport memcpy, memset
  */
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 949, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 948, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_glob);
   __Pyx_GIVEREF(__pyx_n_s_glob);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_glob);
-  __pyx_t_7 = __Pyx_Import(__pyx_n_s_glob, __pyx_t_2, -1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 949, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_Import(__pyx_n_s_glob, __pyx_t_2, -1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 948, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_7, __pyx_n_s_glob); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 949, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_7, __pyx_n_s_glob); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 948, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_glob, __pyx_t_2) < 0) __PYX_ERR(0, 949, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_glob, __pyx_t_2) < 0) __PYX_ERR(0, 948, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":950
+  /* "netCDF4/_netCDF4.pyx":949
  * import warnings
  * from glob import glob
  * from numpy import ma             # <<<<<<<<<<<<<<
- * from libc.string cimport memcpy
+ * from libc.string cimport memcpy, memset
  * from libc.stdlib cimport malloc, free
  */
-  __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 950, __pyx_L1_error)
+  __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 949, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_n_s_ma);
   __Pyx_GIVEREF(__pyx_n_s_ma);
   PyList_SET_ITEM(__pyx_t_7, 0, __pyx_n_s_ma);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_numpy, __pyx_t_7, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 950, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_numpy, __pyx_t_7, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 949, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_ma); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 950, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_ma); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 949, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ma, __pyx_t_7) < 0) __PYX_ERR(0, 950, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ma, __pyx_t_7) < 0) __PYX_ERR(0, 949, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":953
- * from libc.string cimport memcpy
+  /* "netCDF4/_netCDF4.pyx":952
+ * from libc.string cimport memcpy, memset
  * from libc.stdlib cimport malloc, free
  * import_array()             # <<<<<<<<<<<<<<
  * include "netCDF4.pxi"
@@ -82558,38 +82583,38 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  */
   import_array();
 
-  /* "netCDF4/_netCDF4.pyx":959
+  /* "netCDF4/_netCDF4.pyx":958
  * # check for required version of netcdf-4 and hdf5.
  * 
  * def _gethdf5libversion():             # <<<<<<<<<<<<<<
  *     majorvers = H5_VERS_MAJOR
  *     minorvers = H5_VERS_MINOR
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7netCDF4_8_netCDF4_1_gethdf5libversion, NULL, __pyx_n_s_netCDF4__netCDF4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 959, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7netCDF4_8_netCDF4_1_gethdf5libversion, NULL, __pyx_n_s_netCDF4__netCDF4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 958, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_gethdf5libversion, __pyx_t_2) < 0) __PYX_ERR(0, 959, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_gethdf5libversion, __pyx_t_2) < 0) __PYX_ERR(0, 958, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":969
+  /* "netCDF4/_netCDF4.pyx":968
  *         return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
  * 
  * def getlibversion():             # <<<<<<<<<<<<<<
  *     """
  * **`getlibversion()`**
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7netCDF4_8_netCDF4_3getlibversion, NULL, __pyx_n_s_netCDF4__netCDF4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 969, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7netCDF4_8_netCDF4_3getlibversion, NULL, __pyx_n_s_netCDF4__netCDF4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 968, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_getlibversion, __pyx_t_2) < 0) __PYX_ERR(0, 969, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_getlibversion, __pyx_t_2) < 0) __PYX_ERR(0, 968, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":978
+  /* "netCDF4/_netCDF4.pyx":977
  *     return (<char *>nc_inq_libvers()).decode('ascii')
  * 
  * __netcdf4libversion__ = getlibversion().split()[0]             # <<<<<<<<<<<<<<
  * __hdf5libversion__ = _gethdf5libversion()
  * __has_rename_grp__ = HAS_RENAME_GRP
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_getlibversion); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 978, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_getlibversion); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 977, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_13 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -82602,14 +82627,14 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     }
   }
   if (__pyx_t_13) {
-    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_13); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 978, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_13); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 977, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   } else {
-    __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 978, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 977, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 978, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 977, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -82623,27 +82648,27 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     }
   }
   if (__pyx_t_7) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 978, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 977, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 978, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 977, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 978, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 977, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_netcdf4libversion, __pyx_t_1) < 0) __PYX_ERR(0, 978, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_netcdf4libversion, __pyx_t_1) < 0) __PYX_ERR(0, 977, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":979
+  /* "netCDF4/_netCDF4.pyx":978
  * 
  * __netcdf4libversion__ = getlibversion().split()[0]
  * __hdf5libversion__ = _gethdf5libversion()             # <<<<<<<<<<<<<<
  * __has_rename_grp__ = HAS_RENAME_GRP
  * __has_nc_inq_path__ = HAS_NC_INQ_PATH
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_gethdf5libversion); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 979, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_gethdf5libversion); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 978, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -82656,73 +82681,73 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     }
   }
   if (__pyx_t_7) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 979, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 978, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 979, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 978, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_hdf5libversion, __pyx_t_1) < 0) __PYX_ERR(0, 979, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_hdf5libversion, __pyx_t_1) < 0) __PYX_ERR(0, 978, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":980
+  /* "netCDF4/_netCDF4.pyx":979
  * __netcdf4libversion__ = getlibversion().split()[0]
  * __hdf5libversion__ = _gethdf5libversion()
  * __has_rename_grp__ = HAS_RENAME_GRP             # <<<<<<<<<<<<<<
  * __has_nc_inq_path__ = HAS_NC_INQ_PATH
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_rename_grp, __pyx_int_0) < 0) __PYX_ERR(0, 980, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_rename_grp, __pyx_int_0) < 0) __PYX_ERR(0, 979, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":981
+  /* "netCDF4/_netCDF4.pyx":980
  * __hdf5libversion__ = _gethdf5libversion()
  * __has_rename_grp__ = HAS_RENAME_GRP
  * __has_nc_inq_path__ = HAS_NC_INQ_PATH             # <<<<<<<<<<<<<<
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
  * __has_cdf5__ = HAS_CDF5_FORMAT
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_path, __pyx_int_0) < 0) __PYX_ERR(0, 981, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_path, __pyx_int_0) < 0) __PYX_ERR(0, 980, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":982
+  /* "netCDF4/_netCDF4.pyx":981
  * __has_rename_grp__ = HAS_RENAME_GRP
  * __has_nc_inq_path__ = HAS_NC_INQ_PATH
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED             # <<<<<<<<<<<<<<
  * __has_cdf5__ = HAS_CDF5_FORMAT
  * __has_nc_open_mem__ = HAS_NC_OPEN_MEM
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_format_extended, __pyx_int_0) < 0) __PYX_ERR(0, 982, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_inq_format_extended, __pyx_int_0) < 0) __PYX_ERR(0, 981, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":983
+  /* "netCDF4/_netCDF4.pyx":982
  * __has_nc_inq_path__ = HAS_NC_INQ_PATH
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
  * __has_cdf5__ = HAS_CDF5_FORMAT             # <<<<<<<<<<<<<<
  * __has_nc_open_mem__ = HAS_NC_OPEN_MEM
  * _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_cdf5, __pyx_int_0) < 0) __PYX_ERR(0, 983, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_cdf5, __pyx_int_0) < 0) __PYX_ERR(0, 982, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":984
+  /* "netCDF4/_netCDF4.pyx":983
  * __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
  * __has_cdf5__ = HAS_CDF5_FORMAT
  * __has_nc_open_mem__ = HAS_NC_OPEN_MEM             # <<<<<<<<<<<<<<
  * _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
  *                (__netcdf4libversion__.startswith("4.4.0") and \
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_open_mem, __pyx_int_0) < 0) __PYX_ERR(0, 984, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_has_nc_open_mem, __pyx_int_0) < 0) __PYX_ERR(0, 983, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":985
+  /* "netCDF4/_netCDF4.pyx":984
  * __has_cdf5__ = HAS_CDF5_FORMAT
  * __has_nc_open_mem__ = HAS_NC_OPEN_MEM
  * _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \             # <<<<<<<<<<<<<<
  *                (__netcdf4libversion__.startswith("4.4.0") and \
  *                 "-development" in __netcdf4libversion__)
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 985, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 984, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = PyObject_RichCompare(__pyx_t_2, __pyx_kp_s_4_4_0, Py_LT); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 985, __pyx_L1_error)
+  __pyx_t_7 = PyObject_RichCompare(__pyx_t_2, __pyx_kp_s_4_4_0, Py_LT); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 984, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 985, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 984, __pyx_L1_error)
   if (!__pyx_t_15) {
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   } else {
@@ -82732,22 +82757,22 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     goto __pyx_L30_bool_binop_done;
   }
 
-  /* "netCDF4/_netCDF4.pyx":986
+  /* "netCDF4/_netCDF4.pyx":985
  * __has_nc_open_mem__ = HAS_NC_OPEN_MEM
  * _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
  *                (__netcdf4libversion__.startswith("4.4.0") and \             # <<<<<<<<<<<<<<
  *                 "-development" in __netcdf4libversion__)
  * 
  */
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 986, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 985, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_startswith); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 986, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_startswith); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 985, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__135, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 986, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__135, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 985, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 986, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 985, __pyx_L1_error)
   if (__pyx_t_15) {
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   } else {
@@ -82757,40 +82782,40 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     goto __pyx_L30_bool_binop_done;
   }
 
-  /* "netCDF4/_netCDF4.pyx":987
+  /* "netCDF4/_netCDF4.pyx":986
  * _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
  *                (__netcdf4libversion__.startswith("4.4.0") and \
  *                 "-development" in __netcdf4libversion__)             # <<<<<<<<<<<<<<
  * 
  * # issue warning for hdf5 1.10 (issue #549)
  */
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 987, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 986, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_15 = (__Pyx_PySequence_ContainsTF(__pyx_kp_s_development, __pyx_t_7, Py_EQ)); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 987, __pyx_L1_error)
+  __pyx_t_15 = (__Pyx_PySequence_ContainsTF(__pyx_kp_s_development, __pyx_t_7, Py_EQ)); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 986, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyBool_FromLong(__pyx_t_15); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 987, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyBool_FromLong(__pyx_t_15); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 986, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_1 = __pyx_t_7;
   __pyx_t_7 = 0;
   __pyx_L30_bool_binop_done:;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_needsworkaround_issue485, __pyx_t_1) < 0) __PYX_ERR(0, 985, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_needsworkaround_issue485, __pyx_t_1) < 0) __PYX_ERR(0, 984, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":990
+  /* "netCDF4/_netCDF4.pyx":989
  * 
  * # issue warning for hdf5 1.10 (issue #549)
  * if __netcdf4libversion__[0:5] < "4.4.1" and\             # <<<<<<<<<<<<<<
  *    __hdf5libversion__.startswith("1.10"):
  *     msg = """
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 990, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_netcdf4libversion); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 989, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, 5, NULL, NULL, &__pyx_slice__136, 1, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 990, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_t_1, 0, 5, NULL, NULL, &__pyx_slice__136, 1, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 989, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_t_7, __pyx_kp_s_4_4_1, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 990, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_t_7, __pyx_kp_s_4_4_1, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 989, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 990, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 989, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_16) {
   } else {
@@ -82798,27 +82823,27 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     goto __pyx_L34_bool_binop_done;
   }
 
-  /* "netCDF4/_netCDF4.pyx":991
+  /* "netCDF4/_netCDF4.pyx":990
  * # issue warning for hdf5 1.10 (issue #549)
  * if __netcdf4libversion__[0:5] < "4.4.1" and\
  *    __hdf5libversion__.startswith("1.10"):             # <<<<<<<<<<<<<<
  *     msg = """
  * WARNING: Backwards incompatible files will be created with HDF5 1.10.x
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_hdf5libversion); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 991, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_hdf5libversion); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 990, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_startswith); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 991, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_startswith); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 990, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_tuple__137, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 991, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_tuple__137, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 990, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 991, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 990, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_15 = __pyx_t_16;
   __pyx_L34_bool_binop_done:;
 
-  /* "netCDF4/_netCDF4.pyx":990
+  /* "netCDF4/_netCDF4.pyx":989
  * 
  * # issue warning for hdf5 1.10 (issue #549)
  * if __netcdf4libversion__[0:5] < "4.4.1" and\             # <<<<<<<<<<<<<<
@@ -82827,28 +82852,28 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  */
   if (__pyx_t_15) {
 
-    /* "netCDF4/_netCDF4.pyx":992
+    /* "netCDF4/_netCDF4.pyx":991
  * if __netcdf4libversion__[0:5] < "4.4.1" and\
  *    __hdf5libversion__.startswith("1.10"):
  *     msg = """             # <<<<<<<<<<<<<<
  * WARNING: Backwards incompatible files will be created with HDF5 1.10.x
  * and netCDF < 4.4.1. Upgrading to netCDF4 >= 4.4.1 or downgrading to
  */
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_msg, __pyx_kp_s_WARNING_Backwards_incompatible) < 0) __PYX_ERR(0, 992, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_msg, __pyx_kp_s_WARNING_Backwards_incompatible) < 0) __PYX_ERR(0, 991, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":997
+    /* "netCDF4/_netCDF4.pyx":996
  * to HDF5 version 1.8.x is highly recommended
  * (see https://github.com/Unidata/netcdf-c/issues/250)."""
  *     warnings.warn(msg)             # <<<<<<<<<<<<<<
  * 
  * # numpy data type <--> netCDF 4 data type mapping.
  */
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 997, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_warnings); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 996, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_warn); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 997, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_warn); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 996, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_msg); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 997, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_msg); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 996, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_13 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -82861,14 +82886,14 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
       }
     }
     if (!__pyx_t_13) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 997, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 996, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[2] = {__pyx_t_13, __pyx_t_7};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 997, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 996, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -82877,20 +82902,20 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
         PyObject *__pyx_temp[2] = {__pyx_t_13, __pyx_t_7};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 997, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 996, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       } else
       #endif
       {
-        __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 997, __pyx_L1_error)
+        __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 996, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_11);
         __Pyx_GIVEREF(__pyx_t_13); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_13); __pyx_t_13 = NULL;
         __Pyx_GIVEREF(__pyx_t_7);
         PyTuple_SET_ITEM(__pyx_t_11, 0+1, __pyx_t_7);
         __pyx_t_7 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 997, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 996, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       }
@@ -82898,7 +82923,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":990
+    /* "netCDF4/_netCDF4.pyx":989
  * 
  * # issue warning for hdf5 1.10 (issue #549)
  * if __netcdf4libversion__[0:5] < "4.4.1" and\             # <<<<<<<<<<<<<<
@@ -82907,473 +82932,496 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1000
+  /* "netCDF4/_netCDF4.pyx":999
  * 
  * # numpy data type <--> netCDF 4 data type mapping.
  * _nptonctype  = {'S1' : NC_CHAR,             # <<<<<<<<<<<<<<
  *                 'i1' : NC_BYTE,
  *                 'u1' : NC_UBYTE,
  */
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1000, __pyx_L1_error)
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_CHAR); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1000, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_CHAR); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_S1, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_S1, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1001
+  /* "netCDF4/_netCDF4.pyx":1000
  * # numpy data type <--> netCDF 4 data type mapping.
  * _nptonctype  = {'S1' : NC_CHAR,
  *                 'i1' : NC_BYTE,             # <<<<<<<<<<<<<<
  *                 'u1' : NC_UBYTE,
  *                 'i2' : NC_SHORT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_BYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1001, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_BYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1000, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i1, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i1, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1002
+  /* "netCDF4/_netCDF4.pyx":1001
  * _nptonctype  = {'S1' : NC_CHAR,
  *                 'i1' : NC_BYTE,
  *                 'u1' : NC_UBYTE,             # <<<<<<<<<<<<<<
  *                 'i2' : NC_SHORT,
  *                 'u2' : NC_USHORT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UBYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1002, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UBYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1001, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u1, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u1, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1003
+  /* "netCDF4/_netCDF4.pyx":1002
  *                 'i1' : NC_BYTE,
  *                 'u1' : NC_UBYTE,
  *                 'i2' : NC_SHORT,             # <<<<<<<<<<<<<<
  *                 'u2' : NC_USHORT,
  *                 'i4' : NC_INT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_SHORT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1003, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_SHORT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1002, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i2, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i2, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1004
+  /* "netCDF4/_netCDF4.pyx":1003
  *                 'u1' : NC_UBYTE,
  *                 'i2' : NC_SHORT,
  *                 'u2' : NC_USHORT,             # <<<<<<<<<<<<<<
  *                 'i4' : NC_INT,
  *                 'u4' : NC_UINT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_USHORT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1004, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_USHORT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1003, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u2, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u2, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1005
+  /* "netCDF4/_netCDF4.pyx":1004
  *                 'i2' : NC_SHORT,
  *                 'u2' : NC_USHORT,
  *                 'i4' : NC_INT,             # <<<<<<<<<<<<<<
  *                 'u4' : NC_UINT,
  *                 'i8' : NC_INT64,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_INT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1005, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_INT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1004, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i4, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i4, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1006
+  /* "netCDF4/_netCDF4.pyx":1005
  *                 'u2' : NC_USHORT,
  *                 'i4' : NC_INT,
  *                 'u4' : NC_UINT,             # <<<<<<<<<<<<<<
  *                 'i8' : NC_INT64,
  *                 'u8' : NC_UINT64,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UINT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1006, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UINT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1005, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u4, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u4, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1007
+  /* "netCDF4/_netCDF4.pyx":1006
  *                 'i4' : NC_INT,
  *                 'u4' : NC_UINT,
  *                 'i8' : NC_INT64,             # <<<<<<<<<<<<<<
  *                 'u8' : NC_UINT64,
  *                 'f4' : NC_FLOAT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_INT64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1007, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_INT64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1006, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i8, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i8, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1008
+  /* "netCDF4/_netCDF4.pyx":1007
  *                 'u4' : NC_UINT,
  *                 'i8' : NC_INT64,
  *                 'u8' : NC_UINT64,             # <<<<<<<<<<<<<<
  *                 'f4' : NC_FLOAT,
  *                 'f8' : NC_DOUBLE}
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UINT64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1008, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UINT64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1007, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u8, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u8, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1009
+  /* "netCDF4/_netCDF4.pyx":1008
  *                 'i8' : NC_INT64,
  *                 'u8' : NC_UINT64,
  *                 'f4' : NC_FLOAT,             # <<<<<<<<<<<<<<
  *                 'f8' : NC_DOUBLE}
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FLOAT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1009, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FLOAT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1008, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_f4, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_f4, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1010
+  /* "netCDF4/_netCDF4.pyx":1009
  *                 'u8' : NC_UINT64,
  *                 'f4' : NC_FLOAT,
  *                 'f8' : NC_DOUBLE}             # <<<<<<<<<<<<<<
  * 
  * # just integer types.
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_DOUBLE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1010, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_DOUBLE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1009, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_f8, __pyx_t_2) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_f8, __pyx_t_2) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nptonctype, __pyx_t_1) < 0) __PYX_ERR(0, 1000, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nptonctype, __pyx_t_1) < 0) __PYX_ERR(0, 999, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1013
+  /* "netCDF4/_netCDF4.pyx":1012
  * 
  * # just integer types.
  * _intnptonctype  = {'i1' : NC_BYTE,             # <<<<<<<<<<<<<<
  *                    'u1' : NC_UBYTE,
  *                    'i2' : NC_SHORT,
  */
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1013, __pyx_L1_error)
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_BYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1013, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_BYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i1, __pyx_t_2) < 0) __PYX_ERR(0, 1013, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i1, __pyx_t_2) < 0) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1014
+  /* "netCDF4/_netCDF4.pyx":1013
  * # just integer types.
  * _intnptonctype  = {'i1' : NC_BYTE,
  *                    'u1' : NC_UBYTE,             # <<<<<<<<<<<<<<
  *                    'i2' : NC_SHORT,
  *                    'u2' : NC_USHORT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UBYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1014, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UBYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1013, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u1, __pyx_t_2) < 0) __PYX_ERR(0, 1013, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u1, __pyx_t_2) < 0) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1015
+  /* "netCDF4/_netCDF4.pyx":1014
  * _intnptonctype  = {'i1' : NC_BYTE,
  *                    'u1' : NC_UBYTE,
  *                    'i2' : NC_SHORT,             # <<<<<<<<<<<<<<
  *                    'u2' : NC_USHORT,
  *                    'i4' : NC_INT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_SHORT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1015, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_SHORT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1014, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i2, __pyx_t_2) < 0) __PYX_ERR(0, 1013, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i2, __pyx_t_2) < 0) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1016
+  /* "netCDF4/_netCDF4.pyx":1015
  *                    'u1' : NC_UBYTE,
  *                    'i2' : NC_SHORT,
  *                    'u2' : NC_USHORT,             # <<<<<<<<<<<<<<
  *                    'i4' : NC_INT,
  *                    'u4' : NC_UINT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_USHORT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1016, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_USHORT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1015, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u2, __pyx_t_2) < 0) __PYX_ERR(0, 1013, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u2, __pyx_t_2) < 0) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1017
+  /* "netCDF4/_netCDF4.pyx":1016
  *                    'i2' : NC_SHORT,
  *                    'u2' : NC_USHORT,
  *                    'i4' : NC_INT,             # <<<<<<<<<<<<<<
  *                    'u4' : NC_UINT,
  *                    'i8' : NC_INT64,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_INT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1017, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_INT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1016, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i4, __pyx_t_2) < 0) __PYX_ERR(0, 1013, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i4, __pyx_t_2) < 0) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1018
+  /* "netCDF4/_netCDF4.pyx":1017
  *                    'u2' : NC_USHORT,
  *                    'i4' : NC_INT,
  *                    'u4' : NC_UINT,             # <<<<<<<<<<<<<<
  *                    'i8' : NC_INT64,
  *                    'u8' : NC_UINT64}
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UINT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1018, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UINT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1017, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u4, __pyx_t_2) < 0) __PYX_ERR(0, 1013, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u4, __pyx_t_2) < 0) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1019
+  /* "netCDF4/_netCDF4.pyx":1018
  *                    'i4' : NC_INT,
  *                    'u4' : NC_UINT,
  *                    'i8' : NC_INT64,             # <<<<<<<<<<<<<<
  *                    'u8' : NC_UINT64}
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_INT64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1019, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_INT64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1018, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i8, __pyx_t_2) < 0) __PYX_ERR(0, 1013, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_i8, __pyx_t_2) < 0) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1020
+  /* "netCDF4/_netCDF4.pyx":1019
  *                    'u4' : NC_UINT,
  *                    'i8' : NC_INT64,
  *                    'u8' : NC_UINT64}             # <<<<<<<<<<<<<<
  * 
  * # create dictionary mapping string identifiers to netcdf format codes
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UINT64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1020, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_UINT64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1019, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u8, __pyx_t_2) < 0) __PYX_ERR(0, 1013, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_u8, __pyx_t_2) < 0) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_intnptonctype, __pyx_t_1) < 0) __PYX_ERR(0, 1013, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_intnptonctype, __pyx_t_1) < 0) __PYX_ERR(0, 1012, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1023
+  /* "netCDF4/_netCDF4.pyx":1022
  * 
  * # create dictionary mapping string identifiers to netcdf format codes
  * _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,             # <<<<<<<<<<<<<<
  *                  'NETCDF4_CLASSIC' : NC_FORMAT_NETCDF4_CLASSIC,
  *                  'NETCDF4'         : NC_FORMAT_NETCDF4}
  */
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1023, __pyx_L1_error)
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1022, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_CLASSIC); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1023, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_CLASSIC); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1022, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_NETCDF3_CLASSIC, __pyx_t_2) < 0) __PYX_ERR(0, 1023, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_NETCDF3_CLASSIC, __pyx_t_2) < 0) __PYX_ERR(0, 1022, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1024
+  /* "netCDF4/_netCDF4.pyx":1023
  * # create dictionary mapping string identifiers to netcdf format codes
  * _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
  *                  'NETCDF4_CLASSIC' : NC_FORMAT_NETCDF4_CLASSIC,             # <<<<<<<<<<<<<<
  *                  'NETCDF4'         : NC_FORMAT_NETCDF4}
  * IF HAS_CDF5_FORMAT:
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_NETCDF4_CLASSIC); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1024, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_NETCDF4_CLASSIC); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1023, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_NETCDF4_CLASSIC, __pyx_t_2) < 0) __PYX_ERR(0, 1023, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_NETCDF4_CLASSIC, __pyx_t_2) < 0) __PYX_ERR(0, 1022, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1025
+  /* "netCDF4/_netCDF4.pyx":1024
  * _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
  *                  'NETCDF4_CLASSIC' : NC_FORMAT_NETCDF4_CLASSIC,
  *                  'NETCDF4'         : NC_FORMAT_NETCDF4}             # <<<<<<<<<<<<<<
  * IF HAS_CDF5_FORMAT:
  *     # NETCDF3_64BIT deprecated, saved for compatibility.
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_NETCDF4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1025, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_NETCDF4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1024, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_NETCDF4, __pyx_t_2) < 0) __PYX_ERR(0, 1023, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_NETCDF4, __pyx_t_2) < 0) __PYX_ERR(0, 1022, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_format_dict, __pyx_t_1) < 0) __PYX_ERR(0, 1023, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_format_dict, __pyx_t_1) < 0) __PYX_ERR(0, 1022, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1032
+  /* "netCDF4/_netCDF4.pyx":1031
  *     _format_dict['NETCDF3_64BIT_DATA'] = NC_FORMAT_64BIT_DATA
  * ELSE:
  *     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT             # <<<<<<<<<<<<<<
  * # invert dictionary mapping
  * _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FORMAT_64BIT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1032, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FORMAT_64BIT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1031, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1032, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1031, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (unlikely(PyObject_SetItem(__pyx_t_2, __pyx_n_s_NETCDF3_64BIT, __pyx_t_1) < 0)) __PYX_ERR(0, 1032, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_2, __pyx_n_s_NETCDF3_64BIT, __pyx_t_1) < 0)) __PYX_ERR(0, 1031, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1034
+  /* "netCDF4/_netCDF4.pyx":1033
  *     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
  * # invert dictionary mapping
  * _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())             # <<<<<<<<<<<<<<
  * # add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET)
  * IF HAS_CDF5_FORMAT:
  */
-  __pyx_t_1 = __pyx_pf_7netCDF4_8_netCDF4_22genexpr(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_7netCDF4_8_netCDF4_22genexpr(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1033, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_Generator_Next(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1034, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Generator_Next(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1033, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reverse_format_dict, __pyx_t_2) < 0) __PYX_ERR(0, 1034, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reverse_format_dict, __pyx_t_2) < 0) __PYX_ERR(0, 1033, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1039
+  /* "netCDF4/_netCDF4.pyx":1038
  *     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
  * ELSE:
  *     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT             # <<<<<<<<<<<<<<
  * 
  * # default fill_value to numpy datatype mapping.
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_64BIT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1039, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(NC_FORMAT_64BIT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1038, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1039, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_format_dict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1038, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_NETCDF3_64BIT_OFFSET, __pyx_t_2) < 0)) __PYX_ERR(0, 1039, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_1, __pyx_n_s_NETCDF3_64BIT_OFFSET, __pyx_t_2) < 0)) __PYX_ERR(0, 1038, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1043
+  /* "netCDF4/_netCDF4.pyx":1042
  * # default fill_value to numpy datatype mapping.
  * default_fillvals = {#'S1':NC_FILL_CHAR,
  *                      'S1':'\0',             # <<<<<<<<<<<<<<
  *                      'i1':NC_FILL_BYTE,
  *                      'u1':NC_FILL_UBYTE,
  */
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1043, __pyx_L1_error)
+  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_S1, __pyx_kp_s_) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_S1, __pyx_kp_s_) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":1044
+  /* "netCDF4/_netCDF4.pyx":1043
  * default_fillvals = {#'S1':NC_FILL_CHAR,
  *                      'S1':'\0',
  *                      'i1':NC_FILL_BYTE,             # <<<<<<<<<<<<<<
  *                      'u1':NC_FILL_UBYTE,
  *                      'i2':NC_FILL_SHORT,
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FILL_BYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1044, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FILL_BYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1043, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_i1, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_i1, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1045
+  /* "netCDF4/_netCDF4.pyx":1044
  *                      'S1':'\0',
  *                      'i1':NC_FILL_BYTE,
  *                      'u1':NC_FILL_UBYTE,             # <<<<<<<<<<<<<<
  *                      'i2':NC_FILL_SHORT,
  *                      'u2':NC_FILL_USHORT,
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FILL_UBYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1045, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FILL_UBYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1044, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_u1, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_u1, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1046
+  /* "netCDF4/_netCDF4.pyx":1045
  *                      'i1':NC_FILL_BYTE,
  *                      'u1':NC_FILL_UBYTE,
  *                      'i2':NC_FILL_SHORT,             # <<<<<<<<<<<<<<
  *                      'u2':NC_FILL_USHORT,
  *                      'i4':NC_FILL_INT,
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FILL_SHORT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1046, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FILL_SHORT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1045, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_i2, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_i2, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1047
+  /* "netCDF4/_netCDF4.pyx":1046
  *                      'u1':NC_FILL_UBYTE,
  *                      'i2':NC_FILL_SHORT,
  *                      'u2':NC_FILL_USHORT,             # <<<<<<<<<<<<<<
  *                      'i4':NC_FILL_INT,
  *                      'u4':NC_FILL_UINT,
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FILL_USHORT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1047, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(NC_FILL_USHORT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1046, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_u2, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_u2, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1048
+  /* "netCDF4/_netCDF4.pyx":1047
  *                      'i2':NC_FILL_SHORT,
  *                      'u2':NC_FILL_USHORT,
  *                      'i4':NC_FILL_INT,             # <<<<<<<<<<<<<<
  *                      'u4':NC_FILL_UINT,
  *                      'i8':NC_FILL_INT64,
  */
-  __pyx_t_1 = __Pyx_PyInt_From_long(NC_FILL_INT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1048, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(NC_FILL_INT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1047, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_i4, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_i4, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1049
+  /* "netCDF4/_netCDF4.pyx":1048
  *                      'u2':NC_FILL_USHORT,
  *                      'i4':NC_FILL_INT,
  *                      'u4':NC_FILL_UINT,             # <<<<<<<<<<<<<<
  *                      'i8':NC_FILL_INT64,
  *                      'u8':NC_FILL_UINT64,
  */
-  __pyx_t_1 = __Pyx_PyInt_From_unsigned_long(NC_FILL_UINT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1049, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_unsigned_long(NC_FILL_UINT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1048, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_u4, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_u4, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1050
+  /* "netCDF4/_netCDF4.pyx":1049
  *                      'i4':NC_FILL_INT,
  *                      'u4':NC_FILL_UINT,
  *                      'i8':NC_FILL_INT64,             # <<<<<<<<<<<<<<
  *                      'u8':NC_FILL_UINT64,
  *                      'f4':NC_FILL_FLOAT,
  */
-  __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(NC_FILL_INT64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1050, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_PY_LONG_LONG(NC_FILL_INT64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1049, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_i8, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_i8, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1051
+  /* "netCDF4/_netCDF4.pyx":1050
  *                      'u4':NC_FILL_UINT,
  *                      'i8':NC_FILL_INT64,
  *                      'u8':NC_FILL_UINT64,             # <<<<<<<<<<<<<<
  *                      'f4':NC_FILL_FLOAT,
  *                      'f8':NC_FILL_DOUBLE}
  */
-  __pyx_t_1 = __Pyx_PyInt_From_unsigned_PY_LONG_LONG(NC_FILL_UINT64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1051, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_unsigned_PY_LONG_LONG(NC_FILL_UINT64); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1050, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_u8, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_u8, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1052
+  /* "netCDF4/_netCDF4.pyx":1051
  *                      'i8':NC_FILL_INT64,
  *                      'u8':NC_FILL_UINT64,
  *                      'f4':NC_FILL_FLOAT,             # <<<<<<<<<<<<<<
  *                      'f8':NC_FILL_DOUBLE}
  * 
  */
-  __pyx_t_1 = PyFloat_FromDouble(NC_FILL_FLOAT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1052, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(NC_FILL_FLOAT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1051, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_f4, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_f4, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1053
+  /* "netCDF4/_netCDF4.pyx":1052
  *                      'u8':NC_FILL_UINT64,
  *                      'f4':NC_FILL_FLOAT,
  *                      'f8':NC_FILL_DOUBLE}             # <<<<<<<<<<<<<<
  * 
  * # logical for native endian type.
  */
-  __pyx_t_1 = PyFloat_FromDouble(NC_FILL_DOUBLE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1053, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(NC_FILL_DOUBLE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1052, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_f8, __pyx_t_1) < 0) __PYX_ERR(0, 1043, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_f8, __pyx_t_1) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_default_fillvals, __pyx_t_2) < 0) __PYX_ERR(0, 1042, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_default_fillvals, __pyx_t_2) < 0) __PYX_ERR(0, 1041, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1056
+  /* "netCDF4/_netCDF4.pyx":1055
  * 
  * # logical for native endian type.
  * is_native_little = numpy.dtype('<f4').byteorder == '='             # <<<<<<<<<<<<<<
  * is_native_big = numpy.dtype('>f4').byteorder == '='
  * 
  */
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1055, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_dtype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1055, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__138, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1055, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_byteorder); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1055, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_kp_s__38, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1055, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_is_native_little, __pyx_t_2) < 0) __PYX_ERR(0, 1055, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "netCDF4/_netCDF4.pyx":1056
+ * # logical for native endian type.
+ * is_native_little = numpy.dtype('<f4').byteorder == '='
+ * is_native_big = numpy.dtype('>f4').byteorder == '='             # <<<<<<<<<<<<<<
+ * 
+ * # hard code these here, instead of importing from netcdf.h
+ */
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_dtype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__138, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1056, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__139, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_byteorder); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1056, __pyx_L1_error)
@@ -83381,111 +83429,88 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_kp_s__38, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_is_native_little, __pyx_t_2) < 0) __PYX_ERR(0, 1056, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_is_native_big, __pyx_t_2) < 0) __PYX_ERR(0, 1056, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1057
- * # logical for native endian type.
- * is_native_little = numpy.dtype('<f4').byteorder == '='
- * is_native_big = numpy.dtype('>f4').byteorder == '='             # <<<<<<<<<<<<<<
- * 
- * # hard code these here, instead of importing from netcdf.h
- */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1057, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_dtype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1057, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__139, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1057, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_byteorder); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1057, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_kp_s__38, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1057, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_is_native_big, __pyx_t_2) < 0) __PYX_ERR(0, 1057, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "netCDF4/_netCDF4.pyx":1061
+  /* "netCDF4/_netCDF4.pyx":1060
  * # hard code these here, instead of importing from netcdf.h
  * # so it will compile with versions <= 4.2.
  * NC_DISKLESS = 0x0008             # <<<<<<<<<<<<<<
  * NC_INMEMORY = 0x8000
  * 
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_NC_DISKLESS, __pyx_int_8) < 0) __PYX_ERR(0, 1061, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_NC_DISKLESS, __pyx_int_8) < 0) __PYX_ERR(0, 1060, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":1062
+  /* "netCDF4/_netCDF4.pyx":1061
  * # so it will compile with versions <= 4.2.
  * NC_DISKLESS = 0x0008
  * NC_INMEMORY = 0x8000             # <<<<<<<<<<<<<<
  * 
  * # encoding used to convert strings to bytes when writing text data
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_NC_INMEMORY, __pyx_int_32768) < 0) __PYX_ERR(0, 1062, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_NC_INMEMORY, __pyx_int_32768) < 0) __PYX_ERR(0, 1061, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":1067
+  /* "netCDF4/_netCDF4.pyx":1066
  * # to the netcdf file, and for converting bytes to strings when reading
  * # from the netcdf file.
  * default_encoding = 'utf-8'             # <<<<<<<<<<<<<<
  * # unicode decode/encode error handling.  Replace bad chars with "?"
  * # can be set to 'strict' or 'ignore'.
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_default_encoding, __pyx_kp_s_utf_8) < 0) __PYX_ERR(0, 1067, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_default_encoding, __pyx_kp_s_utf_8) < 0) __PYX_ERR(0, 1066, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":1070
+  /* "netCDF4/_netCDF4.pyx":1069
  * # unicode decode/encode error handling.  Replace bad chars with "?"
  * # can be set to 'strict' or 'ignore'.
  * unicode_error = 'replace'             # <<<<<<<<<<<<<<
  * python3 = sys.version_info[0] > 2
  * if python3:
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_unicode_error, __pyx_n_s_replace) < 0) __PYX_ERR(0, 1070, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_unicode_error, __pyx_n_s_replace) < 0) __PYX_ERR(0, 1069, __pyx_L1_error)
 
-  /* "netCDF4/_netCDF4.pyx":1071
+  /* "netCDF4/_netCDF4.pyx":1070
  * # can be set to 'strict' or 'ignore'.
  * unicode_error = 'replace'
  * python3 = sys.version_info[0] > 2             # <<<<<<<<<<<<<<
  * if python3:
  *     buffer = memoryview
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_sys); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1071, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_sys); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1070, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_version_info); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1071, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_version_info); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1070, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1071, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1070, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_int_2, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1071, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_int_2, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1070, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_python3, __pyx_t_1) < 0) __PYX_ERR(0, 1071, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_python3, __pyx_t_1) < 0) __PYX_ERR(0, 1070, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1072
+  /* "netCDF4/_netCDF4.pyx":1071
  * unicode_error = 'replace'
  * python3 = sys.version_info[0] > 2
  * if python3:             # <<<<<<<<<<<<<<
  *     buffer = memoryview
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_python3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1072, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_python3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1071, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 1072, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_15 < 0)) __PYX_ERR(0, 1071, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_15) {
 
-    /* "netCDF4/_netCDF4.pyx":1073
+    /* "netCDF4/_netCDF4.pyx":1072
  * python3 = sys.version_info[0] > 2
  * if python3:
  *     buffer = memoryview             # <<<<<<<<<<<<<<
  * 
  * _nctonptype = {}
  */
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_buffer, __pyx_builtin_memoryview) < 0) __PYX_ERR(0, 1073, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_buffer, __pyx_builtin_memoryview) < 0) __PYX_ERR(0, 1072, __pyx_L1_error)
 
-    /* "netCDF4/_netCDF4.pyx":1072
+    /* "netCDF4/_netCDF4.pyx":1071
  * unicode_error = 'replace'
  * python3 = sys.version_info[0] > 2
  * if python3:             # <<<<<<<<<<<<<<
@@ -83494,28 +83519,28 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
  */
   }
 
-  /* "netCDF4/_netCDF4.pyx":1075
+  /* "netCDF4/_netCDF4.pyx":1074
  *     buffer = memoryview
  * 
  * _nctonptype = {}             # <<<<<<<<<<<<<<
  * for _key,_value in _nptonctype.items():
  *     _nctonptype[_value] = _key
  */
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1075, __pyx_L1_error)
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1074, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nctonptype, __pyx_t_1) < 0) __PYX_ERR(0, 1075, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nctonptype, __pyx_t_1) < 0) __PYX_ERR(0, 1074, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1076
+  /* "netCDF4/_netCDF4.pyx":1075
  * 
  * _nctonptype = {}
  * for _key,_value in _nptonctype.items():             # <<<<<<<<<<<<<<
  *     _nctonptype[_value] = _key
  * _supportedtypes = _nptonctype.keys()
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_nptonctype); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1076, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_nptonctype); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1075, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_items); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1076, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_items); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1075, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -83529,10 +83554,10 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     }
   }
   if (__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1076, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1075, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1076, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1075, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -83540,9 +83565,9 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     __pyx_t_11 = __pyx_t_1; __Pyx_INCREF(__pyx_t_11); __pyx_t_17 = 0;
     __pyx_t_18 = NULL;
   } else {
-    __pyx_t_17 = -1; __pyx_t_11 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1076, __pyx_L1_error)
+    __pyx_t_17 = -1; __pyx_t_11 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1075, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_18 = Py_TYPE(__pyx_t_11)->tp_iternext; if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 1076, __pyx_L1_error)
+    __pyx_t_18 = Py_TYPE(__pyx_t_11)->tp_iternext; if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 1075, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -83550,17 +83575,17 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
       if (likely(PyList_CheckExact(__pyx_t_11))) {
         if (__pyx_t_17 >= PyList_GET_SIZE(__pyx_t_11)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_17); __Pyx_INCREF(__pyx_t_1); __pyx_t_17++; if (unlikely(0 < 0)) __PYX_ERR(0, 1076, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_11, __pyx_t_17); __Pyx_INCREF(__pyx_t_1); __pyx_t_17++; if (unlikely(0 < 0)) __PYX_ERR(0, 1075, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_11, __pyx_t_17); __pyx_t_17++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1076, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_11, __pyx_t_17); __pyx_t_17++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1075, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_17 >= PyTuple_GET_SIZE(__pyx_t_11)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_11, __pyx_t_17); __Pyx_INCREF(__pyx_t_1); __pyx_t_17++; if (unlikely(0 < 0)) __PYX_ERR(0, 1076, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_11, __pyx_t_17); __Pyx_INCREF(__pyx_t_1); __pyx_t_17++; if (unlikely(0 < 0)) __PYX_ERR(0, 1075, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_11, __pyx_t_17); __pyx_t_17++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1076, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_11, __pyx_t_17); __pyx_t_17++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1075, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -83570,7 +83595,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 1076, __pyx_L1_error)
+          else __PYX_ERR(0, 1075, __pyx_L1_error)
         }
         break;
       }
@@ -83586,7 +83611,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 1076, __pyx_L1_error)
+        __PYX_ERR(0, 1075, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -83599,15 +83624,15 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
       __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(__pyx_t_7);
       #else
-      __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1076, __pyx_L1_error)
+      __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1075, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1076, __pyx_L1_error)
+      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1075, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       #endif
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_13 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1076, __pyx_L1_error)
+      __pyx_t_13 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 1075, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_19 = Py_TYPE(__pyx_t_13)->tp_iternext;
@@ -83615,7 +83640,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
       __Pyx_GOTREF(__pyx_t_2);
       index = 1; __pyx_t_7 = __pyx_t_19(__pyx_t_13); if (unlikely(!__pyx_t_7)) goto __pyx_L39_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_7);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_19(__pyx_t_13), 2) < 0) __PYX_ERR(0, 1076, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_19(__pyx_t_13), 2) < 0) __PYX_ERR(0, 1075, __pyx_L1_error)
       __pyx_t_19 = NULL;
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       goto __pyx_L40_unpacking_done;
@@ -83623,33 +83648,33 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __pyx_t_19 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 1076, __pyx_L1_error)
+      __PYX_ERR(0, 1075, __pyx_L1_error)
       __pyx_L40_unpacking_done:;
     }
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_key, __pyx_t_2) < 0) __PYX_ERR(0, 1076, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_key, __pyx_t_2) < 0) __PYX_ERR(0, 1075, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (PyDict_SetItem(__pyx_d, __pyx_n_s_value_2, __pyx_t_7) < 0) __PYX_ERR(0, 1076, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_d, __pyx_n_s_value_2, __pyx_t_7) < 0) __PYX_ERR(0, 1075, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1077
+    /* "netCDF4/_netCDF4.pyx":1076
  * _nctonptype = {}
  * for _key,_value in _nptonctype.items():
  *     _nctonptype[_value] = _key             # <<<<<<<<<<<<<<
  * _supportedtypes = _nptonctype.keys()
  * # make sure NC_CHAR points to S1
  */
-    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1077, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1076, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_nctonptype); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1077, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_nctonptype); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1076, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_value_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1077, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_value_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1076, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    if (unlikely(PyObject_SetItem(__pyx_t_7, __pyx_t_2, __pyx_t_1) < 0)) __PYX_ERR(0, 1077, __pyx_L1_error)
+    if (unlikely(PyObject_SetItem(__pyx_t_7, __pyx_t_2, __pyx_t_1) < 0)) __PYX_ERR(0, 1076, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "netCDF4/_netCDF4.pyx":1076
+    /* "netCDF4/_netCDF4.pyx":1075
  * 
  * _nctonptype = {}
  * for _key,_value in _nptonctype.items():             # <<<<<<<<<<<<<<
@@ -83659,16 +83684,16 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   }
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1078
+  /* "netCDF4/_netCDF4.pyx":1077
  * for _key,_value in _nptonctype.items():
  *     _nctonptype[_value] = _key
  * _supportedtypes = _nptonctype.keys()             # <<<<<<<<<<<<<<
  * # make sure NC_CHAR points to S1
  * _nctonptype[NC_CHAR]='S1'
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_nptonctype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1078, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_nptonctype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1077, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_keys); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1078, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_keys); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1077, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -83682,41 +83707,41 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
     }
   }
   if (__pyx_t_1) {
-    __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1078, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1077, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
-    __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1078, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1077, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_supportedtypes, __pyx_t_11) < 0) __PYX_ERR(0, 1078, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_supportedtypes, __pyx_t_11) < 0) __PYX_ERR(0, 1077, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1080
+  /* "netCDF4/_netCDF4.pyx":1079
  * _supportedtypes = _nptonctype.keys()
  * # make sure NC_CHAR points to S1
  * _nctonptype[NC_CHAR]='S1'             # <<<<<<<<<<<<<<
  * 
  * # internal C functions.
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_nctonptype); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1080, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_nctonptype); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1079, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(__Pyx_SetItemInt(__pyx_t_11, NC_CHAR, __pyx_n_s_S1, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 1080, __pyx_L1_error)
+  if (unlikely(__Pyx_SetItemInt(__pyx_t_11, NC_CHAR, __pyx_n_s_S1, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 1079, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1187
+  /* "netCDF4/_netCDF4.pyx":1186
  *             return value_arr
  * 
  * def _set_default_format(object format='NETCDF4'):             # <<<<<<<<<<<<<<
  *     # Private function to set the netCDF file format
  *     if format not in _format_dict:
  */
-  __pyx_t_11 = PyCFunction_NewEx(&__pyx_mdef_7netCDF4_8_netCDF4_5_set_default_format, NULL, __pyx_n_s_netCDF4__netCDF4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1187, __pyx_L1_error)
+  __pyx_t_11 = PyCFunction_NewEx(&__pyx_mdef_7netCDF4_8_netCDF4_5_set_default_format, NULL, __pyx_n_s_netCDF4__netCDF4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_set_default_format, __pyx_t_11) < 0) __PYX_ERR(0, 1187, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_set_default_format, __pyx_t_11) < 0) __PYX_ERR(0, 1186, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1585
+  /* "netCDF4/_netCDF4.pyx":1584
  *     return variables
  * 
  * cdef _ensure_nc_success(ierr, err_cls=RuntimeError):             # <<<<<<<<<<<<<<
@@ -83727,14 +83752,14 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   __pyx_k__15 = __pyx_builtin_RuntimeError;
   __Pyx_GIVEREF(__pyx_builtin_RuntimeError);
 
-  /* "netCDF4/_netCDF4.pyx":1593
+  /* "netCDF4/_netCDF4.pyx":1592
  * 
  * _private_atts =\
  * ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',             # <<<<<<<<<<<<<<
  *  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  *  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
  */
-  __pyx_t_11 = PyList_New(30); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1593, __pyx_L1_error)
+  __pyx_t_11 = PyList_New(30); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1592, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_INCREF(__pyx_n_s_grpid);
   __Pyx_GIVEREF(__pyx_n_s_grpid);
@@ -83826,163 +83851,163 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   __Pyx_INCREF(__pyx_n_s_has_lsd);
   __Pyx_GIVEREF(__pyx_n_s_has_lsd);
   PyList_SET_ITEM(__pyx_t_11, 29, __pyx_n_s_has_lsd);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_private_atts, __pyx_t_11) < 0) __PYX_ERR(0, 1592, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_private_atts, __pyx_t_11) < 0) __PYX_ERR(0, 1591, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1597
+  /* "netCDF4/_netCDF4.pyx":1596
  *  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
  *  '__orthogoral_indexing__','keepweakref','_has_lsd']
  * __pdoc__ = {}             # <<<<<<<<<<<<<<
  * 
  * cdef class Dataset:
  */
-  __pyx_t_11 = PyDict_New(); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1597, __pyx_L1_error)
+  __pyx_t_11 = PyDict_New(); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1596, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pdoc, __pyx_t_11) < 0) __PYX_ERR(0, 1597, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_pdoc, __pyx_t_11) < 0) __PYX_ERR(0, 1596, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1674
+  /* "netCDF4/_netCDF4.pyx":1673
  *     keepweakref
  *     # Docstrings for class variables (used by pdoc).
  *     __pdoc__['Dataset.dimensions']=\             # <<<<<<<<<<<<<<
  *     """The `dimensions` dictionary maps the names of
  *     dimensions defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1674, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1673, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_dimensions, __pyx_kp_s_The_dimensions_dictionary_maps_t) < 0)) __PYX_ERR(0, 1674, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_dimensions, __pyx_kp_s_The_dimensions_dictionary_maps_t) < 0)) __PYX_ERR(0, 1673, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1678
+  /* "netCDF4/_netCDF4.pyx":1677
  *     dimensions defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
  *     `netCDF4.Dimension` class."""
  *     __pdoc__['Dataset.variables']=\             # <<<<<<<<<<<<<<
  *     """The `variables` dictionary maps the names of variables
  *     defined for this `netCDF4.Dataset` or `netCDF4.Group` to instances of the `netCDF4.Variable`
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1678, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1677, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_variables, __pyx_kp_s_The_variables_dictionary_maps_th) < 0)) __PYX_ERR(0, 1678, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_variables, __pyx_kp_s_The_variables_dictionary_maps_th) < 0)) __PYX_ERR(0, 1677, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1682
+  /* "netCDF4/_netCDF4.pyx":1681
  *     defined for this `netCDF4.Dataset` or `netCDF4.Group` to instances of the `netCDF4.Variable`
  *     class."""
  *     __pdoc__['Dataset.groups']=\             # <<<<<<<<<<<<<<
  *     """The groups dictionary maps the names of groups created for
  *     this `netCDF4.Dataset` or `netCDF4.Group` to instances of the `netCDF4.Group` class (the
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1682, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1681, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_groups, __pyx_kp_s_The_groups_dictionary_maps_the_n) < 0)) __PYX_ERR(0, 1682, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_groups, __pyx_kp_s_The_groups_dictionary_maps_the_n) < 0)) __PYX_ERR(0, 1681, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1687
+  /* "netCDF4/_netCDF4.pyx":1686
  *     `netCDF4.Dataset` class is simply a special case of the `netCDF4.Group` class which
  *     describes the root group in the netCDF4 file)."""
  *     __pdoc__['Dataset.cmptypes']=\             # <<<<<<<<<<<<<<
  *     """The `cmptypes` dictionary maps the names of
  *     compound types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1687, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1686, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_cmptypes, __pyx_kp_s_The_cmptypes_dictionary_maps_the) < 0)) __PYX_ERR(0, 1687, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_cmptypes, __pyx_kp_s_The_cmptypes_dictionary_maps_the) < 0)) __PYX_ERR(0, 1686, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1691
+  /* "netCDF4/_netCDF4.pyx":1690
  *     compound types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
  *     `netCDF4.CompoundType` class."""
  *     __pdoc__['Dataset.vltypes']=\             # <<<<<<<<<<<<<<
  *     """The `vltypes` dictionary maps the names of
  *     variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1691, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1690, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_vltypes, __pyx_kp_s_The_vltypes_dictionary_maps_the) < 0)) __PYX_ERR(0, 1691, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_vltypes, __pyx_kp_s_The_vltypes_dictionary_maps_the) < 0)) __PYX_ERR(0, 1690, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1695
+  /* "netCDF4/_netCDF4.pyx":1694
  *     variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
  *     `netCDF4.VLType` class."""
  *     __pdoc__['Dataset.enumtypes']=\             # <<<<<<<<<<<<<<
  *     """The `enumtypes` dictionary maps the names of
  *     Enum types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1695, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1694, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_enumtypes, __pyx_kp_s_The_enumtypes_dictionary_maps_th) < 0)) __PYX_ERR(0, 1695, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_enumtypes, __pyx_kp_s_The_enumtypes_dictionary_maps_th) < 0)) __PYX_ERR(0, 1694, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1699
+  /* "netCDF4/_netCDF4.pyx":1698
  *     Enum types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of the
  *     `netCDF4.EnumType` class."""
  *     __pdoc__['Dataset.data_model']=\             # <<<<<<<<<<<<<<
  *     """`data_model` describes the netCDF
  *     data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1699, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1698, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_data_model, __pyx_kp_s_data_model_describes_the_netCDF) < 0)) __PYX_ERR(0, 1699, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_data_model, __pyx_kp_s_data_model_describes_the_netCDF) < 0)) __PYX_ERR(0, 1698, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1703
+  /* "netCDF4/_netCDF4.pyx":1702
  *     data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
  *     `NETCDF4_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`."""
  *     __pdoc__['Dataset.file_format']=\             # <<<<<<<<<<<<<<
  *     """same as `data_model`, retained for backwards compatibility."""
  *     __pdoc__['Dataset.disk_format']=\
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1703, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1702, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_file_format, __pyx_kp_s_same_as_data_model_retained_for) < 0)) __PYX_ERR(0, 1703, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_file_format, __pyx_kp_s_same_as_data_model_retained_for) < 0)) __PYX_ERR(0, 1702, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1705
+  /* "netCDF4/_netCDF4.pyx":1704
  *     __pdoc__['Dataset.file_format']=\
  *     """same as `data_model`, retained for backwards compatibility."""
  *     __pdoc__['Dataset.disk_format']=\             # <<<<<<<<<<<<<<
  *     """`disk_format` describes the underlying
  *     file format, one of `NETCDF3`, `HDF5`, `HDF4`,
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1705, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1704, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_disk_format, __pyx_kp_s_disk_format_describes_the_under) < 0)) __PYX_ERR(0, 1705, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_disk_format, __pyx_kp_s_disk_format_describes_the_under) < 0)) __PYX_ERR(0, 1704, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1711
+  /* "netCDF4/_netCDF4.pyx":1710
  *     netcdf C library version >= 4.3.1, otherwise will always return
  *     `UNDEFINED`."""
  *     __pdoc__['Dataset.parent']=\             # <<<<<<<<<<<<<<
  *     """`parent` is a reference to the parent
  *     `netCDF4.Group` instance. `None` for the root group or `netCDF4.Dataset` instance"""
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1711, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1710, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_parent, __pyx_kp_s_parent_is_a_reference_to_the_pa) < 0)) __PYX_ERR(0, 1711, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_parent, __pyx_kp_s_parent_is_a_reference_to_the_pa) < 0)) __PYX_ERR(0, 1710, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1714
+  /* "netCDF4/_netCDF4.pyx":1713
  *     """`parent` is a reference to the parent
  *     `netCDF4.Group` instance. `None` for the root group or `netCDF4.Dataset` instance"""
  *     __pdoc__['Dataset.path']=\             # <<<<<<<<<<<<<<
  *     """`path` shows the location of the `netCDF4.Group` in
  *     the `netCDF4.Dataset` in a unix directory format (the names of groups in the
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1714, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1713, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_path, __pyx_kp_s_path_shows_the_location_of_the) < 0)) __PYX_ERR(0, 1714, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_path, __pyx_kp_s_path_shows_the_location_of_the) < 0)) __PYX_ERR(0, 1713, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
-  /* "netCDF4/_netCDF4.pyx":1719
+  /* "netCDF4/_netCDF4.pyx":1718
  *     hierarchy separated by backslashes). A `netCDF4.Dataset` instance is the root
  *     group, so the path is simply `'/'`."""
  *     __pdoc__['Dataset.keepweakref']=\             # <<<<<<<<<<<<<<
  *     """If `True`, child Dimension and Variables objects only keep weak references to
  *     the parent Dataset or Group."""
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1719, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_pdoc); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 1718, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_keepweakref, __pyx_kp_s_If_True_child_Dimension_and_Vari) < 0)) __PYX_ERR(0, 1719, __pyx_L1_error)
+  if (unlikely(PyObject_SetItem(__pyx_t_11, __pyx_kp_s_Dataset_keepweakref, __pyx_kp_s_If_True_child_Dimension_and_Vari) < 0)) __PYX_ERR(0, 1718, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
   /* "netCDF4/_netCDF4.pyx":2642

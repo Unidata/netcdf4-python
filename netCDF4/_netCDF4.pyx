@@ -916,7 +916,6 @@ PERFORMANCE OF THIS SOFTWARE.
 """
 
 # Make changes to this file, not the c-wrappers that Cython generates.
-
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from cpython.buffer cimport PyObject_GetBuffer, PyBuffer_Release, PyBUF_SIMPLE, PyBUF_ANY_CONTIGUOUS
 
@@ -948,7 +947,7 @@ import sys
 import warnings
 from glob import glob
 from numpy import ma
-from libc.string cimport memcpy
+from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 import_array()
 include "netCDF4.pxi"
@@ -1793,7 +1792,7 @@ references to the parent Dataset or Group.
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
 
-        self._buffer.buf = NULL
+        memset(&self._buffer, 0, sizeof(self._buffer))
 
         # flag to indicate that Variables in this Dataset support orthogonal indexing.
         self.__orthogonal_indexing__ = True
@@ -2000,13 +1999,14 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
 Close the Dataset.
         """
-        _ensure_nc_success(nc_close(self._grpid))
+        try:
+            _ensure_nc_success(nc_close(self._grpid))
 
-        if self._buffer.buf:
+            self._isopen = 0 # indicates file already closed, checked by __dealloc__
+        finally:
+            # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
+            # view.obj is checked, ref on obj is decremented and obj will be null'd out
             PyBuffer_Release(&self._buffer)
-            self._buffer.buf = NULL
-
-        self._isopen = 0 # indicates file already closed, checked by __dealloc__
 
     def isopen(self):
         """
