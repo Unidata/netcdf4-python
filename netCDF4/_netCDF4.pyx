@@ -2003,7 +2003,7 @@ Close the Dataset.
         _ensure_nc_success(nc_close(self._grpid))
 
         if self._buffer.buf:
-            _ensure_nc_success(PyBuffer_Release(&self._buffer))
+            PyBuffer_Release(&self._buffer)
             self._buffer.buf = NULL
 
         self._isopen = 0 # indicates file already closed, checked by __dealloc__
