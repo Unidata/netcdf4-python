@@ -1058,7 +1058,6 @@ is_native_big = numpy.dtype('>f4').byteorder == '='
 # hard code these here, instead of importing from netcdf.h
 # so it will compile with versions <= 4.2.
 NC_DISKLESS = 0x0008
-NC_INMEMORY = 0x8000
 
 # encoding used to convert strings to bytes when writing text data
 # to the netcdf file, and for converting bytes to strings when reading
@@ -1588,11 +1587,11 @@ cdef _ensure_nc_success(ierr, err_cls=RuntimeError):
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
 
-_private_atts =\
+_private_atts = \
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd', '_encoding', '_encoding_errors']
+ '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer', '_encoding', '_encoding_errors']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -1729,7 +1728,8 @@ references to the parent Dataset or Group.
         `netCDF4.Dataset` constructor.
 
         **`filename`**: Name of netCDF file to hold dataset. Can also
-	be a python 3 pathlib instance or the URL of an OpenDAP dataset.
+	be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
+	set this is just used to set the `filepath()`.
         
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
