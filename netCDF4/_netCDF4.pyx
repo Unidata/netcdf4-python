@@ -1665,8 +1665,8 @@ references to the parent Dataset or Group.
     cdef public int _grpid
     cdef public int _isopen
     cdef Py_buffer _buffer
-    cdef unicode _encoding
-    cdef unicode _encoding_errors
+    cdef basestring _encoding
+    cdef basestring _encoding_errors
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
     keepweakref
@@ -4668,7 +4668,7 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name
-    cdef unicode _encoding
+    cdef basestring _encoding
 
     __pdoc__['CompoundType.name'] = \
     """String name."""
@@ -4920,7 +4920,7 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name
-    cdef unicode _encoding
+    cdef basestring _encoding
 
     __pdoc__['VLType.name'] = \
     """String name."""
@@ -5041,7 +5041,7 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name, enum_dict
-    cdef unicode _encoding
+    cdef basestring _encoding
 
     __pdoc__['EnumType.name'] = \
     """String name."""

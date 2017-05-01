@@ -13017,14 +13017,14 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
   __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_encoding); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 1807, __pyx_L1_error)
   if (!__pyx_t_2) {
   } else {
-    if (!(likely(PyUnicode_CheckExact(__pyx_v_encoding))||((__pyx_v_encoding) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_v_encoding)->tp_name), 0))) __PYX_ERR(0, 1807, __pyx_L1_error)
+    if (!(likely(__Pyx_PyBaseString_CheckExact(__pyx_v_encoding))||((__pyx_v_encoding) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", (PY_MAJOR_VERSION < 3 ? "basestring" : "str"), Py_TYPE(__pyx_v_encoding)->tp_name), 0))) __PYX_ERR(0, 1807, __pyx_L1_error)
     __Pyx_INCREF(__pyx_v_encoding);
     __pyx_t_1 = __pyx_v_encoding;
     goto __pyx_L3_bool_binop_done;
   }
   __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_default_encoding); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1807, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 1807, __pyx_L1_error)
+  if (!(likely(__Pyx_PyBaseString_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", (PY_MAJOR_VERSION < 3 ? "basestring" : "str"), Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 1807, __pyx_L1_error)
   __Pyx_INCREF(__pyx_t_3);
   __pyx_t_1 = __pyx_t_3;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -13042,7 +13042,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset___init__(struct __pyx_obj_7netCD
  * 
  *         # flag to indicate that Variables in this Dataset support orthogonal indexing.
  */
-  if (!(likely(PyUnicode_CheckExact(__pyx_v_encoding_errors))||((__pyx_v_encoding_errors) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_v_encoding_errors)->tp_name), 0))) __PYX_ERR(0, 1808, __pyx_L1_error)
+  if (!(likely(__Pyx_PyBaseString_CheckExact(__pyx_v_encoding_errors))||((__pyx_v_encoding_errors) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", (PY_MAJOR_VERSION < 3 ? "basestring" : "str"), Py_TYPE(__pyx_v_encoding_errors)->tp_name), 0))) __PYX_ERR(0, 1808, __pyx_L1_error)
   __pyx_t_1 = __pyx_v_encoding_errors;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -23697,7 +23697,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_6_grpid_2__set__(struct __pyx_ob
  *     cdef public int _grpid
  *     cdef public int _isopen             # <<<<<<<<<<<<<<
  *     cdef Py_buffer _buffer
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  */
 
 /* Python wrapper */
@@ -23769,8 +23769,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_7_isopen_2__set__(struct __pyx_o
 }
 
 /* "netCDF4/_netCDF4.pyx":1670
- *     cdef unicode _encoding
- *     cdef unicode _encoding_errors
+ *     cdef basestring _encoding
+ *     cdef basestring _encoding_errors
  *     cdef public groups, dimensions, variables, disk_format, path, parent,\             # <<<<<<<<<<<<<<
  *     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
  *     keepweakref
@@ -24299,7 +24299,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_7Dataset_6parent_4__del__(struct __pyx_ob
 }
 
 /* "netCDF4/_netCDF4.pyx":1671
- *     cdef unicode _encoding_errors
+ *     cdef basestring _encoding_errors
  *     cdef public groups, dimensions, variables, disk_format, path, parent,\
  *     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \             # <<<<<<<<<<<<<<
  *     keepweakref
@@ -54647,7 +54647,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_12CompoundType___init__(struct __pyx_obj_
  */
   __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_encoding); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 4711, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 4711, __pyx_L1_error)
+  if (!(likely(__Pyx_PyBaseString_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", (PY_MAJOR_VERSION < 3 ? "basestring" : "str"), Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 4711, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF(__pyx_v_self->_encoding);
   __Pyx_DECREF(__pyx_v_self->_encoding);
@@ -55011,7 +55011,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_12CompoundType_6__reduce__(CYTHON_U
  *     """
  *     cdef public nc_type _nc_type             # <<<<<<<<<<<<<<
  *     cdef public dtype, name
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  */
 
 /* Python wrapper */
@@ -55086,7 +55086,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_12CompoundType_8_nc_type_2__set__(struct 
  *     """
  *     cdef public nc_type _nc_type
  *     cdef public dtype, name             # <<<<<<<<<<<<<<
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  * 
  */
 
@@ -58676,7 +58676,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_6VLType___init__(struct __pyx_obj_7netCDF
  */
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_encoding); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 4958, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 4958, __pyx_L1_error)
+  if (!(likely(__Pyx_PyBaseString_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", (PY_MAJOR_VERSION < 3 ? "basestring" : "str"), Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 4958, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->_encoding);
   __Pyx_DECREF(__pyx_v_self->_encoding);
@@ -59081,7 +59081,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_6VLType_6__reduce__(CYTHON_UNUSED s
  *     """
  *     cdef public nc_type _nc_type             # <<<<<<<<<<<<<<
  *     cdef public dtype, name
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  */
 
 /* Python wrapper */
@@ -59156,7 +59156,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_6VLType_8_nc_type_2__set__(struct __pyx_o
  *     """
  *     cdef public nc_type _nc_type
  *     cdef public dtype, name             # <<<<<<<<<<<<<<
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  * 
  */
 
@@ -60396,7 +60396,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8EnumType___init__(struct __pyx_obj_7netC
  */
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_grp, __pyx_n_s_encoding); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5082, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 5082, __pyx_L1_error)
+  if (!(likely(__Pyx_PyBaseString_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", (PY_MAJOR_VERSION < 3 ? "basestring" : "str"), Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 5082, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->_encoding);
   __Pyx_DECREF(__pyx_v_self->_encoding);
@@ -60771,7 +60771,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8EnumType_6__reduce__(CYTHON_UNUSED
  *     """
  *     cdef public nc_type _nc_type             # <<<<<<<<<<<<<<
  *     cdef public dtype, name, enum_dict
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  */
 
 /* Python wrapper */
@@ -60846,7 +60846,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8EnumType_8_nc_type_2__set__(struct __pyx
  *     """
  *     cdef public nc_type _nc_type
  *     cdef public dtype, name, enum_dict             # <<<<<<<<<<<<<<
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  * 
  */
 
@@ -85661,7 +85661,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
   /* "netCDF4/_netCDF4.pyx":4673
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  * 
  *     __pdoc__['CompoundType.name'] = \             # <<<<<<<<<<<<<<
  *     """String name."""
@@ -85685,7 +85685,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
   /* "netCDF4/_netCDF4.pyx":4925
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  * 
  *     __pdoc__['VLType.name'] = \             # <<<<<<<<<<<<<<
  *     """String name."""
@@ -85709,7 +85709,7 @@ PyMODINIT_FUNC PyInit__netCDF4(void)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 
   /* "netCDF4/_netCDF4.pyx":5046
- *     cdef unicode _encoding
+ *     cdef basestring _encoding
  * 
  *     __pdoc__['EnumType.name'] = \             # <<<<<<<<<<<<<<
  *     """String name."""
