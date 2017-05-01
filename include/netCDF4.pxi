@@ -250,6 +250,7 @@ cdef extern from "netcdf.h":
     int nc_create(char *path, int cmode, int *ncidp)
     int nc__create(char *path, int cmode, size_t initialsz, size_t *chunksizehintp, int *ncidp)
     int nc_open(char *path, int mode, int *ncidp)
+    int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp)
     int nc__open(char *path, int mode, size_t *chunksizehintp, int *ncidp)
     int nc_inq_path(int ncid, size_t *pathlen, char *path) nogil
     int nc_inq_format_extended(int ncid, int *formatp, int* modep) nogil

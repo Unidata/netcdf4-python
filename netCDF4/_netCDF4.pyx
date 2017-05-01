@@ -1,5 +1,5 @@
 """
-Version 1.2.7
+Version 1.2.8a0
 -------------
 - - - 
 
@@ -916,8 +916,8 @@ PERFORMANCE OF THIS SOFTWARE.
 """
 
 # Make changes to this file, not the c-wrappers that Cython generates.
-
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
+from cpython.buffer cimport PyObject_GetBuffer, PyBuffer_Release, PyBUF_SIMPLE, PyBUF_ANY_CONTIGUOUS
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
@@ -936,7 +936,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.7"
+__version__ = "1.2.8a0"
 
 # Initialize numpy
 import posixpath
@@ -947,7 +947,7 @@ import sys
 import warnings
 from glob import glob
 from numpy import ma
-from libc.string cimport memcpy
+from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 import_array()
 include "netCDF4.pxi"
@@ -980,6 +980,7 @@ __has_rename_grp__ = HAS_RENAME_GRP
 __has_nc_inq_path__ = HAS_NC_INQ_PATH
 __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
 __has_cdf5__ = HAS_CDF5_FORMAT
+__has_nc_open_mem__ = HAS_NC_OPEN_MEM
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
@@ -1054,9 +1055,10 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
 is_native_little = numpy.dtype('<f4').byteorder == '='
 is_native_big = numpy.dtype('>f4').byteorder == '='
 
-# hard code this here, instead of importing from netcdf.h
+# hard code these here, instead of importing from netcdf.h
 # so it will compile with versions <= 4.2.
 NC_DISKLESS = 0x0008
+
 # encoding used to convert strings to bytes when writing text data
 # to the netcdf file, and for converting bytes to strings when reading
 # from the netcdf file.
@@ -1578,14 +1580,18 @@ cdef _get_vars(group):
         free(varids) # free pointer holding variable ids.
     return variables
 
+cdef _ensure_nc_success(ierr, err_cls=RuntimeError):
+    if ierr != NC_NOERR:
+        raise err_cls((<char *>nc_strerror(ierr)).decode('ascii'))
+
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
 
-_private_atts =\
+_private_atts = \
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd']
+ '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -1658,6 +1664,7 @@ references to the parent Dataset or Group.
     cdef object __weakref__
     cdef public int _grpid
     cdef public int _isopen
+    cdef Py_buffer _buffer
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
     keepweakref
@@ -1712,7 +1719,7 @@ references to the parent Dataset or Group.
     the parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, keepweakref=False, **kwargs):
+                 diskless=False, persist=False, keepweakref=False, memory=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, format='NETCDF4')`**
@@ -1720,7 +1727,8 @@ references to the parent Dataset or Group.
         `netCDF4.Dataset` constructor.
 
         **`filename`**: Name of netCDF file to hold dataset. Can also
-	be a python 3 pathlib instance or the URL of an OpenDAP dataset.
+	be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
+	set this is just used to set the `filepath()`.
         
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
@@ -1776,10 +1784,16 @@ references to the parent Dataset or Group.
         reducing memory usage and open file handles.  However, in many cases this is not
         desirable, since the associated Variable instances may still be needed, but are
         rendered unusable when the parent Dataset instance is garbage collected.
+        
+        **`memory`**: if not `None`, open file with contents taken from this block of memory.
+        Must be a sequence of bytes.  Note this only works with "r" mode.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
+
+        memset(&self._buffer, 0, sizeof(self._buffer))
+
         # flag to indicate that Variables in this Dataset support orthogonal indexing.
         self.__orthogonal_indexing__ = True
         if diskless and __netcdf4libversion__ < '4.2.1':
@@ -1787,6 +1801,10 @@ references to the parent Dataset or Group.
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
         bytestr = _strencode(str(filename))
         path = bytestr
+
+        if memory is not None and (mode != 'r' or type(memory) != bytes):
+            raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
+
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
@@ -1811,7 +1829,20 @@ references to the parent Dataset or Group.
             # 4.3.0 of the netcdf library (add a version check here?).
             _set_default_format(format='NETCDF3_64BIT_OFFSET')
         elif mode == 'r':
-            if diskless:
+            if memory is not None:
+                IF HAS_NC_OPEN_MEM:
+                    # Store reference to memory
+                    result = PyObject_GetBuffer(memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS)
+                    if result != 0:
+                        raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
+
+                    ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
+                ELSE:
+                    msg = """
+        nc_open_mem method not enabled.  To enable, install Cython, make sure you have
+        version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+                    raise ValueError(msg)
+            elif diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_NOWRITE, &grpid)
@@ -1844,8 +1875,9 @@ references to the parent Dataset or Group.
                     ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
         else:
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
-        if ierr != NC_NOERR:
-            raise IOError((<char *>nc_strerror(ierr)).decode('ascii'))
+
+        _ensure_nc_success(ierr, IOError)
+
         # data model and file format attributes
         self.data_model = _get_format(grpid)
         # data_model attribute used to be file_format (versions < 1.0.8), retain
@@ -1910,16 +1942,16 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
         IF HAS_NC_INQ_PATH:
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
+
             c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
             if not c_path:
                 raise MemoryError()
             try:
                 with nogil:
                     ierr = nc_inq_path(self._grpid, &pathlen, c_path)
-                if ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
+
                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
             finally:
                 free(c_path)
@@ -1961,17 +1993,27 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         ncdump.append('    groups: %s\n' % ', '.join(grpnames))
         return ''.join(ncdump)
 
+    def _close(self, check_err):
+        cdef int ierr = nc_close(self._grpid)
+
+        if check_err:
+            _ensure_nc_success(ierr)
+
+        self._isopen = 0 # indicates file already closed, checked by __dealloc__
+
+        # Only release buffer if close succeeded
+        # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
+        # view.obj is checked, ref on obj is decremented and obj will be null'd out
+        PyBuffer_Release(&self._buffer)
+
+
     def close(self):
         """
 **`close(self)`**
 
 Close the Dataset.
         """
-        cdef int ierr
-        ierr = nc_close(self._grpid)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        self._isopen = 0 # indicates file already closed, checked by __dealloc__
+        self._close(True)
 
     def isopen(self):
         """
@@ -1983,9 +2025,8 @@ is the Dataset open or closed?
 
     def __dealloc__(self):
         # close file when there are no references to object left
-        cdef int ierr
         if self._isopen:
-            ierr = nc_close(self._grpid)
+           self._close(False)
 
     def __reduce__(self):
         # raise error is user tries to pickle a Dataset object.
@@ -1996,10 +2037,7 @@ is the Dataset open or closed?
 **`sync(self)`**
 
 Writes all buffered data in the `netCDF4.Dataset` to the disk file."""
-        cdef int ierr
-        ierr = nc_sync(self._grpid)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(nc_sync(self._grpid))
 
     def _redef(self):
         cdef int ierr
@@ -2022,10 +2060,8 @@ separately for each variable type). The default behavior of the netCDF
 library corresponds to `set_fill_on`.  Data which are equal to the
 `_Fill_Value` indicate that the variable was created, but never written
 to."""
-        cdef int ierr, oldmode
-        ierr = nc_set_fill (self._grpid, NC_FILL, &oldmode)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        cdef int oldmode
+        _ensure_nc_success(nc_set_fill(self._grpid, NC_FILL, &oldmode))
 
     def set_fill_off(self):
         """
@@ -2036,10 +2072,8 @@ Sets the fill mode for a `netCDF4.Dataset` open for writing to `off`.
 This will prevent the data from being pre-filled with fill values, which
 may result in some performance improvements. However, you must then make
 sure the data is actually written before being read."""
-        cdef int ierr, oldmode
-        ierr = nc_set_fill (self._grpid, NC_NOFILL, &oldmode)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        cdef int oldmode
+        _ensure_nc_success(nc_set_fill(self._grpid, NC_NOFILL, &oldmode))
 
     def createDimension(self, dimname, size=None):
         """
@@ -2072,8 +2106,8 @@ rename a `netCDF4.Dimension` named `oldname` to `newname`."""
             raise KeyError('%s not a valid dimension name' % oldname)
         ierr = nc_rename_dim(self._grpid, dim._dimid, namstring)
         if self.data_model != 'NETCDF4': self._enddef()
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+
+        _ensure_nc_success(ierr)
         # remove old key from dimensions dict.
         self.dimensions.pop(oldname)
         # add new key.
@@ -2282,8 +2316,8 @@ rename a `netCDF4.Variable` named `oldname` to `newname`"""
         if self.data_model != 'NETCDF4': self._redef()
         ierr = nc_rename_var(self._grpid, var._varid, namstring)
         if self.data_model != 'NETCDF4': self._enddef()
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+
+        _ensure_nc_success(ierr)
         # remove old key from dimensions dict.
         self.variables.pop(oldname)
         # add new key.
@@ -2396,8 +2430,7 @@ attributes."""
         if self.data_model != 'NETCDF4': self._redef()
         ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
         if self.data_model != 'NETCDF4': self._enddef()
-        if ierr != NC_NOERR:
-            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
 
     def __setattr__(self,name,value):
         # if name in _private_atts, it is stored at the python
@@ -2434,23 +2467,19 @@ attributes."""
 **`renameAttribute(self, oldname, newname)`**
 
 rename a `netCDF4.Dataset` or `netCDF4.Group` attribute named `oldname` to `newname`."""
-        cdef int ierr
         cdef char *oldnamec
         cdef char *newnamec
         bytestr = _strencode(oldname)
         oldnamec = bytestr
         bytestr = _strencode(newname)
         newnamec = bytestr
-        ierr = nc_rename_att(self._grpid, NC_GLOBAL, oldnamec, newnamec)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(nc_rename_att(self._grpid, NC_GLOBAL, oldnamec, newnamec))
 
     def renameGroup(self, oldname, newname):
         """
 **`renameGroup(self, oldname, newname)`**
 
 rename a `netCDF4.Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)."""
-        cdef int ierr
         cdef char *newnamec
         IF HAS_RENAME_GRP:
             bytestr = _strencode(newname)
@@ -2459,9 +2488,7 @@ rename a `netCDF4.Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)
                 grp = self.groups[oldname]
             except KeyError:
                 raise KeyError('%s not a valid group name' % oldname)
-            ierr = nc_rename_grp(grp._grpid, newnamec)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(nc_rename_grp(grp._grpid, newnamec))
             # remove old key from groups dict.
             self.groups.pop(oldname)
             # add new key.
@@ -2634,7 +2661,6 @@ Additional read-only class variables:
         `netCDF4.Dataset.createGroup` method of a `netCDF4.Dataset` instance, or
         another `netCDF4.Group` instance, not using this class directly.
         """
-        cdef int ierr
         cdef char *groupname
         # flag to indicate that Variables in this Group support orthogonal indexing.
         self.__orthogonal_indexing__ = True
@@ -2660,9 +2686,7 @@ Additional read-only class variables:
         else:
             bytestr = _strencode(name)
             groupname = bytestr
-            ierr = nc_def_grp(parent._grpid, groupname, &self._grpid)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(nc_def_grp(parent._grpid, groupname, &self._grpid))
             self.cmptypes = OrderedDict()
             self.vltypes = OrderedDict()
             self.enumtypes = OrderedDict()
@@ -2680,12 +2704,11 @@ instances, raises IOError."""
 
     def _getname(self):
         # private method to get name associated with instance.
-        cdef int err
+        cdef int ierr
         cdef char namstring[NC_MAX_NAME+1]
         with nogil:
             ierr = nc_inq_grpname(self._grpid, namstring)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         return namstring.decode(default_encoding,unicode_error)
 
     property name:

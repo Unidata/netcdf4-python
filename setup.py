@@ -72,11 +72,16 @@ def check_api(inc_dirs):
     has_nc_inq_path = False
     has_nc_inq_format_extended = False
     has_cdf5_format = False
+    has_nc_open_mem = False
+
     for d in inc_dirs:
         try:
-            f = open(os.path.join(d,'netcdf.h'),**open_kwargs)
+            f = open(os.path.join(d, 'netcdf.h'), **open_kwargs)
         except IOError:
             continue
+
+        has_nc_open_mem = os.path.exists(os.path.join(d, 'netcdf_mem.h'))
+
         for line in f:
             if line.startswith('nc_rename_grp'):
                 has_rename_grp = True
@@ -87,8 +92,9 @@ def check_api(inc_dirs):
             if line.startswith('#define NC_FORMAT_64BIT_DATA'):
                 has_cdf5_format = True
         break
+
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended,\
-           has_cdf5_format
+           has_cdf5_format, has_nc_open_mem
 
 def getnetcdfvers(libdirs):
     """
@@ -235,7 +241,7 @@ if USE_NCCONFIG:
         else: # otherwise, just hope it's in the users PATH.
             ncconfig = 'nc-config'
     try:
-        retcode =  subprocess.call([ncconfig,'--libs'],stdout=subprocess.PIPE)
+        retcode = subprocess.call([ncconfig,'--libs'], stdout=subprocess.PIPE)
     except:
         retcode = 1
 else:
@@ -267,7 +273,7 @@ elif HAS_PKG_CONFIG: # Try pkg-config.
     inc_dirs.extend([str(i[2:].decode()) for i in dep.split() if i[0:2].decode() == '-I'])
 # If nc-config and pkg-config both didn't work (it won't on Windows), fall back on brute force method.
 else:
-    dirstosearch =  [os.path.expanduser('~'),'/usr/local','/sw','/opt','/opt/local', '/usr']
+    dirstosearch =  [os.path.expanduser('~'), '/usr/local', '/sw', '/opt', '/opt/local', '/usr']
 
     if HDF5_incdir is None and HDF5_dir is None:
         sys.stdout.write("""
@@ -322,12 +328,13 @@ NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
         netCDF4_libdir = os.path.join(netCDF4_dir, 'lib')
 
     if sys.platform=='win32':
-        libs = ['netcdf','hdf5_hl','hdf5','zlib']
+        libs = ['netcdf', 'hdf5_hl', 'hdf5', 'zlib']
     else:
-        libs = ['netcdf','hdf5_hl','hdf5','z']
-    if netCDF4_libdir is not None: lib_dirs=[netCDF4_libdir]
+        libs = ['netcdf', 'hdf5_hl', 'hdf5', 'z']
+
+    if netCDF4_libdir is not None: lib_dirs = [netCDF4_libdir]
     if HDF5_libdir is not None: lib_dirs.append(HDF5_libdir)
-    if netCDF4_incdir is not None: inc_dirs=[netCDF4_incdir]
+    if netCDF4_incdir is not None: inc_dirs = [netCDF4_incdir]
     if HDF5_incdir is not None: inc_dirs.append(HDF5_incdir)
 
     # add szip to link if desired.
@@ -409,32 +416,43 @@ if has_cython and 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         os.remove(netcdf4_src_c)
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-    has_cdf5_format = check_api(inc_dirs)
-    f = open(osp.join('include', 'constants.pyx'),'w')
+    has_cdf5_format, has_nc_open_mem = check_api(inc_dirs)
+    f = open(osp.join('include', 'constants.pyx'), 'w')
     if has_rename_grp:
         sys.stdout.write('netcdf lib has group rename capability\n')
         f.write('DEF HAS_RENAME_GRP = 1\n')
     else:
         sys.stdout.write('netcdf lib does not have group rename capability\n')
         f.write('DEF HAS_RENAME_GRP = 0\n')
+
     if has_nc_inq_path:
         sys.stdout.write('netcdf lib has nc_inq_path function\n')
         f.write('DEF HAS_NC_INQ_PATH = 1\n')
     else:
         sys.stdout.write('netcdf lib does not have nc_inq_path function\n')
         f.write('DEF HAS_NC_INQ_PATH = 0\n')
+
     if has_nc_inq_format_extended:
         sys.stdout.write('netcdf lib has nc_inq_format_extended function\n')
         f.write('DEF HAS_NC_INQ_FORMAT_EXTENDED = 1\n')
     else:
         sys.stdout.write('netcdf lib does not have nc_inq_format_extended function\n')
         f.write('DEF HAS_NC_INQ_FORMAT_EXTENDED = 0\n')
+
+    if has_nc_open_mem:
+        sys.stdout.write('netcdf lib has nc_open_mem function\n')
+        f.write('DEF HAS_NC_OPEN_MEM = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have nc_open_mem function\n')
+        f.write('DEF HAS_NC_OPEN_MEM = 0\n')
+
     if has_cdf5_format:
         sys.stdout.write('netcdf lib has cdf-5 format capability\n')
         f.write('DEF HAS_CDF5_FORMAT = 1\n')
     else:
         sys.stdout.write('netcdf lib does not have cdf-5 format capability\n')
         f.write('DEF HAS_CDF5_FORMAT = 0\n')
+
     f.close()
     ext_modules = cythonize(extensions, include_path=['include'])
 else:
@@ -449,7 +467,7 @@ else:
 
 setup(name = "netCDF4",
   cmdclass = cmdclass,
-  version = "1.2.7",
+  version = "1.2.8a0",
   long_description = "netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project has a `Subversion repository <http://code.google.com/p/netcdf4-python/source>`_ where you may access the most up-to-date source.",
   author            = "Jeff Whitaker",
   author_email      = "jeffrey.s.whitaker@noaa.gov",
