@@ -950,8 +950,8 @@ from numpy import ma
 from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 import_array()
-include "netCDF4.pxi"
 include "constants.pyx"
+include "netCDF4.pxi"
 
 # check for required version of netcdf-4 and hdf5.
 
@@ -1261,7 +1261,7 @@ cdef _set_att(grp, int varid, name, value,\
        is_netcdf3):
         value_arr = value_arr.astype('i4')
     # if array contains ascii strings, write a text attribute (stored as bytes).
-    # if array contains unicode strings, and data model is NETCDF4, 
+    # if array contains unicode strings, and data model is NETCDF4,
     # write as a string.
     if value_arr.dtype.char in ['S','U']:
         if not is_netcdf3 and force_ncstring and value_arr.size > 1:
@@ -1665,6 +1665,8 @@ references to the parent Dataset or Group.
     cdef public int _grpid
     cdef public int _isopen
     cdef Py_buffer _buffer
+    cdef unicode _encoding
+    cdef unicode _encoding_errors
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
     keepweakref
@@ -1797,6 +1799,9 @@ references to the parent Dataset or Group.
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
 
+        # NOTE: DO NOT set non cdef'd PRIVATE attributes until AFTER the file has been loaded
+        #   as __setattr__ will cause a __getattr__ on `__dict__` which will then try to get the
+        #   attrs from the file.
         memset(&self._buffer, 0, sizeof(self._buffer))
 
         self._encoding = encoding or default_encoding
