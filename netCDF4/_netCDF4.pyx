@@ -4668,10 +4668,13 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name
+    cdef unicode _encoding
+
     __pdoc__['CompoundType.name'] = \
     """String name."""
     __pdoc__['CompoundType.dtype'] = \
     """A numpy dtype object describing the compound data type."""
+
     def __init__(self, grp, object dt, object dtype_name, **kwargs):
         """
         ***`__init__(group, datatype, datatype_name)`***
@@ -4917,6 +4920,8 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name
+    cdef unicode _encoding
+
     __pdoc__['VLType.name'] = \
     """String name."""
     __pdoc__['VLType.dtype'] = \
@@ -5036,6 +5041,8 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name, enum_dict
+    cdef unicode _encoding
+
     __pdoc__['EnumType.name'] = \
     """String name."""
     __pdoc__['EnumType.dtype'] = \
