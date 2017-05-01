@@ -23,7 +23,7 @@ from distutils.dist import Distribution
 try:
     from Cython.Build import cythonize
     from Cython import __version__ as cython_version
-    if cython_version >= '0.19':
+    if cython_version >= '0.20':
         has_cython = True
         sys.stdout.write('cython version %s found ...\n' % cython_version)
     else:

@@ -1,6 +1,8 @@
  version 1.2.8a0 (tag XXXX)
 ===========================
  * add Dataset init memory parameter to allow loading a file from memory
+ * add support for encoding and encoding_error init params to Dataset
+ * bump up minimum cython version to 0.20 for basestring support
 
  version 1.2.7 (tag v1.2.7rel)
 ==============================
