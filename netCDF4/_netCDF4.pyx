@@ -1665,8 +1665,7 @@ references to the parent Dataset or Group.
     cdef public int _grpid
     cdef public int _isopen
     cdef Py_buffer _buffer
-    cdef basestring _encoding
-    cdef basestring _encoding_errors
+    cdef basestring _encoding, _encoding_errors
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
     keepweakref
@@ -2780,6 +2779,8 @@ Read-only class variables:
     """
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
+    cdef basestring _encoding, _encoding_errors
+
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Dimension.name']=\
     """A string describing the name of the `netCDF4.Dimension` - used when creating a
@@ -2804,19 +2805,25 @@ Read-only class variables:
         cdef int ierr
         cdef char *dimname
         cdef size_t lendim
+
         self._grpid = grp._grpid
+
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
         if grp.keepweakref:
             self._grp = weakref.proxy(grp)
         else:
             self._grp = grp
+
         self._data_model = grp.data_model
         self._name = name
+        self._encoding = grp.encoding
+        self._encoding_errors = grp.encoding_errors
+
         if 'id' in kwargs:
             self._dimid = kwargs['id']
         else:
-            bytestr = _strencode(name, self.encoding)
+            bytestr = _strencode(name, self._encoding)
             dimname = bytestr
             if size is not None:
                 lendim = size
@@ -2837,21 +2844,7 @@ Read-only class variables:
             ierr = nc_inq_dimname(_grpid, self._dimid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        return namstring.decode(self.encoding, self.encoding_errors)
-
-    property encoding:
-        """encoding from parent Dataset"""
-        def __get__(self):
-            return self._grp.encoding
-        def __set__(self, value):
-            raise AttributeError("encoding cannot be altered")
-
-    property encoding_errors:
-        """encoding from parent Dataset"""
-        def __get__(self):
-            return self._grp.encoding
-        def __set__(self, value):
-            raise AttributeError("encoding cannot be altered")
+        return namstring.decode(self._encoding, self._encoding_errors)
 
     property name:
         """string name of Dimension instance"""
@@ -2871,7 +2864,7 @@ Read-only class variables:
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(self.encoding)
+            return unicode(self).encode(self._encoding)
 
     def __unicode__(self):
         if not dir(self._grp):
@@ -2988,8 +2981,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
-    _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
-    __orthogonal_indexing__, _has_lsd
+        _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
+        __orthogonal_indexing__, _has_lsd
+
+    cdef basestring _encoding, _encoding_errors
+
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
     """A tuple containing the names of the
@@ -3130,23 +3126,32 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
+
+        self._encoding = grp.encoding
+        self._encoding_errors = grp.encoding_errors
+
         # flag to indicate that orthogonal indexing is supported
         self.__orthogonal_indexing__ = True
+
         # if complevel is set to zero, set zlib to False.
         if not complevel:
             zlib = False
+
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
         # dimensions = 'lat' instead of ('lat',)
         if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
             dimensions = dimensions,
+
         self._grpid = grp._grpid
+
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
         if grp.keepweakref:
             self._grp = weakref.proxy(grp)
         else:
             self._grp = grp
+
         user_type = isinstance(datatype, CompoundType) or \
                     isinstance(datatype, VLType) or \
                     isinstance(datatype, EnumType) or \
@@ -3181,6 +3186,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self._iscompound = False
         self._isvlen = False
         self._isenum = False
+
         if user_type:
             if isinstance(datatype, CompoundType):
                 self._iscompound = True
@@ -3215,7 +3221,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         if 'id' in kwargs:
             self._varid = kwargs['id']
         else:
-            bytestr = _strencode(name, self.encoding)
+            bytestr = _strencode(name, self._encoding)
             varname = bytestr
             ndims = len(dimensions)
             # find dimension ids.
@@ -3387,7 +3393,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(self.encoding)
+            return unicode(self).encode(self._encoding)
 
     def __unicode__(self):
         cdef int ierr, no_fill
@@ -3469,7 +3475,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            name = namstring.decode(self.encoding, self.encoding_errors)
+            name = namstring.decode(self._encoding, self._encoding_errors)
             dimensions = dimensions + (name,)
         free(dimids)
         return dimensions
@@ -3483,21 +3489,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ierr = nc_inq_varname(_grpid, self._varid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        return namstring.decode(self.encoding, self.encoding_errors)
-
-    property encoding:
-        """encoding from parent Dataset"""
-        def __get__(self):
-            return self._grp.encoding
-        def __set__(self,value):
-            raise AttributeError("encoding cannot be altered")
-
-    property encoding_errors:
-        """encoding_errors from parent Dataset"""
-        def __get__(self):
-            return self._grp.encoding_errors
-        def __set__(self, value):
-            raise AttributeError("encoding_errors cannot be altered")
+        return namstring.decode(self._encoding, self._encoding_errors)
 
     property name:
         """string name of Variable instance"""
@@ -3556,7 +3548,7 @@ return the group that this `netCDF4.Variable` is a member of."""
 **`ncattrs(self)`**
 
 return netCDF attribute names for this `netCDF4.Variable` in a list."""
-        return _get_att_names(self._grpid, self._varid, self.encoding, self.encoding_errors)
+        return _get_att_names(self._grpid, self._varid, self._encoding, self._encoding_errors)
 
     def setncattr(self,name,value):
         """
@@ -3614,7 +3606,7 @@ delete a netCDF variable attribute.  Use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
-        bytestr = _strencode(name, self.encoding)
+        bytestr = _strencode(name, self._encoding)
         attname = bytestr
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
         ierr = nc_del_att(self._grpid, self._varid, attname)
@@ -3803,9 +3795,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         cdef int ierr
         cdef char *oldnamec
         cdef char *newnamec
-        bytestr = _strencode(oldname, self.encoding)
+        bytestr = _strencode(oldname, self._encoding)
         oldnamec = bytestr
-        bytestr = _strencode(newname, self.encoding)
+        bytestr = _strencode(newname, self._encoding)
         newnamec = bytestr
         ierr = nc_rename_att(self._grpid, self._varid, oldnamec, newnamec)
         if ierr != NC_NOERR:
@@ -4070,7 +4062,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             countp[n] = count[n]
         if self.dtype == str: # VLEN string
             strdata = <char **>malloc(sizeof(char *))
-            bytestr = _strencode(data, self.encoding)
+            bytestr = _strencode(data, self._encoding)
             strdata[0] = bytestr
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, strdata)
@@ -4451,7 +4443,7 @@ The default value of `mask` is `True`
             if self.dtype == str:
                 # convert all elements from strings to bytes
                 for n in range(data.shape[0]):
-                    data[n] = _strencode(data[n], self.encoding)
+                    data[n] = _strencode(data[n], self._encoding)
                 # vlen string (NC_STRING)
                 # loop over elements of object array, put data buffer for
                 # each element in struct.
@@ -4588,7 +4580,7 @@ The default value of `mask` is `True`
                 # loop over elements of object array, fill array with
                 # contents of strdata.
                 for i from 0<=i<totelem:
-                    data[i] = strdata[i].decode(self.encoding)
+                    data[i] = strdata[i].decode(self._encoding)
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
                 # free string data internally allocated in netcdf C lib
