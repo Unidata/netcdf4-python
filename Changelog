@@ -1,3 +1,7 @@
+ version 1.2.8a0 (tag XXXX)
+===========================
+ * add Dataset init memory parameter to allow loading a file from memory
+
  version 1.2.7 (tag v1.2.7rel)
 ==============================
  * fix for issue #624 (error in conversion to masked array when variable slice
