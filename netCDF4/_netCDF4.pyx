@@ -38,7 +38,7 @@ Requires
 
  - Python 2.7 or later (python 3 works too).
  - [numpy array module](http://numpy.scipy.org), version 1.7.0 or later.
- - [Cython](http://cython.org), version 0.19 or later, is optional - if it is installed setup.py will
+ - [Cython](http://cython.org), version 0.20 or later, is optional - if it is installed setup.py will
    use it to recompile the Cython source code into C, using conditional compilation
    to enable features in the netCDF API that have been added since version 4.1.1.  If
    Cython is not installed, these features (such as the ability to rename Group objects)
@@ -950,8 +950,8 @@ from numpy import ma
 from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 import_array()
-include "netCDF4.pxi"
 include "constants.pyx"
+include "netCDF4.pxi"
 
 # check for required version of netcdf-4 and hdf5.
 
@@ -1079,7 +1079,7 @@ _nctonptype[NC_CHAR]='S1'
 
 # internal C functions.
 
-cdef _get_att_names(int grpid, int varid):
+cdef _get_att_names(int grpid, int varid, encoding, encoding_error):
     # Private function to get all the attribute names in a group
     cdef int ierr, numatts, n
     cdef char namstring[NC_MAX_NAME+1]
@@ -1097,7 +1097,7 @@ cdef _get_att_names(int grpid, int varid):
             ierr = nc_inq_attname(grpid, varid, n, namstring)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        attslist.append(namstring.decode(default_encoding,unicode_error))
+        attslist.append(namstring.decode(encoding, encoding_error))
     return attslist
 
 cdef _get_att(grp, int varid, name):
@@ -1107,7 +1107,7 @@ cdef _get_att(grp, int varid, name):
     cdef char *attname
     cdef nc_type att_type
     cdef ndarray value_arr
-    bytestr = _strencode(name)
+    bytestr = _strencode(name, grp.encoding)
     attname = bytestr
     _grpid = grp._grpid
     with nogil:
@@ -1127,7 +1127,7 @@ cdef _get_att(grp, int varid, name):
             pstring = value_arr.tostring()
         else:
             pstring =\
-            value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
+            value_arr.tostring().decode(grp.encoding, grp.encoding_errors).replace('\x00','')
         return pstring
     elif att_type == NC_STRING:
         values = <char**>PyMem_Malloc(sizeof(char*) * att_len)
@@ -1139,7 +1139,7 @@ cdef _get_att(grp, int varid, name):
             if ierr != NC_NOERR:
                 raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
             try:
-                result = [values[j].decode(default_encoding,unicode_error).replace('\x00','')
+                result = [values[j].decode(grp.encoding, grp.encoding_errors).replace('\x00','')
                           for j in range(att_len)]
             finally:
                 ierr = nc_free_string(att_len, values) # free memory in netcdf C lib
@@ -1249,7 +1249,7 @@ cdef _set_att(grp, int varid, name, value,\
     cdef char *datstring
     cdef char **string_ptrs
     cdef ndarray value_arr
-    bytestr = _strencode(name)
+    bytestr = _strencode(name, grp.encoding)
     attname = bytestr
     # put attribute value into a numpy array.
     value_arr = numpy.array(value)
@@ -1261,7 +1261,7 @@ cdef _set_att(grp, int varid, name, value,\
        is_netcdf3):
         value_arr = value_arr.astype('i4')
     # if array contains ascii strings, write a text attribute (stored as bytes).
-    # if array contains unicode strings, and data model is NETCDF4, 
+    # if array contains unicode strings, and data model is NETCDF4,
     # write as a string.
     if value_arr.dtype.char in ['S','U']:
         if not is_netcdf3 and force_ncstring and value_arr.size > 1:
@@ -1270,10 +1270,10 @@ cdef _set_att(grp, int varid, name, value,\
             if not string_ptrs:
                 raise MemoryError()
             try:
-                strings = [_strencode(s) for s in value_arr.flat]
+                strings = [_strencode(s, grp.encoding) for s in value_arr.flat]
                 for j in range(N):
                     if len(strings[j]) == 0:
-                        strings[j] = _strencode('\x00')
+                        strings[j] = _strencode('\x00', grp.encoding)
                     string_ptrs[j] = strings[j]
                 issue485_workaround(grp._grpid, varid, attname)
                 ierr = nc_put_att_string(grp._grpid, varid, attname, N, string_ptrs)
@@ -1281,10 +1281,10 @@ cdef _set_att(grp, int varid, name, value,\
                 PyMem_Free(string_ptrs)
         else:
             if not value_arr.shape:
-                dats = _strencode(value_arr.item())
+                dats = _strencode(value_arr.item(), grp.encoding)
             else:
                 value_arr1 = value_arr.ravel()
-                dats = _strencode(''.join(value_arr1.tolist()))
+                dats = _strencode(''.join(value_arr1.tolist()), grp.encoding)
             lenarr = len(dats)
             datstring = dats
             if lenarr == 0:
@@ -1350,7 +1350,7 @@ cdef _get_types(group):
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             if classp == NC_COMPOUND: # a compound
-                name = namstring.decode(default_encoding,unicode_error)
+                name = namstring.decode(group.encoding, group.encoding_errors)
                 # read the compound type info from the file,
                 # create a CompoundType instance from it.
                 try:
@@ -1361,7 +1361,7 @@ cdef _get_types(group):
                     continue
                 cmptypes[name] = cmptype
             elif classp == NC_VLEN: # a vlen
-                name = namstring.decode(default_encoding,unicode_error)
+                name = namstring.decode(group.encoding, group.encoding_errors)
                 # read the VLEN type info from the file,
                 # create a VLType instance from it.
                 try:
@@ -1372,7 +1372,7 @@ cdef _get_types(group):
                     continue
                 vltypes[name] = vltype
             elif classp == NC_ENUM: # an enum type
-                name = namstring.decode(default_encoding,unicode_error)
+                name = namstring.decode(group.encoding, group.encoding_errors)
                 # read the Enum type info from the file,
                 # create a EnumType instance from it.
                 try:
@@ -1414,7 +1414,7 @@ cdef _get_dims(group):
                 ierr = nc_inq_dimname(_grpid, dimids[n], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            name = namstring.decode(default_encoding,unicode_error)
+            name = namstring.decode(group.encoding, group.encoding_errors)
             dimensions[name] = Dimension(group, name, id=dimids[n])
         free(dimids)
     return dimensions
@@ -1444,7 +1444,7 @@ cdef _get_grps(group):
                 ierr = nc_inq_grpname(grpids[n], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            name = namstring.decode(default_encoding,unicode_error)
+            name = namstring.decode(group.encoding, group.encoding_errors)
             groups[name] = Group(group, name, id=grpids[n])
         free(grpids)
     return groups
@@ -1485,7 +1485,7 @@ cdef _get_vars(group):
                 ierr = nc_inq_varname(_grpid, varid, namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            name = namstring.decode(default_encoding,unicode_error)
+            name = namstring.decode(group.encoding, group.encoding_errors)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # get variable type.
@@ -1591,7 +1591,7 @@ _private_atts = \
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer']
+ '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer', '_encoding', '_encoding_errors']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -1665,6 +1665,7 @@ references to the parent Dataset or Group.
     cdef public int _grpid
     cdef public int _isopen
     cdef Py_buffer _buffer
+    cdef basestring _encoding, _encoding_errors
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
     keepweakref
@@ -1719,16 +1720,18 @@ references to the parent Dataset or Group.
     the parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, keepweakref=False, memory=None, **kwargs):
+                 diskless=False, persist=False, keepweakref=False, memory=None,
+                 encoding=default_encoding, encoding_errors=unicode_error, **kwargs):
         """
-        **`__init__(self, filename, mode="r", clobber=True, diskless=False,
-        persist=False, keepweakref=False, format='NETCDF4')`**
+        **`__init__(self, filename, mode="r", clobber=True, format='NETCDF4'
+        diskless=False, persist=False, keepweakref=False, memory=None, 
+        encoding=default_encoding, encoding_errors=unicode_error)`**
 
         `netCDF4.Dataset` constructor.
 
         **`filename`**: Name of netCDF file to hold dataset. Can also
-	be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
-	set this is just used to set the `filepath()`.
+	    be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
+	    set this is just used to set the `filepath()`.
         
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
@@ -1787,19 +1790,29 @@ references to the parent Dataset or Group.
         
         **`memory`**: if not `None`, open file with contents taken from this block of memory.
         Must be a sequence of bytes.  Note this only works with "r" mode.
+        
+        **`encoding`**: encoding to use for Dataset.
+        
+        **`encoding_errors`**: string decoding error handling strategy(s).
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
 
+        # NOTE: DO NOT set non cdef'd PRIVATE attributes until AFTER the file has been loaded
+        #   as __setattr__ will cause a __getattr__ on `__dict__` which will then try to get the
+        #   attrs from the file.
         memset(&self._buffer, 0, sizeof(self._buffer))
+
+        self._encoding = encoding or default_encoding
+        self._encoding_errors = encoding_errors
 
         # flag to indicate that Variables in this Dataset support orthogonal indexing.
         self.__orthogonal_indexing__ = True
         if diskless and __netcdf4libversion__ < '4.2.1':
             #diskless = False # don't raise error, instead silently ignore
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
-        bytestr = _strencode(str(filename))
+        bytestr = _strencode(str(filename), self.encoding)
         path = bytestr
 
         if memory is not None and (mode != 'r' or type(memory) != bytes):
@@ -1930,6 +1943,20 @@ references to the parent Dataset or Group.
         else:
             raise IndexError('%s not found in %s' % (lastname,group.path))
 
+    property encoding:
+        """encoding of Dataset"""
+        def __get__(self):
+            return self._encoding
+        def __set__(self,value):
+            raise AttributeError("encoding cannot be altered")
+
+    property encoding_errors:
+        """encoding_errors of Dataset"""
+        def __get__(self):
+            return self._encoding_errors
+        def __set__(self, value):
+            raise AttributeError("encoding_errors cannot be altered")
+
     def filepath(self):
         """
 **`filepath(self)`**
@@ -1966,7 +1993,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode(self.encoding)
 
     def __unicode__(self):
         ncdump = ['%r\n' % type(self)]
@@ -2097,7 +2124,7 @@ instance. To determine if a dimension is 'unlimited', use the
 
 rename a `netCDF4.Dimension` named `oldname` to `newname`."""
         cdef char *namstring
-        bytestr = _strencode(newname)
+        bytestr = _strencode(newname, self.encoding)
         namstring = bytestr
         if self.data_model != 'NETCDF4': self._redef()
         try:
@@ -2311,7 +2338,7 @@ rename a `netCDF4.Variable` named `oldname` to `newname`"""
             var = self.variables[oldname]
         except KeyError:
             raise KeyError('%s not a valid variable name' % oldname)
-        bytestr = _strencode(newname)
+        bytestr = _strencode(newname, self.encoding)
         namstring = bytestr
         if self.data_model != 'NETCDF4': self._redef()
         ierr = nc_rename_var(self._grpid, var._varid, namstring)
@@ -2358,7 +2385,7 @@ The return value is a `netCDF4.Group` class instance."""
 **`ncattrs(self)`**
 
 return netCDF global attribute names for this `netCDF4.Dataset` or `netCDF4.Group` in a list."""
-        return _get_att_names(self._grpid, NC_GLOBAL)
+        return _get_att_names(self._grpid, NC_GLOBAL, self.encoding, self.encoding_errors)
 
     def setncattr(self,name,value):
         """
@@ -2425,7 +2452,7 @@ netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
         cdef int ierr
-        bytestr = _strencode(name)
+        bytestr = _strencode(name, self.encoding)
         attname = bytestr
         if self.data_model != 'NETCDF4': self._redef()
         ierr = nc_del_att(self._grpid, NC_GLOBAL, attname)
@@ -2469,9 +2496,9 @@ attributes."""
 rename a `netCDF4.Dataset` or `netCDF4.Group` attribute named `oldname` to `newname`."""
         cdef char *oldnamec
         cdef char *newnamec
-        bytestr = _strencode(oldname)
+        bytestr = _strencode(oldname, self.encoding)
         oldnamec = bytestr
-        bytestr = _strencode(newname)
+        bytestr = _strencode(newname, self.encoding)
         newnamec = bytestr
         _ensure_nc_success(nc_rename_att(self._grpid, NC_GLOBAL, oldnamec, newnamec))
 
@@ -2482,7 +2509,7 @@ rename a `netCDF4.Dataset` or `netCDF4.Group` attribute named `oldname` to `newn
 rename a `netCDF4.Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)."""
         cdef char *newnamec
         IF HAS_RENAME_GRP:
-            bytestr = _strencode(newname)
+            bytestr = _strencode(newname, self.encoding)
             newnamec = bytestr
             try:
                 grp = self.groups[oldname]
@@ -2684,7 +2711,7 @@ Additional read-only class variables:
             # get groups in this Group.
             self.groups = _get_grps(self)
         else:
-            bytestr = _strencode(name)
+            bytestr = _strencode(name, self.encoding)
             groupname = bytestr
             _ensure_nc_success(nc_def_grp(parent._grpid, groupname, &self._grpid))
             self.cmptypes = OrderedDict()
@@ -2702,6 +2729,20 @@ overrides `netCDF4.Dataset` close method which does not apply to `netCDF4.Group`
 instances, raises IOError."""
         raise IOError('cannot close a `netCDF4.Group` (only applies to Dataset)')
 
+    property encoding:
+        """encoding from parent Dataset"""
+        def __get__(self):
+            return self.parent.encoding
+        def __set__(self, value):
+            raise AttributeError("encoding cannot be altered")
+
+    property encoding_errors:
+        """encoding_errors from parent Dataset"""
+        def __get__(self):
+            return self.parent.encoding_errors
+        def __set__(self, value):
+            raise AttributeError("encoding_errors cannot be altered")
+
     def _getname(self):
         # private method to get name associated with instance.
         cdef int ierr
@@ -2709,7 +2750,7 @@ instances, raises IOError."""
         with nogil:
             ierr = nc_inq_grpname(self._grpid, namstring)
         _ensure_nc_success(ierr)
-        return namstring.decode(default_encoding,unicode_error)
+        return namstring.decode(self.encoding, self.encoding_errors)
 
     property name:
         """string name of Group instance"""
@@ -2739,6 +2780,8 @@ Read-only class variables:
     """
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
+    cdef basestring _encoding, _encoding_errors
+
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Dimension.name']=\
     """A string describing the name of the `netCDF4.Dimension` - used when creating a
@@ -2763,19 +2806,25 @@ Read-only class variables:
         cdef int ierr
         cdef char *dimname
         cdef size_t lendim
+
         self._grpid = grp._grpid
+
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
         if grp.keepweakref:
             self._grp = weakref.proxy(grp)
         else:
             self._grp = grp
+
         self._data_model = grp.data_model
         self._name = name
+        self._encoding = grp.encoding
+        self._encoding_errors = grp.encoding_errors
+
         if 'id' in kwargs:
             self._dimid = kwargs['id']
         else:
-            bytestr = _strencode(name)
+            bytestr = _strencode(name, self._encoding)
             dimname = bytestr
             if size is not None:
                 lendim = size
@@ -2796,7 +2845,7 @@ Read-only class variables:
             ierr = nc_inq_dimname(_grpid, self._dimid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        return namstring.decode(default_encoding,unicode_error)
+        return namstring.decode(self._encoding, self._encoding_errors)
 
     property name:
         """string name of Dimension instance"""
@@ -2816,7 +2865,7 @@ Read-only class variables:
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode(self._encoding)
 
     def __unicode__(self):
         if not dir(self._grp):
@@ -2933,8 +2982,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     """
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
-    _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
-    __orthogonal_indexing__, _has_lsd
+        _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
+        __orthogonal_indexing__, _has_lsd
+
+    cdef basestring _encoding, _encoding_errors
+
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
     """A tuple containing the names of the
@@ -3075,23 +3127,32 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
+
+        self._encoding = grp.encoding
+        self._encoding_errors = grp.encoding_errors
+
         # flag to indicate that orthogonal indexing is supported
         self.__orthogonal_indexing__ = True
+
         # if complevel is set to zero, set zlib to False.
         if not complevel:
             zlib = False
+
         # if dimensions is a string, convert to a tuple
         # this prevents a common error that occurs when
         # dimensions = 'lat' instead of ('lat',)
         if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
             dimensions = dimensions,
+
         self._grpid = grp._grpid
+
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
         if grp.keepweakref:
             self._grp = weakref.proxy(grp)
         else:
             self._grp = grp
+
         user_type = isinstance(datatype, CompoundType) or \
                     isinstance(datatype, VLType) or \
                     isinstance(datatype, EnumType) or \
@@ -3126,6 +3187,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self._iscompound = False
         self._isvlen = False
         self._isenum = False
+
         if user_type:
             if isinstance(datatype, CompoundType):
                 self._iscompound = True
@@ -3160,7 +3222,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         if 'id' in kwargs:
             self._varid = kwargs['id']
         else:
-            bytestr = _strencode(name)
+            bytestr = _strencode(name, self._encoding)
             varname = bytestr
             ndims = len(dimensions)
             # find dimension ids.
@@ -3332,7 +3394,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode(self._encoding)
 
     def __unicode__(self):
         cdef int ierr, no_fill
@@ -3414,7 +3476,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            name = namstring.decode(default_encoding,unicode_error)
+            name = namstring.decode(self._encoding, self._encoding_errors)
             dimensions = dimensions + (name,)
         free(dimids)
         return dimensions
@@ -3428,7 +3490,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ierr = nc_inq_varname(_grpid, self._varid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        return namstring.decode(default_encoding,unicode_error)
+        return namstring.decode(self._encoding, self._encoding_errors)
 
     property name:
         """string name of Variable instance"""
@@ -3475,7 +3537,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         def __set__(self,value):
             raise AttributeError("dimensions cannot be altered")
 
-
     def group(self):
         """
 **`group(self)`**
@@ -3488,7 +3549,7 @@ return the group that this `netCDF4.Variable` is a member of."""
 **`ncattrs(self)`**
 
 return netCDF attribute names for this `netCDF4.Variable` in a list."""
-        return _get_att_names(self._grpid, self._varid)
+        return _get_att_names(self._grpid, self._varid, self._encoding, self._encoding_errors)
 
     def setncattr(self,name,value):
         """
@@ -3546,7 +3607,7 @@ delete a netCDF variable attribute.  Use if you need to delete a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef char *attname
-        bytestr = _strencode(name)
+        bytestr = _strencode(name, self._encoding)
         attname = bytestr
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
         ierr = nc_del_att(self._grpid, self._varid, attname)
@@ -3735,9 +3796,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         cdef int ierr
         cdef char *oldnamec
         cdef char *newnamec
-        bytestr = _strencode(oldname)
+        bytestr = _strencode(oldname, self._encoding)
         oldnamec = bytestr
-        bytestr = _strencode(newname)
+        bytestr = _strencode(newname, self._encoding)
         newnamec = bytestr
         ierr = nc_rename_att(self._grpid, self._varid, oldnamec, newnamec)
         if ierr != NC_NOERR:
@@ -4002,7 +4063,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             countp[n] = count[n]
         if self.dtype == str: # VLEN string
             strdata = <char **>malloc(sizeof(char *))
-            bytestr = _strencode(data)
+            bytestr = _strencode(data, self._encoding)
             strdata[0] = bytestr
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, strdata)
@@ -4383,7 +4444,7 @@ The default value of `mask` is `True`
             if self.dtype == str:
                 # convert all elements from strings to bytes
                 for n in range(data.shape[0]):
-                    data[n] = _strencode(data[n])
+                    data[n] = _strencode(data[n], self._encoding)
                 # vlen string (NC_STRING)
                 # loop over elements of object array, put data buffer for
                 # each element in struct.
@@ -4520,7 +4581,7 @@ The default value of `mask` is `True`
                 # loop over elements of object array, fill array with
                 # contents of strdata.
                 for i from 0<=i<totelem:
-                    data[i] = strdata[i].decode(default_encoding)
+                    data[i] = strdata[i].decode(self._encoding)
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
                 # free string data internally allocated in netcdf C lib
@@ -4600,10 +4661,13 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name
+    cdef basestring _encoding
+
     __pdoc__['CompoundType.name'] = \
     """String name."""
     __pdoc__['CompoundType.dtype'] = \
     """A numpy dtype object describing the compound data type."""
+
     def __init__(self, grp, object dt, object dtype_name, **kwargs):
         """
         ***`__init__(group, datatype, datatype_name)`***
@@ -4637,12 +4701,13 @@ the user.
         self._nc_type = xtype
         self.dtype = dt
         self.name = dtype_name
+        self._encoding = grp.encoding
 
     def __repr__(self):
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode(self._encoding)
 
     def __unicode__(self):
         return repr(type(self))+": name = '%s', numpy dtype = %s\n" %\
@@ -4661,7 +4726,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
     cdef char *namstring
     cdef char *nested_namstring
     cdef int *dim_sizes
-    bytestr = _strencode(dtype_name)
+    bytestr = _strencode(dtype_name, grp.encoding)
     namstring = bytestr
     size = dt.itemsize
     ierr = nc_def_compound(grp._grpid, size, namstring, &xtype)
@@ -4676,7 +4741,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
     formats = _sortbylist(formats, offsets)
     offsets.sort()
     for name, format, offset in zip(names, formats, offsets):
-        bytestr = _strencode(name)
+        bytestr = _strencode(name, grp.encoding)
         namstring = bytestr
         if format.kind != 'V': # scalar primitive type
             try:
@@ -4691,7 +4756,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
             if format.shape ==  (): # nested scalar compound type
                 # find this compound type in this group or it's parents.
                 xtype_tmp = _find_cmptype(grp, format)
-                bytestr = _strencode(name)
+                bytestr = _strencode(name, grp.encoding)
                 nested_namstring = bytestr
                 ierr = nc_insert_compound(grp._grpid, xtype,\
                                           nested_namstring,\
@@ -4715,7 +4780,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
                 else: # nested array compound type.
                     # find this compound type in this group or it's parents.
                     xtype_tmp = _find_cmptype(grp, format.subdtype[0])
-                    bytestr = _strencode(name)
+                    bytestr = _strencode(name, grp.encoding)
                     nested_namstring = bytestr
                     ierr = nc_insert_array_compound(grp._grpid,xtype,\
                                                     nested_namstring,\
@@ -4770,7 +4835,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
         ierr = nc_inq_compound(_grpid, xtype, cmp_namstring, NULL, &nfields)
     if ierr != NC_NOERR:
         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-    name = cmp_namstring.decode(default_encoding,unicode_error)
+    name = cmp_namstring.decode(group.encoding, group.encoding_errors)
     # loop over fields.
     names = []
     formats = []
@@ -4799,7 +4864,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
                                          dim_sizes)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        field_name = field_namstring.decode(default_encoding,unicode_error)
+        field_name = field_namstring.decode(group.encoding, group.encoding_errors)
         names.append(field_name)
         offsets.append(offset)
         # if numdims=0, not an array.
@@ -4848,6 +4913,8 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name
+    cdef basestring _encoding
+
     __pdoc__['VLType.name'] = \
     """String name."""
     __pdoc__['VLType.dtype'] = \
@@ -4881,12 +4948,13 @@ the user.
             self.name = None
         else:
             self.name = dtype_name
+        self._encoding = grp.encoding
 
     def __repr__(self):
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode(self._encoding)
 
     def __unicode__(self):
         if self.dtype == str:
@@ -4911,7 +4979,7 @@ cdef _def_vlen(grp, object dt, object dtype_name):
         xtype = NC_STRING
         # dtype_name ignored
     else: # numpy datatype
-        bytestr = _strencode(dtype_name)
+        bytestr = _strencode(dtype_name, grp.encoding)
         namstring = bytestr
         dt = numpy.dtype(dt) # convert to numpy datatype.
         if dt.str[1:] in _supportedtypes:
@@ -4943,7 +5011,7 @@ cdef _read_vlen(group, nc_type xtype, endian=None):
             ierr = nc_inq_vlen(_grpid, xtype, vl_namstring, &vlsize, &base_xtype)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        name = vl_namstring.decode(default_encoding,unicode_error)
+        name = vl_namstring.decode(group.encoding, group.encoding_errors)
         try:
             datatype = _nctonptype[base_xtype]
             if endian is not None: datatype = endian + datatype
@@ -4966,6 +5034,8 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name, enum_dict
+    cdef basestring _encoding
+
     __pdoc__['EnumType.name'] = \
     """String name."""
     __pdoc__['EnumType.dtype'] = \
@@ -5002,12 +5072,13 @@ the user.
         self.dtype = dt
         self.name = dtype_name
         self.enum_dict = enum_dict
+        self._encoding = grp.encoding
 
     def __repr__(self):
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode(self._encoding)
 
     def __unicode__(self):
         return repr(type(self))+\
@@ -5025,7 +5096,7 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
     cdef int ierr
     cdef char *namstring
     cdef ndarray value_arr
-    bytestr = _strencode(dtype_name)
+    bytestr = _strencode(dtype_name, grp.encoding)
     namstring = bytestr
     dt = numpy.dtype(dt) # convert to numpy datatype.
     if dt.str[1:] in _intnptonctype.keys():
@@ -5041,7 +5112,7 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
     # insert named members into enum type.
     for field in enum_dict:
         value_arr = numpy.array(enum_dict[field],dt)
-        bytestr = _strencode(field)
+        bytestr = _strencode(field, grp.encoding)
         namstring = bytestr
         ierr = nc_insert_enum(grp._grpid, xtype, namstring, value_arr.data)
         if ierr != NC_NOERR:
@@ -5065,7 +5136,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
                 &nmembers)
     if ierr != NC_NOERR:
         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-    name = enum_namstring.decode(default_encoding,unicode_error)
+    name = enum_namstring.decode(group.encoding, group.encoding_errors)
     try:
         datatype = _nctonptype[base_xtype]
         if endian is not None: datatype = endian + datatype
@@ -5080,15 +5151,12 @@ cdef _read_enum(group, nc_type xtype, endian=None):
                                       enum_namstring, &enum_val)
         if ierr != NC_NOERR:
            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        name = enum_namstring.decode(default_encoding,unicode_error)
+        name = enum_namstring.decode(group.encoding, group.encoding_errors)
         enum_dict[name] = int(enum_val)
     return EnumType(group, dt, name, enum_dict, typeid=xtype)
 
-cdef _strencode(pystr,encoding=None):
+cdef _strencode(pystr, encoding):
     # encode a string into bytes.  If already bytes, do nothing.
-    # uses default_encoding module variable for default encoding.
-    if encoding is None:
-        encoding = default_encoding
     try:
         return pystr.encode(encoding)
     except (AttributeError, UnicodeDecodeError):
@@ -5159,9 +5227,9 @@ returns a rank 1 numpy character array of length NUMCHARS with datatype `'S1'`
     arr[0:len(string)] = tuple(string)
     return arr
 
-def stringtochar(a):
+def stringtochar(a, encoding=default_encoding):
     """
-**`stringtochar(a)`**
+**`stringtochar(a, encoding)`**
 
 convert a string array to a character array with one extra dimension
 
@@ -5169,16 +5237,18 @@ convert a string array to a character array with one extra dimension
 is the number of characters in each string.  Will be converted to
 an array of characters (datatype `'S1'` or `'U1'`) of shape `a.shape + (N,)`.
 
+**`encoding`**: Encoding to use.
+
 returns a numpy character array with datatype `'S1'` or `'U1'`
 and shape `a.shape + (N,)`, where N is the length of each string in a."""
     dtype = a.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
-    b = numpy.array(tuple(a.tostring().decode(default_encoding)),dtype+'1')
+    b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
     b.shape = a.shape + (a.itemsize,)
     return b
 
-def chartostring(b):
+def chartostring(b, encoding=default_encoding):
     """
 **`chartostring(b)`**
 
@@ -5188,12 +5258,14 @@ convert a character array to a string array with one less dimension.
 Will be converted to a array of strings, where each string has a fixed
 length of `b.shape[-1]` characters.
 
+**`encoding`**: Encoding to use.
+
 returns a numpy string array with datatype `'SN'` or `'UN'` and shape
 `b.shape[:-1]` where where `N=b.shape[-1]`."""
     dtype = b.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
-    bs = b.tostring().decode(default_encoding)
+    bs = b.tostring().decode(encoding)
     slen = int(b.shape[-1])
     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
     a.shape = b.shape[:-1]
