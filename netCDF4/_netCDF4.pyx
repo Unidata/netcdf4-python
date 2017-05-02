@@ -1723,14 +1723,15 @@ references to the parent Dataset or Group.
                  diskless=False, persist=False, keepweakref=False, memory=None,
                  encoding=default_encoding, encoding_errors=unicode_error, **kwargs):
         """
-        **`__init__(self, filename, mode="r", clobber=True, diskless=False,
-        persist=False, keepweakref=False, format='NETCDF4')`**
+        **`__init__(self, filename, mode="r", clobber=True, format='NETCDF4'
+        diskless=False, persist=False, keepweakref=False, memory=None, 
+        encoding=default_encoding, encoding_errors=unicode_error)`**
 
         `netCDF4.Dataset` constructor.
 
         **`filename`**: Name of netCDF file to hold dataset. Can also
-	be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
-	set this is just used to set the `filepath()`.
+	    be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
+	    set this is just used to set the `filepath()`.
         
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
