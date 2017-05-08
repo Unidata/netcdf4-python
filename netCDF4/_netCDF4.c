@@ -1749,7 +1749,7 @@ static const char __pyx_k_sta[] = "sta";
 static const char __pyx_k_str[] = "str";
 static const char __pyx_k_sum[] = "sum";
 static const char __pyx_k_sys[] = "sys";
-static const char __pyx_k_u_2[] = "u";
+static const char __pyx_k_u_s[] = "u%s";
 static const char __pyx_k_val[] = "val";
 static const char __pyx_k_var[] = "var";
 static const char __pyx_k_vid[] = "vid";
@@ -3015,7 +3015,7 @@ static PyObject *__pyx_n_s_u1;
 static PyObject *__pyx_n_s_u2;
 static PyObject *__pyx_n_s_u4;
 static PyObject *__pyx_n_s_u8;
-static PyObject *__pyx_n_s_u_2;
+static PyObject *__pyx_kp_s_u_s;
 static PyObject *__pyx_n_s_unicode;
 static PyObject *__pyx_n_s_unicode_error;
 static PyObject *__pyx_n_s_unit;
@@ -40564,7 +40564,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_44__getitem__(struct __py
  *         # dtype, return view with corresponding unsigned dtype (issue #656)
  *         is_unsigned = getattr(self, '_Unsigned', False)             # <<<<<<<<<<<<<<
  *         if is_unsigned and data.dtype.kind == 'i':
- *             data = data.view('u'+data.dtype.str[2])
+ *             data = data.view('u%s' % data.dtype.itemsize)
  */
   __pyx_t_4 = __Pyx_GetAttr3(((PyObject *)__pyx_v_self), __pyx_n_s_Unsigned, Py_False); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 3828, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -40575,7 +40575,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_44__getitem__(struct __py
  *         # dtype, return view with corresponding unsigned dtype (issue #656)
  *         is_unsigned = getattr(self, '_Unsigned', False)
  *         if is_unsigned and data.dtype.kind == 'i':             # <<<<<<<<<<<<<<
- *             data = data.view('u'+data.dtype.str[2])
+ *             data = data.view('u%s' % data.dtype.itemsize)
  * 
  */
   __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_v_is_unsigned); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 3829, __pyx_L1_error)
@@ -40598,7 +40598,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_44__getitem__(struct __py
     /* "netCDF4/_netCDF4.pyx":3830
  *         is_unsigned = getattr(self, '_Unsigned', False)
  *         if is_unsigned and data.dtype.kind == 'i':
- *             data = data.view('u'+data.dtype.str[2])             # <<<<<<<<<<<<<<
+ *             data = data.view('u%s' % data.dtype.itemsize)             # <<<<<<<<<<<<<<
  * 
  *         return data
  */
@@ -40606,55 +40606,52 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_44__getitem__(struct __py
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_data, __pyx_n_s_dtype); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 3830, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3830, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3830, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_1, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 3830, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyString_Format(__pyx_kp_s_u_s, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 3830, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyNumber_Add(__pyx_n_s_u_2, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3830, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = NULL;
+    __pyx_t_1 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_4);
-      if (likely(__pyx_t_7)) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_1)) {
         PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-        __Pyx_INCREF(__pyx_t_7);
+        __Pyx_INCREF(__pyx_t_1);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    if (!__pyx_t_7) {
-      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 3830, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (!__pyx_t_1) {
+      __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 3830, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_3);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_1};
+        PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_t_7};
         __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 3830, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       } else
       #endif
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
-        PyObject *__pyx_temp[2] = {__pyx_t_7, __pyx_t_1};
+        PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_t_7};
         __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 3830, __pyx_L1_error)
-        __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       } else
       #endif
       {
         __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 3830, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_7); __pyx_t_7 = NULL;
-        __Pyx_GIVEREF(__pyx_t_1);
-        PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_1);
-        __pyx_t_1 = 0;
+        __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1); __pyx_t_1 = NULL;
+        __Pyx_GIVEREF(__pyx_t_7);
+        PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_7);
+        __pyx_t_7 = 0;
         __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 3830, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -40668,13 +40665,13 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_44__getitem__(struct __py
  *         # dtype, return view with corresponding unsigned dtype (issue #656)
  *         is_unsigned = getattr(self, '_Unsigned', False)
  *         if is_unsigned and data.dtype.kind == 'i':             # <<<<<<<<<<<<<<
- *             data = data.view('u'+data.dtype.str[2])
+ *             data = data.view('u%s' % data.dtype.itemsize)
  * 
  */
   }
 
   /* "netCDF4/_netCDF4.pyx":3832
- *             data = data.view('u'+data.dtype.str[2])
+ *             data = data.view('u%s' % data.dtype.itemsize)
  * 
  *         return data             # <<<<<<<<<<<<<<
  * 
@@ -80177,7 +80174,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_u2, __pyx_k_u2, sizeof(__pyx_k_u2), 0, 0, 1, 1},
   {&__pyx_n_s_u4, __pyx_k_u4, sizeof(__pyx_k_u4), 0, 0, 1, 1},
   {&__pyx_n_s_u8, __pyx_k_u8, sizeof(__pyx_k_u8), 0, 0, 1, 1},
-  {&__pyx_n_s_u_2, __pyx_k_u_2, sizeof(__pyx_k_u_2), 0, 0, 1, 1},
+  {&__pyx_kp_s_u_s, __pyx_k_u_s, sizeof(__pyx_k_u_s), 0, 0, 1, 0},
   {&__pyx_n_s_unicode, __pyx_k_unicode, sizeof(__pyx_k_unicode), 0, 0, 1, 1},
   {&__pyx_n_s_unicode_error, __pyx_k_unicode_error, sizeof(__pyx_k_unicode_error), 0, 0, 1, 1},
   {&__pyx_n_s_unit, __pyx_k_unit, sizeof(__pyx_k_unit), 0, 0, 1, 1},
