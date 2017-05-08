@@ -13,6 +13,7 @@ class Test_Unsigned(unittest.TestCase):
         data = f['ub'][:]
         assert data.dtype.str[1:] == 'u1'
         assert_array_equal(data,np.array([0,255],np.uint8))
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
