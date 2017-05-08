@@ -1,5 +1,7 @@
- version 1.2.8a0 (tag XXXX)
+ version 1.2.8a0 (not yet released)
 ===========================
+ * recognize _Unsigned attribute used by netcdf-java to designate unsigned
+   integer data stored with a signed integer type in netcdf-3.
  * add Dataset init memory parameter to allow loading a file from memory
 
  version 1.2.7 (tag v1.2.7rel)

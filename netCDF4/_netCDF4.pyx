@@ -3822,6 +3822,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # else if variable has only add_offset attributes, rescale.
             elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
                 data = data + self.add_offset
+
+        # if attribute _Unsigned is True, and variable has signed integer
+        # dtype, return view with corresponding unsigned dtype (issue #656)
+        is_unsigned = getattr(self, '_Unsigned', False)
+        if is_unsigned and data.dtype.str[1] == 'i':
+            data = data.view('u'+data.dtype.str[2])
+
         return data
 
     def _toma(self,data):
