@@ -3826,7 +3826,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # if attribute _Unsigned is True, and variable has signed integer
         # dtype, return view with corresponding unsigned dtype (issue #656)
         is_unsigned = getattr(self, '_Unsigned', False)
-        if is_unsigned and data.dtype.str[1] == 'i':
+        if is_unsigned and data.dtype.kind == 'i':
             data = data.view('u'+data.dtype.str[2])
 
         return data
