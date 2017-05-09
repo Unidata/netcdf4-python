@@ -3794,9 +3794,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
         # if attribute _Unsigned is True, and variable has signed integer
         # dtype, return view with corresponding unsigned dtype (issue #656)
-        is_unsigned = getattr(self, '_Unsigned', False)
-        if is_unsigned and data.dtype.kind == 'i':
-            data = data.view('u%s' % data.dtype.itemsize)
+        if self.scale:  # only do this if autoscale option is on.
+            is_unsigned = getattr(self, '_Unsigned', False)
+            if is_unsigned and data.dtype.kind == 'i':
+                data = data.view('u%s' % data.dtype.itemsize)
 
         # if auto_scale mode set to True, (through
         # a call to set_auto_scale or set_auto_maskandscale),
