@@ -3792,6 +3792,12 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # length 1.
             if data.ndim != 0: data = numpy.asarray(data[0])
 
+        # if attribute _Unsigned is True, and variable has signed integer
+        # dtype, return view with corresponding unsigned dtype (issue #656)
+        is_unsigned = getattr(self, '_Unsigned', False)
+        if is_unsigned and data.dtype.kind == 'i':
+            data = data.view('u%s' % data.dtype.itemsize)
+
         # if auto_scale mode set to True, (through
         # a call to set_auto_scale or set_auto_maskandscale),
         # perform automatic unpacking using scale_factor/add_offset.
@@ -3822,12 +3828,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # else if variable has only add_offset attributes, rescale.
             elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
                 data = data + self.add_offset
-
-        # if attribute _Unsigned is True, and variable has signed integer
-        # dtype, return view with corresponding unsigned dtype (issue #656)
-        is_unsigned = getattr(self, '_Unsigned', False)
-        if is_unsigned and data.dtype.kind == 'i':
-            data = data.view('u%s' % data.dtype.itemsize)
 
         return data
 
