@@ -1,5 +1,5 @@
 """
-Version 1.2.8a0
+Version 1.2.8
 -------------
 - - - 
 
@@ -936,7 +936,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.8a0"
+__version__ = "1.2.8"
 
 # Initialize numpy
 import posixpath
@@ -3791,6 +3791,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # Make sure a numpy scalar array is returned instead of a 1-d array of
             # length 1.
             if data.ndim != 0: data = numpy.asarray(data[0])
+
+        # if attribute _Unsigned is True, and variable has signed integer
+        # dtype, return view with corresponding unsigned dtype (issue #656)
+        if self.scale:  # only do this if autoscale option is on.
+            is_unsigned = getattr(self, '_Unsigned', False)
+            if is_unsigned and data.dtype.kind == 'i':
+                data = data.view('u%s' % data.dtype.itemsize)
 
         # if auto_scale mode set to True, (through
         # a call to set_auto_scale or set_auto_maskandscale),
