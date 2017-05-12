@@ -3829,7 +3829,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # else if variable has only add_offset attributes, rescale.
             elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
                 data = data + self.add_offset
-
         return data
 
     def _toma(self,data):
