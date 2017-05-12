@@ -5,11 +5,12 @@ import numpy as np
 
 class Test_Unsigned(unittest.TestCase):
     """
-    test autoconversion to unsigned ints when _Unsigned attribute is True (
-    (used by netcdf-java to designate unsigned
-    integer data stored with a signed integer type in netcdf-3).
+    Test autoconversion to unsigned ints when _Unsigned attribute is True.
+    This attribute is is set by netcdf-java to designate unsigned
+    integer data stored with a signed integer type in netcdf-3.
     If _Unsigned=True, a view to the data as unsigned integers is returned.
     set_autoscale can be used to turn this off (default is on)
+    See issue #656 (pull reqeust #658).
     """
     def test_unsigned(self):
         f = netCDF4.Dataset("ubyte.nc3")
