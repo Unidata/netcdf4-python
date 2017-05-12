@@ -3,6 +3,7 @@
  * recognize _Unsigned attribute used by netcdf-java to designate unsigned
    integer data stored with a signed integer type in netcdf-3.
  * add Dataset init memory parameter to allow loading a file from memory
+ * fix for negative times in num2date (issue #659).
 
  version 1.2.7 (tag v1.2.7rel)
 ==============================
