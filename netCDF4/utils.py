@@ -223,7 +223,7 @@ Boolean array must have the same shape as the data along this dimension."""
             # convert negative indices in 1d array to positive ones.
             ea = np.where(ea < 0, ea + shape[i], ea)
             if np.any(ea < 0):
-                raise IndexErro("integer index out of range")
+                raise IndexError("integer index out of range")
             # if unlim, let integer index be longer than current dimension
             # length.
             if ea.shape != (0,):
