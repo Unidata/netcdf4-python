@@ -5343,8 +5343,9 @@ contains one.
             msg='negative reference year in time units, must be >= 1'
             raise ValueError(msg)
 
-    if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
-       (calendar in ['gregorian','standard'] and basedate > gregorian):
+    postimes =  (numpy.asarray(times) > 0).all()
+    if postimes and ((calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
+       (calendar in ['gregorian','standard'] and basedate > gregorian)):
         # use python datetime module,
         isscalar = False
         try:
