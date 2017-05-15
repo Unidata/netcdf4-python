@@ -4,6 +4,7 @@
    integer data stored with a signed integer type in netcdf-3.
  * add Dataset init memory parameter to allow loading a file from memory
  * fix for negative times in num2date (issue #659).
+ * fix for failing tests in numpy 1.13 due to changes in numpy.ma (issue #662).
 
  version 1.2.7 (tag v1.2.7rel)
 ==============================

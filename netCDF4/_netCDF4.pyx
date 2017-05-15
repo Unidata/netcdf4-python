@@ -4082,8 +4082,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # for Enum variable, make sure data is valid.
         if self._isenum:
             test = numpy.zeros(data.shape,numpy.bool)
-            for val in self.datatype.enum_dict.values():
-                test += data == val
+            if ma.isMA(data):
+                # fix for new behaviour in numpy.ma in 1.13 (issue #662)
+                for val in self.datatype.enum_dict.values():
+                    test += data.filled() == val
+            else:
+                for val in self.datatype.enum_dict.values():
+                    test += data == val
             if not numpy.all(test):
                 msg="trying to assign illegal value to Enum variable"
                 raise ValueError(msg)
