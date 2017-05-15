@@ -43011,7 +43011,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_46_toma(struct __pyx_obj_
  *             # to numpy.ma.MaskedConstant to be consistent with slicing
  *             # behavior of masked arrays.
  *             if data.shape == () and data.mask.all():             # <<<<<<<<<<<<<<
- *                 data = data[...]
+ *                 data = data[()]
  *         return data
  */
     __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_data, __pyx_n_s_shape); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 3955, __pyx_L1_error)
@@ -43057,11 +43057,11 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_46_toma(struct __pyx_obj_
       /* "netCDF4/_netCDF4.pyx":3956
  *             # behavior of masked arrays.
  *             if data.shape == () and data.mask.all():
- *                 data = data[...]             # <<<<<<<<<<<<<<
+ *                 data = data[()]             # <<<<<<<<<<<<<<
  *         return data
  * 
  */
-      __pyx_t_1 = PyObject_GetItem(__pyx_v_data, Py_Ellipsis); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3956, __pyx_L1_error)
+      __pyx_t_1 = PyObject_GetItem(__pyx_v_data, __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3956, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF_SET(__pyx_v_data, __pyx_t_1);
       __pyx_t_1 = 0;
@@ -43070,7 +43070,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_46_toma(struct __pyx_obj_
  *             # to numpy.ma.MaskedConstant to be consistent with slicing
  *             # behavior of masked arrays.
  *             if data.shape == () and data.mask.all():             # <<<<<<<<<<<<<<
- *                 data = data[...]
+ *                 data = data[()]
  *         return data
  */
     }
@@ -43086,7 +43086,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_8Variable_46_toma(struct __pyx_obj_
 
   /* "netCDF4/_netCDF4.pyx":3957
  *             if data.shape == () and data.mask.all():
- *                 data = data[...]
+ *                 data = data[()]
  *         return data             # <<<<<<<<<<<<<<
  * 
  *     def _assign_vlen(self, elem, data):

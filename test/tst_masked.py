@@ -108,10 +108,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         # added to test fix to issue 46 (result before r865 was 10)
         assert_array_equal(datapacked2[0],11)
         # added test for issue 515
-        #assert(file['v'][0] is NP.ma.masked)
-        # above fails in 1.13.0rc1, so do this instead (issue #662)
-        # see also https://github.com/numpy/numpy/issues/9121
-        assert(NP.ma.is_masked(file['v'][0]))
+        assert(file['v'][0] is NP.ma.masked)
         file.close()
 
 if __name__ == '__main__':
