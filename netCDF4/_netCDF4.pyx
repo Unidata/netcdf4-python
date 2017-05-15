@@ -3953,7 +3953,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # to numpy.ma.MaskedConstant to be consistent with slicing
             # behavior of masked arrays.
             if data.shape == () and data.mask.all():
-                data = data[()]
+                # return a scalar numpy masked constant not a 0-d masked array,
+                # so that data == numpy.ma.masked.
+                data = data[()] # changed from [...] (issue #662)
         return data
 
     def _assign_vlen(self, elem, data):
