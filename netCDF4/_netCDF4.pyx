@@ -3834,7 +3834,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
         # if _Encoding is specified for a character variable, return 
         # a numpy array of strings with one less dimension.
-        if self.dtype.kind == 'S' and self.dtype.itemsize == 1:
+        if getattr(self.dtype,'kind',None) == 'S' and\
+           getattr(self.dtype,'itemsize',None) == 1:
             encoding = getattr(self,'_Encoding',None)
             if encoding is not None:
                 data = chartostring(data, encoding=encoding)
@@ -4056,7 +4057,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # if _Encoding is specified for a character variable, convert
         # numpy array of strings to a numpy array of characters with one more
         # dimension.
-        if (self.dtype.kind == 'S' and self.dtype.itemsize == 1) and\
+        if (getattr(self.dtype,'kind',None) == 'S' and
+            getattr(self.dtype,'itemsize',None) == 1) and\
            (data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1):
             encoding = getattr(self,'_Encoding',None)
             if encoding is not None:
