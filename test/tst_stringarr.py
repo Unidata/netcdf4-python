@@ -43,7 +43,7 @@ class StringArrayTestCase(unittest.TestCase):
         assert v.shape == (nrecs,n2,nchar)
         for nrec in range(nrecs):
             data2 = chartostring(v[nrec])
-            assert_array_equal(data2,data[nrec])
+            assert_array_equal(data2,data[nrec].astype('U'))
         nc.close()
 
 if __name__ == '__main__':

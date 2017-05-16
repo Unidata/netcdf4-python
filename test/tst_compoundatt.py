@@ -65,10 +65,10 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(vv.units['speed'], windunits['speed'].squeeze())
         assert_array_equal(vv.units['direction'],\
                 windunits['direction'].squeeze())
-        assert(chartostring(v.units['speed']).item().rstrip().decode('utf-8') == 'm/s')
-        assert(chartostring(v.units['direction']).item().rstrip().decode('utf-8') == 'degrees')
-        assert(chartostring(vv.units['speed']).item().rstrip().decode('utf-8') == 'm/s')
-        assert(chartostring(vv.units['direction']).item().rstrip().decode('utf-8') == 'degrees')
+        assert(chartostring(v.units['speed']).item().rstrip() == 'm/s')
+        assert(chartostring(v.units['direction']).item().rstrip() == 'degrees')
+        assert(chartostring(vv.units['speed']).item().rstrip() == 'm/s')
+        assert(chartostring(vv.units['direction']).item().rstrip() == 'degrees')
         f.close()
 
 if __name__ == '__main__':
