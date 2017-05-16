@@ -6,6 +6,11 @@
    (pull request #652, issues #406 and #295).
  * fix for negative times in num2date (issue #659).
  * fix for failing tests in numpy 1.13 due to changes in numpy.ma (issue #662).
+ * Checking for _Encoding attribute for NC_STRING variables, otherwise use
+   'utf-8'. 'utf-8' is used everywhere else, default_encoding global module
+   variable is no longer used.  getncattr method now takes optional kwarg
+   'encoding' (default 'utf-8') so encoding of attributes can be specified
+   if desired.
 
  version 1.2.7 (tag v1.2.7rel)
 ==============================
