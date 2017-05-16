@@ -5223,7 +5223,7 @@ and shape `a.shape + (N,)`, where N is the length of each string in a."""
     dtype = a.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
-    b = numpy.array(tuple(a.tostring().decode(encoding,errors='surrogateescale')),dtype+'1')
+    b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
     b.shape = a.shape + (a.itemsize,)
     return b
 
@@ -5247,7 +5247,7 @@ returns a numpy string array with datatype `'SN'` or `'UN'` and shape
         raise ValueError("type must be string or unicode ('S' or 'U')")
     if encoding is None:
         encoding = 'utf-8'
-    bs = b.tostring().decode(encoding,errors='surrogateescape')
+    bs = b.tostring().decode(encoding)
     slen = int(b.shape[-1])
     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
     a.shape = b.shape[:-1]
