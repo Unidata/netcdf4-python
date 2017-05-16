@@ -2,8 +2,7 @@ import sys
 import unittest
 import os
 import tempfile
-from netCDF4 import Dataset, CompoundType, chartostring, stringtoarr, \
-default_encoding
+from netCDF4 import Dataset, CompoundType, chartostring, stringtoarr
 import numpy as np
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 
@@ -66,10 +65,10 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(vv.units['speed'], windunits['speed'].squeeze())
         assert_array_equal(vv.units['direction'],\
                 windunits['direction'].squeeze())
-        assert(chartostring(v.units['speed']).item().rstrip().decode(default_encoding) == 'm/s')
-        assert(chartostring(v.units['direction']).item().rstrip().decode(default_encoding) == 'degrees')
-        assert(chartostring(vv.units['speed']).item().rstrip().decode(default_encoding) == 'm/s')
-        assert(chartostring(vv.units['direction']).item().rstrip().decode(default_encoding) == 'degrees')
+        assert(chartostring(v.units['speed']).item().rstrip().decode('utf-8') == 'm/s')
+        assert(chartostring(v.units['direction']).item().rstrip().decode('utf-8') == 'degrees')
+        assert(chartostring(vv.units['speed']).item().rstrip().decode('utf-8') == 'm/s')
+        assert(chartostring(vv.units['direction']).item().rstrip().decode('utf-8') == 'degrees')
         f.close()
 
 if __name__ == '__main__':
