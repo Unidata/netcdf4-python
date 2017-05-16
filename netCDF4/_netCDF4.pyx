@@ -4013,7 +4013,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             countp[n] = count[n]
         if self.dtype == str: # VLEN string
             strdata = <char **>malloc(sizeof(char *))
-            bytestr = _strencode(data)
+            # use _Encoding attribute to specify string encoding - if
+            # not given, use 'utf-8'.
+            encoding = getattr(self,'_Encoding','utf-8')
+            bytestr = _strencode(data,encoding=encoding)
             strdata[0] = bytestr
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, strdata)
