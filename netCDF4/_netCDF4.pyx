@@ -3832,12 +3832,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
                 data = data + self.add_offset
 
-        # if _Encoding is specified for a character array, return 
-        # an array of strings with one less dimension.
+        # if _Encoding is specified for a character variable, return 
+        # a numpy array of strings with one less dimension.
         if self.dtype.kind == 'S' and self.dtype.itemsize == 1:
             encoding = getattr(self,'_Encoding',None)
             if encoding is not None:
                 data = chartostring(data, encoding=encoding)
+
         return data
 
     def _toma(self,data):
@@ -4051,6 +4052,15 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
+
+        # if _Encoding is specified for a character variable, convert
+        # numpy array of strings to a numpy array of characters with one more
+        # dimension.
+        if (self.dtype.kind == 'S' and self.dtype.itemsize == 1) and\
+           (data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1):
+            encoding = getattr(self,'_Encoding',None)
+            if encoding is not None:
+                data = stringtochar(data, encoding=encoding)
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
             if self.dtype == str:

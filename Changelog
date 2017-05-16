@@ -13,7 +13,10 @@
    if desired. If _Encoding is specified for an NC_CHAR ('S1') variable,
    the chartostring utility function is used to convert the array of
    characters to an array of strings with one less dimension (the last
-   dimension is interpreted as the length of each string).
+   dimension is interpreted as the length of each string) when reading the
+   data. When writing the data, stringtochar is used to convert a numpy 
+   array of fixed length strings to an array of characters with one more
+   dimension.
 
  version 1.2.7 (tag v1.2.7rel)
 ==============================
