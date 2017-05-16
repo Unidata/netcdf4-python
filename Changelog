@@ -10,7 +10,10 @@
    'utf-8'. 'utf-8' is used everywhere else, default_encoding global module
    variable is no longer used.  getncattr method now takes optional kwarg
    'encoding' (default 'utf-8') so encoding of attributes can be specified
-   if desired.
+   if desired. If _Encoding is specified for an NC_CHAR ('S1') variable,
+   the chartostring utility function is used to convert the array of
+   characters to an array of strings with one less dimension (the last
+   dimension is interpreted as the length of each string).
 
  version 1.2.7 (tag v1.2.7rel)
 ==============================

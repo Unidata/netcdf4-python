@@ -3831,6 +3831,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # else if variable has only add_offset attributes, rescale.
             elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
                 data = data + self.add_offset
+
+        # if _Encoding is specified for a character array, return 
+        # an array of strings with one less dimension.
+        if self.dtype.kind == 'S' and self.dtype.itemsize == 1:
+            encoding = getattr(self,'_Encoding',None)
+            if encoding is not None:
+                data = chartostring(data, encoding=encoding)
         return data
 
     def _toma(self,data):
