@@ -2196,6 +2196,8 @@ static const char __pyx_k_current_shape_s[] = "current shape = %s\n";
 static const char __pyx_k_has_nc_inq_path[] = "__has_nc_inq_path__";
 static const char __pyx_k_has_nc_open_mem[] = "__has_nc_open_mem__";
 static const char __pyx_k_out_array_shape[] = "_out_array_shape";
+static const char __pyx_k_surrogateescale[] = "surrogateescale";
+static const char __pyx_k_surrogateescape[] = "surrogateescape";
 static const char __pyx_k_Dataset_cmptypes[] = "Dataset.cmptypes";
 static const char __pyx_k_Dimension___init[] = "_Dimension.__init__";
 static const char __pyx_k_Dimension___repr[] = "_Dimension.__repr__";
@@ -2369,6 +2371,7 @@ static const char __pyx_k_strides_must_all_be_1_for_vlen_v[] = "strides must all
 static const char __pyx_k_to_assign_values_to_a_non_scalar[] = "to assign values to a non-scalar variable, use a slice";
 static const char __pyx_k_to_retrieve_values_from_a_non_sc[] = "to retrieve values from a non-scalar variable, use slicing";
 static const char __pyx_k_trying_to_assign_illegal_value_t[] = "trying to assign illegal value to Enum variable";
+static const char __pyx_k_type_must_be_string_or_unicode_S[] = "type must be string or unicode ('S' or 'U')";
 static const char __pyx_k_type_must_string_or_unicode_S_or[] = "type must string or unicode ('S' or 'U')";
 static const char __pyx_k_unsupported_component_type_for_V[] = "unsupported component type for VLEN";
 static const char __pyx_k_unsupported_datatype_specified_f[] = "unsupported datatype specified for VLEN";
@@ -3002,6 +3005,8 @@ static PyObject *__pyx_n_s_strt;
 static PyObject *__pyx_n_s_subdtype;
 static PyObject *__pyx_n_s_sum;
 static PyObject *__pyx_n_s_supportedtypes;
+static PyObject *__pyx_n_s_surrogateescale;
+static PyObject *__pyx_n_s_surrogateescape;
 static PyObject *__pyx_n_s_sys;
 static PyObject *__pyx_n_s_t;
 static PyObject *__pyx_n_s_td;
@@ -3025,6 +3030,7 @@ static PyObject *__pyx_n_s_totaltime;
 static PyObject *__pyx_n_s_traceback;
 static PyObject *__pyx_kp_s_trying_to_assign_illegal_value_t;
 static PyObject *__pyx_n_s_tsecs;
+static PyObject *__pyx_kp_s_type_must_be_string_or_unicode_S;
 static PyObject *__pyx_kp_s_type_must_string_or_unicode_S_or;
 static PyObject *__pyx_n_s_typecode;
 static PyObject *__pyx_n_s_typeid;
@@ -61945,7 +61951,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_12stringtochar(CYTHON_UNUSED PyObje
  *     dtype = a.dtype.kind
  *     if dtype not in ["S","U"]:             # <<<<<<<<<<<<<<
  *         raise ValueError("type must string or unicode ('S' or 'U')")
- *     b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
+ *     b = numpy.array(tuple(a.tostring().decode(encoding,errors='surrogateescale')),dtype+'1')
  */
   __Pyx_INCREF(__pyx_v_dtype);
   __pyx_t_4 = __pyx_v_dtype;
@@ -61966,7 +61972,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_12stringtochar(CYTHON_UNUSED PyObje
  *     dtype = a.dtype.kind
  *     if dtype not in ["S","U"]:
  *         raise ValueError("type must string or unicode ('S' or 'U')")             # <<<<<<<<<<<<<<
- *     b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
+ *     b = numpy.array(tuple(a.tostring().decode(encoding,errors='surrogateescale')),dtype+'1')
  *     b.shape = a.shape + (a.itemsize,)
  */
     __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__111, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 5225, __pyx_L1_error)
@@ -61980,14 +61986,14 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_12stringtochar(CYTHON_UNUSED PyObje
  *     dtype = a.dtype.kind
  *     if dtype not in ["S","U"]:             # <<<<<<<<<<<<<<
  *         raise ValueError("type must string or unicode ('S' or 'U')")
- *     b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
+ *     b = numpy.array(tuple(a.tostring().decode(encoding,errors='surrogateescale')),dtype+'1')
  */
   }
 
   /* "netCDF4/_netCDF4.pyx":5226
  *     if dtype not in ["S","U"]:
  *         raise ValueError("type must string or unicode ('S' or 'U')")
- *     b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')             # <<<<<<<<<<<<<<
+ *     b = numpy.array(tuple(a.tostring().decode(encoding,errors='surrogateescale')),dtype+'1')             # <<<<<<<<<<<<<<
  *     b.shape = a.shape + (a.itemsize,)
  *     return b
  */
@@ -61996,84 +62002,54 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_12stringtochar(CYTHON_UNUSED PyObje
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_array); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 5226, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_a, __pyx_n_s_tostring); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 5226, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_7);
-    if (likely(__pyx_t_8)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-      __Pyx_INCREF(__pyx_t_8);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_7, function);
-    }
-  }
-  if (__pyx_t_8) {
-    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5226, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  } else {
-    __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5226, __pyx_L1_error)
-  }
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_a, __pyx_n_s_tostring); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5226, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_decode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 5226, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_7);
-    if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-      __Pyx_INCREF(__pyx_t_6);
+  __pyx_t_7 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
+    if (likely(__pyx_t_7)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      __Pyx_INCREF(__pyx_t_7);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_7, function);
+      __Pyx_DECREF_SET(__pyx_t_6, function);
     }
   }
-  if (!__pyx_t_6) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_v_encoding); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5226, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
+  if (__pyx_t_7) {
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5226, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_7)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_v_encoding};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5226, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_6, __pyx_v_encoding};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5226, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
-    } else
-    #endif
-    {
-      __pyx_t_8 = PyTuple_New(1+1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 5226, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
-      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
-      __Pyx_INCREF(__pyx_v_encoding);
-      __Pyx_GIVEREF(__pyx_v_encoding);
-      PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_v_encoding);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5226, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    }
+    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5226, __pyx_L1_error)
   }
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = PySequence_Tuple(__pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 5226, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Add(__pyx_v_dtype, __pyx_kp_s_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5226, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_8 = NULL;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_decode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 5226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_INCREF(__pyx_v_encoding);
+  __Pyx_GIVEREF(__pyx_v_encoding);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_encoding);
+  __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 5226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_errors, __pyx_n_s_surrogateescale) < 0) __PYX_ERR(0, 5226, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 5226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_7 = PySequence_Tuple(__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 5226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __pyx_t_8 = PyNumber_Add(__pyx_v_dtype, __pyx_kp_s_1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 5226, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_3 = NULL;
   __pyx_t_9 = 0;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_8)) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_5);
+    if (likely(__pyx_t_3)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_8);
+      __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_5, function);
       __pyx_t_9 = 1;
@@ -62081,36 +62057,36 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_12stringtochar(CYTHON_UNUSED PyObje
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_5)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_7, __pyx_t_3};
+    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_7, __pyx_t_8};
     __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 5226, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_7, __pyx_t_3};
+    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_7, __pyx_t_8};
     __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_9, 2+__pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 5226, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   } else
   #endif
   {
     __pyx_t_6 = PyTuple_New(2+__pyx_t_9); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    if (__pyx_t_8) {
-      __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_8); __pyx_t_8 = NULL;
+    if (__pyx_t_3) {
+      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_3); __pyx_t_3 = NULL;
     }
     __Pyx_GIVEREF(__pyx_t_7);
     PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_9, __pyx_t_7);
-    __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_9, __pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_8);
+    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_9, __pyx_t_8);
     __pyx_t_7 = 0;
-    __pyx_t_3 = 0;
+    __pyx_t_8 = 0;
     __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 5226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -62121,7 +62097,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_12stringtochar(CYTHON_UNUSED PyObje
 
   /* "netCDF4/_netCDF4.pyx":5227
  *         raise ValueError("type must string or unicode ('S' or 'U')")
- *     b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
+ *     b = numpy.array(tuple(a.tostring().decode(encoding,errors='surrogateescale')),dtype+'1')
  *     b.shape = a.shape + (a.itemsize,)             # <<<<<<<<<<<<<<
  *     return b
  * 
@@ -62143,7 +62119,7 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_12stringtochar(CYTHON_UNUSED PyObje
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "netCDF4/_netCDF4.pyx":5228
- *     b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
+ *     b = numpy.array(tuple(a.tostring().decode(encoding,errors='surrogateescale')),dtype+'1')
  *     b.shape = a.shape + (a.itemsize,)
  *     return b             # <<<<<<<<<<<<<<
  * 
@@ -62278,8 +62254,8 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_14chartostring(CYTHON_UNUSED PyObje
  * returns a numpy string array with datatype `'SN'` or `'UN'` and shape
  * `b.shape[:-1]` where where `N=b.shape[-1]`."""
  *     dtype = b.dtype.kind             # <<<<<<<<<<<<<<
- *     if encoding is None:
- *         encoding = 'utf-8'
+ *     if dtype not in ["S","U"]:
+ *         raise ValueError("type must be string or unicode ('S' or 'U')")
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_b, __pyx_n_s_dtype); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -62292,182 +62268,152 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_14chartostring(CYTHON_UNUSED PyObje
   /* "netCDF4/_netCDF4.pyx":5246
  * `b.shape[:-1]` where where `N=b.shape[-1]`."""
  *     dtype = b.dtype.kind
- *     if encoding is None:             # <<<<<<<<<<<<<<
- *         encoding = 'utf-8'
- *     if dtype not in ["S","U"]:
+ *     if dtype not in ["S","U"]:             # <<<<<<<<<<<<<<
+ *         raise ValueError("type must be string or unicode ('S' or 'U')")
+ *     if encoding is None:
  */
-  __pyx_t_3 = (__pyx_v_encoding == Py_None);
+  __Pyx_INCREF(__pyx_v_dtype);
+  __pyx_t_2 = __pyx_v_dtype;
+  __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_S, Py_NE)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 5246, __pyx_L1_error)
+  if (__pyx_t_4) {
+  } else {
+    __pyx_t_3 = __pyx_t_4;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_U, Py_NE)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 5246, __pyx_L1_error)
+  __pyx_t_3 = __pyx_t_4;
+  __pyx_L4_bool_binop_done:;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (__pyx_t_4) {
 
     /* "netCDF4/_netCDF4.pyx":5247
  *     dtype = b.dtype.kind
- *     if encoding is None:
- *         encoding = 'utf-8'             # <<<<<<<<<<<<<<
  *     if dtype not in ["S","U"]:
- *         raise ValueError("type must string or unicode ('S' or 'U')")
+ *         raise ValueError("type must be string or unicode ('S' or 'U')")             # <<<<<<<<<<<<<<
+ *     if encoding is None:
+ *         encoding = 'utf-8'
  */
-    __Pyx_INCREF(__pyx_kp_s_utf_8);
-    __Pyx_DECREF_SET(__pyx_v_encoding, __pyx_kp_s_utf_8);
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__112, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5247, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __PYX_ERR(0, 5247, __pyx_L1_error)
 
     /* "netCDF4/_netCDF4.pyx":5246
  * `b.shape[:-1]` where where `N=b.shape[-1]`."""
  *     dtype = b.dtype.kind
- *     if encoding is None:             # <<<<<<<<<<<<<<
- *         encoding = 'utf-8'
- *     if dtype not in ["S","U"]:
+ *     if dtype not in ["S","U"]:             # <<<<<<<<<<<<<<
+ *         raise ValueError("type must be string or unicode ('S' or 'U')")
+ *     if encoding is None:
  */
   }
 
   /* "netCDF4/_netCDF4.pyx":5248
- *     if encoding is None:
+ *     if dtype not in ["S","U"]:
+ *         raise ValueError("type must be string or unicode ('S' or 'U')")
+ *     if encoding is None:             # <<<<<<<<<<<<<<
  *         encoding = 'utf-8'
- *     if dtype not in ["S","U"]:             # <<<<<<<<<<<<<<
- *         raise ValueError("type must string or unicode ('S' or 'U')")
- *     bs = b.tostring().decode(encoding)
+ *     bs = b.tostring().decode(encoding,errors='surrogateescape')
  */
-  __Pyx_INCREF(__pyx_v_dtype);
-  __pyx_t_2 = __pyx_v_dtype;
-  __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_S, Py_NE)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 5248, __pyx_L1_error)
-  if (__pyx_t_3) {
-  } else {
-    __pyx_t_4 = __pyx_t_3;
-    goto __pyx_L5_bool_binop_done;
-  }
-  __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_U, Py_NE)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 5248, __pyx_L1_error)
-  __pyx_t_4 = __pyx_t_3;
-  __pyx_L5_bool_binop_done:;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_4 = (__pyx_v_encoding == Py_None);
   __pyx_t_3 = (__pyx_t_4 != 0);
   if (__pyx_t_3) {
 
     /* "netCDF4/_netCDF4.pyx":5249
- *         encoding = 'utf-8'
- *     if dtype not in ["S","U"]:
- *         raise ValueError("type must string or unicode ('S' or 'U')")             # <<<<<<<<<<<<<<
- *     bs = b.tostring().decode(encoding)
+ *         raise ValueError("type must be string or unicode ('S' or 'U')")
+ *     if encoding is None:
+ *         encoding = 'utf-8'             # <<<<<<<<<<<<<<
+ *     bs = b.tostring().decode(encoding,errors='surrogateescape')
  *     slen = int(b.shape[-1])
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__112, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5249, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 5249, __pyx_L1_error)
+    __Pyx_INCREF(__pyx_kp_s_utf_8);
+    __Pyx_DECREF_SET(__pyx_v_encoding, __pyx_kp_s_utf_8);
 
     /* "netCDF4/_netCDF4.pyx":5248
- *     if encoding is None:
+ *     if dtype not in ["S","U"]:
+ *         raise ValueError("type must be string or unicode ('S' or 'U')")
+ *     if encoding is None:             # <<<<<<<<<<<<<<
  *         encoding = 'utf-8'
- *     if dtype not in ["S","U"]:             # <<<<<<<<<<<<<<
- *         raise ValueError("type must string or unicode ('S' or 'U')")
- *     bs = b.tostring().decode(encoding)
+ *     bs = b.tostring().decode(encoding,errors='surrogateescape')
  */
   }
 
   /* "netCDF4/_netCDF4.pyx":5250
- *     if dtype not in ["S","U"]:
- *         raise ValueError("type must string or unicode ('S' or 'U')")
- *     bs = b.tostring().decode(encoding)             # <<<<<<<<<<<<<<
+ *     if encoding is None:
+ *         encoding = 'utf-8'
+ *     bs = b.tostring().decode(encoding,errors='surrogateescape')             # <<<<<<<<<<<<<<
  *     slen = int(b.shape[-1])
- *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
+ *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
  */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_b, __pyx_n_s_tostring); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 5250, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_6);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
-    }
-  }
-  if (__pyx_t_6) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5250, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5250, __pyx_L1_error)
-  }
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_b, __pyx_n_s_tostring); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 5250, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_1)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_1);
+  __pyx_t_5 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
     }
   }
-  if (!__pyx_t_1) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_encoding); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5250, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+  if (__pyx_t_5) {
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5250, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_v_encoding};
-      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5250, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_GOTREF(__pyx_t_2);
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[2] = {__pyx_t_1, __pyx_v_encoding};
-      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5250, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_GOTREF(__pyx_t_2);
-    } else
-    #endif
-    {
-      __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5250, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1); __pyx_t_1 = NULL;
-      __Pyx_INCREF(__pyx_v_encoding);
-      __Pyx_GIVEREF(__pyx_v_encoding);
-      PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_v_encoding);
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5250, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    }
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5250, __pyx_L1_error)
   }
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_decode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5250, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5250, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_INCREF(__pyx_v_encoding);
+  __Pyx_GIVEREF(__pyx_v_encoding);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_encoding);
+  __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 5250, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_errors, __pyx_n_s_surrogateescape) < 0) __PYX_ERR(0, 5250, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5250, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_v_bs = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_v_bs = __pyx_t_6;
+  __pyx_t_6 = 0;
 
   /* "netCDF4/_netCDF4.pyx":5251
- *         raise ValueError("type must string or unicode ('S' or 'U')")
- *     bs = b.tostring().decode(encoding)
+ *         encoding = 'utf-8'
+ *     bs = b.tostring().decode(encoding,errors='surrogateescape')
  *     slen = int(b.shape[-1])             # <<<<<<<<<<<<<<
- *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
+ *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
  *     a.shape = b.shape[:-1]
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_b, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5251, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_2, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 5251, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_b, __pyx_n_s_shape); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5251, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_6, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 5251, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyNumber_Int(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5251, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyNumber_Int(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5251, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_v_slen = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_v_slen = __pyx_t_6;
+  __pyx_t_6 = 0;
 
   /* "netCDF4/_netCDF4.pyx":5252
- *     bs = b.tostring().decode(encoding)
+ *     bs = b.tostring().decode(encoding,errors='surrogateescape')
  *     slen = int(b.shape[-1])
- *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))             # <<<<<<<<<<<<<<
+ *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))             # <<<<<<<<<<<<<<
  *     a.shape = b.shape[:-1]
  *     return a
  */
   __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 5252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_array); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5252, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_array); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5252, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 5252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -62541,37 +62487,37 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_14chartostring(CYTHON_UNUSED PyObje
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = PyObject_Repr(__pyx_v_slen); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 5252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = PyNumber_Add(__pyx_v_dtype, __pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 5252, __pyx_L1_error)
+  __pyx_t_10 = PyNumber_Add(__pyx_n_s_U, __pyx_t_8); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 5252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __pyx_t_8 = NULL;
   __pyx_t_11 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_6);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_2);
     if (likely(__pyx_t_8)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
       __Pyx_INCREF(__pyx_t_8);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
       __pyx_t_11 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_6)) {
+  if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_10};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5252, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5252, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[3] = {__pyx_t_8, __pyx_t_5, __pyx_t_10};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5252, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5252, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   } else
@@ -62588,31 +62534,31 @@ static PyObject *__pyx_pf_7netCDF4_8_netCDF4_14chartostring(CYTHON_UNUSED PyObje
     PyTuple_SET_ITEM(__pyx_t_1, 1+__pyx_t_11, __pyx_t_10);
     __pyx_t_5 = 0;
     __pyx_t_10 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5252, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5252, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_v_a = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_a = __pyx_t_6;
+  __pyx_t_6 = 0;
 
   /* "netCDF4/_netCDF4.pyx":5253
  *     slen = int(b.shape[-1])
- *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
+ *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
  *     a.shape = b.shape[:-1]             # <<<<<<<<<<<<<<
  *     return a
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_b, __pyx_n_s_shape); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5253, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyObject_GetSlice(__pyx_t_2, 0, -1L, NULL, NULL, &__pyx_slice__113, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5253, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_b, __pyx_n_s_shape); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 5253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_a, __pyx_n_s_shape, __pyx_t_6) < 0) __PYX_ERR(0, 5253, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_t_6, 0, -1L, NULL, NULL, &__pyx_slice__113, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5253, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_a, __pyx_n_s_shape, __pyx_t_2) < 0) __PYX_ERR(0, 5253, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "netCDF4/_netCDF4.pyx":5254
- *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
+ *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
  *     a.shape = b.shape[:-1]
  *     return a             # <<<<<<<<<<<<<<
  * 
@@ -79663,6 +79609,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_subdtype, __pyx_k_subdtype, sizeof(__pyx_k_subdtype), 0, 0, 1, 1},
   {&__pyx_n_s_sum, __pyx_k_sum, sizeof(__pyx_k_sum), 0, 0, 1, 1},
   {&__pyx_n_s_supportedtypes, __pyx_k_supportedtypes, sizeof(__pyx_k_supportedtypes), 0, 0, 1, 1},
+  {&__pyx_n_s_surrogateescale, __pyx_k_surrogateescale, sizeof(__pyx_k_surrogateescale), 0, 0, 1, 1},
+  {&__pyx_n_s_surrogateescape, __pyx_k_surrogateescape, sizeof(__pyx_k_surrogateescape), 0, 0, 1, 1},
   {&__pyx_n_s_sys, __pyx_k_sys, sizeof(__pyx_k_sys), 0, 0, 1, 1},
   {&__pyx_n_s_t, __pyx_k_t, sizeof(__pyx_k_t), 0, 0, 1, 1},
   {&__pyx_n_s_td, __pyx_k_td, sizeof(__pyx_k_td), 0, 0, 1, 1},
@@ -79686,6 +79634,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_traceback, __pyx_k_traceback, sizeof(__pyx_k_traceback), 0, 0, 1, 1},
   {&__pyx_kp_s_trying_to_assign_illegal_value_t, __pyx_k_trying_to_assign_illegal_value_t, sizeof(__pyx_k_trying_to_assign_illegal_value_t), 0, 0, 1, 0},
   {&__pyx_n_s_tsecs, __pyx_k_tsecs, sizeof(__pyx_k_tsecs), 0, 0, 1, 1},
+  {&__pyx_kp_s_type_must_be_string_or_unicode_S, __pyx_k_type_must_be_string_or_unicode_S, sizeof(__pyx_k_type_must_be_string_or_unicode_S), 0, 0, 1, 0},
   {&__pyx_kp_s_type_must_string_or_unicode_S_or, __pyx_k_type_must_string_or_unicode_S_or, sizeof(__pyx_k_type_must_string_or_unicode_S_or), 0, 0, 1, 0},
   {&__pyx_n_s_typecode, __pyx_k_typecode, sizeof(__pyx_k_typecode), 0, 0, 1, 1},
   {&__pyx_n_s_typeid, __pyx_k_typeid, sizeof(__pyx_k_typeid), 0, 0, 1, 1},
@@ -80829,27 +80778,27 @@ static int __Pyx_InitCachedConstants(void) {
  *     dtype = a.dtype.kind
  *     if dtype not in ["S","U"]:
  *         raise ValueError("type must string or unicode ('S' or 'U')")             # <<<<<<<<<<<<<<
- *     b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
+ *     b = numpy.array(tuple(a.tostring().decode(encoding,errors='surrogateescale')),dtype+'1')
  *     b.shape = a.shape + (a.itemsize,)
  */
   __pyx_tuple__111 = PyTuple_Pack(1, __pyx_kp_s_type_must_string_or_unicode_S_or); if (unlikely(!__pyx_tuple__111)) __PYX_ERR(0, 5225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__111);
   __Pyx_GIVEREF(__pyx_tuple__111);
 
-  /* "netCDF4/_netCDF4.pyx":5249
- *         encoding = 'utf-8'
+  /* "netCDF4/_netCDF4.pyx":5247
+ *     dtype = b.dtype.kind
  *     if dtype not in ["S","U"]:
- *         raise ValueError("type must string or unicode ('S' or 'U')")             # <<<<<<<<<<<<<<
- *     bs = b.tostring().decode(encoding)
- *     slen = int(b.shape[-1])
+ *         raise ValueError("type must be string or unicode ('S' or 'U')")             # <<<<<<<<<<<<<<
+ *     if encoding is None:
+ *         encoding = 'utf-8'
  */
-  __pyx_tuple__112 = PyTuple_Pack(1, __pyx_kp_s_type_must_string_or_unicode_S_or); if (unlikely(!__pyx_tuple__112)) __PYX_ERR(0, 5249, __pyx_L1_error)
+  __pyx_tuple__112 = PyTuple_Pack(1, __pyx_kp_s_type_must_be_string_or_unicode_S); if (unlikely(!__pyx_tuple__112)) __PYX_ERR(0, 5247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__112);
   __Pyx_GIVEREF(__pyx_tuple__112);
 
   /* "netCDF4/_netCDF4.pyx":5253
  *     slen = int(b.shape[-1])
- *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
+ *     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
  *     a.shape = b.shape[:-1]             # <<<<<<<<<<<<<<
  *     return a
  * 
