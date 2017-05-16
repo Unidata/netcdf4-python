@@ -1,9 +1,11 @@
  version 1.2.8 (not yet released)
 =================================
  * recognize _Unsigned attribute used by netcdf-java to designate unsigned
-   integer data stored with a signed integer type in netcdf-3.
+   integer data stored with a signed integer type in netcdf-3 (issue #656).
  * add Dataset init memory parameter to allow loading a file from memory
+   (pull request #652, issues #406 and #295).
  * fix for negative times in num2date (issue #659).
+ * fix for failing tests in numpy 1.13 due to changes in numpy.ma (issue #662).
 
  version 1.2.7 (tag v1.2.7rel)
 ==============================
