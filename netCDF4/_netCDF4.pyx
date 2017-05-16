@@ -5223,7 +5223,7 @@ and shape `a.shape + (N,)`, where N is the length of each string in a."""
     dtype = a.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
-    b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
+    b = numpy.array(tuple(a.tostring().decode(encoding,errors='surrogateescale')),dtype+'1')
     b.shape = a.shape + (a.itemsize,)
     return b
 
@@ -5243,13 +5243,13 @@ optional kwarg `encoding` can be used to specify character encoding (default
 returns a numpy string array with datatype `'SN'` or `'UN'` and shape
 `b.shape[:-1]` where where `N=b.shape[-1]`."""
     dtype = b.dtype.kind
+    if dtype not in ["S","U"]:
+        raise ValueError("type must be string or unicode ('S' or 'U')")
     if encoding is None:
         encoding = 'utf-8'
-    if dtype not in ["S","U"]:
-        raise ValueError("type must string or unicode ('S' or 'U')")
-    bs = b.tostring().decode(encoding)
+    bs = b.tostring().decode(encoding,errors='surrogateescape')
     slen = int(b.shape[-1])
-    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
+    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
     a.shape = b.shape[:-1]
     return a
 
