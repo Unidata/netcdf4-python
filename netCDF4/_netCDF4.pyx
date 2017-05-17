@@ -3840,6 +3840,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         if getattr(self.dtype,'kind',None) == 'S' and\
            getattr(self.dtype,'itemsize',None) == 1:
             encoding = getattr(self,'_Encoding',None)
+            # should this only be done if self.scale = True?
+            # should there be some other way to disable this?
             if encoding is not None:
                 data = chartostring(data, encoding=encoding)
 
@@ -4066,10 +4068,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             encoding = getattr(self,'_Encoding',None)
             if encoding is not None:
                 # _Encoding attribute is set
-                # make sure data is an numpy array of fixed length strings
+                # if data is a string, convert to a numpy string array
                 # whose length is equal to the rightmost dimension of the
                 # variable.
-                data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+                if type(data) == str: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
                 if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:
                     # if data is a numpy string array, convert it to an array
                     # of characters with one more dimension.
