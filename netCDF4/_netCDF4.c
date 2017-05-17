@@ -43653,7 +43653,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *             encoding = getattr(self,'_Encoding',None)
  *             if encoding is not None:             # <<<<<<<<<<<<<<
  *                 # _Encoding attribute is set
- *                 # if data is a string, convert to a numpy string array
+ *                 # if data is a string or a bytes object, convert to a numpy string array
  */
     __pyx_t_1 = (__pyx_v_encoding != Py_None);
     __pyx_t_4 = (__pyx_t_1 != 0);
@@ -43662,14 +43662,28 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       /* "netCDF4/_netCDF4.pyx":4074
  *                 # whose length is equal to the rightmost dimension of the
  *                 # variable.
- *                 if type(data) == str: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))             # <<<<<<<<<<<<<<
+ *                 if type(data) in [str,bytes]: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))             # <<<<<<<<<<<<<<
  *                 if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:
  *                     # if data is a numpy string array, convert it to an array
  */
-      __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_data)), ((PyObject *)(&PyString_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 4074, __pyx_L1_error)
-      __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4074, __pyx_L1_error)
+      __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_data)));
+      __pyx_t_3 = ((PyObject *)Py_TYPE(__pyx_v_data));
+      __pyx_t_2 = PyObject_RichCompare(((PyObject *)__pyx_t_3), ((PyObject *)(&PyString_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4074, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4074, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      if (!__pyx_t_1) {
+      } else {
+        __pyx_t_4 = __pyx_t_1;
+        goto __pyx_L8_bool_binop_done;
+      }
+      __pyx_t_2 = PyObject_RichCompare(((PyObject *)__pyx_t_3), ((PyObject *)(&PyBytes_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4074, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4074, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_4 = __pyx_t_1;
+      __pyx_L8_bool_binop_done:;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (__pyx_t_4) {
+      __pyx_t_1 = (__pyx_t_4 != 0);
+      if (__pyx_t_1) {
         __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 4074, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4074, __pyx_L1_error)
@@ -43706,7 +43720,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
 
       /* "netCDF4/_netCDF4.pyx":4075
  *                 # variable.
- *                 if type(data) == str: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+ *                 if type(data) in [str,bytes]: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
  *                 if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:             # <<<<<<<<<<<<<<
  *                     # if data is a numpy string array, convert it to an array
  *                     # of characters with one more dimension.
@@ -43719,18 +43733,18 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       __pyx_t_8 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_S, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 4075, __pyx_L1_error)
       if (!__pyx_t_8) {
       } else {
-        __pyx_t_1 = __pyx_t_8;
-        goto __pyx_L11_bool_binop_done;
+        __pyx_t_4 = __pyx_t_8;
+        goto __pyx_L13_bool_binop_done;
       }
       __pyx_t_8 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_U, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 4075, __pyx_L1_error)
-      __pyx_t_1 = __pyx_t_8;
-      __pyx_L11_bool_binop_done:;
+      __pyx_t_4 = __pyx_t_8;
+      __pyx_L13_bool_binop_done:;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_8 = (__pyx_t_1 != 0);
+      __pyx_t_8 = (__pyx_t_4 != 0);
       if (__pyx_t_8) {
       } else {
-        __pyx_t_4 = __pyx_t_8;
-        goto __pyx_L9_bool_binop_done;
+        __pyx_t_1 = __pyx_t_8;
+        goto __pyx_L11_bool_binop_done;
       }
       __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_data, __pyx_n_s_dtype); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 4075, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
@@ -43741,9 +43755,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 4075, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_4 = __pyx_t_8;
-      __pyx_L9_bool_binop_done:;
-      if (__pyx_t_4) {
+      __pyx_t_1 = __pyx_t_8;
+      __pyx_L11_bool_binop_done:;
+      if (__pyx_t_1) {
 
         /* "netCDF4/_netCDF4.pyx":4078
  *                     # if data is a numpy string array, convert it to an array
@@ -43772,7 +43786,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
 
         /* "netCDF4/_netCDF4.pyx":4075
  *                 # variable.
- *                 if type(data) == str: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+ *                 if type(data) in [str,bytes]: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
  *                 if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:             # <<<<<<<<<<<<<<
  *                     # if data is a numpy string array, convert it to an array
  *                     # of characters with one more dimension.
@@ -43784,7 +43798,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *             encoding = getattr(self,'_Encoding',None)
  *             if encoding is not None:             # <<<<<<<<<<<<<<
  *                 # _Encoding attribute is set
- *                 # if data is a string, convert to a numpy string array
+ *                 # if data is a string or a bytes object, convert to a numpy string array
  */
     }
 
@@ -43804,8 +43818,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *             if self.dtype == str:
  *                 # for string vars, if data is not an array
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isvlen); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4080, __pyx_L1_error)
-  if (__pyx_t_4) {
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isvlen); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4080, __pyx_L1_error)
+  if (__pyx_t_1) {
 
     /* "netCDF4/_netCDF4.pyx":4081
  * 
@@ -43815,9 +43829,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 # assume it is a python string and raise an error
  */
     __pyx_t_2 = PyObject_RichCompare(__pyx_v_self->dtype, ((PyObject *)(&PyString_Type)), Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4081, __pyx_L1_error)
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4081, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4081, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (__pyx_t_4) {
+    if (__pyx_t_1) {
 
       /* "netCDF4/_netCDF4.pyx":4085
  *                 # assume it is a python string and raise an error
@@ -43831,9 +43845,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_ndarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 4085, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_4 = PyObject_IsInstance(__pyx_v_data, __pyx_t_3); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 4085, __pyx_L1_error)
+      __pyx_t_1 = PyObject_IsInstance(__pyx_v_data, __pyx_t_3); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 4085, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_8 = ((!(__pyx_t_4 != 0)) != 0);
+      __pyx_t_8 = ((!(__pyx_t_1 != 0)) != 0);
       if (__pyx_t_8) {
 
         /* "netCDF4/_netCDF4.pyx":4087
@@ -43844,12 +43858,12 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                     self._assign_vlen(elem, data)
  */
         __pyx_t_3 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_elem)), ((PyObject *)Py_TYPE(__pyx_builtin_Ellipsis)), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 4087, __pyx_L1_error)
-        __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4087, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4087, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (__pyx_t_4) {
+        if (__pyx_t_1) {
         } else {
-          __pyx_t_8 = __pyx_t_4;
-          goto __pyx_L17_bool_binop_done;
+          __pyx_t_8 = __pyx_t_1;
+          goto __pyx_L19_bool_binop_done;
         }
 
         /* "netCDF4/_netCDF4.pyx":4088
@@ -43871,9 +43885,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                        len(self.dimensions): elem = 0
  *                     self._assign_vlen(elem, data)
  */
-        __pyx_t_4 = ((!(__pyx_t_9 != 0)) != 0);
-        __pyx_t_8 = __pyx_t_4;
-        __pyx_L17_bool_binop_done:;
+        __pyx_t_1 = ((!(__pyx_t_9 != 0)) != 0);
+        __pyx_t_8 = __pyx_t_1;
+        __pyx_L19_bool_binop_done:;
         if (__pyx_t_8) {
 
           /* "netCDF4/_netCDF4.pyx":4088
@@ -43982,18 +43996,18 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_kind); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4091, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_S, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4091, __pyx_L1_error)
-      if (!__pyx_t_4) {
+      __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_S, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4091, __pyx_L1_error)
+      if (!__pyx_t_1) {
       } else {
-        __pyx_t_8 = __pyx_t_4;
-        goto __pyx_L19_bool_binop_done;
+        __pyx_t_8 = __pyx_t_1;
+        goto __pyx_L21_bool_binop_done;
       }
-      __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_U, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4091, __pyx_L1_error)
-      __pyx_t_8 = __pyx_t_4;
-      __pyx_L19_bool_binop_done:;
+      __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_U, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4091, __pyx_L1_error)
+      __pyx_t_8 = __pyx_t_1;
+      __pyx_L21_bool_binop_done:;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_4 = (__pyx_t_8 != 0);
-      if (__pyx_t_4) {
+      __pyx_t_1 = (__pyx_t_8 != 0);
+      if (__pyx_t_1) {
 
         /* "netCDF4/_netCDF4.pyx":4092
  *                     return
@@ -44050,9 +44064,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
           }
         }
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4092, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4092, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        if (__pyx_t_4) {
+        if (__pyx_t_1) {
 
           /* "netCDF4/_netCDF4.pyx":4093
  *                 elif data.dtype.kind in ['S', 'U']:
@@ -44154,7 +44168,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                     if ma.isMA(data):
  *                         msg='masked arrays cannot be assigned by VLEN str slices'
  */
-        goto __pyx_L15;
+        goto __pyx_L17;
       }
 
       /* "netCDF4/_netCDF4.pyx":4096
@@ -44169,9 +44183,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_kind); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4096, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_O, Py_NE)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4096, __pyx_L1_error)
+      __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_O, Py_NE)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4096, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (__pyx_t_4) {
+      if (__pyx_t_1) {
 
         /* "netCDF4/_netCDF4.pyx":4097
  *                     data = data.astype(object)
@@ -44210,7 +44224,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                            'be assigned to VLEN str var slices')
  */
       }
-      __pyx_L15:;
+      __pyx_L17:;
 
       /* "netCDF4/_netCDF4.pyx":4081
  * 
@@ -44219,7 +44233,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 # for string vars, if data is not an array
  *                 # assume it is a python string and raise an error
  */
-      goto __pyx_L14;
+      goto __pyx_L16;
     }
 
     /* "netCDF4/_netCDF4.pyx":4104
@@ -44237,22 +44251,22 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_8 = PyObject_IsInstance(__pyx_v_data, __pyx_t_2); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 4104, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_1 = ((!(__pyx_t_8 != 0)) != 0);
-      if (!__pyx_t_1) {
+      __pyx_t_4 = ((!(__pyx_t_8 != 0)) != 0);
+      if (!__pyx_t_4) {
       } else {
-        __pyx_t_4 = __pyx_t_1;
-        goto __pyx_L23_bool_binop_done;
+        __pyx_t_1 = __pyx_t_4;
+        goto __pyx_L25_bool_binop_done;
       }
       __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_data, __pyx_n_s_dtype); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4104, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_kind); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 4104, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_O, Py_NE)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4104, __pyx_L1_error)
+      __pyx_t_4 = (__Pyx_PyString_Equals(__pyx_t_5, __pyx_n_s_O, Py_NE)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4104, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_4 = __pyx_t_1;
-      __pyx_L23_bool_binop_done:;
-      if (__pyx_t_4) {
+      __pyx_t_1 = __pyx_t_4;
+      __pyx_L25_bool_binop_done:;
+      if (__pyx_t_1) {
 
         /* "netCDF4/_netCDF4.pyx":4106
  *                 if not isinstance(data, numpy.ndarray) or data.dtype.kind != 'O':
@@ -44262,12 +44276,12 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                     self._assign_vlen(elem, data)
  */
         __pyx_t_5 = PyObject_RichCompare(((PyObject *)Py_TYPE(__pyx_v_elem)), ((PyObject *)Py_TYPE(__pyx_builtin_Ellipsis)), Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 4106, __pyx_L1_error)
-        __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4106, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4106, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        if (__pyx_t_1) {
+        if (__pyx_t_4) {
         } else {
-          __pyx_t_4 = __pyx_t_1;
-          goto __pyx_L26_bool_binop_done;
+          __pyx_t_1 = __pyx_t_4;
+          goto __pyx_L28_bool_binop_done;
         }
 
         /* "netCDF4/_netCDF4.pyx":4107
@@ -44289,10 +44303,10 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                        len(self.dimensions): elem = 0
  *                     self._assign_vlen(elem, data)
  */
-        __pyx_t_1 = ((!(__pyx_t_9 != 0)) != 0);
-        __pyx_t_4 = __pyx_t_1;
-        __pyx_L26_bool_binop_done:;
-        if (__pyx_t_4) {
+        __pyx_t_4 = ((!(__pyx_t_9 != 0)) != 0);
+        __pyx_t_1 = __pyx_t_4;
+        __pyx_L28_bool_binop_done:;
+        if (__pyx_t_1) {
 
           /* "netCDF4/_netCDF4.pyx":4107
  *                     # issue 458, allow Ellipsis to be used for scalar var
@@ -44388,7 +44402,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  */
       }
     }
-    __pyx_L14:;
+    __pyx_L16:;
 
     /* "netCDF4/_netCDF4.pyx":4080
  *                     data = stringtochar(data, encoding=encoding)
@@ -44454,20 +44468,20 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
     }
   }
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4113, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4113, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_8 = ((!__pyx_t_1) != 0);
+  __pyx_t_8 = ((!__pyx_t_4) != 0);
   if (__pyx_t_8) {
   } else {
-    __pyx_t_4 = __pyx_t_8;
-    goto __pyx_L29_bool_binop_done;
+    __pyx_t_1 = __pyx_t_8;
+    goto __pyx_L31_bool_binop_done;
   }
-  __pyx_t_1 = PyObject_HasAttr(__pyx_v_data, __pyx_n_s_data); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 4113, __pyx_L1_error)
-  __pyx_t_11 = (__pyx_t_1 != 0);
+  __pyx_t_4 = PyObject_HasAttr(__pyx_v_data, __pyx_n_s_data); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 4113, __pyx_L1_error)
+  __pyx_t_11 = (__pyx_t_4 != 0);
   if (__pyx_t_11) {
   } else {
     __pyx_t_8 = __pyx_t_11;
-    goto __pyx_L31_bool_binop_done;
+    goto __pyx_L33_bool_binop_done;
   }
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_data, __pyx_n_s_data); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 4113, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -44476,13 +44490,13 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
   __pyx_t_11 = PyObject_IsInstance(__pyx_t_5, __pyx_t_7); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 4113, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_1 = (__pyx_t_11 != 0);
-  __pyx_t_8 = __pyx_t_1;
+  __pyx_t_4 = (__pyx_t_11 != 0);
+  __pyx_t_8 = __pyx_t_4;
+  __pyx_L33_bool_binop_done:;
+  __pyx_t_4 = ((!__pyx_t_8) != 0);
+  __pyx_t_1 = __pyx_t_4;
   __pyx_L31_bool_binop_done:;
-  __pyx_t_1 = ((!__pyx_t_8) != 0);
-  __pyx_t_4 = __pyx_t_1;
-  __pyx_L29_bool_binop_done:;
-  if (__pyx_t_4) {
+  if (__pyx_t_1) {
 
     /* "netCDF4/_netCDF4.pyx":4115
  *         if not ma.isMA(data) and not (hasattr(data,'data') and isinstance(data.data,buffer)):
@@ -44491,18 +44505,18 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
  *                 data = numpy.array(data,numpy.float)
  */
-    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->scale); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4115, __pyx_L1_error)
-    if (!__pyx_t_1) {
-      goto __pyx_L35_next_or;
+    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->scale); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4115, __pyx_L1_error)
+    if (!__pyx_t_4) {
+      goto __pyx_L37_next_or;
     } else {
     }
     __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 4115, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_7, __pyx_n_s_iu, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4115, __pyx_L1_error)
+    __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_t_7, __pyx_n_s_iu, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4115, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_8 = (__pyx_t_1 != 0);
+    __pyx_t_8 = (__pyx_t_4 != 0);
     if (!__pyx_t_8) {
-      goto __pyx_L35_next_or;
+      goto __pyx_L37_next_or;
     } else {
     }
 
@@ -44514,17 +44528,17 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *             else:
  */
     __pyx_t_8 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_scale_factor); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 4116, __pyx_L1_error)
-    __pyx_t_1 = (__pyx_t_8 != 0);
-    if (!__pyx_t_1) {
+    __pyx_t_4 = (__pyx_t_8 != 0);
+    if (!__pyx_t_4) {
     } else {
-      __pyx_t_4 = __pyx_t_1;
-      goto __pyx_L34_bool_binop_done;
+      __pyx_t_1 = __pyx_t_4;
+      goto __pyx_L36_bool_binop_done;
     }
-    __pyx_L35_next_or:;
-    __pyx_t_1 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 4116, __pyx_L1_error)
-    __pyx_t_8 = (__pyx_t_1 != 0);
-    __pyx_t_4 = __pyx_t_8;
-    __pyx_L34_bool_binop_done:;
+    __pyx_L37_next_or:;
+    __pyx_t_4 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 4116, __pyx_L1_error)
+    __pyx_t_8 = (__pyx_t_4 != 0);
+    __pyx_t_1 = __pyx_t_8;
+    __pyx_L36_bool_binop_done:;
 
     /* "netCDF4/_netCDF4.pyx":4115
  *         if not ma.isMA(data) and not (hasattr(data,'data') and isinstance(data.data,buffer)):
@@ -44533,7 +44547,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
  *                 data = numpy.array(data,numpy.float)
  */
-    if (__pyx_t_4) {
+    if (__pyx_t_1) {
 
       /* "netCDF4/_netCDF4.pyx":4117
  *             if self.scale and self.dtype.kind in 'iu' and \
@@ -44609,7 +44623,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
  *                 data = numpy.array(data,numpy.float)
  */
-      goto __pyx_L33;
+      goto __pyx_L35;
     }
 
     /* "netCDF4/_netCDF4.pyx":4119
@@ -44673,7 +44687,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       __Pyx_DECREF_SET(__pyx_v_data, __pyx_t_7);
       __pyx_t_7 = 0;
     }
-    __pyx_L33:;
+    __pyx_L35:;
 
     /* "netCDF4/_netCDF4.pyx":4113
  *         # A numpy or masked array (or an object supporting the buffer interface) is needed.
@@ -44691,8 +44705,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *             test = numpy.zeros(data.shape,numpy.bool)
  *             if ma.isMA(data):
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isenum); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4122, __pyx_L1_error)
-  if (__pyx_t_4) {
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isenum); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4122, __pyx_L1_error)
+  if (__pyx_t_1) {
 
     /* "netCDF4/_netCDF4.pyx":4123
  *         # for Enum variable, make sure data is valid.
@@ -44820,9 +44834,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       }
     }
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4124, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4124, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (__pyx_t_4) {
+    if (__pyx_t_1) {
 
       /* "netCDF4/_netCDF4.pyx":4126
  *             if ma.isMA(data):
@@ -44952,7 +44966,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 # fix for new behaviour in numpy.ma in 1.13 (issue #662)
  *                 for val in self.datatype.enum_dict.values():
  */
-      goto __pyx_L39;
+      goto __pyx_L41;
     }
 
     /* "netCDF4/_netCDF4.pyx":4129
@@ -45056,7 +45070,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       }
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
-    __pyx_L39:;
+    __pyx_L41:;
 
     /* "netCDF4/_netCDF4.pyx":4131
  *                 for val in self.datatype.enum_dict.values():
@@ -45113,9 +45127,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       }
     }
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4131, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4131, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_8 = ((!__pyx_t_4) != 0);
+    __pyx_t_8 = ((!__pyx_t_1) != 0);
     if (__pyx_t_8) {
 
       /* "netCDF4/_netCDF4.pyx":4132
@@ -45252,20 +45266,20 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __pyx_t_14 = Py_TYPE(__pyx_t_3)->tp_iternext;
     for (index=0; index < 4; index++) {
-      PyObject* item = __pyx_t_14(__pyx_t_3); if (unlikely(!item)) goto __pyx_L45_unpacking_failed;
+      PyObject* item = __pyx_t_14(__pyx_t_3); if (unlikely(!item)) goto __pyx_L47_unpacking_failed;
       __Pyx_GOTREF(item);
       *(temps[index]) = item;
     }
     if (__Pyx_IternextUnpackEndCheck(__pyx_t_14(__pyx_t_3), 4) < 0) __PYX_ERR(0, 4135, __pyx_L1_error)
     __pyx_t_14 = NULL;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    goto __pyx_L46_unpacking_done;
-    __pyx_L45_unpacking_failed:;
+    goto __pyx_L48_unpacking_done;
+    __pyx_L47_unpacking_failed:;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_14 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
     __PYX_ERR(0, 4135, __pyx_L1_error)
-    __pyx_L46_unpacking_done:;
+    __pyx_L48_unpacking_done:;
   }
 
   /* "netCDF4/_netCDF4.pyx":4135
@@ -45503,13 +45517,13 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
   } else {
     __Pyx_INCREF(__pyx_v_self->ndim);
     __pyx_t_12 = __pyx_v_self->ndim;
-    goto __pyx_L49_bool_binop_done;
+    goto __pyx_L51_bool_binop_done;
   }
   __pyx_t_7 = __Pyx_PyInt_From_long(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 4151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_12 = __pyx_t_7;
   __pyx_t_7 = 0;
-  __pyx_L49_bool_binop_done:;
+  __pyx_L51_bool_binop_done:;
   __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 4151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_int_neg_1);
@@ -45581,13 +45595,13 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
   } else {
     __Pyx_INCREF(__pyx_v_self->ndim);
     __pyx_t_2 = __pyx_v_self->ndim;
-    goto __pyx_L51_bool_binop_done;
+    goto __pyx_L53_bool_binop_done;
   }
   __pyx_t_7 = __Pyx_PyInt_From_long(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 4152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_2 = __pyx_t_7;
   __pyx_t_7 = 0;
-  __pyx_L51_bool_binop_done:;
+  __pyx_L53_bool_binop_done:;
   __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 4152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_int_neg_1);
@@ -45659,13 +45673,13 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
   } else {
     __Pyx_INCREF(__pyx_v_self->ndim);
     __pyx_t_12 = __pyx_v_self->ndim;
-    goto __pyx_L53_bool_binop_done;
+    goto __pyx_L55_bool_binop_done;
   }
   __pyx_t_7 = __Pyx_PyInt_From_long(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 4153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_12 = __pyx_t_7;
   __pyx_t_7 = 0;
-  __pyx_L53_bool_binop_done:;
+  __pyx_L55_bool_binop_done:;
   __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 4153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_int_neg_1);
@@ -45737,13 +45751,13 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
   } else {
     __Pyx_INCREF(__pyx_v_self->ndim);
     __pyx_t_2 = __pyx_v_self->ndim;
-    goto __pyx_L55_bool_binop_done;
+    goto __pyx_L57_bool_binop_done;
   }
   __pyx_t_7 = __Pyx_PyInt_From_long(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 4154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_2 = __pyx_t_7;
   __pyx_t_7 = 0;
-  __pyx_L55_bool_binop_done:;
+  __pyx_L57_bool_binop_done:;
   __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 4154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_int_neg_1);
@@ -45888,21 +45902,21 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *             # use missing_value as fill value.
  *             # if no missing value set, use _FillValue.
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->mask); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4168, __pyx_L1_error)
-  if (__pyx_t_4) {
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->mask); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4168, __pyx_L1_error)
+  if (__pyx_t_1) {
   } else {
-    __pyx_t_8 = __pyx_t_4;
-    goto __pyx_L59_bool_binop_done;
+    __pyx_t_8 = __pyx_t_1;
+    goto __pyx_L61_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isprimitive); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4168, __pyx_L1_error)
-  if (!__pyx_t_4) {
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isprimitive); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4168, __pyx_L1_error)
+  if (!__pyx_t_1) {
   } else {
-    __pyx_t_8 = __pyx_t_4;
-    goto __pyx_L59_bool_binop_done;
+    __pyx_t_8 = __pyx_t_1;
+    goto __pyx_L61_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isenum); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4168, __pyx_L1_error)
-  __pyx_t_8 = __pyx_t_4;
-  __pyx_L59_bool_binop_done:;
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isenum); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4168, __pyx_L1_error)
+  __pyx_t_8 = __pyx_t_1;
+  __pyx_L61_bool_binop_done:;
   if (__pyx_t_8) {
 
     /* "netCDF4/_netCDF4.pyx":4171
@@ -45912,17 +45926,17 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 # if not masked, create a masked array.
  *                 if not ma.isMA(data): data = self._toma(data)
  */
-    __pyx_t_4 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_scale_factor); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 4171, __pyx_L1_error)
-    __pyx_t_1 = (__pyx_t_4 != 0);
-    if (!__pyx_t_1) {
-    } else {
-      __pyx_t_8 = __pyx_t_1;
-      goto __pyx_L63_bool_binop_done;
-    }
-    __pyx_t_1 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 4171, __pyx_L1_error)
+    __pyx_t_1 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_scale_factor); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 4171, __pyx_L1_error)
     __pyx_t_4 = (__pyx_t_1 != 0);
-    __pyx_t_8 = __pyx_t_4;
-    __pyx_L63_bool_binop_done:;
+    if (!__pyx_t_4) {
+    } else {
+      __pyx_t_8 = __pyx_t_4;
+      goto __pyx_L65_bool_binop_done;
+    }
+    __pyx_t_4 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 4171, __pyx_L1_error)
+    __pyx_t_1 = (__pyx_t_4 != 0);
+    __pyx_t_8 = __pyx_t_1;
+    __pyx_L65_bool_binop_done:;
     if (__pyx_t_8) {
 
       /* "netCDF4/_netCDF4.pyx":4173
@@ -45982,8 +45996,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 4173, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_4 = ((!__pyx_t_8) != 0);
-      if (__pyx_t_4) {
+      __pyx_t_1 = ((!__pyx_t_8) != 0);
+      if (__pyx_t_1) {
         __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_toma); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4173, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __pyx_t_12 = NULL;
@@ -46061,13 +46075,13 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
   __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_self->scale); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 4174, __pyx_L1_error)
   if (__pyx_t_8) {
   } else {
-    __pyx_t_4 = __pyx_t_8;
-    goto __pyx_L67_bool_binop_done;
+    __pyx_t_1 = __pyx_t_8;
+    goto __pyx_L69_bool_binop_done;
   }
   __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_self->_isprimitive); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 4174, __pyx_L1_error)
-  __pyx_t_4 = __pyx_t_8;
-  __pyx_L67_bool_binop_done:;
-  if (__pyx_t_4) {
+  __pyx_t_1 = __pyx_t_8;
+  __pyx_L69_bool_binop_done:;
+  if (__pyx_t_1) {
 
     /* "netCDF4/_netCDF4.pyx":4176
  *         if self.scale and self._isprimitive:
@@ -46077,17 +46091,17 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
  */
     __pyx_t_8 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_scale_factor); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 4176, __pyx_L1_error)
-    __pyx_t_1 = (__pyx_t_8 != 0);
-    if (__pyx_t_1) {
-    } else {
-      __pyx_t_4 = __pyx_t_1;
-      goto __pyx_L70_bool_binop_done;
-    }
-    __pyx_t_1 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 4176, __pyx_L1_error)
-    __pyx_t_8 = (__pyx_t_1 != 0);
-    __pyx_t_4 = __pyx_t_8;
-    __pyx_L70_bool_binop_done:;
+    __pyx_t_4 = (__pyx_t_8 != 0);
     if (__pyx_t_4) {
+    } else {
+      __pyx_t_1 = __pyx_t_4;
+      goto __pyx_L72_bool_binop_done;
+    }
+    __pyx_t_4 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 4176, __pyx_L1_error)
+    __pyx_t_8 = (__pyx_t_4 != 0);
+    __pyx_t_1 = __pyx_t_8;
+    __pyx_L72_bool_binop_done:;
+    if (__pyx_t_1) {
 
       /* "netCDF4/_netCDF4.pyx":4177
  *             # pack non-masked values using scale_factor and add_offset
@@ -46119,9 +46133,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  */
       __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 4178, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_t_5, __pyx_n_s_iu, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4178, __pyx_L1_error)
+      __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_5, __pyx_n_s_iu, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4178, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_8 = (__pyx_t_4 != 0);
+      __pyx_t_8 = (__pyx_t_1 != 0);
       if (__pyx_t_8) {
         __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 4178, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
@@ -46182,7 +46196,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 data = (data - self.add_offset)/self.scale_factor
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
  */
-      goto __pyx_L69;
+      goto __pyx_L71;
     }
 
     /* "netCDF4/_netCDF4.pyx":4179
@@ -46193,8 +46207,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
  */
     __pyx_t_8 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_scale_factor); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 4179, __pyx_L1_error)
-    __pyx_t_4 = (__pyx_t_8 != 0);
-    if (__pyx_t_4) {
+    __pyx_t_1 = (__pyx_t_8 != 0);
+    if (__pyx_t_1) {
 
       /* "netCDF4/_netCDF4.pyx":4180
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
@@ -46220,9 +46234,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  */
       __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4181, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_n_s_iu, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4181, __pyx_L1_error)
+      __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_n_s_iu, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4181, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_8 = (__pyx_t_4 != 0);
+      __pyx_t_8 = (__pyx_t_1 != 0);
       if (__pyx_t_8) {
         __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 4181, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
@@ -46283,7 +46297,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 data = data/self.scale_factor
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
  */
-      goto __pyx_L69;
+      goto __pyx_L71;
     }
 
     /* "netCDF4/_netCDF4.pyx":4182
@@ -46294,8 +46308,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
  */
     __pyx_t_8 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_add_offset); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 4182, __pyx_L1_error)
-    __pyx_t_4 = (__pyx_t_8 != 0);
-    if (__pyx_t_4) {
+    __pyx_t_1 = (__pyx_t_8 != 0);
+    if (__pyx_t_1) {
 
       /* "netCDF4/_netCDF4.pyx":4183
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
@@ -46321,9 +46335,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  */
       __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 4184, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_t_12, __pyx_n_s_iu, Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4184, __pyx_L1_error)
+      __pyx_t_1 = (__Pyx_PySequence_ContainsTF(__pyx_t_12, __pyx_n_s_iu, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4184, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_8 = (__pyx_t_4 != 0);
+      __pyx_t_8 = (__pyx_t_1 != 0);
       if (__pyx_t_8) {
         __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_numpy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4184, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
@@ -46385,7 +46399,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                 if self.dtype.kind in 'iu': data = numpy.around(data)
  */
     }
-    __pyx_L69:;
+    __pyx_L71:;
 
     /* "netCDF4/_netCDF4.pyx":4185
  *                 data = data - self.add_offset
@@ -46453,12 +46467,12 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                    numpy.all(numpy.in1d(data.data[data.mask],self.missing_value)):
  *                     data = data.data
  */
-      __pyx_t_4 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_missing_value); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 4189, __pyx_L1_error)
-      __pyx_t_1 = (__pyx_t_4 != 0);
-      if (__pyx_t_1) {
+      __pyx_t_1 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_missing_value); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 4189, __pyx_L1_error)
+      __pyx_t_4 = (__pyx_t_1 != 0);
+      if (__pyx_t_4) {
       } else {
-        __pyx_t_8 = __pyx_t_1;
-        goto __pyx_L77_bool_binop_done;
+        __pyx_t_8 = __pyx_t_4;
+        goto __pyx_L79_bool_binop_done;
       }
 
       /* "netCDF4/_netCDF4.pyx":4190
@@ -46583,10 +46597,10 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
         }
       }
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_12); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4190, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_12); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4190, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_8 = __pyx_t_1;
-      __pyx_L77_bool_binop_done:;
+      __pyx_t_8 = __pyx_t_4;
+      __pyx_L79_bool_binop_done:;
 
       /* "netCDF4/_netCDF4.pyx":4189
  *                 # corresponds to missing values, don't fill masked array -
@@ -46616,7 +46630,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                    numpy.all(numpy.in1d(data.data[data.mask],self.missing_value)):
  *                     data = data.data
  */
-        goto __pyx_L76;
+        goto __pyx_L78;
       }
 
       /* "netCDF4/_netCDF4.pyx":4193
@@ -46628,8 +46642,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  */
       /*else*/ {
         __pyx_t_8 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_missing_value); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 4193, __pyx_L1_error)
-        __pyx_t_1 = (__pyx_t_8 != 0);
-        if (__pyx_t_1) {
+        __pyx_t_4 = (__pyx_t_8 != 0);
+        if (__pyx_t_4) {
 
           /* "netCDF4/_netCDF4.pyx":4197
  *                         # if missing value is a vector, raise an exception
@@ -46696,9 +46710,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
           __pyx_t_12 = PyObject_RichCompare(__pyx_t_17, __pyx_empty_tuple, Py_EQ); __Pyx_XGOTREF(__pyx_t_12); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 4197, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-          __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_12); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4197, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_12); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4197, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-          if (__pyx_t_1) {
+          if (__pyx_t_4) {
 
             /* "netCDF4/_netCDF4.pyx":4198
  *                         # since we then don't know how to fill in masked values.
@@ -46719,7 +46733,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                             fillval = self.missing_value
  *                         else:
  */
-            goto __pyx_L80;
+            goto __pyx_L82;
           }
 
           /* "netCDF4/_netCDF4.pyx":4200
@@ -46752,7 +46766,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
             __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
             __PYX_ERR(0, 4201, __pyx_L1_error)
           }
-          __pyx_L80:;
+          __pyx_L82:;
 
           /* "netCDF4/_netCDF4.pyx":4202
  *                             msg="cannot assign fill_value for masked array when missing_value attribute is not a scalar"
@@ -46814,9 +46828,9 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
           __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
           __pyx_t_17 = PyObject_RichCompare(__pyx_t_7, __pyx_empty_tuple, Py_NE); __Pyx_XGOTREF(__pyx_t_17); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 4202, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-          __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_17); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 4202, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_17); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 4202, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-          if (__pyx_t_1) {
+          if (__pyx_t_4) {
 
             /* "netCDF4/_netCDF4.pyx":4203
  *                             raise RuntimeError(msg)
@@ -46846,7 +46860,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                         # if missing value is a scalar, use it as fill_value.
  *                         # if missing value is a vector, raise an exception
  */
-          goto __pyx_L79;
+          goto __pyx_L81;
         }
 
         /* "netCDF4/_netCDF4.pyx":4204
@@ -46856,8 +46870,8 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                         fillval = self._FillValue
  *                     else:
  */
-        __pyx_t_1 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_FillValue); if (unlikely(__pyx_t_1 == -1)) __PYX_ERR(0, 4204, __pyx_L1_error)
-        __pyx_t_8 = (__pyx_t_1 != 0);
+        __pyx_t_4 = PyObject_HasAttr(((PyObject *)__pyx_v_self), __pyx_n_s_FillValue); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 4204, __pyx_L1_error)
+        __pyx_t_8 = (__pyx_t_4 != 0);
         if (__pyx_t_8) {
 
           /* "netCDF4/_netCDF4.pyx":4205
@@ -46879,7 +46893,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                         fillval = self._FillValue
  *                     else:
  */
-          goto __pyx_L79;
+          goto __pyx_L81;
         }
 
         /* "netCDF4/_netCDF4.pyx":4207
@@ -46904,7 +46918,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
           __pyx_v_fillval = __pyx_t_7;
           __pyx_t_7 = 0;
         }
-        __pyx_L79:;
+        __pyx_L81:;
 
         /* "netCDF4/_netCDF4.pyx":4208
  *                     else:
@@ -46925,7 +46939,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
         __Pyx_DECREF_SET(__pyx_v_data, __pyx_t_17);
         __pyx_t_17 = 0;
       }
-      __pyx_L76:;
+      __pyx_L78:;
 
       /* "netCDF4/_netCDF4.pyx":4185
  *                 data = data - self.add_offset
@@ -47093,20 +47107,20 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
       __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
       __pyx_t_14 = Py_TYPE(__pyx_t_16)->tp_iternext;
       for (index=0; index < 4; index++) {
-        PyObject* item = __pyx_t_14(__pyx_t_16); if (unlikely(!item)) goto __pyx_L84_unpacking_failed;
+        PyObject* item = __pyx_t_14(__pyx_t_16); if (unlikely(!item)) goto __pyx_L86_unpacking_failed;
         __Pyx_GOTREF(item);
         *(temps[index]) = item;
       }
       if (__Pyx_IternextUnpackEndCheck(__pyx_t_14(__pyx_t_16), 4) < 0) __PYX_ERR(0, 4211, __pyx_L1_error)
       __pyx_t_14 = NULL;
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      goto __pyx_L85_unpacking_done;
-      __pyx_L84_unpacking_failed:;
+      goto __pyx_L87_unpacking_done;
+      __pyx_L86_unpacking_failed:;
       __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
       __pyx_t_14 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
       __PYX_ERR(0, 4211, __pyx_L1_error)
-      __pyx_L85_unpacking_done:;
+      __pyx_L87_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_a, __pyx_t_12);
     __pyx_t_12 = 0;
@@ -47147,7 +47161,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
     __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_17); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 4213, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
     if (__pyx_t_8) {
-      goto __pyx_L82_continue;
+      goto __pyx_L84_continue;
     }
 
     /* "netCDF4/_netCDF4.pyx":4215
@@ -47242,7 +47256,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *                     dataput=numpy.array(dataput,'O')
  *                 else:
  */
-        goto __pyx_L88;
+        goto __pyx_L90;
       }
 
       /* "netCDF4/_netCDF4.pyx":4219
@@ -47310,7 +47324,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
         __Pyx_DECREF_SET(__pyx_v_dataput, __pyx_t_3);
         __pyx_t_3 = 0;
       }
-      __pyx_L88:;
+      __pyx_L90:;
 
       /* "netCDF4/_netCDF4.pyx":4215
  *             if dataput.size == 0: continue # nothing to write
@@ -47390,7 +47404,7 @@ static int __pyx_pf_7netCDF4_8_netCDF4_8Variable_50__setitem__(struct __pyx_obj_
  *             dataput = data[tuple(i)]
  *             if dataput.size == 0: continue # nothing to write
  */
-    __pyx_L82_continue:;
+    __pyx_L84_continue:;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 

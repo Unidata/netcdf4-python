@@ -4068,10 +4068,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             encoding = getattr(self,'_Encoding',None)
             if encoding is not None:
                 # _Encoding attribute is set
-                # if data is a string, convert to a numpy string array
+                # if data is a string or a bytes object, convert to a numpy string array
                 # whose length is equal to the rightmost dimension of the
                 # variable.
-                if type(data) == str: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+                if type(data) in [str,bytes]: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
                 if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:
                     # if data is a numpy string array, convert it to an array
                     # of characters with one more dimension.
