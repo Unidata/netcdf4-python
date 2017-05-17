@@ -34,7 +34,8 @@ class StringArrayTestCase(unittest.TestCase):
         for nrec in range(nrecs):
             datac = stringtochar(data,encoding='ascii')
             v[nrec] = datac[nrec]
-        v2[:] = data
+        v2[:-1] = data[:-1]
+        v2[-1] = data[-1]
         nc.close()
 
     def tearDown(self):
@@ -54,6 +55,8 @@ class StringArrayTestCase(unittest.TestCase):
             data2 = chartostring(v[nrec],encoding='ascii')
             assert_array_equal(data2,datau[nrec])
         data2 = v2[:]
+        data2[0] = v2[0]
+        data2[0,1] = v2[0,1]
         assert_array_equal(data2,datau)
         nc.close()
 
