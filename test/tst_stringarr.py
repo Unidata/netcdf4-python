@@ -7,7 +7,7 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 def generateString(length, alphabet=string.ascii_letters + string.digits + string.punctuation):
     return(''.join([random.choice(alphabet) for i in range(length)]))
 
-# test utilities for converting arrays of fixed-length strings
+# test conversion of arrays of fixed-length strings
 # to arrays of characters (with an extra dimension), and vice-versa.
 
 FILE_NAME = 'tst_stringarr.nc'
@@ -30,9 +30,9 @@ class StringArrayTestCase(unittest.TestCase):
         v2 = nc.createVariable('strings2','S1',('n1','n2','nchar'))
         # if _Encoding set, string array should automatically be converted
         # to a char array and vice-versan
-        v2._Encoding = 'utf-8'
+        v2._Encoding = 'ascii'
         for nrec in range(nrecs):
-            datac = stringtochar(data,encoding='utf-8')
+            datac = stringtochar(data,encoding='ascii')
             v[nrec] = datac[nrec]
         v2[:] = data
         nc.close()
@@ -51,7 +51,7 @@ class StringArrayTestCase(unittest.TestCase):
         assert v.shape == (nrecs,n2,nchar)
         datau = data.astype('U')
         for nrec in range(nrecs):
-            data2 = chartostring(v[nrec],encoding='utf-8')
+            data2 = chartostring(v[nrec],encoding='ascii')
             assert_array_equal(data2,datau[nrec])
         data2 = v2[:]
         assert_array_equal(data2,datau)
