@@ -2,8 +2,6 @@ import netCDF4
 import numpy as np
 import sys, unittest, os, tempfile
 
-netCDF4.default_encoding = 'utf-8'
-
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 ATT1 = '\u03a0\u03a3\u03a9'
 ATT2 = 'x\xb0'
