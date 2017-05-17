@@ -17,6 +17,7 @@ data = numpy.empty((nrecs,n2),'S'+repr(nchar))
 for nrec in range(nrecs):
     for n in range(n2):
         data[nrec,n] = generateString(nchar)
+datau = data.astype('U')
 
 class StringArrayTestCase(unittest.TestCase):
 
@@ -41,7 +42,7 @@ class StringArrayTestCase(unittest.TestCase):
         v2[:-1] = data[:-1]
         v2[-1] = data[-1]
         v2[-1,-1] = data[-1,-1] # write single element
-        v2[-1,-1] = str(data[-1,-1]) # write single python string
+        v2[-1,-1] = data[-1,-1].tostring() # write single python string
         # _Encoding should be ignored if an array of characters is specified
         v3[:] = stringtochar(data, encoding='ascii')
         nc.close()
@@ -59,7 +60,6 @@ class StringArrayTestCase(unittest.TestCase):
         v3 = nc.variables['strings3']
         assert v.dtype.str[1:] in ['S1','U1']
         assert v.shape == (nrecs,n2,nchar)
-        datau = data.astype('U')
         for nrec in range(nrecs):
             data2 = chartostring(v[nrec],encoding='ascii')
             assert_array_equal(data2,datau[nrec])
