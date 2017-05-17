@@ -4060,12 +4060,20 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # if _Encoding is specified for a character variable, convert
         # numpy array of strings to a numpy array of characters with one more
         # dimension.
-        if (getattr(self.dtype,'kind',None) == 'S' and
-            getattr(self.dtype,'itemsize',None) == 1) and\
-           (data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1):
+        if getattr(self.dtype,'kind',None) == 'S' and\
+           getattr(self.dtype,'itemsize',None) == 1:
+            # NC_CHAR variable
             encoding = getattr(self,'_Encoding',None)
             if encoding is not None:
-                data = stringtochar(data, encoding=encoding)
+                # _Encoding attribute is set
+                # make sure data is an numpy array of fixed length strings
+                # whose length is equal to the rightmost dimension of the
+                # variable.
+                data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+                if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:
+                    # if data is a numpy string array, convert it to an array
+                    # of characters with one more dimension.
+                    data = stringtochar(data, encoding=encoding)
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
             if self.dtype == str:
