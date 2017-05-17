@@ -31,11 +31,19 @@ class StringArrayTestCase(unittest.TestCase):
         # if _Encoding set, string array should automatically be converted
         # to a char array and vice-versan
         v2._Encoding = 'ascii'
+        v3 = nc.createVariable('strings3','S1',('n1','n2','nchar'))
+        # if _Encoding set, string array should automatically be converted
+        # to a char array and vice-versan
+        v3._Encoding = 'ascii'
         for nrec in range(nrecs):
             datac = stringtochar(data,encoding='ascii')
             v[nrec] = datac[nrec]
         v2[:-1] = data[:-1]
         v2[-1] = data[-1]
+        v2[-1,-1] = data[-1,-1] # write single element
+        v2[-1,-1] = str(data[-1,-1]) # write single python string
+        # _Encoding should be ignored if an array of characters is specified
+        v3[:] = stringtochar(data, encoding='ascii')
         nc.close()
 
     def tearDown(self):
@@ -48,6 +56,7 @@ class StringArrayTestCase(unittest.TestCase):
         assert nc.dimensions['n1'].isunlimited() == True
         v = nc.variables['strings']
         v2 = nc.variables['strings2']
+        v3 = nc.variables['strings3']
         assert v.dtype.str[1:] in ['S1','U1']
         assert v.shape == (nrecs,n2,nchar)
         datau = data.astype('U')
@@ -58,6 +67,8 @@ class StringArrayTestCase(unittest.TestCase):
         data2[0] = v2[0]
         data2[0,1] = v2[0,1]
         assert_array_equal(data2,datau)
+        data3 = v3[:]
+        assert_array_equal(data3,datau)
         nc.close()
 
 if __name__ == '__main__':
