@@ -950,8 +950,8 @@ from numpy import ma
 from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 import_array()
-include "netCDF4.pxi"
 include "constants.pyx"
+include "netCDF4.pxi"
 
 # check for required version of netcdf-4 and hdf5.
 
@@ -1059,7 +1059,10 @@ is_native_big = numpy.dtype('>f4').byteorder == '='
 # so it will compile with versions <= 4.2.
 NC_DISKLESS = 0x0008
 
-default_encoding = 'utf-8' #  does nothing, preserve for backwards compatibility
+# next two lines do nothing, preserved for backwards compatibility.
+default_encoding = 'utf-8' 
+unicode_error = 'replace'
+
 python3 = sys.version_info[0] > 2
 if python3:
     buffer = memoryview
