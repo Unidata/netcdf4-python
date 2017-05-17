@@ -250,7 +250,6 @@ cdef extern from "netcdf.h":
     int nc_create(char *path, int cmode, int *ncidp)
     int nc__create(char *path, int cmode, size_t initialsz, size_t *chunksizehintp, int *ncidp)
     int nc_open(char *path, int mode, int *ncidp)
-    int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp)
     int nc__open(char *path, int mode, size_t *chunksizehintp, int *ncidp)
     int nc_inq_path(int ncid, size_t *pathlen, char *path) nogil
     int nc_inq_format_extended(int ncid, int *formatp, int* modep) nogil
@@ -717,6 +716,11 @@ cdef extern from "netcdf.h":
     int nc_inq_enum_member(int ncid, nc_type xtype, int idx, char *name, void *value) nogil
 
     int nc_inq_enum_ident(int ncid, nc_type xtype, long long value, char *identifier) nogil
+
+
+IF HAS_NC_OPEN_MEM:
+    cdef extern from "netcdf_mem.h":
+        int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp)
 
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
