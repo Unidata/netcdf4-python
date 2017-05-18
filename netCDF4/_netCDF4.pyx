@@ -3844,9 +3844,16 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # should there be some other way to disable this?
             if encoding is not None:
                 # only try to return a string array if rightmost dimension of
-                # sliced data matches rigthmost dimension of char variable
+                # sliced data matches rightmost dimension of char variable
                 if len(data.shape) > 0 and data.shape[-1] == self.shape[-1]:
-                    data = chartostring(data, encoding=encoding)
+                    # also make sure slice is along last dimension
+                    matchdim = True
+                    for cnt in count:
+                        if cnt[-1] != self.shape[-1]: 
+                            matchdim = False
+                            break
+                    if matchdim:
+                        data = chartostring(data, encoding=encoding)
 
         return data
 

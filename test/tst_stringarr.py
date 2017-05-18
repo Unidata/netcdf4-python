@@ -12,7 +12,7 @@ def generateString(length, alphabet=string.ascii_letters + string.digits + strin
 
 FILE_NAME = 'tst_stringarr.nc'
 FILE_FORMAT = 'NETCDF4_CLASSIC'
-n2 = 10; nchar = 12; nrecs = 4
+n2 = 20; nchar = 12; nrecs = 4
 data = numpy.empty((nrecs,n2),'S'+repr(nchar))
 for nrec in range(nrecs):
     for n in range(n2):
@@ -70,10 +70,13 @@ class StringArrayTestCase(unittest.TestCase):
         assert_array_equal(data2,datau)
         data3 = v3[:]
         assert_array_equal(data3,datau)
-        # this should return a char array, not a string array
+        # these slices should return a char array, not a string array
         data4 = v2[:,:,0]
         assert(data4.dtype.itemsize == 1)
         assert_array_equal(data4, datac[:,:,0])
+        data5 = v2[0,0:nchar,0]
+        assert(data5.dtype.itemsize == 1)
+        assert_array_equal(data5, datac[0,0:nchar,0])
         nc.close()
 
 if __name__ == '__main__':
