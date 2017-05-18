@@ -17,6 +17,9 @@
    data. When writing the data, stringtochar is used to convert a numpy 
    array of fixed length strings to an array of characters with one more
    dimension. chartostring and stringtochar now also have an 'encoding' kwarg.
+   Automatic conversion to/from character to string arrays can be turned off
+   via a new set_auto_chartostring Dataset and Variable method (default
+   is True).
 
  version 1.2.7 (tag v1.2.7rel)
 ==============================

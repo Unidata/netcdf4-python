@@ -1590,7 +1590,7 @@ _private_atts = \
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer']
+ '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer','chartostring']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -2501,6 +2501,34 @@ renameGroup method not enabled.  To enable, install Cython, make sure you have
 version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
 
+    def set_auto_chartostring(self, value):
+        """
+**`set_auto_chartostring(self, True_or_False)`**
+
+Call `netCDF4.Variable.set_auto_chartostring` for all variables contained in this `netCDF4.Dataset` or
+`netCDF4.Group`, as well as for all variables in all its subgroups.
+
+**`True_or_False`**: Boolean determining if automatic conversion of
+all character arrays <--> string arrays should be performed for 
+character variables (i.e. variables of type `NC_CHAR` or `S1` with the
+`_Encoding` attribute set).
+
+***Note***: Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.
+        """
+
+        # this is a hack to make inheritance work in MFDataset
+        # (which stores variables in _vars)
+        _vars = self.variables
+        if _vars is None: _vars = self._vars
+        for var in _vars.values():
+            var.set_auto_chartostring(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                for var in group.variables.values():
+                    var.set_auto_chartostring(value)
+
     def set_auto_maskandscale(self, value):
         """
 **`set_auto_maskandscale(self, True_or_False)`**
@@ -2916,6 +2944,10 @@ arrays when missing values or fill values are present. Default is `True`, can be
 reset using `netCDF4.Variable.set_auto_mask` and `netCDF4.Variable.set_auto_maskandscale`
 methods.
 
+**`chartostring`**: If True, data is automatically converted to/from character 
+arrays to string arrays when the `_Encoding` variable attribute is set. Default is `True`, can be
+reset using `netCDF4.Variable.set_auto_chartostring` method.
+
 **`least_significant_digit`**: Describes the power of ten of the 
 smallest decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the `netCDF4.Variable`
@@ -2934,7 +2966,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 **`size`**: The number of stored elements.
     """
     cdef public int _varid, _grpid, _nunlimdim
-    cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
+    cdef public _name, ndim, dtype, mask, scale, chartostring,  _isprimitive, _iscompound,\
     _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
     __orthogonal_indexing__, _has_lsd
     # Docstrings for class variables (used by pdoc).
@@ -2955,6 +2987,10 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     arrays when missing values or fill values are present. Default is `True`, can be
     reset using `netCDF4.Variable.set_auto_mask` and `netCDF4.Variable.set_auto_maskandscale`
     methods."""
+    __pdoc__['Variable.chartostring'] = \
+    """If True, data is automatically converted to/from character 
+    arrays to string arrays when `_Encoding` variable attribute is set. Default is `True`, can be
+    reset using `netCDF4.Variable.set_auto_chartostring` method."""
     __pdoc__['Variable.least_significant_digit'] = \
     """Describes the power of ten of the 
     smallest decimal place in the data the contains a reliable value.  Data is
@@ -3321,6 +3357,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # add_offset, and converting to/from masked arrays is True.
         self.scale = True
         self.mask = True
+        # default is to automatically convert to/from character
+        # to string arrays when _Encoding variable attribute is set.
+        self.chartostring = True
         if 'least_significant_digit' in self.ncattrs():
             self._has_lsd = True
 
@@ -3837,7 +3876,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
         # if _Encoding is specified for a character variable, return 
         # a numpy array of strings with one less dimension.
-        if getattr(self.dtype,'kind',None) == 'S' and\
+        if self.chartostring and getattr(self.dtype,'kind',None) == 'S' and\
            getattr(self.dtype,'itemsize',None) == 1:
             encoding = getattr(self,'_Encoding',None)
             # should this only be done if self.scale = True?
@@ -4072,7 +4111,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # if _Encoding is specified for a character variable, convert
         # numpy array of strings to a numpy array of characters with one more
         # dimension.
-        if getattr(self.dtype,'kind',None) == 'S' and\
+        if self.chartostring and getattr(self.dtype,'kind',None) == 'S' and\
            getattr(self.dtype,'itemsize',None) == 1:
             # NC_CHAR variable
             encoding = getattr(self,'_Encoding',None)
@@ -4256,6 +4295,32 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([...])."""
         if len(self.dimensions):
             raise IndexError('to retrieve values from a non-scalar variable, use slicing')
         return self[slice(None)]
+
+    def set_auto_chartostring(self,chartostring):
+        """
+**`set_auto_chartostring(self,chartostring)`**
+
+turn on or off automatic conversion of character variable data to and
+from numpy fixed length string arrays when the `_Encoding` variable attribute
+is set.
+
+If `chartostring` is set to `True`, when data is read from a character variable
+(dtype = `S1`) that has an `_Encoding` attribute, it is converted to a numpy
+fixed length unicode string array (dtype = `SN`, where `N` is the length
+of the the rightmost dimension of the variable).  The value of `_Encoding`
+is the unicode encoding that is used to decode the bytes into strings. 
+
+When numpy string data is written to a variable it is converted back to
+indiviual bytes, with the number of bytes in each string equalling the
+rightmost dimension of the variable.
+
+The default value of `chartostring` is `True`
+(automatic conversions are performed).
+        """
+        if chartostring:
+            self.chartostring = True
+        else:
+            self.chartostring = False
 
     def set_auto_maskandscale(self,maskandscale):
         """
@@ -5847,6 +5912,9 @@ class _Variable(object):
     def _shape(self):
         recdimlen = len(self._dset.dimensions[self._recdimname])
         return (recdimlen,) + self._mastervar.shape[1:]
+    def set_auto_chartostring(self,val):
+        for v in self._recVar:
+            v.set_auto_chartostring(val)
     def set_auto_maskandscale(self,val):
         for v in self._recVar:
             v.set_auto_maskandscale(val)

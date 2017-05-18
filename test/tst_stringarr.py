@@ -34,8 +34,6 @@ class StringArrayTestCase(unittest.TestCase):
         # to a char array and vice-versan
         v2._Encoding = 'ascii'
         v3 = nc.createVariable('strings3','S1',('n1','n2','nchar'))
-        # if _Encoding set, string array should automatically be converted
-        # to a char array and vice-versan
         v3._Encoding = 'ascii'
         for nrec in range(nrecs):
             datac = stringtochar(data,encoding='ascii')
@@ -77,6 +75,15 @@ class StringArrayTestCase(unittest.TestCase):
         data5 = v2[0,0:nchar,0]
         assert(data5.dtype.itemsize == 1)
         assert_array_equal(data5, datac[0,0:nchar,0])
+        # test turning auto-conversion off.
+        v2.set_auto_chartostring(False)
+        data6 = v2[:]
+        assert(data6.dtype.itemsize == 1)
+        assert_array_equal(data6, datac)
+        nc.set_auto_chartostring(False)
+        data7 = v3[:]
+        assert(data7.dtype.itemsize == 1)
+        assert_array_equal(data7, datac)
         nc.close()
 
 if __name__ == '__main__':
