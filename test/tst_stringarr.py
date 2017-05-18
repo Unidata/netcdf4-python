@@ -18,6 +18,7 @@ for nrec in range(nrecs):
     for n in range(n2):
         data[nrec,n] = generateString(nchar)
 datau = data.astype('U')
+datac = stringtochar(data, encoding='ascii')
 
 class StringArrayTestCase(unittest.TestCase):
 
@@ -69,6 +70,10 @@ class StringArrayTestCase(unittest.TestCase):
         assert_array_equal(data2,datau)
         data3 = v3[:]
         assert_array_equal(data3,datau)
+        # this should return a char array, not a string array
+        data4 = v2[:,:,0]
+        assert(data4.dtype.itemsize == 1)
+        assert_array_equal(data4, datac[:,:,0])
         nc.close()
 
 if __name__ == '__main__':

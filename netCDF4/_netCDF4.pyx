@@ -3843,7 +3843,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # should this only be done if self.scale = True?
             # should there be some other way to disable this?
             if encoding is not None:
-                data = chartostring(data, encoding=encoding)
+                # only try to return a string array if rightmost dimension of
+                # sliced data matches rigthmost dimension of char variable
+                if len(data.shape) > 0 and data.shape[-1] == self.shape[-1]:
+                    data = chartostring(data, encoding=encoding)
 
         return data
 
