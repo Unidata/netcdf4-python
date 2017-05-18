@@ -2510,8 +2510,8 @@ Call `netCDF4.Variable.set_auto_chartostring` for all variables contained in thi
 
 **`True_or_False`**: Boolean determining if automatic conversion of
 all character arrays <--> string arrays should be performed for 
-character variables (i.e. variables of type `NC_CHAR` or `S1` with the
-`_Encoding` attribute set).
+character variables (variables of type `NC_CHAR` or `S1`) with the
+`_Encoding` attribute set.
 
 ***Note***: Calling this function only affects existing variables. Variables created
 after calling this function will follow the default behaviour.
@@ -2936,7 +2936,9 @@ variable's data type.
 **`shape`**: A tuple with the current shape (length of all dimensions).
 
 **`scale`**: If True, `scale_factor` and `add_offset` are
-applied. Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
+applied, and signed integer data is automatically converted to
+unsigned integer data if the `_Unsigned` attribute is set. 
+Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
 `netCDF4.Variable.set_auto_maskandscale` methods.
 
 **`mask`**: If True, data is automatically converted to/from masked 
@@ -2945,8 +2947,9 @@ reset using `netCDF4.Variable.set_auto_mask` and `netCDF4.Variable.set_auto_mask
 methods.
 
 **`chartostring`**: If True, data is automatically converted to/from character 
-arrays to string arrays when the `_Encoding` variable attribute is set. Default is `True`, can be
-reset using `netCDF4.Variable.set_auto_chartostring` method.
+arrays to string arrays when the `_Encoding` variable attribute is set. 
+Default is `True`, can be reset using
+`netCDF4.Variable.set_auto_chartostring` method.
 
 **`least_significant_digit`**: Describes the power of ten of the 
 smallest decimal place in the data the contains a reliable value.  Data is
@@ -2980,7 +2983,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     """The number of variable dimensions."""
     __pdoc__['Variable.scale'] = \
     """if True, `scale_factor` and `add_offset` are
-    applied. Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
+    applied, and signed integer data is converted to unsigned
+    integer data if the `_Unsigned` attribute is set.
+    Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
     `netCDF4.Variable.set_auto_maskandscale` methods."""
     __pdoc__['Variable.mask'] = \
     """If True, data is automatically converted to/from masked 
@@ -2989,8 +2994,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     methods."""
     __pdoc__['Variable.chartostring'] = \
     """If True, data is automatically converted to/from character 
-    arrays to string arrays when `_Encoding` variable attribute is set. Default is `True`, can be
-    reset using `netCDF4.Variable.set_auto_chartostring` method."""
+    arrays to string arrays when `_Encoding` variable attribute is set.
+    Default is `True`, can be reset using
+    `netCDF4.Variable.set_auto_chartostring` method."""
     __pdoc__['Variable.least_significant_digit'] = \
     """Describes the power of ten of the 
     smallest decimal place in the data the contains a reliable value.  Data is
@@ -4306,7 +4312,7 @@ is set.
 
 If `chartostring` is set to `True`, when data is read from a character variable
 (dtype = `S1`) that has an `_Encoding` attribute, it is converted to a numpy
-fixed length unicode string array (dtype = `SN`, where `N` is the length
+fixed length unicode string array (dtype = `UN`, where `N` is the length
 of the the rightmost dimension of the variable).  The value of `_Encoding`
 is the unicode encoding that is used to decode the bytes into strings. 
 
@@ -4327,8 +4333,10 @@ The default value of `chartostring` is `True`
 **`set_auto_maskandscale(self,maskandscale)`**
 
 turn on or off automatic conversion of variable data to and
-from masked arrays and automatic packing/unpacking of variable
-data using `scale_factor` and `add_offset` attributes.
+from masked arrays, automatic packing/unpacking of variable
+data using `scale_factor` and `add_offset` attributes and 
+automatic conversion of signed integer data to unsigned integer
+data if the `_Unsigned` attribute exists.
 
 If `maskandscale` is set to `True`, when data is read from a variable
 it is converted to a masked array if any of the values are exactly
@@ -4361,6 +4369,13 @@ For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see the
 [PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
+In addition, if `maskandscale` is set to `True`, and if the variable has an 
+attribute `_Unsigned` set, and the variable has a signed integer data type, 
+a view to the data is returned with the corresponding unsigned integer data type.
+This convention is used by the netcdf-java library to save unsigned integer
+data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3` 
+data model does not have unsigned integer data types).
+
 The default value of `maskandscale` is `True`
 (automatic conversions are performed).
         """
@@ -4377,6 +4392,9 @@ The default value of `maskandscale` is `True`
 
 turn on or off automatic packing/unpacking of variable
 data using `scale_factor` and `add_offset` attributes.
+Also turns on and off automatic conversion of signed integer data
+to unsigned integer data if the variable has an `_Unsigned`
+attribute.
 
 If `scale` is set to `True`, and the variable has a
 `scale_factor` or an `add_offset` attribute, then data read
@@ -4394,6 +4412,13 @@ scale_factor is assumed to be one.
 For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see the
 [PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
+
+In addition, if `scale` is set to `True`, and if the variable has an 
+attribute `_Unsigned` set, and the variable has a signed integer data type,
+a view to the data is returned with the corresponding unsigned integer datatype.
+This convention is used by the netcdf-java library to save unsigned integer
+data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3` 
+data model does not have unsigned integer data types).
 
 The default value of `scale` is `True`
 (automatic conversions are performed).
@@ -5291,9 +5316,9 @@ returns a rank 1 numpy character array of length NUMCHARS with datatype `'S1'`
     arr[0:len(string)] = tuple(string)
     return arr
 
-def stringtochar(a,encoding=None):
+def stringtochar(a,encoding='utf-8'):
     """
-**`stringtochar(a)`**
+**`stringtochar(a,encoding='utf-8')`**
 
 convert a string array to a character array with one extra dimension
 
@@ -5306,8 +5331,6 @@ optional kwarg `encoding` can be used to specify character encoding (default
 
 returns a numpy character array with datatype `'S1'` or `'U1'`
 and shape `a.shape + (N,)`, where N is the length of each string in a."""
-    if encoding is None:
-        encoding = 'utf-8'
     dtype = a.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
@@ -5315,9 +5338,9 @@ and shape `a.shape + (N,)`, where N is the length of each string in a."""
     b.shape = a.shape + (a.itemsize,)
     return b
 
-def chartostring(b,encoding=None):
+def chartostring(b,encoding='utf-8'):
     """
-**`chartostring(b)`**
+**`chartostring(b,encoding='utf-8')`**
 
 convert a character array to a string array with one less dimension.
 
@@ -5328,13 +5351,11 @@ length of `b.shape[-1]` characters.
 optional kwarg `encoding` can be used to specify character encoding (default
 `utf-8`).
 
-returns a numpy string array with datatype `'SN'` or `'UN'` and shape
+returns a numpy string array with datatype `'UN'` and shape
 `b.shape[:-1]` where where `N=b.shape[-1]`."""
     dtype = b.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must be string or unicode ('S' or 'U')")
-    if encoding is None:
-        encoding = 'utf-8'
     bs = b.tostring().decode(encoding)
     slen = int(b.shape[-1])
     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
