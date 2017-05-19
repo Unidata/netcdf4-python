@@ -23,14 +23,9 @@ from distutils.dist import Distribution
 try:
     from Cython.Build import cythonize
     from Cython import __version__ as cython_version
-    if cython_version >= '0.19':
-        has_cython = True
-        sys.stdout.write('cython version %s found ...\n' % cython_version)
-    else:
-        sys.stdout.write('cython not found or too old...\n')
-        has_cython = False
+    if cython_version < '0.19': raise ImportError
 except ImportError:
-    has_cython = False
+        raise ImportError('cython >= 0.19 required')
 
 if sys.version_info[0] < 3:
     import ConfigParser as configparser
@@ -221,10 +216,6 @@ if USE_SETUPCFG and os.path.exists(setup_cfg):
     try: use_cython = config.getboolean("options", "use_cython")
     except: pass
 
-# turn off cython compilation if desired
-if has_cython and not use_cython:
-    has_cython = False
-
 # make sure USE_NCCONFIG from environment takes
 # precendence over use_ncconfig from setup.cfg (issue #341).
 if USE_NCCONFIG is None and use_ncconfig is not None:
@@ -400,7 +391,7 @@ else:
 cmdclass = {}
 netcdf4_src_root = osp.join('netCDF4', '_netCDF4')
 netcdf4_src_c = netcdf4_src_root + '.c'
-if has_cython and 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
+if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
     extensions = [Extension("netCDF4._netCDF4",
                             [netcdf4_src_root + '.pyx'],
@@ -455,15 +446,6 @@ if has_cython and 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
 
     f.close()
     ext_modules = cythonize(extensions, include_path=['include'])
-else:
-    extensions = [Extension("netCDF4._netCDF4",
-                            [netcdf4_src_c],
-                            libraries=libs,
-                            library_dirs=lib_dirs,
-                            include_dirs=inc_dirs,
-                            runtime_library_dirs=runtime_lib_dirs),
-                  Extension('netcdftime._netcdftime', ['netcdftime/_netcdftime.c'])]
-    ext_modules = extensions
 
 setup(name = "netCDF4",
   cmdclass = cmdclass,

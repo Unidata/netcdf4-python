@@ -20,6 +20,8 @@
    Automatic conversion to/from character to string arrays can be turned off
    via a new set_auto_chartostring Dataset and Variable method (default
    is True).
+ * Cython >= 0.19 now required, _netCDF4.c and _netcdftime.c removed from
+   repository.
 
  version 1.2.7 (tag v1.2.7rel)
 ==============================

@@ -1,6 +1,5 @@
 recursive-include docs *
 recursive-include man *
-recursive-include include *
 recursive-include conda.recipe
 include MANIFEST.in
 include README.md
@@ -20,8 +19,7 @@ include utils/nc4tonc3
 include utils/ncinfo
 include netcdftime/__init__.py
 include netcdftime/_netcdftime.pyx
-include netcdftime/_netcdftime.c
 include netCDF4/__init__.py
 include netCDF4/_netCDF4.pyx
 include netCDF4/utils.py
-include netCDF4/_netCDF4.c
+include include/netCDF4.pxi
