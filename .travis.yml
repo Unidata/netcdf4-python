@@ -16,9 +16,9 @@ env:
 
 python:
   - "2.7"
-  - "3.4"
   - "3.5"
-  - "3.6-dev"
+  - "3.6"
+  - "3.7-dev"
 
 matrix:
   include:
@@ -26,10 +26,6 @@ matrix:
     - python: 2.7
       env:
         - DEPENDS="numpy==1.7.0 cython==0.19 ordereddict==1.1"
-    # Test without Cython installed.
-    - python: 2.7
-      env:
-        - DEPENDS="numpy ordereddict"
 
 notifications:
   email: false
