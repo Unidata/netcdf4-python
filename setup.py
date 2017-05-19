@@ -4,7 +4,7 @@ import os.path as osp
 try:
     from setuptools import setup, Extension
     setuptools_extra_kwargs = {
-        "install_requires":  ["numpy>=1.7"],
+        "install_requires":  ["numpy>=1.7","cython>=0.19"],
         "entry_points": {
             'console_scripts': [
                 'ncinfo = netCDF4.utils:ncinfo',
