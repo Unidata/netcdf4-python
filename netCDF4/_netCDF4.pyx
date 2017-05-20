@@ -38,12 +38,7 @@ Requires
 
  - Python 2.7 or later (python 3 works too).
  - [numpy array module](http://numpy.scipy.org), version 1.7.0 or later.
- - [Cython](http://cython.org), version 0.19 or later, is optional - if it is installed setup.py will
-   use it to recompile the Cython source code into C, using conditional compilation
-   to enable features in the netCDF API that have been added since version 4.1.1.  If
-   Cython is not installed, these features (such as the ability to rename Group objects)
-   will be disabled to preserve backward compatibility with older versions of the netCDF
-   library.
+ - [Cython](http://cython.org), version 0.19 or later.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
