@@ -17,7 +17,7 @@ For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-p
    [issue #406](https://github.com/Unidata/netcdf4-python/issues/406) and
    [issue #295](https://github.com/Unidata/netcdf4-python/issues/295).
  * fix for negative times in num2date [issue #659](https://github.com/Unidata/netcdf4-python/pull/659).
- * fix for failing tests in numpy 1.13 due to changes in numpy.ma
+ * fix for failing tests in numpy 1.13 due to changes in `numpy.ma`
    [issue #662](https://github.com/Unidata/netcdf4-python/issues/662).
  * Checking for `_Encoding` attribute for `NC_STRING` variables, otherwise use
    'utf-8'. 'utf-8' is used everywhere else, 'default_encoding' global module
@@ -32,8 +32,8 @@ For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-p
    dimension. chartostring and stringtochar now also have an 'encoding' kwarg.
    Automatic conversion to/from character to string arrays can be turned off
    via a new `set_auto_chartostring` Dataset and Variable method (default
-   is True).
- * Cython >= 0.19 now required, _netCDF4.c and _netcdftime.c removed from
+   is `True`). Addresses [issue #654](https://github.com/Unidata/netcdf4-python/issues/654)
+ * [Cython](http://cython.org) >= 0.19 now required, `_netCDF4.c` and `_netcdftime.c` removed from
    repository.
 
 1/8/2017: Version [1.2.7](https://pypi.python.org/pypi/netCDF4/1.2.7) released. 
