@@ -9,8 +9,8 @@
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
 6/1/2017: Version [1.2.8](https://pypi.python.org/pypi/netCDF4/1.2.8) released.  From Changelog:
- * recognize `_Unsigned` attribute used by netcdf-java to designate unsigned
-   integer data stored with a signed integer type in netcdf-3 
+ * recognize `_Unsigned` attribute used by [netcdf-java](http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/)
+   to designate unsigned integer data stored with a signed integer type in netcdf-3 
    [issue #656](https://github.com/Unidata/netcdf4-python/issues/656).
  * add Dataset init memory parameter to allow loading a file from memory
    [pull request #652](https://github.com/Unidata/netcdf4-python/pull/652),
