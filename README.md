@@ -10,14 +10,15 @@ For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-p
 
 6/1/2017: Version [1.2.8](https://pypi.python.org/pypi/netCDF4/1.2.8) released.  From Changelog:
  * recognize `_Unsigned` attribute used by netcdf-java to designate unsigned
-   integer data stored with a signed integer type in netcdf-3 (issue #656).
+   integer data stored with a signed integer type in netcdf-3 
+   [issue #656](https://github.com/Unidata/netcdf4-python/issues/656).
  * add Dataset init memory parameter to allow loading a file from memory
-   [pull request #652](https://github.com/Unidata/netcdf-python/pull/652),
-   [issue #406](https://github.com/Unidata/netcdf4-python/issue/406) and
-   [issue #295](https://github.com/Unidata/netcdf4-python/issue/295).
+   [pull request #652](https://github.com/Unidata/netcdf4-python/pull/652),
+   [issue #406](https://github.com/Unidata/netcdf4-python/issues/406) and
+   [issue #295](https://github.com/Unidata/netcdf4-python/issues/295).
  * fix for negative times in num2date [issue #659](https://github.com/Unidata/netcdf4-python/pull/659).
  * fix for failing tests in numpy 1.13 due to changes in numpy.ma
-   [issue #662](https://github.com/Unidata/netcdf4-python/issue/662).
+   [issue #662](https://github.com/Unidata/netcdf4-python/issues/662).
  * Checking for `_Encoding` attribute for `NC_STRING` variables, otherwise use
    'utf-8'. 'utf-8' is used everywhere else, 'default_encoding' global module
    variable is no longer used.  getncattr method now takes optional kwarg
