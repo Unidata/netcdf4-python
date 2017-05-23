@@ -1,5 +1,5 @@
- version 1.2.8 (not yet released)
-=================================
+ version 1.2.8 (tag v1.2.8rel)
+==============================
  * recognize _Unsigned attribute used by netcdf-java to designate unsigned
    integer data stored with a signed integer type in netcdf-3 (issue #656).
  * add Dataset init memory parameter to allow loading a file from memory
@@ -19,7 +19,7 @@
    dimension. chartostring and stringtochar now also have an 'encoding' kwarg.
    Automatic conversion to/from character to string arrays can be turned off
    via a new set_auto_chartostring Dataset and Variable method (default
-   is True).
+   is True). Addresses issue #654.
  * Cython >= 0.19 now required, _netCDF4.c and _netcdftime.c removed from
    repository.
 
