@@ -8,6 +8,34 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+6/1/2017: Version [1.2.8](https://github.com/Unidata/netcdf4-python/archive/v1.2.8rel.tar.gz) released.  From Changelog:
+ * recognize `_Unsigned` attribute used by [netcdf-java](http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/)
+   to designate unsigned integer data stored with a signed integer type in netcdf-3 
+   [issue #656](https://github.com/Unidata/netcdf4-python/issues/656).
+ * add Dataset init memory parameter to allow loading a file from memory
+   [pull request #652](https://github.com/Unidata/netcdf4-python/pull/652),
+   [issue #406](https://github.com/Unidata/netcdf4-python/issues/406) and
+   [issue #295](https://github.com/Unidata/netcdf4-python/issues/295).
+ * fix for negative times in num2date [issue #659](https://github.com/Unidata/netcdf4-python/pull/659).
+ * fix for failing tests in numpy 1.13 due to changes in `numpy.ma`
+   [issue #662](https://github.com/Unidata/netcdf4-python/issues/662).
+ * Checking for `_Encoding` attribute for `NC_STRING` variables, otherwise use
+   'utf-8'. 'utf-8' is used everywhere else, 'default_encoding' global module
+   variable is no longer used.  getncattr method now takes optional kwarg
+   'encoding' (default 'utf-8') so encoding of attributes can be specified
+   if desired. If `_Encoding` is specified for an `NC_CHAR` (`'S1'`) variable,
+   the chartostring utility function is used to convert the array of
+   characters to an array of strings with one less dimension (the last
+   dimension is interpreted as the length of each string) when reading the
+   data. When writing the data, stringtochar is used to convert a numpy 
+   array of fixed length strings to an array of characters with one more
+   dimension. chartostring and stringtochar now also have an 'encoding' kwarg.
+   Automatic conversion to/from character to string arrays can be turned off
+   via a new `set_auto_chartostring` Dataset and Variable method (default
+   is `True`). Addresses [issue #654](https://github.com/Unidata/netcdf4-python/issues/654)
+ * [Cython](http://cython.org) >= 0.19 now required, `_netCDF4.c` and `_netcdftime.c` removed from
+   repository.
+
 1/8/2017: Version [1.2.7](https://pypi.python.org/pypi/netCDF4/1.2.7) released. 
 Python 3.6 compatibility, and fix for vector missing_values.
 
