@@ -446,6 +446,8 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
 
     f.close()
     ext_modules = cythonize(extensions, include_path=['include'])
+else:
+    ext_modules = None
 
 setup(name = "netCDF4",
   cmdclass = cmdclass,
