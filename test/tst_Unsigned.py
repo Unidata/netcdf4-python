@@ -13,7 +13,7 @@ class Test_Unsigned(unittest.TestCase):
     See issue #656 (pull reqeust #658).
     """
     def test_unsigned(self):
-        f = netCDF4.Dataset("ubyte.nc3")
+        f = netCDF4.Dataset("ubyte.nc")
         data = f['ub'][:]
         assert data.dtype.str[1:] == 'u1'
         assert_array_equal(data,np.array([0,255],np.uint8))
