@@ -25,7 +25,7 @@ try:
     from Cython import __version__ as cython_version
     if cython_version < '0.19': raise ImportError
 except ImportError:
-        raise ImportError('cython >= 0.19 required')
+    raise ImportError('cython >= 0.19 required')
 
 if sys.version_info[0] < 3:
     import ConfigParser as configparser
