@@ -3837,13 +3837,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # length 1.
             if data.ndim != 0: data = numpy.asarray(data[0])
 
-        # if attribute _Unsigned is True, and variable has signed integer
-        # dtype, return view with corresponding unsigned dtype (issue #656)
-        if self.scale:  # only do this if autoscale option is on.
-            is_unsigned = getattr(self, '_Unsigned', False)
-            if is_unsigned and data.dtype.kind == 'i':
-                data = data.view('u%s' % data.dtype.itemsize)
-
         # if auto_scale mode set to True, (through
         # a call to set_auto_scale or set_auto_maskandscale),
         # perform automatic unpacking using scale_factor/add_offset.
@@ -3861,8 +3854,17 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if self.scale:
                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
                 warnings.warn(msg)
+
         if self.mask and (self._isprimitive or self._isenum):
             data = self._toma(data)
+
+        # if attribute _Unsigned is True, and variable has signed integer
+        # dtype, return view with corresponding unsigned dtype (issue #656)
+        if self.scale:  # only do this if autoscale option is on.
+            is_unsigned = getattr(self, '_Unsigned', False)
+            if is_unsigned and data.dtype.kind == 'i':
+                data = data.view('u%s' % data.dtype.itemsize)
+
         if self.scale and self._isprimitive and valid_scaleoffset:
             # if variable has scale_factor and add_offset attributes, rescale.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset') and\
