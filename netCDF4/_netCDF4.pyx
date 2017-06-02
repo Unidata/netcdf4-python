@@ -3909,43 +3909,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             mval = numpy.array(self.missing_value, self.dtype)
             # create mask from missing values. 
             mvalmask = numpy.zeros(data.shape, numpy.bool)
-            # set mask=True for data outside valid_min,valid_max.
-            # (issue #576)
-            validmin = None; validmax = None
-            # if valid_range exists use that, otherwise
-            # look for valid_min, valid_max.  No special
-            # treatment of byte data as described at
-            # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
-            if hasattr(self, 'valid_range') and len(self.valid_range) == 2:
-                validmin = numpy.array(self.valid_range[0], self.dtype)
-                validmax = numpy.array(self.valid_range[1], self.dtype)
-            else:
-                if hasattr(self, 'valid_min'):
-                    validmin = numpy.array(self.valid_min, self.dtype)
-                if hasattr(self, 'valid_max'):
-                    validmax = numpy.array(self.valid_max, self.dtype)
-            # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
-            # "If the data type is byte and _FillValue 
-            # is not explicitly defined,
-            # then the valid range should include all possible values.
-            # Otherwise, the valid range should exclude the _FillValue
-            # (whether defined explicitly or by default) as follows. 
-            # If the _FillValue is positive then it defines a valid maximum,
-            #  otherwise it defines a valid minimum."
-            byte_type = self.dtype.str[1:] in ['u1','i1']
-            if hasattr(self, '_FillValue'):
-                fval = numpy.array(self._FillValue, self.dtype)
-            else:
-                fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
-                if byte_type: fval = None
-            if validmin is None and (fval is not None and fval <= 0):
-                validmin = fval
-            elif validmax is None and (fval is not None and fval > 0):
-                validmax = fval
-            if validmin is not None:
-                mvalmask += data < validmin
-            if validmax is not None:
-                mvalmask += data > validmax
             if mval.shape == (): # mval a scalar.
                 mval = [mval] # make into iterable.
             for m in mval:
@@ -3964,7 +3927,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # if missing_value is a vector).
                 fill_value = mval[0]
                 totalmask += mvalmask
-        # set mask=True for missing data
+        # set mask=True for data == fill value
         if hasattr(self, '_FillValue'):
             fval = numpy.array(self._FillValue, self.dtype)
             # is _FillValue a NaN?
@@ -4008,14 +3971,52 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # in that case convert to an array.
                 if type(has_fillval) == bool: has_fillval=numpy.asarray(has_fillval)
                 if has_fillval.any():
-                    mask=data==fillval
                     if fill_value is None:
                         fill_value = fillval
+                    mask=data==fillval
                     totalmask += mask
-        # all values where data == missing_value or _FillValue are
-        # masked.  fill_value set to missing_value if it exists,
-        # otherwise _FillValue.
-        if fill_value is not None:
+        # set mask=True for data outside valid_min,valid_max.
+        # (issue #576)
+        validmin = None; validmax = None
+        # if valid_range exists use that, otherwise
+        # look for valid_min, valid_max.  No special
+        # treatment of byte data as described at
+        # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
+        if hasattr(self, 'valid_range') and len(self.valid_range) == 2:
+            validmin = numpy.array(self.valid_range[0], self.dtype)
+            validmax = numpy.array(self.valid_range[1], self.dtype)
+        else:
+            if hasattr(self, 'valid_min'):
+                validmin = numpy.array(self.valid_min, self.dtype)
+            if hasattr(self, 'valid_max'):
+                validmax = numpy.array(self.valid_max, self.dtype)
+        # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
+        # "If the data type is byte and _FillValue 
+        # is not explicitly defined,
+        # then the valid range should include all possible values.
+        # Otherwise, the valid range should exclude the _FillValue
+        # (whether defined explicitly or by default) as follows. 
+        # If the _FillValue is positive then it defines a valid maximum,
+        #  otherwise it defines a valid minimum."
+        byte_type = self.dtype.str[1:] in ['u1','i1']
+        if hasattr(self, '_FillValue'):
+            fval = numpy.array(self._FillValue, self.dtype)
+        else:
+            fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
+            if byte_type: fval = None
+        if validmin is None and (fval is not None and fval <= 0):
+            validmin = fval
+        if validmax is None and (fval is not None and fval > 0):
+            validmax = fval
+        if self.dtype.kind != 'S': # don't set mask for character data
+            if validmin is not None:
+                totalmask += data < validmin
+            if validmax is not None:
+                totalmask += data > validmax
+        if fill_value is None and fval is not None:
+            fill_value = fval
+        # create masked array with computed mask
+        if totalmask.any() and fill_value is not None:
             data = ma.masked_array(data,mask=totalmask,fill_value=fill_value)
             # issue 515 scalar array with mask=True should be converted
             # to numpy.ma.MaskedConstant to be consistent with slicing
