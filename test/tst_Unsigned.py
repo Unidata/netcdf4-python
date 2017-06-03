@@ -22,6 +22,14 @@ class Test_Unsigned(unittest.TestCase):
         assert data2.dtype.str[1:] == 'i1'
         assert_array_equal(data2,np.array([0,-1],np.int8))
         f.close()
+        # issue 671
+        f = netCDF4.Dataset('issue671.nc')
+        data1 = f['soil_moisture'][:]
+        assert(np.ma.isMA(data1))
+        f.set_auto_scale(False)
+        data2 = f['soil_moisture'][:]
+        assert(data1.mask.sum() == data2.mask.sum())
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
