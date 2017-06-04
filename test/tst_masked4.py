@@ -105,11 +105,15 @@ class SetValidMinMax(unittest.TestCase):
         # issue 672
         f = Dataset('issue672.nc')
         field = 'azi_angle_trip'
-        data1 = f.variables[field][:]
-        f.set_auto_scale(False)
-        data2 = f.variables[field][:]
-        assert(data1[(data1 < -180)].mask.sum() == 12)
-        assert(data2[(data1 < -180)].mask.sum()==data1[(data1 < -180)].mask.sum())
+        v = f.variables[field]
+        data1 = v[:]
+        v.set_auto_scale(False)
+        data2 = v[:]
+        v.set_auto_maskandscale(False)
+        data3 = v[:]
+        assert(data1[(data3 < v.valid_min)].mask.sum() == 12)
+        assert(data2[(data3 < v.valid_min)].mask.sum() ==
+               data1[(data3 < v.valid_min)].mask.sum())
         f.close()
 
 
