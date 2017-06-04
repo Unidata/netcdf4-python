@@ -108,8 +108,8 @@ class SetValidMinMax(unittest.TestCase):
         data1 = f.variables[field][:]
         f.set_auto_scale(False)
         data2 = f.variables[field][:]
-        assert(data1[np.where(data1 < -180)].mask.sum() == 12)
-        assert(data2[np.where(data1 < -180)].mask.sum()==data1[np.where(data1 < -180)].mask.sum())
+        assert(data1[(data1 < -180)].mask.sum() == 12)
+        assert(data2[(data1 < -180)].mask.sum()==data1[(data1 < -180)].mask.sum())
         f.close()
 
 
