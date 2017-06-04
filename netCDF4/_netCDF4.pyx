@@ -4004,11 +4004,11 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         else:
             fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
             if byte_type: fval = None
-        if validmin is None and (fval is not None and fval <= 0):
-            validmin = fval
-        if validmax is None and (fval is not None and fval > 0):
-            validmax = fval
         if self.dtype.kind != 'S': # don't set mask for character data
+            if validmin is None and (fval is not None and fval <= 0):
+                validmin = fval
+            if validmax is None and (fval is not None and fval > 0):
+                validmax = fval
             if validmin is not None:
                 totalmask += data < validmin
             if validmax is not None:
