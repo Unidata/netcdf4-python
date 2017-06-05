@@ -21,7 +21,6 @@ except ImportError:
 
 from distutils.dist import Distribution
 from Cython.Build import cythonize
-from Cython import __version__ as cython_version
 
 if sys.version_info[0] < 3:
     import ConfigParser as configparser
