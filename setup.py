@@ -18,14 +18,10 @@ except ImportError:
     setuptools_extra_kwargs = {
         "scripts": ['utils/nc3tonc4','utils/nc4tonc3','utils/ncinfo']
     }
-from distutils.dist import Distribution
 
-try:
-    from Cython.Build import cythonize
-    from Cython import __version__ as cython_version
-    if cython_version < '0.19': raise ImportError
-except ImportError:
-    raise ImportError('cython >= 0.19 required')
+from distutils.dist import Distribution
+from Cython.Build import cythonize
+from Cython import __version__ as cython_version
 
 if sys.version_info[0] < 3:
     import ConfigParser as configparser
