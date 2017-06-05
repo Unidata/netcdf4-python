@@ -1,6 +1,6 @@
 recursive-include docs *
 recursive-include man *
-recursive-include conda.recipe
+recursive-include conda.recipe *
 include MANIFEST.in
 include README.md
 include COPYING

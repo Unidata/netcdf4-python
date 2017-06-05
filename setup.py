@@ -1,26 +1,18 @@
 import os, sys, subprocess
 import os.path as osp
-
-try:
-    from setuptools import setup, Extension
-    setuptools_extra_kwargs = {
-        "install_requires":  ["numpy>=1.7","cython>=0.19"],
-        "entry_points": {
-            'console_scripts': [
-                'ncinfo = netCDF4.utils:ncinfo',
-                'nc4tonc3 = netCDF4.utils:nc4tonc3',
-                'nc3tonc4 = netCDF4.utils:nc3tonc4',
-            ]
-        },
-    }
-except ImportError:
-    from distutils.core  import setup, Extension
-    setuptools_extra_kwargs = {
-        "scripts": ['utils/nc3tonc4','utils/nc4tonc3','utils/ncinfo']
-    }
-
+from setuptools import setup, Extension
 from distutils.dist import Distribution
-from Cython.Build import cythonize
+setuptools_extra_kwargs = {
+    "install_requires":  ["numpy>=1.7","cython>=0.19"],
+    "setup_requires":  ['setuptools>=18.0',"cython>=0.19","cython>=0.19"],
+    "entry_points": {
+        'console_scripts': [
+            'ncinfo = netCDF4.utils:ncinfo',
+            'nc4tonc3 = netCDF4.utils:nc4tonc3',
+            'nc3tonc4 = netCDF4.utils:nc3tonc4',
+        ]
+    },
+}
 
 if sys.version_info[0] < 3:
     import ConfigParser as configparser
@@ -379,7 +371,7 @@ else:
 # get netcdf library version.
 netcdf_lib_version = getnetcdfvers(lib_dirs)
 if netcdf_lib_version is None:
-    sys.stdout.write('unable to detect netcdf library version')
+    sys.stdout.write('unable to detect netcdf library version\n')
 else:
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
@@ -388,13 +380,6 @@ netcdf4_src_root = osp.join('netCDF4', '_netCDF4')
 netcdf4_src_c = netcdf4_src_root + '.c'
 if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
-    extensions = [Extension("netCDF4._netCDF4",
-                            [netcdf4_src_root + '.pyx'],
-                            libraries=libs,
-                            library_dirs=lib_dirs,
-                            include_dirs=inc_dirs,
-                            runtime_library_dirs=runtime_lib_dirs),
-                  Extension('netcdftime._netcdftime', ['netcdftime/_netcdftime.pyx'])]
     # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
     # run for build *and* install (issue #263). Otherwise 'pip install' will
     # not regenerate netCDF4.c, even if the C lib supports the new features.
@@ -440,7 +425,13 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         f.write('DEF HAS_CDF5_FORMAT = 0\n')
 
     f.close()
-    ext_modules = cythonize(extensions, include_path=['include'])
+    ext_modules = [Extension("netCDF4._netCDF4",
+                            [netcdf4_src_root + '.pyx'],
+                            libraries=libs,
+                            library_dirs=lib_dirs,
+                            include_dirs=inc_dirs+['include'],
+                            runtime_library_dirs=runtime_lib_dirs),
+                  Extension('netcdftime._netcdftime', ['netcdftime/_netcdftime.pyx'])]
 else:
     ext_modules = None
 
