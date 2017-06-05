@@ -4,6 +4,7 @@
    view as unsigned type after scaling and masking). Issue #671.
  * Always mask values outside valid_min, valid_max (not just when
    missing_value attribue present).  Issue #672.
+ * Don't raise ImportError in setup.py if cython not found (let pip install it).
 
  version 1.2.8 (tag v1.2.8rel)
 ==============================
