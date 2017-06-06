@@ -11,7 +11,7 @@ addons:
 
 env:
   global:
-    - DEPENDS="numpy cython"
+    - DEPENDS="numpy cython setuptools==18.0.1"
     - NO_NET=1
 
 python:
