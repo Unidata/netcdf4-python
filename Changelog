@@ -4,6 +4,8 @@
    view as unsigned type after scaling and masking). Issue #671.
  * Always mask values outside valid_min, valid_max (not just when
    missing_value attribue present).  Issue #672.
+ * Fix setup.py so pip install doesn't fail if cython not installed.  
+   setuptools >= 18.0 now required for installation (Issue #666).
 
  version 1.2.8 (tag v1.2.8rel)
 ==============================

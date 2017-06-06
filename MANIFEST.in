@@ -1,6 +1,6 @@
 recursive-include docs *
 recursive-include man *
-recursive-include conda.recipe
+recursive-include conda.recipe *
 include MANIFEST.in
 include README.md
 include COPYING
@@ -14,9 +14,6 @@ include examples/*ipynb
 include examples/README.md
 include test/*py
 include test/*nc
-include utils/nc3tonc4
-include utils/nc4tonc3
-include utils/ncinfo
 include netcdftime/__init__.py
 include netcdftime/_netcdftime.pyx
 include netCDF4/__init__.py
