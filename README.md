@@ -8,6 +8,11 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+6/10/2017: Version [1.2.9](https://pypi.python.org/pypi/netCDF4/1.2.9) released. Fixes for auto-scaling
+and masking when `_Unsigned` and/or `valid_min`, `valid_max` attribute present.  setup.py updated
+so that `pip install` works if cython not installed.  Now requires [setuptools](https://pypi.python.org/setuptools)
+version 18.0 or greater.
+
 6/1/2017: Version [1.2.8](https://pypi.python.org/pypi/netCDF4/1.2.8) released.  From Changelog:
  * recognize `_Unsigned` attribute used by [netcdf-java](http://www.unidata.ucar.edu/software/thredds/current/netcdf-java/)
    to designate unsigned integer data stored with a signed integer type in netcdf-3 
