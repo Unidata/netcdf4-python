@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Version 1.2.8
+    <meta name="description" content="Version 1.2.9
 -------------
 - - - 
 
@@ -1268,7 +1268,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h2>Version 1.2.8</h2>
+  <h2>Version 1.2.9</h2>
 <hr />
 <h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
@@ -1298,12 +1298,9 @@ types) are not supported.</p>
 <ul>
 <li>Python 2.7 or later (python 3 works too).</li>
 <li><a href="http://numpy.scipy.org">numpy array module</a>, version 1.7.0 or later.</li>
-<li><a href="http://cython.org">Cython</a>, version 0.19 or later, is optional - if it is installed setup.py will
-   use it to recompile the Cython source code into C, using conditional compilation
-   to enable features in the netCDF API that have been added since version 4.1.1.  If
-   Cython is not installed, these features (such as the ability to rename Group objects)
-   will be disabled to preserve backward compatibility with older versions of the netCDF
-   library.</li>
+<li><a href="http://cython.org">Cython</a>, version 0.19 or later.</li>
+<li><a href="https://pypi.python.org/pypi/setuptools">setuptools</a>, version 18.0 or
+   later.</li>
 <li>The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
  from <a href="ftp://ftp.hdfgroup.org/HDF5/current/src"></a>.
  <strong><em>netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
