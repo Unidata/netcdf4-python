@@ -20,14 +20,14 @@ python:
   - "3.6"
 
 matrix:
+  allow_failures:
+    - python: "3.7-dev"
   include:
     # Absolute minimum dependencies.
     - python: 2.7
       env:
         - DEPENDS="numpy==1.7.0 cython==0.19 ordereddict==1.1 setuptools==18.0"
           matrix:
-  allow_failures:
-    - python: "3.7-dev"
 
 notifications:
   email: false
