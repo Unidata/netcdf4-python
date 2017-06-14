@@ -100,7 +100,20 @@ class SetValidMinMax(unittest.TestCase):
         v.set_auto_scale(False) 
         v = v[:]
         self.assertTrue(np.all(self.v == v.data))
+        f.close()
 
+        # issue 672
+        f = Dataset('issue672.nc')
+        field = 'azi_angle_trip'
+        v = f.variables[field]
+        data1 = v[:]
+        v.set_auto_scale(False)
+        data2 = v[:]
+        v.set_auto_maskandscale(False)
+        data3 = v[:]
+        assert(data1[(data3 < v.valid_min)].mask.sum() == 12)
+        assert(data2[(data3 < v.valid_min)].mask.sum() ==
+               data1[(data3 < v.valid_min)].mask.sum())
         f.close()
 
 

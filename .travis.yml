@@ -11,25 +11,21 @@ addons:
 
 env:
   global:
-    - DEPENDS="numpy cython"
+    - DEPENDS="numpy cython setuptools==18.0.1"
     - NO_NET=1
 
 python:
   - "2.7"
-  - "3.4"
   - "3.5"
-  - "3.6-dev"
+  - "3.6"
+  - "3.7-dev"
 
 matrix:
   include:
     # Absolute minimum dependencies.
     - python: 2.7
       env:
-        - DEPENDS="numpy==1.7.0 cython==0.19 ordereddict==1.1"
-    # Test without Cython installed.
-    - python: 2.7
-      env:
-        - DEPENDS="numpy ordereddict"
+        - DEPENDS="numpy==1.7.0 cython==0.19 ordereddict==1.1 setuptools==18.0"
 
 notifications:
   email: false

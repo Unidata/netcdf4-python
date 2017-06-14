@@ -1,5 +1,5 @@
 """
-Version 1.2.8a0
+Version 1.2.9
 -------------
 - - - 
 
@@ -38,12 +38,9 @@ Requires
 
  - Python 2.7 or later (python 3 works too).
  - [numpy array module](http://numpy.scipy.org), version 1.7.0 or later.
- - [Cython](http://cython.org), version 0.19 or later, is optional - if it is installed setup.py will
-   use it to recompile the Cython source code into C, using conditional compilation
-   to enable features in the netCDF API that have been added since version 4.1.1.  If
-   Cython is not installed, these features (such as the ability to rename Group objects)
-   will be disabled to preserve backward compatibility with older versions of the netCDF
-   library.
+ - [Cython](http://cython.org), version 0.19 or later.
+ - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
+   later.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
@@ -936,7 +933,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.8a0"
+__version__ = "1.2.9"
 
 # Initialize numpy
 import posixpath
@@ -950,8 +947,8 @@ from numpy import ma
 from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 import_array()
-include "netCDF4.pxi"
 include "constants.pyx"
+include "netCDF4.pxi"
 
 # check for required version of netcdf-4 and hdf5.
 
@@ -1059,13 +1056,10 @@ is_native_big = numpy.dtype('>f4').byteorder == '='
 # so it will compile with versions <= 4.2.
 NC_DISKLESS = 0x0008
 
-# encoding used to convert strings to bytes when writing text data
-# to the netcdf file, and for converting bytes to strings when reading
-# from the netcdf file.
-default_encoding = 'utf-8'
-# unicode decode/encode error handling.  Replace bad chars with "?"
-# can be set to 'strict' or 'ignore'.
+# next two lines do nothing, preserved for backwards compatibility.
+default_encoding = 'utf-8' 
 unicode_error = 'replace'
+
 python3 = sys.version_info[0] > 2
 if python3:
     buffer = memoryview
@@ -1097,17 +1091,19 @@ cdef _get_att_names(int grpid, int varid):
             ierr = nc_inq_attname(grpid, varid, n, namstring)
         if ierr != NC_NOERR:
             raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        attslist.append(namstring.decode(default_encoding,unicode_error))
+        # attribute names are assumed to be utf-8
+        attslist.append(namstring.decode('utf-8'))
     return attslist
 
-cdef _get_att(grp, int varid, name):
+cdef _get_att(grp, int varid, name, encoding='utf-8'):
     # Private function to get an attribute value given its name
     cdef int ierr, n, _grpid
     cdef size_t att_len
     cdef char *attname
     cdef nc_type att_type
     cdef ndarray value_arr
-    bytestr = _strencode(name)
+    # attribute names are assumed to be utf-8
+    bytestr = _strencode(name,encoding='utf-8')
     attname = bytestr
     _grpid = grp._grpid
     with nogil:
@@ -1127,7 +1123,7 @@ cdef _get_att(grp, int varid, name):
             pstring = value_arr.tostring()
         else:
             pstring =\
-            value_arr.tostring().decode(default_encoding,unicode_error).replace('\x00','')
+            value_arr.tostring().decode(encoding,errors='replace').replace('\x00','')
         return pstring
     elif att_type == NC_STRING:
         values = <char**>PyMem_Malloc(sizeof(char*) * att_len)
@@ -1139,7 +1135,7 @@ cdef _get_att(grp, int varid, name):
             if ierr != NC_NOERR:
                 raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
             try:
-                result = [values[j].decode(default_encoding,unicode_error).replace('\x00','')
+                result = [values[j].decode(encoding,errors='replace').replace('\x00','')
                           for j in range(att_len)]
             finally:
                 ierr = nc_free_string(att_len, values) # free memory in netcdf C lib
@@ -1350,7 +1346,7 @@ cdef _get_types(group):
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             if classp == NC_COMPOUND: # a compound
-                name = namstring.decode(default_encoding,unicode_error)
+                name = namstring.decode('utf-8')
                 # read the compound type info from the file,
                 # create a CompoundType instance from it.
                 try:
@@ -1361,7 +1357,7 @@ cdef _get_types(group):
                     continue
                 cmptypes[name] = cmptype
             elif classp == NC_VLEN: # a vlen
-                name = namstring.decode(default_encoding,unicode_error)
+                name = namstring.decode('utf-8')
                 # read the VLEN type info from the file,
                 # create a VLType instance from it.
                 try:
@@ -1372,7 +1368,7 @@ cdef _get_types(group):
                     continue
                 vltypes[name] = vltype
             elif classp == NC_ENUM: # an enum type
-                name = namstring.decode(default_encoding,unicode_error)
+                name = namstring.decode('utf-8')
                 # read the Enum type info from the file,
                 # create a EnumType instance from it.
                 try:
@@ -1414,7 +1410,7 @@ cdef _get_dims(group):
                 ierr = nc_inq_dimname(_grpid, dimids[n], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            name = namstring.decode(default_encoding,unicode_error)
+            name = namstring.decode('utf-8')
             dimensions[name] = Dimension(group, name, id=dimids[n])
         free(dimids)
     return dimensions
@@ -1444,7 +1440,7 @@ cdef _get_grps(group):
                 ierr = nc_inq_grpname(grpids[n], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            name = namstring.decode(default_encoding,unicode_error)
+            name = namstring.decode('utf-8')
             groups[name] = Group(group, name, id=grpids[n])
         free(grpids)
     return groups
@@ -1485,7 +1481,7 @@ cdef _get_vars(group):
                 ierr = nc_inq_varname(_grpid, varid, namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            name = namstring.decode(default_encoding,unicode_error)
+            name = namstring.decode('utf-8')
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # get variable type.
@@ -1591,7 +1587,7 @@ _private_atts = \
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer']
+ '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer','chartostring']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -1966,7 +1962,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode('utf-8')
 
     def __unicode__(self):
         ncdump = ['%r\n' % type(self)]
@@ -2399,14 +2395,17 @@ each attribute"""
             _set_att(self, NC_GLOBAL, name, value)
         if self.data_model != 'NETCDF4': self._enddef()
 
-    def getncattr(self,name):
+    def getncattr(self,name,encoding='utf-8'):
         """
 **`getncattr(self,name)`**
 
 retrieve a netCDF dataset or group attribute.
-Use if you need to get a netCDF attribute with the same 
-name as one of the reserved python attributes."""
-        return _get_att(self, NC_GLOBAL, name)
+Use if you need to get a netCDF attribute with the same
+name as one of the reserved python attributes.
+
+option kwarg `encoding` can be used to specify the
+character encoding of a string attribute (default is `utf-8`)."""
+        return _get_att(self, NC_GLOBAL, name, encoding=encoding)
 
     def __delattr__(self,name):
         # if it's a netCDF attribute, remove it
@@ -2498,6 +2497,34 @@ rename a `netCDF4.Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)
 renameGroup method not enabled.  To enable, install Cython, make sure you have
 version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
+
+    def set_auto_chartostring(self, value):
+        """
+**`set_auto_chartostring(self, True_or_False)`**
+
+Call `netCDF4.Variable.set_auto_chartostring` for all variables contained in this `netCDF4.Dataset` or
+`netCDF4.Group`, as well as for all variables in all its subgroups.
+
+**`True_or_False`**: Boolean determining if automatic conversion of
+all character arrays <--> string arrays should be performed for 
+character variables (variables of type `NC_CHAR` or `S1`) with the
+`_Encoding` attribute set.
+
+***Note***: Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.
+        """
+
+        # this is a hack to make inheritance work in MFDataset
+        # (which stores variables in _vars)
+        _vars = self.variables
+        if _vars is None: _vars = self._vars
+        for var in _vars.values():
+            var.set_auto_chartostring(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                for var in group.variables.values():
+                    var.set_auto_chartostring(value)
 
     def set_auto_maskandscale(self, value):
         """
@@ -2709,7 +2736,7 @@ instances, raises IOError."""
         with nogil:
             ierr = nc_inq_grpname(self._grpid, namstring)
         _ensure_nc_success(ierr)
-        return namstring.decode(default_encoding,unicode_error)
+        return namstring.decode('utf-8')
 
     property name:
         """string name of Group instance"""
@@ -2796,7 +2823,7 @@ Read-only class variables:
             ierr = nc_inq_dimname(_grpid, self._dimid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        return namstring.decode(default_encoding,unicode_error)
+        return namstring.decode('utf-8')
 
     property name:
         """string name of Dimension instance"""
@@ -2816,7 +2843,7 @@ Read-only class variables:
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode('utf-8')
 
     def __unicode__(self):
         if not dir(self._grp):
@@ -2906,13 +2933,20 @@ variable's data type.
 **`shape`**: A tuple with the current shape (length of all dimensions).
 
 **`scale`**: If True, `scale_factor` and `add_offset` are
-applied. Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
+applied, and signed integer data is automatically converted to
+unsigned integer data if the `_Unsigned` attribute is set. 
+Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
 `netCDF4.Variable.set_auto_maskandscale` methods.
 
 **`mask`**: If True, data is automatically converted to/from masked 
 arrays when missing values or fill values are present. Default is `True`, can be
 reset using `netCDF4.Variable.set_auto_mask` and `netCDF4.Variable.set_auto_maskandscale`
 methods.
+
+**`chartostring`**: If True, data is automatically converted to/from character 
+arrays to string arrays when the `_Encoding` variable attribute is set. 
+Default is `True`, can be reset using
+`netCDF4.Variable.set_auto_chartostring` method.
 
 **`least_significant_digit`**: Describes the power of ten of the 
 smallest decimal place in the data the contains a reliable value.  Data is
@@ -2932,7 +2966,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 **`size`**: The number of stored elements.
     """
     cdef public int _varid, _grpid, _nunlimdim
-    cdef public _name, ndim, dtype, mask, scale, _isprimitive, _iscompound,\
+    cdef public _name, ndim, dtype, mask, scale, chartostring,  _isprimitive, _iscompound,\
     _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
     __orthogonal_indexing__, _has_lsd
     # Docstrings for class variables (used by pdoc).
@@ -2946,13 +2980,20 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     """The number of variable dimensions."""
     __pdoc__['Variable.scale'] = \
     """if True, `scale_factor` and `add_offset` are
-    applied. Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
+    applied, and signed integer data is converted to unsigned
+    integer data if the `_Unsigned` attribute is set.
+    Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
     `netCDF4.Variable.set_auto_maskandscale` methods."""
     __pdoc__['Variable.mask'] = \
     """If True, data is automatically converted to/from masked 
     arrays when missing values or fill values are present. Default is `True`, can be
     reset using `netCDF4.Variable.set_auto_mask` and `netCDF4.Variable.set_auto_maskandscale`
     methods."""
+    __pdoc__['Variable.chartostring'] = \
+    """If True, data is automatically converted to/from character 
+    arrays to string arrays when `_Encoding` variable attribute is set.
+    Default is `True`, can be reset using
+    `netCDF4.Variable.set_auto_chartostring` method."""
     __pdoc__['Variable.least_significant_digit'] = \
     """Describes the power of ten of the 
     smallest decimal place in the data the contains a reliable value.  Data is
@@ -3319,6 +3360,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # add_offset, and converting to/from masked arrays is True.
         self.scale = True
         self.mask = True
+        # default is to automatically convert to/from character
+        # to string arrays when _Encoding variable attribute is set.
+        self.chartostring = True
         if 'least_significant_digit' in self.ncattrs():
             self._has_lsd = True
 
@@ -3332,7 +3376,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode('utf-8')
 
     def __unicode__(self):
         cdef int ierr, no_fill
@@ -3414,7 +3458,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
             if ierr != NC_NOERR:
                 raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-            name = namstring.decode(default_encoding,unicode_error)
+            name = namstring.decode('utf-8')
             dimensions = dimensions + (name,)
         free(dimids)
         return dimensions
@@ -3428,7 +3472,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ierr = nc_inq_varname(_grpid, self._varid, namstring)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        return namstring.decode(default_encoding,unicode_error)
+        return namstring.decode('utf-8')
 
     property name:
         """string name of Variable instance"""
@@ -3529,14 +3573,17 @@ each attribute"""
             _set_att(self._grp, self._varid, name, value)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
 
-    def getncattr(self,name):
+    def getncattr(self,name,encoding='utf-8'):
         """
 **`getncattr(self,name)`**
 
 retrieve a netCDF variable attribute.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
-attributes."""
-        return _get_att(self._grp, self._varid, name)
+attributes.
+
+option kwarg `encoding` can be used to specify the
+character encoding of a string attribute (default is `utf-8`)."""
+        return _get_att(self._grp, self._varid, name, encoding=encoding)
 
     def delncattr(self, name):
         """
@@ -3809,8 +3856,17 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if self.scale:
                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
                 warnings.warn(msg)
+
         if self.mask and (self._isprimitive or self._isenum):
             data = self._toma(data)
+
+        # if attribute _Unsigned is True, and variable has signed integer
+        # dtype, return view with corresponding unsigned dtype (issue #656)
+        if self.scale:  # only do this if autoscale option is on.
+            is_unsigned = getattr(self, '_Unsigned', False)
+            if is_unsigned and data.dtype.kind == 'i':
+                data = data.view('u%s' % data.dtype.itemsize)
+
         if self.scale and self._isprimitive and valid_scaleoffset:
             # if variable has scale_factor and add_offset attributes, rescale.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset') and\
@@ -3822,6 +3878,27 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # else if variable has only add_offset attributes, rescale.
             elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
                 data = data + self.add_offset
+
+        # if _Encoding is specified for a character variable, return 
+        # a numpy array of strings with one less dimension.
+        if self.chartostring and getattr(self.dtype,'kind',None) == 'S' and\
+           getattr(self.dtype,'itemsize',None) == 1:
+            encoding = getattr(self,'_Encoding',None)
+            # should this only be done if self.scale = True?
+            # should there be some other way to disable this?
+            if encoding is not None:
+                # only try to return a string array if rightmost dimension of
+                # sliced data matches rightmost dimension of char variable
+                if len(data.shape) > 0 and data.shape[-1] == self.shape[-1]:
+                    # also make sure slice is along last dimension
+                    matchdim = True
+                    for cnt in count:
+                        if cnt[-1] != self.shape[-1]: 
+                            matchdim = False
+                            break
+                    if matchdim:
+                        data = chartostring(data, encoding=encoding)
+
         return data
 
     def _toma(self,data):
@@ -3834,43 +3911,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             mval = numpy.array(self.missing_value, self.dtype)
             # create mask from missing values. 
             mvalmask = numpy.zeros(data.shape, numpy.bool)
-            # set mask=True for data outside valid_min,valid_max.
-            # (issue #576)
-            validmin = None; validmax = None
-            # if valid_range exists use that, otherwise
-            # look for valid_min, valid_max.  No special
-            # treatment of byte data as described at
-            # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
-            if hasattr(self, 'valid_range') and len(self.valid_range) == 2:
-                validmin = numpy.array(self.valid_range[0], self.dtype)
-                validmax = numpy.array(self.valid_range[1], self.dtype)
-            else:
-                if hasattr(self, 'valid_min'):
-                    validmin = numpy.array(self.valid_min, self.dtype)
-                if hasattr(self, 'valid_max'):
-                    validmax = numpy.array(self.valid_max, self.dtype)
-            # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
-            # "If the data type is byte and _FillValue 
-            # is not explicitly defined,
-            # then the valid range should include all possible values.
-            # Otherwise, the valid range should exclude the _FillValue
-            # (whether defined explicitly or by default) as follows. 
-            # If the _FillValue is positive then it defines a valid maximum,
-            #  otherwise it defines a valid minimum."
-            byte_type = self.dtype.str[1:] in ['u1','i1']
-            if hasattr(self, '_FillValue'):
-                fval = numpy.array(self._FillValue, self.dtype)
-            else:
-                fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
-                if byte_type: fval = None
-            if validmin is None and (fval is not None and fval <= 0):
-                validmin = fval
-            elif validmax is None and (fval is not None and fval > 0):
-                validmax = fval
-            if validmin is not None:
-                mvalmask += data < validmin
-            if validmax is not None:
-                mvalmask += data > validmax
             if mval.shape == (): # mval a scalar.
                 mval = [mval] # make into iterable.
             for m in mval:
@@ -3889,7 +3929,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # if missing_value is a vector).
                 fill_value = mval[0]
                 totalmask += mvalmask
-        # set mask=True for missing data
+        # set mask=True for data == fill value
         if hasattr(self, '_FillValue'):
             fval = numpy.array(self._FillValue, self.dtype)
             # is _FillValue a NaN?
@@ -3933,20 +3973,60 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # in that case convert to an array.
                 if type(has_fillval) == bool: has_fillval=numpy.asarray(has_fillval)
                 if has_fillval.any():
-                    mask=data==fillval
                     if fill_value is None:
                         fill_value = fillval
+                    mask=data==fillval
                     totalmask += mask
-        # all values where data == missing_value or _FillValue are
-        # masked.  fill_value set to missing_value if it exists,
-        # otherwise _FillValue.
-        if fill_value is not None:
+        # set mask=True for data outside valid_min,valid_max.
+        # (issue #576)
+        validmin = None; validmax = None
+        # if valid_range exists use that, otherwise
+        # look for valid_min, valid_max.  No special
+        # treatment of byte data as described at
+        # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
+        if hasattr(self, 'valid_range') and len(self.valid_range) == 2:
+            validmin = numpy.array(self.valid_range[0], self.dtype)
+            validmax = numpy.array(self.valid_range[1], self.dtype)
+        else:
+            if hasattr(self, 'valid_min'):
+                validmin = numpy.array(self.valid_min, self.dtype)
+            if hasattr(self, 'valid_max'):
+                validmax = numpy.array(self.valid_max, self.dtype)
+        # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
+        # "If the data type is byte and _FillValue 
+        # is not explicitly defined,
+        # then the valid range should include all possible values.
+        # Otherwise, the valid range should exclude the _FillValue
+        # (whether defined explicitly or by default) as follows. 
+        # If the _FillValue is positive then it defines a valid maximum,
+        #  otherwise it defines a valid minimum."
+        byte_type = self.dtype.str[1:] in ['u1','i1']
+        if hasattr(self, '_FillValue'):
+            fval = numpy.array(self._FillValue, self.dtype)
+        else:
+            fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
+            if byte_type: fval = None
+        if self.dtype.kind != 'S': # don't set mask for character data
+            if validmin is None and (fval is not None and fval <= 0):
+                validmin = fval
+            if validmax is None and (fval is not None and fval > 0):
+                validmax = fval
+            if validmin is not None:
+                totalmask += data < validmin
+            if validmax is not None:
+                totalmask += data > validmax
+        if fill_value is None and fval is not None:
+            fill_value = fval
+        # create masked array with computed mask
+        if totalmask.any() and fill_value is not None:
             data = ma.masked_array(data,mask=totalmask,fill_value=fill_value)
             # issue 515 scalar array with mask=True should be converted
             # to numpy.ma.MaskedConstant to be consistent with slicing
             # behavior of masked arrays.
             if data.shape == () and data.mask.all():
-                data = data[...]
+                # return a scalar numpy masked constant not a 0-d masked array,
+                # so that data == numpy.ma.masked.
+                data = data[()] # changed from [...] (issue #662)
         return data
 
     def _assign_vlen(self, elem, data):
@@ -4002,7 +4082,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             countp[n] = count[n]
         if self.dtype == str: # VLEN string
             strdata = <char **>malloc(sizeof(char *))
-            bytestr = _strencode(data)
+            # use _Encoding attribute to specify string encoding - if
+            # not given, use 'utf-8'.
+            encoding = getattr(self,'_Encoding','utf-8')
+            bytestr = _strencode(data,encoding=encoding)
             strdata[0] = bytestr
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, strdata)
@@ -4030,6 +4113,24 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_put_var() function, and is much more easy
         # to use.
+
+        # if _Encoding is specified for a character variable, convert
+        # numpy array of strings to a numpy array of characters with one more
+        # dimension.
+        if self.chartostring and getattr(self.dtype,'kind',None) == 'S' and\
+           getattr(self.dtype,'itemsize',None) == 1:
+            # NC_CHAR variable
+            encoding = getattr(self,'_Encoding',None)
+            if encoding is not None:
+                # _Encoding attribute is set
+                # if data is a string or a bytes object, convert to a numpy string array
+                # whose length is equal to the rightmost dimension of the
+                # variable.
+                if type(data) in [str,bytes]: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+                if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:
+                    # if data is a numpy string array, convert it to an array
+                    # of characters with one more dimension.
+                    data = stringtochar(data, encoding=encoding)
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
             if self.dtype == str:
@@ -4075,8 +4176,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # for Enum variable, make sure data is valid.
         if self._isenum:
             test = numpy.zeros(data.shape,numpy.bool)
-            for val in self.datatype.enum_dict.values():
-                test += data == val
+            if ma.isMA(data):
+                # fix for new behaviour in numpy.ma in 1.13 (issue #662)
+                for val in self.datatype.enum_dict.values():
+                    test += data.filled() == val
+            else:
+                for val in self.datatype.enum_dict.values():
+                    test += data == val
             if not numpy.all(test):
                 msg="trying to assign illegal value to Enum variable"
                 raise ValueError(msg)
@@ -4196,13 +4302,41 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([...])."""
             raise IndexError('to retrieve values from a non-scalar variable, use slicing')
         return self[slice(None)]
 
+    def set_auto_chartostring(self,chartostring):
+        """
+**`set_auto_chartostring(self,chartostring)`**
+
+turn on or off automatic conversion of character variable data to and
+from numpy fixed length string arrays when the `_Encoding` variable attribute
+is set.
+
+If `chartostring` is set to `True`, when data is read from a character variable
+(dtype = `S1`) that has an `_Encoding` attribute, it is converted to a numpy
+fixed length unicode string array (dtype = `UN`, where `N` is the length
+of the the rightmost dimension of the variable).  The value of `_Encoding`
+is the unicode encoding that is used to decode the bytes into strings. 
+
+When numpy string data is written to a variable it is converted back to
+indiviual bytes, with the number of bytes in each string equalling the
+rightmost dimension of the variable.
+
+The default value of `chartostring` is `True`
+(automatic conversions are performed).
+        """
+        if chartostring:
+            self.chartostring = True
+        else:
+            self.chartostring = False
+
     def set_auto_maskandscale(self,maskandscale):
         """
 **`set_auto_maskandscale(self,maskandscale)`**
 
 turn on or off automatic conversion of variable data to and
-from masked arrays and automatic packing/unpacking of variable
-data using `scale_factor` and `add_offset` attributes.
+from masked arrays, automatic packing/unpacking of variable
+data using `scale_factor` and `add_offset` attributes and 
+automatic conversion of signed integer data to unsigned integer
+data if the `_Unsigned` attribute exists.
 
 If `maskandscale` is set to `True`, when data is read from a variable
 it is converted to a masked array if any of the values are exactly
@@ -4235,6 +4369,13 @@ For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see the
 [PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
+In addition, if `maskandscale` is set to `True`, and if the variable has an 
+attribute `_Unsigned` set, and the variable has a signed integer data type, 
+a view to the data is returned with the corresponding unsigned integer data type.
+This convention is used by the netcdf-java library to save unsigned integer
+data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3` 
+data model does not have unsigned integer data types).
+
 The default value of `maskandscale` is `True`
 (automatic conversions are performed).
         """
@@ -4251,6 +4392,9 @@ The default value of `maskandscale` is `True`
 
 turn on or off automatic packing/unpacking of variable
 data using `scale_factor` and `add_offset` attributes.
+Also turns on and off automatic conversion of signed integer data
+to unsigned integer data if the variable has an `_Unsigned`
+attribute.
 
 If `scale` is set to `True`, and the variable has a
 `scale_factor` or an `add_offset` attribute, then data read
@@ -4268,6 +4412,13 @@ scale_factor is assumed to be one.
 For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see the
 [PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
+
+In addition, if `scale` is set to `True`, and if the variable has an 
+attribute `_Unsigned` set, and the variable has a signed integer data type,
+a view to the data is returned with the corresponding unsigned integer datatype.
+This convention is used by the netcdf-java library to save unsigned integer
+data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3` 
+data model does not have unsigned integer data types).
 
 The default value of `scale` is `True`
 (automatic conversions are performed).
@@ -4382,8 +4533,11 @@ The default value of `mask` is `True`
             data = data.flatten()
             if self.dtype == str:
                 # convert all elements from strings to bytes
+                # use _Encoding attribute to specify string encoding - if
+                # not given, use 'utf-8'.
+                encoding = getattr(self,'_Encoding','utf-8')
                 for n in range(data.shape[0]):
-                    data[n] = _strencode(data[n])
+                    data[n] = _strencode(data[n],encoding=encoding)
                 # vlen string (NC_STRING)
                 # loop over elements of object array, put data buffer for
                 # each element in struct.
@@ -4519,8 +4673,11 @@ The default value of `mask` is `True`
                     raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
                 # loop over elements of object array, fill array with
                 # contents of strdata.
+                # use _Encoding attribute to decode string to bytes - if
+                # not given, use 'utf-8'.
+                encoding = getattr(self,'_Encoding','utf-8')
                 for i from 0<=i<totelem:
-                    data[i] = strdata[i].decode(default_encoding)
+                    data[i] = strdata[i].decode(encoding)
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
                 # free string data internally allocated in netcdf C lib
@@ -4642,7 +4799,7 @@ the user.
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode('utf-8')
 
     def __unicode__(self):
         return repr(type(self))+": name = '%s', numpy dtype = %s\n" %\
@@ -4770,7 +4927,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
         ierr = nc_inq_compound(_grpid, xtype, cmp_namstring, NULL, &nfields)
     if ierr != NC_NOERR:
         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-    name = cmp_namstring.decode(default_encoding,unicode_error)
+    name = cmp_namstring.decode('utf-8')
     # loop over fields.
     names = []
     formats = []
@@ -4799,7 +4956,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
                                          dim_sizes)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        field_name = field_namstring.decode(default_encoding,unicode_error)
+        field_name = field_namstring.decode('utf-8')
         names.append(field_name)
         offsets.append(offset)
         # if numdims=0, not an array.
@@ -4886,7 +5043,7 @@ the user.
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode('utf-8')
 
     def __unicode__(self):
         if self.dtype == str:
@@ -4943,7 +5100,7 @@ cdef _read_vlen(group, nc_type xtype, endian=None):
             ierr = nc_inq_vlen(_grpid, xtype, vl_namstring, &vlsize, &base_xtype)
         if ierr != NC_NOERR:
             raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        name = vl_namstring.decode(default_encoding,unicode_error)
+        name = vl_namstring.decode('utf-8')
         try:
             datatype = _nctonptype[base_xtype]
             if endian is not None: datatype = endian + datatype
@@ -5007,7 +5164,7 @@ the user.
         if python3:
             return self.__unicode__()
         else:
-            return unicode(self).encode(default_encoding)
+            return unicode(self).encode('utf-8')
 
     def __unicode__(self):
         return repr(type(self))+\
@@ -5065,7 +5222,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
                 &nmembers)
     if ierr != NC_NOERR:
         raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-    name = enum_namstring.decode(default_encoding,unicode_error)
+    name = enum_namstring.decode('utf-8')
     try:
         datatype = _nctonptype[base_xtype]
         if endian is not None: datatype = endian + datatype
@@ -5080,15 +5237,15 @@ cdef _read_enum(group, nc_type xtype, endian=None):
                                       enum_namstring, &enum_val)
         if ierr != NC_NOERR:
            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
-        name = enum_namstring.decode(default_encoding,unicode_error)
+        name = enum_namstring.decode('utf-8')
         enum_dict[name] = int(enum_val)
     return EnumType(group, dt, name, enum_dict, typeid=xtype)
 
 cdef _strencode(pystr,encoding=None):
     # encode a string into bytes.  If already bytes, do nothing.
-    # uses default_encoding module variable for default encoding.
+    # uses 'utf-8' for default encoding.
     if encoding is None:
-        encoding = default_encoding
+        encoding = 'utf-8'
     try:
         return pystr.encode(encoding)
     except (AttributeError, UnicodeDecodeError):
@@ -5159,9 +5316,9 @@ returns a rank 1 numpy character array of length NUMCHARS with datatype `'S1'`
     arr[0:len(string)] = tuple(string)
     return arr
 
-def stringtochar(a):
+def stringtochar(a,encoding='utf-8'):
     """
-**`stringtochar(a)`**
+**`stringtochar(a,encoding='utf-8')`**
 
 convert a string array to a character array with one extra dimension
 
@@ -5169,18 +5326,21 @@ convert a string array to a character array with one extra dimension
 is the number of characters in each string.  Will be converted to
 an array of characters (datatype `'S1'` or `'U1'`) of shape `a.shape + (N,)`.
 
+optional kwarg `encoding` can be used to specify character encoding (default
+`utf-8`).
+
 returns a numpy character array with datatype `'S1'` or `'U1'`
 and shape `a.shape + (N,)`, where N is the length of each string in a."""
     dtype = a.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
-    b = numpy.array(tuple(a.tostring().decode(default_encoding)),dtype+'1')
+    b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
     b.shape = a.shape + (a.itemsize,)
     return b
 
-def chartostring(b):
+def chartostring(b,encoding='utf-8'):
     """
-**`chartostring(b)`**
+**`chartostring(b,encoding='utf-8')`**
 
 convert a character array to a string array with one less dimension.
 
@@ -5188,14 +5348,17 @@ convert a character array to a string array with one less dimension.
 Will be converted to a array of strings, where each string has a fixed
 length of `b.shape[-1]` characters.
 
-returns a numpy string array with datatype `'SN'` or `'UN'` and shape
+optional kwarg `encoding` can be used to specify character encoding (default
+`utf-8`).
+
+returns a numpy string array with datatype `'UN'` and shape
 `b.shape[:-1]` where where `N=b.shape[-1]`."""
     dtype = b.dtype.kind
     if dtype not in ["S","U"]:
-        raise ValueError("type must string or unicode ('S' or 'U')")
-    bs = b.tostring().decode(default_encoding)
+        raise ValueError("type must be string or unicode ('S' or 'U')")
+    bs = b.tostring().decode(encoding)
     slen = int(b.shape[-1])
-    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],dtype+repr(slen))
+    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
     a.shape = b.shape[:-1]
     return a
 
@@ -5336,8 +5499,9 @@ contains one.
             msg='negative reference year in time units, must be >= 1'
             raise ValueError(msg)
 
-    if (calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
-       (calendar in ['gregorian','standard'] and basedate > gregorian):
+    postimes =  (numpy.asarray(times) > 0).all()
+    if postimes and ((calendar == 'proleptic_gregorian' and basedate.year >= MINYEAR) or \
+       (calendar in ['gregorian','standard'] and basedate > gregorian)):
         # use python datetime module,
         isscalar = False
         try:
@@ -5769,6 +5933,9 @@ class _Variable(object):
     def _shape(self):
         recdimlen = len(self._dset.dimensions[self._recdimname])
         return (recdimlen,) + self._mastervar.shape[1:]
+    def set_auto_chartostring(self,val):
+        for v in self._recVar:
+            v.set_auto_chartostring(val)
     def set_auto_maskandscale(self,val):
         for v in self._recVar:
             v.set_auto_maskandscale(val)

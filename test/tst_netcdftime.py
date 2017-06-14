@@ -476,6 +476,13 @@ class netcdftimeTestCase(unittest.TestCase):
         assert (d.month == 1)
         assert (d.day == 1)
         assert (d.hour == 0)
+        # test fix for issue #659 (proper treatment of negative time values).
+        units = 'days since 1800-01-01 00:00:0.0'
+        d = num2date(-657073, units, calendar='standard')
+        assert (d.year == 1)
+        assert (d.month == 1)
+        assert (d.day == 1)
+        assert (d.hour == 0)
 
 
 class TestDate2index(unittest.TestCase):
