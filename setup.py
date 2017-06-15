@@ -286,6 +286,8 @@ _HDF5_MIN_VERSION = '1.8.0'
 
 
 def _populate_hdf5_info(inc_dirs, libs, lib_dirs):
+    global HDF5_incdir, HDF5_dir, HDF5_libdir
+
     if HAS_PKG_CONFIG:
         dep = subprocess.Popen(['pkg-config', '--modversion', 'hdf5'],
                                stdout=subprocess.PIPE).communicate()[0]
