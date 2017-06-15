@@ -285,7 +285,7 @@ except OSError:
 _HDF5_MIN_VERSION = '1.8.0'
 
 
-def _populate_hdf5_info(inc_dirs, libs, lib_dirs):
+def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
     global HDF5_incdir, HDF5_dir, HDF5_libdir
 
     if HAS_PKG_CONFIG:
@@ -344,6 +344,9 @@ def _populate_hdf5_info(inc_dirs, libs, lib_dirs):
         libs.extend(['hdf5_hl', 'hdf5'])
 
 
+dirstosearch = [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
+                '/opt/local', '/usr']
+
 if not retcode:  # Try nc-config.
     sys.stdout.write('using nc-config ...\n')
     dep = subprocess.Popen([ncconfig, '--libs'],
@@ -356,7 +359,7 @@ if not retcode:  # Try nc-config.
     inc_dirs = [str(i[2:].decode()) for i in dep.split() if
                 i[0:2].decode() == '-I']
 
-    _populate_hdf5_info(inc_dirs, libs, lib_dirs)
+    _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 elif HAS_PKG_CONFIG:  # Try pkg-config.
     sys.stdout.write('using pkg-config ...\n')
     dep = subprocess.Popen(['pkg-config', '--libs', 'netcdf'],
@@ -366,17 +369,14 @@ elif HAS_PKG_CONFIG:  # Try pkg-config.
                 l[0:2].decode() == '-L']
 
     inc_dirs = []
-    _populate_hdf5_info(inc_dirs, libs, lib_dirs)
+    _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 # If nc-config and pkg-config both didn't work (it won't on Windows), fall back on brute force method.
 else:
-    dirstosearch = [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
-                    '/opt/local', '/usr']
-
     lib_dirs = []
     inc_dirs = []
     libs = []
 
-    _populate_hdf5_info(inc_dirs, libs, lib_dirs)
+    _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 
     if netCDF4_incdir is None and netCDF4_dir is None:
         sys.stdout.write("""
