@@ -1,5 +1,5 @@
- version 1.2.9 (not yet released)
-=================================
+ version 1.2.9 (tag v1.2.9rel)
+==============================
  * Fix for auto scaling and masking when _Unsigned attribute set (create
    view as unsigned type after scaling and masking). Issue #671.
  * Always mask values outside valid_min, valid_max (not just when
