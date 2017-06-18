@@ -8,7 +8,7 @@
 ## News
 For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-6/10/2017: Version [1.2.9](https://pypi.python.org/pypi/netCDF4/1.2.9) released. Fixes for auto-scaling
+6/10/2017: Version [1.2.9](https://github.com/Unidata/netcdf4-python/releases) released. Fixes for auto-scaling
 and masking when `_Unsigned` and/or `valid_min`, `valid_max` attributes present.  setup.py updated
 so that `pip install` works if cython not installed.  Now requires [setuptools](https://pypi.python.org/pypi/setuptools)
 version 18.0 or greater.
