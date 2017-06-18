@@ -2,3 +2,6 @@ build/
 *.pyc
 dist/
 *.egg-info/
+netCDF4/_netCDF4.c
+include/constants.pyx
+netcdftime/_netcdftime.c
