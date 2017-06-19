@@ -5,6 +5,7 @@ cdef extern from "stdlib.h":
 
 # hdf5 version info.
 cdef extern from "H5public.h":
+    ctypedef int herr_t
     int H5get_libversion( unsigned int *majnum, unsigned int *minnum, unsigned int *relnum )
  
 cdef extern from *:

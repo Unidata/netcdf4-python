@@ -954,7 +954,10 @@ include "netCDF4.pxi"
 
 def _gethdf5libversion():
     cdef unsigned int majorvers, minorvers, releasevers
+    cdef herr_t ierr
     ierr = H5get_libversion( &majorvers, &minorvers, &releasevers)
+    if ierr < 0:
+        raise RuntimeError('error getting HDF5 library version info')
     return '%d.%d.%d' % (majorvers,minorvers,releasevers)
 
 def getlibversion():
