@@ -5,21 +5,8 @@ cdef extern from "stdlib.h":
 
 # hdf5 version info.
 cdef extern from "H5public.h":
-    cdef char *H5_VERS_INFO
-    cdef char *H5_VERS_SUBRELEASE
-    cdef enum:
-        H5_VERS_MAJOR
-        H5_VERS_MINOR
-        H5_VERS_RELEASE
+    int H5get_libversion( unsigned int *majnum, unsigned int *minnum, unsigned int *relnum )
  
-# netcdf version info.
-#cdef extern from "netcdf_meta.h":
-#    cdef char *NC_VERSION_NOTE
-#    cdef enum:
-#        NC_VERSION_MAJOR
-#        NC_VERSION_MINOR
-#        NC_VERSION_PATCH
-
 cdef extern from *:
     ctypedef char* const_char_ptr "const char*"
  
@@ -30,20 +17,6 @@ cdef extern from "netcdf.h":
     ctypedef struct nc_vlen_t:
         size_t len                 # Length of VL data (in base type units) 
         void *p                    # Pointer to VL data 
-# default fill values.
-# could define these in the anonymous enum, but then they
-# would be assumed to be integers.
-#define NC_FILL_BYTE	((signed char)-127)
-#define NC_FILL_CHAR	((char)0)
-#define NC_FILL_SHORT	((short)-32767)
-#define NC_FILL_INT	(-2147483647L)
-#define NC_FILL_FLOAT	(9.9692099683868690e+36f) /* near 15 * 2^119 */
-#define NC_FILL_DOUBLE	(9.9692099683868690e+36)
-#define NC_FILL_UBYTE   (255)
-#define NC_FILL_USHORT  (65535)
-#define NC_FILL_UINT    (4294967295U)
-#define NC_FILL_INT64   ((long long)-9223372036854775806)
-#define NC_FILL_UINT64  ((unsigned long long)18446744073709551614)
     float NC_FILL_FLOAT
     long NC_FILL_INT
     double NC_FILL_DOUBLE

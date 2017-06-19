@@ -953,14 +953,9 @@ include "netCDF4.pxi"
 # check for required version of netcdf-4 and hdf5.
 
 def _gethdf5libversion():
-    majorvers = H5_VERS_MAJOR
-    minorvers = H5_VERS_MINOR
-    releasevers = H5_VERS_RELEASE
-    patchstring = H5_VERS_SUBRELEASE.decode('ascii')
-    if not patchstring:
-        return '%d.%d.%d' % (majorvers,minorvers,releasevers)
-    else:
-        return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
+    cdef unsigned int majorvers, minorvers, releasevers
+    ierr = H5get_libversion( &majorvers, &minorvers, &releasevers)
+    return '%d.%d.%d' % (majorvers,minorvers,releasevers)
 
 def getlibversion():
     """
