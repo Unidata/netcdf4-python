@@ -5,7 +5,7 @@ from distutils.dist import Distribution
 
 setuptools_extra_kwargs = {
     "install_requires": ["numpy>=1.7"],
-    "setup_requires": ['setuptools>=18.0', "cython>=0.19", ""],
+    "setup_requires": ['setuptools>=18.0', "cython>=0.19"],
     "entry_points": {
         'console_scripts': [
             'ncinfo = netCDF4.utils:ncinfo',
