@@ -1,3 +1,10 @@
+ since version 1.2.9 release
+============================
+ * always search for HDF5 headers when building, even when nc-config is used 
+   (since nc-config does not always include the path to the HDF5 headers).
+   Also use H5get_libversion to obtain HDF5 version info instead of
+   H5public.h. Fixes issue #677.
+
  version 1.2.9 (tag v1.2.9rel)
 ==============================
  * Fix for auto scaling and masking when _Unsigned attribute set (create
