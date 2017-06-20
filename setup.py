@@ -164,7 +164,6 @@ setup_cfg = 'setup.cfg'
 # which does not take precedence ofver USE_NCCONFIG env var.
 ncconfig = None
 use_ncconfig = None
-use_cython = True
 if USE_SETUPCFG and os.path.exists(setup_cfg):
     sys.stdout.write('reading from setup.cfg...\n')
     config = configparser.SafeConfigParser()
@@ -247,10 +246,6 @@ if USE_SETUPCFG and os.path.exists(setup_cfg):
         pass
     try:
         ncconfig = config.get("options", "ncconfig")
-    except:
-        pass
-    try:
-        use_cython = config.getboolean("options", "use_cython")
     except:
         pass
 
