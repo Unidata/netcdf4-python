@@ -27,21 +27,13 @@ else:
 
 def check_hdf5version(hdf5_includedir):
     try:
-        f = open(os.path.join(hdf5_includedir, 'H5pubconf-64.h'), **open_kwargs)
+        f = open(os.path.join(hdf5_includedir, 'H5public.h'), **open_kwargs)
     except IOError:
-        try:
-            f = open(os.path.join(hdf5_includedir, 'H5pubconf-32.h'),
-                     **open_kwargs)
-        except IOError:
-            try:
-                f = open(os.path.join(hdf5_includedir, 'H5pubconf.h'),
-                         **open_kwargs)
-            except IOError:
-                return None
+        return None
     hdf5_version = None
     for line in f:
-        if line.startswith('#define H5_VERSION'):
-            hdf5_version = line.split()[2]
+        if line.startswith('#define H5_VERS_INFO'):
+            hdf5_version = line.split('"')[1]
     return hdf5_version
 
 
@@ -281,13 +273,6 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
     global HDF5_incdir, HDF5_dir, HDF5_libdir
 
     if HAS_PKG_CONFIG:
-        dep = subprocess.Popen(['pkg-config', '--modversion', 'hdf5'],
-                               stdout=subprocess.PIPE).communicate()[0]
-
-        hdf5_version = dep.decode().strip()
-        if hdf5_version < _HDF5_MIN_VERSION:
-            raise ValueError('HDF5 version >= {} is required'.format(_HDF5_MIN_VERSION))
-
         dep = subprocess.Popen(['pkg-config', '--cflags', 'hdf5'],
                                stdout=subprocess.PIPE).communicate()[0]
         inc_dirs.extend([str(i[2:].decode()) for i in dep.split() if
@@ -314,7 +299,8 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
                 else:
                     HDF5_dir = direc
                     HDF5_incdir = os.path.join(direc, 'include')
-                    sys.stdout.write('HDF5 found in %s\n' % HDF5_dir)
+                    sys.stdout.write('%s found in %s\n' %
+                                    (hdf5_version,HDF5_dir))
                     break
             if HDF5_dir is None:
                 raise ValueError('did not find HDF5 headers')
@@ -324,6 +310,9 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
             hdf5_version = check_hdf5version(HDF5_incdir)
             if hdf5_version is None:
                 raise ValueError('did not find HDF5 headers in %s' % HDF5_incdir)
+            else:
+                sys.stdout.write('%s found in %s\n' %
+                                (hdf5_version,HDF5_dir))
 
         if HDF5_libdir is None and HDF5_dir is not None:
             HDF5_libdir = os.path.join(HDF5_dir, 'lib')
