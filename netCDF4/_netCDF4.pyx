@@ -1,5 +1,5 @@
 """
-Version 1.2.9
+Version 1.3.0
 -------------
 - - - 
 
@@ -933,7 +933,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.2.9"
+__version__ = "1.3.0"
 
 # Initialize numpy
 import posixpath
@@ -953,14 +953,12 @@ include "netCDF4.pxi"
 # check for required version of netcdf-4 and hdf5.
 
 def _gethdf5libversion():
-    majorvers = H5_VERS_MAJOR
-    minorvers = H5_VERS_MINOR
-    releasevers = H5_VERS_RELEASE
-    patchstring = H5_VERS_SUBRELEASE.decode('ascii')
-    if not patchstring:
-        return '%d.%d.%d' % (majorvers,minorvers,releasevers)
-    else:
-        return '%d.%d.%d-%s' % (majorvers,minorvers,releasevers,patchstring)
+    cdef unsigned int majorvers, minorvers, releasevers
+    cdef herr_t ierr
+    ierr = H5get_libversion( &majorvers, &minorvers, &releasevers)
+    if ierr < 0:
+        raise RuntimeError('error getting HDF5 library version info')
+    return '%d.%d.%d' % (majorvers,minorvers,releasevers)
 
 def getlibversion():
     """

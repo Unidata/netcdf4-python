@@ -1,7 +1,6 @@
 set SITECFG=%SRC_DIR%/setup.cfg
 
 echo [options] > %SITECFG%
-echo use_cython=True >> %SITECFG%
 echo [directories] >> %SITECFG%
 echo HDF5_libdir = %LIBRARY_LIB% >> %SITECFG%
 echo HDF5_incdir = %LIBRARY_INC% >> %SITECFG%

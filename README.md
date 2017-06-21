@@ -122,8 +122,7 @@ instead of relying exclusively on the nc-config utility.
   installed and you have [Python](https://www.python.org) 2.7 or newer.
 
 * Make sure [HDF5](http://www.h5py.org/) and netcdf-4 are installed, and the `nc-config` utility
-  is in your Unix PATH. If `setup.cfg` does not exist, copy `setup.cfg.template`
-  to `setup.cfg`, and make sure the line with `use_ncconfig=True` is un-commented.
+  is in your Unix PATH. 
 
 * Run `python setup.py build`, then `python setup.py install` (with `sudo` if necessary).
 
