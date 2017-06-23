@@ -260,7 +260,7 @@ Boolean array must have the same shape as the data along this dimension."""
             # The ellipsis stands for the missing dimensions.
             newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
             hasEllipsis = True
-        # Replace sequence of indices with slice object if possible.
+        # Replace sequence of indices with slice object if possible with a stride of 1
         elif np.iterable(e) and len(e) > 1:
             start = e[0]
             stop = e[-1]+1
@@ -269,7 +269,7 @@ Boolean array must have the same shape as the data along this dimension."""
                 ee = range(start,stop,step)
             except ValueError: # start, stop or step is not valid for a range
                 ee = False
-            if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
+            if ee and e[1]-e[0]==1 and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
                 newElem.append(slice(start,stop,step))
             else:
                 newElem.append(e)
