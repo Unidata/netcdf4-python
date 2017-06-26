@@ -247,6 +247,8 @@ Boolean array must have the same shape as the data along this dimension."""
         elif type(e) == slice or type(e) == type(Ellipsis):
             if type(e) == slice and e.step not in [None,-1,1] and\
                dimensions is not None and grp is not None:
+                # convert strided slice to integer sequence if possible
+                # (this will avoid nc_get_vars, which is slow - issue #680).
                 start = e.start if e.start is not None else 0
                 step = e.step
                 if e.stop is None and dimensions is not None and grp is not None:
