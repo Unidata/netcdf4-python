@@ -122,12 +122,10 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     sequences used to slice the netCDF Variable (Variable[elem]).
     shape : tuple containing the current shape of the netCDF variable.
     dimensions : sequence
-      The name of the dimensions. This is only useful to find out
-      whether or not some dimensions are unlimited. Only needed within
+      The name of the dimensions.
       __setitem__.
     grp  : netCDF Group
       The netCDF group to which the variable being set belongs to.
-      Only needed within __setitem__.
     datashape : sequence
       The shape of the data that is being stored. Only needed by __setitime__
     put : True|False (default False).  If called from __setitem__, put is True.
@@ -184,6 +182,8 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     newElem = []
     IndexErrorMsg=\
     "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
+    # instead of calling nc_get_vars, call nc_get_vara N times if N < slice_thresh
+    slice_thresh = 1000
     for i, e in enumerate(elem):
         # string-like object try to cast to int
         # needs to be done first, since strings are iterable and
@@ -239,6 +239,22 @@ Boolean array must have the same shape as the data along this dimension."""
             newElem.append(e)
         # slice or ellipsis object
         elif type(e) == slice or type(e) == type(Ellipsis):
+            if type(e) == slice and e.step not in [None,-1,1] and\
+               dimensions is not None and grp is not None:
+                start = e.start if e.start is not None else 0
+                step = e.step
+                if e.stop is None and dimensions is not None and grp is not None:
+                    stop = len(_find_dim(grp, dimensions[i]))
+                else:
+                    stop = e.stop
+                    if stop < 0:
+                        stop = len(_find_dim(grp, dimensions[i])) + stop
+                try:
+                    ee = np.arange(start,stop,e.step)
+                    if ee is not [] and len(ee) < slice_thresh:
+                        e = ee # don't use empty range
+                except:
+                    pass
             newElem.append(e)
         else:  # castable to a scalar int, otherwise invalid
             try:
@@ -270,7 +286,12 @@ Boolean array must have the same shape as the data along this dimension."""
             except ValueError: # start, stop or step is not valid for a range
                 ee = False
             if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
-                newElem.append(slice(start,stop,step))
+                # don't convert to slice unless abs(stride) == 1 and
+                # length of sequence is 'small' (issue 680)
+                if step not in [1,-1] and len(e) < slice_thresh:
+                    newElem.append(e)
+                else:
+                    newElem.append(slice(start,stop,step))
             else:
                 newElem.append(e)
         elif np.iterable(e) and len(e) == 1:

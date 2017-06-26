@@ -3794,7 +3794,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
-        start, count, stride, put_ind = _StartCountStride(elem,self.shape)
+        start, count, stride, put_ind =\
+        _StartCountStride(elem,self.shape,dimensions=self.dimensions,grp=self._grp)
         datashape = _out_array_shape(count)
         if self._isvlen:
             data = numpy.empty(datashape, dtype='O')
