@@ -184,7 +184,13 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
     # instead of calling nc_get_vars, call nc_get_vara N times if N < slice_thresh
     slice_thresh = 1000
+    idim = -1
     for i, e in enumerate(elem):
+        # which dimension is this?
+        if type(e) == type(Ellipsis):
+            idim = nDims - len(elem)
+        else:
+            idim += 1
         # string-like object try to cast to int
         # needs to be done first, since strings are iterable and
         # hard to distinguish from something castable to an iterable numpy array.
@@ -201,7 +207,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         # (called from __setitem__)
         if put and (dimensions is not None and grp is not None) and len(dimensions):
             try:
-                dimname = dimensions[i]
+                dimname = dimensions[idim]
                 # is this dimension unlimited?
                 # look in current group, and parents for dim.
                 dim = _find_dim(grp, dimname)
@@ -213,7 +219,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         # convert boolean index to integer array.
         if np.iterable(ea) and ea.dtype.kind =='b':
             # check that boolen array not too long
-            if not unlim and shape[i] != len(ea):
+            if not unlim and shape[idim] != len(ea):
                 msg="""
 Boolean array must have the same shape as the data along this dimension."""
                 raise IndexError(msg)
@@ -221,13 +227,13 @@ Boolean array must have the same shape as the data along this dimension."""
         # an iterable (non-scalar) integer array.
         if np.iterable(ea) and ea.dtype.kind == 'i':
             # convert negative indices in 1d array to positive ones.
-            ea = np.where(ea < 0, ea + shape[i], ea)
+            ea = np.where(ea < 0, ea + shape[idim], ea)
             if np.any(ea < 0):
                 raise IndexError("integer index out of range")
             # if unlim, let integer index be longer than current dimension
             # length.
             if ea.shape != (0,):
-                elen = shape[i]
+                elen = shape[idim]
                 if unlim:
                     elen = max(ea.max()+1,elen)
                 if ea.max()+1 > elen:
@@ -244,15 +250,17 @@ Boolean array must have the same shape as the data along this dimension."""
                 start = e.start if e.start is not None else 0
                 step = e.step
                 if e.stop is None and dimensions is not None and grp is not None:
-                    stop = len(_find_dim(grp, dimensions[i]))
+                    stop = len(_find_dim(grp, dimensions[idim]))
                 else:
                     stop = e.stop
                     if stop < 0:
-                        stop = len(_find_dim(grp, dimensions[i])) + stop
+                        stop = len(_find_dim(grp, dimensions[idim])) + stop
                 try:
+                    #print(start,stop,dimensions[idim],len(_find_dim(grp,\
+                    #    dimensions[idim])),e.step)
                     ee = np.arange(start,stop,e.step)
-                    if ee is not [] and len(ee) < slice_thresh:
-                        e = ee # don't use empty range
+                    if len(ee) > 0 and len(ee) < slice_thresh:
+                        e = ee
                 except:
                     pass
             newElem.append(e)
