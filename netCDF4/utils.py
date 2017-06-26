@@ -256,8 +256,6 @@ Boolean array must have the same shape as the data along this dimension."""
                     if stop < 0:
                         stop = len(_find_dim(grp, dimensions[idim])) + stop
                 try:
-                    #print(start,stop,dimensions[idim],len(_find_dim(grp,\
-                    #    dimensions[idim])),e.step)
                     ee = np.arange(start,stop,e.step)
                     if len(ee) > 0 and len(ee) < slice_thresh:
                         e = ee
