@@ -182,8 +182,6 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     newElem = []
     IndexErrorMsg=\
     "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
-    # instead of calling nc_get_vars, call nc_get_vara N times if N < slice_thresh
-    slice_thresh = 1000
     idim = -1
     for i, e in enumerate(elem):
         # which dimension is this?
@@ -259,7 +257,7 @@ Boolean array must have the same shape as the data along this dimension."""
                         stop = len(_find_dim(grp, dimensions[idim])) + stop
                 try:
                     ee = np.arange(start,stop,e.step)
-                    if len(ee) > 0 and len(ee) < slice_thresh:
+                    if len(ee) > 0:
                         e = ee
                 except:
                     pass
@@ -294,9 +292,9 @@ Boolean array must have the same shape as the data along this dimension."""
             except ValueError: # start, stop or step is not valid for a range
                 ee = False
             if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
-                # don't convert to slice unless abs(stride) == 1 and
-                # length of sequence is 'small' (issue 680)
-                if step not in [1,-1] and len(e) < slice_thresh:
+                # don't convert to slice unless abs(stride) == 1 
+                # (nc_get_vars is very slow, issue #680)
+                if step not in [1,-1]:
                     newElem.append(e)
                 else:
                     newElem.append(slice(start,stop,step))
