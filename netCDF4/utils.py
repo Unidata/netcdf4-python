@@ -186,7 +186,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     for i, e in enumerate(elem):
         # which dimension is this?
         if type(e) == type(Ellipsis):
-            idim = nDims - len(elem)
+            idim = nDims - len(elem) + idim + 1
         else:
             idim += 1
         # string-like object try to cast to int
