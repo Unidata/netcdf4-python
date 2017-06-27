@@ -2993,9 +2993,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     arrays to string arrays when `_Encoding` variable attribute is set.
     Default is `True`, can be reset using
     `netCDF4.Variable.set_auto_chartostring` method."""
-    __pdoc__['Variable._no_get_vars] = \
-    """If True (default), netcdf routine `nc_get_vars` is not used for strided slicing.
-    Can be re-set using `netCDF4.Variable.use_nc_get_vars` method."""
+    __pdoc__['Variable._no_get_vars'] = \
+    """If True (default), netcdf routine `nc_get_vars` is not used for strided slicing
+    slicing. Can be re-set using `netCDF4.Variable.use_nc_get_vars` method."""
     __pdoc__['Variable.least_significant_digit'] = \
     """Describes the power of ten of the 
     smallest decimal place in the data the contains a reliable value.  Data is
