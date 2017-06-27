@@ -4,9 +4,10 @@
    (since nc-config does not always include the path to the HDF5 headers).
    Also use H5get_libversion to obtain HDF5 version info instead of
    H5public.h. Fixes issue #677.
- * Calls to nc_get_vars are avoided, since nc_get_vars is very slow. 
-   Strided slices are now converted to multiple calls to nc_get_vara.
-   Fixes issue #680.
+ * Calls to nc_get_vars are avoided, since nc_get_vars is very slow (issue
+   #680).  Strided slices are now converted to multiple calls to
+   nc_get_vara.  This speeds up strided slice reads by several orders
+   of magnitude.
 
  version 1.2.9 (tag v1.2.9rel)
 ==============================
