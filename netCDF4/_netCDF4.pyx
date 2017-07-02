@@ -1793,7 +1793,7 @@ references to the parent Dataset or Group.
         if diskless and __netcdf4libversion__ < '4.2.1':
             #diskless = False # don't raise error, instead silently ignore
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
-        bytestr = _strencode(str(filename))
+        bytestr = _strencode(str(filename), encoding=sys.getfilesystemencoding())
         path = bytestr
 
         if memory is not None and (mode != 'r' or type(memory) != bytes):
