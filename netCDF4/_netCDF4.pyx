@@ -1585,7 +1585,8 @@ _private_atts = \
 ['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd', '_buffer','chartostring']
+ '__orthogoral_indexing__','keepweakref','_has_lsd',
+ '_buffer','chartostring','_no_get_vars']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -2966,7 +2967,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, chartostring,  _isprimitive, _iscompound,\
     _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
-    __orthogonal_indexing__, _has_lsd
+    __orthogonal_indexing__, _has_lsd, _no_get_vars
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
     """A tuple containing the names of the
@@ -2992,6 +2993,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     arrays to string arrays when `_Encoding` variable attribute is set.
     Default is `True`, can be reset using
     `netCDF4.Variable.set_auto_chartostring` method."""
+    __pdoc__['Variable._no_get_vars'] = \
+    """If True (default), netcdf routine `nc_get_vars` is not used for strided slicing
+    slicing. Can be re-set using `netCDF4.Variable.use_nc_get_vars` method."""
     __pdoc__['Variable.least_significant_digit'] = \
     """Describes the power of ten of the 
     smallest decimal place in the data the contains a reliable value.  Data is
@@ -3363,6 +3367,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self.chartostring = True
         if 'least_significant_digit' in self.ncattrs():
             self._has_lsd = True
+        # avoid calling nc_get_vars for strided slices by default.
+        self._no_get_vars = True
 
     def __array__(self):
         # numpy special method that returns a numpy array.
@@ -3794,7 +3800,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
-        start, count, stride, put_ind = _StartCountStride(elem,self.shape)
+        start, count, stride, put_ind =\
+        _StartCountStride(elem,self.shape,dimensions=self.dimensions,grp=self._grp,no_get_vars=self._no_get_vars)
         datashape = _out_array_shape(count)
         if self._isvlen:
             data = numpy.empty(datashape, dtype='O')
@@ -4325,6 +4332,20 @@ The default value of `chartostring` is `True`
             self.chartostring = True
         else:
             self.chartostring = False
+
+    def use_nc_get_vars(self,use_nc_get_vars):
+        """
+**`use_nc_get_vars(self,_no_get_vars)`**
+
+enable the use of netcdf library routine `nc_get_vars`
+to retrieve strided variable slices.  By default,
+`nc_get_vars` not used since it slower than multiple calls
+to the unstrided read routine `nc_get_vara` in most cases.
+        """
+        if not use_nc_get_vars:
+            self._no_get_vars = True
+        else:
+            self._no_get_vars = False
 
     def set_auto_maskandscale(self,maskandscale):
         """

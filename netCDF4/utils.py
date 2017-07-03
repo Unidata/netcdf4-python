@@ -74,7 +74,7 @@ least_significant_digit=1, bits will be 4.
         return datout
 
 def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
-        put=False):
+        put=False, no_get_vars = True):
     """Return start, count, stride and indices needed to store/extract data
     into/from a netCDF variable.
 
@@ -122,12 +122,10 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     sequences used to slice the netCDF Variable (Variable[elem]).
     shape : tuple containing the current shape of the netCDF variable.
     dimensions : sequence
-      The name of the dimensions. This is only useful to find out
-      whether or not some dimensions are unlimited. Only needed within
+      The name of the dimensions.
       __setitem__.
     grp  : netCDF Group
       The netCDF group to which the variable being set belongs to.
-      Only needed within __setitem__.
     datashape : sequence
       The shape of the data that is being stored. Only needed by __setitime__
     put : True|False (default False).  If called from __setitem__, put is True.
@@ -184,7 +182,13 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     newElem = []
     IndexErrorMsg=\
     "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
+    idim = -1
     for i, e in enumerate(elem):
+        # which dimension is this?
+        if type(e) == type(Ellipsis):
+            idim = nDims - len(elem) + idim + 1
+        else:
+            idim += 1
         # string-like object try to cast to int
         # needs to be done first, since strings are iterable and
         # hard to distinguish from something castable to an iterable numpy array.
@@ -201,7 +205,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         # (called from __setitem__)
         if put and (dimensions is not None and grp is not None) and len(dimensions):
             try:
-                dimname = dimensions[i]
+                dimname = dimensions[idim]
                 # is this dimension unlimited?
                 # look in current group, and parents for dim.
                 dim = _find_dim(grp, dimname)
@@ -213,7 +217,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         # convert boolean index to integer array.
         if np.iterable(ea) and ea.dtype.kind =='b':
             # check that boolen array not too long
-            if not unlim and shape[i] != len(ea):
+            if not unlim and shape[idim] != len(ea):
                 msg="""
 Boolean array must have the same shape as the data along this dimension."""
                 raise IndexError(msg)
@@ -221,13 +225,13 @@ Boolean array must have the same shape as the data along this dimension."""
         # an iterable (non-scalar) integer array.
         if np.iterable(ea) and ea.dtype.kind == 'i':
             # convert negative indices in 1d array to positive ones.
-            ea = np.where(ea < 0, ea + shape[i], ea)
+            ea = np.where(ea < 0, ea + shape[idim], ea)
             if np.any(ea < 0):
                 raise IndexError("integer index out of range")
             # if unlim, let integer index be longer than current dimension
             # length.
             if ea.shape != (0,):
-                elen = shape[i]
+                elen = shape[idim]
                 if unlim:
                     elen = max(ea.max()+1,elen)
                 if ea.max()+1 > elen:
@@ -239,6 +243,24 @@ Boolean array must have the same shape as the data along this dimension."""
             newElem.append(e)
         # slice or ellipsis object
         elif type(e) == slice or type(e) == type(Ellipsis):
+            if no_get_vars and type(e) == slice and e.step not in [None,-1,1] and\
+               dimensions is not None and grp is not None:
+                # convert strided slice to integer sequence if possible
+                # (this will avoid nc_get_vars, which is slow - issue #680).
+                start = e.start if e.start is not None else 0
+                step = e.step
+                if e.stop is None and dimensions is not None and grp is not None:
+                    stop = len(_find_dim(grp, dimensions[idim]))
+                else:
+                    stop = e.stop
+                    if stop < 0:
+                        stop = len(_find_dim(grp, dimensions[idim])) + stop
+                try:
+                    ee = np.arange(start,stop,e.step)
+                    if len(ee) > 0:
+                        e = ee
+                except:
+                    pass
             newElem.append(e)
         else:  # castable to a scalar int, otherwise invalid
             try:
@@ -269,8 +291,13 @@ Boolean array must have the same shape as the data along this dimension."""
                 ee = range(start,stop,step)
             except ValueError: # start, stop or step is not valid for a range
                 ee = False
-            if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
-                newElem.append(slice(start,stop,step))
+            if no_get_vars and ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
+                # don't convert to slice unless abs(stride) == 1
+                # (nc_get_vars is very slow, issue #680)
+                if step not in [1,-1]:
+                    newElem.append(e)
+                else:
+                    newElem.append(slice(start,stop,step))
             else:
                 newElem.append(e)
         elif np.iterable(e) and len(e) == 1:
