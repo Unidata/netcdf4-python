@@ -17,7 +17,7 @@
    of multiple calls to nc_get_vara, which was the default behaviour previous
    to this change.
  * fix utc offset time zone conversion in netcdftime - it was being done
-   exactly backwards (issue #685).
+   exactly backwards (issue #685 - thanks to @pgamez and @mdecker).
 
  version 1.2.9 (tag v1.2.9rel)
 ==============================
