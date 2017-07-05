@@ -490,10 +490,11 @@ class netcdftimeTestCase(unittest.TestCase):
         utc_date = datetime(2000,1,1,18,30)
         for units in ("hours since 2000-01-01 22:30+04:00", "hours since 2000-01-01 11:30-07:00", "hours since 2000-01-01 15:00-03:30"):
             d = num2date(0, units, calendar="standard")
-            #self.assertEqual(d, utc_date)
+            assert(numpy.abs((d-utc_date).total_seconds()) < 1.e-3)
             # also test with negative values to cover 2nd code path
             d = num2date(-1, units, calendar="standard")
-            self.assertEqual(d, utc_date - timedelta(hours=1))
+            assert(numpy.abs((d - \
+                (utc_date-timedelta(hours=1))).total_seconds()) < 1.e-3)
 
             n = date2num(utc_date, units, calendar="standard")
             # n should always be 0 as all units refer to the same point in time

@@ -5303,7 +5303,7 @@ def _dateparse(timestr):
         _parse_date( isostring.strip() )
     if year >= MINYEAR:
         basedate = datetime(year, month, day, hour, minute, second)
-        # subtract utc_offset to basedate time instance (which is timezone naive)
+        # subtract utc_offset from basedate time instance (which is timezone naive)
         basedate -= timedelta(days=utc_offset/1440.)
     else:
         if not utc_offset:
