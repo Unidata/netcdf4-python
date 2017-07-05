@@ -797,19 +797,19 @@ units to datetime objects.
                     jdelta.append(_360DayFromDate(d) - self._jd0)
         if not isscalar:
             jdelta = numpy.array(jdelta)
-        # convert to desired units, subtract time zone offset.
+        # convert to desired units, add time zone offset.
         if self.units in microsec_units:
-            jdelta = jdelta * 86400. * 1.e6  - self.tzoffset * 60. * 1.e6
+            jdelta = jdelta * 86400. * 1.e6  + self.tzoffset * 60. * 1.e6
         elif self.units in millisec_units:
-            jdelta = jdelta * 86400. * 1.e3  - self.tzoffset * 60. * 1.e3
+            jdelta = jdelta * 86400. * 1.e3  + self.tzoffset * 60. * 1.e3
         elif self.units in sec_units:
-            jdelta = jdelta * 86400. - self.tzoffset * 60.
+            jdelta = jdelta * 86400. + self.tzoffset * 60.
         elif self.units in min_units:
-            jdelta = jdelta * 1440. - self.tzoffset
+            jdelta = jdelta * 1440. + self.tzoffset
         elif self.units in hr_units:
-            jdelta = jdelta * 24. - self.tzoffset / 60.
+            jdelta = jdelta * 24. + self.tzoffset / 60.
         elif self.units in day_units:
-            jdelta = jdelta - self.tzoffset / 1440.
+            jdelta = jdelta + self.tzoffset / 1440.
         else:
             raise ValueError('unsupported time units')
         if isscalar:
@@ -851,19 +851,19 @@ units to datetime objects.
         if not isscalar:
             time_value = numpy.array(time_value, dtype='d')
             shape = time_value.shape
-        # convert to desired units, add time zone offset.
+        # convert to desired units, subtract time zone offset.
         if self.units in microsec_units:
-            jdelta = time_value / 86400000000. + self.tzoffset / 1440.
+            jdelta = time_value / 86400000000. - self.tzoffset / 1440.
         elif self.units in millisec_units:
-            jdelta = time_value / 86400000. + self.tzoffset / 1440.
+            jdelta = time_value / 86400000. - self.tzoffset / 1440.
         elif self.units in sec_units:
-            jdelta = time_value / 86400. + self.tzoffset / 1440.
+            jdelta = time_value / 86400. - self.tzoffset / 1440.
         elif self.units in min_units:
-            jdelta = time_value / 1440. + self.tzoffset / 1440.
+            jdelta = time_value / 1440. - self.tzoffset / 1440.
         elif self.units in hr_units:
-            jdelta = time_value / 24. + self.tzoffset / 1440.
+            jdelta = time_value / 24. - self.tzoffset / 1440.
         elif self.units in day_units:
-            jdelta = time_value + self.tzoffset / 1440.
+            jdelta = time_value - self.tzoffset / 1440.
         else:
             raise ValueError('unsupported time units')
         jd = self._jd0 + jdelta
