@@ -4,9 +4,6 @@
    (since nc-config does not always include the path to the HDF5 headers).
    Also use H5get_libversion to obtain HDF5 version info instead of
    H5public.h. Fixes issue #677.
- * Netcdef4.Dataset(filepath) uses now the system's filesystem encoding to
-   encode the filepath. This avoids problems with non-ascii-characters 
-   in the filepath under windows. 
  * Calls to nc_get_vars are avoided, since nc_get_vars is very slow (issue
    #680).  Strided slices are now converted to multiple calls to
    nc_get_vara.  This speeds up strided slice reads by a factor of 10-100
