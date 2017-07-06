@@ -941,6 +941,7 @@ import netcdftime
 import numpy
 import weakref
 import sys
+import urllib
 import warnings
 from glob import glob
 from numpy import ma
@@ -1950,7 +1951,13 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
             finally:
                 free(c_path)
-            return py_path.decode('ascii')
+                if self.disk_format.startswith('DAP'):
+                    # OpenDAP-Datasource
+                    decoded_path = urllib.parse.unquote(py_path)
+                else:
+                    # filepath on disk
+                    decoded_path = py_path.decode(sys.getfilesystemencoding())
+		return decoded_path
         ELSE:
             msg = """
 filepath method not enabled.  To enable, install Cython, make sure you have
