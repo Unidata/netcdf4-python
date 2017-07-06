@@ -21,7 +21,10 @@ class test_filepath(unittest.TestCase):
         nc_non_ascii = netCDF4.Dataset(nc_non_ascii_file, 'w')
         
         # test that no UnicodeDecodeError occur in the filepath() method
-        assert nc_non_ascii.filepath() == str(nc_non_ascii_file)
+        msg = 'original: {}\nstr_orig: {}\nfilepath: {}'.format(nc_non_ascii_file,
+                                                                str(nc_non_ascii_file), 
+                                                                nc_non_ascii.filepath())
+        assert nc_non_ascii.filepath() == str(nc_non_ascii_file), msg
         
         # cleanup
         nc_non_ascii.close()
