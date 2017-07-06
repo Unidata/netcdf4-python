@@ -1795,7 +1795,7 @@ references to the parent Dataset or Group.
         if diskless and __netcdf4libversion__ < '4.2.1':
             #diskless = False # don't raise error, instead silently ignore
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
-        if sys.platform == 'win32:
+        if sys.platform == 'win32':
             bytestr = _strencode(str_filename, encoding='mbcs')
         else:
             bytestr = _strencode(str_filename)
