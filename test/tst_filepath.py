@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 import os
+import sys
 import unittest
 import tempfile
 import netCDF4
@@ -13,13 +16,27 @@ class test_filepath(unittest.TestCase):
         assert self.nc.filepath() == str(self.netcdf_file)
 
     def test_filepath_with_non_ascii_characters(self):
+        python3 = sys.version_info[0] > 2
+        if python3:
+            encoding = 'utf-8'
+        else:
+            encoding = 'mbsc'
         # create nc-file in a filepath with Non-Ascii-Characters
-        tempdir = tempfile.mkdtemp(prefix='ÄÖÜß_')
-        nc_non_ascii_file = os.path.join(tempdir, "Besançonalléestraße.nc")
-        nc_non_ascii = netCDF4.Dataset(nc_non_ascii_file, 'w')
+        tempdir = tempfile.mkdtemp(prefix=u'ÄÖÜß_')
+        filename = u"Besançonalléestraße.nc"
+        nc_non_ascii_file = os.path.join(tempdir, filename)
+        try:
+            nc_non_ascii = netCDF4.Dataset(nc_non_ascii_file, 'w')
+        except OSError:
+            msg = u'cannot create file {} in folder {}\n using encoding: {}'.format(
+                tempdir, filename, encoding)
+            raise OSError(msg)
         
         # test that no UnicodeDecodeError occur in the filepath() method
-        assert nc_non_ascii.filepath() == str(nc_non_ascii_file)
+        msg = u'original: {}\nfilepath: {}'.format(
+            nc_non_ascii_file,
+            nc_non_ascii.filepath())
+        assert nc_non_ascii.filepath() == nc_non_ascii_file, msg
         
         # cleanup
         nc_non_ascii.close()

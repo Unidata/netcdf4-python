@@ -941,6 +941,7 @@ import netcdftime
 import numpy
 import weakref
 import sys
+import urllib
 import warnings
 from glob import glob
 from numpy import ma
@@ -1794,7 +1795,11 @@ references to the parent Dataset or Group.
         if diskless and __netcdf4libversion__ < '4.2.1':
             #diskless = False # don't raise error, instead silently ignore
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
-        bytestr = _strencode(str(filename), encoding=sys.getfilesystemencoding())
+        if sys.platform == 'win32':
+            bytestr = _strencode(filename, encoding='mbcs')
+        else:
+            bytestr = _strencode(filename)
+
         path = bytestr
 
         if memory is not None and (mode != 'r' or type(memory) != bytes):
@@ -1950,7 +1955,18 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
             finally:
                 free(c_path)
-            return py_path.decode('ascii')
+
+            if self.disk_format.startswith('DAP'):
+                # OpenDAP-Datasource
+                decoded_path = urllib.parse.unquote(py_path)
+            else:
+                # filepath on disk
+                if sys.platform == 'win32':
+                    decoded_path = py_path.decode('mbcs')
+                else:
+                    decoded_path = py_path.decode('utf-8')
+            return decoded_path
+
         ELSE:
             msg = """
 filepath method not enabled.  To enable, install Cython, make sure you have
