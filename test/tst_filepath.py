@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import unittest
 import tempfile
 import netCDF4
@@ -22,7 +23,8 @@ class test_filepath(unittest.TestCase):
         try:
             nc_non_ascii = netCDF4.Dataset(nc_non_ascii_file, 'w')
         except OSError:
-            msg = u'cannot create file {} in folder {}'.format(tempdir, filename)
+            msg = u'cannot create file {} in folder {}\n using encoding: {}'.format(
+                tempdir, filename, sys.getfilesystemencoding())
             raise OSError(msg)
         
         # test that no UnicodeDecodeError occur in the filepath() method
