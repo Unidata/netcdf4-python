@@ -1957,7 +1957,7 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
                 else:
                     # filepath on disk
                     decoded_path = py_path.decode(sys.getfilesystemencoding())
-		return decoded_path
+                return decoded_path
         ELSE:
             msg = """
 filepath method not enabled.  To enable, install Cython, make sure you have
