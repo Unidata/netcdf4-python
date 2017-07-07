@@ -1714,7 +1714,8 @@ references to the parent Dataset or Group.
     the parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, keepweakref=False, memory=None, **kwargs):
+                 diskless=False, persist=False, keepweakref=False,
+                 memory=None, encoding='utf-8', **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, format='NETCDF4')`**
@@ -1782,6 +1783,9 @@ references to the parent Dataset or Group.
         
         **`memory`**: if not `None`, open file with contents taken from this block of memory.
         Must be a sequence of bytes.  Note this only works with "r" mode.
+
+        **`encoding`**: encoding used to encode filename string into bytes.
+        Default is `utf-8`.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
@@ -1794,7 +1798,9 @@ references to the parent Dataset or Group.
         if diskless and __netcdf4libversion__ < '4.2.1':
             #diskless = False # don't raise error, instead silently ignore
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
-        bytestr = _strencode(str(filename), encoding=sys.getfilesystemencoding())
+        # convert filename into string (from os.path object for example),
+        # encode into bytes.
+        bytestr = _strencode(str(filename), encoding=encoding)
         path = bytestr
 
         if memory is not None and (mode != 'r' or type(memory) != bytes):
@@ -1925,12 +1931,14 @@ references to the parent Dataset or Group.
         else:
             raise IndexError('%s not found in %s' % (lastname,group.path))
 
-    def filepath(self):
+    def filepath(self,encoding='utf-8'):
         """
-**`filepath(self)`**
+**`filepath(self,encoding='utf-8')`**
 
 Get the file system path (or the opendap URL) which was used to
-open/create the Dataset. Requires netcdf >= 4.1.2"""
+open/create the Dataset. Requires netcdf >= 4.1.2.  The path
+is decoded into a `utf-8` string by default, this can be
+changed using the `encoding` kwarg."""
         cdef int ierr
         cdef size_t pathlen
         cdef char *c_path
@@ -1950,7 +1958,7 @@ open/create the Dataset. Requires netcdf >= 4.1.2"""
                 py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
             finally:
                 free(c_path)
-            return py_path.decode('ascii')
+            return py_path.decode(encoding)
         ELSE:
             msg = """
 filepath method not enabled.  To enable, install Cython, make sure you have
