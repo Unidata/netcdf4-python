@@ -1081,12 +1081,12 @@ cdef _get_att_names(int grpid, int varid):
     else:
         with nogil:
             ierr = nc_inq_varnatts(grpid, varid, &numatts)
-    _ensure_nc_success(ierr, AttributeError)
+    _ensure_nc_success(ierr, err_cls=AttributeError)
     attslist = []
     for n from 0 <= n < numatts:
         with nogil:
             ierr = nc_inq_attname(grpid, varid, n, namstring)
-        _ensure_nc_success(ierr, AttributeError)
+        _ensure_nc_success(ierr, err_cls=AttributeError)
         # attribute names are assumed to be utf-8
         attslist.append(namstring.decode('utf-8'))
     return attslist
@@ -1104,13 +1104,13 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
     _grpid = grp._grpid
     with nogil:
         ierr = nc_inq_att(_grpid, varid, attname, &att_type, &att_len)
-    _ensure_nc_success(ierr, AttributeError)
+    _ensure_nc_success(ierr, err_cls=AttributeError)
     # attribute is a character or string ...
     if att_type == NC_CHAR:
         value_arr = numpy.empty(att_len,'S1')
         with nogil:
             ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)
-        _ensure_nc_success(ierr, AttributeError)
+        _ensure_nc_success(ierr, err_cls=AttributeError)
         if name == '_FillValue' and python3:
             # make sure _FillValue for character arrays is a byte on python 3
             # (issue 271).
@@ -1126,7 +1126,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
         try:
             with nogil:
                 ierr = nc_get_att_string(_grpid, varid, attname, values)
-            _ensure_nc_success(ierr, AttributeError)
+            _ensure_nc_success(ierr, err_cls=AttributeError)
             try:
                 result = [values[j].decode(encoding,errors='replace').replace('\x00','')
                           for j in range(att_len)]
@@ -1160,7 +1160,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
                     raise KeyError('attribute %s has unsupported datatype' % attname)
         with nogil:
             ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
-        _ensure_nc_success(ierr, AttributeError)
+        _ensure_nc_success(ierr, err_cls=AttributeError)
         if value_arr.shape == ():
             # return a scalar for a scalar array
             return value_arr.item()
@@ -1222,8 +1222,7 @@ cdef issue485_workaround(int grpid, int varid, char* attname):
     if not _needsworkaround_issue485:
         return
     ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
-    _ensure_nc_success(ierr)
-    if att_type == NC_CHAR:
+    if ierr == NC_NOERR and att_type == NC_CHAR:
         ierr = nc_del_att(grpid, varid, attname)
         _ensure_nc_success(ierr)
 
@@ -1289,7 +1288,7 @@ cdef _set_att(grp, int varid, name, value,\
                     ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
             else:
                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
-        _ensure_nc_success(ierr, AttributeError)
+        _ensure_nc_success(ierr, err_cls=AttributeError)
     # a 'regular' array type ('f4','i4','f8' etc)
     else:
         if value_arr.dtype.kind == 'V': # compound attribute.
@@ -1300,7 +1299,7 @@ cdef _set_att(grp, int varid, name, value,\
             xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
-        _ensure_nc_success(ierr, AttributeError)
+        _ensure_nc_success(ierr, err_cls=AttributeError)
 
 cdef _get_types(group):
     # Private function to create `netCDF4.CompoundType`,
@@ -1438,7 +1437,7 @@ cdef _get_vars(group):
     _grpid = group._grpid
     with nogil:
         ierr = nc_inq_nvars(_grpid, &numvars)
-    _ensure_nc_success(ierr, AttributeError)
+    _ensure_nc_success(ierr, err_cls=AttributeError)
     # create empty dictionary for variables.
     variables = OrderedDict()
     if numvars > 0:
