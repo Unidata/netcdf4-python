@@ -1800,7 +1800,7 @@ references to the parent Dataset or Group.
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
         # convert filename into string (from os.path object for example),
         # encode into bytes.
-        bytestr = _strencode(str(filename), encoding=encoding)
+        bytestr = _strencode(_tostr(filename), encoding=encoding)
         path = bytestr
 
         if memory is not None and (mode != 'r' or type(memory) != bytes):
