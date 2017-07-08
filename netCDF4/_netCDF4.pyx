@@ -1081,14 +1081,12 @@ cdef _get_att_names(int grpid, int varid):
     else:
         with nogil:
             ierr = nc_inq_varnatts(grpid, varid, &numatts)
-    if ierr != NC_NOERR:
-        raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr, AttributeError)
     attslist = []
     for n from 0 <= n < numatts:
         with nogil:
             ierr = nc_inq_attname(grpid, varid, n, namstring)
-        if ierr != NC_NOERR:
-            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr, AttributeError)
         # attribute names are assumed to be utf-8
         attslist.append(namstring.decode('utf-8'))
     return attslist
@@ -1106,15 +1104,13 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
     _grpid = grp._grpid
     with nogil:
         ierr = nc_inq_att(_grpid, varid, attname, &att_type, &att_len)
-    if ierr != NC_NOERR:
-        raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr, AttributeError)
     # attribute is a character or string ...
     if att_type == NC_CHAR:
         value_arr = numpy.empty(att_len,'S1')
         with nogil:
             ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)
-        if ierr != NC_NOERR:
-            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr, AttributeError)
         if name == '_FillValue' and python3:
             # make sure _FillValue for character arrays is a byte on python 3
             # (issue 271).
@@ -1130,8 +1126,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
         try:
             with nogil:
                 ierr = nc_get_att_string(_grpid, varid, attname, values)
-            if ierr != NC_NOERR:
-                raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr, AttributeError)
             try:
                 result = [values[j].decode(encoding,errors='replace').replace('\x00','')
                           for j in range(att_len)]
@@ -1165,8 +1160,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
                     raise KeyError('attribute %s has unsupported datatype' % attname)
         with nogil:
             ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
-        if ierr != NC_NOERR:
-            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr, AttributeError)
         if value_arr.shape == ():
             # return a scalar for a scalar array
             return value_arr.item()
@@ -1187,8 +1181,7 @@ cdef _get_format(int grpid):
     cdef int ierr, formatp
     with nogil:
         ierr = nc_inq_format(grpid, &formatp)
-    if ierr != NC_NOERR:
-        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr)
     if formatp not in _reverse_format_dict:
         raise ValueError('format not supported by python interface')
     return _reverse_format_dict[formatp]
@@ -1199,8 +1192,7 @@ cdef _get_full_format(int grpid):
     IF HAS_NC_INQ_FORMAT_EXTENDED:
         with nogil:
             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         if formatp == NC_FORMAT_NC3:
             return 'NETCDF3'
         elif formatp == NC_FORMAT_NC_HDF5:
@@ -1230,10 +1222,11 @@ cdef issue485_workaround(int grpid, int varid, char* attname):
     if not _needsworkaround_issue485:
         return
     ierr = nc_inq_att(grpid, varid, attname, &att_type, &att_len)
-    if ierr == NC_NOERR and att_type == NC_CHAR:
+    _ensure_nc_success(ierr)
+    if att_type == NC_CHAR:
         ierr = nc_del_att(grpid, varid, attname)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
+
 
 cdef _set_att(grp, int varid, name, value,\
               nc_type xtype=-99, force_ncstring=False):
@@ -1296,8 +1289,7 @@ cdef _set_att(grp, int varid, name, value,\
                     ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
             else:
                 ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
-        if ierr != NC_NOERR:
-            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr, AttributeError)
     # a 'regular' array type ('f4','i4','f8' etc)
     else:
         if value_arr.dtype.kind == 'V': # compound attribute.
@@ -1308,8 +1300,7 @@ cdef _set_att(grp, int varid, name, value,\
             xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
         ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
-        if ierr != NC_NOERR:
-            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr, AttributeError)
 
 cdef _get_types(group):
     # Private function to create `netCDF4.CompoundType`,
@@ -1323,14 +1314,12 @@ cdef _get_types(group):
     # get the number of user defined types in this group.
     with nogil:
         ierr = nc_inq_typeids(_grpid, &ntypes, NULL)
-    if ierr != NC_NOERR:
-        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr)
     if ntypes > 0:
         typeids = <nc_type *>malloc(sizeof(nc_type) * ntypes)
         with nogil:
             ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
     # create empty dictionary for CompoundType instances.
     cmptypes = OrderedDict()
     vltypes = OrderedDict()
@@ -1341,8 +1330,7 @@ cdef _get_types(group):
             with nogil:
                 ierr = nc_inq_user_type(_grpid, xtype, namstring,
                                         NULL,NULL,NULL,&classp)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             if classp == NC_COMPOUND: # a compound
                 name = namstring.decode('utf-8')
                 # read the compound type info from the file,
@@ -1389,8 +1377,7 @@ cdef _get_dims(group):
     _grpid = group._grpid
     with nogil:
         ierr = nc_inq_ndims(_grpid, &numdims)
-    if ierr != NC_NOERR:
-        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr)
     # create empty dictionary for dimensions.
     dimensions = OrderedDict()
     if numdims > 0:
@@ -1398,16 +1385,14 @@ cdef _get_dims(group):
         if group.data_model == 'NETCDF4':
             with nogil:
                 ierr = nc_inq_dimids(_grpid, &numdims, dimids, 0)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
         else:
             for n from 0 <= n < numdims:
                 dimids[n] = n
         for n from 0 <= n < numdims:
             with nogil:
                 ierr = nc_inq_dimname(_grpid, dimids[n], namstring)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             name = namstring.decode('utf-8')
             dimensions[name] = Dimension(group, name, id=dimids[n])
         free(dimids)
@@ -1423,21 +1408,18 @@ cdef _get_grps(group):
     _grpid = group._grpid
     with nogil:
         ierr = nc_inq_grps(_grpid, &numgrps, NULL)
-    if ierr != NC_NOERR:
-        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr)
     # create dictionary containing `netCDF4.Group` instances for groups in this group
     groups = OrderedDict()
     if numgrps > 0:
         grpids = <int *>malloc(sizeof(int) * numgrps)
         with nogil:
             ierr = nc_inq_grps(_grpid, NULL, grpids)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         for n from 0 <= n < numgrps:
             with nogil:
                 ierr = nc_inq_grpname(grpids[n], namstring)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             name = namstring.decode('utf-8')
             groups[name] = Group(group, name, id=grpids[n])
         free(grpids)
@@ -1456,8 +1438,7 @@ cdef _get_vars(group):
     _grpid = group._grpid
     with nogil:
         ierr = nc_inq_nvars(_grpid, &numvars)
-    if ierr != NC_NOERR:
-        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr, AttributeError)
     # create empty dictionary for variables.
     variables = OrderedDict()
     if numvars > 0:
@@ -1466,8 +1447,7 @@ cdef _get_vars(group):
         if group.data_model == 'NETCDF4':
             with nogil:
                 ierr = nc_inq_varids(_grpid, &numvars, varids)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
         else:
             for n from 0 <= n < numvars:
                 varids[n] = n
@@ -1477,25 +1457,20 @@ cdef _get_vars(group):
             # get variable name.
             with nogil:
                 ierr = nc_inq_varname(_grpid, varid, namstring)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             name = namstring.decode('utf-8')
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
             # get variable type.
             with nogil:
                 ierr = nc_inq_vartype(_grpid, varid, &xtype)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             # get endian-ness of variable.
             endianness = None
             with nogil:
                 ierr = nc_inq_var_endian(_grpid, varid, &iendian)
-            if ierr == NC_NOERR:
-                if iendian == NC_ENDIAN_LITTLE:
-                    endianness = '<'
-                elif iendian == NC_ENDIAN_BIG:
-                    endianness = '>'
+            if ierr == NC_NOERR and iendian == NC_ENDIAN_LITTLE:
+                endianness = '<'
+            elif iendian == NC_ENDIAN_BIG:
+                endianness = '>'
             # check to see if it is a supported user-defined type.
             try:
                 datatype = _nctonptype[xtype]
@@ -1508,6 +1483,7 @@ cdef _get_vars(group):
                     with nogil:
                         ierr = nc_inq_user_type(_grpid, xtype, namstring_cmp,
                                                 NULL, NULL, NULL, &classp)
+                    _ensure_nc_success(ierr)
                     if classp == NC_COMPOUND: # a compound type
                         # create CompoundType instance describing this compound type.
                         try:
@@ -1539,14 +1515,12 @@ cdef _get_vars(group):
             # get number of dimensions.
             with nogil:
                 ierr = nc_inq_varndims(_grpid, varid, &numdims)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             dimids = <int *>malloc(sizeof(int) * numdims)
             # get dimension ids.
             with nogil:
                 ierr = nc_inq_vardimid(_grpid, varid, dimids)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             # loop over dimensions, retrieve names.
             # if not found in current group, look in parents.
             # QUESTION:  what if grp1 has a dimension named 'foo'
@@ -1575,6 +1549,7 @@ cdef _get_vars(group):
     return variables
 
 cdef _ensure_nc_success(ierr, err_cls=RuntimeError):
+    # print netcdf error message, raise error.
     if ierr != NC_NOERR:
         raise err_cls((<char *>nc_strerror(ierr)).decode('ascii'))
 
