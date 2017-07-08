@@ -2793,8 +2793,7 @@ Read-only class variables:
             if grp.data_model != 'NETCDF4': grp._redef()
             ierr = nc_def_dim(self._grpid, dimname, lendim, &self._dimid)
             if grp.data_model != 'NETCDF4': grp._enddef()
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
 
     def _getname(self):
         # private method to get name associated with instance.
@@ -2803,8 +2802,7 @@ Read-only class variables:
         _grpid = self._grp._grpid
         with nogil:
             ierr = nc_inq_dimname(_grpid, self._dimid, namstring)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         return namstring.decode('utf-8')
 
     property name:
@@ -2841,8 +2839,7 @@ Read-only class variables:
         cdef size_t lengthp
         with nogil:
             ierr = nc_inq_dimlen(self._grpid, self._dimid, &lengthp)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         return lengthp
 
     def group(self):
@@ -2861,8 +2858,7 @@ returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwi
         cdef int *unlimdimids
         if self._data_model == 'NETCDF4':
             ierr = nc_inq_unlimdims(self._grpid, &numunlimdims, NULL)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             if numunlimdims == 0:
                 return False
             else:
@@ -2870,8 +2866,7 @@ returns `True` if the `netCDF4.Dimension` instance is unlimited, `False` otherwi
                 dimid = self._dimid
                 with nogil:
                     ierr = nc_inq_unlimdims(self._grpid, &numunlimdims, unlimdimids)
-                if ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
                 unlimdim_ids = []
                 for n from 0 <= n < numunlimdims:
                     unlimdim_ids.append(unlimdimids[n])
@@ -3221,17 +3216,15 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             if grp.data_model.startswith('NETCDF4') and chunk_cache is not None:
                 ierr = nc_get_var_chunk_cache(self._grpid, self._varid, &sizep,
                         &nelemsp, &preemptionp)
-                if ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
                 # reset chunk cache size, leave other parameters unchanged.
                 sizep = chunk_cache
                 ierr = nc_set_var_chunk_cache(self._grpid, self._varid, sizep,
                         nelemsp, preemptionp)
-                if ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
             if ierr != NC_NOERR:
                 if grp.data_model != 'NETCDF4': grp._enddef()
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
             # set zlib, shuffle, chunking, fletcher32 and endian
             # variable settings.
             # don't bother for NETCDF3* formats.
@@ -3248,13 +3241,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         ierr = nc_def_var_deflate(self._grpid, self._varid, 0, 1, ideflate_level)
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
-                        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                        _ensure_nc_success(ierr)
                 # set checksum.
                 if fletcher32 and ndims: # don't bother for scalar variable
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
-                        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                        _ensure_nc_success(ierr)
                 # set chunking stuff.
                 if ndims: # don't bother for scalar variable.
                     if contiguous:
@@ -3281,7 +3274,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         free(chunksizesp)
                         if ierr != NC_NOERR:
                             if grp.data_model != 'NETCDF4': grp._enddef()
-                            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                            _ensure_nc_success(ierr)
                 # set endian-ness of variable
                 if endian == 'little':
                     ierr = nc_def_var_endian(self._grpid, self._varid, NC_ENDIAN_LITTLE)
@@ -3293,7 +3286,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                     raise ValueError("'endian' keyword argument must be 'little','big' or 'native', got '%s'" % endian)
                 if ierr != NC_NOERR:
                     if grp.data_model != 'NETCDF4': grp._enddef()
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                    _ensure_nc_success(ierr)
             else:
                 if endian != 'native':
                     msg="only endian='native' allowed for NETCDF3 files"
@@ -3312,7 +3305,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
-                        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                        _ensure_nc_success(ierr)
                 else:
                     # cast fill_value to type of variable.
                     # also make sure it is written in native byte order
@@ -3337,8 +3330,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # set ndim attribute (number of dimensions).
         with nogil:
             ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         self.ndim = numdims
         self._name = name
         # default for automatically applying scale_factor and
@@ -3402,8 +3394,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         ncdump_var.append('current shape = %s\n' % repr(self.shape))
         with nogil:
             ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         if self._isprimitive:
             if no_fill != 1:
                 try:
@@ -3430,21 +3421,18 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # get number of dimensions for this variable.
         with nogil:
             ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         dimids = <int *>malloc(sizeof(int) * numdims)
         # get dimension ids.
         with nogil:
             ierr = nc_inq_vardimid(self._grpid, self._varid, dimids)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         # loop over dimensions, retrieve names.
         dimensions = ()
         for nn from 0 <= nn < numdims:
             with nogil:
                 ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             name = namstring.decode('utf-8')
             dimensions = dimensions + (name,)
         free(dimids)
@@ -3457,8 +3445,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         _grpid = self._grp._grpid
         with nogil:
             ierr = nc_inq_varname(_grpid, self._varid, namstring)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         return namstring.decode('utf-8')
 
     property name:
@@ -3585,8 +3572,7 @@ attributes."""
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
         ierr = nc_del_att(self._grpid, self._varid, attname)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
 
     def filters(self):
         """
@@ -3598,12 +3584,10 @@ return dictionary containing HDF5 filter parameters."""
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
         with nogil:
             ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &ideflate_level)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         with nogil:
             ierr = nc_inq_var_fletcher32(self._grpid, self._varid, &ifletcher32)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         if ideflate:
             filtdict['zlib']=True
             filtdict['complevel']=ideflate_level
@@ -3623,8 +3607,7 @@ return endian-ness (`little,big,native`) of variable (as stored in HDF5 file).""
             return 'native'
         with nogil:
             ierr = nc_inq_var_endian(self._grpid, self._varid, &iendian)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         if iendian == NC_ENDIAN_LITTLE:
             return 'little'
         elif iendian == NC_ENDIAN_BIG:
@@ -3647,8 +3630,7 @@ each dimension is returned."""
         chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
         with nogil:
             ierr = nc_inq_var_chunking(self._grpid, self._varid, &icontiguous, chunksizesp)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         chunksizes=[]
         for n from 0 <= n < ndims:
             chunksizes.append(chunksizesp[n])
@@ -3671,8 +3653,7 @@ details."""
         with nogil:
             ierr = nc_get_var_chunk_cache(self._grpid, self._varid, &sizep,
                    &nelemsp, &preemptionp)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         size = sizep; nelems = nelemsp; preemption = preemptionp
         return (size,nelems,preemption)
 
@@ -3702,8 +3683,7 @@ details."""
             preemptionp = preemption_orig
         ierr = nc_set_var_chunk_cache(self._grpid, self._varid, sizep,
                nelemsp, preemptionp)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
 
     def __delattr__(self,name):
         # if it's a netCDF attribute, remove it
@@ -3774,8 +3754,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         bytestr = _strencode(newname)
         newnamec = bytestr
         ierr = nc_rename_att(self._grpid, self._varid, oldnamec, newnamec)
-        if ierr != NC_NOERR:
-            raise AttributeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
 
     def __getitem__(self, elem):
         # This special method is used to index the netCDF variable
@@ -3940,8 +3919,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         else:
             with nogil:
                 ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             # if no_fill is not 1, and not a byte variable, then use default fill value.
             # from http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
             # "If you need a fill value for a byte variable, it is recommended
@@ -4077,8 +4055,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             strdata[0] = bytestr
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, strdata)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             free(strdata)
         else: # regular VLEN
             if data.dtype != self.dtype:
@@ -4089,8 +4066,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             vldata[0].p = data2.data
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, vldata)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
             free(vldata)
         free(startp)
         free(countp)
@@ -4526,8 +4502,7 @@ The default value of `mask` is `True`
             else:
                 ierr = nc_put_vars(self._grpid, self._varid,
                                    startp, countp, stridep, data.data)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
         elif self._isvlen:
             if data.dtype.char !='O':
                 raise TypeError('data to put in string variable must be an object array containing Python strings')
@@ -4555,8 +4530,7 @@ The default value of `mask` is `True`
                     raise IndexError('strides must all be 1 for string variables')
                     #ierr = nc_put_vars(self._grpid, self._varid,
                     #                   startp, countp, stridep, strdata)
-                if ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
                 free(strdata)
             else:
                 # regular vlen.
@@ -4583,8 +4557,7 @@ The default value of `mask` is `True`
                     raise IndexError('strides must all be 1 for vlen variables')
                     #ierr = nc_put_vars(self._grpid, self._varid,
                     #                   startp, countp, stridep, vldata)
-                if ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
                 # free the pointer array.
                 free(vldata)
         free(startp)
@@ -4648,7 +4621,7 @@ The default value of `mask` is `True`
             if ierr == NC_EINVALCOORDS:
                 raise IndexError
             elif ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
         elif self._isvlen:
             # allocate array of correct primitive type.
             data = numpy.empty(shapeout, 'O')
@@ -4672,7 +4645,7 @@ The default value of `mask` is `True`
                 if ierr == NC_EINVALCOORDS:
                     raise IndexError
                 elif ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                   _ensure_nc_success(ierr)
                 # loop over elements of object array, fill array with
                 # contents of strdata.
                 # use _Encoding attribute to decode string to bytes - if
@@ -4705,7 +4678,7 @@ The default value of `mask` is `True`
                 if ierr == NC_EINVALCOORDS:
                     raise IndexError
                 elif ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                    _ensure_nc_success(ierr)
                 # loop over elements of object array, fill array with
                 # contents of vlarray struct, put array in object array.
                 for i from 0<=i<totelem:
@@ -4824,8 +4797,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
     namstring = bytestr
     size = dt.itemsize
     ierr = nc_def_compound(grp._grpid, size, namstring, &xtype)
-    if ierr != NC_NOERR:
-        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr)
     names = list(dt.fields.keys())
     formats = [v[0] for v in dt.fields.values()]
     offsets = [v[1] for v in dt.fields.values()]
@@ -4844,8 +4816,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
                 raise ValueError('Unsupported compound type element')
             ierr = nc_insert_compound(grp._grpid, xtype, namstring,
                                       offset, xtype_tmp)
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
         else:
             if format.shape ==  (): # nested scalar compound type
                 # find this compound type in this group or it's parents.
@@ -4855,8 +4826,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
                 ierr = nc_insert_compound(grp._grpid, xtype,\
                                           nested_namstring,\
                                           offset, xtype_tmp)
-                if ierr != NC_NOERR:
-                    raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                _ensure_nc_success(ierr)
             else: # array compound element
                 ndims = len(format.shape)
                 dim_sizes = <int *>malloc(sizeof(int) * ndims)
@@ -4869,8 +4839,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
                         raise ValueError('Unsupported compound type element')
                     ierr = nc_insert_array_compound(grp._grpid,xtype,namstring,
                            offset,xtype_tmp,ndims,dim_sizes)
-                    if ierr != NC_NOERR:
-                        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                    _ensure_nc_success(ierr)
                 else: # nested array compound type.
                     # find this compound type in this group or it's parents.
                     xtype_tmp = _find_cmptype(grp, format.subdtype[0])
@@ -4880,8 +4849,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
                                                     nested_namstring,\
                                                     offset,xtype_tmp,\
                                                     ndims,dim_sizes)
-                    if ierr != NC_NOERR:
-                        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+                    _ensure_nc_success(ierr)
                 free(dim_sizes)
     return xtype
 
@@ -4927,8 +4895,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
     _grpid = group._grpid
     with nogil:
         ierr = nc_inq_compound(_grpid, xtype, cmp_namstring, NULL, &nfields)
-    if ierr != NC_NOERR:
-        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr)
     name = cmp_namstring.decode('utf-8')
     # loop over fields.
     names = []
@@ -4944,8 +4911,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
                                          &field_typeid,
                                          &numdims,
                                          NULL)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         dim_sizes = <int *>malloc(sizeof(int) * numdims)
         with nogil:
             ierr = nc_inq_compound_field(_grpid,
@@ -4956,8 +4922,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
                                          &field_typeid,
                                          &numdims,
                                          dim_sizes)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         field_name = field_namstring.decode('utf-8')
         names.append(field_name)
         offsets.append(offset)
@@ -5078,8 +5043,7 @@ cdef _def_vlen(grp, object dt, object dtype_name):
             # specified numpy data type.
             xtype_tmp = _nptonctype[dt.str[1:]]
             ierr = nc_def_vlen(grp._grpid, namstring, xtype_tmp, &xtype);
-            if ierr != NC_NOERR:
-                raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+            _ensure_nc_success(ierr)
         else:
             raise KeyError("unsupported datatype specified for VLEN")
     return xtype, dt
@@ -5100,8 +5064,7 @@ cdef _read_vlen(group, nc_type xtype, endian=None):
     else:
         with nogil:
             ierr = nc_inq_vlen(_grpid, xtype, vl_namstring, &vlsize, &base_xtype)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         name = vl_namstring.decode('utf-8')
         try:
             datatype = _nctonptype[base_xtype]
@@ -5192,8 +5155,7 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
         # specified numpy data type.
         xtype_tmp = _intnptonctype[dt.str[1:]]
         ierr = nc_def_enum(grp._grpid, xtype_tmp, namstring, &xtype);
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
     else:
         msg="unsupported datatype specified for Enum (must be integer)"
         raise KeyError(msg)
@@ -5203,8 +5165,7 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
         bytestr = _strencode(field)
         namstring = bytestr
         ierr = nc_insert_enum(grp._grpid, xtype, namstring, value_arr.data)
-        if ierr != NC_NOERR:
-            raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
     return xtype, dt
 
 cdef _read_enum(group, nc_type xtype, endian=None):
@@ -5222,8 +5183,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
     with nogil:
         ierr = nc_inq_enum(_grpid, xtype, enum_namstring, &base_xtype, NULL,\
                 &nmembers)
-    if ierr != NC_NOERR:
-        raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+    _ensure_nc_success(ierr)
     name = enum_namstring.decode('utf-8')
     try:
         datatype = _nctonptype[base_xtype]
@@ -5237,8 +5197,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
         with nogil:
             ierr = nc_inq_enum_member(_grpid, xtype, nmem, \
                                       enum_namstring, &enum_val)
-        if ierr != NC_NOERR:
-           raise RuntimeError((<char *>nc_strerror(ierr)).decode('ascii'))
+        _ensure_nc_success(ierr)
         name = enum_namstring.decode('utf-8')
         enum_dict[name] = int(enum_val)
     return EnumType(group, dt, name, enum_dict, typeid=xtype)
