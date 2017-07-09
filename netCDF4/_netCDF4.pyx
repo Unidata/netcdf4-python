@@ -1689,7 +1689,7 @@ references to the parent Dataset or Group.
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                  diskless=False, persist=False, keepweakref=False,
-                 memory=None, encoding='utf-8', **kwargs):
+                 memory=None, encoding=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, format='NETCDF4')`**
@@ -1759,7 +1759,7 @@ references to the parent Dataset or Group.
         Must be a sequence of bytes.  Note this only works with "r" mode.
 
         **`encoding`**: encoding used to encode filename string into bytes.
-        Default is `utf-8`.
+        Default is None (`sys.getdefaultfileencoding()` is used).
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
@@ -1774,6 +1774,8 @@ references to the parent Dataset or Group.
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
         # convert filename into string (from os.path object for example),
         # encode into bytes.
+        if encoding is None:
+            encoding = sys.getfilesystemencoding()
         bytestr = _strencode(_tostr(filename), encoding=encoding)
         path = bytestr
 
@@ -1905,17 +1907,19 @@ references to the parent Dataset or Group.
         else:
             raise IndexError('%s not found in %s' % (lastname,group.path))
 
-    def filepath(self,encoding='utf-8'):
+    def filepath(self,encoding=None):
         """
-**`filepath(self,encoding='utf-8')`**
+**`filepath(self,encoding=None)`**
 
 Get the file system path (or the opendap URL) which was used to
 open/create the Dataset. Requires netcdf >= 4.1.2.  The path
-is decoded into a `utf-8` string by default, this can be
+is decoded into a string using `sys.getfilesystemencoding()` by default, this can be
 changed using the `encoding` kwarg."""
         cdef int ierr
         cdef size_t pathlen
         cdef char *c_path
+        if encoding is None:
+            encoding = sys.getfilesystemencoding()
         IF HAS_NC_INQ_PATH:
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
