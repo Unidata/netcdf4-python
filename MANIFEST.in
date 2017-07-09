@@ -8,7 +8,6 @@ include Changelog
 include appveyor.yml
 include .travis.yml
 include setup.cfg
-include setup.cfg.template
 include examples/*py
 include examples/*ipynb
 include examples/README.md
