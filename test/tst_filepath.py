@@ -1,6 +1,6 @@
-import os
-import unittest
+import os, sys, shutil
 import tempfile
+import unittest
 import netCDF4
 
 class test_filepath(unittest.TestCase):
@@ -13,19 +13,15 @@ class test_filepath(unittest.TestCase):
         assert self.nc.filepath() == str(self.netcdf_file)
 
     def test_filepath_with_non_ascii_characters(self):
-        # create nc-file in a filepath with Non-Ascii-Characters
-        tempdir = tempfile.mkdtemp(prefix='ÄÖÜß_')
-        nc_non_ascii_file = os.path.join(tempdir, "Besançonalléestraße.nc")
-        nc_non_ascii = netCDF4.Dataset(nc_non_ascii_file, 'w')
-        
-        # test that no UnicodeDecodeError occur in the filepath() method
-        assert nc_non_ascii.filepath() == str(nc_non_ascii_file)
-        
-        # cleanup
-        nc_non_ascii.close()
-        os.remove(nc_non_ascii_file)
-        os.rmdir(tempdir)
-        
-        
+        # create nc-file in a filepath using a cp1252 string
+        tmpdir = tempfile.mkdtemp()
+        filepath = os.path.join(tmpdir,b'Pl\xc3\xb6n.nc'.decode('cp1252'))
+        nc = netCDF4.Dataset(filepath,'w',encoding='cp1252')
+        filepatho = nc.filepath(encoding='cp1252')
+        assert filepath == filepatho
+        assert filepath.encode('cp1252') == filepatho.encode('cp1252')
+        nc.close()
+        shutil.rmtree(tmpdir)
+
 if __name__ == '__main__':
     unittest.main()
