@@ -1,0 +1,6 @@
+using macports:
+
+CPPFLAGS=-I/opt/local/include/mpich-mp
+LDSHARED="/usr/bin/clang -bundle -undefined dynamic_lookup -L/opt/local/lib/hdf5-18/lib  -Wl,-headerpad_max_install_names"
+
+tst_diskless.py fails when MPI enabled library is linked
