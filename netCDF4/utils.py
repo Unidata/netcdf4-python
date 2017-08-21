@@ -180,10 +180,11 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
 
     # replace boolean arrays with sequences of integers.
     newElem = []
+    i=0
     IndexErrorMsg=\
     "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
     idim = -1
-    for i, e in enumerate(elem):
+    for e in elem:
         # which dimension is this?
         if type(e) == type(Ellipsis):
             idim = nDims - len(elem) + idim + 1
@@ -268,6 +269,10 @@ Boolean array must have the same shape as the data along this dimension."""
                 newElem.append(e)
             except:
                 raise IndexError(IndexErrorMsg)
+        if type(e)==type(Ellipsis):
+            i+=1+nDims-len(elem)
+        else:
+            i+=1
     elem = newElem
 
     # replace Ellipsis and integer arrays with slice objects, if possible.
