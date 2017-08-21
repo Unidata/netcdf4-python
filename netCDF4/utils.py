@@ -177,18 +177,19 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
                 elem.append(slice(None,None,None))
     else:   # Convert single index to sequence
         elem = [elem]
-
+    
+    hasEllipsis=False
+    for e in elem:
+        if type(e)==type(Ellipsis):
+            if hasEllipsis:
+                raise IndexError("At most one ellipsis allowed in a slicing expression")
+            hasEllipsis=True
     # replace boolean arrays with sequences of integers.
     newElem = []
     IndexErrorMsg=\
     "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
-    idim = -1
-    for i, e in enumerate(elem):
-        # which dimension is this?
-        if type(e) == type(Ellipsis):
-            idim = nDims - len(elem) + idim + 1
-        else:
-            idim += 1
+    i=0
+    for e in elem:
         # string-like object try to cast to int
         # needs to be done first, since strings are iterable and
         # hard to distinguish from something castable to an iterable numpy array.
@@ -205,7 +206,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         # (called from __setitem__)
         if put and (dimensions is not None and grp is not None) and len(dimensions):
             try:
-                dimname = dimensions[idim]
+                dimname = dimensions[i]
                 # is this dimension unlimited?
                 # look in current group, and parents for dim.
                 dim = _find_dim(grp, dimname)
@@ -217,7 +218,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         # convert boolean index to integer array.
         if np.iterable(ea) and ea.dtype.kind =='b':
             # check that boolen array not too long
-            if not unlim and shape[idim] != len(ea):
+            if not unlim and shape[i] != len(ea):
                 msg="""
 Boolean array must have the same shape as the data along this dimension."""
                 raise IndexError(msg)
@@ -225,13 +226,13 @@ Boolean array must have the same shape as the data along this dimension."""
         # an iterable (non-scalar) integer array.
         if np.iterable(ea) and ea.dtype.kind == 'i':
             # convert negative indices in 1d array to positive ones.
-            ea = np.where(ea < 0, ea + shape[idim], ea)
+            ea = np.where(ea < 0, ea + shape[i], ea)
             if np.any(ea < 0):
                 raise IndexError("integer index out of range")
             # if unlim, let integer index be longer than current dimension
             # length.
             if ea.shape != (0,):
-                elen = shape[idim]
+                elen = shape[i]
                 if unlim:
                     elen = max(ea.max()+1,elen)
                 if ea.max()+1 > elen:
@@ -250,11 +251,11 @@ Boolean array must have the same shape as the data along this dimension."""
                 start = e.start if e.start is not None else 0
                 step = e.step
                 if e.stop is None and dimensions is not None and grp is not None:
-                    stop = len(_find_dim(grp, dimensions[idim]))
+                    stop = len(_find_dim(grp, dimensions[i]))
                 else:
                     stop = e.stop
                     if stop < 0:
-                        stop = len(_find_dim(grp, dimensions[idim])) + stop
+                        stop = len(_find_dim(grp, dimensions[i])) + stop
                 try:
                     ee = np.arange(start,stop,e.step)
                     if len(ee) > 0:
@@ -268,20 +269,20 @@ Boolean array must have the same shape as the data along this dimension."""
                 newElem.append(e)
             except:
                 raise IndexError(IndexErrorMsg)
+        if type(e)==type(Ellipsis): 
+            i+=1+nDims-len(elem)
+        else:
+            i+=1
     elem = newElem
 
     # replace Ellipsis and integer arrays with slice objects, if possible.
-    hasEllipsis = False
     newElem = []
     for e in elem:
         ea = np.asarray(e)
         # Replace ellipsis with slices.
         if type(e) == type(Ellipsis):
-            if hasEllipsis:
-                raise IndexError("At most one ellipsis allowed in a slicing expression")
             # The ellipsis stands for the missing dimensions.
             newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
-            hasEllipsis = True
         # Replace sequence of indices with slice object if possible.
         elif np.iterable(e) and len(e) > 1:
             start = e[0]
