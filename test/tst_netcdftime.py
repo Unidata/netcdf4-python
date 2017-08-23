@@ -1,7 +1,7 @@
 from netcdftime import utime, JulianDayFromDate, DateFromJulianDay
 from netcdftime import datetime as datetimex
 from netcdftime import DatetimeNoLeap, DatetimeAllLeap, Datetime360Day, DatetimeJulian, \
-    DatetimeGregorian, DatetimeProlepticGregorian
+    DatetimeGregorian, DatetimeProlepticGregorian, _parse_date
 from netCDF4 import Dataset, num2date, date2num, date2index, num2date
 import copy
 import numpy
@@ -952,6 +952,41 @@ class DateTime(unittest.TestCase):
 
         for func in [not_comparable_1, not_comparable_2, not_comparable_3, not_comparable_4]:
             self.assertRaises(TypeError, func)
+
+class issue17TestCase(unittest.TestCase):
+    """Regression tests for issue #17/#669."""
+    # issue 17 / 699: timezone formats not supported correctly
+    # valid timezone formats are: +-hh, +-hh:mm, +-hhmm
+
+    def setUp(self):
+        pass
+
+    def test_parse_date_tz(self):
+        "Test timezone parsing in _parse_date"
+
+        # these should succeed and are ISO8601 compliant
+        expected_parsed_date = (2017, 5, 1, 0, 0, 0, 60.0)
+        for datestr in ("2017-05-01 00:00+01:00", "2017-05-01 00:00+0100", "2017-05-01 00:00+01"):
+            d = _parse_date(datestr)
+            assert_equal(d, expected_parsed_date)
+        # some more tests with non-zero minutes, should all be ISO compliant and work
+        expected_parsed_date = (2017, 5, 1, 0, 0, 0, 85.0)
+        for datestr in ("2017-05-01 00:00+01:25", "2017-05-01 00:00+0125"):
+            d = _parse_date(datestr)
+            assert_equal(d, expected_parsed_date)
+        # these are NOT ISO8601 compliant and should not even be parseable but will be parsed with timezone anyway
+        # because, due to support of other legacy time formats, they are difficult to reject
+        # ATTENTION: only the hours part of this will be parsed, single-digit minutes will be ignored!
+        expected_parsed_date = (2017, 5, 1, 0, 0, 0, 60.0)
+        for datestr in ("2017-05-01 00:00+01:0", "2017-05-01 00:00+01:", "2017-05-01 00:00+01:5"):
+            d = _parse_date(datestr)
+            assert_equal(d, expected_parsed_date)
+        # these should not even be parseable as datestrings but are parseable anyway with ignored timezone
+        # this is because the module also supports some legacy, non-standard time strings
+        expected_parsed_date = (2017, 5, 1, 0, 0, 0, 0.0)
+        for datestr in ("2017-05-01 00:00+1",):
+            d = _parse_date(datestr)
+            assert_equal(d, expected_parsed_date)
 
 if __name__ == '__main__':
     unittest.main()
