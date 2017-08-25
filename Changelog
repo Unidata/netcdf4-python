@@ -20,6 +20,8 @@
  * fix utc offset time zone conversion in netcdftime - it was being done
    exactly backwards (issue #685 - thanks to @pgamez and @mdecker).
  * Fix error message for illegal ellipsis slicing, add test (issue #701).
+ * Improve timezone format parsing in netcdftime
+   (https://github.com/Unidata/netcdftime/issues/17).  
  
 
  version 1.2.9 (tag v1.2.9rel)

@@ -31,12 +31,19 @@ _calendars = ['standard', 'gregorian', 'proleptic_gregorian',
 __version__ = '1.4.1'
 
 # Adapted from http://delete.me.uk/2005/03/iso8601.html
+# Note: This regex ensures that all ISO8601 timezone formats are accepted -
+# but, due to legacy support for other timestrings, not all incorrect formats can be rejected.
+# For example, the TZ spec "+01:0" will still work even though the minutes value is only one character long.
 ISO8601_REGEX = re.compile(r"(?P<year>[+-]?[0-9]{1,4})(-(?P<month>[0-9]{1,2})(-(?P<day>[0-9]{1,2})"
                            r"(((?P<separator1>.)(?P<hour>[0-9]{1,2}):(?P<minute>[0-9]{1,2})(:(?P<second>[0-9]{1,2})(\.(?P<fraction>[0-9]+))?)?)?"
-                           r"((?P<separator2>.?)(?P<timezone>Z|(([-+])([0-9]{1,2}):([0-9]{1,2}))))?)?)?)?"
+                           r"((?P<separator2>.?)(?P<timezone>Z|(([-+])([0-9]{2})((:([0-9]{2}))|([0-9]{2}))?)))?)?)?)?"
                            )
+# Note: The re module apparently does not support branch reset groups that allow
+# redifinition of the same group name in alternative branches as PCRE does.
+# Using two different group names is also somewhat ugly, but other solutions might
+# hugely inflate the expression. feel free to contribute a better solution.
 TIMEZONE_REGEX = re.compile(
-    "(?P<prefix>[+-])(?P<hours>[0-9]{1,2}):(?P<minutes>[0-9]{1,2})")
+       "(?P<prefix>[+-])(?P<hours>[0-9]{2})(?:(?::(?P<minutes1>[0-9]{2}))|(?P<minutes2>[0-9]{2}))?")
 
 def JulianDayFromDate(date, calendar='standard'):
     """
@@ -916,8 +923,13 @@ cdef _parse_timezone(tzstring):
     if tzstring is None:
         return 0
     m = TIMEZONE_REGEX.match(tzstring)
-    prefix, hours, minutes = m.groups()
-    hours, minutes = int(hours), int(minutes)
+    prefix, hours, minutes1, minutes2 = m.groups()
+    hours = int(hours)
+# Note: Minutes don't have to be specified in tzstring, 
+# so if the group is not found it means minutes is 0.
+# Also, due to the timezone regex definition, there are two mutually
+# exclusive groups that might hold the minutes value, so check both.
+    minutes = int(minutes1) if minutes1 is not None else int(minutes2) if minutes2 is not None else 0
     if prefix == "-":
         hours = -hours
         minutes = -minutes
