@@ -4764,7 +4764,14 @@ the user.
         method of a `netCDF4.Dataset` or `netCDF4.Group` instance, not using this class directly.
         """
         cdef nc_type xtype
+        # convert dt to a numpy datatype object
+        # and make sure alignment flag is set to True
         dt = numpy.dtype(dt,align=True)
+        if dt.fields is None:
+            msg='CompoundTypes must be created using numpy structured dtypes'
+            raise ValueError(msg)
+        elif not dt.isalignedstruct:
+            dt = _set_alignment(dt)
         if 'typeid' in kwargs:
             xtype = kwargs['typeid']
         else:
@@ -4786,6 +4793,14 @@ the user.
     def __reduce__(self):
         # raise error is user tries to pickle a CompoundType object.
         raise NotImplementedError('CompoundType is not picklable')
+
+def _set_alignment(dt):
+    names = []; formats = []
+    for k,v in dt.fields.iteritems():
+        names.append(k)
+        formats.append(v[0])
+    dtype_dict = {'names':names,'formats':formats}
+    return numpy.dtype(dtype_dict, align=True)
 
 cdef _def_compound(grp, object dt, object dtype_name):
     # private function used to construct a netcdf compound data type
