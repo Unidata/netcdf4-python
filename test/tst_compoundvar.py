@@ -6,7 +6,6 @@ from netCDF4 import Dataset, CompoundType
 import numpy as np
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 
-
 # test compound data types.
 
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -20,11 +19,18 @@ TYPE_NAME3 = 'cmp3'
 TYPE_NAME4 = 'cmp4'
 TYPE_NAME5 = 'cmp5'
 DIM_SIZE=3
-dtype1=np.dtype([('i', 'i2'), ('j', 'i8')])
-dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))])
-dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)])
-dtype4=np.dtype([('xxx',dtype3),('yyy','f8', (4,))])
-dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)])
+#dtype1=np.dtype([('i', 'i2'), ('j', 'i8')])
+#dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))])
+#dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)])
+#dtype4=np.dtype([('xxx',dtype3),('yyy','f8', (4,))])
+#dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)])
+# use aligned data types
+dtype1 = np.dtype({'names':['i','j'],'formats':['<i2','<i8']},align=True)
+dtype2 = np.dtype({'names':['x','y'],'formats':['<f4',('<f8', (3, 2))]},align=True)
+dtype3 = np.dtype({'names':['xx','yy'],'formats':[dtype1,dtype2]},align=True)
+dtype4 = np.dtype({'names':['xxx','yyy'],'formats':[dtype3,'f8', (4,)]},align=True)
+dtype5 = np.dtype({'names':['x1','y1'],'formats':[dtype1,dtype2]},align=True)
+
 data = np.zeros(DIM_SIZE,dtype4)
 data['xxx']['xx']['i']=1
 data['xxx']['xx']['j']=2
