@@ -4853,7 +4853,6 @@ cdef _def_compound(grp, object dt, object dtype_name):
                                           offset, xtype_tmp)
                 _ensure_nc_success(ierr)
             else: # nested array compound element
-                # the following does not work, disable for now...
                 ndims = len(format.shape)
                 dim_sizes = <int *>malloc(sizeof(int) * ndims)
                 for n from 0 <= n < ndims:
@@ -4868,7 +4867,8 @@ cdef _def_compound(grp, object dt, object dtype_name):
                     _ensure_nc_success(ierr)
                 else: # nested array compound type.
                     raise TypeError('nested structured dtype arrays not supported')
-                    # this code is untested and probably does not work
+                    # this code is untested and probably does not work, disable
+                    # for now...
                 #   # find this compound type in this group or it's parents.
                 #   xtype_tmp = _find_cmptype(grp, format.subdtype[0])
                 #   bytestr = _strencode(name)
