@@ -4790,11 +4790,19 @@ the user.
         raise NotImplementedError('CompoundType is not picklable')
 
 def _set_alignment(dt):
+    # recursively set alignment flag in nested structured data type
     names = dt.names; formats = []
     for name in names:
-        if dt.fields[name][0].kind == 'V' and dt.fields[name][0].shape == ():
-            dtx = _set_alignment(dt.fields[name][0])
+        fmt = dt.fields[name][0]
+        if fmt.kind == 'V':
+            if fmt.shape == () or fmt.subdtype[0].str[1] == 'V':
+                # nested scalar or array structured type
+                dtx = _set_alignment(dt.fields[name][0])
+            else:
+                # primitive data type
+                dtx = dt.fields[name][0]
         else:
+            # primitive data type
             dtx = dt.fields[name][0]
         formats.append(dtx)
     dtype_dict = {'names':names,'formats':formats}
