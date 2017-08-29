@@ -9,7 +9,6 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 # test compound data types.
 
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
-#FILE_NAME = 'test.nc'
 DIM_NAME = 'phony_dim'
 GROUP_NAME = 'phony_group'
 VAR_NAME = 'phony_compound_var'
@@ -19,12 +18,13 @@ TYPE_NAME3 = 'cmp3'
 TYPE_NAME4 = 'cmp4'
 TYPE_NAME5 = 'cmp5'
 DIM_SIZE=3
+# unaligned data types (note they are nested)
 dtype1=np.dtype([('i', 'i2'), ('j', 'i8')])
 dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))])
 dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)])
 dtype4=np.dtype([('xxx',dtype3),('yyy','f8', (4,))])
 dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)])
-# use aligned data types
+# aligned data types
 dtype1a = np.dtype({'names':['i','j'],'formats':['<i2','<i8']},align=True)
 dtype2a = np.dtype({'names':['x','y'],'formats':['<f4',('<f8', (3, 2))]},align=True)
 dtype3a = np.dtype({'names':['xx','yy'],'formats':[dtype1a,dtype2a]},align=True)
@@ -66,6 +66,22 @@ class VariablesTestCase(unittest.TestCase):
         vv = g.createVariable(VAR_NAME,cmptype5, DIM_NAME)
         v[:] = data
         vv[:] = datag
+        # try reading the data back before the file is closed
+        dataout = v[:]
+        dataoutg = vv[:]
+        assert (cmptype4 == dtype4a) # data type should be aligned
+        assert (dataout.dtype == dtype4a) # data type should be aligned
+        assert(list(f.cmptypes.keys()) ==\
+               [TYPE_NAME1,TYPE_NAME2,TYPE_NAME3,TYPE_NAME4,TYPE_NAME5])
+        assert_array_equal(dataout['xxx']['xx']['i'],data['xxx']['xx']['i'])
+        assert_array_equal(dataout['xxx']['xx']['j'],data['xxx']['xx']['j'])
+        assert_array_almost_equal(dataout['xxx']['yy']['x'],data['xxx']['yy']['x'])
+        assert_array_almost_equal(dataout['xxx']['yy']['y'],data['xxx']['yy']['y'])
+        assert_array_almost_equal(dataout['yyy'],data['yyy'])
+        assert_array_equal(dataoutg['x1']['i'],datag['x1']['i'])
+        assert_array_equal(dataoutg['x1']['j'],datag['x1']['j'])
+        assert_array_almost_equal(dataoutg['y1']['x'],datag['y1']['x'])
+        assert_array_almost_equal(dataoutg['y1']['y'],datag['y1']['y'])
         f.close()
 
     def tearDown(self):
