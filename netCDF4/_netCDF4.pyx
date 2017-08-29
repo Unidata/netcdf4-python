@@ -4766,12 +4766,7 @@ the user.
         cdef nc_type xtype
         # convert dt to a numpy datatype object
         # and make sure alignment flag is set to True
-        dt = numpy.dtype(dt,align=True)
-        if dt.fields is None:
-            msg='CompoundTypes must be created using numpy structured dtypes'
-            raise ValueError(msg)
-        elif not dt.isalignedstruct:
-            dt = _set_alignment(dt)
+        dt = _set_alignment(numpy.dtype(dt))
         if 'typeid' in kwargs:
             xtype = kwargs['typeid']
         else:
@@ -4795,10 +4790,13 @@ the user.
         raise NotImplementedError('CompoundType is not picklable')
 
 def _set_alignment(dt):
-    names = []; formats = []
-    for k,v in dt.fields.iteritems():
-        names.append(k)
-        formats.append(v[0])
+    names = dt.names; formats = []
+    for name in names:
+        if dt.fields[name][0].kind == 'V' and dt.fields[name][0].shape == ():
+            dtx = _set_alignment(dt.fields[name][0])
+        else:
+            dtx = dt.fields[name][0]
+        formats.append(dtx)
     dtype_dict = {'names':names,'formats':formats}
     return numpy.dtype(dtype_dict, align=True)
 
@@ -4878,7 +4876,8 @@ cdef _find_cmptype(grp, dtype):
     match = False
     for cmpname, cmpdt in grp.cmptypes.items():
         xtype = cmpdt._nc_type
-        names1 = dtype.names; names2 = cmpdt.dtype.names
+        names1 = dtype.fields.keys()
+        names2 = cmpdt.dtype.fields.keys()
         formats1 = [v[0] for v in dtype.fields.values()]
         formats2 = [v[0] for v in cmpdt.dtype.fields.values()]
         # match names, formats, but not offsets (they may be changed

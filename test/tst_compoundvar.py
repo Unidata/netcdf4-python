@@ -19,17 +19,17 @@ TYPE_NAME3 = 'cmp3'
 TYPE_NAME4 = 'cmp4'
 TYPE_NAME5 = 'cmp5'
 DIM_SIZE=3
-#dtype1=np.dtype([('i', 'i2'), ('j', 'i8')])
-#dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))])
-#dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)])
-#dtype4=np.dtype([('xxx',dtype3),('yyy','f8', (4,))])
-#dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)])
+dtype1=np.dtype([('i', 'i2'), ('j', 'i8')])
+dtype2=np.dtype([('x', 'f4',), ('y', 'f8',(3,2))])
+dtype3=np.dtype([('xx', dtype1), ('yy', dtype2)])
+dtype4=np.dtype([('xxx',dtype3),('yyy','f8', (4,))])
+dtype5=np.dtype([('x1', dtype1), ('y1', dtype2)])
 # use aligned data types
-dtype1 = np.dtype({'names':['i','j'],'formats':['<i2','<i8']},align=True)
-dtype2 = np.dtype({'names':['x','y'],'formats':['<f4',('<f8', (3, 2))]},align=True)
-dtype3 = np.dtype({'names':['xx','yy'],'formats':[dtype1,dtype2]},align=True)
-dtype4 = np.dtype({'names':['xxx','yyy'],'formats':[dtype3,'f8', (4,)]},align=True)
-dtype5 = np.dtype({'names':['x1','y1'],'formats':[dtype1,dtype2]},align=True)
+dtype1a = np.dtype({'names':['i','j'],'formats':['<i2','<i8']},align=True)
+dtype2a = np.dtype({'names':['x','y'],'formats':['<f4',('<f8', (3, 2))]},align=True)
+dtype3a = np.dtype({'names':['xx','yy'],'formats':[dtype1a,dtype2a]},align=True)
+dtype4a = np.dtype({'names':['xxx','yyy'],'formats':[dtype3a,('f8', (4,))]},align=True)
+dtype5a = np.dtype({'names':['x1','y1'],'formats':[dtype1a,dtype2a]},align=True)
 
 data = np.zeros(DIM_SIZE,dtype4)
 data['xxx']['xx']['i']=1
@@ -81,6 +81,8 @@ class VariablesTestCase(unittest.TestCase):
         vv = g.variables[VAR_NAME]
         dataout = v[:]
         dataoutg = vv[:]
+        # make sure data type is aligned
+        assert (f.cmptypes['cmp4'] == dtype4a)
         assert(list(f.cmptypes.keys()) ==\
                [TYPE_NAME1,TYPE_NAME2,TYPE_NAME3,TYPE_NAME4,TYPE_NAME5])
         assert_array_equal(dataout['xxx']['xx']['i'],data['xxx']['xx']['i'])
