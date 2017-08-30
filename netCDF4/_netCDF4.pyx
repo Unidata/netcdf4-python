@@ -4764,7 +4764,9 @@ the user.
         method of a `netCDF4.Dataset` or `netCDF4.Group` instance, not using this class directly.
         """
         cdef nc_type xtype
-        dt = numpy.dtype(dt,align=True)
+        # convert dt to a numpy datatype object
+        # and make sure alignment flag is set to True
+        dt = _set_alignment(numpy.dtype(dt))
         if 'typeid' in kwargs:
             xtype = kwargs['typeid']
         else:
@@ -4786,6 +4788,26 @@ the user.
     def __reduce__(self):
         # raise error is user tries to pickle a CompoundType object.
         raise NotImplementedError('CompoundType is not picklable')
+
+def _set_alignment(dt):
+    # recursively set alignment flag in nested structured data type
+    names = dt.names; formats = []
+    for name in names:
+        fmt = dt.fields[name][0]
+        if fmt.kind == 'V':
+            if fmt.shape == ():
+                dtx = _set_alignment(dt.fields[name][0])
+            else:
+                if fmt.subdtype[0].kind == 'V': # structured dtype
+                    raise TypeError('nested structured dtype arrays not supported')
+                else:
+                    dtx = dt.fields[name][0]
+        else:
+            # primitive data type
+            dtx = dt.fields[name][0]
+        formats.append(dtx)
+    dtype_dict = {'names':names,'formats':formats}
+    return numpy.dtype(dtype_dict, align=True)
 
 cdef _def_compound(grp, object dt, object dtype_name):
     # private function used to construct a netcdf compound data type
@@ -4830,12 +4852,12 @@ cdef _def_compound(grp, object dt, object dtype_name):
                                           nested_namstring,\
                                           offset, xtype_tmp)
                 _ensure_nc_success(ierr)
-            else: # array compound element
+            else: # nested array compound element
                 ndims = len(format.shape)
                 dim_sizes = <int *>malloc(sizeof(int) * ndims)
                 for n from 0 <= n < ndims:
                     dim_sizes[n] = format.shape[n]
-                if format.subdtype[0].str[1] != 'V': # primitive type.
+                if format.subdtype[0].kind != 'V': # primitive type.
                     try:
                         xtype_tmp = _nptonctype[format.subdtype[0].str[1:]]
                     except KeyError:
@@ -4844,15 +4866,18 @@ cdef _def_compound(grp, object dt, object dtype_name):
                            offset,xtype_tmp,ndims,dim_sizes)
                     _ensure_nc_success(ierr)
                 else: # nested array compound type.
-                    # find this compound type in this group or it's parents.
-                    xtype_tmp = _find_cmptype(grp, format.subdtype[0])
-                    bytestr = _strencode(name)
-                    nested_namstring = bytestr
-                    ierr = nc_insert_array_compound(grp._grpid,xtype,\
-                                                    nested_namstring,\
-                                                    offset,xtype_tmp,\
-                                                    ndims,dim_sizes)
-                    _ensure_nc_success(ierr)
+                    raise TypeError('nested structured dtype arrays not supported')
+                    # this code is untested and probably does not work, disable
+                    # for now...
+                #   # find this compound type in this group or it's parents.
+                #   xtype_tmp = _find_cmptype(grp, format.subdtype[0])
+                #   bytestr = _strencode(name)
+                #   nested_namstring = bytestr
+                #   ierr = nc_insert_array_compound(grp._grpid,xtype,\
+                #                                   nested_namstring,\
+                #                                   offset,xtype_tmp,\
+                #                                   ndims,dim_sizes)
+                #   _ensure_nc_success(ierr)
                 free(dim_sizes)
     return xtype
 
@@ -4863,7 +4888,8 @@ cdef _find_cmptype(grp, dtype):
     match = False
     for cmpname, cmpdt in grp.cmptypes.items():
         xtype = cmpdt._nc_type
-        names1 = dtype.names; names2 = cmpdt.dtype.names
+        names1 = dtype.fields.keys()
+        names2 = cmpdt.dtype.fields.keys()
         formats1 = [v[0] for v in dtype.fields.values()]
         formats2 = [v[0] for v in cmpdt.dtype.fields.values()]
         # match names, formats, but not offsets (they may be changed
