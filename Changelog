@@ -23,7 +23,7 @@
  * Improve timezone format parsing in netcdftime
    (https://github.com/Unidata/netcdftime/issues/17).  
  * make sure numpy datatypes used to define CompoundTypes have
-   isalignedstruct flag set to True (issue #705), otherwisse
+   isalignedstruct flag set to True (issue #705), otherwise.
    segfaults can occur.
 
  version 1.2.9 (tag v1.2.9rel)
