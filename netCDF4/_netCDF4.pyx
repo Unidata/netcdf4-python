@@ -4765,7 +4765,13 @@ the user.
         """
         cdef nc_type xtype
         # convert dt to a numpy datatype object
-        # and make sure alignment flag is set to True
+        # and make sure the isalignedstruct flag is set to True.
+        # This is needed because the netcdf C library is
+        # apparently expecting the data to be laid out
+        # with padding to match what a C struct would have.
+        # (this may or may not be still true, but empirical
+        # evidence suggests that segfaults occur if this
+        # alignment step is skipped - see issue #705).
         dt = _set_alignment(numpy.dtype(dt))
         if 'typeid' in kwargs:
             xtype = kwargs['typeid']
@@ -4806,6 +4812,7 @@ def _set_alignment(dt):
             # primitive data type
             dtx = dt.fields[name][0]
         formats.append(dtx)
+    # leave out offsets, they will be re-computed to preserve alignment.
     dtype_dict = {'names':names,'formats':formats}
     return numpy.dtype(dtype_dict, align=True)
 
