@@ -37,7 +37,7 @@ Requires
 ========
 
  - Python 2.7 or later (python 3 works too).
- - [numpy array module](http://numpy.scipy.org), version 1.7.0 or later.
+ - [numpy array module](http://numpy.scipy.org), version 1.9.0 or later.
  - [Cython](http://cython.org), version 0.19 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
