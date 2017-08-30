@@ -4765,10 +4765,12 @@ the user.
         """
         cdef nc_type xtype
         # convert dt to a numpy datatype object
-        # and make sure the isalignedstruct flag is set to True.
-        # This is needed because the netcdf C library is
-        # apparently expecting the data to be laid out
-        # with padding to match what a C struct would have.
+        # and make sure the isalignedstruct flag is set to True
+        # (so padding is added to the fields to match what a
+        # C compiler would output for a similar C-struct).
+        # This is needed because nc_get_vara is
+        # apparently expecting the data buffer to include
+        # padding to match what a C struct would have.
         # (this may or may not be still true, but empirical
         # evidence suggests that segfaults occur if this
         # alignment step is skipped - see issue #705).
