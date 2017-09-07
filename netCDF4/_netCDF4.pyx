@@ -3716,8 +3716,13 @@ details."""
                 # make sure these attributes written in same data type as variable.
                 # also make sure it is written in native byte order
                 # (the same as the data)
-                value = numpy.array(value, self.dtype)
-                if not value.dtype.isnative: value.byteswap(True)
+                if numpy.can_cast(value,self.dtype):
+                    value = numpy.array(value, self.dtype)
+                    if not value.dtype.isnative: value.byteswap(True)
+                else:
+                    msg="WARNING: %s cannot be safely cast to variable dtype" \
+                    % name
+                    warnings.warn(msg)
             self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
