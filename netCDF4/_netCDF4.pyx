@@ -3877,7 +3877,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # and/or _FillValues.
         totalmask = numpy.zeros(data.shape, numpy.bool)
         fill_value = None
-        if hasattr(self, 'missing_value'):
+        safe_missval = self._check_safecast('missing_value')
+        if safe_missval:
             mval = numpy.array(self.missing_value, self.dtype)
             # create mask from missing values. 
             mvalmask = numpy.zeros(data.shape, numpy.bool)
@@ -3900,7 +3901,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 fill_value = mval[0]
                 totalmask += mvalmask
         # set mask=True for data == fill value
-        if hasattr(self, '_FillValue'):
+        safe_fillval = self._check_safecast('_FillValue')
+        if safe_fillval:
             fval = numpy.array(self._FillValue, self.dtype)
             # is _FillValue a NaN?
             try:
@@ -3953,13 +3955,16 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # look for valid_min, valid_max.  No special
         # treatment of byte data as described at
         # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
-        if hasattr(self, 'valid_range') and len(self.valid_range) == 2:
+        safe_validrange = self._check_safecast('valid_range')
+        safe_validmin = self._check_safecast('valid_min')
+        safe_validmax = self._check_safecast('valid_max')
+        if safe_validrange and len(self.valid_range) == 2:
             validmin = numpy.array(self.valid_range[0], self.dtype)
             validmax = numpy.array(self.valid_range[1], self.dtype)
         else:
-            if hasattr(self, 'valid_min'):
+            if safe_validmin:
                 validmin = numpy.array(self.valid_min, self.dtype)
-            if hasattr(self, 'valid_max'):
+            if safe_validmax:
                 validmax = numpy.array(self.valid_max, self.dtype)
         # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
         # "If the data type is byte and _FillValue 
@@ -3970,7 +3975,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # If the _FillValue is positive then it defines a valid maximum,
         #  otherwise it defines a valid minimum."
         byte_type = self.dtype.str[1:] in ['u1','i1']
-        if hasattr(self, '_FillValue'):
+        if safe_fillval:
             fval = numpy.array(self._FillValue, self.dtype)
         else:
             fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
@@ -4073,6 +4078,27 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             free(vldata)
         free(startp)
         free(countp)
+
+    def _check_safecast(self, attname):
+        # check to see that variable attribute exists
+        # can can be safely cast to variable data type.
+        try:
+            if hasattr(self, attname) and\
+               numpy.can_cast(self.getncattr(attname),self.dtype):
+                is_safe = True
+            else:
+                is_safe = False
+                if hasattr(self, attname):
+                    msg="""WARNING: %s not used since it
+cannot be safely cast to variable data type""" % attname
+                    warnings.warn(msg)
+        except TypeError:
+            is_safe = False
+            if hasattr(self, attname):
+                msg="""WARNING: %s not used since it
+cannot be safely cast to variable data type""" % attname
+                warnings.warn(msg)
+        return is_safe
 
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable
