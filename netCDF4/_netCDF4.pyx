@@ -3716,10 +3716,11 @@ details."""
                 # make sure these attributes written in same data type as variable.
                 # also make sure it is written in native byte order
                 # (the same as the data)
-                if numpy.can_cast(value,self.dtype):
-                    value = numpy.array(value, self.dtype)
+                valuea = numpy.array(value, self.dtype)
+                if numpy.isnan(valuea).any() or (valuea == value).all(): # check to see that cast is safe
+                    value = valuea
                     if not value.dtype.isnative: value.byteswap(True)
-                else:
+                else: # otherwise don't do it, but issue a warning
                     msg="WARNING: %s cannot be safely cast to variable dtype" \
                     % name
                     warnings.warn(msg)
