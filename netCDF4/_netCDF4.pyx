@@ -4082,22 +4082,25 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
     def _check_safecast(self, attname):
         # check to see that variable attribute exists
         # can can be safely cast to variable data type.
+        if hasattr(self, attname):
+            att = numpy.array(self.getncattr(attname))
+        else:
+            return False
+        if self.dtype.kind in ['U','S'] and att.dtype.kind in ['U','S']:
+            return True
         try:
-            if hasattr(self, attname) and\
-               numpy.can_cast(self.getncattr(attname),self.dtype):
+            if numpy.can_cast(att,self.dtype):
                 is_safe = True
             else:
                 is_safe = False
-                if hasattr(self, attname):
-                    msg="""WARNING: %s not used since it
-cannot be safely cast to variable data type""" % attname
-                    warnings.warn(msg)
-        except TypeError:
-            is_safe = False
-            if hasattr(self, attname):
                 msg="""WARNING: %s not used since it
 cannot be safely cast to variable data type""" % attname
                 warnings.warn(msg)
+        except TypeError:
+            is_safe = False
+            msg="""WARNING: %s not used since it
+cannot be safely cast to variable data type""" % attname
+            warnings.warn(msg)
         return is_safe
 
     def __setitem__(self, elem, data):
