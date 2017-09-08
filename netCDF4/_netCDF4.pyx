@@ -3717,7 +3717,11 @@ details."""
                 # also make sure it is written in native byte order
                 # (the same as the data)
                 valuea = numpy.array(value, self.dtype)
-                if numpy.isnan(valuea).any() or (valuea == value).all(): # check to see that cast is safe
+                try:
+                    hasnan = numpy.isnan(valuea).any()
+                except TypeError:
+                    hasnan = False
+                if hasnan or (valuea == value).all(): # check to see that cast is safe
                     value = valuea
                     if not value.dtype.isnative: value.byteswap(True)
                 else: # otherwise don't do it, but issue a warning
@@ -4092,22 +4096,19 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             att = numpy.array(self.getncattr(attname))
         else:
             return False
-        if self.dtype.kind in ['U','S'] and att.dtype.kind in ['U','S']:
-            return True
+        atta = numpy.array(att, self.dtype)
         try:
-            if numpy.can_cast(att,self.dtype):
-                is_safe = True
-            else:
-                is_safe = False
-                msg="""WARNING: %s not used since it
-cannot be safely cast to variable data type""" % attname
-                warnings.warn(msg)
+            hasnan = numpy.isnan(atta).any()
         except TypeError:
+            hasnan = False
+        if hasnan or (atta == att).all(): 
+            return True
+        else:
             is_safe = False
             msg="""WARNING: %s not used since it
 cannot be safely cast to variable data type""" % attname
             warnings.warn(msg)
-        return is_safe
+            return False
 
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable
