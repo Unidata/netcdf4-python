@@ -918,7 +918,7 @@ from cpython.buffer cimport PyObject_GetBuffer, PyBuffer_Release, PyBUF_SIMPLE, 
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
-                    _out_array_shape, _sortbylist, _tostr)
+                    _out_array_shape, _sortbylist, _tostr, _safecast)
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict
@@ -3717,11 +3717,8 @@ details."""
                 # also make sure it is written in native byte order
                 # (the same as the data)
                 valuea = numpy.array(value, self.dtype)
-                try:
-                    hasnan = numpy.isnan(valuea).any()
-                except TypeError:
-                    hasnan = False
-                if hasnan or (valuea == value).all(): # check to see that cast is safe
+                # check to see if array cast is safe
+                if _safecast(numpy.array(value),valuea):
                     value = valuea
                     if not value.dtype.isnative: value.byteswap(True)
                 else: # otherwise don't do it, but issue a warning
@@ -4097,18 +4094,11 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         else:
             return False
         atta = numpy.array(att, self.dtype)
-        try:
-            hasnan = numpy.isnan(atta).any()
-        except TypeError:
-            hasnan = False
-        if hasnan or (atta == att).all(): 
-            return True
-        else:
-            is_safe = False
+        is_safe = _safecast(att,atta)
+        if not is_safe:
             msg="""WARNING: %s not used since it
 cannot be safely cast to variable data type""" % attname
-            warnings.warn(msg)
-            return False
+        return is_safe
 
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable
