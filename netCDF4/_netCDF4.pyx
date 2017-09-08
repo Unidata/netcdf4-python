@@ -4098,6 +4098,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         if not is_safe:
             msg="""WARNING: %s not used since it
 cannot be safely cast to variable data type""" % attname
+            warnings.warn(msg)
         return is_safe
 
     def __setitem__(self, elem, data):
