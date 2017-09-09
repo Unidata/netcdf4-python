@@ -69,9 +69,9 @@ Install
  easiest if all the C libs are built as shared libraries.
  - By default, the utility `nc-config`, installed with netcdf 4.1.2 or higher,
  will be run used to determine where all the dependencies live.
- - If `nc-config` is not in your default `$PATH`, rename the
- file `setup.cfg.template` to `setup.cfg`, then edit
- in a text editor (follow the instructions in the comments).
+ - If `nc-config` is not in your default `$PATH`
+ edit the `setup.cfg` file
+ in a text editor and follow the instructions in the comments.
  In addition to specifying the path to `nc-config`,
  you can manually set the paths to all the libraries and their include files
  (in case `nc-config` does not do the right thing).
@@ -703,8 +703,11 @@ for storing numpy complex arrays.  Here's an example:
     complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
 
 Compound types can be nested, but you must create the 'inner'
-ones first. All of the compound types defined for a `netCDF4.Dataset` or `netCDF4.Group` are stored in a
-Python dictionary, just like variables and dimensions. As always, printing
+ones first. All possible numpy structured arrays cannot be
+represented as Compound variables - an error message will be
+raise if you try to create one that is not supported.
+All of the compound types defined for a `netCDF4.Dataset` or `netCDF4.Group` are stored 
+in a Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:
 
     :::python
