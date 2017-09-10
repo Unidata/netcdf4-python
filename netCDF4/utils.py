@@ -21,7 +21,7 @@ except NameError:
     bytes = str
 
 def _safecast(a,b):
-    # check to see if array a can be safely case
+    # check to see if array a can be safely cast
     # to array b.  A little less picky than numpy.can_cast.
     try:
         is_safe = ((a == b) | (np.isnan(a) & np.isnan(b))).all()
