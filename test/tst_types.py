@@ -37,6 +37,9 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         v2 = file.createVariable('issue273', NP.dtype('S1'), 'n2',\
                 fill_value='\x00')
         v2[:] = issue273_data
+        v3 = file.createVariable('issue707',NP.int8,'n2')
+        v3.setncattr('missing_value',255)
+        v3[:]=-1
         file.close()
 
     def tearDown(self):
@@ -83,6 +86,10 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         else:
             assert(v2._FillValue == u'') # python 2
         assert(str(issue273_data) == str(v2[:]))
+        # isse 707 (don't apply missing_value if cast to variable type is
+        # unsafe)
+        v3 = file.variables['issue707']
+        assert_array_equal(v3[:],-1*NP.ones(n2dim,v3.dtype))
         file.close()
 
 if __name__ == '__main__':

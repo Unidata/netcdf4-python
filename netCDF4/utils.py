@@ -20,6 +20,18 @@ except NameError:
     # no bytes type in python < 2.6
     bytes = str
 
+def _safecast(a,b):
+    # check to see if array a can be safely case
+    # to array b.  A little less picky than numpy.can_cast.
+    try:
+        is_safe = ((a == b) | (np.isnan(a) & np.isnan(b))).all()
+        #is_safe = np.allclose(a, b, equal_nan=True) # numpy 1.10.0
+    except:
+        try:
+            is_safe = (a == b).all() # string arrays.
+        except:
+            is_safe = False
+    return is_safe
 
 def _sortbylist(A,B):
     # sort one list (A) using the values from another list (B)

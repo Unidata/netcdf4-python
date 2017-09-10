@@ -69,9 +69,9 @@ Install
  easiest if all the C libs are built as shared libraries.
  - By default, the utility `nc-config`, installed with netcdf 4.1.2 or higher,
  will be run used to determine where all the dependencies live.
- - If `nc-config` is not in your default `$PATH`, rename the
- file `setup.cfg.template` to `setup.cfg`, then edit
- in a text editor (follow the instructions in the comments).
+ - If `nc-config` is not in your default `$PATH`
+ edit the `setup.cfg` file
+ in a text editor and follow the instructions in the comments.
  In addition to specifying the path to `nc-config`,
  you can manually set the paths to all the libraries and their include files
  (in case `nc-config` does not do the right thing).
@@ -703,8 +703,11 @@ for storing numpy complex arrays.  Here's an example:
     complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
 
 Compound types can be nested, but you must create the 'inner'
-ones first. All of the compound types defined for a `netCDF4.Dataset` or `netCDF4.Group` are stored in a
-Python dictionary, just like variables and dimensions. As always, printing
+ones first. All possible numpy structured arrays cannot be
+represented as Compound variables - an error message will be
+raise if you try to create one that is not supported.
+All of the compound types defined for a `netCDF4.Dataset` or `netCDF4.Group` are stored 
+in a Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:
 
     :::python
@@ -918,7 +921,7 @@ from cpython.buffer cimport PyObject_GetBuffer, PyBuffer_Release, PyBUF_SIMPLE, 
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
-                    _out_array_shape, _sortbylist, _tostr)
+                    _out_array_shape, _sortbylist, _tostr, _safecast)
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict
@@ -3716,8 +3719,15 @@ details."""
                 # make sure these attributes written in same data type as variable.
                 # also make sure it is written in native byte order
                 # (the same as the data)
-                value = numpy.array(value, self.dtype)
-                if not value.dtype.isnative: value.byteswap(True)
+                valuea = numpy.array(value, self.dtype)
+                # check to see if array cast is safe
+                if _safecast(numpy.array(value),valuea):
+                    value = valuea
+                    if not value.dtype.isnative: value.byteswap(True)
+                else: # otherwise don't do it, but issue a warning
+                    msg="WARNING: %s cannot be safely cast to variable dtype" \
+                    % name
+                    warnings.warn(msg)
             self.setncattr(name, value)
         elif not name.endswith('__'):
             if hasattr(self,name):
@@ -3877,7 +3887,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # and/or _FillValues.
         totalmask = numpy.zeros(data.shape, numpy.bool)
         fill_value = None
-        if hasattr(self, 'missing_value'):
+        safe_missval = self._check_safecast('missing_value')
+        if safe_missval:
             mval = numpy.array(self.missing_value, self.dtype)
             # create mask from missing values. 
             mvalmask = numpy.zeros(data.shape, numpy.bool)
@@ -3900,7 +3911,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 fill_value = mval[0]
                 totalmask += mvalmask
         # set mask=True for data == fill value
-        if hasattr(self, '_FillValue'):
+        safe_fillval = self._check_safecast('_FillValue')
+        if safe_fillval:
             fval = numpy.array(self._FillValue, self.dtype)
             # is _FillValue a NaN?
             try:
@@ -3953,13 +3965,16 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # look for valid_min, valid_max.  No special
         # treatment of byte data as described at
         # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
-        if hasattr(self, 'valid_range') and len(self.valid_range) == 2:
+        safe_validrange = self._check_safecast('valid_range')
+        safe_validmin = self._check_safecast('valid_min')
+        safe_validmax = self._check_safecast('valid_max')
+        if safe_validrange and len(self.valid_range) == 2:
             validmin = numpy.array(self.valid_range[0], self.dtype)
             validmax = numpy.array(self.valid_range[1], self.dtype)
         else:
-            if hasattr(self, 'valid_min'):
+            if safe_validmin:
                 validmin = numpy.array(self.valid_min, self.dtype)
-            if hasattr(self, 'valid_max'):
+            if safe_validmax:
                 validmax = numpy.array(self.valid_max, self.dtype)
         # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
         # "If the data type is byte and _FillValue 
@@ -3970,7 +3985,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # If the _FillValue is positive then it defines a valid maximum,
         #  otherwise it defines a valid minimum."
         byte_type = self.dtype.str[1:] in ['u1','i1']
-        if hasattr(self, '_FillValue'):
+        if safe_fillval:
             fval = numpy.array(self._FillValue, self.dtype)
         else:
             fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
@@ -4073,6 +4088,21 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             free(vldata)
         free(startp)
         free(countp)
+
+    def _check_safecast(self, attname):
+        # check to see that variable attribute exists
+        # can can be safely cast to variable data type.
+        if hasattr(self, attname):
+            att = numpy.array(self.getncattr(attname))
+        else:
+            return False
+        atta = numpy.array(att, self.dtype)
+        is_safe = _safecast(att,atta)
+        if not is_safe:
+            msg="""WARNING: %s not used since it
+cannot be safely cast to variable data type""" % attname
+            warnings.warn(msg)
+        return is_safe
 
     def __setitem__(self, elem, data):
         # This special method is used to assign to the netCDF variable

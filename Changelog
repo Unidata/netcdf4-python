@@ -26,6 +26,11 @@
    isalignedstruct flag set to True (issue #705), otherwise.
    segfaults can occur. Fix required raising them minimum numpy requirement 
    from 1.7.0 to 1.9.0.
+ * ignore missing_value, _FillValue, valid_range, valid_min and valid_max
+   when creating masked arrays if attribute variable cannot be safely
+   cast to variable data type (and issue a warning).  When setting
+   these attributes don't cast to variable dtype unless it can
+   be done safely and issue a warning. Issue #707.
 
  version 1.2.9 (tag v1.2.9rel)
 ==============================
