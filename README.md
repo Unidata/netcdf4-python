@@ -6,7 +6,7 @@
 [![PyPI package](https://badge.fury.io/py/netCDF4.svg)](http://python.org/pypi/netCDF4)
 
 ## News
-For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
+For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
 9/25/2017: Version [1.3.0](https://pypi.python.org/pypi/netCDF4/1.3.0) released. Bug fixes
 for `netcdftime` and optimizations for reading strided slices. `encoding` kwarg added to 
