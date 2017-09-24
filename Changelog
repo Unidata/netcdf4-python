@@ -1,5 +1,5 @@
- version 1.3.0 (not yet released)
-=================================
+ version 1.3.0 (tag v1.3.0rel)
+==============================
  * always search for HDF5 headers when building, even when nc-config is used 
    (since nc-config does not always include the path to the HDF5 headers).
    Also use H5get_libversion to obtain HDF5 version info instead of

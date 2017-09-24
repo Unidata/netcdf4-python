@@ -6,7 +6,17 @@
 [![PyPI package](https://badge.fury.io/py/netCDF4.svg)](http://python.org/pypi/netCDF4)
 
 ## News
-For the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
+For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
+
+9/25/2017: Version [1.3.0](https://pypi.python.org/pypi/netCDF4/1.3.0) released. Bug fixes
+for `netcdftime` and optimizations for reading strided slices. `encoding` kwarg added to 
+`Dataset.__init__` and `Dataset.filepath` to deal with oddball encodings in filename
+paths (`sys.getfilesystemencoding()` is used by default to determine encoding).
+Make sure numpy datatypes used to define CompoundTypes have `isalignedstruct` flag set
+to avoid segfaults - which required bumping the minimum required numpy from 1.7.0 
+to 1.9.0. In cases where `missing_value/valid_min/valid_max/_FillValue` cannot be
+safely cast to the variable's dtype, they are no longer be used to automatically
+mask the data and a warning message is issued.
 
 6/10/2017: Version [1.2.9](https://pypi.python.org/pypi/netCDF4/1.2.9) released. Fixes for auto-scaling
 and masking when `_Unsigned` and/or `valid_min`, `valid_max` attributes present.  setup.py updated
