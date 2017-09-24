@@ -34,24 +34,33 @@ install:
 
     # Add path, activate `conda` and update conda.
     - cmd: set "PATH=%CONDA_INSTALL_LOCN%\\Scripts;%CONDA_INSTALL_LOCN%\\Library\\bin;%PATH%"
-    - cmd: conda update --yes --quiet conda
-    - cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
+    #- cmd: conda update --yes --quiet conda
+    #- cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
 
     - cmd: set PYTHONUNBUFFERED=1
-
-    # Ensure defaults and conda-forge channels are present.
-    - cmd: conda config --set show_channel_urls true
-    - cmd: conda config --remove channels defaults
-    - cmd: conda config --add channels defaults
-    - cmd: conda config --add channels conda-forge
-
-    # Conda build tools.
-    - cmd: conda install -n root --quiet --yes obvious-ci
+    # for obvci_appveyor_python_build_env.cmd
     - cmd: conda update --all --yes
     - cmd: conda install anaconda-client=1.6.3 --yes
     - cmd: conda install -c conda-forge --yes obvious-ci
+    # for msinttypes and newer stuff
+    - cmd: conda config --prepend channels conda-forge
+    - cmd: conda config --set show_channel_urls yes
+    - cmd: conda config --set always_yes true
+    # For building conda packages
+    - cmd: conda install --yes conda-build jinja2 anaconda-client
+    # this is now the downloaded conda...
+    - cmd: conda info -a
+
+    # Ensure defaults and conda-forge channels are present.
+    #- cmd: conda config --set show_channel_urls true
+    #- cmd: conda config --remove channels defaults
+    #- cmd: conda config --add channels defaults
+    #- cmd: conda config --add channels conda-forge
+
+    ## Conda build tools.
+    #- cmd: conda install -n root --quiet --yes obvious-ci
     #- cmd: obvci_install_conda_build_tools.py
-    - cmd: conda info
+    #- cmd: conda info
 
 # Skip .NET project specific build phase.
 build: off
