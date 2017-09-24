@@ -47,7 +47,10 @@ install:
 
     # Conda build tools.
     - cmd: conda install -n root --quiet --yes obvious-ci
-    - cmd: obvci_install_conda_build_tools.py
+    - cmd: conda update --all --yes
+    - cmd: conda install anaconda-client=1.6.3 --yes
+    - cmd: conda install -c conda-forge --yes obvious-ci
+    #- cmd: obvci_install_conda_build_tools.py
     - cmd: conda info
 
 # Skip .NET project specific build phase.
