@@ -1,4 +1,0 @@
-* may need setenv LDSHARED "/usr/bin/clang -bundle -undefined dynamic_lookup -L/Users/jwhitaker/lib"
-  when using macports python
-* setenv CPPFLAGS -I/opt/local/include/mpich-mp
-* tst_diskless.py fails.
