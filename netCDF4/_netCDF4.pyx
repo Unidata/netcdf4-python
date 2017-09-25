@@ -4804,6 +4804,25 @@ The default value of `mask` is `True`
         else:
             return data
 
+    def set_collective(self, value):
+        """
+**`set_collective(self,True_or_False)`**
+
+turn on or off collective parallel IO access. Ignored if file is not
+open for parallel access.
+        """
+        IF HAS_NC_PAR:
+            # set collective MPI IO mode on or off
+            if value:
+                ierr = nc_var_par_access(self._grpid, self._varid,
+                       NC_COLLECTIVE)
+            else:
+                ierr = nc_var_par_access(self._grpid, self._varid,
+                       NC_INDEPENDENT)
+            _ensure_nc_success(ierr)
+        ELSE:
+            pass # does nothing
+
     def __reduce__(self):
         # raise error is user tries to pickle a Variable object.
         raise NotImplementedError('Variable is not picklable')
