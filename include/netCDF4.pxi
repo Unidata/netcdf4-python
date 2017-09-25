@@ -696,6 +696,14 @@ IF HAS_NC_OPEN_MEM:
     cdef extern from "netcdf_mem.h":
         int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp)
 
+IF HAS_NC_PAR:
+    cdef extern from "netcdf_par.h":
+        ctypedef int MPI_Comm
+        ctypedef int MPI_Info
+        int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp);
+        int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp);
+        int nc_var_par_access(int ncid, int varid, int par_access);
+
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
     ctypedef int npy_intp 

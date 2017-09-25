@@ -55,6 +55,7 @@ def check_api(inc_dirs):
     has_nc_inq_format_extended = False
     has_cdf5_format = False
     has_nc_open_mem = False
+    has_nc_par = False
 
     for d in inc_dirs:
         try:
@@ -63,6 +64,7 @@ def check_api(inc_dirs):
             continue
 
         has_nc_open_mem = os.path.exists(os.path.join(d, 'netcdf_mem.h'))
+        has_nc_par = os.path.exists(os.path.join(d, 'netcdf_par.h'))
 
         for line in f:
             if line.startswith('nc_rename_grp'):
@@ -76,7 +78,7 @@ def check_api(inc_dirs):
         break
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-           has_cdf5_format, has_nc_open_mem
+           has_cdf5_format, has_nc_open_mem, has_nc_par
 
 
 def getnetcdfvers(libdirs):
@@ -442,7 +444,6 @@ if any('--' + opt in sys.argv for opt in Distribution.display_option_names +
 else:
     # append numpy include dir.
     import numpy
-
     inc_dirs.append(numpy.get_include())
 
 # get netcdf library version.
@@ -464,7 +465,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         os.remove(netcdf4_src_c)
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-        has_cdf5_format, has_nc_open_mem = check_api(inc_dirs)
+        has_cdf5_format, has_nc_open_mem, has_nc_par = check_api(inc_dirs)
 
     f = open(osp.join('include', 'constants.pyx'), 'w')
     if has_rename_grp:
@@ -503,7 +504,19 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         sys.stdout.write('netcdf lib does not have cdf-5 format capability\n')
         f.write('DEF HAS_CDF5_FORMAT = 0\n')
 
+    if has_nc_par:
+        sys.stdout.write('netcdf lib has netcdf4 parallel functions\n')
+        f.write('DEF HAS_NC_PAR = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have netcdf4 parallel functions\n')
+        f.write('DEF HAS_NC_PAR = 0\n')
+
     f.close()
+
+    if has_nc_par:
+        import mpi4py
+        inc_dirs.append(mpi4py.get_include())
+
     ext_modules = [Extension("netCDF4._netCDF4",
                              [netcdf4_src_root + '.pyx'],
                              libraries=libs,
