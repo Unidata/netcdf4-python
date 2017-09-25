@@ -1,3 +1,4 @@
+# to run: mpirun -np 4 python mpi_example.py
 from mpi4py import MPI
 import numpy as np
 from netCDF4 import Dataset
@@ -16,8 +17,7 @@ nc = Dataset('parallel_test.nc', 'a',parallel=True, comm=MPI.COMM_WORLD,
         info=MPI.Info())
 if rank == 3: v[rank] = 2*rank
 nc.close()
-nc = Dataset('parallel_test.nc', parallel=True, comm=MPI.COMM_WORLD,
-        info=MPI.Info())
+nc = Dataset('parallel_test.nc', parallel=True, comm=MPI.COMM_WORLD)
 if rank == 3:
     assert 2*rank==nc['var'][rank]
 else:
