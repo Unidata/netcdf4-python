@@ -2,10 +2,10 @@ since version 1.3.0 release
 ===========================
  * add parallel IO capabilities.  netcdf-c and hdf5 must be compiled with MPI
    support, and mpi4py must be installed.  To open a file for parallel access,
-   use `parallel=True` in `Dataset.__init__` and pass the mpi4py Comm instance
-   using the `comm` kwarg.  IO can be toggled between collective and
-   independent using `Variable.set_collective`.  See
-   `examples/mpi_example.py`. Issue #717.
+   use `parallel=True` in `Dataset.__init__` and optionally pass the mpi4py Comm instance
+   using the `comm` kwarg and the mpi4py Info instance using the `info` kwarg.
+   IO can be toggled between collective and independent using `Variable.set_collective`.
+   See `examples/mpi_example.py`. Issue #717.
 
  version 1.3.0 (tag v1.3.0rel)
 ==============================

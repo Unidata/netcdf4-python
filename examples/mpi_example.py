@@ -5,6 +5,8 @@ from netCDF4 import Dataset
 rank = MPI.COMM_WORLD.rank  # The process ID (integer 0-3 for 4-process run)
 nc = Dataset('parallel_test.nc', 'w', parallel=True, comm=MPI.COMM_WORLD,
         info=MPI.Info())
+# below should work also - MPI_COMM_WORLD and MPI_INFO_NULL will be used.
+#nc = Dataset('parallel_test.nc', 'w', parallel=True)
 d = nc.createDimension('dim',4)
 v = nc.createVariable('var', np.int, 'dim')
 v[rank] = rank

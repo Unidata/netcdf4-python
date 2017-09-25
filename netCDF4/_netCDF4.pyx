@@ -955,7 +955,8 @@ include "netCDF4.pxi"
 IF HAS_NC_PAR:
     cimport mpi4py.MPI as MPI
     from mpi4py.libmpi cimport MPI_Comm, MPI_Info, MPI_Comm_dup, MPI_Info_dup, \
-                               MPI_Comm_free, MPI_Info_free, MPI_INFO_NULL
+                               MPI_Comm_free, MPI_Info_free, MPI_INFO_NULL,\
+                               MPI_COMM_WORLD
 
 # check for required version of netcdf-4 and hdf5.
 
@@ -1771,10 +1772,13 @@ references to the parent Dataset or Group.
 
         **`parallel`**: open for parallel access using MPI (requires mpi4py and
         parallel-enabled netcdf-c and hdf5 libraries).  Default is `False`. If
-        `True`, `comm` kwarg must also be specified.
+        `True`, `comm` and `info` kwargs may also be specified.
 
-        **`comm`**: MPI_Comm object for parallel access. Default `None`,
-        ignored if `parallel=False`.
+        **`comm`**: MPI_Comm object for parallel access. Default `None`, which
+        means MPI_COMM_WORLD will be used.  Ignored if `parallel=False`.
+
+        **`info`**: MPI_Info object for parallel access. Default `None`, which
+        means MPI_INFO_NULL will be used.  Ignored if `parallel=False`.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
@@ -1803,22 +1807,22 @@ references to the parent Dataset or Group.
             IF HAS_NC_PAR != 1:
                 msg='parallel mode requires MPI enabled netcdf-c'
                 raise ValueError(msg)
-            if comm is None:
-                msg='must provide mpi4py Comm object via comm kwarg'
-                raise ValueError(msg)
             if format != 'NETCDF4':
                 msg='parallel mode only works with format=NETCDF4'
                 raise ValueError(msg)
+            if comm is not None:
+                mpicomm = comm.ob_mpi
+            else:
+                mpicomm = MPI_COMM_WORLD
+            if info is not None:
+                mpiinfo = info.ob_mpi
+            else:
+                mpiinfo = MPI_INFO_NULL
 
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
                 if parallel:
-                    mpicomm = comm.ob_mpi
-                    if info is not None:
-                        mpiinfo = info.ob_mpi
-                    else:
-                        mpiinfo = MPI_INFO_NULL
                     ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
                            mpicomm, mpiinfo, &grpid)
                 elif diskless:
@@ -1830,11 +1834,6 @@ references to the parent Dataset or Group.
                     ierr = nc_create(path, NC_CLOBBER, &grpid)
             else:
                 if parallel:
-                    mpicomm = comm.ob_mpi
-                    if info is not None:
-                        mpiinfo = info.ob_mpi
-                    else:
-                        mpiinfo = MPI_INFO_NULL
                     ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
                            mpicomm, mpiinfo, &grpid)
                 elif diskless:
@@ -1864,11 +1863,6 @@ references to the parent Dataset or Group.
         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
                     raise ValueError(msg)
             elif parallel:
-                mpicomm = comm.ob_mpi
-                if info is not None:
-                    mpiinfo = info.ob_mpi
-                else:
-                    mpiinfo = MPI_INFO_NULL
                 ierr = nc_open_par(path, NC_NOWRITE | NC_MPIIO, \
                        mpicomm, mpiinfo, &grpid)
             elif diskless:
@@ -1877,11 +1871,6 @@ references to the parent Dataset or Group.
                 ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
             if parallel:
-                mpicomm = comm.ob_mpi
-                if info is not None:
-                    mpiinfo = info.ob_mpi
-                else:
-                    mpiinfo = MPI_INFO_NULL
                 ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
                        mpicomm, mpiinfo, &grpid)
             elif diskless:
