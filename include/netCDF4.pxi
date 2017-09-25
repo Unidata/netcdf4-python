@@ -697,6 +697,7 @@ IF HAS_NC_OPEN_MEM:
         int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp)
 
 IF HAS_NC_PAR:
+    cdef extern from "mpi-compat.h": pass
     cdef extern from "netcdf_par.h":
         ctypedef int MPI_Comm
         ctypedef int MPI_Info

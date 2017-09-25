@@ -952,6 +952,10 @@ from libc.stdlib cimport malloc, free
 import_array()
 include "constants.pyx"
 include "netCDF4.pxi"
+IF HAS_NC_PAR:
+    cimport mpi4py.MPI as MPI
+    from mpi4py.libmpi cimport MPI_Comm, MPI_Info, MPI_Comm_dup, MPI_Info_dup, \
+                               MPI_Comm_free, MPI_Info_free, MPI_INFO_NULL
 
 # check for required version of netcdf-4 and hdf5.
 
@@ -1692,7 +1696,8 @@ references to the parent Dataset or Group.
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                  diskless=False, persist=False, keepweakref=False,
-                 memory=None, encoding=None, **kwargs):
+                 memory=None, encoding=None, parallel=False,
+                 MPI.Comm comm=None, MPI.Info info=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, format='NETCDF4')`**
@@ -1763,10 +1768,20 @@ references to the parent Dataset or Group.
 
         **`encoding`**: encoding used to encode filename string into bytes.
         Default is None (`sys.getdefaultfileencoding()` is used).
+
+        **`parallel`**: open for parallel access using MPI (requires mpi4py and
+        parallel-enabled netcdf-c and hdf5 libraries).  Default is `False`. If
+        `True`, `comm` kwarg must also be specified.
+
+        **`comm`**: MPI_Comm object for parallel access. Default `None`,
+        ignored if `parallel=False`.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
+        IF HAS_NC_PAR:
+            cdef MPI_Comm mpicomm
+            cdef MPI_Info mpiinfo
 
         memset(&self._buffer, 0, sizeof(self._buffer))
 
@@ -1784,11 +1799,26 @@ references to the parent Dataset or Group.
 
         if memory is not None and (mode != 'r' or type(memory) != bytes):
             raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
+        if parallel:
+            IF HAS_NC_PAR != 1:
+                msg='parallel mode requires MPI enabled netcdf-c'
+                raise ValueError(msg)
+            if format != 'NETCDF4':
+                msg='parallel mode only works with format=NETCDF4'
+                raise ValueError(msg)
 
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
-                if diskless:
+                if parallel:
+                    mpicomm = comm.ob_mpi
+                    if info is not None:
+                        mpiinfo = info.ob_mpi
+                    else:
+                        mpiinfo = MPI_INFO_NULL
+                    ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_CLOBBER | NC_DISKLESS , &grpid)
                     else:
