@@ -1826,7 +1826,15 @@ references to the parent Dataset or Group.
                 else:
                     ierr = nc_create(path, NC_CLOBBER, &grpid)
             else:
-                if diskless:
+                if parallel:
+                    mpicomm = comm.ob_mpi
+                    if info is not None:
+                        mpiinfo = info.ob_mpi
+                    else:
+                        mpiinfo = MPI_INFO_NULL
+                    ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
                     else:
@@ -1852,22 +1860,42 @@ references to the parent Dataset or Group.
         nc_open_mem method not enabled.  To enable, install Cython, make sure you have
         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
                     raise ValueError(msg)
+            elif parallel:
+                mpicomm = comm.ob_mpi
+                if info is not None:
+                    mpiinfo = info.ob_mpi
+                else:
+                    mpiinfo = MPI_INFO_NULL
+                ierr = nc_open_par(path, NC_NOWRITE | NC_MPIIO, \
+                       mpicomm, mpiinfo, &grpid)
             elif diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
-            if diskless:
+            if parallel:
+                mpicomm = comm.ob_mpi
+                if info is not None:
+                    mpiinfo = info.ob_mpi
+                else:
+                    mpiinfo = MPI_INFO_NULL
+                ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
+                       mpicomm, mpiinfo, &grpid)
+            elif diskless:
                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_WRITE, &grpid)
         elif mode == 'as' or mode == 'r+s':
-            if diskless:
+            if parallel:
+                raise ValueError('shared mode not allowed when parallel=True')
+            elif diskless:
                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_SHARE, &grpid)
         elif mode == 'ws':
-            if clobber:
+            if parallel:
+                raise ValueError('shared mode not allowed when parallel=True')
+            elif clobber:
                 if diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
