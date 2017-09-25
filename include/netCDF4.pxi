@@ -703,6 +703,10 @@ IF HAS_NC_PAR:
         int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp);
         int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp);
         int nc_var_par_access(int ncid, int varid, int par_access);
+    cdef extern from "netcdf.h":
+        cdef enum:
+            NC_MPIIO
+            NC_PNETCDF
 
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
