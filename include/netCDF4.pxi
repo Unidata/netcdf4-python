@@ -701,6 +701,9 @@ IF HAS_NC_PAR:
     cdef extern from "netcdf_par.h":
         ctypedef int MPI_Comm
         ctypedef int MPI_Info
+        cdef enum:
+            NC_COLLECTIVE
+            NC_INDEPENDENT
         int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp);
         int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp);
         int nc_var_par_access(int ncid, int varid, int par_access);
