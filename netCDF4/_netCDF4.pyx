@@ -1803,6 +1803,10 @@ references to the parent Dataset or Group.
             IF HAS_NC_PAR != 1:
                 msg='parallel mode requires MPI enabled netcdf-c'
                 raise ValueError(msg)
+            else:
+                if comm is None:
+                msg='must provide mpi4py Comm object via comm kwarg'
+                raise ValueError(msg)
             if format != 'NETCDF4':
                 msg='parallel mode only works with format=NETCDF4'
                 raise ValueError(msg)
