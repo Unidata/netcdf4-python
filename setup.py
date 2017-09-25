@@ -466,6 +466,10 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
         has_cdf5_format, has_nc_open_mem, has_nc_par = check_api(inc_dirs)
+    try:
+        import mpi4py
+    except ImportError:
+        has_nc_par = False
 
     f = open(osp.join('include', 'constants.pyx'), 'w')
     if has_rename_grp:
@@ -514,7 +518,6 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     f.close()
 
     if has_nc_par:
-        import mpi4py
         inc_dirs.append(mpi4py.get_include())
 
     ext_modules = [Extension("netCDF4._netCDF4",
