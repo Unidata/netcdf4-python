@@ -8,3 +8,18 @@ d = nc.createDimension('dim',4)
 v = nc.createVariable('var', np.int, 'dim')
 v[rank] = rank
 nc.close()
+nc = Dataset('parallel_test.nc', parallel=True, comm=MPI.COMM_WORLD,
+        info=MPI.Info())
+assert rank==nc['var'][rank]
+nc.close()
+nc = Dataset('parallel_test.nc', 'a',parallel=True, comm=MPI.COMM_WORLD,
+        info=MPI.Info())
+if rank == 3: v[rank] = 2*rank
+nc.close()
+nc = Dataset('parallel_test.nc', parallel=True, comm=MPI.COMM_WORLD,
+        info=MPI.Info())
+if rank == 3:
+    assert 2*rank==nc['var'][rank]
+else:
+    assert rank==nc['var'][rank]
+nc.close()
