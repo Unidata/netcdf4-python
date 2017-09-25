@@ -1879,16 +1879,20 @@ references to the parent Dataset or Group.
                 ierr = nc_open(path, NC_WRITE, &grpid)
         elif mode == 'as' or mode == 'r+s':
             if parallel:
-                raise ValueError('shared mode not allowed when parallel=True')
+                # NC_SHARE ignored
+                ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
+                       mpicomm, mpiinfo, &grpid)
             elif diskless:
                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_SHARE, &grpid)
         elif mode == 'ws':
-            if parallel:
-                raise ValueError('shared mode not allowed when parallel=True')
-            elif clobber:
-                if diskless:
+            if clobber:
+                if parallel:
+                    # NC_SHARE ignored
+                    ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
                     else:
@@ -1896,7 +1900,11 @@ references to the parent Dataset or Group.
                 else:
                     ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)
             else:
-                if diskless:
+                if parallel:
+                    # NC_SHARE ignored
+                    ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
                     else:
