@@ -141,6 +141,7 @@ jpeg_incdir = os.environ.get('JPEG_INCDIR')
 curl_dir = os.environ.get('CURL_DIR')
 curl_libdir = os.environ.get('CURL_LIBDIR')
 curl_incdir = os.environ.get('CURL_INCDIR')
+mpi_incdir = os.environ.get('MPI_INCDIR')
 
 USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
 if USE_NCCONFIG is not None:
@@ -232,6 +233,10 @@ if USE_SETUPCFG and os.path.exists(setup_cfg):
         pass
     try:
         curl_incdir = config.get("directories", "curl_incdir")
+    except:
+        pass
+    try:
+        mpi_incdir = config.get("directories","mpi_incdir")
     except:
         pass
     try:
@@ -519,6 +524,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
 
     if has_nc_par:
         inc_dirs.append(mpi4py.get_include())
+        inc_dirs.append(mpi_incdir)
 
     ext_modules = [Extension("netCDF4._netCDF4",
                              [netcdf4_src_root + '.pyx'],
