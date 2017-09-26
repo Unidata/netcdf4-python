@@ -957,6 +957,11 @@ IF HAS_NC_PAR:
     from mpi4py.libmpi cimport MPI_Comm, MPI_Info, MPI_Comm_dup, MPI_Info_dup, \
                                MPI_Comm_free, MPI_Info_free, MPI_INFO_NULL,\
                                MPI_COMM_WORLD
+    ctypedef MPI.Comm Comm
+    ctypedef MPI.Info Info
+ELSE:
+    ctypedef object Comm
+    ctypedef object Info
 
 # check for required version of netcdf-4 and hdf5.
 
@@ -1698,7 +1703,7 @@ references to the parent Dataset or Group.
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                      diskless=False, persist=False, keepweakref=False,
                      memory=None, encoding=None, parallel=False,
-                     comm=None, info=None, **kwargs):
+                     Comm comm=None, Info info=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, format='NETCDF4')`**
@@ -1786,8 +1791,6 @@ references to the parent Dataset or Group.
         IF HAS_NC_PAR:
             cdef MPI_Comm mpicomm
             cdef MPI_Info mpiinfo
-            cdef MPI.comm comm
-            cdef MPI.info info
 
         memset(&self._buffer, 0, sizeof(self._buffer))
 
