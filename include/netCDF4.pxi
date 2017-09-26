@@ -699,8 +699,10 @@ IF HAS_NC_OPEN_MEM:
 IF HAS_NC_PAR:
     cdef extern from "mpi-compat.h": pass
     cdef extern from "netcdf_par.h":
-        int nc_create_par(char *path, int cmode, int comm, int info, int *ncidp);
-        int nc_open_par(char *path, int mode, int comm, int info, int *ncidp);
+        ctypedef int MPI_Comm
+        ctypedef int MPI_Info
+        int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp);
+        int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp);
         int nc_var_par_access(int ncid, int varid, int par_access);
         cdef enum:
             NC_COLLECTIVE
