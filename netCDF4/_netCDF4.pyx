@@ -1696,9 +1696,9 @@ references to the parent Dataset or Group.
     the parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, keepweakref=False,
-                 memory=None, encoding=None, parallel=False,
-                 MPI.Comm comm=None, MPI.Info info=None, **kwargs):
+                     diskless=False, persist=False, keepweakref=False,
+                     memory=None, encoding=None, parallel=False,
+                     comm=None, info=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, format='NETCDF4')`**
@@ -1786,6 +1786,8 @@ references to the parent Dataset or Group.
         IF HAS_NC_PAR:
             cdef MPI_Comm mpicomm
             cdef MPI_Info mpiinfo
+            cdef MPI.comm comm
+            cdef MPI.info info
 
         memset(&self._buffer, 0, sizeof(self._buffer))
 
@@ -1823,8 +1825,11 @@ references to the parent Dataset or Group.
             _set_default_format(format=format)
             if clobber:
                 if parallel:
-                    ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
-                           mpicomm, mpiinfo, &grpid)
+                    IF HAS_NC_PAR:
+                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                               mpicomm, mpiinfo, &grpid)
+                    ELSE:
+                        pass
                 elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_CLOBBER | NC_DISKLESS , &grpid)
@@ -1834,8 +1839,11 @@ references to the parent Dataset or Group.
                     ierr = nc_create(path, NC_CLOBBER, &grpid)
             else:
                 if parallel:
-                    ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
-                           mpicomm, mpiinfo, &grpid)
+                    IF HAS_NC_PAR:
+                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                               mpicomm, mpiinfo, &grpid)
+                    ELSE:
+                        pass
                 elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
@@ -1863,16 +1871,22 @@ references to the parent Dataset or Group.
         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
                     raise ValueError(msg)
             elif parallel:
-                ierr = nc_open_par(path, NC_NOWRITE | NC_MPIIO, \
-                       mpicomm, mpiinfo, &grpid)
+                IF HAS_NC_PAR:
+                    ierr = nc_open_par(path, NC_NOWRITE | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                ELSE:
+                    pass
             elif diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
             if parallel:
-                ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
-                       mpicomm, mpiinfo, &grpid)
+                IF HAS_NC_PAR:
+                    ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                ELSE:
+                    pass
             elif diskless:
                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
             else:
@@ -1880,8 +1894,11 @@ references to the parent Dataset or Group.
         elif mode == 'as' or mode == 'r+s':
             if parallel:
                 # NC_SHARE ignored
-                ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
-                       mpicomm, mpiinfo, &grpid)
+                IF HAS_NC_PAR:
+                    ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                ELSE:
+                    pass
             elif diskless:
                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
             else:
@@ -1890,8 +1907,11 @@ references to the parent Dataset or Group.
             if clobber:
                 if parallel:
                     # NC_SHARE ignored
-                    ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
-                           mpicomm, mpiinfo, &grpid)
+                    IF HAS_NC_PAR:
+                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                               mpicomm, mpiinfo, &grpid)
+                    ELSE:
+                        pass
                 elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
@@ -1902,8 +1922,11 @@ references to the parent Dataset or Group.
             else:
                 if parallel:
                     # NC_SHARE ignored
-                    ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
-                           mpicomm, mpiinfo, &grpid)
+                    IF HAS_NC_PAR:
+                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                               mpicomm, mpiinfo, &grpid)
+                    ELSE:
+                        pass
                 elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
