@@ -38,7 +38,7 @@ Requires
 
  - Python 2.7 or later (python 3 works too).
  - [numpy array module](http://numpy.scipy.org), version 1.9.0 or later.
- - [Cython](http://cython.org), version 0.19 or later.
+ - [Cython](http://cython.org), version 0.21.2 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
@@ -60,6 +60,9 @@ Requires
  If you want [OPeNDAP](http://opendap.org) support, add `--enable-dap`.
  If you want HDF4 SD support, add `--enable-hdf4` and add
  the location of the HDF4 headers and library to `$CPPFLAGS` and `$LDFLAGS`.
+ - for MPI parallel IO support, MPI-enabled versions of the HDF5 and netcdf
+ libraries are required, as is the [mpi4py](http://mpi4py.scipy.org) python
+ module.
 
 
 Install
@@ -75,19 +78,21 @@ Install
  In addition to specifying the path to `nc-config`,
  you can manually set the paths to all the libraries and their include files
  (in case `nc-config` does not do the right thing).
+ - For MPI parallel IO support, `setup.py` also needs to know the location of `mpi.h`,
+ which can be specified by setting `mpi_incdir` in `setup.cfg`.
  - run `python setup.py build`, then `python setup.py install` (as root if
  necessary).
  - [`pip install`](https://pip.pypa.io/en/latest/reference/pip_install.html) can
-   also be used, with library paths set with environment variables. To make
-   this work, the `USE_SETUPCFG` environment variable must be used to tell 
-   setup.py not to use `setup.cfg`.
-   For example, `USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
-   HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install` has been
-   shown to work on an Ubuntu/Debian linux system. Similarly, environment variables
-   (all capitalized) can be used to set the include and library paths for
-   `hdf5`, `netCDF4`, `hdf4`, `szip`, `jpeg`, `curl` and `zlib`. If the
-   libraries are installed in standard places (e.g. `/usr` or `/usr/local`), 
-   the environment variables do not need to be set.
+ also be used, with library paths set with environment variables. To make
+ this work, the `USE_SETUPCFG` environment variable must be used to tell
+ setup.py not to use `setup.cfg`.
+ For example, `USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
+ HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install` has been
+ shown to work on an Ubuntu/Debian linux system. Similarly, environment variables
+ (all capitalized) can be used to set the include and library paths for
+ `hdf5`, `netCDF4`, `hdf4`, `szip`, `jpeg`, `curl` and `zlib`. If the
+ libraries are installed in standard places (e.g. `/usr` or `/usr/local`),
+ the environment variables do not need to be set.
  - run the tests in the 'test' directory by running `python run_all.py`.
 
 Tutorial
@@ -105,6 +110,7 @@ Tutorial
 10. [Beyond homogeneous arrays of a fixed type - compound data types.](#section10)
 11. [Variable-length (vlen) data types.](#section11)
 12. [Enum data type.](#section12)
+13. [Parallel IO.](#section13)
 
 
 ## <div id='section1'>1) Creating/Opening/Closing a netCDF file.
@@ -893,7 +899,60 @@ specified names.
     [0 2 4 -- 1]
     >>> nc.close()
 
-All of the code in this tutorial is available in `examples/tutorial.py`,
+## <div id='section13'>13) Parallel IO.
+
+If MPI parallel enabled versions of netcdf and hdf5 are detected, and
+[mpi4py](https://mpi4py.scipy.org) is installed, netcdf4-python will
+be built with parallel IO capabilities enabled.  To use parallel IO,
+your program must be running in an MPI environment using 
+[mpi4py](https://mpi4py.scipy.org).
+
+    :::python
+    >>> from mpi4py import MPI
+    >>> import numpy as np
+    >>> from netCDF4 import Dataset
+    >>> rank = MPI.COMM_WORLD.rank  # The process ID (integer 0-3 for 4-process run)
+
+To run an MPI-based parallel program like this, you must use `mpiexec` to launch several
+parallel instances of Python (for example, using `mpiexec -np 4 python mpi_example.py`).
+The parallel features of netcdf4-python are mostly transparent -
+when a new dataset is created or an existing dataset is opened,
+use the `parallel` keyword to enable parallel access.
+
+    :::python
+    >>> nc = Dataset('parallel_tst.nc','w',parallel=True)
+
+The optional `comm` keyword may be used to specify a particular
+MPI communicator (`MPI.COMM_WORLD` is used by default).  Each process (or rank)
+can now write to the file indepedently.  In this example the process rank is
+written to a different variable index on each task
+
+    :::python
+    >>> d = nc.createDimension('dim',4)
+    >>> v = nc.createVariable('var', np.int, 'dim')
+    >>> v[rank] = rank
+    >>> nc.close()
+
+    % ncdump parallel_test.nc
+    netcdf parallel_test {
+    dimensions:
+        dim = 4 ;
+        variables:
+        int64 var(dim) ;
+        data:
+
+        var = 0, 1, 2, 3 ;
+    }
+
+By default, variable data is written using independent IO (each processor can
+perform an IO operation, or not, as it pleases).  Collective
+IO is also supported (all processors must participate). To toggle
+back and forth, use the `netCDF4.Variable.set_collective` method. All metadata
+operations (such as creation of groups, types, variables, dimensions, or attributes)
+are collective.
+
+All of the code in this tutorial is available in `examples/tutorial.py`, except
+the parallel IO example, which is in `examples/mpi_example.py`.
 Unit tests are in the `test` directory.
 
 **contact**: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
