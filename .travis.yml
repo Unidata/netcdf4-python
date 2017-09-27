@@ -11,7 +11,7 @@ addons:
 
 env:
   global:
-    - DEPENDS="numpy cython setuptools==18.0.1"
+    - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0"
     - NO_NET=1
     - MPI=0
 
@@ -33,6 +33,17 @@ matrix:
     - python: 2.7
       env: 
         - MPI=1
+        - CC=mpicc
+        - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1"
+        - NETCDF_VERSION=4.4.1.1
+        - NETCDF_DIR=$HOME/netcdf-${NETCDF_VERSION}
+        - PATH=${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
+      addons:
+        apt:
+          packages:
+            - openmpi-bin         # 1.6.5 based on trusty
+            - libopenmpi-dev
+            - libhdf5-openmpi-dev # 1.8.11 based on trusty
 
 notifications:
   email: false
@@ -41,6 +52,7 @@ before_install:
   - pip install $DEPENDS
 
 install:
+  - if [ $MPI -eq 1 ] ; then ci/travis/build-netcdf-parallel.sh; fi
   - python setup.py build
   - python setup.py install
 
