@@ -1046,8 +1046,9 @@ __hdf5libversion__ = _gethdf5libversion()
 __has_rename_grp__ = HAS_RENAME_GRP
 __has_nc_inq_path__ = HAS_NC_INQ_PATH
 __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
-__has_cdf5__ = HAS_CDF5_FORMAT
+__has_cdf5_format__ = HAS_CDF5_FORMAT
 __has_nc_open_mem__ = HAS_NC_OPEN_MEM
+__has_nc_par__ = HAS_NC_PAR
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
