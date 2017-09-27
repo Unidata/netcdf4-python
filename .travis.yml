@@ -13,7 +13,7 @@ env:
   global:
     - DEPENDS="numpy cython setuptools==18.0.1"
     - NO_NET=1
-    - MPI=false
+    - MPI=0
 
 python:
   - "2.7"
@@ -23,7 +23,7 @@ python:
 matrix:
   allow_failures:
     - python: "3.7-dev"
-    - env: MPI=true
+    - env: MPI=1
   include:
     # Absolute minimum dependencies.
     - python: 2.7
@@ -46,8 +46,10 @@ install:
 
 script:
   - |
-    if $MPI ; then
+    if [ $MPI -eq 1 ] ; then
        cd examples
+       pwd
+       ls -l mpi_example.py
        mpirun -np 4 python mpi_example.py
        cd ..
     fi
