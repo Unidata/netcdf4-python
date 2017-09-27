@@ -38,7 +38,7 @@ Requires
 
  - Python 2.7 or later (python 3 works too).
  - [numpy array module](http://numpy.scipy.org), version 1.9.0 or later.
- - [Cython](http://cython.org), version 0.21.2 or later.
+ - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
@@ -1046,8 +1046,9 @@ __hdf5libversion__ = _gethdf5libversion()
 __has_rename_grp__ = HAS_RENAME_GRP
 __has_nc_inq_path__ = HAS_NC_INQ_PATH
 __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
-__has_cdf5__ = HAS_CDF5_FORMAT
+__has_cdf5_format__ = HAS_CDF5_FORMAT
 __has_nc_open_mem__ = HAS_NC_OPEN_MEM
+__has_nc_par__ = HAS_NC_PAR
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)

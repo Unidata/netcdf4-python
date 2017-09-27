@@ -75,6 +75,13 @@ def check_api(inc_dirs):
                 has_nc_inq_format_extended = True
             if line.startswith('#define NC_FORMAT_64BIT_DATA'):
                 has_cdf5_format = True
+
+        ncmetapath = os.path.join(d,'netcdf_meta.h')
+        if os.path.exists(ncmetapath):
+            has_cdf5 = False
+            for line in open(ncmetapath):
+                if line.startswith('#define NC_HAS_CDF5'):
+                    has_cdf5 = True
         break
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
