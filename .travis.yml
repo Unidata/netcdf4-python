@@ -41,9 +41,9 @@ matrix:
       addons:
         apt:
           packages:
-            - openmpi-bin         # 1.6.5 based on trusty
+            - openmpi-bin
             - libopenmpi-dev
-            - libhdf5-openmpi-dev # 1.8.11 based on trusty
+            - libhdf5-openmpi-dev
 
 notifications:
   email: false
@@ -52,7 +52,7 @@ before_install:
   - pip install $DEPENDS
 
 install:
-  - if [ $MPI -eq 1 ] ; then ci/travis/build-netcdf-parallel.sh; fi
+  - if [ $MPI -eq 1 ] ; then ci/travis/build-parallel-netcdf.sh; fi
   - python setup.py build
   - python setup.py install
 
@@ -60,8 +60,6 @@ script:
   - |
     if [ $MPI -eq 1 ] ; then
        cd examples
-       pwd
-       ls -l mpi_example.py
        mpirun -np 4 python mpi_example.py
        cd ..
     fi
