@@ -38,7 +38,7 @@ Requires
 
  - Python 2.7 or later (python 3 works too).
  - [numpy array module](http://numpy.scipy.org), version 1.9.0 or later.
- - [Cython](http://cython.org), version 0.21.2 or later.
+ - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
