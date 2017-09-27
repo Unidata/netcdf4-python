@@ -7,7 +7,7 @@ pushd /tmp
 wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-${NETCDF_VERSION}.tar.gz
 tar -xzvf netcdf-${NETCDF_VERSION}.tar.gz
 pushd netcdf-${NETCDF_VERSION}
-./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap  --disable-dependency-tracking  --enable-parallel
+./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --disable-dap  --enable-parallel
 make -j 2
 make install
 popd
