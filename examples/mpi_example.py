@@ -10,6 +10,9 @@ nc = Dataset('parallel_test.nc', 'w', parallel=True, comm=MPI.COMM_WORLD,
 d = nc.createDimension('dim',4)
 v = nc.createVariable('var', np.int, 'dim')
 v[rank] = rank
+# switch to collective mode, rewrite the data.
+v.set_collective(True)
+v[rank] = rank
 nc.close()
 # reopen the file read-only, check the data
 nc = Dataset('parallel_test.nc', parallel=True, comm=MPI.COMM_WORLD,
