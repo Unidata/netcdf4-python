@@ -78,8 +78,6 @@ Install
  In addition to specifying the path to `nc-config`,
  you can manually set the paths to all the libraries and their include files
  (in case `nc-config` does not do the right thing).
- - For MPI parallel IO support, `setup.py` also needs to know the location of `mpi.h`,
- which can be specified by setting `mpi_incdir` in `setup.cfg`.
  - run `python setup.py build`, then `python setup.py install` (as root if
  necessary).
  - [`pip install`](https://pip.pypa.io/en/latest/reference/pip_install.html) can
