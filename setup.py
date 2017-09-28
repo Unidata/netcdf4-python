@@ -530,8 +530,11 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         if mpi_incdir is None:
             sys.stdout.write("""
 Looking for mpi.h.. \n""")
-            for direc in dirstosearch:
-                d = os.path.join(direc, 'include')
+            for direc in inc_dirs + dirstosearch:
+                if not direc.endswith('include'):
+                    d = os.path.join(direc, 'include')
+                else:
+                    d = direc
                 sys.stdout.write('checking %s ...\n' % d)
                 hasmpiheader = check_mpiheader(d)
                 if not hasmpiheader:
