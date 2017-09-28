@@ -531,7 +531,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
 
     if has_nc_par:
         inc_dirs.append(mpi4py.get_include())
-        inc_dirs.append(mpi_incdir)
+        if mpi_incdir is not None: inc_dirs.append(mpi_incdir)
 
     ext_modules = [Extension("netCDF4._netCDF4",
                              [netcdf4_src_root + '.pyx'],
