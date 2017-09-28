@@ -8,6 +8,11 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+9/28/2017: Version 1.3.1 (git master, not yet released).  Parallel IO support with MPI!
+Requires that netcdf-c and hdf5 be built with MPI support, and [mpi4py](http://mpi4py.readthedocs.io/en/stable).
+To open a file for parallel access, just use `parallel=True` when creating
+the `Dataset` instance.  See `examples/mpi_example.py` for a demonstration. 
+
 9/25/2017: Version [1.3.0](https://pypi.python.org/pypi/netCDF4/1.3.0) released. Bug fixes
 for `netcdftime` and optimizations for reading strided slices. `encoding` kwarg added to 
 `Dataset.__init__` and `Dataset.filepath` to deal with oddball encodings in filename

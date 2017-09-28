@@ -1,5 +1,5 @@
 """
-Version 1.3.0
+Version 1.3.1
 -------------
 - - - 
 
@@ -38,7 +38,7 @@ Requires
 
  - Python 2.7 or later (python 3 works too).
  - [numpy array module](http://numpy.scipy.org), version 1.9.0 or later.
- - [Cython](http://cython.org), version 0.19 or later.
+ - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
@@ -60,6 +60,9 @@ Requires
  If you want [OPeNDAP](http://opendap.org) support, add `--enable-dap`.
  If you want HDF4 SD support, add `--enable-hdf4` and add
  the location of the HDF4 headers and library to `$CPPFLAGS` and `$LDFLAGS`.
+ - for MPI parallel IO support, MPI-enabled versions of the HDF5 and netcdf
+ libraries are required, as is the [mpi4py](http://mpi4py.scipy.org) python
+ module.
 
 
 Install
@@ -75,19 +78,21 @@ Install
  In addition to specifying the path to `nc-config`,
  you can manually set the paths to all the libraries and their include files
  (in case `nc-config` does not do the right thing).
+ - For MPI parallel IO support, `setup.py` also needs to know the location of `mpi.h`,
+ which can be specified by setting `mpi_incdir` in `setup.cfg`.
  - run `python setup.py build`, then `python setup.py install` (as root if
  necessary).
  - [`pip install`](https://pip.pypa.io/en/latest/reference/pip_install.html) can
-   also be used, with library paths set with environment variables. To make
-   this work, the `USE_SETUPCFG` environment variable must be used to tell 
-   setup.py not to use `setup.cfg`.
-   For example, `USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
-   HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install` has been
-   shown to work on an Ubuntu/Debian linux system. Similarly, environment variables
-   (all capitalized) can be used to set the include and library paths for
-   `hdf5`, `netCDF4`, `hdf4`, `szip`, `jpeg`, `curl` and `zlib`. If the
-   libraries are installed in standard places (e.g. `/usr` or `/usr/local`), 
-   the environment variables do not need to be set.
+ also be used, with library paths set with environment variables. To make
+ this work, the `USE_SETUPCFG` environment variable must be used to tell
+ setup.py not to use `setup.cfg`.
+ For example, `USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
+ HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install` has been
+ shown to work on an Ubuntu/Debian linux system. Similarly, environment variables
+ (all capitalized) can be used to set the include and library paths for
+ `hdf5`, `netCDF4`, `hdf4`, `szip`, `jpeg`, `curl` and `zlib`. If the
+ libraries are installed in standard places (e.g. `/usr` or `/usr/local`),
+ the environment variables do not need to be set.
  - run the tests in the 'test' directory by running `python run_all.py`.
 
 Tutorial
@@ -105,6 +110,7 @@ Tutorial
 10. [Beyond homogeneous arrays of a fixed type - compound data types.](#section10)
 11. [Variable-length (vlen) data types.](#section11)
 12. [Enum data type.](#section12)
+13. [Parallel IO.](#section13)
 
 
 ## <div id='section1'>1) Creating/Opening/Closing a netCDF file.
@@ -893,7 +899,60 @@ specified names.
     [0 2 4 -- 1]
     >>> nc.close()
 
-All of the code in this tutorial is available in `examples/tutorial.py`,
+## <div id='section13'>13) Parallel IO.
+
+If MPI parallel enabled versions of netcdf and hdf5 are detected, and
+[mpi4py](https://mpi4py.scipy.org) is installed, netcdf4-python will
+be built with parallel IO capabilities enabled.  To use parallel IO,
+your program must be running in an MPI environment using 
+[mpi4py](https://mpi4py.scipy.org).
+
+    :::python
+    >>> from mpi4py import MPI
+    >>> import numpy as np
+    >>> from netCDF4 import Dataset
+    >>> rank = MPI.COMM_WORLD.rank  # The process ID (integer 0-3 for 4-process run)
+
+To run an MPI-based parallel program like this, you must use `mpiexec` to launch several
+parallel instances of Python (for example, using `mpiexec -np 4 python mpi_example.py`).
+The parallel features of netcdf4-python are mostly transparent -
+when a new dataset is created or an existing dataset is opened,
+use the `parallel` keyword to enable parallel access.
+
+    :::python
+    >>> nc = Dataset('parallel_tst.nc','w',parallel=True)
+
+The optional `comm` keyword may be used to specify a particular
+MPI communicator (`MPI.COMM_WORLD` is used by default).  Each process (or rank)
+can now write to the file indepedently.  In this example the process rank is
+written to a different variable index on each task
+
+    :::python
+    >>> d = nc.createDimension('dim',4)
+    >>> v = nc.createVariable('var', np.int, 'dim')
+    >>> v[rank] = rank
+    >>> nc.close()
+
+    % ncdump parallel_test.nc
+    netcdf parallel_test {
+    dimensions:
+        dim = 4 ;
+        variables:
+        int64 var(dim) ;
+        data:
+
+        var = 0, 1, 2, 3 ;
+    }
+
+By default, variable data is written using independent IO (each processor can
+perform an IO operation, or not, as it pleases).  Collective
+IO is also supported (all processors must participate). To toggle
+back and forth, use the `netCDF4.Variable.set_collective` method. All metadata
+operations (such as creation of groups, types, variables, dimensions, or attributes)
+are collective.
+
+All of the code in this tutorial is available in `examples/tutorial.py`, except
+the parallel IO example, which is in `examples/mpi_example.py`.
 Unit tests are in the `test` directory.
 
 **contact**: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
@@ -936,7 +995,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.3.0"
+__version__ = "1.3.1"
 
 # Initialize numpy
 import posixpath
@@ -952,6 +1011,16 @@ from libc.stdlib cimport malloc, free
 import_array()
 include "constants.pyx"
 include "netCDF4.pxi"
+IF HAS_NC_PAR:
+    cimport mpi4py.MPI as MPI
+    from mpi4py.libmpi cimport MPI_Comm, MPI_Info, MPI_Comm_dup, MPI_Info_dup, \
+                               MPI_Comm_free, MPI_Info_free, MPI_INFO_NULL,\
+                               MPI_COMM_WORLD
+    ctypedef MPI.Comm Comm
+    ctypedef MPI.Info Info
+ELSE:
+    ctypedef object Comm
+    ctypedef object Info
 
 # check for required version of netcdf-4 and hdf5.
 
@@ -977,8 +1046,9 @@ __hdf5libversion__ = _gethdf5libversion()
 __has_rename_grp__ = HAS_RENAME_GRP
 __has_nc_inq_path__ = HAS_NC_INQ_PATH
 __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
-__has_cdf5__ = HAS_CDF5_FORMAT
+__has_cdf5_format__ = HAS_CDF5_FORMAT
 __has_nc_open_mem__ = HAS_NC_OPEN_MEM
+__has_nc_par__ = HAS_NC_PAR
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
@@ -1691,8 +1761,9 @@ references to the parent Dataset or Group.
     the parent Dataset or Group.""" 
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
-                 diskless=False, persist=False, keepweakref=False,
-                 memory=None, encoding=None, **kwargs):
+                     diskless=False, persist=False, keepweakref=False,
+                     memory=None, encoding=None, parallel=False,
+                     Comm comm=None, Info info=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, format='NETCDF4')`**
@@ -1763,10 +1834,23 @@ references to the parent Dataset or Group.
 
         **`encoding`**: encoding used to encode filename string into bytes.
         Default is None (`sys.getdefaultfileencoding()` is used).
+
+        **`parallel`**: open for parallel access using MPI (requires mpi4py and
+        parallel-enabled netcdf-c and hdf5 libraries).  Default is `False`. If
+        `True`, `comm` and `info` kwargs may also be specified.
+
+        **`comm`**: MPI_Comm object for parallel access. Default `None`, which
+        means MPI_COMM_WORLD will be used.  Ignored if `parallel=False`.
+
+        **`info`**: MPI_Info object for parallel access. Default `None`, which
+        means MPI_INFO_NULL will be used.  Ignored if `parallel=False`.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
+        IF HAS_NC_PAR:
+            cdef MPI_Comm mpicomm
+            cdef MPI_Info mpiinfo
 
         memset(&self._buffer, 0, sizeof(self._buffer))
 
@@ -1784,11 +1868,32 @@ references to the parent Dataset or Group.
 
         if memory is not None and (mode != 'r' or type(memory) != bytes):
             raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
+        if parallel:
+            IF HAS_NC_PAR != 1:
+                msg='parallel mode requires MPI enabled netcdf-c'
+                raise ValueError(msg)
+            if format != 'NETCDF4':
+                msg='parallel mode only works with format=NETCDF4'
+                raise ValueError(msg)
+            if comm is not None:
+                mpicomm = comm.ob_mpi
+            else:
+                mpicomm = MPI_COMM_WORLD
+            if info is not None:
+                mpiinfo = info.ob_mpi
+            else:
+                mpiinfo = MPI_INFO_NULL
 
         if mode == 'w':
             _set_default_format(format=format)
             if clobber:
-                if diskless:
+                if parallel:
+                    IF HAS_NC_PAR:
+                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                               mpicomm, mpiinfo, &grpid)
+                    ELSE:
+                        pass
+                elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_CLOBBER | NC_DISKLESS , &grpid)
                     else:
@@ -1796,7 +1901,13 @@ references to the parent Dataset or Group.
                 else:
                     ierr = nc_create(path, NC_CLOBBER, &grpid)
             else:
-                if diskless:
+                if parallel:
+                    IF HAS_NC_PAR:
+                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                               mpicomm, mpiinfo, &grpid)
+                    ELSE:
+                        pass
+                elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
                     else:
@@ -1822,23 +1933,49 @@ references to the parent Dataset or Group.
         nc_open_mem method not enabled.  To enable, install Cython, make sure you have
         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
                     raise ValueError(msg)
+            elif parallel:
+                IF HAS_NC_PAR:
+                    ierr = nc_open_par(path, NC_NOWRITE | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                ELSE:
+                    pass
             elif diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
-            if diskless:
+            if parallel:
+                IF HAS_NC_PAR:
+                    ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                ELSE:
+                    pass
+            elif diskless:
                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_WRITE, &grpid)
         elif mode == 'as' or mode == 'r+s':
-            if diskless:
+            if parallel:
+                # NC_SHARE ignored
+                IF HAS_NC_PAR:
+                    ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
+                           mpicomm, mpiinfo, &grpid)
+                ELSE:
+                    pass
+            elif diskless:
                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_SHARE, &grpid)
         elif mode == 'ws':
             if clobber:
-                if diskless:
+                if parallel:
+                    # NC_SHARE ignored
+                    IF HAS_NC_PAR:
+                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                               mpicomm, mpiinfo, &grpid)
+                    ELSE:
+                        pass
+                elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS , &grpid)
                     else:
@@ -1846,7 +1983,14 @@ references to the parent Dataset or Group.
                 else:
                     ierr = nc_create(path, NC_SHARE | NC_CLOBBER, &grpid)
             else:
-                if diskless:
+                if parallel:
+                    # NC_SHARE ignored
+                    IF HAS_NC_PAR:
+                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                               mpicomm, mpiinfo, &grpid)
+                    ELSE:
+                        pass
+                elif diskless:
                     if persist:
                         ierr = nc_create(path, NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
                     else:
@@ -4745,6 +4889,25 @@ The default value of `mask` is `True`
             return numpy.squeeze(data)
         else:
             return data
+
+    def set_collective(self, value):
+        """
+**`set_collective(self,True_or_False)`**
+
+turn on or off collective parallel IO access. Ignored if file is not
+open for parallel access.
+        """
+        IF HAS_NC_PAR:
+            # set collective MPI IO mode on or off
+            if value:
+                ierr = nc_var_par_access(self._grpid, self._varid,
+                       NC_COLLECTIVE)
+            else:
+                ierr = nc_var_par_access(self._grpid, self._varid,
+                       NC_INDEPENDENT)
+            _ensure_nc_success(ierr)
+        ELSE:
+            pass # does nothing
 
     def __reduce__(self):
         # raise error is user tries to pickle a Variable object.

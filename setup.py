@@ -55,6 +55,7 @@ def check_api(inc_dirs):
     has_nc_inq_format_extended = False
     has_cdf5_format = False
     has_nc_open_mem = False
+    has_nc_par = False
 
     for d in inc_dirs:
         try:
@@ -63,6 +64,7 @@ def check_api(inc_dirs):
             continue
 
         has_nc_open_mem = os.path.exists(os.path.join(d, 'netcdf_mem.h'))
+        has_nc_par = os.path.exists(os.path.join(d, 'netcdf_par.h'))
 
         for line in f:
             if line.startswith('nc_rename_grp'):
@@ -73,10 +75,17 @@ def check_api(inc_dirs):
                 has_nc_inq_format_extended = True
             if line.startswith('#define NC_FORMAT_64BIT_DATA'):
                 has_cdf5_format = True
+
+        ncmetapath = os.path.join(d,'netcdf_meta.h')
+        if os.path.exists(ncmetapath):
+            has_cdf5 = False
+            for line in open(ncmetapath):
+                if line.startswith('#define NC_HAS_CDF5'):
+                    has_cdf5 = True
         break
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-           has_cdf5_format, has_nc_open_mem
+           has_cdf5_format, has_nc_open_mem, has_nc_par
 
 
 def getnetcdfvers(libdirs):
@@ -139,6 +148,7 @@ jpeg_incdir = os.environ.get('JPEG_INCDIR')
 curl_dir = os.environ.get('CURL_DIR')
 curl_libdir = os.environ.get('CURL_LIBDIR')
 curl_incdir = os.environ.get('CURL_INCDIR')
+mpi_incdir = os.environ.get('MPI_INCDIR')
 
 USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
 if USE_NCCONFIG is not None:
@@ -230,6 +240,10 @@ if USE_SETUPCFG and os.path.exists(setup_cfg):
         pass
     try:
         curl_incdir = config.get("directories", "curl_incdir")
+    except:
+        pass
+    try:
+        mpi_incdir = config.get("directories","mpi_incdir")
     except:
         pass
     try:
@@ -442,7 +456,6 @@ if any('--' + opt in sys.argv for opt in Distribution.display_option_names +
 else:
     # append numpy include dir.
     import numpy
-
     inc_dirs.append(numpy.get_include())
 
 # get netcdf library version.
@@ -464,7 +477,11 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         os.remove(netcdf4_src_c)
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-        has_cdf5_format, has_nc_open_mem = check_api(inc_dirs)
+        has_cdf5_format, has_nc_open_mem, has_nc_par = check_api(inc_dirs)
+    try:
+        import mpi4py
+    except ImportError:
+        has_nc_par = False
 
     f = open(osp.join('include', 'constants.pyx'), 'w')
     if has_rename_grp:
@@ -503,7 +520,19 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         sys.stdout.write('netcdf lib does not have cdf-5 format capability\n')
         f.write('DEF HAS_CDF5_FORMAT = 0\n')
 
+    if has_nc_par:
+        sys.stdout.write('netcdf lib has netcdf4 parallel functions\n')
+        f.write('DEF HAS_NC_PAR = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have netcdf4 parallel functions\n')
+        f.write('DEF HAS_NC_PAR = 0\n')
+
     f.close()
+
+    if has_nc_par:
+        inc_dirs.append(mpi4py.get_include())
+        inc_dirs.append(mpi_incdir)
+
     ext_modules = [Extension("netCDF4._netCDF4",
                              [netcdf4_src_root + '.pyx'],
                              libraries=libs,
@@ -517,7 +546,7 @@ else:
 
 setup(name="netCDF4",
       cmdclass=cmdclass,
-      version="1.3.0",
+      version="1.3.1",
       long_description="netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project has a `Subversion repository <http://code.google.com/p/netcdf4-python/source>`_ where you may access the most up-to-date source.",
       author="Jeff Whitaker",
       author_email="jeffrey.s.whitaker@noaa.gov",

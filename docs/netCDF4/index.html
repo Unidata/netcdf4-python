@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Version 1.3.0
+    <meta name="description" content="Version 1.3.1
 -------------
 - - - 
 
@@ -1246,6 +1246,7 @@ table {
     <li class="mono"><a href="#netCDF4.Variable.set_auto_mask">set_auto_mask</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_auto_maskandscale">set_auto_maskandscale</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_auto_scale">set_auto_scale</a></li>
+    <li class="mono"><a href="#netCDF4.Variable.set_collective">set_collective</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_var_chunk_cache">set_var_chunk_cache</a></li>
     <li class="mono"><a href="#netCDF4.Variable.setncattr">setncattr</a></li>
     <li class="mono"><a href="#netCDF4.Variable.setncattr_string">setncattr_string</a></li>
@@ -1269,7 +1270,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h2>Version 1.3.0</h2>
+  <h2>Version 1.3.1</h2>
 <hr />
 <h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
@@ -1299,7 +1300,7 @@ types) are not supported.</p>
 <ul>
 <li>Python 2.7 or later (python 3 works too).</li>
 <li><a href="http://numpy.scipy.org">numpy array module</a>, version 1.9.0 or later.</li>
-<li><a href="http://cython.org">Cython</a>, version 0.19 or later.</li>
+<li><a href="http://cython.org">Cython</a>, version 0.21 or later.</li>
 <li><a href="https://pypi.python.org/pypi/setuptools">setuptools</a>, version 18.0 or
    later.</li>
 <li>The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
@@ -1321,6 +1322,9 @@ types) are not supported.</p>
  If you want <a href="http://opendap.org">OPeNDAP</a> support, add <code>--enable-dap</code>.
  If you want HDF4 SD support, add <code>--enable-hdf4</code> and add
  the location of the HDF4 headers and library to <code>$CPPFLAGS</code> and <code>$LDFLAGS</code>.</li>
+<li>for MPI parallel IO support, MPI-enabled versions of the HDF5 and netcdf
+ libraries are required, as is the <a href="http://mpi4py.scipy.org">mpi4py</a> python
+ module.</li>
 </ul>
 <h1>Install</h1>
 <ul>
@@ -1334,19 +1338,21 @@ types) are not supported.</p>
  In addition to specifying the path to <code>nc-config</code>,
  you can manually set the paths to all the libraries and their include files
  (in case <code>nc-config</code> does not do the right thing).</li>
+<li>For MPI parallel IO support, <code>setup.py</code> also needs to know the location of <code>mpi.h</code>,
+ which can be specified by setting <code>mpi_incdir</code> in <code>setup.cfg</code>.</li>
 <li>run <code>python setup.py build</code>, then <code>python setup.py install</code> (as root if
  necessary).</li>
 <li><a href="https://pip.pypa.io/en/latest/reference/pip_install.html"><code>pip install</code></a> can
-   also be used, with library paths set with environment variables. To make
-   this work, the <code>USE_SETUPCFG</code> environment variable must be used to tell 
-   setup.py not to use <code>setup.cfg</code>.
-   For example, <code>USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
-   HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install</code> has been
-   shown to work on an Ubuntu/Debian linux system. Similarly, environment variables
-   (all capitalized) can be used to set the include and library paths for
-   <code>hdf5</code>, <code>netCDF4</code>, <code>hdf4</code>, <code>szip</code>, <code>jpeg</code>, <code>curl</code> and <code>zlib</code>. If the
-   libraries are installed in standard places (e.g. <code>/usr</code> or <code>/usr/local</code>), 
-   the environment variables do not need to be set.</li>
+ also be used, with library paths set with environment variables. To make
+ this work, the <code>USE_SETUPCFG</code> environment variable must be used to tell
+ setup.py not to use <code>setup.cfg</code>.
+ For example, <code>USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
+ HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install</code> has been
+ shown to work on an Ubuntu/Debian linux system. Similarly, environment variables
+ (all capitalized) can be used to set the include and library paths for
+ <code>hdf5</code>, <code>netCDF4</code>, <code>hdf4</code>, <code>szip</code>, <code>jpeg</code>, <code>curl</code> and <code>zlib</code>. If the
+ libraries are installed in standard places (e.g. <code>/usr</code> or <code>/usr/local</code>),
+ the environment variables do not need to be set.</li>
 <li>run the tests in the 'test' directory by running <code>python run_all.py</code>.</li>
 </ul>
 <h1>Tutorial</h1>
@@ -1363,6 +1369,7 @@ types) are not supported.</p>
 <li><a href="#section10">Beyond homogeneous arrays of a fixed type - compound data types.</a></li>
 <li><a href="#section11">Variable-length (vlen) data types.</a></li>
 <li><a href="#section12">Enum data type.</a></li>
+<li><a href="#section13">Parallel IO.</a></li>
 </ol>
 <h2><div id='section1'>1) Creating/Opening/Closing a netCDF file.</h2>
 <p>To create a netCDF file from python, you simply call the <a href="#netCDF4.Dataset"><code>Dataset</code></a>
@@ -2117,7 +2124,58 @@ specified names.</p>
 </pre></div>
 
 
-<p>All of the code in this tutorial is available in <code>examples/tutorial.py</code>,
+<h2><div id='section13'>13) Parallel IO.</h2>
+<p>If MPI parallel enabled versions of netcdf and hdf5 are detected, and
+<a href="https://mpi4py.scipy.org">mpi4py</a> is installed, netcdf4-python will
+be built with parallel IO capabilities enabled.  To use parallel IO,
+your program must be running in an MPI environment using 
+<a href="https://mpi4py.scipy.org">mpi4py</a>.</p>
+<div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">rank</span>  <span class="c1"># The process ID (integer 0-3 for 4-process run)</span>
+</pre></div>
+
+
+<p>To run an MPI-based parallel program like this, you must use <code>mpiexec</code> to launch several
+parallel instances of Python (for example, using <code>mpiexec -np 4 python mpi_example.py</code>).
+The parallel features of netcdf4-python are mostly transparent -
+when a new dataset is created or an existing dataset is opened,
+use the <code>parallel</code> keyword to enable parallel access.</p>
+<div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;parallel_tst.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">parallel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The optional <code>comm</code> keyword may be used to specify a particular
+MPI communicator (<code>MPI.COMM_WORLD</code> is used by default).  Each process (or rank)
+can now write to the file indepedently.  In this example the process rank is
+written to a different variable index on each task</p>
+<div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;dim&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;var&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">,</span> <span class="s1">&#39;dim&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">rank</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="o">%</span> <span class="n">ncdump</span> <span class="n">parallel_test</span><span class="o">.</span><span class="n">nc</span>
+<span class="n">netcdf</span> <span class="n">parallel_test</span> <span class="p">{</span>
+<span class="n">dimensions</span><span class="p">:</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="mi">4</span> <span class="p">;</span>
+    <span class="n">variables</span><span class="p">:</span>
+    <span class="n">int64</span> <span class="n">var</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span> <span class="p">;</span>
+    <span class="n">data</span><span class="p">:</span>
+
+    <span class="n">var</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>By default, variable data is written using independent IO (each processor can
+perform an IO operation, or not, as it pleases).  Collective
+IO is also supported (all processors must participate). To toggle
+back and forth, use the <a href="#netCDF4.Variable.set_collective"><code>set_collective</code></a> method. All metadata
+operations (such as creation of groups, types, variables, dimensions, or attributes)
+are collective.</p>
+<p>All of the code in this tutorial is available in <code>examples/tutorial.py</code>, except
+the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 <p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#46;&#115;&#46;&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;&#111;&#97;&#97;&#46;&#103;&#111;&#118;">&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#46;&#115;&#46;&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;&#111;&#97;&#97;&#46;&#103;&#111;&#118;</a></p>
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
@@ -2700,7 +2758,14 @@ rendered unusable when the parent Dataset instance is garbage collected.</p>
 <p><strong><code>memory</code></strong>: if not <code>None</code>, open file with contents taken from this block of memory.
 Must be a sequence of bytes.  Note this only works with "r" mode.</p>
 <p><strong><code>encoding</code></strong>: encoding used to encode filename string into bytes.
-Default is None (<code>sys.getdefaultfileencoding()</code> is used).</p></div>
+Default is None (<code>sys.getdefaultfileencoding()</code> is used).</p>
+<p><strong><code>parallel</code></strong>: open for parallel access using MPI (requires mpi4py and
+parallel-enabled netcdf-c and hdf5 libraries).  Default is <code>False</code>. If
+<code>True</code>, <code>comm</code> and <code>info</code> kwargs may also be specified.</p>
+<p><strong><code>comm</code></strong>: MPI_Comm object for parallel access. Default <code>None</code>, which
+means MPI_COMM_WORLD will be used.  Ignored if <code>parallel=False</code>.</p>
+<p><strong><code>info</code></strong>: MPI_Info object for parallel access. Default <code>None</code>, which
+means MPI_INFO_NULL will be used.  Ignored if <code>parallel=False</code>.</p></div>
   <div class="source_cont">
 </div>
 
@@ -6290,6 +6355,22 @@ data in <code>NETCDF3</code> or <code>NETCDF4_CLASSIC</code> files (since the <c
 data model does not have unsigned integer data types).</p>
 <p>The default value of <code>scale</code> is <code>True</code>
 (automatic conversions are performed).</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Variable.set_collective">
+    <p>def <span class="ident">set_collective</span>(</p><p>self,True_or_False)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>turn on or off collective parallel IO access. Ignored if file is not
+open for parallel access.</p></div>
   <div class="source_cont">
 </div>
 
