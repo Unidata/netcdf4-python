@@ -942,12 +942,22 @@ written to a different variable index on each task
         var = 0, 1, 2, 3 ;
     }
 
-By default, variable data is written using independent IO (each processor can
-perform an IO operation, or not, as it pleases).  Collective
-IO is also supported (all processors must participate). To toggle
-back and forth, use the `netCDF4.Variable.set_collective` method. All metadata
+There are two types of parallel IO, independent (the default) and collective.
+Independent IO means that each process can do IO independently. It should not
+depend on or be affected by other processes. Collective IO is a way of doing
+IO defined in the MPI-IO standard; unlike independent IO, all processes must
+participate in doing IO. To toggle back and forth between
+the two types of IO, use the `netCDF4.Variable.set_collective`
+`netCDF4.Variable`method. All metadata
 operations (such as creation of groups, types, variables, dimensions, or attributes)
-are collective.
+are collective.  There are a couple of important limitatons of parallel IO:
+
+ - If a variable has an unlimited dimension, appending data must be done in collective mode.
+   If the write is done in independent mode, the operation will fail with a
+   a generic "HDF Error".
+ - You cannot write compressed data in parallel (although
+   you can read it).
+ - You cannot use variable-length (VLEN) data types. 
 
 All of the code in this tutorial is available in `examples/tutorial.py`, except
 the parallel IO example, which is in `examples/mpi_example.py`.
