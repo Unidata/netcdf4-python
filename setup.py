@@ -48,6 +48,12 @@ def check_ifnetcdf4(netcdf4_includedir):
             isnetcdf4 = True
     return isnetcdf4
 
+def check_mpiheader(includedir):
+    try:
+        f = open(os.path.join(includedir, 'mpi.h'), **open_kwargs)
+        return True
+    except IOError:
+        return False
 
 def check_api(inc_dirs):
     has_rename_grp = False
@@ -521,6 +527,23 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         f.write('DEF HAS_CDF5_FORMAT = 0\n')
 
     if has_nc_par:
+        if mpi_incdir is None:
+            sys.stdout.write("""
+Looking for mpi.h.. \n""")
+            for direc in dirstosearch:
+                sys.stdout.write('checking %s ...\n' % direc)
+                hasmpiheader = check_mpiheader(os.path.join(direc, 'include'))
+                if not hasmpiheader:
+                    continue
+                else:
+                    mpi_incdir = os.path.join(direc, 'include')
+                    sys.stdout.write('mpi.h found in %s\n' % mpi_incdir)
+                    break
+            if mpi_incdir is None:
+                raise ValueError("""
+mpi.h not found, needed with parallel enabled HDF5.
+Try specifying MPI_INCDIR or mpi_incdir in setup.cfg. """)
+    if has_nc_par:
         sys.stdout.write('netcdf lib has netcdf4 parallel functions\n')
         f.write('DEF HAS_NC_PAR = 1\n')
     else:
@@ -531,7 +554,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
 
     if has_nc_par:
         inc_dirs.append(mpi4py.get_include())
-        if mpi_incdir is not None: inc_dirs.append(mpi_incdir)
+        inc_dirs.append(mpi_incdir)
 
     ext_modules = [Extension("netCDF4._netCDF4",
                              [netcdf4_src_root + '.pyx'],
