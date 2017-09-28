@@ -23,7 +23,6 @@ python:
 matrix:
   allow_failures:
     - python: "3.7-dev"
-    - env: MPI=1
   include:
     # Absolute minimum dependencies.
     - python: 2.7
