@@ -13,7 +13,7 @@ Requires that netcdf-c and hdf5 be built with MPI support, and [mpi4py](http://m
 To open a file for parallel access in a program running in an MPI environment
 using mpi4py, just use `parallel=True` when creating
 the `Dataset` instance.  See [`examples/mpi_example.py`](https://github.com/Unidata/netcdf4-python/blob/master/examples/mpi_example.py)
- for a demonstration. 
+ for a demonstration.  For more info, see the tutorial [section](http://unidata.github.io/netcdf4-python/#section13).
 
 9/25/2017: Version [1.3.0](https://pypi.python.org/pypi/netCDF4/1.3.0) released. Bug fixes
 for `netcdftime` and optimizations for reading strided slices. `encoding` kwarg added to 
