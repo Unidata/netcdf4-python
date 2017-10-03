@@ -921,7 +921,7 @@ use the `parallel` keyword to enable parallel access.
     >>> nc = Dataset('parallel_tst.nc','w',parallel=True)
 
 The optional `comm` keyword may be used to specify a particular
-MPI communicator (`MPI.COMM_WORLD` is used by default).  Each process (or rank)
+MPI communicator (`MPI_COMM_WORLD` is used by default).  Each process (or rank)
 can now write to the file indepedently.  In this example the process rank is
 written to a different variable index on each task
 
