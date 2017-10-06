@@ -86,7 +86,9 @@ class NonuniformTimeTestCase(unittest.TestCase):
             yr = 1979+nfile
             time.units = 'days since %s-01-01' % yr
 
-            time.calendar = 'standard'
+            # Do not set the calendar attribute on the created files to test calendar
+            # overload.
+            # time.calendar = 'standard'
 
             x = f.createVariable('x','f',('time', 'y', 'z'))
             x.units = 'potatoes per square mile'
@@ -106,20 +108,23 @@ class NonuniformTimeTestCase(unittest.TestCase):
 
 
     def runTest(self):
+        # The test files have no calendar attribute on the time variable.
+        calendar = 'standard'
+
         # Get the real dates
         dates = []
         for file in self.files:
             f = Dataset(file)
             t = f.variables['time']
-            dates.extend(num2date(t[:], t.units, t.calendar))
+            dates.extend(num2date(t[:], t.units, calendar))
             f.close()
 
         # Compare with the MF dates
         f = MFDataset(self.files,check=True)
         t = f.variables['time']
-        mfdates = num2date(t[:], t.units, t.calendar)
 
-        T = MFTime(t)
+        T = MFTime(t, calendar=calendar)
+        assert_equal(T.calendar, calendar)
         assert_equal(len(T), len(t))
         assert_equal(T.shape, t.shape)
         assert_equal(T.dimensions, t.dimensions)
@@ -127,6 +132,24 @@ class NonuniformTimeTestCase(unittest.TestCase):
         assert_array_equal(num2date(T[:], T.units, T.calendar), dates)
         assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
         f.close()
+
+        # Test exception is raised when no calendar attribute is available on the
+        # time variable.
+        with MFDataset(self.files, check=True) as ds:
+            with self.assertRaises(ValueError):
+                MFTime(ds.variables['time'])
+
+        # Test exception is raised when the calendar attribute is different on the
+        # variables. First, add calendar attributes to file. Note this will modify
+        # the files inplace.
+        calendars = ['standard', 'gregorian']
+        for idx, f in enumerate(self.files):
+            with Dataset(f, 'a') as ds:
+                ds.variables['time'].calendar = calendars[idx]
+        with MFDataset(self.files, check=True) as ds:
+            with self.assertRaises(ValueError):
+                MFTime(ds.variables['time'])
+
 
 if __name__ == '__main__':
     unittest.main()
