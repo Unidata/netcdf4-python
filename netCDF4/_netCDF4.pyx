@@ -6252,7 +6252,7 @@ class _Variable(object):
 class MFTime(_Variable):
     """
 Class providing an interface to a MFDataset time Variable by imposing a unique common
-time unit to all files. 
+time unit and/or calendar to all files.
 
 Example usage (See `netCDF4.MFTime.__init__` for more details):
 
@@ -6284,17 +6284,22 @@ Example usage (See `netCDF4.MFTime.__init__` for more details):
     32
     """
 
-    def __init__(self, time, units=None):
+    def __init__(self, time, units=None, calendar=None):
         """
-        **`__init__(self, time, units=None)`**
+        **`__init__(self, time, units=None, calendar=None)`**
 
         Create a time Variable with units consistent across a multifile
         dataset.
         
         **`time`**: Time variable from a `netCDF4.MFDataset`.
         
-        **`units`**: Time units, for example, `days since 1979-01-01`. If None, use
-        the units from the master variable.
+        **`units`**: Time units, for example, `'days since 1979-01-01'`. If `None`,
+        use the units from the master variable.
+
+        **`calendar`**: Calendar overload to use across all files, for example,
+        `'standard'` or `'gregorian'`. If `None`, check that the calendar attribute
+        is present on each variable and values are unique across files raising a
+        `ValueError` otherwise.
         """
         import datetime
         self.__time = time
@@ -6303,14 +6308,27 @@ Example usage (See `netCDF4.MFTime.__init__` for more details):
         for name, value in time.__dict__.items():
             self.__dict__[name] = value
 
-        # make sure calendar attribute present in all files.
-        for t in self._recVar:
-            if not hasattr(t,'calendar'):
-                raise ValueError('MFTime requires that the time variable in all files have a calendar attribute')
+        # Make sure calendar attribute present in all files if no default calendar
+        # is provided. Also assert this value is the same across files.
+        if calendar is None:
+            calendars = [None] * len(self._recVar)
+            for idx, t in enumerate(self._recVar):
+                if not hasattr(t, 'calendar'):
+                    msg = 'MFTime requires that the time variable in all files ' \
+                          'have a calendar attribute if no default calendar is provided.'
+                    raise ValueError(msg)
+                else:
+                    calendars[idx] = t.calendar
+            calendars = set(calendars)
+            if len(calendars) > 1:
+                msg = 'MFTime requires that the same time calendar is ' \
+                      'used by all files if no default calendar is provided.'
+                raise ValueError(msg)
+            else:
+                calendar = list(calendars)[0]
 
-        # Check that calendar is the same in all files.
-        if len(set([t.calendar for t in self._recVar])) > 1:
-            raise ValueError('MFTime requires that the same time calendar is used by all files.')
+        # Set calendar using the default or the unique calendar value across all files.
+        self.calendar = calendar
 
         # Override units if units is specified.
         self.units = units or time.units
