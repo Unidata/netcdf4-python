@@ -468,13 +468,19 @@ else:
 cmdclass = {}
 netcdf4_src_root = osp.join('netCDF4', '_netCDF4')
 netcdf4_src_c = netcdf4_src_root + '.c'
+netcdftime_src_root = osp.join('netcdftime', '_netcdftime')
+netcdftime_src_c = netcdftime_src_root + '.c'
 if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
-    # remove netCDF4.c file if it exists, so cython will recompile netCDF4.pyx.
+    # remove _netCDF4.c file if it exists, so cython will recompile _netCDF4.pyx.
     # run for build *and* install (issue #263). Otherwise 'pip install' will
-    # not regenerate netCDF4.c, even if the C lib supports the new features.
-    if len(sys.argv) >= 2 and os.path.exists(netcdf4_src_c):
-        os.remove(netcdf4_src_c)
+    # not regenerate _netCDF4.c, even if the C lib supports the new features.
+    if len(sys.argv) >= 2:
+        if os.path.exists(netcdf4_src_c):
+            os.remove(netcdf4_src_c)
+        # same for _netcdftime.c
+        if os.path.exists(netcdftime_src_c):
+            os.remove(netcdftime_src_c)
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
         has_cdf5_format, has_nc_open_mem, has_nc_par = check_api(inc_dirs)
@@ -542,7 +548,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
                              include_dirs=inc_dirs + ['include'],
                              runtime_library_dirs=runtime_lib_dirs),
                    Extension('netcdftime._netcdftime',
-                             ['netcdftime/_netcdftime.pyx'])]
+                             [netcdftime_src_root + '.pyx'])]
 else:
     ext_modules = None
 
