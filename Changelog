@@ -7,6 +7,10 @@
    IO can be toggled between collective and independent using `Variable.set_collective`.
    See `examples/mpi_example.py`. Issue #717, pull request #716.
    Minimum cython dependency bumped from 0.19 to 0.21.
+ * Add optional `MFTime` calendar overload to use across all files, for example,
+   `'standard'` or `'gregorian'`. If `None` (the default), check that the calendar
+   attribute is present on each variable and values are unique across files raising
+   a `ValueError` otherwise.
 
  version 1.3.0 (tag v1.3.0rel)
 ==============================
