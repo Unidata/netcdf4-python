@@ -4472,10 +4472,7 @@ rightmost dimension of the variable.
 The default value of `chartostring` is `True`
 (automatic conversions are performed).
         """
-        if chartostring:
-            self.chartostring = True
-        else:
-            self.chartostring = False
+        self.chartostring = bool(chartostring)
 
     def use_nc_get_vars(self,use_nc_get_vars):
         """
@@ -4486,11 +4483,8 @@ to retrieve strided variable slices.  By default,
 `nc_get_vars` not used since it slower than multiple calls
 to the unstrided read routine `nc_get_vara` in most cases.
         """
-        if not use_nc_get_vars:
-            self._no_get_vars = True
-        else:
-            self._no_get_vars = False
-
+        self._no_get_vars = not bool(use_nc_get_vars)
+        
     def set_auto_maskandscale(self,maskandscale):
         """
 **`set_auto_maskandscale(self,maskandscale)`**
@@ -4542,12 +4536,7 @@ data model does not have unsigned integer data types).
 The default value of `maskandscale` is `True`
 (automatic conversions are performed).
         """
-        if maskandscale:
-            self.scale = True
-            self.mask = True
-        else:
-            self.scale = False
-            self.mask = False
+        self.scale = self.mask = bool(maskandscale)
 
     def set_auto_scale(self,scale):
         """
@@ -4586,11 +4575,8 @@ data model does not have unsigned integer data types).
 The default value of `scale` is `True`
 (automatic conversions are performed).
         """
-        if scale:
-            self.scale = True
-        else:
-            self.scale = False
-
+        self.scale = bool(scale)
+        
     def set_auto_mask(self,mask):
         """
 **`set_auto_mask(self,mask)`**
@@ -4615,11 +4601,8 @@ set to missing_value.
 The default value of `mask` is `True`
 (automatic conversions are performed).
         """
-        if mask:
-            self.mask = True
-        else:
-            self.mask = False
-
+        self.mask = bool(mask)
+        
 
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
