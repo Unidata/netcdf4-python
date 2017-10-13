@@ -3451,7 +3451,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 # recreating the dataset if it is set later (after the enddef).
                 # Use nc_def_var_fill for NETCDF4* files.
                 if fill_value is not None:
-                    print 'fill_value given'
                     if not fill_value and isinstance(fill_value,bool):
                         # no filling for this variable if fill_value==False.
                         if not self._isprimitive:
@@ -3472,7 +3471,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             if not fillval.dtype.isnative: fillval.byteswap(True)
                             ierr = nc_def_var_fill(self._grpid, self._varid,\
                                     0, fillval.data)
-                            print 'ierr',ierr,'leave define mode'
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
                                 _ensure_nc_success(ierr)
