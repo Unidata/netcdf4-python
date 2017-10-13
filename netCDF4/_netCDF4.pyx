@@ -3236,13 +3236,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         around(scale*data)/scale, where scale = 2**bits, and bits is determined
         so that a precision of 0.1 is retained (in this case bits=4). Default is
         `None`, or no quantization.
-        
+
         **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
         value that the variable gets filled with before any data is written to it)
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
         in `netCDF4.default_fillvals`.
-
+        
         ***Note***: `netCDF4.Variable` instances should be created using the
         `netCDF4.Dataset.createVariable` method of a `netCDF4.Dataset` or
         `netCDF4.Group` instance, not using this class directly.
@@ -3254,6 +3254,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
+        cdef ndarray fillval
         # flag to indicate that orthogonal indexing is supported
         self.__orthogonal_indexing__ = True
         # if complevel is set to zero, set zlib to False.
@@ -3445,26 +3446,47 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 if ierr != NC_NOERR:
                     if grp.data_model != 'NETCDF4': grp._enddef()
                     _ensure_nc_success(ierr)
+                # set a fill value for this variable if fill_value keyword
+                # given.  This avoids the HDF5 overhead of deleting and
+                # recreating the dataset if it is set later (after the enddef).
+                # Use nc_def_var_fill for NETCDF4* files.
+                if fill_value is not None:
+                    print 'fill_value given'
+                    if not fill_value and isinstance(fill_value,bool):
+                        # no filling for this variable if fill_value==False.
+                        if not self._isprimitive:
+                            # no fill values for VLEN and compound variables
+                            # anyway.
+                            ierr = 0
+                        else:
+                            ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4': grp._enddef()
+                            _ensure_nc_success(ierr)
+                    else:
+                        # cast fill_value to type of variable.
+                        # also make sure it is written in native byte order
+                        # (the same as the data)
+                        if self._isprimitive or self._isenum:
+                            fillval = numpy.array(fill_value, self.dtype)
+                            if not fillval.dtype.isnative: fillval.byteswap(True)
+                            ierr = nc_def_var_fill(self._grpid, self._varid,\
+                                    0, fillval.data)
+                            print 'ierr',ierr,'leave define mode'
+                            if ierr != NC_NOERR:
+                                if grp.data_model != 'NETCDF4': grp._enddef()
+                                _ensure_nc_success(ierr)
+                        else:
+                            raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
             else:
                 if endian != 'native':
                     msg="only endian='native' allowed for NETCDF3 files"
                     raise RuntimeError(msg)
-            # set a fill value for this variable if fill_value keyword
-            # given.  This avoids the HDF5 overhead of deleting and
-            # recreating the dataset if it is set later (after the enddef).
-            if fill_value is not None:
-                if not fill_value and isinstance(fill_value,bool):
-                    # no filling for this variable if fill_value==False.
-                    if not self._isprimitive:
-                        # no fill values for VLEN and compound variables
-                        # anyway.
-                        ierr = 0
-                    else:
-                        ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
-                    if ierr != NC_NOERR:
-                        if grp.data_model != 'NETCDF4': grp._enddef()
-                        _ensure_nc_success(ierr)
-                else:
+                # for NETCDF3 files, set _FillValue attribute directly
+                if fill_value is not None:
+                    if isinstance(fill_value,bool):
+                        msg='cannot turn filling off for NETCDF3 files'
+                        raise ValueError(msg)
                     # cast fill_value to type of variable.
                     # also make sure it is written in native byte order
                     # (the same as the data)
@@ -3473,8 +3495,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         if not fillval.dtype.isnative: fillval.byteswap(True)
                         _set_att(self._grp, self._varid, '_FillValue',\
                                  fillval, xtype=xtype)
-                    else:
-                        raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
+                        grp._enddef()
+                        _ensure_nc_success(ierr)
             if least_significant_digit is not None:
                 self.least_significant_digit = least_significant_digit
             # leave define mode if not a NETCDF4 format file.
