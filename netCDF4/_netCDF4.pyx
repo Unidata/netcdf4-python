@@ -1628,10 +1628,14 @@ cdef _get_vars(group):
         free(varids) # free pointer holding variable ids.
     return variables
 
-cdef _ensure_nc_success(ierr, err_cls=RuntimeError):
+cdef _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None):
     # print netcdf error message, raise error.
     if ierr != NC_NOERR:
-        raise err_cls((<char *>nc_strerror(ierr)).decode('ascii'))
+        err_str = (<char *>nc_strerror(ierr)).decode('ascii')
+        if isinstance(err_cls, EnvironmentError):
+            raise err_cls(ierr, err_str, filename)
+        else:
+            raise err_cls(err_str)
 
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
@@ -2008,7 +2012,7 @@ references to the parent Dataset or Group.
         else:
             raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
 
-        _ensure_nc_success(ierr, IOError)
+        _ensure_nc_success(ierr, err_cls=IOError, filename=path)
 
         # data model and file format attributes
         self.data_model = _get_format(grpid)
