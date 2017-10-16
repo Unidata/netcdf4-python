@@ -4110,7 +4110,11 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # issue #725 - nc_inq_var_fill always returns no_fill=1
             # for NETCDF3 files.  Always assume filling is on for these files.
             if self._grp.data_model not in ['NETCDF4','NETCDF4_CLASSIC']:
-                no_fill = 0
+                # fix for nc_inq_var_fill with NETCDF3 files
+                # added in 4.5.1, before first release candidate.
+                if __netcdf4libversion__ < '4.5.1' or \
+                   __netcdf4libversion__.strip() == '4.5.1-development':
+                    no_fill = 0
             # if no_fill is not 1, and not a byte variable, then use default fill value.
             # from http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
             # "If you need a fill value for a byte variable, it is recommended

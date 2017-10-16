@@ -11,6 +11,8 @@
    `'standard'` or `'gregorian'`. If `None` (the default), check that the calendar
    attribute is present on each variable and values are unique across files raising
    a `ValueError` otherwise.
+ * workaround for issue 725 (no masking when data == _FillValue for NETCDF3
+   files).  Fix in netcdf-c forthcoming in netcdf-c 4.5.1.
 
  version 1.3.0 (tag v1.3.0rel)
 ==============================
