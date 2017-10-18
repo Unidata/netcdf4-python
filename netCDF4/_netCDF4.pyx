@@ -1632,7 +1632,7 @@ cdef _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None):
     # print netcdf error message, raise error.
     if ierr != NC_NOERR:
         err_str = (<char *>nc_strerror(ierr)).decode('ascii')
-        if isinstance(err_cls, EnvironmentError):
+        if issubclass(err_cls, EnvironmentError):
             raise err_cls(ierr, err_str, filename)
         else:
             raise err_cls(err_str)
