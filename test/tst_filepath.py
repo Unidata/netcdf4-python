@@ -3,6 +3,7 @@ import tempfile
 import unittest
 import netCDF4
 
+
 class test_filepath(unittest.TestCase):
 
     def setUp(self):
@@ -22,6 +23,12 @@ class test_filepath(unittest.TestCase):
         assert filepath.encode('cp1252') == filepatho.encode('cp1252')
         nc.close()
         shutil.rmtree(tmpdir)
+
+    def test_no_such_file_raises(self):
+        fname = 'not_a_nc_file.nc'
+        with self.assertRaisesRegexp(IOError, fname):
+            netCDF4.Dataset(fname, 'r')
+
 
 if __name__ == '__main__':
     unittest.main()
