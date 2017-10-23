@@ -3469,14 +3469,16 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         if grp.data_model != 'NETCDF4': grp._enddef()
                         _ensure_nc_success(ierr)
                 else:
-                    # cast fill_value to type of variable.
-                    # also make sure it is written in native byte order
-                    # (the same as the data)
-                    if self._isprimitive or self._isenum:
-                        fillval = numpy.array(fill_value, self.dtype)
-                        if not fillval.dtype.isnative: fillval.byteswap(True)
-                        _set_att(self._grp, self._varid, '_FillValue',\
-                                 fillval, xtype=xtype)
+                    if self._isprimitive or self._isenum or \
+                       (self._isvlen and self.dtype == str):
+                        if self._isvlen and self.dtype == str:
+                            _set_att(self._grp, self._varid, '_FillValue',\
+                               fill_value, xtype=xtype, force_ncstring=True)
+                        else:
+                            fillval = numpy.array(fill_value, self.dtype)
+                            if not fillval.dtype.isnative: fillval.byteswap(True)
+                            _set_att(self._grp, self._varid, '_FillValue',\
+                                     fillval, xtype=xtype)
                     else:
                         raise AttributeError("cannot set _FillValue attribute for VLEN or compound variable")
             if least_significant_digit is not None:
