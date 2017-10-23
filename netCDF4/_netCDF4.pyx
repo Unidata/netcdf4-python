@@ -3559,6 +3559,14 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         with nogil:
             ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
         _ensure_nc_success(ierr)
+        # issue #725 - nc_inq_var_fill always returns no_fill=1
+        # for NETCDF3 files.  Always assume filling is on for these files.
+        #if self._grp.data_model not in ['NETCDF4','NETCDF4_CLASSIC']:
+        #    # fix for nc_inq_var_fill with NETCDF3 files
+        #    # added in 4.5.1, before first release candidate.
+        #    if __netcdf4libversion__ < '4.5.1' or \
+        #      __netcdf4libversion__.strip() == '4.5.1-development':
+        #         no_fill = 0
         if self._isprimitive:
             if no_fill != 1:
                 try:
