@@ -3473,7 +3473,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                        (self._isvlen and self.dtype == str):
                         if self._isvlen and self.dtype == str:
                             _set_att(self._grp, self._varid, '_FillValue',\
-                               fill_value, xtype=xtype, force_ncstring=True)
+                               _tostr(fill_value), xtype=xtype, force_ncstring=True)
                         else:
                             fillval = numpy.array(fill_value, self.dtype)
                             if not fillval.dtype.isnative: fillval.byteswap(True)
