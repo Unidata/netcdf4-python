@@ -5,7 +5,7 @@ import tempfile
 import numpy as np
 from numpy import ma
 from numpy.testing import assert_array_equal
-from netCDF4 import Dataset
+from netCDF4 import Dataset, __netcdf4libversion__
 
 # Test use of vector of missing values.
 
@@ -53,8 +53,9 @@ class VectorMissingValues(unittest.TestCase):
         assert_array_equal(v[:], self.v)
 
         # issue 730
-        assert (v2[0]==u'first')
-        assert (v2[1]==u'<missing>')
+        if __netcdf4libversion__ >= '4.4.0':
+            assert (v2[0]==u'first')
+            assert (v2[1]==u'<missing>')
 
 
         f.close()
