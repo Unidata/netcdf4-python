@@ -53,8 +53,7 @@ class VectorMissingValues(unittest.TestCase):
         assert_array_equal(v[:], self.v)
 
         # issue 730
-        assert (v2[0]=='first')
-        print v2[1]
+        assert (v2[0]==u'first')
         assert (v2[1]==u'<missing>')
 
 
