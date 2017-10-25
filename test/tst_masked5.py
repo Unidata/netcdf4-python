@@ -53,6 +53,8 @@ class VectorMissingValues(unittest.TestCase):
         assert_array_equal(v[:], self.v)
 
         # issue 730
+        # this part fails with netcdf 4.1.3
+        # a bug in vlen strings?
         if __netcdf4libversion__ >= '4.4.0':
             assert (v2[0]==u'first')
             assert (v2[1]==u'<missing>')
