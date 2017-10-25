@@ -23,9 +23,12 @@ class VectorMissingValues(unittest.TestCase):
         f = Dataset(self.testfile, 'w')
         d = f.createDimension('x',6)
         v = f.createVariable('v', "i2", 'x')
+        # issue 730: set fill_value for vlen str vars
+        v2 = f.createVariable('v2',str,'x',fill_value='<missing>')
 
         v.missing_value = self.missing_values
         v[:] = self.v
+        v2[0]='first'
 
         f.close()
 
@@ -41,12 +44,18 @@ class VectorMissingValues(unittest.TestCase):
 
         f = Dataset(self.testfile)
         v = f.variables["v"]
+        v2 = f.variables["v2"]
         self.assertTrue(isinstance(v[:], ma.core.MaskedArray))
         assert_array_equal(v[:], self.v_ma)
         assert_array_equal(v[2],self.v[2]) # issue #624.
         v.set_auto_mask(False)
         self.assertTrue(isinstance(v[:], np.ndarray))
         assert_array_equal(v[:], self.v)
+
+        # issue 730
+        assert (v2[0]=='first')
+        assert (v2[1]=='<missing>')
+
 
         f.close()
 
