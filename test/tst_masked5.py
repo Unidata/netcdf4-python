@@ -54,6 +54,7 @@ class VectorMissingValues(unittest.TestCase):
 
         # issue 730
         assert (v2[0]=='first')
+        print v2[1]
         assert (v2[1]==u'<missing>')
 
 
