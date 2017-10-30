@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: netCDF4
-Version: 1.3.0
+Version: 1.3.1
 Author: Jeff Whitaker
 Author-email: jeffrey s whitaker at noaa gov
 Home-page: https://github.com/Unidata/netcdf4-python
