@@ -8,7 +8,7 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-9/28/2017: Version 1.3.1 (git master, not yet released).  Parallel IO support with MPI!
+11/01/2017: Version 1.3.1 released.  Parallel IO support with MPI!
 Requires that netcdf-c and hdf5 be built with MPI support, and [mpi4py](http://mpi4py.readthedocs.io/en/stable).
 To open a file for parallel access in a program running in an MPI environment
 using mpi4py, just use `parallel=True` when creating
