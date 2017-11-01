@@ -81,8 +81,7 @@ def check_api(inc_dirs):
             has_cdf5 = False
             for line in open(ncmetapath):
                 if line.startswith('#define NC_HAS_CDF5'):
-                    linesplit = line.split()
-                    has_cdf5 = bool(linesplit[2])
+                    has_cdf5 = bool(int(line.split()[2]))
         break
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
