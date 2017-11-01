@@ -1,9 +1,8 @@
 * create a release branch ('vX.Y.Zrel').  In the release branch...
-* make sure version number in setup.py and netCDF4/_netCDF4.pyx are up to date
+* make sure version number in PKG-INFO, setup.py and netCDF4/_netCDF4.pyx are up to date
   (in _netCDF4.pyx, change 'Version' in first line of docstring at top of file,
    and __version__ variable). If netcdftime module has any updates,
-  increment __version__ in netcdftime/_netcdftime.pyx. Update version number in 
-  PKG_INFO.
+  increment __version__ in netcdftime/_netcdftime.pyx. 
 * update Changelog and README.md as needed. 
 * commit and push all of the above changes.
 * install the module (python setup.py install), then run 'sh create_docs.sh'
