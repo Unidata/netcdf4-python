@@ -78,10 +78,9 @@ def check_api(inc_dirs):
 
         ncmetapath = os.path.join(d,'netcdf_meta.h')
         if os.path.exists(ncmetapath):
-            has_cdf5 = False
             for line in open(ncmetapath):
                 if line.startswith('#define NC_HAS_CDF5'):
-                    has_cdf5 = True
+                    has_cdf5_format = bool(int(line.split()[2]))
         break
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
@@ -463,6 +462,7 @@ netcdf_lib_version = getnetcdfvers(lib_dirs)
 if netcdf_lib_version is None:
     sys.stdout.write('unable to detect netcdf library version\n')
 else:
+    netcdf_lib_version = str(netcdf_lib_version)
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
 cmdclass = {}
@@ -484,6 +484,12 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
         has_cdf5_format, has_nc_open_mem, has_nc_par = check_api(inc_dirs)
+    # for netcdf 4.4.x CDF5 format is always enabled.
+    if netcdf_lib_version is not None and\
+       (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
+        has_cdf5_format = True
+
+    # disable parallel support if mpi4py not available.
     try:
         import mpi4py
     except ImportError:
@@ -554,7 +560,7 @@ else:
 
 setup(name="netCDF4",
       cmdclass=cmdclass,
-      version="1.3.1",
+      version="1.3.2",
       long_description="netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project is hosted on a `GitHub repository <https://github.com/Unidata/netcdf4-python>`_ where you may access the most up-to-date source.",
       author="Jeff Whitaker",
       author_email="jeffrey.s.whitaker@noaa.gov",
