@@ -5,7 +5,7 @@ import tempfile
 import numpy as np
 from numpy import ma
 from numpy.testing import assert_array_equal
-from netCDF4 import Dataset
+from netCDF4 import Dataset, __netcdf4libversion__
 
 # Test use of vector of missing values.
 
@@ -24,9 +24,12 @@ class VectorMissingValues(unittest.TestCase):
         f = Dataset(self.testfile, 'w')
         d = f.createDimension('x',6)
         v = f.createVariable('v', "i2", 'x')
+        # issue 730: set fill_value for vlen str vars
+        v2 = f.createVariable('v2',str,'x',fill_value=u'<missing>')
 
         v.missing_value = self.missing_values
         v[:] = self.v
+        v2[0]='first'
 
         f.close()
         f2 = Dataset(self.testfile2, 'w',format='NETCDF3_CLASSIC')
@@ -46,6 +49,7 @@ class VectorMissingValues(unittest.TestCase):
 
         f = Dataset(self.testfile)
         v = f.variables["v"]
+        v2 = f.variables["v2"]
         self.assertTrue(isinstance(v[:], ma.core.MaskedArray))
         assert_array_equal(v[:], self.v_ma)
         assert_array_equal(v[2],self.v[2]) # issue #624.
@@ -58,6 +62,14 @@ class VectorMissingValues(unittest.TestCase):
         f = Dataset(self.testfile2)
         # all elements should be masked since no data written
         assert(f.variables['v'][:].all() is ma.masked)
+        
+        # issue 730
+        # this part fails with netcdf 4.1.3
+        # a bug in vlen strings?
+        if __netcdf4libversion__ >= '4.4.0':
+            assert (v2[0]==u'first')
+            assert (v2[1]==u'<missing>')
+
         f.close()
 
 
