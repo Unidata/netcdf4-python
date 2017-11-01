@@ -485,7 +485,8 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
         has_cdf5_format, has_nc_open_mem, has_nc_par = check_api(inc_dirs)
     # for netcdf 4.4.x CDF5 format is always enabled.
-    if netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5":
+    if netcdf_lib_version is not None and\
+       (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
         has_cdf5_format = True
 
     # disable parallel support if mpi4py not available.
