@@ -1,4 +1,4 @@
-import glob, os, sys, unittest
+import glob, os, sys, unittest, struct
 from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__version__
 from netCDF4 import __has_cdf5_format__, __has_nc_inq_path__, __has_nc_par__
 
@@ -21,7 +21,7 @@ if __netcdf4libversion__ < '4.2.1' or __has_nc_par__:
 if not __has_nc_inq_path__:
     test_files.remove('tst_filepath.py')
     sys.stdout.write('not running tst_filepath.py ...\n')
-if not __has_cdf5_format__:
+if not __has_cdf5_format__ or struct.calcsize("P") < 8:
     test_files.remove('tst_cdf5.py')
     sys.stdout.write('not running tst_cdf5.py ...\n')
 

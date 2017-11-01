@@ -19,3 +19,4 @@ include netCDF4/__init__.py
 include netCDF4/_netCDF4.pyx
 include netCDF4/utils.py
 include include/netCDF4.pxi
+include include/mpi-compat.h

@@ -1,5 +1,5 @@
- version 1.3.1 (not yet released)
-===========================
+ version 1.3.1 (tag v1.3.1rel)
+=============================
  * add parallel IO capabilities.  netcdf-c and hdf5 must be compiled with MPI
    support, and mpi4py must be installed.  To open a file for parallel access,
    use `parallel=True` in `Dataset.__init__` and optionally pass the mpi4py Comm instance
@@ -13,6 +13,7 @@
    a `ValueError` otherwise.
  * workaround for issue 725 (no masking when data == _FillValue for NETCDF3
    files).  Fix in netcdf-c forthcoming in netcdf-c 4.5.1.
+ * Allow _FillValue to be set for vlen string variables (issue #730).
 
  version 1.3.0 (tag v1.3.0rel)
 ==============================
