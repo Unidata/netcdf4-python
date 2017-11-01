@@ -462,6 +462,7 @@ netcdf_lib_version = getnetcdfvers(lib_dirs)
 if netcdf_lib_version is None:
     sys.stdout.write('unable to detect netcdf library version\n')
 else:
+    netcdf_lib_version = str(netcdf_lib_version)
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
 cmdclass = {}
