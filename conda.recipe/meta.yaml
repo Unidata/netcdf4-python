@@ -19,14 +19,14 @@ requirements:
     - python
     - setuptools
     - cython
-    - numpy 
+    - numpy x.x
     - msinttypes  # [win and py<35]
     - hdf5 
     - libnetcdf 
   run:
     - python
     - setuptools
-    - numpy 
+    - numpy x.x
     - hdf5 
     - libnetcdf 
 
