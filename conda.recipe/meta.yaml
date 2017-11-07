@@ -21,14 +21,14 @@ requirements:
     - cython
     - numpy x.x
     - msinttypes  # [win and py<35]
-    - hdf5 1.8.17|1.8.17.*
-    - libnetcdf 4.4.*
+    - hdf5 
+    - libnetcdf 
   run:
     - python
     - setuptools
     - numpy x.x
-    - hdf5 1.8.17|1.8.17.*
-    - libnetcdf 4.4.*
+    - hdf5 
+    - libnetcdf 
 
 test:
   source_files:
