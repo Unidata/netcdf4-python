@@ -4784,16 +4784,20 @@ The default value of `mask` is `True`
         if self._isprimitive or self._iscompound or self._isenum:
             data = numpy.empty(shapeout, self.dtype)
             # strides all 1 or scalar variable, use get_vara (faster)
-            if sum(stride) == ndims or ndims == 0:
-                with nogil:
-                    ierr = nc_get_vara(self._grpid, self._varid,
-                                       startp, countp, data.data)
+            # if count contains a zero element, no data is being read
+            if 0 not in count:
+                if sum(stride) == ndims or ndims == 0:
+                    with nogil:
+                        ierr = nc_get_vara(self._grpid, self._varid,
+                                           startp, countp, data.data)
+                else:
+                    with nogil:
+                        ierr = nc_get_vars(self._grpid, self._varid,
+                                           startp, countp, stridep, data.data)
             else:
-                with nogil:
-                    ierr = nc_get_vars(self._grpid, self._varid,
-                                       startp, countp, stridep, data.data)
+                ierr = 0
             if ierr == NC_EINVALCOORDS:
-                raise IndexError
+                raise IndexError('index exceeds dimension bounds')
             elif ierr != NC_NOERR:
                 _ensure_nc_success(ierr)
         elif self._isvlen:
