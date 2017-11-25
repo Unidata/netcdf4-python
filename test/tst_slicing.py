@@ -194,5 +194,18 @@ class VariablesTestCase(unittest.TestCase):
         assert_equal(data.shape, shape)
         f.close()
 
+    def test_issue743(self):
+        nc = Dataset(self.file,'w',format='NETCDF3_CLASSIC')
+        td = nc.createDimension('t',None)
+        xd = nc.createDimension('x',33)
+        yd = nc.createDimension('y',4)
+        v = nc.createVariable('v',np.float,('t','x','y'))
+        nc.close()
+        nc = Dataset(self.file)
+        data = np.empty(nc['v'].shape, nc['v'].dtype)
+        data2 = nc['v'][...]
+        assert_array_equal(data,data2)
+        nc.close()
+
 if __name__ == '__main__':
     unittest.main()
