@@ -191,7 +191,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         elem = [elem]
     
     # ensure there is at most 1 ellipse
-    if sum((1 for e in elem if type(e) == type(Ellipsis))) > 1:
+    if elem.count(Ellipsis) > 1:
         raise IndexError("At most one ellipsis allowed in a slicing expression")
     
     # replace boolean arrays with sequences of integers.
