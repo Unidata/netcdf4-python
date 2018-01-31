@@ -1007,7 +1007,11 @@ __version__ = "1.3.2"
 
 # Initialize numpy
 import posixpath
-import netcdftime
+try:
+    import netcdftime
+    _has_netcdftime = True
+except ImportError:
+    _has_netcdftime = False
 import numpy
 import weakref
 import sys
@@ -5455,8 +5459,9 @@ def _to_ascii(bytestr):
 # extra utilities (formerly in utils.pyx)
 #----------------------------------------
 from datetime import timedelta, datetime, MINYEAR
-from netcdftime import _parse_date, microsec_units, millisec_units,\
-                       sec_units, min_units, hr_units, day_units
+if _has_netcdftime:
+    from netcdftime import _parse_date, microsec_units, millisec_units,\
+                           sec_units, min_units, hr_units, day_units
 
 # start of the gregorian calendar
 gregorian = datetime(1582,10,15)
@@ -5464,6 +5469,8 @@ gregorian = datetime(1582,10,15)
 def _dateparse(timestr):
     """parse a string of the form time-units since yyyy-mm-dd hh:mm:ss,
     return a datetime instance"""
+    if not _has_netcdftime:
+        raise ImportError('please install netcdftime to use this feature')
     # same as version in netcdftime, but returns a timezone naive
     # python datetime instance with the utc_offset included.
     timestr_split = timestr.split()
@@ -5584,6 +5591,8 @@ Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 returns a numeric time value, or an array of numeric time values 
 with approximately millisecond accuracy.
     """
+    if not _has_netcdftime:
+        raise ImportError('please install netcdftime to use this feature')
     calendar = calendar.lower()
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
@@ -5680,6 +5689,8 @@ datetime objects. The datetime instances
 do not contain a time-zone offset, even if the specified `units`
 contains one.
     """
+    if not _has_netcdftime:
+        raise ImportError('please install netcdftime to use this feature')
     calendar = calendar.lower()
     basedate = _dateparse(units)
     unit = units.split()[0].lower()
@@ -5778,6 +5789,8 @@ correspond to the closest dates.
 returns an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
     """
+    if not _has_netcdftime:
+        raise ImportError('please install netcdftime to use this feature')
     try: 
         nctime.units
     except AttributeError:
