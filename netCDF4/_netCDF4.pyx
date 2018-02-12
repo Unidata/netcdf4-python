@@ -988,7 +988,7 @@ from cpython.buffer cimport PyObject_GetBuffer, PyBuffer_Release, PyBUF_SIMPLE, 
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
-                    _out_array_shape, _sortbylist, _tostr, _safecast)
+                    _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 # try to use built-in ordered dict in python >= 2.7
 try:
     from collections import OrderedDict
@@ -4185,7 +4185,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         msg="data can only be assigned to VLEN variables using integer indices"
         # check to see that elem is a tuple of integers.
         # handle negative integers.
-        if isinstance(elem, int):
+        if _is_int(elem):
             if ndims > 1:
                 raise IndexError(msg)
             if elem < 0:
@@ -4198,7 +4198,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 raise IndexError("Illegal index")
             elemnew = []
             for n,e in enumerate(elem):
-                if not isinstance(e, int):
+                if not _is_int(e):
                     raise IndexError(msg)
                 elif e < 0:
                     enew = self.shape[n]+e
