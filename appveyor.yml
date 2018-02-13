@@ -38,6 +38,7 @@ install:
     - cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
     # for obvci_appveyor_python_build_env.cmd
     - cmd: conda update --all --yes
+    - cmd: conda config --system --add pinned_packages defaults::conda
     - cmd: conda install anaconda-client=1.6.3 --yes
     - cmd: conda install -c conda-forge --yes obvious-ci
     # for msinttypes and newer stuff

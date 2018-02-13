@@ -105,6 +105,21 @@ class TestScalarVlenString(unittest.TestCase):
         f.close()
         os.remove(FILE_NAME)
 
+class TestIntegerIndex(unittest.TestCase):
+    # issue 526
+    def runTest(self):
+        strtest = Dataset(FILE_NAME, 'w', format='NETCDF4')
+        strtest.createDimension('tenstrings', 10)
+        strtest.createVariable('tenstrings', str, ['tenstrings'])
+        strtest['tenstrings'][np.int32(5)] = 'asdf'
+        strtest['tenstrings'][6.0] = 'asdf'
+        strtest.close()
+        f = Dataset(FILE_NAME)
+        assert f.variables['tenstrings'][np.int32(5)] == 'asdf'
+        assert f.variables['tenstrings'][6.0] == 'asdf'
+        f.close()
+        os.remove(FILE_NAME)
+
 class TestObjectArrayIndexing(unittest.TestCase):
 
     def setUp(self):
