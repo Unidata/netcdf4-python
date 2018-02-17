@@ -6,6 +6,9 @@
    files (issue #743).
  * allow integer-like objects in VLEN slices (not just python ints, issue
    #526, pull request #757).
+ * treating _FillValue as a valid_min/valid_max was too surprising, despite
+   the fact the thet netcdf docs 'attribute best practices' suggests that
+   clients should to this.  Revert this change from issue #576 (issue #761).
 
  version 1.3.1 (tag v1.3.1rel)
 =============================
