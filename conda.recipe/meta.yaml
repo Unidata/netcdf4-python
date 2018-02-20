@@ -29,6 +29,7 @@ requirements:
     - numpy x.x
     - hdf5 
     - libnetcdf 
+    - cython
 
 test:
   source_files:
