@@ -41,6 +41,9 @@ Requires
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
+ - [netcdftime](https://github.com/Unidata/netcdftime), in order to use
+ the time and date handling utility functions (`netCDF4.num2date` and
+ `netCDF4.date2num`).
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
@@ -543,7 +546,9 @@ measure relative to a fixed date using a certain calendar, with units
 specified like `hours since YY-MM-DD hh:mm:ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called `netCDF4.num2date` and `netCDF4.date2num` are
-provided with this package to do just that.  Here's an example of how they
+provided with this package to do just that (starting with version 1.3.2, the 
+[netcdftime](https://github.com/Unidata/netcdftime) package must be installed
+separately for these functions to work).  Here's an example of how they
 can be used:
 
     :::python
@@ -5590,6 +5595,9 @@ Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
 
 returns a numeric time value, or an array of numeric time values 
 with approximately millisecond accuracy.
+
+Requires the [netcdftime](https://github.com/Unidata/netcdftime)
+external package.
     """
     if not _has_netcdftime:
         raise ImportError('please install netcdftime to use this feature')
@@ -5688,6 +5696,9 @@ objects which support some but not all the methods of 'real' python
 datetime objects. The datetime instances
 do not contain a time-zone offset, even if the specified `units`
 contains one.
+
+Requires the [netcdftime](https://github.com/Unidata/netcdftime)
+external package.
     """
     if not _has_netcdftime:
         raise ImportError('please install netcdftime to use this feature')
@@ -5788,6 +5799,9 @@ correspond to the closest dates.
 
 returns an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).
+
+Requires the [netcdftime](https://github.com/Unidata/netcdftime)
+external package.
     """
     if not _has_netcdftime:
         raise ImportError('please install netcdftime to use this feature')
