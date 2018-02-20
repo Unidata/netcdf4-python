@@ -3240,13 +3240,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         around(scale*data)/scale, where scale = 2**bits, and bits is determined
         so that a precision of 0.1 is retained (in this case bits=4). Default is
         `None`, or no quantization.
-        
+
         **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
         value that the variable gets filled with before any data is written to it)
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
         in `netCDF4.default_fillvals`.
-
+        
         ***Note***: `netCDF4.Variable` instances should be created using the
         `netCDF4.Dataset.createVariable` method of a `netCDF4.Dataset` or
         `netCDF4.Group` instance, not using this class directly.
@@ -4093,6 +4093,14 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             with nogil:
                 ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
             _ensure_nc_success(ierr)
+            # issue #725 - nc_inq_var_fill always returns no_fill=1
+            # for NETCDF3 files.  Always assume filling is on for these files.
+            if self._grp.data_model not in ['NETCDF4','NETCDF4_CLASSIC']:
+                # fix for nc_inq_var_fill with NETCDF3 files
+                # added in 4.5.1, before first release candidate.
+                if __netcdf4libversion__ < '4.5.1' or \
+                   __netcdf4libversion__.strip() == '4.5.1-development':
+                    no_fill = 0
             # if no_fill is not 1, and not a byte variable, then use default fill value.
             # from http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
             # "If you need a fill value for a byte variable, it is recommended

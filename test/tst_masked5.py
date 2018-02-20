@@ -14,6 +14,7 @@ class VectorMissingValues(unittest.TestCase):
     def setUp(self):
 
         self.testfile = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+        self.testfile2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
         self.missing_values = [-999,999,0]
         self.v    = np.array([-999,0,1,2,3,999], dtype = "i2")
@@ -31,6 +32,10 @@ class VectorMissingValues(unittest.TestCase):
         v2[0]='first'
 
         f.close()
+        f2 = Dataset(self.testfile2, 'w',format='NETCDF3_CLASSIC')
+        d2 = f.createDimension('x',6)
+        v2 = f.createVariable('v', "i4", 'x')
+        f2.close()
 
 
     def tearDown(self):
@@ -51,14 +56,19 @@ class VectorMissingValues(unittest.TestCase):
         v.set_auto_mask(False)
         self.assertTrue(isinstance(v[:], np.ndarray))
         assert_array_equal(v[:], self.v)
+        f.close()
 
+        # issue 725
+        f = Dataset(self.testfile2)
+        # all elements should be masked since no data written
+        assert(f.variables['v'][:].all() is ma.masked)
+        
         # issue 730
         # this part fails with netcdf 4.1.3
         # a bug in vlen strings?
         if __netcdf4libversion__ >= '4.4.0':
             assert (v2[0]==u'first')
             assert (v2[1]==u'<missing>')
-
 
         f.close()
 
