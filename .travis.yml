@@ -48,6 +48,7 @@ notifications:
   email: false
 
 before_install:
+  - pip install Cython # workaround for pip bug
   - pip install $DEPENDS
 
 install:
