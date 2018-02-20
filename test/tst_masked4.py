@@ -94,7 +94,9 @@ class SetValidMinMax(unittest.TestCase):
         assert_array_almost_equal(v2, self.v_scaled)
         self.assertTrue(np.all(self.v_ma.mask == v.mask))
         self.assertTrue(np.all(self.v_ma.mask == v2.mask))
-        self.assertTrue(np.all(self.v_ma.mask == v3.mask))
+        # treating _FillValue as valid_min/valid_max was
+        # too suprising, revert to old behaviour (issue #761)
+        #self.assertTrue(np.all(self.v_ma.mask == v3.mask))
         # check that underlying data is same as in netcdf file
         v = f.variables['v']
         v.set_auto_scale(False) 

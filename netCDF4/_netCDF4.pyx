@@ -4158,10 +4158,14 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             fval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
             if byte_type: fval = None
         if self.dtype.kind != 'S': # don't set mask for character data
-            if validmin is None and (fval is not None and fval <= 0):
-                validmin = fval
-            if validmax is None and (fval is not None and fval > 0):
-                validmax = fval
+            # issues #761 and #748:  setting valid_min/valid_max to the
+            # _FillVaue is too surprising for many users (despite the
+            # netcdf docs attribute best practices suggesting clients
+            # should do this).
+            #if validmin is None and (fval is not None and fval <= 0):
+            #    validmin = fval
+            #if validmax is None and (fval is not None and fval > 0):
+            #    validmax = fval
             if validmin is not None:
                 totalmask += data < validmin
             if validmax is not None:
