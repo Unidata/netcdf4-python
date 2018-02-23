@@ -29,13 +29,14 @@ requirements:
     - numpy x.x
     - hdf5 
     - libnetcdf 
+    - cython
 
 test:
   source_files:
     - test
   imports:
     - netCDF4
-    - netcdftime
+#   - netcdftime
   commands:
     - ncinfo -h
     - nc4tonc3 -h

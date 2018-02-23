@@ -11,7 +11,7 @@ addons:
 
 env:
   global:
-    - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0"
+    - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 netcdftime>=1.0.0a1"
     - NO_NET=1
     - MPI=0
 
@@ -48,6 +48,7 @@ notifications:
   email: false
 
 before_install:
+  - pip install Cython # workaround for pip bug
   - pip install $DEPENDS
 
 install:
