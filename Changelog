@@ -4,8 +4,6 @@
    #736, issue #713).
  * fixed reading of variables with zero-length dimensions in NETCDF3_CLASSIC
    files (issue #743).
- * netcdftime removed.  Raise ImportError in utilities that use it. 
-   Tests that use netcdftime only run if it is installed separately.
  * allow integer-like objects in VLEN slices (not just python ints, issue
    #526, pull request #757).
  * treating _FillValue as a valid_min/valid_max was too surprising, despite
