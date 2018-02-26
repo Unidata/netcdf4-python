@@ -4,11 +4,6 @@ from numpy.random import seed, randint
 from numpy.testing import assert_array_equal, assert_equal
 from numpy import ma
 import tempfile, unittest, os, datetime
-try:
-    import netcdftime
-    _has_netcdftime = True
-except ImportError:
-    _has_netcdftime = False
 
 nx=100; ydim=5; zdim=10
 nfiles = 10
@@ -106,28 +101,27 @@ class NonuniformTimeTestCase(unittest.TestCase):
 
 
     def runTest(self):
-        if _has_netcdftime:
-            # Get the real dates
-            dates = []
-            for file in self.files:
-                f = Dataset(file)
-                t = f.variables['time']
-                dates.extend(num2date(t[:], t.units, t.calendar))
-                f.close()
-
-            # Compare with the MF dates
-            f = MFDataset(self.files,check=True)
+        # Get the real dates
+        dates = []
+        for file in self.files:
+            f = Dataset(file)
             t = f.variables['time']
-            mfdates = num2date(t[:], t.units, t.calendar)
-
-            T = MFTime(t)
-            assert_equal(len(T), len(t))
-            assert_equal(T.shape, t.shape)
-            assert_equal(T.dimensions, t.dimensions)
-            assert_equal(T.typecode(), t.typecode())
-            assert_array_equal(num2date(T[:], T.units, T.calendar), dates)
-            assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
+            dates.extend(num2date(t[:], t.units, t.calendar))
             f.close()
+
+        # Compare with the MF dates
+        f = MFDataset(self.files,check=True)
+        t = f.variables['time']
+        mfdates = num2date(t[:], t.units, t.calendar)
+
+        T = MFTime(t)
+        assert_equal(len(T), len(t))
+        assert_equal(T.shape, t.shape)
+        assert_equal(T.dimensions, t.dimensions)
+        assert_equal(T.typecode(), t.typecode())
+        assert_array_equal(num2date(T[:], T.units, T.calendar), dates)
+        assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()

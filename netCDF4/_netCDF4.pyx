@@ -41,9 +41,9 @@ Requires
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
- - [netcdftime](https://github.com/Unidata/netcdftime), in order to use
- the time and date handling utility functions (`netCDF4.num2date` and
- `netCDF4.date2num`).
+ - [netcdftime](https://github.com/Unidata/netcdftime) for 
+ the time and date handling utility functions (`netCDF4.num2date`,
+ `netCDF4.date2num` and `netCDF4.date2index`).
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
@@ -548,7 +548,7 @@ awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called `netCDF4.num2date` and `netCDF4.date2num` are
 provided with this package to do just that (starting with version 1.3.2, the 
 [netcdftime](https://github.com/Unidata/netcdftime) package must be installed
-separately for these functions to work).  Here's an example of how they
+separately).  Here's an example of how they
 can be used:
 
     :::python
@@ -1012,11 +1012,7 @@ __version__ = "1.3.2"
 
 # Initialize numpy
 import posixpath
-try:
-    import netcdftime
-    _has_netcdftime = True
-except ImportError:
-    _has_netcdftime = False
+from netcdftime import num2date, date2num, date2index
 import numpy
 import weakref
 import sys
@@ -5532,128 +5528,6 @@ returns a numpy string array with datatype `'UN'` and shape
     a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
     a.shape = b.shape[:-1]
     return a
-
-def date2num(dates,units,calendar='standard'):
-    """
-**`date2num(dates,units,calendar='standard')`**
-
-Return numeric time values given datetime objects. The units
-of the numeric time values are described by the `netCDF4.units` argument
-and the `netCDF4.calendar` keyword. The datetime objects must
-be in UTC with no time-zone offset.  If there is a
-time-zone offset in `units`, it will be applied to the
-returned numeric values.
-
-**`dates`**: A datetime object or a sequence of datetime objects.
-The datetime objects should not include a time-zone offset.
-
-**`units`**: a string of the form `<time units> since <reference time>`
-describing the time units. `<time units>` can be days, hours, minutes,
-seconds, milliseconds or microseconds. `<reference time>` is the time
-origin.  
-
-**`calendar`**: describes the calendar used in the time calculations.
-All the values currently defined in the 
-[CF metadata convention](http://cfconventions.org)
-Valid calendars `'standard', 'gregorian', 'proleptic_gregorian'
-'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'`.
-Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
-
-returns a numeric time value, or an array of numeric time values 
-with approximately millisecond accuracy.
-
-Requires the [netcdftime](https://github.com/Unidata/netcdftime)
-external package.
-    """
-    if not _has_netcdftime:
-        raise ImportError('please install netcdftime to use this feature')
-    else:
-        return netcdftime.date2num(dates,units,calendar=calendar)
-
-def num2date(times,units,calendar='standard'):
-    """
-**`num2date(times,units,calendar='standard')`**
-
-Return datetime objects given numeric time values. The units
-of the numeric time values are described by the `units` argument
-and the `calendar` keyword. The returned datetime objects represent
-UTC with no time-zone offset, even if the specified
-`units` contain a time-zone offset.
-
-**`times`**: numeric time values.
-
-**`units`**: a string of the form `<time units> since <reference time>`
-describing the time units. `<time units>` can be days, hours, minutes,
-seconds, milliseconds or microseconds. `<reference time>` is the time
-origin.
-
-**`calendar`**: describes the calendar used in the time calculations.
-All the values currently defined in the 
-[CF metadata convention](http://cfconventions.org)
-Valid calendars `'standard', 'gregorian', 'proleptic_gregorian'
-'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'`.
-Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
-
-returns a datetime instance, or an array of datetime instances with
-approximately millisecond accuracy.
-
-***Note***: The datetime instances returned are 'real' python datetime
-objects if `calendar='proleptic_gregorian'`, or
-`calendar='standard'` or `'gregorian'`
-and the date is after the breakpoint between the Julian and
-Gregorian calendars (1582-10-15). Otherwise, they are 'phony' datetime
-objects which support some but not all the methods of 'real' python
-datetime objects. The datetime instances
-do not contain a time-zone offset, even if the specified `units`
-contains one.
-
-Requires the [netcdftime](https://github.com/Unidata/netcdftime)
-external package.
-    """
-    if not _has_netcdftime:
-        raise ImportError('please install netcdftime to use this feature')
-    else:
-        return netcdftime.num2date(times,units,calendar=calendar)
-
-def date2index(dates, nctime, calendar=None, select='exact'):
-    """
-**`date2index(dates, nctime, calendar=None, select='exact')`**
-
-Return indices of a netCDF time variable corresponding to the given dates.
-
-**`dates`**: A datetime object or a sequence of datetime objects.
-The datetime objects should not include a time-zone offset.
-
-**`nctime`**: A netCDF time variable object. The nctime object must have a
-`units` attribute.
-
-**`calendar`**: describes the calendar used in the time calculations.
-All the values currently defined in the 
-[CF metadata convention](http://cfconventions.org)
-Valid calendars `'standard', 'gregorian', 'proleptic_gregorian'
-'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'`.
-Default is `'standard'`, which is a mixed Julian/Gregorian calendar.
-If `calendar` is None, its value is given by `nctime.calendar` or
-`standard` if no such attribute exists.
-
-**`select`**: `'exact', 'before', 'after', 'nearest'`
-The index selection method. `exact` will return the indices perfectly
-matching the dates given. `before` and `after` will return the indices
-corresponding to the dates just before or just after the given dates if
-an exact match cannot be found. `nearest` will return the indices that
-correspond to the closest dates.
-
-returns an index (indices) of the netCDF time variable corresponding
-to the given datetime object(s).
-
-Requires the [netcdftime](https://github.com/Unidata/netcdftime)
-external package.
-    """
-    if not _has_netcdftime:
-        raise ImportError('please install netcdftime to use this feature')
-    else:
-        return netcdftime.date2index(dates, nctime, calendar=calendar,
-                select=select)
 
 class MFDataset(Dataset):
     """
