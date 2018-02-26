@@ -547,7 +547,7 @@ specified like `hours since YY-MM-DD hh:mm:ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called `netCDF4.num2date` and `netCDF4.date2num` are
 provided with this package to do just that (starting with version 1.3.2, the 
-[netcdftime](https://github.com/Unidata/netcdftime) package must be installed
+[netcdftime](https://unidata.github.io/netcdftime) package must be installed
 separately).  Here's an example of how they
 can be used:
 
