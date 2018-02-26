@@ -23,6 +23,7 @@ requirements:
     - msinttypes  # [win and py<35]
     - hdf5 
     - libnetcdf 
+    - netcdftime
   run:
     - python
     - setuptools
@@ -30,6 +31,7 @@ requirements:
     - hdf5 
     - libnetcdf 
     - cython
+    - netcdftime
 
 test:
   source_files:
