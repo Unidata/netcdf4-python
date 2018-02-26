@@ -36,7 +36,7 @@ test:
     - test
   imports:
     - netCDF4
-#   - netcdftime
+    - netcdftime
   commands:
     - ncinfo -h
     - nc4tonc3 -h
