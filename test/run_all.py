@@ -1,11 +1,6 @@
 import glob, os, sys, unittest, struct
 from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__version__
 from netCDF4 import __has_cdf5_format__, __has_nc_inq_path__, __has_nc_par__
-try:
-    import netcdftime
-    _has_netcdftime = True
-except ImportError:
-    _has_netcdftime = False
 
 # can also just run
 # python -m unittest discover . 'tst*py'
@@ -29,9 +24,6 @@ if not __has_nc_inq_path__:
 if not __has_cdf5_format__ or struct.calcsize("P") < 8:
     test_files.remove('tst_cdf5.py')
     sys.stdout.write('not running tst_cdf5.py ...\n')
-if not _has_netcdftime:
-    test_files.remove('tst_netcdftime.py')
-    sys.stdout.write('not running tst_netcdftime.py ...\n')
 
 # Don't run tests that require network connectivity
 if os.getenv('NO_NET'):
