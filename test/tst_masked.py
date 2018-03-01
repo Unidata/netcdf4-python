@@ -116,7 +116,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         f.createDimension('dimension', 2)
         f.createVariable('variable', NP.float32, dimensions=('dimension',))
         f['variable'][:] = NP.nan
-        data = f['variable'][:] # should not raise and error
+        data = f['variable'][:] # should not raise an error
         f.close()
 
 if __name__ == '__main__':
