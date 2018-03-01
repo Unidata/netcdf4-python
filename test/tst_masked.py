@@ -110,6 +110,14 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         # added test for issue 515
         assert(file['v'][0] is NP.ma.masked)
         file.close()
+        # issue 766
+        NP.seterr(invalid='raise')
+        f = netCDF4.Dataset(self.file, 'w')
+        f.createDimension('dimension', 2)
+        f.createVariable('variable', NP.float32, dimensions=('dimension',))
+        f['variable'][:] = NP.nan
+        data = f['variable'][:] # should not raise an error
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
