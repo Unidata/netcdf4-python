@@ -1889,17 +1889,18 @@ references to the parent Dataset or Group.
             IF HAS_NC_PAR != 1:
                 msg='parallel mode requires MPI enabled netcdf-c'
                 raise ValueError(msg)
-            if format != 'NETCDF4':
-                msg='parallel mode only works with format=NETCDF4'
-                raise ValueError(msg)
-            if comm is not None:
-                mpicomm = comm.ob_mpi
-            else:
-                mpicomm = MPI_COMM_WORLD
-            if info is not None:
-                mpiinfo = info.ob_mpi
-            else:
-                mpiinfo = MPI_INFO_NULL
+            ELSE:
+                if format != 'NETCDF4':
+                    msg='parallel mode only works with format=NETCDF4'
+                    raise ValueError(msg)
+                if comm is not None:
+                    mpicomm = comm.ob_mpi
+                else:
+                    mpicomm = MPI_COMM_WORLD
+                if info is not None:
+                    mpiinfo = info.ob_mpi
+                else:
+                    mpiinfo = MPI_INFO_NULL
 
         if mode == 'w':
             _set_default_format(format=format)
