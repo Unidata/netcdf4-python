@@ -1336,6 +1336,8 @@ cdef _set_att(grp, int varid, name, value,\
     # if array contains unicode strings, and data model is NETCDF4, 
     # write as a string.
     if value_arr.dtype.char in ['S','U']:
+        # force array of strings if array has multiple elements (issue #770)
+        if value_arr.size > 1: force_ncstring=True
         if not is_netcdf3 and force_ncstring and value_arr.size > 1:
             N = value_arr.size
             string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
