@@ -33,7 +33,9 @@ class UnicodeTestCase(unittest.TestCase):
         # check accessing individual attributes.
         assert f.attribute1 == ATT1
         assert f.attribute2 == ATT2
-        assert f.attribute3 == ''.join(ATT3)
+        #assert f.attribute3 == ''.join(ATT3)
+        # behavior changed pull request #771
+        assert f.attribute3 == ATT3
         f.close()
 
 if __name__ == '__main__':
