@@ -1339,7 +1339,7 @@ cdef _set_att(grp, int varid, name, value,\
         # force array of strings if array has multiple elements (issue #770)
         N = value_arr.size
         if N > 1: force_ncstring=True
-        if not is_netcdf3 and force_ncstring and value_arr.size > 1:
+        if not is_netcdf3 and force_ncstring and N > 1:
             string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
             if not string_ptrs:
                 raise MemoryError()
@@ -1354,6 +1354,10 @@ cdef _set_att(grp, int varid, name, value,\
             finally:
                 PyMem_Free(string_ptrs)
         else:
+            # don't allow string array attributes in NETCDF3 files.
+            if is_netcdf3 and N > 1:
+                msg='array string attributes can only be written with NETCDF4'
+                raise IOError(msg)
             if not value_arr.shape:
                 dats = _strencode(value_arr.item())
             else:

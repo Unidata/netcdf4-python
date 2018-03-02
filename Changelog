@@ -14,8 +14,8 @@
  * fix 'Unreachable code' cython warning (issue #767).
  * Change behavior of string attributes so that nc.stringatt = ['foo','bar']
    produces an vlen string array attribute in NETCDF4, instead of concatenating
-   into a single string ('foobar').  In NETCDF3/NETCDF4_CLASSIC, 'foobar' will
-   still be produced. Issue #770.
+   into a single string ('foobar').  In NETCDF3/NETCDF4_CLASSIC, an IOError
+   is now raised, instead of writing 'foobar'. Issue #770.
  
 
  version 1.3.1 (tag v1.3.1rel)
