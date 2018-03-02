@@ -11,6 +11,7 @@
    clients should to this.  Revert this change from issue #576 (issue #761).
  * remove netcdftime, since it is now a separate package. date2num, num2date
    and date2index still importable from netCDF4.
+ * fix 'Unreachable code' cython warning (issue #767).
  
 
  version 1.3.1 (tag v1.3.1rel)
