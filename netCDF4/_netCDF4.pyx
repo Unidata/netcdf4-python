@@ -2529,8 +2529,7 @@ with the same name as one of the reserved python attributes."""
 
 set a netCDF dataset or group string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
-`NC_STRING` if the file format is `NETCDF4`.
-Use if you need to set an attribute to an array of variable-length strings."""
+`NC_STRING` if the file format is `NETCDF4`."""
         cdef nc_type xtype
         xtype=-99
         if self.data_model != 'NETCDF4':
