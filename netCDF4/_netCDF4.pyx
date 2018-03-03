@@ -1336,8 +1336,10 @@ cdef _set_att(grp, int varid, name, value,\
     # if array contains unicode strings, and data model is NETCDF4, 
     # write as a string.
     if value_arr.dtype.char in ['S','U']:
-        if not is_netcdf3 and force_ncstring and value_arr.size > 1:
-            N = value_arr.size
+        # force array of strings if array has multiple elements (issue #770)
+        N = value_arr.size
+        if N > 1: force_ncstring=True
+        if not is_netcdf3 and force_ncstring and N > 1:
             string_ptrs = <char**>PyMem_Malloc(N * sizeof(char*))
             if not string_ptrs:
                 raise MemoryError()
@@ -1352,6 +1354,10 @@ cdef _set_att(grp, int varid, name, value,\
             finally:
                 PyMem_Free(string_ptrs)
         else:
+            # don't allow string array attributes in NETCDF3 files.
+            if is_netcdf3 and N > 1:
+                msg='array string attributes can only be written with NETCDF4'
+                raise IOError(msg)
             if not value_arr.shape:
                 dats = _strencode(value_arr.item())
             else:
@@ -2523,8 +2529,7 @@ with the same name as one of the reserved python attributes."""
 
 set a netCDF dataset or group string attribute using name,value pair.
 Use if you need to ensure that a netCDF attribute is created with type
-`NC_STRING` if the file format is `NETCDF4`.
-Use if you need to set an attribute to an array of variable-length strings."""
+`NC_STRING` if the file format is `NETCDF4`."""
         cdef nc_type xtype
         xtype=-99
         if self.data_model != 'NETCDF4':

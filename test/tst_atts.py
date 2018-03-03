@@ -31,8 +31,11 @@ INTATT = 1
 FLOATATT = math.pi
 SEQATT = NP.arange(10)
 STRINGSEQATT = ['mary ','','had ','a ','little ','lamb',]
+#ATTDICT = {'stratt':STRATT,'floatatt':FLOATATT,'seqatt':SEQATT,
+#           'stringseqatt':''.join(STRINGSEQATT), # changed in issue #770
+#           'emptystratt':EMPTYSTRATT,'intatt':INTATT}
 ATTDICT = {'stratt':STRATT,'floatatt':FLOATATT,'seqatt':SEQATT,
-           'stringseqatt':''.join(STRINGSEQATT),
+           'stringseqatt':STRINGSEQATT,
            'emptystratt':EMPTYSTRATT,'intatt':INTATT}
 
 class VariablesTestCase(unittest.TestCase):
@@ -126,7 +129,8 @@ class VariablesTestCase(unittest.TestCase):
         assert f.stratt == STRATT
         assert f.emptystratt == EMPTYSTRATT
         assert f.seqatt.tolist() == SEQATT.tolist()
-        assert f.stringseqatt == ''.join(STRINGSEQATT)
+        #assert f.stringseqatt == ''.join(STRINGSEQATT) # issue 770
+        assert f.stringseqatt == STRINGSEQATT
         assert f.stringseqatt_array == STRINGSEQATT
         assert f.getncattr('file_format') == 'netcdf4_format'
         # variable attributes.
@@ -141,7 +145,8 @@ class VariablesTestCase(unittest.TestCase):
         assert v.floatatt == FLOATATT
         assert v.stratt == STRATT
         assert v.seqatt.tolist() == SEQATT.tolist()
-        assert v.stringseqatt == ''.join(STRINGSEQATT)
+        #assert v.stringseqatt == ''.join(STRINGSEQATT) # issue 770
+        assert v.stringseqatt == STRINGSEQATT
         assert v.stringseqatt_array == STRINGSEQATT
         assert v.getncattr('ndim') == 'three'
         assert v.getncattr('foo') == 1
@@ -178,7 +183,8 @@ class VariablesTestCase(unittest.TestCase):
         assert g.stratt == STRATT
         assert g.emptystratt == EMPTYSTRATT
         assert g.seqatt.tolist() == SEQATT.tolist()
-        assert g.stringseqatt == ''.join(STRINGSEQATT)
+        #assert g.stringseqatt == ''.join(STRINGSEQATT) # issue 770
+        assert g.stringseqatt == STRINGSEQATT
         assert g.stringseqatt_array == STRINGSEQATT
         for key,val in ATTDICT.items():
             if type(val) == NP.ndarray:
@@ -190,7 +196,8 @@ class VariablesTestCase(unittest.TestCase):
         assert v1.stratt == STRATT
         assert v1.emptystratt == EMPTYSTRATT
         assert v1.seqatt.tolist() == SEQATT.tolist()
-        assert v1.stringseqatt == ''.join(STRINGSEQATT)
+        #assert v1.stringseqatt == ''.join(STRINGSEQATT) # issue 770
+        assert v1.stringseqatt == STRINGSEQATT
         assert v1.stringseqatt_array == STRINGSEQATT
         assert getattr(v1,'nonexistantatt',None) == None
         f.close()
