@@ -5431,7 +5431,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
         ierr = nc_inq_enum(_grpid, xtype, enum_namstring, &base_xtype, NULL,\
                 &nmembers)
     _ensure_nc_success(ierr)
-    name = enum_namstring.decode('utf-8')
+    enum_name = enum_namstring.decode('utf-8')
     try:
         datatype = _nctonptype[base_xtype]
         if endian is not None: datatype = endian + datatype
@@ -5447,7 +5447,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
         _ensure_nc_success(ierr)
         name = enum_namstring.decode('utf-8')
         enum_dict[name] = int(enum_val)
-    return EnumType(group, dt, name, enum_dict, typeid=xtype)
+    return EnumType(group, dt, enum_name, enum_dict, typeid=xtype)
 
 cdef _strencode(pystr,encoding=None):
     # encode a string into bytes.  If already bytes, do nothing.
