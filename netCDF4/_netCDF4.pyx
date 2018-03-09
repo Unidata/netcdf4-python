@@ -3322,9 +3322,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self._isvlen = False
         self._isenum = False
         if user_type:
-            # make sure this a valid datatype is defined in the Group
-            ierr = nc_inq_type(self._grpid, datatype._nc_type, namstring, NULL)
-            _ensure_nc_success(ierr)
             if isinstance(datatype, CompoundType):
                 self._iscompound = True
                 self._cmptype = datatype
@@ -3344,6 +3341,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 datatype = VLType(self._grp, str, None)
                 self._vltype = datatype
             xtype = datatype._nc_type
+            # make sure this a valid user defined datatype defined in this Group
+            ierr = nc_inq_type(self._grpid, xtype, namstring, NULL)
+            _ensure_nc_success(ierr)
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype.dtype
         elif datatype.str[1:] in _supportedtypes:
