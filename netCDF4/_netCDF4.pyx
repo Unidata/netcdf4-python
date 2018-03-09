@@ -5404,7 +5404,7 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
         ierr = nc_def_enum(grp._grpid, xtype_tmp, namstring, &xtype);
         _ensure_nc_success(ierr)
     else:
-        msg="unsupported datatype specified for Enum (must be integer)"
+        msg="unsupported datatype specified for ENUM (must be integer)"
         raise KeyError(msg)
     # insert named members into enum type.
     for field in enum_dict:
@@ -5437,7 +5437,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
         if endian is not None: datatype = endian + datatype
         dt = numpy.dtype(datatype) # see if it is a primitive type
     except KeyError:
-        raise KeyError("unsupported component type for VLEN")
+        raise KeyError("unsupported component type for ENUM")
     # loop over members, build dict.
     enum_dict = {}
     for nmem from 0 <= nmem < nmembers:
