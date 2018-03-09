@@ -3263,6 +3263,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         `netCDF4.Group` instance, not using this class directly.
         """
         cdef int ierr, ndims, icontiguous, ideflate_level, numdims, _grpid
+        cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
         cdef int *dimids
@@ -3340,6 +3341,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 datatype = VLType(self._grp, str, None)
                 self._vltype = datatype
             xtype = datatype._nc_type
+            # make sure this a valid user defined datatype defined in this Group
+            ierr = nc_inq_type(self._grpid, xtype, namstring, NULL)
+            _ensure_nc_success(ierr)
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype.dtype
         elif datatype.str[1:] in _supportedtypes:
@@ -5404,7 +5408,7 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
         ierr = nc_def_enum(grp._grpid, xtype_tmp, namstring, &xtype);
         _ensure_nc_success(ierr)
     else:
-        msg="unsupported datatype specified for Enum (must be integer)"
+        msg="unsupported datatype specified for ENUM (must be integer)"
         raise KeyError(msg)
     # insert named members into enum type.
     for field in enum_dict:
@@ -5431,13 +5435,13 @@ cdef _read_enum(group, nc_type xtype, endian=None):
         ierr = nc_inq_enum(_grpid, xtype, enum_namstring, &base_xtype, NULL,\
                 &nmembers)
     _ensure_nc_success(ierr)
-    name = enum_namstring.decode('utf-8')
+    enum_name = enum_namstring.decode('utf-8')
     try:
         datatype = _nctonptype[base_xtype]
         if endian is not None: datatype = endian + datatype
         dt = numpy.dtype(datatype) # see if it is a primitive type
     except KeyError:
-        raise KeyError("unsupported component type for VLEN")
+        raise KeyError("unsupported component type for ENUM")
     # loop over members, build dict.
     enum_dict = {}
     for nmem from 0 <= nmem < nmembers:
@@ -5447,7 +5451,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
         _ensure_nc_success(ierr)
         name = enum_namstring.decode('utf-8')
         enum_dict[name] = int(enum_val)
-    return EnumType(group, dt, name, enum_dict, typeid=xtype)
+    return EnumType(group, dt, enum_name, enum_dict, typeid=xtype)
 
 cdef _strencode(pystr,encoding=None):
     # encode a string into bytes.  If already bytes, do nothing.

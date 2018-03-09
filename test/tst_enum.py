@@ -12,7 +12,7 @@ ENUM_BASETYPE = np.int8
 VAR_NAME = 'primary_cloud'
 ENUM_DICT = {u'Altocumulus': 7, u'Missing': 127, u'Stratus': 2, u'Clear': 0,
 u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5, u'Cumulonimbus': 1,
-u'Stratocumulus': 3} 
+u'Stratocumulus': 3}
 datain = np.array([ENUM_DICT['Clear'],ENUM_DICT['Stratus'],ENUM_DICT['Cumulus'],\
                    ENUM_DICT['Missing'],ENUM_DICT['Cumulonimbus']],dtype=ENUM_BASETYPE)
 datain_masked = np.ma.masked_values(datain,ENUM_DICT['Missing'])
@@ -51,6 +51,7 @@ class EnumTestCase(unittest.TestCase):
         v = f.variables[VAR_NAME]
         assert v.datatype.enum_dict == ENUM_DICT
         assert list(f.enumtypes.keys()) == [ENUM_NAME]
+        assert f.enumtypes[ENUM_NAME].name == ENUM_NAME # issue 775
         assert f.enumtypes[ENUM_NAME].dtype == ENUM_BASETYPE
         assert v._FillValue == ENUM_DICT['Missing']
         v.set_auto_mask(False)
