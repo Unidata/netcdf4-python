@@ -3263,6 +3263,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         `netCDF4.Group` instance, not using this class directly.
         """
         cdef int ierr, ndims, icontiguous, ideflate_level, numdims, _grpid
+        cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
         cdef int *dimids
@@ -3321,6 +3322,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self._isvlen = False
         self._isenum = False
         if user_type:
+            # make sure this a valid datatype is defined in the Group
+            ierr = nc_inq_type(self._grpid, datatype._nc_type, namstring, NULL)
+            _ensure_nc_success(ierr)
             if isinstance(datatype, CompoundType):
                 self._iscompound = True
                 self._cmptype = datatype
