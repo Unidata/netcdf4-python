@@ -5055,7 +5055,7 @@ def _set_viewdtype(dt):
         fmt = dt.fields[name][0]
         if fmt.kind == 'V':
             if fmt.shape == ():
-                dtx = _set_alignment(dt.fields[name][0])
+                dtx = _set_viewdtype(dt.fields[name][0])
             else:
                 if fmt.subdtype[0].kind == 'V': # structured dtype
                     raise TypeError('nested structured dtype arrays not supported')
