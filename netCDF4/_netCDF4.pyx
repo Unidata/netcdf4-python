@@ -5063,12 +5063,9 @@ def _set_viewdtype(dt):
             else:
                 if fmt.subdtype[0].kind == 'V': # structured dtype
                     raise TypeError('nested structured dtype arrays not supported')
-                elif fmt.subdtype[0].kind == 'S':
-                    if len(dt.fields[name][0].shape) == 1:
-                        lenchar = dt.fields[name][0].shape[0]
-                        dtx = numpy.dtype('S%s' % lenchar)
-                    else:
-                        dtx = dt.fields[name][0]
+                elif fmt.subdtype[0].kind == 'S' and len(dt.fields[name][0].shape) == 1:
+                    lenchar = dt.fields[name][0].shape[0]
+                    dtx = numpy.dtype('S%s' % lenchar)
                 else:
                     dtx = dt.fields[name][0]
         else:
