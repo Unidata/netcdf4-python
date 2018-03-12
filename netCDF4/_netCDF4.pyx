@@ -4394,12 +4394,16 @@ cannot be safely cast to variable data type""" % attname
         # automatic conversion to masked array using
         # valid_min,validmax,missing_value,_Fill_Value.
         # ignore if not a primitive or enum data type (not compound or vlen).
-        if self.mask and (self._isprimitive or self._isenum):
-            # use missing_value as fill value.
-            # if no missing value set, use _FillValue.
-            if hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
-                # if not masked, create a masked array.
-                if not ma.isMA(data): data = self._toma(data)
+
+        # remove this since it causes suprising behaviour (issue #777)
+        # (missing_value should apply to scaled data, not unscaled data)
+        #if self.mask and (self._isprimitive or self._isenum):
+        #    # use missing_value as fill value.
+        #    # if no missing value set, use _FillValue.
+        #    if hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
+        #        # if not masked, create a masked array.
+        #        if not ma.isMA(data): data = self._toma(data)
+
         if self.scale and self._isprimitive:
             # pack non-masked values using scale_factor and add_offset
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
