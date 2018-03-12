@@ -4056,8 +4056,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # if _Encoding att set (issue #773)
         if self._iscompound and \
            self._cmptype.dtype != self._cmptype.dtype_view:
-            encoding = getattr(self,'_Encoding',None)
-            if encoding is not None:
+            if getattr(self,'_Encoding',None) is not None:
                 data = data.view(self._cmptype.dtype_view)
         return data
 
@@ -4318,8 +4317,7 @@ cannot be safely cast to variable data type""" % attname
         if self._iscompound and \
            self._cmptype.dtype != self._cmptype.dtype_view and \
            data.dtype == self._cmptype.dtype_view:
-            encoding = getattr(self,'_Encoding',None)
-            if encoding is not None:
+            if getattr(self,'_Encoding',None) is not None:
                 data = data.view(self._cmptype.dtype)
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
