@@ -4052,6 +4052,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                     if matchdim:
                         data = chartostring(data, encoding=encoding)
 
+        # if structure array contains char arrays, return view as strings
+        # if _Encoding att set (issue #773)
+        if self._iscompound and \
+           self._cmptype.dtype != self._cmptype.dtype_view:
+            encoding = getattr(self,'_Encoding',None)
+            if encoding is not None:
+                data = data.view(self._cmptype.dtype_view)
         return data
 
     def _toma(self,data):
@@ -4305,6 +4312,15 @@ cannot be safely cast to variable data type""" % attname
                     # if data is a numpy string array, convert it to an array
                     # of characters with one more dimension.
                     data = stringtochar(data, encoding=encoding)
+
+        # if structured data has strings (and _Encoding att set), create view as char arrays
+        # (issue #773)
+        if self._iscompound and \
+           self._cmptype.dtype != self._cmptype.dtype_view and \
+           data.dtype == self._cmptype.dtype_view:
+            encoding = getattr(self,'_Encoding',None)
+            if encoding is not None:
+                data = data.view(self._cmptype.dtype)
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
             if self.dtype == str:
@@ -4947,7 +4963,7 @@ The instance variables `dtype` and `name` should not be modified by
 the user.
     """
     cdef public nc_type _nc_type
-    cdef public dtype, name
+    cdef public dtype, dtype_view, name
     __pdoc__['CompoundType.name'] = \
     """String name."""
     __pdoc__['CompoundType.dtype'] = \
@@ -4988,12 +5004,15 @@ the user.
         # evidence suggests that segfaults occur if this
         # alignment step is skipped - see issue #705).
         dt = _set_alignment(numpy.dtype(dt))
+        # create a view datatype for converting char arrays to strings
+        dtview = _set_viewdtype(numpy.dtype(dt))
         if 'typeid' in kwargs:
             xtype = kwargs['typeid']
         else:
             xtype = _def_compound(grp, dt, dtype_name)
         self._nc_type = xtype
         self.dtype = dt
+        self.dtype_view = dtview
         self.name = dtype_name
 
     def __repr__(self):
@@ -5028,6 +5047,32 @@ def _set_alignment(dt):
             dtx = dt.fields[name][0]
         formats.append(dtx)
     # leave out offsets, they will be re-computed to preserve alignment.
+    dtype_dict = {'names':names,'formats':formats}
+    return numpy.dtype(dtype_dict, align=True)
+
+def _set_viewdtype(dt):
+    # recursively change character array dtypes to string dtypes
+    names = dt.names; formats = []
+    for name in names:
+        fmt = dt.fields[name][0]
+        if fmt.kind == 'V':
+            if fmt.shape == ():
+                dtx = _set_alignment(dt.fields[name][0])
+            else:
+                if fmt.subdtype[0].kind == 'V': # structured dtype
+                    raise TypeError('nested structured dtype arrays not supported')
+                elif fmt.subdtype[0].kind == 'S':
+                    if len(dt.fields[name][0].shape) == 1:
+                        lenchar = dt.fields[name][0].shape[0]
+                        dtx = numpy.dtype('S%s' % lenchar)
+                    else:
+                        dtx = dt.fields[name][0]
+                else:
+                    dtx = dt.fields[name][0]
+        else:
+            # primitive data type
+            dtx = dt.fields[name][0]
+        formats.append(dtx)
     dtype_dict = {'names':names,'formats':formats}
     return numpy.dtype(dtype_dict, align=True)
 
