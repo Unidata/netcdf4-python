@@ -39,6 +39,7 @@ install:
     - cmd: conda.exe config --set always_yes yes --set changeps1 no --set show_channel_urls true
     - cmd: conda.exe update conda
     - cmd: conda.exe config --add channels conda-forge --force
+    - cmd: conda.exe install conda-build
 
     - cmd: set PYTHONUNBUFFERED=1
 
