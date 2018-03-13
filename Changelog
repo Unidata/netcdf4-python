@@ -20,7 +20,10 @@
  * make sure missing_value applies only to scaled short integers if
    auto-scaling is on (issue #777).
  * automatically create views of compound types with character arrays as 
-   numpy strings (issue #773).
+   numpy strings if '_Encoding' attribute is set (issue #773).  Numpy
+   structure arrays dtypes with 'SN' string subtypes can now be used to
+   define netcdf compound types (they get converted to ('S1',N)
+   character array types automatically).
  
 
  version 1.3.1 (tag v1.3.1rel)
