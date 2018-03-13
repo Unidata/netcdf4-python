@@ -13,12 +13,12 @@ environment:
     - TARGET_ARCH: x64
       CONDA_NPY: 111
       CONDA_PY: 36
-      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
+      CONDA_INSTALL_LOCN: C:\\Miniconda36-x64
 
     - TARGET_ARCH: x64
       CONDA_NPY: 114
       CONDA_PY: 36
-      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
+      CONDA_INSTALL_LOCN: C:\\Miniconda36-x64
 
 platform:
     - x64
@@ -36,19 +36,24 @@ install:
 
     # Add path, activate `conda` and update conda.
     - cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
-    - cmd: conda.exe config --set always_yes yes --set changeps1 no --set show_channel_urls true
-    - cmd: conda.exe update conda
-    - cmd: conda.exe config --add channels conda-forge --force
+    - cmd: conda config --set always_yes yes --set changeps1 no --set show_channel_urls true --set auto_update_conda false
+    - cmd: conda update conda
+    # We need to pin conda until https://github.com/conda/conda/issues/6556 is fixed.
+    - cmd: conda config --system --add pinned_packages defaults::conda
+    - cmd: conda config --add channels conda-forge --force
+
+    # Install conda-build.
+    - cmd: conda install conda-build
 
     - cmd: set PYTHONUNBUFFERED=1
-
-    - cmd: conda.exe install conda-build vs2008_express_vc_python_patch
-    - cmd: call setup_x64
-    - cmd: conda.exe info --all
-    - cmd: conda.exe list
+  
+    - cmd: conda install vs2008_express_vc_python_patch
+    - cmd: call setup_x64.bat
+  
+    - cmd: conda info --all
 
 # Skip .NET project specific build phase.
 build: off
 
 test_script:
-    - "conda build conda.recipe"
+    - conda build conda.recipe
