@@ -4056,7 +4056,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # if _Encoding att set (issue #773)
         if self._iscompound and \
            self._cmptype.dtype != self._cmptype.dtype_view and \
-           getattr(self,'_Encoding',None) is not None:
+           self.chartostring and getattr(self,'_Encoding',None) is not None:
                 data = data.view(self._cmptype.dtype_view)
         return data
 
@@ -4317,7 +4317,7 @@ cannot be safely cast to variable data type""" % attname
         if self._iscompound and \
            self._cmptype.dtype != self._cmptype.dtype_view and \
            data.dtype == self._cmptype.dtype_view and \
-           getattr(self,'_Encoding',None) is not None:
+           self.chartostring and getattr(self,'_Encoding',None) is not None:
                 data = data.view(self._cmptype.dtype)
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
@@ -5005,8 +5005,13 @@ the user.
         # (this may or may not be still true, but empirical
         # evidence suggests that segfaults occur if this
         # alignment step is skipped - see issue #705).
+        # numpy string subdtypes (i.e. 'S80') are 
+        # automatically converted to character array
+        # subtypes (i.e. ('S1',80)).  If '_Encoding'
+        # variable attribute is set, data will be converted
+        # to and from the string array representation with views.
         dt = _set_alignment(numpy.dtype(dt))
-        # create a view datatype for converting char arrays to strings
+        # create a view datatype for converting char arrays to/from strings
         dtview = _set_viewdtype(numpy.dtype(dt))
         if 'typeid' in kwargs:
             xtype = kwargs['typeid']
@@ -5045,8 +5050,12 @@ def _set_alignment(dt):
                 else:
                     dtx = dt.fields[name][0]
         else:
-            # primitive data type
-            dtx = dt.fields[name][0]
+            # convert character string elements to char arrays
+            if fmt.kind == 'S' and fmt.itemsize != 1:
+                dtx = numpy.dtype('(%s,)S1' % fmt.itemsize)
+            else:
+                # primitive data type
+                dtx = dt.fields[name][0]
         formats.append(dtx)
     # leave out offsets, they will be re-computed to preserve alignment.
     dtype_dict = {'names':names,'formats':formats}

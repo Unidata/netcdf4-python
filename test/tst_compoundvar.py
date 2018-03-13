@@ -114,9 +114,9 @@ class VariablesTestCase(unittest.TestCase):
         # issue 773
         f = Dataset(self.file,'w')
         dtype = np.dtype([('observation', 'i4'),
-                          ('station_name','S1',80)])
+                          ('station_name','S80')])
         dtype_nest = np.dtype([('observation', 'i4'),
-                               ('station_name','S1',80),
+                               ('station_name','S80'),
                                ('nested_observation',dtype)])
         station_data_t1 = f.createCompoundType(dtype,'station_data1')
         station_data_t2 = f.createCompoundType(dtype_nest,'station_data')
