@@ -13,12 +13,12 @@ environment:
     - TARGET_ARCH: x64
       CONDA_NPY: 111
       CONDA_PY: 36
-      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
+      CONDA_INSTALL_LOCN: C:\\Miniconda36-x64
 
     - TARGET_ARCH: x64
       CONDA_NPY: 114
       CONDA_PY: 36
-      CONDA_INSTALL_LOCN: C:\\Miniconda35-x64
+      CONDA_INSTALL_LOCN: C:\\Miniconda36-x64
 
 platform:
     - x64
@@ -42,8 +42,6 @@ install:
 
     - cmd: set PYTHONUNBUFFERED=1
 
-    - cmd: conda.exe install conda-build vs2008_express_vc_python_patch
-    - cmd: call setup_x64
     - cmd: conda.exe info --all
     - cmd: conda.exe list
 
