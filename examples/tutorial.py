@@ -309,7 +309,7 @@ dtype = numpy.dtype([('observation', 'f4'),
 station_data_t = nc.createCompoundType(dtype,'station_data')
 nc.createDimension('station',None)
 statdat = nc.createVariable('station_obs', station_data_t, ('station',))
-data = numpy.empty(2,dtype)
+data = numpy.empty(2,station_data_t.dtype_view)
 data['observation'][:] = (123.,3.14)
 data['station_name'][:] = ('Boulder','New York')
 print(statdat.dtype) # strings actually stored as character arrays
@@ -317,6 +317,6 @@ statdat[:] = data # strings converted to character arrays internally
 print(statdat[:]) # character arrays converted back to strings
 print(statdat[:].dtype)
 statdat.set_auto_chartostring(False) # turn off auto-conversion
-statdat[:] = data.view(dtype=[('observation', 'f4'),('station_name','S1',10)])
+statdat[:] = data.view(station_data_t.dtype)
 print(statdat[:]) # now structured array with char array subtype is returned
 nc.close()
