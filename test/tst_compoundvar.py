@@ -122,7 +122,6 @@ class VariablesTestCase(unittest.TestCase):
         station_data_t2 = f.createCompoundType(dtype_nest,'station_data')
         f.createDimension('station',None)
         statdat = f.createVariable('station_obs', station_data_t2, ('station',))
-        statdat._Encoding = 'ascii'
         assert(statdat.dtype == station_data_t2.dtype)
         datain = np.empty(2,station_data_t2.dtype_view)
         datain['observation'][:] = (123,314)
