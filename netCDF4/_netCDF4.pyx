@@ -536,7 +536,7 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).
     shape of fancy temp slice =  (3, 3, 36, 71)
 
 ***Special note for scalar variables***: To extract data from a scalar variable
-`v` with no associated dimensions, use `np.asarray(v)` or `v[...]`. The result
+`v` with no associated dimensions, use `numpy.asarray(v)` or `v[...]`. The result
 will be a numpy scalar array.
 
 ## <div id='section7'>7) Dealing with time coordinates.
@@ -933,7 +933,7 @@ written to a different variable index on each task
 
     :::python
     >>> d = nc.createDimension('dim',4)
-    >>> v = nc.createVariable('var', np.int, 'dim')
+    >>> v = nc.createVariable('var', numpy.int, 'dim')
     >>> v[rank] = rank
     >>> nc.close()
 
@@ -993,7 +993,7 @@ characters with one more dimension. For example,
     >>> nc.createDimension('nchars',3)
     >>> nc.createDimension('nstrings',None)
     >>> v = nc.createVariable('strings','S1',('nstrings','nchars'))
-    >>> datain = np.array(['foo','bar'],dtype='S3')
+    >>> datain = numpy.array(['foo','bar'],dtype='S3')
     >>> v[:] = stringtochar(datain) # manual conversion to char array
     >>> v[:] # data returned as char array
     [[b'f' b'o' b'o']
@@ -1022,12 +1022,12 @@ Here's an example:
 
     :::python
     >>> nc = Dataset('compoundstring_example.nc','w')
-    >>> dtype = np.dtype([('observation', 'f4'),
+    >>> dtype = numpy.dtype([('observation', 'f4'),
                       ('station_name','S80')])
     >>> station_data_t = nc.createCompoundType(dtype,'station_data')
     >>> nc.createDimension('station',None)
     >>> statdat = nc.createVariable('station_obs', station_data_t, ('station',))
-    >>> data = np.empty(2,dtype)
+    >>> data = numpy.empty(2,dtype)
     >>> data['observation'][:] = (123.,3.14)
     >>> data['station_name'][:] = ('Boulder','New York')
     >>> statdat.dtype # strings actually stored as character arrays
@@ -4404,7 +4404,8 @@ cannot be safely cast to variable data type""" % attname
            data.dtype == self._cmptype.dtype_view and \
            self.chartostring:
 #          self.chartostring and getattr(self,'_Encoding',None) is not None:
-                data = data.view(self._cmptype.dtype)
+                # may need to cast input data to aligned type
+                data = data.astype(self._cmptype.dtype_view).view(self._cmptype.dtype)
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
             if self.dtype == str:
@@ -5253,9 +5254,10 @@ cdef _find_cmptype(grp, dtype):
         names2 = cmpdt.dtype.fields.keys()
         formats1 = [v[0] for v in dtype.fields.values()]
         formats2 = [v[0] for v in cmpdt.dtype.fields.values()]
+        formats2v = [v[0] for v in cmpdt.dtype_view.fields.values()]
         # match names, formats, but not offsets (they may be changed
         # by netcdf lib).
-        if names1==names2 and formats1==formats2:
+        if names1==names2 and formats1==formats2 or (formats1 == formats2v):
             match = True
             break
     if not match:
