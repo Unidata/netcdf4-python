@@ -162,18 +162,17 @@ datac2.real = datain['real']
 datac2.imag = datain['imag']
 print(datac.dtype,datac)
 print(datac2.dtype,datac2)
+
 # more complex compound type example.
-from netCDF4 import chartostring, stringtoarr
 f = Dataset('compound_example.nc','w') # create a new dataset.
 # create an unlimited  dimension call 'station'
 f.createDimension('station',None)
 # define a compound data type (can contain arrays, or nested compound types).
-NUMCHARS = 80 # number of characters to use in fixed-length strings.
 winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
 statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),
                          ('surface_wind',winddtype),
                          ('temp_sounding','f4',10),('press_sounding','i4',10),
-                         ('location_name','S1',NUMCHARS)])
+                         ('location_name','S12')])
 # use this data type definitions to create a compound data types
 # called using the createCompoundType Dataset method.
 # create a compound type for vector wind which will be nested inside
@@ -182,12 +181,12 @@ wind_data_t = f.createCompoundType(winddtype,'wind_data')
 # now that wind_data_t is defined, create the station data type.
 station_data_t = f.createCompoundType(statdtype,'station_data')
 # create nested compound data types to hold the units variable attribute.
-winddtype_units = numpy.dtype([('speed','S1',NUMCHARS),('direction','S1',NUMCHARS)])
-statdtype_units = numpy.dtype([('latitude', 'S1',NUMCHARS), ('longitude', 'S1',NUMCHARS),
+winddtype_units = numpy.dtype([('speed','S12'),('direction','S12')])
+statdtype_units = numpy.dtype([('latitude', 'S12'), ('longitude', 'S12'),
                                ('surface_wind',winddtype_units),
-                               ('temp_sounding','S1',NUMCHARS),
-                               ('location_name','S1',NUMCHARS),
-                               ('press_sounding','S1',NUMCHARS)])
+                               ('temp_sounding','S12'),
+                               ('location_name','S12'),
+                               ('press_sounding','S12')])
 # create the wind_data_units type first, since it will nested inside
 # the station_data_units data type.
 wind_data_units_t = f.createCompoundType(winddtype_units,'wind_data_units')
@@ -196,35 +195,33 @@ f.createCompoundType(statdtype_units,'station_data_units')
 # create a variable of of type 'station_data_t'
 statdat = f.createVariable('station_obs', station_data_t, ('station',))
 # create a numpy structured array, assign data to it.
-data = numpy.empty(1,station_data_t)
+data = numpy.empty(1,statdtype)
 data['latitude'] = 40.
 data['longitude'] = -105.
 data['surface_wind']['speed'] = 12.5
 data['surface_wind']['direction'] = 270
 data['temp_sounding'] = (280.3,272.,270.,269.,266.,258.,254.1,250.,245.5,240.)
 data['press_sounding'] = range(800,300,-50)
-# variable-length string datatypes are not supported inside compound types, so
-# to store strings in a compound data type, each string must be
-# stored as fixed-size (in this case 80) array of characters.
-data['location_name'] = stringtoarr('Boulder, Colorado, USA',NUMCHARS)
+data['location_name'] = 'Boulder, CO'
 # assign structured array to variable slice.
 statdat[0] = data
 # or just assign a tuple of values to variable slice
 # (will automatically be converted to a structured array).
-statdat[1] = (40.78,-73.99,(-12.5,90),
+statdat[1] = numpy.array((40.78,-73.99,(-12.5,90),
              (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),
-             range(900,400,-50),stringtoarr('New York, New York, USA',NUMCHARS))
+             range(900,400,-50),'New York, NY'),data.dtype)
 print(f.cmptypes)
 windunits = numpy.empty(1,winddtype_units)
 stationobs_units = numpy.empty(1,statdtype_units)
-windunits['speed'] = stringtoarr('m/s',NUMCHARS)
-windunits['direction'] = stringtoarr('degrees',NUMCHARS)
-stationobs_units['latitude'] = stringtoarr('degrees north',NUMCHARS)
-stationobs_units['longitude'] = stringtoarr('degrees west',NUMCHARS)
+windunits['speed'] = 'm/s'
+windunits['direction'] = 'degrees'
+stationobs_units['latitude'] = 'degrees N'
+stationobs_units['longitude'] = 'degrees W'
 stationobs_units['surface_wind'] = windunits
-stationobs_units['location_name'] = stringtoarr('None', NUMCHARS)
-stationobs_units['temp_sounding'] = stringtoarr('Kelvin',NUMCHARS)
-stationobs_units['press_sounding'] = stringtoarr('hPa',NUMCHARS)
+stationobs_units['location_name'] = 'None'
+stationobs_units['temp_sounding'] = 'Kelvin'
+stationobs_units['press_sounding'] = 'hPa'
+print(stationobs_units.dtype)
 statdat.units = stationobs_units
 # close and reopen the file.
 f.close()
@@ -234,22 +231,7 @@ statdat = f.variables['station_obs']
 print(statdat)
 # print out data in variable.
 print('data in a variable of compound type:')
-print('----')
-for data in statdat[:]:
-    for name in statdat.dtype.names:
-        if data[name].dtype.kind == 'S': # a string
-            # convert array of characters back to a string for display.
-            units = chartostring(statdat.units[name])
-            print(name,': value =',chartostring(data[name]),\
-                    ': units=',units)
-        elif data[name].dtype.kind == 'V': # a nested compound type
-            units_list = [chartostring(s) for s in tuple(statdat.units[name])]
-            print(name,data[name].dtype.names,': value=',data[name],': units=',\
-            units_list)
-        else: # a numeric type.
-            units = chartostring(statdat.units[name])
-            print(name,': value=',data[name],': units=',units)
-    print('----')
+print(statdat[:])
 f.close()
 
 f = Dataset('tst_vlen.nc','w')
@@ -306,3 +288,35 @@ print(cloud_var)
 print(cloud_var.datatype.enum_dict)
 print(cloud_var[:])
 f.close()
+
+# dealing with strings
+from netCDF4 import stringtochar
+nc = Dataset('stringtest.nc','w',format='NETCDF4_CLASSIC')
+nc.createDimension('nchars',3)
+nc.createDimension('nstrings',None)
+v = nc.createVariable('strings','S1',('nstrings','nchars'))
+datain = numpy.array(['foo','bar'],dtype='S3')
+v[:] = stringtochar(datain) # manual conversion to char array
+print(v[:]) # data returned as char array
+v._Encoding = 'ascii' # this enables automatic conversion
+v[:] = datain # conversion to char array done internally
+print(v[:]) # data returned in numpy string array
+nc.close()
+# strings in compound types
+nc = Dataset('compoundstring_example.nc','w')
+dtype = numpy.dtype([('observation', 'f4'),
+                     ('station_name','S12')])
+station_data_t = nc.createCompoundType(dtype,'station_data')
+nc.createDimension('station',None)
+statdat = nc.createVariable('station_obs', station_data_t, ('station',))
+data = numpy.empty(2,station_data_t.dtype_view)
+data['observation'][:] = (123.,3.14)
+data['station_name'][:] = ('Boulder','New York')
+print(statdat.dtype) # strings actually stored as character arrays
+statdat[:] = data # strings converted to character arrays internally
+print(statdat[:]) # character arrays converted back to strings
+print(statdat[:].dtype)
+statdat.set_auto_chartostring(False) # turn off auto-conversion
+statdat[:] = data.view(station_data_t.dtype)
+print(statdat[:]) # now structured array with char array subtype is returned
+nc.close()

@@ -112,6 +112,7 @@ Tutorial
 11. [Variable-length (vlen) data types.](#section11)
 12. [Enum data type.](#section12)
 13. [Parallel IO.](#section13)
+14. [Dealing with strings](#section14)
 
 
 ## <div id='section1'>1) Creating/Opening/Closing a netCDF file.
@@ -535,7 +536,7 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).
     shape of fancy temp slice =  (3, 3, 36, 71)
 
 ***Special note for scalar variables***: To extract data from a scalar variable
-`v` with no associated dimensions, use `np.asarray(v)` or `v[...]`. The result
+`v` with no associated dimensions, use `numpy.asarray(v)` or `v[...]`. The result
 will be a numpy scalar array.
 
 ## <div id='section7'>7) Dealing with time coordinates.
@@ -932,7 +933,7 @@ written to a different variable index on each task
 
     :::python
     >>> d = nc.createDimension('dim',4)
-    >>> v = nc.createVariable('var', np.int, 'dim')
+    >>> v = nc.createVariable('var', numpy.int, 'dim')
     >>> v[rank] = rank
     >>> nc.close()
 
@@ -963,6 +964,89 @@ are collective.  There are a couple of important limitatons of parallel IO:
  - You cannot write compressed data in parallel (although
    you can read it).
  - You cannot use variable-length (VLEN) data types. 
+
+## <div id='section14'>14) Dealing with strings.
+
+The most flexible way to store arrays of strings is with the 
+[Variable-length (vlen) string data type](#section11). However, this requires
+the use of the NETCDF4 data model, and the vlen type does not map very well
+numpy arrays (you have to use numpy arrays of dtype=`object`, which are arrays of
+arbitrary python objects). numpy does have a fixed-width string array
+data type, but unfortunately the netCDF data model does not.
+Instead fixed-width byte strings are typically stored as [arrays of 8-bit
+characters](https://www.unidata.ucar.edu/software/netcdf/docs/BestPractices.html#bp_Strings-and-Variables-of-type-char).
+To perform the conversion to and from character arrays to fixed-width numpy string arrays, the
+following convention is followed by the python interface.
+If the `_Encoding` special attribute is set for a character array
+(dtype `S1`) variable, the `netCDF4.chartostring` utility function is used to convert the array of
+characters to an array of strings with one less dimension (the last dimension is
+interpreted as the length of each string) when reading the data. The character
+set (usually ascii) is specified by the `_Encoding` attribute. If `_Encoding`
+is 'none' or 'bytes', then the character array is converted to a numpy
+fixed-width byte string array (dtype `S#`), otherwise a numpy unicode (dtype
+`U#`) array is created.  When writing the data,
+`netCDF4.stringtochar` is used to convert the numpy string array to an array of
+characters with one more dimension. For example,
+
+    :::python
+    >>> nc = Dataset('stringtest.nc','w',format='NETCDF4_CLASSIC')
+    >>> nc.createDimension('nchars',3)
+    >>> nc.createDimension('nstrings',None)
+    >>> v = nc.createVariable('strings','S1',('nstrings','nchars'))
+    >>> datain = numpy.array(['foo','bar'],dtype='S3')
+    >>> v[:] = stringtochar(datain) # manual conversion to char array
+    >>> v[:] # data returned as char array
+    [[b'f' b'o' b'o']
+    [b'b' b'a' b'r']]
+    >>> v._Encoding = 'ascii' # this enables automatic conversion
+    >>> v[:] = datain # conversion to char array done internally
+    >>> v[:] # data returned in numpy string array
+    ['foo' 'bar']
+    >>> nc.close()
+
+Even if the `_Encoding` attribute is set, the automatic conversion of char
+arrays to/from string arrays can be disabled with
+`netCDF4.Variable.set_auto_chartostring`. 
+
+A similar situation is often encountered with numpy structured arrays with subdtypes
+containing fixed-wdith byte strings (dtype=`S#`). Since there is no native fixed-length string
+netCDF datatype, these numpy structure arrays are mapped onto netCDF compound
+types with character array elements.  In this case the string <-> char array
+conversion is handled automatically (without the need to set the `_Encoding`
+attribute) using [numpy
+views](https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.view.html).
+The structured array dtype (including the string elements) can even be used to
+define the compound data type - the string dtype will be converted to
+character array dtype under the hood when creating the netcdf compound type.
+Here's an example:
+
+    :::python
+    >>> nc = Dataset('compoundstring_example.nc','w')
+    >>> dtype = numpy.dtype([('observation', 'f4'),
+                      ('station_name','S80')])
+    >>> station_data_t = nc.createCompoundType(dtype,'station_data')
+    >>> nc.createDimension('station',None)
+    >>> statdat = nc.createVariable('station_obs', station_data_t, ('station',))
+    >>> data = numpy.empty(2,dtype)
+    >>> data['observation'][:] = (123.,3.14)
+    >>> data['station_name'][:] = ('Boulder','New York')
+    >>> statdat.dtype # strings actually stored as character arrays
+    {'names':['observation','station_name'], 'formats':['<f4',('S1', (80,))], 'offsets':[0,4], 'itemsize':84, 'aligned':True}
+    >>> statdat[:] = data # strings converted to character arrays internally
+    >>> statdat[:] # character arrays converted back to strings
+    [(123.  , 'Boulder') (  3.14, 'New York')]
+    >>> statdat[:].dtype
+    {'names':['observation','station_name'], 'formats':['<f4','S80'], 'offsets':[0,4], 'itemsize':84, 'aligned':True}
+    >>> statdat.set_auto_chartostring(False) # turn off auto-conversion
+    >>> statdat[:] = data.view(dtype=[('observation', 'f4'),('station_name','S1',10)])
+    >>> statdat[:] # now structured array with char array subtype is returned
+    [(123.  , ['B', 'o', 'u', 'l', 'd', 'e', 'r', '', '', ''])
+    (  3.14, ['N', 'e', 'w', ' ', 'Y', 'o', 'r', 'k', '', ''])]
+    >>> nc.close()
+
+Note that there is currently no support for mapping numpy structured arrays with
+unicode elements (dtype `U#`) onto netCDF compound types, nor is there support 
+for netCDF compound types with vlen string components.
 
 All of the code in this tutorial is available in `examples/tutorial.py`, except
 the parallel IO example, which is in `examples/mpi_example.py`.
@@ -1236,7 +1320,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
             # check if it's a compound
             try:
                 type_att = _read_compound(grp, att_type)
-                value_arr = numpy.empty(att_len,type_att)
+                value_arr = numpy.empty(att_len,type_att.dtype_view)
             except:
                 # check if it's an enum
                 try:
@@ -4052,6 +4136,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                     if matchdim:
                         data = chartostring(data, encoding=encoding)
 
+        # if structure array contains char arrays, return view as strings
+        # if _Encoding att set (issue #773)
+        if self._iscompound and \
+           self._cmptype.dtype != self._cmptype.dtype_view and \
+           self.chartostring:
+#          self.chartostring and getattr(self,'_Encoding',None) is not None:
+                data = data.view(self._cmptype.dtype_view)
         return data
 
     def _toma(self,data):
@@ -4305,6 +4396,16 @@ cannot be safely cast to variable data type""" % attname
                     # if data is a numpy string array, convert it to an array
                     # of characters with one more dimension.
                     data = stringtochar(data, encoding=encoding)
+
+        # if structured data has strings (and _Encoding att set), create view as char arrays
+        # (issue #773)
+        if self._iscompound and \
+           self._cmptype.dtype != self._cmptype.dtype_view and \
+           _set_viewdtype(data.dtype) == self._cmptype.dtype_view and \
+           self.chartostring:
+#          self.chartostring and getattr(self,'_Encoding',None) is not None:
+                # may need to cast input data to aligned type
+                data = data.astype(self._cmptype.dtype_view).view(self._cmptype.dtype)
 
         if self._isvlen: # if vlen, should be object array (don't try casting)
             if self.dtype == str:
@@ -4951,7 +5052,7 @@ The instance variables `dtype` and `name` should not be modified by
 the user.
     """
     cdef public nc_type _nc_type
-    cdef public dtype, name
+    cdef public dtype, dtype_view, name
     __pdoc__['CompoundType.name'] = \
     """String name."""
     __pdoc__['CompoundType.dtype'] = \
@@ -4991,13 +5092,21 @@ the user.
         # (this may or may not be still true, but empirical
         # evidence suggests that segfaults occur if this
         # alignment step is skipped - see issue #705).
+        # numpy string subdtypes (i.e. 'S80') are 
+        # automatically converted to character array
+        # subtypes (i.e. ('S1',80)).  If '_Encoding'
+        # variable attribute is set, data will be converted
+        # to and from the string array representation with views.
         dt = _set_alignment(numpy.dtype(dt))
+        # create a view datatype for converting char arrays to/from strings
+        dtview = _set_viewdtype(numpy.dtype(dt))
         if 'typeid' in kwargs:
             xtype = kwargs['typeid']
         else:
             xtype = _def_compound(grp, dt, dtype_name)
         self._nc_type = xtype
         self.dtype = dt
+        self.dtype_view = dtview
         self.name = dtype_name
 
     def __repr__(self):
@@ -5028,10 +5137,37 @@ def _set_alignment(dt):
                 else:
                     dtx = dt.fields[name][0]
         else:
+            # convert character string elements to char arrays
+            if fmt.kind == 'S' and fmt.itemsize != 1:
+                dtx = numpy.dtype('(%s,)S1' % fmt.itemsize)
+            else:
+                # primitive data type
+                dtx = dt.fields[name][0]
+        formats.append(dtx)
+    # leave out offsets, they will be re-computed to preserve alignment.
+    dtype_dict = {'names':names,'formats':formats}
+    return numpy.dtype(dtype_dict, align=True)
+
+def _set_viewdtype(dt):
+    # recursively change character array dtypes to string dtypes
+    names = dt.names; formats = []
+    for name in names:
+        fmt = dt.fields[name][0]
+        if fmt.kind == 'V':
+            if fmt.shape == ():
+                dtx = _set_viewdtype(dt.fields[name][0])
+            else:
+                if fmt.subdtype[0].kind == 'V': # structured dtype
+                    raise TypeError('nested structured dtype arrays not supported')
+                elif fmt.subdtype[0].kind == 'S' and len(dt.fields[name][0].shape) == 1:
+                    lenchar = dt.fields[name][0].shape[0]
+                    dtx = numpy.dtype('S%s' % lenchar)
+                else:
+                    dtx = dt.fields[name][0]
+        else:
             # primitive data type
             dtx = dt.fields[name][0]
         formats.append(dtx)
-    # leave out offsets, they will be re-computed to preserve alignment.
     dtype_dict = {'names':names,'formats':formats}
     return numpy.dtype(dtype_dict, align=True)
 
@@ -5118,9 +5254,10 @@ cdef _find_cmptype(grp, dtype):
         names2 = cmpdt.dtype.fields.keys()
         formats1 = [v[0] for v in dtype.fields.values()]
         formats2 = [v[0] for v in cmpdt.dtype.fields.values()]
+        formats2v = [v[0] for v in cmpdt.dtype_view.fields.values()]
         # match names, formats, but not offsets (they may be changed
         # by netcdf lib).
-        if names1==names2 and formats1==formats2:
+        if names1==names2 and formats1==formats2 or (formats1 == formats2v):
             match = True
             break
     if not match:
@@ -5508,14 +5645,18 @@ is the number of characters in each string.  Will be converted to
 an array of characters (datatype `'S1'` or `'U1'`) of shape `a.shape + (N,)`.
 
 optional kwarg `encoding` can be used to specify character encoding (default
-`utf-8`).
+`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` the input array
+is treated a raw byte strings (`numpy.string_`).
 
 returns a numpy character array with datatype `'S1'` or `'U1'`
 and shape `a.shape + (N,)`, where N is the length of each string in a."""
     dtype = a.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
-    b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
+    if encoding in ['none','None','bytes']:
+        b = numpy.array(tuple(a.tostring()),'S1')
+    else:
+        b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
     b.shape = a.shape + (a.itemsize,)
     return b
 
@@ -5530,16 +5671,23 @@ Will be converted to a array of strings, where each string has a fixed
 length of `b.shape[-1]` characters.
 
 optional kwarg `encoding` can be used to specify character encoding (default
-`utf-8`).
+`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` btye array is
+returned.
 
-returns a numpy string array with datatype `'UN'` and shape
+returns a numpy string array with datatype `'UN'` (or `'SN'`) and shape
 `b.shape[:-1]` where where `N=b.shape[-1]`."""
     dtype = b.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must be string or unicode ('S' or 'U')")
-    bs = b.tostring().decode(encoding)
+    if encoding in ['none','None','bytes']:
+        bs = b.tostring()
+    else:
+        bs = b.tostring().decode(encoding)
     slen = int(b.shape[-1])
-    a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
+    if encoding in ['none','None','bytes']:
+        a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'S'+repr(slen))
+    else:
+        a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
     a.shape = b.shape[:-1]
     return a
 

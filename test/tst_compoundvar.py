@@ -111,6 +111,30 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_almost_equal(dataoutg['y1']['x'],datag['y1']['x'])
         assert_array_almost_equal(dataoutg['y1']['y'],datag['y1']['y'])
         f.close()
+        # issue 773
+        f = Dataset(self.file,'w')
+        dtype = np.dtype([('observation', 'i4'),
+                          ('station_name','S80')])
+        dtype_nest = np.dtype([('observation', 'i4'),
+                               ('station_name','S80'),
+                               ('nested_observation',dtype)])
+        station_data_t1 = f.createCompoundType(dtype,'station_data1')
+        station_data_t2 = f.createCompoundType(dtype_nest,'station_data')
+        f.createDimension('station',None)
+        statdat = f.createVariable('station_obs', station_data_t2, ('station',))
+        assert(statdat.dtype == station_data_t2.dtype)
+        datain = np.empty(2,station_data_t2.dtype_view)
+        datain['observation'][:] = (123,314)
+        datain['station_name'][:] = ('Boulder','New York')
+        datain['nested_observation']['observation'][:] = (-999,999)
+        datain['nested_observation']['station_name'][:] = ('Boston','Chicago')
+        statdat[:] = datain
+        f.close()
+        f = Dataset(self.file)
+        dataout = f['station_obs'][:]
+        assert(dataout.dtype == station_data_t2.dtype_view)
+        assert_array_equal(datain, dataout)
+        f.close()
 
 if __name__ == '__main__':
     from netCDF4 import getlibversion

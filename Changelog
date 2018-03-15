@@ -19,6 +19,12 @@
  * fix loading of enum type names (issue #775).
  * make sure missing_value applies only to scaled short integers if
    auto-scaling is on (issue #777).
+ * automatically create views of compound types with character arrays as 
+   numpy strings (issue #773).  Can be disabled using
+   'set_auto_chartostring(False)'. Numpy structured
+   array dtypes with 'SN' string subtypes can now be used to
+   define netcdf compound types (they get converted to ('S1',N)
+   character array types automatically).
  
 
  version 1.3.1 (tag v1.3.1rel)
