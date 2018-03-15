@@ -4401,7 +4401,7 @@ cannot be safely cast to variable data type""" % attname
         # (issue #773)
         if self._iscompound and \
            self._cmptype.dtype != self._cmptype.dtype_view and \
-           data.dtype == self._cmptype.dtype_view and \
+           _set_viewdtype(data.dtype) == self._cmptype.dtype_view and \
            self.chartostring:
 #          self.chartostring and getattr(self,'_Encoding',None) is not None:
                 # may need to cast input data to aligned type

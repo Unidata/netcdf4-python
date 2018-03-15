@@ -195,7 +195,7 @@ f.createCompoundType(statdtype_units,'station_data_units')
 # create a variable of of type 'station_data_t'
 statdat = f.createVariable('station_obs', station_data_t, ('station',))
 # create a numpy structured array, assign data to it.
-data = numpy.empty(1,station_data_t)
+data = numpy.empty(1,statdtype)
 data['latitude'] = 40.
 data['longitude'] = -105.
 data['surface_wind']['speed'] = 12.5
