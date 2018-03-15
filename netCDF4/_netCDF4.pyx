@@ -1320,7 +1320,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
             # check if it's a compound
             try:
                 type_att = _read_compound(grp, att_type)
-                value_arr = numpy.empty(att_len,type_att)
+                value_arr = numpy.empty(att_len,type_att.dtype_view)
             except:
                 # check if it's an enum
                 try:

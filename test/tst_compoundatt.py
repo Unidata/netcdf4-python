@@ -2,7 +2,7 @@ import sys
 import unittest
 import os
 import tempfile
-from netCDF4 import Dataset, CompoundType, chartostring, stringtoarr
+from netCDF4 import Dataset, CompoundType
 import numpy as np
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 
@@ -16,15 +16,13 @@ GROUP_NAME = 'forecasts'
 dtype=np.dtype([('speed', 'f4'), ('direction', 'f4')])
 TYPE_NAME = 'wind_vector_type'
 TYPE_NAMEC = 'wind_vectorunits_type'
-dtypec=np.dtype([('speed', 'c',(8,)), ('direction', 'c',(8,))])
+dtypec=np.dtype([('speed', 'S8'), ('direction', 'S8')])
 missvals = np.empty(1,dtype)
 missvals['direction']=1.e20
 missvals['speed']=-999.
-windunits = np.zeros(1,dtypec)
-windunits['speed'] = stringtoarr('m/s',\
-        dtypec.fields['speed'][0].itemsize)
-windunits['direction'] = stringtoarr('degrees',\
-        dtypec.fields['direction'][0].itemsize)
+windunits = np.empty(1,dtypec)
+windunits['speed'] = 'm/s'
+windunits['direction'] = 'degrees'
 
 class VariablesTestCase(unittest.TestCase):
 
@@ -65,10 +63,10 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(vv.units['speed'], windunits['speed'].squeeze())
         assert_array_equal(vv.units['direction'],\
                 windunits['direction'].squeeze())
-        assert(chartostring(v.units['speed']).item().rstrip() == 'm/s')
-        assert(chartostring(v.units['direction']).item().rstrip() == 'degrees')
-        assert(chartostring(vv.units['speed']).item().rstrip() == 'm/s')
-        assert(chartostring(vv.units['direction']).item().rstrip() == 'degrees')
+        assert(v.units['speed'] == b'm/s')
+        assert(v.units['direction'] == b'degrees')
+        assert(vv.units['speed'] == b'm/s')
+        assert(vv.units['direction'] == b'degrees')
         f.close()
 
 if __name__ == '__main__':
