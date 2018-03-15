@@ -172,7 +172,7 @@ winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
 statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),
                          ('surface_wind',winddtype),
                          ('temp_sounding','f4',10),('press_sounding','i4',10),
-                         ('location_name','S20')])
+                         ('location_name','S12')])
 # use this data type definitions to create a compound data types
 # called using the createCompoundType Dataset method.
 # create a compound type for vector wind which will be nested inside
@@ -181,12 +181,12 @@ wind_data_t = f.createCompoundType(winddtype,'wind_data')
 # now that wind_data_t is defined, create the station data type.
 station_data_t = f.createCompoundType(statdtype,'station_data')
 # create nested compound data types to hold the units variable attribute.
-winddtype_units = numpy.dtype([('speed','S20'),('direction','S20')])
-statdtype_units = numpy.dtype([('latitude', 'S20'), ('longitude', 'S20'),
+winddtype_units = numpy.dtype([('speed','S12'),('direction','S12')])
+statdtype_units = numpy.dtype([('latitude', 'S12'), ('longitude', 'S12'),
                                ('surface_wind',winddtype_units),
-                               ('temp_sounding','S20'),
-                               ('location_name','S20'),
-                               ('press_sounding','S20')])
+                               ('temp_sounding','S12'),
+                               ('location_name','S12'),
+                               ('press_sounding','S12')])
 # create the wind_data_units type first, since it will nested inside
 # the station_data_units data type.
 wind_data_units_t = f.createCompoundType(winddtype_units,'wind_data_units')
@@ -202,21 +202,21 @@ data['surface_wind']['speed'] = 12.5
 data['surface_wind']['direction'] = 270
 data['temp_sounding'] = (280.3,272.,270.,269.,266.,258.,254.1,250.,245.5,240.)
 data['press_sounding'] = range(800,300,-50)
-data['location_name'] = 'Boulder, Colorado, USA'
+data['location_name'] = 'Boulder, CO'
 # assign structured array to variable slice.
 statdat[0] = data
 # or just assign a tuple of values to variable slice
 # (will automatically be converted to a structured array).
 statdat[1] = numpy.array((40.78,-73.99,(-12.5,90),
              (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),
-             range(900,400,-50),'New York, New York, USA'),data.dtype)
+             range(900,400,-50),'New York, NY'),data.dtype)
 print(f.cmptypes)
 windunits = numpy.empty(1,winddtype_units)
 stationobs_units = numpy.empty(1,statdtype_units)
 windunits['speed'] = 'm/s'
 windunits['direction'] = 'degrees'
-stationobs_units['latitude'] = 'degrees north'
-stationobs_units['longitude'] = 'degrees west'
+stationobs_units['latitude'] = 'degrees N'
+stationobs_units['longitude'] = 'degrees W'
 stationobs_units['surface_wind'] = windunits
 stationobs_units['location_name'] = 'None'
 stationobs_units['temp_sounding'] = 'Kelvin'
@@ -305,7 +305,7 @@ nc.close()
 # strings in compound types
 nc = Dataset('compoundstring_example.nc','w')
 dtype = numpy.dtype([('observation', 'f4'),
-                     ('station_name','S10')])
+                     ('station_name','S12')])
 station_data_t = nc.createCompoundType(dtype,'station_data')
 nc.createDimension('station',None)
 statdat = nc.createVariable('station_obs', station_data_t, ('station',))
