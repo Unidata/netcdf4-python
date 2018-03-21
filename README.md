@@ -19,9 +19,9 @@ bug fixes, there are a few important changes to the default behaviour to note:
    into a single string (`foobar`).  In NETCDF3/NETCDF4_CLASSIC, an IOError
    is now raised, instead of writing `foobar`.
  * automatically create views of compound types with character arrays as 
-   numpy strings ([issue773](https://github.com/Unidata/netcdf4-python/issues/773)).  Can be disabled using
+   numpy strings ([issue #773](https://github.com/Unidata/netcdf4-python/issues/773)).  Can be disabled using
    `set_auto_chartostring(False)`. Numpy structured
-   array dtypes with `SN` string subtypes can now be used to
+   array dtypes with `'SN'` string subtypes can now be used to
    define netcdf compound types (they get converted to `('S1',N)`
    character array types automatically).
 
