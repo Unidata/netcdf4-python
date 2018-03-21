@@ -14,15 +14,15 @@ bug fixes, there are a few important changes to the default behaviour to note:
  * `_FillValue` is no longer treated as a valid_min/valid_max.  This was  too surprising, despite
    the fact the thet netcdf docs [attribute best practices](https://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html) suggests that
    clients should to this if `valid_min`, `valid_max` and `valid_range` are not set. 
- * Change behavior of string attributes so that `nc.stringatt = ['foo','bar']`
+ * Changed behavior of string attributes so that `nc.stringatt = ['foo','bar']`
    produces an vlen string array attribute in NETCDF4, instead of concatenating
    into a single string (`foobar`).  In NETCDF3/NETCDF4_CLASSIC, an IOError
    is now raised, instead of writing `foobar`.
- * automatically create views of compound types with character arrays as 
+ * Retrieved compound-type variable data now returned with character array elements converted to 
    numpy strings ([issue #773](https://github.com/Unidata/netcdf4-python/issues/773)).  Can be disabled using
    `set_auto_chartostring(False)`. Numpy structured
    array dtypes with `'SN'` string subtypes can now be used to
-   define netcdf compound types (they get converted to `('S1',N)`
+   define netcdf compound types in `createCompoundType` (they get converted to `('S1',N)`
    character array types automatically).
 
 11/01/2017: Version [1.3.1](https://pypi.python.org/pypi/netCDF4/1.3.1) released.  Parallel IO support with MPI!
