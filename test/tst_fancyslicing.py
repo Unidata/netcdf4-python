@@ -112,7 +112,9 @@ class VariablesTestCase(unittest.TestCase):
         # Empty boolean -- all False
         d1 = f.variables['data1']
         m = np.zeros(xdim, bool)
-        assert_equal(d1[m], ())
+        if np.__version__ > '1.9.0':
+            # fails for old numpy versions
+            assert_equal(d1[m], ())
 
         # Check that no assignment is made
         d1[m] = 0
