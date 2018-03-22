@@ -11,6 +11,10 @@ For details on the latest updates, see the [Changelog](https://github.com/Unidat
 03/30/2018: Version [1.3.2](https://pypi.python.org/pypi/netCDF4/1.3.2) released. The netcdftime package is no longer
 included, it is now a separate [package](https://pypi.python.org/pypi/netcdftime) dependency.  In addition to several
 bug fixes, there are a few important changes to the default behaviour to note:
+ * Slicing a netCDF variable will now always return masked array by default, even if there are no 
+   masked values.  The result depended on the slice before, which was too surprising.
+   If auto-masking is turned off (with `set_auto_mask(False)`) a numpy array will always
+   be returned.
  * `_FillValue` is no longer treated as a valid_min/valid_max.  This was  too surprising, despite
    the fact the thet netcdf docs [attribute best practices](https://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html) suggests that
    clients should to this if `valid_min`, `valid_max` and `valid_range` are not set. 
