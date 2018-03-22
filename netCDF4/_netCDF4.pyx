@@ -4269,16 +4269,24 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 totalmask += data > validmax
         if fill_value is None and fval is not None:
             fill_value = fval
+        # if all else fails, use default _FillValue as fill_value
+        # for masked array.
+        if fill_value is None:
+            fill_value = default_fillvals[self.dtype.str[1:]]
         # create masked array with computed mask
-        if totalmask.any() and fill_value is not None:
+        if totalmask.any():
             data = ma.masked_array(data,mask=totalmask,fill_value=fill_value)
-            # issue 515 scalar array with mask=True should be converted
-            # to numpy.ma.MaskedConstant to be consistent with slicing
-            # behavior of masked arrays.
-            if data.shape == () and data.mask.all():
-                # return a scalar numpy masked constant not a 0-d masked array,
-                # so that data == numpy.ma.masked.
-                data = data[()] # changed from [...] (issue #662)
+        else:
+            # issue #785: always return masked array, if no values masked
+            # set mask=False.
+            data = ma.masked_array(data,mask=False,fill_value=fill_value)
+        # issue 515 scalar array with mask=True should be converted
+        # to numpy.ma.MaskedConstant to be consistent with slicing
+        # behavior of masked arrays.
+        if data.shape == () and data.mask.all():
+            # return a scalar numpy masked constant not a 0-d masked array,
+            # so that data == numpy.ma.masked.
+            data = data[()] # changed from [...] (issue #662)
         return data
 
     def _assign_vlen(self, elem, data):

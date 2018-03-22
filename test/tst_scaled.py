@@ -63,7 +63,8 @@ class SetAutoScaleFalse(SetAutoScaleTestBase):
 
         self.assertEqual(v.dtype, "i2")
         self.assertTrue(isinstance(v, np.ndarray))
-        self.assertTrue(not isinstance(v, ma.core.MaskedArray))
+        # issue 785: always return masked array by default
+        self.assertTrue(isinstance(v, ma.core.MaskedArray))
         assert_array_almost_equal(v, self.v)
 
         f.close()
@@ -107,7 +108,8 @@ class SetAutoScaleTrue(SetAutoScaleTestBase):
 
         self.assertEqual(v_scaled.dtype, "f8")
         self.assertTrue(isinstance(v_scaled, np.ndarray))
-        self.assertTrue(not isinstance(v_scaled, ma.core.MaskedArray))
+        # issue 785: always return masked array by default
+        self.assertTrue(isinstance(v_scaled, ma.core.MaskedArray))
         assert_array_almost_equal(v_scaled, self.v_scaled)
         f.close()
 

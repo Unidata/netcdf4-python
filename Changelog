@@ -25,6 +25,9 @@
    array dtypes with 'SN' string subtypes can now be used to
    define netcdf compound types (they get converted to ('S1',N)
    character array types automatically).
+ * always return masked array by default, even if there are no 
+   masked values (too surprising to get ndarray or MaskedArray depending
+   on slice, issue #785).
  
 
  version 1.3.1 (tag v1.3.1rel)
