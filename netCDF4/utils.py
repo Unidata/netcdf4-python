@@ -744,11 +744,18 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
         if dounpackshort:
             if not quiet: sys.stdout.write('unpacking short integers to floats ...\n')
             sys.stdout.write('')
+        # is there missing value?
         if hasattr(ncvar, '_FillValue'):
-            FillValue = ncvar._FillValue
+            fillvalue3 = ncvar._FillValue
+        elif hasattr(ncvar, 'missing_value'):
+            fillvalue3 = ncvar.missing_value
         else:
-            FillValue = None
-        var = ncfile4.createVariable(varname,datatype,ncvar.dimensions, fill_value=FillValue, least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
+            fillvalue3 = None
+        if fillvalue3 is not None:
+            fillvalue4 = fillvalue3 if not dounpackshort else mval
+        else:
+            fillvalue4 = None
+        var = ncfile4.createVariable(varname,datatype,ncvar.dimensions, fill_value=fillvalue4, least_significant_digit=lsd,zlib=zlib,complevel=complevel,shuffle=shuffle,fletcher32=fletcher32)
         # fill variable attributes.
         attdict = ncvar.__dict__
         if '_FillValue' in attdict: del attdict['_FillValue']
@@ -757,15 +764,8 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
         if dounpackshort and 'scale_factor' in attdict:
             del attdict['scale_factor']
         if dounpackshort and 'missing_value' in attdict:
-            attdict['missing_value']=mval
+            attdict['missing_value'] = fillvalue4
         var.setncatts(attdict)
-        #for attname in ncvar.ncattrs():
-        #    if attname == '_FillValue': continue
-        #    if dounpackshort and attname in ['add_offset','scale_factor']: continue
-        #    if dounpackshort and attname == 'missing_value':
-        #        setattr(var,attname,mval)
-        #    else:
-        #        setattr(var,attname,getattr(ncvar,attname))
         # fill variables with data.
         if hasunlimdim: # has an unlim dim, loop over unlim dim index.
             # range to copy
@@ -775,32 +775,11 @@ def _nc3tonc4(filename3,filename4,unpackshort=True,
                 for n in range(start, stop, step):
                     nmax = n+nchunk
                     if nmax > istop: nmax=istop
-                    idata = ncvar[n:nmax]
-                    if dounpackshort:
-                        tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
-                        if hasattr(ncvar,'missing_value'):
-                            tmpdata = np.where(idata == ncvar.missing_value, mval, tmpdata)
-                    else:
-                        tmpdata = idata
-                    var[n-istart:nmax-istart] = tmpdata
+                    var[n-istart:nmax-istart] = ncvar[n:nmax]
             else:
-                idata = ncvar[:]
-                if dounpackshort:
-                    tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
-                    if hasattr(ncvar,'missing_value'):
-                        tmpdata = np.where(idata == ncvar.missing_value, mval, tmpdata)
-                else:
-                    tmpdata = idata
-                var[0:len(unlimdim)] = tmpdata
+                var[0:len(unlimdim)] = ncvar[:]
         else: # no unlim dim or 1-d variable, just copy all data at once.
-            idata = ncvar[:]
-            if dounpackshort:
-                tmpdata = (ncvar.scale_factor*idata.astype('f')+ncvar.add_offset).astype('f')
-                if hasattr(ncvar,'missing_value'):
-                    tmpdata = np.where(idata == ncvar.missing_value, mval, tmpdata)
-            else:
-                tmpdata = idata
-            var[:] = tmpdata
+            var[:] = ncvar[:]
         ncfile4.sync() # flush data to disk
     # close files.
     ncfile3.close()
