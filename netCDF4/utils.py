@@ -527,9 +527,9 @@ def ncinfo():
                 print(f.dimensions[dim])
     else:
         if var is None and dim is None:
-            print(getgrp(f,group))
+            print(_getgrp(f,group))
         else:
-            g = getgrp(f,group)
+            g = _getgrp(f,group)
             if var is not None:
                 print(g.variables[var])
             if dim is not None:
