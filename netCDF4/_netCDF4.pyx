@@ -41,7 +41,7 @@ Requires
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
- - [netcdftime](https://github.com/Unidata/netcdftime) for 
+ - [cftime](https://github.com/Unidata/cftime) for 
  the time and date handling utility functions (`netCDF4.num2date`,
  `netCDF4.date2num` and `netCDF4.date2index`).
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
@@ -548,7 +548,7 @@ specified like `hours since YY-MM-DD hh:mm:ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called `netCDF4.num2date` and `netCDF4.date2num` are
 provided with this package to do just that (starting with version 1.3.2, the 
-[netcdftime](https://unidata.github.io/netcdftime) package must be installed
+[cftime](https://unidata.github.io/cftime) package must be installed
 separately).  Here's an example of how they
 can be used:
 
@@ -1096,7 +1096,7 @@ __version__ = "1.3.2"
 
 # Initialize numpy
 import posixpath
-from netcdftime import num2date, date2num, date2index
+from cftime import num2date, date2num, date2index
 import numpy
 import weakref
 import sys

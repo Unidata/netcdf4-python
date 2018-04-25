@@ -1,6 +1,6 @@
-from netcdftime import utime, JulianDayFromDate, DateFromJulianDay
-from netcdftime import datetime as datetimex
-from netcdftime import DatetimeNoLeap, DatetimeAllLeap, Datetime360Day, DatetimeJulian, \
+from cftime import utime, JulianDayFromDate, DateFromJulianDay
+from cftime import datetime as datetimex
+from cftime import DatetimeNoLeap, DatetimeAllLeap, Datetime360Day, DatetimeJulian, \
     DatetimeGregorian, DatetimeProlepticGregorian, _parse_date
 from netCDF4 import Dataset, num2date, date2num, date2index, num2date
 import copy
