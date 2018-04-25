@@ -8,6 +8,28 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+??/??/2018: Version [1.4.0](https://pypi.python.org/pypi/netCDF4/1.4.0) released. The netcdftime package is no longer
+included, it is now a separate [package](https://pypi.python.org/pypi/netcdftime) dependency.  In addition to several
+bug fixes, there are a few important changes to the default behaviour to note:
+ * Slicing a netCDF variable will now always return masked array by default, even if there are no 
+   masked values.  The result depended on the slice before, which was too surprising.
+   If auto-masking is turned off (with `set_auto_mask(False)`) a numpy array will always
+   be returned.
+ * `_FillValue` is no longer treated as a valid_min/valid_max.  This was  too surprising, despite
+   the fact the thet netcdf docs [attribute best practices](https://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html) suggests that
+   clients should to this if `valid_min`, `valid_max` and `valid_range` are not set. 
+ * Changed behavior of string attributes so that `nc.stringatt = ['foo','bar']`
+   produces an vlen string array attribute in NETCDF4, instead of concatenating
+   into a single string (`foobar`).  In NETCDF3/NETCDF4_CLASSIC, an IOError
+   is now raised, instead of writing `foobar`.
+ * Retrieved compound-type variable data now returned with character array elements converted to 
+   numpy strings ([issue #773](https://github.com/Unidata/netcdf4-python/issues/773)).
+   Works for assignment also.  Can be disabled using
+   `set_auto_chartostring(False)`. Numpy structured
+   array dtypes with `'SN'` string subtypes can now be used to
+   define netcdf compound types in `createCompoundType` (they get converted to `('S1',N)`
+   character array types automatically).
+
 11/01/2017: Version [1.3.1](https://pypi.python.org/pypi/netCDF4/1.3.1) released.  Parallel IO support with MPI!
 Requires that netcdf-c and hdf5 be built with MPI support, and [mpi4py](http://mpi4py.readthedocs.io/en/stable).
 To open a file for parallel access in a program running in an MPI environment
