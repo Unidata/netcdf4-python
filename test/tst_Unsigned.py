@@ -31,6 +31,8 @@ class Test_Unsigned(unittest.TestCase):
         assert(data1.mask.sum() == data2.mask.sum())
         f.close()
         # issue 794
+        # test that valid_min/valid_max/_FillValue are
+        # treated as unsigned integers.
         f=netCDF4.Dataset('20171025_2056.Cloud_Top_Height.nc')
         data = f['HT'][:]
         assert(data.mask.sum() == 57432)
