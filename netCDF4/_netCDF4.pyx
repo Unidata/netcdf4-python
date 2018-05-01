@@ -4096,13 +4096,13 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
         if self.mask and (self._isprimitive or self._isenum):
             data = self._toma(data)
-
-        # if attribute _Unsigned is True, and variable has signed integer
-        # dtype, return view with corresponding unsigned dtype (issue #656)
-        if self.scale:  # only do this if autoscale option is on.
-            is_unsigned = getattr(self, '_Unsigned', False)
-            if is_unsigned and data.dtype.kind == 'i':
-                data = data.view('u%s' % data.dtype.itemsize)
+        else:
+            # if attribute _Unsigned is True, and variable has signed integer
+            # dtype, return view with corresponding unsigned dtype (issue #656)
+            if self.scale:  # only do this if autoscale option is on.
+                is_unsigned = getattr(self, '_Unsigned', False)
+                if is_unsigned and data.dtype.kind == 'i':
+                    data = data.view('u%s' % data.dtype.itemsize)
 
         if self.scale and self._isprimitive and valid_scaleoffset:
             # if variable has scale_factor and add_offset attributes, rescale.
@@ -4147,6 +4147,14 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
     def _toma(self,data):
         cdef int ierr, no_fill
+        # if attribute _Unsigned is True, and variable has signed integer
+        # dtype, return view with corresponding unsigned dtype (issues #656,
+        # #794)
+        is_unsigned = getattr(self, '_Unsigned', False)
+        is_unsigned_int = is_unsigned and data.dtype.kind == 'i'
+        if self.scale and is_unsigned_int:  # only do this if autoscale option is on.
+            dtype_unsigned_int = 'u%s' % data.dtype.itemsize
+            data = data.view(dtype_unsigned_int)
         # private function for creating a masked array, masking missing_values
         # and/or _FillValues.
         totalmask = numpy.zeros(data.shape, numpy.bool)
@@ -4154,6 +4162,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         safe_missval = self._check_safecast('missing_value')
         if safe_missval:
             mval = numpy.array(self.missing_value, self.dtype)
+            if self.scale and is_unsigned_int:
+                mval = mval.view(dtype_unsigned_int)
             # create mask from missing values. 
             mvalmask = numpy.zeros(data.shape, numpy.bool)
             if mval.shape == (): # mval a scalar.
@@ -4178,6 +4188,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         safe_fillval = self._check_safecast('_FillValue')
         if safe_fillval:
             fval = numpy.array(self._FillValue, self.dtype)
+            if self.scale and is_unsigned_int:
+                fval = fval.view(dtype_unsigned_int)
             # is _FillValue a NaN?
             try:
                 fvalisnan = numpy.isnan(fval)
@@ -4240,6 +4252,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 validmin = numpy.array(self.valid_min, self.dtype)
             if safe_validmax:
                 validmax = numpy.array(self.valid_max, self.dtype)
+        if validmin is not None and self.scale and is_unsigned_int:
+            validmin = validmin.view(dtype_unsigned_int)
+        if validmax is not None and self.scale and is_unsigned_int:
+            validmax = validmax.view(dtype_unsigned_int)
         # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
         # "If the data type is byte and _FillValue 
         # is not explicitly defined,

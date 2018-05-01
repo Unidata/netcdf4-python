@@ -30,6 +30,16 @@ class Test_Unsigned(unittest.TestCase):
         data2 = f['soil_moisture'][:]
         assert(data1.mask.sum() == data2.mask.sum())
         f.close()
+        # issue 794
+        # test that valid_min/valid_max/_FillValue are
+        # treated as unsigned integers.
+        f=netCDF4.Dataset('20171025_2056.Cloud_Top_Height.nc')
+        data = f['HT'][:]
+        assert(data.mask.sum() == 57432)
+        assert(int(data.max()) == 15430)
+        assert(int(data.min()) == 0)
+        assert(data.dtype == np.float32)
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
