@@ -30,7 +30,7 @@ bug fixes, there are a few important changes to the default behaviour to note:
    define netcdf compound types in `createCompoundType` (they get converted to `('S1',N)`
    character array types automatically).
  * `valid_min`, `valid_max`, `_FillValue` and `missing_value` are now treated as unsigned
-   integers if _Unsigned is set (to mimic behaviour of netcdf-java).
+   integers if `_Unsigned` variable attribute is set (to mimic behaviour of netcdf-java).
    Conversion to unsigned type now occurs before masking and scale/offset
    operation ([issue #794](https://github.com/Unidata/netcdf4-python/issues/794))
 
