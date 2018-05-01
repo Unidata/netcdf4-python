@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Version 1.3.2
+    <meta name="description" content="Version 1.4.0
 -------------
 - - - 
 
@@ -1264,7 +1264,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h2>Version 1.3.2</h2>
+  <h2>Version 1.4.0</h2>
 <hr />
 <h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
@@ -1297,7 +1297,7 @@ types) are not supported.</p>
 <li><a href="http://cython.org">Cython</a>, version 0.21 or later.</li>
 <li><a href="https://pypi.python.org/pypi/setuptools">setuptools</a>, version 18.0 or
    later.</li>
-<li><a href="https://github.com/Unidata/netcdftime">netcdftime</a> for 
+<li><a href="https://github.com/Unidata/cftime">cftime</a> for 
  the time and date handling utility functions (<a href="#netCDF4.num2date"><code>num2date</code></a>,
  <a href="#netCDF4.date2num"><code>date2num</code></a> and <a href="#netCDF4.date2index"><code>date2index</code></a>).</li>
 <li>The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
@@ -1770,7 +1770,7 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).</p>
 
 
 <p><strong><em>Special note for scalar variables</em></strong>: To extract data from a scalar variable
-<code>v</code> with no associated dimensions, use <code>np.asarray(v)</code> or <code>v[...]</code>. The result
+<code>v</code> with no associated dimensions, use <code>numpy.asarray(v)</code> or <code>v[...]</code>. The result
 will be a numpy scalar array.</p>
 <h2><div id='section7'>7) Dealing with time coordinates.</h2>
 <p>Time coordinate values pose a special challenge to netCDF users.  Most
@@ -1779,8 +1779,8 @@ measure relative to a fixed date using a certain calendar, with units
 specified like <code>hours since YY-MM-DD hh:mm:ss</code>.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called <a href="#netCDF4.num2date"><code>num2date</code></a> and <a href="#netCDF4.date2num"><code>date2num</code></a> are
-provided with this package to do just that (starting with version 1.3.2, the 
-<a href="https://unidata.github.io/netcdftime">netcdftime</a> package must be installed
+provided with this package to do just that (starting with version 1.4.0, the 
+<a href="https://unidata.github.io/cftime">cftime</a> package must be installed
 separately).  Here's an example of how they
 can be used:</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c"># fill in times.</span>
@@ -2149,7 +2149,7 @@ MPI communicator (<code>MPI_COMM_WORLD</code> is used by default).  Each process
 can now write to the file indepedently.  In this example the process rank is
 written to a different variable index on each task</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;dim&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;var&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">,</span> <span class="s">&#39;dim&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;var&#39;</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">,</span> <span class="s">&#39;dim&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">rank</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
@@ -2208,7 +2208,7 @@ characters with one more dimension. For example,</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;nchars&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;nstrings&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;strings&#39;</span><span class="p">,</span><span class="s">&#39;S1&#39;</span><span class="p">,(</span><span class="s">&#39;nstrings&#39;</span><span class="p">,</span><span class="s">&#39;nchars&#39;</span><span class="p">))</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">datain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s">&#39;foo&#39;</span><span class="p">,</span><span class="s">&#39;bar&#39;</span><span class="p">],</span><span class="n">dtype</span><span class="o">=</span><span class="s">&#39;S3&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">datain</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s">&#39;foo&#39;</span><span class="p">,</span><span class="s">&#39;bar&#39;</span><span class="p">],</span><span class="n">dtype</span><span class="o">=</span><span class="s">&#39;S3&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">stringtochar</span><span class="p">(</span><span class="n">datain</span><span class="p">)</span> <span class="c"># manual conversion to char array</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[:]</span> <span class="c"># data returned as char array</span>
 <span class="p">[[</span><span class="n">b</span><span class="s">&#39;f&#39;</span> <span class="n">b</span><span class="s">&#39;o&#39;</span> <span class="n">b</span><span class="s">&#39;o&#39;</span><span class="p">]</span>
@@ -2236,12 +2236,12 @@ define the compound data type - the string dtype will be converted to
 character array dtype under the hood when creating the netcdf compound type.
 Here's an example:</p>
 <div class="codehilite"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;compoundstring_example.nc&#39;</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s">&#39;observation&#39;</span><span class="p">,</span> <span class="s">&#39;f4&#39;</span><span class="p">),</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s">&#39;observation&#39;</span><span class="p">,</span> <span class="s">&#39;f4&#39;</span><span class="p">),</span>
                   <span class="p">(</span><span class="s">&#39;station_name&#39;</span><span class="p">,</span><span class="s">&#39;S80&#39;</span><span class="p">)])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">station_data_t</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createCompoundType</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span><span class="s">&#39;station_data&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s">&#39;station&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">statdat</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s">&#39;station_obs&#39;</span><span class="p">,</span> <span class="n">station_data_t</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;station&#39;</span><span class="p">,))</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">dtype</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">dtype</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;observation&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">123.</span><span class="p">,</span><span class="mf">3.14</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;station_name&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Boulder&#39;</span><span class="p">,</span><span class="s">&#39;New York&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">statdat</span><span class="o">.</span><span class="n">dtype</span> <span class="c"># strings actually stored as character arrays</span>
@@ -2424,6 +2424,9 @@ All the values currently defined in the
 Valid calendars <code>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</code>.
 Default is <code>'standard'</code>, which is a mixed Julian/Gregorian calendar.</p>
+<p><strong><code>only_use_cftime_datetimes</code></strong>: if False (default), datetime.datetime
+objects are returned from num2date where possible; if True dates which
+subclass cftime.datetime are returned for all calendars.</p>
 <p>returns a datetime instance, or an array of datetime instances with
 approximately millisecond accuracy.</p>
 <p><strong><em>Note</em></strong>: The datetime instances returned are 'real' python datetime
