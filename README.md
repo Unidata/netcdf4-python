@@ -8,7 +8,7 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-??/??/2018: Version [1.4.0](https://pypi.python.org/pypi/netCDF4/1.4.0) released. The netcdftime package is no longer
+05/11/2018: Version [1.4.0](https://pypi.python.org/pypi/netCDF4/1.4.0) released. The netcdftime package is no longer
 included, it is now a separate [package](https://pypi.python.org/pypi/cftime) dependency.  In addition to several
 bug fixes, there are a few important changes to the default behaviour to note:
  * Slicing a netCDF variable will now always return masked array by default, even if there are no 
