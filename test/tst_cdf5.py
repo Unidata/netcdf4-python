@@ -4,7 +4,7 @@ import sys, os, unittest, tempfile
 from numpy.testing import assert_array_equal
 
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
-dimsize = np.iinfo(np.int64).max # max unsigned 64 bit integer
+dimsize = np.iinfo(np.int32).max*2 # only allowed in CDF5
 ndim = 100
 arrdata = np.random.randint(np.iinfo(np.uint8).min,np.iinfo(np.uint8).max,size=ndim)
 
