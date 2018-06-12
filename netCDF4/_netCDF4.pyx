@@ -4639,8 +4639,9 @@ The default value of `chartostring` is `True`
 
 enable the use of netcdf library routine `nc_get_vars`
 to retrieve strided variable slices.  By default,
-`nc_get_vars` not used since it slower than multiple calls
-to the unstrided read routine `nc_get_vara` in most cases.
+`nc_get_vars` may not used by default (depending on the
+version of the netcdf-c library being used) since it may be
+slower than multiple calls to the unstrided read routine `nc_get_vara`.
         """
         self._no_get_vars = not bool(use_nc_get_vars)
         
