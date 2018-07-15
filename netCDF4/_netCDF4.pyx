@@ -3606,7 +3606,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         if 'least_significant_digit' in self.ncattrs():
             self._has_lsd = True
         # avoid calling nc_get_vars for strided slices by default.
-        self._no_get_vars = True
+        # a fix for strided slice access using HDF5 was added
+        # in 4.6.2.
+        if __netcdf4libversion__ >= "4.6.2":
+            self._no_get_vars = False
+        else:
+            self._no_get_vars = True
 
     def __array__(self):
         # numpy special method that returns a numpy array.
@@ -4634,8 +4639,9 @@ The default value of `chartostring` is `True`
 
 enable the use of netcdf library routine `nc_get_vars`
 to retrieve strided variable slices.  By default,
-`nc_get_vars` not used since it slower than multiple calls
-to the unstrided read routine `nc_get_vara` in most cases.
+`nc_get_vars` may not used by default (depending on the
+version of the netcdf-c library being used) since it may be
+slower than multiple calls to the unstrided read routine `nc_get_vara`.
         """
         self._no_get_vars = not bool(use_nc_get_vars)
         
