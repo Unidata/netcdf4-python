@@ -4328,8 +4328,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             data = ma.masked_array(data,mask=totalmask,fill_value=fill_value)
         else:
             # issue #785: always return masked array, if no values masked
-            # set mask=False.
-            data = ma.masked_array(data,mask=False,fill_value=fill_value)
+            data = ma.masked_array(data)
         # issue 515 scalar array with mask=True should be converted
         # to numpy.ma.MaskedConstant to be consistent with slicing
         # behavior of masked arrays.
