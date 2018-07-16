@@ -7,11 +7,11 @@ from numpy import ma
 from numpy.testing import assert_array_almost_equal
 from netCDF4 import Dataset
 
-# Test automatic conversion of masked arrays (set_auto_array_type())
+# Test automatic conversion of masked arrays (set_always_mask())
 
-class SetAutoArrayTypeTestBase(unittest.TestCase):
+class SetAlwaysMaskTestBase(unittest.TestCase):
 
-    """Base object for tests checking the functionality of set_auto_array_type()"""
+    """Base object for tests checking the functionality of set_always_mask()"""
 
     def setUp(self):
 
@@ -35,14 +35,14 @@ class SetAutoArrayTypeTestBase(unittest.TestCase):
         os.remove(self.testfile)
 
 
-class SetAutoArrayTypeFalse(SetAutoArrayTypeTestBase):
+class SetAlwaysMaskTrue(SetAlwaysMaskTestBase):
 
-    def test_auto_array_type(self):
+    def test_always_mask(self):
         
         """Testing auto-conversion of masked arrays with no missing values to regular arrays."""
         f = Dataset(self.testfile)
 
-        f.variables["v"].set_auto_array_type(False) # The default anyway...
+        f.variables["v"].set_always_mask(True) # The default anyway...
 
         v = f.variables['v'][:]
 
@@ -58,14 +58,14 @@ class SetAutoArrayTypeFalse(SetAutoArrayTypeTestBase):
         
         f.close()
 
-class SetAutoArrayTypeTrue(SetAutoArrayTypeTestBase):
+class SetAlwyasMaskFalse(SetAlwaysMaskTestBase):
 
-    def test_auto_array_type(self):
+    def test_always_mask(self):
         
         """Testing auto-conversion of masked arrays with no missing values to regular arrays."""
         f = Dataset(self.testfile)
 
-        f.variables["v"].set_auto_array_type(True)
+        f.variables["v"].set_always_mask(False)
         v = f.variables['v'][:]
 
         self.assertTrue(isinstance(v, np.ndarray))
@@ -80,7 +80,7 @@ class SetAutoArrayTypeTrue(SetAutoArrayTypeTestBase):
 
         f.close()
 
-class GlobalSetAutoArrayTypeTest(unittest.TestCase):
+class GlobalSetAlwaysMaskTest(unittest.TestCase):
 
     def setUp(self):
 
@@ -109,25 +109,25 @@ class GlobalSetAutoArrayTypeTest(unittest.TestCase):
 
         f = Dataset(self.testfile, "r")
 
-        # Without auto array typing
+        # Without regular numpy arrays
 
-        f.set_auto_array_type(False)
+        f.set_always_mask(True)
 
         v0 = f.variables['var0']
         v1 = f.groups['Group1'].variables['var1']
         v2 = f.groups['Group2'].variables['var2']
 
-        self.assertFalse(v0.array_type)
-        self.assertFalse(v1.array_type)
-        self.assertFalse(v2.array_type)
+        self.assertTrue(v0.always_mask)
+        self.assertTrue(v1.always_mask)
+        self.assertTrue(v2.always_mask)
 
-        # With auto array typing
+        # With regular numpy arrays
 
-        f.set_auto_array_type(True)
+        f.set_always_mask(False)
 
-        self.assertTrue(v0.array_type)
-        self.assertTrue(v1.array_type)
-        self.assertTrue(v2.array_type)
+        self.assertFalse(v0.always_mask)
+        self.assertFalse(v1.always_mask)
+        self.assertFalse(v2.always_mask)
 
         f.close()
 

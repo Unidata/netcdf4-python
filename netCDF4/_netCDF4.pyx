@@ -2840,30 +2840,30 @@ after calling this function will follow the default behaviour.
                 for var in group.variables.values():
                     var.set_auto_scale(value)
 
-    def set_auto_array_type(self, value):
+    def set_always_mask(self, value):
         """
-**`set_auto_array_type(self, True_or_False)`**
+**`set_always_mask(self, True_or_False)`**
 
-Call `netCDF4.Variable.set_auto_array_type` for all variables
-contained in this `netCDF4.Dataset` or `netCDF4.Group`, as well as for
-all variables in all its subgroups.
+Call `netCDF4.Variable.set_always_mask` for all variables contained in
+this `netCDF4.Dataset` or `netCDF4.Group`, as well as for all
+variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic conversion of
 masked arrays with no missing values to regular ararys shall be
 applied for all variables.
 
-***Note***: Calling this function only affects existing variables. Variables created
-after calling this function will follow the default behaviour.
-
+***Note***: Calling this function only affects existing
+variables. Variables created after calling this function will follow
+the default behaviour.
         """
 
         for var in self.variables.values():
-            var.set_auto_array_type(value)
+            var.set_always_mask(value)
 
         for groups in _walk_grps(self):
             for group in groups:
                 for var in group.variables.values():
-                    var.set_auto_array_type(value)
+                    var.set_always_mask(value)
 
     def get_variables_by_attributes(self, **kwargs):
         """
@@ -3225,7 +3225,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 **`size`**: The number of stored elements.
     """
     cdef public int _varid, _grpid, _nunlimdim
-    cdef public _name, ndim, dtype, mask, scale, array_type, chartostring,  _isprimitive, \
+    cdef public _name, ndim, dtype, mask, scale, always_mask, chartostring,  _isprimitive, \
     _iscompound, _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
     __orthogonal_indexing__, _has_lsd, _no_get_vars
     # Docstrings for class variables (used by pdoc).
@@ -3627,7 +3627,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self.mask = True
         # issue 809: default for converting arrays with no missing values to
         # regular numpy arrays
-        self.array_type = False
+        self.always_mask = True
         # default is to automatically convert to/from character
         # to string arrays when _Encoding variable attribute is set.
         self.chartostring = True
@@ -4336,7 +4336,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # return a scalar numpy masked constant not a 0-d masked array,
             # so that data == numpy.ma.masked.
             data = data[()] # changed from [...] (issue #662)
-        elif self.array_type and not masked_values:
+        elif not self.always_mask and not masked_values:
             # issue #809: return a regular numpy array if requested
             # and there are no missing values
             data = numpy.array(data, copy=False)
@@ -4796,20 +4796,21 @@ The default value of `mask` is `True`
         """
         self.mask = bool(mask)
         
-    def set_auto_array_type(self,array_type):
+    def set_always_mask(self,always_mask):
         """
-**`set_auto_array_type(self,array_type)`**
+**`set_always_mask(self,always_mask)`**
 
 turn on or off conversion of data without missing values to regular
 numpy arrays.
 
-If `array_type` is set to `True` then a masked array with no missing
+If `always_mask` is set to `True` then a masked array with no missing
 values is converted to a regular numpy array.
 
-The default value of `array_type` is `False` (conversions are not
-performed). 
+The default value of `always_mask` is `True` (conversions to regular
+numpy arrays are not performed).
+
         """
-        self.array_type = bool(array_type)
+        self.always_mask = bool(always_mask)
 
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
