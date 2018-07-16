@@ -1470,7 +1470,7 @@ cdef _set_att(grp, int varid, name, value,\
         if value_arr.dtype.kind == 'V': # compound attribute.
             xtype = _find_cmptype(grp,value_arr.dtype)
         elif value_arr.dtype.str[1:] not in _supportedtypes:
-            raise TypeError, 'illegal data type for attribute, must be one of %s, got %s' % (_supportedtypes, value_arr.dtype.str[1:])
+            raise TypeError, 'illegal data type for attribute %r, must be one of %s, got %s' % (attname, _supportedtypes, value_arr.dtype.str[1:])
         elif xtype == -99: # if xtype is not passed in as kwarg.
             xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
@@ -2840,6 +2840,31 @@ after calling this function will follow the default behaviour.
                 for var in group.variables.values():
                     var.set_auto_scale(value)
 
+    def set_auto_array_type(self, value):
+        """
+**`set_auto_array_type(self, True_or_False)`**
+
+Call `netCDF4.Variable.set_auto_array_type` for all variables
+contained in this `netCDF4.Dataset` or `netCDF4.Group`, as well as for
+all variables in all its subgroups.
+
+**`True_or_False`**: Boolean determining if automatic conversion of
+masked arrays with no missing values to regular ararys shall be
+applied for all variables.
+
+***Note***: Calling this function only affects existing variables. Variables created
+after calling this function will follow the default behaviour.
+
+        """
+
+        for var in self.variables.values():
+            var.set_auto_array_type(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                for var in group.variables.values():
+                    var.set_auto_array_type(value)
+
     def get_variables_by_attributes(self, **kwargs):
         """
 **`get_variables_by_attribute(self, **kwargs)`**
@@ -3200,8 +3225,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 **`size`**: The number of stored elements.
     """
     cdef public int _varid, _grpid, _nunlimdim
-    cdef public _name, ndim, dtype, mask, scale, chartostring,  _isprimitive, _iscompound,\
-    _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
+    cdef public _name, ndim, dtype, mask, scale, array_type, chartostring,  _isprimitive, \
+    _iscompound, _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
     __orthogonal_indexing__, _has_lsd, _no_get_vars
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
@@ -3600,6 +3625,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # add_offset, and converting to/from masked arrays is True.
         self.scale = True
         self.mask = True
+        # issue 809: default for converting arrays with no missing values to
+        # regular numpy arrays
+        self.array_type = False
         # default is to automatically convert to/from character
         # to string arrays when _Encoding variable attribute is set.
         self.chartostring = True
@@ -4295,7 +4323,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         if fill_value is None:
             fill_value = default_fillvals[self.dtype.str[1:]]
         # create masked array with computed mask
-        if totalmask.any():
+        masked_values = bool(totalmask.any())
+        if masked_values:
             data = ma.masked_array(data,mask=totalmask,fill_value=fill_value)
         else:
             # issue #785: always return masked array, if no values masked
@@ -4308,6 +4337,11 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # return a scalar numpy masked constant not a 0-d masked array,
             # so that data == numpy.ma.masked.
             data = data[()] # changed from [...] (issue #662)
+        elif self.array_type and not masked_values:
+            # issue #809: return a regular numpy array if requested
+            # and there are no missing values
+            data = numpy.array(data, copy=False)
+            
         return data
 
     def _assign_vlen(self, elem, data):
@@ -4763,6 +4797,20 @@ The default value of `mask` is `True`
         """
         self.mask = bool(mask)
         
+    def set_auto_array_type(self,array_type):
+        """
+**`set_auto_array_type(self,array_type)`**
+
+turn on or off conversion of data without missing values to regular
+numpy arrays.
+
+If `array_type` is set to `True` then a masked array with no missing
+values is converted to a regular numpy array.
+
+The default value of `array_type` is `False` (conversions are not
+performed). 
+        """
+        self.array_type = bool(array_type)
 
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
