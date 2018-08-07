@@ -8,6 +8,10 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+08/10/2018: Version [1.4.1](https://pypi.python.org/pypi/netCDF4/1.4.1) released. The old slicing behavior
+(numpy array returned unless missing values are present, otherwise masked array returned) is renabled
+via `set_always_mask(False)`.
+
 05/11/2018: Version [1.4.0](https://pypi.python.org/pypi/netCDF4/1.4.0) released. The netcdftime package is no longer
 included, it is now a separate [package](https://pypi.python.org/pypi/cftime) dependency.  In addition to several
 bug fixes, there are a few important changes to the default behaviour to note:
