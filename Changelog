@@ -1,4 +1,4 @@
- since version 1.4.1 (not yet released)
+ version 1.4.1 (tag v1.4.1rel)
 =============================
  * disable workaround for slow nc_get_vars for __netcdflibversion__ >= 4.6.2,
    since a fix was added to speed up nc_get_vars in the C library.  Issue 680.

@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Version 1.4.0
+    <meta name="description" content="Version 1.4.1
 -------------
 - - - 
 
@@ -1090,6 +1090,7 @@ table {
     <li class="mono"><a href="#netCDF4.Dataset.renameDimension">renameDimension</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.renameGroup">renameGroup</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.renameVariable">renameVariable</a></li>
+    <li class="mono"><a href="#netCDF4.Dataset.set_always_mask">set_always_mask</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.set_auto_chartostring">set_auto_chartostring</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.set_auto_mask">set_auto_mask</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.set_auto_maskandscale">set_auto_maskandscale</a></li>
@@ -1146,6 +1147,7 @@ table {
     <li class="mono"><a href="#netCDF4.Group.renameDimension">renameDimension</a></li>
     <li class="mono"><a href="#netCDF4.Group.renameGroup">renameGroup</a></li>
     <li class="mono"><a href="#netCDF4.Group.renameVariable">renameVariable</a></li>
+    <li class="mono"><a href="#netCDF4.Group.set_always_mask">set_always_mask</a></li>
     <li class="mono"><a href="#netCDF4.Group.set_auto_chartostring">set_auto_chartostring</a></li>
     <li class="mono"><a href="#netCDF4.Group.set_auto_mask">set_auto_mask</a></li>
     <li class="mono"><a href="#netCDF4.Group.set_auto_maskandscale">set_auto_maskandscale</a></li>
@@ -1182,6 +1184,7 @@ table {
     <li class="mono"><a href="#netCDF4.MFDataset.renameDimension">renameDimension</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.renameGroup">renameGroup</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.renameVariable">renameVariable</a></li>
+    <li class="mono"><a href="#netCDF4.MFDataset.set_always_mask">set_always_mask</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.set_auto_chartostring">set_auto_chartostring</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.set_auto_mask">set_auto_mask</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.set_auto_maskandscale">set_auto_maskandscale</a></li>
@@ -1236,6 +1239,7 @@ table {
     <li class="mono"><a href="#netCDF4.Variable.group">group</a></li>
     <li class="mono"><a href="#netCDF4.Variable.ncattrs">ncattrs</a></li>
     <li class="mono"><a href="#netCDF4.Variable.renameAttribute">renameAttribute</a></li>
+    <li class="mono"><a href="#netCDF4.Variable.set_always_mask">set_always_mask</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_auto_chartostring">set_auto_chartostring</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_auto_mask">set_auto_mask</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_auto_maskandscale">set_auto_maskandscale</a></li>
@@ -1264,7 +1268,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h2>Version 1.4.0</h2>
+  <h2>Version 1.4.1</h2>
 <hr />
 <h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
@@ -1772,6 +1776,17 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).</p>
 <p><strong><em>Special note for scalar variables</em></strong>: To extract data from a scalar variable
 <code>v</code> with no associated dimensions, use <code>numpy.asarray(v)</code> or <code>v[...]</code>. The result
 will be a numpy scalar array.</p>
+<p>By default, netcdf4-python returns numpy masked arrays with values equal to the
+<code>missing_value</code> or <code>_FillValue</code> variable attributes masked.  The
+<a href="#netCDF4.Dataset.set_auto_mask"><code>set_auto_mask</code></a>  <a href="#netCDF4.Dataset"><code>Dataset</code></a> and <a href="#netCDF4.Variable"><code>Variable</code></a> methods
+can be used to disable this feature so that
+numpy arrays are always returned, with the missing values included. Prior to
+version 1.4.0 the default behavior was to only return masked arrays when the
+requested slice contained missing values.  This behavior can be recovered
+using the <a href="#netCDF4.Dataset.set_always_mask"><code>set_always_mask</code></a> method. If a masked array is
+written to a netCDF variable, the masked elements are filled with the
+value specified by the <code>missing_value</code> attribute.  If the variable has
+no <code>missing_value</code>, the <code>_FillValue</code> is used instead.</p>
 <h2><div id='section7'>7) Dealing with time coordinates.</h2>
 <p>Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF) specify that time should be
@@ -3291,6 +3306,29 @@ character encoding of a string attribute (default is <code>utf-8</code>).</p></d
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.Dataset.set_always_mask">
+    <p>def <span class="ident">set_always_mask</span>(</p><p>self, True_or_False)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Call <a href="#netCDF4.Variable.set_always_mask"><code>set_always_mask</code></a> for all variables contained in
+this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all
+variables in all its subgroups.</p>
+<p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion of
+masked arrays with no missing values to regular ararys shall be
+applied for all variables.</p>
+<p><strong><em>Note</em></strong>: Calling this function only affects existing
+variables. Variables created after calling this function will follow
+the default behaviour.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.Dataset.set_auto_chartostring">
     <p>def <span class="ident">set_auto_chartostring</span>(</p><p>self, True_or_False)</p>
     </div>
@@ -4264,6 +4302,29 @@ character encoding of a string attribute (default is <code>utf-8</code>).</p></d
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.Group.set_always_mask">
+    <p>def <span class="ident">set_always_mask</span>(</p><p>self, True_or_False)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Call <a href="#netCDF4.Variable.set_always_mask"><code>set_always_mask</code></a> for all variables contained in
+this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all
+variables in all its subgroups.</p>
+<p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion of
+masked arrays with no missing values to regular ararys shall be
+applied for all variables.</p>
+<p><strong><em>Note</em></strong>: Calling this function only affects existing
+variables. Variables created after calling this function will follow
+the default behaviour.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.Group.set_auto_chartostring">
     <p>def <span class="ident">set_auto_chartostring</span>(</p><p>self, True_or_False)</p>
     </div>
@@ -5069,6 +5130,29 @@ character encoding of a string attribute (default is <code>utf-8</code>).</p></d
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.MFDataset.set_always_mask">
+    <p>def <span class="ident">set_always_mask</span>(</p><p>self, True_or_False)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Call <a href="#netCDF4.Variable.set_always_mask"><code>set_always_mask</code></a> for all variables contained in
+this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all
+variables in all its subgroups.</p>
+<p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion of
+masked arrays with no missing values to regular ararys shall be
+applied for all variables.</p>
+<p><strong><em>Note</em></strong>: Calling this function only affects existing
+variables. Variables created after calling this function will follow
+the default behaviour.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.MFDataset.set_auto_chartostring">
     <p>def <span class="ident">set_auto_chartostring</span>(</p><p>self, True_or_False)</p>
     </div>
@@ -5542,6 +5626,16 @@ behavior is similar to Fortran or Matlab, but different than numpy.</p>
           </ul>
           <h3>Class variables</h3>
             <div class="item">
+            <p id="netCDF4.Variable.always_mask" class="name">var <span class="ident">always_mask</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
             <p id="netCDF4.Variable.chartostring" class="name">var <span class="ident">chartostring</span></p>
             
 
@@ -5928,6 +6022,26 @@ character encoding of a string attribute (default is <code>utf-8</code>).</p></d
   
             
   <div class="item">
+    <div class="name def" id="netCDF4.Variable.set_always_mask">
+    <p>def <span class="ident">set_always_mask</span>(</p><p>self,always_mask)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>turn on or off conversion of data without missing values to regular
+numpy arrays.</p>
+<p>If <code>always_mask</code> is set to <code>True</code> then a masked array with no missing
+values is converted to a regular numpy array.</p>
+<p>The default value of <code>always_mask</code> is <code>True</code> (conversions to regular
+numpy arrays are not performed).</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="netCDF4.Variable.set_auto_chartostring">
     <p>def <span class="ident">set_auto_chartostring</span>(</p><p>self,chartostring)</p>
     </div>
@@ -6184,8 +6298,9 @@ each attribute</p></div>
   
     <div class="desc"><p>enable the use of netcdf library routine <code>nc_get_vars</code>
 to retrieve strided variable slices.  By default,
-<code>nc_get_vars</code> not used since it slower than multiple calls
-to the unstrided read routine <code>nc_get_vara</code> in most cases.</p></div>
+<code>nc_get_vars</code> may not used by default (depending on the
+version of the netcdf-c library being used) since it may be
+slower than multiple calls to the unstrided read routine <code>nc_get_vara</code>.</p></div>
   <div class="source_cont">
 </div>
 

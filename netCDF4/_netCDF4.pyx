@@ -539,6 +539,18 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).
 `v` with no associated dimensions, use `numpy.asarray(v)` or `v[...]`. The result
 will be a numpy scalar array.
 
+By default, netcdf4-python returns numpy masked arrays with values equal to the
+`missing_value` or `_FillValue` variable attributes masked.  The
+`netCDF4.Dataset.set_auto_mask`  `netCDF4.Dataset` and `netCDF4.Variable` methods
+can be used to disable this feature so that
+numpy arrays are always returned, with the missing values included. Prior to
+version 1.4.0 the default behavior was to only return masked arrays when the
+requested slice contained missing values.  This behavior can be recovered
+using the `netCDF4.Dataset.set_always_mask` method. If a masked array is
+written to a netCDF variable, the masked elements are filled with the
+value specified by the `missing_value` attribute.  If the variable has
+no `missing_value`, the `_FillValue` is used instead.
+
 ## <div id='section7'>7) Dealing with time coordinates.
 
 Time coordinate values pose a special challenge to netCDF users.  Most
