@@ -5131,11 +5131,7 @@ open for parallel access.
 return a tuple of `netCDF4.Dimension` instances associated with this 
 `netCDF4.Variable.
         """
-        dims = ()
-        for dimname in self.dimensions:
-            dim = _find_dim(self._grp, dimname)
-            dims += (dim,)
-        return dims
+        return tuple(_find_dim(self._grp, dim) for dim in self.dimensions)
 
     def __reduce__(self):
         # raise error is user tries to pickle a Variable object.
