@@ -5124,6 +5124,19 @@ open for parallel access.
         ELSE:
             pass # does nothing
 
+    def get_dims(self):
+        """
+**`get_dims(self)`**
+
+return a tuple of `netCDF4.Dimension` instances associated with this 
+`netCDF4.Variable.
+        """
+        dims = ()
+        for dimname in self.dimensions:
+            dim = _find_dim(self._grp, dimname)
+            dims += (dim,)
+        return dims
+
     def __reduce__(self):
         # raise error is user tries to pickle a Variable object.
         raise NotImplementedError('Variable is not picklable')
