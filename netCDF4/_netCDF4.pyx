@@ -2087,6 +2087,7 @@ references to the parent Dataset or Group.
             else:
                 ierr = nc_open(path, NC_SHARE, &grpid)
         elif mode == 'ws':
+            _set_default_format(format=format)
             if clobber:
                 if parallel:
                     # NC_SHARE ignored
