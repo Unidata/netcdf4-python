@@ -1,5 +1,5 @@
- since version 1.4.1
-===================
+ version 1.4.2 (not yet released)
+=============================
  * add get_dims Variable method (issue #824)
  * make sure format keyword not ignored when mode is 'ws' (issue #827)
 
