@@ -1,5 +1,5 @@
 """
-Version 1.4.1
+Version 1.4.2
 -------------
 - - - 
 
@@ -1104,7 +1104,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.4.1"
+__version__ = "1.4.2"
 
 # Initialize numpy
 import posixpath
@@ -2087,6 +2087,7 @@ references to the parent Dataset or Group.
             else:
                 ierr = nc_open(path, NC_SHARE, &grpid)
         elif mode == 'ws':
+            _set_default_format(format=format)
             if clobber:
                 if parallel:
                     # NC_SHARE ignored
@@ -5123,6 +5124,15 @@ open for parallel access.
             _ensure_nc_success(ierr)
         ELSE:
             pass # does nothing
+
+    def get_dims(self):
+        """
+**`get_dims(self)`**
+
+return a tuple of `netCDF4.Dimension` instances associated with this 
+`netCDF4.Variable.
+        """
+        return tuple(_find_dim(self._grp, dim) for dim in self.dimensions)
 
     def __reduce__(self):
         # raise error is user tries to pickle a Variable object.
