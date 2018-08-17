@@ -17,12 +17,12 @@ env:
 
 python:
   - "2.7"
-  - "3.5"
   - "3.6"
+  - "3.7"
 
 matrix:
-  allow_failures:
-    - python: "3.7-dev"
+  #allow_failures:
+  #  - python: "3.7-dev"
   include:
     # Absolute minimum dependencies.
     - python: 2.7
