@@ -4872,7 +4872,7 @@ numpy arrays are not performed).
             raise IndexError('size of data array does not conform to slice')
         if negstride:
             # reverse data along axes with negative strides.
-            data = data[sl].copy() # make sure a copy is made.
+            data = data[tuple(sl)].copy() # make sure a copy is made.
         if self._isprimitive or self._iscompound or self._isenum:
             # primitive, enum or compound data type.
             # if data type of array doesn't match variable,
@@ -5091,7 +5091,7 @@ numpy arrays are not performed).
         free(stridep)
         if negstride:
             # reverse data along axes with negative strides.
-            data = data[sl].copy() # make a copy so data is contiguous.
+            data = data[tuple(sl)].copy() # make a copy so data is contiguous.
         # netcdf-c always returns data in native byte order,
         # regardless of variable endian-ness. Here we swap the 
         # bytes if the variable dtype is not native endian, so the
