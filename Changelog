@@ -2,6 +2,8 @@
 =============================
  * add get_dims Variable method (issue #824)
  * make sure format keyword not ignored when mode is 'ws' (issue #827)
+ * fix numpy FutureWarning (non-tuple sequence for     
+   multidimensional indexing is deprecated), issue #833.
 
  version 1.4.1 (tag v1.4.1rel)
 =============================
