@@ -5821,7 +5821,8 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
      75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
     """
 
-    def __init__(self, files, check=False, aggdim=None, exclude=[]):
+    def __init__(self, files, check=False, aggdim=None, exclude=[],
+            master_file=None):
         """
         **`__init__(self, files, check=False, aggdim=None, exclude=[])`**
 
@@ -5833,7 +5834,8 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         of the variables to be aggregated.
         
         **`files`**: either a sequence of netCDF files or a string with a
-        wildcard (converted to a sorted list of files using glob)  The first file
+        wildcard (converted to a sorted list of files using glob)  If
+        the `master_file` kwarg is not specified, the first file
         in the list will become the "master" file, defining all the
         variables with an aggregation dimension which may span
         subsequent files. Attribute access returns attributes only from "master"
@@ -5850,6 +5852,9 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         
         **`exclude`**: A list of variable names to exclude from aggregation.
         Default is an empty list.
+
+        **`master_file`**: file to use as "master file", defining all the
+        variables with an aggregation dimension and all global attributes.
        """
 
         # Open the master file in the base class, so that the CDFMF instance
@@ -5861,7 +5866,13 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
             else:
                 files = sorted(glob(files))
 
-        master = files[0]
+        if master_file is not None:
+            if master_file not in files:
+                raise ValueError('master_file not in files list')
+            else:
+                master = master_file
+        else:
+            master = files[0]
 
         # Open the master again, this time as a classic CDF instance. This will avoid
         # calling methods of the CDFMF subclass when querying the master file.
