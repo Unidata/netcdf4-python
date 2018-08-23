@@ -63,9 +63,7 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(varin[:],data2)
         assert getattr(varin,'nonexistantatt',None) == None
         f.close()
-
-    def test_get_by_mfdataset(self):
-        """testing multi-file get_variables_by_attributes."""
+        # testing multi-file get_variables_by_attributes
         f = MFDataset(self.files,check=True)
         assert f.get_variables_by_attributes(axis='T') == []
         f.get_variables_by_attributes(units='zlotys')[0] == f['x']
