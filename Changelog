@@ -4,6 +4,7 @@
  * make sure format keyword not ignored when mode is 'ws' (issue #827)
  * fix numpy FutureWarning (non-tuple sequence for     
    multidimensional indexing is deprecated), issue #833.
+ * add 'master_file' kwarg to MFDataset.__init__ (issue #835).
 
  version 1.4.1 (tag v1.4.1rel)
 =============================
