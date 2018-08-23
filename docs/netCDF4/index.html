@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Version 1.4.1
+    <meta name="description" content="Version 1.4.2
 -------------
 - - - 
 
@@ -1234,6 +1234,7 @@ table {
     <li class="mono"><a href="#netCDF4.Variable.endian">endian</a></li>
     <li class="mono"><a href="#netCDF4.Variable.filters">filters</a></li>
     <li class="mono"><a href="#netCDF4.Variable.getValue">getValue</a></li>
+    <li class="mono"><a href="#netCDF4.Variable.get_dims">get_dims</a></li>
     <li class="mono"><a href="#netCDF4.Variable.get_var_chunk_cache">get_var_chunk_cache</a></li>
     <li class="mono"><a href="#netCDF4.Variable.getncattr">getncattr</a></li>
     <li class="mono"><a href="#netCDF4.Variable.group">group</a></li>
@@ -1268,7 +1269,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h2>Version 1.4.1</h2>
+  <h2>Version 1.4.2</h2>
 <hr />
 <h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
@@ -4678,7 +4679,7 @@ or NETCDF3_64BIT_DATA</code> format (<code>NETCDF4</code> Datasets won't work).<
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, files, check=False, aggdim=None, exclude=[])</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, files, check=False, aggdim=None, exclude=[], master_file=None)</p>
     </div>
     
     <p class="inheritance">
@@ -4696,7 +4697,8 @@ dimension (specified with the keyword <code>aggdim</code>) are aggregated. If
 <code>aggdim</code> must be the leftmost (slowest varying) dimension of each
 of the variables to be aggregated.</p>
 <p><strong><code>files</code></strong>: either a sequence of netCDF files or a string with a
-wildcard (converted to a sorted list of files using glob)  The first file
+wildcard (converted to a sorted list of files using glob)  If
+the <code>master_file</code> kwarg is not specified, the first file
 in the list will become the "master" file, defining all the
 variables with an aggregation dimension which may span
 subsequent files. Attribute access returns attributes only from "master"
@@ -4709,7 +4711,9 @@ False.</p>
 be the leftmost dimension of each of the variables to be aggregated).
 If None (default), aggregate over the unlimited dimension.</p>
 <p><strong><code>exclude</code></strong>: A list of variable names to exclude from aggregation.
-Default is an empty list.</p></div>
+Default is an empty list.</p>
+<p><strong><code>master_file</code></strong>: file to use as "master file", defining all the
+variables with an aggregation dimension and all global attributes.</p></div>
   <div class="source_cont">
 </div>
 
@@ -5934,6 +5938,22 @@ attributes.</p></div>
   
     <div class="desc"><p>get the value of a scalar variable.  Provided for compatibility with
 Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([...]).</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Variable.get_dims">
+    <p>def <span class="ident">get_dims</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>return a tuple of <a href="#netCDF4.Dimension"><code>Dimension</code></a> instances associated with this 
+`netCDF4.Variable.</p></div>
   <div class="source_cont">
 </div>
 
