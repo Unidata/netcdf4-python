@@ -5920,7 +5920,7 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         #             cdf file of the file set
         cdf = []
         self._cdf = cdf        # Store this now, because dim() method needs it
-        cdfVLen = [len(aggDimId)]
+        cdfVLen = []
         cdfRecVar = {}
 
         # Open each remaining file in read-only mode.
