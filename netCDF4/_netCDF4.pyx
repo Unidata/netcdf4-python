@@ -5918,18 +5918,23 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         #   cdfRecVar dictionary indexed by the aggregation var names; each key holds
         #             a list of the corresponding Variable instance, one for each
         #             cdf file of the file set
-        cdf = [cdfm]
+        cdf = []
         self._cdf = cdf        # Store this now, because dim() method needs it
         cdfVLen = [len(aggDimId)]
         cdfRecVar = {}
-        for v in masterRecVar.keys():
-            cdfRecVar[v] = [cdfm.variables[v]]
 
         # Open each remaining file in read-only mode.
         # Make sure each file defines the same aggregation variables as the master
         # and that the variables are defined in the same way (name, shape and type)
-        for f in files[1:]:
-            part = Dataset(f)
+        for f in files:
+            if f == master:
+                part = cdfm
+            else:
+                part = Dataset(f)
+            if cdfRecVar == {}:
+                empty_cdfRecVar = True
+            else:
+                empty_cdfRecVar = False
             varInfo = part.variables
             for v in masterRecVar.keys():
                 if check:
@@ -5968,12 +5973,16 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
                                        (v, master, masterType, f, extType))
 
                     # Everything ok.
-                    vInst = part.variables[v]
-                    cdfRecVar[v].append(vInst)
+                    if empty_cdfRecVar:
+                        cdfRecVar[v] = [part.variables[v]]
+                    else:
+                        cdfRecVar[v].append(part.variables[v])
                 else:
                     # No making sure of anything -- assume this is ok..
-                    vInst = part.variables[v]
-                    cdfRecVar[v].append(vInst)
+                    if empty_cdfRecVar:
+                        cdfRecVar[v] = [part.variables[v]]
+                    else:
+                        cdfRecVar[v].append(part.variables[v])
 
             cdf.append(part)
             cdfVLen.append(len(part.dimensions[aggDimName]))
