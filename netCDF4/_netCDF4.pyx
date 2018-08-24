@@ -5803,14 +5803,14 @@ Adapted from [pycdf](http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 Example usage (See `netCDF4.MFDataset.__init__` for more details):
 
     :::python
-    >>> import numpy
+    >>> import numpy as np
     >>> # create a series of netCDF files with a variable sharing
     >>> # the same unlimited dimension.
     >>> for nf in range(10):
-    >>>     f = Dataset("mftest%s.nc" % nf,"w")
+    >>>     f = Dataset("mftest%s.nc" % nf,"w",format='NETCDF4_CLASSIC')
     >>>     f.createDimension("x",None)
     >>>     x = f.createVariable("x","i",("x",))
-    >>>     x[0:10] = numpy.arange(nf*10,10*(nf+1))
+    >>>     x[0:10] = np.arange(nf*10,10*(nf+1))
     >>>     f.close()
     >>> # now read all those files in at once, in one Dataset.
     >>> f = MFDataset("mftest*nc")
