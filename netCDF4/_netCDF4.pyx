@@ -3649,7 +3649,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # avoid calling nc_get_vars for strided slices by default.
         # a fix for strided slice access using HDF5 was added
         # in 4.6.2.
-        # always use nc_get_vars for strided access with OpenDAP (issue #836).
+        # always use nc_get_vars for strided access with OpenDAP (issue #838).
         if __netcdf4libversion__ >= "4.6.2" or\
            self._grp.filepath().startswith('http'):
             self._no_get_vars = False

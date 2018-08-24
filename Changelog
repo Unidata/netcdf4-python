@@ -4,7 +4,7 @@
  * make sure format keyword not ignored when mode is 'ws' (issue #827)
  * fix numpy FutureWarning (non-tuple sequence for     
    multidimensional indexing is deprecated), issue #833.
- * always use nc_get_vars for strided access over OpenDAP (issue #836).
+ * always use nc_get_vars for strided access over OpenDAP (issue #838).
 
  version 1.4.1 (tag v1.4.1rel)
 =============================
