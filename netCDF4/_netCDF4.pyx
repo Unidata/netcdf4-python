@@ -5805,14 +5805,14 @@ Adapted from [pycdf](http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 Example usage (See `netCDF4.MFDataset.__init__` for more details):
 
     :::python
-    >>> import numpy
+    >>> import numpy as np
     >>> # create a series of netCDF files with a variable sharing
     >>> # the same unlimited dimension.
     >>> for nf in range(10):
-    >>>     f = Dataset("mftest%s.nc" % nf,"w")
+    >>>     f = Dataset("mftest%s.nc" % nf,"w",format='NETCDF4_CLASSIC')
     >>>     f.createDimension("x",None)
     >>>     x = f.createVariable("x","i",("x",))
-    >>>     x[0:10] = numpy.arange(nf*10,10*(nf+1))
+    >>>     x[0:10] = np.arange(nf*10,10*(nf+1))
     >>>     f.close()
     >>> # now read all those files in at once, in one Dataset.
     >>> f = MFDataset("mftest*nc")
@@ -5823,7 +5823,8 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
      75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
     """
 
-    def __init__(self, files, check=False, aggdim=None, exclude=[]):
+    def __init__(self, files, check=False, aggdim=None, exclude=[],
+            master_file=None):
         """
         **`__init__(self, files, check=False, aggdim=None, exclude=[])`**
 
@@ -5835,7 +5836,8 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         of the variables to be aggregated.
         
         **`files`**: either a sequence of netCDF files or a string with a
-        wildcard (converted to a sorted list of files using glob)  The first file
+        wildcard (converted to a sorted list of files using glob)  If
+        the `master_file` kwarg is not specified, the first file
         in the list will become the "master" file, defining all the
         variables with an aggregation dimension which may span
         subsequent files. Attribute access returns attributes only from "master"
@@ -5852,6 +5854,9 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         
         **`exclude`**: A list of variable names to exclude from aggregation.
         Default is an empty list.
+
+        **`master_file`**: file to use as "master file", defining all the
+        variables with an aggregation dimension and all global attributes.
        """
 
         # Open the master file in the base class, so that the CDFMF instance
@@ -5863,7 +5868,13 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
             else:
                 files = sorted(glob(files))
 
-        master = files[0]
+        if master_file is not None:
+            if master_file not in files:
+                raise ValueError('master_file not in files list')
+            else:
+                master = master_file
+        else:
+            master = files[0]
 
         # Open the master again, this time as a classic CDF instance. This will avoid
         # calling methods of the CDFMF subclass when querying the master file.
@@ -5909,18 +5920,23 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         #   cdfRecVar dictionary indexed by the aggregation var names; each key holds
         #             a list of the corresponding Variable instance, one for each
         #             cdf file of the file set
-        cdf = [cdfm]
+        cdf = []
         self._cdf = cdf        # Store this now, because dim() method needs it
-        cdfVLen = [len(aggDimId)]
+        cdfVLen = []
         cdfRecVar = {}
-        for v in masterRecVar.keys():
-            cdfRecVar[v] = [cdfm.variables[v]]
 
         # Open each remaining file in read-only mode.
         # Make sure each file defines the same aggregation variables as the master
         # and that the variables are defined in the same way (name, shape and type)
-        for f in files[1:]:
-            part = Dataset(f)
+        for f in files:
+            if f == master:
+                part = cdfm
+            else:
+                part = Dataset(f)
+            if cdfRecVar == {}:
+                empty_cdfRecVar = True
+            else:
+                empty_cdfRecVar = False
             varInfo = part.variables
             for v in masterRecVar.keys():
                 if check:
@@ -5959,12 +5975,16 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
                                        (v, master, masterType, f, extType))
 
                     # Everything ok.
-                    vInst = part.variables[v]
-                    cdfRecVar[v].append(vInst)
+                    if empty_cdfRecVar:
+                        cdfRecVar[v] = [part.variables[v]]
+                    else:
+                        cdfRecVar[v].append(part.variables[v])
                 else:
                     # No making sure of anything -- assume this is ok..
-                    vInst = part.variables[v]
-                    cdfRecVar[v].append(vInst)
+                    if empty_cdfRecVar:
+                        cdfRecVar[v] = [part.variables[v]]
+                    else:
+                        cdfRecVar[v].append(part.variables[v])
 
             cdf.append(part)
             cdfVLen.append(len(part.dimensions[aggDimName]))
