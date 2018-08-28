@@ -19,10 +19,11 @@ python:
   - "2.7"
   - "3.6"
   - "3.7"
+# - "3.8-dev"
 
 matrix:
-  #allow_failures:
-  #  - python: "3.7-dev"
+  allow_failures:
+    - python: "3.8-dev"
   include:
     # Absolute minimum dependencies.
     - python: 2.7
@@ -30,6 +31,7 @@ matrix:
         - DEPENDS="numpy==1.9.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
     # test MPI
     - python: 2.7
+      dist: trusty
       env: 
         - MPI=1
         - CC=mpicc
