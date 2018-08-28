@@ -55,8 +55,6 @@ cdef extern from "netcdf.h":
         NC_CLASSIC_MODEL # Enforce strict netcdf-3 rules. 
         # Use these 'mode' flags for both nc_create and nc_open.
         NC_SHARE # Share updates, limit cacheing 
-        NC_MPIIO
-        NC_MPIPOSIX
         # The following flag currently is ignored, but use in
         # nc_open() or nc_create() may someday support use of advisory
         # locking to prevent multiple writers from clobbering a file 
@@ -710,6 +708,7 @@ IF HAS_NC_PAR:
     cdef extern from "netcdf.h":
         cdef enum:
             NC_MPIIO
+            NC_MPIPOSIX
             NC_PNETCDF
 
 # taken from numpy.pxi in numpy 1.0rc2.
