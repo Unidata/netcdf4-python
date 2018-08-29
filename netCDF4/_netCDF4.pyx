@@ -1421,7 +1421,7 @@ cdef _set_att(grp, int varid, name, value,\
     attname = bytestr
     # put attribute value into a numpy array.
     value_arr = numpy.array(value)
-    if value_arr.ndim > 1:
+    if value_arr.ndim > 1: # issue #841
         raise ValueError('multi-dimensional array attributes not supported')
     # if array is 64 bit integers or
     # if 64-bit datatype not supported, cast to 32 bit integers.
