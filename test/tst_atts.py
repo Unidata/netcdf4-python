@@ -70,7 +70,7 @@ class VariablesTestCase(unittest.TestCase):
         g.seqatt = SEQATT
         g.stringseqatt = STRINGSEQATT
         with self.assertRaises(ValueError):
-            g.arrayatt = [[1, 2], [3, 4]]
+            g.arrayatt = [[1, 2], [3, 4]] # issue #841
         g.setncattr_string('stringseqatt_array',STRINGSEQATT) # array of NC_STRING
         v = f.createVariable(VAR_NAME, 'f8',(DIM1_NAME,DIM2_NAME,DIM3_NAME))
         # try to set a variable attribute with one of the reserved names.
