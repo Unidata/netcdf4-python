@@ -7,7 +7,7 @@
  * add 'master_file' kwarg to MFDataset.__init__ (issue #835).
  * always use nc_get_vars for strided access over OpenDAP (issue #838).
  * raise Future when trying to set multi-dimensional array attribute
-   while still silently flattening array (issue #841). Will change
+   while still silently flattening the array (issue #841). Will change
    to ValueError in next release.
 
 
