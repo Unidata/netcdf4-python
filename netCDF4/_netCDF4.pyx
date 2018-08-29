@@ -31,7 +31,7 @@ Download
  - Latest bleeding-edge code from the 
    [github repository](http://github.com/Unidata/netcdf4-python).
  - Latest [releases](https://pypi.python.org/pypi/netCDF4)
-   (source code and windows installers).
+   (source code and binary installers).
 
 Requires
 ========
