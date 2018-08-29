@@ -6,8 +6,9 @@
    multidimensional indexing is deprecated), issue #833.
  * add 'master_file' kwarg to MFDataset.__init__ (issue #835).
  * always use nc_get_vars for strided access over OpenDAP (issue #838).
- * raise ValueError when trying to set multi-dimensional array attribute
-   instead of silently flattening array (issue #841),
+ * raise Future when trying to set multi-dimensional array attribute
+   while still silently flattening array (issue #841). Will change
+   to ValueError in next release.
 
 
  version 1.4.1 (tag v1.4.1rel)
