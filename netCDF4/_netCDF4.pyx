@@ -31,7 +31,7 @@ Download
  - Latest bleeding-edge code from the 
    [github repository](http://github.com/Unidata/netcdf4-python).
  - Latest [releases](https://pypi.python.org/pypi/netCDF4)
-   (source code and windows installers).
+   (source code and binary installers).
 
 Requires
 ========
@@ -1421,6 +1421,15 @@ cdef _set_att(grp, int varid, name, value,\
     attname = bytestr
     # put attribute value into a numpy array.
     value_arr = numpy.array(value)
+    if value_arr.ndim > 1: # issue #841
+        if __version__ > "1.4.2":
+            raise ValueError('multi-dimensional array attributes not supported')
+        else:
+            msg = """
+Multi-dimensional array attributes are now deprecated.
+Instead of silently flattening the array, an error will
+be raised in the next release."""
+            warnings.warn(msg,FutureWarning)
     # if array is 64 bit integers or
     # if 64-bit datatype not supported, cast to 32 bit integers.
     fmt = _get_format(grp._grpid)
