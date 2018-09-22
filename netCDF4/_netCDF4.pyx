@@ -2047,7 +2047,7 @@ references to the parent Dataset or Group.
             # for issue 170 (nc_open'ing a DAP dataset after switching
             # format to NETCDF4). This bug should be fixed in version
             # 4.3.0 of the netcdf library (add a version check here?).
-            _set_default_format(format='NETCDF3_64BIT_OFFSET')
+            #_set_default_format(format='NETCDF3_64BIT_OFFSET')
         elif mode == 'r':
             if memory is not None:
                 IF HAS_NC_OPEN_MEM:
