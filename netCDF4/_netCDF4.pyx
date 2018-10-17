@@ -3483,6 +3483,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # specified numpy data type.
             xtype = _nptonctype[datatype.str[1:]]
             # dtype variable attribute is a numpy datatype object.
+            # set numpy char type to single char string (issue #830)
+            if datatype.char == 'c':
+                datatype = numpy.dtype('S1')
             self.dtype = datatype
         else:
             raise TypeError('illegal primitive data type, must be one of %s, got %s' % (_supportedtypes,datatype))
@@ -4625,6 +4628,9 @@ cannot be safely cast to variable data type""" % attname
                         fillval = self._FillValue
                     else:
                         fillval = default_fillvals[self.dtype.str[1:]]
+                    # cast to type of variable before filling (issue #830)
+                    if self.dtype != data.dtype:
+                        data = data.astype(self.dtype) # cast data, if necessary.
                     data = data.filled(fill_value=fillval)
 
         # Fill output array with data chunks.
