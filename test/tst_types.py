@@ -91,7 +91,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         v3 = f.variables['issue707']
         assert_array_equal(v3[:],-1*np.ones(n2dim,v3.dtype))
         f.close()
-        # issue #830 (masked scalar char variable)
+        # issue #850 (masked scalar char variable)
         f = netCDF4.Dataset(self.file,'a')
         a = f.createVariable('a', 'c', ())
         a[:] = np.ma.masked
