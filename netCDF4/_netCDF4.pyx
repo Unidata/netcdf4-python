@@ -3484,6 +3484,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             xtype = _nptonctype[datatype.str[1:]]
             # dtype variable attribute is a numpy datatype object.
             # set numpy char type to single char string (issue #850)
+            # to avoid "TypeError: Cannot set fill value of string with
+            # array of dtype float64" when filling masked array in __setitem__
             if datatype.char == 'c':
                 datatype = numpy.dtype('S1')
             self.dtype = datatype
@@ -4629,6 +4631,9 @@ cannot be safely cast to variable data type""" % attname
                     else:
                         fillval = default_fillvals[self.dtype.str[1:]]
                     # cast to type of variable before filling (issue #850)
+                    # otherwise 'filled' method may raise an error
+                    # (example, data is type float while fill_value is a
+                    # string)
                     if self.dtype != data.dtype:
                         data = data.astype(self.dtype) # cast data, if necessary.
                     data = data.filled(fill_value=fillval)
