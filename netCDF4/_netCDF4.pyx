@@ -4627,7 +4627,13 @@ cannot be safely cast to variable data type""" % attname
                         fillval = self._FillValue
                     else:
                         fillval = default_fillvals[self.dtype.str[1:]]
-                    data = data.filled(fill_value=fillval)
+                    # some versions of numpy have trouble handling
+                    # MaskedConstants when filling - this is is 
+                    # a workaround (issue #850)
+                    if data.shape == (1,) and data.mask.all():
+                        data = numpy.array([fillval],self.dtype)
+                    else:
+                        data = data.filled(fill_value=fillval)
 
         # Fill output array with data chunks.
         for (a,b,c,i) in zip(start, count, stride, put_ind):
