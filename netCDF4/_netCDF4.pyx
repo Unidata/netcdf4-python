@@ -3486,8 +3486,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # set numpy char type to single char string (issue #850)
             # to avoid "TypeError: Cannot set fill value of string with
             # array of dtype float64" when filling masked array in __setitem__
-            if datatype.char == 'c':
-                datatype = numpy.dtype('S1')
+            #if datatype.char == 'c':
+            #    datatype = numpy.dtype('S1')
             self.dtype = datatype
         else:
             raise TypeError('illegal primitive data type, must be one of %s, got %s' % (_supportedtypes,datatype))
@@ -4630,30 +4630,32 @@ cannot be safely cast to variable data type""" % attname
                         fillval = self._FillValue
                     else:
                         fillval = default_fillvals[self.dtype.str[1:]]
-                    # cast to type of variable before filling (issue #850)
-                    # otherwise 'filled' method may raise an error
-                    # (example, data is type float while fill_value is a
-                    # string).
-                    # this would probably also work
-                    #if data.shape == (1,) and data[0]==numpy.ma.masked:
-                    #    data = numpy.array([fillval],self.dtype)
-                    #else:
-                    #    data = data.filled(fill_value=fillval)
-                    try: 
-                        data.filled()
-                    except (AttributeError, ValueError):
-                        # workaround for bug in numpy 1.13.x
-                        # "AttributeError:
-                        # 'MaskedConstant' object has no attribute '_fill_value'"
-                        # when data contains a single numpy.ma.masked constant.
-                        # older versions of numpy (1.9.2) raise "ValueError:
-                        # could not broadcast where mask from shape (1) into
-                        # shape ()"
+                    # some versions of numpy have trouble handling
+                    # MaskedConstants when filling - this is is 
+                    # a workaround (issue #850)
+                    if data.shape == (1,) and data[0]==numpy.ma.masked:
                         data = numpy.array([fillval],self.dtype)
                     else:
-                        if self.dtype != data.dtype:
-                            data = data.astype(self.dtype) # cast data, if necessary.
                         data = data.filled(fill_value=fillval)
+                    #try: 
+                    #    data.filled()
+                    #except (AttributeError, ValueError):
+                    #    # workaround for bug in numpy 1.13.x
+                    #    # "AttributeError:
+                    #    # 'MaskedConstant' object has no attribute '_fill_value'"
+                    #    # when data contains a single numpy.ma.masked constant.
+                    #    # older versions of numpy (1.9.2) raise "ValueError:
+                    #    # could not broadcast where mask from shape (1) into
+                    #    # shape ()"
+                    #    data = numpy.array([fillval],self.dtype)
+                    #else:
+                    #    # cast to type of variable before filling (issue #850)
+                    #    # otherwise 'filled' method may raise an error
+                    #    # (example, data is type float while fill_value is a
+                    #    # string).
+                    #    if self.dtype != data.dtype:
+                    #        data = data.astype(self.dtype) # cast data, if necessary.
+                    #    data = data.filled(fill_value=fillval)
 
         # Fill output array with data chunks.
         for (a,b,c,i) in zip(start, count, stride, put_ind):
