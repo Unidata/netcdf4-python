@@ -4633,29 +4633,25 @@ cannot be safely cast to variable data type""" % attname
                     # some versions of numpy have trouble handling
                     # MaskedConstants when filling - this is is 
                     # a workaround (issue #850)
-                    if data.shape == (1,) and data[0]==numpy.ma.masked:
+                    try: 
+                        data.filled()
+                    except (AttributeError, ValueError):
+                        # workaround for bug in numpy 1.13.x
+                        # "AttributeError:
+                        # 'MaskedConstant' object has no attribute '_fill_value'"
+                        # when data contains a single numpy.ma.masked constant.
+                        # older versions of numpy (1.9.2) raise "ValueError:
+                        # could not broadcast where mask from shape (1) into
+                        # shape ()"
                         data = numpy.array([fillval],self.dtype)
                     else:
+                        # cast to type of variable before filling (issue #850)
+                        # otherwise 'filled' method may raise an error
+                        # (example, data is type float while fill_value is a
+                        # string).
+                        #if self.dtype != data.dtype:
+                        #    data = data.astype(self.dtype) # cast data, if necessary.
                         data = data.filled(fill_value=fillval)
-                    #try: 
-                    #    data.filled()
-                    #except (AttributeError, ValueError):
-                    #    # workaround for bug in numpy 1.13.x
-                    #    # "AttributeError:
-                    #    # 'MaskedConstant' object has no attribute '_fill_value'"
-                    #    # when data contains a single numpy.ma.masked constant.
-                    #    # older versions of numpy (1.9.2) raise "ValueError:
-                    #    # could not broadcast where mask from shape (1) into
-                    #    # shape ()"
-                    #    data = numpy.array([fillval],self.dtype)
-                    #else:
-                    #    # cast to type of variable before filling (issue #850)
-                    #    # otherwise 'filled' method may raise an error
-                    #    # (example, data is type float while fill_value is a
-                    #    # string).
-                    #    if self.dtype != data.dtype:
-                    #        data = data.astype(self.dtype) # cast data, if necessary.
-                    #    data = data.filled(fill_value=fillval)
 
         # Fill output array with data chunks.
         for (a,b,c,i) in zip(start, count, stride, put_ind):
