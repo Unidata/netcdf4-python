@@ -4633,14 +4633,17 @@ cannot be safely cast to variable data type""" % attname
                     # cast to type of variable before filling (issue #850)
                     # otherwise 'filled' method may raise an error
                     # (example, data is type float while fill_value is a
-                    # string)
+                    # string).
                     try: 
                         data.filled()
-                    except AttributeError:
+                    except (AttributeError, ValueError):
                         # workaround for bug in numpy 1.13.x
-                        # AttributeError:
-                        # 'MaskedConstant' object has no attribute '_fill_value'
+                        # "AttributeError:
+                        # 'MaskedConstant' object has no attribute '_fill_value'"
                         # when data contains a single numpy.ma.masked constant.
+                        # older versions of numpy (1.9.2) raise "ValueError:
+                        # could not broadcast where mask from shape (1) into
+                        # shape ()"
                         data = numpy.array([fillval],self.dtype)
                     else:
                         if self.dtype != data.dtype:
