@@ -9,8 +9,9 @@
  * raise FutureWarning when trying to set multi-dimensional array attribute
    while still silently flattening the array (issue #841). Will change
    to ValueError in next release (1.4.3).
+ * fix parallel writes when both nc4 parallel and pnetcdf parallel options
+   enabled in the netcdf-c library (issue #820).
  * fix for writing masked scalar character variable (issue #850).
-
 
  version 1.4.1 (tag v1.4.1rel)
 =============================
