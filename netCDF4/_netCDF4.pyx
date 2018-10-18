@@ -4634,9 +4634,18 @@ cannot be safely cast to variable data type""" % attname
                     # otherwise 'filled' method may raise an error
                     # (example, data is type float while fill_value is a
                     # string)
-                    if self.dtype != data.dtype:
-                        data = data.astype(self.dtype) # cast data, if necessary.
-                    data = data.filled(fill_value=fillval)
+                    try: 
+                        data.filled()
+                    except AttributeError:
+                        # workaround for bug in numpy 1.13.x
+                        # AttributeError:
+                        # 'MaskedConstant' object has no attribute '_fill_value'
+                        # when data contains a single numpy.ma.masked constant.
+                        data = numpy.array([fillval],self.dtype)
+                    else:
+                        if self.dtype != data.dtype:
+                            data = data.astype(self.dtype) # cast data, if necessary.
+                        data = data.filled(fill_value=fillval)
 
         # Fill output array with data chunks.
         for (a,b,c,i) in zip(start, count, stride, put_ind):
