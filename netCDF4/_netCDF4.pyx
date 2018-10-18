@@ -4643,8 +4643,11 @@ cannot be safely cast to variable data type""" % attname
                        # older versions of numpy (1.9.2) raise "ValueError:
                        # could not broadcast where mask from shape (1) into
                        # shape ()"
-                       data = numpy.array([fillval],self.dtype)
-                       data_filled = True
+                       if data.shape == (1,) and data.mask.all():
+                           data = numpy.array([fillval],self.dtype)
+                       else:
+                           msg='error converting masked array to numpy ndarray'
+                           raise ValueError(msg)
                     else:
                         # cast to type of variable before filling (issue #850)
                         # otherwise 'filled' method may raise an error
