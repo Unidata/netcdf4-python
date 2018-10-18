@@ -3482,6 +3482,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # find netCDF primitive data type corresponding to
             # specified numpy data type.
             xtype = _nptonctype[datatype.str[1:]]
+            # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype
         else:
             raise TypeError('illegal primitive data type, must be one of %s, got %s' % (_supportedtypes,datatype))
