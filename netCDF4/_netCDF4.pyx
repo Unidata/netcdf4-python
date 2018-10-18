@@ -4634,6 +4634,11 @@ cannot be safely cast to variable data type""" % attname
                     # otherwise 'filled' method may raise an error
                     # (example, data is type float while fill_value is a
                     # string).
+                    # this would probably also work
+                    #if data.shape == (1,) and data[0]==numpy.ma.masked:
+                    #    data = numpy.array([fillval],self.dtype)
+                    #else:
+                    #    data = data.filled(fill_value=fillval)
                     try: 
                         data.filled()
                     except (AttributeError, ValueError):
