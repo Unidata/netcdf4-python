@@ -434,7 +434,7 @@ class netcdftimeTestCase(unittest.TestCase):
             pass
         # this should not fail (year zero allowed in 'fake' calendars)
         t = date2num(datetime(1, 1, 1), units, calendar='360_day')
-        self.assertEqual(t, 360)
+        self.assertAlmostEqual(t, 360)
         d = num2date(t, units, calendar='360_day')
         self.assertEqual(d, Datetime360Day(1,1,1))
         d = num2date(0, units, calendar='360_day')
