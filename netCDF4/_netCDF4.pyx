@@ -5843,7 +5843,8 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
     def __init__(self, files, check=False, aggdim=None, exclude=[],
             master_file=None):
         """
-        **`__init__(self, files, check=False, aggdim=None, exclude=[])`**
+        **`__init__(self, files, check=False, aggdim=None, exclude=[],
+        master_file=None)`**
 
         Open a Dataset spanning multiple files, making it look as if it was a
         single file. Variables in the list of files that share the same
