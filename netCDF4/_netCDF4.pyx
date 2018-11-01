@@ -2834,7 +2834,7 @@ after calling this function will follow the default behaviour.
         # (which stores variables in _vars)
         _vars = self.variables
         if _vars is None: _vars = self._vars
-        for var in self._vars.values():
+        for var in _vars.values():
             var.set_auto_mask(value)
 
         for groups in _walk_grps(self):
@@ -2889,7 +2889,7 @@ the default behaviour.
         # (which stores variables in _vars)
         _vars = self.variables
         if _vars is None: _vars = self._vars
-        for var in self._vars.values():
+        for var in _vars.values():
             var.set_always_mask(value)
 
         for groups in _walk_grps(self):
