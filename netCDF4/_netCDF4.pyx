@@ -2834,7 +2834,7 @@ after calling this function will follow the default behaviour.
         # (which stores variables in _vars)
         _vars = self.variables
         if _vars is None: _vars = self._vars
-        for var in self.variables.values():
+        for var in self._vars.values():
             var.set_auto_mask(value)
 
         for groups in _walk_grps(self):
@@ -2889,7 +2889,7 @@ the default behaviour.
         # (which stores variables in _vars)
         _vars = self.variables
         if _vars is None: _vars = self._vars
-        for var in self.variables.values():
+        for var in self._vars.values():
             var.set_always_mask(value)
 
         for groups in _walk_grps(self):
@@ -6174,6 +6174,9 @@ class _Variable(object):
     def set_auto_scale(self,val):
         for v in self._recVar:
             v.set_auto_scale(val)
+    def set_always_mask(self,val):
+        for v in self._recVar:
+            v.set_always_mask(val)
     def __getitem__(self, elem):
         """Get records from a concatenated set of variables."""
 
