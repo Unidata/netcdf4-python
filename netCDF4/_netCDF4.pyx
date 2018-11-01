@@ -2830,6 +2830,10 @@ shall be applied for all variables.
 after calling this function will follow the default behaviour.
         """
 
+        # this is a hack to make inheritance work in MFDataset
+        # (which stores variables in _vars)
+        _vars = self.variables
+        if _vars is None: _vars = self._vars
         for var in self.variables.values():
             var.set_auto_mask(value)
 
@@ -2881,6 +2885,10 @@ variables. Variables created after calling this function will follow
 the default behaviour.
         """
 
+        # this is a hack to make inheritance work in MFDataset
+        # (which stores variables in _vars)
+        _vars = self.variables
+        if _vars is None: _vars = self._vars
         for var in self.variables.values():
             var.set_always_mask(value)
 
