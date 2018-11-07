@@ -29,6 +29,12 @@ if not __has_cdf5_format__ or struct.calcsize("P") < 8:
 if os.getenv('NO_NET'):
     test_files.remove('tst_dap.py');
     sys.stdout.write('not running tst_dap.py ...\n')
+else:
+    # run opendap test first (issue #856).
+    test_files.remove('tst_dap.py')
+    test_files.insert(0,'tst_dap.py')
+    print(test_files)
+
 
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
