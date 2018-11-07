@@ -33,7 +33,6 @@ else:
     # run opendap test first (issue #856).
     test_files.remove('tst_dap.py')
     test_files.insert(0,'tst_dap.py')
-    print(test_files)
 
 
 # Build the test suite from the tests found in the test files.
