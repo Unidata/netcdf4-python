@@ -33,7 +33,7 @@ install:
   - cmd: conda.exe install conda-build vs2008_express_vc_python_patch
   - cmd: call setup_x64
 
-  - cmd: conda.exe create --name TEST python=%PY% numpy=%NPY% cython pip pytest hdf5 libnetcdf=4.6.1 cftime
+  - cmd: conda.exe create --name TEST python=%PY% numpy=%NPY% cython pip pytest hdf5 libnetcdf cftime
   - cmd: conda activate TEST
 
   - cmd: conda.exe info --all
