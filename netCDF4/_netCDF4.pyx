@@ -1239,7 +1239,7 @@ NC_DISKLESS = 0x0008
 if __netcdf4libversion__[0:5] >= "4.6.2":
     NC_PERSIST = 0x4000
 else:  # prior to 4.6.2 this flag doesn't work, so make the same as NC_DISKLESS
-    NC_PERSIST = 0x0008
+    NC_PERSIST = NC_DISKLESS
 
 # next two lines do nothing, preserved for backwards compatibility.
 default_encoding = 'utf-8' 
