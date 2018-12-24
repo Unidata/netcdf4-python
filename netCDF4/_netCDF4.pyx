@@ -1235,6 +1235,11 @@ is_native_big = numpy.dtype('>f4').byteorder == '='
 # hard code these here, instead of importing from netcdf.h
 # so it will compile with versions <= 4.2.
 NC_DISKLESS = 0x0008
+# introduced in 4.6.2
+if __netcdf4libversion__[0:5] >= "4.6.2":
+    NC_PERSIST = 0x4000
+else:  # prior to 4.6.2 this flag doesn't work, so make the same as NC_DISKLESS
+    NC_PERSIST = NC_DISKLESS
 
 # next two lines do nothing, preserved for backwards compatibility.
 default_encoding = 'utf-8' 
@@ -2024,7 +2029,8 @@ references to the parent Dataset or Group.
                         pass
                 elif diskless:
                     if persist:
-                        ierr = nc_create(path, NC_WRITE | NC_CLOBBER | NC_DISKLESS , &grpid)
+                        ierr = nc_create(path, NC_WRITE | NC_CLOBBER |
+                                NC_DISKLESS | NC_PERSIST, &grpid)
                     else:
                         ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
                 else:
@@ -2038,7 +2044,8 @@ references to the parent Dataset or Group.
                         pass
                 elif diskless:
                     if persist:
-                        ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                        ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER |
+                                NC_DISKLESS | NC_PERSIST , &grpid)
                     else:
                         ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
                 else:
