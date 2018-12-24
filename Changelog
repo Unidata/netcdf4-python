@@ -1,6 +1,7 @@
  since version 1.4.2
 =============================
  * make set_always_mask work in MFDataset.
+ * fix saving diskless files to disk with netcdf-c >= 4.6.2.
 
  version 1.4.2 (tag v1.4.2rel)
 =============================
