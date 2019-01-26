@@ -694,6 +694,15 @@ IF HAS_NC_OPEN_MEM:
     cdef extern from "netcdf_mem.h":
         int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp)
 
+IF HAS_NC_CREATE_MEM:
+    cdef extern from "netcdf_mem.h":
+        int nc_create_mem(const char *path, int mode, size_t initialize, int *ncidp);
+        ctypedef struct NC_memio:
+            size_t size
+            void* memory
+            int flags
+        int nc_close_memio(int ncid, NC_memio* info);
+
 IF HAS_NC_PAR:
     cdef extern from "mpi-compat.h": pass
     cdef extern from "netcdf_par.h":

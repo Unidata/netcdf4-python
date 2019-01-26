@@ -1086,6 +1086,7 @@ PERFORMANCE OF THIS SOFTWARE.
 # Make changes to this file, not the c-wrappers that Cython generates.
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from cpython.buffer cimport PyObject_GetBuffer, PyBuffer_Release, PyBUF_SIMPLE, PyBUF_ANY_CONTIGUOUS
+from cpython.bytes cimport PyBytes_FromStringAndSize
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
@@ -1979,6 +1980,7 @@ references to the parent Dataset or Group.
         means MPI_INFO_NULL will be used.  Ignored if `parallel=False`.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
+        cdef size_t initialsize
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
         IF HAS_NC_PAR:
@@ -1999,8 +2001,8 @@ references to the parent Dataset or Group.
         bytestr = _strencode(_tostr(filename), encoding=encoding)
         path = bytestr
 
-        if memory is not None and (mode != 'r' or type(memory) != bytes):
-            raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
+        #if memory is not None and (mode != 'r' or type(memory) != bytes):
+        #    raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
         if parallel:
             IF HAS_NC_PAR != 1:
                 msg='parallel mode requires MPI enabled netcdf-c'
@@ -2018,38 +2020,52 @@ references to the parent Dataset or Group.
                 else:
                     mpiinfo = MPI_INFO_NULL
 
+        self._inmemory = False
         if mode == 'w':
             _set_default_format(format=format)
-            if clobber:
-                if parallel:
-                    IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
-                               mpicomm, mpiinfo, &grpid)
-                    ELSE:
-                        pass
-                elif diskless:
-                    if persist:
-                        ierr = nc_create(path, NC_WRITE | NC_CLOBBER |
-                                NC_DISKLESS | NC_PERSIST, &grpid)
-                    else:
-                        ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
-                else:
-                    ierr = nc_create(path, NC_CLOBBER, &grpid)
+            if memory is not None:
+                # if memory is not None and mode='w', memory
+                # kwarg is interpreted as advisory size.
+                IF HAS_NC_CREATE_MEM:
+                   initialsize = <size_t>memory
+                   ierr = nc_create_mem(path, 0, initialsize, &grpid)
+                   self._inmemory = True # checked in close method
+                ELSE:
+                    msg = """
+        nc_create_mem functionality not enabled.  To enable, install Cython, make sure you have
+        version 4.6.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+                    raise ValueError(msg)
             else:
-                if parallel:
-                    IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
-                               mpicomm, mpiinfo, &grpid)
-                    ELSE:
-                        pass
-                elif diskless:
-                    if persist:
-                        ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER |
-                                NC_DISKLESS | NC_PERSIST , &grpid)
+                if clobber:
+                    if parallel:
+                        IF HAS_NC_PAR:
+                            ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                                   mpicomm, mpiinfo, &grpid)
+                        ELSE:
+                            pass
+                    elif diskless:
+                        if persist:
+                            ierr = nc_create(path, NC_WRITE | NC_CLOBBER |
+                                    NC_DISKLESS | NC_PERSIST, &grpid)
+                        else:
+                            ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
                     else:
-                        ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                        ierr = nc_create(path, NC_CLOBBER, &grpid)
                 else:
-                    ierr = nc_create(path, NC_NOCLOBBER, &grpid)
+                    if parallel:
+                        IF HAS_NC_PAR:
+                            ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                                   mpicomm, mpiinfo, &grpid)
+                        ELSE:
+                            pass
+                    elif diskless:
+                        if persist:
+                            ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER |
+                                    NC_DISKLESS | NC_PERSIST , &grpid)
+                        else:
+                            ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                    else:
+                        ierr = nc_create(path, NC_NOCLOBBER, &grpid)
             # reset default format to netcdf3 - this is a workaround
             # for issue 170 (nc_open'ing a DAP dataset after switching
             # format to NETCDF4). This bug should be fixed in version
@@ -2068,7 +2084,7 @@ references to the parent Dataset or Group.
                     ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
                 ELSE:
                     msg = """
-        nc_open_mem method not enabled.  To enable, install Cython, make sure you have
+        nc_open_mem functionality not enabled.  To enable, install Cython, make sure you have
         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
                     raise ValueError(msg)
             elif parallel:
@@ -2273,6 +2289,25 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         # view.obj is checked, ref on obj is decremented and obj will be null'd out
         PyBuffer_Release(&self._buffer)
 
+    def _close_mem(self, check_err):
+        cdef NC_memio memio
+        cdef int ierr
+
+        ierr = nc_close_memio(self._grpid, &memio)
+
+        if check_err:
+            _ensure_nc_success(ierr)
+
+        self._isopen = 0 # indicates file already closed, checked by __dealloc__
+
+        # Only release buffer if close succeeded
+        # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
+        # view.obj is checked, ref on obj is decremented and obj will be null'd out
+        PyBuffer_Release(&self._buffer)
+
+        # return bytes representing in-memory dataset
+        return PyBytes_FromStringAndSize(<char *>memio.memory, memio.size)
+
 
     def close(self):
         """
@@ -2280,7 +2315,10 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
 Close the Dataset.
         """
-        self._close(True)
+        if self._inmemory:
+            memory = self._close_mem(True)
+        else:
+            self._close(True)
 
     def isopen(self):
         """
