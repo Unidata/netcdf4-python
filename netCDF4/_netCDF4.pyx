@@ -1837,7 +1837,7 @@ group, so the path is simply `'/'`.
 **`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak 
 references to the parent Dataset or Group.
     """
-    cdef object __weakref__
+    cdef object __weakref__, _inmemory
     cdef public int _grpid
     cdef public int _isopen
     cdef Py_buffer _buffer
@@ -2316,7 +2316,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 Close the Dataset.
         """
         if self._inmemory:
-            memory = self._close_mem(True)
+            return self._close_mem(True)
         else:
             self._close(True)
 
