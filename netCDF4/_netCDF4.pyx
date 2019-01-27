@@ -2290,10 +2290,11 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         PyBuffer_Release(&self._buffer)
 
     def _close_mem(self, check_err):
-        cdef NC_memio memio
         cdef int ierr
 
-        ierr = nc_close_memio(self._grpid, &memio)
+        IF HAS_NC_CREATE_MEM:
+            cdef NC_memio memio
+            ierr = nc_close_memio(self._grpid, &memio)
 
         if check_err:
             _ensure_nc_success(ierr)
@@ -2306,7 +2307,8 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         PyBuffer_Release(&self._buffer)
 
         # return bytes representing in-memory dataset
-        return PyBytes_FromStringAndSize(<char *>memio.memory, memio.size)
+        IF HAS_NC_CREATE_MEM:
+            return PyBytes_FromStringAndSize(<char *>memio.memory, memio.size)
 
 
     def close(self):
@@ -2315,9 +2317,12 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
 Close the Dataset.
         """
-        if self._inmemory:
-            return self._close_mem(True)
-        else:
+        IF HAS_NC_CREATE_MEM:
+            if self._inmemory:
+                return self._close_mem(True)
+            else:
+                self._close(True)
+        ELSE:
             self._close(True)
 
     def isopen(self):
