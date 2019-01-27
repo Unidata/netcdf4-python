@@ -2001,8 +2001,20 @@ references to the parent Dataset or Group.
         bytestr = _strencode(_tostr(filename), encoding=encoding)
         path = bytestr
 
-        #if memory is not None and (mode != 'r' or type(memory) != bytes):
-        #    raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
+        if memory is not None:
+            if mode == 'r' and type(memory) != bytes:
+                msg='memory kwarg must be a bytes object if mode=\'r\''
+                raise ValueError(msg)
+            elif mode == 'w':
+                try:
+                    memory = int(memory)
+                except:
+                    msg='memory kwarg must be an integer-like if mode=\'w\''
+                    raise ValueError(msg)
+            else:
+                msg='if memory kwarg specified, mode must be \'r\' or \'w\''
+                raise ValueError(msg)
+
         if parallel:
             IF HAS_NC_PAR != 1:
                 msg='parallel mode requires MPI enabled netcdf-c'
@@ -2289,25 +2301,23 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         # view.obj is checked, ref on obj is decremented and obj will be null'd out
         PyBuffer_Release(&self._buffer)
 
-    def _close_mem(self, check_err):
-        cdef int ierr
-
-        IF HAS_NC_CREATE_MEM:
+    IF HAS_NC_CREATE_MEM:
+        def _close_mem(self, check_err):
+            cdef int ierr
             cdef NC_memio memio
             ierr = nc_close_memio(self._grpid, &memio)
 
-        if check_err:
-            _ensure_nc_success(ierr)
+            if check_err:
+                _ensure_nc_success(ierr)
 
-        self._isopen = 0 # indicates file already closed, checked by __dealloc__
+            self._isopen = 0 # indicates file already closed, checked by __dealloc__
 
-        # Only release buffer if close succeeded
-        # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
-        # view.obj is checked, ref on obj is decremented and obj will be null'd out
-        PyBuffer_Release(&self._buffer)
+            # Only release buffer if close succeeded
+            # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
+            # view.obj is checked, ref on obj is decremented and obj will be null'd out
+            PyBuffer_Release(&self._buffer)
 
-        # return bytes representing in-memory dataset
-        IF HAS_NC_CREATE_MEM:
+            # return bytes representing in-memory dataset
             return PyBytes_FromStringAndSize(<char *>memio.memory, memio.size)
 
 
