@@ -25,19 +25,17 @@ install:
 
   # Add path, activate `conda` and update conda.
   - cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
-  - cmd: conda.exe config --set always_yes yes --set changeps1 no --set show_channel_urls true
-  - cmd: conda.exe update conda
-  - cmd: conda.exe config --remove channels defaults --force
-  - cmd: conda.exe config --add channels conda-forge --force
+  - cmd: conda config --set always_yes yes --set changeps1 no --set show_channel_urls true
+  - cmd: conda update conda
+  - cmd: conda config --remove channels defaults --force
+  - cmd: conda config --add channels conda-forge --force
   - cmd: set PYTHONUNBUFFERED=1
-  - cmd: conda.exe install conda-build vs2008_express_vc_python_patch
+  - cmd: conda install conda-build vs2008_express_vc_python_patch
   - cmd: call setup_x64
 
-  - cmd: conda.exe create --name TEST python=%PY% numpy=%NPY% cython pip pytest hdf5 libnetcdf cftime
+  - cmd: conda create --name TEST python=%PY% numpy=%NPY% cython pip pytest hdf5 libnetcdf cftime
+  - cmd: conda info --all
   - cmd: conda activate TEST
-
-  - cmd: conda.exe info --all
-  - cmd: conda.exe list
 
   - cmd: echo [options] > setup.cfg
   - cmd: echo [directories] >> setup.cfg
