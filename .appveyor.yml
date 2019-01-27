@@ -25,6 +25,7 @@ install:
 
   # Add path, activate `conda` and update conda.
   - cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
+  - cmd: SET PATH=%CONDA_INSTALL_LOCN%;%CONDA_INSTALL_LOCN%\Scripts;%PATH%
   - cmd: conda.exe config --set always_yes yes --set changeps1 no --set show_channel_urls true
   - cmd: conda.exe update conda
   - cmd: conda.exe config --remove channels defaults --force
