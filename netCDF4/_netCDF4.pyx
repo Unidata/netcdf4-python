@@ -1120,6 +1120,7 @@ from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 import_array()
 include "constants.pyx"
+include "membuf.pyx"
 include "netCDF4.pxi"
 IF HAS_NC_PAR:
     cimport mpi4py.MPI as MPI
@@ -2002,22 +2003,9 @@ references to the parent Dataset or Group.
         bytestr = _strencode(_tostr(filename), encoding=encoding)
         path = bytestr
 
-        if memory is not None:
-            if mode == 'r':
-                try:
-                    memory = buffer(memory)
-                except:
-                    msg='memory kwarg must be support the buffer interface'
-                    raise ValueError(msg)
-            elif mode == 'w':
-                try:
-                    memory = int(memory)
-                except:
-                    msg='memory kwarg must be integer-like'
-                    raise ValueError(msg)
-            else:
-                msg='if memory kwarg specified, mode must be \'r\' or \'w\''
-                raise ValueError(msg)
+        if memory is not None and mode not in ['r','w']:
+            msg='if memory kwarg specified, mode must be \'r\' or \'w\''
+            raise ValueError(msg)
 
         if parallel:
             IF HAS_NC_PAR != 1:
@@ -2314,16 +2302,20 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             if check_err:
                 _ensure_nc_success(ierr)
 
-            self._isopen
+            self._isopen = 0
             PyBuffer_Release(&self._buffer)
 
             # get python bytes representing in-memory dataset
             # this makes a copy of memory in memio
-            b = PyBytes_FromStringAndSize(<char *>memio.memory, memio.size)
+            #b = PyBytes_FromStringAndSize(<char *>memio.memory, memio.size)
             # free memory returned by nc_close_memio
-            free(memio.memory)
+            #free(memio.memory)
             # return python bytes
-            return b
+            #return b
+
+            # makebuf from membuf.pyx - creates a python memoryview
+            # from a raw pointer without making a copy.
+            return makebuf(<char *>memio.memory, memio.size)
 
 
     def close(self):
