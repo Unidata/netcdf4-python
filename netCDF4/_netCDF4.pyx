@@ -1158,6 +1158,7 @@ __has_nc_inq_path__ = HAS_NC_INQ_PATH
 __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
 __has_cdf5_format__ = HAS_CDF5_FORMAT
 __has_nc_open_mem__ = HAS_NC_OPEN_MEM
+__has_nc_create_mem__ = HAS_NC_CREATE_MEM
 __has_nc_par__ = HAS_NC_PAR
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
@@ -2311,11 +2312,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             if check_err:
                 _ensure_nc_success(ierr)
 
-            self._isopen = 0 # indicates file already closed, checked by __dealloc__
-
-            # Only release buffer if close succeeded
-            # per impl of PyBuffer_Release: https://github.com/python/cpython/blob/master/Objects/abstract.c#L667
-            # view.obj is checked, ref on obj is decremented and obj will be null'd out
+            self._isopen
             PyBuffer_Release(&self._buffer)
 
             # return bytes representing in-memory dataset
