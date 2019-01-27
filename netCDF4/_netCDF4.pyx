@@ -2002,9 +2002,10 @@ references to the parent Dataset or Group.
         path = bytestr
 
         if memory is not None:
-            if mode == 'r' and type(memory) != bytes:
-                msg='memory kwarg must be a bytes object if mode=\'r\''
-                raise ValueError(msg)
+            if mode == 'r':
+                if type(memory) != bytes:
+                    msg='memory kwarg must be a bytes object if mode=\'r\''
+                    raise ValueError(msg)
             elif mode == 'w':
                 try:
                     memory = int(memory)
