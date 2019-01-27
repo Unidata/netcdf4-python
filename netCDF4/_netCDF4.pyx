@@ -1902,7 +1902,8 @@ references to the parent Dataset or Group.
                      Comm comm=None, Info info=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
-        persist=False, keepweakref=False, format='NETCDF4')`**
+        persist=False, keepweakref=False, memory=None, encoding=None,
+        parallel=False, comm=None, info=None, format='NETCDF4')`**
 
         `netCDF4.Dataset` constructor.
 
@@ -1944,8 +1945,8 @@ references to the parent Dataset or Group.
         64 bit integer data types, but is only compatible with clients linked against
         netCDF version 4.4.0 or later.
         
-        **`diskless`**: If `True`, create diskless (in memory) file.  
-        This is an experimental feature added to the C library after the
+        **`diskless`**: If `True`, create diskless (in-core) file.  
+        This is a feature added to the C library after the
         netcdf-4.2 release. If you need to access the memory buffer directly,
         use the in-memory feature instead (see `memory` kwarg).
         
@@ -1967,7 +1968,8 @@ references to the parent Dataset or Group.
         rendered unusable when the parent Dataset instance is garbage collected.
         
         **`memory`**: if not `None`, create or open an in-memory Dataset.
-        If mode = 'r', the memory kwarg must contain a buffer object.
+        If mode = 'r', the memory kwarg must contain a memory buffer object
+        (an object that supports the python buffer interface).
         The Dataset will then be created with contents taken from this block of memory.
         If mode = 'w', the memory kwarg should contain the anticipated size
         of the Dataset in bytes (used only for NETCDF3 files).  A memory
