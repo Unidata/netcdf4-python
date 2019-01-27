@@ -2004,14 +2004,16 @@ references to the parent Dataset or Group.
 
         if memory is not None:
             if mode == 'r':
-                if type(memory) != bytes:
-                    msg='memory kwarg must be a bytes object if mode=\'r\''
+                try:
+                    memory = buffer(memory)
+                except:
+                    msg='memory kwarg must be support the buffer interface'
                     raise ValueError(msg)
             elif mode == 'w':
                 try:
                     memory = int(memory)
                 except:
-                    msg='memory kwarg must be an integer-like if mode=\'w\''
+                    msg='memory kwarg must be integer-like'
                     raise ValueError(msg)
             else:
                 msg='if memory kwarg specified, mode must be \'r\' or \'w\''
