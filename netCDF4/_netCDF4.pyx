@@ -2315,8 +2315,13 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             self._isopen
             PyBuffer_Release(&self._buffer)
 
-            # return bytes representing in-memory dataset
-            return PyBytes_FromStringAndSize(<char *>memio.memory, memio.size)
+            # get python bytes representing in-memory dataset
+            # this makes a copy of memory in memio
+            b = PyBytes_FromStringAndSize(<char *>memio.memory, memio.size)
+            # free memory returned by nc_close_memio
+            free(memio.memory)
+            # return python bytes
+            return b
 
 
     def close(self):
