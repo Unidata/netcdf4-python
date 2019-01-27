@@ -1946,7 +1946,8 @@ references to the parent Dataset or Group.
         
         **`diskless`**: If `True`, create diskless (in memory) file.  
         This is an experimental feature added to the C library after the
-        netcdf-4.2 release.
+        netcdf-4.2 release. If you need to access the memory buffer directly,
+        use the in-memory feature instead (see `memory` kwarg).
         
         **`persist`**: if `diskless=True`, persist file to disk when closed
         (default `False`).
@@ -1965,8 +1966,16 @@ references to the parent Dataset or Group.
         desirable, since the associated Variable instances may still be needed, but are
         rendered unusable when the parent Dataset instance is garbage collected.
         
-        **`memory`**: if not `None`, open file with contents taken from this block of memory.
-        Must be a sequence of bytes.  Note this only works with "r" mode.
+        **`memory`**: if not `None`, create or open an in-memory Dataset.
+        If mode = 'r', the memory kwarg must contain a buffer object.
+        The Dataset will then be created with contents taken from this block of memory.
+        If mode = 'w', the memory kwarg should contain the anticipated size
+        of the Dataset in bytes (used only for NETCDF3 files).  A memory
+        buffer containing a copy of the Dataset is returned by the
+        `Dataset.close` method. Requires netcdf-c version 4.4.1 for mode='r,
+        netcdf-c 4.6.2 for mode='w'. To persist the file to disk, the raw
+        bytes from the returned buffer can be written into a binary file.
+        The Dataset can also be re-opened using this memory buffer.
 
         **`encoding`**: encoding used to encode filename string into bytes.
         Default is None (`sys.getdefaultfileencoding()` is used).
