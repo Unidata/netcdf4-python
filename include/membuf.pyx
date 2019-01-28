@@ -16,7 +16,7 @@ cdef void free_buf(const void *p, size_t l, void *arg):
 # a raw pointer.
 cdef makebuf(void *p, size_t l):
     assert p!=NULL, "invalid NULL buffer pointer"
-    return MemBuf_init(p, l, &free_buf, NULL)
+    return memoryview( MemBuf_init(p, l, &free_buf, NULL) )
 
 cdef class MemBuf:
     cdef const void *p

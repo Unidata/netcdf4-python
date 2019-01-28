@@ -1074,8 +1074,8 @@ create a new read-only Dataset from an existing python memory buffer, use the
 If you want to create a new in-memory Dataset, and then access the memory buffer
 directly from Python, use the `memory` keyword argument to specify the
 estimated size of the Dataset in bytes when creating the Dataset with
-`mode='w'`.  Then, the `Dataset.close` method will return a python memory
-buffer representing the Dataset. Below are examples illustrating both
+`mode='w'`.  Then, the `Dataset.close` method will return a python memoryview
+object representing the Dataset. Below are examples illustrating both
 approaches.
 
     :::python
@@ -1119,11 +1119,12 @@ approaches.
     >>> d = nc.createDimension('x',None)
     >>> v = nc.createVariable('v',numpy.int32,'x')
     >>> v[0:5] = numpy.arange(5)
-    >>> nc_buf = nc.close() # close returns memory buffer.
+    >>> nc_buf = nc.close() # close returns memoryview
+    >>> print(type(nc_buf))
+    <type 'memoryview'>
     >>> # save nc_buf to disk, read it back in and check.
-    >>> # tobytes method of cython memory buffer converts to bytes.
-    >>> f = open('inmemory.nc', 'w')
-    >>> f.write(nc_buf.tobytes()); f.close()
+    >>> f = open('inmemory.nc', 'wb')
+    >>> f.write(nc_buf); f.close()
     >>> nc = Dataset('inmemory.nc')
     >>> print(nc)
     <type 'netCDF4._netCDF4.Dataset'>

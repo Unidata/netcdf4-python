@@ -347,12 +347,11 @@ nc = Dataset('inmemory.nc', mode='w',memory=1028)
 d = nc.createDimension('x',None)
 v = nc.createVariable('v',numpy.int32,'x')
 v[0:5] = numpy.arange(5)
-nc_buf = nc.close() # close returns memory buffer.
+nc_buf = nc.close() # close returns memoryview
 print type(nc_buf)
 # save nc_buf to disk, read it back in and check.
-# tobytes method of cython memory buffer converts to bytes.
-f = open('inmemory.nc', 'w')
-f.write(nc_buf.tobytes()); f.close()
+f = open('inmemory.nc', 'wb')
+f.write(nc_buf); f.close()
 nc = Dataset('inmemory.nc')
 print(nc)
 print(nc['v'][:])
