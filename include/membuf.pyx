@@ -5,7 +5,6 @@
 from cpython.buffer cimport PyBuffer_FillInfo, PyBuffer_Release
 from cpython.bytes cimport PyBytes_FromStringAndSize
 from libc.stdlib cimport free
-from libc.string cimport memcpy
 from libc.stdint cimport uintptr_t
 
 ctypedef void dealloc_callback(const void *p, size_t l, void *arg)
