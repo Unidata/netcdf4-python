@@ -320,3 +320,40 @@ statdat.set_auto_chartostring(False) # turn off auto-conversion
 statdat[:] = data.view(station_data_t.dtype)
 print(statdat[:]) # now structured array with char array subtype is returned
 nc.close()
+
+# create a diskless (in-memory) Dataset, and persist the file
+# to disk when it is closed.
+nc = Dataset('diskless_example.nc','w',diskless=True,persist=True)
+d = nc.createDimension('x',None)
+v = nc.createVariable('v',numpy.int32,'x')
+v[0:5] = numpy.arange(5)
+print(nc)
+print(nc['v'][:])
+nc.close() # file saved to disk
+# create an in-memory dataset from an existing python memory
+# buffer.
+# read the newly created netcdf file into a python bytes object.
+f = open('diskless_example.nc', 'rb')
+nc_bytes = f.read(); f.close()
+# create a netCDF in-memory dataset from the bytes object.
+nc = Dataset('inmemory.nc', memory=nc_bytes)
+print(nc)
+print(nc['v'][:])
+nc.close()
+# create an in-memory Dataset and retrieve memory buffer
+# estimated size is 1028 bytes - this is actually only
+# used if format is NETCDF3 (ignored for NETCDF4/HDF5 files).
+nc = Dataset('inmemory.nc', mode='w',memory=1028)
+d = nc.createDimension('x',None)
+v = nc.createVariable('v',numpy.int32,'x')
+v[0:5] = numpy.arange(5)
+nc_buf = nc.close() # close returns memory buffer.
+print type(nc_buf)
+# save nc_buf to disk, read it back in and check.
+# tobytes method of cython memory buffer converts to bytes.
+f = open('inmemory.nc', 'w')
+f.write(nc_buf.tobytes()); f.close()
+nc = Dataset('inmemory.nc')
+print(nc)
+print(nc['v'][:])
+nc.close()
