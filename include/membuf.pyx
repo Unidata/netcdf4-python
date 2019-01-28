@@ -3,6 +3,7 @@
 # Allows to return a malloced python buffer,
 # which will be freed when the python object is garbage collected.
 from cpython.buffer cimport PyBuffer_FillInfo, PyBuffer_Release
+from cpython.bytes cimport PyBytes_FromStringAndSize
 from libc.stdlib cimport free
 from libc.string cimport memcpy
 from libc.stdint cimport uintptr_t
@@ -43,6 +44,9 @@ cdef class MemBuf:
     def __dealloc__(self):
         if self.dealloc_cb_p != NULL:
             self.dealloc_cb_p(self.p, self.l, self.dealloc_cb_arg)
+
+    def tobytes(self):
+        return PyBytes_FromStringAndSize(<char *>self.p, self.l)
 
 # Call this instead of constructing a MemBuf directly.  The __cinit__
 # and __init__ methods can only take Python objects, so the real

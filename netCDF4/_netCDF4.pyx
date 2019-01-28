@@ -112,7 +112,8 @@ Tutorial
 11. [Variable-length (vlen) data types.](#section11)
 12. [Enum data type.](#section12)
 13. [Parallel IO.](#section13)
-14. [Dealing with strings](#section14)
+14. [Dealing with strings.](#section14)
+15. [In-memory (diskless) Datasets.](#section15)
 
 
 ## <div id='section1'>1) Creating/Opening/Closing a netCDF file.
@@ -1059,6 +1060,62 @@ Here's an example:
 Note that there is currently no support for mapping numpy structured arrays with
 unicode elements (dtype `U#`) onto netCDF compound types, nor is there support 
 for netCDF compound types with vlen string components.
+
+## <div id='section15'>15) In-memory (diskless) Datasets.
+
+You can create netCDF Datasets whose content is held in memory
+instead of in a disk file.  There are two ways to do this.  If you
+don't need access to the memory buffer containing the Dataset from
+within python, the best way is to use the `diskless=True` keyword
+argument when creating the Dataset.  If you want to save the Dataset
+to disk when you close it, also set `persist=True`.  If you want to
+create a new read-only Dataset from an existing python memory buffer, use the
+`memory` keyword argument to pass the memory buffer when creating the Dataset.
+If you want to create a new in-memory Dataset, and then access the memory buffer
+directly from Python, use the `memory` keyword argument to specify the
+estimated size of the Dataset in bytes when creating the Dataset with
+`mode='w'`.  Then, the `Dataset.close` method will return a python memory
+buffer representing the Dataset. Below are examples illustrating both
+approaches.
+
+    :::python
+    >>> # create a diskless (in-memory) Dataset, and persist the file
+    >>> # to disk when it is closed.
+    >>> nc = Dataset('diskless_example.nc','w',diskless=True,persist=True)
+    >>> nc.history = 'test of diskless file capability'
+    >>> d = nc.createDimension('x',None)
+    >>> v = nc.createVariable('v',np.int32,'x')
+    >>> v[0:5] = np.arange(5)
+    >>> print(nc)
+    >>> print(nc['v'][:])
+    >>> nc.close() # file saved to disk
+    >>> # create an in-memory dataset from an existing python memory
+    >>> # buffer.
+    >>> # read the newly created netcdf file into a python bytes object.
+    >>> f = open('diskless_example.nc', 'rb')
+    >>> nc_bytes = f.read(); f.close()
+    >>> # create a netCDF in-memory dataset from the bytes object.
+    >>> nc = Dataset('inmemory.nc', memory=nc_bytes)
+    >>> print(nc)
+    >>> print(nc['v'][:])
+    >>> nc.close()
+    >>> # create an in-memory Dataset and retrieve memory buffer
+    >>> # estimated size is 1028 bytes - this is actually only
+    >>> # used if format is NETCDF3 (ignored for NETCDF4/HDF5 files).
+    >>> nc = Dataset('inmemory.nc', mode='w',memory=1028)
+    >>> d = nc.createDimension('x',None)
+    >>> v = nc.createVariable('v',np.int32,'x')
+    >>> v[0:5] = np.arange(5)
+    >>> nc_buf = nc.close() # close returns memory buffer.
+    >>> # save nc_buf to disk, read it back in and check.
+    >>> # tobytes method of cython memory buffer converts to bytes.
+    >>> f = open('inmemory.nc', 'w')
+    >>> f.write(nc_buf.tobytes()); f.close()
+    >>> nc = Dataset('inmemory.nc')
+    >>> print(nc)
+    >>> print(nc['v'][:])
+    >>> nc.close()
+
 
 All of the code in this tutorial is available in `examples/tutorial.py`, except
 the parallel IO example, which is in `examples/mpi_example.py`.
@@ -2315,14 +2372,6 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
             self._isopen = 0
             PyBuffer_Release(&self._buffer)
-
-            # get python bytes representing in-memory dataset
-            # this makes a copy of memory in memio
-            #b = PyBytes_FromStringAndSize(<char *>memio.memory, memio.size)
-            # free memory returned by nc_close_memio
-            #free(memio.memory)
-            # return python bytes
-            #return b
 
             # makebuf from membuf.pyx - creates a python memoryview
             # from a raw pointer without making a copy.
