@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 
     <title>netCDF4 API documentation</title>
-    <meta name="description" content="Version 1.4.2
+    <meta name="description" content="Version 1.4.3
 -------------
 - - - 
 
@@ -1211,6 +1211,7 @@ table {
   <ul>
     <li class="mono"><a href="#netCDF4.MFTime.__init__">__init__</a></li>
     <li class="mono"><a href="#netCDF4.MFTime.ncattrs">ncattrs</a></li>
+    <li class="mono"><a href="#netCDF4.MFTime.set_always_mask">set_always_mask</a></li>
     <li class="mono"><a href="#netCDF4.MFTime.set_auto_chartostring">set_auto_chartostring</a></li>
     <li class="mono"><a href="#netCDF4.MFTime.set_auto_mask">set_auto_mask</a></li>
     <li class="mono"><a href="#netCDF4.MFTime.set_auto_maskandscale">set_auto_maskandscale</a></li>
@@ -1275,7 +1276,7 @@ table {
 
   <header id="section-intro">
   <h1 class="title"><span class="name">netCDF4</span> module</h1>
-  <h2>Version 1.4.2</h2>
+  <h2>Version 1.4.3</h2>
 <hr />
 <h1>Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.  </p>
@@ -1376,7 +1377,8 @@ types) are not supported.</p>
 <li><a href="#section11">Variable-length (vlen) data types.</a></li>
 <li><a href="#section12">Enum data type.</a></li>
 <li><a href="#section13">Parallel IO.</a></li>
-<li><a href="#section14">Dealing with strings</a></li>
+<li><a href="#section14">Dealing with strings.</a></li>
+<li><a href="#section15">In-memory (diskless) Datasets.</a></li>
 </ol>
 <h2><div id='section1'>1) Creating/Opening/Closing a netCDF file.</h2>
 <p>To create a netCDF file from python, you simply call the <a href="#netCDF4.Dataset"><code>Dataset</code></a>
@@ -2285,6 +2287,79 @@ Here's an example:</p>
 <p>Note that there is currently no support for mapping numpy structured arrays with
 unicode elements (dtype <code>U#</code>) onto netCDF compound types, nor is there support 
 for netCDF compound types with vlen string components.</p>
+<h2><div id='section15'>15) In-memory (diskless) Datasets.</h2>
+<p>You can create netCDF Datasets whose content is held in memory
+instead of in a disk file.  There are two ways to do this.  If you
+don't need access to the memory buffer containing the Dataset from
+within python, the best way is to use the <code>diskless=True</code> keyword
+argument when creating the Dataset.  If you want to save the Dataset
+to disk when you close it, also set <code>persist=True</code>.  If you want to
+create a new read-only Dataset from an existing python memory buffer, use the
+<code>memory</code> keyword argument to pass the memory buffer when creating the Dataset.
+If you want to create a new in-memory Dataset, and then access the memory buffer
+directly from Python, use the <code>memory</code> keyword argument to specify the
+estimated size of the Dataset in bytes when creating the Dataset with
+<code>mode='w'</code>.  Then, the <code>Dataset.close</code> method will return a python memory
+buffer representing the Dataset. Below are examples illustrating both
+approaches.</p>
+<div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a diskless (in-memory) Dataset, </span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># and persist the file to disk when it is closed.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;diskless_example.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">diskless</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">persist</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">nc</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;netCDF4._netCDF4.Dataset&#39;</span><span class="o">&gt;</span>
+<span class="n">root</span> <span class="n">group</span> <span class="p">(</span><span class="n">NETCDF4</span> <span class="n">data</span> <span class="n">model</span><span class="p">,</span> <span class="nb">file</span> <span class="n">format</span> <span class="n">HDF5</span><span class="p">):</span>
+<span class="n">dimensions</span><span class="p">(</span><span class="n">sizes</span><span class="p">):</span> <span class="n">x</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">variables</span><span class="p">(</span><span class="n">dimensions</span><span class="p">):</span> <span class="n">int32</span> <span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">groups</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">nc</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">][:])</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># file saved to disk</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create an in-memory dataset from an existing python</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># python memory buffer.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># read the newly created netcdf file into a python</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># bytes object.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;diskless_example.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc_bytes</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">();</span> <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a netCDF in-memory dataset from the bytes object.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;inmemory.nc&#39;</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="n">nc_bytes</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">nc</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;netCDF4._netCDF4.Dataset&#39;</span><span class="o">&gt;</span>
+<span class="n">root</span> <span class="n">group</span> <span class="p">(</span><span class="n">NETCDF4</span> <span class="n">data</span> <span class="n">model</span><span class="p">,</span> <span class="nb">file</span> <span class="n">format</span> <span class="n">HDF5</span><span class="p">):</span>
+<span class="n">dimensions</span><span class="p">(</span><span class="n">sizes</span><span class="p">):</span> <span class="n">x</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">variables</span><span class="p">(</span><span class="n">dimensions</span><span class="p">):</span> <span class="n">int32</span> <span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">groups</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">nc</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">][:])</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># create an in-memory Dataset and retrieve memory buffer</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># estimated size is 1028 bytes - this is actually only</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># used if format is NETCDF3 </span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># (ignored for NETCDF4/HDF5 files).</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;inmemory.nc&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">memory</span><span class="o">=</span><span class="mi">1028</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc_buf</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># close returns memory buffer.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># save nc_buf to disk, read it back in and check.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># tobytes method of cython memory buffer converts to bytes.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;inmemory.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">nc_buf</span><span class="o">.</span><span class="n">tobytes</span><span class="p">());</span> <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;inmemory.nc&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">nc</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;netCDF4._netCDF4.Dataset&#39;</span><span class="o">&gt;</span>
+<span class="n">root</span> <span class="n">group</span> <span class="p">(</span><span class="n">NETCDF4</span> <span class="n">data</span> <span class="n">model</span><span class="p">,</span> <span class="nb">file</span> <span class="n">format</span> <span class="n">HDF5</span><span class="p">):</span>
+<span class="n">dimensions</span><span class="p">(</span><span class="n">sizes</span><span class="p">):</span> <span class="n">x</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">variables</span><span class="p">(</span><span class="n">dimensions</span><span class="p">):</span> <span class="n">int32</span> <span class="n">v</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">groups</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">nc</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">][:])</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+
 <p>All of the code in this tutorial is available in <code>examples/tutorial.py</code>, except
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
@@ -2390,7 +2465,7 @@ The datetime objects should not include a time-zone offset.</p>
 <p><strong><code>units</code></strong>: a string of the form <code>&lt;time units&gt; since &lt;reference time&gt;</code>
 describing the time units. <code>&lt;time units&gt;</code> can be days, hours, minutes,
 seconds, milliseconds or microseconds. <code>&lt;reference time&gt;</code> is the time
-origin.</p>
+origin. <code>months_since</code> is allowed <em>only</em> for the <code>360_day</code> calendar.</p>
 <p><strong><code>calendar</code></strong>: describes the calendar used in the time calculations.
 All the values currently defined in the
 <a href="http://cfconventions.org">CF metadata convention</a>
@@ -2398,7 +2473,7 @@ Valid calendars <code>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</code>.
 Default is <code>'standard'</code>, which is a mixed Julian/Gregorian calendar.</p>
 <p>returns a numeric time value, or an array of numeric time values
-with approximately millisecond accuracy.</p></div>
+with approximately 100 microsecond accuracy.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2439,7 +2514,7 @@ UTC with no time-zone offset, even if the specified
 <p><strong><code>units</code></strong>: a string of the form <code>&lt;time units&gt; since &lt;reference time&gt;</code>
 describing the time units. <code>&lt;time units&gt;</code> can be days, hours, minutes,
 seconds, milliseconds or microseconds. <code>&lt;reference time&gt;</code> is the time
-origin.</p>
+origin. <code>months_since</code> is allowed <em>only</em> for the <code>360_day</code> calendar.</p>
 <p><strong><code>calendar</code></strong>: describes the calendar used in the time calculations.
 All the values currently defined in the
 <a href="http://cfconventions.org">CF metadata convention</a>
@@ -2450,7 +2525,7 @@ Default is <code>'standard'</code>, which is a mixed Julian/Gregorian calendar.<
 objects are returned from num2date where possible; if True dates which
 subclass cftime.datetime are returned for all calendars.</p>
 <p>returns a datetime instance, or an array of datetime instances with
-approximately millisecond accuracy.</p>
+approximately 100 microsecond accuracy.</p>
 <p><strong><em>Note</em></strong>: The datetime instances returned are 'real' python datetime
 objects if <code>calendar='proleptic_gregorian'</code>, or
 <code>calendar='standard'</code> or <code>'gregorian'</code>
@@ -2825,7 +2900,7 @@ variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, filename, mode=&#34;r&#34;, clobber=True, diskless=False, persist=False, keepweakref=False, format=&#39;NETCDF4&#39;)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, filename, mode=&#34;r&#34;, clobber=True, diskless=False, persist=False, keepweakref=False, memory=None, encoding=None, parallel=False, comm=None, info=None, format=&#39;NETCDF4&#39;)</p>
     </div>
     
 
@@ -2866,9 +2941,10 @@ later. <code>'NETCDF3_64BIT_DATA'</code> is the 64-bit data version of the netCD
 file format, which supports 64-bit dimension sizes plus unsigned and
 64 bit integer data types, but is only compatible with clients linked against
 netCDF version 4.4.0 or later.</p>
-<p><strong><code>diskless</code></strong>: If <code>True</code>, create diskless (in memory) file.<br />
-This is an experimental feature added to the C library after the
-netcdf-4.2 release.</p>
+<p><strong><code>diskless</code></strong>: If <code>True</code>, create diskless (in-core) file.<br />
+This is a feature added to the C library after the
+netcdf-4.2 release. If you need to access the memory buffer directly,
+use the in-memory feature instead (see <code>memory</code> kwarg).</p>
 <p><strong><code>persist</code></strong>: if <code>diskless=True</code>, persist file to disk when closed
 (default <code>False</code>).</p>
 <p><strong><code>keepweakref</code></strong>: if <code>True</code>, child Dimension and Variable instances will keep weak
@@ -2884,8 +2960,17 @@ Dataset instances to be garbage collected as soon as they go out of scope, poten
 reducing memory usage and open file handles.  However, in many cases this is not
 desirable, since the associated Variable instances may still be needed, but are
 rendered unusable when the parent Dataset instance is garbage collected.</p>
-<p><strong><code>memory</code></strong>: if not <code>None</code>, open file with contents taken from this block of memory.
-Must be a sequence of bytes.  Note this only works with "r" mode.</p>
+<p><strong><code>memory</code></strong>: if not <code>None</code>, create or open an in-memory Dataset.
+If mode = 'r', the memory kwarg must contain a memory buffer object
+(an object that supports the python buffer interface).
+The Dataset will then be created with contents taken from this block of memory.
+If mode = 'w', the memory kwarg should contain the anticipated size
+of the Dataset in bytes (used only for NETCDF3 files).  A memory
+buffer containing a copy of the Dataset is returned by the
+<code>Dataset.close</code> method. Requires netcdf-c version 4.4.1 for mode='r,
+netcdf-c 4.6.2 for mode='w'. To persist the file to disk, the raw
+bytes from the returned buffer can be written into a binary file.
+The Dataset can also be re-opened using this memory buffer.</p>
 <p><strong><code>encoding</code></strong>: encoding used to encode filename string into bytes.
 Default is None (<code>sys.getdefaultfileencoding()</code> is used).</p>
 <p><strong><code>parallel</code></strong>: open for parallel access using MPI (requires mpi4py and
@@ -5815,6 +5900,20 @@ is present on each variable and values are unique across files raising a
   <div class="item">
     <div class="name def" id="netCDF4.MFTime.ncattrs">
     <p>def <span class="ident">ncattrs</span>(</p><p>...)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.MFTime.set_always_mask">
+    <p>def <span class="ident">set_always_mask</span>(</p><p>...)</p>
     </div>
     
 
