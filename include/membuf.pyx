@@ -33,10 +33,12 @@ cdef class MemBuf:
     cdef const void *get_mem(self):
         return self.p
 
-    def __getbuffer__(self, Py_buffer *view, int flags):
-        PyBuffer_FillInfo(view, self, <void *>self.p, self.l, 1, flags)
+    def __getbuffer__(self, Py_buffer *buffer, int flags):
+        cdef int ret,readonly
+        readonly=1
+        ret=PyBuffer_FillInfo(buffer, self, <void *>self.p, self.l, readonly, flags)
 
-    def __releasebuffer__(self, Py_buffer *view):
+    def __releasebuffer__(self, Py_buffer *buffer):
         #PyBuffer_Release(view) 
         pass
 
