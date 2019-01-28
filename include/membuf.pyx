@@ -46,6 +46,7 @@ cdef class MemBuf:
         if self.dealloc_cb_p != NULL:
             self.dealloc_cb_p(self.p, self.l, self.dealloc_cb_arg)
 
+    # not really needed if MemBuf converted to memoryview
     def tobytes(self):
         return PyBytes_FromStringAndSize(<char *>self.p, self.l)
 
