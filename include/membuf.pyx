@@ -7,9 +7,9 @@ from cpython.bytes cimport PyBytes_FromStringAndSize
 from libc.stdlib cimport free
 from libc.stdint cimport uintptr_t
 
-ctypedef void dealloc_callback(const void *memory, size_t size, void *arg)
+ctypedef void dealloc_callback(const void *memory, size_t size)
 
-cdef void free_buf(const void *memory, size_t size, void *arg):
+cdef void free_buf(const void *memory, size_t size):
     free(<void *>memory)
 
 # this is the function used to create a memory view from
@@ -26,7 +26,6 @@ cdef class _MemBuf:
     cdef const void *memory
     cdef size_t size
     cdef dealloc_callback *dealloc_cb
-    cdef void *dealloc_cb_arg
 
     def __getbuffer__(self, Py_buffer *buf, int flags):
         cdef int ret,readonly
@@ -38,17 +37,15 @@ cdef class _MemBuf:
         pass
 
     def __dealloc__(self):
-        self.dealloc_cb(self.memory, self.size, self.dealloc_cb_arg)
+        self.dealloc_cb(self.memory, self.size)
 
 # Call this instead of constructing a _MemBuf directly.  The __cinit__
 # and __init__ methods can only take Python objects, so the real
 # constructor is here.  
 cdef _MemBuf MemBuf_init(const void *memory, size_t size,
-                        dealloc_callback *dealloc_cb,
-                        void *dealloc_cb_arg):
+                        dealloc_callback *dealloc_cb)
     cdef _MemBuf ret = _MemBuf()
     ret.memory = memory # malloced void pointer
     ret.size = size # size of pointer in bytes
     ret.dealloc_cb = dealloc_cb # callback function to free memory
-    ret.dealloc_cb_arg = dealloc_cb_arg # optional args to callback function
     return ret
