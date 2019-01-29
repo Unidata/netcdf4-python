@@ -7,60 +7,48 @@ from cpython.bytes cimport PyBytes_FromStringAndSize
 from libc.stdlib cimport free
 from libc.stdint cimport uintptr_t
 
-ctypedef void dealloc_callback(const void *p, size_t l, void *arg)
+ctypedef void dealloc_callback(const void *memory, size_t size, void *arg)
 
-cdef void free_buf(const void *p, size_t l, void *arg):
-    free(<void *>p)
+cdef void free_buf(const void *memory, size_t size, void *arg):
+    free(<void *>memory)
 
 # this is the function used to create a memory view from
 # a raw pointer.
 # Only this function is intended to be used from external
 # cython code.
-cdef memview_fromptr(void *p, size_t l):
-    assert p!=NULL, "invalid NULL buffer pointer"
-    return memoryview( MemBuf_init(p, l, &free_buf, NULL) )
+cdef memview_fromptr(void *memory, size_t size):
+    # memory is malloced void pointer, size is number of bytes allocated
+    if memory==NULL:
+        raise MemoryError('no memory allocated to pointer')
+    return memoryview( MemBuf_init(memory, size, &free_buf, NULL) )
 
 cdef class _MemBuf:
-    cdef const void *p
-    cdef size_t l
-    cdef dealloc_callback *dealloc_cb_p
+    cdef const void *memory
+    cdef size_t size
+    cdef dealloc_callback *dealloc_cb
     cdef void *dealloc_cb_arg
-
-    def __len__(self):
-        return self.l
-
-    def __repr__(self):
-        return "_MemBuf(%#x)" % (<uintptr_t> self.p)
-
-    cdef const void *get_mem(self):
-        return self.p
 
     def __getbuffer__(self, Py_buffer *buf, int flags):
         cdef int ret,readonly
         readonly=1
-        ret=PyBuffer_FillInfo(buf, self, <void *>self.p, self.l, readonly, flags)
+        ret=PyBuffer_FillInfo(buf, self, <void *>self.memory, self.size, readonly, flags)
 
     def __releasebuffer__(self, Py_buffer *buf):
         # why doesn't this do anything??
         pass
 
     def __dealloc__(self):
-        if self.dealloc_cb_p != NULL:
-            self.dealloc_cb_p(self.p, self.l, self.dealloc_cb_arg)
-
-    # not really needed if _MemBuf converted to memoryview
-    def tobytes(self):
-        return PyBytes_FromStringAndSize(<char *>self.p, self.l)
+        self.dealloc_cb(self.memory, self.size, self.dealloc_cb_arg)
 
 # Call this instead of constructing a _MemBuf directly.  The __cinit__
 # and __init__ methods can only take Python objects, so the real
 # constructor is here.  
-cdef _MemBuf MemBuf_init(const void *p, size_t l,
-                        dealloc_callback *dealloc_cb_p,
+cdef _MemBuf MemBuf_init(const void *memory, size_t size,
+                        dealloc_callback *dealloc_cb,
                         void *dealloc_cb_arg):
     cdef _MemBuf ret = _MemBuf()
-    ret.p = p
-    ret.l = l
-    ret.dealloc_cb_p = dealloc_cb_p
-    ret.dealloc_cb_arg = dealloc_cb_arg
+    ret.memory = memory # malloced void pointer
+    ret.size = size # size of pointer in bytes
+    ret.dealloc_cb = dealloc_cb # callback function to free memory
+    ret.dealloc_cb_arg = dealloc_cb_arg # optional args to callback function
     return ret
