@@ -2,10 +2,8 @@
 # which will be freed when the python object is garbage collected.
 # Code found here is derived from
 # http://stackoverflow.com/a/28166272/428751
-from cpython.buffer cimport PyBuffer_FillInfo, PyBuffer_Release
-from cpython.bytes cimport PyBytes_FromStringAndSize
+from cpython.buffer cimport PyBuffer_FillInfo
 from libc.stdlib cimport free
-from libc.stdint cimport uintptr_t
 
 ctypedef void dealloc_callback(const void *memory, size_t size)
 
@@ -28,9 +26,7 @@ cdef class _MemBuf:
     cdef dealloc_callback *dealloc_cb
 
     def __getbuffer__(self, Py_buffer *buf, int flags):
-        cdef int ret,readonly
-        readonly=1
-        ret=PyBuffer_FillInfo(buf, self, <void *>self.memory, self.size, readonly, flags)
+        PyBuffer_FillInfo(buf, self, <void *>self.memory, self.size, 1, flags)
 
     def __releasebuffer__(self, Py_buffer *buf):
         # why doesn't this do anything??
@@ -41,7 +37,7 @@ cdef class _MemBuf:
 
 # Call this instead of constructing a _MemBuf directly.  The __cinit__
 # and __init__ methods can only take Python objects, so the real
-# constructor is here.  
+# constructor is here.
 cdef _MemBuf MemBuf_init(const void *memory, size_t size,
                         dealloc_callback *dealloc_cb)
     cdef _MemBuf ret = _MemBuf()
