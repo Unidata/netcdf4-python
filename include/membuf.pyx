@@ -14,7 +14,7 @@ cdef void free_buf(const void *p, size_t l, void *arg):
 
 # this is the function used to create a memory view from
 # a raw pointer.
-cdef makebuf(void *p, size_t l):
+cdef memview_fromptr(void *p, size_t l):
     assert p!=NULL, "invalid NULL buffer pointer"
     return memoryview( MemBuf_init(p, l, &free_buf, NULL) )
 

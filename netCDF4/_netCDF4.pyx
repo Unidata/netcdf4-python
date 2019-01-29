@@ -2395,7 +2395,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
             # makebuf from membuf.pyx - creates a python memoryview
             # from a raw pointer without making a copy.
-            return makebuf(<char *>memio.memory, memio.size)
+            return memview_fromptr(<char *>memio.memory, memio.size)
 
 
     def close(self):
