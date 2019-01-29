@@ -1,7 +1,7 @@
-# Buffer code found here similar to
-# http://stackoverflow.com/a/28166272/428751
-# Allows to return a malloced python buffer,
+# Creates a memoryview from a malloced C pointer,
 # which will be freed when the python object is garbage collected.
+# Code found here is derived from
+# http://stackoverflow.com/a/28166272/428751
 from cpython.buffer cimport PyBuffer_FillInfo, PyBuffer_Release
 from cpython.bytes cimport PyBytes_FromStringAndSize
 from libc.stdlib cimport free
@@ -41,7 +41,7 @@ cdef class _MemBuf:
         ret=PyBuffer_FillInfo(buf, self, <void *>self.p, self.l, readonly, flags)
 
     def __releasebuffer__(self, Py_buffer *buf):
-        #PyBuffer_Release(buf) 
+        # why doesn't this do anything??
         pass
 
     def __dealloc__(self):
@@ -54,8 +54,7 @@ cdef class _MemBuf:
 
 # Call this instead of constructing a _MemBuf directly.  The __cinit__
 # and __init__ methods can only take Python objects, so the real
-# constructor is here.  See:
-# https://mail.python.org/pipermail/cython-devel/2012-June/002734.html
+# constructor is here.  
 cdef _MemBuf MemBuf_init(const void *p, size_t l,
                         dealloc_callback *dealloc_cb_p,
                         void *dealloc_cb_arg):
