@@ -2299,8 +2299,8 @@ create a new read-only Dataset from an existing python memory buffer, use the
 If you want to create a new in-memory Dataset, and then access the memory buffer
 directly from Python, use the <code>memory</code> keyword argument to specify the
 estimated size of the Dataset in bytes when creating the Dataset with
-<code>mode='w'</code>.  Then, the <code>Dataset.close</code> method will return a python memory
-buffer representing the Dataset. Below are examples illustrating both
+<code>mode='w'</code>.  Then, the <code>Dataset.close</code> method will return a python memoryview
+object representing the Dataset. Below are examples illustrating both
 approaches.</p>
 <div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a diskless (in-memory) Dataset, </span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># and persist the file to disk when it is closed.</span>
@@ -2342,11 +2342,12 @@ approaches.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">nc_buf</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># close returns memory buffer.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nc_buf</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># close returns memoryview</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">nc_buf</span><span class="p">))</span>
+<span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;memoryview&#39;</span><span class="o">&gt;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># save nc_buf to disk, read it back in and check.</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c1"># tobytes method of cython memory buffer converts to bytes.</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;inmemory.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">nc_buf</span><span class="o">.</span><span class="n">tobytes</span><span class="p">());</span> <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;inmemory.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">nc_buf</span><span class="p">);</span> <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;inmemory.nc&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span><span class="p">(</span><span class="n">nc</span><span class="p">)</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;netCDF4._netCDF4.Dataset&#39;</span><span class="o">&gt;</span>
