@@ -39,7 +39,7 @@ cdef class _MemBuf:
 # and __init__ methods can only take Python objects, so the real
 # constructor is here.
 cdef _MemBuf MemBuf_init(const void *memory, size_t size,
-                        dealloc_callback *dealloc_cb)
+                         dealloc_callback *dealloc_cb):
     cdef _MemBuf ret = _MemBuf()
     ret.memory = memory # malloced void pointer
     ret.size = size # size of pointer in bytes
