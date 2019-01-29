@@ -348,7 +348,7 @@ d = nc.createDimension('x',None)
 v = nc.createVariable('v',numpy.int32,'x')
 v[0:5] = numpy.arange(5)
 nc_buf = nc.close() # close returns memoryview
-print type(nc_buf)
+print(type(nc_buf))
 # save nc_buf to disk, read it back in and check.
 f = open('inmemory.nc', 'wb')
 f.write(nc_buf); f.close()
