@@ -14,11 +14,13 @@ cdef void free_buf(const void *p, size_t l, void *arg):
 
 # this is the function used to create a memory view from
 # a raw pointer.
+# Only this function is intended to be used from external
+# cython code.
 cdef memview_fromptr(void *p, size_t l):
     assert p!=NULL, "invalid NULL buffer pointer"
     return memoryview( MemBuf_init(p, l, &free_buf, NULL) )
 
-cdef class MemBuf:
+cdef class _MemBuf:
     cdef const void *p
     cdef size_t l
     cdef dealloc_callback *dealloc_cb_p
@@ -28,7 +30,7 @@ cdef class MemBuf:
         return self.l
 
     def __repr__(self):
-        return "MemBuf(%#x)" % (<uintptr_t> self.p)
+        return "_MemBuf(%#x)" % (<uintptr_t> self.p)
 
     cdef const void *get_mem(self):
         return self.p
@@ -46,18 +48,18 @@ cdef class MemBuf:
         if self.dealloc_cb_p != NULL:
             self.dealloc_cb_p(self.p, self.l, self.dealloc_cb_arg)
 
-    # not really needed if MemBuf converted to memoryview
+    # not really needed if _MemBuf converted to memoryview
     def tobytes(self):
         return PyBytes_FromStringAndSize(<char *>self.p, self.l)
 
-# Call this instead of constructing a MemBuf directly.  The __cinit__
+# Call this instead of constructing a _MemBuf directly.  The __cinit__
 # and __init__ methods can only take Python objects, so the real
 # constructor is here.  See:
 # https://mail.python.org/pipermail/cython-devel/2012-June/002734.html
-cdef MemBuf MemBuf_init(const void *p, size_t l,
+cdef _MemBuf MemBuf_init(const void *p, size_t l,
                         dealloc_callback *dealloc_cb_p,
                         void *dealloc_cb_arg):
-    cdef MemBuf ret = MemBuf()
+    cdef _MemBuf ret = _MemBuf()
     ret.p = p
     ret.l = l
     ret.dealloc_cb_p = dealloc_cb_p
