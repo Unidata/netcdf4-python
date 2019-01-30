@@ -55,6 +55,7 @@ def check_api(inc_dirs):
     has_nc_inq_format_extended = False
     has_cdf5_format = False
     has_nc_open_mem = False
+    has_nc_create_mem = False
     has_nc_par = False
 
     for d in inc_dirs:
@@ -76,6 +77,15 @@ def check_api(inc_dirs):
             if line.startswith('#define NC_FORMAT_64BIT_DATA'):
                 has_cdf5_format = True
 
+        if has_nc_open_mem:
+            try:
+                f = open(os.path.join(d, 'netcdf_mem.h'), **open_kwargs)
+            except IOError:
+                continue
+            for line in f:
+                if line.startswith('EXTERNL int nc_create_mem'):
+                    has_nc_create_mem = True
+
         ncmetapath = os.path.join(d,'netcdf_meta.h')
         if os.path.exists(ncmetapath):
             for line in open(ncmetapath):
@@ -84,7 +94,7 @@ def check_api(inc_dirs):
         break
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-           has_cdf5_format, has_nc_open_mem, has_nc_par
+           has_cdf5_format, has_nc_open_mem, has_nc_create_mem, has_nc_par
 
 
 def getnetcdfvers(libdirs):
@@ -478,7 +488,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
             os.remove(netcdf4_src_c)
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-        has_cdf5_format, has_nc_open_mem, has_nc_par = check_api(inc_dirs)
+    has_cdf5_format, has_nc_open_mem, has_nc_create_mem, has_nc_par = check_api(inc_dirs)
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
        (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
@@ -520,6 +530,13 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         sys.stdout.write('netcdf lib does not have nc_open_mem function\n')
         f.write('DEF HAS_NC_OPEN_MEM = 0\n')
 
+    if has_nc_create_mem:
+        sys.stdout.write('netcdf lib has nc_create_mem function\n')
+        f.write('DEF HAS_NC_CREATE_MEM = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have nc_create_mem function\n')
+        f.write('DEF HAS_NC_CREATE_MEM = 0\n')
+
     if has_cdf5_format:
         sys.stdout.write('netcdf lib has cdf-5 format capability\n')
         f.write('DEF HAS_CDF5_FORMAT = 1\n')
@@ -553,7 +570,7 @@ else:
 
 setup(name="netCDF4",
       cmdclass=cmdclass,
-      version="1.4.2",
+      version="1.4.3",
       long_description="netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project is hosted on a `GitHub repository <https://github.com/Unidata/netcdf4-python>`_ where you may access the most up-to-date source.",
       author="Jeff Whitaker",
       author_email="jeffrey.s.whitaker@noaa.gov",

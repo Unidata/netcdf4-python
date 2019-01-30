@@ -1,5 +1,5 @@
 """
-Version 1.4.2
+Version 1.4.3
 -------------
 - - - 
 
@@ -112,7 +112,8 @@ Tutorial
 11. [Variable-length (vlen) data types.](#section11)
 12. [Enum data type.](#section12)
 13. [Parallel IO.](#section13)
-14. [Dealing with strings](#section14)
+14. [Dealing with strings.](#section14)
+15. [In-memory (diskless) Datasets.](#section15)
 
 
 ## <div id='section1'>1) Creating/Opening/Closing a netCDF file.
@@ -1060,6 +1061,82 @@ Note that there is currently no support for mapping numpy structured arrays with
 unicode elements (dtype `U#`) onto netCDF compound types, nor is there support 
 for netCDF compound types with vlen string components.
 
+## <div id='section15'>15) In-memory (diskless) Datasets.
+
+You can create netCDF Datasets whose content is held in memory
+instead of in a disk file.  There are two ways to do this.  If you
+don't need access to the memory buffer containing the Dataset from
+within python, the best way is to use the `diskless=True` keyword
+argument when creating the Dataset.  If you want to save the Dataset
+to disk when you close it, also set `persist=True`.  If you want to
+create a new read-only Dataset from an existing python memory buffer, use the
+`memory` keyword argument to pass the memory buffer when creating the Dataset.
+If you want to create a new in-memory Dataset, and then access the memory buffer
+directly from Python, use the `memory` keyword argument to specify the
+estimated size of the Dataset in bytes when creating the Dataset with
+`mode='w'`.  Then, the `Dataset.close` method will return a python memoryview
+object representing the Dataset. Below are examples illustrating both
+approaches.
+
+    :::python
+    >>> # create a diskless (in-memory) Dataset, 
+    >>> # and persist the file to disk when it is closed.
+    >>> nc = Dataset('diskless_example.nc','w',diskless=True,persist=True)
+    >>> d = nc.createDimension('x',None)
+    >>> v = nc.createVariable('v',numpy.int32,'x')
+    >>> v[0:5] = numpy.arange(5)
+    >>> print(nc)
+    <type 'netCDF4._netCDF4.Dataset'>
+    root group (NETCDF4 data model, file format HDF5):
+    dimensions(sizes): x(5)
+    variables(dimensions): int32 v(x)
+    groups:
+    >>> print(nc['v'][:])
+    [0 1 2 3 4]
+    >>> nc.close() # file saved to disk
+    >>> # create an in-memory dataset from an existing python
+    >>> # python memory buffer.
+    >>> # read the newly created netcdf file into a python
+    >>> # bytes object.
+    >>> f = open('diskless_example.nc', 'rb')
+    >>> nc_bytes = f.read(); f.close()
+    >>> # create a netCDF in-memory dataset from the bytes object.
+    >>> nc = Dataset('inmemory.nc', memory=nc_bytes)
+    >>> print(nc)
+    <type 'netCDF4._netCDF4.Dataset'>
+    root group (NETCDF4 data model, file format HDF5):
+    dimensions(sizes): x(5)
+    variables(dimensions): int32 v(x)
+    groups:
+    >>> print(nc['v'][:])
+    [0 1 2 3 4]
+    >>> nc.close()
+    >>> # create an in-memory Dataset and retrieve memory buffer
+    >>> # estimated size is 1028 bytes - this is actually only
+    >>> # used if format is NETCDF3 
+    >>> # (ignored for NETCDF4/HDF5 files).
+    >>> nc = Dataset('inmemory.nc', mode='w',memory=1028)
+    >>> d = nc.createDimension('x',None)
+    >>> v = nc.createVariable('v',numpy.int32,'x')
+    >>> v[0:5] = numpy.arange(5)
+    >>> nc_buf = nc.close() # close returns memoryview
+    >>> print(type(nc_buf))
+    <type 'memoryview'>
+    >>> # save nc_buf to disk, read it back in and check.
+    >>> f = open('inmemory.nc', 'wb')
+    >>> f.write(nc_buf); f.close()
+    >>> nc = Dataset('inmemory.nc')
+    >>> print(nc)
+    <type 'netCDF4._netCDF4.Dataset'>
+    root group (NETCDF4 data model, file format HDF5):
+    dimensions(sizes): x(5)
+    variables(dimensions): int32 v(x)
+    groups:
+    >>> print(nc['v'][:])
+    [0 1 2 3 4]
+    >>> nc.close()
+
+
 All of the code in this tutorial is available in `examples/tutorial.py`, except
 the parallel IO example, which is in `examples/mpi_example.py`.
 Unit tests are in the `test` directory.
@@ -1086,6 +1163,7 @@ PERFORMANCE OF THIS SOFTWARE.
 # Make changes to this file, not the c-wrappers that Cython generates.
 from cpython.mem cimport PyMem_Malloc, PyMem_Free
 from cpython.buffer cimport PyObject_GetBuffer, PyBuffer_Release, PyBUF_SIMPLE, PyBUF_ANY_CONTIGUOUS
+from cpython.bytes cimport PyBytes_FromStringAndSize
 
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
@@ -1104,7 +1182,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.4.2"
+__version__ = "1.4.3"
 
 # Initialize numpy
 import posixpath
@@ -1119,6 +1197,7 @@ from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 import_array()
 include "constants.pyx"
+include "membuf.pyx"
 include "netCDF4.pxi"
 IF HAS_NC_PAR:
     cimport mpi4py.MPI as MPI
@@ -1157,6 +1236,7 @@ __has_nc_inq_path__ = HAS_NC_INQ_PATH
 __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
 __has_cdf5_format__ = HAS_CDF5_FORMAT
 __has_nc_open_mem__ = HAS_NC_OPEN_MEM
+__has_nc_create_mem__ = HAS_NC_CREATE_MEM
 __has_nc_par__ = HAS_NC_PAR
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
@@ -1836,7 +1916,7 @@ group, so the path is simply `'/'`.
 **`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak 
 references to the parent Dataset or Group.
     """
-    cdef object __weakref__
+    cdef object __weakref__, _inmemory
     cdef public int _grpid
     cdef public int _isopen
     cdef Py_buffer _buffer
@@ -1899,7 +1979,8 @@ references to the parent Dataset or Group.
                      Comm comm=None, Info info=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
-        persist=False, keepweakref=False, format='NETCDF4')`**
+        persist=False, keepweakref=False, memory=None, encoding=None,
+        parallel=False, comm=None, info=None, format='NETCDF4')`**
 
         `netCDF4.Dataset` constructor.
 
@@ -1941,9 +2022,10 @@ references to the parent Dataset or Group.
         64 bit integer data types, but is only compatible with clients linked against
         netCDF version 4.4.0 or later.
         
-        **`diskless`**: If `True`, create diskless (in memory) file.  
-        This is an experimental feature added to the C library after the
-        netcdf-4.2 release.
+        **`diskless`**: If `True`, create diskless (in-core) file.  
+        This is a feature added to the C library after the
+        netcdf-4.2 release. If you need to access the memory buffer directly,
+        use the in-memory feature instead (see `memory` kwarg).
         
         **`persist`**: if `diskless=True`, persist file to disk when closed
         (default `False`).
@@ -1962,8 +2044,17 @@ references to the parent Dataset or Group.
         desirable, since the associated Variable instances may still be needed, but are
         rendered unusable when the parent Dataset instance is garbage collected.
         
-        **`memory`**: if not `None`, open file with contents taken from this block of memory.
-        Must be a sequence of bytes.  Note this only works with "r" mode.
+        **`memory`**: if not `None`, create or open an in-memory Dataset.
+        If mode = 'r', the memory kwarg must contain a memory buffer object
+        (an object that supports the python buffer interface).
+        The Dataset will then be created with contents taken from this block of memory.
+        If mode = 'w', the memory kwarg should contain the anticipated size
+        of the Dataset in bytes (used only for NETCDF3 files).  A memory
+        buffer containing a copy of the Dataset is returned by the
+        `Dataset.close` method. Requires netcdf-c version 4.4.1 for mode='r,
+        netcdf-c 4.6.2 for mode='w'. To persist the file to disk, the raw
+        bytes from the returned buffer can be written into a binary file.
+        The Dataset can also be re-opened using this memory buffer.
 
         **`encoding`**: encoding used to encode filename string into bytes.
         Default is None (`sys.getdefaultfileencoding()` is used).
@@ -1979,6 +2070,7 @@ references to the parent Dataset or Group.
         means MPI_INFO_NULL will be used.  Ignored if `parallel=False`.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars
+        cdef size_t initialsize
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
         IF HAS_NC_PAR:
@@ -1999,8 +2091,10 @@ references to the parent Dataset or Group.
         bytestr = _strencode(_tostr(filename), encoding=encoding)
         path = bytestr
 
-        if memory is not None and (mode != 'r' or type(memory) != bytes):
-            raise ValueError('memory mode only works with \'r\' modes and must be `bytes`')
+        if memory is not None and mode not in ['r','w']:
+            msg='if memory kwarg specified, mode must be \'r\' or \'w\''
+            raise ValueError(msg)
+
         if parallel:
             IF HAS_NC_PAR != 1:
                 msg='parallel mode requires MPI enabled netcdf-c'
@@ -2018,38 +2112,52 @@ references to the parent Dataset or Group.
                 else:
                     mpiinfo = MPI_INFO_NULL
 
+        self._inmemory = False
         if mode == 'w':
             _set_default_format(format=format)
-            if clobber:
-                if parallel:
-                    IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
-                               mpicomm, mpiinfo, &grpid)
-                    ELSE:
-                        pass
-                elif diskless:
-                    if persist:
-                        ierr = nc_create(path, NC_WRITE | NC_CLOBBER |
-                                NC_DISKLESS | NC_PERSIST, &grpid)
-                    else:
-                        ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
-                else:
-                    ierr = nc_create(path, NC_CLOBBER, &grpid)
+            if memory is not None:
+                # if memory is not None and mode='w', memory
+                # kwarg is interpreted as advisory size.
+                IF HAS_NC_CREATE_MEM:
+                   initialsize = <size_t>memory
+                   ierr = nc_create_mem(path, 0, initialsize, &grpid)
+                   self._inmemory = True # checked in close method
+                ELSE:
+                    msg = """
+        nc_create_mem functionality not enabled.  To enable, install Cython, make sure you have
+        version 4.6.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+                    raise ValueError(msg)
             else:
-                if parallel:
-                    IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
-                               mpicomm, mpiinfo, &grpid)
-                    ELSE:
-                        pass
-                elif diskless:
-                    if persist:
-                        ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER |
-                                NC_DISKLESS | NC_PERSIST , &grpid)
+                if clobber:
+                    if parallel:
+                        IF HAS_NC_PAR:
+                            ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                                   mpicomm, mpiinfo, &grpid)
+                        ELSE:
+                            pass
+                    elif diskless:
+                        if persist:
+                            ierr = nc_create(path, NC_WRITE | NC_CLOBBER |
+                                    NC_DISKLESS | NC_PERSIST, &grpid)
+                        else:
+                            ierr = nc_create(path, NC_CLOBBER | NC_DISKLESS , &grpid)
                     else:
-                        ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                        ierr = nc_create(path, NC_CLOBBER, &grpid)
                 else:
-                    ierr = nc_create(path, NC_NOCLOBBER, &grpid)
+                    if parallel:
+                        IF HAS_NC_PAR:
+                            ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                                   mpicomm, mpiinfo, &grpid)
+                        ELSE:
+                            pass
+                    elif diskless:
+                        if persist:
+                            ierr = nc_create(path, NC_WRITE | NC_NOCLOBBER |
+                                    NC_DISKLESS | NC_PERSIST , &grpid)
+                        else:
+                            ierr = nc_create(path, NC_NOCLOBBER | NC_DISKLESS , &grpid)
+                    else:
+                        ierr = nc_create(path, NC_NOCLOBBER, &grpid)
             # reset default format to netcdf3 - this is a workaround
             # for issue 170 (nc_open'ing a DAP dataset after switching
             # format to NETCDF4). This bug should be fixed in version
@@ -2068,7 +2176,7 @@ references to the parent Dataset or Group.
                     ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
                 ELSE:
                     msg = """
-        nc_open_mem method not enabled.  To enable, install Cython, make sure you have
+        nc_open_mem functionality not enabled.  To enable, install Cython, make sure you have
         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
                     raise ValueError(msg)
             elif parallel:
@@ -2273,6 +2381,22 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         # view.obj is checked, ref on obj is decremented and obj will be null'd out
         PyBuffer_Release(&self._buffer)
 
+    IF HAS_NC_CREATE_MEM:
+        def _close_mem(self, check_err):
+            cdef int ierr
+            cdef NC_memio memio
+            ierr = nc_close_memio(self._grpid, &memio)
+
+            if check_err:
+                _ensure_nc_success(ierr)
+
+            self._isopen = 0
+            PyBuffer_Release(&self._buffer)
+
+            # membuf_fromptr from membuf.pyx - creates a python memoryview
+            # from a raw pointer without making a copy.
+            return memview_fromptr(<char *>memio.memory, memio.size)
+
 
     def close(self):
         """
@@ -2280,7 +2404,13 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
 Close the Dataset.
         """
-        self._close(True)
+        IF HAS_NC_CREATE_MEM:
+            if self._inmemory:
+                return self._close_mem(True)
+            else:
+                self._close(True)
+        ELSE:
+            self._close(True)
 
     def isopen(self):
         """
