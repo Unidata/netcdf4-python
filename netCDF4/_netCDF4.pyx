@@ -2393,7 +2393,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             self._isopen = 0
             PyBuffer_Release(&self._buffer)
 
-            # makebuf from membuf.pyx - creates a python memoryview
+            # membuf_fromptr from membuf.pyx - creates a python memoryview
             # from a raw pointer without making a copy.
             return memview_fromptr(<char *>memio.memory, memio.size)
 
