@@ -10,10 +10,13 @@ from libc.stdlib cimport free
 # Only this function is intended to be used from external
 # cython code.
 cdef memview_fromptr(void *memory, size_t size):
+    cdef _MemBuf buf = _MemBuf()
+    buf.memory = memory # malloced void pointer
+    buf.size = size # size of pointer in bytes
     # memory is malloced void pointer, size is number of bytes allocated
     if memory==NULL:
         raise MemoryError('no memory allocated to pointer')
-    return memoryview( MemBuf_init(memory, size) )
+    return memoryview( buf )
 
 cdef class _MemBuf:
     cdef const void *memory
@@ -25,12 +28,3 @@ cdef class _MemBuf:
         pass
     def __dealloc__(self):
         free(self.memory)
-
-# Call this instead of constructing a _MemBuf directly.  The __cinit__
-# and __init__ methods can only take Python objects, so the real
-# constructor is here.
-cdef _MemBuf MemBuf_init(const void *memory, size_t size):
-    cdef _MemBuf ret = _MemBuf()
-    ret.memory = memory # malloced void pointer
-    ret.size = size # size of pointer in bytes
-    return ret
