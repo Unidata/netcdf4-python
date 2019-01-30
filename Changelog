@@ -2,8 +2,8 @@
 =============================
  * make set_always_mask work in MFDataset.
  * fix saving diskless files to disk with netcdf-c >= 4.6.2.
- * write to an in-memory Dataset, memory buffer returned by Dataset.close()
-   (issue #865)
+ * write to an in-memory Dataset, memoryview buffer returned by Dataset.close()
+   (issue #865, requires netcdf-c >= 4.6.2)
 
  version 1.4.2 (tag v1.4.2rel)
 =============================
