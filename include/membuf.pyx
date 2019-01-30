@@ -13,9 +13,6 @@ cdef memview_fromptr(void *memory, size_t size):
     cdef _MemBuf buf = _MemBuf()
     buf.memory = memory # malloced void pointer
     buf.size = size # size of pointer in bytes
-    # memory is malloced void pointer, size is number of bytes allocated
-    if memory==NULL:
-        raise MemoryError('no memory allocated to pointer')
     return memoryview( buf )
 
 cdef class _MemBuf:
