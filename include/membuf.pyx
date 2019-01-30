@@ -5,16 +5,14 @@
 from cpython.buffer cimport PyBuffer_FillInfo
 from libc.stdlib cimport free
 
-# this is the function used to create a memory view from
-# a raw pointer.
-# Only this function is intended to be used from external
-# cython code.
+# create a python memoryview object from a raw pointer.
 cdef memview_fromptr(void *memory, size_t size):
     cdef _MemBuf buf = _MemBuf()
     buf.memory = memory # malloced void pointer
     buf.size = size # size of pointer in bytes
-    return memoryview( buf )
+    return memoryview(buf)
 
+# private extension type that implements buffer protocal.
 cdef class _MemBuf:
     cdef const void *memory
     cdef size_t size
