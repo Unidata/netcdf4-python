@@ -1,7 +1,9 @@
- since version 1.4.2
+ version 1.4.3 (not yet released)
 =============================
  * make set_always_mask work in MFDataset.
  * fix saving diskless files to disk with netcdf-c >= 4.6.2.
+ * fix performance regression when using large sequences of consecutive
+   integers for indexing with netcdf-c >= 4.6.2 (issue #870).
 
  version 1.4.2 (tag v1.4.2rel)
 =============================
