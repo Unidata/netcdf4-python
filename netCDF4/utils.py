@@ -305,7 +305,7 @@ Boolean array must have the same shape as the data along this dimension."""
                 ee = range(start,stop,step)
             except ValueError: # start, stop or step is not valid for a range
                 ee = False
-            if no_get_vars and ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
+            if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
                 # don't convert to slice unless abs(stride) == 1
                 # (nc_get_vars is very slow, issue #680)
                 if step not in [1,-1]:
