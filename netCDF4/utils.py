@@ -308,7 +308,7 @@ Boolean array must have the same shape as the data along this dimension."""
             if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
                 # don't convert to slice unless abs(stride) == 1
                 # (nc_get_vars is very slow, issue #680)
-                if step not in [1,-1]:
+                if no_get_vars and step not in [1,-1]:
                     newElem.append(e)
                 else:
                     newElem.append(slice(start,stop,step))
