@@ -86,7 +86,7 @@ least_significant_digit=1, bits will be 4.
         return datout
 
 def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
-        put=False, no_get_vars = True):
+        put=False, use_get_vars = False):
     """Return start, count, stride and indices needed to store/extract data
     into/from a netCDF variable.
 
@@ -257,7 +257,7 @@ Boolean array must have the same shape as the data along this dimension."""
             newElem.append(e)
         # slice or ellipsis object
         elif type(e) == slice or type(e) == type(Ellipsis):
-            if no_get_vars and type(e) == slice and e.step not in [None,-1,1] and\
+            if not use_get_vars and type(e) == slice and e.step not in [None,-1,1] and\
                dimensions is not None and grp is not None:
                 # convert strided slice to integer sequence if possible
                 # (this will avoid nc_get_vars, which is slow - issue #680).
@@ -308,7 +308,7 @@ Boolean array must have the same shape as the data along this dimension."""
             if ee and len(e) == len(ee) and (e == np.arange(start,stop,step)).all():
                 # don't convert to slice unless abs(stride) == 1
                 # (nc_get_vars is very slow, issue #680)
-                if no_get_vars and step not in [1,-1]:
+                if not use_get_vars and step not in [1,-1]:
                     newElem.append(e)
                 else:
                     newElem.append(slice(start,stop,step))
