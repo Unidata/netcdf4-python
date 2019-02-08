@@ -517,6 +517,7 @@ def ncinfo():
     try:
         filename = pargs[-1]
     except IndexError:
+        sys.stdout.write("You need to pass netcdf filename!\n.")
         sys.stderr.write(usage)
         sys.exit(0)
 
@@ -663,16 +664,8 @@ def nc4tonc3():
         sys.exit(0)
 
     # Catch the files passed as the last arguments
-    try:
-        filename4 = pargs[0]
-    except IndexError:
-        sys.stderr.write(usage)
-        sys.exit(0)
-    try:
-        filename3 = pargs[1]
-    except IndexError:
-        sys.stderr.write(usage)
-        sys.exit(0)
+    filename4 = pargs[0]
+    filename3 = pargs[1]
 
     # copy the data from filename4 to filename3.
     _nc4tonc3(filename4,filename3,clobber=overwritefile,quiet=quiet,format=format)
@@ -912,16 +905,8 @@ def nc3tonc4():
         sys.exit(0)
 
     # Catch the files passed as the last arguments
-    try:
-        filename3 = pargs[0]
-    except IndexError:
-        sys.stderr.write(usage)
-        sys.exit(0)
-    try:
-        filename4 = pargs[1]
-    except IndexError:
-        sys.stderr.write(usage)
-        sys.exit(0)
+    filename3 = pargs[0]
+    filename4 = pargs[1]
 
     # Parse the quantize option, create a dictionary from key/value pairs.
     if quantize is not None:
