@@ -473,9 +473,9 @@ def ncinfo():
     usage = """
  Print summary information about a netCDF file.
 
- usage: %s [-h] [-g grp or --group=grp] [-v var or --variable=var] [-d dim or --dimension=dim] filename
+ usage: %s [-h/--help] [-g grp or --group=grp] [-v var or --variable=var] [-d dim or --dimension=dim] filename
 
- -h -- Print usage message.
+ -h/--help -- Print usage message.
  -g <group name> or --group=<group name> -- Print info for this group
       (default is root group). Nested groups specified
       using posix paths ("group1/group2/group3").
@@ -499,7 +499,7 @@ def ncinfo():
     # Get the options
     group = None; var = None; dim=None
     for option in opts:
-        if option[0] == '-h':
+        if option[0] == '-h' or option[0] == '--help':
             sys.stderr.write(usage)
             sys.exit(0)
         elif option[0] == '--group' or option[0] == '-g':
@@ -514,7 +514,12 @@ def ncinfo():
             sys.exit(0)
 
     # filename passed as last argumenbt
-    filename = pargs[-1]
+    try:
+        filename = pargs[-1]
+    except IndexError:
+        sys.stdout.write("You need to pass netcdf filename!\n.")
+        sys.stderr.write(usage)
+        sys.exit(0)
 
     f = Dataset(filename)
     if group is None:
@@ -609,8 +614,8 @@ def nc4tonc3():
     usage = """
  Convert a netCDF 4 file (in NETCDF4_CLASSIC format) to netCDF 3 format.
 
- usage: %s [-h] [-o] [--chunk] netcdf4filename netcdf3filename
- -h -- Print usage message.
+ usage: %s [-h/--help] [-o] [--chunk] netcdf4filename netcdf3filename
+ -h/--help -- Print usage message.
  -o -- Overwrite destination file (default is to raise an error if output file already exists).
  --quiet=(0|1)  -- if 1, don't print diagnostic information.
  --format -- netcdf3 format to use (NETCDF3_64BIT by default, can be set to NETCDF3_CLASSIC)
@@ -636,7 +641,7 @@ def nc4tonc3():
 
     # Get the options
     for option in opts:
-        if option[0] == '-h':
+        if option[0] == '-h' or option[0] == '--help':
             sys.stderr.write(usage)
             sys.exit(0)
         elif option[0] == '-o':
@@ -793,8 +798,8 @@ def nc3tonc4():
  to floats, and adding zlib compression (with the HDF5 shuffle filter and fletcher32 checksum).
  Data may also be quantized (truncated) to a specified precision to improve compression.
 
- usage: %s [-h] [-o] [--vars=var1,var2,..] [--zlib=(0|1)] [--complevel=(1-9)] [--shuffle=(0|1)] [--fletcher32=(0|1)] [--unpackshort=(0|1)] [--quantize=var1=n1,var2=n2,..] netcdf3filename netcdf4filename
- -h -- Print usage message.
+ usage: %s [-h/--help] [-o] [--vars=var1,var2,..] [--zlib=(0|1)] [--complevel=(1-9)] [--shuffle=(0|1)] [--fletcher32=(0|1)] [--unpackshort=(0|1)] [--quantize=var1=n1,var2=n2,..] netcdf3filename netcdf4filename
+ -h/--help -- Print usage message.
  -o -- Overwrite destination file (default is to raise an error if output file already exists).
  --vars -- comma separated list of variable names to copy (default is to copy
     all variables)
@@ -859,7 +864,7 @@ def nc3tonc4():
 
     # Get the options
     for option in opts:
-        if option[0] == '-h':
+        if option[0] == '-h' or option[0] == '--help':
             sys.stderr.write(usage)
             sys.exit(0)
         elif option[0] == '-o':

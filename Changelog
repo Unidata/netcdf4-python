@@ -6,6 +6,7 @@
    (issue #865, requires netcdf-c >= 4.6.2)
  * fix performance regression when using large sequences of consecutive
    integers for indexing with netcdf-c >= 4.6.2 (issue #870).
+ * improved error messages for ncinfo and other utilities (issue #873).
 
  version 1.4.2 (tag v1.4.2rel)
 =============================
