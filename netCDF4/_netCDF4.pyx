@@ -1520,7 +1520,7 @@ be raised in the next release."""
     fmt = _get_format(grp._grpid)
     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'
     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
-       is_netcdf3):
+       (is_netcdf3 and fmt != 'NETCDF3_64BIT_DATA')):
         value_arr = value_arr.astype('i4')
     # if array contains ascii strings, write a text attribute (stored as bytes).
     # if array contains unicode strings, and data model is NETCDF4, 
