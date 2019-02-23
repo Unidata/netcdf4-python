@@ -1,12 +1,12 @@
 """
 Version 1.4.3
 -------------
-- - - 
+- - -
 
 Introduction
 ============
 
-netcdf4-python is a Python interface to the netCDF C library.  
+netcdf4-python is a Python interface to the netCDF C library.
 
 [netCDF](http://www.unidata.ucar.edu/software/netcdf/) version 4 has many features
 not found in earlier versions of the library and is implemented on top of
@@ -28,7 +28,7 @@ types) are not supported.
 Download
 ========
 
- - Latest bleeding-edge code from the 
+ - Latest bleeding-edge code from the
    [github repository](http://github.com/Unidata/netcdf4-python).
  - Latest [releases](https://pypi.python.org/pypi/netCDF4)
    (source code and binary installers).
@@ -41,7 +41,7 @@ Requires
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
- - [cftime](https://github.com/Unidata/cftime) for 
+ - [cftime](https://github.com/Unidata/cftime) for
  the time and date handling utility functions (`netCDF4.num2date`,
  `netCDF4.date2num` and `netCDF4.date2index`).
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
@@ -55,7 +55,7 @@ Requires
  - [HDF4](http://www.hdfgroup.org/products/hdf4), if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.
  - The netCDF-4 C library from the [github releases
-   page](https://github.com/Unidata/netcdf-c/releases). 
+   page](https://github.com/Unidata/netcdf-c/releases).
  Version 4.1.1 or higher is required (4.2 or higher recommended).
  Be sure to build with `--enable-netcdf-4 --enable-shared`, and set
  `CPPFLAGS="-I $HDF5_DIR/include"` and `LDFLAGS="-L $HDF5_DIR/lib"`,
@@ -123,11 +123,11 @@ constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (`mode='w', 'r+'` or `'a'`), you may
 write any type of data including new dimensions, groups, variables and
 attributes.  netCDF files come in five flavors (`NETCDF3_CLASSIC,
-NETCDF3_64BIT_OFFSET, NETCDF3_64BIT_DATA, NETCDF4_CLASSIC`, and `NETCDF4`). 
-`NETCDF3_CLASSIC` was the original netcdf binary format, and was limited 
+NETCDF3_64BIT_OFFSET, NETCDF3_64BIT_DATA, NETCDF4_CLASSIC`, and `NETCDF4`).
+`NETCDF3_CLASSIC` was the original netcdf binary format, and was limited
 to file sizes less than 2 Gb. `NETCDF3_64BIT_OFFSET` was introduced
 in version 3.6.0 of the library, and extended the original binary format
-to allow for file sizes greater than 2 Gb. 
+to allow for file sizes greater than 2 Gb.
 `NETCDF3_64BIT_DATA` is a new format that requires version 4.4.0 of
 the C library - it extends the `NETCDF3_64BIT_OFFSET` binary format to
 allow for unsigned/64 bit integer data types and 64-bit dimension sizes.
@@ -182,9 +182,9 @@ in a netCDF 3 file you will get an error message.
     >>> fcstgrp = rootgrp.createGroup("forecasts")
     >>> analgrp = rootgrp.createGroup("analyses")
     >>> print rootgrp.groups
-    OrderedDict([("forecasts", 
+    OrderedDict([("forecasts",
                   <netCDF4._netCDF4.Group object at 0x1b4b7b0>),
-                 ("analyses", 
+                 ("analyses",
                   <netCDF4._netCDF4.Group object at 0x1b4b970>)])
 
 Groups can exist within groups in a `netCDF4.Dataset`, just as directories
@@ -201,7 +201,7 @@ use a unix-like path as an argument to `netCDF4.Dataset.createGroup`.
 
 If any of the intermediate elements of the path do not exist, they are created,
 just as with the unix command `'mkdir -p'`. If you try to create a group
-that already exists, no error will be raised, and the existing group will be 
+that already exists, no error will be raised, and the existing group will be
 returned.
 
 Here's an example that shows how to navigate all the groups in a
@@ -366,7 +366,7 @@ You can use a path to create a Variable inside a hierarchy of groups.
 
 If the intermediate groups do not yet exist, they will be created.
 
-You can also query a `netCDF4.Dataset` or `netCDF4.Group` instance directly to obtain `netCDF4.Group` or 
+You can also query a `netCDF4.Dataset` or `netCDF4.Group` instance directly to obtain `netCDF4.Group` or
 `netCDF4.Variable` instances using paths.
 
     :::python
@@ -560,7 +560,7 @@ measure relative to a fixed date using a certain calendar, with units
 specified like `hours since YY-MM-DD hh:mm:ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called `netCDF4.num2date` and `netCDF4.date2num` are
-provided with this package to do just that (starting with version 1.4.0, the 
+provided with this package to do just that (starting with version 1.4.0, the
 [cftime](https://unidata.github.io/cftime) package must be installed
 separately).  Here's an example of how they
 can be used:
@@ -729,7 +729,7 @@ Compound types can be nested, but you must create the 'inner'
 ones first. All possible numpy structured arrays cannot be
 represented as Compound variables - an error message will be
 raise if you try to create one that is not supported.
-All of the compound types defined for a `netCDF4.Dataset` or `netCDF4.Group` are stored 
+All of the compound types defined for a `netCDF4.Dataset` or `netCDF4.Group` are stored
 in a Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:
 
@@ -857,7 +857,7 @@ netCDF4 has an enumerated data type, which is an integer datatype that is
 restricted to certain named values. Since Enums don't map directly to
 a numpy data type, they are read and written as integer arrays.
 
-Here's an example of using an Enum type to hold cloud type data. 
+Here's an example of using an Enum type to hold cloud type data.
 The base integer data type and a python dictionary describing the allowed
 values and their names are used to define an Enum data type using
 `netCDF4.Dataset.createEnumType`.
@@ -865,7 +865,7 @@ values and their names are used to define an Enum data type using
     :::python
     >>> nc = Dataset('clouds.nc','w')
     >>> # python dict with allowed values and their names.
-    >>> enum_dict = {u'Altocumulus': 7, u'Missing': 255, 
+    >>> enum_dict = {u'Altocumulus': 7, u'Missing': 255,
     >>> u'Stratus': 2, u'Clear': 0,
     >>> u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5,
     >>> u'Cumulonimbus': 1, u'Stratocumulus': 3}
@@ -921,7 +921,7 @@ specified names.
 If MPI parallel enabled versions of netcdf and hdf5 are detected, and
 [mpi4py](https://mpi4py.scipy.org) is installed, netcdf4-python will
 be built with parallel IO capabilities enabled.  To use parallel IO,
-your program must be running in an MPI environment using 
+your program must be running in an MPI environment using
 [mpi4py](https://mpi4py.scipy.org).
 
     :::python
@@ -976,11 +976,11 @@ are collective.  There are a couple of important limitatons of parallel IO:
    a generic "HDF Error".
  - You cannot write compressed data in parallel (although
    you can read it).
- - You cannot use variable-length (VLEN) data types. 
+ - You cannot use variable-length (VLEN) data types.
 
 ## <div id='section14'>14) Dealing with strings.
 
-The most flexible way to store arrays of strings is with the 
+The most flexible way to store arrays of strings is with the
 [Variable-length (vlen) string data type](#section11). However, this requires
 the use of the NETCDF4 data model, and the vlen type does not map very well
 numpy arrays (you have to use numpy arrays of dtype=`object`, which are arrays of
@@ -1019,7 +1019,7 @@ characters with one more dimension. For example,
 
 Even if the `_Encoding` attribute is set, the automatic conversion of char
 arrays to/from string arrays can be disabled with
-`netCDF4.Variable.set_auto_chartostring`. 
+`netCDF4.Variable.set_auto_chartostring`.
 
 A similar situation is often encountered with numpy structured arrays with subdtypes
 containing fixed-wdith byte strings (dtype=`S#`). Since there is no native fixed-length string
@@ -1058,7 +1058,7 @@ Here's an example:
     >>> nc.close()
 
 Note that there is currently no support for mapping numpy structured arrays with
-unicode elements (dtype `U#`) onto netCDF compound types, nor is there support 
+unicode elements (dtype `U#`) onto netCDF compound types, nor is there support
 for netCDF compound types with vlen string components.
 
 ## <div id='section15'>15) In-memory (diskless) Datasets.
@@ -1079,7 +1079,7 @@ object representing the Dataset. Below are examples illustrating both
 approaches.
 
     :::python
-    >>> # create a diskless (in-memory) Dataset, 
+    >>> # create a diskless (in-memory) Dataset,
     >>> # and persist the file to disk when it is closed.
     >>> nc = Dataset('diskless_example.nc','w',diskless=True,persist=True)
     >>> d = nc.createDimension('x',None)
@@ -1113,7 +1113,7 @@ approaches.
     >>> nc.close()
     >>> # create an in-memory Dataset and retrieve memory buffer
     >>> # estimated size is 1028 bytes - this is actually only
-    >>> # used if format is NETCDF3 
+    >>> # used if format is NETCDF3
     >>> # (ignored for NETCDF4/HDF5 files).
     >>> nc = Dataset('inmemory.nc', mode='w',memory=1028)
     >>> d = nc.createDimension('x',None)
@@ -1322,7 +1322,7 @@ else:  # prior to 4.6.2 this flag doesn't work, so make the same as NC_DISKLESS
     NC_PERSIST = NC_DISKLESS
 
 # next two lines do nothing, preserved for backwards compatibility.
-default_encoding = 'utf-8' 
+default_encoding = 'utf-8'
 unicode_error = 'replace'
 
 python3 = sys.version_info[0] > 2
@@ -1523,7 +1523,7 @@ be raised in the next release."""
        (is_netcdf3 and fmt != 'NETCDF3_64BIT_DATA')):
         value_arr = value_arr.astype('i4')
     # if array contains ascii strings, write a text attribute (stored as bytes).
-    # if array contains unicode strings, and data model is NETCDF4, 
+    # if array contains unicode strings, and data model is NETCDF4,
     # write as a string.
     if value_arr.dtype.char in ['S','U']:
         # force array of strings if array has multiple elements (issue #770)
@@ -1846,7 +1846,7 @@ _private_atts = \
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
  '__orthogoral_indexing__','keepweakref','_has_lsd',
- '_buffer','chartostring','_use_get_vars']
+ '_buffer','chartostring','_use_get_vars','ncstring_attrs']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -1872,7 +1872,7 @@ dimensions defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances of 
 `netCDF4.Dimension` class.
 
 **`variables`**: The `variables` dictionary maps the names of variables
-defined for this `netCDF4.Dataset` or `netCDF4.Group` to instances of the 
+defined for this `netCDF4.Dataset` or `netCDF4.Group` to instances of the
 `netCDF4.Variable` class.
 
 **`groups`**: The groups dictionary maps the names of groups created for
@@ -1885,11 +1885,11 @@ compound types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances
 `netCDF4.CompoundType` class.
 
 **`vltypes`**: The `vltypes` dictionary maps the names of
-variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances 
+variable-length types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances
 of the `netCDF4.VLType` class.
 
 **`enumtypes`**: The `enumtypes` dictionary maps the names of
-Enum types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances 
+Enum types defined for the `netCDF4.Group` or `netCDF4.Dataset` to instances
 of the `netCDF4.EnumType` class.
 
 **`data_model`**: `data_model` describes the netCDF
@@ -1913,7 +1913,7 @@ the `netCDF4.Dataset` in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A `netCDF4.Dataset` instance is the root
 group, so the path is simply `'/'`.
 
-**`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak 
+**`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak
 references to the parent Dataset or Group.
     """
     cdef object __weakref__, _inmemory
@@ -1922,7 +1922,7 @@ references to the parent Dataset or Group.
     cdef Py_buffer _buffer
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
-    keepweakref
+    keepweakref, ncstring_attrs
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Dataset.dimensions']=\
     """The `dimensions` dictionary maps the names of
@@ -1971,11 +1971,13 @@ references to the parent Dataset or Group.
     group, so the path is simply `'/'`."""
     __pdoc__['Dataset.keepweakref']=\
     """If `True`, child Dimension and Variables objects only keep weak references to
-    the parent Dataset or Group.""" 
+    the parent Dataset or Group."""
+    __pdoc__['Dataset.ncstring_attrs']=\
+    """If `True`, string attributes will be NCSTRINGs instead of character arrays."""
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                      diskless=False, persist=False, keepweakref=False,
-                     memory=None, encoding=None, parallel=False,
+                     memory=None, encoding=None, parallel=False, ncstring_attrs=False,
                      Comm comm=None, Info info=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
@@ -1987,7 +1989,7 @@ references to the parent Dataset or Group.
         **`filename`**: Name of netCDF file to hold dataset. Can also
 	be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
 	set this is just used to set the `filepath()`.
-        
+
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
         the same name is deleted. `a` and `r+` mean append (in analogy with
@@ -1999,11 +2001,11 @@ references to the parent Dataset or Group.
         access, since it may be faster for programs that don't access data
         sequentially. This option is ignored for `NETCDF4` and `NETCDF4_CLASSIC`
         formatted files.
-        
+
         **`clobber`**: if `True` (default), opening a file with `mode='w'`
         will clobber an existing file with the same name.  if `False`, an
         exception will be raised if a file with the same name already exists.
-        
+
         **`format`**: underlying file format (one of `'NETCDF4',
         'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
         `'NETCDF3_64BIT_DATA'`.
@@ -2021,12 +2023,12 @@ references to the parent Dataset or Group.
         file format, which supports 64-bit dimension sizes plus unsigned and
         64 bit integer data types, but is only compatible with clients linked against
         netCDF version 4.4.0 or later.
-        
-        **`diskless`**: If `True`, create diskless (in-core) file.  
+
+        **`diskless`**: If `True`, create diskless (in-core) file.
         This is a feature added to the C library after the
         netcdf-4.2 release. If you need to access the memory buffer directly,
         use the in-memory feature instead (see `memory` kwarg).
-        
+
         **`persist`**: if `diskless=True`, persist file to disk when closed
         (default `False`).
 
@@ -2043,7 +2045,10 @@ references to the parent Dataset or Group.
         reducing memory usage and open file handles.  However, in many cases this is not
         desirable, since the associated Variable instances may still be needed, but are
         rendered unusable when the parent Dataset instance is garbage collected.
-        
+
+        **`ncstring_attrs`**: if `ncstring_attrs=True`, all string attributes will use
+        the variable length NCSTRING attributes (default `False`).
+
         **`memory`**: if not `None`, create or open an in-memory Dataset.
         If mode = 'r', the memory kwarg must contain a memory buffer object
         (an object that supports the python buffer interface).
@@ -2264,6 +2269,7 @@ references to the parent Dataset or Group.
         self.path = '/'
         self.parent = None
         self.keepweakref = keepweakref
+        self.ncstring_attrs = ncstring_attrs
         # get compound, vlen and enum types in the root Group.
         self.cmptypes, self.vltypes, self.enumtypes = _get_types(self)
         # get dimensions in the root group.
@@ -2570,7 +2576,7 @@ Creates a new variable with the given `varname`, `datatype`, and
 a scalar.
 
 If `varname` is specified as a path, using forward slashes as in unix to
-separate components, then intermediate groups will be created as necessary 
+separate components, then intermediate groups will be created as necessary
 For example, `createVariable('/GroupA/GroupB/VarC', float, ('x','y'))` will create groups `GroupA`
 and `GroupA/GroupB`, plus the variable `GroupA/GroupB/VarC`, if the preceding
 groups don't already exist.
@@ -2642,7 +2648,7 @@ with `zlib=True` this produces 'lossy', but significantly more
 efficient compression. For example, if `least_significant_digit=1`,
 data will be quantized using `numpy.around(scale*data)/scale`, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4). From the 
+retained (in this case bits=4). From the
 [PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml):
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is `None`, or no
@@ -2727,7 +2733,7 @@ rename a `netCDF4.Variable` named `oldname` to `newname`"""
 Creates a new `netCDF4.Group` with the given `groupname`.
 
 If `groupname` is specified as a path, using forward slashes as in unix to
-separate components, then intermediate groups will be created as necessary 
+separate components, then intermediate groups will be created as necessary
 (analogous to `mkdir -p` in unix).  For example,
 `createGroup('/GroupA/GroupB/GroupC')` will create `GroupA`,
 `GroupA/GroupB`, and `GroupA/GroupB/GroupC`, if they don't already exist.
@@ -2764,8 +2770,10 @@ return netCDF global attribute names for this `netCDF4.Dataset` or `netCDF4.Grou
 set a netCDF dataset or group attribute using name,value pair.
 Use if you need to set a netCDF attribute with the
 with the same name as one of the reserved python attributes."""
+        cdef nc_type xtype
+        xtype=-99
         if self.data_model != 'NETCDF4': self._redef()
-        _set_att(self, NC_GLOBAL, name, value)
+        _set_att(self, NC_GLOBAL, name, value, xtype=xtype, force_ncstring=self.ncstring_attrs)
         if self.data_model !=  'NETCDF4': self._enddef()
 
     def setncattr_string(self,name,value):
@@ -2906,7 +2914,7 @@ Call `netCDF4.Variable.set_auto_chartostring` for all variables contained in thi
 `netCDF4.Group`, as well as for all variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic conversion of
-all character arrays <--> string arrays should be performed for 
+all character arrays <--> string arrays should be performed for
 character variables (variables of type `NC_CHAR` or `S1`) with the
 `_Encoding` attribute set.
 
@@ -3041,7 +3049,7 @@ the default behaviour.
 Returns a list of variables that match specific conditions.
 
 Can pass in key=value parameters and variables are returned that
-contain all of the matches. For example, 
+contain all of the matches. For example,
 
     :::python
     >>> # Get variables with x-axis attribute.
@@ -3096,7 +3104,7 @@ a `netCDF4.Dataset` within a Dataset, and can contain it's own variables,
 dimensions and attributes (and other Groups). See `netCDF4.Group.__init__`
 for more details.
 
-`netCDF4.Group` inherits from `netCDF4.Dataset`, so all the 
+`netCDF4.Group` inherits from `netCDF4.Dataset`, so all the
 `netCDF4.Dataset` class methods and variables are available
 to a `netCDF4.Group` instance (except the `close` method).
 
@@ -3362,21 +3370,21 @@ variable's data type.
 
 **`scale`**: If True, `scale_factor` and `add_offset` are
 applied, and signed integer data is automatically converted to
-unsigned integer data if the `_Unsigned` attribute is set. 
+unsigned integer data if the `_Unsigned` attribute is set.
 Default is `True`, can be reset using `netCDF4.Variable.set_auto_scale` and
 `netCDF4.Variable.set_auto_maskandscale` methods.
 
-**`mask`**: If True, data is automatically converted to/from masked 
+**`mask`**: If True, data is automatically converted to/from masked
 arrays when missing values or fill values are present. Default is `True`, can be
 reset using `netCDF4.Variable.set_auto_mask` and `netCDF4.Variable.set_auto_maskandscale`
 methods.
 
-**`chartostring`**: If True, data is automatically converted to/from character 
-arrays to string arrays when the `_Encoding` variable attribute is set. 
+**`chartostring`**: If True, data is automatically converted to/from character
+arrays to string arrays when the `_Encoding` variable attribute is set.
 Default is `True`, can be reset using
 `netCDF4.Variable.set_auto_chartostring` method.
 
-**`least_significant_digit`**: Describes the power of ten of the 
+**`least_significant_digit`**: Describes the power of ten of the
 smallest decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the `netCDF4.Variable`
 instance. If `None`, the data is not truncated.
@@ -3480,28 +3488,28 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (for a variable-length array), or the python `str` builtin
         (for a variable-length string array). Numpy string and unicode datatypes with
         length greater than one are aliases for `str`.
-        
+
         **`dimensions`**: a tuple containing the variable's dimension names
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
-        
+
         **`zlib`**: if `True`, data assigned to the `netCDF4.Variable`
         instance is compressed on disk. Default `False`.
-        
+
         **`complevel`**: the level of zlib compression to use (1 is the fastest,
         but poorest compression, 9 is the slowest but best compression). Default 4.
         Ignored if `zlib=False`.
-        
+
         **`shuffle`**: if `True`, the HDF5 shuffle filter is applied
         to improve compression. Default `True`. Ignored if `zlib=False`.
-        
+
         **`fletcher32`**: if `True` (default `False`), the Fletcher32 checksum
         algorithm is used for error detection.
-        
+
         **`contiguous`**: if `True` (default `False`), the variable data is
         stored contiguously on disk.  Default `False`. Setting to `True` for
         a variable with an unlimited dimension will trigger an error.
-        
+
         **`chunksizes`**: Can be used to specify the HDF5 chunksizes for each
         dimension of the variable. A detailed discussion of HDF chunking and I/O
         performance is available
@@ -3509,7 +3517,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         Basically, you want the chunk size for each dimension to match as
         closely as possible the size of the data block that users will read
         from the file. `chunksizes` cannot be set if `contiguous=True`.
-        
+
         **`endian`**: Can be used to control whether the
         data is stored in little or big endian format on disk. Possible
         values are `little, big` or `native` (default). The library
@@ -3518,10 +3526,10 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         opposite format as the one used to create the file, there may be
         some performance advantage to be gained by setting the endian-ness.
         For netCDF 3 files (that don't use HDF5), only `endian='native'` is allowed.
-        
+
         The `zlib, complevel, shuffle, fletcher32, contiguous` and `chunksizes`
         keywords are silently ignored for netCDF 3 files that do not use HDF5.
-        
+
         **`least_significant_digit`**: If specified, variable data will be
         truncated (quantized). In conjunction with `zlib=True` this produces
         'lossy', but significantly more efficient compression. For example, if
@@ -3529,7 +3537,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         around(scale*data)/scale, where scale = 2**bits, and bits is determined
         so that a precision of 0.1 is retained (in this case bits=4). Default is
         `None`, or no quantization.
-        
+
         **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
         value that the variable gets filled with before any data is written to it)
         is replaced with this value.  If fill_value is set to `False`, then
@@ -4320,7 +4328,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             elif hasattr(self, 'add_offset') and self.add_offset != 0.0:
                 data = data + self.add_offset
 
-        # if _Encoding is specified for a character variable, return 
+        # if _Encoding is specified for a character variable, return
         # a numpy array of strings with one less dimension.
         if self.chartostring and getattr(self.dtype,'kind',None) == 'S' and\
            getattr(self.dtype,'itemsize',None) == 1:
@@ -4334,7 +4342,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                     # also make sure slice is along last dimension
                     matchdim = True
                     for cnt in count:
-                        if cnt[-1] != self.shape[-1]: 
+                        if cnt[-1] != self.shape[-1]:
                             matchdim = False
                             break
                     if matchdim:
@@ -4368,7 +4376,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             mval = numpy.array(self.missing_value, self.dtype)
             if self.scale and is_unsigned_int:
                 mval = mval.view(dtype_unsigned_int)
-            # create mask from missing values. 
+            # create mask from missing values.
             mvalmask = numpy.zeros(data.shape, numpy.bool)
             if mval.shape == (): # mval a scalar.
                 mval = [mval] # make into iterable.
@@ -4378,12 +4386,12 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                     mvalisnan = numpy.isnan(m)
                 except TypeError: # isnan fails on some dtypes (issue 206)
                     mvalisnan = False
-                if mvalisnan: 
+                if mvalisnan:
                     mvalmask += numpy.isnan(data)
                 else:
                     mvalmask += data==m
             if mvalmask.any():
-                # set fill_value for masked array 
+                # set fill_value for masked array
                 # to missing_value (or 1st element
                 # if missing_value is a vector).
                 fill_value = mval[0]
@@ -4461,11 +4469,11 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         if validmax is not None and self.scale and is_unsigned_int:
             validmax = validmax.view(dtype_unsigned_int)
         # http://www.unidata.ucar.edu/software/netcdf/docs/attribute_conventions.html).
-        # "If the data type is byte and _FillValue 
+        # "If the data type is byte and _FillValue
         # is not explicitly defined,
         # then the valid range should include all possible values.
         # Otherwise, the valid range should exclude the _FillValue
-        # (whether defined explicitly or by default) as follows. 
+        # (whether defined explicitly or by default) as follows.
         # If the _FillValue is positive then it defines a valid maximum,
         #  otherwise it defines a valid minimum."
         byte_type = self.dtype.str[1:] in ['u1','i1']
@@ -4511,7 +4519,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # issue #809: return a regular numpy array if requested
             # and there are no missing values
             data = numpy.array(data, copy=False)
-            
+
         return data
 
     def _assign_vlen(self, elem, data):
@@ -4773,7 +4781,7 @@ cannot be safely cast to variable data type""" % attname
                     else:
                         fillval = default_fillvals[self.dtype.str[1:]]
                     # some versions of numpy have trouble handling
-                    # MaskedConstants when filling - this is is 
+                    # MaskedConstants when filling - this is is
                     # a workaround (issue #850)
                     if data.shape == (1,) and data.mask.all():
                         data = numpy.array([fillval],self.dtype)
@@ -4832,7 +4840,7 @@ If `chartostring` is set to `True`, when data is read from a character variable
 (dtype = `S1`) that has an `_Encoding` attribute, it is converted to a numpy
 fixed length unicode string array (dtype = `UN`, where `N` is the length
 of the the rightmost dimension of the variable).  The value of `_Encoding`
-is the unicode encoding that is used to decode the bytes into strings. 
+is the unicode encoding that is used to decode the bytes into strings.
 
 When numpy string data is written to a variable it is converted back to
 indiviual bytes, with the number of bytes in each string equalling the
@@ -4854,14 +4862,14 @@ version of the netcdf-c library being used) since it may be
 slower than multiple calls to the unstrided read routine `nc_get_vara`.
         """
         self._use_get_vars = bool(use_nc_get_vars)
-        
+
     def set_auto_maskandscale(self,maskandscale):
         """
 **`set_auto_maskandscale(self,maskandscale)`**
 
 turn on or off automatic conversion of variable data to and
 from masked arrays, automatic packing/unpacking of variable
-data using `scale_factor` and `add_offset` attributes and 
+data using `scale_factor` and `add_offset` attributes and
 automatic conversion of signed integer data to unsigned integer
 data if the `_Unsigned` attribute exists.
 
@@ -4875,7 +4883,7 @@ for each data type).  When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. If the variable has valid_min/valid_max and 
+is used instead. If the variable has valid_min/valid_max and
 missing_value attributes, data outside the specified range will be
 set to missing_value.
 
@@ -4896,11 +4904,11 @@ For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see the
 [PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
-In addition, if `maskandscale` is set to `True`, and if the variable has an 
-attribute `_Unsigned` set, and the variable has a signed integer data type, 
+In addition, if `maskandscale` is set to `True`, and if the variable has an
+attribute `_Unsigned` set, and the variable has a signed integer data type,
 a view to the data is returned with the corresponding unsigned integer data type.
 This convention is used by the netcdf-java library to save unsigned integer
-data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3` 
+data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3`
 data model does not have unsigned integer data types).
 
 The default value of `maskandscale` is `True`
@@ -4935,18 +4943,18 @@ For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see the
 [PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
-In addition, if `scale` is set to `True`, and if the variable has an 
+In addition, if `scale` is set to `True`, and if the variable has an
 attribute `_Unsigned` set, and the variable has a signed integer data type,
 a view to the data is returned with the corresponding unsigned integer datatype.
 This convention is used by the netcdf-java library to save unsigned integer
-data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3` 
+data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3`
 data model does not have unsigned integer data types).
 
 The default value of `scale` is `True`
 (automatic conversions are performed).
         """
         self.scale = bool(scale)
-        
+
     def set_auto_mask(self,mask):
         """
 **`set_auto_mask(self,mask)`**
@@ -4964,7 +4972,7 @@ for each data type).  When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. If the variable has valid_min/valid_max and 
+is used instead. If the variable has valid_min/valid_max and
 missing_value attributes, data outside the specified range will be
 set to missing_value.
 
@@ -4972,7 +4980,7 @@ The default value of `mask` is `True`
 (automatic conversions are performed).
         """
         self.mask = bool(mask)
-        
+
     def set_always_mask(self,always_mask):
         """
 **`set_always_mask(self,always_mask)`**
@@ -5044,7 +5052,7 @@ numpy arrays are not performed).
             if self.dtype != data.dtype:
                 data = data.astype(self.dtype) # cast data, if necessary.
             # byte-swap data in numpy array so that is has native
-            # endian byte order (this is what netcdf-c expects - 
+            # endian byte order (this is what netcdf-c expects -
             # issue #554, pull request #555)
             if not data.dtype.isnative:
                 data = data.byteswap()
@@ -5257,7 +5265,7 @@ numpy arrays are not performed).
             # reverse data along axes with negative strides.
             data = data[tuple(sl)].copy() # make a copy so data is contiguous.
         # netcdf-c always returns data in native byte order,
-        # regardless of variable endian-ness. Here we swap the 
+        # regardless of variable endian-ness. Here we swap the
         # bytes if the variable dtype is not native endian, so the
         # dtype of the returned numpy array matches the variable dtype.
         # (pull request #555, issue #554).
@@ -5293,7 +5301,7 @@ open for parallel access.
         """
 **`get_dims(self)`**
 
-return a tuple of `netCDF4.Dimension` instances associated with this 
+return a tuple of `netCDF4.Dimension` instances associated with this
 `netCDF4.Variable.
         """
         return tuple(_find_dim(self._grp, dim) for dim in self.dimensions)
@@ -5308,7 +5316,7 @@ cdef class CompoundType:
     """
 A `netCDF4.CompoundType` instance is used to describe a compound data
 type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
-a `netCDF4.Dataset` or `netCDF4.Group` instance. 
+a `netCDF4.Dataset` or `netCDF4.Group` instance.
 Compound data types map to numpy structured arrays.
 See `netCDF4.CompoundType.__init__` for more details.
 
@@ -5356,7 +5364,7 @@ the user.
         # (this may or may not be still true, but empirical
         # evidence suggests that segfaults occur if this
         # alignment step is skipped - see issue #705).
-        # numpy string subdtypes (i.e. 'S80') are 
+        # numpy string subdtypes (i.e. 'S80') are
         # automatically converted to character array
         # subtypes (i.e. ('S1',80)).  If '_Encoding'
         # variable attribute is set, data will be converted
@@ -5620,7 +5628,7 @@ cdef class VLType:
     """
 A `netCDF4.VLType` instance is used to describe a variable length (VLEN) data
 type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
-a `netCDF4.Dataset` or `netCDF4.Group` instance. See 
+a `netCDF4.Dataset` or `netCDF4.Group` instance. See
 `netCDF4.VLType.__init__` for more details.
 
 The instance variables `dtype` and `name` should not be modified by
@@ -5736,7 +5744,7 @@ cdef class EnumType:
     """
 A `netCDF4.EnumType` instance is used to describe an Enum data
 type, and can be passed to the the `netCDF4.Dataset.createVariable` method of
-a `netCDF4.Dataset` or `netCDF4.Group` instance. See 
+a `netCDF4.Dataset` or `netCDF4.Group` instance. See
 `netCDF4.EnumType.__init__` for more details.
 
 The instance variables `dtype`, `name` and `enum_dict` should not be modified by
@@ -5997,7 +6005,7 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         `aggdim` is not specified, the unlimited is aggregated.  Currently,
         `aggdim` must be the leftmost (slowest varying) dimension of each
         of the variables to be aggregated.
-        
+
         **`files`**: either a sequence of netCDF files or a string with a
         wildcard (converted to a sorted list of files using glob)  If
         the `master_file` kwarg is not specified, the first file
@@ -6005,16 +6013,16 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
         variables with an aggregation dimension which may span
         subsequent files. Attribute access returns attributes only from "master"
         file. The files are always opened in read-only mode.
-        
+
         **`check`**: True if you want to do consistency checking to ensure the
         correct variables structure for all of the netcdf files.  Checking makes
         the initialization of the MFDataset instance much slower. Default is
         False.
-        
+
         **`aggdim`**: The name of the dimension to aggregate over (must
         be the leftmost dimension of each of the variables to be aggregated).
         If None (default), aggregate over the unlimited dimension.
-        
+
         **`exclude`**: A list of variable names to exclude from aggregation.
         Default is an empty list.
 
@@ -6459,9 +6467,9 @@ Example usage (See `netCDF4.MFTime.__init__` for more details):
 
         Create a time Variable with units consistent across a multifile
         dataset.
-        
+
         **`time`**: Time variable from a `netCDF4.MFDataset`.
-        
+
         **`units`**: Time units, for example, `'days since 1979-01-01'`. If `None`,
         use the units from the master variable.
 
