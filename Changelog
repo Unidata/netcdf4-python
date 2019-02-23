@@ -7,6 +7,8 @@
  * fix performance regression when using large sequences of consecutive
    integers for indexing with netcdf-c >= 4.6.2 (issue #870).
  * improved error messages for ncinfo and other utilities (issue #873).
+ * fix for int64 attributes not being created for NETCDF3_64BIT_DATA (CDF5)
+   files (issue #878).
 
  version 1.4.2 (tag v1.4.2rel)
 =============================

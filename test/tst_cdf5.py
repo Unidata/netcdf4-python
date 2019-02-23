@@ -18,6 +18,8 @@ class test_cdf5(unittest.TestCase):
         # create an 8-bit unsigned integer variable
         v = nc.createVariable('var',np.uint8,'dim')
         v[:ndim] = arrdata
+        # create a 64-bit integer attribute (issue #878)
+        nc.setncattr('int64_attr', np.int64(-9223372036854775806))
         nc.close()
 
     def tearDown(self):
@@ -29,6 +31,7 @@ class test_cdf5(unittest.TestCase):
         f  = Dataset(self.netcdf_file, 'r')
         assert f.dimensions['dim'].size == dimsize
         assert_array_equal(arrdata, f.variables['var'][:ndim])
+        assert (type(f.int64_attr) == np.int64)
         f.close()
 
 if __name__ == '__main__':
