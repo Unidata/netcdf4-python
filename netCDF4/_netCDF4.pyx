@@ -3141,6 +3141,8 @@ Additional read-only class variables:
         self.parent = parent
         # propagate weak reference setting from parent.
         self.keepweakref = parent.keepweakref
+        # propagate ncstring_attrs setting from parent.
+        self.ncstring_attrs = parent.ncstring_attrs
         if 'id' in kwargs:
             self._grpid = kwargs['id']
             # get compound, vlen and enum types in this Group.
@@ -3404,7 +3406,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, always_mask, chartostring,  _isprimitive, \
     _iscompound, _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
-    __orthogonal_indexing__, _has_lsd, _use_get_vars
+    __orthogonal_indexing__, _has_lsd, _use_get_vars, ncstring_attrs
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
     """A tuple containing the names of the
@@ -3808,6 +3810,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # default is to automatically convert to/from character
         # to string arrays when _Encoding variable attribute is set.
         self.chartostring = True
+        # propagate ncstring_attrs setting from parent group.
+        self.ncstring_attrs = grp.ncstring_attrs
         if 'least_significant_digit' in self.ncattrs():
             self._has_lsd = True
         # avoid calling nc_get_vars for strided slices by default.
@@ -3990,8 +3994,10 @@ return netCDF attribute names for this `netCDF4.Variable` in a list."""
 set a netCDF variable attribute using name,value pair.  Use if you need to set a
 netCDF attribute with the same name as one of the reserved python
 attributes."""
+        cdef nc_type xtype
+        xtype=-99
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
-        _set_att(self._grp, self._varid, name, value)
+        _set_att(self._grp, self._varid, name, value, xtype=xtype, force_ncstring=self.ncstring_attrs)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
 
     def setncattr_string(self,name,value):
