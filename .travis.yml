@@ -59,11 +59,17 @@ install:
   - python setup.py install
 
 script:
-  - |
-    if [ $MPI -eq 1 ] ; then
-       cd examples
-       mpirun -np 4 python mpi_example.py
-       cd ..
-    fi
   - cd test
   - python run_all.py
+  - |
+    if [ $MPI -eq 1 ] ; then
+       cd ../examples
+       mpirun -np 4 python mpi_example.py
+       if [ $? -ne 0 ] ; then
+         echo "mpi test failed!"
+         exit 1
+       else
+         echo "mpi test passed!"
+         exit 0
+       fi
+    fi
