@@ -2146,7 +2146,8 @@ references to the parent Dataset or Group.
                 else:
                     if parallel:
                         IF HAS_NC_PAR:
-                            ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4, \
+                            #ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4, \
+                            ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
