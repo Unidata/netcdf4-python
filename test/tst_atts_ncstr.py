@@ -42,7 +42,9 @@ class VariablesTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
-        f = netCDF4.Dataset(self.file,'w',ncstring_attrs=True)
+        f = netCDF4.Dataset(self.file,'w')
+        # make sure text attributes are always NC_STRINGs
+        f.set_ncstring_attrs(True)
         # try to set a dataset attribute with one of the reserved names.
         f.setncattr('file_format','netcdf4_format')
         # test attribute renameing

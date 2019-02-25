@@ -1975,13 +1975,10 @@ strings.
     __pdoc__['Dataset.keepweakref']=\
     """If `True`, child Dimension and Variables objects only keep weak references to
     the parent Dataset or Group."""
-    __pdoc__['Dataset.ncstring_attrs']=\
-    """If `True`, all string attributes will be variable-length NC_STRINGs
-    (default behaviour is to write ascii text attributes as NC_CHAR)."""
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                      diskless=False, persist=False, keepweakref=False,
-                     memory=None, encoding=None, parallel=False, ncstring_attrs=False,
+                     memory=None, encoding=None, parallel=False,
                      Comm comm=None, Info info=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
@@ -2274,7 +2271,7 @@ strings.
         self.path = '/'
         self.parent = None
         self.keepweakref = keepweakref
-        self.ncstring_attrs = ncstring_attrs
+        self.ncstring_attrs = False
         # get compound, vlen and enum types in the root Group.
         self.cmptypes, self.vltypes, self.enumtypes = _get_types(self)
         # get dimensions in the root group.
@@ -3046,6 +3043,38 @@ the default behaviour.
             for group in groups:
                 for var in group.variables.values():
                     var.set_always_mask(value)
+
+    def set_ncstring_attrs(self, value):
+        """
+**`set_ncstring_attrs(self, True_or_False)`**
+
+Call `netCDF4.Variable.set_ncstring_attrs` for all variables contained in
+this `netCDF4.Dataset` or `netCDF4.Group`, as well as for all its
+subgroups and their variables.
+
+**`True_or_False`**: Boolean determining if all string attributes are
+created as variable-length NC_STRINGs, (if True), or if ascii text
+attributes are stored as NC_CHARs (if False; default)
+
+***Note***: Calling this function only affects newly created attributes
+of existing (sub-) groups and their variables.
+        """
+
+        self.ncstring_attrs = bool(value)
+
+        # this is a hack to make inheritance work in MFDataset
+        # (which stores variables in _vars)
+        _vars = self.variables
+        if _vars is None:
+            _vars = self._vars
+        for var in _vars.values():
+            var.set_ncstring_attrs(value)
+
+        for groups in _walk_grps(self):
+            for group in groups:
+                group.ncstring_attrs = bool(value) # do not recurse into subgroups...
+                for var in group.variables.values():
+                    var.set_ncstring_attrs(value)
 
     def get_variables_by_attributes(self, **kwargs):
         """
@@ -5007,6 +5036,21 @@ numpy arrays are not performed).
 
         """
         self.always_mask = bool(always_mask)
+
+    def set_ncstring_attrs(self,ncstring_attrs):
+        """
+**`set_always_mask(self,ncstring_attrs)`**
+
+turn on or off creating NC_STRING string attributes.
+
+If `ncstring_attrs` is set to `True` then text attributes will be variable-length
+NC_STRINGs.
+
+The default value of `ncstring_attrs` is `False` (writing ascii text attributes as
+NC_CHAR).
+
+        """
+        self.ncstring_attrs = bool(ncstring_attrs)
 
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
