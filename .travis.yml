@@ -31,7 +31,7 @@ matrix:
         - DEPENDS="numpy==1.9.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
     # test MPI
     - python: 3.7
-      dist: trusty
+      dist: xenial
       env: 
         - MPI=1
         - CC=mpicc
