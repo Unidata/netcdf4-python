@@ -2131,7 +2131,7 @@ references to the parent Dataset or Group.
                 if clobber:
                     if parallel:
                         IF HAS_NC_PAR:
-                            ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                            ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO | NC_NETCDF4, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
@@ -2146,7 +2146,7 @@ references to the parent Dataset or Group.
                 else:
                     if parallel:
                         IF HAS_NC_PAR:
-                            ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                            ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
@@ -2218,7 +2218,7 @@ references to the parent Dataset or Group.
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO | NC_NETCDF4, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
@@ -2233,7 +2233,7 @@ references to the parent Dataset or Group.
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
