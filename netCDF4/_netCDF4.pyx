@@ -1915,6 +1915,9 @@ group, so the path is simply `'/'`.
 
 **`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak
 references to the parent Dataset or Group.
+
+**`ncstring_attrs`**: If `True`, all text attributes will be written as variable-length
+strings.
     """
     cdef object __weakref__, _inmemory
     cdef public int _grpid
@@ -1973,7 +1976,8 @@ references to the parent Dataset or Group.
     """If `True`, child Dimension and Variables objects only keep weak references to
     the parent Dataset or Group."""
     __pdoc__['Dataset.ncstring_attrs']=\
-    """If `True`, string attributes will be NCSTRINGs instead of character arrays."""
+    """If `True`, all string attributes will be variable-length NC_STRINGs
+    (default behaviour is to write ascii text attributes as NC_CHAR)."""
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                      diskless=False, persist=False, keepweakref=False,
@@ -2047,7 +2051,8 @@ references to the parent Dataset or Group.
         rendered unusable when the parent Dataset instance is garbage collected.
 
         **`ncstring_attrs`**: if `ncstring_attrs=True`, all string attributes will use
-        the variable length NCSTRING attributes (default `False`).
+        the variable length NC_STRING attributes (default `False`, ascii text
+        attributes written as NC_CHAR).
 
         **`memory`**: if not `None`, create or open an in-memory Dataset.
         If mode = 'r', the memory kwarg must contain a memory buffer object

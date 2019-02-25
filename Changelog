@@ -9,6 +9,9 @@
  * improved error messages for ncinfo and other utilities (issue #873).
  * fix for int64 attributes not being created for NETCDF3_64BIT_DATA (CDF5)
    files (issue #878).
+ * Added kwarg `ncstring_attrs` to Dataset.__init__ that forces all text
+   attributes to be written as variable length strings (netCDF type
+   NC_STRING - issue #882).
 
  version 1.4.2 (tag v1.4.2rel)
 =============================
