@@ -2131,8 +2131,7 @@ references to the parent Dataset or Group.
                 if clobber:
                     if parallel:
                         IF HAS_NC_PAR:
-                            #ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO | NC_NETCDF4, \
-                            ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                            ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO | NC_NETCDF4, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
