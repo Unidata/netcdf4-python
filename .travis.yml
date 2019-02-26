@@ -30,11 +30,11 @@ matrix:
       env:
         - DEPENDS="numpy==1.9.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
     # test MPI with latest released version
-    - python: 3.6
-      dist: trusty
+    - python: 3.7
+      dist: xenial
       env: 
         - MPI=1
-        - CC=mpicc
+        - CC=mpicc.openmpi
         - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
         - NETCDF_VERSION=4.6.2
         - NETCDF_DIR=$HOME
@@ -46,11 +46,11 @@ matrix:
             - libopenmpi-dev
             - libhdf5-openmpi-dev
     # test with netcdf-c from github master
-    - python: 3.6
-      dist: trusty
+    - python: 3.7
+      dist: xenial
       env:
         - MPI=1
-        - CC=mpicc
+        - CC=mpicc.openmpi
         - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
         - NETCDF_VERSION=GITMASTER
         - NETCDF_DIR=$HOME
@@ -80,7 +80,7 @@ script:
   - |
     if [ $MPI -eq 1 ] ; then
        cd ../examples
-       mpirun -np 4 python mpi_example.py
+       mpirun.openmpi -np 4 python mpi_example.py
        if [ $? -ne 0 ] ; then
          echo "mpi test failed!"
          exit 1
