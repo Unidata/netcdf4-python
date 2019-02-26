@@ -14,8 +14,8 @@ else
    pushd netcdf-c-${NETCDF_VERSION}
 fi
 # for Ubuntu xenial
-export CPPFLAGS="-I/usr/include/hdf5/openmpi"
-export LIBS="-lhdf5_openmpihl -lhdf5_openmpi -lm -lz"
+#export CPPFLAGS="-I/usr/include/hdf5/openmpi"
+#export LIBS="-lhdf5_openmpihl -lhdf5_openmpi -lm -lz"
 ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --disable-dap --enable-parallel
 make -j 2
 make install
