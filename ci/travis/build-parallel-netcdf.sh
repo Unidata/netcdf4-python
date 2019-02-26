@@ -13,7 +13,10 @@ else
    tar -xzvf netcdf-c-${NETCDF_VERSION}.tar.gz
    pushd netcdf-c-${NETCDF_VERSION}
 fi
-./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --disable-dap  --enable-parallel
+# for Ubuntu xenial
+export CPPFLAGS="-I/usr/include/hdf5/openmpi"
+export LIBS="-lhdf5_openmpihl -lhdf5_openmpi -lm -lz"
+./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --disable-dap --enable-parallel
 make -j 2
 make install
 popd
