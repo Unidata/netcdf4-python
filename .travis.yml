@@ -29,7 +29,7 @@ matrix:
     - python: 2.7
       env:
         - DEPENDS="numpy==1.9.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
-    # test MPI
+    # test MPI with latest released version
     - python: 3.6
       dist: trusty
       env: 
@@ -37,6 +37,22 @@ matrix:
         - CC=mpicc
         - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
         - NETCDF_VERSION=4.6.2
+        - NETCDF_DIR=$HOME
+        - PATH=${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
+      addons:
+        apt:
+          packages:
+            - openmpi-bin
+            - libopenmpi-dev
+            - libhdf5-openmpi-dev
+    # test with netcdf-c from github master
+    - python: 3.6
+      dist: trusty
+      env:
+        - MPI=1
+        - CC=mpicc
+        - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
+        - NETCDF_VERSION=GITMASTER
         - NETCDF_DIR=$HOME
         - PATH=${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
       addons:
