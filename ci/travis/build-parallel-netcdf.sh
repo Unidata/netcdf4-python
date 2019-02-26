@@ -16,7 +16,6 @@ fi
 # for Ubuntu xenial
 export CPPFLAGS="-I/usr/include/hdf5/mpich"
 export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
-ls -l /usr/bin/mpi*
 ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --disable-dap --enable-parallel
 make -j 2
 make install
