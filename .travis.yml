@@ -24,17 +24,25 @@ python:
 matrix:
   allow_failures:
     - python: "3.8-dev"
+    - python: 3.7
+      env:
+        - MPI=1
+        - CC=mpicc.mpich
+        - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
+        - NETCDF_VERSION=GITMASTER
+        - NETCDF_DIR=$HOME
+        - PATH=${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
   include:
     # Absolute minimum dependencies.
     - python: 2.7
       env:
         - DEPENDS="numpy==1.9.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
     # test MPI with latest released version
-    - python: 3.6
-      dist: trusty
+    - python: 3.7
+      dist: xenial
       env: 
         - MPI=1
-        - CC=mpicc
+        - CC=mpicc.mpich
         - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
         - NETCDF_VERSION=4.6.2
         - NETCDF_DIR=$HOME
@@ -42,15 +50,15 @@ matrix:
       addons:
         apt:
           packages:
-            - openmpi-bin
-            - libopenmpi-dev
-            - libhdf5-openmpi-dev
+            - mpich
+            - libmpich-dev
+            - libhdf5-mpich-dev
     # test with netcdf-c from github master
-    - python: 3.6
-      dist: trusty
+    - python: 3.7
+      dist: xenial
       env:
         - MPI=1
-        - CC=mpicc
+        - CC=mpicc.mpich
         - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
         - NETCDF_VERSION=GITMASTER
         - NETCDF_DIR=$HOME
@@ -58,9 +66,9 @@ matrix:
       addons:
         apt:
           packages:
-            - openmpi-bin
-            - libopenmpi-dev
-            - libhdf5-openmpi-dev
+            - mpich
+            - libmpich-dev
+            - libhdf5-mpich-dev
 
 notifications:
   email: false
@@ -80,7 +88,7 @@ script:
   - |
     if [ $MPI -eq 1 ] ; then
        cd ../examples
-       mpirun -np 4 python mpi_example.py
+       mpirun.mpich -np 4 python mpi_example.py
        if [ $? -ne 0 ] ; then
          echo "mpi test failed!"
          exit 1
