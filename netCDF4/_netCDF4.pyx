@@ -2138,7 +2138,7 @@ strings.
                 if clobber:
                     if parallel:
                         IF HAS_NC_PAR:
-                            ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                            ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO | NC_NETCDF4, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
@@ -2153,7 +2153,7 @@ strings.
                 else:
                     if parallel:
                         IF HAS_NC_PAR:
-                            ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                            ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
@@ -2225,7 +2225,7 @@ strings.
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO, \
+                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO | NC_NETCDF4, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
@@ -2240,7 +2240,7 @@ strings.
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO, \
+                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
