@@ -106,10 +106,23 @@ class VariablesTestCase(unittest.TestCase):
         f.cafe = u'caf\xe9' # NC_STRING
         f.batt = u'caf\xe9'.encode('utf-8') #NC_CHAR
         v.setncattr_string('stringatt','bar') # NC_STRING
+        # issue #882 - provide an option to always string attribute
+        # as NC_STRINGs. Testing various approaches to setting text attributes...
+        f.set_ncstring_attrs(True)
+        f.stringatt_ncstr = u'foo' # will now be written as NC_STRING
+        f.setncattr_string('stringatt_ncstr','bar') # NC_STRING anyway
+        f.caf_ncstr = u'caf\xe9' # NC_STRING anyway
+        f.bat_ncstr = u'caf\xe9'.encode('utf-8') # now NC_STRING
+        g.stratt_ncstr = STRATT # now NC_STRING
+        #g.renameAttribute('stratt_tmp','stratt_ncstr')
+        v.setncattr_string('stringatt_ncstr','bar') # NC_STRING anyway
+        v.stratt_ncstr = STRATT
+        v1.emptystratt_ncstr = EMPTYSTRATT
         f.close()
 
     def tearDown(self):
         # Remove the temporary files
+        #pass
         os.remove(self.file)
 
     def runTest(self):
@@ -170,10 +183,12 @@ class VariablesTestCase(unittest.TestCase):
                 ncdump_output = str(dep,encoding='utf-8').split('\n')
             for line in ncdump_output:
                 line = line.strip('\t\n\r')
+                line = line.strip()# Must be done another time for group variables
                 if "stringatt" in line: assert line.startswith('string')
                 if "charatt" in line: assert line.startswith(':')
                 if "cafe" in line: assert line.startswith('string')
                 if "batt" in line: assert line.startswith(':')
+                if "_ncstr" in line: assert line.startswith('string')
         # check attributes in subgroup.
         # global attributes.
         for key,val in ATTDICT.items():

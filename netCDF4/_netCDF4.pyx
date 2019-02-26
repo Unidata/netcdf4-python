@@ -1846,7 +1846,7 @@ _private_atts = \
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
  '__orthogoral_indexing__','keepweakref','_has_lsd',
- '_buffer','chartostring','_use_get_vars','ncstring_attrs']
+ '_buffer','chartostring','_use_get_vars','_ncstring_attrs__']
 __pdoc__ = {}
 
 cdef class Dataset:
@@ -1916,7 +1916,7 @@ group, so the path is simply `'/'`.
 **`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak
 references to the parent Dataset or Group.
 
-**`ncstring_attrs`**: If `True`, all text attributes will be written as variable-length
+**`_ncstring_attrs__`**: If `True`, all text attributes will be written as variable-length
 strings.
     """
     cdef object __weakref__, _inmemory
@@ -1925,7 +1925,7 @@ strings.
     cdef Py_buffer _buffer
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
-    keepweakref, ncstring_attrs
+    keepweakref, _ncstring_attrs__
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Dataset.dimensions']=\
     """The `dimensions` dictionary maps the names of
@@ -2047,7 +2047,7 @@ strings.
         desirable, since the associated Variable instances may still be needed, but are
         rendered unusable when the parent Dataset instance is garbage collected.
 
-        **`ncstring_attrs`**: if `ncstring_attrs=True`, all string attributes will use
+        **`_ncstring_attrs__`**: if `_ncstring_attrs__=True`, all string attributes will use
         the variable length NC_STRING attributes (default `False`, ascii text
         attributes written as NC_CHAR).
 
@@ -2271,7 +2271,7 @@ strings.
         self.path = '/'
         self.parent = None
         self.keepweakref = keepweakref
-        self.ncstring_attrs = False
+        self._ncstring_attrs__ = False
         # get compound, vlen and enum types in the root Group.
         self.cmptypes, self.vltypes, self.enumtypes = _get_types(self)
         # get dimensions in the root group.
@@ -2775,7 +2775,7 @@ with the same name as one of the reserved python attributes."""
         cdef nc_type xtype
         xtype=-99
         if self.data_model != 'NETCDF4': self._redef()
-        _set_att(self, NC_GLOBAL, name, value, xtype=xtype, force_ncstring=self.ncstring_attrs)
+        _set_att(self, NC_GLOBAL, name, value, xtype=xtype, force_ncstring=self._ncstring_attrs__)
         if self.data_model !=  'NETCDF4': self._enddef()
 
     def setncattr_string(self,name,value):
@@ -3060,7 +3060,7 @@ attributes are stored as NC_CHARs (if False; default)
 of existing (sub-) groups and their variables.
         """
 
-        self.ncstring_attrs = bool(value)
+        self._ncstring_attrs__ = bool(value)
 
         # this is a hack to make inheritance work in MFDataset
         # (which stores variables in _vars)
@@ -3072,9 +3072,7 @@ of existing (sub-) groups and their variables.
 
         for groups in _walk_grps(self):
             for group in groups:
-                group.ncstring_attrs = bool(value) # do not recurse into subgroups...
-                for var in group.variables.values():
-                    var.set_ncstring_attrs(value)
+                group.set_ncstring_attrs(value) # recurse into subgroups...
 
     def get_variables_by_attributes(self, **kwargs):
         """
@@ -3175,8 +3173,8 @@ Additional read-only class variables:
         self.parent = parent
         # propagate weak reference setting from parent.
         self.keepweakref = parent.keepweakref
-        # propagate ncstring_attrs setting from parent.
-        self.ncstring_attrs = parent.ncstring_attrs
+        # propagate _ncstring_attrs__ setting from parent.
+        self._ncstring_attrs__ = parent._ncstring_attrs__
         if 'id' in kwargs:
             self._grpid = kwargs['id']
             # get compound, vlen and enum types in this Group.
@@ -3440,7 +3438,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, always_mask, chartostring,  _isprimitive, \
     _iscompound, _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
-    __orthogonal_indexing__, _has_lsd, _use_get_vars, ncstring_attrs
+    __orthogonal_indexing__, _has_lsd, _use_get_vars, _ncstring_attrs__
     # Docstrings for class variables (used by pdoc).
     __pdoc__['Variable.dimensions'] = \
     """A tuple containing the names of the
@@ -3844,8 +3842,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # default is to automatically convert to/from character
         # to string arrays when _Encoding variable attribute is set.
         self.chartostring = True
-        # propagate ncstring_attrs setting from parent group.
-        self.ncstring_attrs = grp.ncstring_attrs
+        # propagate _ncstring_attrs__ setting from parent group.
+        self._ncstring_attrs__ = grp._ncstring_attrs__
         if 'least_significant_digit' in self.ncattrs():
             self._has_lsd = True
         # avoid calling nc_get_vars for strided slices by default.
@@ -4031,7 +4029,7 @@ attributes."""
         cdef nc_type xtype
         xtype=-99
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
-        _set_att(self._grp, self._varid, name, value, xtype=xtype, force_ncstring=self.ncstring_attrs)
+        _set_att(self._grp, self._varid, name, value, xtype=xtype, force_ncstring=self._ncstring_attrs__)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
 
     def setncattr_string(self,name,value):
@@ -5050,7 +5048,7 @@ The default value of `ncstring_attrs` is `False` (writing ascii text attributes 
 NC_CHAR).
 
         """
-        self.ncstring_attrs = bool(ncstring_attrs)
+        self._ncstring_attrs__ = bool(ncstring_attrs)
 
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
