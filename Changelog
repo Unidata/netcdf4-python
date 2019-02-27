@@ -11,12 +11,15 @@
    files (issue #878).
  * fix for MPI parallel error ("NetCDF: Attempt to use feature that was not
    turned on when netCDF was built") using netcdf-c 4.6.2 (issue #883).
+ * Added methods `set_ncstring_attrs()` to Dataset, Group and Variable that
+   forces all text attributes to be written as variable length strings (netCDF
+   type NC_STRING - issue #882).
 
  version 1.4.2 (tag v1.4.2rel)
 =============================
  * add get_dims Variable method (issue #824)
  * make sure format keyword not ignored when mode is 'ws' (issue #827)
- * fix numpy FutureWarning (non-tuple sequence for     
+ * fix numpy FutureWarning (non-tuple sequence for
    multidimensional indexing is deprecated), issue #833.
  * add 'master_file' kwarg to MFDataset.__init__ (issue #835).
  * always use nc_get_vars for strided access over OpenDAP (issue #838).
@@ -34,7 +37,7 @@
  * new Dataset and Variable methods (set_always_mask) to optionally
    re-enable old behaviour (return masked arrays
    only if selected slice contains missing values) (issue #809).
-	
+
  version 1.4.0 (tag v1.4.0rel)
 =============================
  * fixed bug in detection of CDF5 library support in setup.py (pull request
@@ -56,20 +59,20 @@
  * fix loading of enum type names (issue #775).
  * make sure missing_value applies only to scaled short integers if
    auto-scaling is on (issue #777).
- * automatically create views of compound types with character arrays as 
+ * automatically create views of compound types with character arrays as
    numpy strings (issue #773).  Can be disabled using
    'set_auto_chartostring(False)'. Numpy structured
    array dtypes with 'SN' string subtypes can now be used to
    define netcdf compound types (they get converted to ('S1',N)
    character array types automatically).
- * always return masked array by default, even if there are no 
+ * always return masked array by default, even if there are no
    masked values (too surprising to get ndarray or MaskedArray depending
    on slice, issue #785).
  * treat valid_min/valid_max/_FillValue/missing_value as unsigned
    integers if _Unsigned is set (to mimic behaviour of netcdf-java).
    Conversion to unsigned type now occurs before masking and scale/offset
    operation. Issue #794.
- 
+
 
  version 1.3.1 (tag v1.3.1rel)
 =============================
@@ -88,20 +91,20 @@
 
  version 1.3.0 (tag v1.3.0rel)
 ==============================
- * always search for HDF5 headers when building, even when nc-config is used 
+ * always search for HDF5 headers when building, even when nc-config is used
    (since nc-config does not always include the path to the HDF5 headers).
    Also use H5get_libversion to obtain HDF5 version info instead of
    H5public.h. Fixes issue #677.
  * encoding kwarg added to Dataset.__init__ and Dataset.filepath (default
    is to use sys.getfilesystemencoding()) so that oddball
-   encodings (such as cp1252 on windows) can be handled in Dataset 
+   encodings (such as cp1252 on windows) can be handled in Dataset
    filepaths (issue #686).
  * Calls to nc_get_vars are avoided, since nc_get_vars is very slow (issue
    #680).  Strided slices are now converted to multiple calls to
    nc_get_vara.  This speeds up strided slice reads by a factor of 10-100
    (especially for NETCDF4/HDF5 files) in most cases. In some cases, strided reads
    using nc_get_vars are faster (e.g. strided reads over many dimensions
-   such as var[:,::2,::2,::2])), so a variable method use_nc_get_vars was added. 
+   such as var[:,::2,::2,::2])), so a variable method use_nc_get_vars was added.
    var.use_nc_get_vars(True) will tell the library to use nc_get_vars instead
    of multiple calls to nc_get_vara, which was the default behaviour previous
    to this change.
@@ -109,10 +112,10 @@
    exactly backwards (issue #685 - thanks to @pgamez and @mdecker).
  * Fix error message for illegal ellipsis slicing, add test (issue #701).
  * Improve timezone format parsing in netcdftime
-   (https://github.com/Unidata/netcdftime/issues/17).  
+   (https://github.com/Unidata/netcdftime/issues/17).
  * make sure numpy datatypes used to define CompoundTypes have
    isalignedstruct flag set to True (issue #705), otherwise.
-   segfaults can occur. Fix required raising them minimum numpy requirement 
+   segfaults can occur. Fix required raising them minimum numpy requirement
    from 1.7.0 to 1.9.0.
  * ignore missing_value, _FillValue, valid_range, valid_min and valid_max
    when creating masked arrays if attribute cannot be safely
@@ -126,7 +129,7 @@
    view as unsigned type after scaling and masking). Issue #671.
  * Always mask values outside valid_min, valid_max (not just when
    missing_value attribue present).  Issue #672.
- * Fix setup.py so pip install doesn't fail if cython not installed.  
+ * Fix setup.py so pip install doesn't fail if cython not installed.
    setuptools >= 18.0 now required for installation (Issue #666).
 
  version 1.2.8 (tag v1.2.8rel)
@@ -145,7 +148,7 @@
    the chartostring utility function is used to convert the array of
    characters to an array of strings with one less dimension (the last
    dimension is interpreted as the length of each string) when reading the
-   data. When writing the data, stringtochar is used to convert a numpy 
+   data. When writing the data, stringtochar is used to convert a numpy
    array of fixed length strings to an array of characters with one more
    dimension. chartostring and stringtochar now also have an 'encoding' kwarg.
    Automatic conversion to/from character to string arrays can be turned off
@@ -165,7 +168,7 @@
 
  version 1.2.6 (tag v1.2.6rel)
 ==============================
- * fix some test failures on big endian PPC64 that were due to 
+ * fix some test failures on big endian PPC64 that were due to
    errors in byte-swapping logic. Also fixed bug in enum
    code exposed on PPC64 (issue #608).
  * remove support for python 2.6 (it probably still will work for a while
@@ -212,13 +215,13 @@
    byte order before passing to netcdf-c library.  Data read from variable
    with non-native byte order is also byte-swapped, so that dtype remains
    consistent with netcdf variable.  Behavior now consistent with h5py.
- * raise warning for HDF5 1.10.x (issue #549), since backwards 
+ * raise warning for HDF5 1.10.x (issue #549), since backwards
    incompatible files may be created.
  * raise AttributeError instead of RuntimeError when attribute operation
-   fails.  raise IOError instead of RuntimeError when nc_create or 
+   fails.  raise IOError instead of RuntimeError when nc_create or
    nc_open fails (issue #546).
  * Use NamedTemporaryFile instead of deprecated mktemp in tests
-   (pull request #543). 
+   (pull request #543).
  * add AppVeyor automated windows tests (pull request #540).
 
  version 1.2.3.1 (tag v1.2.3.1rel)
@@ -243,17 +246,17 @@
    NETCDF3_64BIT_DATA format and filepath Dataset method).
  * expose netcdftime.__version__ (issue #504).
  * fix potential memory leak in Dataset.filepath in attempt to fix
-   mysterious segfaults on CentOS6 (issue #506). Segfaults  
+   mysterious segfaults on CentOS6 (issue #506). Segfaults
    can apparently still occur on systems like CentOS6 with old versions of glibc.
 
  version 1.2.2 (tag v1.2.2rel)
  =============================
  * fix failing tests on python 2.6 (issue #497). Change minimum required
    python from 2.5 to 2.6.
- * Potential memory leaks fixed by freeing string pointers internally allocated 
+ * Potential memory leaks fixed by freeing string pointers internally allocated
    in netcdf-c using nc_free_string. Also use nc_free_vlens to free space allocated
    for vlens inside netcdf-c (issue #495).
- * invoke str on filename argument to Dataset constructor, so pathlib 
+ * invoke str on filename argument to Dataset constructor, so pathlib
    instances can be used (issue #489).
  * don't use hardwired NC_MAX_DIMS or NC_MAX_VARS internally to allocate space
    for dimension or variable ids.  Instead, find out the number of dims
@@ -272,7 +275,7 @@
  * add 'size' attribute to Dimension (same as len(d), where
    d is a Dimension instance, issue #477).
  * fix bug in nc3tonc4 with --unpackshort=1 (issue #474).
- * dates do not have to be contiguous, i.e. can be before and after the 
+ * dates do not have to be contiguous, i.e. can be before and after the
    missing dates in Gregorian calendar (pull request #476).
 
  version 1.2.1 (tag v1.2.1rel)
@@ -320,9 +323,9 @@
    packing (set_auto_scale and set_auto_maskandscale) when writing.
    Pull request #435.
  * use USE_SETUPCFG env var to over-ride use of setup.cfg. If USE_SETUPCFG
-   evaluates to false, setup.cfg will not be used and all configuration 
+   evaluates to false, setup.cfg will not be used and all configuration
    variables can be set from environment variables.  Useful when using 'pip
-   install' and nc-config is broken (issue #438).  
+   install' and nc-config is broken (issue #438).
  * fix for integer overflow in date2index (issue #444).
 
  version 1.1.8 (tag v1.1.8rel)
@@ -340,18 +343,18 @@
    will now return the existing group instance.
    Dataset.__getitem__ also added.  nc['/path/to'] returns
    a Group instance, and nc['/path/to/var1'] returns a Variable
-   instance.  
+   instance.
  * change minimum required numpy to 1.7.0, fix so all tests pass with 1.7.0.
    Added travis tests for minimum required cython, numpy (issue #404).
  * enable abbreviations to time units specification, as allowed in CF (issue
    #402). Now, instead of just 'seconds' and 'seconds', 'secs', 'sec' and 's'
    are also allowed (similar to minutes, days and hours).
- * install utility scripts in utils directory with setuptools entry points 
+ * install utility scripts in utils directory with setuptools entry points
    (pull request #392 from @mindw).  Code for utilities moved
    to netCDF4_utils.py - makes utilities more windows-friendly.
  * make sure booleans are treated correctly in setup.cfg. Add
    use_cython (default True) to setup.cfg.  If set to False, then
-   cython will not be used to compile netCDF4.pyx (existing netCDF4.c 
+   cython will not be used to compile netCDF4.pyx (existing netCDF4.c
    will be used instead).
  * use "from Cython.Build import cythonize" instead of
    "from Cython.Distutils import build_ext" in setup.py (issue #393)
@@ -359,9 +362,9 @@
    https://github.com/cython/cython/wiki/enhancements-distutils_preprocessing).
  * unicode attributes now written as strings, not bytes (using
    nc_put_att_string instead of nc_put_att_text, issue #388).
- * add __orthogonal_indexing__ attribute to Variable, Dataset and Group (issue #385) to 
+ * add __orthogonal_indexing__ attribute to Variable, Dataset and Group (issue #385) to
    denote that Variable objects do not follow numpy indexing semantics for integer and
-   boolean array indices. 
+   boolean array indices.
  * make sure application of scale_factor and add_offset works correctly when
    scale_factor not given (issue #381).
  * add man pages for nc3tonc4, nc4tonc3, ncinfo in man directory.
@@ -379,14 +382,14 @@
    to use it (otherwise compilation with fail).  Issue 367.
  * add ipython notebooks from Unidata workshop in examples directory.
  * fix ellipsis variable slicing regression (issue 371).
- * release the Global Interpreter Lock (GIL) when calling the C 
+ * release the Global Interpreter Lock (GIL) when calling the C
    library for read operations.  Speeds up multi-threaded reads
-   (issue 369).  Caution - the HDF5 library may need to be compiled 
+   (issue 369).  Caution - the HDF5 library may need to be compiled
    with the threadsafe option to ensure that global data structures
    are not corrupted by simultaneous manipulation by different threads.
  * Make sure USE_NCCONFIG environment variable takes precedence over value
    of use_ncconfig in setup.cfg.  With this change, 'pip install netCDF4'
-   with USE_NCCONFIG=1 will use environment variables to find paths to 
+   with USE_NCCONFIG=1 will use environment variables to find paths to
    libraries and include files, instead of relying on nc-config (issue #341).
 
  version 1.1.6 (tag v1.1.6rel)
@@ -399,13 +402,13 @@
  * make calendar name keyword for num2date/date2num case insensitive
    (issue 362).
  * make sure units parser returns time-zone naive datetime instance that
-   includes UTC offset (issue 357).  UTC offset was applied incorrectly in 
+   includes UTC offset (issue 357).  UTC offset was applied incorrectly in
    netcdftime.date2num and num2date.  No longer need to depend on
    python-dateutil.
 
  version 1.1.5 (tag v1.1.5rel)
  =============================
-  
+
  * add dependency on python-dateutil in setup.py and install docs.
  * use python datetime in num2date and date2num whenever possible. Remove
    duplicate num2date and date2num functions from netcdftime. Addresses issue
@@ -425,7 +428,7 @@
  * speedup conversion of array indices to slices (issue #325).
  * fix for issue #330 (incorrect values for seconds returned by netcdftime).
  * fix reading of scalar vlen variables (issue #333).
- * setting fill_value=False in createVariable for vlen and compound variables 
+ * setting fill_value=False in createVariable for vlen and compound variables
    now does nothing, instead of causing an error when the Dataset is closed
    (issue #331).
  * cython will regenerate netCDF4.c when install is run, not just build.
