@@ -6,12 +6,12 @@
     <title>netCDF4 API documentation</title>
     <meta name="description" content="Version 1.4.3
 -------------
-- - - 
+- - -
 
 Introduction
 ============
 
-netcdf4-python is a Python interface ..." />
+netcdf4-python is a Python interface t..." />
 
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300' rel='stylesheet' type='text/css'>
   
@@ -1103,6 +1103,7 @@ table {
     <li class="mono"><a href="#netCDF4.Dataset.set_auto_scale">set_auto_scale</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.set_fill_off">set_fill_off</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.set_fill_on">set_fill_on</a></li>
+    <li class="mono"><a href="#netCDF4.Dataset.set_ncstring_attrs">set_ncstring_attrs</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.setncattr">setncattr</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.setncattr_string">setncattr_string</a></li>
     <li class="mono"><a href="#netCDF4.Dataset.setncatts">setncatts</a></li>
@@ -1160,6 +1161,7 @@ table {
     <li class="mono"><a href="#netCDF4.Group.set_auto_scale">set_auto_scale</a></li>
     <li class="mono"><a href="#netCDF4.Group.set_fill_off">set_fill_off</a></li>
     <li class="mono"><a href="#netCDF4.Group.set_fill_on">set_fill_on</a></li>
+    <li class="mono"><a href="#netCDF4.Group.set_ncstring_attrs">set_ncstring_attrs</a></li>
     <li class="mono"><a href="#netCDF4.Group.setncattr">setncattr</a></li>
     <li class="mono"><a href="#netCDF4.Group.setncattr_string">setncattr_string</a></li>
     <li class="mono"><a href="#netCDF4.Group.setncatts">setncatts</a></li>
@@ -1194,6 +1196,7 @@ table {
     <li class="mono"><a href="#netCDF4.MFDataset.set_auto_scale">set_auto_scale</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.set_fill_off">set_fill_off</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.set_fill_on">set_fill_on</a></li>
+    <li class="mono"><a href="#netCDF4.MFDataset.set_ncstring_attrs">set_ncstring_attrs</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.setncattr">setncattr</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.setncattr_string">setncattr_string</a></li>
     <li class="mono"><a href="#netCDF4.MFDataset.setncatts">setncatts</a></li>
@@ -1253,6 +1256,7 @@ table {
     <li class="mono"><a href="#netCDF4.Variable.set_auto_maskandscale">set_auto_maskandscale</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_auto_scale">set_auto_scale</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_collective">set_collective</a></li>
+    <li class="mono"><a href="#netCDF4.Variable.set_ncstring_attrs">set_ncstring_attrs</a></li>
     <li class="mono"><a href="#netCDF4.Variable.set_var_chunk_cache">set_var_chunk_cache</a></li>
     <li class="mono"><a href="#netCDF4.Variable.setncattr">setncattr</a></li>
     <li class="mono"><a href="#netCDF4.Variable.setncattr_string">setncattr_string</a></li>
@@ -1279,7 +1283,7 @@ table {
   <h2>Version 1.4.3</h2>
 <hr />
 <h1>Introduction</h1>
-<p>netcdf4-python is a Python interface to the netCDF C library.  </p>
+<p>netcdf4-python is a Python interface to the netCDF C library.</p>
 <p><a href="http://www.unidata.ucar.edu/software/netcdf/">netCDF</a> version 4 has many features
 not found in earlier versions of the library and is implemented on top of
 <a href="http://www.hdfgroup.org/HDF5">HDF5</a>. This module can read and write
@@ -1297,7 +1301,7 @@ compound types containing enums, or vlens containing compound
 types) are not supported.</p>
 <h1>Download</h1>
 <ul>
-<li>Latest bleeding-edge code from the 
+<li>Latest bleeding-edge code from the
    <a href="http://github.com/Unidata/netcdf4-python">github repository</a>.</li>
 <li>Latest <a href="https://pypi.python.org/pypi/netCDF4">releases</a>
    (source code and binary installers).</li>
@@ -1309,7 +1313,7 @@ types) are not supported.</p>
 <li><a href="http://cython.org">Cython</a>, version 0.21 or later.</li>
 <li><a href="https://pypi.python.org/pypi/setuptools">setuptools</a>, version 18.0 or
    later.</li>
-<li><a href="https://github.com/Unidata/cftime">cftime</a> for 
+<li><a href="https://github.com/Unidata/cftime">cftime</a> for
  the time and date handling utility functions (<a href="#netCDF4.num2date"><code>num2date</code></a>,
  <a href="#netCDF4.date2num"><code>date2num</code></a> and <a href="#netCDF4.date2index"><code>date2index</code></a>).</li>
 <li>The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
@@ -1323,7 +1327,7 @@ types) are not supported.</p>
 <li><a href="http://www.hdfgroup.org/products/hdf4">HDF4</a>, if you want
  to be able to read HDF4 "Scientific Dataset" (SD) files.</li>
 <li>The netCDF-4 C library from the <a href="https://github.com/Unidata/netcdf-c/releases">github releases
-   page</a>. 
+   page</a>.
  Version 4.1.1 or higher is required (4.2 or higher recommended).
  Be sure to build with <code>--enable-netcdf-4 --enable-shared</code>, and set
  <code>CPPFLAGS="-I $HDF5_DIR/include"</code> and <code>LDFLAGS="-L $HDF5_DIR/lib"</code>,
@@ -1386,11 +1390,11 @@ constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (<code>mode='w', 'r+'</code> or <code>'a'</code>), you may
 write any type of data including new dimensions, groups, variables and
 attributes.  netCDF files come in five flavors (<code>NETCDF3_CLASSIC,
-NETCDF3_64BIT_OFFSET, NETCDF3_64BIT_DATA, NETCDF4_CLASSIC</code>, and <code>NETCDF4</code>). 
-<code>NETCDF3_CLASSIC</code> was the original netcdf binary format, and was limited 
+NETCDF3_64BIT_OFFSET, NETCDF3_64BIT_DATA, NETCDF4_CLASSIC</code>, and <code>NETCDF4</code>).
+<code>NETCDF3_CLASSIC</code> was the original netcdf binary format, and was limited
 to file sizes less than 2 Gb. <code>NETCDF3_64BIT_OFFSET</code> was introduced
 in version 3.6.0 of the library, and extended the original binary format
-to allow for file sizes greater than 2 Gb. 
+to allow for file sizes greater than 2 Gb.
 <code>NETCDF3_64BIT_DATA</code> is a new format that requires version 4.4.0 of
 the C library - it extends the <code>NETCDF3_64BIT_OFFSET</code> binary format to
 allow for unsigned/64 bit integer data types and 64-bit dimension sizes.
@@ -1439,9 +1443,9 @@ in a netCDF 3 file you will get an error message.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">fcstgrp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s2">&quot;forecasts&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">analgrp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s2">&quot;analyses&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">groups</span>
-<span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;forecasts&quot;</span><span class="p">,</span> 
+<span class="n">OrderedDict</span><span class="p">([(</span><span class="s2">&quot;forecasts&quot;</span><span class="p">,</span>
               <span class="o">&lt;</span><span class="n">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Group</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x1b4b7b0</span><span class="o">&gt;</span><span class="p">),</span>
-             <span class="p">(</span><span class="s2">&quot;analyses&quot;</span><span class="p">,</span> 
+             <span class="p">(</span><span class="s2">&quot;analyses&quot;</span><span class="p">,</span>
               <span class="o">&lt;</span><span class="n">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Group</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x1b4b970</span><span class="o">&gt;</span><span class="p">)])</span>
 </pre></div>
 
@@ -1460,7 +1464,7 @@ use a unix-like path as an argument to <a href="#netCDF4.Dataset.createGroup"><c
 
 <p>If any of the intermediate elements of the path do not exist, they are created,
 just as with the unix command <code>'mkdir -p'</code>. If you try to create a group
-that already exists, no error will be raised, and the existing group will be 
+that already exists, no error will be raised, and the existing group will be
 returned.</p>
 <p>Here's an example that shows how to navigate all the groups in a
 <a href="#netCDF4.Dataset"><code>Dataset</code></a>. The function <code>walktree</code> is a Python generator that is used
@@ -1618,7 +1622,7 @@ used later to access and set variable data and attributes.</p>
 
 
 <p>If the intermediate groups do not yet exist, they will be created.</p>
-<p>You can also query a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance directly to obtain <a href="#netCDF4.Group"><code>Group</code></a> or 
+<p>You can also query a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance directly to obtain <a href="#netCDF4.Group"><code>Group</code></a> or
 <a href="#netCDF4.Variable"><code>Variable</code></a> instances using paths.</p>
 <div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">rootgrp</span><span class="p">[</span><span class="s2">&quot;/forecasts/model1&quot;</span><span class="p">]</span> <span class="c1"># a Group instance</span>
 <span class="o">&lt;</span><span class="nb">type</span> <span class="s2">&quot;netCDF4._netCDF4.Group&quot;</span><span class="o">&gt;</span>
@@ -1803,7 +1807,7 @@ measure relative to a fixed date using a certain calendar, with units
 specified like <code>hours since YY-MM-DD hh:mm:ss</code>.  These units can be
 awkward to deal with, without a utility to convert the values to and
 from calendar dates.  The function called <a href="#netCDF4.num2date"><code>num2date</code></a> and <a href="#netCDF4.date2num"><code>date2num</code></a> are
-provided with this package to do just that (starting with version 1.4.0, the 
+provided with this package to do just that (starting with version 1.4.0, the
 <a href="https://unidata.github.io/cftime">cftime</a> package must be installed
 separately).  Here's an example of how they
 can be used:</p>
@@ -1963,7 +1967,7 @@ for storing numpy complex arrays.  Here's an example:</p>
 ones first. All possible numpy structured arrays cannot be
 represented as Compound variables - an error message will be
 raise if you try to create one that is not supported.
-All of the compound types defined for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> are stored 
+All of the compound types defined for a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> are stored
 in a Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:</p>
 <div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">f</span>
@@ -2087,13 +2091,13 @@ of such variables will always return numpy arrays with dtype <code>object</code>
 <p>netCDF4 has an enumerated data type, which is an integer datatype that is
 restricted to certain named values. Since Enums don't map directly to
 a numpy data type, they are read and written as integer arrays.</p>
-<p>Here's an example of using an Enum type to hold cloud type data. 
+<p>Here's an example of using an Enum type to hold cloud type data.
 The base integer data type and a python dictionary describing the allowed
 values and their names are used to define an Enum data type using
 <a href="#netCDF4.Dataset.createEnumType"><code>createEnumType</code></a>.</p>
 <div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;clouds.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># python dict with allowed values and their names.</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span> <span class="o">=</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Altocumulus&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Missing&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span> <span class="o">=</span> <span class="p">{</span><span class="sa">u</span><span class="s1">&#39;Altocumulus&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Missing&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="sa">u</span><span class="s1">&#39;Stratus&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Clear&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="sa">u</span><span class="s1">&#39;Nimbostratus&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Cumulus&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Altostratus&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="sa">u</span><span class="s1">&#39;Cumulonimbus&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;Stratocumulus&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
@@ -2150,7 +2154,7 @@ specified names.</p>
 <p>If MPI parallel enabled versions of netcdf and hdf5 are detected, and
 <a href="https://mpi4py.scipy.org">mpi4py</a> is installed, netcdf4-python will
 be built with parallel IO capabilities enabled.  To use parallel IO,
-your program must be running in an MPI environment using 
+your program must be running in an MPI environment using
 <a href="https://mpi4py.scipy.org">mpi4py</a>.</p>
 <div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -2205,10 +2209,10 @@ are collective.  There are a couple of important limitatons of parallel IO:</p>
    a generic "HDF Error".</li>
 <li>You cannot write compressed data in parallel (although
    you can read it).</li>
-<li>You cannot use variable-length (VLEN) data types. </li>
+<li>You cannot use variable-length (VLEN) data types.</li>
 </ul>
 <h2><div id='section14'>14) Dealing with strings.</h2>
-<p>The most flexible way to store arrays of strings is with the 
+<p>The most flexible way to store arrays of strings is with the
 <a href="#section11">Variable-length (vlen) string data type</a>. However, this requires
 the use of the NETCDF4 data model, and the vlen type does not map very well
 numpy arrays (you have to use numpy arrays of dtype=<code>object</code>, which are arrays of
@@ -2247,7 +2251,7 @@ characters with one more dimension. For example,</p>
 
 <p>Even if the <code>_Encoding</code> attribute is set, the automatic conversion of char
 arrays to/from string arrays can be disabled with
-<a href="#netCDF4.Variable.set_auto_chartostring"><code>set_auto_chartostring</code></a>. </p>
+<a href="#netCDF4.Variable.set_auto_chartostring"><code>set_auto_chartostring</code></a>.</p>
 <p>A similar situation is often encountered with numpy structured arrays with subdtypes
 containing fixed-wdith byte strings (dtype=<code>S#</code>). Since there is no native fixed-length string
 netCDF datatype, these numpy structure arrays are mapped onto netCDF compound
@@ -2285,7 +2289,7 @@ Here's an example:</p>
 
 
 <p>Note that there is currently no support for mapping numpy structured arrays with
-unicode elements (dtype <code>U#</code>) onto netCDF compound types, nor is there support 
+unicode elements (dtype <code>U#</code>) onto netCDF compound types, nor is there support
 for netCDF compound types with vlen string components.</p>
 <h2><div id='section15'>15) In-memory (diskless) Datasets.</h2>
 <p>You can create netCDF Datasets whose content is held in memory
@@ -2302,7 +2306,7 @@ estimated size of the Dataset in bytes when creating the Dataset with
 <code>mode='w'</code>.  Then, the <code>Dataset.close</code> method will return a python memoryview
 object representing the Dataset. Below are examples illustrating both
 approaches.</p>
-<div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a diskless (in-memory) Dataset, </span>
+<div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a diskless (in-memory) Dataset,</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># and persist the file to disk when it is closed.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;diskless_example.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">diskless</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">persist</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
@@ -2336,7 +2340,7 @@ approaches.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># create an in-memory Dataset and retrieve memory buffer</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># estimated size is 1028 bytes - this is actually only</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c1"># used if format is NETCDF3 </span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># used if format is NETCDF3</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># (ignored for NETCDF4/HDF5 files).</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;inmemory.nc&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">memory</span><span class="o">=</span><span class="mi">1028</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="bp">None</span><span class="p">)</span>
@@ -2596,7 +2600,7 @@ and shape <code>a.shape + (N,)</code>, where N is the length of each string in a
   
     <div class="desc"><p>A <a href="#netCDF4.CompoundType"><code>CompoundType</code></a> instance is used to describe a compound data
 type, and can be passed to the the <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of
-a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance. 
+a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance.
 Compound data types map to numpy structured arrays.
 See <a href="#netCDF4.CompoundType.__init__"><code>__init__</code></a> for more details.</p>
 <p>The instance variables <code>dtype</code> and <code>name</code> should not be modified by
@@ -2697,7 +2701,7 @@ modified by the user.</p>
 dimensions defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
 <a href="#netCDF4.Dimension"><code>Dimension</code></a> class.</p>
 <p><strong><code>variables</code></strong>: The <code>variables</code> dictionary maps the names of variables
-defined for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> to instances of the 
+defined for this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> to instances of the
 <a href="#netCDF4.Variable"><code>Variable</code></a> class.</p>
 <p><strong><code>groups</code></strong>: The groups dictionary maps the names of groups created for
 this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> to instances of the <a href="#netCDF4.Group"><code>Group</code></a> class (the
@@ -2707,10 +2711,10 @@ describes the root group in the netCDF4 file).</p>
 compound types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances of the
 <a href="#netCDF4.CompoundType"><code>CompoundType</code></a> class.</p>
 <p><strong><code>vltypes</code></strong>: The <code>vltypes</code> dictionary maps the names of
-variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances 
+variable-length types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances
 of the <a href="#netCDF4.VLType"><code>VLType</code></a> class.</p>
 <p><strong><code>enumtypes</code></strong>: The <code>enumtypes</code> dictionary maps the names of
-Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances 
+Enum types defined for the <a href="#netCDF4.Group"><code>Group</code></a> or <a href="#netCDF4.Dataset"><code>Dataset</code></a> to instances
 of the <a href="#netCDF4.EnumType"><code>EnumType</code></a> class.</p>
 <p><strong><code>data_model</code></strong>: <code>data_model</code> describes the netCDF
 data model version, one of <code>NETCDF3_CLASSIC</code>, <code>NETCDF4</code>,
@@ -2728,8 +2732,10 @@ instance.</p>
 the <a href="#netCDF4.Dataset"><code>Dataset</code></a> in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A <a href="#netCDF4.Dataset"><code>Dataset</code></a> instance is the root
 group, so the path is simply <code>'/'</code>.</p>
-<p><strong><code>keepweakref</code></strong>: If <code>True</code>, child Dimension and Variables objects only keep weak 
-references to the parent Dataset or Group.</p></div>
+<p><strong><code>keepweakref</code></strong>: If <code>True</code>, child Dimension and Variables objects only keep weak
+references to the parent Dataset or Group.</p>
+<p><strong><code>_ncstring_attrs__</code></strong>: If <code>True</code>, all text attributes will be written as variable-length
+strings.</p></div>
   <div class="source_cont">
 </div>
 
@@ -2942,7 +2948,7 @@ later. <code>'NETCDF3_64BIT_DATA'</code> is the 64-bit data version of the netCD
 file format, which supports 64-bit dimension sizes plus unsigned and
 64 bit integer data types, but is only compatible with clients linked against
 netCDF version 4.4.0 or later.</p>
-<p><strong><code>diskless</code></strong>: If <code>True</code>, create diskless (in-core) file.<br />
+<p><strong><code>diskless</code></strong>: If <code>True</code>, create diskless (in-core) file.
 This is a feature added to the C library after the
 netcdf-4.2 release. If you need to access the memory buffer directly,
 use the in-memory feature instead (see <code>memory</code> kwarg).</p>
@@ -2961,6 +2967,9 @@ Dataset instances to be garbage collected as soon as they go out of scope, poten
 reducing memory usage and open file handles.  However, in many cases this is not
 desirable, since the associated Variable instances may still be needed, but are
 rendered unusable when the parent Dataset instance is garbage collected.</p>
+<p><strong><code>_ncstring_attrs__</code></strong>: if <code>_ncstring_attrs__=True</code>, all string attributes will use
+the variable length NC_STRING attributes (default <code>False</code>, ascii text
+attributes written as NC_CHAR).</p>
 <p><strong><code>memory</code></strong>: if not <code>None</code>, create or open an in-memory Dataset.
 If mode = 'r', the memory kwarg must contain a memory buffer object
 (an object that supports the python buffer interface).
@@ -3075,7 +3084,7 @@ datatype.</p></div>
   
     <div class="desc"><p>Creates a new <a href="#netCDF4.Group"><code>Group</code></a> with the given <code>groupname</code>.</p>
 <p>If <code>groupname</code> is specified as a path, using forward slashes as in unix to
-separate components, then intermediate groups will be created as necessary 
+separate components, then intermediate groups will be created as necessary
 (analogous to <code>mkdir -p</code> in unix).  For example,
 <code>createGroup('/GroupA/GroupB/GroupC')</code> will create <code>GroupA</code>,
 <code>GroupA/GroupB</code>, and <code>GroupA/GroupB/GroupC</code>, if they don't already exist.
@@ -3118,7 +3127,7 @@ datatype.</p></div>
 <code>dimensions</code>. If dimensions are not given, the variable is assumed to be
 a scalar.</p>
 <p>If <code>varname</code> is specified as a path, using forward slashes as in unix to
-separate components, then intermediate groups will be created as necessary 
+separate components, then intermediate groups will be created as necessary
 For example, <code>createVariable('/GroupA/GroupB/VarC', float, ('x','y'))</code> will create groups <code>GroupA</code>
 and <code>GroupA/GroupB</code>, plus the variable <code>GroupA/GroupB/VarC</code>, if the preceding
 groups don't already exist.</p>
@@ -3177,7 +3186,7 @@ with <code>zlib=True</code> this produces 'lossy', but significantly more
 efficient compression. For example, if <code>least_significant_digit=1</code>,
 data will be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4). From the 
+retained (in this case bits=4). From the
 <a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>:
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is <code>None</code>, or no
@@ -3264,7 +3273,7 @@ changed using the <code>encoding</code> kwarg.</p></div>
   
     <div class="desc"><p>Returns a list of variables that match specific conditions.</p>
 <p>Can pass in key=value parameters and variables are returned that
-contain all of the matches. For example, </p>
+contain all of the matches. For example,</p>
 <div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with x-axis attribute.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with matching &quot;standard_name&quot; attribute</span>
@@ -3432,7 +3441,7 @@ the default behaviour.</p></div>
     <div class="desc"><p>Call <a href="#netCDF4.Variable.set_auto_chartostring"><code>set_auto_chartostring</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion of
-all character arrays &lt;--&gt; string arrays should be performed for 
+all character arrays &lt;--&gt; string arrays should be performed for
 character variables (variables of type <code>NC_CHAR</code> or <code>S1</code>) with the
 <code>_Encoding</code> attribute set.</p>
 <p><strong><em>Note</em></strong>: Calling this function only affects existing variables. Variables created
@@ -3537,6 +3546,28 @@ separately for each variable type). The default behavior of the netCDF
 library corresponds to <code>set_fill_on</code>.  Data which are equal to the
 <code>_Fill_Value</code> indicate that the variable was created, but never written
 to.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Dataset.set_ncstring_attrs">
+    <p>def <span class="ident">set_ncstring_attrs</span>(</p><p>self, True_or_False)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Call <a href="#netCDF4.Variable.set_ncstring_attrs"><code>set_ncstring_attrs</code></a> for all variables contained in
+this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all its
+subgroups and their variables.</p>
+<p><strong><code>True_or_False</code></strong>: Boolean determining if all string attributes are
+created as variable-length NC_STRINGs, (if True), or if ascii text
+attributes are stored as NC_CHARs (if False; default)</p>
+<p><strong><em>Note</em></strong>: Calling this function only affects newly created attributes
+of existing (sub-) groups and their variables.</p></div>
   <div class="source_cont">
 </div>
 
@@ -3721,7 +3752,7 @@ determine if the dimension is unlimited.</p>
   
     <div class="desc"><p>A <a href="#netCDF4.EnumType"><code>EnumType</code></a> instance is used to describe an Enum data
 type, and can be passed to the the <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of
-a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance. See 
+a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance. See
 <a href="#netCDF4.EnumType.__init__"><code>__init__</code></a> for more details.</p>
 <p>The instance variables <code>dtype</code>, <code>name</code> and <code>enum_dict</code> should not be modified by
 the user.</p></div>
@@ -3807,7 +3838,7 @@ analogous to directories in a unix filesystem. Each <a href="#netCDF4.Group"><co
 a <a href="#netCDF4.Dataset"><code>Dataset</code></a> within a Dataset, and can contain it's own variables,
 dimensions and attributes (and other Groups). See <a href="#netCDF4.Group.__init__"><code>__init__</code></a>
 for more details.</p>
-<p><a href="#netCDF4.Group"><code>Group</code></a> inherits from <a href="#netCDF4.Dataset"><code>Dataset</code></a>, so all the 
+<p><a href="#netCDF4.Group"><code>Group</code></a> inherits from <a href="#netCDF4.Dataset"><code>Dataset</code></a>, so all the
 <a href="#netCDF4.Dataset"><code>Dataset</code></a> class methods and variables are available
 to a <a href="#netCDF4.Group"><code>Group</code></a> instance (except the <code>close</code> method).</p>
 <p>Additional read-only class variables:</p>
@@ -4175,7 +4206,7 @@ datatype.</p></div>
   
     <div class="desc inherited"><p>Creates a new <a href="#netCDF4.Group"><code>Group</code></a> with the given <code>groupname</code>.</p>
 <p>If <code>groupname</code> is specified as a path, using forward slashes as in unix to
-separate components, then intermediate groups will be created as necessary 
+separate components, then intermediate groups will be created as necessary
 (analogous to <code>mkdir -p</code> in unix).  For example,
 <code>createGroup('/GroupA/GroupB/GroupC')</code> will create <code>GroupA</code>,
 <code>GroupA/GroupB</code>, and <code>GroupA/GroupB/GroupC</code>, if they don't already exist.
@@ -4226,7 +4257,7 @@ datatype.</p></div>
 <code>dimensions</code>. If dimensions are not given, the variable is assumed to be
 a scalar.</p>
 <p>If <code>varname</code> is specified as a path, using forward slashes as in unix to
-separate components, then intermediate groups will be created as necessary 
+separate components, then intermediate groups will be created as necessary
 For example, <code>createVariable('/GroupA/GroupB/VarC', float, ('x','y'))</code> will create groups <code>GroupA</code>
 and <code>GroupA/GroupB</code>, plus the variable <code>GroupA/GroupB/VarC</code>, if the preceding
 groups don't already exist.</p>
@@ -4285,7 +4316,7 @@ with <code>zlib=True</code> this produces 'lossy', but significantly more
 efficient compression. For example, if <code>least_significant_digit=1</code>,
 data will be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4). From the 
+retained (in this case bits=4). From the
 <a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>:
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is <code>None</code>, or no
@@ -4384,7 +4415,7 @@ changed using the <code>encoding</code> kwarg.</p></div>
   
     <div class="desc inherited"><p>Returns a list of variables that match specific conditions.</p>
 <p>Can pass in key=value parameters and variables are returned that
-contain all of the matches. For example, </p>
+contain all of the matches. For example,</p>
 <div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with x-axis attribute.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with matching &quot;standard_name&quot; attribute</span>
@@ -4588,7 +4619,7 @@ the default behaviour.</p></div>
     <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_chartostring"><code>set_auto_chartostring</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion of
-all character arrays &lt;--&gt; string arrays should be performed for 
+all character arrays &lt;--&gt; string arrays should be performed for
 character variables (variables of type <code>NC_CHAR</code> or <code>S1</code>) with the
 <code>_Encoding</code> attribute set.</p>
 <p><strong><em>Note</em></strong>: Calling this function only affects existing variables. Variables created
@@ -4713,6 +4744,32 @@ separately for each variable type). The default behavior of the netCDF
 library corresponds to <code>set_fill_on</code>.  Data which are equal to the
 <code>_Fill_Value</code> indicate that the variable was created, but never written
 to.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Group.set_ncstring_attrs">
+    <p>def <span class="ident">set_ncstring_attrs</span>(</p><p>self, True_or_False)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.set_ncstring_attrs">set_ncstring_attrs</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_ncstring_attrs"><code>set_ncstring_attrs</code></a> for all variables contained in
+this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all its
+subgroups and their variables.</p>
+<p><strong><code>True_or_False</code></strong>: Boolean determining if all string attributes are
+created as variable-length NC_STRINGs, (if True), or if ascii text
+attributes are stored as NC_CHARs (if False; default)</p>
+<p><strong><em>Note</em></strong>: Calling this function only affects newly created attributes
+of existing (sub-) groups and their variables.</p></div>
   <div class="source_cont">
 </div>
 
@@ -5138,7 +5195,7 @@ datatype.</p></div>
   
     <div class="desc inherited"><p>Creates a new <a href="#netCDF4.Group"><code>Group</code></a> with the given <code>groupname</code>.</p>
 <p>If <code>groupname</code> is specified as a path, using forward slashes as in unix to
-separate components, then intermediate groups will be created as necessary 
+separate components, then intermediate groups will be created as necessary
 (analogous to <code>mkdir -p</code> in unix).  For example,
 <code>createGroup('/GroupA/GroupB/GroupC')</code> will create <code>GroupA</code>,
 <code>GroupA/GroupB</code>, and <code>GroupA/GroupB/GroupC</code>, if they don't already exist.
@@ -5189,7 +5246,7 @@ datatype.</p></div>
 <code>dimensions</code>. If dimensions are not given, the variable is assumed to be
 a scalar.</p>
 <p>If <code>varname</code> is specified as a path, using forward slashes as in unix to
-separate components, then intermediate groups will be created as necessary 
+separate components, then intermediate groups will be created as necessary
 For example, <code>createVariable('/GroupA/GroupB/VarC', float, ('x','y'))</code> will create groups <code>GroupA</code>
 and <code>GroupA/GroupB</code>, plus the variable <code>GroupA/GroupB/VarC</code>, if the preceding
 groups don't already exist.</p>
@@ -5248,7 +5305,7 @@ with <code>zlib=True</code> this produces 'lossy', but significantly more
 efficient compression. For example, if <code>least_significant_digit=1</code>,
 data will be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4). From the 
+retained (in this case bits=4). From the
 <a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>:
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is <code>None</code>, or no
@@ -5347,7 +5404,7 @@ changed using the <code>encoding</code> kwarg.</p></div>
   
     <div class="desc inherited"><p>Returns a list of variables that match specific conditions.</p>
 <p>Can pass in key=value parameters and variables are returned that
-contain all of the matches. For example, </p>
+contain all of the matches. For example,</p>
 <div class="codehilite"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with x-axis attribute.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with matching &quot;standard_name&quot; attribute</span>
@@ -5532,7 +5589,7 @@ the default behaviour.</p></div>
     <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_auto_chartostring"><code>set_auto_chartostring</code></a> for all variables contained in this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all variables in all its subgroups.</p>
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion of
-all character arrays &lt;--&gt; string arrays should be performed for 
+all character arrays &lt;--&gt; string arrays should be performed for
 character variables (variables of type <code>NC_CHAR</code> or <code>S1</code>) with the
 <code>_Encoding</code> attribute set.</p>
 <p><strong><em>Note</em></strong>: Calling this function only affects existing variables. Variables created
@@ -5657,6 +5714,32 @@ separately for each variable type). The default behavior of the netCDF
 library corresponds to <code>set_fill_on</code>.  Data which are equal to the
 <code>_Fill_Value</code> indicate that the variable was created, but never written
 to.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.MFDataset.set_ncstring_attrs">
+    <p>def <span class="ident">set_ncstring_attrs</span>(</p><p>self, True_or_False)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#netCDF4.Dataset">Dataset</a></code>.<code><a href="#netCDF4.Dataset.set_ncstring_attrs">set_ncstring_attrs</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><p>Call <a href="#netCDF4.Variable.set_ncstring_attrs"><code>set_ncstring_attrs</code></a> for all variables contained in
+this <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a>, as well as for all its
+subgroups and their variables.</p>
+<p><strong><code>True_or_False</code></strong>: Boolean determining if all string attributes are
+created as variable-length NC_STRINGs, (if True), or if ascii text
+attributes are stored as NC_CHARs (if False; default)</p>
+<p><strong><em>Note</em></strong>: Calling this function only affects newly created attributes
+of existing (sub-) groups and their variables.</p></div>
   <div class="source_cont">
 </div>
 
@@ -6004,7 +6087,7 @@ is present on each variable and values are unique across files raising a
   
     <div class="desc"><p>A <a href="#netCDF4.VLType"><code>VLType</code></a> instance is used to describe a variable length (VLEN) data
 type, and can be passed to the the <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of
-a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance. See 
+a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or <a href="#netCDF4.Group"><code>Group</code></a> instance. See
 <a href="#netCDF4.VLType.__init__"><code>__init__</code></a> for more details.</p>
 <p>The instance variables <code>dtype</code> and <code>name</code> should not be modified by
 the user.</p></div>
@@ -6090,18 +6173,18 @@ variable's data type.</p>
 <p><strong><code>shape</code></strong>: A tuple with the current shape (length of all dimensions).</p>
 <p><strong><code>scale</code></strong>: If True, <code>scale_factor</code> and <code>add_offset</code> are
 applied, and signed integer data is automatically converted to
-unsigned integer data if the <code>_Unsigned</code> attribute is set. 
+unsigned integer data if the <code>_Unsigned</code> attribute is set.
 Default is <code>True</code>, can be reset using <a href="#netCDF4.Variable.set_auto_scale"><code>set_auto_scale</code></a> and
 <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a> methods.</p>
-<p><strong><code>mask</code></strong>: If True, data is automatically converted to/from masked 
+<p><strong><code>mask</code></strong>: If True, data is automatically converted to/from masked
 arrays when missing values or fill values are present. Default is <code>True</code>, can be
 reset using <a href="#netCDF4.Variable.set_auto_mask"><code>set_auto_mask</code></a> and <a href="#netCDF4.Variable.set_auto_maskandscale"><code>set_auto_maskandscale</code></a>
 methods.</p>
-<p><strong><code>chartostring</code></strong>: If True, data is automatically converted to/from character 
-arrays to string arrays when the <code>_Encoding</code> variable attribute is set. 
+<p><strong><code>chartostring</code></strong>: If True, data is automatically converted to/from character
+arrays to string arrays when the <code>_Encoding</code> variable attribute is set.
 Default is <code>True</code>, can be reset using
 <a href="#netCDF4.Variable.set_auto_chartostring"><code>set_auto_chartostring</code></a> method.</p>
-<p><strong><code>least_significant_digit</code></strong>: Describes the power of ten of the 
+<p><strong><code>least_significant_digit</code></strong>: Describes the power of ten of the
 smallest decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the <a href="#netCDF4.Variable"><code>Variable</code></a>
 instance. If <code>None</code>, the data is not truncated.</p>
@@ -6447,7 +6530,7 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([...]).</p><
 
     
   
-    <div class="desc"><p>return a tuple of <a href="#netCDF4.Dimension"><code>Dimension</code></a> instances associated with this 
+    <div class="desc"><p>return a tuple of <a href="#netCDF4.Dimension"><code>Dimension</code></a> instances associated with this
 `netCDF4.Variable.</p></div>
   <div class="source_cont">
 </div>
@@ -6571,7 +6654,7 @@ is set.</p>
 (dtype = <code>S1</code>) that has an <code>_Encoding</code> attribute, it is converted to a numpy
 fixed length unicode string array (dtype = <code>UN</code>, where <code>N</code> is the length
 of the the rightmost dimension of the variable).  The value of <code>_Encoding</code>
-is the unicode encoding that is used to decode the bytes into strings. </p>
+is the unicode encoding that is used to decode the bytes into strings.</p>
 <p>When numpy string data is written to a variable it is converted back to
 indiviual bytes, with the number of bytes in each string equalling the
 rightmost dimension of the variable.</p>
@@ -6603,7 +6686,7 @@ for each data type).  When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. If the variable has valid_min/valid_max and 
+is used instead. If the variable has valid_min/valid_max and
 missing_value attributes, data outside the specified range will be
 set to missing_value.</p>
 <p>The default value of <code>mask</code> is <code>True</code>
@@ -6624,7 +6707,7 @@ set to missing_value.</p>
   
     <div class="desc"><p>turn on or off automatic conversion of variable data to and
 from masked arrays, automatic packing/unpacking of variable
-data using <code>scale_factor</code> and <code>add_offset</code> attributes and 
+data using <code>scale_factor</code> and <code>add_offset</code> attributes and
 automatic conversion of signed integer data to unsigned integer
 data if the <code>_Unsigned</code> attribute exists.</p>
 <p>If <code>maskandscale</code> is set to <code>True</code>, when data is read from a variable
@@ -6637,7 +6720,7 @@ for each data type).  When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. If the variable has valid_min/valid_max and 
+is used instead. If the variable has valid_min/valid_max and
 missing_value attributes, data outside the specified range will be
 set to missing_value.</p>
 <p>If <code>maskandscale</code> is set to <code>True</code>, and the variable has a
@@ -6658,11 +6741,11 @@ scale_factor is assumed to be one.
 For more information on how <code>scale_factor</code> and <code>add_offset</code> can be
 used to provide simple compression, see the
 <a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>.</p>
-<p>In addition, if <code>maskandscale</code> is set to <code>True</code>, and if the variable has an 
-attribute <code>_Unsigned</code> set, and the variable has a signed integer data type, 
+<p>In addition, if <code>maskandscale</code> is set to <code>True</code>, and if the variable has an
+attribute <code>_Unsigned</code> set, and the variable has a signed integer data type,
 a view to the data is returned with the corresponding unsigned integer data type.
 This convention is used by the netcdf-java library to save unsigned integer
-data in <code>NETCDF3</code> or <code>NETCDF4_CLASSIC</code> files (since the <code>NETCDF3</code> 
+data in <code>NETCDF3</code> or <code>NETCDF4_CLASSIC</code> files (since the <code>NETCDF3</code>
 data model does not have unsigned integer data types).</p>
 <p>The default value of <code>maskandscale</code> is <code>True</code>
 (automatic conversions are performed).</p></div>
@@ -6703,11 +6786,11 @@ scale_factor is assumed to be one.
 For more information on how <code>scale_factor</code> and <code>add_offset</code> can be
 used to provide simple compression, see the
 <a href="http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml">PSD metadata conventions</a>.</p>
-<p>In addition, if <code>scale</code> is set to <code>True</code>, and if the variable has an 
+<p>In addition, if <code>scale</code> is set to <code>True</code>, and if the variable has an
 attribute <code>_Unsigned</code> set, and the variable has a signed integer data type,
 a view to the data is returned with the corresponding unsigned integer datatype.
 This convention is used by the netcdf-java library to save unsigned integer
-data in <code>NETCDF3</code> or <code>NETCDF4_CLASSIC</code> files (since the <code>NETCDF3</code> 
+data in <code>NETCDF3</code> or <code>NETCDF4_CLASSIC</code> files (since the <code>NETCDF3</code>
 data model does not have unsigned integer data types).</p>
 <p>The default value of <code>scale</code> is <code>True</code>
 (automatic conversions are performed).</p></div>
@@ -6727,6 +6810,25 @@ data model does not have unsigned integer data types).</p>
   
     <div class="desc"><p>turn on or off collective parallel IO access. Ignored if file is not
 open for parallel access.</p></div>
+  <div class="source_cont">
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="netCDF4.Variable.set_ncstring_attrs">
+    <p>def <span class="ident">set_ncstring_attrs</span>(</p><p>...)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>turn on or off creating NC_STRING string attributes.</p>
+<p>If <code>ncstring_attrs</code> is set to <code>True</code> then text attributes will be variable-length
+NC_STRINGs.</p>
+<p>The default value of <code>ncstring_attrs</code> is <code>False</code> (writing ascii text attributes as
+NC_CHAR).</p></div>
   <div class="source_cont">
 </div>
 
@@ -6805,7 +6907,7 @@ each attribute</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.use_nc_get_vars">
-    <p>def <span class="ident">use_nc_get_vars</span>(</p><p>self,_no_get_vars)</p>
+    <p>def <span class="ident">use_nc_get_vars</span>(</p><p>self,_use_get_vars)</p>
     </div>
     
 
