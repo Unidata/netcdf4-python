@@ -2107,8 +2107,11 @@ strings.
                 msg='parallel mode requires MPI enabled netcdf-c'
                 raise ValueError(msg)
             ELSE:
-                if format != 'NETCDF4':
-                    msg='parallel mode only works with format=NETCDF4'
+                #if format != 'NETCDF4':
+                #    msg='parallel mode only works with format=NETCDF4'
+                #    raise ValueError(msg)
+                if format not in ['NETCDF4','NETCDF4_CLASSIC']:
+                    msg='parallel mode only works with format=NETCDF4 or NETCDF4_CLASSIC'
                     raise ValueError(msg)
                 if comm is not None:
                     mpicomm = comm.ob_mpi
