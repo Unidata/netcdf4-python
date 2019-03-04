@@ -14,6 +14,7 @@
  * Added methods `set_ncstring_attrs()` to Dataset, Group and Variable that
    forces all text attributes to be written as variable length strings (netCDF
    type NC_STRING - issue #882).
+ * Allow parallel mode with NETCDF4_CLASSIC files (issue #890).
 
  version 1.4.2 (tag v1.4.2rel)
 =============================

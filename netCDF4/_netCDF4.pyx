@@ -920,7 +920,9 @@ specified names.
 
 If MPI parallel enabled versions of netcdf and hdf5 are detected, and
 [mpi4py](https://mpi4py.scipy.org) is installed, netcdf4-python will
-be built with parallel IO capabilities enabled.  To use parallel IO,
+be built with parallel IO capabilities enabled.  Since parallel IO
+uses features of HDF5, it can only be used with NETCDF4 or 
+NETCDF4_CLASSIC formatted files. To use parallel IO,
 your program must be running in an MPI environment using
 [mpi4py](https://mpi4py.scipy.org).
 
@@ -971,6 +973,7 @@ the two types of IO, use the `netCDF4.Variable.set_collective`
 operations (such as creation of groups, types, variables, dimensions, or attributes)
 are collective.  There are a couple of important limitatons of parallel IO:
 
+ - only works with NETCDF4 or NETCDF4_CLASSIC formatted files.
  - If a variable has an unlimited dimension, appending data must be done in collective mode.
    If the write is done in independent mode, the operation will fail with a
    a generic "HDF Error".
@@ -2107,8 +2110,8 @@ strings.
                 msg='parallel mode requires MPI enabled netcdf-c'
                 raise ValueError(msg)
             ELSE:
-                if format != 'NETCDF4':
-                    msg='parallel mode only works with format=NETCDF4'
+                if format not in ['NETCDF4','NETCDF4_CLASSIC']:
+                    msg='parallel mode only works with format=NETCDF4 or NETCDF4_CLASSIC'
                     raise ValueError(msg)
                 if comm is not None:
                     mpicomm = comm.ob_mpi
