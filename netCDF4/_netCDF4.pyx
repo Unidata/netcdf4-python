@@ -2122,6 +2122,9 @@ strings.
                     mpiinfo = info.ob_mpi
                 else:
                     mpiinfo = MPI_INFO_NULL
+                cmode = NC_MPIIO | NC_NETCDF4
+                if format == 'NETCDF4_CLASSIC':
+                    cmode = cmode | NC_CLASSIC_MODEL
 
         self._inmemory = False
         if mode == 'w':
@@ -2142,11 +2145,7 @@ strings.
                 if clobber:
                     if parallel:
                         IF HAS_NC_PAR:
-                            if format == 'NETCDF4_CLASSIC':
-                                cmode = NC_CLOBBER | NC_MPIIO | NC_NETCDF4 | NC_CLASSIC_MODEL
-                            else:
-                                cmode = NC_CLOBBER | NC_MPIIO | NC_NETCDF4
-                            ierr = nc_create_par(path, cmode, \
+                            ierr = nc_create_par(path, NC_CLOBBER | cmode, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
@@ -2161,11 +2160,7 @@ strings.
                 else:
                     if parallel:
                         IF HAS_NC_PAR:
-                            if format == 'NETCDF4_CLASSIC':
-                                cmode = NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4 | NC_CLASSIC_MODEL
-                            else:
-                                cmode = NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4
-                            ierr = nc_create_par(path, cmode, \
+                            ierr = nc_create_par(path, NC_NOCLOBBER | cmode, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
@@ -2237,11 +2232,7 @@ strings.
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_NC_PAR:
-                        if format == 'NETCDF4_CLASSIC':
-                            cmode = NC_CLOBBER | NC_MPIIO | NC_NETCDF4 | NC_CLASSIC_MODEL
-                        else:
-                            cmode = NC_CLOBBER | NC_MPIIO | NC_NETCDF4
-                        ierr = nc_create_par(path, cmode, \
+                        ierr = nc_create_par(path, NC_CLOBBER | cmode, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
@@ -2256,11 +2247,7 @@ strings.
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_NC_PAR:
-                        if format == 'NETCDF4_CLASSIC':
-                            cmode = NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4 | NC_CLASSIC_MODEL
-                        else:
-                            cmode = NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4
-                        ierr = nc_create_par(path, cmode, \
+                        ierr = nc_create_par(path, NC_NOCLOBBER | cmode, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
