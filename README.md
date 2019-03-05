@@ -9,6 +9,9 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+03/07/2019: Version [1.4.3.1](https://pypi.python.org/pypi/netCDF4/1.4.3.1) released. 
+Fixes bug in implementation of NETCDF4_CLASSIC parallel IO support in 1.4.3.
+
 03/05/2019: Version [1.4.3](https://pypi.python.org/pypi/netCDF4/1.4.3) released. Issues with netcdf-c 4.6.2 fixed (including broken parallel IO).  `set_ncstring_attrs()` method added, memoryview buffer now returned when an in-memory Dataset is closed.
 
 10/26/2018: Version [1.4.2](https://pypi.python.org/pypi/netCDF4/1.4.2) released. Minor bugfixes, added `Variable.get_dims()` method and `master_file` kwarg for `MFDataset.__init__`.
