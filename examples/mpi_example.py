@@ -8,7 +8,7 @@ nc = Dataset('parallel_test.nc', 'w', parallel=True, comm=MPI.COMM_WORLD,
 # below should work also - MPI_COMM_WORLD and MPI_INFO_NULL will be used.
 #nc = Dataset('parallel_test.nc', 'w', parallel=True)
 d = nc.createDimension('dim',4)
-v = nc.createVariable('var', np.int, 'dim')
+v = nc.createVariable('var', np.int32, 'dim')
 v[rank] = rank
 # switch to collective mode, rewrite the data.
 v.set_collective(True)
