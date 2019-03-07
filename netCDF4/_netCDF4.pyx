@@ -1185,7 +1185,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.4.3"
+__version__ = "1.4.3.1"
 
 # Initialize numpy
 import posixpath
@@ -2083,6 +2083,7 @@ strings.
         cdef size_t initialsize
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
+        cdef int cmode
         IF HAS_NC_PAR:
             cdef MPI_Comm mpicomm
             cdef MPI_Info mpiinfo
@@ -2121,6 +2122,9 @@ strings.
                     mpiinfo = info.ob_mpi
                 else:
                     mpiinfo = MPI_INFO_NULL
+                cmode = NC_MPIIO | NC_NETCDF4
+                if format == 'NETCDF4_CLASSIC':
+                    cmode = cmode | NC_CLASSIC_MODEL
 
         self._inmemory = False
         if mode == 'w':
@@ -2141,7 +2145,7 @@ strings.
                 if clobber:
                     if parallel:
                         IF HAS_NC_PAR:
-                            ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO | NC_NETCDF4, \
+                            ierr = nc_create_par(path, NC_CLOBBER | cmode, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
@@ -2156,7 +2160,7 @@ strings.
                 else:
                     if parallel:
                         IF HAS_NC_PAR:
-                            ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4, \
+                            ierr = nc_create_par(path, NC_NOCLOBBER | cmode, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
@@ -2228,7 +2232,7 @@ strings.
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_CLOBBER | NC_MPIIO | NC_NETCDF4, \
+                        ierr = nc_create_par(path, NC_CLOBBER | cmode, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
@@ -2243,7 +2247,7 @@ strings.
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_NC_PAR:
-                        ierr = nc_create_par(path, NC_NOCLOBBER | NC_MPIIO | NC_NETCDF4, \
+                        ierr = nc_create_par(path, NC_NOCLOBBER | cmode, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
