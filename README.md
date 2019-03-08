@@ -9,6 +9,9 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+03/08/2019: Version [1.4.3.2](https://pypi.python.org/pypi/netCDF4/1.4.3.2) released. 
+Include missing membuf.pyx file in source tarball.
+
 03/07/2019: Version [1.4.3.1](https://pypi.python.org/pypi/netCDF4/1.4.3.1) released. 
 Fixes bug in implementation of NETCDF4_CLASSIC parallel IO support in 1.4.3.
 
