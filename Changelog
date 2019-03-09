@@ -1,9 +1,9 @@
- version 1.4.3.2 (tag v1.4.3.2rel)
-==================================
+ version 1.4.3.2 (tag v1.4.3.2)
+===============================
  * include missing membuf.pyx file in release source tarball.
 
  version 1.4.3.1 (tag v1.4.3.1)
-===================================
+===============================
  * fix bug in implementation of NETCDF4_CLASSIC support for parallel IO
    in v1.4.3 release.
 
