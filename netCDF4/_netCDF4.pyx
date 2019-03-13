@@ -6099,6 +6099,10 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
             else:
                 files = sorted(glob(files))
 
+        if not files:
+           msg='no files specified (file list is empty)'
+           raise IOError(msg)
+
         if master_file is not None:
             if master_file not in files:
                 raise ValueError('master_file not in files list')
