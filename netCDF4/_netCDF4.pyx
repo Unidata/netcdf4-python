@@ -2179,7 +2179,7 @@ strings.
             # **this causes parallel mode to fail when both hdf5-parallel and
             # pnetcdf are enabled - issue #820 **
             #_set_default_format(format='NETCDF3_64BIT_OFFSET')
-        elif mode == 'r':
+        elif mode in ('r', 'rs'):
             if memory is not None:
                 IF HAS_NC_OPEN_MEM:
                     # Store reference to memory
@@ -2202,7 +2202,12 @@ strings.
             elif diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
             else:
-                ierr = nc_open(path, NC_NOWRITE, &grpid)
+		if mode == 'rs':
+                    # NC_SHARE is very important for reading large
+                    # netcdf files
+                    ierr = nc_open(path, NC_NOWRITE | NC_SHARE, &grpid)
+		else:
+                    ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
             if parallel:
                 IF HAS_NC_PAR:
