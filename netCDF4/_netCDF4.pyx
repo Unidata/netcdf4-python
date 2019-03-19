@@ -63,9 +63,10 @@ Requires
  If you want [OPeNDAP](http://opendap.org) support, add `--enable-dap`.
  If you want HDF4 SD support, add `--enable-hdf4` and add
  the location of the HDF4 headers and library to `$CPPFLAGS` and `$LDFLAGS`.
- - for MPI parallel IO support, MPI-enabled versions of the HDF5 and netcdf
- libraries are required, as is the [mpi4py](http://mpi4py.scipy.org) python
- module.
+ - for MPI parallel IO support, an MPI-enabled versions of the netcdf library
+ is required, as is the [mpi4py](http://mpi4py.scipy.org) python module.
+ Parallel IO further depends on the existence of MPI-enabled HDF5 or the
+ [PnetCDF](https://parallel-netcdf.github.io/) library.
 
 
 Install
@@ -918,13 +919,14 @@ specified names.
 
 ## <div id='section13'>13) Parallel IO.
 
-If MPI parallel enabled versions of netcdf and hdf5 are detected, and
-[mpi4py](https://mpi4py.scipy.org) is installed, netcdf4-python will
-be built with parallel IO capabilities enabled.  Since parallel IO
-uses features of HDF5, it can only be used with NETCDF4 or 
-NETCDF4_CLASSIC formatted files. To use parallel IO,
-your program must be running in an MPI environment using
-[mpi4py](https://mpi4py.scipy.org).
+If MPI parallel enabled versions of netcdf and hdf5 or pnetcdf are detected,
+and [mpi4py](https://mpi4py.scipy.org) is installed, netcdf4-python will
+be built with parallel IO capabilities enabled. Parallel IO of NETCDF4 or 
+NETCDF4_CLASSIC formatted files is only available if the MPI parallel HDF5
+library is available. Parallel IO of classic netcdf-3 file formats is only
+available if the [PnetCDF](https://parallel-netcdf.github.io/) library is
+available. To use parallel IO, your program must be running in an MPI
+environment using [mpi4py](https://mpi4py.scipy.org).
 
     :::python
     >>> from mpi4py import MPI
@@ -971,9 +973,12 @@ participate in doing IO. To toggle back and forth between
 the two types of IO, use the `netCDF4.Variable.set_collective`
 `netCDF4.Variable`method. All metadata
 operations (such as creation of groups, types, variables, dimensions, or attributes)
-are collective.  There are a couple of important limitatons of parallel IO:
+are collective.  There are a couple of important limitations of parallel IO:
 
- - only works with NETCDF4 or NETCDF4_CLASSIC formatted files.
+ - parallel IO for NETCDF4 or NETCDF4_CLASSIC formatted files is only available
+   if the netcdf library was compiled with MPI enabled HDF5.
+ - parallel IO for all classic netcdf-3 file formats is only available if the
+   netcdf library was compiled with PnetCDF.
  - If a variable has an unlimited dimension, appending data must be done in collective mode.
    If the write is done in independent mode, the operation will fail with a
    a generic "HDF Error".
