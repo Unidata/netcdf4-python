@@ -1,7 +1,7 @@
 import glob, os, sys, unittest, struct
 from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__version__
-from netCDF4 import __has_cdf5_format__, __has_nc_inq_path__, __has_nc_par__,\
-                    __has_nc_create_mem__
+from netCDF4 import __has_cdf5_format__, __has_nc_inq_path__, __has_nc_create_mem__, \
+                    __has_parallel4_support__, __has_pnetcdf_support__
 
 # can also just run
 # python -m unittest discover . 'tst*py'
@@ -16,7 +16,7 @@ if python3:
 else:
     test_files.remove('tst_unicode3.py')
     sys.stdout.write('not running tst_unicode3.py ...\n')
-if __netcdf4libversion__ < '4.2.1' or __has_nc_par__:
+if __netcdf4libversion__ < '4.2.1' or __has_parallel4_support__ or __has_pnetcdf_support__:
     test_files.remove('tst_diskless.py')
     sys.stdout.write('not running tst_diskless.py ...\n')
 if not __has_nc_inq_path__:
