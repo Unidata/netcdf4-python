@@ -51,6 +51,7 @@ cdef extern from "netcdf.h":
         NC_CLOBBER
         NC_NOCLOBBER # Don't destroy existing file on create 
         NC_64BIT_OFFSET # Use large (64-bit) file offsets 
+        NC_64BIT_DATA # Use cdf-5 format 
         NC_NETCDF4 # Use netCDF-4/HDF5 format 
         NC_CLASSIC_MODEL # Enforce strict netcdf-3 rules. 
         # Use these 'mode' flags for both nc_create and nc_open.
@@ -703,7 +704,7 @@ IF HAS_NC_CREATE_MEM:
             int flags
         int nc_close_memio(int ncid, NC_memio* info);
 
-IF HAS_NC_PAR:
+IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
     cdef extern from "mpi-compat.h": pass
     cdef extern from "netcdf_par.h":
         ctypedef int MPI_Comm

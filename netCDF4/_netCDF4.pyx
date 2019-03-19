@@ -1202,7 +1202,7 @@ import_array()
 include "constants.pyx"
 include "membuf.pyx"
 include "netCDF4.pxi"
-IF HAS_NC_PAR:
+IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
     cimport mpi4py.MPI as MPI
     from mpi4py.libmpi cimport MPI_Comm, MPI_Info, MPI_Comm_dup, MPI_Info_dup, \
                                MPI_Comm_free, MPI_Info_free, MPI_INFO_NULL,\
@@ -1240,7 +1240,8 @@ __has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
 __has_cdf5_format__ = HAS_CDF5_FORMAT
 __has_nc_open_mem__ = HAS_NC_OPEN_MEM
 __has_nc_create_mem__ = HAS_NC_CREATE_MEM
-__has_nc_par__ = HAS_NC_PAR
+__has_parallel4_support__ = HAS_PARALLEL4_SUPPORT
+__has_pnetcdf_support__ = HAS_PNETCDF_SUPPORT
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
@@ -1282,20 +1283,29 @@ _intnptonctype  = {'i1' : NC_BYTE,
 _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
                  'NETCDF4_CLASSIC' : NC_FORMAT_NETCDF4_CLASSIC,
                  'NETCDF4'         : NC_FORMAT_NETCDF4}
+# create dictionary mapping string identifiers to netcdf create format codes
+_cmode_dict  = {'NETCDF3_CLASSIC' : NC_CLASSIC_MODEL,
+                'NETCDF4_CLASSIC' : NC_CLASSIC_MODEL,
+                'NETCDF4'         : NC_NETCDF4}
 IF HAS_CDF5_FORMAT:
     # NETCDF3_64BIT deprecated, saved for compatibility.
     # use NETCDF3_64BIT_OFFSET instead.
     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT_OFFSET
     _format_dict['NETCDF3_64BIT_DATA'] = NC_FORMAT_64BIT_DATA
+    _cmode_dict['NETCDF3_64BIT_OFFSET'] = NC_64BIT_OFFSET
+    _cmode_dict['NETCDF3_64BIT_DATA'] = NC_64BIT_DATA
 ELSE:
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
+    _cmode_dict['NETCDF3_64BIT'] = NC_64BIT_OFFSET
 # invert dictionary mapping
 _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())
 # add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET)
 IF HAS_CDF5_FORMAT:
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
+    _cmode_dict['NETCDF3_64BIT'] = NC_64BIT_OFFSET
 ELSE:
     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT
+    _cmode_dict['NETCDF3_64BIT_OFFSET'] = NC_64BIT_OFFSET
 
 # default fill_value to numpy datatype mapping.
 default_fillvals = {#'S1':NC_FILL_CHAR,
@@ -2084,7 +2094,7 @@ strings.
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
         cdef int cmode
-        IF HAS_NC_PAR:
+        IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
             cdef MPI_Comm mpicomm
             cdef MPI_Info mpiinfo
 
@@ -2107,12 +2117,20 @@ strings.
             raise ValueError(msg)
 
         if parallel:
-            IF HAS_NC_PAR != 1:
+            IF HAS_PARALLEL4_SUPPORT != 1 and HAS_PNETCDF_SUPPORT != 1:
                 msg='parallel mode requires MPI enabled netcdf-c'
                 raise ValueError(msg)
             ELSE:
-                if format not in ['NETCDF4','NETCDF4_CLASSIC']:
-                    msg='parallel mode only works with format=NETCDF4 or NETCDF4_CLASSIC'
+                parallel_formats = []
+                IF HAS_PARALLEL4_SUPPORT:
+                    parallel_formats += ['NETCDF4','NETCDF4_CLASSIC']
+                IF HAS_PNETCDF_SUPPORT:
+                    parallel_formats += ['NETCDF3_CLASSIC',
+                                         'NETCDF3_64BIT_OFFSET',
+                                         'NETCDF3_64BIT_DATA',
+                                         'NETCDF3_64BIT']
+                if format not in parallel_formats:
+                    msg='parallel mode only works with the following formats: ' + ' '.join(parallel_formats)
                     raise ValueError(msg)
                 if comm is not None:
                     mpicomm = comm.ob_mpi
@@ -2122,9 +2140,7 @@ strings.
                     mpiinfo = info.ob_mpi
                 else:
                     mpiinfo = MPI_INFO_NULL
-                cmode = NC_MPIIO | NC_NETCDF4
-                if format == 'NETCDF4_CLASSIC':
-                    cmode = cmode | NC_CLASSIC_MODEL
+                cmode = NC_MPIIO | _cmode_dict[format]
 
         self._inmemory = False
         if mode == 'w':
@@ -2144,7 +2160,7 @@ strings.
             else:
                 if clobber:
                     if parallel:
-                        IF HAS_NC_PAR:
+                        IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                             ierr = nc_create_par(path, NC_CLOBBER | cmode, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
@@ -2159,7 +2175,7 @@ strings.
                         ierr = nc_create(path, NC_CLOBBER, &grpid)
                 else:
                     if parallel:
-                        IF HAS_NC_PAR:
+                        IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                             ierr = nc_create_par(path, NC_NOCLOBBER | cmode, \
                                    mpicomm, mpiinfo, &grpid)
                         ELSE:
@@ -2194,7 +2210,7 @@ strings.
         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
                     raise ValueError(msg)
             elif parallel:
-                IF HAS_NC_PAR:
+                IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     ierr = nc_open_par(path, NC_NOWRITE | NC_MPIIO, \
                            mpicomm, mpiinfo, &grpid)
                 ELSE:
@@ -2205,7 +2221,7 @@ strings.
                 ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
             if parallel:
-                IF HAS_NC_PAR:
+                IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
                            mpicomm, mpiinfo, &grpid)
                 ELSE:
@@ -2217,7 +2233,7 @@ strings.
         elif mode == 'as' or mode == 'r+s':
             if parallel:
                 # NC_SHARE ignored
-                IF HAS_NC_PAR:
+                IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
                            mpicomm, mpiinfo, &grpid)
                 ELSE:
@@ -2231,7 +2247,7 @@ strings.
             if clobber:
                 if parallel:
                     # NC_SHARE ignored
-                    IF HAS_NC_PAR:
+                    IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                         ierr = nc_create_par(path, NC_CLOBBER | cmode, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
@@ -2246,7 +2262,7 @@ strings.
             else:
                 if parallel:
                     # NC_SHARE ignored
-                    IF HAS_NC_PAR:
+                    IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                         ierr = nc_create_par(path, NC_NOCLOBBER | cmode, \
                                mpicomm, mpiinfo, &grpid)
                     ELSE:
@@ -5345,7 +5361,7 @@ NC_CHAR).
 turn on or off collective parallel IO access. Ignored if file is not
 open for parallel access.
         """
-        IF HAS_NC_PAR:
+        IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
             # set collective MPI IO mode on or off
             if value:
                 ierr = nc_var_par_access(self._grpid, self._varid,
