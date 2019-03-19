@@ -25,9 +25,10 @@ else
    pushd netcdf-c-${NETCDF_VERSION}
 fi
 # for Ubuntu xenial
-export CPPFLAGS="-I/usr/include/hdf5/mpich"
+export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
+export LDFLAGS="-L${NETCDF_DIR}/lib"
 export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
-./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --disable-dap --enable-parallel ${NETCDF_EXTRA_CONFIG}
+./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --disable-dap --enable-parallel $NETCDF_EXTRA_CONFIG
 make -j 2
 make install
 popd
