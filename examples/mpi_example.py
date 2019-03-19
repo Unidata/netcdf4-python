@@ -11,7 +11,7 @@ rank = MPI.COMM_WORLD.rank  # The process ID (integer 0-3 for 4-process run)
 if rank == 0:
 	print('Creating file with format {}'.format(format))
 nc = Dataset('parallel_test.nc', 'w', parallel=True, comm=MPI.COMM_WORLD,
-        info=MPI.Info(),format='NETCDF4_CLASSIC')
+        info=MPI.Info(),format=format)
 # below should work also - MPI_COMM_WORLD and MPI_INFO_NULL will be used.
 #nc = Dataset('parallel_test.nc', 'w', parallel=True)
 d = nc.createDimension('dim',4)
