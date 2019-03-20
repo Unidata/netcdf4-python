@@ -113,7 +113,6 @@ script:
          exit 1
        else
          echo "mpi test passed!"
-         exit 0
        fi
        if [ -n "${PNETCDF_VERSION}" ] ; then
           mpirun.mpich -np 4 python mpi_example.py NETCDF3_64BIT_DATA
@@ -122,7 +121,6 @@ script:
             exit 1
           else
             echo "PnetCDF mpi test passed!"
-            exit 0
           fi
        fi
     fi
