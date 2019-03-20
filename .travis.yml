@@ -103,6 +103,8 @@ script:
   - cd test
   - python run_all.py
   - |
+    echo "MPI = ${MPI}"
+    echo "PNETCDF_VERSION = ${PNETCDF_VERSION}"
     if [ $MPI -eq 1 ] ; then
        cd ../examples
        mpirun.mpich -np 4 python mpi_example.py
