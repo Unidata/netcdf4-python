@@ -1290,7 +1290,7 @@ _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
                  'NETCDF4'         : NC_FORMAT_NETCDF4}
 # create dictionary mapping string identifiers to netcdf create format codes
 _cmode_dict  = {'NETCDF3_CLASSIC' : NC_CLASSIC_MODEL,
-                'NETCDF4_CLASSIC' : NC_CLASSIC_MODEL,
+                'NETCDF4_CLASSIC' : NC_CLASSIC_MODEL | NC_NETCDF4,
                 'NETCDF4'         : NC_NETCDF4}
 IF HAS_CDF5_FORMAT:
     # NETCDF3_64BIT deprecated, saved for compatibility.
