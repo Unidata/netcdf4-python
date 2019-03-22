@@ -11,7 +11,7 @@
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
 03/24/2019: Version [1.5.0](https://pypi.python.org/pypi/netCDF4/1.5.0) released. Parallel IO support for classic
-file formats added using the pnetcdf library (contribution from Lars Pastewka, [pull request #897](https://github.com/Unidata/netcdf4-python/pull/897).
+file formats added using the pnetcdf library (contribution from Lars Pastewka, [pull request #897](https://github.com/Unidata/netcdf4-python/pull/897)).
 
 03/08/2019: Version [1.4.3.2](https://pypi.python.org/pypi/netCDF4/1.4.3.2) released. 
 Include missing membuf.pyx file in source tarball. No need to update if you installed
