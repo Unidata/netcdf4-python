@@ -1,10 +1,17 @@
 # to run: mpirun -np 4 python mpi_example.py
+import sys
 from mpi4py import MPI
 import numpy as np
 from netCDF4 import Dataset
+if len(sys.argv) == 2:
+	format = sys.argv[1]
+else:
+	format = 'NETCDF4_CLASSIC'
 rank = MPI.COMM_WORLD.rank  # The process ID (integer 0-3 for 4-process run)
+if rank == 0:
+	print('Creating file with format {}'.format(format))
 nc = Dataset('parallel_test.nc', 'w', parallel=True, comm=MPI.COMM_WORLD,
-        info=MPI.Info(),format='NETCDF4_CLASSIC')
+        info=MPI.Info(),format=format)
 # below should work also - MPI_COMM_WORLD and MPI_INFO_NULL will be used.
 #nc = Dataset('parallel_test.nc', 'w', parallel=True)
 d = nc.createDimension('dim',4)

@@ -1,3 +1,8 @@
+ current master
+===============
+ * added support for parallel IO in the classic netcdf-3 formats through the
+   pnetcdf library.
+
  version 1.4.3.2 (tag v1.4.3.2)
 ===============================
  * include missing membuf.pyx file in release source tarball.

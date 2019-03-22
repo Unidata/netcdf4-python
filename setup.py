@@ -56,7 +56,8 @@ def check_api(inc_dirs):
     has_cdf5_format = False
     has_nc_open_mem = False
     has_nc_create_mem = False
-    has_nc_par = False
+    has_parallel4_support = False
+    has_pnetcdf_support = False
 
     for d in inc_dirs:
         try:
@@ -65,7 +66,6 @@ def check_api(inc_dirs):
             continue
 
         has_nc_open_mem = os.path.exists(os.path.join(d, 'netcdf_mem.h'))
-        has_nc_par = os.path.exists(os.path.join(d, 'netcdf_par.h'))
 
         for line in f:
             if line.startswith('nc_rename_grp'):
@@ -91,10 +91,15 @@ def check_api(inc_dirs):
             for line in open(ncmetapath):
                 if line.startswith('#define NC_HAS_CDF5'):
                     has_cdf5_format = bool(int(line.split()[2]))
+                elif line.startswith('#define NC_HAS_PARALLEL4'):
+                    has_parallel4_support = bool(int(line.split()[2]))
+                elif line.startswith('#define NC_HAS_PNETCDF'):
+                    has_pnetcdf_support = bool(int(line.split()[2]))
         break
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-           has_cdf5_format, has_nc_open_mem, has_nc_create_mem, has_nc_par
+           has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
+           has_parallel4_support, has_pnetcdf_support
 
 
 def getnetcdfvers(libdirs):
@@ -488,7 +493,8 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
             os.remove(netcdf4_src_c)
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-    has_cdf5_format, has_nc_open_mem, has_nc_create_mem, has_nc_par = check_api(inc_dirs)
+    has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
+    has_parallel4_support, has_pnetcdf_support = check_api(inc_dirs)
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
        (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
@@ -498,7 +504,8 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     try:
         import mpi4py
     except ImportError:
-        has_nc_par = False
+        has_parallel4_support = False
+        has_pnetcdf_support = False
 
     f = open(osp.join('include', 'constants.pyx'), 'w')
     if has_rename_grp:
@@ -544,16 +551,23 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         sys.stdout.write('netcdf lib does not have cdf-5 format capability\n')
         f.write('DEF HAS_CDF5_FORMAT = 0\n')
 
-    if has_nc_par:
+    if has_parallel4_support:
         sys.stdout.write('netcdf lib has netcdf4 parallel functions\n')
-        f.write('DEF HAS_NC_PAR = 1\n')
+        f.write('DEF HAS_PARALLEL4_SUPPORT = 1\n')
     else:
         sys.stdout.write('netcdf lib does not have netcdf4 parallel functions\n')
-        f.write('DEF HAS_NC_PAR = 0\n')
+        f.write('DEF HAS_PARALLEL4_SUPPORT = 0\n')
+
+    if has_pnetcdf_support:
+        sys.stdout.write('netcdf lib has pnetcdf parallel functions\n')
+        f.write('DEF HAS_PNETCDF_SUPPORT = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have pnetcdf parallel functions\n')
+        f.write('DEF HAS_PNETCDF_SUPPORT = 0\n')
 
     f.close()
 
-    if has_nc_par:
+    if has_parallel4_support or has_pnetcdf_support:
         inc_dirs.append(mpi4py.get_include())
         # mpi_incdir should not be needed if using nc-config
         # (should be included in nc-config --cflags)
