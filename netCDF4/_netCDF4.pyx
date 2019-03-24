@@ -1991,8 +1991,8 @@ strings.
         `netCDF4.Dataset` constructor.
 
         **`filename`**: Name of netCDF file to hold dataset. Can also
-	be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
-	set this is just used to set the `filepath()`.
+        be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
+        set this is just used to set the `filepath()`.
 
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
@@ -2202,11 +2202,13 @@ strings.
             elif diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
             else:
-		if mode == 'rs':
-                    # NC_SHARE is very important for reading large
-                    # netcdf files
+                if mode == 'rs':
+                    # NC_SHARE is very important for speed reading
+                    # large netcdf3 files with a record dimension.
+                    # Opening as r+s or as implies capability to
+                    # which may be inconsistent with actual access
                     ierr = nc_open(path, NC_NOWRITE | NC_SHARE, &grpid)
-		else:
+                else:
                     ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
             if parallel:
