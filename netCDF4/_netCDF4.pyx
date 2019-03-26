@@ -1998,7 +1998,7 @@ strings.
         modified. `w` means write; a new file is created, an existing file with
         the same name is deleted. `a` and `r+` mean append (in analogy with
         serial files); an existing file is opened for reading and writing.
-        Appending `s` to modes `w`, `r+` or `a` will enable unbuffered shared
+        Appending `s` to modes `r`, `w`, `r+` or `a` will enable unbuffered shared
         access to `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or
         `NETCDF3_64BIT_DATA` formatted files.
         Unbuffered access may be useful even if you don't need shared
