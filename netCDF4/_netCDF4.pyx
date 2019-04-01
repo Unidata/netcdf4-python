@@ -1,5 +1,5 @@
 """
-Version 1.5.0
+Version 1.5.0.1
 -------------
 - - -
 
@@ -1190,7 +1190,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.5.0"
+__version__ = "1.5.0.1"
 
 # Initialize numpy
 import posixpath

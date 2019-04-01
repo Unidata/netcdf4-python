@@ -1,3 +1,8 @@
+ version 1.5.0.1 (tag v1.5.0.1rel)
+==================================
+ * binary wheels for linux and macosx rebuilt against netcdf-c 4.6.3 (instead
+   of 4.4.1.1).  No changes to source code.
+
  version 1.5.0 (tag v1.5.0rel)
 ===============================
  * added support for parallel IO in the classic netcdf-3 formats through the

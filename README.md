@@ -9,6 +9,9 @@
 
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
+ 
+04/02/2019: Version [1.5.0.1](https://pypi.python.org/pypi/netCDF4/1.5.0.1) released. Binary wheels for macos x
+and linux rebuilt with netcdf-c 4.6.3 (instead of 4.4.1.1).  
 
 03/24/2019: Version [1.5.0](https://pypi.python.org/pypi/netCDF4/1.5.0) released. Parallel IO support for classic
 file formats added using the pnetcdf library (contribution from Lars Pastewka, [pull request #897](https://github.com/Unidata/netcdf4-python/pull/897)).
