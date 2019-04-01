@@ -2006,14 +2006,14 @@ strings.
         `netCDF4.Dataset` constructor.
 
         **`filename`**: Name of netCDF file to hold dataset. Can also
-	be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
-	set this is just used to set the `filepath()`.
+        be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
+        set this is just used to set the `filepath()`.
 
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
         the same name is deleted. `a` and `r+` mean append (in analogy with
         serial files); an existing file is opened for reading and writing.
-        Appending `s` to modes `w`, `r+` or `a` will enable unbuffered shared
+        Appending `s` to modes `r`, `w`, `r+` or `a` will enable unbuffered shared
         access to `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or
         `NETCDF3_64BIT_DATA` formatted files.
         Unbuffered access may be useful even if you don't need shared
@@ -2200,7 +2200,7 @@ strings.
             # **this causes parallel mode to fail when both hdf5-parallel and
             # pnetcdf are enabled - issue #820 **
             #_set_default_format(format='NETCDF3_64BIT_OFFSET')
-        elif mode == 'r':
+        elif mode in ('r', 'rs'):
             if memory is not None:
                 IF HAS_NC_OPEN_MEM:
                     # Store reference to memory
@@ -2223,7 +2223,14 @@ strings.
             elif diskless:
                 ierr = nc_open(path, NC_NOWRITE | NC_DISKLESS, &grpid)
             else:
-                ierr = nc_open(path, NC_NOWRITE, &grpid)
+                if mode == 'rs':
+                    # NC_SHARE is very important for speed reading
+                    # large netcdf3 files with a record dimension.
+                    # Opening as r+s or as implies capability to
+                    # which may be inconsistent with actual access
+                    ierr = nc_open(path, NC_NOWRITE | NC_SHARE, &grpid)
+                else:
+                    ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode == 'r+' or mode == 'a':
             if parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
