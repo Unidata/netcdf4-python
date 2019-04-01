@@ -1,5 +1,5 @@
 """
-Version 1.5.0
+Version 1.5.0.1
 -------------
 - - -
 
@@ -1190,7 +1190,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.5.0"
+__version__ = "1.5.0.1"
 
 # Initialize numpy
 import posixpath
@@ -2225,9 +2225,8 @@ strings.
             else:
                 if mode == 'rs':
                     # NC_SHARE is very important for speed reading
-                    # large netcdf3 files with a record dimension.
-                    # Opening as r+s or as implies capability to
-                    # which may be inconsistent with actual access
+                    # large netcdf3 files with a record dimension
+                    # (pull request #902).
                     ierr = nc_open(path, NC_NOWRITE | NC_SHARE, &grpid)
                 else:
                     ierr = nc_open(path, NC_NOWRITE, &grpid)
