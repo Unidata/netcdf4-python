@@ -1,7 +1,9 @@
  version 1.5.0.1 (tag v1.5.0.1rel)
 ==================================
  * binary wheels for linux and macosx rebuilt against netcdf-c 4.6.3 (instead
-   of 4.4.1.1).  No changes to source code.
+   of 4.4.1.1).  
+ * add read-shared mode (mode='rs'). Significantly speeds up reads of NETCDF3
+   files (pull request #902).
 
  version 1.5.0 (tag v1.5.0rel)
 ===============================
