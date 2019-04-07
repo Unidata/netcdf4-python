@@ -211,5 +211,16 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(data,data2)
         nc.close()
 
+    def test_issue906(self):
+        f = Dataset('test.nc','w')
+        f.createDimension('d1',3)
+        f.createDimension('d2',None)
+        f.createDimension('d3',5)
+        f.createVariable('v2',np.float,('d1','d2','d3'))
+        f['v2'][:] = np.zeros((3,4,5))
+        f['v2'][0,:,0] = np.arange(4)
+        f['v2'][0,:,:] = np.ones((4,5))
+        f.close()
+
 if __name__ == '__main__':
     unittest.main()
