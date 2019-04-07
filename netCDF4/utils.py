@@ -343,14 +343,15 @@ Boolean array must have the same shape as the data along this dimension."""
             sdim.append(1)
 
     # pad datashape with zeros for dimensions not being sliced
-    datashapenew = (); i=0
-    for e in elem:
-        if type(e) != slice:
-            datashapenew = datashapenew + (0,)
-        else:
-            datashapenew = datashapenew + (datashape[i],)
-            i+=1
-    datashape = datashapenew
+    if datashape:
+        datashapenew = (); i=0
+        for e in elem:
+            if type(e) != slice:
+                datashapenew = datashapenew + (0,)
+            else:
+                datashapenew = datashapenew + (datashape[i],)
+                i+=1
+        datashape = datashapenew
 
     # Create the start, count, stride and indices arrays.
 
