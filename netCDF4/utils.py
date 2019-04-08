@@ -139,7 +139,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     grp  : netCDF Group
       The netCDF group to which the variable being set belongs to.
     datashape : sequence
-      The shape of the data that is being stored. Only needed by __setitime__
+      The shape of the data that is being stored. Only needed by __setitem__
     put : True|False (default False).  If called from __setitem__, put is True.
 
     Returns
@@ -341,6 +341,17 @@ Boolean array must have the same shape as the data along this dimension."""
         # Scalar int or slice, just a single _get call
         else:
             sdim.append(1)
+
+    # pad datashape with zeros for dimensions not being sliced
+    if datashape:
+        datashapenew = (); i=0
+        for e in elem:
+            if type(e) != slice:
+                datashapenew = datashapenew + (0,)
+            else:
+                datashapenew = datashapenew + (datashape[i],)
+                i+=1
+        datashape = datashapenew
 
     # Create the start, count, stride and indices arrays.
 
