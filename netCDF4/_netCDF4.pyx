@@ -3943,7 +3943,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # before 4.5.1 there was no way to turn off filling on a
             # per-variable basis for classic files.
             no_fill=0
-        else
+        else:
             with nogil:
                 ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
             _ensure_nc_success(ierr)
@@ -4506,7 +4506,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 # before 4.5.1 there was no way to turn off filling on a
                 # per-variable basis for classic files.
                 no_fill=0
-            else
+            else:
                 with nogil:
                     ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
                 _ensure_nc_success(ierr)
