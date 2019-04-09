@@ -1,5 +1,5 @@
- since version 1.5.0.1
-===============================
+ version 1.5.1 (not yet released)
+=================================
  * fix issue #908 by adding workaround for incorrect value returned
    by nc_inq_var_fill for netcdf-c < 4.5.1.
  * fix bug writing slice to unlimited dimension that is not the first
