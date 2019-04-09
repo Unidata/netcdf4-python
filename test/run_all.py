@@ -39,6 +39,8 @@ else:
     test_files.insert(0,'tst_dap.py')
 
 
+test_files=['tst_issue908.py']
+
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
 for f in test_files:

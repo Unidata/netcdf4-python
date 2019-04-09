@@ -4472,6 +4472,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         safe_fillval = self._check_safecast('_FillValue')
         if safe_fillval:
             fval = numpy.array(self._FillValue, self.dtype)
+            print fval, (data == fval).any()
             if self.scale and is_unsigned_int:
                 fval = fval.view(dtype_unsigned_int)
             # is _FillValue a NaN?
@@ -4507,12 +4508,14 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # type, signed or unsigned, because the byte ranges are too
             # small to assume one of the values should appear as a missing
             # value unless a _FillValue attribute is set explicitly."
+            print 'no_fill',no_fill
             if no_fill != 1 and self.dtype.str[1:] not in ['u1','i1']:
                 fillval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
                 has_fillval = data == fillval
                 # if data is an array scalar, has_fillval will be a boolean.
                 # in that case convert to an array.
                 if type(has_fillval) == bool: has_fillval=numpy.asarray(has_fillval)
+                print has_fillval.any()
                 if has_fillval.any():
                     if fill_value is None:
                         fill_value = fillval
