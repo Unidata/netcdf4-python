@@ -4496,6 +4496,10 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             with nogil:
                 ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
             _ensure_nc_success(ierr)
+            if __netcdf4libversion__ < '4.5.1' and\
+                self._grp.file_format.startswith('NETCDF3'):
+                # issue #908 no_fill not correct for NETCDF3 files before 4.5.1
+                no_fill=0
             # if no_fill is not 1, and not a byte variable, then use default fill value.
             # from http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
             # "If you need a fill value for a byte variable, it is recommended
