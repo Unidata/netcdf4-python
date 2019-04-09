@@ -4479,7 +4479,6 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         safe_fillval = self._check_safecast('_FillValue')
         if safe_fillval:
             fval = numpy.array(self._FillValue, self.dtype)
-            print fval, (data == fval).any()
             if self.scale and is_unsigned_int:
                 fval = fval.view(dtype_unsigned_int)
             # is _FillValue a NaN?
