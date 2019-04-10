@@ -1,5 +1,5 @@
 """
-Version 1.5.0.1
+Version 1.5.1
 -------------
 - - -
 
@@ -3937,9 +3937,16 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         if (self._grp.path != '/'): ncdump_var.append('path = %s\n' % self._grp.path)
         ncdump_var.append('unlimited dimensions: %s\n' % ', '.join(unlimdims))
         ncdump_var.append('current shape = %s\n' % repr(self.shape))
-        with nogil:
-            ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
-        _ensure_nc_success(ierr)
+        if __netcdf4libversion__ < '4.5.1' and\
+            self._grp.file_format.startswith('NETCDF3'):
+            # issue #908: no_fill not correct for NETCDF3 files before 4.5.1
+            # before 4.5.1 there was no way to turn off filling on a
+            # per-variable basis for classic files.
+            no_fill=0
+        else:
+            with nogil:
+                ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
+            _ensure_nc_success(ierr)
         if self._isprimitive:
             if no_fill != 1:
                 try:
@@ -4492,9 +4499,16 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # issue 209: don't return masked array if variable filling
         # is disabled.
         else:
-            with nogil:
-                ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
-            _ensure_nc_success(ierr)
+            if __netcdf4libversion__ < '4.5.1' and\
+                self._grp.file_format.startswith('NETCDF3'):
+                # issue #908: no_fill not correct for NETCDF3 files before 4.5.1
+                # before 4.5.1 there was no way to turn off filling on a
+                # per-variable basis for classic files.
+                no_fill=0
+            else:
+                with nogil:
+                    ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
+                _ensure_nc_success(ierr)
             # if no_fill is not 1, and not a byte variable, then use default fill value.
             # from http://www.unidata.ucar.edu/software/netcdf/docs/netcdf-c/Fill-Values.html#Fill-Values
             # "If you need a fill value for a byte variable, it is recommended

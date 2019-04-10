@@ -38,7 +38,6 @@ else:
     test_files.remove('tst_dap.py')
     test_files.insert(0,'tst_dap.py')
 
-
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
 for f in test_files:
