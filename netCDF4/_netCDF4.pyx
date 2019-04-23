@@ -1414,7 +1414,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
             _ensure_nc_success(ierr, err_cls=AttributeError)
             try:
                 result = [values[j].decode(encoding,errors='replace').replace('\x00','')
-                if values[j] else "" for j in range(att_len)]
+                          if values[j] else "" for j in range(att_len)]
             finally:
                 ierr = nc_free_string(att_len, values) # free memory in netcdf C lib
         finally:
