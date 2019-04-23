@@ -4397,9 +4397,11 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
         if self.scale and self._isprimitive and valid_scaleoffset:
             # if variable has scale_factor and add_offset attributes, rescale.
-            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset') and\
-            (self.add_offset != 0.0 or self.scale_factor != 1.0):
-                data = data*self.scale_factor + self.add_offset
+            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+                if self.add_offset != 0.0 or self.scale_factor != 1.0:
+                    data = data*self.scale_factor + self.add_offset
+                else:
+                    data = data.astype(self.scale_factor.dtype) # issue 913
             # else if variable has only scale_factor attributes, rescale.
             elif hasattr(self, 'scale_factor') and self.scale_factor != 1.0:
                 data = data*self.scale_factor
