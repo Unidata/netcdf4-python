@@ -5321,7 +5321,10 @@ NC_CHAR).
                 # not given, use 'utf-8'.
                 encoding = getattr(self,'_Encoding','utf-8')
                 for i from 0<=i<totelem:
-                    data[i] = strdata[i].decode(encoding)
+                    if strdata[i]:
+                        data[i] = strdata[i].decode(encoding)
+                    else:
+                        data[i] = "" # issue 915
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
                 # free string data internally allocated in netcdf C lib
