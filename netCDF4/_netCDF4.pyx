@@ -1412,11 +1412,14 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
             with nogil:
                 ierr = nc_get_att_string(_grpid, varid, attname, values)
             _ensure_nc_success(ierr, err_cls=AttributeError)
-            try:
-                result = [values[j].decode(encoding,errors='replace').replace('\x00','')
-                          for j in range(att_len)]
-            finally:
-                ierr = nc_free_string(att_len, values) # free memory in netcdf C lib
+            if not values[0]:
+                result = [""]
+            else:
+                try:
+                    result = [values[j].decode(encoding,errors='replace').replace('\x00','')
+                              for j in range(att_len)]
+                finally:
+                    ierr = nc_free_string(att_len, values) # free memory in netcdf C lib
         finally:
             PyMem_Free(values)
 
