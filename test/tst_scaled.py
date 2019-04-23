@@ -33,9 +33,13 @@ class SetAutoScaleTestBase(unittest.TestCase):
 
         f = Dataset(self.testfile, 'w')
         x = f.createDimension('x', None)
+        xx = f.createDimension('xx', 10)
         v = f.createVariable('v', "i2", 'x')
+        vv = f.createVariable('vv', "i2", 'xx')
+        vv.add_offset=0; vv.scale_factor=np.float32(1.0)
 
         v[:] = self.v
+        vv[:] = np.ones(10)
 
         # Note: Scale factors are only added after writing, so that no auto-scaling takes place!
 
@@ -105,6 +109,11 @@ class SetAutoScaleTrue(SetAutoScaleTestBase):
 
         f.variables["v"].set_auto_scale(True) # The default anyway...
         v_scaled = f.variables['v'][:]
+
+        # issue 913
+        vv_scaled = f.variables['vv'][:]
+        self.assertEqual(vv_scaled.dtype,f.variables['vv'].scale_factor.dtype)
+        assert_array_almost_equal(vv_scaled, np.ones(10))
 
         self.assertEqual(v_scaled.dtype, "f8")
         self.assertTrue(isinstance(v_scaled, np.ndarray))
