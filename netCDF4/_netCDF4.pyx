@@ -1414,7 +1414,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
             _ensure_nc_success(ierr, err_cls=AttributeError)
             try:
                 result = [values[j].decode(encoding,errors='replace').replace('\x00','')
-                          for j in range(att_len)]
+                          if values[j] else "" for j in range(att_len)]
             finally:
                 ierr = nc_free_string(att_len, values) # free memory in netcdf C lib
         finally:
@@ -5321,7 +5321,10 @@ NC_CHAR).
                 # not given, use 'utf-8'.
                 encoding = getattr(self,'_Encoding','utf-8')
                 for i from 0<=i<totelem:
-                    data[i] = strdata[i].decode(encoding)
+                    if strdata[i]:
+                        data[i] = strdata[i].decode(encoding)
+                    else:
+                        data[i] = "" # issue 915
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
                 # free string data internally allocated in netcdf C lib

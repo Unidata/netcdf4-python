@@ -219,6 +219,10 @@ class VariablesTestCase(unittest.TestCase):
         assert v1.stringseqatt_array == STRINGSEQATT
         assert getattr(v1,'nonexistantatt',None) == None
         f.close()
+        # issue 915 empty string attribute (ncdump reports 'NIL')
+        f = netCDF4.Dataset('test_gold.nc')
+        assert f['RADIANCE'].VAR_NOTES == ""
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
