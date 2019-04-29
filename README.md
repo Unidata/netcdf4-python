@@ -10,6 +10,8 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
  
+04/30/2019: Version [1.5.1](https://pypi.python.org/pypi/netCDF4/1.5.1) released. Bugfixes, no new features.
+
 04/02/2019: Version [1.5.0.1](https://pypi.python.org/pypi/netCDF4/1.5.0.1) released. Binary wheels for macos x
 and linux rebuilt with netcdf-c 4.6.3 (instead of 4.4.1.1).   Added read-shared capability for faster reads
 of NETCDF3 files (mode='rs').
