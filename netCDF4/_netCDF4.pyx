@@ -4800,14 +4800,14 @@ cannot be safely cast to variable data type""" % attname
         # and fill with scalar values.
         if data.shape == ():
             data = numpy.tile(data,datashape)
-        # reshape data array by adding extra singleton dimensions
+        # reshape data array by adding extra dimensions
         # if needed to conform with start,count,stride.
         if len(data.shape) != len(datashape):
             # create a view so shape in caller is not modified (issue 90)
-            try:
+            try: # if extra singleton dims, just reshape
                 data = data.view()
                 data.shape = tuple(datashape)
-            except:
+            except ValueError: # otherwise broadcast
                 data = numpy.broadcast_to(data, datashape)
 
         # Reshape these arrays so we can iterate over them.
