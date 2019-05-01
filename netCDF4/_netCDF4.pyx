@@ -1,6 +1,6 @@
 """
-Version 1.5.1
--------------
+Version 1.5.1.1
+---------------
 - - -
 
 Introduction
@@ -1190,7 +1190,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.5.0.1"
+__version__ = "1.5.1.1"
 
 # Initialize numpy
 import posixpath
@@ -4804,8 +4804,11 @@ cannot be safely cast to variable data type""" % attname
         # if needed to conform with start,count,stride.
         if len(data.shape) != len(datashape):
             # create a view so shape in caller is not modified (issue 90)
-            data = data.view()
-            data.shape = tuple(datashape)
+            try:
+                data = data.view()
+                data.shape = tuple(datashape)
+            except:
+                data = numpy.broadcast_to(data, datashape)
 
         # Reshape these arrays so we can iterate over them.
         start = start.reshape((-1, self.ndim or 1))

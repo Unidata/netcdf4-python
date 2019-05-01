@@ -3,6 +3,7 @@ from __future__ import print_function
 import sys
 import numpy as np
 from numpy import ma
+from numpy.lib.stride_tricks import as_strided
 import warnings
 import getopt
 import os
@@ -189,14 +190,14 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
                 elem.append(slice(None,None,None))
     else:   # Convert single index to sequence
         elem = [elem]
-    
+
     # ensure there is at most 1 ellipse
     #  we cannot use elem.count(Ellipsis), as with fancy indexing would occur
-    #  np.array() == Ellipsis which gives ValueError: The truth value of an 
+    #  np.array() == Ellipsis which gives ValueError: The truth value of an
     #  array with more than one element is ambiguous. Use a.any() or a.all()
     if sum(1 for e in elem if e is Ellipsis) > 1:
         raise IndexError("At most one ellipsis allowed in a slicing expression")
-    
+
     # replace boolean arrays with sequences of integers.
     newElem = []
     IndexErrorMsg=\
@@ -282,7 +283,7 @@ Boolean array must have the same shape as the data along this dimension."""
                 newElem.append(e)
             except:
                 raise IndexError(IndexErrorMsg)
-        if type(e)==type(Ellipsis): 
+        if type(e)==type(Ellipsis):
             i+=1+nDims-len(elem)
         else:
             i+=1
@@ -342,7 +343,28 @@ Boolean array must have the same shape as the data along this dimension."""
         else:
             sdim.append(1)
 
-    # pad datashape with zeros for dimensions not being sliced
+    # is there an unlimited dimension? (only defined for __setitem__)
+    if put:
+        hasunlim = False
+        if dimensions:
+            for i in range(nDims):
+                dimname = dimensions[i]
+                # is this dimension unlimited?
+                # look in current group, and parents for dim.
+                dim = _find_dim(grp, dimname)
+                if dim.isunlimited():
+                    hasunlim = True
+                    break
+
+    # broadcast data shape when assigned to full variable (issue #919)
+    try:
+        fullslice = elem.count(slice(None,None,None)) == len(elem)
+    except: # fails if elem contains a numpy array.
+        fullslice = False
+    if fullslice and datashape and put and not hasunlim:
+        datashape = broadcasted_shape(shape, datashape)
+
+    # pad datashape with zeros for dimensions not being sliced (issue #906)
     if datashape:
         datashapenew = (); i=0
         for e in elem:
@@ -938,3 +960,12 @@ def nc3tonc4():
         fletcher32=fletcher32,clobber=overwritefile,lsd_dict=lsd_dict,
         nchunk=chunk,quiet=quiet,vars=vars,classic=classic,
         istart=istart,istop=istop)
+
+def broadcasted_shape(shp1, shp2):
+    # determine shape of array of shp1 and shp2 broadcast against one another.
+    x = np.array([1])
+    # trick to define array with certain shape that doesn't allocate all the
+    # memory.
+    a = as_strided(x, shape=shp1, strides=[0] * len(shp1))
+    b = as_strided(x, shape=shp2, strides=[0] * len(shp2))
+    return np.broadcast(a, b).shape

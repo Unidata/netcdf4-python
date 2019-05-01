@@ -1,3 +1,8 @@
+ version 1.5.1.1 (not yet released)
+ * fixed __version__ attribute (was set incorrectly in 1.5.1 release).
+ * fix for issue #919  (assigning 2d array to 3d variable with singleton
+   first dimension with v[:] = a).
+
  version 1.5.1 (tag v1.5.1rel)
 ==============================
  * fix issue #908 by adding workaround for incorrect value returned

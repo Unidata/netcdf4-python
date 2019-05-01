@@ -212,7 +212,7 @@ class VariablesTestCase(unittest.TestCase):
         nc.close()
 
     def test_issue906(self):
-        f = Dataset('test.nc','w')
+        f = Dataset(self.file,'w')
         f.createDimension('d1',3)
         f.createDimension('d2',None)
         f.createDimension('d3',5)
@@ -221,6 +221,15 @@ class VariablesTestCase(unittest.TestCase):
         f['v2'][0,:,0] = np.arange(4)
         f['v2'][0,:,:] = np.ones((4,5))
         f.close()
+
+    def test_issue919(self):
+        with Dataset(self.file,'w') as f:
+            f.createDimension('time',2)
+            f.createDimension('lat',10)
+            f.createDimension('lon',9)
+            f.createVariable('v1',np.float,('time', 'lon','lat',))
+            arr = np.arange(9*10).reshape((9, 10))
+            f['v1'][:] = arr
 
 if __name__ == '__main__':
     unittest.main()
