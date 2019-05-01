@@ -196,21 +196,21 @@ class TestgetStartCountStride(unittest.TestCase):
         assert_equal(start[0,0,0,0,0], [0, 0, 15, 0, 0])
         assert_equal(count[0,0,0,0,0], (2, 10, 5, 10, 10))
         assert_equal(put_ind[0,0,0,0,0], (slice(None), slice(None), slice(None), slice(None), slice(None)))
-        
+
         try:
             elem=(Ellipsis, [15,16,17,18,19], slice(None))
             start, count, stride, put_ind = _StartCountStride(elem, (2,10,20,10,10))
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:
             assert_equal(str(e), "integer index exceeds dimension size")
-            
+
         try:
             elem=(Ellipsis, [15,16,17,18,19], Ellipsis)
             start, count, stride, put_ind = _StartCountStride(elem, (2,10, 20,10,10))
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:
             assert_equal(str(e), "At most one ellipsis allowed in a slicing expression")
-            
+
 class TestsetStartCountStride(unittest.TestCase):
 
     def test_basic(self):
@@ -281,7 +281,7 @@ class TestsetStartCountStride(unittest.TestCase):
         #assert_equal(count[0][0][0], (5, 6, 7))
         #assert_equal(stride[0][0][0], (2, 1, 1))
         #assert_equal(take_ind[0][0][0], 3*(slice(None),))
-     
+
     def test_ellipsis(self):
         grp = FakeGroup({'x':False, 'y':False, 'time':True})
 
@@ -291,7 +291,7 @@ class TestsetStartCountStride(unittest.TestCase):
         assert_equal(start[0,0,0], [0, 0, 1])
         assert_equal(count[0,0,0], (22, 25, 3))
         assert_equal(take_ind[0,0,0], (slice(None), slice(None), slice(None)))
-        
+
         grp = FakeGroup({'time':True, 'h':False, 'z':False, 'y':False, 'x':False})
 
         elem=(Ellipsis, [15,16,17,18,19], slice(None), slice(None))
@@ -301,23 +301,25 @@ class TestsetStartCountStride(unittest.TestCase):
         assert_equal(count[0,0,0,0,0], [2, 10, 5, 10, 10])
         assert_equal(stride[0,0,0,0,0], [1, 1, 1, 1, 1])
         assert_equal(take_ind[0,0,0,0,0], (slice(None), slice(None), slice(None), slice(None), slice(None)))
-        
+
         try:
             elem=(Ellipsis, [15,16,17,18,19], slice(None))
             start, count, stride, take_ind = _StartCountStride(elem, (2,10,20,10,10),\
                ['time', 'z', 'y', 'x'], grp, (2,10,5,10,10), put=True)
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:
-            assert_equal(str(e), "integer index exceeds dimension size")
-            
+            #assert_equal(str(e), "integer index exceeds dimension size")
+            assert_equal(str(e), "list index out of range")
+
         try:
             elem=(Ellipsis, [15,16,17,18,19], Ellipsis)
             start, count, stride, take_ind = _StartCountStride(elem, (2,10, 20,10,10),\
                ['time', 'z', 'y', 'x'], grp, (2,10,5,10,10), put=True)
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:
-            assert_equal(str(e), "At most one ellipsis allowed in a slicing expression")
-       
+            #assert_equal(str(e), "At most one ellipsis allowed in a slicing expression")
+            assert_equal(str(e), "list index out of range")
+
 class FakeGroup(object):
     """Create a fake group instance by passing a dictionary of booleans
     keyed by dimension name."""

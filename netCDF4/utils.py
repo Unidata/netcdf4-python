@@ -179,6 +179,22 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         nDims = 1
         shape = (1,)
 
+    # is there an unlimited dimension? (only defined for __setitem__)
+    if put:
+        hasunlim = False
+        unlimd={}
+        if dimensions:
+            for i in range(nDims):
+                dimname = dimensions[i]
+                # is this dimension unlimited?
+                # look in current group, and parents for dim.
+                dim = _find_dim(grp, dimname)
+                unlimd[dimname]=dim.isunlimited()
+                if unlimd[dimname]:
+                    hasunlim = True
+    else:
+        hasunlim = False
+
     # When a single array or (non-tuple) sequence of integers is given
     # as a slice, assume it applies to the first dimension,
     # and use ellipsis for remaining dimensions.
@@ -218,13 +234,10 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             raise IndexError("Index cannot be multidimensional")
         # set unlim to True if dimension is unlimited and put==True
         # (called from __setitem__)
-        if put and (dimensions is not None and grp is not None) and len(dimensions):
+        if hasunlim and put and dimensions:
             try:
                 dimname = dimensions[i]
-                # is this dimension unlimited?
-                # look in current group, and parents for dim.
-                dim = _find_dim(grp, dimname)
-                unlim = dim.isunlimited()
+                unlim = unlimd[dimname]
             except IndexError: # more slices than dimensions (issue 371)
                 unlim = False
         else:
@@ -343,19 +356,6 @@ Boolean array must have the same shape as the data along this dimension."""
         else:
             sdim.append(1)
 
-    # is there an unlimited dimension? (only defined for __setitem__)
-    if put:
-        hasunlim = False
-        if dimensions:
-            for i in range(nDims):
-                dimname = dimensions[i]
-                # is this dimension unlimited?
-                # look in current group, and parents for dim.
-                dim = _find_dim(grp, dimname)
-                if dim.isunlimited():
-                    hasunlim = True
-                    break
-
     # broadcast data shape when assigned to full variable (issue #919)
     try:
         fullslice = elem.count(slice(None,None,None)) == len(elem)
@@ -389,12 +389,9 @@ Boolean array must have the same shape as the data along this dimension."""
 
         # set unlim to True if dimension is unlimited and put==True
         # (called from __setitem__). Note: grp and dimensions must be set.
-        if put and (dimensions is not None and grp is not None) and len(dimensions):
+        if hasunlim and put and dimensions:
             dimname = dimensions[i]
-            # is this dimension unlimited?
-            # look in current group, and parents for dim.
-            dim = _find_dim(grp, dimname)
-            unlim = dim.isunlimited()
+            unlim = unlimd[dimname]
         else:
             unlim = False
 
