@@ -1,7 +1,9 @@
- version 1.5.1.1 (not yet released)
+ version 1.5.1.1 (tag v1.5.1.1rel)
+==================================
  * fixed __version__ attribute (was set incorrectly in 1.5.1 release).
  * fix for issue #919  (assigning 2d array to 3d variable with singleton
    first dimension with v[:] = a).
+ * minimum numpy changed from 1.9.0 to 1.10.0.
 
  version 1.5.1 (tag v1.5.1rel)
 ==============================
