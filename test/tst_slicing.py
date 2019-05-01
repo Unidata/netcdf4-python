@@ -227,9 +227,13 @@ class VariablesTestCase(unittest.TestCase):
             f.createDimension('time',2)
             f.createDimension('lat',10)
             f.createDimension('lon',9)
-            f.createVariable('v1',np.float,('time', 'lon','lat',))
+            f.createVariable('v1',np.int,('time', 'lon','lat',))
             arr = np.arange(9*10).reshape((9, 10))
             f['v1'][:] = arr
+            assert_array_equal(f['v1'][:],np.broadcast_to(arr,f['v1'].shape))
+            arr = np.arange(10)
+            f['v1'][:] = arr
+            assert_array_equal(f['v1'][:],np.broadcast_to(arr,f['v1'].shape))
 
 if __name__ == '__main__':
     unittest.main()
