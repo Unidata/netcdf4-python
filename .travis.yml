@@ -11,7 +11,7 @@ addons:
 
 env:
   global:
-    - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 cftime"
+    - DEPENDS="numpy>=1.10.0 cython>=0.21 setuptools>=18.0 cftime"
     - NO_NET=1
     - MPI=0
 
@@ -28,7 +28,7 @@ matrix:
       env:
         - MPI=1
         - CC=mpicc.mpich
-        - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
+        - DEPENDS="numpy>=1.10.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
         - NETCDF_VERSION=GITMASTER
         - NETCDF_DIR=$HOME
         - PATH=${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
@@ -36,14 +36,14 @@ matrix:
     # Absolute minimum dependencies.
     - python: 2.7
       env:
-        - DEPENDS="numpy==1.9.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
+        - DEPENDS="numpy==1.10.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
     # test MPI with latest released version
     - python: 3.7
       dist: xenial
       env: 
         - MPI=1
         - CC=mpicc.mpich
-        - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
+        - DEPENDS="numpy>=1.10.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
         - NETCDF_VERSION=4.6.3
         - NETCDF_DIR=$HOME
         - PATH=${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
@@ -59,7 +59,7 @@ matrix:
       env: 
         - MPI=1
         - CC=mpicc.mpich
-        - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
+        - DEPENDS="numpy>=1.10.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
         - NETCDF_VERSION=4.6.3
         - PNETCDF_VERSION=1.11.0
         - NETCDF_DIR=$HOME
@@ -76,7 +76,7 @@ matrix:
       env:
         - MPI=1
         - CC=mpicc.mpich
-        - DEPENDS="numpy>=1.9.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
+        - DEPENDS="numpy>=1.10.0 cython>=0.21 setuptools>=18.0 mpi4py>=1.3.1 cftime"
         - NETCDF_VERSION=GITMASTER
         - NETCDF_DIR=$HOME
         - PATH=${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
