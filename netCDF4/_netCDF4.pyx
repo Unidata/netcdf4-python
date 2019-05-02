@@ -1,6 +1,6 @@
 """
-Version 1.5.1
--------------
+Version 1.5.1.1
+---------------
 - - -
 
 Introduction
@@ -37,7 +37,7 @@ Requires
 ========
 
  - Python 2.7 or later (python 3 works too).
- - [numpy array module](http://numpy.scipy.org), version 1.9.0 or later.
+ - [numpy array module](http://numpy.scipy.org), version 1.10.0 or later.
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
@@ -1190,7 +1190,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.5.0.1"
+__version__ = "1.5.1.1"
 
 # Initialize numpy
 import posixpath
@@ -4800,12 +4800,15 @@ cannot be safely cast to variable data type""" % attname
         # and fill with scalar values.
         if data.shape == ():
             data = numpy.tile(data,datashape)
-        # reshape data array by adding extra singleton dimensions
+        # reshape data array by adding extra dimensions
         # if needed to conform with start,count,stride.
         if len(data.shape) != len(datashape):
             # create a view so shape in caller is not modified (issue 90)
-            data = data.view()
-            data.shape = tuple(datashape)
+            try: # if extra singleton dims, just reshape
+                data = data.view()
+                data.shape = tuple(datashape)
+            except ValueError: # otherwise broadcast
+                data = numpy.broadcast_to(data, datashape)
 
         # Reshape these arrays so we can iterate over them.
         start = start.reshape((-1, self.ndim or 1))

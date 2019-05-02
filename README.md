@@ -9,6 +9,9 @@
 
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
+
+05/02/2019: Version [1.5.1.1](https://pypi.python.org/pypi/netCDF4/1.5.1.1) released. Fixes incorrect __version__
+module variable in 1.5.1 release, plus a slicing bug ([issue #919)](https://github.com/Unidata/netcdf4-python/issues/919)).
  
 04/30/2019: Version [1.5.1](https://pypi.python.org/pypi/netCDF4/1.5.1) released. Bugfixes, no new features.
 
