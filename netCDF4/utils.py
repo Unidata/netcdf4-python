@@ -365,7 +365,9 @@ Boolean array must have the same shape as the data along this dimension."""
         datashape = broadcasted_shape(shape, datashape)
 
     # pad datashape with zeros for dimensions not being sliced (issue #906)
-    if datashape:
+    # only used when there is a slice over only one dimension
+    if datashape and len(datashape) != len(elem) and\
+       len(datashape) == sum(1 for e in elem if type(e) == slice):
         datashapenew = (); i=0
         for e in elem:
             if type(e) != slice:
