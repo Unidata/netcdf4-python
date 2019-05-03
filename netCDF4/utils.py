@@ -409,10 +409,13 @@ Boolean array must have the same shape as the data along this dimension."""
             if unlim and e.stop is not None and e.stop > shape[i]:
                 length = e.stop
             elif unlim and e.stop is None and datashape != ():
-                if e.start is None:
-                    length = datashape[i]
-                else:
-                    length = e.start+datashape[i]
+                try:
+                    if e.start is None:
+                        length = datashape[i]
+                    else:
+                        length = e.start+datashape[i]
+                except IndexError:
+                    raise IndexError("Illegal slice")
             else:
                 if unlim and datashape == () and len(dim) == 0:
                     # writing scalar along unlimited dimension using slicing
