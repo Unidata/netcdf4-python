@@ -415,7 +415,7 @@ Boolean array must have the same shape as the data along this dimension."""
                     else:
                         length = e.start+datashape[i]
                 except IndexError:
-                    raise IndexError("Illegal slice")
+                    raise IndexError("shape of data does not conform to slice")
             else:
                 if unlim and datashape == () and len(dim) == 0:
                     # writing scalar along unlimited dimension using slicing
