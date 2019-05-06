@@ -365,12 +365,14 @@ Boolean array must have the same shape as the data along this dimension."""
         datashape = broadcasted_shape(shape, datashape)
 
     # pad datashape with zeros for dimensions not being sliced (issue #906)
-    if datashape:
+    # only used when data covers slice over subset of dimensions
+    if datashape and len(datashape) != len(elem) and\
+       len(datashape) == sum(1 for e in elem if type(e) == slice):
         datashapenew = (); i=0
         for e in elem:
-            if type(e) != slice:
+            if type(e) != slice and not np.iterable(e): # scalar integer slice
                 datashapenew = datashapenew + (0,)
-            else:
+            else: # slice object
                 datashapenew = datashapenew + (datashape[i],)
                 i+=1
         datashape = datashapenew
@@ -407,10 +409,13 @@ Boolean array must have the same shape as the data along this dimension."""
             if unlim and e.stop is not None and e.stop > shape[i]:
                 length = e.stop
             elif unlim and e.stop is None and datashape != ():
-                if e.start is None:
-                    length = datashape[i]
-                else:
-                    length = e.start+datashape[i]
+                try:
+                    if e.start is None:
+                        length = datashape[i]
+                    else:
+                        length = e.start+datashape[i]
+                except IndexError:
+                    raise IndexError("shape of data does not conform to slice")
             else:
                 if unlim and datashape == () and len(dim) == 0:
                     # writing scalar along unlimited dimension using slicing
