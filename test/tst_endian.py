@@ -125,7 +125,7 @@ def issue930(file):
     nc = netCDF4.Dataset(file,'w')
     d = nc.createDimension('x',2)
     v1 = nc.createVariable('v1','i2','x',endian='big')
-    v2 = nc.createVariable('v2','i2','x',endian='big')
+    v2 = nc.createVariable('v2','i2','x',endian='little')
     v1[0] = 255; v1[1] = 1
     v2[0] = 255; v2[1] = 1
     v1._Unsigned="TRUE"; v1.missing_value=np.int16(1)
