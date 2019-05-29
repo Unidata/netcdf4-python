@@ -121,6 +121,24 @@ def issue346(file):
     assert_array_equal(datal,xl)
     nc.close()
 
+def issue930(file):
+    nc = netCDF4.Dataset(file,'w')
+    d = nc.createDimension('x',2)
+    v1 = nc.createVariable('v1','i2','x',endian='big')
+    v2 = nc.createVariable('v2','i2','x',endian='big')
+    v1[0] = 255; v1[1] = 1
+    v2[0] = 255; v2[1] = 1
+    v1._Unsigned="TRUE"; v1.missing_value=np.int16(1)
+    v2._Unsigned="TRUE"; v2.missing_value=np.int16(1)
+    nc.close()
+    nc = netCDF4.Dataset(file)
+    assert_array_equal(nc['v1'][:],np.ma.masked_array([255,1],mask=[False,True]))
+    assert_array_equal(nc['v2'][:],np.ma.masked_array([255,1],mask=[False,True]))
+    nc.set_auto_mask(False)
+    assert_array_equal(nc['v1'][:],np.array([255,1]))
+    assert_array_equal(nc['v2'][:],np.array([255,1]))
+    nc.close()
+
 class EndianTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -141,6 +159,7 @@ class EndianTestCase(unittest.TestCase):
         check_byteswap(self.file3, data)
         issue310(self.file)
         issue346(self.file2)
+        issue930(self.file2)
 
 if __name__ == '__main__':
     unittest.main()
