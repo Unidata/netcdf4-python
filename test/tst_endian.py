@@ -122,6 +122,9 @@ def issue346(file):
     nc.close()
 
 def issue930(file):
+    # make sure view to unsigned data type (triggered
+    # by _Unsigned attribute being set) is correct when
+    # data byte order is non-native.
     nc = netCDF4.Dataset(file,'w')
     d = nc.createDimension('x',2)
     v1 = nc.createVariable('v1','i2','x',endian='big')
