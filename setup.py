@@ -584,7 +584,7 @@ else:
 
 setup(name="netCDF4",
       cmdclass=cmdclass,
-      version="1.5.1.2",
+      version="1.5.2",
       long_description="netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project is hosted on a `GitHub repository <https://github.com/Unidata/netcdf4-python>`_ where you may access the most up-to-date source.",
       author="Jeff Whitaker",
       author_email="jeffrey.s.whitaker@noaa.gov",

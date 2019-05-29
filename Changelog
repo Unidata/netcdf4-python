@@ -1,3 +1,8 @@
+ version 1.5.2 (not yet released)
+==============================
+ * fix for scaling bug when _Unsigned attribute is set and byteorder of data does not
+   match native byteorder (issue #930).
+
  version 1.5.1.2 (tag v1.5.1.2rel)
 ==================================
  * fix another slicing bug introduced by the fix to issue #906 (issue #922).

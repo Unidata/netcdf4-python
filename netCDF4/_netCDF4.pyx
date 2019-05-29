@@ -1,5 +1,5 @@
 """
-Version 1.5.1.2
+Version 1.5.2
 ---------------
 - - -
 
@@ -1190,7 +1190,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.5.1.2"
+__version__ = "1.5.2"
 
 # Initialize numpy
 import posixpath
@@ -4393,7 +4393,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if self.scale:  # only do this if autoscale option is on.
                 is_unsigned = getattr(self, '_Unsigned', False)
                 if is_unsigned and data.dtype.kind == 'i':
-                    data = data.view('u%s' % data.dtype.itemsize)
+                    data=data.view('%su%s'%(data.dtype.byteorder,data.dtype.itemsize))
 
         if self.scale and self._isprimitive and valid_scaleoffset:
             # if variable has scale_factor and add_offset attributes, apply
@@ -4447,7 +4447,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         is_unsigned = getattr(self, '_Unsigned', False)
         is_unsigned_int = is_unsigned and data.dtype.kind == 'i'
         if self.scale and is_unsigned_int:  # only do this if autoscale option is on.
-            dtype_unsigned_int = 'u%s' % data.dtype.itemsize
+            dtype_unsigned_int='%su%s' % (data.dtype.byteorder,data.dtype.itemsize)
             data = data.view(dtype_unsigned_int)
         # private function for creating a masked array, masking missing_values
         # and/or _FillValues.
