@@ -151,7 +151,7 @@ Here's an example:
     :::python
     >>> from netCDF4 import Dataset
     >>> rootgrp = Dataset("test.nc", "w", format="NETCDF4")
-    >>> print rootgrp.data_model
+    >>> print(rootgrp.data_model)
     NETCDF4
     >>> rootgrp.close()
 
@@ -182,11 +182,20 @@ in a netCDF 3 file you will get an error message.
     >>> rootgrp = Dataset("test.nc", "a")
     >>> fcstgrp = rootgrp.createGroup("forecasts")
     >>> analgrp = rootgrp.createGroup("analyses")
-    >>> print rootgrp.groups
-    OrderedDict([("forecasts",
-                  <netCDF4._netCDF4.Group object at 0x1b4b7b0>),
-                 ("analyses",
-                  <netCDF4._netCDF4.Group object at 0x1b4b970>)])
+    >>> print(rootgrp.groups)
+    OrderedDict([('forecasts', <class 'netCDF4._netCDF4.Group'>
+    group /forecasts:
+        dimensions(sizes): 
+        variables(dimensions): 
+        groups: 
+    ), ('analyses', <class 'netCDF4._netCDF4.Group'>
+    group /analyses:
+        dimensions(sizes): 
+        variables(dimensions): 
+        groups: 
+    )])
+
+
 
 Groups can exist within groups in a `netCDF4.Dataset`, just as directories
 exist within directories in a unix filesystem. Each `netCDF4.Group` instance
@@ -212,40 +221,45 @@ object yields summary information about it's contents.
 
     :::python
     >>> def walktree(top):
-    >>>     values = top.groups.values()
-    >>>     yield values
-    >>>     for value in top.groups.values():
-    >>>         for children in walktree(value):
-    >>>             yield children
-    >>> print rootgrp
-    >>> for children in walktree(rootgrp):
-    >>>      for child in children:
-    >>>          print child
-    <type "netCDF4._netCDF4.Dataset">
-    root group (NETCDF4 file format):
-        dimensions:
-        variables:
+    ...     values = top.groups.values()
+    ...     yield values
+    ...     for value in top.groups.values():
+    ...         for children in walktree(value):
+    ...             yield children
+    >>> print(rootgrp)
+    <class 'netCDF4._netCDF4.Dataset'>
+    root group (NETCDF4 data model, file format HDF5):
+        dimensions(sizes): 
+        variables(dimensions): 
         groups: forecasts, analyses
-    <type "netCDF4._netCDF4.Group">
+    <BLANKLINE>
+    >>> for children in walktree(rootgrp):
+    ...     for child in children:
+    ...         print(child)
+    <class 'netCDF4._netCDF4.Group'>
     group /forecasts:
-        dimensions:
-        variables:
+        dimensions(sizes): 
+        variables(dimensions): 
         groups: model1, model2
-    <type "netCDF4._netCDF4.Group">
+    <BLANKLINE>
+    <class 'netCDF4._netCDF4.Group'>
     group /analyses:
-        dimensions:
-        variables:
-        groups:
-    <type "netCDF4._netCDF4.Group">
+        dimensions(sizes): 
+        variables(dimensions): 
+        groups: 
+    <BLANKLINE>
+    <class 'netCDF4._netCDF4.Group'>
     group /forecasts/model1:
-        dimensions:
-        variables:
-        groups:
-    <type "netCDF4._netCDF4.Group">
+        dimensions(sizes): 
+        variables(dimensions): 
+        groups: 
+    <BLANKLINE>
+    <class 'netCDF4._netCDF4.Group'>
     group /forecasts/model2:
-        dimensions:
-        variables:
-        groups:
+        dimensions(sizes): 
+        variables(dimensions): 
+        groups: 
+    <BLANKLINE>
 
 ## <div id='section3'>3) Dimensions in a netCDF file.
 
@@ -272,11 +286,12 @@ one, and it must be the first (leftmost) dimension of the variable.
 All of the `netCDF4.Dimension` instances are stored in a python dictionary.
 
     :::python
-    >>> print rootgrp.dimensions
-    OrderedDict([("level", <netCDF4._netCDF4.Dimension object at 0x1b48030>),
-                 ("time", <netCDF4._netCDF4.Dimension object at 0x1b481c0>),
-                 ("lat", <netCDF4._netCDF4.Dimension object at 0x1b480f8>),
-                 ("lon", <netCDF4._netCDF4.Dimension object at 0x1b48a08>)])
+    >>> print(rootgrp.dimensions)
+    OrderedDict([('level', <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'level', size = 0
+    ), ('time', <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0
+    ), ('lat', <class 'netCDF4._netCDF4.Dimension'>: name = 'lat', size = 73
+    ), ('lon', <class 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144
+    )])
 
 Calling the python `len` function with a `netCDF4.Dimension` instance returns
 the current size of that dimension.
@@ -284,11 +299,11 @@ The `netCDF4.Dimension.isunlimited` method of a `netCDF4.Dimension` instance
 can be used to determine if the dimensions is unlimited, or appendable.
 
     :::python
-    >>> print len(lon)
+    >>> print(len(lon))
     144
-    >>> print lon.isunlimited()
+    >>> print(lon.isunlimited())
     False
-    >>> print time.isunlimited()
+    >>> print(time.isunlimited())
     True
 
 Printing the `netCDF4.Dimension` object
@@ -297,12 +312,15 @@ and whether it is unlimited.
 
     :::python
     >>> for dimobj in rootgrp.dimensions.values():
-    >>>    print dimobj
-    <type "netCDF4._netCDF4.Dimension"> (unlimited): name = "level", size = 0
-    <type "netCDF4._netCDF4.Dimension"> (unlimited): name = "time", size = 0
-    <type "netCDF4._netCDF4.Dimension">: name = "lat", size = 73
-    <type "netCDF4._netCDF4.Dimension">: name = "lon", size = 144
-    <type "netCDF4._netCDF4.Dimension"> (unlimited): name = "time", size = 0
+    ...     print(dimobj)
+    <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'level', size = 0
+    <BLANKLINE>
+    <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0
+    <BLANKLINE>
+    <class 'netCDF4._netCDF4.Dimension'>: name = 'lat', size = 73
+    <BLANKLINE>
+    <class 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144
+    <BLANKLINE>
 
 `netCDF4.Dimension` names can be changed using the
 `netCDF4.Datatset.renameDimension` method of a `netCDF4.Dataset` or
@@ -348,17 +366,20 @@ used later to access and set variable data and attributes.
     >>> longitudes = rootgrp.createVariable("lon","f4",("lon",))
     >>> # two dimensions unlimited
     >>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",))
+    >>> temp.units = "K"
 
-To get summary info on a `netCDF4.Variable` instance in an interactive session, just print it.
+To get summary info on a `netCDF4.Variable` instance in an interactive session,
+just print it.
 
     :::python
-    >>> print temp
-    <type "netCDF4._netCDF4.Variable">
+    >>> print(temp)
+    <class 'netCDF4._netCDF4.Variable'>
     float32 temp(time, level, lat, lon)
-        least_significant_digit: 3
         units: K
     unlimited dimensions: time, level
     current shape = (0, 0, 73, 144)
+    filling on, default _FillValue of 9.969209968386869e+36 used
+    <BLANKLINE>
 
 You can use a path to create a Variable inside a hierarchy of groups.
 
@@ -371,30 +392,54 @@ You can also query a `netCDF4.Dataset` or `netCDF4.Group` instance directly to o
 `netCDF4.Variable` instances using paths.
 
     :::python
-    >>> print rootgrp["/forecasts/model1"] # a Group instance
-    <type "netCDF4._netCDF4.Group">
+    >>> print(rootgrp["/forecasts/model1"])  # a Group instance
+    <class 'netCDF4._netCDF4.Group'>
     group /forecasts/model1:
         dimensions(sizes):
         variables(dimensions): float32 temp(time,level,lat,lon)
         groups:
-    >>> print rootgrp["/forecasts/model1/temp"] # a Variable instance
-    <type "netCDF4._netCDF4.Variable">
+    >>> print(rootgrp["/forecasts/model1/temp"])  # a Variable instance
+    <class 'netCDF4._netCDF4.Variable'>
     float32 temp(time, level, lat, lon)
     path = /forecasts/model1
     unlimited dimensions: time, level
     current shape = (0, 0, 73, 144)
-    filling on, default _FillValue of 9.96920996839e+36 used
+    filling on, default _FillValue of 9.969209968386869e+36 used
+    <BLANKLINE>
+
 
 All of the variables in the `netCDF4.Dataset` or `netCDF4.Group` are stored in a
 Python dictionary, in the same way as the dimensions:
 
     :::python
-    >>> print rootgrp.variables
-    OrderedDict([("time", <netCDF4.Variable object at 0x1b4ba70>),
-                 ("level", <netCDF4.Variable object at 0x1b4bab0>),
-                 ("lat", <netCDF4.Variable object at 0x1b4baf0>),
-                 ("lon", <netCDF4.Variable object at 0x1b4bb30>),
-                 ("temp", <netCDF4.Variable object at 0x1b4bb70>)])
+    >>> print(rootgrp.variables)
+    OrderedDict([('time', <class 'netCDF4._netCDF4.Variable'>
+    float64 time(time)
+    unlimited dimensions: time
+    current shape = (0,)
+    filling on, default _FillValue of 9.969209968386869e+36 used
+    ), ('level', <class 'netCDF4._netCDF4.Variable'>
+    int32 level(level)
+    unlimited dimensions: level
+    current shape = (0,)
+    filling on, default _FillValue of -2147483647 used
+    ), ('lat', <class 'netCDF4._netCDF4.Variable'>
+    float32 lat(lat)
+    unlimited dimensions: 
+    current shape = (73,)
+    filling on, default _FillValue of 9.969209968386869e+36 used
+    ), ('lon', <class 'netCDF4._netCDF4.Variable'>
+    float32 lon(lon)
+    unlimited dimensions: 
+    current shape = (144,)
+    filling on, default _FillValue of 9.969209968386869e+36 used
+    ), ('temp', <class 'netCDF4._netCDF4.Variable'>
+    float32 temp(time, level, lat, lon)
+        units: K
+    unlimited dimensions: time, level
+    current shape = (0, 0, 73, 144)
+    filling on, default _FillValue of 9.969209968386869e+36 used
+    )])
 
 `netCDF4.Variable` names can be changed using the
 `netCDF4.Dataset.renameVariable` method of a `netCDF4.Dataset`
@@ -432,9 +477,9 @@ and attributes that cannot (or should not) be modified by the user.
 
     :::python
     >>> for name in rootgrp.ncattrs():
-    >>>     print "Global attr", name, "=", getattr(rootgrp,name)
+    ...     print("Global attr {} = {}".format(name, getattr(rootgrp, name)))
     Global attr description = bogus example script
-    Global attr history = Created Mon Nov  7 10.30:56 2005
+    Global attr history = Created Mon Jul  8 14:19:41 2019
     Global attr source = netCDF4 python module tutorial
 
 The `__dict__` attribute of a `netCDF4.Dataset`, `netCDF4.Group` or `netCDF4.Variable`
@@ -442,10 +487,10 @@ instance provides all the netCDF attribute name/value pairs in a python
 dictionary:
 
     :::python
-    >>> print rootgrp.__dict__
-    OrderedDict([(u"description", u"bogus example script"),
-                 (u"history", u"Created Thu Mar  3 19:30:33 2011"),
-                 (u"source", u"netCDF4 python module tutorial")])
+    >>> print(rootgrp.__dict__)
+    OrderedDict([('description', 'bogus example script'),
+                 ('history', 'Created Mon Jul  8 14:19:41 2019'),
+                 ('source', 'netCDF4 python module tutorial')])
 
 Attributes can be deleted from a netCDF `netCDF4.Dataset`, `netCDF4.Group` or
 `netCDF4.Variable` using the python `del` statement (i.e. `del grp.foo`
@@ -462,7 +507,7 @@ into it? You can just treat it like an array and assign data to a slice.
     >>> lons =  numpy.arange(-180,180,2.5)
     >>> latitudes[:] = lats
     >>> longitudes[:] = lons
-    >>> print "latitudes =\\n",latitudes[:]
+    >>> print("latitudes =\\n{}".format(latitudes[:]))
     latitudes =
     [-90.  -87.5 -85.  -82.5 -80.  -77.5 -75.  -72.5 -70.  -67.5 -65.  -62.5
      -60.  -57.5 -55.  -52.5 -50.  -47.5 -45.  -42.5 -40.  -37.5 -35.  -32.5
@@ -480,17 +525,17 @@ assign data outside the currently defined range of indices.
     >>> # append along two unlimited dimensions by assigning to slice.
     >>> nlats = len(rootgrp.dimensions["lat"])
     >>> nlons = len(rootgrp.dimensions["lon"])
-    >>> print "temp shape before adding data = ",temp.shape
-    temp shape before adding data =  (0, 0, 73, 144)
+    >>> print("temp shape before adding data = {}".format(temp.shape))
+    temp shape before adding data = (0, 0, 73, 144)
     >>>
     >>> from numpy.random import uniform
-    >>> temp[0:5,0:10,:,:] = uniform(size=(5,10,nlats,nlons))
-    >>> print "temp shape after adding data = ",temp.shape
-    temp shape after adding data =  (6, 10, 73, 144)
+    >>> temp[0:5, 0:10, :, :] = uniform(size=(5, 10, nlats, nlons))
+    >>> print("temp shape after adding data = {}".format(temp.shape))
+    temp shape after adding data = (5, 10, 73, 144)
     >>>
     >>> # levels have grown, but no values yet assigned.
-    >>> print "levels shape after adding pressure data = ",levels.shape
-    levels shape after adding pressure data =  (10,)
+    >>> print("levels shape after adding pressure data = {}".format(levels.shape))
+    levels shape after adding pressure data = (10,)
 
 Note that the size of the levels variable grows when data is appended
 along the `level` dimension of the variable `temp`, even though no
@@ -510,7 +555,8 @@ allowed, and these indices work independently along each dimension (similar
 to the way vector subscripts work in fortran).  This means that
 
     :::python
-    >>> temp[0, 0, [0,1,2,3], [0,1,2,3]]
+    >>> temp[0, 0, [0,1,2,3], [0,1,2,3]].shape
+    (4, 4)
 
 returns an array of shape (4,4) when slicing a netCDF variable, but for a
 numpy array it returns an array of shape (4,).
@@ -534,12 +580,12 @@ will extract time indices 0,2 and 4, pressure levels
 Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).
 
     :::python
-    >>> print "shape of fancy temp slice = ",tempdat.shape
-    shape of fancy temp slice =  (3, 3, 36, 71)
+    >>> print("shape of fancy temp slice = {}".format(tempdat.shape))
+    shape of fancy temp slice = (3, 3, 36, 71)
 
 ***Special note for scalar variables***: To extract data from a scalar variable
-`v` with no associated dimensions, use `numpy.asarray(v)` or `v[...]`. The result
-will be a numpy scalar array.
+`v` with no associated dimensions, use `numpy.asarray(v)` or `v[...]`.
+The result will be a numpy scalar array.
 
 By default, netcdf4-python returns numpy masked arrays with values equal to the
 `missing_value` or `_FillValue` variable attributes masked.  The
@@ -572,14 +618,15 @@ can be used:
     >>> from netCDF4 import num2date, date2num
     >>> dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
     >>> times[:] = date2num(dates,units=times.units,calendar=times.calendar)
-    >>> print "time values (in units %s): " % times.units+"\\n",times[:]
-    time values (in units hours since January 1, 0001):
-    [ 17533056.  17533068.  17533080.  17533092.  17533104.]
+    >>> print("time values (in units {}):\\n{}".format(times.units, times[:]))
+    time values (in units hours since 0001-01-01 00:00:00.0):
+    [17533104. 17533116. 17533128. 17533140. 17533152.]
     >>> dates = num2date(times[:],units=times.units,calendar=times.calendar)
-    >>> print "dates corresponding to time values:\\n",dates
+    >>> print("dates corresponding to time values:\\n{}".format(dates))
     dates corresponding to time values:
-    [2001-03-01 00:00:00 2001-03-01 12:00:00 2001-03-02 00:00:00
-     2001-03-02 12:00:00 2001-03-03 00:00:00]
+    [real_datetime(2001, 3, 1, 0, 0) real_datetime(2001, 3, 1, 12, 0)
+     real_datetime(2001, 3, 2, 0, 0) real_datetime(2001, 3, 2, 12, 0)
+     real_datetime(2001, 3, 3, 0, 0)]
 
 `netCDF4.num2date` converts numeric values of time in the specified `units`
 and `calendar` to datetime objects, and `netCDF4.date2num` does the reverse.
@@ -607,22 +654,22 @@ datasets are not supported).
 
     :::python
     >>> for nf in range(10):
-    >>>     f = Dataset("mftest%s.nc" % nf,"w")
-    >>>     f.createDimension("x",None)
-    >>>     x = f.createVariable("x","i",("x",))
-    >>>     x[0:10] = numpy.arange(nf*10,10*(nf+1))
-    >>>     f.close()
+    ...     with Dataset("mftest%s.nc" % nf, "w", format="NETCDF4_CLASSIC") as f:
+    ...         _ = f.createDimension("x",None)
+    ...         x = f.createVariable("x","i",("x",))
+    ...         x[0:10] = numpy.arange(nf*10,10*(nf+1))
 
 Now read all the files back in at once with `netCDF4.MFDataset`
 
     :::python
     >>> from netCDF4 import MFDataset
     >>> f = MFDataset("mftest*nc")
-    >>> print f.variables["x"][:]
-    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
-     25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
-     50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
-     75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
+    >>> print(f.variables["x"][:])
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+     24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+     48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
+     72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95
+     96 97 98 99]
 
 Note that `netCDF4.MFDataset` can only be used to read, not write, multi-file
 datasets.
@@ -673,12 +720,12 @@ In our example, try replacing the line
 with
 
     :::python
-    >>> temp = dataset.createVariable("temp","f4",("time","level","lat","lon",),zlib=True)
+    >>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),zlib=True)
 
 and then
 
     :::python
-    >>> temp = dataset.createVariable("temp","f4",("time","level","lat","lon",),zlib=True,least_significant_digit=3)
+    >>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),zlib=True,least_significant_digit=3)
 
 and see how much smaller the resulting files are.
 
@@ -707,7 +754,7 @@ for storing numpy complex arrays.  Here's an example:
     >>> complex128 = numpy.dtype([("real",numpy.float64),("imag",numpy.float64)])
     >>> complex128_t = f.createCompoundType(complex128,"complex128")
     >>> # create a variable with this data type, write some data to it.
-    >>> f.createDimension("x_dim",None)
+    >>> x_dim = f.createDimension("x_dim",None)
     >>> v = f.createVariable("cmplx_var",complex128_t,"x_dim")
     >>> data = numpy.empty(size,complex128) # numpy structured array
     >>> data["real"] = datac.real; data["imag"] = datac.imag
@@ -720,11 +767,11 @@ for storing numpy complex arrays.  Here's an example:
     >>> datac2 = numpy.empty(datain.shape,numpy.complex128)
     >>> # .. fill it with contents of structured array.
     >>> datac2.real = datain["real"]; datac2.imag = datain["imag"]
-    >>> print datac.dtype,datac # original data
-    complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
+    >>> print('{}: {}'.format(datac.dtype, datac)) # original data
+    complex128: [ 0.54030231+0.84147098j -0.84147098+0.54030231j -0.54030231-0.84147098j]
     >>>
-    >>> print datac2.dtype,datac2 # data from file
-    complex128 [ 0.54030231+0.84147098j -0.84147098+0.54030231j  -0.54030231-0.84147098j]
+    >>> print('{}: {}'.format(datac2.dtype, datac2)) # data from file
+    complex128: [ 0.54030231+0.84147098j -0.84147098+0.54030231j -0.54030231-0.84147098j]
 
 Compound types can be nested, but you must create the 'inner'
 ones first. All possible numpy structured arrays cannot be
@@ -735,22 +782,26 @@ in a Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:
 
     :::python
-    >>> print f
-    <type "netCDF4._netCDF4.Dataset">
-    root group (NETCDF4 file format):
-        dimensions: x_dim
-        variables: cmplx_var
-        groups:
-    <type "netCDF4._netCDF4.Variable">
-    >>> print f.variables["cmplx_var"]
+    >>> print(f)
+    <class 'netCDF4._netCDF4.Dataset'>
+    root group (NETCDF4 data model, file format HDF5):
+        dimensions(sizes): x_dim(3)
+        variables(dimensions): {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True} ESC[4mcmplx_varESC[0m(x_dim)
+        groups: 
+    <BLANKLINE>
+    >>> print(f.variables["cmplx_var"])
+    <class 'netCDF4._netCDF4.Variable'>
     compound cmplx_var(x_dim)
-    compound data type: [("real", "<f8"), ("imag", "<f8")]
+    compound data type: {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True}
     unlimited dimensions: x_dim
     current shape = (3,)
-    >>> print f.cmptypes
-    OrderedDict([("complex128", <netCDF4.CompoundType object at 0x1029eb7e8>)])
-    >>> print f.cmptypes["complex128"]
-    <type "netCDF4._netCDF4.CompoundType">: name = "complex128", numpy dtype = [(u"real","<f8"), (u"imag", "<f8")]
+    <BLANKLINE>
+    >>> print(f.cmptypes)
+    OrderedDict([('complex128', <class 'netCDF4._netCDF4.CompoundType'>: name = 'complex128', numpy dtype = {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True}
+    )])
+    >>> print(f.cmptypes["complex128"])
+    <class 'netCDF4._netCDF4.CompoundType'>: name = 'complex128', numpy dtype = {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True}
+    <BLANKLINE>
 
 ## <div id='section11'>11) Variable-length (vlen) data types.
 
@@ -784,32 +835,40 @@ In this case, they contain 1-D numpy `int32` arrays of random length between
 
     :::python
     >>> import random
+    >>> random.seed(54321)
     >>> data = numpy.empty(len(y)*len(x),object)
     >>> for n in range(len(y)*len(x)):
-    >>>    data[n] = numpy.arange(random.randint(1,10),dtype="int32")+1
+    ...     data[n] = numpy.arange(random.randint(1,10),dtype="int32")+1
     >>> data = numpy.reshape(data,(len(y),len(x)))
     >>> vlvar[:] = data
-    >>> print "vlen variable =\\n",vlvar[:]
+    >>> print("vlen variable =\\n{}".format(vlvar[:]))
     vlen variable =
-    [[[ 1  2  3  4  5  6  7  8  9 10] [1 2 3 4 5] [1 2 3 4 5 6 7 8]]
-     [[1 2 3 4 5 6 7] [1 2 3 4 5 6] [1 2 3 4 5]]
-     [[1 2 3 4 5] [1 2 3 4] [1]]
-     [[ 1  2  3  4  5  6  7  8  9 10] [ 1  2  3  4  5  6  7  8  9 10]
-      [1 2 3 4 5 6 7 8]]]
-    >>> print f
-    <type "netCDF4._netCDF4.Dataset">
-    root group (NETCDF4 file format):
-        dimensions: x, y
-        variables: phony_vlen_var
-        groups:
-    >>> print f.variables["phony_vlen_var"]
-    <type "netCDF4._netCDF4.Variable">
+    [[array([1, 2, 3, 4, 5, 6, 7, 8], dtype=int32) array([1, 2], dtype=int32)
+      array([1, 2, 3, 4], dtype=int32)]
+     [array([1, 2, 3], dtype=int32)
+      array([1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=int32)
+      array([1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=int32)]
+     [array([1, 2, 3, 4, 5, 6, 7], dtype=int32) array([1, 2, 3], dtype=int32)
+      array([1, 2, 3, 4, 5, 6], dtype=int32)]
+     [array([1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=int32)
+      array([1, 2, 3, 4, 5], dtype=int32) array([1, 2], dtype=int32)]]
+    >>> print(f)
+    <class 'netCDF4._netCDF4.Dataset'>
+    root group (NETCDF4 data model, file format HDF5):
+        dimensions(sizes): x(3), y(4)
+        variables(dimensions): int32 ESC[4mphony_vlen_varESC[0m(y,x)
+        groups: 
+    <BLANKLINE>
+    >>> print(f.variables["phony_vlen_var"])
+    <class 'netCDF4._netCDF4.Variable'>
     vlen phony_vlen_var(y, x)
     vlen data type: int32
-    unlimited dimensions:
+    unlimited dimensions: 
     current shape = (4, 3)
-    >>> print f.VLtypes["phony_vlen"]
-    <type "netCDF4._netCDF4.VLType">: name = "phony_vlen", numpy dtype = int32
+    <BLANKLINE>
+    >>> print(f.vltypes["phony_vlen"])
+    <class 'netCDF4._netCDF4.VLType'>: name = 'phony_vlen', numpy dtype = int32
+    <BLANKLINE>
 
 Numpy object arrays containing python strings can also be written as vlen
 variables,  For vlen strings, you don't need to create a vlen data type.
@@ -819,7 +878,7 @@ with fixed length greater than 1) when calling the
 
     :::python
     >>> z = f.createDimension("z",10)
-    >>> strvar = rootgrp.createVariable("strvar", str, "z")
+    >>> strvar = f.createVariable("strvar", str, "z")
 
 In this example, an object array is filled with random python strings with
 random lengths between 2 and 12 characters, and the data in the object
@@ -829,24 +888,27 @@ array is assigned to the vlen string variable.
     >>> chars = "1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     >>> data = numpy.empty(10,"O")
     >>> for n in range(10):
-    >>>     stringlen = random.randint(2,12)
-    >>>     data[n] = "".join([random.choice(chars) for i in range(stringlen)])
+    ...     stringlen = random.randint(2,12)
+    ...     data[n] = "".join([random.choice(chars) for i in range(stringlen)])
     >>> strvar[:] = data
-    >>> print "variable-length string variable:\\n",strvar[:]
+    >>> print("variable-length string variable:\\n{}".format(strvar[:]))
     variable-length string variable:
-    [aDy29jPt 5DS9X8 jd7aplD b8t4RM jHh8hq KtaPWF9cQj Q1hHN5WoXSiT MMxsVeq tdLUzvVTzj]
-    >>> print f
-    <type "netCDF4._netCDF4.Dataset">
-    root group (NETCDF4 file format):
-        dimensions: x, y, z
-        variables: phony_vlen_var, strvar
-        groups:
-    >>> print f.variables["strvar"]
-    <type "netCDF4._netCDF4.Variable">
+    ['Lh' '25F8wBbMI' '53rmM' 'vvjnb3t63ao' 'qjRBQk6w' 'aJh' 'QF'
+     'jtIJbJACaQk4' '3Z5' 'bftIIq']
+    >>> print(f)
+    <class 'netCDF4._netCDF4.Dataset'>
+    root group (NETCDF4 data model, file format HDF5):
+        dimensions(sizes): x(3), y(4), z(10)
+        variables(dimensions): int32 phony_vlen_var(y,x), <class 'str'> strvar(z)
+        groups: 
+    <BLANKLINE>
+    >>> print(f.variables["strvar"])
+    <class 'netCDF4._netCDF4.Variable'>
     vlen strvar(z)
-    vlen data type: <type "str">
-    unlimited dimensions:
-    current size = (10,)
+    vlen data type: <class 'str'>
+    unlimited dimensions: 
+    current shape = (10,)
+    <BLANKLINE>
 
 It is also possible to set contents of vlen string variables with numpy arrays
 of any string or unicode data type. Note, however, that accessing the contents
@@ -866,19 +928,15 @@ values and their names are used to define an Enum data type using
     :::python
     >>> nc = Dataset('clouds.nc','w')
     >>> # python dict with allowed values and their names.
-    >>> enum_dict = {u'Altocumulus': 7, u'Missing': 255,
-    >>> u'Stratus': 2, u'Clear': 0,
-    >>> u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5,
-    >>> u'Cumulonimbus': 1, u'Stratocumulus': 3}
+    >>> enum_dict = {'Altocumulus': 7, 'Missing': 255,
+    ... 'Stratus': 2, 'Clear': 0,
+    ... 'Nimbostratus': 6, 'Cumulus': 4, 'Altostratus': 5,
+    ... 'Cumulonimbus': 1, 'Stratocumulus': 3}
     >>> # create the Enum type called 'cloud_t'.
     >>> cloud_type = nc.createEnumType(numpy.uint8,'cloud_t',enum_dict)
-    >>> print cloud_type
-    <type 'netCDF4._netCDF4.EnumType'>: name = 'cloud_t',
-    numpy dtype = uint8, fields/values ={u'Cumulus': 4,
-    u'Altocumulus': 7, u'Missing': 255,
-    u'Stratus': 2, u'Clear': 0,
-    u'Cumulonimbus': 1, u'Stratocumulus': 3,
-    u'Nimbostratus': 6, u'Altostratus': 5}
+    >>> print(cloud_type)
+    <class 'netCDF4._netCDF4.EnumType'>: name = 'cloud_t', numpy dtype = uint8, fields/values ={'Altocumulus': 7, 'Missing': 255, 'Stratus': 2, 'Clear': 0, 'Nimbostratus': 6, 'Cumulus': 4, 'Altostratus': 5, 'Cumulonimbus': 1, 'Stratocumulus': 3}
+    <BLANKLINE>
 
 A new variable can be created in the usual way using this data type.
 Integer data is written to the variable that represents the named
@@ -890,30 +948,26 @@ specified names.
     >>> time = nc.createDimension('time',None)
     >>> # create a 1d variable of type 'cloud_type'.
     >>> # The fill_value is set to the 'Missing' named value.
-    >>> cloud_var =
-    >>> nc.createVariable('primary_cloud',cloud_type,'time',
-    >>> fill_value=enum_dict['Missing'])
+    >>> cloud_var = nc.createVariable('primary_cloud',cloud_type,'time',
+    ...                               fill_value=enum_dict['Missing'])
     >>> # write some data to the variable.
-    >>> cloud_var[:] = [enum_dict['Clear'],enum_dict['Stratus'],
-    >>> enum_dict['Cumulus'],enum_dict['Missing'],
-    >>> enum_dict['Cumulonimbus']]
+    >>> cloud_var[:] = [enum_dict[k] for k in ['Clear', 'Stratus', 'Cumulus',
+    ...                                        'Missing', 'Cumulonimbus']]
     >>> nc.close()
     >>> # reopen the file, read the data.
     >>> nc = Dataset('clouds.nc')
     >>> cloud_var = nc.variables['primary_cloud']
-    >>> print cloud_var
-    <type 'netCDF4._netCDF4.Variable'>
+    >>> print(cloud_var)
+    <class 'netCDF4._netCDF4.Variable'>
     enum primary_cloud(time)
         _FillValue: 255
     enum data type: uint8
     unlimited dimensions: time
     current shape = (5,)
-    >>> print cloud_var.datatype.enum_dict
-    {u'Altocumulus': 7, u'Missing': 255, u'Stratus': 2,
-    u'Clear': 0, u'Nimbostratus': 6, u'Cumulus': 4,
-    u'Altostratus': 5, u'Cumulonimbus': 1,
-    u'Stratocumulus': 3}
-    >>> print cloud_var[:]
+    <BLANKLINE>
+    >>> print(cloud_var.datatype.enum_dict)
+    {'Altocumulus': 7, 'Missing': 255, 'Stratus': 2, 'Clear': 0, 'Nimbostratus': 6, 'Cumulus': 4, 'Altostratus': 5, 'Cumulonimbus': 1, 'Stratocumulus': 3}
+    >>> print(cloud_var[:])
     [0 2 4 -- 1]
     >>> nc.close()
 
@@ -941,7 +995,7 @@ when a new dataset is created or an existing dataset is opened,
 use the `parallel` keyword to enable parallel access.
 
     :::python
-    >>> nc = Dataset('parallel_tst.nc','w',parallel=True)
+    >>> nc = Dataset('parallel_test.nc','w',parallel=True)
 
 The optional `comm` keyword may be used to specify a particular
 MPI communicator (`MPI_COMM_WORLD` is used by default).  Each process (or rank)
@@ -950,7 +1004,7 @@ written to a different variable index on each task
 
     :::python
     >>> d = nc.createDimension('dim',4)
-    >>> v = nc.createVariable('var', numpy.int, 'dim')
+    >>> v = nc.createVariable('var', np.int, 'dim')
     >>> v[rank] = rank
     >>> nc.close()
 
@@ -958,9 +1012,9 @@ written to a different variable index on each task
     netcdf parallel_test {
     dimensions:
         dim = 4 ;
-        variables:
+    variables:
         int64 var(dim) ;
-        data:
+    data:
 
         var = 0, 1, 2, 3 ;
     }
@@ -1010,18 +1064,19 @@ fixed-width byte string array (dtype `S#`), otherwise a numpy unicode (dtype
 characters with one more dimension. For example,
 
     :::python
+    >>> from netCDF4 import stringtochar
     >>> nc = Dataset('stringtest.nc','w',format='NETCDF4_CLASSIC')
-    >>> nc.createDimension('nchars',3)
-    >>> nc.createDimension('nstrings',None)
+    >>> _ = nc.createDimension('nchars',3)
+    >>> _ = nc.createDimension('nstrings',None)
     >>> v = nc.createVariable('strings','S1',('nstrings','nchars'))
     >>> datain = numpy.array(['foo','bar'],dtype='S3')
     >>> v[:] = stringtochar(datain) # manual conversion to char array
-    >>> v[:] # data returned as char array
+    >>> print(v[:]) # data returned as char array
     [[b'f' b'o' b'o']
-    [b'b' b'a' b'r']]
+     [b'b' b'a' b'r']]
     >>> v._Encoding = 'ascii' # this enables automatic conversion
     >>> v[:] = datain # conversion to char array done internally
-    >>> v[:] # data returned in numpy string array
+    >>> print(v[:])  # data returned in numpy string array
     ['foo' 'bar']
     >>> nc.close()
 
@@ -1044,25 +1099,25 @@ Here's an example:
     :::python
     >>> nc = Dataset('compoundstring_example.nc','w')
     >>> dtype = numpy.dtype([('observation', 'f4'),
-                      ('station_name','S80')])
+    ...                      ('station_name','S10')])
     >>> station_data_t = nc.createCompoundType(dtype,'station_data')
-    >>> nc.createDimension('station',None)
+    >>> _ = nc.createDimension('station',None)
     >>> statdat = nc.createVariable('station_obs', station_data_t, ('station',))
     >>> data = numpy.empty(2,dtype)
     >>> data['observation'][:] = (123.,3.14)
     >>> data['station_name'][:] = ('Boulder','New York')
-    >>> statdat.dtype # strings actually stored as character arrays
-    {'names':['observation','station_name'], 'formats':['<f4',('S1', (80,))], 'offsets':[0,4], 'itemsize':84, 'aligned':True}
+    >>> print(statdat.dtype) # strings actually stored as character arrays
+    {'names':['observation','station_name'], 'formats':['<f4',('S1', (10,))], 'offsets':[0,4], 'itemsize':16, 'aligned':True}
     >>> statdat[:] = data # strings converted to character arrays internally
-    >>> statdat[:] # character arrays converted back to strings
-    [(123.  , 'Boulder') (  3.14, 'New York')]
-    >>> statdat[:].dtype
-    {'names':['observation','station_name'], 'formats':['<f4','S80'], 'offsets':[0,4], 'itemsize':84, 'aligned':True}
+    >>> print(statdat[:])  # character arrays converted back to strings
+    [(123.  , b'Boulder') (  3.14, b'New York')]
+    >>> print(statdat[:].dtype)
+    {'names':['observation','station_name'], 'formats':['<f4','S10'], 'offsets':[0,4], 'itemsize':16, 'aligned':True}
     >>> statdat.set_auto_chartostring(False) # turn off auto-conversion
     >>> statdat[:] = data.view(dtype=[('observation', 'f4'),('station_name','S1',10)])
-    >>> statdat[:] # now structured array with char array subtype is returned
-    [(123.  , ['B', 'o', 'u', 'l', 'd', 'e', 'r', '', '', ''])
-    (  3.14, ['N', 'e', 'w', ' ', 'Y', 'o', 'r', 'k', '', ''])]
+    >>> print(statdat[:])  # now structured array with char array subtype is returned
+    [(123.  , [b'B', b'o', b'u', b'l', b'd', b'e', b'r', b'', b'', b''])
+     (  3.14, [b'N', b'e', b'w', b' ', b'Y', b'o', b'r', b'k', b'', b''])]
     >>> nc.close()
 
 Note that there is currently no support for mapping numpy structured arrays with
@@ -1094,11 +1149,12 @@ approaches.
     >>> v = nc.createVariable('v',numpy.int32,'x')
     >>> v[0:5] = numpy.arange(5)
     >>> print(nc)
-    <type 'netCDF4._netCDF4.Dataset'>
+    <class 'netCDF4._netCDF4.Dataset'>
     root group (NETCDF4 data model, file format HDF5):
-    dimensions(sizes): x(5)
-    variables(dimensions): int32 v(x)
-    groups:
+        dimensions(sizes): x(5)
+        variables(dimensions): int32 v(x)
+        groups: 
+    <BLANKLINE>
     >>> print(nc['v'][:])
     [0 1 2 3 4]
     >>> nc.close() # file saved to disk
@@ -1106,16 +1162,17 @@ approaches.
     >>> # python memory buffer.
     >>> # read the newly created netcdf file into a python
     >>> # bytes object.
-    >>> f = open('diskless_example.nc', 'rb')
-    >>> nc_bytes = f.read(); f.close()
+    >>> with open('diskless_example.nc', 'rb') as f:
+    ...     nc_bytes = f.read()
     >>> # create a netCDF in-memory dataset from the bytes object.
     >>> nc = Dataset('inmemory.nc', memory=nc_bytes)
     >>> print(nc)
-    <type 'netCDF4._netCDF4.Dataset'>
+    <class 'netCDF4._netCDF4.Dataset'>
     root group (NETCDF4 data model, file format HDF5):
-    dimensions(sizes): x(5)
-    variables(dimensions): int32 v(x)
-    groups:
+        dimensions(sizes): x(5)
+        variables(dimensions): int32 v(x)
+        groups: 
+    <BLANKLINE>
     >>> print(nc['v'][:])
     [0 1 2 3 4]
     >>> nc.close()
@@ -1129,17 +1186,17 @@ approaches.
     >>> v[0:5] = numpy.arange(5)
     >>> nc_buf = nc.close() # close returns memoryview
     >>> print(type(nc_buf))
-    <type 'memoryview'>
+    <class 'memoryview'>
     >>> # save nc_buf to disk, read it back in and check.
-    >>> f = open('inmemory.nc', 'wb')
-    >>> f.write(nc_buf); f.close()
+    >>> with open('inmemory.nc', 'wb') as f:
+    ...     f.write(nc_buf)
     >>> nc = Dataset('inmemory.nc')
     >>> print(nc)
-    <type 'netCDF4._netCDF4.Dataset'>
+    <class 'netCDF4._netCDF4.Dataset'>
     root group (NETCDF4 data model, file format HDF5):
-    dimensions(sizes): x(5)
-    variables(dimensions): int32 v(x)
-    groups:
+        dimensions(sizes): x(5)
+        variables(dimensions): int32 v(x)
+        groups:
     >>> print(nc['v'][:])
     [0 1 2 3 4]
     >>> nc.close()
@@ -6089,18 +6146,18 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
     >>> # create a series of netCDF files with a variable sharing
     >>> # the same unlimited dimension.
     >>> for nf in range(10):
-    >>>     f = Dataset("mftest%s.nc" % nf,"w",format='NETCDF4_CLASSIC')
-    >>>     f.createDimension("x",None)
-    >>>     x = f.createVariable("x","i",("x",))
-    >>>     x[0:10] = np.arange(nf*10,10*(nf+1))
-    >>>     f.close()
+    ...     with Dataset("mftest%s.nc" % nf, "w", format='NETCDF4_CLASSIC') as f:
+    ...         f.createDimension("x",None)
+    ...         x = f.createVariable("x","i",("x",))
+    ...         x[0:10] = np.arange(nf*10,10*(nf+1))
     >>> # now read all those files in at once, in one Dataset.
     >>> f = MFDataset("mftest*nc")
-    >>> print f.variables["x"][:]
-    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
-     25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
-     50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74
-     75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99]
+    >>> print(f.variables["x"][:])
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+     24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+     48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
+     72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95
+     96 97 98 99]
     """
 
     def __init__(self, files, check=False, aggdim=None, exclude=[],
@@ -6564,14 +6621,14 @@ Example usage (See `netCDF4.MFTime.__init__` for more details):
     >>> f1.close()
     >>> f2.close()
     >>> # Read the two files in at once, in one Dataset.
-    >>> f = MFDataset("mftest*nc")
+    >>> f = MFDataset("mftest_*nc")
     >>> t = f.variables["time"]
-    >>> print t.units
+    >>> print(t.units)
     days since 2000-01-01
-    >>> print t[32] # The value written in the file, inconsistent with the MF time units.
+    >>> print(t[32])  # The value written in the file, inconsistent with the MF time units.
     1
     >>> T = MFTime(t)
-    >>> print T[32]
+    >>> print(T[32])
     32
     """
 
