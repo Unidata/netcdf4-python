@@ -523,7 +523,7 @@ class TestDate2index(unittest.TestCase):
 
             :Example:
             >>> t = TestTime(datetime(1989, 2, 18), 45, 6, 'hours since 1979-01-01')
-            >>> print num2date(t[1], t.units)
+            >>> print(num2date(t[1], t.units))
             1989-02-18 06:00:00
             """
             self.units = units
