@@ -1,6 +1,6 @@
 language: python
 dist: xenial
-sudo: true
+cache: pip
 
 addons:
   apt:
@@ -39,7 +39,6 @@ matrix:
         - DEPENDS="numpy==1.10.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
     # test MPI with latest released version
     - python: 3.7
-      dist: xenial
       env: 
         - MPI=1
         - CC=mpicc.mpich
@@ -55,7 +54,6 @@ matrix:
             - libhdf5-mpich-dev
     # test MPI with latest released version
     - python: 3.7
-      dist: xenial
       env: 
         - MPI=1
         - CC=mpicc.mpich
@@ -72,7 +70,6 @@ matrix:
             - libhdf5-mpich-dev
     # test with netcdf-c from github master
     - python: 3.7
-      dist: xenial
       env:
         - MPI=1
         - CC=mpicc.mpich
