@@ -2,11 +2,15 @@ environment:
   CONDA_INSTALL_LOCN: C:\\Miniconda36-x64
   matrix:
     - TARGET_ARCH: x64
-      NPY: 1.16
+      NPY: 1.16.4
+      PY: 3.5
+
+    - TARGET_ARCH: x64
+      NPY: 1.16.4
       PY: 3.6
 
     - TARGET_ARCH: x64
-      NPY: 1.16
+      NPY: 1.16.4
       PY: 3.7
 
 platform:
