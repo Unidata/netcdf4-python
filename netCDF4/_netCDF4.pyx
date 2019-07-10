@@ -1233,14 +1233,10 @@ from cpython.bytes cimport PyBytes_FromStringAndSize
 # pure python utilities
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
-# try to use built-in ordered dict in python >= 2.7
-try:
+import sys
+if sys.version_info[0:2] < (3, 7):
+    # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
-except ImportError: # or else use drop-in substitute
-    try:
-        from ordereddict import OrderedDict
-    except ImportError:
-        raise ImportError('please install ordereddict (https://pypi.python.org/pypi/ordereddict)')
 try:
     from itertools import izip as zip
 except ImportError:
@@ -1254,7 +1250,6 @@ import posixpath
 from cftime import num2date, date2num, date2index
 import numpy
 import weakref
-import sys
 import warnings
 from glob import glob
 from numpy import ma
@@ -1677,9 +1672,15 @@ cdef _get_types(group):
             ierr = nc_inq_typeids(_grpid, &ntypes, typeids)
         _ensure_nc_success(ierr)
     # create empty dictionary for CompoundType instances.
-    cmptypes = OrderedDict()
-    vltypes = OrderedDict()
-    enumtypes = OrderedDict()
+    if sys.version_info[0:2] < (3, 7):
+        cmptypes = OrderedDict()
+        vltypes = OrderedDict()
+        enumtypes = OrderedDict()
+    else:
+        cmptypes = dict()
+        vltypes = dict()
+        enumtypes = dict()
+
     if ntypes > 0:
         for n from 0 <= n < ntypes:
             xtype = typeids[n]
@@ -1735,7 +1736,10 @@ cdef _get_dims(group):
         ierr = nc_inq_ndims(_grpid, &numdims)
     _ensure_nc_success(ierr)
     # create empty dictionary for dimensions.
-    dimensions = OrderedDict()
+    if sys.version_info[0:2] < (3, 7):
+        dimensions = OrderedDict()
+    else:
+        dimensions = dict()
     if numdims > 0:
         dimids = <int *>malloc(sizeof(int) * numdims)
         if group.data_model == 'NETCDF4':
@@ -1766,7 +1770,10 @@ cdef _get_grps(group):
         ierr = nc_inq_grps(_grpid, &numgrps, NULL)
     _ensure_nc_success(ierr)
     # create dictionary containing `netCDF4.Group` instances for groups in this group
-    groups = OrderedDict()
+    if sys.version_info[0:2] < (3, 7):
+        groups = OrderedDict()
+    else:
+        groups = dict()
     if numgrps > 0:
         grpids = <int *>malloc(sizeof(int) * numgrps)
         with nogil:
@@ -1796,7 +1803,10 @@ cdef _get_vars(group):
         ierr = nc_inq_nvars(_grpid, &numvars)
     _ensure_nc_success(ierr, err_cls=AttributeError)
     # create empty dictionary for variables.
-    variables = OrderedDict()
+    if sys.version_info[0:2] < (3, 7):
+        variables = OrderedDict()
+    else:
+        variables = dict()
     if numvars > 0:
         # get variable ids.
         varids = <int *>malloc(sizeof(int) * numvars)
@@ -2373,7 +2383,10 @@ strings.
         if self.data_model == 'NETCDF4':
             self.groups = _get_grps(self)
         else:
-            self.groups = OrderedDict()
+            if sys.version_info[0:2] < (3, 7):
+                self.groups = OrderedDict()
+            else:
+                self.groups = dict()
 
     # these allow Dataset objects to be used via a "with" statement.
     def __enter__(self):
@@ -2954,7 +2967,11 @@ attributes."""
                 values = []
                 for name in names:
                     values.append(_get_att(self, NC_GLOBAL, name))
-                return OrderedDict(zip(names,values))
+                gen = zip(names, values)
+                if sys.version_info[0:2] < (3, 7):
+                    return OrderedDict(gen)
+                else:
+                    return dict(gen)
             else:
                 raise AttributeError
         elif name in _private_atts:
@@ -3280,12 +3297,21 @@ Additional read-only class variables:
             bytestr = _strencode(name)
             groupname = bytestr
             _ensure_nc_success(nc_def_grp(parent._grpid, groupname, &self._grpid))
-            self.cmptypes = OrderedDict()
-            self.vltypes = OrderedDict()
-            self.enumtypes = OrderedDict()
-            self.dimensions = OrderedDict()
-            self.variables = OrderedDict()
-            self.groups = OrderedDict()
+            if sys.version_info[0:2] < (3, 7):
+                self.cmptypes = OrderedDict()
+                self.vltypes = OrderedDict()
+                self.enumtypes = OrderedDict()
+                self.dimensions = OrderedDict()
+                self.variables = OrderedDict()
+                self.groups = OrderedDict()
+            else:
+                self.cmptypes = dict()
+                self.vltypes = dict()
+                self.enumtypes = dict()
+                self.dimensions = dict()
+                self.variables = dict()
+                self.groups = dict()
+
 
     def close(self):
         """
@@ -4351,7 +4377,12 @@ details."""
                 values = []
                 for name in names:
                     values.append(_get_att(self._grp, self._varid, name))
-                return OrderedDict(zip(names,values))
+                gen = zip(names, values)
+                if sys.version_info[0:2] < (3, 7):
+                    return OrderedDict(gen)
+                else:
+                    return dict(gen)
+
             else:
                 raise AttributeError
         elif name in _private_atts:
