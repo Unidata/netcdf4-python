@@ -7,13 +7,10 @@ import tempfile
 import warnings
 
 import numpy as NP
+from collections import OrderedDict
 from numpy.random.mtrand import uniform
-import netCDF4
 
-try:
-    from collections import OrderedDict
-except ImportError: # or else use drop-in substitute
-    from ordereddict import OrderedDict
+import netCDF4
 
 # test attribute creation.
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
