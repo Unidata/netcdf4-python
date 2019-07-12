@@ -1,7 +1,12 @@
  version 1.5.2 (not yet released)
 ==============================
- * fix for scaling bug when _Unsigned attribute is set and byteorder of data does not
-   match native byteorder (issue #930).
+ * fix for scaling bug when _Unsigned attribute is set and byteorder of data
+   does not match native byteorder (issue #930).
+ * revise documentation for Python 3 (issue #946).
+ * establish support for Python 2.7, 3.5, 3.6 and 3.7 (issue #948).
+ * use dict built-in instead of OrderedDict for Python 3.7+
+   (pull request #955).
+ * remove underline ANSI in Dataset string representation (pull request #956)
 
  version 1.5.1.2 (tag v1.5.1.2rel)
 ==================================
