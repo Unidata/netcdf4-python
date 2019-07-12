@@ -4120,7 +4120,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     property size:
         """Return the number of stored elements."""
         def __get__(self):
-            return numpy.prod(self.shape)
+            # issue #957: add int since prod(())=1.0
+            return int(numpy.prod(self.shape))
 
     property dimensions:
         """get variables's dimension names"""
