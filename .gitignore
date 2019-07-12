@@ -3,5 +3,9 @@ build/
 dist/
 *.egg-info/
 netCDF4/_netCDF4.c
+netCDF4/*.so
 include/constants.pyx
 netcdftime/_netcdftime.c
+venv/
+.eggs/
+.idea/

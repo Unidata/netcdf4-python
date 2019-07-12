@@ -395,9 +395,10 @@ You can also query a `netCDF4.Dataset` or `netCDF4.Group` instance directly to o
     >>> print(rootgrp["/forecasts/model1"])  # a Group instance
     <class 'netCDF4._netCDF4.Group'>
     group /forecasts/model1:
-        dimensions(sizes):
+        dimensions(sizes): 
         variables(dimensions): float32 temp(time,level,lat,lon)
-        groups:
+        groups: 
+    <BLANKLINE>
     >>> print(rootgrp["/forecasts/model1/temp"])  # a Variable instance
     <class 'netCDF4._netCDF4.Variable'>
     float32 temp(time, level, lat, lon)
@@ -786,7 +787,7 @@ objects gives useful summary information in an interactive session:
     <class 'netCDF4._netCDF4.Dataset'>
     root group (NETCDF4 data model, file format HDF5):
         dimensions(sizes): x_dim(3)
-        variables(dimensions): {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True} ESC[4mcmplx_varESC[0m(x_dim)
+        variables(dimensions): {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True} cmplx_var(x_dim)
         groups: 
     <BLANKLINE>
     >>> print(f.variables["cmplx_var"])
@@ -856,7 +857,7 @@ In this case, they contain 1-D numpy `int32` arrays of random length between
     <class 'netCDF4._netCDF4.Dataset'>
     root group (NETCDF4 data model, file format HDF5):
         dimensions(sizes): x(3), y(4)
-        variables(dimensions): int32 ESC[4mphony_vlen_varESC[0m(y,x)
+        variables(dimensions): int32 phony_vlen_var(y,x)
         groups: 
     <BLANKLINE>
     >>> print(f.variables["phony_vlen_var"])
@@ -2460,7 +2461,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys()])
         varnames = tuple(\
-        [_tostr(self.variables[varname].dtype)+' \033[4m'+_tostr(varname)+'\033[0m'+
+        [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
         (((_tostr(self.variables[varname].dimensions)
         .replace("u'",""))\
         .replace("'",""))\
