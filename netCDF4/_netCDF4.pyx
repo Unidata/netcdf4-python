@@ -183,17 +183,15 @@ in a netCDF 3 file you will get an error message.
     >>> fcstgrp = rootgrp.createGroup("forecasts")
     >>> analgrp = rootgrp.createGroup("analyses")
     >>> print(rootgrp.groups)
-    OrderedDict([('forecasts', <class 'netCDF4._netCDF4.Group'>
+    {'forecasts': <class 'netCDF4._netCDF4.Group'>
     group /forecasts:
         dimensions(sizes): 
         variables(dimensions): 
-        groups: 
-    ), ('analyses', <class 'netCDF4._netCDF4.Group'>
+        groups: , 'analyses': <class 'netCDF4._netCDF4.Group'>
     group /analyses:
         dimensions(sizes): 
         variables(dimensions): 
-        groups: 
-    )])
+        groups: }
 
 
 
@@ -232,7 +230,6 @@ object yields summary information about it's contents.
         dimensions(sizes): 
         variables(dimensions): 
         groups: forecasts, analyses
-    <BLANKLINE>
     >>> for children in walktree(rootgrp):
     ...     for child in children:
     ...         print(child)
@@ -241,25 +238,21 @@ object yields summary information about it's contents.
         dimensions(sizes): 
         variables(dimensions): 
         groups: model1, model2
-    <BLANKLINE>
     <class 'netCDF4._netCDF4.Group'>
     group /analyses:
         dimensions(sizes): 
         variables(dimensions): 
         groups: 
-    <BLANKLINE>
     <class 'netCDF4._netCDF4.Group'>
     group /forecasts/model1:
         dimensions(sizes): 
         variables(dimensions): 
         groups: 
-    <BLANKLINE>
     <class 'netCDF4._netCDF4.Group'>
     group /forecasts/model2:
         dimensions(sizes): 
         variables(dimensions): 
         groups: 
-    <BLANKLINE>
 
 ## <div id='section3'>3) Dimensions in a netCDF file.
 
@@ -287,11 +280,7 @@ All of the `netCDF4.Dimension` instances are stored in a python dictionary.
 
     :::python
     >>> print(rootgrp.dimensions)
-    OrderedDict([('level', <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'level', size = 0
-    ), ('time', <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0
-    ), ('lat', <class 'netCDF4._netCDF4.Dimension'>: name = 'lat', size = 73
-    ), ('lon', <class 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144
-    )])
+    {'level': <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'level', size = 0, 'time': <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0, 'lat': <class 'netCDF4._netCDF4.Dimension'>: name = 'lat', size = 73, 'lon': <class 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144}
 
 Calling the python `len` function with a `netCDF4.Dimension` instance returns
 the current size of that dimension.
@@ -314,13 +303,9 @@ and whether it is unlimited.
     >>> for dimobj in rootgrp.dimensions.values():
     ...     print(dimobj)
     <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'level', size = 0
-    <BLANKLINE>
     <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0
-    <BLANKLINE>
     <class 'netCDF4._netCDF4.Dimension'>: name = 'lat', size = 73
-    <BLANKLINE>
     <class 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144
-    <BLANKLINE>
 
 `netCDF4.Dimension` names can be changed using the
 `netCDF4.Datatset.renameDimension` method of a `netCDF4.Dataset` or
@@ -379,7 +364,6 @@ just print it.
     unlimited dimensions: time, level
     current shape = (0, 0, 73, 144)
     filling on, default _FillValue of 9.969209968386869e+36 used
-    <BLANKLINE>
 
 You can use a path to create a Variable inside a hierarchy of groups.
 
@@ -398,7 +382,6 @@ You can also query a `netCDF4.Dataset` or `netCDF4.Group` instance directly to o
         dimensions(sizes): 
         variables(dimensions): float32 temp(time,level,lat,lon)
         groups: 
-    <BLANKLINE>
     >>> print(rootgrp["/forecasts/model1/temp"])  # a Variable instance
     <class 'netCDF4._netCDF4.Variable'>
     float32 temp(time, level, lat, lon)
@@ -406,7 +389,6 @@ You can also query a `netCDF4.Dataset` or `netCDF4.Group` instance directly to o
     unlimited dimensions: time, level
     current shape = (0, 0, 73, 144)
     filling on, default _FillValue of 9.969209968386869e+36 used
-    <BLANKLINE>
 
 
 All of the variables in the `netCDF4.Dataset` or `netCDF4.Group` are stored in a
@@ -414,33 +396,28 @@ Python dictionary, in the same way as the dimensions:
 
     :::python
     >>> print(rootgrp.variables)
-    OrderedDict([('time', <class 'netCDF4._netCDF4.Variable'>
+    {'time': <class 'netCDF4._netCDF4.Variable'>
     float64 time(time)
     unlimited dimensions: time
     current shape = (0,)
-    filling on, default _FillValue of 9.969209968386869e+36 used
-    ), ('level', <class 'netCDF4._netCDF4.Variable'>
+    filling on, default _FillValue of 9.969209968386869e+36 used, 'level': <class 'netCDF4._netCDF4.Variable'>
     int32 level(level)
     unlimited dimensions: level
     current shape = (0,)
-    filling on, default _FillValue of -2147483647 used
-    ), ('lat', <class 'netCDF4._netCDF4.Variable'>
+    filling on, default _FillValue of -2147483647 used, 'lat': <class 'netCDF4._netCDF4.Variable'>
     float32 lat(lat)
     unlimited dimensions: 
     current shape = (73,)
-    filling on, default _FillValue of 9.969209968386869e+36 used
-    ), ('lon', <class 'netCDF4._netCDF4.Variable'>
+    filling on, default _FillValue of 9.969209968386869e+36 used, 'lon': <class 'netCDF4._netCDF4.Variable'>
     float32 lon(lon)
     unlimited dimensions: 
     current shape = (144,)
-    filling on, default _FillValue of 9.969209968386869e+36 used
-    ), ('temp', <class 'netCDF4._netCDF4.Variable'>
+    filling on, default _FillValue of 9.969209968386869e+36 used, 'temp': <class 'netCDF4._netCDF4.Variable'>
     float32 temp(time, level, lat, lon)
         units: K
     unlimited dimensions: time, level
     current shape = (0, 0, 73, 144)
-    filling on, default _FillValue of 9.969209968386869e+36 used
-    )])
+    filling on, default _FillValue of 9.969209968386869e+36 used}
 
 `netCDF4.Variable` names can be changed using the
 `netCDF4.Dataset.renameVariable` method of a `netCDF4.Dataset`
@@ -489,9 +466,7 @@ dictionary:
 
     :::python
     >>> print(rootgrp.__dict__)
-    OrderedDict([('description', 'bogus example script'),
-                 ('history', 'Created Mon Jul  8 14:19:41 2019'),
-                 ('source', 'netCDF4 python module tutorial')])
+    {'description': 'bogus example script', 'history': 'Created Mon Jul  8 14:19:41 2019', 'source': 'netCDF4 python module tutorial'}
 
 Attributes can be deleted from a netCDF `netCDF4.Dataset`, `netCDF4.Group` or
 `netCDF4.Variable` using the python `del` statement (i.e. `del grp.foo`
@@ -789,20 +764,16 @@ objects gives useful summary information in an interactive session:
         dimensions(sizes): x_dim(3)
         variables(dimensions): {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True} cmplx_var(x_dim)
         groups: 
-    <BLANKLINE>
     >>> print(f.variables["cmplx_var"])
     <class 'netCDF4._netCDF4.Variable'>
     compound cmplx_var(x_dim)
     compound data type: {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True}
     unlimited dimensions: x_dim
     current shape = (3,)
-    <BLANKLINE>
     >>> print(f.cmptypes)
-    OrderedDict([('complex128', <class 'netCDF4._netCDF4.CompoundType'>: name = 'complex128', numpy dtype = {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True}
-    )])
+    {'complex128': <class 'netCDF4._netCDF4.CompoundType'>: name = 'complex128', numpy dtype = {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True}}
     >>> print(f.cmptypes["complex128"])
     <class 'netCDF4._netCDF4.CompoundType'>: name = 'complex128', numpy dtype = {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True}
-    <BLANKLINE>
 
 ## <div id='section11'>11) Variable-length (vlen) data types.
 
@@ -859,17 +830,14 @@ In this case, they contain 1-D numpy `int32` arrays of random length between
         dimensions(sizes): x(3), y(4)
         variables(dimensions): int32 phony_vlen_var(y,x)
         groups: 
-    <BLANKLINE>
     >>> print(f.variables["phony_vlen_var"])
     <class 'netCDF4._netCDF4.Variable'>
     vlen phony_vlen_var(y, x)
     vlen data type: int32
     unlimited dimensions: 
     current shape = (4, 3)
-    <BLANKLINE>
     >>> print(f.vltypes["phony_vlen"])
     <class 'netCDF4._netCDF4.VLType'>: name = 'phony_vlen', numpy dtype = int32
-    <BLANKLINE>
 
 Numpy object arrays containing python strings can also be written as vlen
 variables,  For vlen strings, you don't need to create a vlen data type.
@@ -902,14 +870,12 @@ array is assigned to the vlen string variable.
         dimensions(sizes): x(3), y(4), z(10)
         variables(dimensions): int32 phony_vlen_var(y,x), <class 'str'> strvar(z)
         groups: 
-    <BLANKLINE>
     >>> print(f.variables["strvar"])
     <class 'netCDF4._netCDF4.Variable'>
     vlen strvar(z)
     vlen data type: <class 'str'>
     unlimited dimensions: 
     current shape = (10,)
-    <BLANKLINE>
 
 It is also possible to set contents of vlen string variables with numpy arrays
 of any string or unicode data type. Note, however, that accessing the contents
@@ -937,7 +903,6 @@ values and their names are used to define an Enum data type using
     >>> cloud_type = nc.createEnumType(numpy.uint8,'cloud_t',enum_dict)
     >>> print(cloud_type)
     <class 'netCDF4._netCDF4.EnumType'>: name = 'cloud_t', numpy dtype = uint8, fields/values ={'Altocumulus': 7, 'Missing': 255, 'Stratus': 2, 'Clear': 0, 'Nimbostratus': 6, 'Cumulus': 4, 'Altostratus': 5, 'Cumulonimbus': 1, 'Stratocumulus': 3}
-    <BLANKLINE>
 
 A new variable can be created in the usual way using this data type.
 Integer data is written to the variable that represents the named
@@ -965,7 +930,6 @@ specified names.
     enum data type: uint8
     unlimited dimensions: time
     current shape = (5,)
-    <BLANKLINE>
     >>> print(cloud_var.datatype.enum_dict)
     {'Altocumulus': 7, 'Missing': 255, 'Stratus': 2, 'Clear': 0, 'Nimbostratus': 6, 'Cumulus': 4, 'Altostratus': 5, 'Cumulonimbus': 1, 'Stratocumulus': 3}
     >>> print(cloud_var[:])
@@ -1155,7 +1119,6 @@ approaches.
         dimensions(sizes): x(5)
         variables(dimensions): int32 v(x)
         groups: 
-    <BLANKLINE>
     >>> print(nc['v'][:])
     [0 1 2 3 4]
     >>> nc.close() # file saved to disk
@@ -1173,7 +1136,6 @@ approaches.
         dimensions(sizes): x(5)
         variables(dimensions): int32 v(x)
         groups: 
-    <BLANKLINE>
     >>> print(nc['v'][:])
     [0 1 2 3 4]
     >>> nc.close()
@@ -2457,9 +2419,9 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             return unicode(self).encode('utf-8')
 
     def __unicode__(self):
-        ncdump = ['%r\n' % type(self)]
-        dimnames = tuple([_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
-        for dimname in self.dimensions.keys()])
+        ncdump = [repr(type(self))]
+        dimnames = tuple(_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
+        for dimname in self.dimensions.keys())
         varnames = tuple(\
         [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
         (((_tostr(self.variables[varname].dimensions)
@@ -2467,19 +2429,18 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         .replace("'",""))\
         .replace(", ",","))\
         .replace(",)",")") for varname in self.variables.keys()])
-        grpnames = tuple([_tostr(grpname) for grpname in self.groups.keys()])
+        grpnames = tuple(_tostr(grpname) for grpname in self.groups.keys())
         if self.path == '/':
-            ncdump.append('root group (%s data model, file format %s):\n' %
+            ncdump.append('root group (%s data model, file format %s):' %
                     (self.data_model, self.disk_format))
         else:
-            ncdump.append('group %s:\n' % self.path)
-        attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
-                self.ncattrs()]
-        ncdump = ncdump + attrs
-        ncdump.append('    dimensions(sizes): %s\n' % ', '.join(dimnames))
-        ncdump.append('    variables(dimensions): %s\n' % ', '.join(varnames))
-        ncdump.append('    groups: %s\n' % ', '.join(grpnames))
-        return ''.join(ncdump)
+            ncdump.append('group %s:' % self.path)
+        for name in self.ncattrs():
+            ncdump.append('    %s: %s' % (name, self.getncattr(name)))
+        ncdump.append('    dimensions(sizes): %s' % ', '.join(dimnames))
+        ncdump.append('    variables(dimensions): %s' % ', '.join(varnames))
+        ncdump.append('    groups: %s' % ', '.join(grpnames))
+        return '\n'.join(ncdump)
 
     def _close(self, check_err):
         cdef int ierr = nc_close(self._grpid)
@@ -3440,9 +3401,11 @@ Read-only class variables:
         if not dir(self._grp):
             return 'Dimension object no longer valid'
         if self.isunlimited():
-            return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
+            return "%r (unlimited): name = '%s', size = %s" %\
+                (type(self), self._name, len(self))
         else:
-            return repr(type(self))+": name = '%s', size = %s\n" % (self._name,len(self))
+            return "%r: name = '%s', size = %s" %\
+                (type(self), self._name, len(self))
 
     def __len__(self):
         # len(`netCDF4.Dimension` instance) returns current size of dimension
@@ -3990,37 +3953,32 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef int ierr, no_fill
         if not dir(self._grp):
             return 'Variable object no longer valid'
-        ncdump_var = ['%r\n' % type(self)]
-        dimnames = tuple([_tostr(dimname) for dimname in self.dimensions])
-        attrs = ['    %s: %s\n' % (name,self.getncattr(name)) for name in\
-                self.ncattrs()]
+        ncdump = [repr(type(self))]
+        show_more_dtype = True
         if self._iscompound:
-            ncdump_var.append('%s %s(%s)\n' %\
-            ('compound',self._name,', '.join(dimnames)))
+            kind = 'compound'
         elif self._isvlen:
-            ncdump_var.append('%s %s(%s)\n' %\
-            ('vlen',self._name,', '.join(dimnames)))
+            kind = 'vlen'
         elif self._isenum:
-            ncdump_var.append('%s %s(%s)\n' %\
-            ('enum',self._name,', '.join(dimnames)))
+            kind = 'enum'
         else:
-            ncdump_var.append('%s %s(%s)\n' %\
-            (self.dtype,self._name,', '.join(dimnames)))
-        ncdump_var = ncdump_var + attrs
-        if self._iscompound:
-            ncdump_var.append('compound data type: %s\n' % self.dtype)
-        elif self._isvlen:
-            ncdump_var.append('vlen data type: %s\n' % self.dtype)
-        elif self._isenum:
-            ncdump_var.append('enum data type: %s\n' % self.dtype)
+            show_more_dtype = False
+            kind = str(self.dtype)
+        dimnames = tuple(_tostr(dimname) for dimname in self.dimensions)
+        ncdump.append('%s %s(%s)' %\
+            (kind, self._name, ', '.join(dimnames)))
+        for name in self.ncattrs():
+            ncdump.append('    %s: %s' % (name, self.getncattr(name)))
+        if show_more_dtype:
+            ncdump.append('%s data type: %s' % (kind, self.dtype))
         unlimdims = []
         for dimname in self.dimensions:
             dim = _find_dim(self._grp, dimname)
             if dim.isunlimited():
                 unlimdims.append(dimname)
-        if (self._grp.path != '/'): ncdump_var.append('path = %s\n' % self._grp.path)
-        ncdump_var.append('unlimited dimensions: %s\n' % ', '.join(unlimdims))
-        ncdump_var.append('current shape = %s\n' % repr(self.shape))
+        if (self._grp.path != '/'): ncdump.append('path = %s' % self._grp.path)
+        ncdump.append('unlimited dimensions: %s' % ', '.join(unlimdims))
+        ncdump.append('current shape = %r' % (self.shape,))
         if __netcdf4libversion__ < '4.5.1' and\
             self._grp.file_format.startswith('NETCDF3'):
             # issue #908: no_fill not correct for NETCDF3 files before 4.5.1
@@ -4039,15 +3997,15 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 except AttributeError:
                     fillval = default_fillvals[self.dtype.str[1:]]
                     if self.dtype.str[1:] in ['u1','i1']:
-                        msg = 'filling on, default _FillValue of %s ignored\n' % fillval
+                        msg = 'filling on, default _FillValue of %s ignored' % fillval
                     else:
-                        msg = 'filling on, default _FillValue of %s used\n' % fillval
-                ncdump_var.append(msg)
+                        msg = 'filling on, default _FillValue of %s used' % fillval
+                ncdump.append(msg)
             else:
-                ncdump_var.append('filling off\n')
+                ncdump.append('filling off')
 
 
-        return ''.join(ncdump_var)
+        return '\n'.join(ncdump)
 
     def _getdims(self):
         # Private method to get variables's dimension names
@@ -5588,8 +5546,8 @@ the user.
             return unicode(self).encode('utf-8')
 
     def __unicode__(self):
-        return repr(type(self))+": name = '%s', numpy dtype = %s\n" %\
-        (self.name,self.dtype)
+        return "%r: name = '%s', numpy dtype = %s" %\
+            (type(self), self.name, self.dtype)
 
     def __reduce__(self):
         # raise error is user tries to pickle a CompoundType object.
@@ -5878,10 +5836,10 @@ the user.
 
     def __unicode__(self):
         if self.dtype == str:
-            return repr(type(self))+': string type'
+            return '%r: string type' % (type(self),)
         else:
-            return repr(type(self))+": name = '%s', numpy dtype = %s\n" %\
-            (self.name, self.dtype)
+            return "%r: name = '%s', numpy dtype = %s" %\
+                (type(self), self.name, self.dtype)
 
     def __reduce__(self):
         # raise error is user tries to pickle a VLType object.
@@ -5996,9 +5954,8 @@ the user.
             return unicode(self).encode('utf-8')
 
     def __unicode__(self):
-        return repr(type(self))+\
-        ": name = '%s', numpy dtype = %s, fields/values =%s\n" %\
-        (self.name, self.dtype, self.enum_dict)
+        return "%r: name = '%s', numpy dtype = %s, fields/values =%s" %\
+            (type(self), self.name, self.dtype, self.enum_dict)
 
     def __reduce__(self):
         # raise error is user tries to pickle a EnumType object.
@@ -6426,22 +6383,21 @@ Example usage (See `netCDF4.MFDataset.__init__` for more details):
             dset.close()
 
     def __repr__(self):
-        ncdump = ['%r\n' % type(self)]
-        dimnames = tuple([str(dimname) for dimname in self.dimensions.keys()])
-        varnames = tuple([str(varname) for varname in self.variables.keys()])
+        ncdump = [repr(type(self))]
+        dimnames = tuple(str(dimname) for dimname in self.dimensions.keys())
+        varnames = tuple(str(varname) for varname in self.variables.keys())
         grpnames = ()
         if self.path == '/':
-            ncdump.append('root group (%s data model, file format %s):\n' %
+            ncdump.append('root group (%s data model, file format %s):' %
                     (self.data_model[0], self.disk_format[0]))
         else:
-            ncdump.append('group %s:\n' % self.path)
-        attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
-                self.ncattrs()]
-        ncdump = ncdump + attrs
-        ncdump.append('    dimensions = %s\n' % str(dimnames))
-        ncdump.append('    variables = %s\n' % str(varnames))
-        ncdump.append('    groups = %s\n' % str(grpnames))
-        return ''.join(ncdump)
+            ncdump.append('group %s:' % self.path)
+        for name in self.ncattrs():
+            ncdump.append('    %s: %s' % (name, self.__dict__[name]))
+        ncdump.append('    dimensions = %s' % str(dimnames))
+        ncdump.append('    variables = %s' % str(varnames))
+        ncdump.append('    groups = %s' % str(grpnames))
+        return '\n'.join(ncdump)
 
     def __reduce__(self):
         # raise error is user tries to pickle a MFDataset object.
@@ -6458,9 +6414,11 @@ class _Dimension(object):
         return True
     def __repr__(self):
         if self.isunlimited():
-            return repr(type(self))+" (unlimited): name = '%s', size = %s\n" % (self._name,len(self))
+            return "%r (unlimited): name = '%s', size = %s" %\
+                (type(self), self._name, len(self))
         else:
-            return repr(type(self))+": name = '%s', size = %s\n" % (self._name,len(self))
+            return "%r: name = '%s', size = %s" %\
+                (type(self), self._name, len(self))
 
 class _Variable(object):
     def __init__(self, dset, varname, var, recdimname):
@@ -6488,21 +6446,19 @@ class _Variable(object):
         except:
             raise AttributeError(name)
     def __repr__(self):
-        ncdump_var = ['%r\n' % type(self)]
-        dimnames = tuple([str(dimname) for dimname in self.dimensions])
-        attrs = ['    %s: %s\n' % (name,self.__dict__[name]) for name in\
-                self.ncattrs()]
-        ncdump_var.append('%s %s%s\n' %\
-        (self.dtype,self._name,dimnames))
-        ncdump_var = ncdump_var + attrs
+        ncdump = [repr(type(self))]
+        dimnames = tuple(str(dimname) for dimname in self.dimensions)
+        ncdump.append('%s %s%s' % (self.dtype, self._name, dimnames))
+        for name in self.ncattrs():
+            ncdump.append('    %s: %s' % (name, self.__dict__[name]))
         unlimdims = []
         for dimname in self.dimensions:
             dim = _find_dim(self._grp, dimname)
             if dim.isunlimited():
                 unlimdims.append(str(dimname))
-        ncdump_var.append('unlimited dimensions = %s\n' % repr(tuple(unlimdims)))
-        ncdump_var.append('current size = %s\n' % repr(self.shape))
-        return ''.join(ncdump_var)
+        ncdump.append('unlimited dimensions = %r' % (tuple(unlimdims),))
+        ncdump.append('current size = %r' % (self.shape,))
+        return '\n'.join(ncdump)
     def __len__(self):
         if not self._shape:
             raise TypeError('len() of unsized object')

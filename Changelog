@@ -6,7 +6,8 @@
  * establish support for Python 2.7, 3.5, 3.6 and 3.7 (issue #948).
  * use dict built-in instead of OrderedDict for Python 3.7+
    (pull request #955).
- * remove underline ANSI in Dataset string representation (pull request #956)
+ * remove underline ANSI in Dataset string representation (pull request #956).
+ * remove newlines from string representation (pull request #960).
  * fix for issue #957 (size of scalar var is a float since numpy.prod(())=1.0).
 
  version 1.5.1.2 (tag v1.5.1.2rel)
