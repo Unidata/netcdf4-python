@@ -9,6 +9,7 @@
  * remove underline ANSI in Dataset string representation (pull request #956).
  * remove newlines from string representation (pull request #960).
  * fix for issue #957 (size of scalar var is a float since numpy.prod(())=1.0).
+ * make sure Variable.setncattr fails to set _FillValue (issue #959).
 
  version 1.5.1.2 (tag v1.5.1.2rel)
 ==================================

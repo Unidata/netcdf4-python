@@ -91,6 +91,19 @@ class VariablesTestCase(unittest.TestCase):
         v1.seqatt = SEQATT
         v1.stringseqatt = STRINGSEQATT
         v1.setncattr_string('stringseqatt_array',STRINGSEQATT) # array of NC_STRING
+        # issue #959: should not be able to set _FillValue after var creation
+        try:
+            v1._FillValue(-999.)
+        except AttributeError:
+            pass
+        else:
+            raise ValueError('This test should have failed.')
+        try:
+            v1.setncattr('_FillValue',-999.)
+        except AttributeError:
+            pass
+        else:
+            raise ValueError('This test should have failed.')
         # issue #485 (triggers segfault in C lib
         # with version 1.2.1 without pull request #486)
         f.foo = NP.array('bar','S')
