@@ -4112,6 +4112,13 @@ netCDF attribute with the same name as one of the reserved python
 attributes."""
         cdef nc_type xtype
         xtype=-99
+        # issue #959 - trying to set _FillValue results in mysterious
+        # error when close method is called so catch it here. It is
+        # already caught in __setattr__.
+        if name == '_FillValue':
+            msg='_FillValue attribute must be set when variable is '+\
+            'created (using fill_value keyword to createVariable)'
+            raise AttributeError(msg)
         if self._grp.data_model != 'NETCDF4': self._grp._redef()
         _set_att(self._grp, self._varid, name, value, xtype=xtype, force_ncstring=self._ncstring_attrs__)
         if self._grp.data_model != 'NETCDF4': self._grp._enddef()
