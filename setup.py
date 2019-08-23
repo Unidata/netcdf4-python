@@ -91,7 +91,7 @@ def check_api(inc_dirs):
             for line in open(ncmetapath):
                 if line.startswith('#define NC_HAS_CDF5'):
                     has_cdf5_format = bool(int(line.split()[2]))
-                elif line.startswith('#define NC_HAS_PARALLEL4'):
+                elif line.startswith('#define NC_HAS_PARALLEL'):
                     has_parallel4_support = bool(int(line.split()[2]))
                 elif line.startswith('#define NC_HAS_PNETCDF'):
                     has_pnetcdf_support = bool(int(line.split()[2]))
