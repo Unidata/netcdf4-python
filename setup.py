@@ -49,7 +49,7 @@ def check_ifnetcdf4(netcdf4_includedir):
     return isnetcdf4
 
 
-def check_api(inc_dirs):
+def check_api(inc_dirs,netcdf_lib_version):
     has_rename_grp = False
     has_nc_inq_path = False
     has_nc_inq_format_extended = False
@@ -100,6 +100,11 @@ def check_api(inc_dirs):
                     has_pnetcdf_support = bool(int(line.split()[2]))
         # NC_HAS_PARALLEL4 missing in 4.6.1 (issue #964)
         if not has_parallel4_support and has_parallel_support and not has_pnetcdf_support:
+            has_parallel4_support = True
+        # for 4.6.1, if NC_HAS_PARALLEL=NC_HAS_PNETCDF=1, guess that
+        # parallel HDF5 is enabled (must guess since there is no
+        # NC_HAS_PARALLEL4)
+        elif netcdf_lib_version == "4.6.1" and not has_parallel4_support and has_parallel_support:
             has_parallel4_support = True
         break
 
@@ -500,7 +505,8 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
     has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
-    has_parallel4_support, has_pnetcdf_support = check_api(inc_dirs)
+    has_parallel4_support, has_pnetcdf_support = \
+    check_api(inc_dirs,netcdf_lib_version)
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
        (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
