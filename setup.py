@@ -193,7 +193,7 @@ ncconfig = None
 use_ncconfig = None
 if USE_SETUPCFG and os.path.exists(setup_cfg):
     sys.stdout.write('reading from setup.cfg...\n')
-    config = configparser.SafeConfigParser()
+    config = configparser.ConfigParser()
     config.read(setup_cfg)
     try:
         HDF5_dir = config.get("directories", "HDF5_dir")
