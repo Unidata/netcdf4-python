@@ -100,7 +100,7 @@ def check_api(inc_dirs):
                     has_pnetcdf_support = bool(int(line.split()[2]))
         # NC_HAS_PARALLEL4 missing in 4.6.1 (issue #964)
         if not has_parallel4_support and has_parallel_support and not has_pnetcdf_support:
-                has_parallel4_support = True
+            has_parallel4_support = True
         break
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
