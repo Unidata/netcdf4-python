@@ -10,6 +10,8 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+09/03/2019: Version [1.5.2](https://pypi.python.org/pypi/netCDF4/1.5.2) released. Bugfixes, no new features.
+
 05/06/2019: Version [1.5.1.2](https://pypi.python.org/pypi/netCDF4/1.5.1.2) released. Fixes another slicing
 regression ([issue #922)](https://github.com/Unidata/netcdf4-python/issues/922)) introduced in the 1.5.1 release.
 
