@@ -3094,8 +3094,10 @@ this `netCDF4.Dataset` or `netCDF4.Group`, as well as for all
 variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic conversion of
-masked arrays with no missing values to regular ararys shall be
-applied for all variables.
+masked arrays with no missing values to regular numpy arrays shall be
+applied for all variables. Default True. Set to False to restore the default behaviour
+in versions prior to 1.4.1 (numpy array returned unless missing values are present,
+otherwise masked array returned).
 
 ***Note***: Calling this function only affects existing
 variables. Variables created after calling this function will follow
@@ -5135,12 +5137,11 @@ The default value of `mask` is `True`
 turn on or off conversion of data without missing values to regular
 numpy arrays.
 
-If `always_mask` is set to `True` then a masked array with no missing
-values is converted to a regular numpy array.
-
-The default value of `always_mask` is `True` (conversions to regular
-numpy arrays are not performed).
-
+`always_mask` is a Boolean determining if automatic conversion of
+masked arrays with no missing values to regular numpy arrays shall be
+applied. Default is True. Set to False to restore the default behaviour
+in versions prior to 1.4.1 (numpy array returned unless missing values are present,
+otherwise masked array returned).
         """
         self.always_mask = bool(always_mask)
 
