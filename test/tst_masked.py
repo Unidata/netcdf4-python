@@ -7,12 +7,14 @@ from numpy import ma
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from numpy.random.mtrand import uniform
 import netCDF4
+from numpy.ma import masked_all
 
 # test automatic conversion of masked arrays, and
 # packing/unpacking of short ints.
 
 # create an n1dim by n2dim random ranarr.
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 ndim = 10
 ranarr = 100.*uniform(size=(ndim))
 ranarr2 = 100.*uniform(size=(ndim))
@@ -38,6 +40,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
+        self.file2 = FILE_NAME2
         file = netCDF4.Dataset(self.file,'w')
         file.createDimension('n', ndim)
         foo = file.createVariable('maskeddata', 'f8', ('n',))
@@ -71,9 +74,21 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         v = file.createVariable('v',NP.float,'x',fill_value=-9999)
         file.close()
 
+        # issue #972: when auto_fill off byte arrays (u1,i1) should
+        # not be masked, but other datatypes should.
+        dataset = netCDF4.Dataset(self.file2, "w")
+        dataset.set_fill_off()  # comment this out and everything works as expected
+        dim = dataset.createDimension("dim", 10)
+        var1 = dataset.createVariable("var1", "f8", (dim.name,))
+        var1[:] = masked_all((10,), "f8")
+        var2 = dataset.createVariable("var2", "u1", (dim.name,))
+        var2[:] = masked_all((10,), "u1")
+        dataset.close()
+
     def tearDown(self):
         # Remove the temporary files
         os.remove(self.file)
+        os.remove(self.file2)
 
     def runTest(self):
         """testing auto-conversion of masked arrays and packed integers"""
@@ -118,6 +133,13 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         f['variable'][:] = NP.nan
         data = f['variable'][:] # should not raise an error
         f.close()
+        # issue #972
+        dataset = netCDF4.Dataset(self.file2, "r")
+        var1 = dataset.variables["var1"]
+        var2 = dataset.variables["var2"]
+        assert var1[:].mask.all()
+        assert var2[:].mask.any() == False
+        file.close()
 
 if __name__ == '__main__':
     unittest.main()
