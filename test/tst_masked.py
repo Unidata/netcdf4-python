@@ -77,7 +77,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         # issue #972: when auto_fill off byte arrays (u1,i1) should
         # not be masked, but other datatypes should.
         dataset = netCDF4.Dataset(self.file2, "w")
-        dataset.set_fill_off()  # comment this out and everything works as expected
+        dataset.set_fill_off()
         dim = dataset.createDimension("dim", 10)
         var1 = dataset.createVariable("var1", "f8", (dim.name,))
         var1[:] = masked_all((10,), "f8")
