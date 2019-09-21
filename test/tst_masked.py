@@ -139,7 +139,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         var2 = dataset.variables["var2"]
         assert var1[:].mask.all()
         assert var2[:].mask.any() == False
-        file.close()
+        dataset.close()
 
 if __name__ == '__main__':
     unittest.main()
