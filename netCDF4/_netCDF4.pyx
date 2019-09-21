@@ -1,5 +1,5 @@
 """
-Version 1.5.2
+Version 1.5.3
 ---------------
 - - -
 
@@ -1206,7 +1206,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.5.2"
+__version__ = "1.5.3"
 
 # Initialize numpy
 import posixpath
@@ -4581,7 +4581,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             # type, signed or unsigned, because the byte ranges are too
             # small to assume one of the values should appear as a missing
             # value unless a _FillValue attribute is set explicitly."
-            if no_fill != 1 and self.dtype.str[1:] not in ['u1','i1']:
+            if no_fill != 1 or self.dtype.str[1:] not in ['u1','i1']:
                 fillval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
                 has_fillval = data == fillval
                 # if data is an array scalar, has_fillval will be a boolean.
