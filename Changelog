@@ -1,7 +1,8 @@
- version 1.5.3 (not yet released)
+ version 1.5.3 (tag v1.5.3rel)
 ==============================
  * make sure arrays are masked that are not filled when auto_fill is off 
    (issue #972).
+ * python 3.8 binary wheels.
 
  version 1.5.2 (tag v1.5.2rel)
 ==============================
