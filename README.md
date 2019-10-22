@@ -10,6 +10,10 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+10/27/2019: Version [1.5.3](https://pypi.python.org/pypi/netCDF4/1.5.3) released]. Fix for
+[issue #972](https://github.com/Unidata/netcdf4-python/issues/972), plus binary wheels for
+python 3.8.
+
 09/03/2019: Version [1.5.2](https://pypi.python.org/pypi/netCDF4/1.5.2) released. Bugfixes, no new features.
 
 05/06/2019: Version [1.5.1.2](https://pypi.python.org/pypi/netCDF4/1.5.1.2) released. Fixes another slicing
