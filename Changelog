@@ -1,7 +1,7 @@
  version 1.5.4 (not yet released)
 ==============================
  * fix printing of variable objects for variables that end with the letter 'u'
-   (issue #982).
+   (issue #983).
 
  version 1.5.3 (tag v1.5.3rel)
 ==============================
