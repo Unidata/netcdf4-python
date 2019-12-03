@@ -2422,13 +2422,16 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         ncdump = [repr(type(self))]
         dimnames = tuple(_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys())
-        varnames = tuple(\
-        [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
-        (((_tostr(self.variables[varname].dimensions)
-        .replace("u'",""))\
-        .replace("'",""))\
-        .replace(", ",","))\
-        .replace(",)",")") for varname in self.variables.keys()])
+        if python3:
+            varnames = tuple(\
+            [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
+             ((_tostr(self.variables[varname].dimensions)).replace(",)",")")).replace("'","")
+             for varname in self.variables.keys()])
+        else: # don't try to remove quotes in python2
+            varnames = tuple(\
+            [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
+             (_tostr(self.variables[varname].dimensions)).replace(",)",")")
+             for varname in self.variables.keys()])
         grpnames = tuple(_tostr(grpname) for grpname in self.groups.keys())
         if self.path == '/':
             ncdump.append('root group (%s data model, file format %s):' %
