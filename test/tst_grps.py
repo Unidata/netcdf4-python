@@ -66,6 +66,8 @@ class GroupsTestCase(unittest.TestCase):
     def runTest(self):
         """testing groups"""
         f  = netCDF4.Dataset(self.file1, 'r')
+        # issue 988
+        f.name
         tree = [f.path]
         for children in walktree(f):
             for child in children:
