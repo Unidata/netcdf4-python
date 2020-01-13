@@ -28,7 +28,7 @@ install:
   - cmd: conda config --set always_yes yes --set changeps1 no --set show_channel_urls true
   - cmd: conda update conda
   - cmd: conda config --add channels conda-forge --force
-  - cmd: conda config --set channel_priority strict
+  #- cmd: conda config --set channel_priority strict
   - cmd: set PYTHONUNBUFFERED=1
   - cmd: conda install conda-build vs2008_express_vc_python_patch
   - cmd: call setup_x64
