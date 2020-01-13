@@ -1,16 +1,14 @@
 environment:
-  CONDA_INSTALL_LOCN: C:\\Miniconda36-x64
+  PYTHON: "C:\\myminiconda3"
   matrix:
-    - TARGET_ARCH: x64
-      NPY: 1.16
-      PY: 3.6
-
-    - TARGET_ARCH: x64
-      NPY: 1.16
+    - NPY: 1.17
       PY: 3.7
 
-platform:
-  - x64
+    - NPY: 1.17
+      PY: 3.8
+
+init:
+  - "ECHO %PYTHON_VERSION% %MINICONDA%"
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.
@@ -24,30 +22,36 @@ install:
         throw "There are newer queued builds for this pull request, failing early." }
 
   # Add path, activate `conda` and update conda.
-  - cmd: call %CONDA_INSTALL_LOCN%\Scripts\activate.bat
-  - cmd: conda config --set always_yes yes --set changeps1 no --set show_channel_urls true
-  - cmd: conda update conda
-  - cmd: conda config --add channels conda-forge --force
-  - cmd: conda config --set channel_priority strict
-  - cmd: set PYTHONUNBUFFERED=1
-  - cmd: conda install conda-build vs2008_express_vc_python_patch
-  - cmd: call setup_x64
+  - set URL="https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe"
+  - curl -fsS -o miniconda3.exe %URL%
+  - start /wait "" miniconda3.exe /InstallationType=JustMe /RegisterPython=0 /S /D=%PYTHON%
 
-  - cmd: conda create --name TEST python=%PY% numpy=%NPY% cython pip pytest hdf5 libnetcdf cftime
-  - cmd: conda info --all
-  - cmd: conda activate TEST
+  - "set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - call %PYTHON%\Scripts\activate
 
-  - cmd: echo [options] > setup.cfg
-  - cmd: echo [directories] >> setup.cfg
-  - cmd: echo HDF5_libdir = %CONDA_PREFIX%\Library\lib >> setup.cfg
-  - cmd: echo HDF5_incdir = %CONDA_PREFIX%\Library\include >> setup.cfg
-  - cmd: echo netCDF4_libdir = %CONDA_PREFIX%\Library\lib >> setup.cfg
-  - cmd: echo netCDF4_incdir = %CONDA_PREFIX%\Library\include >> setup.cfg
+  - conda config --set always_yes yes --set changeps1 no --set show_channel_urls true
+  - conda config --add channels conda-forge --force
+  - set PYTHONUNBUFFERED=1
+  - conda install conda-build vs2008_express_vc_python_patch
+  - call setup_x64
+
+  - conda create --name TEST python=%PY% numpy=%NPY% cython pip pytest hdf5 libnetcdf cftime
+  - conda activate TEST
+
+  - echo [options] > setup.cfg
+  - echo [directories] >> setup.cfg
+  - echo HDF5_libdir = %CONDA_PREFIX%\Library\lib >> setup.cfg
+  - echo HDF5_incdir = %CONDA_PREFIX%\Library\include >> setup.cfg
+  - echo netCDF4_libdir = %CONDA_PREFIX%\Library\lib >> setup.cfg
+  - echo netCDF4_incdir = %CONDA_PREFIX%\Library\include >> setup.cfg
+
+  - conda info --all
+  - conda list
 
 # Skip .NET project specific build phase.
 build: off
 
 test_script:
-  - python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
+  - python -m pip install . --no-deps --ignore-installed --no-cache-dir -vv
   - set NO_NET=1
   - cd test && python run_all.py
