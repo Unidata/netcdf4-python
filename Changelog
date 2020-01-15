@@ -2,6 +2,7 @@
 ==============================
  * fix printing of variable objects for variables that end with the letter 'u'
    (issue #983).
+ * make sure root group has 'name' attribute (issue #988).
 
  version 1.5.3 (tag v1.5.3rel)
 ==============================

@@ -3202,6 +3202,22 @@ attribute does not exist on the variable. For example,
 
         return vs
 
+    def _getname(self):
+        # private method to get name associated with instance.
+        cdef int ierr
+        cdef char namstring[NC_MAX_NAME+1]
+        with nogil:
+            ierr = nc_inq_grpname(self._grpid, namstring)
+        _ensure_nc_success(ierr)
+        return namstring.decode('utf-8')
+
+    property name:
+        """string name of Group instance"""
+        def __get__(self):
+            return self._getname()
+        def __set__(self,value):
+            raise AttributeError("name cannot be altered")
+
 
 cdef class Group(Dataset):
     """
@@ -3287,22 +3303,6 @@ Additional read-only class variables:
 overrides `netCDF4.Dataset` close method which does not apply to `netCDF4.Group`
 instances, raises IOError."""
         raise IOError('cannot close a `netCDF4.Group` (only applies to Dataset)')
-
-    def _getname(self):
-        # private method to get name associated with instance.
-        cdef int ierr
-        cdef char namstring[NC_MAX_NAME+1]
-        with nogil:
-            ierr = nc_inq_grpname(self._grpid, namstring)
-        _ensure_nc_success(ierr)
-        return namstring.decode('utf-8')
-
-    property name:
-        """string name of Group instance"""
-        def __get__(self):
-            return self._getname()
-        def __set__(self,value):
-            raise AttributeError("name cannot be altered")
 
 
 cdef class Dimension:
