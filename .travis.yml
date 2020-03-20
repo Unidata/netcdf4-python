@@ -73,8 +73,8 @@ notifications:
   email: false
 
 before_install:
-  - pip install Cython --no-binary :all: # workaround for pip bug
-  - pip install $DEPENDS --no-binary :all:
+  - pip install --no-binary :all: Cython
+  - pip install --no-binary :all: $DEPENDS
 
 install:
   - if [ $MPI -eq 1 ] ; then ci/travis/build-parallel-netcdf.sh; fi
