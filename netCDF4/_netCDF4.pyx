@@ -36,7 +36,6 @@ Download
 Requires
 ========
 
- - Python 2.7 or later (python 3 works too).
  - [numpy array module](http://numpy.scipy.org), version 1.10.0 or later.
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
