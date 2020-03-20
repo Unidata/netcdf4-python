@@ -34,10 +34,10 @@ matrix:
     # Absolute minimum dependencies.
     - python: 2.7
       env:
-        - DEPENDS="numpy==1.10.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
-    - python: 3.7
+        - DEPENDS="numpy==1.13.3 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
+    - python: 3.6
       env:
-        - DEPENDS="numpy==1.10.1 cython==0.21 setuptools==18.0 cftime"
+        - DEPENDS="numpy==1.13.3 cython==0.21 setuptools==18.0 cftime"
     # test MPI with latest released version
     - python: 3.8
       env: 
