@@ -32,7 +32,7 @@ matrix:
         - PATH=${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
   include:
     # Absolute minimum dependencies.
-    - python: 3.8
+    - python: 3.6
       env:
         - DEPENDS="numpy==1.10.0 cython==0.21 ordereddict==1.1 setuptools==18.0 cftime"
     # test MPI with latest released version
