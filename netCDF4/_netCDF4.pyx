@@ -4716,7 +4716,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                     data = numpy.array([fillval],self.dtype)
                 else:
                     data = data.filled(fill_value=fillval)
-        return data.astype(self.dtype) # cast data to var type
+        if self.dtype != data.dtype:
+            data = data.astype(self.dtype) # cast data to var type, if necessary.
+        return data
 
     def _assign_vlen(self, elem, data):
         """private method to assign data to a single item in a VLEN variable"""
