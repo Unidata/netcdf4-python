@@ -4433,7 +4433,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # set_auto_mask or set_auto_maskandscale), perform
         # automatic conversion to masked array using
         # missing_value/_Fill_Value.
-        # ignore for compound, vlen or enum datatypes.
+        # applied for primitive and (non-string) vlen,
+        # ignored for compound and enum datatypes.
         try: # check to see if scale_factor and add_offset is valid (issue 176).
             if hasattr(self,'scale_factor'): float(self.scale_factor)
             if hasattr(self,'add_offset'): float(self.add_offset)
@@ -4444,7 +4445,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 msg = 'invalid scale_factor or add_offset attribute, no unpacking done...'
                 warnings.warn(msg)
 
-        if self.mask and (self._isprimitive or self._isenum):
+        if self.mask and\
+           (self._isprimitive or self._isenum or\
+           (self._isvlen and self.dtype != str)):
             data = self._toma(data)
         else:
             # if attribute _Unsigned is True, and variable has signed integer
@@ -4454,7 +4457,9 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
                 if is_unsigned and data.dtype.kind == 'i':
                     data=data.view('%su%s'%(data.dtype.byteorder,data.dtype.itemsize))
 
-        if self.scale and self._isprimitive and valid_scaleoffset:
+        if self.scale and\
+           (self._isprimitive or (self._isvlen and self.dtype != str)) and\
+           valid_scaleoffset:
             # if variable has scale_factor and add_offset attributes, apply
             # them.
             if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
@@ -4670,6 +4675,51 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
 
         return data
 
+    def _pack(self,data):
+        # pack non-masked values using scale_factor and add_offset
+        if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
+            data = (data - self.add_offset)/self.scale_factor
+            if self.dtype.kind in 'iu': data = numpy.around(data)
+        elif hasattr(self, 'scale_factor'):
+            data = data/self.scale_factor
+            if self.dtype.kind in 'iu': data = numpy.around(data)
+        elif hasattr(self, 'add_offset'):
+            data = data - self.add_offset
+            if self.dtype.kind in 'iu': data = numpy.around(data)
+        if ma.isMA(data):
+            # if underlying data in masked regions of masked array
+            # corresponds to missing values, don't fill masked array -
+            # just use underlying data instead
+            if hasattr(self, 'missing_value') and \
+               numpy.all(numpy.in1d(data.data[data.mask],self.missing_value)):
+                data = data.data
+            else:
+                if hasattr(self, 'missing_value'):
+                    # if missing value is a scalar, use it as fill_value.
+                    # if missing value is a vector, raise an exception
+                    # since we then don't know how to fill in masked values.
+                    if numpy.array(self.missing_value).shape == ():
+                        fillval = self.missing_value
+                    else:
+                        msg="cannot assign fill_value for masked array when missing_value attribute is not a scalar"
+                        raise RuntimeError(msg)
+                    if numpy.array(fillval).shape != ():
+                        fillval = fillval[0]
+                elif hasattr(self, '_FillValue'):
+                    fillval = self._FillValue
+                else:
+                    fillval = default_fillvals[self.dtype.str[1:]]
+                # some versions of numpy have trouble handling
+                # MaskedConstants when filling - this is is
+                # a workaround (issue #850)
+                if data.shape == (1,) and data.mask.all():
+                    data = numpy.array([fillval],self.dtype)
+                else:
+                    data = data.filled(fill_value=fillval)
+        if self.dtype != data.dtype:
+            data = data.astype(self.dtype) # cast data to var type, if necessary.
+        return data
+
     def _assign_vlen(self, elem, data):
         """private method to assign data to a single item in a VLEN variable"""
         cdef size_t *startp
@@ -4824,6 +4874,9 @@ cannot be safely cast to variable data type""" % attname
                     # issue 458, allow Ellipsis to be used for scalar var
                     if type(elem) == type(Ellipsis) and not\
                        len(self.dimensions): elem = 0
+                    # pack as integers if desired.
+                    if self.scale:
+                        data = self._pack(data)
                     self._assign_vlen(elem, data)
                     return
 
@@ -4879,65 +4932,10 @@ cannot be safely cast to variable data type""" % attname
         # exists (improves compression).
         if self._has_lsd:
             data = _quantize(data,self.least_significant_digit)
-        # if auto_scale mode set to True, (through
-        # a call to set_auto_scale or set_auto_maskandscale),
-        # perform automatic unpacking using scale_factor/add_offset.
-        # if auto_mask mode is set to True (through a call to
-        # set_auto_mask or set_auto_maskandscale), perform
-        # automatic conversion to masked array using
-        # valid_min,validmax,missing_value,_Fill_Value.
-        # ignore if not a primitive or enum data type (not compound or vlen).
-
-        # remove this since it causes suprising behaviour (issue #777)
-        # (missing_value should apply to scaled data, not unscaled data)
-        #if self.mask and (self._isprimitive or self._isenum):
-        #    # use missing_value as fill value.
-        #    # if no missing value set, use _FillValue.
-        #    if hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
-        #        # if not masked, create a masked array.
-        #        if not ma.isMA(data): data = self._toma(data)
 
         if self.scale and self._isprimitive:
             # pack non-masked values using scale_factor and add_offset
-            if hasattr(self, 'scale_factor') and hasattr(self, 'add_offset'):
-                data = (data - self.add_offset)/self.scale_factor
-                if self.dtype.kind in 'iu': data = numpy.around(data)
-            elif hasattr(self, 'scale_factor'):
-                data = data/self.scale_factor
-                if self.dtype.kind in 'iu': data = numpy.around(data)
-            elif hasattr(self, 'add_offset'):
-                data = data - self.add_offset
-                if self.dtype.kind in 'iu': data = numpy.around(data)
-            if ma.isMA(data):
-                # if underlying data in masked regions of masked array
-                # corresponds to missing values, don't fill masked array -
-                # just use underlying data instead
-                if hasattr(self, 'missing_value') and \
-                   numpy.all(numpy.in1d(data.data[data.mask],self.missing_value)):
-                    data = data.data
-                else:
-                    if hasattr(self, 'missing_value'):
-                        # if missing value is a scalar, use it as fill_value.
-                        # if missing value is a vector, raise an exception
-                        # since we then don't know how to fill in masked values.
-                        if numpy.array(self.missing_value).shape == ():
-                            fillval = self.missing_value
-                        else:
-                            msg="cannot assign fill_value for masked array when missing_value attribute is not a scalar"
-                            raise RuntimeError(msg)
-                        if numpy.array(fillval).shape != ():
-                            fillval = fillval[0]
-                    elif hasattr(self, '_FillValue'):
-                        fillval = self._FillValue
-                    else:
-                        fillval = default_fillvals[self.dtype.str[1:]]
-                    # some versions of numpy have trouble handling
-                    # MaskedConstants when filling - this is is
-                    # a workaround (issue #850)
-                    if data.shape == (1,) and data.mask.all():
-                        data = numpy.array([fillval],self.dtype)
-                    else:
-                        data = data.filled(fill_value=fillval)
+            data = self._pack(data)
 
         # Fill output array with data chunks.
         for (a,b,c,i) in zip(start, count, stride, put_ind):
