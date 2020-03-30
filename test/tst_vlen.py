@@ -229,6 +229,7 @@ class Vlen_ScaledInts(unittest.TestCase):
         nc.set_auto_maskandscale(False)
         data = nc['vl'][-1]
         assert(data[-1] == 255)
+        nc.close()
 
 if __name__ == '__main__':
     unittest.main()
