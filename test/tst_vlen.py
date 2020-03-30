@@ -190,6 +190,45 @@ class VlenAppendTestCase(unittest.TestCase):
         v[0].size               # BOOM!
         f.close()
 
+class Vlen_ScaledInts(unittest.TestCase):
+    def setUp(self):
+        self.file = FILE_NAME
+        nc = Dataset(self.file, 'w')
+        vlen_type = nc.createVLType(np.uint8, 'vltest')
+        nc.createDimension('x', None)
+        v = nc.createVariable('vl', vlen_type, 'x')
+        v.scale_factor = 1./254.
+        v.missing_value=np.array(255,np.uint8)
+        # random lengths between 1 and 1000
+        ilen = np.random.randint(1,1000,size=100)
+        n = 0
+        for nlen in ilen:
+            data = np.random.uniform(low=0.0, high=1.0, size=nlen)
+            if n==99:
+                # mark last value as missing
+                mask = np.zeros(data.shape,dtype=bool)
+                mask[-1] = True
+                data = np.ma.masked_array(data, mask=mask)
+                self.data = data
+            v[n] = data
+            n += 1
+        nc.close()
+    def tearDown(self):
+        # Remove the temporary files
+        os.remove(self.file)
+    def runTest(self):
+        """testing packing float vlens as scaled integers (issue #1003)."""
+        nc = Dataset(self.file)
+        # see if data is masked
+        data = nc['vl'][-1]
+        assert(data[-1] is np.ma.masked)
+        # check max error of compression
+        err = np.abs(data - self.data)
+        assert(err.max() < nc['vl'].scale_factor)
+        # turn off auto-scaling
+        nc.set_auto_maskandscale(False)
+        data = nc['vl'][-1]
+        assert(data[-1] == 255)
 
 if __name__ == '__main__':
     unittest.main()
