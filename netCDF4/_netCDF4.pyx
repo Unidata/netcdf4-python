@@ -4433,7 +4433,8 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         # set_auto_mask or set_auto_maskandscale), perform
         # automatic conversion to masked array using
         # missing_value/_Fill_Value.
-        # ignore for compound datatypes.
+        # applied for primitive and (non-string) vlen,
+        # ignored for compound and enum datatypes.
         try: # check to see if scale_factor and add_offset is valid (issue 176).
             if hasattr(self,'scale_factor'): float(self.scale_factor)
             if hasattr(self,'add_offset'): float(self.add_offset)
