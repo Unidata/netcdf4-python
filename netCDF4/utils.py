@@ -351,7 +351,7 @@ Boolean array must have the same shape as the data along this dimension."""
         # at this stage e is a slice, a scalar integer, or a 1d integer array.
         # integer array:  _get call for each True value
         if np.iterable(e):
-            sdim.append(np.alen(e))
+            sdim.append(len(e))
         # Scalar int or slice, just a single _get call
         else:
             sdim.append(1)
