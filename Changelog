@@ -5,6 +5,7 @@
  * make sure root group has 'name' attribute (issue #988).
  * add the ability to pack vlen floats to integers using
    scale_factor/add_offset (issue #1003)
+ * use len instead of deprecated numpy.alen (issue #1008)
 
  version 1.5.3 (tag v1.5.3rel)
 ==============================
