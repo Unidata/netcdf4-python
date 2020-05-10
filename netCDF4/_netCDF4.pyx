@@ -2094,10 +2094,6 @@ strings.
         desirable, since the associated Variable instances may still be needed, but are
         rendered unusable when the parent Dataset instance is garbage collected.
 
-        **`_ncstring_attrs__`**: if `_ncstring_attrs__=True`, all string attributes will use
-        the variable length NC_STRING attributes (default `False`, ascii text
-        attributes written as NC_CHAR).
-
         **`memory`**: if not `None`, create or open an in-memory Dataset.
         If mode = 'r', the memory kwarg must contain a memory buffer object
         (an object that supports the python buffer interface).
