@@ -4605,7 +4605,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
         safe_validrange = self._check_safecast('valid_range')
         safe_validmin = self._check_safecast('valid_min')
         safe_validmax = self._check_safecast('valid_max')
-        if safe_validrange and self.valid_range.ndim == 2:
+        if safe_validrange and self.valid_range.size == 2:
             validmin = numpy.array(self.valid_range[0], self.dtype)
             validmax = numpy.array(self.valid_range[1], self.dtype)
         else:

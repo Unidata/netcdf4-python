@@ -36,6 +36,7 @@ class SetValidMinMax(unittest.TestCase):
         v.missing_value = np.array(32767, v.dtype)
         v.valid_min = np.array(self.valid_min, v.dtype)
         v.valid_max = np.array(self.valid_max, v.dtype)
+        v.valid_range = 0 # issue 1013, this is wrong but should not raise an exception
 
         v[0] = self.valid_min-1
         v[1] = self.v[1]
