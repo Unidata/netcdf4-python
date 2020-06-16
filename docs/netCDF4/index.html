@@ -3189,7 +3189,7 @@ datatype.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Dataset.createVariable">
-    <p>def <span class="ident">createVariable</span>(</p><p>self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None, fill_value=None)</p>
+    <p>def <span class="ident">createVariable</span>(</p><p>self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None, fill_value=None, chunk_cache=None)</p>
     </div>
     
 
@@ -4209,7 +4209,7 @@ datatype.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.Group.createVariable">
-    <p>def <span class="ident">createVariable</span>(</p><p>self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None, fill_value=None)</p>
+    <p>def <span class="ident">createVariable</span>(</p><p>self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None, fill_value=None, chunk_cache=None)</p>
     </div>
     
 
@@ -5074,7 +5074,7 @@ datatype.</p></div>
             
   <div class="item">
     <div class="name def" id="netCDF4.MFDataset.createVariable">
-    <p>def <span class="ident">createVariable</span>(</p><p>self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None, fill_value=None)</p>
+    <p>def <span class="ident">createVariable</span>(</p><p>self, varname, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None, fill_value=None, chunk_cache=None)</p>
     </div>
     
 
@@ -6037,7 +6037,7 @@ Default is <code>True</code>, can be reset using <a href="#netCDF4.Variable.set_
             
   <div class="item">
     <div class="name def" id="netCDF4.Variable.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, group, name, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None,fill_value=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, group, name, datatype, dimensions=(), zlib=False, complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None, endian=&#39;native&#39;, least_significant_digit=None,fill_value=None,chunk_cache=None)</p>
     </div>
     
 
@@ -6108,6 +6108,9 @@ value that the variable gets filled with before any data is written to it)
 is replaced with this value.  If fill_value is set to <code>False</code>, then
 the variable is not pre-filled. The default netCDF fill values can be found
 in <code>netCDF4.default_fillvals</code>.</p>
+<p><strong><code>chunk_cache</code></strong>: If specified, sets the chunk cache size for this variable.
+Persists as long as Dataset is open. Use <code>netCDF4.set_var_chunk_cache</code> to 
+change it when Dataset is re-opened. </p>
 <p><strong><em>Note</em></strong>: <a href="#netCDF4.Variable"><code>Variable</code></a> instances should be created using the
 <a href="#netCDF4.Dataset.createVariable"><code>createVariable</code></a> method of a <a href="#netCDF4.Dataset"><code>Dataset</code></a> or
 <a href="#netCDF4.Group"><code>Group</code></a> instance, not using this class directly.</p></div>

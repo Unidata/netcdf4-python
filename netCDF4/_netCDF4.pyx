@@ -2677,7 +2677,7 @@ datatype."""
         """
 **`createVariable(self, varname, datatype, dimensions=(), zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-endian='native', least_significant_digit=None, fill_value=None)`**
+endian='native', least_significant_digit=None, fill_value=None, chunk_cache=None)`**
 
 Creates a new variable with the given `varname`, `datatype`, and
 `dimensions`. If dimensions are not given, the variable is assumed to be
@@ -3619,7 +3619,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         **`__init__(self, group, name, datatype, dimensions=(), zlib=False,
         complevel=4, shuffle=True, fletcher32=False, contiguous=False,
         chunksizes=None, endian='native',
-        least_significant_digit=None,fill_value=None)`**
+        least_significant_digit=None,fill_value=None,chunk_cache=None)`**
 
         `netCDF4.Variable` constructor.
 
@@ -3700,6 +3700,10 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
         in `netCDF4.default_fillvals`.
+      
+        **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
+        Persists as long as Dataset is open. Use `netCDF4.set_var_chunk_cache` to 
+        change it when Dataset is re-opened. 
 
         ***Note***: `netCDF4.Variable` instances should be created using the
         `netCDF4.Dataset.createVariable` method of a `netCDF4.Dataset` or
