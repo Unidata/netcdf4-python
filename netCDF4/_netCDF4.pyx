@@ -1251,6 +1251,48 @@ used to build the module, and when it was built.
     """
     return (<char *>nc_inq_libvers()).decode('ascii')
 
+def get_chunk_cache():
+    """
+**`get_chunk_cache()`**
+
+return current netCDF chunk cache information in a tuple (size,nelems,preemption).
+See netcdf C library documentation for `nc_get_chunk_cache` for
+details. Values can be reset with `netCDF4.set_chunk_cache`."""
+    cdef int ierr
+    cdef size_t sizep, nelemsp
+    cdef float preemptionp
+    ierr = nc_get_chunk_cache(&sizep, &nelemsp, &preemptionp)
+    _ensure_nc_success(ierr)
+    size = sizep; nelems = nelemsp; preemption = preemptionp
+    return (size,nelems,preemption)
+
+def set_chunk_cache(size=None,nelems=None,preemption=None):
+    """
+**`set_chunk_cache(self,size=None,nelems=None,preemption=None)`**
+
+change netCDF4 chunk cache settings.
+See netcdf C library documentation for `nc_set_chunk_cache` for
+details."""
+    cdef int ierr
+    cdef size_t sizep, nelemsp
+    cdef float preemptionp
+    # reset chunk cache size, leave other parameters unchanged.
+    size_orig, nelems_orig, preemption_orig = get_chunk_cache()
+    if size is not None:
+        sizep = size
+    else:
+        sizep = size_orig
+    if nelems is not None:
+        nelemsp = nelems
+    else:
+        nelemsp = nelems_orig
+    if preemption is not None:
+        preemptionp = preemption
+    else:
+        preemptionp = preemption_orig
+    ierr = nc_set_chunk_cache(sizep,nelemsp, preemptionp)
+    _ensure_nc_success(ierr)
+
 __netcdf4libversion__ = getlibversion().split()[0]
 __hdf5libversion__ = _gethdf5libversion()
 __has_rename_grp__ = HAS_RENAME_GRP
