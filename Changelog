@@ -9,6 +9,8 @@
  * check size on valid_range instead of using len (issue #1013).
  * add `set_chunk_cache/get_chunk_cache` module functions to reset the
    default chunk cache sizes before opening a Dataset (issue #1018).
+ * replace use of numpy's deprecated tostring() method with tobytes()
+   (issue #1023).
 
  version 1.5.3 (tag v1.5.3rel)
 ==============================
