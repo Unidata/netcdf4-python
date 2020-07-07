@@ -1455,10 +1455,10 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
         if name == '_FillValue' and python3:
             # make sure _FillValue for character arrays is a byte on python 3
             # (issue 271).
-            pstring = value_arr.tostring()
+            pstring = value_arr.tobytes()
         else:
             pstring =\
-            value_arr.tostring().decode(encoding,errors='replace').replace('\x00','')
+            value_arr.tobytes().decode(encoding,errors='replace').replace('\x00','')
         return pstring
     elif att_type == NC_STRING:
         values = <char**>PyMem_Malloc(sizeof(char*) * att_len)
@@ -6133,9 +6133,9 @@ and shape `a.shape + (N,)`, where N is the length of each string in a."""
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
     if encoding in ['none','None','bytes']:
-        b = numpy.array(tuple(a.tostring()),'S1')
+        b = numpy.array(tuple(a.tobytes()),'S1')
     else:
-        b = numpy.array(tuple(a.tostring().decode(encoding)),dtype+'1')
+        b = numpy.array(tuple(a.tobytes().decode(encoding)),dtype+'1')
     b.shape = a.shape + (a.itemsize,)
     return b
 
@@ -6159,9 +6159,9 @@ returns a numpy string array with datatype `'UN'` (or `'SN'`) and shape
     if dtype not in ["S","U"]:
         raise ValueError("type must be string or unicode ('S' or 'U')")
     if encoding in ['none','None','bytes']:
-        bs = b.tostring()
+        bs = b.tobytes()
     else:
-        bs = b.tostring().decode(encoding)
+        bs = b.tobytes().decode(encoding)
     slen = int(b.shape[-1])
     if encoding in ['none','None','bytes']:
         a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'S'+repr(slen))
