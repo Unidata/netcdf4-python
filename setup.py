@@ -362,8 +362,8 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
         libs.extend(['hdf5_hl', 'hdf5'])
 
 
-dirstosearch = [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
-                '/opt/local', '/usr', os.getenv("CONDA_PREFIX", "")]
+dirstosearch = [os.getenv("CONDA_PREFIX", ""), os.path.expanduser('~'),
+                '/usr/local', '/sw', '/opt', '/opt/local', '/usr']
 
 if not retcode:  # Try nc-config.
     sys.stdout.write('using nc-config ...\n')
