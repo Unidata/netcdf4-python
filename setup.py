@@ -4,7 +4,7 @@ from setuptools import setup, Extension
 from distutils.dist import Distribution
 
 setuptools_extra_kwargs = {
-    "install_requires": ["numpy>=1.7","cftime"],
+    "install_requires": ["numpy>=1.9","cftime"],
     "setup_requires": ['setuptools>=18.0', "cython>=0.19"],
     "entry_points": {
         'console_scripts': [
@@ -363,7 +363,7 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
 
 
 dirstosearch = [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
-                '/opt/local', '/usr']
+                '/opt/local', '/usr', os.getenv("CONDA_PREFIX", "")]
 
 if not retcode:  # Try nc-config.
     sys.stdout.write('using nc-config ...\n')
