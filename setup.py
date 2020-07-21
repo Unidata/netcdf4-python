@@ -4,7 +4,7 @@ from setuptools import setup, Extension
 from distutils.dist import Distribution
 
 setuptools_extra_kwargs = {
-    "install_requires": ["numpy>=1.7","cftime"],
+    "install_requires": ["numpy>=1.9","cftime"],
     "setup_requires": ['setuptools>=18.0', "cython>=0.19"],
     "entry_points": {
         'console_scripts': [

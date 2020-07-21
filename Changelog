@@ -11,6 +11,7 @@
    default chunk cache sizes before opening a Dataset (issue #1018).
  * replace use of numpy's deprecated tostring() method with tobytes()
    (issue #1023).
+ * bump minimal numpy version to 1.9
 
  version 1.5.3 (tag v1.5.3rel)
 ==============================
