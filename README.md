@@ -10,6 +10,9 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+07/23/2020: Version [1.5.4](https://pypi.python.org/pypi/netCDF4/1.5.4) released]. Now requires 
+numpy >= 1.9.
+ 
 10/27/2019: Version [1.5.3](https://pypi.python.org/pypi/netCDF4/1.5.3) released]. Fix for
 [issue #972](https://github.com/Unidata/netcdf4-python/issues/972), plus binary wheels for
 python 3.8.
