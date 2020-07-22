@@ -330,7 +330,9 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
         if HDF5_incdir is None and HDF5_dir is None:
             sys.stdout.write("""
     HDF5_DIR environment variable not set, checking some standard locations ..\n""")
-            for direc in dirstosearch:
+            # Add parents of include dir to dirstosearch and look there first
+            parentdirs = [os.path.join(direc, os.pardir) for direc in inc_dirs]
+            for direc in parentdirs + dirstosearch:
                 sys.stdout.write('checking %s ...\n' % direc)
                 hdf5_version = check_hdf5version(os.path.join(direc, 'include'))
                 if hdf5_version is None:
