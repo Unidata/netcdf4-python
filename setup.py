@@ -392,16 +392,11 @@ if not ncconfig_retcode:  # Try nc-config.
     hdf5_version = None
     for direc in inc_dirs:
         hdf5_version = get_hdf5_version(direc)
-        sys.stdout.write('checking %s ...\n' % direc)
-        if hdf5_version is None:
-            continue
-        else:
-            sys.stdout.write('%s headers found in %s\n' %
-                            (hdf5_version,direc))
+        if hdf5_version is not None:
             break
-    # if not found, search other standard locations.
+    # if hdf5 not found, search other standard locations (including those specified in env vars).
     if hdf5_version is None:
-        sys.stdout.write('did not find HDF5 headers, search other locations...')
+        sys.stdout.write('nc-config did provide path to HDF5 headers, search standard locations...')
         _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 
 elif HAS_PKG_CONFIG:  # Try pkg-config.
@@ -420,6 +415,8 @@ else:
     inc_dirs = []
     libs = []
 
+    # _populate_hdf5_info will use HDF5_dir, HDF5_libdir and HDF5_incdir if they are set.
+    # otherwise, dirstosearch will be searched.
     _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 
     if netCDF4_incdir is None and netCDF4_dir is None:
