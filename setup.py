@@ -199,8 +199,7 @@ else:
 
 setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars, unless
-# USE_SETUPCFG evaluates to True. Exception is use_ncconfig,
-# which does not take precedence ofver USE_NCCONFIG env var.
+# USE_SETUPCFG evaluates to False. 
 ncconfig = None
 use_ncconfig = None
 if USE_SETUPCFG and os.path.exists(setup_cfg):
@@ -292,27 +291,26 @@ if USE_SETUPCFG and os.path.exists(setup_cfg):
     except:
         pass
 
-# make sure USE_NCCONFIG from environment takes
-# precendence over use_ncconfig from setup.cfg (issue #341).
-if USE_NCCONFIG is None and use_ncconfig is not None:
-    USE_NCCONFIG = use_ncconfig
-elif USE_NCCONFIG is None:
-    USE_NCCONFIG = False
-
-# if USE_NCCONFIG set, and nc-config works, use it.
-if USE_NCCONFIG:
-    # if NETCDF4_DIR env var is set, look for nc-config in NETCDF4_DIR/bin.
+try:
     if ncconfig is None:
         if netCDF4_dir is not None:
             ncconfig = os.path.join(netCDF4_dir, 'bin/nc-config')
         else:  # otherwise, just hope it's in the users PATH.
             ncconfig = 'nc-config'
-    try:
-        ncconfig_retcode = subprocess.call([ncconfig, '--libs'], stdout=subprocess.PIPE)
-    except:
-        ncconfig_retcode = 1
-else:
-    ncconfig_retcode = 1
+    HAS_NCCONFIG = subprocess.call([ncconfig, '--libs'],
+                                     stdout=subprocess.PIPE) == 0
+except OSError:
+    HAS_NCCONFIG = False
+
+# make sure USE_NCCONFIG from environment takes
+# precendence over use_ncconfig from setup.cfg (issue #341).
+if USE_NCCONFIG is None and use_ncconfig is not None:
+    USE_NCCONFIG = use_ncconfig
+elif USE_NCCONFIG is None:
+    # if nc-config exists, and USE_NCCONFIG not set, try to use it.
+    if HAS_NCCONFIG: USE_NCCONFIG=True
+#elif USE_NCCONFIG is None: 
+#    USE_NCCONFIG = False # don't try to use nc-config if USE_NCCONFIG not set
 
 try:
     HAS_PKG_CONFIG = subprocess.call(['pkg-config', '--libs', 'hdf5'],
@@ -343,7 +341,7 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
             sys.stdout.write("""
     HDF5_DIR environment variable not set, checking some standard locations ..\n""")
             for direc in dirstosearch:
-                hdf5_version = get_hdf5version(os.path.join(direc, 'include'))
+                hdf5_version = get_hdf5_version(os.path.join(direc, 'include'))
                 if hdf5_version is None:
                     continue
                 else:
@@ -357,7 +355,7 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
         else:
             if HDF5_incdir is None:
                 HDF5_incdir = os.path.join(HDF5_dir, 'include')
-            hdf5_version = get_hdf5version(HDF5_incdir)
+            hdf5_version = get_hdf5_version(HDF5_incdir)
             if hdf5_version is None:
                 raise ValueError('did not find HDF5 headers in %s' % HDF5_incdir)
             else:
@@ -376,8 +374,9 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
 dirstosearch = [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
                 '/opt/local', '/usr']
 
-if not ncconfig_retcode:  # Try nc-config.
-    sys.stdout.write('using nc-config ...\n')
+# try nc-config first
+if USE_NCCONFIG and HAS_NCCONFIG:  # Try nc-config.
+    sys.stdout.write('using %s...\n' % ncconfig)
     dep = subprocess.Popen([ncconfig, '--libs'],
                            stdout=subprocess.PIPE).communicate()[0]
     libs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l']
@@ -399,7 +398,7 @@ if not ncconfig_retcode:  # Try nc-config.
         sys.stdout.write('nc-config did provide path to HDF5 headers, search standard locations...')
         _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 
-elif HAS_PKG_CONFIG:  # Try pkg-config.
+elif HAS_PKG_CONFIG:  # Try pkg-config next.
     sys.stdout.write('using pkg-config ...\n')
     dep = subprocess.Popen(['pkg-config', '--libs', 'netcdf'],
                            stdout=subprocess.PIPE).communicate()[0]
@@ -409,7 +408,7 @@ elif HAS_PKG_CONFIG:  # Try pkg-config.
 
     inc_dirs = []
     _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
-# If nc-config and pkg-config both didn't work (it won't on Windows), fall back on brute force method.
+# If nc-config and pkg-config both donn't work, fall back on brute force method.
 else:
     lib_dirs = []
     inc_dirs = []
