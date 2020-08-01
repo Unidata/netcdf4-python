@@ -1,3 +1,8 @@
+ since version 1.5.4
+====================
+ * have setup.py always try use nc-config first to find paths to netcdf and
+ hdf5 libraries and headers.
+
  version 1.5.4 (tag v1.5.4rel)
 ==============================
  * fix printing of variable objects for variables that end with the letter 'u'
