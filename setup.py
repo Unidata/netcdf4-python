@@ -321,7 +321,9 @@ except OSError:
 def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
     global HDF5_incdir, HDF5_dir, HDF5_libdir
 
-    if HAS_PKG_CONFIG:
+    nohdf5dirs = HDF5_incdir is None and HDF5_libdir is None and  HDF5_dir is None
+    if HAS_PKG_CONFIG and nohdf5dirs:
+        # if HDF5 dirs not specified, and pkg-config available, use it
         dep = subprocess.Popen(['pkg-config', '--cflags', 'hdf5'],
                                stdout=subprocess.PIPE).communicate()[0]
         inc_dirs.extend([str(i[2:].decode()) for i in dep.split() if
@@ -398,24 +400,14 @@ if USE_NCCONFIG and HAS_NCCONFIG:  # Try nc-config.
         sys.stdout.write('nc-config did provide path to HDF5 headers, search standard locations...')
         _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 
-elif HAS_PKG_CONFIG:  # Try pkg-config next.
-    sys.stdout.write('using pkg-config ...\n')
-    dep = subprocess.Popen(['pkg-config', '--libs', 'netcdf'],
-                           stdout=subprocess.PIPE).communicate()[0]
-    libs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l']
-    lib_dirs = [str(l[2:].decode()) for l in dep.split() if
-                l[0:2].decode() == '-L']
-
-    inc_dirs = []
-    _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
-# If nc-config and pkg-config both donn't work, fall back on brute force method.
+# If nc-config doesn't work, fall back on brute force method.
 else:
     lib_dirs = []
     inc_dirs = []
     libs = []
 
     # _populate_hdf5_info will use HDF5_dir, HDF5_libdir and HDF5_incdir if they are set.
-    # otherwise, dirstosearch will be searched.
+    # otherwise pkg-config will be tried, and if that fails, dirstosearch will be searched.
     _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 
     if netCDF4_incdir is None and netCDF4_dir is None:
