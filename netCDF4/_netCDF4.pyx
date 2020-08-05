@@ -75,25 +75,24 @@ Install
  easiest if all the C libs are built as shared libraries.
  - By default, the utility `nc-config`, installed with netcdf 4.1.2 or higher,
  will be run used to determine where all the dependencies live.
- - If `nc-config` is not in your default `$PATH`
- edit the `setup.cfg` file
+ - If `nc-config` is not in your default `PATH`, you can set the `NETCDF4_DIR`
+ environment variable and `setup.py` will look in `$NETCDF4_DIR/bin`.
+ You can also use the file `setup.cfg` to set the path to `nc-config`, or
+ enter the paths to the libraries and include files manually. Just  edit the `setup.cfg` file
  in a text editor and follow the instructions in the comments.
- In addition to specifying the path to `nc-config`,
- you can manually set the paths to all the libraries and their include files
- (in case `nc-config` does not do the right thing).
- - run `python setup.py build`, then `python setup.py install` (as root if
- necessary).
- - [`pip install`](https://pip.pypa.io/en/latest/reference/pip_install.html) can
- also be used, with library paths set with environment variables. To make
- this work, the `USE_SETUPCFG` environment variable must be used to tell
- setup.py not to use `setup.cfg`.
- For example, `USE_SETUPCFG=0 HDF5_INCDIR=/usr/include/hdf5/serial
- HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial pip install` has been
- shown to work on an Ubuntu/Debian linux system. Similarly, environment variables
+ To disable the use of `nc-config`, set the env var `USE_NCCONFIG` to 0.
+ To disable the use of `setup.cfg`, set `USE_SETUPCFG` to 0.
+ As a last resort, the library and include paths can be set via environment variables.
+ If you go this route, set `USE_NCCONFIG` and `USE_SETUPCFG` to 0, and specify
+ `NETCDF4_LIBDIR`, `NETCDF4_INCDIR`, `HDF5_LIBDIR` and `HDF5_INCDIR`.
+ Similarly, environment variables
  (all capitalized) can be used to set the include and library paths for
- `hdf5`, `netCDF4`, `hdf4`, `szip`, `jpeg`, `curl` and `zlib`. If the
- libraries are installed in standard places (e.g. `/usr` or `/usr/local`),
- the environment variables do not need to be set.
+ `hdf4`, `szip`, `jpeg`, `curl` and `zlib`. If the dependencies are not found
+ in any of the paths specified by environment variables, then standard locations
+ (such as `/usr` and `/usr/local`) are searched.
+ - run `python setup.py build`, then `python setup.py install` (as root if
+ necessary). `pip install` can be used to install pre-compiled binary wheels from 
+ [pypi](https://pypi.org/project/netCDF4).
  - run the tests in the 'test' directory by running `python run_all.py`.
 
 Tutorial
