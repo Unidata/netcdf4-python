@@ -2551,51 +2551,42 @@ used to build the module, and when it was built.</p></div>
 
     
   
-    <div class="desc"><p>num2date(times, units, calendar='standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False)
-Decode times exactly with timedelta arithmetic.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">Return</span> <span class="n">datetime</span> <span class="n">objects</span> <span class="n">given</span> <span class="nb">numeric</span> <span class="k">time</span> <span class="k">values</span><span class="p">.</span> <span class="n">The</span> <span class="n">units</span>
-<span class="k">of</span> <span class="n">the</span> <span class="nb">numeric</span> <span class="k">time</span> <span class="k">values</span> <span class="k">are</span> <span class="n">described</span> <span class="k">by</span> <span class="n">the</span> <span class="o">**</span><span class="n">units</span><span class="o">**</span> <span class="n">argument</span>
-<span class="k">and</span> <span class="n">the</span> <span class="o">**</span><span class="n">calendar</span><span class="o">**</span> <span class="n">keyword</span><span class="p">.</span> <span class="n">The</span> <span class="n">returned</span> <span class="n">datetime</span> <span class="n">objects</span> <span class="n">represent</span>
-<span class="n">UTC</span> <span class="k">with</span> <span class="k">no</span> <span class="k">time</span><span class="o">-</span><span class="k">zone</span> <span class="k">offset</span><span class="p">,</span> <span class="n">even</span> <span class="k">if</span> <span class="n">the</span> <span class="n">specified</span>
-<span class="o">**</span><span class="n">units</span><span class="o">**</span> <span class="n">contain</span> <span class="n">a</span> <span class="k">time</span><span class="o">-</span><span class="k">zone</span> <span class="k">offset</span><span class="p">.</span>
-
-<span class="o">**</span><span class="n">times</span><span class="o">**</span><span class="p">:</span> <span class="nb">numeric</span> <span class="k">time</span> <span class="k">values</span><span class="p">.</span>
-
-<span class="o">**</span><span class="n">units</span><span class="o">**</span><span class="p">:</span> <span class="n">a</span> <span class="n">string</span> <span class="k">of</span> <span class="n">the</span> <span class="n">form</span> <span class="o">**&lt;</span><span class="k">time</span> <span class="n">units</span><span class="o">&gt;</span> <span class="n">since</span> <span class="o">&lt;</span><span class="n">reference</span> <span class="k">time</span><span class="o">&gt;**</span>
-<span class="n">describing</span> <span class="n">the</span> <span class="k">time</span> <span class="n">units</span><span class="p">.</span> <span class="o">**&lt;</span><span class="k">time</span> <span class="n">units</span><span class="o">&gt;**</span> <span class="n">can</span> <span class="n">be</span> <span class="n">days</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">minutes</span><span class="p">,</span>
-<span class="n">seconds</span><span class="p">,</span> <span class="n">milliseconds</span> <span class="k">or</span> <span class="n">microseconds</span><span class="p">.</span> <span class="o">**&lt;</span><span class="n">reference</span> <span class="k">time</span><span class="o">&gt;**</span> <span class="k">is</span> <span class="n">the</span> <span class="k">time</span>
-<span class="n">origin</span><span class="p">.</span> <span class="o">**</span><span class="n">months_since</span><span class="o">**</span> <span class="k">is</span> <span class="n">allowed</span> <span class="o">*</span><span class="k">only</span><span class="o">*</span> <span class="k">for</span> <span class="n">the</span> <span class="o">**</span><span class="mi">360</span><span class="n">_day</span><span class="o">**</span> <span class="n">calendar</span><span class="p">.</span>
-
-<span class="o">**</span><span class="n">calendar</span><span class="o">**</span><span class="p">:</span> <span class="n">describes</span> <span class="n">the</span> <span class="n">calendar</span> <span class="n">used</span> <span class="k">in</span> <span class="n">the</span> <span class="k">time</span> <span class="n">calculations</span><span class="p">.</span>
-<span class="k">All</span> <span class="n">the</span> <span class="k">values</span> <span class="n">currently</span> <span class="k">defined</span> <span class="k">in</span> <span class="n">the</span>
-<span class="p">[</span><span class="n">CF</span> <span class="n">metadata</span> <span class="n">convention</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">cfconventions</span><span class="p">.</span><span class="n">org</span><span class="p">)</span>
-<span class="k">Valid</span> <span class="n">calendars</span> <span class="o">**</span><span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="s1">&#39;gregorian&#39;</span><span class="p">,</span> <span class="s1">&#39;proleptic_gregorian&#39;</span>
-<span class="s1">&#39;noleap&#39;</span><span class="p">,</span> <span class="s1">&#39;365_day&#39;</span><span class="p">,</span> <span class="s1">&#39;360_day&#39;</span><span class="p">,</span> <span class="s1">&#39;julian&#39;</span><span class="p">,</span> <span class="s1">&#39;all_leap&#39;</span><span class="p">,</span> <span class="s1">&#39;366_day&#39;</span><span class="o">**</span><span class="p">.</span>
-<span class="k">Default</span> <span class="k">is</span> <span class="o">**</span><span class="s1">&#39;standard&#39;</span><span class="o">**</span><span class="p">,</span> <span class="n">which</span> <span class="k">is</span> <span class="n">a</span> <span class="n">mixed</span> <span class="n">Julian</span><span class="o">/</span><span class="n">Gregorian</span> <span class="n">calendar</span><span class="p">.</span>
-
-<span class="o">**</span><span class="n">only_use_cftime_datetimes</span><span class="o">**</span><span class="p">:</span> <span class="k">if</span> <span class="k">False</span><span class="p">,</span> <span class="n">python</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span>
-<span class="n">objects</span> <span class="k">are</span> <span class="n">returned</span> <span class="k">from</span> <span class="n">num2date</span> <span class="k">where</span> <span class="n">possible</span><span class="p">;</span> <span class="k">if</span> <span class="k">True</span> <span class="n">dates</span> <span class="n">which</span>
-<span class="n">subclass</span> <span class="n">cftime</span><span class="p">.</span><span class="n">datetime</span> <span class="k">are</span> <span class="n">returned</span> <span class="k">for</span> <span class="k">all</span> <span class="n">calendars</span><span class="p">.</span> <span class="k">Default</span> <span class="o">**</span><span class="k">True</span><span class="o">**</span><span class="p">.</span>
-
-<span class="o">**</span><span class="n">only_use_python_datetimes</span><span class="o">**</span><span class="p">:</span> <span class="n">always</span> <span class="k">return</span> <span class="n">python</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span>
-<span class="n">objects</span> <span class="k">and</span> <span class="n">raise</span> <span class="n">an</span> <span class="n">error</span> <span class="k">if</span> <span class="n">this</span> <span class="k">is</span> <span class="k">not</span> <span class="n">possible</span><span class="p">.</span> <span class="n">Ignored</span> <span class="n">unless</span>
-<span class="o">**</span><span class="n">only_use_cftime_datetimes</span><span class="o">=</span><span class="k">False</span><span class="o">**</span><span class="p">.</span> <span class="k">Default</span> <span class="o">**</span><span class="k">False</span><span class="o">**</span><span class="p">.</span>
-
-<span class="k">returns</span> <span class="n">a</span> <span class="n">datetime</span> <span class="n">instance</span><span class="p">,</span> <span class="k">or</span> <span class="n">an</span> <span class="nb">array</span> <span class="k">of</span> <span class="n">datetime</span> <span class="n">instances</span> <span class="k">with</span>
-<span class="n">microsecond</span> <span class="n">accuracy</span><span class="p">,</span> <span class="k">if</span> <span class="n">possible</span><span class="p">.</span>
-
-<span class="o">***</span><span class="n">Note</span><span class="o">***</span><span class="p">:</span> <span class="k">If</span> <span class="n">only_use_cftime_datetimes</span><span class="o">=</span><span class="k">False</span> <span class="k">and</span>
-<span class="n">use_only_python_datetimes</span><span class="o">=</span><span class="k">False</span><span class="p">,</span> <span class="n">the</span> <span class="n">datetime</span> <span class="n">instances</span>
-<span class="n">returned</span> <span class="k">are</span> <span class="s1">&#39;real&#39;</span> <span class="n">python</span> <span class="n">datetime</span>
-<span class="n">objects</span> <span class="k">if</span> <span class="o">**</span><span class="n">calendar</span><span class="o">=</span><span class="s1">&#39;proleptic_gregorian&#39;</span><span class="o">**</span><span class="p">,</span> <span class="k">or</span>
-<span class="o">**</span><span class="n">calendar</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="o">**</span> <span class="k">or</span> <span class="o">**</span><span class="s1">&#39;gregorian&#39;</span><span class="o">**</span>
-<span class="k">and</span> <span class="n">the</span> <span class="nb">date</span> <span class="k">is</span> <span class="k">after</span> <span class="n">the</span> <span class="n">breakpoint</span> <span class="k">between</span> <span class="n">the</span> <span class="n">Julian</span> <span class="k">and</span>
-<span class="n">Gregorian</span> <span class="n">calendars</span> <span class="p">(</span><span class="mi">1582</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">15</span><span class="p">).</span> <span class="n">Otherwise</span><span class="p">,</span> <span class="n">they</span> <span class="k">are</span> <span class="n">ctime</span><span class="p">.</span><span class="n">datetime</span>
-<span class="n">objects</span> <span class="n">which</span> <span class="n">support</span> <span class="k">some</span> <span class="n">but</span> <span class="k">not</span> <span class="k">all</span> <span class="n">the</span> <span class="n">methods</span> <span class="k">of</span> <span class="n">native</span> <span class="n">python</span>
-<span class="n">datetime</span> <span class="n">objects</span><span class="p">.</span> <span class="n">The</span> <span class="n">datetime</span> <span class="n">instances</span>
-<span class="k">do</span> <span class="k">not</span> <span class="n">contain</span> <span class="n">a</span> <span class="k">time</span><span class="o">-</span><span class="k">zone</span> <span class="k">offset</span><span class="p">,</span> <span class="n">even</span> <span class="k">if</span> <span class="n">the</span> <span class="n">specified</span> <span class="o">**</span><span class="n">units</span><span class="o">**</span>
-<span class="k">contains</span> <span class="n">one</span><span class="p">.</span>
-</code></pre></div></div>
+    <div class="desc"><p>num2date(times, units, calendar='standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False)</p>
+<p>Return datetime objects given numeric time values. The units
+of the numeric time values are described by the <strong>units</strong> argument
+and the <strong>calendar</strong> keyword. The returned datetime objects represent
+UTC with no time-zone offset, even if the specified
+<strong>units</strong> contain a time-zone offset.</p>
+<p><strong>times</strong>: numeric time values.</p>
+<p><strong>units</strong>: a string of the form <strong><time units> since <reference time></strong>
+describing the time units. <strong><time units></strong> can be days, hours, minutes,
+seconds, milliseconds or microseconds. <strong><reference time></strong> is the time
+origin. <strong>months_since</strong> is allowed <em>only</em> for the <strong>360_day</strong> calendar.</p>
+<p><strong>calendar</strong>: describes the calendar used in the time calculations.
+All the values currently defined in the
+<a href="http://cfconventions.org">CF metadata convention</a>
+Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
+'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
+Default is <strong>'standard'</strong>, which is a mixed Julian/Gregorian calendar.</p>
+<p><strong>only_use_cftime_datetimes</strong>: if False, python datetime.datetime
+objects are returned from num2date where possible; if True dates which
+subclass cftime.datetime are returned for all calendars. Default <strong>True</strong>.</p>
+<p><strong>only_use_python_datetimes</strong>: always return python datetime.datetime
+objects and raise an error if this is not possible. Ignored unless
+<strong>only_use_cftime_datetimes=False</strong>. Default <strong>False</strong>.</p>
+<p>returns a datetime instance, or an array of datetime instances with
+microsecond accuracy, if possible.</p>
+<p><strong><em>Note</em></strong>: If only_use_cftime_datetimes=False and
+use_only_python_datetimes=False, the datetime instances
+returned are 'real' python datetime
+objects if <strong>calendar='proleptic_gregorian'</strong>, or
+<strong>calendar='standard'</strong> or <strong>'gregorian'</strong>
+and the date is after the breakpoint between the Julian and
+Gregorian calendars (1582-10-15). Otherwise, they are ctime.datetime
+objects which support some but not all the methods of native python
+datetime objects. The datetime instances
+do not contain a time-zone offset, even if the specified <strong>units</strong>
+contains one.</p></div>
   <div class="source_cont">
 </div>
 
