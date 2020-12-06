@@ -1,8 +1,9 @@
- since version 1.5.4
-====================
+ version 1.5.5 (tag v1.5.5rel)
+==============================
  * have setup.py always try use nc-config first to find paths to netcdf and
  hdf5 libraries and headers. Don't use pkg-config to find HDF5 if HDF5 env
  vars are set (or read from setup.cfg).
+ * Change MIT license text to standard OSI wording (PR #1046).
 
  version 1.5.4 (tag v1.5.4rel)
 ==============================
