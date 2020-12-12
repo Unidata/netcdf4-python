@@ -1,5 +1,5 @@
-import netCDF4, sys, numpy
-sys.stdout.write('netcdf4-python version: %s\n'%netCDF4.__version__)
-sys.stdout.write('HDF5 lib version:       %s\n'%netCDF4.__hdf5libversion__)
-sys.stdout.write('netcdf lib version:     %s\n'%netCDF4.__netcdf4libversion__)
-sys.stdout.write('numpy version           %s\n' % numpy.__version__)
+import netCDF4, numpy
+print('netcdf4-python version: %s'%netCDF4.__version__)
+print('HDF5 lib version:       %s'%netCDF4.__hdf5libversion__)
+print('netcdf lib version:     %s'%netCDF4.__netcdf4libversion__)
+print('numpy version           %s' % numpy.__version__)
