@@ -1,3 +1,7 @@
+ version 1.5.5.1 (tag v1.5.5.1rel)
+==================================
+ * rebuild binary wheels for linux and OSX to link netcdf-c 4.7.4 and hdf5 1.12.0.
+
  version 1.5.5 (tag v1.5.5rel)
 ==============================
  * have setup.py always try use nc-config first to find paths to netcdf and
