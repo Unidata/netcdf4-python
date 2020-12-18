@@ -10,6 +10,9 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+12/20/2020: Version [1.5.5.1](https://pypi.python.org/pypi/netCDF4/1.5.5.1) released.
+Updated binary wheels for OSX and linux that link latest netcdf-c and hdf5 libs.
+
 12/01/2020: Version [1.5.5](https://pypi.python.org/pypi/netCDF4/1.5.5) released.
 Update license wording to be consistent with MIT license. 
 
