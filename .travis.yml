@@ -12,7 +12,7 @@ addons:
 env:
   global:
     - DEPENDS="numpy>=1.10.0 cython>=0.21 setuptools>=18.0 cftime"
-    - NO_NET=1
+#   - NO_NET=1
     - MPI=0
 
 python:
