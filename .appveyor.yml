@@ -53,5 +53,5 @@ build: off
 
 test_script:
   - python -m pip install . --no-deps --ignore-installed --no-cache-dir -vv
-  - set NO_NET=1
+# - set NO_NET=1
   - cd test && python run_all.py
