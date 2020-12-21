@@ -1,0 +1,32 @@
+name: linux-tests
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install
+      shell: bash -l {0}
+      run: |
+        sudo apt-get install libhdf5-serial-dev netcdf-bin libnetcdf-dev
+        python -m pip install --upgrade pip setuptools
+        python -m pip install numpy cython cftime
+        pip install -e . --no-deps
+
+    - name: Run tests
+      run: cd test && python run_all.py
