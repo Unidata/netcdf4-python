@@ -25,7 +25,7 @@ jobs:
       run: |
         sudo apt-get install libhdf5-serial-dev netcdf-bin libnetcdf-dev
         python -m pip install --upgrade pip setuptools
-        python -m pip install numpy cython cftime
+        python -m pip install numpy>=1.10.0 cython>=0.21 cftime
         pip install -e . --no-deps
 
     - name: Run tests
