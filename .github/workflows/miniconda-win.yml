@@ -10,7 +10,8 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.9]
+        python-version: [3.7, 3.8, 3.9]
+        numpy-version: [1.17, 1.19]
 
     steps:
     - uses: actions/checkout@v2
@@ -21,14 +22,19 @@ jobs:
         activate-conda: false
         conda-channels: conda-forge
 
-    - name: Python ${{ matrix.python-version }}
+    - name: Python ${{ matrix.python-version }} ${{ matrix.numpy-version }}
       shell: bash -l {0}
       run: |
-        conda create --name TEST python=${{ matrix.python-version }} "numpy=1.17" cython pip pytest hdf5 libnetcdf cftime --strict-channel-priority
+        conda create --name TEST python=${{ matrix.python-version }} numpy=${{ matrix.numpy-version }} cython pip hdf5 libnetcdf cftime
         source activate TEST
+        echo [options] > setup.cfg
+        echo [directories] >> setup.cfg
+        echo HDF5_libdir = $CONDA_PREFIX\\Library\\lib >> setup.cfg
+        echo HDF5_incdir = $CONDA_PREFIX\\Library\\include >> setup.cfg
+        echo netCDF4_libdir = $CONDA_PREFIX\\Library\\lib >> setup.cfg
+        echo netCDF4_incdir = $CONDA_PREFIX\\Library\\include >> setup.cfg
+        cat setup.cfg
         pip install -e . --no-deps --force-reinstall
-        conda info --all
-        conda list
 
     - name: Tests
       shell: bash -l {0}
