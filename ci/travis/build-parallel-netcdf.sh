@@ -8,7 +8,7 @@ if [ -n "${PNETCDF_VERSION}" ]; then
 	wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
 	tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
 	pushd pnetcdf-${PNETCDF_VERSION}
-	./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
+	./configure --prefix ${NETCDF_DIR} --enable-shared --disable-fortran --disable-cxx
 	NETCDF_EXTRA_CONFIG="--enable-pnetcdf"
 	make -j 2
 	make install
@@ -28,7 +28,7 @@ fi
 export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
 export LDFLAGS="-L${NETCDF_DIR}/lib"
 export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
-./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
+./configure --prefix ${NETCDF_DIR} --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
 make -j 2
 make install
 popd
