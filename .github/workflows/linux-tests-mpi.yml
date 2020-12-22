@@ -14,9 +14,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    # Should not ne needed :-/
-    - name: Install sudo package
-      run: apt update && apt install sudo
 
     - name: Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
@@ -32,7 +29,7 @@ jobs:
         NETCDF_VERSION: 4.7.3
         PNETCDF_VERSION: 1.12.1
         NETCDF_DIR: $HOME
-        PATH: ${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
+        # PATH: ${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
       run: |
         sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev
         python -m pip install --upgrade pip setuptools
