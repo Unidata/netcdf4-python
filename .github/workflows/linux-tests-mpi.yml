@@ -29,7 +29,7 @@ jobs:
         NETCDF_VERSION: GITMASTER
         NETCDF_DIR: $GITHUB_WORKSPACE/netcdf
       run: |
-        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev
+        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev
         # pick up nc-config here
         echo "${NETCDF_DIR}/bin" >> $GITHUB_PATH
         python -m pip install --upgrade pip setuptools
