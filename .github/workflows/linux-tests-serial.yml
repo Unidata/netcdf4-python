@@ -22,10 +22,14 @@ jobs:
 
     - name: Install
       shell: bash -l {0}
+      env:
+        DEPENDS: "numpy>=1.10.0 cython>=0.21 setuptools>=18.0 cftime"
+        # NO_NET: 1
+        MPI: 0
       run: |
         sudo apt-get install libhdf5-serial-dev netcdf-bin libnetcdf-dev
         python -m pip install --upgrade pip setuptools
-        python -m pip install numpy>=1.10.0 cython>=0.21 cftime
+        python -m pip install $DEPENDS
         pip install -e . --no-deps
 
     - name: Run tests
