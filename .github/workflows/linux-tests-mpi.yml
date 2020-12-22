@@ -1,4 +1,4 @@
-name: linux-tests-serial
+name: linux-tests-mpi
 
 on:
   pull_request:
