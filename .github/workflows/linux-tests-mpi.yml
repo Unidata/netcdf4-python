@@ -29,9 +29,10 @@ jobs:
         NETCDF_VERSION: 4.7.3
         PNETCDF_VERSION: 1.12.1
         NETCDF_DIR: $HOME
-        # PATH: ${NETCDF_DIR}/bin:${PATH} # pick up nc-config here
       run: |
         sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev
+        # pick up nc-config here
+        echo "${NETCDF_DIR}/bin" >> $GITHUB_PATH
         python -m pip install --upgrade pip setuptools
         python -m pip install ${DEPENDS}
         if [ $MPI -eq 1 ] ; then ci/travis/build-parallel-netcdf.sh; fi
