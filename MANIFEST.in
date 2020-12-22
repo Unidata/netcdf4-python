@@ -2,7 +2,7 @@ recursive-include docs *
 recursive-include man *
 include MANIFEST.in
 include README.md
-include COPYING
+include LICENSE
 include Changelog
 include appveyor.yml
 include .travis.yml
