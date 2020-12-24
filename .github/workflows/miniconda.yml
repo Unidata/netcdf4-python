@@ -1,4 +1,4 @@
-name: windows
+name: build and test
 
 on:
   pull_request:
@@ -7,10 +7,10 @@ on:
 
 jobs:
   run:
-    runs-on: windows-latest
+    runs-on: [ubuntu-latest, macosx-latest, windows-latest]
     strategy:
       matrix:
-        python-version: [3.7, 3.9]
+        python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
     - name: Python ${{ matrix.python-version }}
       shell: bash -l {0}
       run: |
-        conda create --name TEST python=${{ matrix.python-version }} "numpy=1.17" cython pip pytest hdf5 libnetcdf cftime --strict-channel-priority
+        conda create --name TEST python=${{ matrix.python-version }} numpy cython pip pytest hdf5 libnetcdf cftime --strict-channel-priority
         source activate TEST
         pip install -e . --no-deps --force-reinstall
         conda info --all
@@ -34,5 +34,4 @@ jobs:
       shell: bash -l {0}
       run: |
         source activate TEST
-        set NO_NET=1
         cd test && python run_all.py
