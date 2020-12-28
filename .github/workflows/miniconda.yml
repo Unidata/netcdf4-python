@@ -10,8 +10,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: [ "3.7", "3.8", "3.9"]
+        #python-version: [ "3.7", "3.8", "3.9"]
         #os: [windows-latest, ubuntu-latest, macos-latest]
+        python-version: [ "3.8" ]
         os: [windows-latest]
         #platform: [x64, x32]
         platform: [x64]
@@ -33,11 +34,12 @@ jobs:
         conda create --name TEST python=${{ matrix.python-version }} numpy cython pip pytest hdf5 libnetcdf cftime --strict-channel-priority
         source activate TEST
         export PATH="$CONDA_PREFIX/bin:$PATH" # so setup.py finds nc-config
-        which nc-config
+        cd $CONDA_PREFIX
+        find ./ -name 'hdf5.h' -print
+        find ./ -name 'nc-config' -print
         ls -l $CONDA_PREFIX
-        ls -l $CONDA_PREFIX/bin
-        ls -l $CONDA_PREFIX/include
-        ls -l $CONDA_PREFIX/libs
+        ls -l $CONDA_PREFIX/Scripts
+        ls -l $CONDA_PREFIX/DLLs
         pip install -e . --no-deps --force-reinstall
         conda info --all
         conda list
