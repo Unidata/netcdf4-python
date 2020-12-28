@@ -373,7 +373,10 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
         libs.extend(['hdf5_hl', 'hdf5'])
 
 
-dirstosearch = [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
+dirstosearch = []
+if os.environ.get("CONDA_PREFIX"):
+    dirstosearch.append(os.environ["CONDA_PREFIX"])
+dirstosearch += [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
                 '/opt/local', '/usr']
 
 # try nc-config first
