@@ -376,7 +376,7 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
 dirstosearch = []
 if os.environ.get("CONDA_PREFIX"):
     dirstosearch.append(os.environ["CONDA_PREFIX"]) # linux,macosx
-    dirstosearch.append(os.path.join(os.environ["CONDA_PREFIX"]),'Library') # windows
+    dirstosearch.append(os.path.join(os.environ["CONDA_PREFIX"],'Library')) # windows
 dirstosearch += [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
                 '/opt/local', '/usr']
 
