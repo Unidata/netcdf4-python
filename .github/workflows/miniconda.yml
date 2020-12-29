@@ -47,7 +47,7 @@ jobs:
       matrix:
         python-version: [ "3.8" ]
         os: [windows-latest, ubuntu-latest, macos-latest]
-        platform: x64
+        platform: [x64]
     steps:
     - uses: actions/checkout@v2
 
