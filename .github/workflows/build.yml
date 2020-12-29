@@ -24,16 +24,16 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install mpich libmpich-de libhdf5-mpich-dev
-	echo "Download and build PnetCDF version ${PNETCDF_VERSION}"
-	wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
-	tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
-	pushd pnetcdf-${PNETCDF_VERSION}
-	./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
-	NETCDF_EXTRA_CONFIG="--enable-pnetcdf"
-	make -j 2
-	make install
-	popd
-	echo "Download and build netCDF version ${NETCDF_VERSION}"
+        echo "Download and build PnetCDF version ${PNETCDF_VERSION}"
+        wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
+        tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
+        pushd pnetcdf-${PNETCDF_VERSION}
+        ./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
+        NETCDF_EXTRA_CONFIG="--enable-pnetcdf"
+        make -j 2
+        make install
+        popd
+        echo "Download and build netCDF version ${NETCDF_VERSION}"
         wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-${NETCDF_VERSION}.tar.gz
         tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
         pushd netcdf-c-${NETCDF_VERSION}
@@ -71,24 +71,17 @@ jobs:
         python run_all.py
         # parallel (hdf5 for netcdf4, pnetcdf for netcdf3)
         cd ../examples
-        mpirun.mpich -np 4 --oversubscribe python mpi_example.py
+        mpirun.mpich -np 4 python mpi_example.py
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"
           exit 1
         else
           echo "hdf5 mpi test passed!"
         fi
-        mpirun.mpich -np 4 --oversubscribe python mpi_example.py NETCDF3_64BIT_DATA
+        mpirun.mpich -np 4 python mpi_example.py NETCDF3_64BIT_DATA
         if [ $? -ne 0 ] ; then
           echo "pnetcdf mpi test failed!"
           exit 1
         else
           echo "pnetcdf mpi test passed!"
         fi
-
-#   - name: Tarball
-#     run: |
-#       python setup.py --version ; 
-#       pip wheel . -w dist --no-deps ;
-#       check-manifest --verbose ;
-#       twine check dist/* ;
