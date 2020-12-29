@@ -24,7 +24,6 @@ class TestOpenMem(unittest.TestCase):
                 return
 
             with netCDF4.Dataset('foo_bar', memory=nc_bytes) as nc:
-                print(nc.filepath())
                 assert nc.filepath() == 'foo_bar'
                 assert nc.project_summary == 'Dummy netCDF file'
 
