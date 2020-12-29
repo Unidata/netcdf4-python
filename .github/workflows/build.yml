@@ -3,11 +3,12 @@ on: [push, pull_request]
 jobs:
   build-linux:
     name: Python (${{ matrix.python-version }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     env:
       PNETCDF_VERSION: 1.12.1
       NETCDF_VERSION: 4.7.4
-      NETCDF_DIR: ${{ github.workspace }}
+      NETCDF_DIR: ${{ github.workspace }}/..
+      NETCDF_EXTRA_CONFIG: --enable-pnetcdf
     strategy:
       matrix:
         python-version: ["3.9"]
@@ -29,12 +30,8 @@ jobs:
         tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
         pushd pnetcdf-${PNETCDF_VERSION}
         ./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
-        NETCDF_EXTRA_CONFIG="--enable-pnetcdf"
         make -j 2
         make install
-        popd
-        pushd /usr
-        find ./ -name "hdf5.h" -print
         popd
         echo "Download and build netCDF version ${NETCDF_VERSION}"
         wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-${NETCDF_VERSION}.tar.gz
@@ -44,6 +41,7 @@ jobs:
         export LDFLAGS="-L${NETCDF_DIR}/lib"
         export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
         ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
+        cat config.log
         make -j 2
         make install
         popd
