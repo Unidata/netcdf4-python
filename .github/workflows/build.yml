@@ -48,6 +48,7 @@ jobs:
     - name: The job has failed
       if: ${{ failure() }}
       run: |
+        cd netcdf-c-${NETCDF_VERSION}
         cat config.log 
 
     - name: Update Pip
