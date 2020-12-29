@@ -5,9 +5,9 @@ jobs:
     name: Python (${{ matrix.python-version }})
     runs-on: ubuntu-latest
     env:
-        PNETCDF_VERSION=1.12.1
-        NETCDF_VERSION=4.7.4
-        NETCDF_DIR=/usr/local
+      PNETCDF_VERSION: 1.12.1
+      NETCDF_VERSION: 4.7.4
+      NETCDF_DIR: /usr/local
     strategy:
       matrix:
         python-version: ["3.9"]
