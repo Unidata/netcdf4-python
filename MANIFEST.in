@@ -4,8 +4,6 @@ include MANIFEST.in
 include README.md
 include COPYING
 include Changelog
-include appveyor.yml
-include .travis.yml
 include setup.cfg
 include examples/*py
 include examples/*ipynb
