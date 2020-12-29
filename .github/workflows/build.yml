@@ -10,6 +10,7 @@ jobs:
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
       CC: mpicc.mpich
+      NO_NET: 1
     strategy:
       matrix:
         python-version: ["3.9"]
@@ -46,11 +47,11 @@ jobs:
         make install
         popd
 
-    - name: The job has failed
-      if: ${{ failure() }}
-      run: |
-        cd netcdf-c-${NETCDF_VERSION}
-        cat config.log 
+#   - name: The job has failed
+#     if: ${{ failure() }}
+#     run: |
+#       cd netcdf-c-${NETCDF_VERSION}
+#       cat config.log 
 
     - name: Update Pip
       run: |
