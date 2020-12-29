@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   build-linux:
     name: Python (${{ matrix.python-version }})
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     env:
       PNETCDF_VERSION: 1.12.1
       NETCDF_VERSION: 4.7.4
@@ -40,11 +40,15 @@ jobs:
         export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
         export LDFLAGS="-L${NETCDF_DIR}/lib"
         export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
-        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
-        cat config.log
+        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --disable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
         make -j 2
         make install
         popd
+
+    - name: The job has failed
+      if: ${{ failure() }}
+      run: |
+        cat config.log 
 
     - name: Update Pip
       run: |
