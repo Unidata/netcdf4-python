@@ -3,7 +3,11 @@ on: [push, pull_request]
 jobs:
   build-linux:
     name: Python (${{ matrix.python-version }})
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    env:
+        PNETCDF_VERSION=1.12.1
+        NETCDF_VERSION=4.7.4
+        NETCDF_DIR=/usr/local
     strategy:
       matrix:
         python-version: ["3.9"]
@@ -19,7 +23,27 @@ jobs:
     - name: Install Ubuntu Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libnetcdf-pnetcdf
+        sudo apt-get install mpich libmpich-de libhdf5-mpich-dev
+	echo "Download and build PnetCDF version ${PNETCDF_VERSION}"
+	wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
+	tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
+	pushd pnetcdf-${PNETCDF_VERSION}
+	./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
+	NETCDF_EXTRA_CONFIG="--enable-pnetcdf"
+	make -j 2
+	make install
+	popd
+	echo "Download and build netCDF version ${NETCDF_VERSION}"
+        wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-${NETCDF_VERSION}.tar.gz
+        tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
+        pushd netcdf-c-${NETCDF_VERSION}
+        export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
+        export LDFLAGS="-L${NETCDF_DIR}/lib"
+        export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
+        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
+        make -j 2
+        make install
+        popd
 
     - name: Update Pip
       run: |
@@ -38,6 +62,7 @@ jobs:
 
     - name: Install netcdf4-python
       run: |
+        export PATH=${NETCDF_DIR}/bin:${PATH} 
         python setup.py install
     - name: Test
       run: |
@@ -46,14 +71,14 @@ jobs:
         python run_all.py
         # parallel (hdf5 for netcdf4, pnetcdf for netcdf3)
         cd ../examples
-        mpirun -np 4 --oversubscribe python mpi_example.py
+        mpirun.mpich -np 4 --oversubscribe python mpi_example.py
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"
           exit 1
         else
           echo "hdf5 mpi test passed!"
         fi
-        mpirun -np 4 --oversubscribe python mpi_example.py NETCDF3_64BIT_DATA
+        mpirun.mpich -np 4 --oversubscribe python mpi_example.py NETCDF3_64BIT_DATA
         if [ $? -ne 0 ] ; then
           echo "pnetcdf mpi test failed!"
           exit 1
@@ -61,9 +86,9 @@ jobs:
           echo "pnetcdf mpi test passed!"
         fi
 
-    - name: Tarball
-      run: |
-        python setup.py --version ; 
-        pip wheel . -w dist --no-deps ;
-        check-manifest --verbose ;
-        twine check dist/* ;
+#   - name: Tarball
+#     run: |
+#       python setup.py --version ; 
+#       pip wheel . -w dist --no-deps ;
+#       check-manifest --verbose ;
+#       twine check dist/* ;
