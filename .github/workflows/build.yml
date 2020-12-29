@@ -7,7 +7,7 @@ jobs:
     env:
       PNETCDF_VERSION: 1.12.1
       NETCDF_VERSION: 4.7.4
-      NETCDF_DIR: /usr/local
+      NETCDF_DIR: ${{ github.workspace }}
     strategy:
       matrix:
         python-version: ["3.9"]
