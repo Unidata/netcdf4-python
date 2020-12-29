@@ -33,6 +33,9 @@ jobs:
         make -j 2
         make install
         popd
+        pushd /usr
+        find ./ -name "hdf5.h" -print
+        popd
         echo "Download and build netCDF version ${NETCDF_VERSION}"
         wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-${NETCDF_VERSION}.tar.gz
         tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
