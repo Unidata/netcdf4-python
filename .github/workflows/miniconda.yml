@@ -77,8 +77,7 @@ jobs:
         cd test && python run_all.py
         cd ../examples
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" 
-        ls -l $CONDA_PREFIX/bin/mpi*
-        mpirun -np 4 python mpi_example.py
+        mpirun -np 2 python mpi_example.py
         if [ $? -ne 0 ] ; then
           echo "mpi test failed!"
           exit 1
