@@ -1,12 +1,10 @@
 recursive-include docs *
 recursive-include man *
 include MANIFEST.in
-include README.md
-include COPYING
+include README.release
 include Changelog
 include setup.cfg
 include examples/*py
-include examples/*ipynb
 include examples/README.md
 include test/*py
 include test/*nc
@@ -16,3 +14,8 @@ include netCDF4/utils.py
 include include/netCDF4.pxi
 include include/mpi-compat.h
 include include/membuf.pyx
+include *.md
+include *.py
+include *.release
+include *.sh
+include LICENSE
