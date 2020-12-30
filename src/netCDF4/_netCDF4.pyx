@@ -1204,7 +1204,7 @@ except ImportError:
     # python3: zip is already python2's itertools.izip
     pass
 
-__version__ = "1.5.5.1"
+__version__ = "1.5.6"
 
 # Initialize numpy
 import posixpath

@@ -1,6 +1,7 @@
  version 1.5.6 (not yet released)
 ==================================
  * move CI/CD tests from travis/appveyor to Github Actions (PR #1061).
+ * move netCDF4 dir under src so module can be imported in source directory (PR #1062).
 
  version 1.5.5.1 (tag v1.5.5.1rel)
 ==================================
