@@ -1,3 +1,7 @@
+ version 1.5.6 (not yet released)
+==================================
+ * move CI/CD tests from travis/appveyor to Github Actions (PR #1061).
+
  version 1.5.5.1 (tag v1.5.5.1rel)
 ==================================
  * rebuild binary wheels for linux and OSX to link netcdf-c 4.7.4 and hdf5 1.12.0.

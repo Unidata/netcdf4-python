@@ -1,0 +1,93 @@
+name: Build and Test Linux
+on: [push, pull_request]
+jobs:
+  build-linux:
+    name: Python (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    env:
+      PNETCDF_VERSION: 1.12.1
+      NETCDF_VERSION: 4.7.4
+      NETCDF_DIR: ${{ github.workspace }}/..
+      NETCDF_EXTRA_CONFIG: --enable-pnetcdf
+      CC: mpicc.mpich
+#     NO_NET: 1
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Ubuntu Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev 
+        echo "Download and build PnetCDF version ${PNETCDF_VERSION}"
+        wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
+        tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
+        pushd pnetcdf-${PNETCDF_VERSION}
+        ./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
+        make -j 2
+        make install
+        popd
+        echo "Download and build netCDF version ${NETCDF_VERSION}"
+        wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-${NETCDF_VERSION}.tar.gz
+        tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
+        pushd netcdf-c-${NETCDF_VERSION}
+        export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
+        export LDFLAGS="-L${NETCDF_DIR}/lib"
+        export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
+        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
+        make -j 2
+        make install
+        popd
+
+#   - name: The job has failed
+#     if: ${{ failure() }}
+#     run: |
+#       cd netcdf-c-${NETCDF_VERSION}
+#       cat config.log 
+
+    - name: Install python dependencies via pip
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy cython cftime pytest twine wheel check-manifest mpi4py
+
+    - name: Install netcdf4-python
+      run: |
+        export PATH=${NETCDF_DIR}/bin:${PATH} 
+        python setup.py install
+    - name: Test
+      run: |
+        # serial
+        cd test
+        python run_all.py
+        # parallel (hdf5 for netcdf4, pnetcdf for netcdf3)
+        cd ../examples
+        mpirun.mpich -np 4 python mpi_example.py
+        if [ $? -ne 0 ] ; then
+          echo "hdf5 mpi test failed!"
+          exit 1
+        else
+          echo "hdf5 mpi test passed!"
+        fi
+        mpirun.mpich -np 4 python mpi_example.py NETCDF3_64BIT_DATA
+        if [ $? -ne 0 ] ; then
+          echo "pnetcdf mpi test failed!"
+          exit 1
+        else
+          echo "pnetcdf mpi test passed!"
+        fi
+
+    - name: Tarball
+      run: |
+        export PATH=${NETCDF_DIR}/bin:${PATH} 
+        python setup.py --version  
+        pip wheel . -w dist --no-deps 
+        check-manifest --verbose 
+        twine check dist/* 
