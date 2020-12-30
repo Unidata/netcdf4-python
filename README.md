@@ -1,8 +1,7 @@
 # [netcdf4-python](http://unidata.github.io/netcdf4-python)
 [Python](http://python.org)/[numpy](http://numpy.org) interface to the netCDF [C library](https://github.com/Unidata/netcdf-c).
 
-[![Linux Build Status](https://travis-ci.org/Unidata/netcdf4-python.svg?branch=master)](https://travis-ci.org/Unidata/netcdf4-python)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/fl9taa9je4e6wi7n/branch/master?svg=true)](https://ci.appveyor.com/project/jswhit/netcdf4-python/branch/master)
+[![Build status](https://github.com/Unidata/netcdf4-python/workflows/netcdf4-python%20test/badge.svg)](https://github.com/Unidata/netcdf4-python/actions)
 [![PyPI package](https://badge.fury.io/py/netCDF4.svg)](http://python.org/pypi/netCDF4)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/netCDF4/badges/version.svg)](https://anaconda.org/conda-forge/netCDF4)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2592291.svg)](https://doi.org/10.5281/zenodo.2592290)
