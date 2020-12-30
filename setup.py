@@ -166,6 +166,16 @@ def getnetcdfvers(libdirs):
 
     return None
 
+def extract_version(CYTHON_FNAME):
+    version = None
+    with open(CYTHON_FNAME) as fi:
+        for line in fi:
+            if (line.startswith('__version__')):
+                _, version = line.split('=')
+                version = version.strip()[1:-1]  # Remove quotation characters.
+                break
+    return version
+
 
 HDF5_dir = os.environ.get('HDF5_DIR')
 HDF5_incdir = os.environ.get('HDF5_INCDIR')
@@ -512,7 +522,8 @@ else:
 cmdclass = {}
 netcdf4_src_root = osp.join('netCDF4', '_netCDF4')
 netcdf4_src_c = netcdf4_src_root + '.c'
-if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
+netcdf4_src_pyx = netcdf4_src_root + '.pyx'
+if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' not in sys.argv[1:]:
     sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
     # remove _netCDF4.c file if it exists, so cython will recompile _netCDF4.pyx.
     # run for build *and* install (issue #263). Otherwise 'pip install' will
@@ -604,7 +615,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:]:
         if mpi_incdir is not None: inc_dirs.append(mpi_incdir)
 
     ext_modules = [Extension("netCDF4._netCDF4",
-                             [netcdf4_src_root + '.pyx'],
+                             [netcdf4_src_pyx],
                              libraries=libs,
                              library_dirs=lib_dirs,
                              include_dirs=inc_dirs + ['include'],
@@ -614,7 +625,7 @@ else:
 
 setup(name="netCDF4",
       cmdclass=cmdclass,
-      version="1.5.5.1",
+      version=extract_version(netcdf4_src_pyx),
       long_description="netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project is hosted on a `GitHub repository <https://github.com/Unidata/netcdf4-python>`_ where you may access the most up-to-date source.",
       author="Jeff Whitaker",
       author_email="jeffrey.s.whitaker@noaa.gov",
