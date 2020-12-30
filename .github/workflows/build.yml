@@ -93,3 +93,10 @@ jobs:
         else
           echo "pnetcdf mpi test passed!"
         fi
+
+    - name: Tarball
+      run: |
+        python setup.py --version ; 
+        pip wheel . -w dist --no-deps ;
+        check-manifest --verbose ;
+        twine check dist/* ;
