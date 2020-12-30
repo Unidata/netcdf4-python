@@ -81,11 +81,3 @@ jobs:
         else
           echo "hdf5 mpi test passed!"
         fi
-        # conda libnetcdf doesn't link pnetcdf, so this won't work
-        #mpirun -np 4 --oversubscribe python mpi_example.py NETCDF3_64BIT_DATA
-        #if [ $? -ne 0 ] ; then
-        #  echo "pnetcdf mpi test failed!"
-        #  exit 1
-        #else
-        #  echo "pnetcdf mpi test passed!"
-        #fi
