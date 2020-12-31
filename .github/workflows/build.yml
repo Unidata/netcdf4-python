@@ -64,6 +64,7 @@ jobs:
         python setup.py install
     - name: Test
       run: |
+        python checkversion.py
         # serial
         cd test
         python run_all.py

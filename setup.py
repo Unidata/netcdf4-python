@@ -520,7 +520,7 @@ else:
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
 cmdclass = {}
-netcdf4_src_root = osp.join('netCDF4', '_netCDF4')
+netcdf4_src_root = osp.join(osp.join('src','netCDF4'), '_netCDF4')
 netcdf4_src_c = netcdf4_src_root + '.c'
 netcdf4_src_pyx = netcdf4_src_root + '.pyx'
 if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' not in sys.argv[1:]:
@@ -647,5 +647,6 @@ setup(name="netCDF4",
                    "Topic :: System :: Archiving :: Compression",
                    "Operating System :: OS Independent"],
       packages=['netCDF4'],
+      package_dir={'':'src'},
       ext_modules=ext_modules,
       **setuptools_extra_kwargs)
