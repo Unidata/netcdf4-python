@@ -24,12 +24,12 @@ xdim=9; ydim=10; zdim=11
 i = np.array([2,5,7],'i4')
 i2 = np.array([0,8],'i4')
 i3 = np.array([3,7,9,10],'i4')
-ib = np.zeros(ydim,dtype=np.bool)
+ib = np.zeros(ydim,dtype=np.bool_)
 ib[2] = True; ib[5] = True; ib[7] = True
-ib2 = np.zeros(xdim, dtype=np.bool)
+ib2 = np.zeros(xdim, dtype=np.bool_)
 ib2[1] = True; ib2[4] = True; ib2[6] = True
 # this one should be converted to a slice.
-ib3 = np.zeros(xdim, dtype=np.bool)
+ib3 = np.zeros(xdim, dtype=np.bool_)
 ib3[0] = True; ib2[4] = True; ib2[8] = True
 #seed(9) # fix seed
 data = randint(0,10,size=(xdim,ydim,zdim)).astype('i2')
@@ -88,9 +88,9 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(v[1:2,1:3,:], self.data[1:2,1:3,:])
         # Three integer sequences
         # sequences should be equivalent to booleans
-        ib1 = np.zeros(v.shape[0], np.bool); ib1[i]=True
-        ib2 = np.zeros(v.shape[1], np.bool); ib2[i2]=True
-        ib3 = np.zeros(v.shape[2], np.bool); ib3[i3]=True
+        ib1 = np.zeros(v.shape[0], np.bool_); ib1[i]=True
+        ib2 = np.zeros(v.shape[1], np.bool_); ib2[i2]=True
+        ib3 = np.zeros(v.shape[2], np.bool_); ib3[i3]=True
         assert_array_equal(v[i,i2,i3], v[ib1,ib2,ib3])
         assert_equal(v[i,i2,i3].shape, (len(i),len(i2),len(i3)))
 

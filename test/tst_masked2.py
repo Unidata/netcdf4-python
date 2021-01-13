@@ -64,7 +64,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         v = f.createVariable('v',np.float32,'x',zlib=True,least_significant_digit=1)
         # assign masked array to that variable with one missing value.
         data =\
-        ma.array([1.5678,99.99,3.75145,4.127654],mask=np.array([False,True,False,False],np.bool))
+        ma.array([1.5678,99.99,3.75145,4.127654],mask=np.array([False,True,False,False],np.bool_))
         data.mask[1]=True
         v[:] = data
         f.close()

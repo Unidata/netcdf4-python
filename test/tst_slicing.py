@@ -129,7 +129,7 @@ class VariablesTestCase(unittest.TestCase):
         nlons = 12; lon = f.createDimension('lon',nlons)
         nlevs = 1; lev = f.createDimension('lev',nlevs)
         time = f.createDimension('time',None)
-        var = f.createVariable('var',np.float,('time','lev','lat','lon'))
+        var = f.createVariable('var',np.float_,('time','lev','lat','lon'))
         a = np.random.uniform(size=(10,nlevs,nlats,nlons))
         var[0:10] = a
         f.close()
@@ -168,7 +168,7 @@ class VariablesTestCase(unittest.TestCase):
         nlats = 11; lat = f.createDimension('lat',nlats)
         nlons = 20; lon = f.createDimension('lon',nlons)
         time = f.createDimension('time',None)
-        var = f.createVariable('var',np.float,('time','lat','lon'))
+        var = f.createVariable('var',np.float_,('time','lat','lon'))
         a = np.random.uniform(size=(3,nlats,nlons))
         var[[True,True,False,False,False,True]] = a
         var[0,2.0,"-1"] = 0 # issue 312
@@ -203,7 +203,7 @@ class VariablesTestCase(unittest.TestCase):
         td = nc.createDimension('t',None)
         xd = nc.createDimension('x',33)
         yd = nc.createDimension('y',4)
-        v = nc.createVariable('v',np.float,('t','x','y'))
+        v = nc.createVariable('v',np.float_,('t','x','y'))
         nc.close()
         nc = Dataset(self.file)
         data = np.empty(nc['v'].shape, nc['v'].dtype)
@@ -216,7 +216,7 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension('d1',3)
         f.createDimension('d2',None)
         f.createDimension('d3',5)
-        f.createVariable('v2',np.float,('d1','d2','d3'))
+        f.createVariable('v2',np.float_,('d1','d2','d3'))
         f['v2'][:] = np.zeros((3,4,5))
         f['v2'][0,:,0] = np.arange(4)
         f['v2'][0,:,:] = np.ones((4,5))
