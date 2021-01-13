@@ -725,7 +725,7 @@ for storing numpy complex arrays.  Here's an example:
     >>> # create sample complex data.
     >>> datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
     >>> # create complex128 compound data type.
-    >>> complex128 = numpy.dtype([("real",numpy.float64),("imag",numpy.float64)])
+    >>> complex128 = numpy.dtype([("real",numpy.float_64),("imag",numpy.float_64)])
     >>> complex128_t = f.createCompoundType(complex128,"complex128")
     >>> # create a variable with this data type, write some data to it.
     >>> x_dim = f.createDimension("x_dim",None)
@@ -4556,7 +4556,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             data = data.view(dtype_unsigned_int)
         # private function for creating a masked array, masking missing_values
         # and/or _FillValues.
-        totalmask = numpy.zeros(data.shape, numpy.bool)
+        totalmask = numpy.zeros(data.shape, numpy.bool_)
         fill_value = None
         safe_missval = self._check_safecast('missing_value')
         if safe_missval:
@@ -4564,7 +4564,7 @@ rename a `netCDF4.Variable` attribute named `oldname` to `newname`."""
             if self.scale and is_unsigned_int:
                 mval = mval.view(dtype_unsigned_int)
             # create mask from missing values.
-            mvalmask = numpy.zeros(data.shape, numpy.bool)
+            mvalmask = numpy.zeros(data.shape, numpy.bool_)
             if mval.shape == (): # mval a scalar.
                 mval = [mval] # make into iterable.
             for m in mval:
@@ -4927,13 +4927,13 @@ cannot be safely cast to variable data type""" % attname
             # if auto scaling is to be done, don't cast to an integer yet.
             if self.scale and self.dtype.kind in 'iu' and \
                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
-                data = numpy.array(data,numpy.float)
+                data = numpy.array(data,numpy.float_)
             else:
                 data = numpy.array(data,self.dtype)
 
         # for Enum variable, make sure data is valid.
         if self._isenum:
-            test = numpy.zeros(data.shape,numpy.bool)
+            test = numpy.zeros(data.shape,numpy.bool_)
             if ma.isMA(data):
                 # fix for new behaviour in numpy.ma in 1.13 (issue #662)
                 for val in self.datatype.enum_dict.values():
