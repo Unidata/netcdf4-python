@@ -1038,7 +1038,7 @@ are collective.  There are a couple of important limitations of parallel IO:
 ## Dealing with strings
 
 The most flexible way to store arrays of strings is with the
-[Variable-length (vlen) string data type](#section11). However, this requires
+[Variable-length (vlen) string data type](#variable-length-vlen-data-type). However, this requires
 the use of the NETCDF4 data model, and the vlen type does not map very well
 numpy arrays (you have to use numpy arrays of dtype=`object`, which are arrays of
 arbitrary python objects). numpy does have a fixed-width string array
