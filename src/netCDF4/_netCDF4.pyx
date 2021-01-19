@@ -1970,7 +1970,6 @@ _private_atts = \
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
  '__orthogoral_indexing__','keepweakref','_has_lsd',
  '_buffer','chartostring','_use_get_vars','_ncstring_attrs__']
-__pdoc__ = {}
 
 cdef class Dataset:
     """
@@ -2049,55 +2048,6 @@ strings.
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
     keepweakref, _ncstring_attrs__
-    # Docstrings for class variables (used by pdoc).
-    __pdoc__['Dataset.dimensions']=\
-    """The `dimensions` dictionary maps the names of
-    dimensions defined for the `netCDF4._netCDF4.Group` or `netCDF4._netCDF4.Dataset` to instances of the
-    `netCDF4._netCDF4.Dimension` class."""
-    __pdoc__['Dataset.variables']=\
-    """The `variables` dictionary maps the names of variables
-    defined for this `netCDF4._netCDF4.Dataset` or `netCDF4._netCDF4.Group` to instances of the `netCDF4._netCDF4.Variable`
-    class."""
-    __pdoc__['Dataset.groups']=\
-    """The groups dictionary maps the names of groups created for
-    this `netCDF4._netCDF4.Dataset` or `netCDF4._netCDF4.Group` to instances of the `netCDF4._netCDF4.Group` class (the
-    `netCDF4._netCDF4.Dataset` class is simply a special case of the `netCDF4._netCDF4.Group` class which
-    describes the root group in the netCDF4 file)."""
-    __pdoc__['Dataset.cmptypes']=\
-    """The `cmptypes` dictionary maps the names of
-    compound types defined for the `netCDF4._netCDF4.Group` or `netCDF4._netCDF4.Dataset` to instances of the
-    `netCDF4._netCDF4.CompoundType` class."""
-    __pdoc__['Dataset.vltypes']=\
-    """The `vltypes` dictionary maps the names of
-    variable-length types defined for the `netCDF4._netCDF4.Group` or `netCDF4._netCDF4.Dataset` to instances of the
-    `netCDF4._netCDF4.VLType` class."""
-    __pdoc__['Dataset.enumtypes']=\
-    """The `enumtypes` dictionary maps the names of
-    Enum types defined for the `netCDF4._netCDF4.Group` or `netCDF4._netCDF4.Dataset` to instances of the
-    `netCDF4._netCDF4.EnumType` class."""
-    __pdoc__['Dataset.data_model']=\
-    """`data_model` describes the netCDF
-    data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
-    `NETCDF4_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`."""
-    __pdoc__['Dataset.file_format']=\
-    """same as `data_model`, retained for backwards compatibility."""
-    __pdoc__['Dataset.disk_format']=\
-    """`disk_format` describes the underlying
-    file format, one of `NETCDF3`, `HDF5`, `HDF4`,
-    `PNETCDF`, `DAP2`, `DAP4` or `UNDEFINED`. Only available if using
-    netcdf C library version >= 4.3.1, otherwise will always return
-    `UNDEFINED`."""
-    __pdoc__['Dataset.parent']=\
-    """`parent` is a reference to the parent
-    `netCDF4._netCDF4.Group` instance. `None` for the root group or `netCDF4._netCDF4.Dataset` instance"""
-    __pdoc__['Dataset.path']=\
-    """`path` shows the location of the `netCDF4._netCDF4.Group` in
-    the `netCDF4._netCDF4.Dataset` in a unix directory format (the names of groups in the
-    hierarchy separated by backslashes). A `netCDF4._netCDF4.Dataset` instance is the root
-    group, so the path is simply `'/'`."""
-    __pdoc__['Dataset.keepweakref']=\
-    """If `True`, child Dimension and Variables objects only keep weak references to
-    the parent Dataset or Group."""
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                      diskless=False, persist=False, keepweakref=False,
@@ -3308,9 +3258,6 @@ Additional read-only class variables:
 
 **`name`**: String describing the group name.
     """
-    # Docstrings for class variables (used by pdoc).
-    __pdoc__['Group.name']=\
-    """A string describing the name of the `netCDF4._netCDF4.Group`."""
     def __init__(self, parent, name, **kwargs):
         """
         **`__init__(self, parent, name)`**
@@ -3398,10 +3345,6 @@ Read-only class variables:
     """
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
-    # Docstrings for class variables (used by pdoc).
-    __pdoc__['Dimension.name']=\
-    """A string describing the name of the `netCDF4._netCDF4.Dimension` - used when creating a
-    `netCDF4._netCDF4.Variable` instance with `netCDF4._netCDF4.Dataset.createVariable`."""
 
     def __init__(self, grp, name, size=None, **kwargs):
         """
@@ -3598,54 +3541,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     cdef public _name, ndim, dtype, mask, scale, always_mask, chartostring,  _isprimitive, \
     _iscompound, _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
     __orthogonal_indexing__, _has_lsd, _use_get_vars, _ncstring_attrs__
-    # Docstrings for class variables (used by pdoc).
-    __pdoc__['Variable.dimensions'] = \
-    """A tuple containing the names of the
-    dimensions associated with this variable."""
-    __pdoc__['Variable.dtype'] = \
-    """A numpy dtype object describing the
-    variable's data type."""
-    __pdoc__['Variable.ndim'] = \
-    """The number of variable dimensions."""
-    __pdoc__['Variable.scale'] = \
-    """if True, `scale_factor` and `add_offset` are
-    applied, and signed integer data is converted to unsigned
-    integer data if the `_Unsigned` attribute is set.
-    Default is `True`, can be reset using `netCDF4._netCDF4.Variable.set_auto_scale` and
-    `netCDF4._netCDF4.Variable.set_auto_maskandscale` methods."""
-    __pdoc__['Variable.mask'] = \
-    """If True, data is automatically converted to/from masked 
-    arrays when missing values or fill values are present. Default is `True`, can be
-    reset using `netCDF4._netCDF4.Variable.set_auto_mask` and `netCDF4._netCDF4.Variable.set_auto_maskandscale`
-    methods."""
-    __pdoc__['Variable.chartostring'] = \
-    """If True, data is automatically converted to/from character 
-    arrays to string arrays when `_Encoding` variable attribute is set.
-    Default is `True`, can be reset using
-    `netCDF4._netCDF4.Variable.set_auto_chartostring` method."""
-    __pdoc__['Variable._use_get_vars'] = \
-    """If True (default), netcdf routine `nc_get_vars` is not used for strided slicing
-    slicing. Can be re-set using `netCDF4._netCDF4.Variable.use_nc_get_vars` method."""
-    __pdoc__['Variable.least_significant_digit'] = \
-    """Describes the power of ten of the 
-    smallest decimal place in the data the contains a reliable value.  Data is
-    truncated to this decimal place when it is assigned to the `netCDF4._netCDF4.Variable`
-    instance. If `None`, the data is not truncated."""
-    __pdoc__['Variable.__orthogonal_indexing__'] = \
-    """Always `True`.  Indicates to client code
-    that the object supports 'orthogonal indexing', which means that slices
-    that are 1d arrays or lists slice along each dimension independently.  This
-    behavior is similar to Fortran or Matlab, but different than numpy."""
-    __pdoc__['Variable.datatype'] = \
-     """numpy data type (for primitive data types) or
-     VLType/CompoundType/EnumType instance (for compound, vlen or enum
-     data types)."""
-    __pdoc__['Variable.name'] = \
-    """String name."""
-    __pdoc__['Variable.shape'] = \
-    """A tuple with the current shape (length of all dimensions)."""
-    __pdoc__['Variable.size'] = \
-    """The number of stored elements."""
 
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
@@ -5569,10 +5464,6 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, dtype_view, name
-    __pdoc__['CompoundType.name'] = \
-    """String name."""
-    __pdoc__['CompoundType.dtype'] = \
-    """A numpy dtype object describing the compound data type."""
     def __init__(self, grp, object dt, object dtype_name, **kwargs):
         """
         ***`__init__(group, datatype, datatype_name)`***
@@ -5880,10 +5771,6 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name
-    __pdoc__['VLType.name'] = \
-    """String name."""
-    __pdoc__['VLType.dtype'] = \
-    """A numpy dtype object describing the component type for the VLEN."""
     def __init__(self, grp, object dt, object dtype_name, **kwargs):
         """
         **`__init__(group, datatype, datatype_name)`**
@@ -5996,12 +5883,6 @@ the user.
     """
     cdef public nc_type _nc_type
     cdef public dtype, name, enum_dict
-    __pdoc__['EnumType.name'] = \
-    """String name."""
-    __pdoc__['EnumType.dtype'] = \
-    """A numpy integer dtype object describing the base type for the Enum."""
-    __pdoc__['EnumType.enum_dict'] = \
-    """A python dictionary describing the enum fields and values."""
     def __init__(self, grp, object dt, object dtype_name, object enum_dict, **kwargs):
         """
         **`__init__(group, datatype, datatype_name, enum_dict)`**
