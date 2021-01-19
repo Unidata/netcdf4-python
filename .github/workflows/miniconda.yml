@@ -46,7 +46,7 @@ jobs:
     strategy:
       matrix:
         python-version: [ "3.9" ]
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         platform: [x64]
     steps:
     - uses: actions/checkout@v2
@@ -76,7 +76,7 @@ jobs:
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" 
         which mpirun
         mpirun --version
-        mpirun -np 4 --oversubscribe python mpi_example.py
+        mpirun -np 4 python mpi_example.py
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"
           exit 1
