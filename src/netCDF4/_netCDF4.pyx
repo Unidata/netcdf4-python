@@ -618,7 +618,7 @@ dates corresponding to time values:
 ```
 
 `num2date` converts numeric values of time in the specified `units`
-and `calendar` to datetime objects, and `netCDF4..date2num` does the reverse.
+and `calendar` to datetime objects, and `netCDF4.date2num` does the reverse.
 All the calendars currently defined in the
 [CF metadata convention](http://cfconventions.org) are supported.
 A function called `date2index` is also provided which returns the indices
