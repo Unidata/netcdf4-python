@@ -1,10 +1,8 @@
 """
 Version 1.5.6
 -------------
-- - -
 
-Introduction
-============
+# Introduction
 
 netcdf4-python is a Python interface to the netCDF C library.
 
@@ -25,16 +23,14 @@ Mixtures of compound, vlen and enum data types (such as
 compound types containing enums, or vlens containing compound
 types) are not supported.
 
-Download
-========
+## Download
 
  - Latest bleeding-edge code from the
    [github repository](http://github.com/Unidata/netcdf4-python).
  - Latest [releases](https://pypi.python.org/pypi/netCDF4)
    (source code and binary installers).
 
-Requires
-========
+## Requires
 
  - [numpy array module](http://numpy.scipy.org), version 1.10.0 or later.
  - [Cython](http://cython.org), version 0.21 or later.
@@ -68,8 +64,7 @@ Requires
  [PnetCDF](https://parallel-netcdf.github.io/) library.
 
 
-Install
-=======
+## Install
 
  - install the requisite python modules and C libraries (see above). It's
  easiest if all the C libs are built as shared libraries.
@@ -95,27 +90,25 @@ Install
  [pypi](https://pypi.org/project/netCDF4).
  - run the tests in the 'test' directory by running `python run_all.py`.
 
-Tutorial
-========
+# Tutorial
 
-1. [Creating/Opening/Closing a netCDF file.](#section1)
-2. [Groups in a netCDF file.](#section2)
-3. [Dimensions in a netCDF file.](#section3)
-4. [Variables in a netCDF file.](#section4)
-5. [Attributes in a netCDF file.](#section5)
-6. [Writing data to and retrieving data from a netCDF variable.](#section6)
-7. [Dealing with time coordinates.](#section7)
-8. [Reading data from a multi-file netCDF dataset.](#section8)
-9. [Efficient compression of netCDF variables.](#section9)
-10. [Beyond homogeneous arrays of a fixed type - compound data types.](#section10)
-11. [Variable-length (vlen) data types.](#section11)
-12. [Enum data type.](#section12)
-13. [Parallel IO.](#section13)
-14. [Dealing with strings.](#section14)
-15. [In-memory (diskless) Datasets.](#section15)
+- [Creating/Opening/Closing a netCDF file](#creatingopeningclosing-a-netcdf-file)
+- [Groups in a netCDF file](#groups-in-a-netcdf-file)
+- [Dimensions in a netCDF file](#dimensions-in-a-netcdf-file)
+- [Variables in a netCDF file](#variables-in-a-netcdf-file)
+- [Attributes in a netCDF file](#attributes-in-a-netcdf-file)
+- [Dealing with time coordinates](#dealing-with-time-coordinates)
+- [Writing data to and retrieving data from a netCDF variable](#writing-data-to-and-retrieving-data-from-a-netcdf-variable)
+- [Reading data from a multi-file netCDF dataset](#reading-data-from-a-multi-file-netcdf-dataset)
+- [Efficient compression of netCDF variables](#efficient-compression-of-netcdf-variables)
+- [Beyond homogeneous arrays of a fixed type - compound data types](#beyond-homogeneous-arrays-of-a-fixed-type-compound-data-types)
+- [Variable-length (vlen) data types](#variable-length-vlen-data-types)
+- [Enum data type](#enum-data-type)
+- [Parallel IO](#parallel-io)
+- [Dealing with strings](#dealing-with-strings)
+- [In-memory (diskless) Datasets](#in-memory-diskless-datasets)
 
-
-## <div id='section1'>1) Creating/Opening/Closing a netCDF file.
+## Creating/Opening/Closing a netCDF file
 
 To create a netCDF file from python, you simply call the `netCDF4.Dataset`
 constructor. This is also the method used to open an existing netCDF
@@ -136,7 +129,7 @@ not found in the version 3 API. They can be read by netCDF 3 clients
 only if they have been relinked against the netCDF 4 library. They can
 also be read by HDF5 clients. `NETCDF4` files use the version 4 disk
 format (HDF5) and use the new features of the version 4 API.  The
-`netCDF4` module can read and write files in any of these formats. When
+`netCDF4. module can read and write files in any of these formats. When
 creating a new file, the format may be specified using the `format`
 keyword in the `Dataset` constructor.  The default format is
 `NETCDF4`. To see how a given file is formatted, you can examine the
@@ -161,7 +154,7 @@ OPenDAP support, via the `--enable-dap` configure option (added in
 version 4.0.1).
 
 
-## <div id='section2'>2) Groups in a netCDF file.
+## Groups in a netCDF file
 
 netCDF version 4 added support for organizing data in hierarchical
 groups, which are analogous to directories in a filesystem. Groups serve
@@ -193,8 +186,6 @@ group /analyses:
     groups: }
 >>>
 ```
-
-
 
 Groups can exist within groups in a `netCDF4.Dataset`, just as directories
 exist within directories in a unix filesystem. Each `netCDF4.Group` instance
@@ -257,7 +248,7 @@ group /forecasts/model2:
     groups: 
 ```
 
-## <div id='section3'>3) Dimensions in a netCDF file.
+## Dimensions in a netCDF file
 
 netCDF defines the sizes of all variables in terms of dimensions, so
 before any variables can be created the dimensions they use must be
@@ -317,7 +308,7 @@ and whether it is unlimited.
 `netCDF4.Datatset.renameDimension` method of a `netCDF4.Dataset` or
 `netCDF4.Group` instance.
 
-## <div id='section4'>4) Variables in a netCDF file.
+## Variables in a netCDF file
 
 netCDF variables behave much like python multidimensional array objects
 supplied by the [numpy module](http://numpy.scipy.org). However,
@@ -435,7 +426,7 @@ filling on, default _FillValue of 9.969209968386869e+36 used}
 instance.
 
 
-## <div id='section5'>5) Attributes in a netCDF file.
+## Attributes in a netCDF file
 
 There are two types of attributes in a netCDF file, global and variable.
 Global attributes provide information about a group, or the entire
@@ -486,7 +477,7 @@ Attributes can be deleted from a netCDF `netCDF4.Dataset`, `netCDF4.Group` or
 `netCDF4.Variable` using the python `del` statement (i.e. `del grp.foo`
 removes the attribute `foo` the the group `grp`).
 
-## <div id='section6'>6) Writing data to and retrieving data from a netCDF variable.
+## Writing data to and retrieving data from a netCDF variable
 
 Now that you have a netCDF `netCDF4.Variable` instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.
@@ -595,7 +586,7 @@ written to a netCDF variable, the masked elements are filled with the
 value specified by the `missing_value` attribute.  If the variable has
 no `missing_value`, the `_FillValue` is used instead.
 
-## <div id='section7'>7) Dealing with time coordinates.
+## Dealing with time coordinates
 
 Time coordinate values pose a special challenge to netCDF users.  Most
 metadata standards (such as CF) specify that time should be
@@ -633,7 +624,7 @@ A function called `netCDF4.date2index` is also provided which returns the indice
 of a netCDF time variable corresponding to a sequence of datetime instances.
 
 
-## <div id='section8'>8) Reading data from a multi-file netCDF dataset.
+## Reading data from a multi-file netCDF dataset
 
 If you want to read data from a variable that spans multiple netCDF files,
 you can use the `netCDF4.MFDataset` class to read the data as if it were
@@ -673,7 +664,7 @@ Now read all the files back in at once with `netCDF4.MFDataset`
 Note that `netCDF4.MFDataset` can only be used to read, not write, multi-file
 datasets.
 
-## <div id='section9'>9) Efficient compression of netCDF variables.
+## Efficient compression of netCDF variables
 
 Data stored in netCDF 4 `netCDF4.Variable` objects can be compressed and
 decompressed on the fly. The parameters for the compression are
@@ -730,7 +721,7 @@ and then
 
 and see how much smaller the resulting files are.
 
-## <div id='section10'>10) Beyond homogeneous arrays of a fixed type - compound data types.
+## Beyond homogeneous arrays of a fixed type - compound data types
 
 Compound data types map directly to numpy structured (a.k.a 'record')
 arrays.  Structured arrays are akin to C structs, or derived types
@@ -802,7 +793,7 @@ current shape = (3,)
 <class 'netCDF4._netCDF4.CompoundType'>: name = 'complex128', numpy dtype = {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True}
 ```
 
-## <div id='section11'>11) Variable-length (vlen) data types.
+## Variable-length (vlen) data types
 
 NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
 of variable length sequences having the same type. To create a variable-length
@@ -913,7 +904,7 @@ It is also possible to set contents of vlen string variables with numpy arrays
 of any string or unicode data type. Note, however, that accessing the contents
 of such variables will always return numpy arrays with dtype `object`.
 
-## <div id='section12'>12) Enum data type.
+## Enum data type
 
 netCDF4 has an enumerated data type, which is an integer datatype that is
 restricted to certain named values. Since Enums don't map directly to
@@ -970,7 +961,7 @@ current shape = (5,)
 >>> nc.close()
 ```
 
-## <div id='section13'>13) Parallel IO.
+## Parallel IO
 
 If MPI parallel enabled versions of netcdf and hdf5 or pnetcdf are detected,
 and [mpi4py](https://mpi4py.scipy.org) is installed, netcdf4-python will
@@ -1042,7 +1033,7 @@ are collective.  There are a couple of important limitations of parallel IO:
    you can read it).
  - You cannot use variable-length (VLEN) data types.
 
-## <div id='section14'>14) Dealing with strings.
+## Dealing with strings
 
 The most flexible way to store arrays of strings is with the
 [Variable-length (vlen) string data type](#section11). However, this requires
@@ -1128,7 +1119,7 @@ Note that there is currently no support for mapping numpy structured arrays with
 unicode elements (dtype `U#`) onto netCDF compound types, nor is there support
 for netCDF compound types with vlen string components.
 
-## <div id='section15'>15) In-memory (diskless) Datasets.
+## In-memory (diskless) Datasets
 
 You can create netCDF Datasets whose content is held in memory
 instead of in a disk file.  There are two ways to do this.  If you
