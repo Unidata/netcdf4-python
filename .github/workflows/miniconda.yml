@@ -74,6 +74,8 @@ jobs:
         cd test && python run_all.py
         cd ../examples
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" 
+        which mpirun
+        mpirun --version
         mpirun -np 4 --oversubscribe python mpi_example.py
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"
