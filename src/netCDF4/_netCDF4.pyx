@@ -129,7 +129,7 @@ not found in the version 3 API. They can be read by netCDF 3 clients
 only if they have been relinked against the netCDF 4 library. They can
 also be read by HDF5 clients. `NETCDF4` files use the version 4 disk
 format (HDF5) and use the new features of the version 4 API.  The
-`netCDF4._netCDF4. module can read and write files in any of these formats. When
+`netCDF4._netCDF4` module can read and write files in any of these formats. When
 creating a new file, the format may be specified using the `format`
 keyword in the `Dataset` constructor.  The default format is
 `NETCDF4`. To see how a given file is formatted, you can examine the
