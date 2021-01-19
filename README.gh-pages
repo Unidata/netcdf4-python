@@ -6,7 +6,7 @@ Then in netcdf4-python github clone directory (after building and
 installing github master),
 
 * generate docs (sh create_docs.sh)
-* copy docs/netCDF4/index.html up one level (cp docs/netCDF4/index.html ..)
+* copy docs/netCDF4/_netCDF.html top level index.html (cp docs/netCDF4/_netCDF4.html docs/index.html)
 * git checkout gh-pages
 * cp ../index.html .
 * git commit index.html
