@@ -276,8 +276,9 @@ All of the `netCDF4._netCDF4.Dimension` instances are stored in a python diction
 ```python
 >>> print(rootgrp.dimensions)
 {'level': <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'level', size = 0, 'time': <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0, 'lat': <class 'netCDF4._netCDF4.Dimension'>: name = 'lat', size = 73, 'lon': <class 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144}
+```
 
-ing the python `len` function with a `netCDF4._netCDF4.Dimension` instance returns
+Using the python `len` function with a `netCDF4._netCDF4.Dimension` instance returns
 current size of that dimension.
 `netCDF4._netCDF4.Dimension.isunlimited` method of a `netCDF4._netCDF4.Dimension` instance
 be used to determine if the dimensions is unlimited, or appendable.
