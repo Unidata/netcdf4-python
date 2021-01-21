@@ -3105,7 +3105,7 @@ after calling this function will follow the default behaviour.
         """
 **`set_always_mask(self, True_or_False)`**
 
-Call [Variable.set_always_mask](#Variable.set_always_mask)for all variables contained in
+Call [Variable.set_always_mask](#Variable.set_always_mask) for all variables contained in
 this [Dataset](#Dataset) or [Group](#Group), as well as for all
 variables in all its subgroups.
 
