@@ -1,5 +1,6 @@
-# Uses pdoc (https://github.com/BurntSushi/pdoc)
+# Uses pdoc (https://github.com/mitmproxy/pdoc)
 # to create html docs from docstrings in Cython source.
-# Use hacked version at https://github.com/jswhit/pdoc
-# which extracts cython method docstrings and function signatures.
-pdoc --html --html-no-source --overwrite --html-dir 'docs' netCDF4
+/Users/jwhitaker/.local/bin/pdoc -o 'docs' netCDF4 
+# use resulting docs/netCDF4/_netCDF4.html
+cp docs/netCDF4/_netCDF4.html docs/index.html
+
