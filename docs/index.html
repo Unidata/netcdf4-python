@@ -1449,12 +1449,12 @@ are collective.  There are a couple of important limitations of parallel IO:</p>
 <li>parallel IO for NETCDF4 or NETCDF4_CLASSIC formatted files is only available
 if the netcdf library was compiled with MPI enabled HDF5.</li>
 <li>parallel IO for all classic netcdf-3 file formats is only available if the
-netcdf library was compiled with PnetCDF.</li>
+netcdf library was compiled with <a href="https://parallel-netcdf.github.io">PnetCDF</a>.</li>
 <li>If a variable has an unlimited dimension, appending data must be done in collective mode.
 If the write is done in independent mode, the operation will fail with a
 a generic "HDF Error".</li>
-<li>You cannot write compressed data in parallel (although
-you can read it).</li>
+<li>You can write compressed data in parallel only with netcdf-c &gt;= 4.7.4
+and hdf5 &gt;= 1.10.3 (although you can read in parallel with earlier versions).</li>
 <li>You cannot use variable-length (VLEN) data types.</li>
 </ul>
 
@@ -1621,7 +1621,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#106;&#101;&#x66;&#102;&#x72;&#101;&#121;&#x2e;s&#x2e;&#119;&#x68;&#x69;&#116;&#97;&#107;&#x65;&#x72;&#x40;&#110;&#x6f;&#97;&#x61;&#46;&#x67;&#x6f;&#x76;">&#106;&#101;&#x66;&#102;&#x72;&#101;&#121;&#x2e;s&#x2e;&#119;&#x68;&#x69;&#116;&#97;&#107;&#x65;&#x72;&#x40;&#110;&#x6f;&#97;&#x61;&#46;&#x67;&#x6f;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#105;&#108;t&#x6f;&#58;&#106;&#x65;&#102;f&#114;&#101;&#x79;&#46;&#115;.&#x77;&#x68;&#x69;&#x74;&#x61;&#x6b;&#101;&#114;&#x40;&#x6e;&#x6f;&#x61;&#x61;&#x2e;&#103;&#x6f;&#x76;">&#106;&#x65;&#102;f&#114;&#101;&#x79;&#46;&#115;.&#x77;&#x68;&#x69;&#x74;&#x61;&#x6b;&#101;&#114;&#x40;&#x6e;&#x6f;&#x61;&#x61;&#x2e;&#103;&#x6f;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 

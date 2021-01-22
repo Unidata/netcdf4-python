@@ -1027,12 +1027,12 @@ are collective.  There are a couple of important limitations of parallel IO:
  - parallel IO for NETCDF4 or NETCDF4_CLASSIC formatted files is only available
    if the netcdf library was compiled with MPI enabled HDF5.
  - parallel IO for all classic netcdf-3 file formats is only available if the
-   netcdf library was compiled with PnetCDF.
+   netcdf library was compiled with [PnetCDF](https://parallel-netcdf.github.io).
  - If a variable has an unlimited dimension, appending data must be done in collective mode.
    If the write is done in independent mode, the operation will fail with a
    a generic "HDF Error".
- - You cannot write compressed data in parallel (although
-   you can read it).
+ - You can write compressed data in parallel only with netcdf-c >= 4.7.4
+   and hdf5 >= 1.10.3 (although you can read in parallel with earlier versions).
  - You cannot use variable-length (VLEN) data types.
 
 ## Dealing with strings
