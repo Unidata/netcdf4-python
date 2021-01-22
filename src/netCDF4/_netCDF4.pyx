@@ -2733,7 +2733,7 @@ efficient compression. For example, if `least_significant_digit=1`,
 data will be quantized using `numpy.around(scale*data)/scale`, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
 retained (in this case bits=4). From the
-[PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml):
+[PSL metadata conventions](http://www.esrl.noaa.gov/psl/data/gridded/conventions/cdc_netcdf_standard.shtml):
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is `None`, or no
 quantization, or 'lossless' compression.
@@ -5016,7 +5016,7 @@ is assumed zero.  If add_offset is present, but scale_factor is missing,
 scale_factor is assumed to be one.
 For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see the
-[PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
+[PSL metadata conventions](http://www.esrl.noaa.gov/psl/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
 In addition, if `maskandscale` is set to `True`, and if the variable has an
 attribute `_Unsigned` set, and the variable has a signed integer data type,
@@ -5055,7 +5055,7 @@ is assumed zero.  If add_offset is present, but scale_factor is missing,
 scale_factor is assumed to be one.
 For more information on how `scale_factor` and `add_offset` can be
 used to provide simple compression, see the
-[PSD metadata conventions](http://www.esrl.noaa.gov/psd/data/gridded/conventions/cdc_netcdf_standard.shtml).
+[PSL metadata conventions](http://www.esrl.noaa.gov/psl/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
 In addition, if `scale` is set to `True`, and if the variable has an
 attribute `_Unsigned` set, and the variable has a signed integer data type,
