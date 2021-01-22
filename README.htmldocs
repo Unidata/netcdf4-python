@@ -1,0 +1,9 @@
+To update web docs at http://github.unidata.io/netcdf4-python:
+
+First install pdoc (https://github.com/mitmproxy/pdoc)
+
+Then in netcdf4-python github clone directory (after building and 
+installing github master),
+
+* generate docs (sh create_docs.sh)
+* edit docs/index.html and clean up as needed.
