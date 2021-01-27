@@ -1,4 +1,4 @@
-from netCDF4 import Dataset, MFDataset, MFTime, num2date, date2num, date2index
+from netCDF4 import Dataset, MFDataset, MFTime
 import numpy as np
 from numpy.random import seed, randint
 from numpy.testing import assert_array_equal, assert_equal
@@ -7,6 +7,7 @@ import tempfile, unittest, os, datetime
 try:
     import cftime
     has_cftime=True
+    from netCDF4 import date2num, num2date, date2index
 except ImportError:
     has_cftime=False
 from pkg_resources import parse_version
