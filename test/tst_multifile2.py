@@ -137,7 +137,7 @@ class NonuniformTimeTestCase(unittest.TestCase):
             assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
             f.close()
         else:
-            print('skipping MFTime tests since cftime not installed...')
+            print('skipping MFTime test 2 (of 2) since cftime not installed...')
 
 if __name__ == '__main__':
     unittest.main()

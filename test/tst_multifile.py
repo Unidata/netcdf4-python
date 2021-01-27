@@ -165,7 +165,7 @@ class NonuniformTimeTestCase(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     MFTime(ds.variables['time'])
         else:
-            print('skipping MFTime tests since cftime not installed...')
+            print('skipping MFTime test 1 (of 2) since cftime not installed...')
 
 
 if __name__ == '__main__':
