@@ -43,6 +43,7 @@
 <ul>
   <li><a href="#download">Download</a></li>
   <li><a href="#requires">Requires</a></li>
+  <li><a href="#optional">Optional</a></li>
   <li><a href="#install">Install</a></li>
 </ul></li>
 <li><a href="#tutorial">Tutorial</a>
@@ -496,9 +497,6 @@ types) are not supported.</p>
 <li><a href="http://cython.org">Cython</a>, version 0.21 or later.</li>
 <li><a href="https://pypi.python.org/pypi/setuptools">setuptools</a>, version 18.0 or
 later.</li>
-<li><a href="https://github.com/Unidata/cftime">cftime</a> for
-the time and date handling utility functions (<code>num2date</code>,
-<code>date2num</code> and <code>date2index</code>).</li>
 <li>The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
 from <a href="ftp://ftp.hdfgroup.org/HDF5/current/src"></a>.
 <strong><em>netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
@@ -522,6 +520,15 @@ the location of the HDF4 headers and library to <code>$CPPFLAGS</code> and <code
 is required, as is the <a href="http://mpi4py.scipy.org">mpi4py</a> python module.
 Parallel IO further depends on the existence of MPI-enabled HDF5 or the
 <a href="https://parallel-netcdf.github.io/">PnetCDF</a> library.</li>
+</ul>
+
+<h2 id="optional">Optional</h2>
+
+<ul>
+<li><a href="https://github.com/Unidata/cftime">cftime</a> for
+the time and date handling utility functions (<code>num2date</code>,
+<code>date2num</code> and <code>date2index</code>) are imported into the netCDF4 namespace if available.
+The <a href="#MFTime">MFTime</a> class will not work if cftime not installed.</li>
 </ul>
 
 <h2 id="install">Install</h2>
@@ -1032,16 +1039,14 @@ metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
 specified like <code>hours since YY-MM-DD hh:mm:ss</code>.  These units can be
 awkward to deal with, without a utility to convert the values to and
-from calendar dates.  The function called <a href="https://unidata.github.io/cftime/api.html">num2date</a>
+from calendar dates.  The functions<a href="https://unidata.github.io/cftime/api.html">num2date</a>
 and <a href="https://unidata.github.io/cftime/api.html">date2num</a> are
-provided with this package to do just that (starting with version 1.4.0, the
-<a href="https://unidata.github.io/cftime">cftime</a> package must be installed
-separately).  Here's an example of how they
-can be used:</p>
+provided by <a href="https://unidata.github.io/cftime">cftime</a> to do just that.
+Here's an example of how they can be used:</p>
 
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># fill in times.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">num2date</span><span class="p">,</span> <span class="n">date2num</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">cftime</span> <span class="kn">import</span> <span class="n">num2date</span><span class="p">,</span> <span class="n">date2num</span> <span class="c1"># requires the cftime package</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">n</span><span class="o">*</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">times</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">date2num</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="n">times</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">calendar</span><span class="o">=</span><span class="n">times</span><span class="o">.</span><span class="n">calendar</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;time values (in units </span><span class="si">{}</span><span class="s2">):</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">times</span><span class="p">[:]))</span>
@@ -1441,7 +1446,7 @@ depend on or be affected by other processes. Collective IO is a way of doing
 IO defined in the MPI-IO standard; unlike independent IO, all processes must
 participate in doing IO. To toggle back and forth between
 the two types of IO, use the <a href="#Variable.set_collective">Variable.set_collective</a>
-<a href="#Variable">Variable</a>method. All metadata
+<a href="#Variable">Variable</a> method. All metadata
 operations (such as creation of groups, types, variables, dimensions, or attributes)
 are collective.  There are a couple of important limitations of parallel IO:</p>
 
@@ -1621,7 +1626,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#105;&#108;t&#x6f;&#58;&#106;&#x65;&#102;f&#114;&#101;&#x79;&#46;&#115;.&#x77;&#x68;&#x69;&#x74;&#x61;&#x6b;&#101;&#114;&#x40;&#x6e;&#x6f;&#x61;&#x61;&#x2e;&#103;&#x6f;&#x76;">&#106;&#x65;&#102;f&#114;&#101;&#x79;&#46;&#115;.&#x77;&#x68;&#x69;&#x74;&#x61;&#x6b;&#101;&#114;&#x40;&#x6e;&#x6f;&#x61;&#x61;&#x2e;&#103;&#x6f;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="ma&#x69;l&#x74;&#111;&#x3a;&#x6a;&#x65;&#102;&#x66;&#114;&#x65;&#121;&#x2e;&#115;&#46;&#x77;&#104;&#x69;&#x74;&#97;&#107;&#101;&#114;&#64;&#x6e;&#x6f;&#97;&#x61;&#x2e;&#103;&#x6f;&#118;">&#x6a;&#x65;&#102;&#x66;&#114;&#x65;&#121;&#x2e;&#115;&#46;&#x77;&#104;&#x69;&#x74;&#97;&#107;&#101;&#114;&#64;&#x6e;&#x6f;&#97;&#x61;&#x2e;&#103;&#x6f;&#118;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
