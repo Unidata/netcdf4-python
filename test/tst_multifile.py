@@ -4,7 +4,12 @@ from numpy.random import seed, randint
 from numpy.testing import assert_array_equal, assert_equal
 from numpy import ma
 import tempfile, unittest, os, datetime
-import cftime
+try:
+    import cftime
+    has_cftime=True
+except ImportError:
+    has_cftime=False
+    
 from pkg_resources import parse_version
 
 nx=100; ydim=5; zdim=10
@@ -118,50 +123,48 @@ class NonuniformTimeTestCase(unittest.TestCase):
         # The test files have no calendar attribute on the time variable.
         calendar = 'standard'
 
-        # Get the real dates
-        # skip this until cftime pull request #55 is in a released
-        # version (1.0.1?). Otherwise, fix for issue #808 breaks this
-        if parse_version(cftime.__version__) >= parse_version('1.0.1'):
+        if has_cftime:
+            # Get the real dates
             dates = []
             for file in self.files:
                 f = Dataset(file)
                 t = f.variables['time']
                 dates.extend(num2date(t[:], t.units, calendar))
                 f.close()
+            # Compare with the MF dates
+            f = MFDataset(self.files,check=True)
+            t = f.variables['time']
+            T = MFTime(t, calendar=calendar)
+            assert_equal(T.calendar, calendar)
+            assert_equal(len(T), len(t))
+            assert_equal(T.shape, t.shape)
+            assert_equal(T.dimensions, t.dimensions)
+            assert_equal(T.typecode(), t.typecode())
+            # skip this until cftime pull request #55 is in a released
+            # version (1.0.1?). Otherwise, fix for issue #808 breaks this
+            if parse_version(cftime.__version__) >= parse_version('1.0.1'):
+                assert_array_equal(num2date(T[:], T.units, T.calendar), dates)
+            assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
+            f.close()
 
-        # Compare with the MF dates
-        f = MFDataset(self.files,check=True)
-        t = f.variables['time']
+            # Test exception is raised when no calendar attribute is available on the
+            # time variable.
+            with MFDataset(self.files, check=True) as ds:
+                with self.assertRaises(ValueError):
+                    MFTime(ds.variables['time'])
 
-        T = MFTime(t, calendar=calendar)
-        assert_equal(T.calendar, calendar)
-        assert_equal(len(T), len(t))
-        assert_equal(T.shape, t.shape)
-        assert_equal(T.dimensions, t.dimensions)
-        assert_equal(T.typecode(), t.typecode())
-        # skip this until cftime pull request #55 is in a released
-        # version (1.0.1?). Otherwise, fix for issue #808 breaks this
-        if parse_version(cftime.__version__) >= parse_version('1.0.1'):
-            assert_array_equal(num2date(T[:], T.units, T.calendar), dates)
-        assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
-        f.close()
-
-        # Test exception is raised when no calendar attribute is available on the
-        # time variable.
-        with MFDataset(self.files, check=True) as ds:
-            with self.assertRaises(ValueError):
-                MFTime(ds.variables['time'])
-
-        # Test exception is raised when the calendar attribute is different on the
-        # variables. First, add calendar attributes to file. Note this will modify
-        # the files inplace.
-        calendars = ['standard', 'gregorian']
-        for idx, f in enumerate(self.files):
-            with Dataset(f, 'a') as ds:
-                ds.variables['time'].calendar = calendars[idx]
-        with MFDataset(self.files, check=True) as ds:
-            with self.assertRaises(ValueError):
-                MFTime(ds.variables['time'])
+            # Test exception is raised when the calendar attribute is different on the
+            # variables. First, add calendar attributes to file. Note this will modify
+            # the files inplace.
+            calendars = ['standard', 'gregorian']
+            for idx, f in enumerate(self.files):
+                with Dataset(f, 'a') as ds:
+                    ds.variables['time'].calendar = calendars[idx]
+            with MFDataset(self.files, check=True) as ds:
+                with self.assertRaises(ValueError):
+                    MFTime(ds.variables['time'])
+        else:
+            print('skipping MFTime tests since cftime not installed...')
 
 
 if __name__ == '__main__':

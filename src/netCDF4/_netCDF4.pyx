@@ -36,9 +36,6 @@ types) are not supported.
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
- - [cftime](https://github.com/Unidata/cftime) for
- the time and date handling utility functions (`num2date`,
- `date2num` and `date2index`).
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
@@ -62,6 +59,12 @@ types) are not supported.
  is required, as is the [mpi4py](http://mpi4py.scipy.org) python module.
  Parallel IO further depends on the existence of MPI-enabled HDF5 or the
  [PnetCDF](https://parallel-netcdf.github.io/) library.
+
+## Optional
+ - [cftime](https://github.com/Unidata/cftime) for
+ the time and date handling utility functions (`num2date`,
+ `date2num` and `date2index`) are imported into the netCDF4 namespace if available.
+ The [MFTime](#MFTime) class will not work if cftime not installed.
 
 
 ## Install
@@ -594,17 +597,15 @@ metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
 specified like `hours since YY-MM-DD hh:mm:ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
-from calendar dates.  The function called [num2date](https://unidata.github.io/cftime/api.html)
+from calendar dates.  The functions[num2date](https://unidata.github.io/cftime/api.html)
 and [date2num](https://unidata.github.io/cftime/api.html) are
-provided with this package to do just that (starting with version 1.4.0, the
-[cftime](https://unidata.github.io/cftime) package must be installed
-separately).  Here's an example of how they
-can be used:
+provided by [cftime](https://unidata.github.io/cftime) to do just that.
+Here's an example of how they can be used:
 
 ```python
 >>> # fill in times.
 >>> from datetime import datetime, timedelta
->>> from netCDF4 import num2date, date2num
+>>> from cftime import num2date, date2num # requires the cftime package
 >>> dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
 >>> times[:] = date2num(dates,units=times.units,calendar=times.calendar)
 >>> print("time values (in units {}):\\n{}".format(times.units, times[:]))
@@ -1020,7 +1021,7 @@ depend on or be affected by other processes. Collective IO is a way of doing
 IO defined in the MPI-IO standard; unlike independent IO, all processes must
 participate in doing IO. To toggle back and forth between
 the two types of IO, use the [Variable.set_collective](#Variable.set_collective)
-[Variable](#Variable)method. All metadata
+[Variable](#Variable) method. All metadata
 operations (such as creation of groups, types, variables, dimensions, or attributes)
 are collective.  There are a couple of important limitations of parallel IO:
 
@@ -1235,7 +1236,6 @@ __version__ = "1.5.6"
 
 # Initialize numpy
 import posixpath
-from cftime import num2date, date2num, date2index
 import numpy
 import weakref
 import warnings
@@ -6600,6 +6600,10 @@ days since 2000-01-01
         `ValueError` otherwise.
         """
         import datetime
+        try:
+            from cftime import date2num
+        except ImportError:
+            raise ImportError('cftime required to use MFTime class')
         self.__time = time
 
         # copy attributes from master time variable.
