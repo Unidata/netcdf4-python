@@ -596,7 +596,7 @@ metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
 specified like `hours since YY-MM-DD hh:mm:ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
-from calendar dates.  The functions[num2date](https://unidata.github.io/cftime/api.html)
+from calendar dates.  The functions [num2date](https://unidata.github.io/cftime/api.html)
 and [date2num](https://unidata.github.io/cftime/api.html) are
 provided by [cftime](https://unidata.github.io/cftime) to do just that.
 Here's an example of how they can be used:
