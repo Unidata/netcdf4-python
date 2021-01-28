@@ -7,7 +7,6 @@ import tempfile, unittest, os, datetime
 try:
     import cftime
     has_cftime=True
-    from netCDF4 import date2num, num2date, date2index
 except ImportError:
     has_cftime=False
 from pkg_resources import parse_version
@@ -117,13 +116,13 @@ class NonuniformTimeTestCase(unittest.TestCase):
                 for file in self.files:
                     f = Dataset(file)
                     t = f.variables['time']
-                    dates.extend(num2date(t[:], t.units, t.calendar))
+                    dates.extend(cftime.num2date(t[:], t.units, t.calendar))
                     f.close()
 
             # Compare with the MF dates
             f = MFDataset(self.files,check=True)
             t = f.variables['time']
-            mfdates = num2date(t[:], t.units, t.calendar)
+            mfdates = cftime.num2date(t[:], t.units, t.calendar)
 
             T = MFTime(t)
             assert_equal(len(T), len(t))
@@ -133,8 +132,8 @@ class NonuniformTimeTestCase(unittest.TestCase):
             # skip this until cftime pull request #55 is in a released
             # version (1.0.1?). Otherwise, fix for issue #808 breaks this
             if parse_version(cftime.__version__) >= parse_version('1.0.1'):
-                assert_array_equal(num2date(T[:], T.units, T.calendar), dates)
-            assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
+                assert_array_equal(cftime.num2date(T[:], T.units, T.calendar), dates)
+            assert_equal(cftime.date2index(datetime.datetime(1980, 1, 2), T), 366)
             f.close()
         else:
             print('skipping MFTime test 2 (of 2) since cftime not installed...')

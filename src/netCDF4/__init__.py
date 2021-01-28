@@ -10,8 +10,3 @@ from ._netCDF4 import (__version__, __netcdf4libversion__, __hdf5libversion__,
                        __has_parallel4_support__, __has_pnetcdf_support__)
 __all__ =\
 ['Dataset','Variable','Dimension','Group','MFDataset','MFTime','CompoundType','VLType','stringtochar','chartostring','stringtoarr','getlibversion','EnumType','get_chunk_cache','set_chunk_cache']
-try:
-    from cftime import date2num, num2date, date2index
-    __all__ += [date2num, num2date, date2index]
-except ImportError:
-    pass
