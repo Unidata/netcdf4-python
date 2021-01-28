@@ -62,8 +62,7 @@ types) are not supported.
 
 ## Optional
  - [cftime](https://github.com/Unidata/cftime) for
- the time and date handling utility functions (`num2date`,
- `date2num` and `date2index`) are imported into the netCDF4 namespace if available.
+ the time and date handling utility functions.
  The [MFTime](#MFTime) class will not work if cftime not installed.
 
 
