@@ -601,7 +601,7 @@ Here's an example of how they can be used:
 ```python
 >>> # fill in times.
 >>> from datetime import datetime, timedelta
->>> from cftime import num2date, date2num # requires the cftime package
+>>> from cftime import num2date, date2num
 >>> dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
 >>> times[:] = date2num(dates,units=times.units,calendar=times.calendar)
 >>> print("time values (in units {}):\\n{}".format(times.units, times[:]))
@@ -1219,7 +1219,6 @@ from cpython.bytes cimport PyBytes_FromStringAndSize
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 import sys
-from cftime import date2num, num2date, date2index
 if sys.version_info[0:2] < (3, 7):
     # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
@@ -1233,6 +1232,7 @@ __version__ = "1.5.6"
 
 # Initialize numpy
 import posixpath
+from cftime import date2num, num2date, date2index
 import numpy
 import weakref
 import warnings
