@@ -725,14 +725,11 @@ IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
 cdef extern from "numpy/arrayobject.h":
     ctypedef int npy_intp 
     ctypedef extern class numpy.ndarray [object PyArrayObject]:
-        cdef char *data
-        cdef int nd
-        cdef npy_intp *dimensions
-        cdef npy_intp *strides
-        cdef object base
-#       cdef dtype descr
-        cdef int flags
+        pass
     npy_intp PyArray_SIZE(ndarray arr)
     npy_intp PyArray_ISCONTIGUOUS(ndarray arr)
     npy_intp PyArray_ISALIGNED(ndarray arr)
+    void* PyArray_DATA(ndarray) nogil
+    char* PyArray_BYTES(ndarray) nogil
+    npy_intp* PyArray_STRIDES(ndarray) nogil
     void import_array()

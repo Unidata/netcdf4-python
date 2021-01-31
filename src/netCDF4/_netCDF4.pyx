@@ -1475,7 +1475,8 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
     if att_type == NC_CHAR:
         value_arr = numpy.empty(att_len,'S1')
         with nogil:
-            ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)
+            ierr = nc_get_att_text(_grpid, varid, attname,
+                    PyArray_BYTES(value_arr))
         _ensure_nc_success(ierr, err_cls=AttributeError)
         if name == '_FillValue' and python3:
             # make sure _FillValue for character arrays is a byte on python 3
@@ -1525,7 +1526,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
                 except:
                     raise KeyError('attribute %s has unsupported datatype' % attname)
         with nogil:
-            ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
+            ierr = nc_get_att(_grpid, varid, attname, PyArray_BYTES(value_arr))
         _ensure_nc_success(ierr, err_cls=AttributeError)
         if value_arr.shape == ():
             # return a scalar for a scalar array
@@ -1679,7 +1680,8 @@ be raised in the next release."""
         elif xtype == -99: # if xtype is not passed in as kwarg.
             xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
-        ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
+        ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr,
+                PyArray_DATA(value_arr))
         _ensure_nc_success(ierr, err_cls=AttributeError)
 
 cdef _get_types(group):
@@ -4752,7 +4754,7 @@ rename a [Variable](#Variable) attribute named `oldname` to `newname`."""
             data2 = data
             vldata = <nc_vlen_t *>malloc(sizeof(nc_vlen_t))
             vldata[0].len = PyArray_SIZE(data2)
-            vldata[0].p = data2.data
+            vldata[0].p = PyArray_DATA(data2)
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, vldata)
             _ensure_nc_success(ierr)
@@ -5186,10 +5188,10 @@ NC_CHAR).
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
                 ierr = nc_put_vara(self._grpid, self._varid,
-                                   startp, countp, data.data)
+                                   startp, countp, PyArray_DATA(data))
             else:
                 ierr = nc_put_vars(self._grpid, self._varid,
-                                   startp, countp, stridep, data.data)
+                                   startp, countp, stridep, PyArray_DATA(data))
             _ensure_nc_success(ierr)
         elif self._isvlen:
             if data.dtype.char !='O':
@@ -5235,8 +5237,8 @@ NC_CHAR).
                         # casting doesn't work ?? just raise TypeError
                         raise TypeError("wrong data type in object array: should be %s, got %s" % (self.dtype,dataarr.dtype))
                     vldata[i].len = PyArray_SIZE(dataarr)
-                    vldata[i].p = dataarr.data
-                    databuff = databuff + data.strides[0]
+                    vldata[i].p = PyArray_DATA(dataarr)
+                    databuff = databuff + PyArray_STRIDES(data)[0]
                 # strides all 1 or scalar variable, use put_vara (faster)
                 if sum(stride) == ndims or ndims == 0:
                     ierr = nc_put_vara(self._grpid, self._varid,
@@ -5303,11 +5305,12 @@ NC_CHAR).
                 if sum(stride) == ndims or ndims == 0:
                     with nogil:
                         ierr = nc_get_vara(self._grpid, self._varid,
-                                           startp, countp, data.data)
+                                           startp, countp, PyArray_DATA(data))
                 else:
                     with nogil:
                         ierr = nc_get_vars(self._grpid, self._varid,
-                                           startp, countp, stridep, data.data)
+                                           startp, countp, stridep,
+                                           PyArray_DATA(data))
             else:
                 ierr = 0
             if ierr == NC_EINVALCOORDS:
@@ -5380,7 +5383,7 @@ NC_CHAR).
                     arrlen  = vldata[i].len
                     dataarr = numpy.empty(arrlen, self.dtype)
                     #dataarr.data = <char *>vldata[i].p
-                    memcpy(<void*>dataarr.data, vldata[i].p, dataarr.nbytes)
+                    memcpy(PyArray_DATA(dataarr), vldata[i].p, dataarr.nbytes)
                     data[i] = dataarr
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
@@ -5943,7 +5946,8 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
         value_arr = numpy.array(enum_dict[field],dt)
         bytestr = _strencode(field)
         namstring = bytestr
-        ierr = nc_insert_enum(grp._grpid, xtype, namstring, value_arr.data)
+        ierr = nc_insert_enum(grp._grpid, xtype, namstring,
+                PyArray_DATA(value_arr))
         _ensure_nc_success(ierr)
     return xtype, dt
 

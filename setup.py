@@ -520,6 +520,7 @@ else:
     sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
 
 cmdclass = {}
+DEFINE_MACROS = [("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]
 netcdf4_src_root = osp.join(osp.join('src','netCDF4'), '_netCDF4')
 netcdf4_src_c = netcdf4_src_root + '.c'
 netcdf4_src_pyx = netcdf4_src_root + '.pyx'
@@ -616,6 +617,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
 
     ext_modules = [Extension("netCDF4._netCDF4",
                              [netcdf4_src_pyx],
+                             define_macros=DEFINE_MACROS,
                              libraries=libs,
                              library_dirs=lib_dirs,
                              include_dirs=inc_dirs + ['include'],
