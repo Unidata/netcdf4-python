@@ -1222,6 +1222,7 @@ from cpython.bytes cimport PyBytes_FromStringAndSize
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 import sys
+from cftime import date2num, num2date, date2index
 if sys.version_info[0:2] < (3, 7):
     # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
@@ -6603,10 +6604,6 @@ days since 2000-01-01
         `ValueError` otherwise.
         """
         import datetime
-        try:
-            from cftime import date2num
-        except ImportError:
-            raise ImportError('cftime required to use MFTime class')
         self.__time = time
 
         # copy attributes from master time variable.
