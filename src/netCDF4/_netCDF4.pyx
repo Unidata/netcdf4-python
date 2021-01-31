@@ -5227,7 +5227,7 @@ NC_CHAR).
                 # regular vlen.
                 # loop over elements of object array, put data buffer for
                 # each element in struct.
-                databuff = data.data
+                databuff = PyArray_BYTES(<ndarray>data)
                 # allocate struct array to hold vlen data.
                 vldata = <nc_vlen_t *>malloc(<size_t>totelem*sizeof(nc_vlen_t))
                 for i from 0<=i<totelem:
