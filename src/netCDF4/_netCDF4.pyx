@@ -59,11 +59,8 @@ types) are not supported.
  is required, as is the [mpi4py](http://mpi4py.scipy.org) python module.
  Parallel IO further depends on the existence of MPI-enabled HDF5 or the
  [PnetCDF](https://parallel-netcdf.github.io/) library.
-
-## Optional
  - [cftime](https://github.com/Unidata/cftime) for
- the time and date handling utility functions.
- The [MFTime](#MFTime) class will not work if cftime not installed.
+ time and date handling utility functions.
 
 
 ## Install

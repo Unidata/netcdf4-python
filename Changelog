@@ -5,9 +5,6 @@
  * change numpy.bool to numpy.bool_ and numpy.float to numpy.float_ (float and
    bool are deprecated in numpy 1.20, issue #1065)
  * clean up docstrings so that they work with latest pdoc.
- * make cftime an optional dependency (issue #1073), an import is only
-   attempted if MFTime is used.  date2num,num2date and date2index no longer
-   imported into netCDF4 namespace.
 
  version 1.5.5.1 (tag v1.5.5.1rel)
 ==================================
