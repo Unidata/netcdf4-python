@@ -36,9 +36,6 @@ types) are not supported.
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
- - [cftime](https://github.com/Unidata/cftime) for
- the time and date handling utility functions (`num2date`,
- `date2num` and `date2index`).
  - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
@@ -62,6 +59,8 @@ types) are not supported.
  is required, as is the [mpi4py](http://mpi4py.scipy.org) python module.
  Parallel IO further depends on the existence of MPI-enabled HDF5 or the
  [PnetCDF](https://parallel-netcdf.github.io/) library.
+ - [cftime](https://github.com/Unidata/cftime) for
+ time and date handling utility functions.
 
 
 ## Install
@@ -594,17 +593,15 @@ metadata standards (such as CF) specify that time should be
 measure relative to a fixed date using a certain calendar, with units
 specified like `hours since YY-MM-DD hh:mm:ss`.  These units can be
 awkward to deal with, without a utility to convert the values to and
-from calendar dates.  The function called [num2date](https://unidata.github.io/cftime/api.html)
+from calendar dates.  The functions [num2date](https://unidata.github.io/cftime/api.html)
 and [date2num](https://unidata.github.io/cftime/api.html) are
-provided with this package to do just that (starting with version 1.4.0, the
-[cftime](https://unidata.github.io/cftime) package must be installed
-separately).  Here's an example of how they
-can be used:
+provided by [cftime](https://unidata.github.io/cftime) to do just that.
+Here's an example of how they can be used:
 
 ```python
 >>> # fill in times.
 >>> from datetime import datetime, timedelta
->>> from netCDF4 import num2date, date2num
+>>> from cftime import num2date, date2num
 >>> dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
 >>> times[:] = date2num(dates,units=times.units,calendar=times.calendar)
 >>> print("time values (in units {}):\\n{}".format(times.units, times[:]))
@@ -1020,7 +1017,7 @@ depend on or be affected by other processes. Collective IO is a way of doing
 IO defined in the MPI-IO standard; unlike independent IO, all processes must
 participate in doing IO. To toggle back and forth between
 the two types of IO, use the [Variable.set_collective](#Variable.set_collective)
-[Variable](#Variable)method. All metadata
+[Variable](#Variable) method. All metadata
 operations (such as creation of groups, types, variables, dimensions, or attributes)
 are collective.  There are a couple of important limitations of parallel IO:
 
@@ -1235,7 +1232,7 @@ __version__ = "1.5.6"
 
 # Initialize numpy
 import posixpath
-from cftime import num2date, date2num, date2index
+from cftime import date2num, num2date, date2index
 import numpy
 import weakref
 import warnings
@@ -1476,7 +1473,8 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
     if att_type == NC_CHAR:
         value_arr = numpy.empty(att_len,'S1')
         with nogil:
-            ierr = nc_get_att_text(_grpid, varid, attname, <char *>value_arr.data)
+            ierr = nc_get_att_text(_grpid, varid, attname,
+                    PyArray_BYTES(value_arr))
         _ensure_nc_success(ierr, err_cls=AttributeError)
         if name == '_FillValue' and python3:
             # make sure _FillValue for character arrays is a byte on python 3
@@ -1526,7 +1524,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
                 except:
                     raise KeyError('attribute %s has unsupported datatype' % attname)
         with nogil:
-            ierr = nc_get_att(_grpid, varid, attname, value_arr.data)
+            ierr = nc_get_att(_grpid, varid, attname, PyArray_BYTES(value_arr))
         _ensure_nc_success(ierr, err_cls=AttributeError)
         if value_arr.shape == ():
             # return a scalar for a scalar array
@@ -1680,7 +1678,8 @@ be raised in the next release."""
         elif xtype == -99: # if xtype is not passed in as kwarg.
             xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
-        ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr, value_arr.data)
+        ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr,
+                PyArray_DATA(value_arr))
         _ensure_nc_success(ierr, err_cls=AttributeError)
 
 cdef _get_types(group):
@@ -4753,7 +4752,7 @@ rename a [Variable](#Variable) attribute named `oldname` to `newname`."""
             data2 = data
             vldata = <nc_vlen_t *>malloc(sizeof(nc_vlen_t))
             vldata[0].len = PyArray_SIZE(data2)
-            vldata[0].p = data2.data
+            vldata[0].p = PyArray_DATA(data2)
             ierr = nc_put_vara(self._grpid, self._varid,
                                startp, countp, vldata)
             _ensure_nc_success(ierr)
@@ -5187,10 +5186,10 @@ NC_CHAR).
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
                 ierr = nc_put_vara(self._grpid, self._varid,
-                                   startp, countp, data.data)
+                                   startp, countp, PyArray_DATA(data))
             else:
                 ierr = nc_put_vars(self._grpid, self._varid,
-                                   startp, countp, stridep, data.data)
+                                   startp, countp, stridep, PyArray_DATA(data))
             _ensure_nc_success(ierr)
         elif self._isvlen:
             if data.dtype.char !='O':
@@ -5225,7 +5224,7 @@ NC_CHAR).
                 # regular vlen.
                 # loop over elements of object array, put data buffer for
                 # each element in struct.
-                databuff = data.data
+                databuff = PyArray_BYTES(<ndarray>data)
                 # allocate struct array to hold vlen data.
                 vldata = <nc_vlen_t *>malloc(<size_t>totelem*sizeof(nc_vlen_t))
                 for i from 0<=i<totelem:
@@ -5236,8 +5235,8 @@ NC_CHAR).
                         # casting doesn't work ?? just raise TypeError
                         raise TypeError("wrong data type in object array: should be %s, got %s" % (self.dtype,dataarr.dtype))
                     vldata[i].len = PyArray_SIZE(dataarr)
-                    vldata[i].p = dataarr.data
-                    databuff = databuff + data.strides[0]
+                    vldata[i].p = PyArray_DATA(dataarr)
+                    databuff = databuff + PyArray_STRIDES(data)[0]
                 # strides all 1 or scalar variable, use put_vara (faster)
                 if sum(stride) == ndims or ndims == 0:
                     ierr = nc_put_vara(self._grpid, self._varid,
@@ -5304,11 +5303,12 @@ NC_CHAR).
                 if sum(stride) == ndims or ndims == 0:
                     with nogil:
                         ierr = nc_get_vara(self._grpid, self._varid,
-                                           startp, countp, data.data)
+                                           startp, countp, PyArray_DATA(data))
                 else:
                     with nogil:
                         ierr = nc_get_vars(self._grpid, self._varid,
-                                           startp, countp, stridep, data.data)
+                                           startp, countp, stridep,
+                                           PyArray_DATA(data))
             else:
                 ierr = 0
             if ierr == NC_EINVALCOORDS:
@@ -5381,7 +5381,7 @@ NC_CHAR).
                     arrlen  = vldata[i].len
                     dataarr = numpy.empty(arrlen, self.dtype)
                     #dataarr.data = <char *>vldata[i].p
-                    memcpy(<void*>dataarr.data, vldata[i].p, dataarr.nbytes)
+                    memcpy(PyArray_DATA(dataarr), vldata[i].p, dataarr.nbytes)
                     data[i] = dataarr
                 # reshape the output array
                 data = numpy.reshape(data, shapeout)
@@ -5944,7 +5944,8 @@ cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
         value_arr = numpy.array(enum_dict[field],dt)
         bytestr = _strencode(field)
         namstring = bytestr
-        ierr = nc_insert_enum(grp._grpid, xtype, namstring, value_arr.data)
+        ierr = nc_insert_enum(grp._grpid, xtype, namstring,
+                PyArray_DATA(value_arr))
         _ensure_nc_success(ierr)
     return xtype, dt
 

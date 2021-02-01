@@ -1,6 +1,7 @@
 include docs/index.html
 recursive-include man *
 include MANIFEST.in
+include README.htmldocs
 include Changelog
 include setup.cfg
 include examples/*py

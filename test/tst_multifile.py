@@ -1,4 +1,4 @@
-from netCDF4 import Dataset, MFDataset, MFTime, num2date, date2num, date2index
+from netCDF4 import Dataset, MFDataset, MFTime
 import numpy as np
 from numpy.random import seed, randint
 from numpy.testing import assert_array_equal, assert_equal
@@ -119,20 +119,15 @@ class NonuniformTimeTestCase(unittest.TestCase):
         calendar = 'standard'
 
         # Get the real dates
-        # skip this until cftime pull request #55 is in a released
-        # version (1.0.1?). Otherwise, fix for issue #808 breaks this
-        if parse_version(cftime.__version__) >= parse_version('1.0.1'):
-            dates = []
-            for file in self.files:
-                f = Dataset(file)
-                t = f.variables['time']
-                dates.extend(num2date(t[:], t.units, calendar))
-                f.close()
-
+        dates = []
+        for file in self.files:
+            f = Dataset(file)
+            t = f.variables['time']
+            dates.extend(cftime.num2date(t[:], t.units, calendar))
+            f.close()
         # Compare with the MF dates
         f = MFDataset(self.files,check=True)
         t = f.variables['time']
-
         T = MFTime(t, calendar=calendar)
         assert_equal(T.calendar, calendar)
         assert_equal(len(T), len(t))
@@ -142,8 +137,8 @@ class NonuniformTimeTestCase(unittest.TestCase):
         # skip this until cftime pull request #55 is in a released
         # version (1.0.1?). Otherwise, fix for issue #808 breaks this
         if parse_version(cftime.__version__) >= parse_version('1.0.1'):
-            assert_array_equal(num2date(T[:], T.units, T.calendar), dates)
-        assert_equal(date2index(datetime.datetime(1980, 1, 2), T), 366)
+            assert_array_equal(cftime.num2date(T[:], T.units, T.calendar), dates)
+        assert_equal(cftime.date2index(datetime.datetime(1980, 1, 2), T), 366)
         f.close()
 
         # Test exception is raised when no calendar attribute is available on the
