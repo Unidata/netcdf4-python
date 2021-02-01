@@ -5,6 +5,7 @@
  * change numpy.bool to numpy.bool_ and numpy.float to numpy.float_ (float and
    bool are deprecated in numpy 1.20, issue #1065)
  * clean up docstrings so that they work with latest pdoc.
+ * update cython numpy API to remove deprecation warnings.
 
  version 1.5.5.1 (tag v1.5.5.1rel)
 ==================================
