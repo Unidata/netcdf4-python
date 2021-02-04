@@ -425,6 +425,9 @@ filling on, default _FillValue of 9.969209968386869e+36 used}
 [Dataset.renameVariable](#Dataset.renameVariable) method of a [Dataset](#Dataset)
 instance.
 
+Variables can be sliced similar to numpy arrays, but there are some differences.  See
+[Writing data to and retrieving data from a netCDF variable](#writing-data-to-and-retrieving-data-from-a-netcdf-variable) for more details.
+
 
 ## Attributes in a netCDF file
 
