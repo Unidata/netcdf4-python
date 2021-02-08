@@ -3258,9 +3258,9 @@ suffix replaced by `.nc` is used..
        
 Dataset instance for `ncfilename` is returned.
         """
-        if ncfilename == None:
+        if ncfilename is None:
             filepath = pathlib.Path(cdlfilename)
-        ncfilename = filepath.with_suffix('.nc') 
+            ncfilename = filepath.with_suffix('.nc') 
         formatcodes = {'NETCDF4': 4,
                        'NETCDF4_CLASSIC': 7,
                        'NETCDF3_CLASSIC': 3,
