@@ -1241,6 +1241,7 @@ import weakref
 import warnings
 import subprocess
 import tempfile
+import pathlib
 from glob import glob
 from numpy import ma
 from libc.string cimport memcpy, memset
@@ -1956,16 +1957,6 @@ cdef _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None):
             raise err_cls(ierr, err_str, filename)
         else:
             raise err_cls(err_str)
-
-_cached_temporary_files = {}
-def _cdl_to_netcdf(filename):
-    """Create a temporary netCDF-4 file from a CDL text file"""
-    x = tempfile.NamedTemporaryFile(
-        mode="wb", dir=tempfile.gettempdir(), prefix="netCDF4_", suffix=".nc")
-    tmpfile = x.name
-    _cached_temporary_files[tmpfile] = x
-    subprocess.run(["ncgen", "-knc4", "-o", tmpfile, filename], check=True)
-    return tmpfile
 
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
@@ -3262,6 +3253,14 @@ attribute does not exist on the variable. For example,
             f = open(outfile,'w')
             f.write(result.stdout)
             f.close()
+
+    @staticmethod
+    def fromcdl(cdlfilename,mode='a',ncfilename=None):
+        if ncfilename == None:
+            filepath = pathlib.Path(cdlfilename)
+            ncfilename = filepath.with_suffix('.nc') 
+        subprocess.run(["ncgen", "-knc4", "-o", ncfilename, cdlfilename], check=True)
+        return Dataset(ncfilename, mode=mode)
 
 
 cdef class Group(Dataset):
