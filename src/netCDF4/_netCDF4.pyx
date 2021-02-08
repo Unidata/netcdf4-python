@@ -1239,6 +1239,8 @@ from cftime import date2num, num2date, date2index
 import numpy
 import weakref
 import warnings
+import subprocess
+import tempfile
 from glob import glob
 from numpy import ma
 from libc.string cimport memcpy, memset
@@ -1954,6 +1956,16 @@ cdef _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None):
             raise err_cls(ierr, err_str, filename)
         else:
             raise err_cls(err_str)
+
+_cached_temporary_files = {}
+def _cdl_to_netcdf(filename):
+    """Create a temporary netCDF-4 file from a CDL text file"""
+    x = tempfile.NamedTemporaryFile(
+        mode="wb", dir=tempfile.gettempdir(), prefix="netCDF4_", suffix=".nc")
+    tmpfile = x.name
+    _cached_temporary_files[tmpfile] = x
+    subprocess.run(["ncgen", "-knc4", "-o", tmpfile, filename], check=True)
+    return tmpfile
 
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
@@ -3234,6 +3246,22 @@ attribute does not exist on the variable. For example,
             return self._getname()
         def __set__(self,value):
             raise AttributeError("name cannot be altered")
+
+    def ncdump(self,coordvars=False,outfile=None):
+        """call ncdump"""
+        self.sync()
+        if coordvars:
+            ncdumpargs = "-ch"
+        else:
+            ncdumpargs = "-h"
+        result=subprocess.run(["ncdump", ncdumpargs, self.filepath()],
+                check=True, capture_output=True, text=True)
+        if outfile is None:
+            print(result.stdout)
+        else:
+            f = open(outfile,'w')
+            f.write(result.stdout)
+            f.close()
 
 
 cdef class Group(Dataset):
