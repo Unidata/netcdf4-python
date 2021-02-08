@@ -1968,9 +1968,9 @@ _private_atts = \
  '__orthogoral_indexing__','keepweakref','_has_lsd',
  '_buffer','chartostring','_use_get_vars','_ncstring_attrs__']
 
-def dataset_fromcdl(cdlfilename,mode='a',ncfilename=None):
+def dataset_fromcdl(cdlfilename,ncfilename=None,mode='a'):
     """
-**`dataset_fromcdl(cdlfilename, ncfilename=None)`**
+**`dataset_fromcdl(cdlfilename, ncfilename=None, model='a')`**
 
 call ncgen via subprocess to create Dataset from CDL text representation.
 
