@@ -1968,7 +1968,6 @@ _private_atts = \
  '__orthogoral_indexing__','keepweakref','_has_lsd',
  '_buffer','chartostring','_use_get_vars','_ncstring_attrs__']
 
-
 cdef class Dataset:
     """
 A netCDF [Dataset](#Dataset) is a collection of dimensions, groups, variables and
