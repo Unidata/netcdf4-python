@@ -3259,9 +3259,9 @@ attribute does not exist on the variable. For example,
         def __set__(self,value):
             raise AttributeError("name cannot be altered")
 
-    def ncdump(self,coordvars=False,outfile=None):
+    def tocdl(self,coordvars=False,outfile=None):
         """
-**`ncdump(self, coordvars=False, outfile=None)`**
+**`tocdl(self, coordvars=False, outfile=None)`**
 
 call ncdump via subprocess to create CDL text representation of Dataset
 
