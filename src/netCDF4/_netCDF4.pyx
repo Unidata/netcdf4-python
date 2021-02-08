@@ -3273,25 +3273,28 @@ Dataset instance for `ncfilename` is returned.
         subprocess.run(["ncgen", ncgenargs, "-o", ncfilename, cdlfilename], check=True)
         return Dataset(ncfilename, mode=mode)
 
-    def tocdl(self,coordvars=False,outfile=None):
+    def tocdl(self,coordvars=False,data=False,outfile=None):
         """
-**`tocdl(self, coordvars=False, outfile=None)`**
+**`tocdl(self, coordvars=False, data=False, outfile=None)`**
 
 call ncdump via subprocess to create CDL text representation of Dataset
 
 **`coordvars`**: include coordinate variable data (via `ncdump -c`). Default False
 
-**`outfile`**: If not None, file to output ncdump to. Default is to print result to stdout.
+**`data`**: if True, write out variable data (Default False).
+
+**`outfile`**: If not None, file to output ncdump to. Default is to return a string.
         """
         self.sync()
         if coordvars:
-            ncdumpargs = "-csh"
+            ncdumpargs = "-cs"
         else:
-            ncdumpargs = "-sh"
+            ncdumpargs = "-s"
+        if not data: ncdumpargs += "h"
         result=subprocess.run(["ncdump", ncdumpargs, self.filepath()],
                 check=True, capture_output=True, text=True)
         if outfile is None:
-            print(result.stdout)
+            return result.stdout
         else:
             f = open(outfile,'w')
             f.write(result.stdout)
