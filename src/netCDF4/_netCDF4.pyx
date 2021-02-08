@@ -1968,9 +1968,9 @@ _private_atts = \
  '__orthogoral_indexing__','keepweakref','_has_lsd',
  '_buffer','chartostring','_use_get_vars','_ncstring_attrs__']
 
-def dataset_fromcdl(cdlfilename,ncfilename=None,mode='a'):
+def dataset_fromcdl(cdlfilename,ncfilename=None,mode='a',format='NETCDF4'):
     """
-**`dataset_fromcdl(cdlfilename, ncfilename=None, mode='a')`**
+**`dataset_fromcdl(cdlfilename, ncfilename=None, mode='a',format='NETCDF4')`**
 
 call ncgen via subprocess to create Dataset from CDL text representation.
 
@@ -1980,13 +1980,26 @@ call ncgen via subprocess to create Dataset from CDL text representation.
 suffix replaced by `.nc` is used..
 
 **`mode`**:  Access mode to open Dataset (Default `'a'`).
+
+**`format`**: underlying file format to use (one of `'NETCDF4',
+'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
+`'NETCDF3_64BIT_DATA'`.
        
 Dataset instance for `ncfilename` is returned.
     """
     if ncfilename == None:
         filepath = pathlib.Path(cdlfilename)
         ncfilename = filepath.with_suffix('.nc') 
-    subprocess.run(["ncgen", "-knc4", "-o", ncfilename, cdlfilename], check=True)
+    formatcodes = {'NETCDF4': 4,
+                   'NETCDF4_CLASSIC': 7,
+                   'NETCDF3_CLASSIC': 3,
+                   'NETCDF3_64BIT': 6, # legacy
+                   'NETCDF3_64BIT_OFFSET': 6,
+                   'NETCDF3_64BIT_DATA': 5}
+    if format not in formatcodes:
+        raise ValueError('illegal format requested')
+    ncgenargs="-knc%s" % formatcodes[format]
+    subprocess.run(["ncgen", ncgenargs, "-o", ncfilename, cdlfilename], check=True)
     return Dataset(ncfilename, mode=mode)
 
 cdef class Dataset:
