@@ -6,6 +6,8 @@
    bool are deprecated in numpy 1.20, issue #1065)
  * clean up docstrings so that they work with latest pdoc.
  * update cython numpy API to remove deprecation warnings.
+ * Add "fromcdl" and "tocdl" Dataset methods for import/export of CDL
+   via ncdump/ncgen called externally via the subprocess module (issue #1078).
 
  version 1.5.5.1 (tag v1.5.5.1rel)
 ==================================
