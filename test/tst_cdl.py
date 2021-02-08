@@ -36,6 +36,7 @@ class Test_CDL(unittest.TestCase):
         assert(f1.dimensions.keys() == f2.dimensions.keys())
         assert(len(f1.dimensions['d']) == len(f2.dimensions['d']))
         f1.close(); f2.close()
+        os.remove('ubyte2.nc')
     def tearDown(self):
         # Remove the temporary files
         os.remove('ubyte.cdl')
