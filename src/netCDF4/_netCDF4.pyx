@@ -3284,9 +3284,9 @@ call ncdump via subprocess to create CDL text representation of Dataset
         """
         self.sync()
         if coordvars:
-            ncdumpargs = "-ch"
+            ncdumpargs = "-csh"
         else:
-            ncdumpargs = "-h"
+            ncdumpargs = "-sh"
         result=subprocess.run(["ncdump", ncdumpargs, self.filepath()],
                 check=True, capture_output=True, text=True)
         if outfile is None:
