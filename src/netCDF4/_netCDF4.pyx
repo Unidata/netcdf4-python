@@ -1968,6 +1968,26 @@ _private_atts = \
  '__orthogoral_indexing__','keepweakref','_has_lsd',
  '_buffer','chartostring','_use_get_vars','_ncstring_attrs__']
 
+def dataset_fromcdl(cdlfilename,mode='a',ncfilename=None):
+    """
+**`dataset_fromcdl(cdlfilename, ncfilename)`**
+
+call ncgen via subprocess to create Dataset from CDL text representation.
+
+**`cdlfilename`**:  CDL file.
+
+**`ncfilename`**: netCDF file to create.
+
+**`mode`**:  Access mode to open Dataset (Default `'a'`).
+       
+Dataset instance for `ncfilename` is returned.
+    """
+    if ncfilename == None:
+        filepath = pathlib.Path(cdlfilename)
+        ncfilename = filepath.with_suffix('.nc') 
+    subprocess.run(["ncgen", "-knc4", "-o", ncfilename, cdlfilename], check=True)
+    return Dataset(ncfilename, mode=mode)
+
 cdef class Dataset:
     """
 A netCDF [Dataset](#Dataset) is a collection of dimensions, groups, variables and
@@ -3239,7 +3259,15 @@ attribute does not exist on the variable. For example,
             raise AttributeError("name cannot be altered")
 
     def ncdump(self,coordvars=False,outfile=None):
-        """call ncdump"""
+        """
+**`ncdump(self, coordvars=False, outfile=None)`**
+
+call ncdump via subprocess to create CDL text representation of Dataset
+
+**`coordvars`**: include coordinate variable data (via `ncdump -c`). Default False
+
+**`outfile`**: If not None, file to output ncdump to. Default is to print result to stdout.
+        """
         self.sync()
         if coordvars:
             ncdumpargs = "-ch"
@@ -3253,15 +3281,6 @@ attribute does not exist on the variable. For example,
             f = open(outfile,'w')
             f.write(result.stdout)
             f.close()
-
-    @staticmethod
-    def fromcdl(cdlfilename,mode='a',ncfilename=None):
-        if ncfilename == None:
-            filepath = pathlib.Path(cdlfilename)
-            ncfilename = filepath.with_suffix('.nc') 
-        subprocess.run(["ncgen", "-knc4", "-o", ncfilename, cdlfilename], check=True)
-        return Dataset(ncfilename, mode=mode)
-
 
 cdef class Group(Dataset):
     """
