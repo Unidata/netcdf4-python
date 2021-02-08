@@ -1970,7 +1970,7 @@ _private_atts = \
 
 def dataset_fromcdl(cdlfilename,ncfilename=None,mode='a'):
     """
-**`dataset_fromcdl(cdlfilename, ncfilename=None, model='a')`**
+**`dataset_fromcdl(cdlfilename, ncfilename=None, mode='a')`**
 
 call ncgen via subprocess to create Dataset from CDL text representation.
 
