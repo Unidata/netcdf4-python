@@ -1970,13 +1970,14 @@ _private_atts = \
 
 def dataset_fromcdl(cdlfilename,mode='a',ncfilename=None):
     """
-**`dataset_fromcdl(cdlfilename, ncfilename)`**
+**`dataset_fromcdl(cdlfilename, ncfilename=None)`**
 
 call ncgen via subprocess to create Dataset from CDL text representation.
 
 **`cdlfilename`**:  CDL file.
 
-**`ncfilename`**: netCDF file to create.
+**`ncfilename`**: netCDF file to create. If not given, CDL filename with
+suffix replaced by `.nc` is used..
 
 **`mode`**:  Access mode to open Dataset (Default `'a'`).
        
