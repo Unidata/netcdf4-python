@@ -32,11 +32,12 @@ types) are not supported.
 
 ## Requires
 
+ - Python 3.6 or later.
  - [numpy array module](http://numpy.scipy.org), version 1.10.0 or later.
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
- - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
+ - The HDF5 C library version 1.8.4-patch1 or higher
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
  otherwise resulting files may be unreadable by clients using earlier
