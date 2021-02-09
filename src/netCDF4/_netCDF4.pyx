@@ -1236,7 +1236,6 @@ import numpy
 import weakref
 import warnings
 import subprocess
-import tempfile
 import pathlib
 from glob import glob
 from numpy import ma
