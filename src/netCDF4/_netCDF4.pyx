@@ -1225,11 +1225,6 @@ import sys
 if sys.version_info[0:2] < (3, 7):
     # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
-try:
-    from itertools import izip as zip
-except ImportError:
-    # python3: zip is already python2's itertools.izip
-    pass
 
 __version__ = "1.5.6"
 
@@ -1428,10 +1423,6 @@ else:  # prior to 4.6.2 this flag doesn't work, so make the same as NC_DISKLESS
 default_encoding = 'utf-8'
 unicode_error = 'replace'
 
-python3 = sys.version_info[0] > 2
-if python3:
-    buffer = memoryview
-
 _nctonptype = {}
 for _key,_value in _nptonctype.items():
     _nctonptype[_value] = _key
@@ -1482,7 +1473,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
             ierr = nc_get_att_text(_grpid, varid, attname,
                     PyArray_BYTES(value_arr))
         _ensure_nc_success(ierr, err_cls=AttributeError)
-        if name == '_FillValue' and python3:
+        if name == '_FillValue':
             # make sure _FillValue for character arrays is a byte on python 3
             # (issue 271).
             pstring = value_arr.tobytes()
@@ -2431,25 +2422,16 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         ncdump = [repr(type(self))]
         dimnames = tuple(_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys())
-        if python3:
-            varnames = tuple(\
-            [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
-             ((_tostr(self.variables[varname].dimensions)).replace(",)",")")).replace("'","")
-             for varname in self.variables.keys()])
-        else: # don't try to remove quotes in python2
-            varnames = tuple(\
-            [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
-             (_tostr(self.variables[varname].dimensions)).replace(",)",")")
-             for varname in self.variables.keys()])
+        varnames = tuple(\
+        [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
+         ((_tostr(self.variables[varname].dimensions)).replace(",)",")")).replace("'","")
+         for varname in self.variables.keys()])
         grpnames = tuple(_tostr(grpname) for grpname in self.groups.keys())
         if self.path == '/':
             ncdump.append('root group (%s data model, file format %s):' %
@@ -3473,10 +3455,7 @@ Read-only class variables:
             raise AttributeError("size cannot be altered")
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         if not dir(self._grp):
@@ -3981,10 +3960,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         return self[...]
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         cdef int ierr, no_fill
@@ -4915,7 +4891,7 @@ cannot be safely cast to variable data type""" % attname
 
         # A numpy or masked array (or an object supporting the buffer interface) is needed.
         # Convert if necessary.
-        if not ma.isMA(data) and not (hasattr(data,'data') and isinstance(data.data,buffer)):
+        if not ma.isMA(data) and not (hasattr(data,'data') and isinstance(data.data,memoryview)):
             # if auto scaling is to be done, don't cast to an integer yet.
             if self.scale and self.dtype.kind in 'iu' and \
                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
@@ -5578,10 +5554,7 @@ the user.
         self.name = dtype_name
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         return "%r: name = '%s', numpy dtype = %s" %\
@@ -5863,10 +5836,7 @@ the user.
             self.name = dtype_name
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         if self.dtype == str:
@@ -5976,10 +5946,7 @@ the user.
         self.enum_dict = enum_dict
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         return "%r: name = '%s', numpy dtype = %s, fields/values =%s" %\
@@ -6064,10 +6031,7 @@ cdef _strencode(pystr,encoding=None):
 
 def _to_ascii(bytestr):
     # encode a byte string to an ascii encoded string.
-    if python3:
-        return str(bytestr,encoding='ascii')
-    else:
-        return bytestr.encode('ascii')
+    return str(bytestr,encoding='ascii')
 
 def stringtoarr(string,NUMCHARS,dtype='S'):
     """
