@@ -64,6 +64,7 @@ jobs:
         python setup.py install
     - name: Test
       run: |
+        export PATH=${NETCDF_DIR}/bin:${PATH} 
         python checkversion.py
         # serial
         cd test
