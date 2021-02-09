@@ -32,11 +32,12 @@ types) are not supported.
 
 ## Requires
 
+ - Python 3.6 or later.
  - [numpy array module](http://numpy.scipy.org), version 1.10.0 or later.
  - [Cython](http://cython.org), version 0.21 or later.
  - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
    later.
- - The HDF5 C library version 1.8.4-patch1 or higher (1.8.x recommended)
+ - The HDF5 C library version 1.8.4-patch1 or higher
  from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
  ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
  otherwise resulting files may be unreadable by clients using earlier
@@ -1225,11 +1226,6 @@ import sys
 if sys.version_info[0:2] < (3, 7):
     # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
-try:
-    from itertools import izip as zip
-except ImportError:
-    # python3: zip is already python2's itertools.izip
-    pass
 
 __version__ = "1.5.6"
 
@@ -1239,6 +1235,8 @@ from cftime import date2num, num2date, date2index
 import numpy
 import weakref
 import warnings
+import subprocess
+import pathlib
 from glob import glob
 from numpy import ma
 from libc.string cimport memcpy, memset
@@ -1425,10 +1423,6 @@ else:  # prior to 4.6.2 this flag doesn't work, so make the same as NC_DISKLESS
 default_encoding = 'utf-8'
 unicode_error = 'replace'
 
-python3 = sys.version_info[0] > 2
-if python3:
-    buffer = memoryview
-
 _nctonptype = {}
 for _key,_value in _nptonctype.items():
     _nctonptype[_value] = _key
@@ -1479,7 +1473,7 @@ cdef _get_att(grp, int varid, name, encoding='utf-8'):
             ierr = nc_get_att_text(_grpid, varid, attname,
                     PyArray_BYTES(value_arr))
         _ensure_nc_success(ierr, err_cls=AttributeError)
-        if name == '_FillValue' and python3:
+        if name == '_FillValue':
             # make sure _FillValue for character arrays is a byte on python 3
             # (issue 271).
             pstring = value_arr.tobytes()
@@ -2428,25 +2422,16 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         ncdump = [repr(type(self))]
         dimnames = tuple(_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys())
-        if python3:
-            varnames = tuple(\
-            [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
-             ((_tostr(self.variables[varname].dimensions)).replace(",)",")")).replace("'","")
-             for varname in self.variables.keys()])
-        else: # don't try to remove quotes in python2
-            varnames = tuple(\
-            [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
-             (_tostr(self.variables[varname].dimensions)).replace(",)",")")
-             for varname in self.variables.keys()])
+        varnames = tuple(\
+        [_tostr(self.variables[varname].dtype)+' '+_tostr(varname)+
+         ((_tostr(self.variables[varname].dimensions)).replace(",)",")")).replace("'","")
+         for varname in self.variables.keys()])
         grpnames = tuple(_tostr(grpname) for grpname in self.groups.keys())
         if self.path == '/':
             ncdump.append('root group (%s data model, file format %s):' %
@@ -3235,6 +3220,69 @@ attribute does not exist on the variable. For example,
         def __set__(self,value):
             raise AttributeError("name cannot be altered")
 
+    @staticmethod
+    def fromcdl(cdlfilename,ncfilename=None,mode='a',format='NETCDF4'):
+        """
+**`fromcdl(cdlfilename, ncfilename=None, mode='a',format='NETCDF4')`**
+
+call ncgen via subprocess to create Dataset from [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
+text representation.
+
+**`cdlfilename`**:  CDL file.
+
+**`ncfilename`**: netCDF file to create. If not given, CDL filename with
+suffix replaced by `.nc` is used..
+
+**`mode`**:  Access mode to open Dataset (Default `'a'`).
+
+**`format`**: underlying file format to use (one of `'NETCDF4',
+'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
+`'NETCDF3_64BIT_DATA'`. Default `'NETCDF4'`.
+       
+Dataset instance for `ncfilename` is returned.
+        """
+        if ncfilename is None:
+            filepath = pathlib.Path(cdlfilename)
+            ncfilename = filepath.with_suffix('.nc') 
+        formatcodes = {'NETCDF4': 4,
+                       'NETCDF4_CLASSIC': 7,
+                       'NETCDF3_CLASSIC': 3,
+                       'NETCDF3_64BIT': 6, # legacy
+                       'NETCDF3_64BIT_OFFSET': 6,
+                       'NETCDF3_64BIT_DATA': 5}
+        if format not in formatcodes:
+            raise ValueError('illegal format requested')
+        ncgenargs="-knc%s" % formatcodes[format]
+        subprocess.run(["ncgen", ncgenargs, "-o", ncfilename, cdlfilename], check=True)
+        return Dataset(ncfilename, mode=mode)
+
+    def tocdl(self,coordvars=False,data=False,outfile=None):
+        """
+**`tocdl(self, coordvars=False, data=False, outfile=None)`**
+
+call ncdump via subprocess to create [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
+text representation of Dataset
+
+**`coordvars`**: include coordinate variable data (via `ncdump -c`). Default False
+
+**`data`**: if True, write out variable data (Default False).
+
+**`outfile`**: If not None, file to output ncdump to. Default is to return a string.
+        """
+        self.sync()
+        if coordvars:
+            ncdumpargs = "-cs"
+        else:
+            ncdumpargs = "-s"
+        if not data: ncdumpargs += "h"
+        result=subprocess.run(["ncdump", ncdumpargs, self.filepath()],
+                check=True, capture_output=True, text=True)
+        if outfile is None:
+            return result.stdout
+        else:
+            f = open(outfile,'w')
+            f.write(result.stdout)
+            f.close()
 
 cdef class Group(Dataset):
     """
@@ -3407,10 +3455,7 @@ Read-only class variables:
             raise AttributeError("size cannot be altered")
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         if not dir(self._grp):
@@ -3915,10 +3960,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         return self[...]
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         cdef int ierr, no_fill
@@ -4849,7 +4891,7 @@ cannot be safely cast to variable data type""" % attname
 
         # A numpy or masked array (or an object supporting the buffer interface) is needed.
         # Convert if necessary.
-        if not ma.isMA(data) and not (hasattr(data,'data') and isinstance(data.data,buffer)):
+        if not ma.isMA(data) and not (hasattr(data,'data') and isinstance(data.data,memoryview)):
             # if auto scaling is to be done, don't cast to an integer yet.
             if self.scale and self.dtype.kind in 'iu' and \
                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
@@ -5512,10 +5554,7 @@ the user.
         self.name = dtype_name
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         return "%r: name = '%s', numpy dtype = %s" %\
@@ -5797,10 +5836,7 @@ the user.
             self.name = dtype_name
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         if self.dtype == str:
@@ -5910,10 +5946,7 @@ the user.
         self.enum_dict = enum_dict
 
     def __repr__(self):
-        if python3:
-            return self.__unicode__()
-        else:
-            return unicode(self).encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         return "%r: name = '%s', numpy dtype = %s, fields/values =%s" %\
@@ -5998,10 +6031,7 @@ cdef _strencode(pystr,encoding=None):
 
 def _to_ascii(bytestr):
     # encode a byte string to an ascii encoded string.
-    if python3:
-        return str(bytestr,encoding='ascii')
-    else:
-        return bytestr.encode('ascii')
+    return str(bytestr,encoding='ascii')
 
 def stringtoarr(string,NUMCHARS,dtype='S'):
     """

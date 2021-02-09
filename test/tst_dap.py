@@ -5,7 +5,7 @@ from numpy.testing import assert_array_almost_equal
 # test accessing data over http with opendap.
 
 URL = "http://remotetest.unidata.ucar.edu/thredds/dodsC/testdods/testData.nc"
-URL_https = 'https://podaac-opendap.jpl.nasa.gov/opendap/allData/modis/L3/aqua/11um/v2014.0/4km/daily/2017/365/A2017365.L3m_DAY_NSST_sst_4km.nc'
+URL_https = 'https://podaac-opendap.jpl.nasa.gov/opendap/allData/modis/L3/aqua/11um/v2019.0/4km/daily/2017/365/AQUA_MODIS.20171231.L3m.DAY.NSST.sst.4km.nc'
 varname = 'Z_sfc'
 varmin = 0
 varmax = 3292
