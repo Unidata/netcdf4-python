@@ -4921,19 +4921,14 @@ cannot be safely cast to variable data type""" % attname
         # and fill with scalar values.
         if data.shape == ():
             data = numpy.tile(data,datashape)
-        # reshape data array by adding extra dimensions
-        # if needed to conform with start,count,stride.
-        if data.ndim != len(datashape):
+        # reshape data array if needed to conform with start,count,stride.
+        if data.ndim != len(datashape) or\
+           (data.shape != datashape and data.ndim > 1): # issue #1083
             # create a view so shape in caller is not modified (issue 90)
             try: # if extra singleton dims, just reshape
                 data = data.view()
                 data.shape = tuple(datashape)
             except ValueError: # otherwise broadcast
-                data = numpy.broadcast_to(data, datashape)
-        else:
-            # broadcast data to slice shape if data.ndim > 1
-            # (issue #1083)
-            if data.shape != datashape and data.ndim > 1:
                 data = numpy.broadcast_to(data, datashape)
 
         # Reshape these arrays so we can iterate over them.
