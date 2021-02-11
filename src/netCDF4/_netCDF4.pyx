@@ -4930,6 +4930,11 @@ cannot be safely cast to variable data type""" % attname
                 data.shape = tuple(datashape)
             except ValueError: # otherwise broadcast
                 data = numpy.broadcast_to(data, datashape)
+        else:
+            # if data has singleton last dimension, broadcast it slice shape
+            # (issue #1083)
+            if data.shape != datashape and data.shape[-1] == 1:
+                data = numpy.broadcast_to(data, datashape)
 
         # Reshape these arrays so we can iterate over them.
         start = start.reshape((-1, self.ndim or 1))
