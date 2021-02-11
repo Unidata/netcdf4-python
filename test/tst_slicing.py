@@ -249,5 +249,18 @@ class VariablesTestCase(unittest.TestCase):
             assert_array_equal(f['v2'][:,1:3],np.arange(6,dtype=np.int).reshape(3,2))
             assert_array_equal(f['v2'][:,0],np.arange(3,dtype=np.int))
 
+    def test_issue1083(self):
+        with Dataset(self.file, "w") as nc:
+            nc.createDimension("test", 5)
+            v = nc.createVariable("var", "f8", ("test", "test", "test"))
+            v[:] = 1 # works
+            v[:] = np.ones(()) # works
+            v[:] = np.ones((1,)) # works
+            v[:] = np.ones((5,)) # works
+            v[:] = np.ones((5,5,5)) # works
+            v[:] = np.ones((5,1,1)) # fails (before PR #1084)
+            v[:] = np.ones((5,1,5)) # fails (before PR #1084)
+            v[:] = np.ones((5,5,1)) # fails (before PR #1084)
+
 if __name__ == '__main__':
     unittest.main()

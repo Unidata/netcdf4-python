@@ -4923,7 +4923,7 @@ cannot be safely cast to variable data type""" % attname
             data = numpy.tile(data,datashape)
         # reshape data array by adding extra dimensions
         # if needed to conform with start,count,stride.
-        if len(data.shape) != len(datashape):
+        if data.ndim != len(datashape):
             # create a view so shape in caller is not modified (issue 90)
             try: # if extra singleton dims, just reshape
                 data = data.view()
@@ -4931,9 +4931,9 @@ cannot be safely cast to variable data type""" % attname
             except ValueError: # otherwise broadcast
                 data = numpy.broadcast_to(data, datashape)
         else:
-            # if data has singleton last dimension, broadcast it slice shape
+            # broadcast data to slice shape if data.ndim > 1
             # (issue #1083)
-            if data.shape != datashape and data.shape[-1] == 1:
+            if data.shape != datashape and data.ndim > 1:
                 data = numpy.broadcast_to(data, datashape)
 
         # Reshape these arrays so we can iterate over them.
