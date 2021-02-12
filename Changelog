@@ -9,6 +9,8 @@
  * Add "fromcdl" and "tocdl" Dataset methods for import/export of CDL
    via ncdump/ncgen called externally via the subprocess module (issue #1078).
  * remove python 2.7 support.
+ * broadcast data (if possible)to conform to variable shape when writing to a slice
+   (issue #1083).
 
  version 1.5.5.1 (tag v1.5.5.1rel)
 ==================================
