@@ -3276,7 +3276,8 @@ text representation of Dataset. Requires `ncdump` to be installed and in `$PATH`
             ncdumpargs = "-s"
         if not data: ncdumpargs += "h"
         result=subprocess.run(["ncdump", ncdumpargs, self.filepath()],
-               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+               encoding='utf-8')
         if outfile is None:
             return result.stdout
         else:
