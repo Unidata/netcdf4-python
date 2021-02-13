@@ -3276,7 +3276,7 @@ text representation of Dataset
             ncdumpargs = "-s"
         if not data: ncdumpargs += "h"
         result=subprocess.run(["ncdump", ncdumpargs, self.filepath()],
-                check=True, capture_output=True, text=True)
+               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if outfile is None:
             return result.stdout
         else:
