@@ -5,7 +5,7 @@ import numpy as np
 file_name = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 xdim=None; ydim=121; zdim=169
 datashape = (ydim,zdim)
-data = np.ones(datashape,dtype=np.float_)
+data = np.ones(datashape,dtype=np.float64)
 
 class ShapeTestCase(unittest.TestCase):
 
@@ -15,7 +15,7 @@ class ShapeTestCase(unittest.TestCase):
         f.createDimension('x',xdim)
         f.createDimension('y',ydim)
         f.createDimension('z',zdim)
-        v = f.createVariable('data',np.float_,('x','y','z'))
+        v = f.createVariable('data',np.float64,('x','y','z'))
         f.close()
 
     def tearDown(self):

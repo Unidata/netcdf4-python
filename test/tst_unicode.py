@@ -18,7 +18,7 @@ class UnicodeTestCase(unittest.TestCase):
         f.attribute2 = ATT2
         f.attribute3 = ATT3
         d = f.createDimension(DIM_NAME, None)
-        v = f.createVariable(VAR_NAME, np.float, (DIM_NAME,))
+        v = f.createVariable(VAR_NAME, np.float64, (DIM_NAME,))
         f.close()
 
     def tearDown(self):

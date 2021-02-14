@@ -129,7 +129,7 @@ class VariablesTestCase(unittest.TestCase):
         nlons = 12; lon = f.createDimension('lon',nlons)
         nlevs = 1; lev = f.createDimension('lev',nlevs)
         time = f.createDimension('time',None)
-        var = f.createVariable('var',np.float_,('time','lev','lat','lon'))
+        var = f.createVariable('var',np.float64,('time','lev','lat','lon'))
         a = np.random.uniform(size=(10,nlevs,nlats,nlons))
         var[0:10] = a
         f.close()
@@ -168,7 +168,7 @@ class VariablesTestCase(unittest.TestCase):
         nlats = 11; lat = f.createDimension('lat',nlats)
         nlons = 20; lon = f.createDimension('lon',nlons)
         time = f.createDimension('time',None)
-        var = f.createVariable('var',np.float_,('time','lat','lon'))
+        var = f.createVariable('var',np.float64,('time','lat','lon'))
         a = np.random.uniform(size=(3,nlats,nlons))
         var[[True,True,False,False,False,True]] = a
         var[0,2.0,"-1"] = 0 # issue 312
@@ -203,7 +203,7 @@ class VariablesTestCase(unittest.TestCase):
         td = nc.createDimension('t',None)
         xd = nc.createDimension('x',33)
         yd = nc.createDimension('y',4)
-        v = nc.createVariable('v',np.float_,('t','x','y'))
+        v = nc.createVariable('v',np.float64,('t','x','y'))
         nc.close()
         nc = Dataset(self.file)
         data = np.empty(nc['v'].shape, nc['v'].dtype)
@@ -216,7 +216,7 @@ class VariablesTestCase(unittest.TestCase):
         f.createDimension('d1',3)
         f.createDimension('d2',None)
         f.createDimension('d3',5)
-        f.createVariable('v2',np.float_,('d1','d2','d3'))
+        f.createVariable('v2',np.float64,('d1','d2','d3'))
         f['v2'][:] = np.zeros((3,4,5))
         f['v2'][0,:,0] = np.arange(4)
         f['v2'][0,:,:] = np.ones((4,5))
@@ -227,7 +227,7 @@ class VariablesTestCase(unittest.TestCase):
             f.createDimension('time',2)
             f.createDimension('lat',10)
             f.createDimension('lon',9)
-            f.createVariable('v1',np.int,('time', 'lon','lat',))
+            f.createVariable('v1',np.int64,('time', 'lon','lat',))
             arr = np.arange(9*10).reshape((9, 10))
             f['v1'][:] = arr
             assert_array_equal(f['v1'][:],np.broadcast_to(arr,f['v1'].shape))
@@ -239,15 +239,15 @@ class VariablesTestCase(unittest.TestCase):
         with Dataset(self.file,'w') as f:
             f.createDimension('d1',3)
             f.createDimension('d2',None)
-            f.createVariable('v1',np.int,('d2','d1',))
-            f['v1'][0] = np.arange(3,dtype=np.int)
-            f['v1'][1:3] = np.arange(3,dtype=np.int)
+            f.createVariable('v1',np.int64,('d2','d1',))
+            f['v1'][0] = np.arange(3,dtype=np.int64)
+            f['v1'][1:3] = np.arange(3,dtype=np.int64)
             assert_array_equal(f['v1'][:], np.broadcast_to(np.arange(3),(3,3)))
-            f.createVariable('v2',np.int,('d1','d2',))
-            f['v2'][:,0] = np.arange(3,dtype=np.int)
-            f['v2'][:,1:3] = np.arange(6,dtype=np.int).reshape(3,2)
-            assert_array_equal(f['v2'][:,1:3],np.arange(6,dtype=np.int).reshape(3,2))
-            assert_array_equal(f['v2'][:,0],np.arange(3,dtype=np.int))
+            f.createVariable('v2',np.int64,('d1','d2',))
+            f['v2'][:,0] = np.arange(3,dtype=np.int64)
+            f['v2'][:,1:3] = np.arange(6,dtype=np.int64).reshape(3,2)
+            assert_array_equal(f['v2'][:,1:3],np.arange(6,dtype=np.int64).reshape(3,2))
+            assert_array_equal(f['v2'][:,0],np.arange(3,dtype=np.int64))
 
     def test_issue1083(self):
         with Dataset(self.file, "w") as nc:

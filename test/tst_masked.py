@@ -20,7 +20,7 @@ ranarr = 100.*uniform(size=(ndim))
 ranarr2 = 100.*uniform(size=(ndim))
 # used for checking vector missing_values
 arr3 = NP.linspace(0,9,ndim)
-mask = NP.zeros(ndim,NP.bool); mask[-1]=True; mask[-2]=True
+mask = NP.zeros(ndim,NP.bool_); mask[-1]=True; mask[-2]=True
 marr3 = NP.ma.array(arr3, mask=mask, dtype=NP.int32)
 packeddata = 10.*uniform(size=(ndim))
 missing_value = -9999.
@@ -71,7 +71,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         doh2[0] = 1.
         # added test for issue 515
         file.createDimension('x',1)
-        v = file.createVariable('v',NP.float,'x',fill_value=-9999)
+        v = file.createVariable('v',NP.float64,'x',fill_value=-9999)
         file.close()
 
         # issue #972: when auto_fill off byte arrays (u1,i1) should
@@ -119,7 +119,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         assert_array_almost_equal(datamasked[:].filled(),ranarr)
         assert_array_almost_equal(datamasked2[:].filled(),ranarr2)
         assert_array_almost_equal(datapacked[:],packeddata,decimal=4)
-        assert(datapacked3[:].dtype == NP.float)
+        assert(datapacked3[:].dtype == NP.float64)
         # added to test fix to issue 46 (result before r865 was 10)
         assert_array_equal(datapacked2[0],11)
         # added test for issue 515
