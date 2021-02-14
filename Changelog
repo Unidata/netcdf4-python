@@ -1,5 +1,5 @@
- version 1.5.6 (not yet released)
-==================================
+ version 1.5.6 (tag v1.5.6rel)
+==============================
  * move CI/CD tests from travis/appveyor to Github Actions (PR #1061).
  * move netCDF4 dir under src so module can be imported in source directory (PR #1062).
  * change numpy.bool to numpy.bool_ and numpy.float to numpy.float_ (float and

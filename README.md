@@ -9,6 +9,8 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+2/15/2020:  Version [1.5.6](https://pypi.python.org/pypi/netCDF4/1.5.6) released. Added `Dataset.fromcdl` and `Dataset.tocdl`, which require `ncdump` and `ncgen` utilities to be in `$PATH`. Removed python 2.7 support.
+
 12/20/2020: Version [1.5.5.1](https://pypi.python.org/pypi/netCDF4/1.5.5.1) released.
 Updated binary wheels for OSX and linux that link latest netcdf-c and hdf5 libs.
 

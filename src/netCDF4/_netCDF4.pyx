@@ -3225,8 +3225,8 @@ attribute does not exist on the variable. For example,
         """
 **`fromcdl(cdlfilename, ncfilename=None, mode='a',format='NETCDF4')`**
 
-call ncgen via subprocess to create Dataset from [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
-text representation.
+call `ncgen` via subprocess to create Dataset from [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
+text representation. Requires `ncgen` to be installed and in `$PATH`.
 
 **`cdlfilename`**:  CDL file.
 
@@ -3260,8 +3260,8 @@ Dataset instance for `ncfilename` is returned.
         """
 **`tocdl(self, coordvars=False, data=False, outfile=None)`**
 
-call ncdump via subprocess to create [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
-text representation of Dataset
+call `ncdump` via subprocess to create [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
+text representation of Dataset. Requires `ncdump` to be installed and in `$PATH`.
 
 **`coordvars`**: include coordinate variable data (via `ncdump -c`). Default False
 
@@ -3276,7 +3276,8 @@ text representation of Dataset
             ncdumpargs = "-s"
         if not data: ncdumpargs += "h"
         result=subprocess.run(["ncdump", ncdumpargs, self.filepath()],
-                check=True, capture_output=True, text=True)
+               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+               encoding='utf-8')
         if outfile is None:
             return result.stdout
         else:

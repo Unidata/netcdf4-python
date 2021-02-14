@@ -38,6 +38,11 @@ else:
     test_files.remove('tst_dap.py')
     test_files.insert(0,'tst_dap.py')
 
+# Don't run CDL test (that requires ncdump/ncgen)
+if os.getenv('NO_CDL'):
+    test_files.remove('tst_cdl.py');
+    sys.stdout.write('not running tst_cdl.py ...\n')
+
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
 for f in test_files:
