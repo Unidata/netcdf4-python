@@ -16,11 +16,11 @@ FILE_NAME1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 FILE_NAME3 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 datacheck1 =\
-ma.array([0,5000.0,4000.0,0],dtype=np.float,mask=[True,False,False,True])
+ma.array([0,5000.0,4000.0,0],dtype=np.float64,mask=[True,False,False,True])
 datacheck2 =\
-ma.array([3000.0,5000.0,4000.0,0],dtype=np.float,mask=[False,False,False,True])
+ma.array([3000.0,5000.0,4000.0,0],dtype=np.float64,mask=[False,False,False,True])
 datacheck3 =\
-ma.array([3000.0,5000.0,0,2000.0],dtype=np.float,mask=[False,False,True,False])
+ma.array([3000.0,5000.0,0,2000.0],dtype=np.float64,mask=[False,False,True,False])
 mask = [False,True,False,False]
 datacheck4 = ma.array([1.5625,0,3.75,4.125],mask=mask,dtype=np.float32)
 fillval = default_fillvals[datacheck4.dtype.str[1:]]

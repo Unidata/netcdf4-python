@@ -746,7 +746,7 @@ for storing numpy complex arrays.  Here's an example:
 >>> # create sample complex data.
 >>> datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
 >>> # create complex128 compound data type.
->>> complex128 = numpy.dtype([("real",numpy.float_64),("imag",numpy.float_64)])
+>>> complex128 = numpy.dtype([("real",numpy.float64),("imag",numpy.float64)])
 >>> complex128_t = f.createCompoundType(complex128,"complex128")
 >>> # create a variable with this data type, write some data to it.
 >>> x_dim = f.createDimension("x_dim",None)
@@ -999,7 +999,7 @@ written to a different variable index on each task
 
 ```python
 >>> d = nc.createDimension('dim',4)
->>> v = nc.createVariable('var', np.int, 'dim')
+>>> v = nc.createVariable('var', np.int64, 'dim')
 >>> v[rank] = rank
 >>> nc.close()
 
@@ -4896,7 +4896,7 @@ cannot be safely cast to variable data type""" % attname
             # if auto scaling is to be done, don't cast to an integer yet.
             if self.scale and self.dtype.kind in 'iu' and \
                hasattr(self, 'scale_factor') or hasattr(self, 'add_offset'):
-                data = numpy.array(data,numpy.float_)
+                data = numpy.array(data,numpy.float64)
             else:
                 data = numpy.array(data,self.dtype)
 
