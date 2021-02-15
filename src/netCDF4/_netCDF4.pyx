@@ -487,9 +487,9 @@ Now that you have a netCDF [Variable](#Variable) instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.
 
 ```python
->>> import numpy
->>> lats =  numpy.arange(-90,91,2.5)
->>> lons =  numpy.arange(-180,180,2.5)
+>>> import numpy as np
+>>> lats =  np.arange(-90,91,2.5)
+>>> lons =  np.arange(-180,180,2.5)
 >>> latitudes[:] = lats
 >>> longitudes[:] = lons
 >>> print("latitudes =\\n{}".format(latitudes[:]))
@@ -648,7 +648,7 @@ datasets are not supported).
 ...     with Dataset("mftest%s.nc" % nf, "w", format="NETCDF4_CLASSIC") as f:
 ...         _ = f.createDimension("x",None)
 ...         x = f.createVariable("x","i",("x",))
-...         x[0:10] = numpy.arange(nf*10,10*(nf+1))
+...         x[0:10] = np.arange(nf*10,10*(nf+1))
 ```
 
 Now read all the files back in at once with [MFDataset](#MFDataset)
@@ -744,14 +744,14 @@ for storing numpy complex arrays.  Here's an example:
 >>> f = Dataset("complex.nc","w")
 >>> size = 3 # length of 1-d complex array
 >>> # create sample complex data.
->>> datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
+>>> datac = np.exp(1j*(1.+np.linspace(0, np.pi, size)))
 >>> # create complex128 compound data type.
->>> complex128 = numpy.dtype([("real",numpy.float64),("imag",numpy.float64)])
+>>> complex128 = np.dtype([("real",np.float64),("imag",np.float64)])
 >>> complex128_t = f.createCompoundType(complex128,"complex128")
 >>> # create a variable with this data type, write some data to it.
 >>> x_dim = f.createDimension("x_dim",None)
 >>> v = f.createVariable("cmplx_var",complex128_t,"x_dim")
->>> data = numpy.empty(size,complex128) # numpy structured array
+>>> data = np.empty(size,complex128) # numpy structured array
 >>> data["real"] = datac.real; data["imag"] = datac.imag
 >>> v[:] = data # write numpy structured array to netcdf compound var
 >>> # close and reopen the file, check the contents.
@@ -759,7 +759,7 @@ for storing numpy complex arrays.  Here's an example:
 >>> v = f.variables["cmplx_var"]
 >>> datain = v[:] # read in all the data into a numpy structured array
 >>> # create an empty numpy complex array
->>> datac2 = numpy.empty(datain.shape,numpy.complex128)
+>>> datac2 = np.empty(datain.shape,np.complex128)
 >>> # .. fill it with contents of structured array.
 >>> datac2.real = datain["real"]; datac2.imag = datain["imag"]
 >>> print('{}: {}'.format(datac.dtype, datac)) # original data
@@ -805,7 +805,7 @@ method of a [Dataset](#Dataset) or [Group](#Group) instance.
 
 ```python
 >>> f = Dataset("tst_vlen.nc","w")
->>> vlen_t = f.createVLType(numpy.int32, "phony_vlen")
+>>> vlen_t = f.createVLType(np.int32, "phony_vlen")
 ```
 
 The numpy datatype of the variable-length sequences and the name of the
@@ -831,10 +831,10 @@ In this case, they contain 1-D numpy `int32` arrays of random length between
 ```python
 >>> import random
 >>> random.seed(54321)
->>> data = numpy.empty(len(y)*len(x),object)
+>>> data = np.empty(len(y)*len(x),object)
 >>> for n in range(len(y)*len(x)):
-...     data[n] = numpy.arange(random.randint(1,10),dtype="int32")+1
->>> data = numpy.reshape(data,(len(y),len(x)))
+...     data[n] = np.arange(random.randint(1,10),dtype="int32")+1
+>>> data = np.reshape(data,(len(y),len(x)))
 >>> vlvar[:] = data
 >>> print("vlen variable =\\n{}".format(vlvar[:]))
 vlen variable =
@@ -880,7 +880,7 @@ array is assigned to the vlen string variable.
 
 ```python
 >>> chars = "1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
->>> data = numpy.empty(10,"O")
+>>> data = np.empty(10,"O")
 >>> for n in range(10):
 ...     stringlen = random.randint(2,12)
 ...     data[n] = "".join([random.choice(chars) for i in range(stringlen)])
@@ -926,7 +926,7 @@ values and their names are used to define an Enum data type using
 ... 'Nimbostratus': 6, 'Cumulus': 4, 'Altostratus': 5,
 ... 'Cumulonimbus': 1, 'Stratocumulus': 3}
 >>> # create the Enum type called 'cloud_t'.
->>> cloud_type = nc.createEnumType(numpy.uint8,'cloud_t',enum_dict)
+>>> cloud_type = nc.createEnumType(np.uint8,'cloud_t',enum_dict)
 >>> print(cloud_type)
 <class 'netCDF4._netCDF4.EnumType'>: name = 'cloud_t', numpy dtype = uint8, fields/values ={'Altocumulus': 7, 'Missing': 255, 'Stratus': 2, 'Clear': 0, 'Nimbostratus': 6, 'Cumulus': 4, 'Altostratus': 5, 'Cumulonimbus': 1, 'Stratocumulus': 3}
 ```
@@ -1065,7 +1065,7 @@ characters with one more dimension. For example,
 >>> _ = nc.createDimension('nchars',3)
 >>> _ = nc.createDimension('nstrings',None)
 >>> v = nc.createVariable('strings','S1',('nstrings','nchars'))
->>> datain = numpy.array(['foo','bar'],dtype='S3')
+>>> datain = np.array(['foo','bar'],dtype='S3')
 >>> v[:] = stringtochar(datain) # manual conversion to char array
 >>> print(v[:]) # data returned as char array
 [[b'f' b'o' b'o']
@@ -1095,12 +1095,12 @@ Here's an example:
 
 ```python
 >>> nc = Dataset('compoundstring_example.nc','w')
->>> dtype = numpy.dtype([('observation', 'f4'),
+>>> dtype = np.dtype([('observation', 'f4'),
 ...                      ('station_name','S10')])
 >>> station_data_t = nc.createCompoundType(dtype,'station_data')
 >>> _ = nc.createDimension('station',None)
 >>> statdat = nc.createVariable('station_obs', station_data_t, ('station',))
->>> data = numpy.empty(2,dtype)
+>>> data = np.empty(2,dtype)
 >>> data['observation'][:] = (123.,3.14)
 >>> data['station_name'][:] = ('Boulder','New York')
 >>> print(statdat.dtype) # strings actually stored as character arrays
@@ -1144,8 +1144,8 @@ approaches.
 >>> # and persist the file to disk when it is closed.
 >>> nc = Dataset('diskless_example.nc','w',diskless=True,persist=True)
 >>> d = nc.createDimension('x',None)
->>> v = nc.createVariable('v',numpy.int32,'x')
->>> v[0:5] = numpy.arange(5)
+>>> v = nc.createVariable('v',np.int32,'x')
+>>> v[0:5] = np.arange(5)
 >>> print(nc)
 <class 'netCDF4._netCDF4.Dataset'>
 root group (NETCDF4 data model, file format HDF5):
@@ -1178,8 +1178,8 @@ root group (NETCDF4 data model, file format HDF5):
 >>> # (ignored for NETCDF4/HDF5 files).
 >>> nc = Dataset('inmemory.nc', mode='w',memory=1028)
 >>> d = nc.createDimension('x',None)
->>> v = nc.createVariable('v',numpy.int32,'x')
->>> v[0:5] = numpy.arange(5)
+>>> v = nc.createVariable('v',np.int32,'x')
+>>> v[0:5] = np.arange(5)
 >>> nc_buf = nc.close() # close returns memoryview
 >>> print(type(nc_buf))
 <class 'memoryview'>
@@ -6589,7 +6589,7 @@ time unit and/or calendar to all files.
 Example usage (See [MFTime.__init__](#MFTime.__init__) for more details):
 
 ```python
->>> import numpy
+>>> import numpy as np
 >>> f1 = Dataset("mftest_1.nc","w", format="NETCDF4_CLASSIC")
 >>> f2 = Dataset("mftest_2.nc","w", format="NETCDF4_CLASSIC")
 >>> f1.createDimension("time",None)
@@ -6600,8 +6600,8 @@ Example usage (See [MFTime.__init__](#MFTime.__init__) for more details):
 >>> t2.units = "days since 2000-02-01"
 >>> t1.calendar = "standard"
 >>> t2.calendar = "standard"
->>> t1[:] = numpy.arange(31)
->>> t2[:] = numpy.arange(30)
+>>> t1[:] = np.arange(31)
+>>> t2[:] = np.arange(30)
 >>> f1.close()
 >>> f2.close()
 >>> # Read the two files in at once, in one Dataset.
