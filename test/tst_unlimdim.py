@@ -2,7 +2,7 @@ import sys
 import unittest
 import os
 import tempfile
-import numpy as NP
+import numpy as np
 from numpy.random.mtrand import uniform
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 import netCDF4
@@ -59,7 +59,7 @@ class UnlimdimTestCase(unittest.TestCase):
         self.assertTrue(bar.shape == (n1dim,n2dim,n3dim))
         # check data.
         #assert_array_almost_equal(bar[:,:,:], ranarr)
-        assert_array_almost_equal(bar[:,:,:], 2.*NP.ones((n1dim,n2dim,n3dim),ranarr.dtype))
+        assert_array_almost_equal(bar[:,:,:], 2.*np.ones((n1dim,n2dim,n3dim),ranarr.dtype))
         f.close()
 
 if __name__ == '__main__':

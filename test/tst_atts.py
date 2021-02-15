@@ -6,7 +6,7 @@ import os
 import tempfile
 import warnings
 
-import numpy as NP
+import numpy as np
 from collections import OrderedDict
 from numpy.random.mtrand import uniform
 
@@ -26,7 +26,7 @@ STRATT = 'string attribute'
 EMPTYSTRATT = ''
 INTATT = 1
 FLOATATT = math.pi
-SEQATT = NP.arange(10)
+SEQATT = np.arange(10)
 STRINGSEQATT = ['mary ','','had ','a ','little ','lamb',]
 #ATTDICT = {'stratt':STRATT,'floatatt':FLOATATT,'seqatt':SEQATT,
 #           'stringseqatt':''.join(STRINGSEQATT), # changed in issue #770
@@ -106,8 +106,8 @@ class VariablesTestCase(unittest.TestCase):
             raise ValueError('This test should have failed.')
         # issue #485 (triggers segfault in C lib
         # with version 1.2.1 without pull request #486)
-        f.foo = NP.array('bar','S')
-        f.foo = NP.array('bar','U')
+        f.foo = np.array('bar','S')
+        f.foo = np.array('bar','U')
         # issue #529 write string attribute as NC_CHAR unless
         # it can't be decoded to ascii.  Add setncattr_string
         # method to force NC_STRING.
@@ -145,7 +145,7 @@ class VariablesTestCase(unittest.TestCase):
         # global attributes.
         # check __dict__ method for accessing all netCDF attributes.
         for key,val in ATTDICT.items():
-            if type(val) == NP.ndarray:
+            if type(val) == np.ndarray:
                 assert f.__dict__[key].tolist() == val.tolist()
             else:
                 assert f.__dict__[key] == val
@@ -162,7 +162,7 @@ class VariablesTestCase(unittest.TestCase):
         # variable attributes.
         # check __dict__ method for accessing all netCDF attributes.
         for key,val in ATTDICT.items():
-            if type(val) == NP.ndarray:
+            if type(val) == np.ndarray:
                 assert v.__dict__[key].tolist() == val.tolist()
             else:
                 assert v.__dict__[key] == val
@@ -202,7 +202,7 @@ class VariablesTestCase(unittest.TestCase):
         # check attributes in subgroup.
         # global attributes.
         for key,val in ATTDICT.items():
-            if type(val) == NP.ndarray:
+            if type(val) == np.ndarray:
                 assert g.__dict__[key].tolist() == val.tolist()
             else:
                 assert g.__dict__[key] == val
@@ -215,7 +215,7 @@ class VariablesTestCase(unittest.TestCase):
         assert g.stringseqatt == STRINGSEQATT
         assert g.stringseqatt_array == STRINGSEQATT
         for key,val in ATTDICT.items():
-            if type(val) == NP.ndarray:
+            if type(val) == np.ndarray:
                 assert v1.__dict__[key].tolist() == val.tolist()
             else:
                 assert v1.__dict__[key] == val

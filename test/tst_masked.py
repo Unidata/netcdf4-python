@@ -2,7 +2,7 @@ import sys
 import unittest
 import os
 import tempfile
-import numpy as NP
+import numpy as np
 from numpy import ma
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from numpy.random.mtrand import uniform
@@ -19,22 +19,22 @@ ndim = 10
 ranarr = 100.*uniform(size=(ndim))
 ranarr2 = 100.*uniform(size=(ndim))
 # used for checking vector missing_values
-arr3 = NP.linspace(0,9,ndim)
-mask = NP.zeros(ndim,NP.bool_); mask[-1]=True; mask[-2]=True
-marr3 = NP.ma.array(arr3, mask=mask, dtype=NP.int32)
+arr3 = np.linspace(0,9,ndim)
+mask = np.zeros(ndim,np.bool_); mask[-1]=True; mask[-2]=True
+marr3 = np.ma.array(arr3, mask=mask, dtype=np.int32)
 packeddata = 10.*uniform(size=(ndim))
 missing_value = -9999.
-missing_value2 = NP.nan
+missing_value2 = np.nan
 missing_value3 = [8,9]
 ranarr[::2] = missing_value
 ranarr2[::2] = missing_value2
-NP.seterr(invalid='ignore') # silence warnings from ma.masked_values
+np.seterr(invalid='ignore') # silence warnings from ma.masked_values
 maskedarr = ma.masked_values(ranarr,missing_value)
 #maskedarr2 = ma.masked_values(ranarr2,missing_value2)
 maskedarr2 = ma.masked_invalid(ranarr2)
 scale_factor = (packeddata.max()-packeddata.min())/(2.*32766.)
 add_offset = 0.5*(packeddata.max()+packeddata.min())
-packeddata2 = NP.around((packeddata-add_offset)/scale_factor).astype('i2')
+packeddata2 = np.around((packeddata-add_offset)/scale_factor).astype('i2')
 
 class PrimitiveTypesTestCase(unittest.TestCase):
 
@@ -71,7 +71,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         doh2[0] = 1.
         # added test for issue 515
         file.createDimension('x',1)
-        v = file.createVariable('v',NP.float64,'x',fill_value=-9999)
+        v = file.createVariable('v',np.float64,'x',fill_value=-9999)
         file.close()
 
         # issue #972: when auto_fill off byte arrays (u1,i1) should
@@ -119,18 +119,18 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         assert_array_almost_equal(datamasked[:].filled(),ranarr)
         assert_array_almost_equal(datamasked2[:].filled(),ranarr2)
         assert_array_almost_equal(datapacked[:],packeddata,decimal=4)
-        assert(datapacked3[:].dtype == NP.float64)
+        assert(datapacked3[:].dtype == np.float64)
         # added to test fix to issue 46 (result before r865 was 10)
         assert_array_equal(datapacked2[0],11)
         # added test for issue 515
-        assert(file['v'][0] is NP.ma.masked)
+        assert(file['v'][0] is np.ma.masked)
         file.close()
         # issue 766
-        NP.seterr(invalid='raise')
+        np.seterr(invalid='raise')
         f = netCDF4.Dataset(self.file, 'w')
         f.createDimension('dimension', 2)
-        f.createVariable('variable', NP.float32, dimensions=('dimension',))
-        f['variable'][:] = NP.nan
+        f.createVariable('variable', np.float32, dimensions=('dimension',))
+        f['variable'][:] = np.nan
         data = f['variable'][:] # should not raise an error
         f.close()
         # issue #972

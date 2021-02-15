@@ -2,7 +2,6 @@ import sys
 import unittest
 import os
 import tempfile
-import numpy as NP
 from numpy.testing import assert_almost_equal
 import netCDF4
 import math

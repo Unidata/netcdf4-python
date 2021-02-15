@@ -2,7 +2,6 @@ import sys
 import unittest
 import os
 import tempfile
-import numpy as NP
 from numpy.random.mtrand import uniform
 import netCDF4
 

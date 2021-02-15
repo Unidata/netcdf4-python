@@ -2,7 +2,6 @@ import sys
 import unittest
 import os
 import tempfile
-import numpy as NP
 import netCDF4
 
 # test implicit group creation by using unix-like paths

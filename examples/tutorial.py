@@ -80,10 +80,10 @@ print(rootgrp.__dict__)
 
 print(rootgrp.variables)
 
-import numpy
+import numpy as np
 # no unlimited dimension, just assign to slice.
-lats =  numpy.arange(-90,91,2.5)
-lons =  numpy.arange(-180,180,2.5)
+lats =  np.arange(-90,91,2.5)
+lons =  np.arange(-180,180,2.5)
 latitudes[:] = lats
 longitudes[:] = lons
 print('latitudes =\n',latitudes[:])
@@ -123,7 +123,7 @@ for nfile in range(10):
     f = Dataset('mftest'+repr(nfile)+'.nc','w',format='NETCDF4_CLASSIC')
     f.createDimension('x',None)
     x = f.createVariable('x','i',('x',))
-    x[0:10] = numpy.arange(nfile*10,10*(nfile+1))
+    x[0:10] = np.arange(nfile*10,10*(nfile+1))
     f.close()
 # now read all those files in at once, in one Dataset.
 from netCDF4 import MFDataset
@@ -134,15 +134,15 @@ print(f.variables['x'][:])
 f = Dataset('complex.nc','w')
 size = 3 # length of 1-d complex array
 # create sample complex data.
-datac = numpy.exp(1j*(1.+numpy.linspace(0, numpy.pi, size)))
+datac = np.exp(1j*(1.+np.linspace(0, np.pi, size)))
 print(datac.dtype)
 # create complex128 compound data type.
-complex128 = numpy.dtype([('real',numpy.float64),('imag',numpy.float64)])
+complex128 = np.dtype([('real',np.float64),('imag',np.float64)])
 complex128_t = f.createCompoundType(complex128,'complex128')
 # create a variable with this data type, write some data to it.
 f.createDimension('x_dim',None)
 v = f.createVariable('cmplx_var',complex128_t,'x_dim')
-data = numpy.empty(size,complex128) # numpy structured array
+data = np.empty(size,complex128) # numpy structured array
 data['real'] = datac.real; data['imag'] = datac.imag
 v[:] = data
 # close and reopen the file, check the contents.
@@ -156,7 +156,7 @@ v = f.variables['cmplx_var']
 print(v.shape)
 datain = v[:] # read in all the data into a numpy structured array
 # create an empty numpy complex array
-datac2 = numpy.empty(datain.shape,numpy.complex128)
+datac2 = np.empty(datain.shape,np.complex128)
 # .. fill it with contents of structured array.
 datac2.real = datain['real']
 datac2.imag = datain['imag']
@@ -168,11 +168,11 @@ f = Dataset('compound_example.nc','w') # create a new dataset.
 # create an unlimited  dimension call 'station'
 f.createDimension('station',None)
 # define a compound data type (can contain arrays, or nested compound types).
-winddtype = numpy.dtype([('speed','f4'),('direction','i4')])
-statdtype = numpy.dtype([('latitude', 'f4'), ('longitude', 'f4'),
-                         ('surface_wind',winddtype),
-                         ('temp_sounding','f4',10),('press_sounding','i4',10),
-                         ('location_name','S12')])
+winddtype = np.dtype([('speed','f4'),('direction','i4')])
+statdtype = np.dtype([('latitude', 'f4'), ('longitude', 'f4'),
+                      ('surface_wind',winddtype),
+                      ('temp_sounding','f4',10),('press_sounding','i4',10),
+                      ('location_name','S12')])
 # use this data type definitions to create a compound data types
 # called using the createCompoundType Dataset method.
 # create a compound type for vector wind which will be nested inside
@@ -181,12 +181,12 @@ wind_data_t = f.createCompoundType(winddtype,'wind_data')
 # now that wind_data_t is defined, create the station data type.
 station_data_t = f.createCompoundType(statdtype,'station_data')
 # create nested compound data types to hold the units variable attribute.
-winddtype_units = numpy.dtype([('speed','S12'),('direction','S12')])
-statdtype_units = numpy.dtype([('latitude', 'S12'), ('longitude', 'S12'),
-                               ('surface_wind',winddtype_units),
-                               ('temp_sounding','S12'),
-                               ('location_name','S12'),
-                               ('press_sounding','S12')])
+winddtype_units = np.dtype([('speed','S12'),('direction','S12')])
+statdtype_units = np.dtype([('latitude', 'S12'), ('longitude', 'S12'),
+                            ('surface_wind',winddtype_units),
+                            ('temp_sounding','S12'),
+                            ('location_name','S12'),
+                            ('press_sounding','S12')])
 # create the wind_data_units type first, since it will nested inside
 # the station_data_units data type.
 wind_data_units_t = f.createCompoundType(winddtype_units,'wind_data_units')
@@ -195,7 +195,7 @@ f.createCompoundType(statdtype_units,'station_data_units')
 # create a variable of of type 'station_data_t'
 statdat = f.createVariable('station_obs', station_data_t, ('station',))
 # create a numpy structured array, assign data to it.
-data = numpy.empty(1,statdtype)
+data = np.empty(1,statdtype)
 data['latitude'] = 40.
 data['longitude'] = -105.
 data['surface_wind']['speed'] = 12.5
@@ -207,12 +207,12 @@ data['location_name'] = 'Boulder, CO'
 statdat[0] = data
 # or just assign a tuple of values to variable slice
 # (will automatically be converted to a structured array).
-statdat[1] = numpy.array((40.78,-73.99,(-12.5,90),
+statdat[1] = np.array((40.78,-73.99,(-12.5,90),
              (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),
              range(900,400,-50),'New York, NY'),data.dtype)
 print(f.cmptypes)
-windunits = numpy.empty(1,winddtype_units)
-stationobs_units = numpy.empty(1,statdtype_units)
+windunits = np.empty(1,winddtype_units)
+stationobs_units = np.empty(1,statdtype_units)
 windunits['speed'] = 'm/s'
 windunits['direction'] = 'degrees'
 stationobs_units['latitude'] = 'degrees N'
@@ -235,15 +235,15 @@ print(statdat[:])
 f.close()
 
 f = Dataset('tst_vlen.nc','w')
-vlen_t = f.createVLType(numpy.int32, 'phony_vlen')
+vlen_t = f.createVLType(np.int32, 'phony_vlen')
 x = f.createDimension('x',3)
 y = f.createDimension('y',4)
 vlvar = f.createVariable('phony_vlen_var', vlen_t, ('y','x'))
 import random
-data = numpy.empty(len(y)*len(x),object)
+data = np.empty(len(y)*len(x),object)
 for n in range(len(y)*len(x)):
-    data[n] = numpy.arange(random.randint(1,10),dtype='int32')+1
-data = numpy.reshape(data,(len(y),len(x)))
+    data[n] = np.arange(random.randint(1,10),dtype='int32')+1
+data = np.reshape(data,(len(y),len(x)))
 vlvar[:] = data
 print(vlvar)
 print('vlen variable =\n',vlvar[:])
@@ -253,7 +253,7 @@ print(f.vltypes['phony_vlen'])
 z = f.createDimension('z', 10)
 strvar = f.createVariable('strvar',str,'z')
 chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-data = numpy.empty(10,object)
+data = np.empty(10,object)
 for n in range(10):
     stringlen = random.randint(2,12)
     data[n] = ''.join([random.choice(chars) for i in range(stringlen)])
@@ -270,7 +270,7 @@ enum_dict = {u'Altocumulus': 7, u'Missing': 255, u'Stratus': 2, u'Clear': 0,
 u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5, u'Cumulonimbus': 1,
 u'Stratocumulus': 3}
 # create the Enum type called 'cloud_t'.
-cloud_type = f.createEnumType(numpy.uint8,'cloud_t',enum_dict)
+cloud_type = f.createEnumType(np.uint8,'cloud_t',enum_dict)
 print(cloud_type)
 time = f.createDimension('time',None)
 # create a 1d variable of type 'cloud_type' called 'primary_clouds'.
@@ -295,7 +295,7 @@ nc = Dataset('stringtest.nc','w',format='NETCDF4_CLASSIC')
 nc.createDimension('nchars',3)
 nc.createDimension('nstrings',None)
 v = nc.createVariable('strings','S1',('nstrings','nchars'))
-datain = numpy.array(['foo','bar'],dtype='S3')
+datain = np.array(['foo','bar'],dtype='S3')
 v[:] = stringtochar(datain) # manual conversion to char array
 print(v[:]) # data returned as char array
 v._Encoding = 'ascii' # this enables automatic conversion
@@ -304,12 +304,12 @@ print(v[:]) # data returned in numpy string array
 nc.close()
 # strings in compound types
 nc = Dataset('compoundstring_example.nc','w')
-dtype = numpy.dtype([('observation', 'f4'),
-                     ('station_name','S12')])
+dtype = np.dtype([('observation', 'f4'),
+                  ('station_name','S12')])
 station_data_t = nc.createCompoundType(dtype,'station_data')
 nc.createDimension('station',None)
 statdat = nc.createVariable('station_obs', station_data_t, ('station',))
-data = numpy.empty(2,station_data_t.dtype_view)
+data = np.empty(2,station_data_t.dtype_view)
 data['observation'][:] = (123.,3.14)
 data['station_name'][:] = ('Boulder','New York')
 print(statdat.dtype) # strings actually stored as character arrays
@@ -325,8 +325,8 @@ nc.close()
 # to disk when it is closed.
 nc = Dataset('diskless_example.nc','w',diskless=True,persist=True)
 d = nc.createDimension('x',None)
-v = nc.createVariable('v',numpy.int32,'x')
-v[0:5] = numpy.arange(5)
+v = nc.createVariable('v',np.int32,'x')
+v[0:5] = np.arange(5)
 print(nc)
 print(nc['v'][:])
 nc.close() # file saved to disk
@@ -345,8 +345,8 @@ nc.close()
 # used if format is NETCDF3 (ignored for NETCDF4/HDF5 files).
 nc = Dataset('inmemory.nc', mode='w',memory=1028)
 d = nc.createDimension('x',None)
-v = nc.createVariable('v',numpy.int32,'x')
-v[0:5] = numpy.arange(5)
+v = nc.createVariable('v',np.int32,'x')
+v[0:5] = np.arange(5)
 nc_buf = nc.close() # close returns memoryview
 print(type(nc_buf))
 # save nc_buf to disk, read it back in and check.

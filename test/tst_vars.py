@@ -2,7 +2,7 @@ import sys
 import unittest
 import os
 import tempfile
-import numpy as NP
+import numpy as np
 from numpy.random.mtrand import uniform
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 import netCDF4
@@ -67,7 +67,7 @@ class VariablesTestCase(unittest.TestCase):
         assert v1.size == DIM1_LEN * DIM2_LEN * DIM3_LEN
         assert len(v1) == DIM1_LEN
 
-        #assert NP.allclose(v1[:],randomdata)
+        #assert np.allclose(v1[:],randomdata)
         assert_array_almost_equal(v1[:],randomdata)
         # check variables in sub group.
         g = f.groups[GROUP_NAME]
@@ -86,7 +86,7 @@ class VariablesTestCase(unittest.TestCase):
         assert v2.dimensions == (DIM2_NAME,DIM3_NAME)
         assert v1.shape == (DIM1_LEN,DIM2_LEN,DIM3_LEN)
         assert v2.shape == (DIM2_LEN,DIM3_LEN)
-        #assert NP.allclose(v1[:],randomdata)
+        #assert np.allclose(v1[:],randomdata)
         assert_array_almost_equal(v1[:],randomdata)
         f.close()
 
