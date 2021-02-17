@@ -110,7 +110,7 @@ types) are not supported.
 
 ## Creating/Opening/Closing a netCDF file
 
-To create a netCDF file from python, you simply call the [Dataset](#Dataset)
+To create a netCDF file from python, you simply call the `Dataset`
 constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (`mode='w', 'r+'` or `'a'`), you may
 write any type of data including new dimensions, groups, variables and
@@ -134,7 +134,7 @@ creating a new file, the format may be specified using the `format`
 keyword in the `Dataset` constructor.  The default format is
 `NETCDF4`. To see how a given file is formatted, you can examine the
 `data_model` attribute.  Closing the netCDF file is
-accomplished via the [Dataset.close](#Dataset.close) method of the [Dataset](#Dataset)
+accomplished via the `Dataset.close` method of the `Dataset`
 instance.
 
 Here's an example:
@@ -148,7 +148,7 @@ NETCDF4
 ```
 
 Remote [OPeNDAP](http://opendap.org)-hosted datasets can be accessed for
-reading over http if a URL is provided to the [Dataset](#Dataset) constructor instead of a
+reading over http if a URL is provided to the `Dataset` constructor instead of a
 filename.  However, this requires that the netCDF library be built with
 OPenDAP support, via the `--enable-dap` configure option (added in
 version 4.0.1).
@@ -159,14 +159,14 @@ version 4.0.1).
 netCDF version 4 added support for organizing data in hierarchical
 groups, which are analogous to directories in a filesystem. Groups serve
 as containers for variables, dimensions and attributes, as well as other
-groups.  A [Dataset](#Dataset) creates a special group, called
+groups.  A `Dataset` creates a special group, called
 the 'root group', which is similar to the root directory in a unix
-filesystem.  To create [Group](#Group) instances, use the
-[Dataset.createGroup](#Dataset.createGroup) method of a [Dataset](#Dataset) or [Group](#Group)
-instance. [Dataset.createGroup](#Dataset.createGroup) takes a single argument, a
-python string containing the name of the new group. The new [Group](#Group)
+filesystem.  To create `Group` instances, use the
+`Dataset.createGroup` method of a `Dataset` or `Group`
+instance. `Dataset.createGroup` takes a single argument, a
+python string containing the name of the new group. The new `Group`
 instances contained within the root group can be accessed by name using
-the `groups` dictionary attribute of the [Dataset](#Dataset) instance.  Only
+the `groups` dictionary attribute of the `Dataset` instance.  Only
 `NETCDF4` formatted files support Groups, if you try to create a Group
 in a netCDF 3 file you will get an error message.
 
@@ -187,13 +187,13 @@ group /analyses:
 >>>
 ```
 
-Groups can exist within groups in a [Dataset](#Dataset), just as directories
-exist within directories in a unix filesystem. Each [Group](#Group) instance
+Groups can exist within groups in a `Dataset`, just as directories
+exist within directories in a unix filesystem. Each `Group` instance
 has a `groups` attribute dictionary containing all of the group
-instances contained within that group. Each [Group](#Group) instance also has a
+instances contained within that group. Each `Group` instance also has a
 `path` attribute that contains a simulated unix directory path to
 that group.  To simplify the creation of nested groups, you can
-use a unix-like path as an argument to [Dataset.createGroup](#Dataset.createGroup).
+use a unix-like path as an argument to `Dataset.createGroup`.
 
 ```python
 >>> fcstgrp1 = rootgrp.createGroup("/forecasts/model1")
@@ -206,8 +206,8 @@ that already exists, no error will be raised, and the existing group will be
 returned.
 
 Here's an example that shows how to navigate all the groups in a
-[Dataset](#Dataset). The function `walktree` is a Python generator that is used
-to walk the directory tree. Note that printing the [Dataset](#Dataset) or [Group](#Group)
+`Dataset`. The function `walktree` is a Python generator that is used
+to walk the directory tree. Note that printing the `Dataset` or `Group`
 object yields summary information about it's contents.
 
 ```python
@@ -254,8 +254,8 @@ netCDF defines the sizes of all variables in terms of dimensions, so
 before any variables can be created the dimensions they use must be
 created first. A special case, not often used in practice, is that of a
 scalar variable, which has no dimensions. A dimension is created using
-the [Dataset.createDimension](#Dataset.createDimension) method of a [Dataset](#Dataset)
-or [Group](#Group) instance. A Python string is used to set the name of the
+the `Dataset.createDimension` method of a `Dataset`
+or `Group` instance. A Python string is used to set the name of the
 dimension, and an integer value is used to set the size. To create an
 unlimited dimension (a dimension that can be appended to), the size
 value is set to `None` or 0. In this example, there both the `time` and
@@ -271,16 +271,16 @@ one, and it must be the first (leftmost) dimension of the variable.
 ```
 
 
-All of the [Dimension](#Dimension) instances are stored in a python dictionary.
+All of the `Dimension` instances are stored in a python dictionary.
 
 ```python
 >>> print(rootgrp.dimensions)
 {'level': <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'level', size = 0, 'time': <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'time', size = 0, 'lat': <class 'netCDF4._netCDF4.Dimension'>: name = 'lat', size = 73, 'lon': <class 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144}
 ```
 
-Using the python `len` function with a [Dimension](#Dimension) instance returns
+Using the python `len` function with a `Dimension` instance returns
 current size of that dimension.
-[Dimension.isunlimited](#Dimension.isunlimited) method of a [Dimension](#Dimension) instance
+`Dimension.isunlimited` method of a `Dimension` instance
 be used to determine if the dimensions is unlimited, or appendable.
 
 ```python
@@ -292,7 +292,7 @@ False
 True
 ```
 
-Printing the [Dimension](#Dimension) object
+Printing the `Dimension` object
 provides useful summary info, including the name and length of the dimension,
 and whether it is unlimited.
 
@@ -305,9 +305,9 @@ and whether it is unlimited.
 <class 'netCDF4._netCDF4.Dimension'>: name = 'lon', size = 144
 ```
 
-[Dimension](#Dimension) names can be changed using the
-[Datatset.renameDimension](#Datatset.renameDimension) method of a [Dataset](#Dataset) or
-[Group](#Group) instance.
+`Dimension` names can be changed using the
+`Datatset.renameDimension` method of a `Dataset` or
+`Group` instance.
 
 ## Variables in a netCDF file
 
@@ -315,12 +315,12 @@ netCDF variables behave much like python multidimensional array objects
 supplied by the [numpy module](http://numpy.scipy.org). However,
 unlike numpy arrays, netCDF4 variables can be appended to along one or
 more 'unlimited' dimensions. To create a netCDF variable, use the
-[Dataset.createVariable](#Dataset.createVariable) method of a [Dataset](#Dataset) or
-[Group](#Group) instance. The [Dataset.createVariable](#Dataset.createVariable) method
+`Dataset.createVariable` method of a `Dataset` or
+`Group` instance. The `Dataset.createVariable`j method
 has two mandatory arguments, the variable name (a Python string), and
 the variable datatype. The variable's dimensions are given by a tuple
 containing the dimension names (defined previously with
-[Dataset.createDimension](#Dataset.createDimension)). To create a scalar
+`Dataset.createDimension`). To create a scalar
 variable, simply leave out the dimensions keyword. The variable
 primitive datatypes correspond to the dtype attribute of a numpy array.
 You can specify the datatype as a numpy dtype object, or anything that
@@ -338,8 +338,8 @@ will also work. The unsigned integer types and the 64-bit integer type
 can only be used if the file format is `NETCDF4`.
 
 The dimensions themselves are usually also defined as variables, called
-coordinate variables. The [Dataset.createVariable](#Dataset.createVariable)
-method returns an instance of the [Variable](#Variable) class whose methods can be
+coordinate variables. The `Dataset.createVariable`
+method returns an instance of the `Variable` class whose methods can be
 used later to access and set variable data and attributes.
 
 ```python
@@ -352,7 +352,7 @@ used later to access and set variable data and attributes.
 >>> temp.units = "K"
 ```
 
-To get summary info on a [Variable](#Variable) instance in an interactive session,
+To get summary info on a `Variable` instance in an interactive session,
 just print it.
 
 ```python
@@ -373,8 +373,8 @@ You can use a path to create a Variable inside a hierarchy of groups.
 
 If the intermediate groups do not yet exist, they will be created.
 
-You can also query a [Dataset](#Dataset) or [Group](#Group) instance directly to obtain [Group](#Group) or
-[Variable](#Variable) instances using paths.
+You can also query a `Dataset` or `Group` instance directly to obtain `Group` or
+`Variable` instances using paths.
 
 ```python
 >>> print(rootgrp["/forecasts/model1"])  # a Group instance
@@ -393,7 +393,7 @@ filling on, default _FillValue of 9.969209968386869e+36 used
 ```
 
 
-All of the variables in the [Dataset](#Dataset) or [Group](#Group) are stored in a
+All of the variables in the `Dataset` or `Group` are stored in a
 Python dictionary, in the same way as the dimensions:
 
 ```python
@@ -422,8 +422,8 @@ current shape = (0, 0, 73, 144)
 filling on, default _FillValue of 9.969209968386869e+36 used}
 ```
 
-[Variable](#Variable) names can be changed using the
-[Dataset.renameVariable](#Dataset.renameVariable) method of a [Dataset](#Dataset)
+`Variable` names can be changed using the
+`Dataset.renameVariable` method of a `Dataset`
 instance.
 
 Variables can be sliced similar to numpy arrays, but there are some differences.  See
@@ -434,10 +434,10 @@ Variables can be sliced similar to numpy arrays, but there are some differences.
 
 There are two types of attributes in a netCDF file, global and variable.
 Global attributes provide information about a group, or the entire
-dataset, as a whole. [Variable](#Variable) attributes provide information about
+dataset, as a whole. `Variable` attributes provide information about
 one of the variables in a group. Global attributes are set by assigning
-values to [Dataset](#Dataset) or [Group](#Group) instance variables. [Variable](#Variable)
-attributes are set by assigning values to [Variable](#Variable) instances
+values to `Dataset` or `Group` instance variables. `Variable`
+attributes are set by assigning values to `Variable` instances
 variables. Attributes can be strings, numbers or sequences. Returning to
 our example,
 
@@ -454,8 +454,8 @@ our example,
 >>> times.calendar = "gregorian"
 ```
 
-The [Dataset.ncattrs](#Dataset.ncattrs) method of a [Dataset](#Dataset), [Group](#Group) or
-[Variable](#Variable) instance can be used to retrieve the names of all the netCDF
+The `Dataset.ncattrs` method of a `Dataset`, `Group` or
+`Variable` instance can be used to retrieve the names of all the netCDF
 attributes. This method is provided as a convenience, since using the
 built-in `dir` Python function will return a bunch of private methods
 and attributes that cannot (or should not) be modified by the user.
@@ -468,7 +468,7 @@ Global attr history = Created Mon Jul  8 14:19:41 2019
 Global attr source = netCDF4 python module tutorial
 ```
 
-The `__dict__` attribute of a [Dataset](#Dataset), [Group](#Group) or [Variable](#Variable)
+The `__dict__` attribute of a `Dataset`, `Group` or `Variable`
 instance provides all the netCDF attribute name/value pairs in a python
 dictionary:
 
@@ -477,13 +477,13 @@ dictionary:
 {'description': 'bogus example script', 'history': 'Created Mon Jul  8 14:19:41 2019', 'source': 'netCDF4 python module tutorial'}
 ```
 
-Attributes can be deleted from a netCDF [Dataset](#Dataset), [Group](#Group) or
-[Variable](#Variable) using the python `del` statement (i.e. `del grp.foo`
+Attributes can be deleted from a netCDF `Dataset`, `Group` or
+`Variable` using the python `del` statement (i.e. `del grp.foo`
 removes the attribute `foo` the the group `grp`).
 
 ## Writing data to and retrieving data from a netCDF variable
 
-Now that you have a netCDF [Variable](#Variable) instance, how do you put data
+Now that you have a netCDF `Variable` instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.
 
 ```python
@@ -503,7 +503,7 @@ latitudes =
   90. ]
 ```
 
-Unlike NumPy's array objects, netCDF [Variable](#Variable)
+Unlike NumPy's array objects, netCDF `Variable`
 objects with unlimited dimensions will grow along those dimensions if you
 assign data outside the currently defined range of indices.
 
@@ -580,12 +580,12 @@ The result will be a numpy scalar array.
 
 By default, netcdf4-python returns numpy masked arrays with values equal to the
 `missing_value` or `_FillValue` variable attributes masked.  The
-[Dataset.set_auto_mask](#Dataset.set_auto_mask)  [Dataset](#Dataset) and [Variable](#Variable) methods
+`Dataset.set_auto_mask` `Dataset` and `Variable` methods
 can be used to disable this feature so that
 numpy arrays are always returned, with the missing values included. Prior to
 version 1.4.0 the default behavior was to only return masked arrays when the
 requested slice contained missing values.  This behavior can be recovered
-using the [Dataset.set_always_mask](#Dataset.set_always_mask) method. If a masked array is
+using the `Dataset.set_always_mask` method. If a masked array is
 written to a netCDF variable, the masked elements are filled with the
 value specified by the `missing_value` attribute.  If the variable has
 no `missing_value`, the `_FillValue` is used instead.
@@ -630,9 +630,9 @@ of a netCDF time variable corresponding to a sequence of datetime instances.
 ## Reading data from a multi-file netCDF dataset
 
 If you want to read data from a variable that spans multiple netCDF files,
-you can use the [MFDataset](#MFDataset) class to read the data as if it were
+you can use the `MFDataset` class to read the data as if it were
 contained in a single file. Instead of using a single filename to create
-a [Dataset](#Dataset) instance, create a [MFDataset](#MFDataset) instance with either a list
+a `Dataset` instance, create a `MFDataset` instance with either a list
 of filenames, or a string with a wildcard (which is then converted to
 a sorted list of files using the python glob module).
 Variables in the list of files that share the same unlimited
@@ -651,7 +651,7 @@ datasets are not supported).
 ...         x[0:10] = np.arange(nf*10,10*(nf+1))
 ```
 
-Now read all the files back in at once with [MFDataset](#MFDataset)
+Now read all the files back in at once with `MFDataset`
 
 ```python
 >>> from netCDF4 import MFDataset
@@ -664,15 +664,15 @@ Now read all the files back in at once with [MFDataset](#MFDataset)
  96 97 98 99]
 ```
 
-Note that [MFDataset](#MFDataset) can only be used to read, not write, multi-file
+Note that `MFDataset` can only be used to read, not write, multi-file
 datasets.
 
 ## Efficient compression of netCDF variables
 
-Data stored in netCDF 4 [Variable](#Variable) objects can be compressed and
+Data stored in netCDF 4 `Variable` objects can be compressed and
 decompressed on the fly. The parameters for the compression are
 determined by the `zlib`, `complevel` and `shuffle` keyword arguments
-to the [Dataset.createVariable](#Dataset.createVariable) method. To turn on
+to the `Dataset.createVariable` method. To turn on
 compression, set `zlib=True`.  The `complevel` keyword regulates the
 speed and efficiency of the compression (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
@@ -681,12 +681,12 @@ off the HDF5 shuffle filter, which de-interlaces a block of data before
 compression by reordering the bytes.  The shuffle filter can
 significantly improve compression ratios, and is on by default.  Setting
 `fletcher32` keyword argument to
-[Dataset.createVariable](#Dataset.createVariable) to `True` (it's `False` by
+`Dataset.createVariable` to `True` (it's `False` by
 default) enables the Fletcher32 checksum algorithm for error detection.
 It's also possible to set the HDF5 chunking parameters and endian-ness
 of the binary data stored in the HDF5 file with the `chunksizes`
 and `endian` keyword arguments to
-[Dataset.createVariable](#Dataset.createVariable).  These keyword arguments only
+`Dataset.createVariable`.  These keyword arguments only
 are relevant for `NETCDF4` and `NETCDF4_CLASSIC` files (where the
 underlying file format is HDF5) and are silently ignored if the file
 format is `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`.
@@ -695,7 +695,7 @@ If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
 0.1 degrees), you can dramatically improve zlib compression by
 quantizing (or truncating) the data using the `least_significant_digit`
-keyword argument to [Dataset.createVariable](#Dataset.createVariable). The least
+keyword argument to `Dataset.createVariable`. The least
 significant digit is the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
 precision of 0.1, then setting `least_significant_digit=1` will cause
@@ -736,7 +736,7 @@ location for scattered (point) data. You can then access all the
 information for a point by reading one variable, instead of reading
 different parameters from different variables.  Compound data types
 are created from the corresponding numpy data type using the
-[Dataset.createCompoundType](#Dataset.createCompoundType) method of a [Dataset](#Dataset) or [Group](#Group) instance.
+`Dataset.createCompoundType` method of a `Dataset` or `Group` instance.
 Since there is no native complex data type in netcdf, compound types are handy
 for storing numpy complex arrays.  Here's an example:
 
@@ -773,7 +773,7 @@ Compound types can be nested, but you must create the 'inner'
 ones first. All possible numpy structured arrays cannot be
 represented as Compound variables - an error message will be
 raise if you try to create one that is not supported.
-All of the compound types defined for a [Dataset](#Dataset) or [Group](#Group) are stored
+All of the compound types defined for a `Dataset` or `Group` are stored
 in a Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:
 
@@ -800,8 +800,8 @@ current shape = (3,)
 
 NetCDF 4 has support for variable-length or "ragged" arrays.  These are arrays
 of variable length sequences having the same type. To create a variable-length
-data type, use the [Dataset.createVLType](#Dataset.createVLType) method
-method of a [Dataset](#Dataset) or [Group](#Group) instance.
+data type, use the `Dataset.createVLType` method
+method of a `Dataset` or `Group` instance.
 
 ```python
 >>> f = Dataset("tst_vlen.nc","w")
@@ -867,7 +867,7 @@ Numpy object arrays containing python strings can also be written as vlen
 variables,  For vlen strings, you don't need to create a vlen data type.
 Instead, simply use the python `str` builtin (or a numpy string datatype
 with fixed length greater than 1) when calling the
-[Dataset.createVariable](#Dataset.createVariable) method.
+`Dataset.createVariable` method.
 
 ```python
 >>> z = f.createDimension("z",10)
@@ -916,7 +916,7 @@ a numpy data type, they are read and written as integer arrays.
 Here's an example of using an Enum type to hold cloud type data.
 The base integer data type and a python dictionary describing the allowed
 values and their names are used to define an Enum data type using
-[Dataset.createEnumType](#Dataset.createEnumType).
+`Dataset.createEnumType`.
 
 ```python
 >>> nc = Dataset('clouds.nc','w')
@@ -1020,8 +1020,8 @@ Independent IO means that each process can do IO independently. It should not
 depend on or be affected by other processes. Collective IO is a way of doing
 IO defined in the MPI-IO standard; unlike independent IO, all processes must
 participate in doing IO. To toggle back and forth between
-the two types of IO, use the [Variable.set_collective](#Variable.set_collective)
-[Variable](#Variable) method. All metadata
+the two types of IO, use the `Variable.set_collective`
+`Variable` method. All metadata
 operations (such as creation of groups, types, variables, dimensions, or attributes)
 are collective.  There are a couple of important limitations of parallel IO:
 
@@ -1049,14 +1049,14 @@ characters](https://www.unidata.ucar.edu/software/netcdf/docs/BestPractices.html
 To perform the conversion to and from character arrays to fixed-width numpy string arrays, the
 following convention is followed by the python interface.
 If the `_Encoding` special attribute is set for a character array
-(dtype `S1`) variable, the [chartostring](#chartostring) utility function is used to convert the array of
+(dtype `S1`) variable, the `chartostring` utility function is used to convert the array of
 characters to an array of strings with one less dimension (the last dimension is
 interpreted as the length of each string) when reading the data. The character
 set (usually ascii) is specified by the `_Encoding` attribute. If `_Encoding`
 is 'none' or 'bytes', then the character array is converted to a numpy
 fixed-width byte string array (dtype `S#`), otherwise a numpy unicode (dtype
 `U#`) array is created.  When writing the data,
-[stringtochar](#stringtochar) is used to convert the numpy string array to an array of
+`stringtochar` is used to convert the numpy string array to an array of
 characters with one more dimension. For example,
 
 ```python
@@ -1079,7 +1079,7 @@ characters with one more dimension. For example,
 
 Even if the `_Encoding` attribute is set, the automatic conversion of char
 arrays to/from string arrays can be disabled with
-[Variable.set_auto_chartostring](#Variable.set_auto_chartostring).
+`Variable.set_auto_chartostring`.
 
 A similar situation is often encountered with numpy structured arrays with subdtypes
 containing fixed-wdith byte strings (dtype=`S#`). Since there is no native fixed-length string
@@ -1281,7 +1281,7 @@ def get_chunk_cache():
 
 return current netCDF chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for `nc_get_chunk_cache` for
-details. Values can be reset with [set_chunk_cache](#set_chunk_cache)."""
+details. Values can be reset with `set_chunk_cache`."""
     cdef int ierr
     cdef size_t sizep, nelemsp
     cdef float preemptionp
@@ -1680,9 +1680,9 @@ be raised in the next release."""
         _ensure_nc_success(ierr, err_cls=AttributeError)
 
 cdef _get_types(group):
-    # Private function to create [CompoundType](#CompoundType),
-    # [VLType](#VLType) or [EnumType](#EnumType) instances for all the
-    # compound, VLEN or Enum types in a [Group](#Group) or [Dataset](#Dataset).
+    # Private function to create `CompoundType`,
+    # `VLType` or `EnumType` instances for all the
+    # compound, VLEN or Enum types in a `Group` or `Dataset`.
     cdef int ierr, ntypes, classp, n, _grpid
     cdef nc_type xtype
     cdef nc_type *typeids
@@ -1751,8 +1751,8 @@ cdef _get_types(group):
     return cmptypes, vltypes, enumtypes
 
 cdef _get_dims(group):
-    # Private function to create [Dimension](#Dimension) instances for all the
-    # dimensions in a [Group](#Group) or Dataset
+    # Private function to create `Dimension` instances for all the
+    # dimensions in a `Group` or Dataset
     cdef int ierr, numdims, n, _grpid
     cdef int *dimids
     cdef char namstring[NC_MAX_NAME+1]
@@ -1785,8 +1785,8 @@ cdef _get_dims(group):
     return dimensions
 
 cdef _get_grps(group):
-    # Private function to create [Group](#Group) instances for all the
-    # groups in a [Group](#Group) or Dataset
+    # Private function to create `Group` instances for all the
+    # groups in a `Group` or Dataset
     cdef int ierr, numgrps, n, _grpid
     cdef int *grpids
     cdef char namstring[NC_MAX_NAME+1]
@@ -1795,7 +1795,7 @@ cdef _get_grps(group):
     with nogil:
         ierr = nc_inq_grps(_grpid, &numgrps, NULL)
     _ensure_nc_success(ierr)
-    # create dictionary containing [Group](#Group) instances for groups in this group
+    # create dictionary containing `Group` instances for groups in this group
     if sys.version_info[0:2] < (3, 7):
         groups = OrderedDict()
     else:
@@ -1815,8 +1815,8 @@ cdef _get_grps(group):
     return groups
 
 cdef _get_vars(group):
-    # Private function to create [Variable](#Variable) instances for all the
-    # variables in a [Group](#Group) or Dataset
+    # Private function to create `Variable` instances for all the
+    # variables in a `Group` or Dataset
     cdef int ierr, numvars, n, nn, numdims, varid, classp, iendian, _grpid
     cdef int *varids
     cdef int *dimids
@@ -1961,46 +1961,46 @@ _private_atts = \
 
 cdef class Dataset:
     """
-A netCDF [Dataset](#Dataset) is a collection of dimensions, groups, variables and
+A netCDF `Dataset` is a collection of dimensions, groups, variables and
 attributes. Together they describe the meaning of data and relations among
-data fields stored in a netCDF file. See [Dataset.__init__](#Dataset.__init__) for more
+data fields stored in a netCDF file. See `Dataset.__init__` for more
 details.
 
 A list of attribute names corresponding to global netCDF attributes
-defined for the [Dataset](#Dataset) can be obtained with the
-[Dataset.ncattrs](#Dataset.ncattrs) method.
+defined for the `Dataset` can be obtained with the
+`Dataset.ncattrs` method.
 These attributes can be created by assigning to an attribute of the
-[Dataset](#Dataset) instance. A dictionary containing all the netCDF attribute
+`Dataset` instance. A dictionary containing all the netCDF attribute
 name/value pairs is provided by the `__dict__` attribute of a
-[Dataset](#Dataset) instance.
+`Dataset` instance.
 
 The following class variables are read-only and should not be
 modified by the user.
 
 **`dimensions`**: The `dimensions` dictionary maps the names of
-dimensions defined for the [Group](#Group) or [Dataset](#Dataset) to instances of the
-[Dimension](#Dimension) class.
+dimensions defined for the `Group` or `Dataset` to instances of the
+`Dimension` class.
 
 **`variables`**: The `variables` dictionary maps the names of variables
-defined for this [Dataset](#Dataset) or [Group](#Group) to instances of the
-[Variable](#Variable) class.
+defined for this `Dataset` or `Group` to instances of the
+`Variable` class.
 
 **`groups`**: The groups dictionary maps the names of groups created for
-this [Dataset](#Dataset) or [Group](#Group) to instances of the [Group](#Group) class (the
-[Dataset](#Dataset) class is simply a special case of the [Group](#Group) class which
+this `Dataset` or `Group` to instances of the `Group` class (the
+`Dataset` class is simply a special case of the `Group` class which
 describes the root group in the netCDF4 file).
 
 **`cmptypes`**: The `cmptypes` dictionary maps the names of
-compound types defined for the [Group](#Group) or [Dataset](#Dataset) to instances of the
-[CompoundType](#CompoundType) class.
+compound types defined for the `Group` or `Dataset` to instances of the
+`CompoundType` class.
 
 **`vltypes`**: The `vltypes` dictionary maps the names of
-variable-length types defined for the [Group](#Group) or [Dataset](#Dataset) to instances
-of the [VLType](#VLType) class.
+variable-length types defined for the `Group` or `Dataset` to instances
+of the `VLType` class.
 
 **`enumtypes`**: The `enumtypes` dictionary maps the names of
-Enum types defined for the [Group](#Group) or [Dataset](#Dataset) to instances
-of the [EnumType](#EnumType) class.
+Enum types defined for the `Group` or `Dataset` to instances
+of the `EnumType` class.
 
 **`data_model`**: `data_model` describes the netCDF
 data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
@@ -2015,12 +2015,12 @@ netcdf C library version >= 4.3.1, otherwise will always return
 `UNDEFINED`.
 
 **`parent`**: `parent` is a reference to the parent
-[Group](#Group) instance. `None` for the root group or [Dataset](#Dataset)
+`Group` instance. `None` for the root group or `Dataset`
 instance.
 
-**`path`**: `path` shows the location of the [Group](#Group) in
-the [Dataset](#Dataset) in a unix directory format (the names of groups in the
-hierarchy separated by backslashes). A [Dataset](#Dataset) instance is the root
+**`path`**: `path` shows the location of the `Group` in
+the `Dataset` in a unix directory format (the names of groups in the
+hierarchy separated by backslashes). A `Dataset` instance is the root
 group, so the path is simply `'/'`.
 
 **`keepweakref`**: If `True`, child Dimension and Variables objects only keep weak
@@ -2046,7 +2046,7 @@ strings.
         persist=False, keepweakref=False, memory=None, encoding=None,
         parallel=False, comm=None, info=None, format='NETCDF4')`**
 
-        [Dataset](#Dataset) constructor.
+        `Dataset` constructor.
 
         **`filename`**: Name of netCDF file to hold dataset. Can also
         be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
@@ -2510,7 +2510,7 @@ is the Dataset open or closed?
         """
 **`sync(self)`**
 
-Writes all buffered data in the [Dataset](#Dataset) to the disk file."""
+Writes all buffered data in the `Dataset` to the disk file."""
         _ensure_nc_success(nc_sync(self._grpid))
 
     def _redef(self):
@@ -2525,7 +2525,7 @@ Writes all buffered data in the [Dataset](#Dataset) to the disk file."""
         """
 **`set_fill_on(self)`**
 
-Sets the fill mode for a [Dataset](#Dataset) open for writing to `on`.
+Sets the fill mode for a `Dataset` open for writing to `on`.
 
 This causes data to be pre-filled with fill values. The fill values can be
 controlled by the variable's `_Fill_Value` attribute, but is usually
@@ -2541,7 +2541,7 @@ to."""
         """
 **`set_fill_off(self)`**
 
-Sets the fill mode for a [Dataset](#Dataset) open for writing to `off`.
+Sets the fill mode for a `Dataset` open for writing to `off`.
 
 This will prevent the data from being pre-filled with fill values, which
 may result in some performance improvements. However, you must then make
@@ -2557,11 +2557,11 @@ Creates a new dimension with the given `dimname` and `size`.
 
 `size` must be a positive integer or `None`, which stands for
 "unlimited" (default is `None`). Specifying a size of 0 also
-results in an unlimited dimension. The return value is the [Dimension](#Dimension)
+results in an unlimited dimension. The return value is the `Dimension`
 class instance describing the new dimension.  To determine the current
-maximum size of the dimension, use the `len` function on the [Dimension](#Dimension)
+maximum size of the dimension, use the `len` function on the `Dimension`
 instance. To determine if a dimension is 'unlimited', use the
-[Dimension.isunlimited](#Dimension.isunlimited) method of the [Dimension](#Dimension) instance."""
+`Dimension.isunlimited` method of the `Dimension` instance."""
         self.dimensions[dimname] = Dimension(self, dimname, size=size)
         return self.dimensions[dimname]
 
@@ -2569,7 +2569,7 @@ instance. To determine if a dimension is 'unlimited', use the
         """
 **`renameDimension(self, oldname, newname)`**
 
-rename a [Dimension](#Dimension) named `oldname` to `newname`."""
+rename a `Dimension` named `oldname` to `newname`."""
         cdef char *namstring
         bytestr = _strencode(newname)
         namstring = bytestr
@@ -2601,7 +2601,7 @@ dtype object `datatype`.
 are homogeneous numeric data types), then the 'inner' compound types **must** be
 created first.
 
-The return value is the [CompoundType](#CompoundType) class instance describing the new
+The return value is the `CompoundType` class instance describing the new
 datatype."""
         self.cmptypes[datatype_name] = CompoundType(self, datatype,\
                 datatype_name)
@@ -2614,7 +2614,7 @@ datatype."""
 Creates a new VLEN data type named `datatype_name` from a numpy
 dtype object `datatype`.
 
-The return value is the [VLType](#VLType) class instance describing the new
+The return value is the `VLType` class instance describing the new
 datatype."""
         self.vltypes[datatype_name] = VLType(self, datatype, datatype_name)
         return self.vltypes[datatype_name]
@@ -2627,7 +2627,7 @@ Creates a new Enum data type named `datatype_name` from a numpy
 integer dtype object `datatype`, and a python dictionary
 defining the enum fields and values.
 
-The return value is the [EnumType](#EnumType) class instance describing the new
+The return value is the `EnumType` class instance describing the new
 datatype."""
         self.enumtypes[datatype_name] = EnumType(self, datatype, datatype_name,
                 enum_dict)
@@ -2658,8 +2658,8 @@ Supported specifiers include: `'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 (NC_BYTE), 'u1' (NC_UBYTE), 'i2' or 'h' or 's' (NC_SHORT), 'u2'
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
 'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)`.
-`datatype` can also be a [CompoundType](#CompoundType) instance
-(for a structured, or compound array), a [VLType](#VLType) instance
+`datatype` can also be a `CompoundType` instance
+(for a structured, or compound array), a `VLType` instance
 (for a variable-length array), or the python `str` builtin
 (for a variable-length string array). Numpy string and unicode datatypes with
 length greater than one are aliases for `str`.
@@ -2668,7 +2668,7 @@ Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.
 
 `dimensions` must be a tuple containing dimension names (strings) that
-have been defined previously using [Dataset.createDimension](#Dataset.createDimension). The default value
+have been defined previously using `Dataset.createDimension`. The default value
 is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
@@ -2710,7 +2710,7 @@ keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword `fill_value` can be used to override the default
 netCDF `_FillValue` (the value that the variable gets filled with before
-any data is written to it, defaults given in [default_fillvals](#default_fillvals)).
+any data is written to it, defaults given in the dict `netCDF4.default_fillvals`).
 If fill_value is set to `False`, then the variable is not pre-filled.
 
 If the optional keyword parameter `least_significant_digit` is
@@ -2735,17 +2735,17 @@ persists as long as the Dataset is open - you can use the set_var_chunk_cache
 method to change it the next time the Dataset is opened.
 Warning - messing with this parameter can seriously degrade performance.
 
-The return value is the [Variable](#Variable) class instance describing the new
+The return value is the `Variable` class instance describing the new
 variable.
 
 A list of names corresponding to netCDF variable attributes can be
-obtained with the [Variable](#Variable) method [Variable.ncattrs](#Variable.ncattrs). A dictionary
+obtained with the `Variable` method `Variable.ncattrs`. A dictionary
 containing all the netCDF attribute name/value pairs is provided by
-the `__dict__` attribute of a [Variable](#Variable) instance.
+the `__dict__` attribute of a `Variable` instance.
 
-[Variable](#Variable) instances behave much like array objects. Data can be
+`Variable` instances behave much like array objects. Data can be
 assigned to or retrieved from a variable with indexing and slicing
-operations on the [Variable](#Variable) instance. A [Variable](#Variable) instance has six
+operations on the `Variable` instance. A `Variable` instance has six
 Dataset standard attributes: `dimensions, dtype, shape, ndim, name` and
 `least_significant_digit`. Application programs should never modify
 these attributes. The `dimensions` attribute is a tuple containing the
@@ -2756,7 +2756,7 @@ sizes of all the variable's dimensions. The `name` attribute is a
 string containing the name of the Variable instance.
 The `least_significant_digit`
 attributes describes the power of ten of the smallest decimal place in
-the data the contains a reliable value.  assigned to the [Variable](#Variable)
+the data the contains a reliable value.  assigned to the `Variable`
 instance. If `None`, the data is not truncated. The `ndim` attribute
 is the number of variable dimensions."""
         # if varname specified as a path, split out group names.
@@ -2779,7 +2779,7 @@ is the number of variable dimensions."""
         """
 **`renameVariable(self, oldname, newname)`**
 
-rename a [Variable](#Variable) named `oldname` to `newname`"""
+rename a `Variable` named `oldname` to `newname`"""
         cdef char *namstring
         try:
             var = self.variables[oldname]
@@ -2801,7 +2801,7 @@ rename a [Variable](#Variable) named `oldname` to `newname`"""
         """
 **`createGroup(self, groupname)`**
 
-Creates a new [Group](#Group) with the given `groupname`.
+Creates a new `Group` with the given `groupname`.
 
 If `groupname` is specified as a path, using forward slashes as in unix to
 separate components, then intermediate groups will be created as necessary
@@ -2811,7 +2811,7 @@ separate components, then intermediate groups will be created as necessary
 If the specified path describes a group that already exists, no error is
 raised.
 
-The return value is a [Group](#Group) class instance."""
+The return value is a `Group` class instance."""
         # if group specified as a path, split out group names
         groupname = posixpath.normpath(groupname)
         nestedgroups = groupname.split('/')
@@ -2831,7 +2831,7 @@ The return value is a [Group](#Group) class instance."""
         """
 **`ncattrs(self)`**
 
-return netCDF global attribute names for this [Dataset](#Dataset) or [Group](#Group) in a list."""
+return netCDF global attribute names for this `Dataset` or `Group` in a list."""
         return _get_att_names(self._grpid, NC_GLOBAL)
 
     def setncattr(self,name,value):
@@ -2948,7 +2948,7 @@ attributes."""
         """
 **`renameAttribute(self, oldname, newname)`**
 
-rename a [Dataset](#Dataset) or [Group](#Group) attribute named `oldname` to `newname`."""
+rename a `Dataset` or `Group` attribute named `oldname` to `newname`."""
         cdef char *oldnamec
         cdef char *newnamec
         bytestr = _strencode(oldname)
@@ -2961,7 +2961,7 @@ rename a [Dataset](#Dataset) or [Group](#Group) attribute named `oldname` to `ne
         """
 **`renameGroup(self, oldname, newname)`**
 
-rename a [Group](#Group) named `oldname` to `newname` (requires netcdf >= 4.3.1)."""
+rename a `Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)."""
         cdef char *newnamec
         IF HAS_RENAME_GRP:
             bytestr = _strencode(newname)
@@ -2985,8 +2985,8 @@ version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         """
 **`set_auto_chartostring(self, True_or_False)`**
 
-Call [Variable.set_auto_chartostring](#Variable.set_auto_chartostring) for all variables contained in this [Dataset](#Dataset) or
-[Group](#Group), as well as for all variables in all its subgroups.
+Call `Variable.set_auto_chartostring` for all variables contained in this `Dataset` or
+`Group`, as well as for all variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic conversion of
 all character arrays <--> string arrays should be performed for
@@ -3013,8 +3013,8 @@ after calling this function will follow the default behaviour.
         """
 **`set_auto_maskandscale(self, True_or_False)`**
 
-Call [Variable.set_auto_maskandscale](#Variable.set_auto_maskandscale) for all variables contained in this [Dataset](#Dataset) or
-[Group](#Group), as well as for all variables in all its subgroups.
+Call `Variable.set_auto_maskandscale` for all variables contained in this `Dataset` or
+`Group`, as well as for all variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
 and variable scaling shall be applied for all variables.
@@ -3040,8 +3040,8 @@ after calling this function will follow the default behaviour.
         """
 **`set_auto_mask(self, True_or_False)`**
 
-Call [Variable.set_auto_mask](#Variable.set_auto_mask) for all variables contained in this [Dataset](#Dataset) or
-[Group](#Group), as well as for all variables in all its subgroups.
+Call `Variable.set_auto_mask` for all variables contained in this `Dataset` or
+`Group`, as well as for all variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.
@@ -3066,8 +3066,8 @@ after calling this function will follow the default behaviour.
         """
 **`set_auto_scale(self, True_or_False)`**
 
-Call [Variable.set_auto_scale](#Variable.set_auto_scale) for all variables contained in this [Dataset](#Dataset) or
-[Group](#Group), as well as for all variables in all its subgroups.
+Call `Variable.set_auto_scale` for all variables contained in this `Dataset` or
+`Group`, as well as for all variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic variable scaling
 shall be applied for all variables.
@@ -3092,8 +3092,8 @@ after calling this function will follow the default behaviour.
         """
 **`set_always_mask(self, True_or_False)`**
 
-Call [Variable.set_always_mask](#Variable.set_always_mask) for all variables contained in
-this [Dataset](#Dataset) or [Group](#Group), as well as for all
+Call `Variable.set_always_mask` for all variables contained in
+this `Dataset` or `Group`, as well as for all
 variables in all its subgroups.
 
 **`True_or_False`**: Boolean determining if automatic conversion of
@@ -3123,8 +3123,8 @@ the default behaviour.
         """
 **`set_ncstring_attrs(self, True_or_False)`**
 
-Call [Variable.set_ncstring_attrs](#Variable.set_ncstring_attrs) for all variables contained in
-this [Dataset](#Dataset) or [Group](#Group), as well as for all its
+Call `Variable.set_ncstring_attrs` for all variables contained in
+this `Dataset` or `Group`, as well as for all its
 subgroups and their variables.
 
 **`True_or_False`**: Boolean determining if all string attributes are
@@ -3225,8 +3225,8 @@ attribute does not exist on the variable. For example,
         """
 **`fromcdl(cdlfilename, ncfilename=None, mode='a',format='NETCDF4')`**
 
-call `ncgen` via subprocess to create Dataset from [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
-text representation. Requires `ncgen` to be installed and in `$PATH`.
+call [ncgen][ncgen] via subprocess to create Dataset from [CDL][cdl]
+text representation. Requires [ncgen][ncgen] to be installed and in `$PATH`.
 
 **`cdlfilename`**:  CDL file.
 
@@ -3240,6 +3240,9 @@ suffix replaced by `.nc` is used..
 `'NETCDF3_64BIT_DATA'`. Default `'NETCDF4'`.
        
 Dataset instance for `ncfilename` is returned.
+ 
+[ncgen]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#ncgen_guide
+[cdl]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide
         """
         if ncfilename is None:
             filepath = pathlib.Path(cdlfilename)
@@ -3260,14 +3263,18 @@ Dataset instance for `ncfilename` is returned.
         """
 **`tocdl(self, coordvars=False, data=False, outfile=None)`**
 
-call `ncdump` via subprocess to create [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
-text representation of Dataset. Requires `ncdump` to be installed and in `$PATH`.
+call [ncdump][ncdump] via subprocess to create [CDL][cdl]
+text representation of Dataset. Requires [ncdump][ncdump]
+to be installed and in `$PATH`.
 
 **`coordvars`**: include coordinate variable data (via `ncdump -c`). Default False
 
 **`data`**: if True, write out variable data (Default False).
 
 **`outfile`**: If not None, file to output ncdump to. Default is to return a string.
+
+[ncdump]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#ncdump_guide
+[cdl]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide
         """
         self.sync()
         if coordvars:
@@ -3288,14 +3295,14 @@ text representation of Dataset. Requires `ncdump` to be installed and in `$PATH`
 cdef class Group(Dataset):
     """
 Groups define a hierarchical namespace within a netCDF file. They are
-analogous to directories in a unix filesystem. Each [Group](#Group) behaves like
-a [Dataset](#Dataset) within a Dataset, and can contain it's own variables,
-dimensions and attributes (and other Groups). See [Group.__init__](#Group.__init__)
+analogous to directories in a unix filesystem. Each `Group` behaves like
+a `Dataset` within a Dataset, and can contain it's own variables,
+dimensions and attributes (and other Groups). See `Group.__init__`
 for more details.
 
-[Group](#Group) inherits from [Dataset](#Dataset), so all the
-[Dataset](#Dataset) class methods and variables are available
-to a [Group](#Group) instance (except the `close` method).
+`Group` inherits from `Dataset`, so all the
+`Dataset` class methods and variables are available
+to a `Group` instance (except the `close` method).
 
 Additional read-only class variables:
 
@@ -3304,16 +3311,16 @@ Additional read-only class variables:
     def __init__(self, parent, name, **kwargs):
         """
         **`__init__(self, parent, name)`**
-        [Group](#Group) constructor.
+        `Group` constructor.
 
-        **`parent`**: [Group](#Group) instance for the parent group.  If being created
-        in the root group, use a [Dataset](#Dataset) instance.
+        **`parent`**: `Group` instance for the parent group.  If being created
+        in the root group, use a `Dataset` instance.
 
         **`name`**: - Name of the group.
 
-        ***Note***: [Group](#Group) instances should be created using the
-        [Dataset.createGroup](#Dataset.createGroup) method of a [Dataset](#Dataset) instance, or
-        another [Group](#Group) instance, not using this class directly.
+        ***Note***: `Group` instances should be created using the
+        `Dataset.createGroup` method of a `Dataset` instance, or
+        another `Group` instance, not using this class directly.
         """
         cdef char *groupname
         # flag to indicate that Variables in this Group support orthogonal indexing.
@@ -3363,28 +3370,28 @@ Additional read-only class variables:
         """
 **`close(self)`**
 
-overrides [Dataset](#Dataset) close method which does not apply to [Group](#Group)
+overrides `Dataset` close method which does not apply to `Group`
 instances, raises IOError."""
-        raise IOError('cannot close a [Group](#Group) (only applies to Dataset)')
+        raise IOError('cannot close a `Group` (only applies to Dataset)')
 
 
 cdef class Dimension:
     """
-A netCDF [Dimension](#Dimension) is used to describe the coordinates of a [Variable](#Variable).
-See [Dimension.__init__](#Dimension.__init__) for more details.
+A netCDF `Dimension` is used to describe the coordinates of a `Variable`.
+See `Dimension.__init__` for more details.
 
-The current maximum size of a [Dimension](#Dimension) instance can be obtained by
-calling the python `len` function on the [Dimension](#Dimension) instance. The
-[Dimension.isunlimited](#Dimension.isunlimited) method of a [Dimension](#Dimension) instance can be used to
+The current maximum size of a `Dimension` instance can be obtained by
+calling the python `len` function on the `Dimension` instance. The
+`Dimension.isunlimited` method of a `Dimension` instance can be used to
 determine if the dimension is unlimited.
 
 Read-only class variables:
 
-**`name`**: String name, used when creating a [Variable](#Variable) with
-[Dataset.createVariable](#Dataset.createVariable).
+**`name`**: String name, used when creating a `Variable` with
+`Dataset.createVariable`.
 
-**`size`**: Current [Dimension](#Dimension) size (same as `len(d)`, where `d` is a
-[Dimension](#Dimension) instance).
+**`size`**: Current `Dimension` size (same as `len(d)`, where `d` is a
+`Dimension` instance).
     """
     cdef public int _dimid, _grpid
     cdef public _data_model, _name, _grp
@@ -3393,17 +3400,17 @@ Read-only class variables:
         """
         **`__init__(self, group, name, size=None)`**
 
-        [Dimension](#Dimension) constructor.
+        `Dimension` constructor.
 
-        **`group`**: [Group](#Group) instance to associate with dimension.
+        **`group`**: `Group` instance to associate with dimension.
 
         **`name`**: Name of the dimension.
 
         **`size`**: Size of the dimension. `None` or 0 means unlimited. (Default `None`).
 
-        ***Note***: [Dimension](#Dimension) instances should be created using the
-        [Dataset.createDimension](#Dataset.createDimension) method of a [Group](#Group) or
-        [Dataset](#Dataset) instance, not using [Dimension.__init__](#Dimension.__init__) directly.
+        ***Note***: `Dimension` instances should be created using the
+        `Dataset.createDimension` method of a `Group` or
+        `Dataset` instance, not using `Dimension.__init__` directly.
         """
         cdef int ierr
         cdef char *dimname
@@ -3469,7 +3476,7 @@ Read-only class variables:
                 (type(self), self._name, len(self))
 
     def __len__(self):
-        # len([Dimension](#Dimension) instance) returns current size of dimension
+        # len(`Dimension` instance) returns current size of dimension
         cdef int ierr
         cdef size_t lengthp
         with nogil:
@@ -3481,14 +3488,14 @@ Read-only class variables:
         """
 **`group(self)`**
 
-return the group that this [Dimension](#Dimension) is a member of."""
+return the group that this `Dimension` is a member of."""
         return self._grp
 
     def isunlimited(self):
         """
 **`isunlimited(self)`**
 
-returns `True` if the [Dimension](#Dimension) instance is unlimited, `False` otherwise."""
+returns `True` if the `Dimension` instance is unlimited, `False` otherwise."""
         cdef int ierr, n, numunlimdims, ndims, nvars, ngatts, xdimid
         cdef int *unlimdimids
         if self._data_model == 'NETCDF4':
@@ -3521,16 +3528,16 @@ returns `True` if the [Dimension](#Dimension) instance is unlimited, `False` oth
 
 cdef class Variable:
     """
-A netCDF [Variable](#Variable) is used to read and write netCDF data.  They are
-analogous to numpy array objects. See [Variable.__init__](#Variable.__init__) for more
+A netCDF `Variable` is used to read and write netCDF data.  They are
+analogous to numpy array objects. See `Variable.__init__` for more
 details.
 
 A list of attribute names corresponding to netCDF attributes defined for
-the variable can be obtained with the [Variable.ncattrs](#Variable.ncattrs) method. These
+the variable can be obtained with the `Variable.ncattrs` method. These
 attributes can be created by assigning to an attribute of the
-[Variable](#Variable) instance. A dictionary containing all the netCDF attribute
+`Variable` instance. A dictionary containing all the netCDF attribute
 name/value pairs is provided by the `__dict__` attribute of a
-[Variable](#Variable) instance.
+`Variable` instance.
 
 The following class variables are read-only:
 
@@ -3547,22 +3554,22 @@ variable's data type.
 **`scale`**: If True, `scale_factor` and `add_offset` are
 applied, and signed integer data is automatically converted to
 unsigned integer data if the `_Unsigned` attribute is set.
-Default is `True`, can be reset using [Variable.set_auto_scale](#Variable.set_auto_scale) and
-[Variable.set_auto_maskandscale](#Variable.set_auto_maskandscale) methods.
+Default is `True`, can be reset using `Variable.set_auto_scale` and
+`Variable.set_auto_maskandscale` methods.
 
 **`mask`**: If True, data is automatically converted to/from masked
 arrays when missing values or fill values are present. Default is `True`, can be
-reset using [Variable.set_auto_mask](#Variable.set_auto_mask) and [Variable.set_auto_maskandscale](#Variable.set_auto_maskandscale)
+reset using `Variable.set_auto_mask` and `Variable.set_auto_maskandscale`
 methods.
 
 **`chartostring`**: If True, data is automatically converted to/from character
 arrays to string arrays when the `_Encoding` variable attribute is set.
 Default is `True`, can be reset using
-[Variable.set_auto_chartostring](#Variable.set_auto_chartostring) method.
+`Variable.set_auto_chartostring` method.
 
 **`least_significant_digit`**: Describes the power of ten of the
 smallest decimal place in the data the contains a reliable value.  Data is
-truncated to this decimal place when it is assigned to the [Variable](#Variable)
+truncated to this decimal place when it is assigned to the `Variable`
 instance. If `None`, the data is not truncated.
 
 **`__orthogonal_indexing__`**: Always `True`.  Indicates to client code
@@ -3592,13 +3599,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         chunksizes=None, endian='native',
         least_significant_digit=None,fill_value=None,chunk_cache=None)`**
 
-        [Variable](#Variable) constructor.
+        `Variable` constructor.
 
-        **`group`**: [Group](#Group) or [Dataset](#Dataset) instance to associate with variable.
+        **`group`**: `Group` or `Dataset` instance to associate with variable.
 
         **`name`**: Name of the variable.
 
-        **`datatype`**: [Variable](#Variable) data type. Can be specified by providing a
+        **`datatype`**: `Variable` data type. Can be specified by providing a
         numpy dtype object, or a string that describes a numpy dtype object.
         Supported values, corresponding to `str` attribute of numpy dtype
         objects, include `'f4'` (32-bit floating point), `'f8'` (64-bit floating
@@ -3611,8 +3618,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         typecodes can also be used (`'f'` instead of `'f4'`, `'d'` instead of
         `'f8'`, `'h'` or `'s'` instead of `'i2'`, `'b'` or `'B'` instead of
         `'i1'`, `'c'` instead of `'S1'`, and `'i'` or `'l'` instead of
-        `'i4'`). `datatype` can also be a [CompoundType](#CompoundType) instance
-        (for a structured, or compound array), a [VLType](#VLType) instance
+        `'i4'`). `datatype` can also be a `CompoundType` instance
+        (for a structured, or compound array), a `VLType` instance
         (for a variable-length array), or the python `str` builtin
         (for a variable-length string array). Numpy string and unicode datatypes with
         length greater than one are aliases for `str`.
@@ -3621,7 +3628,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
 
-        **`zlib`**: if `True`, data assigned to the [Variable](#Variable)
+        **`zlib`**: if `True`, data assigned to the `Variable`
         instance is compressed on disk. Default `False`.
 
         **`complevel`**: the level of zlib compression to use (1 is the fastest,
@@ -3670,15 +3677,15 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         value that the variable gets filled with before any data is written to it)
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
-        in [default_fillvals](#default_fillvals).
+        in the dictionary `netCDF4.default_fillvals`.
       
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
-        Persists as long as Dataset is open. Use [set_var_chunk_cache](#set_var_chunk_cache) to 
+        Persists as long as Dataset is open. Use `set_var_chunk_cache` to 
         change it when Dataset is re-opened. 
 
-        ***Note***: [Variable](#Variable) instances should be created using the
-        [Dataset.createVariable](#Dataset.createVariable) method of a [Dataset](#Dataset) or
-        [Group](#Group) instance, not using this class directly.
+        ***Note***: `Variable` instances should be created using the
+        `Dataset.createVariable` method of a `Dataset` or
+        `Group` instance, not using this class directly.
         """
         cdef int ierr, ndims, icontiguous, ideflate_level, numdims, _grpid
         cdef char namstring[NC_MAX_NAME+1]
@@ -4107,14 +4114,14 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         """
 **`group(self)`**
 
-return the group that this [Variable](#Variable) is a member of."""
+return the group that this `Variable` is a member of."""
         return self._grp
 
     def ncattrs(self):
         """
 **`ncattrs(self)`**
 
-return netCDF attribute names for this [Variable](#Variable) in a list."""
+return netCDF attribute names for this `Variable` in a list."""
         return _get_att_names(self._grpid, self._varid)
 
     def setncattr(self,name,value):
@@ -4375,7 +4382,7 @@ details."""
         """
 **`renameAttribute(self, oldname, newname)`**
 
-rename a [Variable](#Variable) attribute named `oldname` to `newname`."""
+rename a `Variable` attribute named `oldname` to `newname`."""
         cdef int ierr
         cdef char *oldnamec
         cdef char *newnamec
@@ -5478,8 +5485,8 @@ open for parallel access.
         """
 **`get_dims(self)`**
 
-return a tuple of [Dimension](#Dimension) instances associated with this
-[Variable](#Variable).
+return a tuple of `Dimension` instances associated with this
+`Variable`.
         """
         return tuple(_find_dim(self._grp, dim) for dim in self.dimensions)
 
@@ -5491,11 +5498,11 @@ return a tuple of [Dimension](#Dimension) instances associated with this
 
 cdef class CompoundType:
     """
-A [CompoundType](#CompoundType) instance is used to describe a compound data
-type, and can be passed to the the [Dataset.createVariable](#Dataset.createVariable) method of
-a [Dataset](#Dataset) or [Group](#Group) instance.
+A `CompoundType` instance is used to describe a compound data
+type, and can be passed to the the `Dataset.createVariable` method of
+a `Dataset` or `Group` instance.
 Compound data types map to numpy structured arrays.
-See [CompoundType.__init__](#CompoundType.__init__) for more details.
+See `CompoundType.__init__` for more details.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
@@ -5508,7 +5515,7 @@ the user.
 
         CompoundType constructor.
 
-        **`group`**: [Group](#Group) instance to associate with the compound datatype.
+        **`group`**: `Group` instance to associate with the compound datatype.
 
         **`datatype`**: A numpy dtype object describing a structured (a.k.a record)
         array.  Can be composed of homogeneous numeric or character data types, or
@@ -5522,9 +5529,9 @@ the user.
         instances (so create CompoundType instances for the innermost structures
         first).
 
-        ***Note 2***: [CompoundType](#CompoundType) instances should be created using the
-        [Dataset.createCompoundType](#Dataset.createCompoundType)
-        method of a [Dataset](#Dataset) or [Group](#Group) instance, not using this class directly.
+        ***Note 2***: `CompoundType` instances should be created using the
+        `Dataset.createCompoundType` method of a `Dataset` or
+        `Group` instance, not using this class directly.
         """
         cdef nc_type xtype
         # convert dt to a numpy datatype object
@@ -5796,10 +5803,10 @@ cdef _read_compound(group, nc_type xtype, endian=None):
 
 cdef class VLType:
     """
-A [VLType](#VLType) instance is used to describe a variable length (VLEN) data
-type, and can be passed to the the [Dataset.createVariable](#Dataset.createVariable) method of
-a [Dataset](#Dataset) or [Group](#Group) instance. See
-[VLType.__init__](#VLType.__init__)for more details.
+A `VLType` instance is used to describe a variable length (VLEN) data
+type, and can be passed to the the `Dataset.createVariable` method of
+a `Dataset` or `Group` instance. See
+`VLType.__init__` for more details.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
@@ -5812,7 +5819,7 @@ the user.
 
         VLType constructor.
 
-        **`group`**: [Group](#Group) instance to associate with the VLEN datatype.
+        **`group`**: `Group` instance to associate with the VLEN datatype.
 
         **`datatype`**: An numpy dtype object describing the component type for the
         variable length array.
@@ -5820,9 +5827,9 @@ the user.
         **`datatype_name`**: a Python string containing a description of the
         VLEN data type.
 
-        ***`Note`***: [VLType](#VLType) instances should be created using the
-        [Dataset.createVLType](#Dataset.createVLType)
-        method of a [Dataset](#Dataset) or [Group](#Group) instance, not using this class directly.
+        ***`Note`***: `VLType` instances should be created using the
+        `Dataset.createVLType` method of a `Dataset` or
+        `Group` instance, not using this class directly.
         """
         cdef nc_type xtype
         if 'typeid' in kwargs:
@@ -5905,10 +5912,10 @@ cdef _read_vlen(group, nc_type xtype, endian=None):
 
 cdef class EnumType:
     """
-A [EnumType](#EnumType) instance is used to describe an Enum data
-type, and can be passed to the the [Dataset.createVariable](#Dataset.createVariable) method of
-a [Dataset](#Dataset) or [Group](#Group) instance. See
-[EnumType.__init__](#EnumType.__init__) for more details.
+A `EnumType` instance is used to describe an Enum data
+type, and can be passed to the the `Dataset.createVariable` method of
+a `Dataset` or `Group` instance. See
+`EnumType.__init__` for more details.
 
 The instance variables `dtype`, `name` and `enum_dict` should not be modified by
 the user.
@@ -5921,7 +5928,7 @@ the user.
 
         EnumType constructor.
 
-        **`group`**: [Group](#Group) instance to associate with the VLEN datatype.
+        **`group`**: `Group` instance to associate with the VLEN datatype.
 
         **`datatype`**: An numpy integer dtype object describing the base type
         for the Enum.
@@ -5932,9 +5939,9 @@ the user.
         **`enum_dict`**: a Python dictionary containing the Enum field/value
         pairs.
 
-        ***`Note`***: [EnumType](#EnumType) instances should be created using the
-        [Dataset.createEnumType](#Dataset.createEnumType)
-        method of a [Dataset](#Dataset) or [Group](#Group) instance, not using this class directly.
+        ***`Note`***: `EnumType` instances should be created using the
+        `Dataset.createEnumType` method of a `Dataset` or
+        `Group` instance, not using this class directly.
         """
         cdef nc_type xtype
         if 'typeid' in kwargs:
@@ -6123,7 +6130,7 @@ or NETCDF3_64BIT_DATA` format (`NETCDF4` Datasets won't work).
 
 Adapted from [pycdf](http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 
-Example usage (See [MFDataset.__init__](#MFDataset.__init__) for more details):
+Example usage (See `MFDataset.__init__` for more details):
 
 ```python
 >>> import numpy as np
@@ -6586,7 +6593,7 @@ class MFTime(_Variable):
 Class providing an interface to a MFDataset time Variable by imposing a unique common
 time unit and/or calendar to all files.
 
-Example usage (See [MFTime.__init__](#MFTime.__init__) for more details):
+Example usage (See `MFTime.__init__` for more details):
 
 ```python
 >>> import numpy as np
@@ -6624,7 +6631,7 @@ days since 2000-01-01
         Create a time Variable with units consistent across a multifile
         dataset.
 
-        **`time`**: Time variable from a [MFDataset](#MFDataset).
+        **`time`**: Time variable from a `MFDataset`.
 
         **`units`**: Time units, for example, `'days since 1979-01-01'`. If `None`,
         use the units from the master variable.
