@@ -3225,8 +3225,8 @@ attribute does not exist on the variable. For example,
         """
 **`fromcdl(cdlfilename, ncfilename=None, mode='a',format='NETCDF4')`**
 
-call `ncgen` via subprocess to create Dataset from [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
-text representation. Requires `ncgen` to be installed and in `$PATH`.
+call [ncgen][ncgen] via subprocess to create Dataset from [CDL][cdl]
+text representation. Requires [ncgen][ncgen] to be installed and in `$PATH`.
 
 **`cdlfilename`**:  CDL file.
 
@@ -3240,6 +3240,9 @@ suffix replaced by `.nc` is used..
 `'NETCDF3_64BIT_DATA'`. Default `'NETCDF4'`.
        
 Dataset instance for `ncfilename` is returned.
+ 
+[ncgen]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#ncgen_guide
+[cdl]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide
         """
         if ncfilename is None:
             filepath = pathlib.Path(cdlfilename)
@@ -3260,14 +3263,18 @@ Dataset instance for `ncfilename` is returned.
         """
 **`tocdl(self, coordvars=False, data=False, outfile=None)`**
 
-call `ncdump` via subprocess to create [CDL](https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide)
-text representation of Dataset. Requires `ncdump` to be installed and in `$PATH`.
+call [ncdump][ncdump] via subprocess to create [CDL][cdl]
+text representation of Dataset. Requires [ncdump][ncdump]
+to be installed and in `$PATH`.
 
 **`coordvars`**: include coordinate variable data (via `ncdump -c`). Default False
 
 **`data`**: if True, write out variable data (Default False).
 
 **`outfile`**: If not None, file to output ncdump to. Default is to return a string.
+
+[ncdump]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#ncdump_guide
+[cdl]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide
         """
         self.sync()
         if coordvars:
