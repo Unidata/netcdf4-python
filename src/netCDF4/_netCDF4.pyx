@@ -280,7 +280,7 @@ All of the `Dimension` instances are stored in a python dictionary.
 
 Using the python `len` function with a `Dimension` instance returns
 current size of that dimension.
-[Dimension.isunlimited](#Dimension.isunlimited) method of a `Dimension` instance
+`Dimension.isunlimited` method of a `Dimension` instance
 be used to determine if the dimensions is unlimited, or appendable.
 
 ```python
@@ -306,7 +306,7 @@ and whether it is unlimited.
 ```
 
 `Dimension` names can be changed using the
-[Datatset.renameDimension](#Datatset.renameDimension) method of a `Dataset` or
+`Datatset.renameDimension` method of a `Dataset` or
 `Group` instance.
 
 ## Variables in a netCDF file
@@ -630,9 +630,9 @@ of a netCDF time variable corresponding to a sequence of datetime instances.
 ## Reading data from a multi-file netCDF dataset
 
 If you want to read data from a variable that spans multiple netCDF files,
-you can use the [MFDataset](#MFDataset) class to read the data as if it were
+you can use the `MFDataset` class to read the data as if it were
 contained in a single file. Instead of using a single filename to create
-a `Dataset` instance, create a [MFDataset](#MFDataset) instance with either a list
+a `Dataset` instance, create a `MFDataset` instance with either a list
 of filenames, or a string with a wildcard (which is then converted to
 a sorted list of files using the python glob module).
 Variables in the list of files that share the same unlimited
@@ -651,7 +651,7 @@ datasets are not supported).
 ...         x[0:10] = np.arange(nf*10,10*(nf+1))
 ```
 
-Now read all the files back in at once with [MFDataset](#MFDataset)
+Now read all the files back in at once with `MFDataset`
 
 ```python
 >>> from netCDF4 import MFDataset
@@ -664,7 +664,7 @@ Now read all the files back in at once with [MFDataset](#MFDataset)
  96 97 98 99]
 ```
 
-Note that [MFDataset](#MFDataset) can only be used to read, not write, multi-file
+Note that `MFDataset` can only be used to read, not write, multi-file
 datasets.
 
 ## Efficient compression of netCDF variables
@@ -1049,14 +1049,14 @@ characters](https://www.unidata.ucar.edu/software/netcdf/docs/BestPractices.html
 To perform the conversion to and from character arrays to fixed-width numpy string arrays, the
 following convention is followed by the python interface.
 If the `_Encoding` special attribute is set for a character array
-(dtype `S1`) variable, the [chartostring](#chartostring) utility function is used to convert the array of
+(dtype `S1`) variable, the `chartostring` utility function is used to convert the array of
 characters to an array of strings with one less dimension (the last dimension is
 interpreted as the length of each string) when reading the data. The character
 set (usually ascii) is specified by the `_Encoding` attribute. If `_Encoding`
 is 'none' or 'bytes', then the character array is converted to a numpy
 fixed-width byte string array (dtype `S#`), otherwise a numpy unicode (dtype
 `U#`) array is created.  When writing the data,
-[stringtochar](#stringtochar) is used to convert the numpy string array to an array of
+`stringtochar` is used to convert the numpy string array to an array of
 characters with one more dimension. For example,
 
 ```python
@@ -1281,7 +1281,7 @@ def get_chunk_cache():
 
 return current netCDF chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for `nc_get_chunk_cache` for
-details. Values can be reset with [set_chunk_cache](#set_chunk_cache)."""
+details. Values can be reset with `set_chunk_cache`."""
     cdef int ierr
     cdef size_t sizep, nelemsp
     cdef float preemptionp
@@ -1681,7 +1681,7 @@ be raised in the next release."""
 
 cdef _get_types(group):
     # Private function to create `CompoundType`,
-    # [VLType](#VLType) or [EnumType](#EnumType) instances for all the
+    # `VLType` or `EnumType` instances for all the
     # compound, VLEN or Enum types in a `Group` or `Dataset`.
     cdef int ierr, ntypes, classp, n, _grpid
     cdef nc_type xtype
@@ -1996,11 +1996,11 @@ compound types defined for the `Group` or `Dataset` to instances of the
 
 **`vltypes`**: The `vltypes` dictionary maps the names of
 variable-length types defined for the `Group` or `Dataset` to instances
-of the [VLType](#VLType) class.
+of the `VLType` class.
 
 **`enumtypes`**: The `enumtypes` dictionary maps the names of
 Enum types defined for the `Group` or `Dataset` to instances
-of the [EnumType](#EnumType) class.
+of the `EnumType` class.
 
 **`data_model`**: `data_model` describes the netCDF
 data model version, one of `NETCDF3_CLASSIC`, `NETCDF4`,
@@ -2561,7 +2561,7 @@ results in an unlimited dimension. The return value is the `Dimension`
 class instance describing the new dimension.  To determine the current
 maximum size of the dimension, use the `len` function on the `Dimension`
 instance. To determine if a dimension is 'unlimited', use the
-[Dimension.isunlimited](#Dimension.isunlimited) method of the `Dimension` instance."""
+`Dimension.isunlimited` method of the `Dimension` instance."""
         self.dimensions[dimname] = Dimension(self, dimname, size=size)
         return self.dimensions[dimname]
 
@@ -2614,7 +2614,7 @@ datatype."""
 Creates a new VLEN data type named `datatype_name` from a numpy
 dtype object `datatype`.
 
-The return value is the [VLType](#VLType) class instance describing the new
+The return value is the `VLType` class instance describing the new
 datatype."""
         self.vltypes[datatype_name] = VLType(self, datatype, datatype_name)
         return self.vltypes[datatype_name]
@@ -2627,7 +2627,7 @@ Creates a new Enum data type named `datatype_name` from a numpy
 integer dtype object `datatype`, and a python dictionary
 defining the enum fields and values.
 
-The return value is the [EnumType](#EnumType) class instance describing the new
+The return value is the `EnumType` class instance describing the new
 datatype."""
         self.enumtypes[datatype_name] = EnumType(self, datatype, datatype_name,
                 enum_dict)
@@ -2659,7 +2659,7 @@ Supported specifiers include: `'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
 'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)`.
 `datatype` can also be a `CompoundType` instance
-(for a structured, or compound array), a [VLType](#VLType) instance
+(for a structured, or compound array), a `VLType` instance
 (for a variable-length array), or the python `str` builtin
 (for a variable-length string array). Numpy string and unicode datatypes with
 length greater than one are aliases for `str`.
@@ -2710,7 +2710,7 @@ keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword `fill_value` can be used to override the default
 netCDF `_FillValue` (the value that the variable gets filled with before
-any data is written to it, defaults given in [default_fillvals](#default_fillvals)).
+any data is written to it, defaults given in the dict `netCDF4.default_fillvals`).
 If fill_value is set to `False`, then the variable is not pre-filled.
 
 If the optional keyword parameter `least_significant_digit` is
@@ -3290,7 +3290,7 @@ cdef class Group(Dataset):
 Groups define a hierarchical namespace within a netCDF file. They are
 analogous to directories in a unix filesystem. Each `Group` behaves like
 a `Dataset` within a Dataset, and can contain it's own variables,
-dimensions and attributes (and other Groups). See [Group.__init__](#Group.__init__)
+dimensions and attributes (and other Groups). See `Group.__init__`
 for more details.
 
 `Group` inherits from `Dataset`, so all the
@@ -3371,11 +3371,11 @@ instances, raises IOError."""
 cdef class Dimension:
     """
 A netCDF `Dimension` is used to describe the coordinates of a `Variable`.
-See [Dimension.__init__](#Dimension.__init__) for more details.
+See `Dimension.__init__` for more details.
 
 The current maximum size of a `Dimension` instance can be obtained by
 calling the python `len` function on the `Dimension` instance. The
-[Dimension.isunlimited](#Dimension.isunlimited) method of a `Dimension` instance can be used to
+`Dimension.isunlimited` method of a `Dimension` instance can be used to
 determine if the dimension is unlimited.
 
 Read-only class variables:
@@ -3403,7 +3403,7 @@ Read-only class variables:
 
         ***Note***: `Dimension` instances should be created using the
         `Dataset.createDimension` method of a `Group` or
-        `Dataset` instance, not using [Dimension.__init__](#Dimension.__init__) directly.
+        `Dataset` instance, not using `Dimension.__init__` directly.
         """
         cdef int ierr
         cdef char *dimname
@@ -3612,7 +3612,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         `'f8'`, `'h'` or `'s'` instead of `'i2'`, `'b'` or `'B'` instead of
         `'i1'`, `'c'` instead of `'S1'`, and `'i'` or `'l'` instead of
         `'i4'`). `datatype` can also be a `CompoundType` instance
-        (for a structured, or compound array), a [VLType](#VLType) instance
+        (for a structured, or compound array), a `VLType` instance
         (for a variable-length array), or the python `str` builtin
         (for a variable-length string array). Numpy string and unicode datatypes with
         length greater than one are aliases for `str`.
@@ -3670,10 +3670,10 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         value that the variable gets filled with before any data is written to it)
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
-        in [default_fillvals](#default_fillvals).
+        in the dictionary `netCDF4.default_fillvals`.
       
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
-        Persists as long as Dataset is open. Use [set_var_chunk_cache](#set_var_chunk_cache) to 
+        Persists as long as Dataset is open. Use `set_var_chunk_cache` to 
         change it when Dataset is re-opened. 
 
         ***Note***: `Variable` instances should be created using the
@@ -5495,7 +5495,7 @@ A `CompoundType` instance is used to describe a compound data
 type, and can be passed to the the `Dataset.createVariable` method of
 a `Dataset` or `Group` instance.
 Compound data types map to numpy structured arrays.
-See [CompoundType.__init__](#CompoundType.__init__) for more details.
+See `CompoundType.__init__` for more details.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
@@ -5796,10 +5796,10 @@ cdef _read_compound(group, nc_type xtype, endian=None):
 
 cdef class VLType:
     """
-A [VLType](#VLType) instance is used to describe a variable length (VLEN) data
+A `VLType` instance is used to describe a variable length (VLEN) data
 type, and can be passed to the the `Dataset.createVariable` method of
 a `Dataset` or `Group` instance. See
-[VLType.__init__](#VLType.__init__)for more details.
+`VLType.__init__` for more details.
 
 The instance variables `dtype` and `name` should not be modified by
 the user.
@@ -5820,7 +5820,7 @@ the user.
         **`datatype_name`**: a Python string containing a description of the
         VLEN data type.
 
-        ***`Note`***: [VLType](#VLType) instances should be created using the
+        ***`Note`***: `VLType` instances should be created using the
         `Dataset.createVLType` method of a `Dataset` or
         `Group` instance, not using this class directly.
         """
@@ -5905,10 +5905,10 @@ cdef _read_vlen(group, nc_type xtype, endian=None):
 
 cdef class EnumType:
     """
-A [EnumType](#EnumType) instance is used to describe an Enum data
+A `EnumType` instance is used to describe an Enum data
 type, and can be passed to the the `Dataset.createVariable` method of
 a `Dataset` or `Group` instance. See
-[EnumType.__init__](#EnumType.__init__) for more details.
+`EnumType.__init__` for more details.
 
 The instance variables `dtype`, `name` and `enum_dict` should not be modified by
 the user.
@@ -5932,7 +5932,7 @@ the user.
         **`enum_dict`**: a Python dictionary containing the Enum field/value
         pairs.
 
-        ***`Note`***: [EnumType](#EnumType) instances should be created using the
+        ***`Note`***: `EnumType` instances should be created using the
         `Dataset.createEnumType` method of a `Dataset` or
         `Group` instance, not using this class directly.
         """
@@ -6123,7 +6123,7 @@ or NETCDF3_64BIT_DATA` format (`NETCDF4` Datasets won't work).
 
 Adapted from [pycdf](http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 
-Example usage (See [MFDataset.__init__](#MFDataset.__init__) for more details):
+Example usage (See `MFDataset.__init__` for more details):
 
 ```python
 >>> import numpy as np
@@ -6586,7 +6586,7 @@ class MFTime(_Variable):
 Class providing an interface to a MFDataset time Variable by imposing a unique common
 time unit and/or calendar to all files.
 
-Example usage (See [MFTime.__init__](#MFTime.__init__) for more details):
+Example usage (See `MFTime.__init__` for more details):
 
 ```python
 >>> import numpy as np
@@ -6624,7 +6624,7 @@ days since 2000-01-01
         Create a time Variable with units consistent across a multifile
         dataset.
 
-        **`time`**: Time variable from a [MFDataset](#MFDataset).
+        **`time`**: Time variable from a `MFDataset`.
 
         **`units`**: Time units, for example, `'days since 1979-01-01'`. If `None`,
         use the units from the master variable.

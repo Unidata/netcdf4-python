@@ -735,7 +735,7 @@ one, and it must be the first (leftmost) dimension of the variable.</p>
 
 <p>Using the python <code>len</code> function with a <code><a href="#Dimension">Dimension</a></code> instance returns
 current size of that dimension.
-<a href="#<a href="#Dimension.isunlimited">Dimension.isunlimited</a>"><a href="#Dimension.isunlimited">Dimension.isunlimited</a></a> method of a <code><a href="#Dimension">Dimension</a></code> instance
+<code><a href="#Dimension.isunlimited">Dimension.isunlimited</a></code> method of a <code><a href="#Dimension">Dimension</a></code> instance
 be used to determine if the dimensions is unlimited, or appendable.</p>
 
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span>
@@ -759,7 +759,7 @@ and whether it is unlimited.</p>
 </code></pre></div>
 
 <p><code><a href="#Dimension">Dimension</a></code> names can be changed using the
-<a href="#Datatset.renameDimension">Datatset.renameDimension</a> method of a <code><a href="#Dataset">Dataset</a></code> or
+<code>Datatset.renameDimension</code> method of a <code><a href="#Dataset">Dataset</a></code> or
 <code><a href="#Group">Group</a></code> instance.</p>
 
 <h2 id="variables-in-a-netcdf-file">Variables in a netCDF file</h2>
@@ -1065,9 +1065,9 @@ of a netCDF time variable corresponding to a sequence of datetime instances.</p>
 <h2 id="reading-data-from-a-multi-file-netcdf-dataset">Reading data from a multi-file netCDF dataset</h2>
 
 <p>If you want to read data from a variable that spans multiple netCDF files,
-you can use the <a href="#MFDataset">MFDataset</a> class to read the data as if it were
+you can use the <code><a href="#MFDataset">MFDataset</a></code> class to read the data as if it were
 contained in a single file. Instead of using a single filename to create
-a <code><a href="#Dataset">Dataset</a></code> instance, create a <a href="#MFDataset">MFDataset</a> instance with either a list
+a <code><a href="#Dataset">Dataset</a></code> instance, create a <code><a href="#MFDataset">MFDataset</a></code> instance with either a list
 of filenames, or a string with a wildcard (which is then converted to
 a sorted list of files using the python glob module).
 Variables in the list of files that share the same unlimited
@@ -1085,7 +1085,7 @@ datasets are not supported).</p>
 <span class="o">...</span>         <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nf</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="o">*</span><span class="p">(</span><span class="n">nf</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 </code></pre></div>
 
-<p>Now read all the files back in at once with <a href="#MFDataset">MFDataset</a></p>
+<p>Now read all the files back in at once with <code><a href="#MFDataset">MFDataset</a></code></p>
 
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">MFDataset</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">MFDataset</span><span class="p">(</span><span class="s2">&quot;mftest*nc&quot;</span><span class="p">)</span>
@@ -1097,7 +1097,7 @@ datasets are not supported).</p>
  <span class="mi">96</span> <span class="mi">97</span> <span class="mi">98</span> <span class="mi">99</span><span class="p">]</span>
 </code></pre></div>
 
-<p>Note that <a href="#MFDataset">MFDataset</a> can only be used to read, not write, multi-file
+<p>Note that <code><a href="#MFDataset">MFDataset</a></code> can only be used to read, not write, multi-file
 datasets.</p>
 
 <h2 id="efficient-compression-of-netcdf-variables">Efficient compression of netCDF variables</h2>
@@ -1471,14 +1471,14 @@ characters</a>.
 To perform the conversion to and from character arrays to fixed-width numpy string arrays, the
 following convention is followed by the python interface.
 If the <code>_Encoding</code> special attribute is set for a character array
-(dtype <code>S1</code>) variable, the <a href="#chartostring">chartostring</a> utility function is used to convert the array of
+(dtype <code>S1</code>) variable, the <code><a href="#chartostring">chartostring</a></code> utility function is used to convert the array of
 characters to an array of strings with one less dimension (the last dimension is
 interpreted as the length of each string) when reading the data. The character
 set (usually ascii) is specified by the <code>_Encoding</code> attribute. If <code>_Encoding</code>
 is 'none' or 'bytes', then the character array is converted to a numpy
 fixed-width byte string array (dtype <code>S#</code>), otherwise a numpy unicode (dtype
 <code>U#</code>) array is created.  When writing the data,
-<a href="#stringtochar">stringtochar</a> is used to convert the numpy string array to an array of
+<code><a href="#stringtochar">stringtochar</a></code> is used to convert the numpy string array to an array of
 characters with one more dimension. For example,</p>
 
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">stringtochar</span>
@@ -1621,7 +1621,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x6a;&#101;&#102;&#102;&#x72;e&#x79;&#x2e;&#x73;.&#119;&#x68;&#105;&#x74;&#x61;&#107;e&#x72;&#64;&#x6e;o&#x61;&#97;&#x2e;g&#x6f;&#118;">&#x6a;&#101;&#102;&#102;&#x72;e&#x79;&#x2e;&#x73;.&#119;&#x68;&#105;&#x74;&#x61;&#107;e&#x72;&#64;&#x6e;o&#x61;&#97;&#x2e;g&#x6f;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#x3a;&#x6a;&#101;&#x66;&#102;&#114;e&#121;&#46;&#x73;.&#x77;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;o&#x61;&#x61;&#46;&#x67;&#x6f;&#118;">&#x6a;&#101;&#x66;&#102;&#114;e&#121;&#46;&#x73;.&#x77;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;o&#x61;&#x61;&#46;&#x67;&#x6f;&#118;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -1696,11 +1696,11 @@ compound types defined for the <code><a href="#Group">Group</a></code> or <code>
 
 <p><strong><code>vltypes</code></strong>: The <code>vltypes</code> dictionary maps the names of
 variable-length types defined for the <code><a href="#Group">Group</a></code> or <code><a href="#Dataset">Dataset</a></code> to instances
-of the <a href="#VLType">VLType</a> class.</p>
+of the <code><a href="#VLType">VLType</a></code> class.</p>
 
 <p><strong><code>enumtypes</code></strong>: The <code>enumtypes</code> dictionary maps the names of
 Enum types defined for the <code><a href="#Group">Group</a></code> or <code><a href="#Dataset">Dataset</a></code> to instances
-of the <a href="#EnumType">EnumType</a> class.</p>
+of the <code><a href="#EnumType">EnumType</a></code> class.</p>
 
 <p><strong><code>data_model</code></strong>: <code>data_model</code> describes the netCDF
 data model version, one of <code>NETCDF3_CLASSIC</code>, <code>NETCDF4</code>,
@@ -1962,7 +1962,7 @@ results in an unlimited dimension. The return value is the <code><a href="#Dimen
 class instance describing the new dimension.  To determine the current
 maximum size of the dimension, use the <code>len</code> function on the <code><a href="#Dimension">Dimension</a></code>
 instance. To determine if a dimension is 'unlimited', use the
-<a href="#<a href="#Dimension.isunlimited">Dimension.isunlimited</a>"><a href="#Dimension.isunlimited">Dimension.isunlimited</a></a> method of the <code><a href="#Dimension">Dimension</a></code> instance.</p>
+<code><a href="#Dimension.isunlimited">Dimension.isunlimited</a></code> method of the <code><a href="#Dimension">Dimension</a></code> instance.</p>
 </div>
 
 
@@ -2022,7 +2022,7 @@ datatype.</p>
 <p>Creates a new VLEN data type named <code>datatype_name</code> from a numpy
 dtype object <code>datatype</code>.</p>
 
-<p>The return value is the <a href="#VLType">VLType</a> class instance describing the new
+<p>The return value is the <code><a href="#VLType">VLType</a></code> class instance describing the new
 datatype.</p>
 </div>
 
@@ -2043,7 +2043,7 @@ datatype.</p>
 integer dtype object <code>datatype</code>, and a python dictionary
 defining the enum fields and values.</p>
 
-<p>The return value is the <a href="#EnumType">EnumType</a> class instance describing the new
+<p>The return value is the <code><a href="#EnumType">EnumType</a></code> class instance describing the new
 datatype.</p>
 </div>
 
@@ -2079,7 +2079,7 @@ Supported specifiers include: <code>'S1' or 'c' (NC_CHAR), 'i1' or 'b' or 'B'
 (NC_USHORT), 'i4' or 'i' or 'l' (NC_INT), 'u4' (NC_UINT), 'i8' (NC_INT64),
 'u8' (NC_UINT64), 'f4' or 'f' (NC_FLOAT), 'f8' or 'd' (NC_DOUBLE)</code>.
 <code>datatype</code> can also be a <code><a href="#CompoundType">CompoundType</a></code> instance
-(for a structured, or compound array), a <a href="#VLType">VLType</a> instance
+(for a structured, or compound array), a <code><a href="#VLType">VLType</a></code> instance
 (for a variable-length array), or the python <code>str</code> builtin
 (for a variable-length string array). Numpy string and unicode datatypes with
 length greater than one are aliases for <code>str</code>.</p>
@@ -2130,7 +2130,7 @@ keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 
 <p>The optional keyword <code>fill_value</code> can be used to override the default
 netCDF <code>_FillValue</code> (the value that the variable gets filled with before
-any data is written to it, defaults given in <a href="#default_fillvals">default_fillvals</a>).
+any data is written to it, defaults given in the dict <code><a href="#default_fillvals">netCDF4.default_fillvals</a></code>).
 If fill_value is set to <code>False</code>, then the variable is not pre-filled.</p>
 
 <p>If the optional keyword parameter <code>least_significant_digit</code> is
@@ -2823,7 +2823,7 @@ typecodes can also be used (<code>'f'</code> instead of <code>'f4'</code>, <code
 <code>'f8'</code>, <code>'h'</code> or <code>'s'</code> instead of <code>'i2'</code>, <code>'b'</code> or <code>'B'</code> instead of
 <code>'i1'</code>, <code>'c'</code> instead of <code>'S1'</code>, and <code>'i'</code> or <code>'l'</code> instead of
 <code>'i4'</code>). <code>datatype</code> can also be a <code><a href="#CompoundType">CompoundType</a></code> instance
-(for a structured, or compound array), a <a href="#VLType">VLType</a> instance
+(for a structured, or compound array), a <code><a href="#VLType">VLType</a></code> instance
 (for a variable-length array), or the python <code>str</code> builtin
 (for a variable-length string array). Numpy string and unicode datatypes with
 length greater than one are aliases for <code>str</code>.</p>
@@ -2881,10 +2881,10 @@ so that a precision of 0.1 is retained (in this case bits=4). Default is
 value that the variable gets filled with before any data is written to it)
 is replaced with this value.  If fill_value is set to <code>False</code>, then
 the variable is not pre-filled. The default netCDF fill values can be found
-in <a href="#default_fillvals">default_fillvals</a>.</p>
+in the dictionary <code><a href="#default_fillvals">netCDF4.default_fillvals</a></code>.</p>
 
 <p><strong><code>chunk_cache</code></strong>: If specified, sets the chunk cache size for this variable.
-Persists as long as Dataset is open. Use <a href="#set_var_chunk_cache">set_var_chunk_cache</a> to 
+Persists as long as Dataset is open. Use <code>set_var_chunk_cache</code> to 
 change it when Dataset is re-opened. </p>
 
 <p><strong><em>Note</em></strong>: <code><a href="#Variable">Variable</a></code> instances should be created using the
@@ -3545,11 +3545,11 @@ open for parallel access.</p>
 
         
             <div class="docstring"><p>A netCDF <code><a href="#Dimension">Dimension</a></code> is used to describe the coordinates of a <code><a href="#Variable">Variable</a></code>.
-See <a href="#<a href="#Dimension.__init__">Dimension.__init__</a>"><a href="#Dimension.__init__">Dimension.__init__</a></a> for more details.</p>
+See <code><a href="#Dimension.__init__">Dimension.__init__</a></code> for more details.</p>
 
 <p>The current maximum size of a <code><a href="#Dimension">Dimension</a></code> instance can be obtained by
 calling the python <code>len</code> function on the <code><a href="#Dimension">Dimension</a></code> instance. The
-<a href="#<a href="#Dimension.isunlimited">Dimension.isunlimited</a>"><a href="#Dimension.isunlimited">Dimension.isunlimited</a></a> method of a <code><a href="#Dimension">Dimension</a></code> instance can be used to
+<code><a href="#Dimension.isunlimited">Dimension.isunlimited</a></code> method of a <code><a href="#Dimension">Dimension</a></code> instance can be used to
 determine if the dimension is unlimited.</p>
 
 <p>Read-only class variables:</p>
@@ -3581,7 +3581,7 @@ determine if the dimension is unlimited.</p>
 
 <p><strong><em>Note</em></strong>: <code><a href="#Dimension">Dimension</a></code> instances should be created using the
 <code><a href="#Dataset.createDimension">Dataset.createDimension</a></code> method of a <code><a href="#Group">Group</a></code> or
-<code><a href="#Dataset">Dataset</a></code> instance, not using <a href="#<a href="#Dimension.__init__">Dimension.__init__</a>"><a href="#Dimension.__init__">Dimension.__init__</a></a> directly.</p>
+<code><a href="#Dataset">Dataset</a></code> instance, not using <code><a href="#Dimension.__init__">Dimension.__init__</a></code> directly.</p>
 </div>
 
 
@@ -3650,7 +3650,7 @@ determine if the dimension is unlimited.</p>
             <div class="docstring"><p>Groups define a hierarchical namespace within a netCDF file. They are
 analogous to directories in a unix filesystem. Each <code><a href="#Group">Group</a></code> behaves like
 a <code><a href="#Dataset">Dataset</a></code> within a Dataset, and can contain it's own variables,
-dimensions and attributes (and other Groups). See <a href="#<a href="#Group.__init__">Group.__init__</a>"><a href="#Group.__init__">Group.__init__</a></a>
+dimensions and attributes (and other Groups). See <code><a href="#Group.__init__">Group.__init__</a></code>
 for more details.</p>
 
 <p><code><a href="#Group">Group</a></code> inherits from <code><a href="#Dataset">Dataset</a></code>, so all the
@@ -3771,7 +3771,7 @@ or NETCDF3_64BIT_DATA</code> format (<code>NETCDF4</code> Datasets won't work).<
 
 <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf">pycdf</a> by Andre Gosselin.</p>
 
-<p>Example usage (See <a href="#<a href="#MFDataset.__init__">MFDataset.__init__</a>"><a href="#MFDataset.__init__">MFDataset.__init__</a></a> for more details):</p>
+<p>Example usage (See <code><a href="#MFDataset.__init__">MFDataset.__init__</a></code> for more details):</p>
 
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a series of netCDF files with a variable sharing</span>
@@ -3932,7 +3932,7 @@ variables with an aggregation dimension and all global attributes.</p>
             <div class="docstring"><p>Class providing an interface to a MFDataset time Variable by imposing a unique common
 time unit and/or calendar to all files.</p>
 
-<p>Example usage (See <a href="#<a href="#MFTime.__init__">MFTime.__init__</a>"><a href="#MFTime.__init__">MFTime.__init__</a></a> for more details):</p>
+<p>Example usage (See <code><a href="#MFTime.__init__">MFTime.__init__</a></code> for more details):</p>
 
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;mftest_1.nc&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;NETCDF4_CLASSIC&quot;</span><span class="p">)</span>
@@ -3975,7 +3975,7 @@ time unit and/or calendar to all files.</p>
 <p>Create a time Variable with units consistent across a multifile
 dataset.</p>
 
-<p><strong><code>time</code></strong>: Time variable from a <a href="#MFDataset">MFDataset</a>.</p>
+<p><strong><code>time</code></strong>: Time variable from a <code><a href="#MFDataset">MFDataset</a></code>.</p>
 
 <p><strong><code>units</code></strong>: Time units, for example, <code>'days since 1979-01-01'</code>. If <code>None</code>,
 use the units from the master variable.</p>
@@ -4018,7 +4018,7 @@ is present on each variable and values are unique across files raising a
 type, and can be passed to the the <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method of
 a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance.
 Compound data types map to numpy structured arrays.
-See <a href="#<a href="#CompoundType.__init__">CompoundType.__init__</a>"><a href="#CompoundType.__init__">CompoundType.__init__</a></a> for more details.</p>
+See <code><a href="#CompoundType.__init__">CompoundType.__init__</a></code> for more details.</p>
 
 <p>The instance variables <code>dtype</code> and <code>name</code> should not be modified by
 the user.</p>
@@ -4095,10 +4095,10 @@ first).</p>
     </div>
 
         
-            <div class="docstring"><p>A <a href="#VLType">VLType</a> instance is used to describe a variable length (VLEN) data
+            <div class="docstring"><p>A <code><a href="#VLType">VLType</a></code> instance is used to describe a variable length (VLEN) data
 type, and can be passed to the the <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method of
 a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance. See
-<a href="#<a href="#VLType.__init__">VLType.__init__</a>"><a href="#VLType.__init__">VLType.__init__</a></a>for more details.</p>
+<code><a href="#VLType.__init__">VLType.__init__</a></code> for more details.</p>
 
 <p>The instance variables <code>dtype</code> and <code>name</code> should not be modified by
 the user.</p>
@@ -4124,7 +4124,7 @@ variable length array.</p>
 <p><strong><code>datatype_name</code></strong>: a Python string containing a description of the
 VLEN data type.</p>
 
-<p><strong><em><code>Note</code></em></strong>: <a href="#VLType">VLType</a> instances should be created using the
+<p><strong><em><code>Note</code></em></strong>: <code><a href="#VLType">VLType</a></code> instances should be created using the
 <code><a href="#Dataset.createVLType">Dataset.createVLType</a></code> method of a <code><a href="#Dataset">Dataset</a></code> or
 <code><a href="#Group">Group</a></code> instance, not using this class directly.</p>
 </div>
@@ -4399,10 +4399,10 @@ used to build the module, and when it was built.</p>
     </div>
 
         
-            <div class="docstring"><p>A <a href="#EnumType">EnumType</a> instance is used to describe an Enum data
+            <div class="docstring"><p>A <code><a href="#EnumType">EnumType</a></code> instance is used to describe an Enum data
 type, and can be passed to the the <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method of
 a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance. See
-<a href="#<a href="#EnumType.__init__">EnumType.__init__</a>"><a href="#EnumType.__init__">EnumType.__init__</a></a> for more details.</p>
+<code><a href="#EnumType.__init__">EnumType.__init__</a></code> for more details.</p>
 
 <p>The instance variables <code>dtype</code>, <code>name</code> and <code>enum_dict</code> should not be modified by
 the user.</p>
@@ -4431,7 +4431,7 @@ Enum data type.</p>
 <p><strong><code>enum_dict</code></strong>: a Python dictionary containing the Enum field/value
 pairs.</p>
 
-<p><strong><em><code>Note</code></em></strong>: <a href="#EnumType">EnumType</a> instances should be created using the
+<p><strong><em><code>Note</code></em></strong>: <code><a href="#EnumType">EnumType</a></code> instances should be created using the
 <code><a href="#Dataset.createEnumType">Dataset.createEnumType</a></code> method of a <code><a href="#Dataset">Dataset</a></code> or
 <code><a href="#Group">Group</a></code> instance, not using this class directly.</p>
 </div>
@@ -4479,7 +4479,7 @@ pairs.</p>
 
 <p>return current netCDF chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for <code>nc_get_chunk_cache</code> for
-details. Values can be reset with <a href="#set_chunk_cache">set_chunk_cache</a>.</p>
+details. Values can be reset with <code><a href="#set_chunk_cache">set_chunk_cache</a></code>.</p>
 </div>
 
 
