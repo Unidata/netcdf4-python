@@ -210,10 +210,10 @@ instead of relying exclusively on the nc-config utility.
 * Clone GitHub repository (`git clone https://github.com/Unidata/netcdf4-python.git`), or get source tarball from [PyPI](https://pypi.python.org/pypi/netCDF4). Links to Windows and OS X precompiled binary packages are also available on [PyPI](https://pypi.python.org/pypi/netCDF4).
 
 * Make sure [numpy](http://www.numpy.org/) and [Cython](http://cython.org/) are
-  installed and you have [Python](https://www.python.org) 2.7 or newer.
+  installed and you have [Python](https://www.python.org) 3.6 or newer.
 
-* Make sure [HDF5](http://www.h5py.org/) and netcdf-4 are installed, and the `nc-config` utility
-  is in your Unix PATH. 
+* Make sure [HDF5](http://www.h5py.org/) and netcdf-4 are installed, 
+  and the `nc-config` utility is in your Unix PATH.
 
 * Run `python setup.py build`, then `python setup.py install` (with `sudo` if necessary).
 
