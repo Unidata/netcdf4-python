@@ -1621,7 +1621,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#106;&#101;&#x66;&#102;r&#101;&#121;&#46;&#115;&#x2e;&#x77;&#104;&#x69;&#116;&#97;&#x6b;&#x65;&#114;&#x40;&#110;o&#97;&#97;&#x2e;&#103;&#x6f;&#118;">&#106;&#101;&#x66;&#102;r&#101;&#121;&#46;&#115;&#x2e;&#x77;&#104;&#x69;&#116;&#97;&#x6b;&#x65;&#114;&#x40;&#110;o&#97;&#97;&#x2e;&#103;&#x6f;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#106;&#x65;&#x66;&#x66;&#114;&#x65;&#121;&#x2e;&#115;&#46;&#x77;&#x68;&#105;&#116;a&#107;&#x65;&#114;&#x40;&#110;&#111;&#97;&#97;&#46;g&#x6f;&#x76;">&#106;&#x65;&#x66;&#x66;&#114;&#x65;&#121;&#x2e;&#115;&#46;&#x77;&#x68;&#105;&#116;a&#107;&#x65;&#114;&#x40;&#110;&#111;&#97;&#97;&#46;g&#x6f;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -3233,13 +3233,14 @@ equal to the either the netCDF _FillValue or the value specified by the
 missing_value variable attribute. The fill_value of the masked array
 is set to the missing_value attribute (if it exists), otherwise
 the netCDF _FillValue attribute (which has a default value
-for each data type).  When data is written to a variable, the masked
+for each data type). If the variable has no missing_value attribute, the
+_FillValue is used instead. If the variable has valid_min/valid_max and
+missing_value attributes, data outside the specified range will be masked.
+When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. If the variable has valid_min/valid_max and
-missing_value attributes, data outside the specified range will be
-set to missing_value.</p>
+is used instead. </p>
 
 <p>If <code>maskandscale</code> is set to <code>True</code>, and the variable has a
 <code>scale_factor</code> or an <code>add_offset</code> attribute, then data read
@@ -3342,13 +3343,14 @@ equal to the either the netCDF _FillValue or the value specified by the
 missing_value variable attribute. The fill_value of the masked array
 is set to the missing_value attribute (if it exists), otherwise
 the netCDF _FillValue attribute (which has a default value
-for each data type).  When data is written to a variable, the masked
+for each data type). If the variable has no missing_value attribute, the
+_FillValue is used instead. If the variable has valid_min/valid_max and
+missing_value attributes, data outside the specified range will be masked.
+When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. If the variable has valid_min/valid_max and
-missing_value attributes, data outside the specified range will be
-set to missing_value.</p>
+is used instead. </p>
 
 <p>The default value of <code>mask</code> is <code>True</code>
 (automatic conversions are performed).</p>
@@ -4160,7 +4162,7 @@ VLEN data type.</p>
     </div>
 
         
-            <div class="docstring"><p>date2num(dates, units, calendar=None)</p>
+            <div class="docstring"><p>date2num(dates, units, calendar=None, has_year_zero=None)</p>
 
 <p>Return numeric time values given datetime objects. The units
 of the numeric time values are described by the <strong>units</strong> argument
@@ -4184,8 +4186,22 @@ All the values currently defined in the
 <code>CF metadata convention &lt;http://cfconventions.org&gt;</code>__ are supported.
 Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
-Default is <code>None</code> which means the calendar associated with the rist
+Default is <code>None</code> which means the calendar associated with the first
 input datetime instance will be used.</p>
+
+<p><strong>has_year_zero</strong>: If set to True, astronomical year numbering
+is used and the year zero exists.  If set to False for real-world
+calendars, then historical year numbering is used and the year 1 is
+preceded by year -1 and no year zero exists.
+The defaults are set to conform with
+CF conventions (False for 'julian', 'gregorian'/'standard', True
+for 'proleptic_gregorian' (ISO 8601) and True for the idealized
+calendars 'noleap'/'365_day', '360_day', 366_day'/'all_leap')
+The defaults can only be over-ridden for the real-world calendars,
+for the the idealized calendars the year zero 
+always exists and the has_year_zero kwarg is ignored.
+This kwarg is not needed to define calendar systems allowed by CF
+(the calendar-specific defaults do this).</p>
 
 <p>returns a numeric time value, or an array of numeric time values
 with approximately 1 microsecond accuracy.</p>
@@ -4202,7 +4218,7 @@ with approximately 1 microsecond accuracy.</p>
     </div>
 
         
-            <div class="docstring"><p>num2date(times, units, calendar=u'standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False)</p>
+            <div class="docstring"><p>num2date(times, units, calendar=u'standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</p>
 
 <p>Return datetime objects given numeric time values. The units
 of the numeric time values are described by the <strong>units</strong> argument
@@ -4232,6 +4248,20 @@ subclass cftime.datetime are returned for all calendars. Default <strong>True</s
 objects and raise an error if this is not possible. Ignored unless
 <strong>only_use_cftime_datetimes=False</strong>. Default <strong>False</strong>.</p>
 
+<p><strong>has_year_zero</strong>: if set to True, astronomical year numbering
+is used and the year zero exists.  If set to False for real-world
+calendars, then historical year numbering is used and the year 1 is
+preceded by year -1 and no year zero exists.
+The defaults are set to conform with
+CF conventions (False for 'julian', 'gregorian'/'standard', True
+for 'proleptic_gregorian' (ISO 8601) and True for the idealized
+calendars 'noleap'/'365_day', '360_day', 366_day'/'all_leap')
+The defaults can only be over-ridden for the real-world calendars,
+for the the idealized calendars the year zero 
+always exists and the has_year_zero kwarg is ignored.
+This kwarg is not needed to define calendar systems allowed by CF
+(the calendar-specific defaults do this).</p>
+
 <p>returns a datetime instance, or an array of datetime instances with
 microsecond accuracy, if possible.</p>
 
@@ -4259,7 +4289,7 @@ contains one.</p>
     </div>
 
         
-            <div class="docstring"><p>date2index(dates, nctime, calendar=None, select=u'exact')</p>
+            <div class="docstring"><p>date2index(dates, nctime, calendar=None, select=u'exact', has_year_zero=None)</p>
 
 <p>Return indices of a netCDF time variable corresponding to the given dates.</p>
 
@@ -4269,14 +4299,13 @@ The datetime objects should not include a time-zone offset.</p>
 <p><strong>nctime</strong>: A netCDF time variable object. The nctime object must have a
 <strong>units</strong> attribute.</p>
 
-<p><strong>calendar</strong>: describes the calendar used in the time calculations.
+<p><strong>calendar</strong>: describes the calendar to be used in the time calculations.
 All the values currently defined in the
 <code>CF metadata convention &lt;http://cfconventions.org&gt;</code>__ are supported.
 Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
-Default is <strong>'standard'</strong>, which is a mixed Julian/Gregorian calendar.
-If <strong>calendar</strong> is None, its value is given by <strong>nctime.calendar</strong> or
-<strong>standard</strong> if no such attribute exists.</p>
+Default is <code>None</code> which means the calendar associated with the first
+input datetime instance will be used.</p>
 
 <p><strong>select</strong>: <strong>'exact', 'before', 'after', 'nearest'</strong>
 The index selection method. <strong>exact</strong> will return the indices perfectly
@@ -4284,6 +4313,20 @@ matching the dates given. <strong>before</strong> and <strong>after</strong> wil
 corresponding to the dates just before or just after the given dates if
 an exact match cannot be found. <strong>nearest</strong> will return the indices that
 correspond to the closest dates.</p>
+
+<p><strong>has_year_zero</strong>: if set to True, astronomical year numbering
+is used and the year zero exists.  If set to False for real-world
+calendars, then historical year numbering is used and the year 1 is
+preceded by year -1 and no year zero exists.
+The defaults are set to conform with
+CF conventions (False for 'julian', 'gregorian'/'standard', True
+for 'proleptic_gregorian' (ISO 8601) and True for the idealized
+calendars 'noleap'/'365_day', '360_day', 366_day'/'all_leap')
+The defaults can only be over-ridden for the real-world calendars,
+for the the idealized calendars the year zero 
+always exists and the has_year_zero kwarg is ignored.
+This kwarg is not needed to define calendar systems allowed by CF
+(the calendar-specific defaults do this).</p>
 
 <p>returns an index (indices) of the netCDF time variable corresponding
 to the given datetime object(s).</p>
