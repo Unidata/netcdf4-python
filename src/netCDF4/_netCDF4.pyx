@@ -5045,13 +5045,14 @@ equal to the either the netCDF _FillValue or the value specified by the
 missing_value variable attribute. The fill_value of the masked array
 is set to the missing_value attribute (if it exists), otherwise
 the netCDF _FillValue attribute (which has a default value
-for each data type).  When data is written to a variable, the masked
+for each data type). If the variable has no missing_value attribute, the
+_FillValue is used instead. If the variable has valid_min/valid_max and
+missing_value attributes, data outside the specified range will be masked.
+When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. If the variable has valid_min/valid_max and
-missing_value attributes, data outside the specified range will be
-set to missing_value.
+is used instead. 
 
 If `maskandscale` is set to `True`, and the variable has a
 `scale_factor` or an `add_offset` attribute, then data read
@@ -5134,13 +5135,14 @@ equal to the either the netCDF _FillValue or the value specified by the
 missing_value variable attribute. The fill_value of the masked array
 is set to the missing_value attribute (if it exists), otherwise
 the netCDF _FillValue attribute (which has a default value
-for each data type).  When data is written to a variable, the masked
+for each data type). If the variable has no missing_value attribute, the
+_FillValue is used instead. If the variable has valid_min/valid_max and
+missing_value attributes, data outside the specified range will be masked.
+When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. If the variable has valid_min/valid_max and
-missing_value attributes, data outside the specified range will be
-set to missing_value.
+is used instead. 
 
 The default value of `mask` is `True`
 (automatic conversions are performed).
