@@ -6,6 +6,7 @@
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/netCDF4/badges/version.svg)](https://anaconda.org/conda-forge/netCDF4)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2592291.svg)](https://doi.org/10.5281/zenodo.2592290)
 
+
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
@@ -206,8 +207,21 @@ regarding thread-safety in the HDF5 C library.  Fixes to `setup.py` now ensure t
 with `export USE_NCCONFIG=0` will use environment variables to find paths to libraries and include files,
 instead of relying exclusively on the nc-config utility.
 
-## Quick Start
-* Clone GitHub repository (`git clone https://github.com/Unidata/netcdf4-python.git`), or get source tarball from [PyPI](https://pypi.python.org/pypi/netCDF4). Links to Windows and OS X precompiled binary packages are also available on [PyPI](https://pypi.python.org/pypi/netCDF4).
+## Installation
+The easiest way to install is through pip:
+
+```shell
+pip install netcdf4
+```
+
+or, if you are a user of the Conda package manager,
+
+```shell
+conda install -c conda-forge netcdf4
+```
+
+## Development installation
+* Clone GitHub repository (`git clone https://github.com/Unidata/netcdf4-python.git`)
 
 * Make sure [numpy](http://www.numpy.org/) and [Cython](http://cython.org/) are
   installed and you have [Python](https://www.python.org) 3.6 or newer.
@@ -215,7 +229,7 @@ instead of relying exclusively on the nc-config utility.
 * Make sure [HDF5](http://www.h5py.org/) and netcdf-4 are installed, 
   and the `nc-config` utility is in your Unix PATH.
 
-* Run `python setup.py build`, then `python setup.py install` (with `sudo` if necessary).
+* Run `python setup.py build`, then `pip install -e .`.
 
 * To run all the tests, execute `cd test && python run_all.py`.
 
