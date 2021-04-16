@@ -24,9 +24,8 @@
 </ul></li>
 <li><a href="#introduction">Introduction</a>
 <ul>
-  <li><a href="#download">Download</a></li>
-  <li><a href="#requires">Requires</a></li>
-  <li><a href="#install">Install</a></li>
+  <li><a href="#quick-install">Quick Install</a></li>
+  <li><a href="#developer-install">Developer Install</a></li>
 </ul></li>
 <li><a href="#tutorial">Tutorial</a>
 <ul>
@@ -479,56 +478,30 @@ Mixtures of compound, vlen and enum data types (such as
 compound types containing enums, or vlens containing compound
 types) are not supported.</p>
 
-<h2 id="download">Download</h2>
+<h2 id="quick-install">Quick Install</h2>
 
 <ul>
-<li>Latest bleeding-edge code from the
-<a href="http://github.com/Unidata/netcdf4-python">github repository</a>.</li>
-<li>Latest <a href="https://pypi.python.org/pypi/netCDF4">releases</a>
-(source code and binary installers).</li>
+<li>the easiest way to get going is to install via <code>pip install netCDF4</code>.
+(or if you are a user conda package manager <code>conda install -c conda_forge netCDF4</code>).</li>
 </ul>
 
-<h2 id="requires">Requires</h2>
+<h2 id="developer-install">Developer Install</h2>
 
 <ul>
-<li>Python 3.6 or later.</li>
-<li><a href="http://numpy.scipy.org">numpy array module</a>, version 1.10.0 or later.</li>
-<li><a href="http://cython.org">Cython</a>, version 0.21 or later.</li>
-<li><a href="https://pypi.python.org/pypi/setuptools">setuptools</a>, version 18.0 or
-later.</li>
-<li>The HDF5 C library version 1.8.4-patch1 or higher
-from <a href="ftp://ftp.hdfgroup.org/HDF5/current/src"></a>.
-<strong><em>netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
-otherwise resulting files may be unreadable by clients using earlier
-versions of HDF5.  For netCDF &lt; 4.4.1, HDF5 version 1.8.x is recommended.</em></strong>
-Be sure to build with <code>--enable-hl --enable-shared</code>.</li>
-<li><a href="http://curl.haxx.se/libcurl">Libcurl</a>, if you want
-<a href="http://opendap.org">OPeNDAP</a> support.</li>
-<li><a href="http://www.hdfgroup.org/products/hdf4">HDF4</a>, if you want
-to be able to read HDF4 "Scientific Dataset" (SD) files.</li>
-<li>The netCDF-4 C library from the <a href="https://github.com/Unidata/netcdf-c/releases">github releases
-page</a>.
-Version 4.1.1 or higher is required (4.2 or higher recommended).
-Be sure to build with <code>--enable-netcdf-4 --enable-shared</code>, and set
-<code>CPPFLAGS="-I $HDF5_DIR/include"</code> and <code>LDFLAGS="-L $HDF5_DIR/lib"</code>,
-where <code>$HDF5_DIR</code> is the directory where HDF5 was installed.
-If you want <a href="http://opendap.org">OPeNDAP</a> support, add <code>--enable-dap</code>.
-If you want HDF4 SD support, add <code>--enable-hdf4</code> and add
-the location of the HDF4 headers and library to <code>$CPPFLAGS</code> and <code>$LDFLAGS</code>.</li>
-<li>for MPI parallel IO support, an MPI-enabled versions of the netcdf library
-is required, as is the <a href="http://mpi4py.scipy.org">mpi4py</a> python module.
+<li>Clone the
+<a href="http://github.com/Unidata/netcdf4-python">github repository</a>.</li>
+<li>Make sure the dependencies are satisfied (Python 3.6 or later,
+<a href="http://numpy.scipy.org">numpy</a>, 
+<a href="http://cython.org">Cython</a>,
+<a href="https://github.com/Unidata/cftime">cftime</a>,
+<a href="https://pypi.python.org/pypi/setuptools">setuptools</a>,
+the <a href="https://www.hdfgroup.org/solutions/hdf5/">HDF5 C library</a>,
+and the <a href="https://www.unidata.ucar.edu/software/netcdf/">netCDF C library</a>).
+For MPI parallel IO support, an MPI-enabled versions of the netcdf library
+is required, as is <a href="http://mpi4py.scipy.org">mpi4py</a>.
 Parallel IO further depends on the existence of MPI-enabled HDF5 or the
 <a href="https://parallel-netcdf.github.io/">PnetCDF</a> library.</li>
-<li><a href="https://github.com/Unidata/cftime">cftime</a> for
-time and date handling utility functions.</li>
-</ul>
-
-<h2 id="install">Install</h2>
-
-<ul>
-<li>install the requisite python modules and C libraries (see above). It's
-easiest if all the C libs are built as shared libraries.</li>
-<li>By default, the utility <code>nc-config</code>, installed with netcdf 4.1.2 or higher,
+<li>By default, the utility <code>nc-config</code> (installed with netcdf-c)
 will be run used to determine where all the dependencies live.</li>
 <li>If <code>nc-config</code> is not in your default <code>PATH</code>, you can set the <code>NETCDF4_DIR</code>
 environment variable and <code>setup.py</code> will look in <code>$NETCDF4_DIR/bin</code>.
@@ -540,14 +513,11 @@ To disable the use of <code>setup.cfg</code>, set <code>USE_SETUPCFG</code> to 0
 As a last resort, the library and include paths can be set via environment variables.
 If you go this route, set <code>USE_NCCONFIG</code> and <code>USE_SETUPCFG</code> to 0, and specify
 <code>NETCDF4_LIBDIR</code>, <code>NETCDF4_INCDIR</code>, <code>HDF5_LIBDIR</code> and <code>HDF5_INCDIR</code>.
-Similarly, environment variables
-(all capitalized) can be used to set the include and library paths for
-<code>hdf4</code>, <code>szip</code>, <code>jpeg</code>, <code>curl</code> and <code>zlib</code>. If the dependencies are not found
+If the dependencies are not found
 in any of the paths specified by environment variables, then standard locations
 (such as <code>/usr</code> and <code>/usr/local</code>) are searched.</li>
 <li>run <code>python setup.py build</code>, then <code>python setup.py install</code> (as root if
-necessary). <code>pip install</code> can be used to install pre-compiled binary wheels from 
-<a href="https://pypi.org/project/netCDF4">pypi</a>.</li>
+necessary).</li>
 <li>run the tests in the 'test' directory by running <code>python run_all.py</code>.</li>
 </ul>
 
@@ -1621,7 +1591,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#106;&#x65;&#x66;&#x66;&#114;&#x65;&#121;&#x2e;&#115;&#46;&#x77;&#x68;&#105;&#116;a&#107;&#x65;&#114;&#x40;&#110;&#111;&#97;&#97;&#46;g&#x6f;&#x76;">&#106;&#x65;&#x66;&#x66;&#114;&#x65;&#121;&#x2e;&#115;&#46;&#x77;&#x68;&#105;&#116;a&#107;&#x65;&#114;&#x40;&#110;&#111;&#97;&#97;&#46;g&#x6f;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#58;&#x6a;&#x65;&#x66;&#x66;&#114;&#101;&#x79;&#x2e;&#x73;&#46;&#x77;&#x68;&#105;&#116;a&#107;&#101;r&#x40;&#x6e;&#111;&#97;&#x61;&#x2e;g&#111;&#x76;">&#x6a;&#x65;&#x66;&#x66;&#114;&#101;&#x79;&#x2e;&#x73;&#46;&#x77;&#x68;&#105;&#116;a&#107;&#101;r&#x40;&#x6e;&#111;&#97;&#x61;&#x2e;g&#111;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -4183,7 +4153,7 @@ origin. <strong>months_since</strong> is allowed <em>only</em> for the <strong>3
 
 <p><strong>calendar</strong>: describes the calendar to be used in the time calculations.
 All the values currently defined in the
-<code>CF metadata convention &lt;http://cfconventions.org&gt;</code>__ are supported.
+<code>CF metadata convention &lt;http://cfconventions.org/cf-conventions/cf-conventions#calendar&gt;</code>__ are supported.
 Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
 Default is <code>None</code> which means the calendar associated with the first
@@ -4194,7 +4164,7 @@ is used and the year zero exists.  If set to False for real-world
 calendars, then historical year numbering is used and the year 1 is
 preceded by year -1 and no year zero exists.
 The defaults are set to conform with
-CF conventions (False for 'julian', 'gregorian'/'standard', True
+CF version 1.9 conventions (False for 'julian', 'gregorian'/'standard', True
 for 'proleptic_gregorian' (ISO 8601) and True for the idealized
 calendars 'noleap'/'365_day', '360_day', 366_day'/'all_leap')
 The defaults can only be over-ridden for the real-world calendars,
@@ -4235,7 +4205,7 @@ origin. <strong>months_since</strong> is allowed <em>only</em> for the <strong>3
 
 <p><strong>calendar</strong>: describes the calendar used in the time calculations.
 All the values currently defined in the
-<code>CF metadata convention &lt;http://cfconventions.org&gt;</code>__ are supported.
+<code>CF metadata convention &lt;http://cfconventions.org/cf-conventions/cf-conventions#calendar&gt;</code>__ are supported.
 Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
 Default is <strong>'standard'</strong>, which is a mixed Julian/Gregorian calendar.</p>
@@ -4253,7 +4223,7 @@ is used and the year zero exists.  If set to False for real-world
 calendars, then historical year numbering is used and the year 1 is
 preceded by year -1 and no year zero exists.
 The defaults are set to conform with
-CF conventions (False for 'julian', 'gregorian'/'standard', True
+CF version 1.9 conventions (False for 'julian', 'gregorian'/'standard', True
 for 'proleptic_gregorian' (ISO 8601) and True for the idealized
 calendars 'noleap'/'365_day', '360_day', 366_day'/'all_leap')
 The defaults can only be over-ridden for the real-world calendars,
@@ -4301,7 +4271,7 @@ The datetime objects should not include a time-zone offset.</p>
 
 <p><strong>calendar</strong>: describes the calendar to be used in the time calculations.
 All the values currently defined in the
-<code>CF metadata convention &lt;http://cfconventions.org&gt;</code>__ are supported.
+<code>CF metadata convention &lt;http://cfconventions.org/cf-conventions/cf-conventions#calendar&gt;</code>__ are supported.
 Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
 Default is <code>None</code> which means the calendar associated with the first
@@ -4319,7 +4289,7 @@ is used and the year zero exists.  If set to False for real-world
 calendars, then historical year numbering is used and the year 1 is
 preceded by year -1 and no year zero exists.
 The defaults are set to conform with
-CF conventions (False for 'julian', 'gregorian'/'standard', True
+CF version 1.9 conventions (False for 'julian', 'gregorian'/'standard', True
 for 'proleptic_gregorian' (ISO 8601) and True for the idealized
 calendars 'noleap'/'365_day', '360_day', 366_day'/'all_leap')
 The defaults can only be over-ridden for the real-world calendars,

@@ -211,13 +211,13 @@ instead of relying exclusively on the nc-config utility.
 The easiest way to install is through pip:
 
 ```shell
-pip install netcdf4
+pip install netCDF4
 ```
 
 or, if you are a user of the Conda package manager,
 
 ```shell
-conda install -c conda-forge netcdf4
+conda install -c conda-forge netCDF4
 ```
 
 ## Development installation
