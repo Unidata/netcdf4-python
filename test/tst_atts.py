@@ -178,15 +178,16 @@ class VariablesTestCase(unittest.TestCase):
         assert v.getncattr('foo') == 1
         assert v.getncattr('bar') == 2
         # check type of attributes using ncdump (issue #529)
-        ncdump_output = f.tocdl()
-        for line in ncdump_output:
-            line = line.strip('\t\n\r')
-            line = line.strip()# Must be done another time for group variables
-            if "stringatt" in line: assert line.startswith('string')
-            if "charatt" in line: assert line.startswith(':')
-            if "cafe" in line: assert line.startswith('string')
-            if "batt" in line: assert line.startswith(':')
-            if "_ncstr" in line: assert line.startswith('string')
+        if not os.getenv('NO_CDL'):
+            ncdump_output = f.tocdl()
+            for line in ncdump_output:
+                line = line.strip('\t\n\r')
+                line = line.strip()# Must be done another time for group variables
+                if "stringatt" in line: assert line.startswith('string')
+                if "charatt" in line: assert line.startswith(':')
+                if "cafe" in line: assert line.startswith('string')
+                if "batt" in line: assert line.startswith(':')
+                if "_ncstr" in line: assert line.startswith('string')
         # check attributes in subgroup.
         # global attributes.
         for key,val in ATTDICT.items():
