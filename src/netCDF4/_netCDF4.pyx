@@ -23,71 +23,43 @@ Mixtures of compound, vlen and enum data types (such as
 compound types containing enums, or vlens containing compound
 types) are not supported.
 
-## Download
+## Quick Install
 
- - Latest bleeding-edge code from the
+ - the easiest way to get going is to install via `pip install netCDF4`.
+   (or if you are a user conda package manager `conda install -c conda_forge netCDF4`).
+
+## Developer Install
+
+ - Clone the
    [github repository](http://github.com/Unidata/netcdf4-python).
- - Latest [releases](https://pypi.python.org/pypi/netCDF4)
-   (source code and binary installers).
-
-## Requires
-
- - Python 3.6 or later.
- - [numpy array module](http://numpy.scipy.org), version 1.10.0 or later.
- - [Cython](http://cython.org), version 0.21 or later.
- - [setuptools](https://pypi.python.org/pypi/setuptools), version 18.0 or
-   later.
- - The HDF5 C library version 1.8.4-patch1 or higher
- from [](ftp://ftp.hdfgroup.org/HDF5/current/src).
- ***netCDF version 4.4.1 or higher is recommended if using HDF5 1.10.x -
- otherwise resulting files may be unreadable by clients using earlier
- versions of HDF5.  For netCDF < 4.4.1, HDF5 version 1.8.x is recommended.***
- Be sure to build with `--enable-hl --enable-shared`.
- - [Libcurl](http://curl.haxx.se/libcurl), if you want
- [OPeNDAP](http://opendap.org) support.
- - [HDF4](http://www.hdfgroup.org/products/hdf4), if you want
- to be able to read HDF4 "Scientific Dataset" (SD) files.
- - The netCDF-4 C library from the [github releases
-   page](https://github.com/Unidata/netcdf-c/releases).
- Version 4.1.1 or higher is required (4.2 or higher recommended).
- Be sure to build with `--enable-netcdf-4 --enable-shared`, and set
- `CPPFLAGS="-I $HDF5_DIR/include"` and `LDFLAGS="-L $HDF5_DIR/lib"`,
- where `$HDF5_DIR` is the directory where HDF5 was installed.
- If you want [OPeNDAP](http://opendap.org) support, add `--enable-dap`.
- If you want HDF4 SD support, add `--enable-hdf4` and add
- the location of the HDF4 headers and library to `$CPPFLAGS` and `$LDFLAGS`.
- - for MPI parallel IO support, an MPI-enabled versions of the netcdf library
- is required, as is the [mpi4py](http://mpi4py.scipy.org) python module.
- Parallel IO further depends on the existence of MPI-enabled HDF5 or the
- [PnetCDF](https://parallel-netcdf.github.io/) library.
- - [cftime](https://github.com/Unidata/cftime) for
- time and date handling utility functions.
-
-
-## Install
-
- - install the requisite python modules and C libraries (see above). It's
- easiest if all the C libs are built as shared libraries.
- - By default, the utility `nc-config`, installed with netcdf 4.1.2 or higher,
- will be run used to determine where all the dependencies live.
+ - Make sure the dependencies are satisfied (Python 3.6 or later,
+   [numpy](http://numpy.scipy.org), 
+   [Cython](http://cython.org),
+   [cftime](https://github.com/Unidata/cftime),
+   [setuptools](https://pypi.python.org/pypi/setuptools),
+   the [HDF5 C library](https://www.hdfgroup.org/solutions/hdf5/),
+   and the [netCDF C library](https://www.unidata.ucar.edu/software/netcdf/)).
+   For MPI parallel IO support, an MPI-enabled versions of the netcdf library
+   is required, as is [mpi4py](http://mpi4py.scipy.org).
+   Parallel IO further depends on the existence of MPI-enabled HDF5 or the
+   [PnetCDF](https://parallel-netcdf.github.io/) library.
+ - By default, the utility `nc-config` (installed with netcdf-c)
+   will be run used to determine where all the dependencies live.
  - If `nc-config` is not in your default `PATH`, you can set the `NETCDF4_DIR`
- environment variable and `setup.py` will look in `$NETCDF4_DIR/bin`.
- You can also use the file `setup.cfg` to set the path to `nc-config`, or
- enter the paths to the libraries and include files manually. Just  edit the `setup.cfg` file
- in a text editor and follow the instructions in the comments.
- To disable the use of `nc-config`, set the env var `USE_NCCONFIG` to 0.
- To disable the use of `setup.cfg`, set `USE_SETUPCFG` to 0.
- As a last resort, the library and include paths can be set via environment variables.
- If you go this route, set `USE_NCCONFIG` and `USE_SETUPCFG` to 0, and specify
- `NETCDF4_LIBDIR`, `NETCDF4_INCDIR`, `HDF5_LIBDIR` and `HDF5_INCDIR`.
- Similarly, environment variables
- (all capitalized) can be used to set the include and library paths for
- `hdf4`, `szip`, `jpeg`, `curl` and `zlib`. If the dependencies are not found
- in any of the paths specified by environment variables, then standard locations
- (such as `/usr` and `/usr/local`) are searched.
+   environment variable and `setup.py` will look in `$NETCDF4_DIR/bin`.
+   You can also use the file `setup.cfg` to set the path to `nc-config`, or
+   enter the paths to the libraries and include files manually. Just  edit the `setup.cfg` file
+   in a text editor and follow the instructions in the comments.
+   To disable the use of `nc-config`, set the env var `USE_NCCONFIG` to 0.
+   To disable the use of `setup.cfg`, set `USE_SETUPCFG` to 0.
+   As a last resort, the library and include paths can be set via environment variables.
+   If you go this route, set `USE_NCCONFIG` and `USE_SETUPCFG` to 0, and specify
+   `NETCDF4_LIBDIR`, `NETCDF4_INCDIR`, `HDF5_LIBDIR` and `HDF5_INCDIR`.
+   If the dependencies are not found
+   in any of the paths specified by environment variables, then standard locations
+   (such as `/usr` and `/usr/local`) are searched.
  - run `python setup.py build`, then `python setup.py install` (as root if
- necessary). `pip install` can be used to install pre-compiled binary wheels from 
- [pypi](https://pypi.org/project/netCDF4).
+   necessary).
  - run the tests in the 'test' directory by running `python run_all.py`.
 
 # Tutorial
