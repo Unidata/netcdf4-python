@@ -178,27 +178,15 @@ class VariablesTestCase(unittest.TestCase):
         assert v.getncattr('foo') == 1
         assert v.getncattr('bar') == 2
         # check type of attributes using ncdump (issue #529)
-        try:  # ncdump may not be on the system PATH
-            nc_proc = subprocess.Popen(
-                ['ncdump', '-h', FILE_NAME], stdout=subprocess.PIPE)
-        except OSError:
-            warnings.warn('"ncdump" not on system path; cannot test '
-                          'read of some attributes')
-            pass
-        else:  # We do have ncdump output
-            dep = nc_proc.communicate()[0]
-            try: # python 2
-                ncdump_output = dep.split('\n')
-            except TypeError: # python 3
-                ncdump_output = str(dep,encoding='utf-8').split('\n')
-            for line in ncdump_output:
-                line = line.strip('\t\n\r')
-                line = line.strip()# Must be done another time for group variables
-                if "stringatt" in line: assert line.startswith('string')
-                if "charatt" in line: assert line.startswith(':')
-                if "cafe" in line: assert line.startswith('string')
-                if "batt" in line: assert line.startswith(':')
-                if "_ncstr" in line: assert line.startswith('string')
+        ncdump_output = f.tocdl()
+        for line in ncdump_output:
+            line = line.strip('\t\n\r')
+            line = line.strip()# Must be done another time for group variables
+            if "stringatt" in line: assert line.startswith('string')
+            if "charatt" in line: assert line.startswith(':')
+            if "cafe" in line: assert line.startswith('string')
+            if "batt" in line: assert line.startswith(':')
+            if "_ncstr" in line: assert line.startswith('string')
         # check attributes in subgroup.
         # global attributes.
         for key,val in ATTDICT.items():
