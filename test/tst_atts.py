@@ -13,7 +13,8 @@ from numpy.random.mtrand import uniform
 import netCDF4
 
 # test attribute creation.
-FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+#FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+FILE_NAME = 'tst_atts.nc'
 VAR_NAME="dummy_var"
 GROUP_NAME = "dummy_group"
 DIM1_NAME="x"
