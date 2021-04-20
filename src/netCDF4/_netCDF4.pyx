@@ -26,7 +26,7 @@ types) are not supported.
 ## Quick Install
 
  - the easiest way to get going is to install via `pip install netCDF4`.
-   (or if you are a user conda package manager `conda install -c conda_forge netCDF4`).
+   (or if you use the [conda](http://conda.io) package manager `conda install -c conda_forge netCDF4`).
 
 ## Developer Install
 
