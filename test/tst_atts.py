@@ -13,7 +13,8 @@ from numpy.random.mtrand import uniform
 import netCDF4
 
 # test attribute creation.
-FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+#FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+FILE_NAME = 'tst_atts.nc'
 VAR_NAME="dummy_var"
 GROUP_NAME = "dummy_group"
 DIM1_NAME="x"
@@ -178,19 +179,8 @@ class VariablesTestCase(unittest.TestCase):
         assert v.getncattr('foo') == 1
         assert v.getncattr('bar') == 2
         # check type of attributes using ncdump (issue #529)
-        try:  # ncdump may not be on the system PATH
-            nc_proc = subprocess.Popen(
-                ['ncdump', '-h', FILE_NAME], stdout=subprocess.PIPE)
-        except OSError:
-            warnings.warn('"ncdump" not on system path; cannot test '
-                          'read of some attributes')
-            pass
-        else:  # We do have ncdump output
-            dep = nc_proc.communicate()[0]
-            try: # python 2
-                ncdump_output = dep.split('\n')
-            except TypeError: # python 3
-                ncdump_output = str(dep,encoding='utf-8').split('\n')
+        if not os.getenv('NO_CDL'):
+            ncdump_output = f.tocdl()
             for line in ncdump_output:
                 line = line.strip('\t\n\r')
                 line = line.strip()# Must be done another time for group variables
