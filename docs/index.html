@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="pdoc 6.3.1" />
+    <meta name="generator" content="pdoc 6.4.3" />
     <title>netCDF4 API documentation</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%2244.5%202.5%2015%2015%22%3E%3Cpath%20d%3D%22M49.351%2021.041c-.233-.721-.546-2.408-.772-4.076-.042-.09-.067-.187-.046-.288-.166-1.347-.277-2.625-.241-3.351-1.378-1.008-2.271-2.586-2.271-4.362%200-.976.272-1.935.788-2.774.057-.094.122-.18.184-.268-.033-.167-.052-.339-.052-.516%200-1.477%201.202-2.679%202.679-2.679.791%200%201.496.352%201.987.9a6.3%206.3%200%200%201%201.001.029c.492-.564%201.207-.929%202.012-.929%201.477%200%202.679%201.202%202.679%202.679a2.65%202.65%200%200%201-.269%201.148c.383.747.595%201.572.595%202.41%200%202.311-1.507%204.29-3.635%205.107.037.699.147%202.27.423%203.294l.137.461c.156%202.136-4.612%205.166-5.199%203.215zm.127-4.919a4.78%204.78%200%200%200%20.775-.584c-.172-.115-.505-.254-.88-.378zm.331%202.302l.828-.502c-.202-.143-.576-.328-.984-.49zm.45%202.157l.701-.403c-.214-.115-.536-.249-.891-.376l.19.779zM49.13%204.141c0%20.152.123.276.276.276s.275-.124.275-.276-.123-.276-.276-.276-.275.124-.275.276zm.735-.389a1.15%201.15%200%200%201%20.314.783%201.16%201.16%200%200%201-1.162%201.162c-.457%200-.842-.27-1.032-.653-.026.117-.042.238-.042.362a1.68%201.68%200%200%200%201.679%201.679%201.68%201.68%200%200%200%201.679-1.679c0-.843-.626-1.535-1.436-1.654zm3.076%201.654a1.68%201.68%200%200%200%201.679%201.679%201.68%201.68%200%200%200%201.679-1.679c0-.037-.009-.072-.011-.109-.21.3-.541.508-.935.508a1.16%201.16%200%200%201-1.162-1.162%201.14%201.14%200%200%201%20.474-.912c-.015%200-.03-.005-.045-.005-.926.001-1.679.754-1.679%201.68zm1.861-1.265c0%20.152.123.276.276.276s.275-.124.275-.276-.123-.276-.276-.276-.275.124-.275.276zm1.823%204.823c0-.52-.103-1.035-.288-1.52-.466.394-1.06.64-1.717.64-1.144%200-2.116-.725-2.499-1.738-.383%201.012-1.355%201.738-2.499%201.738-.867%200-1.631-.421-2.121-1.062-.307.605-.478%201.267-.478%201.942%200%202.486%202.153%204.51%204.801%204.51s4.801-2.023%204.801-4.51zm-3.032%209.156l-.146-.492c-.276-1.02-.395-2.457-.444-3.268a6.11%206.11%200%200%201-1.18.115%206.01%206.01%200%200%201-2.536-.562l.006.175c.802.215%201.848.612%202.021%201.25.079.295-.021.601-.274.837l-.598.501c.667.304%201.243.698%201.311%201.179.02.144.022.507-.393.787l-.564.365c1.285.521%201.361.96%201.381%201.126.018.142.011.496-.427.746l-.854.489c.064-1.19%201.985-2.585%202.697-3.248zM49.34%209.925c0-.667%201-.667%201%200%200%20.653.818%201.205%201.787%201.205s1.787-.552%201.787-1.205c0-.667%201-.667%201%200%200%201.216-1.25%202.205-2.787%202.205s-2.787-.989-2.787-2.205zm-.887-7.633c-.093.077-.205.114-.317.114a.5.5%200%200%201-.318-.886L49.183.397a.5.5%200%200%201%20.703.068.5.5%200%200%201-.069.703zm7.661-.065c-.086%200-.173-.022-.253-.068l-1.523-.893c-.575-.337-.069-1.2.506-.863l1.523.892a.5.5%200%200%201%20.179.685c-.094.158-.261.247-.432.247z%22%20fill%3D%22%233bb300%22/%3E%3C/svg%3E"/>
 
@@ -1110,9 +1110,8 @@ sacrificed for the sake of disk space.</p>
 
 <p>In our example, try replacing the line</p>
 
-<pre><code>```python
-&gt;&gt;&gt; temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",))
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,))</span>
+</code></pre></div>
 
 <p>with</p>
 
@@ -1591,7 +1590,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;:&#106;e&#x66;&#102;&#x72;&#101;&#121;&#x2e;&#x73;&#x2e;&#x77;h&#105;&#116;&#x61;&#x6b;er&#x40;&#x6e;o&#97;&#97;&#x2e;&#x67;&#x6f;&#118;">&#106;e&#x66;&#102;&#x72;&#101;&#121;&#x2e;&#x73;&#x2e;&#x77;h&#105;&#116;&#x61;&#x6b;er&#x40;&#x6e;o&#97;&#97;&#x2e;&#x67;&#x6f;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x6a;&#101;&#x66;&#102;&#x72;e&#121;&#x2e;&#115;&#x2e;w&#104;&#105;t&#97;&#107;&#101;&#114;&#x40;&#110;&#111;&#97;&#97;&#x2e;&#103;&#111;&#118;">&#x6a;&#101;&#x66;&#102;&#x72;e&#121;&#x2e;&#115;&#x2e;w&#104;&#105;t&#97;&#107;&#101;&#114;&#x40;&#110;&#111;&#97;&#97;&#x2e;&#103;&#111;&#118;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -1647,53 +1646,53 @@ name/value pairs is provided by the <code>__dict__</code> attribute of a
 <p>The following class variables are read-only and should not be
 modified by the user.</p>
 
-<p><strong><code>dimensions</code></strong>: The <code>dimensions</code> dictionary maps the names of
+<p><strong><code><a href="#Dataset.dimensions">dimensions</a></code></strong>: The <code><a href="#Dataset.dimensions">dimensions</a></code> dictionary maps the names of
 dimensions defined for the <code><a href="#Group">Group</a></code> or <code><a href="#Dataset">Dataset</a></code> to instances of the
 <code><a href="#Dimension">Dimension</a></code> class.</p>
 
-<p><strong><code>variables</code></strong>: The <code>variables</code> dictionary maps the names of variables
+<p><strong><code><a href="#Dataset.variables">variables</a></code></strong>: The <code><a href="#Dataset.variables">variables</a></code> dictionary maps the names of variables
 defined for this <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> to instances of the
 <code><a href="#Variable">Variable</a></code> class.</p>
 
-<p><strong><code>groups</code></strong>: The groups dictionary maps the names of groups created for
+<p><strong><code><a href="#Dataset.groups">groups</a></code></strong>: The groups dictionary maps the names of groups created for
 this <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> to instances of the <code><a href="#Group">Group</a></code> class (the
 <code><a href="#Dataset">Dataset</a></code> class is simply a special case of the <code><a href="#Group">Group</a></code> class which
 describes the root group in the netCDF4 file).</p>
 
-<p><strong><code>cmptypes</code></strong>: The <code>cmptypes</code> dictionary maps the names of
+<p><strong><code><a href="#Dataset.cmptypes">cmptypes</a></code></strong>: The <code><a href="#Dataset.cmptypes">cmptypes</a></code> dictionary maps the names of
 compound types defined for the <code><a href="#Group">Group</a></code> or <code><a href="#Dataset">Dataset</a></code> to instances of the
 <code><a href="#CompoundType">CompoundType</a></code> class.</p>
 
-<p><strong><code>vltypes</code></strong>: The <code>vltypes</code> dictionary maps the names of
+<p><strong><code><a href="#Dataset.vltypes">vltypes</a></code></strong>: The <code><a href="#Dataset.vltypes">vltypes</a></code> dictionary maps the names of
 variable-length types defined for the <code><a href="#Group">Group</a></code> or <code><a href="#Dataset">Dataset</a></code> to instances
 of the <code><a href="#VLType">VLType</a></code> class.</p>
 
-<p><strong><code>enumtypes</code></strong>: The <code>enumtypes</code> dictionary maps the names of
+<p><strong><code><a href="#Dataset.enumtypes">enumtypes</a></code></strong>: The <code><a href="#Dataset.enumtypes">enumtypes</a></code> dictionary maps the names of
 Enum types defined for the <code><a href="#Group">Group</a></code> or <code><a href="#Dataset">Dataset</a></code> to instances
 of the <code><a href="#EnumType">EnumType</a></code> class.</p>
 
-<p><strong><code>data_model</code></strong>: <code>data_model</code> describes the netCDF
+<p><strong><code><a href="#Dataset.data_model">data_model</a></code></strong>: <code><a href="#Dataset.data_model">data_model</a></code> describes the netCDF
 data model version, one of <code>NETCDF3_CLASSIC</code>, <code>NETCDF4</code>,
 <code>NETCDF4_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code> or <code>NETCDF3_64BIT_DATA</code>.</p>
 
-<p><strong><code>file_format</code></strong>: same as <code>data_model</code>, retained for backwards compatibility.</p>
+<p><strong><code><a href="#Dataset.file_format">file_format</a></code></strong>: same as <code><a href="#Dataset.data_model">data_model</a></code>, retained for backwards compatibility.</p>
 
-<p><strong><code>disk_format</code></strong>: <code>disk_format</code> describes the underlying
+<p><strong><code><a href="#Dataset.disk_format">disk_format</a></code></strong>: <code><a href="#Dataset.disk_format">disk_format</a></code> describes the underlying
 file format, one of <code>NETCDF3</code>, <code>HDF5</code>, <code>HDF4</code>,
 <code>PNETCDF</code>, <code>DAP2</code>, <code>DAP4</code> or <code>UNDEFINED</code>. Only available if using
 netcdf C library version &gt;= 4.3.1, otherwise will always return
 <code>UNDEFINED</code>.</p>
 
-<p><strong><code>parent</code></strong>: <code>parent</code> is a reference to the parent
+<p><strong><code><a href="#Dataset.parent">parent</a></code></strong>: <code><a href="#Dataset.parent">parent</a></code> is a reference to the parent
 <code><a href="#Group">Group</a></code> instance. <code>None</code> for the root group or <code><a href="#Dataset">Dataset</a></code>
 instance.</p>
 
-<p><strong><code>path</code></strong>: <code>path</code> shows the location of the <code><a href="#Group">Group</a></code> in
+<p><strong><code><a href="#Dataset.path">path</a></code></strong>: <code><a href="#Dataset.path">path</a></code> shows the location of the <code><a href="#Group">Group</a></code> in
 the <code><a href="#Dataset">Dataset</a></code> in a unix directory format (the names of groups in the
 hierarchy separated by backslashes). A <code><a href="#Dataset">Dataset</a></code> instance is the root
 group, so the path is simply <code>'/'</code>.</p>
 
-<p><strong><code>keepweakref</code></strong>: If <code>True</code>, child Dimension and Variables objects only keep weak
+<p><strong><code><a href="#Dataset.keepweakref">keepweakref</a></code></strong>: If <code>True</code>, child Dimension and Variables objects only keep weak
 references to the parent Dataset or Group.</p>
 
 <p><strong><code>_ncstring_attrs__</code></strong>: If <code>True</code>, all text attributes will be written as variable-length
@@ -1705,7 +1704,8 @@ strings.</p>
                                         <div class="attr function"><a class="headerlink" href="#Dataset.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">Dataset</span><span class="signature">(unknown)</span>    </div>
+            <span class="name">Dataset</span><span class="signature">()</span>
+    </div>
 
         
             <div class="docstring"><p><strong><code>__init__(self, filename, mode="r", clobber=True, diskless=False,
@@ -1716,7 +1716,7 @@ parallel=False, comm=None, info=None, format='NETCDF4')</code></strong></p>
 
 <p><strong><code>filename</code></strong>: Name of netCDF file to hold dataset. Can also
 be a python 3 pathlib instance or the URL of an OpenDAP dataset.  When memory is
-set this is just used to set the <code>filepath()</code>.</p>
+set this is just used to set the <code><a href="#Dataset.filepath">filepath()</a></code>.</p>
 
 <p><strong><code>mode</code></strong>: access mode. <code>r</code> means read-only; no data can be
 modified. <code>w</code> means write; a new file is created, an existing file with
@@ -1760,7 +1760,7 @@ use the in-memory feature instead (see <code>memory</code> kwarg).</p>
 <p><strong><code>persist</code></strong>: if <code>diskless=True</code>, persist file to disk when closed
 (default <code>False</code>).</p>
 
-<p><strong><code>keepweakref</code></strong>: if <code>True</code>, child Dimension and Variable instances will keep weak
+<p><strong><code><a href="#Dataset.keepweakref">keepweakref</a></code></strong>: if <code>True</code>, child Dimension and Variable instances will keep weak
 references to the parent Dataset or Group object.  Default is <code>False</code>, which
 means strong references will be kept.  Having Dimension and Variable instances
 keep a strong reference to the parent Dataset instance, which in turn keeps a
@@ -1886,7 +1886,7 @@ changed using the <code>encoding</code> kwarg.</p>
 controlled by the variable's <code>_Fill_Value</code> attribute, but is usually
 sufficient to the use the netCDF default <code>_Fill_Value</code> (defined
 separately for each variable type). The default behavior of the netCDF
-library corresponds to <code>set_fill_on</code>.  Data which are equal to the
+library corresponds to <code><a href="#Dataset.set_fill_on">set_fill_on</a></code>.  Data which are equal to the
 <code>_Fill_Value</code> indicate that the variable was created, but never written
 to.</p>
 </div>
@@ -2033,7 +2033,7 @@ complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
 endian='native', least_significant_digit=None, fill_value=None, chunk_cache=None)</code></strong></p>
 
 <p>Creates a new variable with the given <code>varname</code>, <code>datatype</code>, and
-<code>dimensions</code>. If dimensions are not given, the variable is assumed to be
+<code><a href="#Dataset.dimensions">dimensions</a></code>. If dimensions are not given, the variable is assumed to be
 a scalar.</p>
 
 <p>If <code>varname</code> is specified as a path, using forward slashes as in unix to
@@ -2057,7 +2057,7 @@ length greater than one are aliases for <code>str</code>.</p>
 <p>Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.</p>
 
-<p><code>dimensions</code> must be a tuple containing dimension names (strings) that
+<p><code><a href="#Dataset.dimensions">dimensions</a></code> must be a tuple containing dimension names (strings) that
 have been defined previously using <code><a href="#Dataset.createDimension">Dataset.createDimension</a></code>. The default value
 is an empty tuple, which means the variable is a scalar.</p>
 
@@ -2138,11 +2138,11 @@ assigned to or retrieved from a variable with indexing and slicing
 operations on the <code><a href="#Variable">Variable</a></code> instance. A <code><a href="#Variable">Variable</a></code> instance has six
 Dataset standard attributes: <code>dimensions, dtype, shape, ndim, name</code> and
 <code>least_significant_digit</code>. Application programs should never modify
-these attributes. The <code>dimensions</code> attribute is a tuple containing the
+these attributes. The <code><a href="#Dataset.dimensions">dimensions</a></code> attribute is a tuple containing the
 names of the dimensions associated with this variable. The <code>dtype</code>
 attribute is a string describing the variable's data type (<code>i4, f8,
 S1,</code> etc). The <code>shape</code> attribute is a tuple describing the current
-sizes of all the variable's dimensions. The <code>name</code> attribute is a
+sizes of all the variable's dimensions. The <code><a href="#Dataset.name">name</a></code> attribute is a
 string containing the name of the Variable instance.
 The <code>least_significant_digit</code>
 attributes describes the power of ten of the smallest decimal place in
@@ -2582,7 +2582,9 @@ to be installed and in <code>$PATH</code>.</p>
         <span class="name">name</span><span class="default_value"> = &lt;attribute &#39;name&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
     </div>
 
-    
+            <div class="docstring"><p>string name of Group instance</p>
+</div>
+
 
                             </div>
                             <div id="Dataset.groups" class="classattr">
@@ -2717,28 +2719,28 @@ name/value pairs is provided by the <code>__dict__</code> attribute of a
 
 <p>The following class variables are read-only:</p>
 
-<p><strong><code>dimensions</code></strong>: A tuple containing the names of the
+<p><strong><code><a href="#Variable.dimensions">dimensions</a></code></strong>: A tuple containing the names of the
 dimensions associated with this variable.</p>
 
-<p><strong><code>dtype</code></strong>: A numpy dtype object describing the
+<p><strong><code><a href="#Variable.dtype">dtype</a></code></strong>: A numpy dtype object describing the
 variable's data type.</p>
 
-<p><strong><code>ndim</code></strong>: The number of variable dimensions.</p>
+<p><strong><code><a href="#Variable.ndim">ndim</a></code></strong>: The number of variable dimensions.</p>
 
-<p><strong><code>shape</code></strong>: A tuple with the current shape (length of all dimensions).</p>
+<p><strong><code><a href="#Variable.shape">shape</a></code></strong>: A tuple with the current shape (length of all dimensions).</p>
 
-<p><strong><code>scale</code></strong>: If True, <code>scale_factor</code> and <code>add_offset</code> are
+<p><strong><code><a href="#Variable.scale">scale</a></code></strong>: If True, <code>scale_factor</code> and <code>add_offset</code> are
 applied, and signed integer data is automatically converted to
 unsigned integer data if the <code>_Unsigned</code> attribute is set.
 Default is <code>True</code>, can be reset using <code><a href="#Variable.set_auto_scale">Variable.set_auto_scale</a></code> and
 <code><a href="#Variable.set_auto_maskandscale">Variable.set_auto_maskandscale</a></code> methods.</p>
 
-<p><strong><code>mask</code></strong>: If True, data is automatically converted to/from masked
+<p><strong><code><a href="#Variable.mask">mask</a></code></strong>: If True, data is automatically converted to/from masked
 arrays when missing values or fill values are present. Default is <code>True</code>, can be
 reset using <code><a href="#Variable.set_auto_mask">Variable.set_auto_mask</a></code> and <code><a href="#Variable.set_auto_maskandscale">Variable.set_auto_maskandscale</a></code>
 methods.</p>
 
-<p><strong><code><a href="#chartostring">chartostring</a></code></strong>: If True, data is automatically converted to/from character
+<p><strong><code><a href="#Variable.chartostring">chartostring</a></code></strong>: If True, data is automatically converted to/from character
 arrays to string arrays when the <code>_Encoding</code> variable attribute is set.
 Default is <code>True</code>, can be reset using
 <code><a href="#Variable.set_auto_chartostring">Variable.set_auto_chartostring</a></code> method.</p>
@@ -2753,12 +2755,12 @@ that the object supports 'orthogonal indexing', which means that slices
 that are 1d arrays or lists slice along each dimension independently.  This
 behavior is similar to Fortran or Matlab, but different than numpy.</p>
 
-<p><strong><code>datatype</code></strong>: numpy data type (for primitive data types) or VLType/CompoundType
+<p><strong><code><a href="#Variable.datatype">datatype</a></code></strong>: numpy data type (for primitive data types) or VLType/CompoundType
  instance (for compound or vlen data types).</p>
 
-<p><strong><code>name</code></strong>: String name.</p>
+<p><strong><code><a href="#Variable.name">name</a></code></strong>: String name.</p>
 
-<p><strong><code>size</code></strong>: The number of stored elements.</p>
+<p><strong><code><a href="#Variable.size">size</a></code></strong>: The number of stored elements.</p>
 </div>
 
 
@@ -2766,7 +2768,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.</p>
                                         <div class="attr function"><a class="headerlink" href="#Variable.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">Variable</span><span class="signature">(unknown)</span>    </div>
+            <span class="name">Variable</span><span class="signature">()</span>
+    </div>
 
         
             <div class="docstring"><p><strong><code>__init__(self, group, name, datatype, dimensions=(), zlib=False,
@@ -2776,11 +2779,11 @@ least_significant_digit=None,fill_value=None,chunk_cache=None)</code></strong></
 
 <p><code><a href="#Variable">Variable</a></code> constructor.</p>
 
-<p><strong><code>group</code></strong>: <code><a href="#Group">Group</a></code> or <code><a href="#Dataset">Dataset</a></code> instance to associate with variable.</p>
+<p><strong><code><a href="#Variable.group">group</a></code></strong>: <code><a href="#Group">Group</a></code> or <code><a href="#Dataset">Dataset</a></code> instance to associate with variable.</p>
 
-<p><strong><code>name</code></strong>: Name of the variable.</p>
+<p><strong><code><a href="#Variable.name">name</a></code></strong>: Name of the variable.</p>
 
-<p><strong><code>datatype</code></strong>: <code><a href="#Variable">Variable</a></code> data type. Can be specified by providing a
+<p><strong><code><a href="#Variable.datatype">datatype</a></code></strong>: <code><a href="#Variable">Variable</a></code> data type. Can be specified by providing a
 numpy dtype object, or a string that describes a numpy dtype object.
 Supported values, corresponding to <code>str</code> attribute of numpy dtype
 objects, include <code>'f4'</code> (32-bit floating point), <code>'f8'</code> (64-bit floating
@@ -2793,13 +2796,13 @@ compatibility with Scientific.IO.NetCDF, the old Numeric single character
 typecodes can also be used (<code>'f'</code> instead of <code>'f4'</code>, <code>'d'</code> instead of
 <code>'f8'</code>, <code>'h'</code> or <code>'s'</code> instead of <code>'i2'</code>, <code>'b'</code> or <code>'B'</code> instead of
 <code>'i1'</code>, <code>'c'</code> instead of <code>'S1'</code>, and <code>'i'</code> or <code>'l'</code> instead of
-<code>'i4'</code>). <code>datatype</code> can also be a <code><a href="#CompoundType">CompoundType</a></code> instance
+<code>'i4'</code>). <code><a href="#Variable.datatype">datatype</a></code> can also be a <code><a href="#CompoundType">CompoundType</a></code> instance
 (for a structured, or compound array), a <code><a href="#VLType">VLType</a></code> instance
 (for a variable-length array), or the python <code>str</code> builtin
 (for a variable-length string array). Numpy string and unicode datatypes with
 length greater than one are aliases for <code>str</code>.</p>
 
-<p><strong><code>dimensions</code></strong>: a tuple containing the variable's dimension names
+<p><strong><code><a href="#Variable.dimensions">dimensions</a></code></strong>: a tuple containing the variable's dimension names
 (defined previously with <code>createDimension</code>). Default is an empty tuple
 which means the variable is a scalar (and therefore has no dimensions).</p>
 
@@ -2828,7 +2831,7 @@ Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
 from the file. <code>chunksizes</code> cannot be set if <code>contiguous=True</code>.</p>
 
-<p><strong><code>endian</code></strong>: Can be used to control whether the
+<p><strong><code><a href="#Variable.endian">endian</a></code></strong>: Can be used to control whether the
 data is stored in little or big endian format on disk. Possible
 values are <code>little, big</code> or <code>native</code> (default). The library
 will automatically handle endian conversions when the data is read,
@@ -2855,7 +2858,7 @@ the variable is not pre-filled. The default netCDF fill values can be found
 in the dictionary <code><a href="#default_fillvals">netCDF4.default_fillvals</a></code>.</p>
 
 <p><strong><code>chunk_cache</code></strong>: If specified, sets the chunk cache size for this variable.
-Persists as long as Dataset is open. Use <code>set_var_chunk_cache</code> to 
+Persists as long as Dataset is open. Use <code><a href="#Variable.set_var_chunk_cache">set_var_chunk_cache</a></code> to 
 change it when Dataset is re-opened. </p>
 
 <p><strong><em>Note</em></strong>: <code><a href="#Variable">Variable</a></code> instances should be created using the
@@ -3144,7 +3147,7 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([...]).</p>
 from numpy fixed length string arrays when the <code>_Encoding</code> variable attribute
 is set.</p>
 
-<p>If <code><a href="#chartostring">chartostring</a></code> is set to <code>True</code>, when data is read from a character variable
+<p>If <code><a href="#Variable.chartostring">chartostring</a></code> is set to <code>True</code>, when data is read from a character variable
 (dtype = <code>S1</code>) that has an <code>_Encoding</code> attribute, it is converted to a numpy
 fixed length unicode string array (dtype = <code>UN</code>, where <code>N</code> is the length
 of the the rightmost dimension of the variable).  The value of <code>_Encoding</code>
@@ -3154,7 +3157,7 @@ is the unicode encoding that is used to decode the bytes into strings.</p>
 indiviual bytes, with the number of bytes in each string equalling the
 rightmost dimension of the variable.</p>
 
-<p>The default value of <code><a href="#chartostring">chartostring</a></code> is <code>True</code>
+<p>The default value of <code><a href="#Variable.chartostring">chartostring</a></code> is <code>True</code>
 (automatic conversions are performed).</p>
 </div>
 
@@ -3261,7 +3264,7 @@ Also turns on and off automatic conversion of signed integer data
 to unsigned integer data if the variable has an <code>_Unsigned</code>
 attribute.</p>
 
-<p>If <code>scale</code> is set to <code>True</code>, and the variable has a
+<p>If <code><a href="#Variable.scale">scale</a></code> is set to <code>True</code>, and the variable has a
 <code>scale_factor</code> or an <code>add_offset</code> attribute, then data read
 from that variable is unpacked using::</p>
 
@@ -3280,14 +3283,14 @@ For more information on how <code>scale_factor</code> and <code>add_offset</code
 used to provide simple compression, see the
 <a href="http://www.esrl.noaa.gov/psl/data/gridded/conventions/cdc_netcdf_standard.shtml">PSL metadata conventions</a>.</p>
 
-<p>In addition, if <code>scale</code> is set to <code>True</code>, and if the variable has an
+<p>In addition, if <code><a href="#Variable.scale">scale</a></code> is set to <code>True</code>, and if the variable has an
 attribute <code>_Unsigned</code> set, and the variable has a signed integer data type,
 a view to the data is returned with the corresponding unsigned integer datatype.
 This convention is used by the netcdf-java library to save unsigned integer
 data in <code>NETCDF3</code> or <code>NETCDF4_CLASSIC</code> files (since the <code>NETCDF3</code>
 data model does not have unsigned integer data types).</p>
 
-<p>The default value of <code>scale</code> is <code>True</code>
+<p>The default value of <code><a href="#Variable.scale">scale</a></code> is <code>True</code>
 (automatic conversions are performed).</p>
 </div>
 
@@ -3307,7 +3310,7 @@ data model does not have unsigned integer data types).</p>
 <p>turn on or off automatic conversion of variable data to and
 from masked arrays .</p>
 
-<p>If <code>mask</code> is set to <code>True</code>, when data is read from a variable
+<p>If <code><a href="#Variable.mask">mask</a></code> is set to <code>True</code>, when data is read from a variable
 it is converted to a masked array if any of the values are exactly
 equal to the either the netCDF _FillValue or the value specified by the
 missing_value variable attribute. The fill_value of the masked array
@@ -3322,7 +3325,7 @@ masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
 is used instead. </p>
 
-<p>The default value of <code>mask</code> is <code>True</code>
+<p>The default value of <code><a href="#Variable.mask">mask</a></code> is <code>True</code>
 (automatic conversions are performed).</p>
 </div>
 
@@ -3342,7 +3345,7 @@ is used instead. </p>
 <p>turn on or off conversion of data without missing values to regular
 numpy arrays.</p>
 
-<p><code>always_mask</code> is a Boolean determining if automatic conversion of
+<p><code><a href="#Variable.always_mask">always_mask</a></code> is a Boolean determining if automatic conversion of
 masked arrays with no missing values to regular numpy arrays shall be
 applied. Default is True. Set to False to restore the default behaviour
 in versions prior to 1.4.1 (numpy array returned unless missing values are present,
@@ -3413,7 +3416,9 @@ open for parallel access.</p>
         <span class="name">name</span><span class="default_value"> = &lt;attribute &#39;name&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
     </div>
 
-    
+            <div class="docstring"><p>string name of Variable instance</p>
+</div>
+
 
                             </div>
                             <div id="Variable.datatype" class="classattr">
@@ -3422,7 +3427,11 @@ open for parallel access.</p>
         <span class="name">datatype</span><span class="default_value"> = &lt;attribute &#39;datatype&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
     </div>
 
-    
+            <div class="docstring"><p>numpy data type (for primitive data types) or
+VLType/CompoundType/EnumType instance 
+(for compound, vlen  or enum data types)</p>
+</div>
+
 
                             </div>
                             <div id="Variable.shape" class="classattr">
@@ -3431,7 +3440,9 @@ open for parallel access.</p>
         <span class="name">shape</span><span class="default_value"> = &lt;attribute &#39;shape&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
     </div>
 
-    
+            <div class="docstring"><p>find current sizes of all variable dimensions</p>
+</div>
+
 
                             </div>
                             <div id="Variable.size" class="classattr">
@@ -3440,7 +3451,9 @@ open for parallel access.</p>
         <span class="name">size</span><span class="default_value"> = &lt;attribute &#39;size&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
     </div>
 
-    
+            <div class="docstring"><p>Return the number of stored elements.</p>
+</div>
+
 
                             </div>
                             <div id="Variable.dimensions" class="classattr">
@@ -3449,7 +3462,9 @@ open for parallel access.</p>
         <span class="name">dimensions</span><span class="default_value"> = &lt;attribute &#39;dimensions&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
     </div>
 
-    
+            <div class="docstring"><p>get variables's dimension names</p>
+</div>
+
 
                             </div>
                             <div id="Variable.ndim" class="classattr">
@@ -3527,10 +3542,10 @@ determine if the dimension is unlimited.</p>
 
 <p>Read-only class variables:</p>
 
-<p><strong><code>name</code></strong>: String name, used when creating a <code><a href="#Variable">Variable</a></code> with
+<p><strong><code><a href="#Dimension.name">name</a></code></strong>: String name, used when creating a <code><a href="#Variable">Variable</a></code> with
 <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code>.</p>
 
-<p><strong><code>size</code></strong>: Current <code><a href="#Dimension">Dimension</a></code> size (same as <code>len(d)</code>, where <code>d</code> is a
+<p><strong><code><a href="#Dimension.size">size</a></code></strong>: Current <code><a href="#Dimension">Dimension</a></code> size (same as <code>len(d)</code>, where <code>d</code> is a
 <code><a href="#Dimension">Dimension</a></code> instance).</p>
 </div>
 
@@ -3539,18 +3554,19 @@ determine if the dimension is unlimited.</p>
                                         <div class="attr function"><a class="headerlink" href="#Dimension.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">Dimension</span><span class="signature">(unknown)</span>    </div>
+            <span class="name">Dimension</span><span class="signature">()</span>
+    </div>
 
         
             <div class="docstring"><p><strong><code>__init__(self, group, name, size=None)</code></strong></p>
 
 <p><code><a href="#Dimension">Dimension</a></code> constructor.</p>
 
-<p><strong><code>group</code></strong>: <code><a href="#Group">Group</a></code> instance to associate with dimension.</p>
+<p><strong><code><a href="#Dimension.group">group</a></code></strong>: <code><a href="#Group">Group</a></code> instance to associate with dimension.</p>
 
-<p><strong><code>name</code></strong>: Name of the dimension.</p>
+<p><strong><code><a href="#Dimension.name">name</a></code></strong>: Name of the dimension.</p>
 
-<p><strong><code>size</code></strong>: Size of the dimension. <code>None</code> or 0 means unlimited. (Default <code>None</code>).</p>
+<p><strong><code><a href="#Dimension.size">size</a></code></strong>: Size of the dimension. <code>None</code> or 0 means unlimited. (Default <code>None</code>).</p>
 
 <p><strong><em>Note</em></strong>: <code><a href="#Dimension">Dimension</a></code> instances should be created using the
 <code><a href="#Dataset.createDimension">Dataset.createDimension</a></code> method of a <code><a href="#Group">Group</a></code> or
@@ -3597,7 +3613,9 @@ determine if the dimension is unlimited.</p>
         <span class="name">name</span><span class="default_value"> = &lt;attribute &#39;name&#39; of &#39;<a href="#_netCDF4.Dimension">netCDF4._netCDF4.Dimension</a>&#39; objects&gt;</span>
     </div>
 
-    
+            <div class="docstring"><p>string name of Dimension instance</p>
+</div>
+
 
                             </div>
                             <div id="Dimension.size" class="classattr">
@@ -3606,7 +3624,9 @@ determine if the dimension is unlimited.</p>
         <span class="name">size</span><span class="default_value"> = &lt;attribute &#39;size&#39; of &#39;<a href="#_netCDF4.Dimension">netCDF4._netCDF4.Dimension</a>&#39; objects&gt;</span>
     </div>
 
-    
+            <div class="docstring"><p>current size of Dimension (calls <code>len</code> on Dimension instance)</p>
+</div>
+
 
                             </div>
                 </section>
@@ -3616,7 +3636,7 @@ determine if the dimension is unlimited.</p>
 
         
         <span class="def">class</span>
-        <span class="name">Group</span>(<span class="base">netCDF4._netCDF4.Dataset</span>):
+        <span class="name">Group</span>(<span class="base"><a href="#Dataset">netCDF4.Dataset</a></span>):
     </div>
 
         
@@ -3628,11 +3648,11 @@ for more details.</p>
 
 <p><code><a href="#Group">Group</a></code> inherits from <code><a href="#Dataset">Dataset</a></code>, so all the
 <code><a href="#Dataset">Dataset</a></code> class methods and variables are available
-to a <code><a href="#Group">Group</a></code> instance (except the <code>close</code> method).</p>
+to a <code><a href="#Group">Group</a></code> instance (except the <code><a href="#Group.close">close</a></code> method).</p>
 
 <p>Additional read-only class variables:</p>
 
-<p><strong><code>name</code></strong>: String describing the group name.</p>
+<p><strong><code><a href="#Group.name">name</a></code></strong>: String describing the group name.</p>
 </div>
 
 
@@ -3640,16 +3660,17 @@ to a <code><a href="#Group">Group</a></code> instance (except the <code>close</c
                                         <div class="attr function"><a class="headerlink" href="#Group.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">Group</span><span class="signature">(unknown)</span>    </div>
+            <span class="name">Group</span><span class="signature">()</span>
+    </div>
 
         
             <div class="docstring"><p><strong><code>__init__(self, parent, name)</code></strong>
 <code><a href="#Group">Group</a></code> constructor.</p>
 
-<p><strong><code>parent</code></strong>: <code><a href="#Group">Group</a></code> instance for the parent group.  If being created
+<p><strong><code><a href="#Group.parent">parent</a></code></strong>: <code><a href="#Group">Group</a></code> instance for the parent group.  If being created
 in the root group, use a <code><a href="#Dataset">Dataset</a></code> instance.</p>
 
-<p><strong><code>name</code></strong>: - Name of the group.</p>
+<p><strong><code><a href="#Group.name">name</a></code></strong>: - Name of the group.</p>
 
 <p><strong><em>Note</em></strong>: <code><a href="#Group">Group</a></code> instances should be created using the
 <code><a href="#Dataset.createGroup">Dataset.createGroup</a></code> method of a <code><a href="#Dataset">Dataset</a></code> instance, or
@@ -3678,50 +3699,50 @@ instances, raises IOError.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>netCDF4._netCDF4.Dataset</dt>
-                                <dd id="Group.filepath" class="function">filepath</dd>
-                <dd id="Group.isopen" class="function">isopen</dd>
-                <dd id="Group.sync" class="function">sync</dd>
-                <dd id="Group.set_fill_on" class="function">set_fill_on</dd>
-                <dd id="Group.set_fill_off" class="function">set_fill_off</dd>
-                <dd id="Group.createDimension" class="function">createDimension</dd>
-                <dd id="Group.renameDimension" class="function">renameDimension</dd>
-                <dd id="Group.createCompoundType" class="function">createCompoundType</dd>
-                <dd id="Group.createVLType" class="function">createVLType</dd>
-                <dd id="Group.createEnumType" class="function">createEnumType</dd>
-                <dd id="Group.createVariable" class="function">createVariable</dd>
-                <dd id="Group.renameVariable" class="function">renameVariable</dd>
-                <dd id="Group.createGroup" class="function">createGroup</dd>
-                <dd id="Group.ncattrs" class="function">ncattrs</dd>
-                <dd id="Group.setncattr" class="function">setncattr</dd>
-                <dd id="Group.setncattr_string" class="function">setncattr_string</dd>
-                <dd id="Group.setncatts" class="function">setncatts</dd>
-                <dd id="Group.getncattr" class="function">getncattr</dd>
-                <dd id="Group.delncattr" class="function">delncattr</dd>
-                <dd id="Group.renameAttribute" class="function">renameAttribute</dd>
-                <dd id="Group.renameGroup" class="function">renameGroup</dd>
-                <dd id="Group.set_auto_chartostring" class="function">set_auto_chartostring</dd>
-                <dd id="Group.set_auto_maskandscale" class="function">set_auto_maskandscale</dd>
-                <dd id="Group.set_auto_mask" class="function">set_auto_mask</dd>
-                <dd id="Group.set_auto_scale" class="function">set_auto_scale</dd>
-                <dd id="Group.set_always_mask" class="function">set_always_mask</dd>
-                <dd id="Group.set_ncstring_attrs" class="function">set_ncstring_attrs</dd>
-                <dd id="Group.get_variables_by_attributes" class="function">get_variables_by_attributes</dd>
-                <dd id="Group.fromcdl" class="function">fromcdl</dd>
-                <dd id="Group.tocdl" class="function">tocdl</dd>
-                <dd id="Group.name" class="variable">name</dd>
-                <dd id="Group.groups" class="variable">groups</dd>
-                <dd id="Group.dimensions" class="variable">dimensions</dd>
-                <dd id="Group.variables" class="variable">variables</dd>
-                <dd id="Group.disk_format" class="variable">disk_format</dd>
-                <dd id="Group.path" class="variable">path</dd>
-                <dd id="Group.parent" class="variable">parent</dd>
-                <dd id="Group.file_format" class="variable">file_format</dd>
-                <dd id="Group.data_model" class="variable">data_model</dd>
-                <dd id="Group.cmptypes" class="variable">cmptypes</dd>
-                <dd id="Group.vltypes" class="variable">vltypes</dd>
-                <dd id="Group.enumtypes" class="variable">enumtypes</dd>
-                <dd id="Group.keepweakref" class="variable">keepweakref</dd>
+                                    <div><dt><a href="#Dataset">Dataset</a></dt>
+                                <dd id="Group.filepath" class="function"><a href="#Dataset.filepath">filepath</a></dd>
+                <dd id="Group.isopen" class="function"><a href="#Dataset.isopen">isopen</a></dd>
+                <dd id="Group.sync" class="function"><a href="#Dataset.sync">sync</a></dd>
+                <dd id="Group.set_fill_on" class="function"><a href="#Dataset.set_fill_on">set_fill_on</a></dd>
+                <dd id="Group.set_fill_off" class="function"><a href="#Dataset.set_fill_off">set_fill_off</a></dd>
+                <dd id="Group.createDimension" class="function"><a href="#Dataset.createDimension">createDimension</a></dd>
+                <dd id="Group.renameDimension" class="function"><a href="#Dataset.renameDimension">renameDimension</a></dd>
+                <dd id="Group.createCompoundType" class="function"><a href="#Dataset.createCompoundType">createCompoundType</a></dd>
+                <dd id="Group.createVLType" class="function"><a href="#Dataset.createVLType">createVLType</a></dd>
+                <dd id="Group.createEnumType" class="function"><a href="#Dataset.createEnumType">createEnumType</a></dd>
+                <dd id="Group.createVariable" class="function"><a href="#Dataset.createVariable">createVariable</a></dd>
+                <dd id="Group.renameVariable" class="function"><a href="#Dataset.renameVariable">renameVariable</a></dd>
+                <dd id="Group.createGroup" class="function"><a href="#Dataset.createGroup">createGroup</a></dd>
+                <dd id="Group.ncattrs" class="function"><a href="#Dataset.ncattrs">ncattrs</a></dd>
+                <dd id="Group.setncattr" class="function"><a href="#Dataset.setncattr">setncattr</a></dd>
+                <dd id="Group.setncattr_string" class="function"><a href="#Dataset.setncattr_string">setncattr_string</a></dd>
+                <dd id="Group.setncatts" class="function"><a href="#Dataset.setncatts">setncatts</a></dd>
+                <dd id="Group.getncattr" class="function"><a href="#Dataset.getncattr">getncattr</a></dd>
+                <dd id="Group.delncattr" class="function"><a href="#Dataset.delncattr">delncattr</a></dd>
+                <dd id="Group.renameAttribute" class="function"><a href="#Dataset.renameAttribute">renameAttribute</a></dd>
+                <dd id="Group.renameGroup" class="function"><a href="#Dataset.renameGroup">renameGroup</a></dd>
+                <dd id="Group.set_auto_chartostring" class="function"><a href="#Dataset.set_auto_chartostring">set_auto_chartostring</a></dd>
+                <dd id="Group.set_auto_maskandscale" class="function"><a href="#Dataset.set_auto_maskandscale">set_auto_maskandscale</a></dd>
+                <dd id="Group.set_auto_mask" class="function"><a href="#Dataset.set_auto_mask">set_auto_mask</a></dd>
+                <dd id="Group.set_auto_scale" class="function"><a href="#Dataset.set_auto_scale">set_auto_scale</a></dd>
+                <dd id="Group.set_always_mask" class="function"><a href="#Dataset.set_always_mask">set_always_mask</a></dd>
+                <dd id="Group.set_ncstring_attrs" class="function"><a href="#Dataset.set_ncstring_attrs">set_ncstring_attrs</a></dd>
+                <dd id="Group.get_variables_by_attributes" class="function"><a href="#Dataset.get_variables_by_attributes">get_variables_by_attributes</a></dd>
+                <dd id="Group.fromcdl" class="function"><a href="#Dataset.fromcdl">fromcdl</a></dd>
+                <dd id="Group.tocdl" class="function"><a href="#Dataset.tocdl">tocdl</a></dd>
+                <dd id="Group.name" class="variable"><a href="#Dataset.name">name</a></dd>
+                <dd id="Group.groups" class="variable"><a href="#Dataset.groups">groups</a></dd>
+                <dd id="Group.dimensions" class="variable"><a href="#Dataset.dimensions">dimensions</a></dd>
+                <dd id="Group.variables" class="variable"><a href="#Dataset.variables">variables</a></dd>
+                <dd id="Group.disk_format" class="variable"><a href="#Dataset.disk_format">disk_format</a></dd>
+                <dd id="Group.path" class="variable"><a href="#Dataset.path">path</a></dd>
+                <dd id="Group.parent" class="variable"><a href="#Dataset.parent">parent</a></dd>
+                <dd id="Group.file_format" class="variable"><a href="#Dataset.file_format">file_format</a></dd>
+                <dd id="Group.data_model" class="variable"><a href="#Dataset.data_model">data_model</a></dd>
+                <dd id="Group.cmptypes" class="variable"><a href="#Dataset.cmptypes">cmptypes</a></dd>
+                <dd id="Group.vltypes" class="variable"><a href="#Dataset.vltypes">vltypes</a></dd>
+                <dd id="Group.enumtypes" class="variable"><a href="#Dataset.enumtypes">enumtypes</a></dd>
+                <dd id="Group.keepweakref" class="variable"><a href="#Dataset.keepweakref">keepweakref</a></dd>
 
             </div>
                                 </dl>
@@ -3733,7 +3754,7 @@ instances, raises IOError.</p>
 
         
         <span class="def">class</span>
-        <span class="name">MFDataset</span>(<span class="base">netCDF4._netCDF4.Dataset</span>):
+        <span class="name">MFDataset</span>(<span class="base"><a href="#Dataset">netCDF4.Dataset</a></span>):
     </div>
 
         
@@ -3770,7 +3791,8 @@ or NETCDF3_64BIT_DATA</code> format (<code>NETCDF4</code> Datasets won't work).<
                                         <div class="attr function"><a class="headerlink" href="#MFDataset.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">MFDataset</span><span class="signature">(files, check=False, aggdim=None, exclude=[], master_file=None)</span>    </div>
+            <span class="name">MFDataset</span><span class="signature">(files, check=False, aggdim=None, exclude=[], master_file=None)</span>
+    </div>
 
         
             <div class="docstring"><p><strong><code>__init__(self, files, check=False, aggdim=None, exclude=[],
@@ -3844,49 +3866,49 @@ variables with an aggregation dimension and all global attributes.</p>
                             <div class="inherited">
                                 <h5>Inherited Members</h5>
                                 <dl>
-                                    <div><dt>netCDF4._netCDF4.Dataset</dt>
-                                <dd id="MFDataset.filepath" class="function">filepath</dd>
-                <dd id="MFDataset.isopen" class="function">isopen</dd>
-                <dd id="MFDataset.sync" class="function">sync</dd>
-                <dd id="MFDataset.set_fill_on" class="function">set_fill_on</dd>
-                <dd id="MFDataset.set_fill_off" class="function">set_fill_off</dd>
-                <dd id="MFDataset.createDimension" class="function">createDimension</dd>
-                <dd id="MFDataset.renameDimension" class="function">renameDimension</dd>
-                <dd id="MFDataset.createCompoundType" class="function">createCompoundType</dd>
-                <dd id="MFDataset.createVLType" class="function">createVLType</dd>
-                <dd id="MFDataset.createEnumType" class="function">createEnumType</dd>
-                <dd id="MFDataset.createVariable" class="function">createVariable</dd>
-                <dd id="MFDataset.renameVariable" class="function">renameVariable</dd>
-                <dd id="MFDataset.createGroup" class="function">createGroup</dd>
-                <dd id="MFDataset.setncattr" class="function">setncattr</dd>
-                <dd id="MFDataset.setncattr_string" class="function">setncattr_string</dd>
-                <dd id="MFDataset.setncatts" class="function">setncatts</dd>
-                <dd id="MFDataset.getncattr" class="function">getncattr</dd>
-                <dd id="MFDataset.delncattr" class="function">delncattr</dd>
-                <dd id="MFDataset.renameAttribute" class="function">renameAttribute</dd>
-                <dd id="MFDataset.renameGroup" class="function">renameGroup</dd>
-                <dd id="MFDataset.set_auto_chartostring" class="function">set_auto_chartostring</dd>
-                <dd id="MFDataset.set_auto_maskandscale" class="function">set_auto_maskandscale</dd>
-                <dd id="MFDataset.set_auto_mask" class="function">set_auto_mask</dd>
-                <dd id="MFDataset.set_auto_scale" class="function">set_auto_scale</dd>
-                <dd id="MFDataset.set_always_mask" class="function">set_always_mask</dd>
-                <dd id="MFDataset.set_ncstring_attrs" class="function">set_ncstring_attrs</dd>
-                <dd id="MFDataset.get_variables_by_attributes" class="function">get_variables_by_attributes</dd>
-                <dd id="MFDataset.fromcdl" class="function">fromcdl</dd>
-                <dd id="MFDataset.tocdl" class="function">tocdl</dd>
-                <dd id="MFDataset.name" class="variable">name</dd>
-                <dd id="MFDataset.groups" class="variable">groups</dd>
-                <dd id="MFDataset.dimensions" class="variable">dimensions</dd>
-                <dd id="MFDataset.variables" class="variable">variables</dd>
-                <dd id="MFDataset.disk_format" class="variable">disk_format</dd>
-                <dd id="MFDataset.path" class="variable">path</dd>
-                <dd id="MFDataset.parent" class="variable">parent</dd>
-                <dd id="MFDataset.file_format" class="variable">file_format</dd>
-                <dd id="MFDataset.data_model" class="variable">data_model</dd>
-                <dd id="MFDataset.cmptypes" class="variable">cmptypes</dd>
-                <dd id="MFDataset.vltypes" class="variable">vltypes</dd>
-                <dd id="MFDataset.enumtypes" class="variable">enumtypes</dd>
-                <dd id="MFDataset.keepweakref" class="variable">keepweakref</dd>
+                                    <div><dt><a href="#Dataset">Dataset</a></dt>
+                                <dd id="MFDataset.filepath" class="function"><a href="#Dataset.filepath">filepath</a></dd>
+                <dd id="MFDataset.isopen" class="function"><a href="#Dataset.isopen">isopen</a></dd>
+                <dd id="MFDataset.sync" class="function"><a href="#Dataset.sync">sync</a></dd>
+                <dd id="MFDataset.set_fill_on" class="function"><a href="#Dataset.set_fill_on">set_fill_on</a></dd>
+                <dd id="MFDataset.set_fill_off" class="function"><a href="#Dataset.set_fill_off">set_fill_off</a></dd>
+                <dd id="MFDataset.createDimension" class="function"><a href="#Dataset.createDimension">createDimension</a></dd>
+                <dd id="MFDataset.renameDimension" class="function"><a href="#Dataset.renameDimension">renameDimension</a></dd>
+                <dd id="MFDataset.createCompoundType" class="function"><a href="#Dataset.createCompoundType">createCompoundType</a></dd>
+                <dd id="MFDataset.createVLType" class="function"><a href="#Dataset.createVLType">createVLType</a></dd>
+                <dd id="MFDataset.createEnumType" class="function"><a href="#Dataset.createEnumType">createEnumType</a></dd>
+                <dd id="MFDataset.createVariable" class="function"><a href="#Dataset.createVariable">createVariable</a></dd>
+                <dd id="MFDataset.renameVariable" class="function"><a href="#Dataset.renameVariable">renameVariable</a></dd>
+                <dd id="MFDataset.createGroup" class="function"><a href="#Dataset.createGroup">createGroup</a></dd>
+                <dd id="MFDataset.setncattr" class="function"><a href="#Dataset.setncattr">setncattr</a></dd>
+                <dd id="MFDataset.setncattr_string" class="function"><a href="#Dataset.setncattr_string">setncattr_string</a></dd>
+                <dd id="MFDataset.setncatts" class="function"><a href="#Dataset.setncatts">setncatts</a></dd>
+                <dd id="MFDataset.getncattr" class="function"><a href="#Dataset.getncattr">getncattr</a></dd>
+                <dd id="MFDataset.delncattr" class="function"><a href="#Dataset.delncattr">delncattr</a></dd>
+                <dd id="MFDataset.renameAttribute" class="function"><a href="#Dataset.renameAttribute">renameAttribute</a></dd>
+                <dd id="MFDataset.renameGroup" class="function"><a href="#Dataset.renameGroup">renameGroup</a></dd>
+                <dd id="MFDataset.set_auto_chartostring" class="function"><a href="#Dataset.set_auto_chartostring">set_auto_chartostring</a></dd>
+                <dd id="MFDataset.set_auto_maskandscale" class="function"><a href="#Dataset.set_auto_maskandscale">set_auto_maskandscale</a></dd>
+                <dd id="MFDataset.set_auto_mask" class="function"><a href="#Dataset.set_auto_mask">set_auto_mask</a></dd>
+                <dd id="MFDataset.set_auto_scale" class="function"><a href="#Dataset.set_auto_scale">set_auto_scale</a></dd>
+                <dd id="MFDataset.set_always_mask" class="function"><a href="#Dataset.set_always_mask">set_always_mask</a></dd>
+                <dd id="MFDataset.set_ncstring_attrs" class="function"><a href="#Dataset.set_ncstring_attrs">set_ncstring_attrs</a></dd>
+                <dd id="MFDataset.get_variables_by_attributes" class="function"><a href="#Dataset.get_variables_by_attributes">get_variables_by_attributes</a></dd>
+                <dd id="MFDataset.fromcdl" class="function"><a href="#Dataset.fromcdl">fromcdl</a></dd>
+                <dd id="MFDataset.tocdl" class="function"><a href="#Dataset.tocdl">tocdl</a></dd>
+                <dd id="MFDataset.name" class="variable"><a href="#Dataset.name">name</a></dd>
+                <dd id="MFDataset.groups" class="variable"><a href="#Dataset.groups">groups</a></dd>
+                <dd id="MFDataset.dimensions" class="variable"><a href="#Dataset.dimensions">dimensions</a></dd>
+                <dd id="MFDataset.variables" class="variable"><a href="#Dataset.variables">variables</a></dd>
+                <dd id="MFDataset.disk_format" class="variable"><a href="#Dataset.disk_format">disk_format</a></dd>
+                <dd id="MFDataset.path" class="variable"><a href="#Dataset.path">path</a></dd>
+                <dd id="MFDataset.parent" class="variable"><a href="#Dataset.parent">parent</a></dd>
+                <dd id="MFDataset.file_format" class="variable"><a href="#Dataset.file_format">file_format</a></dd>
+                <dd id="MFDataset.data_model" class="variable"><a href="#Dataset.data_model">data_model</a></dd>
+                <dd id="MFDataset.cmptypes" class="variable"><a href="#Dataset.cmptypes">cmptypes</a></dd>
+                <dd id="MFDataset.vltypes" class="variable"><a href="#Dataset.vltypes">vltypes</a></dd>
+                <dd id="MFDataset.enumtypes" class="variable"><a href="#Dataset.enumtypes">enumtypes</a></dd>
+                <dd id="MFDataset.keepweakref" class="variable"><a href="#Dataset.keepweakref">keepweakref</a></dd>
 
             </div>
                                 </dl>
@@ -3940,7 +3962,8 @@ time unit and/or calendar to all files.</p>
                                         <div class="attr function"><a class="headerlink" href="#MFTime.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">MFTime</span><span class="signature">(time, units=None, calendar=None)</span>    </div>
+            <span class="name">MFTime</span><span class="signature">(time, units=None, calendar=None)</span>
+    </div>
 
         
             <div class="docstring"><p><strong><code>__init__(self, time, units=None, calendar=None)</code></strong></p>
@@ -3993,7 +4016,7 @@ a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a
 Compound data types map to numpy structured arrays.
 See <code><a href="#CompoundType.__init__">CompoundType.__init__</a></code> for more details.</p>
 
-<p>The instance variables <code>dtype</code> and <code>name</code> should not be modified by
+<p>The instance variables <code><a href="#CompoundType.dtype">dtype</a></code> and <code><a href="#CompoundType.name">name</a></code> should not be modified by
 the user.</p>
 </div>
 
@@ -4002,7 +4025,8 @@ the user.</p>
                                         <div class="attr function"><a class="headerlink" href="#CompoundType.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">CompoundType</span><span class="signature">(unknown)</span>    </div>
+            <span class="name">CompoundType</span><span class="signature">()</span>
+    </div>
 
         
             <div class="docstring"><p><strong><em><code>__init__(group, datatype, datatype_name)</code></em></strong></p>
@@ -4073,7 +4097,7 @@ type, and can be passed to the the <code><a href="#Dataset.createVariable">Datas
 a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance. See
 <code><a href="#VLType.__init__">VLType.__init__</a></code> for more details.</p>
 
-<p>The instance variables <code>dtype</code> and <code>name</code> should not be modified by
+<p>The instance variables <code><a href="#VLType.dtype">dtype</a></code> and <code><a href="#VLType.name">name</a></code> should not be modified by
 the user.</p>
 </div>
 
@@ -4082,7 +4106,8 @@ the user.</p>
                                         <div class="attr function"><a class="headerlink" href="#VLType.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">VLType</span><span class="signature">(unknown)</span>    </div>
+            <span class="name">VLType</span><span class="signature">()</span>
+    </div>
 
         
             <div class="docstring"><p><strong><code>__init__(group, datatype, datatype_name)</code></strong></p>
@@ -4418,7 +4443,7 @@ type, and can be passed to the the <code><a href="#Dataset.createVariable">Datas
 a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance. See
 <code><a href="#EnumType.__init__">EnumType.__init__</a></code> for more details.</p>
 
-<p>The instance variables <code>dtype</code>, <code>name</code> and <code>enum_dict</code> should not be modified by
+<p>The instance variables <code><a href="#EnumType.dtype">dtype</a></code>, <code><a href="#EnumType.name">name</a></code> and <code><a href="#EnumType.enum_dict">enum_dict</a></code> should not be modified by
 the user.</p>
 </div>
 
@@ -4427,7 +4452,8 @@ the user.</p>
                                         <div class="attr function"><a class="headerlink" href="#EnumType.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">EnumType</span><span class="signature">(unknown)</span>    </div>
+            <span class="name">EnumType</span><span class="signature">()</span>
+    </div>
 
         
             <div class="docstring"><p><strong><code>__init__(group, datatype, datatype_name, enum_dict)</code></strong></p>
@@ -4442,7 +4468,7 @@ for the Enum.</p>
 <p><strong><code>datatype_name</code></strong>: a Python string containing a description of the
 Enum data type.</p>
 
-<p><strong><code>enum_dict</code></strong>: a Python dictionary containing the Enum field/value
+<p><strong><code><a href="#EnumType.enum_dict">enum_dict</a></code></strong>: a Python dictionary containing the Enum field/value
 pairs.</p>
 
 <p><strong><em><code>Note</code></em></strong>: <code><a href="#EnumType">EnumType</a></code> instances should be created using the

@@ -679,8 +679,9 @@ sacrificed for the sake of disk space.
 
 In our example, try replacing the line
 
-    ```python
-    >>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",))
+```python
+>>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",))
+```
 
 with
 
