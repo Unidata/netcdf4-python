@@ -1,7 +1,7 @@
  since version 1.5.6
 ====================
- * don't try to mask vlens with _FillValue, since vlens don't have _FillValues.  This gets
-   rid of numpy DeprecationWarning (issue #1099).
+ * don't try to mask vlens with default  _FillValue, since vlens don't have a default _FillValue.
+   This gets rid of numpy DeprecationWarning (issue #1099).
 
  version 1.5.6 (tag v1.5.6rel)
 ==============================
