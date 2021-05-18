@@ -13,7 +13,8 @@ jobs:
 #     NO_NET: 1
     strategy:
       matrix:
-        python-version: ["3.9"]
+        #python-version: ["3.9"]
+        python-version: ["3.8"]
     steps:
 
     - uses: actions/checkout@v2
