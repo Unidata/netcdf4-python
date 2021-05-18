@@ -86,7 +86,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         else:
             assert(v2._FillValue == u'') # python 2
         assert(str(issue273_data) == str(v2[:]))
-        # isse 707 (don't apply missing_value if cast to variable type is
+        # issue 707 (don't apply missing_value if cast to variable type is
         # unsafe)
         v3 = f.variables['issue707']
         assert_array_equal(v3[:],-1*np.ones(n2dim,v3.dtype))
