@@ -76,7 +76,7 @@ jobs:
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" 
         which mpirun
         mpirun --version
-        mpirun --use-hwthread-cpus -np 4 python mpi_example.py
+        mpirun  --oversubscribe -np 4 python mpi_example.py
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"
           exit 1
