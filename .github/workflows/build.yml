@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PNETCDF_VERSION: 1.12.1
-      NETCDF_VERSION: 4.7.4
+      NETCDF_VERSION: 4.8.0
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
       CC: mpicc.mpich
@@ -77,6 +77,13 @@ jobs:
           exit 1
         else
           echo "hdf5 mpi test passed!"
+        fi
+        mpirun.mpich -np 4 python mpi_example_compressed.py
+        if [ $? -ne 0 ] ; then
+          echo "hdf5 compressed mpi test failed!"
+          exit 1
+        else
+          echo "hdf5 compressed mpi test passed!"
         fi
         mpirun.mpich -np 4 python mpi_example.py NETCDF3_64BIT_DATA
         if [ $? -ne 0 ] ; then
