@@ -1,7 +1,10 @@
- since version 1.5.6
-====================
+ version 1.5.7 (not yet released)
+=================================
  * don't try to mask vlens with default  _FillValue, since vlens don't have a default _FillValue.
    This gets rid of numpy DeprecationWarning (issue #1099).
+ * update docs to reflect the fact that a variable must be in collective mode before writing
+   compressed data to it in parallel. Added a test for this (examples/mpi_example_compressed.py).
+   Issue #1108.
 
  version 1.5.6 (tag v1.5.6rel)
 ==============================
