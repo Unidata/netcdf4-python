@@ -1006,7 +1006,11 @@ are collective.  There are a couple of important limitations of parallel IO:
    If the write is done in independent mode, the operation will fail with a
    a generic "HDF Error".
  - You can write compressed data in parallel only with netcdf-c >= 4.7.4
-   and hdf5 >= 1.10.3 (although you can read in parallel with earlier versions).
+   and hdf5 >= 1.10.3 (although you can read in parallel with earlier versions). To write
+   compressed data in parallel, the variable must be in 'collective IO mode'.  This is done
+   automatically on variable creation if compression is turned on, but if you are appending
+   to a variable in an existing file, you must use `Variable.set_collective(True)` before attempting
+   to write to it.
  - You cannot use variable-length (VLEN) data types.
 
 ## Dealing with strings
