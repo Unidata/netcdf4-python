@@ -10,7 +10,7 @@ v = nc.createVariable('var', np.int32, 'dim', zlib=True)
 v[:] = np.arange(4)
 nc.close()
 # read compressed files in parallel, check the data, try to rewrite some data
-nc = Dataset('parallel_test.nc', 'a', parallel=True)
+nc = Dataset('parallel_test_compressed.nc', 'a', parallel=True)
 v = nc['var']
 assert rank==v[rank]
 v.set_collective(True) # issue #1108 (var must be in collective mode or write will fail)
