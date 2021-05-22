@@ -20,7 +20,7 @@
 
                     <h2>Contents</h2>
                     <ul>
-  <li><a href="#version-156">Version 1.5.6</a></li>
+  <li><a href="#version-157">Version 1.5.7</a></li>
 </ul></li>
 <li><a href="#introduction">Introduction</a>
 <ul>
@@ -455,7 +455,7 @@
                     <h1 class="modulename">
 netCDF4    </h1>
 
-                        <div class="docstring"><h2 id="version-156">Version 1.5.6</h2>
+                        <div class="docstring"><h2 id="version-157">Version 1.5.7</h2>
 
 <h1 id="introduction">Introduction</h1>
 
@@ -1423,7 +1423,11 @@ netcdf library was compiled with <a href="https://parallel-netcdf.github.io">Pne
 If the write is done in independent mode, the operation will fail with a
 a generic "HDF Error".</li>
 <li>You can write compressed data in parallel only with netcdf-c &gt;= 4.7.4
-and hdf5 &gt;= 1.10.3 (although you can read in parallel with earlier versions).</li>
+and hdf5 &gt;= 1.10.3 (although you can read in parallel with earlier versions). To write
+compressed data in parallel, the variable must be in 'collective IO mode'.  This is done
+automatically on variable creation if compression is turned on, but if you are appending
+to a variable in an existing file, you must use <code><a href="#Variable.set_collective">Variable.set_collective</a>(True)</code> before attempting
+to write to it.</li>
 <li>You cannot use variable-length (VLEN) data types.</li>
 </ul>
 
@@ -1590,7 +1594,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x6a;&#101;&#x66;&#102;&#x72;e&#121;&#x2e;&#115;&#x2e;w&#104;&#105;t&#97;&#107;&#101;&#114;&#x40;&#110;&#111;&#97;&#97;&#x2e;&#103;&#111;&#118;">&#x6a;&#101;&#x66;&#102;&#x72;e&#121;&#x2e;&#115;&#x2e;w&#104;&#105;t&#97;&#107;&#101;&#114;&#x40;&#110;&#111;&#97;&#97;&#x2e;&#103;&#111;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;a&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#106;&#x65;&#102;&#x66;&#x72;&#101;&#121;&#46;&#x73;.&#119;&#x68;&#105;&#x74;&#97;&#x6b;&#x65;&#x72;&#x40;n&#111;&#x61;&#x61;&#x2e;&#103;&#111;&#x76;">&#106;&#x65;&#102;&#x66;&#x72;&#101;&#121;&#46;&#x73;.&#119;&#x68;&#105;&#x74;&#97;&#x6b;&#x65;&#x72;&#x40;n&#111;&#x61;&#x61;&#x2e;&#103;&#111;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
