@@ -111,9 +111,9 @@ from datetime import datetime, timedelta
 from netCDF4 import num2date, date2num, date2index
 dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
 times[:] = date2num(dates,units=times.units,calendar=times.calendar)
-print('time values (in units %s): ' % times.units+'\\n',times[:])
+print("time values (in units {}):\n{}".format(times.units, times[:]))
 dates = num2date(times[:],units=times.units,calendar=times.calendar)
-print('dates corresponding to time values:\\n',dates)
+print("dates corresponding to time values:\n{}".format(dates))
 
 rootgrp.close()
 
