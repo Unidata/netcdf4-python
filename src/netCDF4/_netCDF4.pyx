@@ -580,11 +580,11 @@ Here's an example of how they can be used:
 >>> from cftime import num2date, date2num
 >>> dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
 >>> times[:] = date2num(dates,units=times.units,calendar=times.calendar)
->>> print("time values (in units {}):\n{}".format(times.units, times[:]))
+>>> print("time values (in units {}):\\n{}".format(times.units, times[:]))
 time values (in units hours since 0001-01-01 00:00:00.0):
 [17533104. 17533116. 17533128. 17533140. 17533152.]
 >>> dates = num2date(times[:],units=times.units,calendar=times.calendar)
->>> print("dates corresponding to time values:\n{}".format(dates))
+>>> print("dates corresponding to time values:\\n{}".format(dates))
  [cftime.DatetimeGregorian(2001, 3, 1, 0, 0, 0, 0, has_year_zero=False)
   cftime.DatetimeGregorian(2001, 3, 1, 12, 0, 0, 0, has_year_zero=False)
   cftime.DatetimeGregorian(2001, 3, 2, 0, 0, 0, 0, has_year_zero=False)
