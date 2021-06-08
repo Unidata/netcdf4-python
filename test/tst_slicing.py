@@ -18,12 +18,14 @@ class VariablesTestCase(unittest.TestCase):
         f = Dataset(file_name,'w')
         f.createDimension('x',xdim)
         f.createDimension('xu',None)
+        f.createDimension('xu2',None)
         f.createDimension('y',ydim)
         f.createDimension('z',zdim)
         f.createDimension('zu',None)
         v = f.createVariable('data','u1',('x','y','z'))
         vu = f.createVariable('datau','u1',('xu','y','zu'))
         v1 = f.createVariable('data1d', 'u1', ('x',))
+        v2 = f.createVariable('data1dx', 'u1', ('xu2',))
         # variable with no unlimited dim.
         # write slice in reverse order
         v[:,::-1,:] = data
@@ -33,6 +35,7 @@ class VariablesTestCase(unittest.TestCase):
         vu[:,::-1,:] = data
 
         v1[:] = data[:, 0, 0]
+        v2[0:2**31] = 1 # issue 1112 (overflow on windows)
         f.close()
 
     def tearDown(self):
@@ -75,8 +78,10 @@ class VariablesTestCase(unittest.TestCase):
     def test_1d(self):
         f  = Dataset(self.file, 'r')
         v1 = f.variables['data1d']
+        v2 = f.variables['data1dx']
         d = data[:,0,0]
         assert_equal(v1[:], d)
+        assert_equal(v2[:], np.ones(2**31,dtype=np.uint8))
         assert_equal(v1[4:], d[4:])
         # test return of array scalar.
         assert_equal(v1[0].shape, ())
