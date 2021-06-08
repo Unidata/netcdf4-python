@@ -35,7 +35,8 @@ class VariablesTestCase(unittest.TestCase):
         vu[:,::-1,:] = data
 
         v1[:] = data[:, 0, 0]
-        v2[0:2**31] = 1 # issue 1112 (overflow on windows)
+        #v2[0:2**31] = 1 # issue 1112 (overflow on windows)
+        v2[2**31] = 1 # issue 1112 (overflow on windows)
         f.close()
 
     def tearDown(self):
@@ -81,7 +82,8 @@ class VariablesTestCase(unittest.TestCase):
         v2 = f.variables['data1dx']
         d = data[:,0,0]
         assert_equal(v1[:], d)
-        assert_equal(v2[:], np.ones(2**31,dtype=np.uint8))
+        #assert_equal(v2[:], np.ones(2**31,dtype=np.uint8))
+        assert_equal(v2[2**31], 1)
         assert_equal(v1[4:], d[4:])
         # test return of array scalar.
         assert_equal(v1[0].shape, ())
