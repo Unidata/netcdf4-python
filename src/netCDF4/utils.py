@@ -380,7 +380,8 @@ Boolean array must have the same shape as the data along this dimension."""
     # Create the start, count, stride and indices arrays.
 
     sdim.append(max(nDims, 1))
-    start = np.empty(sdim, dtype=np.intp)
+    start = np.empty(sdim, dtype=int)
+    #start = np.empty(sdim, dtype=np.intp)
     count = np.empty(sdim, dtype=np.intp)
     stride = np.empty(sdim, dtype=np.intp)
     indices = np.empty(sdim, dtype=object)
