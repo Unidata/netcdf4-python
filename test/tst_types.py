@@ -75,16 +75,12 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         # issue 271 (_FillValue should be a byte for character arrays on
         # Python 3)
         v = f.variables['issue271']
-        if type(v._FillValue) == bytes:
-            assert(v._FillValue == b'Z') # python 3
-        else:
-            assert(v._FillValue == u'Z') # python 2
+        assert type(v._FillValue) == bytes
+        assert v._FillValue == b'Z'
         # issue 273 (setting _FillValue to null byte manually)
         v2 = f.variables['issue273']
-        if type(v2._FillValue) == bytes:
-            assert(v2._FillValue == b'\x00') # python 3
-        else:
-            assert(v2._FillValue == u'') # python 2
+        assert type(v2._FillValue) == bytes
+        assert v2._FillValue == b'\x00'
         assert(str(issue273_data) == str(v2[:]))
         # issue 707 (don't apply missing_value if cast to variable type is
         # unsafe)
