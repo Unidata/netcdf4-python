@@ -184,11 +184,9 @@ object yields summary information about it's contents.
 
 ```python
 >>> def walktree(top):
-...     values = top.groups.values()
-...     yield values
+...     yield top.groups.values()
 ...     for value in top.groups.values():
-...         for children in walktree(value):
-...             yield children
+...         yield from walktree(value)
 >>> print(rootgrp)
 <class 'netCDF4._netCDF4.Dataset'>
 root group (NETCDF4 data model, file format HDF5):

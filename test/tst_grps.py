@@ -30,11 +30,9 @@ TREE2.sort()
 
 # python generator to walk the Group tree.
 def walktree(top):
-    values = top.groups.values()
-    yield values
+    yield top.groups.values()
     for value in top.groups.values():
-        for children in walktree(value):
-            yield  children
+        yield from walktree(value)
 
 class GroupsTestCase(unittest.TestCase):
 

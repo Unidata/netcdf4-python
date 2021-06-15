@@ -16,11 +16,10 @@ fcstgrp2 = rootgrp.createGroup('/forecasts/model2')
 
 # walk the group tree using a Python generator.
 def walktree(top):
-    values = top.groups.values()
-    yield values
+    yield top.groups.values()
     for value in top.groups.values():
-        for children in walktree(value):
-            yield  children
+        yield from walktree(value)
+
 print(rootgrp)
 for children in walktree(rootgrp):
     for child in children:
