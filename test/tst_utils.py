@@ -320,7 +320,7 @@ class TestsetStartCountStride(unittest.TestCase):
             #assert_equal(str(e), "At most one ellipsis allowed in a slicing expression")
             assert_equal(str(e), "list index out of range")
 
-class FakeGroup(object):
+class FakeGroup:
     """Create a fake group instance by passing a dictionary of booleans
     keyed by dimension name."""
     def __init__(self, dimensions):
@@ -328,7 +328,7 @@ class FakeGroup(object):
         for k,v in dimensions.items():
             self.dimensions[k] = FakeDimension(v)
 
-class FakeDimension(object):
+class FakeDimension:
     def __init__(self, unlimited=False):
         self.unlimited = unlimited
 

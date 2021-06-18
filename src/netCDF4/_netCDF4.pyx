@@ -6386,7 +6386,7 @@ Example usage (See `MFDataset.__init__` for more details):
         # raise error is user tries to pickle a MFDataset object.
         raise NotImplementedError('MFDataset is not picklable')
 
-class _Dimension(object):
+class _Dimension:
     def __init__(self, dimname, dim, dimlens, dimtotlen):
         self.dimlens = dimlens
         self.dimtotlen = dimtotlen
@@ -6403,7 +6403,7 @@ class _Dimension(object):
             return "%r: name = '%s', size = %s" %\
                 (type(self), self._name, len(self))
 
-class _Variable(object):
+class _Variable:
     def __init__(self, dset, varname, var, recdimname):
         self.dimensions = var.dimensions
         self._dset = dset
