@@ -551,8 +551,9 @@ shape of fancy temp slice = (3, 3, 36, 71)
 The result will be a numpy scalar array.
 
 By default, netcdf4-python returns numpy masked arrays with values equal to the
-`missing_value` or `_FillValue` variable attributes masked.  The
-`Dataset.set_auto_mask` `Dataset` and `Variable` methods
+`missing_value` or `_FillValue` variable attributes masked for primitive and
+enum data types.
+The `Dataset.set_auto_mask` `Dataset` and `Variable` methods
 can be used to disable this feature so that
 numpy arrays are always returned, with the missing values included. Prior to
 version 1.4.0 the default behavior was to only return masked arrays when the
@@ -3019,7 +3020,8 @@ after calling this function will follow the default behaviour.
 **`set_auto_mask(self, True_or_False)`**
 
 Call `Variable.set_auto_mask` for all variables contained in this `Dataset` or
-`Group`, as well as for all variables in all its subgroups.
+`Group`, as well as for all variables in all its subgroups. Only affects
+Variables with primitive or enum types (not compound or vlen Variables).
 
 **`True_or_False`**: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.
@@ -3538,7 +3540,8 @@ Default is `True`, can be reset using `Variable.set_auto_scale` and
 **`mask`**: If True, data is automatically converted to/from masked
 arrays when missing values or fill values are present. Default is `True`, can be
 reset using `Variable.set_auto_mask` and `Variable.set_auto_maskandscale`
-methods.
+methods. Only relevant for Variables with primitive or enum types (ignored
+for compound and vlen Variables).
 
 **`chartostring`**: If True, data is automatically converted to/from character
 arrays to string arrays when the `_Encoding` variable attribute is set.
