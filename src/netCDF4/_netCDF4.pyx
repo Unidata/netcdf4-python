@@ -4441,8 +4441,6 @@ rename a `Variable` attribute named `oldname` to `newname`."""
                 warnings.warn(msg)
 
         if self.mask and (self._isprimitive or self._isenum):\
-#          (self._isprimitive or self._isenum or\
-#          (self._isvlen and self.dtype != str)):
             data = self._toma(data)
         else:
             # if attribute _Unsigned is True, and variable has signed integer

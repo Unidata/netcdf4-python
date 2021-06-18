@@ -204,13 +204,8 @@ class Vlen_ScaledInts(unittest.TestCase):
         n = 0
         for nlen in ilen:
             data = np.random.uniform(low=0.0, high=1.0, size=nlen)
-            if n==99:
-            #   # mark last value as missing
-            #   mask = np.zeros(data.shape,dtype=bool)
-            #   mask[-1] = True
-            #   data = np.ma.masked_array(data, mask=mask)
-                self.data = data
             v[n] = data
+            if n==99: self.data = data
             n += 1
         nc.close()
     def tearDown(self):
@@ -219,9 +214,7 @@ class Vlen_ScaledInts(unittest.TestCase):
     def runTest(self):
         """testing packing float vlens as scaled integers (issue #1003)."""
         nc = Dataset(self.file)
-        # see if data is masked
         data = nc['vl'][-1]
-        #assert(data[-1] is np.ma.masked)
         # check max error of compression
         err = np.abs(data - self.data)
         assert(err.max() < nc['vl'].scale_factor)
