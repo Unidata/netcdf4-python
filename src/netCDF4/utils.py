@@ -58,11 +58,9 @@ def _walk_grps(topgrp):
     """Iterate through all (sub-) groups of topgrp, similar to os.walktree.
 
     """
-    grps = topgrp.groups.values()
-    yield grps
+    yield topgrp.groups.values()
     for grp in topgrp.groups.values():
-        for children in _walk_grps(grp):
-            yield children
+        yield from _walk_grps(grp)
 
 def _quantize(data,least_significant_digit):
     """
