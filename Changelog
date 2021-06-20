@@ -6,6 +6,7 @@
    compressed data to it in parallel. Added a test for this (examples/mpi_example_compressed.py).
    Issue #1108.
  * Fix OverflowError when dimension sizes become greater than 2**32-1 elements on Windows (Issue #1112).
+ * Don't return masked arrays for vlens (only for primitive and enum types - issue #1115).
 
  version 1.5.6 (tag v1.5.6rel)
 ==============================
