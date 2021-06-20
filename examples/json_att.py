@@ -4,7 +4,7 @@ import json
 # can be serialized as strings, saved as netCDF attributes,
 # and then converted back to python objects using json.
 ds = Dataset('json.nc', 'w')
-ds.pythonatt1 =  json.dumps([u'foo', {u'bar': [u'baz', None, 1.0, 2]}])
+ds.pythonatt1 =  json.dumps(['foo', {'bar': ['baz', None, 1.0, 2]}])
 ds.pythonatt2 = "true" # converted to bool
 ds.pythonatt3 = "null" # converted to None
 print(ds)

@@ -24,7 +24,7 @@ class VectorMissingValues(unittest.TestCase):
         d = f.createDimension('x',6)
         v = f.createVariable('v', "i2", 'x')
         # issue 730: set fill_value for vlen str vars
-        v2 = f.createVariable('v2',str,'x',fill_value=u'<missing>')
+        v2 = f.createVariable('v2', str, 'x', fill_value='<missing>')
 
         v.missing_value = self.missing_values
         v[:] = self.v
@@ -56,8 +56,8 @@ class VectorMissingValues(unittest.TestCase):
         # this part fails with netcdf 4.1.3
         # a bug in vlen strings?
         if __netcdf4libversion__ >= '4.4.0':
-            assert (v2[0]==u'first')
-            assert (v2[1]==u'<missing>')
+            assert v2[0] == 'first'
+            assert v2[1] == '<missing>'
 
 
         f.close()

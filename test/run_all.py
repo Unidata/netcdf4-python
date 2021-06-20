@@ -6,16 +6,8 @@ from netCDF4 import __has_cdf5_format__, __has_nc_inq_path__, __has_nc_create_me
 # can also just run
 # python -m unittest discover . 'tst*py'
 
-python3 = sys.version_info[0] > 2
-
 # Find all test files.
 test_files = glob.glob('tst_*.py')
-if python3:
-    test_files.remove('tst_unicode.py')
-    sys.stdout.write('not running tst_unicode.py ...\n')
-else:
-    test_files.remove('tst_unicode3.py')
-    sys.stdout.write('not running tst_unicode3.py ...\n')
 if __netcdf4libversion__ < '4.2.1' or __has_parallel4_support__ or __has_pnetcdf_support__:
     test_files.remove('tst_diskless.py')
     sys.stdout.write('not running tst_diskless.py ...\n')

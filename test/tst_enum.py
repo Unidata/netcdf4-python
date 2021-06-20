@@ -10,9 +10,9 @@ FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 ENUM_NAME = 'cloud_t'
 ENUM_BASETYPE = np.int8
 VAR_NAME = 'primary_cloud'
-ENUM_DICT = {u'Altocumulus': 7, u'Missing': 127, u'Stratus': 2, u'Clear': 0,
-u'Nimbostratus': 6, u'Cumulus': 4, u'Altostratus': 5, u'Cumulonimbus': 1,
-u'Stratocumulus': 3}
+ENUM_DICT = {'Altocumulus': 7, 'Missing': 127, 'Stratus': 2, 'Clear': 0,
+'Nimbostratus': 6, 'Cumulus': 4, 'Altostratus': 5, 'Cumulonimbus': 1,
+'Stratocumulus': 3}
 datain = np.array([ENUM_DICT['Clear'],ENUM_DICT['Stratus'],ENUM_DICT['Cumulus'],\
                    ENUM_DICT['Missing'],ENUM_DICT['Cumulonimbus']],dtype=ENUM_BASETYPE)
 datain_masked = np.ma.masked_values(datain,ENUM_DICT['Missing'])

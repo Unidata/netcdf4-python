@@ -8,13 +8,6 @@ import warnings
 import getopt
 import os
 
-python3 = sys.version_info[0] > 2
-if python3:
-    # no unicode type in python 3, use bytes instead when testing
-    # for a string-like object
-    unicode = str
-else:
-    range = xrange
 try:
     bytes
 except NameError:
@@ -221,7 +214,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         # string-like object try to cast to int
         # needs to be done first, since strings are iterable and
         # hard to distinguish from something castable to an iterable numpy array.
-        if type(e) in [str,bytes,unicode]:
+        if type(e) in [str, bytes]:
             try:
                 e = int(e)
             except:

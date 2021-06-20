@@ -8,12 +8,12 @@ import netCDF4
 
 FILE_NAME1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
-DYNASTY=u"Tudor"
-HENRY_VII=u"Henry_VII"
-MARGARET=u"Margaret"
-JAMES_V_OF_SCOTLAND=u"James_V_of_Scotland"
-MARY_I_OF_SCOTLAND=u"Mary_I_of_Scotland"
-JAMES_VI_OF_SCOTLAND_AND_I_OF_ENGLAND=u"James_VI_of_Scotland_and_I_of_England"
+DYNASTY = "Tudor"
+HENRY_VII = "Henry_VII"
+MARGARET = "Margaret"
+JAMES_V_OF_SCOTLAND = "James_V_of_Scotland"
+MARY_I_OF_SCOTLAND = "Mary_I_of_Scotland"
+JAMES_VI_OF_SCOTLAND_AND_I_OF_ENGLAND = "James_VI_of_Scotland_and_I_of_England"
 names = [HENRY_VII,MARGARET,JAMES_V_OF_SCOTLAND,MARY_I_OF_SCOTLAND,JAMES_VI_OF_SCOTLAND_AND_I_OF_ENGLAND]
 root = '/'
 TREE1 = [root]

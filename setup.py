@@ -1,5 +1,6 @@
 import os, sys, subprocess
 import os.path as osp
+import configparser
 from setuptools import setup, Extension
 from distutils.dist import Distribution
 
@@ -15,14 +16,7 @@ setuptools_extra_kwargs = {
     },
 }
 
-if sys.version_info[0] < 3:
-    import ConfigParser as configparser
-
-    open_kwargs = {}
-else:
-    import configparser
-
-    open_kwargs = {'encoding': 'utf-8'}
+open_kwargs = {'encoding': 'utf-8'}
 
 
 def check_hdf5version(hdf5_includedir):

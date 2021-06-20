@@ -3,11 +3,11 @@ import numpy as np
 import sys, unittest, os, tempfile
 
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
-ATT1 = u'\u03a0\u03a3\u03a9'
-ATT2 = u'x\xb0'
-ATT3 = [u'\u03a0',u'\u03a3',u'\u03a9']
-DIM_NAME = u'x\xb0'
-VAR_NAME = u'Andr\xe9'
+ATT1 = '\u03a0\u03a3\u03a9'
+ATT2 = 'x\xb0'
+ATT3 = ['\u03a0', '\u03a3', '\u03a9']
+DIM_NAME = 'x\xb0'
+VAR_NAME = 'Andr\xe9'
 
 class UnicodeTestCase(unittest.TestCase):
 
@@ -34,7 +34,8 @@ class UnicodeTestCase(unittest.TestCase):
         assert f.attribute1 == ATT1
         assert f.attribute2 == ATT2
         #assert f.attribute3 == ''.join(ATT3)
-        assert f.attribute3 == ATT3 # behavior changed issue 770
+        # behavior changed issue 770
+        assert f.attribute3 == ATT3
         f.close()
 
 if __name__ == '__main__':
