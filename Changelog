@@ -1,5 +1,5 @@
- version 1.5.7 (not yet released)
-=================================
+ version 1.5.7 (tag v1.5.7rel)
+==============================
  * don't try to mask vlens with default  _FillValue, since vlens don't have a default _FillValue.
    This gets rid of numpy DeprecationWarning (issue #1099).
  * update docs to reflect the fact that a variable must be in collective mode before writing
