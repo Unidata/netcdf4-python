@@ -2,7 +2,7 @@ from netCDF4 import Dataset
 from numpy.random import seed, randint
 from numpy.testing import assert_array_equal, assert_equal,\
 assert_array_almost_equal
-import tempfile, unittest, os, random
+import tempfile, unittest, os, random, sys
 import numpy as np
 
 file_name = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -35,8 +35,8 @@ class VariablesTestCase(unittest.TestCase):
         vu[:,::-1,:] = data
 
         v1[:] = data[:, 0, 0]
-        #v2[0:2**31] = 1 # issue 1112 (overflow on windows)
-        v2[2**31] = 1 # issue 1112 (overflow on windows)
+        if sys.maxsize > 2**32:
+            v2[2**31] = 1 # issue 1112 (overflow on windows)
         f.close()
 
     def tearDown(self):
@@ -82,8 +82,8 @@ class VariablesTestCase(unittest.TestCase):
         v2 = f.variables['data1dx']
         d = data[:,0,0]
         assert_equal(v1[:], d)
-        #assert_equal(v2[:], np.ones(2**31,dtype=np.uint8))
-        assert_equal(v2[2**31], 1)
+        if sys.maxsize > 2**32:
+            assert_equal(v2[2**31], 1)
         assert_equal(v1[4:], d[4:])
         # test return of array scalar.
         assert_equal(v1[0].shape, ())

@@ -641,11 +641,9 @@ to walk the directory tree. Note that printing the <code><a href="#Dataset">Data
 object yields summary information about it's contents.</p>
 
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">walktree</span><span class="p">(</span><span class="n">top</span><span class="p">):</span>
-<span class="o">...</span>     <span class="n">values</span> <span class="o">=</span> <span class="n">top</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-<span class="o">...</span>     <span class="k">yield</span> <span class="n">values</span>
+<span class="o">...</span>     <span class="k">yield</span> <span class="n">top</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 <span class="o">...</span>     <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">top</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-<span class="o">...</span>         <span class="k">for</span> <span class="n">children</span> <span class="ow">in</span> <span class="n">walktree</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-<span class="o">...</span>             <span class="k">yield</span> <span class="n">children</span>
+<span class="o">...</span>         <span class="k">yield from</span> <span class="n">walktree</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="p">)</span>
 <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="s1">&#39;&gt;</span>
 <span class="n">root</span> <span class="n">group</span> <span class="p">(</span><span class="n">NETCDF4</span> <span class="n">data</span> <span class="n">model</span><span class="p">,</span> <span class="n">file</span> <span class="nb">format</span> <span class="n">HDF5</span><span class="p">):</span>
@@ -987,8 +985,9 @@ Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).</p>
 The result will be a numpy scalar array.</p>
 
 <p>By default, netcdf4-python returns numpy masked arrays with values equal to the
-<code>missing_value</code> or <code>_FillValue</code> variable attributes masked.  The
-<code><a href="#Dataset.set_auto_mask">Dataset.set_auto_mask</a></code> <code><a href="#Dataset">Dataset</a></code> and <code><a href="#Variable">Variable</a></code> methods
+<code>missing_value</code> or <code>_FillValue</code> variable attributes masked for primitive and
+enum data types.
+The <code><a href="#Dataset.set_auto_mask">Dataset.set_auto_mask</a></code> <code><a href="#Dataset">Dataset</a></code> and <code><a href="#Variable">Variable</a></code> methods
 can be used to disable this feature so that
 numpy arrays are always returned, with the missing values included. Prior to
 version 1.4.0 the default behavior was to only return masked arrays when the
@@ -1596,7 +1595,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="ma&#x69;&#108;&#x74;o&#58;&#x6a;&#101;&#102;f&#114;&#x65;&#121;&#46;&#x73;&#x2e;&#x77;&#x68;&#105;&#116;&#97;&#107;&#x65;&#x72;&#64;&#110;&#x6f;aa&#x2e;&#103;&#x6f;&#x76;">&#x6a;&#101;&#102;f&#114;&#x65;&#121;&#46;&#x73;&#x2e;&#x77;&#x68;&#105;&#116;&#97;&#107;&#x65;&#x72;&#64;&#110;&#x6f;aa&#x2e;&#103;&#x6f;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#106;&#101;&#x66;&#x66;&#114;&#x65;&#x79;&#x2e;&#115;&#46;&#x77;&#x68;&#x69;t&#x61;&#107;&#x65;&#x72;&#64;&#110;oa&#97;&#46;&#103;&#x6f;&#x76;">&#106;&#101;&#x66;&#x66;&#114;&#x65;&#x79;&#x2e;&#115;&#46;&#x77;&#x68;&#x69;t&#x61;&#107;&#x65;&#x72;&#64;&#110;oa&#97;&#46;&#103;&#x6f;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -2403,7 +2402,8 @@ after calling this function will follow the default behaviour.</p>
             <div class="docstring"><p><strong><code>set_auto_mask(self, True_or_False)</code></strong></p>
 
 <p>Call <code><a href="#Variable.set_auto_mask">Variable.set_auto_mask</a></code> for all variables contained in this <code><a href="#Dataset">Dataset</a></code> or
-<code><a href="#Group">Group</a></code>, as well as for all variables in all its subgroups.</p>
+<code><a href="#Group">Group</a></code>, as well as for all variables in all its subgroups. Only affects
+Variables with primitive or enum types (not compound or vlen Variables).</p>
 
 <p><strong><code>True_or_False</code></strong>: Boolean determining if automatic conversion to masked arrays
 shall be applied for all variables.</p>
@@ -2744,7 +2744,8 @@ Default is <code>True</code>, can be reset using <code><a href="#Variable.set_au
 <p><strong><code><a href="#Variable.mask">mask</a></code></strong>: If True, data is automatically converted to/from masked
 arrays when missing values or fill values are present. Default is <code>True</code>, can be
 reset using <code><a href="#Variable.set_auto_mask">Variable.set_auto_mask</a></code> and <code><a href="#Variable.set_auto_maskandscale">Variable.set_auto_maskandscale</a></code>
-methods.</p>
+methods. Only relevant for Variables with primitive or enum types (ignored
+for compound and vlen Variables).</p>
 
 <p><strong><code><a href="#Variable.chartostring">chartostring</a></code></strong>: If True, data is automatically converted to/from character
 arrays to string arrays when the <code>_Encoding</code> variable attribute is set.
