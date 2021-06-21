@@ -10,6 +10,10 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+6/22/2021:  Version [1.5.7](https://pypi.python.org/pypi/netCDF4/1.5.7) released.
+Fixed OverflowError on Windows when reading data with dimension sizes greater than 2**32-1.
+Masked arrays no longer returned for vlens.
+
 2/15/2021:  Version [1.5.6](https://pypi.python.org/pypi/netCDF4/1.5.6) released. Added `Dataset.fromcdl` and `Dataset.tocdl`, which require `ncdump` and `ncgen` utilities to be in `$PATH`. Removed python 2.7 support.
 
 12/20/2020: Version [1.5.5.1](https://pypi.python.org/pypi/netCDF4/1.5.5.1) released.
