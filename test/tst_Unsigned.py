@@ -10,7 +10,7 @@ class Test_Unsigned(unittest.TestCase):
     integer data stored with a signed integer type in netcdf-3.
     If _Unsigned=True, a view to the data as unsigned integers is returned.
     set_autoscale can be used to turn this off (default is on)
-    See issue #656 (pull reqeust #658).
+    See issue #656 (pull request #658).
     """
     def test_unsigned(self):
         f = netCDF4.Dataset("ubyte.nc")

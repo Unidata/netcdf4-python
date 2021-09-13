@@ -43,7 +43,7 @@ class VariablesTestCase(unittest.TestCase):
         f = netCDF4.Dataset(self.file,'w')
         # try to set a dataset attribute with one of the reserved names.
         f.setncattr('file_format','netcdf4_format')
-        # test attribute renameing
+        # test attribute renaming
         f.stratt_tmp = STRATT
         f.renameAttribute('stratt_tmp','stratt')
         f.emptystratt = EMPTYSTRATT

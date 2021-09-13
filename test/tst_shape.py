@@ -24,7 +24,7 @@ class ShapeTestCase(unittest.TestCase):
 
     def runTest(self):
         """test for issue 90 (array shape should not be modified by
-        assigment to netCDF variable)"""
+        assignment to netCDF variable)"""
         f  = Dataset(self.file, 'a')
         v = f.variables['data']
         v[0] = data

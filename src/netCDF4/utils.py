@@ -235,7 +235,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             unlim = False
         # convert boolean index to integer array.
         if np.iterable(ea) and ea.dtype.kind =='b':
-            # check that boolen array not too long
+            # check that boolean array not too long
             if not unlim and shape[i] != len(ea):
                 msg="""
 Boolean array must have the same shape as the data along this dimension."""
@@ -539,7 +539,7 @@ def ncinfo():
             sys.stderr.write(usage)
             sys.exit(0)
 
-    # filename passed as last argumenbt
+    # filename passed as last argument
     try:
         filename = pargs[-1]
     except IndexError:

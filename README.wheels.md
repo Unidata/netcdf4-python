@@ -28,7 +28,7 @@ dynamic libraries apart from those provided as standard by OSX.
 
 ### Triggering a build
 
-You will need write permision to the github repository to trigger new builds
+You will need write permission to the github repository to trigger new builds
 on the travis-ci interface.  Contact us on the mailing list if you need this.
 
 You can trigger a build by:

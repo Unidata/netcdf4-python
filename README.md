@@ -58,7 +58,7 @@ Fixes bug in implementation of NETCDF4_CLASSIC parallel IO support in 1.4.3.
 10/26/2018: Version [1.4.2](https://pypi.python.org/pypi/netCDF4/1.4.2) released. Minor bugfixes, added `Variable.get_dims()` method and `master_file` kwarg for `MFDataset.__init__`.
 
 08/10/2018: Version [1.4.1](https://pypi.python.org/pypi/netCDF4/1.4.1) released. The old slicing behavior
-(numpy array returned unless missing values are present, otherwise masked array returned) is renabled
+(numpy array returned unless missing values are present, otherwise masked array returned) is re-enabled
 via `set_always_mask(False)`.
 
 05/11/2018: Version [1.4.0](https://pypi.python.org/pypi/netCDF4/1.4.0) released. The netcdftime package is no longer
