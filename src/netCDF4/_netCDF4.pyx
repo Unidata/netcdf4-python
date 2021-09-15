@@ -2468,9 +2468,9 @@ Close the Dataset.
 
     def isopen(self):
         """
-**`close(self)`**
+**`isopen(self)`**
 
-is the Dataset open or closed?
+Is the Dataset open or closed?
         """
         return bool(self._isopen)
 
