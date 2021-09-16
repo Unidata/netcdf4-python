@@ -63,5 +63,27 @@ class EnumTestCase(unittest.TestCase):
         assert_array_equal(data.mask, datain_masked.mask)
         f.close()
 
+class EnumDictTestCase(unittest.TestCase):
+    # issue 1128
+    def setUp(self):
+        DT = np.int16; BITS = 8
+        self.STORED_VAL = DT(2**BITS)
+        self.VAL_MAP = {f'bits_{n}': DT(2**n) for n in range(1,BITS+1)}
+        self.VAL_MAP['invalid'] = 0
+        self.file = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+        with netCDF4.Dataset(file, 'w') as nc:
+            # The enum is created with dtype=int16, so it will allow BITS values up to 15
+            et = nc.createEnumType(DT, 'etype', self.VAL_MAP)
+            ev = nc.createVariable('evar', et)
+            # Succeeds because the created EnumType does keep the correct dict
+            ev[...] = self.STORED_VAL
+        def tearDown(self):
+            os.remove(self.file)
+        def runTest(self):
+            with netCDF4.Dataset(file, 'r') as nc:
+                read_var = nc['evar']
+                assert(read_var[...] == self.STORED_VAL)
+                assert(read_et.enum_dict == self.VAL_MAP)
+
 if __name__ == '__main__':
     unittest.main()

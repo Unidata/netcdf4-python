@@ -6005,7 +6005,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
                                       enum_namstring,PyArray_DATA(enum_val))
         _ensure_nc_success(ierr)
         name = enum_namstring.decode('utf-8')
-        enum_dict[name] = numpy.asscalar(enum_val)
+        enum_dict[name] = enum_val.item()
     return EnumType(group, dt, enum_name, enum_dict, typeid=xtype)
 
 cdef _strencode(pystr,encoding=None):
