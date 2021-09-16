@@ -2172,7 +2172,6 @@ strings.
                 IF HAS_NC_CREATE_MEM:
                    initialsize = <size_t>memory
                    ierr = nc_create_mem(path, 0, initialsize, &grpid)
-                   print('nc_create_mem',ierr)
                    self._inmemory = True # checked in close method
                 ELSE:
                     msg = """
@@ -2226,7 +2225,6 @@ strings.
                         raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
 
                     ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
-                    print('nc_open_mem',ierr)
                 ELSE:
                     msg = """
         nc_open_mem functionality not enabled.  To enable, install Cython, make sure you have
