@@ -1,5 +1,5 @@
 """
-Version 1.5.7
+Version 1.5.8
 -------------
 
 # Introduction
@@ -1204,7 +1204,7 @@ if sys.version_info[0:2] < (3, 7):
     # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
 
-__version__ = "1.5.7"
+__version__ = "1.5.8"
 
 # Initialize numpy
 import posixpath
