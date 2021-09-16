@@ -8,6 +8,8 @@ on:
 jobs:
   run-serial:
     runs-on: ${{ matrix.os }}
+    env:
+      NO_NET: 1
     strategy:
       matrix:
         python-version: ["3.6", "3.7", "3.8", "3.9"]
@@ -71,7 +73,6 @@ jobs:
       shell: bash -l {0}
       run: |
         source activate TEST
-        export NO_NET=1
         cd test && python run_all.py
         cd ../examples
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" 
