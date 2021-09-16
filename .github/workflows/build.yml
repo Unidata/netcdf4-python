@@ -10,7 +10,7 @@ jobs:
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
       CC: mpicc.mpich
-#     NO_NET: 1
+      NO_NET: 1
     strategy:
       matrix:
         python-version: ["3.9"]
