@@ -2172,6 +2172,7 @@ strings.
                 IF HAS_NC_CREATE_MEM:
                    initialsize = <size_t>memory
                    ierr = nc_create_mem(path, 0, initialsize, &grpid)
+                   print('nc_create_mem',ierr)
                    self._inmemory = True # checked in close method
                 ELSE:
                     msg = """
@@ -2225,6 +2226,7 @@ strings.
                         raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
 
                     ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
+                    print('nc_open_mem',ierr)
                 ELSE:
                     msg = """
         nc_open_mem functionality not enabled.  To enable, install Cython, make sure you have
@@ -5979,7 +5981,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
     # then use that to create a EnumType instance.
     # called by _get_types, _get_vars.
     cdef int ierr, _grpid, nmem
-    cdef char enum_val
+    cdef ndarray enum_val
     cdef nc_type base_xtype
     cdef char enum_namstring[NC_MAX_NAME+1]
     cdef size_t nmembers
@@ -5998,13 +6000,14 @@ cdef _read_enum(group, nc_type xtype, endian=None):
         raise KeyError("unsupported component type for ENUM")
     # loop over members, build dict.
     enum_dict = {}
+    enum_val = numpy.empty(1,dt)
     for nmem from 0 <= nmem < nmembers:
         with nogil:
             ierr = nc_inq_enum_member(_grpid, xtype, nmem, \
-                                      enum_namstring, &enum_val)
+                                      enum_namstring,PyArray_DATA(enum_val))
         _ensure_nc_success(ierr)
         name = enum_namstring.decode('utf-8')
-        enum_dict[name] = int(enum_val)
+        enum_dict[name] = numpy.asscalar(enum_val)
     return EnumType(group, dt, enum_name, enum_dict, typeid=xtype)
 
 cdef _strencode(pystr,encoding=None):
