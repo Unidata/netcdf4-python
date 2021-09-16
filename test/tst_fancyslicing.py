@@ -56,7 +56,7 @@ class VariablesTestCase(unittest.TestCase):
         # integer array slice.
         v[:,i,:] = -100
         self.data[:,i,:] = -100
-        # boolen array slice.
+        # boolean array slice.
         v[ib2] = -200
         self.data[ib2] = -200
         v[ib3,:,:] = -300

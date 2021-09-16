@@ -96,7 +96,7 @@ class SetValidMinMax(unittest.TestCase):
         self.assertTrue(np.all(self.v_ma.mask == v.mask))
         self.assertTrue(np.all(self.v_ma.mask == v2.mask))
         # treating _FillValue as valid_min/valid_max was
-        # too suprising, revert to old behaviour (issue #761)
+        # too surprising, revert to old behaviour (issue #761)
         #self.assertTrue(np.all(self.v_ma.mask == v3.mask))
         # check that underlying data is same as in netcdf file
         v = f.variables['v']

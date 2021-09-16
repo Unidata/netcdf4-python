@@ -3,7 +3,7 @@ import netCDF4
 import numpy as np
 import matplotlib.pyplot as plt
 
-# use real data from CFS reanlysis.
+# use real data from CFS reanalysis.
 # note:  we're reading GRIB2 data!
 URL="http://nomads.ncdc.noaa.gov/thredds/dodsC/modeldata/cmd_flxf/2010/201007/20100701/flxf00.gdas.2010070100.grb2"
 nc = netCDF4.Dataset(URL)
