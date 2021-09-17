@@ -8,6 +8,8 @@ on:
 jobs:
   run-serial:
     runs-on: ${{ matrix.os }}
+    #env:
+    #  NO_NET: 1
     strategy:
       matrix:
         python-version: ["3.6", "3.7", "3.8", "3.9"]
@@ -76,7 +78,7 @@ jobs:
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" 
         which mpirun
         mpirun --version
-        mpirun  --oversubscribe -np 4 python mpi_example.py
+        mpirun -np 4 python mpi_example.py
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"
           exit 1

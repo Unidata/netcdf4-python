@@ -1,5 +1,5 @@
 """
-Version 1.5.7
+Version 1.5.8
 -------------
 
 # Introduction
@@ -1204,7 +1204,7 @@ if sys.version_info[0:2] < (3, 7):
     # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
 
-__version__ = "1.5.7"
+__version__ = "1.5.8"
 
 # Initialize numpy
 import posixpath
@@ -5979,7 +5979,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
     # then use that to create a EnumType instance.
     # called by _get_types, _get_vars.
     cdef int ierr, _grpid, nmem
-    cdef char enum_val
+    cdef ndarray enum_val
     cdef nc_type base_xtype
     cdef char enum_namstring[NC_MAX_NAME+1]
     cdef size_t nmembers
@@ -5998,13 +5998,14 @@ cdef _read_enum(group, nc_type xtype, endian=None):
         raise KeyError("unsupported component type for ENUM")
     # loop over members, build dict.
     enum_dict = {}
+    enum_val = numpy.empty(1,dt)
     for nmem from 0 <= nmem < nmembers:
         with nogil:
             ierr = nc_inq_enum_member(_grpid, xtype, nmem, \
-                                      enum_namstring, &enum_val)
+                                      enum_namstring,PyArray_DATA(enum_val))
         _ensure_nc_success(ierr)
         name = enum_namstring.decode('utf-8')
-        enum_dict[name] = int(enum_val)
+        enum_dict[name] = enum_val.item()
     return EnumType(group, dt, enum_name, enum_dict, typeid=xtype)
 
 cdef _strencode(pystr,encoding=None):
