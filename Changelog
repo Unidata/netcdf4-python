@@ -1,8 +1,9 @@
- version 1.5.8 (not yet released)
+ version 1.5.8 (tag v1.5.8rel)
 ==============================
  * Fix Enum bug (issue #1128): the enum_dict member of an EnumType read from a file
    contains invalid values when the enum is large enough (more than 127 or 255
    members). 
+ * Binary wheels for aarch64 and python 3.10.
 
  version 1.5.7 (tag v1.5.7rel)
 ==============================
