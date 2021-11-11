@@ -1,3 +1,8 @@
+ version 1.6.0 (not yet released)
+=================================
+ * add support for new bit-grooming/quantization functions in netcdf-c 4.8.2.  netCDF4.Dataset.createVariable API
+   has changed - lsd ("least significant digit") keyword changed to nsd (number of significant digits).
+
  version 1.5.8 (tag v1.5.8rel)
 ==============================
  * Fix Enum bug (issue #1128): the enum_dict member of an EnumType read from a file
