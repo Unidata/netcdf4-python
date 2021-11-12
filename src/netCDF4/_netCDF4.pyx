@@ -1304,6 +1304,7 @@ __has_nc_open_mem__ = HAS_NC_OPEN_MEM
 __has_nc_create_mem__ = HAS_NC_CREATE_MEM
 __has_parallel4_support__ = HAS_PARALLEL4_SUPPORT
 __has_pnetcdf_support__ = HAS_PNETCDF_SUPPORT
+__has_quantization_support__ = HAS_QUANTIZATION_SUPPORT
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
@@ -2749,7 +2750,7 @@ is the number of variable dimensions."""
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
-        significant_digits=None,fill_value=fill_value, chunk_cache=chunk_cache)
+        significant_digits=significant_digits,fill_value=fill_value, chunk_cache=chunk_cache)
         return group.variables[varname]
 
     def renameVariable(self, oldname, newname):
