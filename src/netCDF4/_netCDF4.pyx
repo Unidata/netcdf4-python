@@ -3902,7 +3902,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 ELSE:
                     if significant_digits is not None:
                         msg = """
-significant_digits kwarge only works with netcdf-c >= 4.8.2.  To enable, install Cython, make sure you have
+significant_digits kwarg only works with netcdf-c >= 4.8.2.  To enable, install Cython, make sure you have
 version 4.8.2 or higher netcdf-c, and rebuild netcdf4-python. Otherwise, use least_significant_digit
 kwarg for quantization."""
                         raise ValueError(msg)
