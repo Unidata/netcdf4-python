@@ -2613,11 +2613,11 @@ datatype."""
     def createVariable(self, varname, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
-            fill_value=None, chunk_cache=None):
+            significant_digits=None,fill_value=None, chunk_cache=None):
         """
 **`createVariable(self, varname, datatype, dimensions=(), zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-endian='native', least_significant_digit=None, fill_value=None, chunk_cache=None)`**
+endian='native', least_significant_digit=None, significant_digits=None, fill_value=None, chunk_cache=None)`**
 
 Creates a new variable with the given `varname`, `datatype`, and
 `dimensions`. If dimensions are not given, the variable is assumed to be
@@ -2749,7 +2749,7 @@ is the number of variable dimensions."""
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
-        fill_value=fill_value, chunk_cache=chunk_cache)
+        significant_digits=None,fill_value=fill_value, chunk_cache=chunk_cache)
         return group.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -3571,7 +3571,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
-            fill_value=None, chunk_cache=None, **kwargs):
+            significant_digits=None,fill_value=None, chunk_cache=None, **kwargs):
         """
         **`__init__(self, group, name, datatype, dimensions=(), zlib=False,
         complevel=4, shuffle=True, fletcher32=False, contiguous=False,
@@ -3666,7 +3666,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         `Dataset.createVariable` method of a `Dataset` or
         `Group` instance, not using this class directly.
         """
-        cdef int ierr, ndims, icontiguous, ideflate_level, numdims, _grpid
+        cdef int ierr, ndims, icontiguous, ideflate_level, numdims, _grpid, nsd
         cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
@@ -3865,6 +3865,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                     pass # this is the default format.
                 else:
                     raise ValueError("'endian' keyword argument must be 'little','big' or 'native', got '%s'" % endian)
+                # set quantization
+                IF HAS_QUANTIZATION_SUPPORT:
+                    if significant_digits is not None:
+                        nsd = significant_digits
+                        ierr = nc_def_var_quantize(self._grpid, self._varid, NC_QUANTIZE_BITGROOM, nsd)
                 if ierr != NC_NOERR:
                     if grp.data_model != 'NETCDF4': grp._enddef()
                     _ensure_nc_success(ierr)
@@ -4200,6 +4205,30 @@ return dictionary containing HDF5 filter parameters."""
         if ifletcher32:
             filtdict['fletcher32']=True
         return filtdict
+
+    def significant_digits(self):
+        """
+**`significant_digits(self)`**
+
+return number of significant digits used in quantization"""
+        IF HAS_QUANTIZATION_SUPPORT:
+            cdef int ierr, nsd, quantize_mode
+            if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']:
+                return None
+            else:
+                with nogil:
+                    ierr = nc_inq_var_quantize(self._grpid, self._varid, &quantize_mode, &nsd)
+                _ensure_nc_success(ierr)
+                if quantize_mode == NC_NOQUANTIZE:
+                    return None
+                else:
+                    sig_digits = nsd
+                    return sig_digits
+        ELSE:
+            msg = """
+significant_digits method not enabled.  To enable, install Cython, make sure you have
+version 4.8.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+            raise ValueError(msg)
 
     def endian(self):
         """
