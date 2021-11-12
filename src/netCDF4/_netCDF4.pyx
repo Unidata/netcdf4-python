@@ -3870,6 +3870,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                     if significant_digits is not None:
                         nsd = significant_digits
                         ierr = nc_def_var_quantize(self._grpid, self._varid, NC_QUANTIZE_BITGROOM, nsd)
+                ELSE:
+                    if significant_digits is not None:
+                        msg = """
+significant_digits feature not enabled.  To enable, install Cython, make sure you have
+version 4.8.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+                        raise ValueError(msg)
                 if ierr != NC_NOERR:
                     if grp.data_model != 'NETCDF4': grp._enddef()
                     _ensure_nc_success(ierr)
