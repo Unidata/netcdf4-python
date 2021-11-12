@@ -1,7 +1,8 @@
  version 1.6.0 (not yet released)
 =================================
- * add support for new bit-grooming/quantization functions in netcdf-c 4.8.2.  netCDF4.Dataset.createVariable API
-   has changed - lsd ("least significant digit") keyword changed to nsd (number of significant digits).
+ * add support for new bit-grooming/quantization functions in netcdf-c 4.8.2 via "signficant_digits"
+   kwarg in Dataset.createVariable. "signficant_digits" Dataset method returns value associated with
+   Variable.
 
  version 1.5.8 (tag v1.5.8rel)
 ==============================
