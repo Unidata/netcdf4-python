@@ -667,7 +667,7 @@ If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
 0.1 degrees), you can dramatically improve zlib compression by
 quantizing (or truncating) the data. There are two methods supplied for
-doing this.  You can useg the `least_significant_digit`
+doing this.  You can use the `least_significant_digit`
 keyword argument to `Dataset.createVariable` to specify
 the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
@@ -2717,7 +2717,8 @@ retained (in this case bits=4). From the
 in unpacked data that is a reliable value." Default is `None`, or no
 quantization, or 'lossless' compression.  If `significant_digits=3`
 then the data will be quantized so that three significant digits are retained, independent
-of the floating point exponent. This option is available only with netcdf-c >= 4.8.2.
+of the floating point exponent. This option is available only with netcdf-c >= 4.8.2, and 
+only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 
 When creating variables in a `NETCDF4` or `NETCDF4_CLASSIC` formatted file,
 HDF5 creates something called a 'chunk cache' for each variable.  The
@@ -3571,7 +3572,8 @@ instance. If `None`, the data is not truncated.
 **`significant_digits`**: Describes the number of significant digits
 in the data the contains a reliable value.  Data is
 truncated to retain this number of significant digits when it is assigned to the `Variable`
-instance. If `None`, the data is not truncated. Only available with netcdf-c >= 4.8.2.
+instance. If `None`, the data is not truncated. Only available with netcdf-c >= 4.8.2,
+and only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 The number of significant digits used in the quantization of variable data can be
 obtained using the `Variable.significant_digits` method.
 
