@@ -3873,8 +3873,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 ELSE:
                     if significant_digits is not None:
                         msg = """
-significant_digits feature not enabled.  To enable, install Cython, make sure you have
-version 4.8.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
+significant_digits kwarge only works with netcdf-c >= 4.8.2.  To enable, install Cython, make sure you have
+version 4.8.2 or higher netcdf-c, and rebuild netcdf4-python. Otherwise, use least_significant_digit
+kwarg for quantization."""
                         raise ValueError(msg)
                 if ierr != NC_NOERR:
                     if grp.data_model != 'NETCDF4': grp._enddef()
@@ -4231,10 +4232,7 @@ return number of significant digits used in quantization"""
                     sig_digits = nsd
                     return sig_digits
         ELSE:
-            msg = """
-significant_digits method not enabled.  To enable, install Cython, make sure you have
-version 4.8.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
-            raise ValueError(msg)
+            return None
 
     def endian(self):
         """
