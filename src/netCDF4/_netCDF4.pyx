@@ -666,14 +666,22 @@ format is `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`.
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
 0.1 degrees), you can dramatically improve zlib compression by
-quantizing (or truncating) the data using the `least_significant_digit`
-keyword argument to `Dataset.createVariable`. The least
-significant digit is the power of ten of the smallest decimal place in
+quantizing (or truncating) the data. There are two methods supplied for
+doing this.  You can useg the `least_significant_digit`
+keyword argument to `Dataset.createVariable` to specify
+the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
 precision of 0.1, then setting `least_significant_digit=1` will cause
 data the data to be quantized using `numpy.around(scale*data)/scale`, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4).  Effectively, this makes the compression
+retained (in this case bits=4).  This is done at the python level and is
+not a part of the underlying C library.  Starting with netcdf-c version 4.8.2,
+a quantization capability is provided in the library.  This can be
+used via the `significant_digits` `Dataset.createVariable` kwarg.
+The interpretation of `significant_digits` is different than `least_signficant_digit`
+in that it specifies the absolute number of significant digits independent
+of the magnitude of the variable (the floating point exponent).
+Either of these approaches makes the compression
 'lossy' instead of 'lossless', that is some precision in the data is
 sacrificed for the sake of disk space.
 
@@ -693,6 +701,12 @@ and then
 
 ```python
 >>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),zlib=True,least_significant_digit=3)
+```
+
+or with netcdf-c >= 4.8.2
+
+```python
+>>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),zlib=True,significant_digits=4)
 ```
 
 and see how much smaller the resulting files are.
@@ -2691,7 +2705,7 @@ netCDF `_FillValue` (the value that the variable gets filled with before
 any data is written to it, defaults given in the dict `netCDF4.default_fillvals`).
 If fill_value is set to `False`, then the variable is not pre-filled.
 
-If the optional keyword parameter `least_significant_digit` is
+If the optional keyword parameters `least_significant_digit` or `significant_digits` are
 specified, variable data will be truncated (quantized). In conjunction
 with `zlib=True` this produces 'lossy', but significantly more
 efficient compression. For example, if `least_significant_digit=1`,
@@ -2701,7 +2715,9 @@ retained (in this case bits=4). From the
 [PSL metadata conventions](http://www.esrl.noaa.gov/psl/data/gridded/conventions/cdc_netcdf_standard.shtml):
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is `None`, or no
-quantization, or 'lossless' compression.
+quantization, or 'lossless' compression.  If `significant_digits=3`
+then the data will be quantized so that three significant digits are retained, independent
+of the floating point exponent. This option is available only with netcdf-c >= 4.8.2.
 
 When creating variables in a `NETCDF4` or `NETCDF4_CLASSIC` formatted file,
 HDF5 creates something called a 'chunk cache' for each variable.  The
@@ -2735,7 +2751,7 @@ string containing the name of the Variable instance.
 The `least_significant_digit`
 attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the `Variable`
-instance. If `None`, the data is not truncated. The `ndim` attribute
+instance. The `ndim` attribute
 is the number of variable dimensions."""
         # if varname specified as a path, split out group names.
         varname = posixpath.normpath(varname)
@@ -3552,6 +3568,13 @@ smallest decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the `Variable`
 instance. If `None`, the data is not truncated.
 
+**`significant_digits`**: Describes the number of significant digits
+in the data the contains a reliable value.  Data is
+truncated to retain this number of significant digits when it is assigned to the `Variable`
+instance. If `None`, the data is not truncated. Only available with netcdf-c >= 4.8.2.
+The number of significant digits used in the quantization of variable data can be
+obtained using the `Variable.significant_digits` method.
+
 **`__orthogonal_indexing__`**: Always `True`.  Indicates to client code
 that the object supports 'orthogonal indexing', which means that slices
 that are 1d arrays or lists slice along each dimension independently.  This
@@ -3645,13 +3668,18 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         The `zlib, complevel, shuffle, fletcher32, contiguous` and `chunksizes`
         keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
-        **`least_significant_digit`**: If specified, variable data will be
-        truncated (quantized). In conjunction with `zlib=True` this produces
+        **`least_significant_digit`**: If this or `significant_digits` are specified, 
+        variable data will be truncated (quantized).  
+        In conjunction with `zlib=True` this produces
         'lossy', but significantly more efficient compression. For example, if
         `least_significant_digit=1`, data will be quantized using
         around(scale*data)/scale, where scale = 2**bits, and bits is determined
         so that a precision of 0.1 is retained (in this case bits=4). Default is
         `None`, or no quantization.
+
+        **`significant_digits`**: As described for `least_significant_digit`
+        except the number of significant digits retained is prescribed independent
+        of the floating point exponent.  Only available with netcdf-c >= 4.8.2.
 
         **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
         value that the variable gets filled with before any data is written to it)
