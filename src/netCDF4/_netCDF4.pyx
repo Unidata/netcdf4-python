@@ -3627,7 +3627,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         **`chunksizes`**: Can be used to specify the HDF5 chunksizes for each
         dimension of the variable. A detailed discussion of HDF chunking and I/O
         performance is available
-        [here](http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html).
+        [here](https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking).
         Basically, you want the chunk size for each dimension to match as
         closely as possible the size of the data block that users will read
         from the file. `chunksizes` cannot be set if `contiguous=True`.

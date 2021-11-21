@@ -21,7 +21,7 @@
 
                     <h2>Contents</h2>
                     <ul>
-  <li><a href="#version-157">Version 1.5.7</a></li>
+  <li><a href="#version-158">Version 1.5.8</a></li>
 </ul></li>
 <li><a href="#introduction">Introduction</a>
 <ul>
@@ -456,7 +456,7 @@
                     <h1 class="modulename">
 netCDF4    </h1>
 
-                        <div class="docstring"><h2 id="version-157">Version 1.5.7</h2>
+                        <div class="docstring"><h2 id="version-158">Version 1.5.8</h2>
 
 <h1 id="introduction">Introduction</h1>
 
@@ -1595,7 +1595,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#106;&#101;&#x66;&#x66;&#114;&#x65;&#x79;&#x2e;&#115;&#46;&#x77;&#x68;&#x69;t&#x61;&#107;&#x65;&#x72;&#64;&#110;oa&#97;&#46;&#103;&#x6f;&#x76;">&#106;&#101;&#x66;&#x66;&#114;&#x65;&#x79;&#x2e;&#115;&#46;&#x77;&#x68;&#x69;t&#x61;&#107;&#x65;&#x72;&#64;&#110;oa&#97;&#46;&#103;&#x6f;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="m&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x6a;&#101;f&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#46;&#119;&#104;&#105;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#x6e;o&#97;&#x61;&#46;&#103;ov">&#x6a;&#101;f&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#46;&#119;&#104;&#105;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#x6e;o&#97;&#x61;&#46;&#103;ov</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -1851,9 +1851,9 @@ changed using the <code>encoding</code> kwarg.</p>
     </div>
 
         
-            <div class="docstring"><p><strong><code>close(self)</code></strong></p>
+            <div class="docstring"><p><strong><code>isopen(self)</code></strong></p>
 
-<p>is the Dataset open or closed?</p>
+<p>Is the Dataset open or closed?</p>
 </div>
 
 
@@ -2833,7 +2833,7 @@ a variable with an unlimited dimension will trigger an error.</p>
 <p><strong><code>chunksizes</code></strong>: Can be used to specify the HDF5 chunksizes for each
 dimension of the variable. A detailed discussion of HDF chunking and I/O
 performance is available
-<a href="http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html">here</a>.
+<a href="https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking">here</a>.
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
 from the file. <code>chunksizes</code> cannot be set if <code>contiguous=True</code>.</p>
@@ -4181,11 +4181,12 @@ the proleptic gregorian calendar) or cftime.datetime instances.</p>
 <p><strong>units</strong>: a string of the form <strong><time units> since <reference time></strong>
 describing the time units. <strong><time units></strong> can be days, hours, minutes,
 seconds, milliseconds or microseconds. <strong><reference time></strong> is the time
-origin. <strong>months_since</strong> is allowed <em>only</em> for the <strong>360_day</strong> calendar.</p>
+origin. <strong>months since</strong> is allowed <em>only</em> for the <strong>360_day</strong> calendar
+and <strong>common_years since</strong> is allowed <em>only</em> for the <strong>365_day</strong> calendar.</p>
 
 <p><strong>calendar</strong>: describes the calendar to be used in the time calculations.
 All the values currently defined in the
-<code>CF metadata convention &lt;http://cfconventions.org&gt;</code>__ are supported.
+<code>CF metadata convention &lt;http://cfconventions.org/cf-conventions/cf-conventions#calendar&gt;</code>__ are supported.
 Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
 Default is <code>None</code> which means the calendar associated with the first
@@ -4195,8 +4196,13 @@ input datetime instance will be used.</p>
 is used and the year zero exists.  If set to False for real-world
 calendars, then historical year numbering is used and the year 1 is
 preceded by year -1 and no year zero exists.
-The defaults are False for real-world calendars
-and True for idealized calendars.
+The defaults are set to conform with
+CF version 1.9 conventions (False for 'julian', 'gregorian'/'standard', True
+for 'proleptic_gregorian' (ISO 8601) and True for the idealized
+calendars 'noleap'/'365_day', '360_day', 366_day'/'all_leap')
+Note that CF v1.9 does not specifically mention whether year zero
+is allowed in the proleptic_gregorian calendar, but ISO-8601 has
+a year zero so we have adopted this as the default.
 The defaults can only be over-ridden for the real-world calendars,
 for the the idealized calendars the year zero 
 always exists and the has_year_zero kwarg is ignored.
@@ -4231,11 +4237,12 @@ UTC with no time-zone offset, even if the specified
 <p><strong>units</strong>: a string of the form <strong><time units> since <reference time></strong>
 describing the time units. <strong><time units></strong> can be days, hours, minutes,
 seconds, milliseconds or microseconds. <strong><reference time></strong> is the time
-origin. <strong>months_since</strong> is allowed <em>only</em> for the <strong>360_day</strong> calendar.</p>
+origin. <strong>months since</strong> is allowed <em>only</em> for the <strong>360_day</strong> calendar
+and <strong>common_years since</strong> is allowed <em>only</em> for the <strong>365_day</strong> calendar.</p>
 
 <p><strong>calendar</strong>: describes the calendar used in the time calculations.
 All the values currently defined in the
-<code>CF metadata convention &lt;http://cfconventions.org&gt;</code>__ are supported.
+<code>CF metadata convention &lt;http://cfconventions.org/cf-conventions/cf-conventions#calendar&gt;</code>__ are supported.
 Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
 Default is <strong>'standard'</strong>, which is a mixed Julian/Gregorian calendar.</p>
@@ -4252,8 +4259,10 @@ objects and raise an error if this is not possible. Ignored unless
 is used and the year zero exists.  If set to False for real-world
 calendars, then historical year numbering is used and the year 1 is
 preceded by year -1 and no year zero exists.
-The defaults are False for real-world calendars
-and True for idealized calendars.
+The defaults are set to conform with
+CF version 1.9 conventions (False for 'julian', 'gregorian'/'standard', True
+for 'proleptic_gregorian' (ISO 8601) and True for the idealized
+calendars 'noleap'/'365_day', '360_day', 366_day'/'all_leap')
 The defaults can only be over-ridden for the real-world calendars,
 for the the idealized calendars the year zero 
 always exists and the has_year_zero kwarg is ignored.
@@ -4299,7 +4308,7 @@ The datetime objects should not include a time-zone offset.</p>
 
 <p><strong>calendar</strong>: describes the calendar to be used in the time calculations.
 All the values currently defined in the
-<code>CF metadata convention &lt;http://cfconventions.org&gt;</code>__ are supported.
+<code>CF metadata convention &lt;http://cfconventions.org/cf-conventions/cf-conventions#calendar&gt;</code>__ are supported.
 Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
 Default is <code>None</code> which means the calendar associated with the first
@@ -4316,8 +4325,10 @@ correspond to the closest dates.</p>
 is used and the year zero exists.  If set to False for real-world
 calendars, then historical year numbering is used and the year 1 is
 preceded by year -1 and no year zero exists.
-The defaults are False for real-world calendars
-and True for idealized calendars.
+The defaults are set to conform with
+CF version 1.9 conventions (False for 'julian', 'gregorian'/'standard', True
+for 'proleptic_gregorian' (ISO 8601) and True for the idealized
+calendars 'noleap'/'365_day', '360_day', 366_day'/'all_leap')
 The defaults can only be over-ridden for the real-world calendars,
 for the the idealized calendars the year zero 
 always exists and the has_year_zero kwarg is ignored.
