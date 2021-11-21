@@ -21,7 +21,7 @@
 
                     <h2>Contents</h2>
                     <ul>
-  <li><a href="#version-158">Version 1.5.8</a></li>
+  <li><a href="#version-160">Version 1.6.0</a></li>
 </ul></li>
 <li><a href="#introduction">Introduction</a>
 <ul>
@@ -221,6 +221,9 @@
                         </li>
                         <li>
                                 <a class="function" href="#Variable.filters">filters</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Variable.significant_digits">significant_digits</a>
                         </li>
                         <li>
                                 <a class="function" href="#Variable.endian">endian</a>
@@ -456,7 +459,7 @@
                     <h1 class="modulename">
 netCDF4    </h1>
 
-                        <div class="docstring"><h2 id="version-158">Version 1.5.8</h2>
+                        <div class="docstring"><h2 id="version-160">Version 1.6.0</h2>
 
 <h1 id="introduction">Introduction</h1>
 
@@ -1098,14 +1101,23 @@ format is <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code> or <co
 <p>If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
 0.1 degrees), you can dramatically improve zlib compression by
-quantizing (or truncating) the data using the <code>least_significant_digit</code>
-keyword argument to <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code>. The least
-significant digit is the power of ten of the smallest decimal place in
+quantizing (or truncating) the data. There are two methods supplied for
+doing this.  You can use the <code>least_significant_digit</code>
+keyword argument to <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> to specify
+the power of ten of the smallest decimal place in
 the data that is a reliable value. For example if the data has a
 precision of 0.1, then setting <code>least_significant_digit=1</code> will cause
 data the data to be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
-retained (in this case bits=4).  Effectively, this makes the compression
+retained (in this case bits=4).  This is done at the python level and is
+not a part of the underlying C library.  Starting with netcdf-c version 4.8.2,
+a quantization capability is provided in the library.  This can be
+used via the <code>significant_digits</code> <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> kwarg (new in
+version 1.6.0).
+The interpretation of <code>significant_digits</code> is different than <code>least_signficant_digit</code>
+in that it specifies the absolute number of significant digits independent
+of the magnitude of the variable (the floating point exponent).
+Either of these approaches makes the compression
 'lossy' instead of 'lossless', that is some precision in the data is
 sacrificed for the sake of disk space.</p>
 
@@ -1122,6 +1134,11 @@ sacrificed for the sake of disk space.</p>
 <p>and then</p>
 
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">least_significant_digit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+
+<p>or with netcdf-c &gt;= 4.8.2</p>
+
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">significant_digits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 
 <p>and see how much smaller the resulting files are.</p>
@@ -1595,7 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x6a;&#101;f&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#x2e;&#119;&#104;&#x69;&#116;&#97;&#x6b;&#x65;&#x72;&#x40;&#110;&#111;&#97;&#x61;&#x2e;&#x67;&#x6f;&#x76;">&#x6a;&#101;f&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#x2e;&#119;&#104;&#x69;&#116;&#97;&#x6b;&#x65;&#x72;&#x40;&#110;&#111;&#97;&#x61;&#x2e;&#x67;&#x6f;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#58;&#x6a;&#x65;&#x66;&#x66;&#114;ey&#46;&#115;&#x2e;&#x77;&#x68;i&#116;&#97;&#x6b;&#101;&#x72;&#x40;&#x6e;&#x6f;a&#x61;.&#x67;&#111;&#x76;">&#x6a;&#x65;&#x66;&#x66;&#114;ey&#46;&#115;&#x2e;&#x77;&#x68;i&#116;&#97;&#x6b;&#101;&#x72;&#x40;&#x6e;&#x6f;a&#x61;.&#x67;&#111;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -1617,7 +1634,7 @@ Unit tests are in the <code>test</code> directory.</p>
                        <span class="n">__has_rename_grp__</span><span class="p">,</span> <span class="n">__has_nc_inq_path__</span><span class="p">,</span>
                        <span class="n">__has_nc_inq_format_extended__</span><span class="p">,</span> <span class="n">__has_nc_open_mem__</span><span class="p">,</span>
                        <span class="n">__has_nc_create_mem__</span><span class="p">,</span> <span class="n">__has_cdf5_format__</span><span class="p">,</span>
-                       <span class="n">__has_parallel4_support__</span><span class="p">,</span> <span class="n">__has_pnetcdf_support__</span><span class="p">)</span>
+                       <span class="n">__has_parallel4_support__</span><span class="p">,</span> <span class="n">__has_pnetcdf_support__</span><span class="p">,</span><span class="n">__has_quantization_support__</span><span class="p">)</span>
 <span class="n">__all__</span> <span class="o">=</span>\
 <span class="p">[</span><span class="s1">&#39;Dataset&#39;</span><span class="p">,</span><span class="s1">&#39;Variable&#39;</span><span class="p">,</span><span class="s1">&#39;Dimension&#39;</span><span class="p">,</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span><span class="s1">&#39;MFDataset&#39;</span><span class="p">,</span><span class="s1">&#39;MFTime&#39;</span><span class="p">,</span><span class="s1">&#39;CompoundType&#39;</span><span class="p">,</span><span class="s1">&#39;VLType&#39;</span><span class="p">,</span><span class="s1">&#39;date2num&#39;</span><span class="p">,</span><span class="s1">&#39;num2date&#39;</span><span class="p">,</span><span class="s1">&#39;date2index&#39;</span><span class="p">,</span><span class="s1">&#39;stringtochar&#39;</span><span class="p">,</span><span class="s1">&#39;chartostring&#39;</span><span class="p">,</span><span class="s1">&#39;stringtoarr&#39;</span><span class="p">,</span><span class="s1">&#39;getlibversion&#39;</span><span class="p">,</span><span class="s1">&#39;EnumType&#39;</span><span class="p">,</span><span class="s1">&#39;get_chunk_cache&#39;</span><span class="p">,</span><span class="s1">&#39;set_chunk_cache&#39;</span><span class="p">]</span>
 </pre></div>
@@ -2035,7 +2052,7 @@ datatype.</p>
         
             <div class="docstring"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-endian='native', least_significant_digit=None, fill_value=None, chunk_cache=None)</code></strong></p>
+endian='native', least_significant_digit=None, significant_digits=None, fill_value=None, chunk_cache=None)</code></strong></p>
 
 <p>Creates a new variable with the given <code>varname</code>, <code>datatype</code>, and
 <code><a href="#Dataset.dimensions">dimensions</a></code>. If dimensions are not given, the variable is assumed to be
@@ -2112,7 +2129,7 @@ netCDF <code>_FillValue</code> (the value that the variable gets filled with bef
 any data is written to it, defaults given in the dict <code><a href="#default_fillvals">netCDF4.default_fillvals</a></code>).
 If fill_value is set to <code>False</code>, then the variable is not pre-filled.</p>
 
-<p>If the optional keyword parameter <code>least_significant_digit</code> is
+<p>If the optional keyword parameters <code>least_significant_digit</code> or <code>significant_digits</code> are
 specified, variable data will be truncated (quantized). In conjunction
 with <code>zlib=True</code> this produces 'lossy', but significantly more
 efficient compression. For example, if <code>least_significant_digit=1</code>,
@@ -2122,7 +2139,10 @@ retained (in this case bits=4). From the
 <a href="http://www.esrl.noaa.gov/psl/data/gridded/conventions/cdc_netcdf_standard.shtml">PSL metadata conventions</a>:
 "least_significant_digit -- power of ten of the smallest decimal place
 in unpacked data that is a reliable value." Default is <code>None</code>, or no
-quantization, or 'lossless' compression.</p>
+quantization, or 'lossless' compression.  If <code>significant_digits=3</code>
+then the data will be quantized so that three significant digits are retained, independent
+of the floating point exponent. This option is available only with netcdf-c &gt;= 4.8.2, and 
+only works with <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted files.</p>
 
 <p>When creating variables in a <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted file,
 HDF5 creates something called a 'chunk cache' for each variable.  The
@@ -2156,7 +2176,7 @@ string containing the name of the Variable instance.
 The <code>least_significant_digit</code>
 attributes describes the power of ten of the smallest decimal place in
 the data the contains a reliable value.  assigned to the <code><a href="#Variable">Variable</a></code>
-instance. If <code>None</code>, the data is not truncated. The <code>ndim</code> attribute
+instance. The <code>ndim</code> attribute
 is the number of variable dimensions.</p>
 </div>
 
@@ -2761,6 +2781,14 @@ smallest decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the <code><a href="#Variable">Variable</a></code>
 instance. If <code>None</code>, the data is not truncated.</p>
 
+<p><strong><code><a href="#Variable.significant_digits">significant_digits</a></code></strong>: New in version 1.6.0. Describes the number of significant digits
+in the data the contains a reliable value.  Data is
+truncated to retain this number of significant digits when it is assigned to the <code><a href="#Variable">Variable</a></code>
+instance. If <code>None</code>, the data is not truncated. Only available with netcdf-c &gt;= 4.8.2,
+and only works with <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted files.
+The number of significant digits used in the quantization of variable data can be
+obtained using the <code><a href="#Variable.significant_digits">Variable.significant_digits</a></code> method.</p>
+
 <p><strong><code>__orthogonal_indexing__</code></strong>: Always <code>True</code>.  Indicates to client code
 that the object supports 'orthogonal indexing', which means that slices
 that are 1d arrays or lists slice along each dimension independently.  This
@@ -2858,13 +2886,19 @@ For netCDF 3 files (that don't use HDF5), only <code>endian='native'</code> is a
 <p>The <code>zlib, complevel, shuffle, fletcher32, contiguous</code> and <code>chunksizes</code>
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 
-<p><strong><code>least_significant_digit</code></strong>: If specified, variable data will be
-truncated (quantized). In conjunction with <code>zlib=True</code> this produces
+<p><strong><code>least_significant_digit</code></strong>: If this or <code><a href="#Variable.significant_digits">significant_digits</a></code> are specified, 
+variable data will be truncated (quantized). <br />
+In conjunction with <code>zlib=True</code> this produces
 'lossy', but significantly more efficient compression. For example, if
 <code>least_significant_digit=1</code>, data will be quantized using
 around(scale<em>data)/scale, where scale = 2</em>*bits, and bits is determined
 so that a precision of 0.1 is retained (in this case bits=4). Default is
 <code>None</code>, or no quantization.</p>
+
+<p><strong><code><a href="#Variable.significant_digits">significant_digits</a></code></strong>: New in version 1.6.0. 
+As described for <code>least_significant_digit</code>
+except the number of significant digits retained is prescribed independent
+of the floating point exponent.  Only available with netcdf-c &gt;= 4.8.2.</p>
 
 <p><strong><code>fill_value</code></strong>:  If specified, the default netCDF <code>_FillValue</code> (the
 value that the variable gets filled with before any data is written to it)
@@ -3022,6 +3056,22 @@ attributes.</p>
             <div class="docstring"><p><strong><code>filters(self)</code></strong></p>
 
 <p>return dictionary containing HDF5 filter parameters.</p>
+</div>
+
+
+                            </div>
+                            <div id="Variable.significant_digits" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#Variable.significant_digits">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">significant_digits</span><span class="signature">(unknown)</span>:
+    </div>
+
+        
+            <div class="docstring"><p><strong><code>significant_digits(self)</code></strong></p>
+
+<p>return number of significant digits used in quantization</p>
 </div>
 
 
