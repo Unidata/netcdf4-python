@@ -3628,6 +3628,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         dimension of the variable. A detailed discussion of HDF chunking and I/O
         performance is available
         [here](https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking).
+        The default chunking scheme in the netcdf-c library is discussed
+        [here](https://www.unidata.ucar.edu/software/netcdf/documentation/NUG/netcdf_perf_chunking.html).
         Basically, you want the chunk size for each dimension to match as
         closely as possible the size of the data block that users will read
         from the file. `chunksizes` cannot be set if `contiguous=True`.
