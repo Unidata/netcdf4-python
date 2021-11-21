@@ -2665,14 +2665,18 @@ checksum algorithm is activated to detect errors. Default `False`.
 If the optional keyword `contiguous` is `True`, the variable data is
 stored contiguously on disk.  Default `False`. Setting to `True` for
 a variable with an unlimited dimension will trigger an error.
+Fixed size variables (with no unlimited dimension) with no compression filters
+are contiguous by default.
 
 The optional keyword `chunksizes` can be used to manually specify the
-HDF5 chunksizes for each dimension of the variable. A detailed
-discussion of HDF chunking and I/O performance is available
-[here](http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html).
+HDF5 chunksizes for each dimension of the variable.
+A detailed discussion of HDF chunking and I/O performance is available
+[here](https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking).
+The default chunking scheme in the netcdf-c library is discussed
+[here](https://www.unidata.ucar.edu/software/netcdf/documentation/NUG/netcdf_perf_chunking.html).
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
-from the file.  `chunksizes` cannot be set if `contiguous=True`.
+from the file. `chunksizes` cannot be set if `contiguous=True`.
 
 The optional keyword `endian` can be used to control whether the
 data is stored in little or big endian format on disk. Possible

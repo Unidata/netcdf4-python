@@ -1595,7 +1595,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;a&#x69;&#x6c;&#116;&#111;&#58;&#106;&#101;&#x66;&#102;&#x72;&#x65;&#x79;&#x2e;&#x73;&#x2e;w&#x68;&#x69;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#110;o&#97;&#x61;.&#x67;&#111;&#118;">&#106;&#101;&#x66;&#102;&#x72;&#x65;&#x79;&#x2e;&#x73;&#x2e;w&#x68;&#x69;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#110;o&#97;&#x61;.&#x67;&#111;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x6a;&#101;f&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#x2e;&#119;&#104;&#x69;&#116;&#97;&#x6b;&#x65;&#x72;&#x40;&#110;&#111;&#97;&#x61;&#x2e;&#x67;&#x6f;&#x76;">&#x6a;&#101;f&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#x2e;&#119;&#104;&#x69;&#116;&#97;&#x6b;&#x65;&#x72;&#x40;&#110;&#111;&#97;&#x61;&#x2e;&#x67;&#x6f;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -2082,15 +2082,19 @@ checksum algorithm is activated to detect errors. Default <code>False</code>.</p
 
 <p>If the optional keyword <code>contiguous</code> is <code>True</code>, the variable data is
 stored contiguously on disk.  Default <code>False</code>. Setting to <code>True</code> for
-a variable with an unlimited dimension will trigger an error.</p>
+a variable with an unlimited dimension will trigger an error.
+Fixed size variables (with no unlimited dimension) with no compression filters
+are contiguous by default.</p>
 
 <p>The optional keyword <code>chunksizes</code> can be used to manually specify the
-HDF5 chunksizes for each dimension of the variable. A detailed
-discussion of HDF chunking and I/O performance is available
-<a href="http://www.hdfgroup.org/HDF5/doc/H5.user/Chunking.html">here</a>.
+HDF5 chunksizes for each dimension of the variable.
+A detailed discussion of HDF chunking and I/O performance is available
+<a href="https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking">here</a>.
+The default chunking scheme in the netcdf-c library is discussed
+<a href="https://www.unidata.ucar.edu/software/netcdf/documentation/NUG/netcdf_perf_chunking.html">here</a>.
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
-from the file.  <code>chunksizes</code> cannot be set if <code>contiguous=True</code>.</p>
+from the file. <code>chunksizes</code> cannot be set if <code>contiguous=True</code>.</p>
 
 <p>The optional keyword <code>endian</code> can be used to control whether the
 data is stored in little or big endian format on disk. Possible
@@ -2828,7 +2832,9 @@ algorithm is used for error detection.</p>
 
 <p><strong><code>contiguous</code></strong>: if <code>True</code> (default <code>False</code>), the variable data is
 stored contiguously on disk.  Default <code>False</code>. Setting to <code>True</code> for
-a variable with an unlimited dimension will trigger an error.</p>
+a variable with an unlimited dimension will trigger an error. Fixed
+size variables (with no unlimited dimension) with no compression
+filters are contiguous by default.</p>
 
 <p><strong><code>chunksizes</code></strong>: Can be used to specify the HDF5 chunksizes for each
 dimension of the variable. A detailed discussion of HDF chunking and I/O
