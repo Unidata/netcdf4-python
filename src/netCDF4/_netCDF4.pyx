@@ -3622,7 +3622,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
         **`contiguous`**: if `True` (default `False`), the variable data is
         stored contiguously on disk.  Default `False`. Setting to `True` for
-        a variable with an unlimited dimension will trigger an error.
+        a variable with an unlimited dimension will trigger an error. Fixed
+        size variables (with no unlimited dimension) with no compression
+        filters are contiguous by default.
 
         **`chunksizes`**: Can be used to specify the HDF5 chunksizes for each
         dimension of the variable. A detailed discussion of HDF chunking and I/O
