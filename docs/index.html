@@ -1595,7 +1595,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="m&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x6a;&#101;f&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#46;&#119;&#104;&#105;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#x6e;o&#97;&#x61;&#46;&#103;ov">&#x6a;&#101;f&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#46;&#119;&#104;&#105;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#x6e;o&#97;&#x61;&#46;&#103;ov</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;a&#x69;&#x6c;&#116;&#111;&#58;&#106;&#101;&#x66;&#102;&#x72;&#x65;&#x79;&#x2e;&#x73;&#x2e;w&#x68;&#x69;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#110;o&#97;&#x61;.&#x67;&#111;&#118;">&#106;&#101;&#x66;&#102;&#x72;&#x65;&#x79;&#x2e;&#x73;&#x2e;w&#x68;&#x69;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#110;o&#97;&#x61;.&#x67;&#111;&#118;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -2834,6 +2834,8 @@ a variable with an unlimited dimension will trigger an error.</p>
 dimension of the variable. A detailed discussion of HDF chunking and I/O
 performance is available
 <a href="https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking">here</a>.
+The default chunking scheme in the netcdf-c library is discussed
+<a href="https://www.unidata.ucar.edu/software/netcdf/documentation/NUG/netcdf_perf_chunking.html">here</a>.
 Basically, you want the chunk size for each dimension to match as
 closely as possible the size of the data block that users will read
 from the file. <code>chunksizes</code> cannot be set if <code>contiguous=True</code>.</p>
