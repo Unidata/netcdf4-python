@@ -1214,6 +1214,7 @@ import weakref
 import warnings
 import subprocess
 import pathlib
+import os
 from glob import glob
 from numpy import ma
 from libc.string cimport memcpy, memset
@@ -2164,7 +2165,7 @@ strings.
                 cmode = NC_MPIIO | _cmode_dict[format]
 
         self._inmemory = False
-        if mode == 'w':
+        if mode == 'w' or (mode in ['a','r+'] and not os.path.exists(filename)):
             _set_default_format(format=format)
             if memory is not None:
                 # if memory is not None and mode='w', memory
@@ -2246,7 +2247,7 @@ strings.
                     ierr = nc_open(path, NC_NOWRITE | NC_SHARE, &grpid)
                 else:
                     ierr = nc_open(path, NC_NOWRITE, &grpid)
-        elif mode == 'r+' or mode == 'a':
+        elif mode == 'r+' or mode == 'a' and os.path.exists(filename):
             if parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
@@ -2257,7 +2258,7 @@ strings.
                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_WRITE, &grpid)
-        elif mode == 'as' or mode == 'r+s':
+        elif mode == 'as' or mode == 'r+s' and os.path.exists(filename):
             if parallel:
                 # NC_SHARE ignored
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
@@ -2269,7 +2270,7 @@ strings.
                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_SHARE, &grpid)
-        elif mode == 'ws':
+        elif mode == 'ws' or (mode in ['as','r+s'] and not os.path.exists(filename)):
             _set_default_format(format=format)
             if clobber:
                 if parallel:
