@@ -2032,8 +2032,10 @@ strings.
 
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
-        the same name is deleted. `a` and `r+` mean append (in analogy with
-        serial files); an existing file is opened for reading and writing.
+        the same name is deleted. 'x' means write, but fail if an existing
+        file with the same name already exists. `a` and `r+` mean append; 
+        an existing file is opened for reading and writing, if 
+        file does not exist already, one is created.
         Appending `s` to modes `r`, `w`, `r+` or `a` will enable unbuffered shared
         access to `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or
         `NETCDF3_64BIT_DATA` formatted files.
@@ -2045,6 +2047,7 @@ strings.
         **`clobber`**: if `True` (default), opening a file with `mode='w'`
         will clobber an existing file with the same name.  if `False`, an
         exception will be raised if a file with the same name already exists.
+        mode='x' is identical to mode='w' with clobber=False.
 
         **`format`**: underlying file format (one of `'NETCDF4',
         'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
@@ -2165,6 +2168,11 @@ strings.
                 cmode = NC_MPIIO | _cmode_dict[format]
 
         self._inmemory = False
+
+        # mode='x' is the same as mode='w' with clobber=False
+        if mode == 'x':
+            mode = 'w'; clobber = False
+
         if mode == 'w' or (mode in ['a','r+'] and not os.path.exists(filename)):
             _set_default_format(format=format)
             if memory is not None:

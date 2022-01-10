@@ -1,7 +1,9 @@
  since version 1.5.8
-===================
+====================
  * opening a Dataset in append mode (mode = 'a' or 'r+') creates a Dataset
- if one does not already exist (similar to python open builtin).  Issue #1144.
+   if one does not already exist (similar to python open builtin).  Issue #1144.
+   Added a mode='x' option (as in python open) which is the same as mode='w' with
+   clobber=False.
 
  version 1.5.8 (tag v1.5.8rel)
 ==============================
