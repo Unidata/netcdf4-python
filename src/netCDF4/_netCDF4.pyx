@@ -2255,7 +2255,7 @@ strings.
                     ierr = nc_open(path, NC_NOWRITE | NC_SHARE, &grpid)
                 else:
                     ierr = nc_open(path, NC_NOWRITE, &grpid)
-        elif mode == 'r+' or mode == 'a' and os.path.exists(filename):
+        elif mode in ['a','r+'] and os.path.exists(filename):
             if parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
@@ -2266,7 +2266,7 @@ strings.
                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_WRITE, &grpid)
-        elif mode == 'as' or mode == 'r+s' and os.path.exists(filename):
+        elif mode in ['as','r+s'] and os.path.exists(filename):
             if parallel:
                 # NC_SHARE ignored
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
