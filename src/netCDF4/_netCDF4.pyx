@@ -1,5 +1,5 @@
 """
-Version 1.5.8
+Version 1.6.0
 -------------
 
 # Introduction
@@ -1204,7 +1204,7 @@ if sys.version_info[0:2] < (3, 7):
     # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
 
-__version__ = "1.5.8"
+__version__ = "1.6.0"
 
 # Initialize numpy
 import posixpath
@@ -1214,6 +1214,7 @@ import weakref
 import warnings
 import subprocess
 import pathlib
+import os
 from glob import glob
 from numpy import ma
 from libc.string cimport memcpy, memset
@@ -2031,8 +2032,10 @@ strings.
 
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
-        the same name is deleted. `a` and `r+` mean append (in analogy with
-        serial files); an existing file is opened for reading and writing.
+        the same name is deleted. 'x' means write, but fail if an existing
+        file with the same name already exists. `a` and `r+` mean append; 
+        an existing file is opened for reading and writing, if 
+        file does not exist already, one is created.
         Appending `s` to modes `r`, `w`, `r+` or `a` will enable unbuffered shared
         access to `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or
         `NETCDF3_64BIT_DATA` formatted files.
@@ -2044,6 +2047,7 @@ strings.
         **`clobber`**: if `True` (default), opening a file with `mode='w'`
         will clobber an existing file with the same name.  if `False`, an
         exception will be raised if a file with the same name already exists.
+        mode='x' is identical to mode='w' with clobber=False.
 
         **`format`**: underlying file format (one of `'NETCDF4',
         'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
@@ -2164,7 +2168,12 @@ strings.
                 cmode = NC_MPIIO | _cmode_dict[format]
 
         self._inmemory = False
-        if mode == 'w':
+
+        # mode='x' is the same as mode='w' with clobber=False
+        if mode == 'x':
+            mode = 'w'; clobber = False
+
+        if mode == 'w' or (mode in ['a','r+'] and not os.path.exists(filename)):
             _set_default_format(format=format)
             if memory is not None:
                 # if memory is not None and mode='w', memory
@@ -2246,7 +2255,7 @@ strings.
                     ierr = nc_open(path, NC_NOWRITE | NC_SHARE, &grpid)
                 else:
                     ierr = nc_open(path, NC_NOWRITE, &grpid)
-        elif mode == 'r+' or mode == 'a':
+        elif mode in ['a','r+'] and os.path.exists(filename):
             if parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     ierr = nc_open_par(path, NC_WRITE | NC_MPIIO, \
@@ -2257,7 +2266,7 @@ strings.
                 ierr = nc_open(path, NC_WRITE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_WRITE, &grpid)
-        elif mode == 'as' or mode == 'r+s':
+        elif mode in ['as','r+s'] and os.path.exists(filename):
             if parallel:
                 # NC_SHARE ignored
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
@@ -2269,7 +2278,7 @@ strings.
                 ierr = nc_open(path, NC_SHARE | NC_DISKLESS, &grpid)
             else:
                 ierr = nc_open(path, NC_SHARE, &grpid)
-        elif mode == 'ws':
+        elif mode == 'ws' or (mode in ['as','r+s'] and not os.path.exists(filename)):
             _set_default_format(format=format)
             if clobber:
                 if parallel:
