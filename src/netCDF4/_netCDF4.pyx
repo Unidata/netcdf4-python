@@ -3918,8 +3918,15 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 # set quantization
                 IF HAS_QUANTIZATION_SUPPORT:
                     if significant_digits is not None:
-                        nsd = significant_digits
-                        ierr = nc_def_var_quantize(self._grpid, self._varid, NC_QUANTIZE_BITGROOM, nsd)
+                        if significant_digits > 0:
+                            nsd = significant_digits
+                            ierr = nc_def_var_quantize(self._grpid,
+                                    self._varid, NC_QUANTIZE_BITGROOM, nsd)
+                        else:
+                            nsd = -significant_digits
+                            ierr = nc_def_var_quantize(self._grpid,
+                                    self._varid, NC_QUANTIZE_GRANULARBG, nsd)
+
                 ELSE:
                     if significant_digits is not None:
                         msg = """
@@ -4279,7 +4286,10 @@ return number of significant digits used in quantization"""
                 if quantize_mode == NC_NOQUANTIZE:
                     return None
                 else:
-                    sig_digits = nsd
+                    if quantize_mode == NC_QUANTIZE_GRANULARBG:
+                        sig_digits = -nsd
+                    else:
+                        sig_digits = nsd
                     return sig_digits
         ELSE:
             return None
