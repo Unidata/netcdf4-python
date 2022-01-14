@@ -1612,7 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;:&#106;&#101;&#x66;&#x66;&#114;&#101;&#x79;.&#115;.&#119;&#104;&#x69;&#x74;&#x61;&#107;&#x65;&#x72;&#64;&#110;&#x6f;&#x61;&#x61;&#x2e;&#103;&#x6f;&#x76;">&#106;&#101;&#x66;&#x66;&#114;&#101;&#x79;.&#115;.&#119;&#104;&#x69;&#x74;&#x61;&#107;&#x65;&#x72;&#64;&#110;&#x6f;&#x61;&#x61;&#x2e;&#103;&#x6f;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x6a;&#101;&#x66;&#102;&#114;&#101;&#121;&#x2e;&#x73;&#46;wh&#x69;&#116;&#x61;&#x6b;&#101;&#x72;&#64;&#110;&#111;&#97;&#x61;&#x2e;&#103;&#x6f;&#118;">&#x6a;&#101;&#x66;&#102;&#114;&#101;&#121;&#x2e;&#x73;&#46;wh&#x69;&#116;&#x61;&#x6b;&#101;&#x72;&#64;&#110;&#111;&#97;&#x61;&#x2e;&#103;&#x6f;&#118;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -1742,8 +1742,10 @@ set this is just used to set the <code><a href="#Dataset.filepath">filepath()</a
 
 <p><strong><code>mode</code></strong>: access mode. <code>r</code> means read-only; no data can be
 modified. <code>w</code> means write; a new file is created, an existing file with
-the same name is deleted. <code>a</code> and <code>r+</code> mean append (in analogy with
-serial files); an existing file is opened for reading and writing.
+the same name is deleted. 'x' means write, but fail if an existing
+file with the same name already exists. <code>a</code> and <code>r+</code> mean append; 
+an existing file is opened for reading and writing, if 
+file does not exist already, one is created.
 Appending <code>s</code> to modes <code>r</code>, <code>w</code>, <code>r+</code> or <code>a</code> will enable unbuffered shared
 access to <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code> or
 <code>NETCDF3_64BIT_DATA</code> formatted files.
@@ -1754,7 +1756,8 @@ formatted files.</p>
 
 <p><strong><code>clobber</code></strong>: if <code>True</code> (default), opening a file with <code>mode='w'</code>
 will clobber an existing file with the same name.  if <code>False</code>, an
-exception will be raised if a file with the same name already exists.</p>
+exception will be raised if a file with the same name already exists.
+mode='x' is identical to mode='w' with clobber=False.</p>
 
 <p><strong><code>format</code></strong>: underlying file format (one of <code>'NETCDF4',
 'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'</code>, <code>'NETCDF3_64BIT_OFFSET'</code> or
@@ -2143,7 +2146,7 @@ quantization, or 'lossless' compression.  If <code>significant_digits=3</code>
 then the data will be quantized so that three significant digits are retained, independent
 of the floating point exponent. If <code>significant_digits</code> is given as a negative
 number, then an alternate algorithm for quantization ('granular bitgrooming') is used
-that may results in better compression for typical geophysical datasets. 
+that may result in better compression for typical geophysical datasets. 
 This <code>significant_digits</code> kwarg is only available  with netcdf-c &gt;= 4.8.2, and 
 only works with <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted files.</p>
 
