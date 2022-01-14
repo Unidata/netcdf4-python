@@ -1612,7 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#58;&#x6a;&#x65;&#x66;&#x66;&#114;ey&#46;&#115;&#x2e;&#x77;&#x68;i&#116;&#97;&#x6b;&#101;&#x72;&#x40;&#x6e;&#x6f;a&#x61;.&#x67;&#111;&#x76;">&#x6a;&#x65;&#x66;&#x66;&#114;ey&#46;&#115;&#x2e;&#x77;&#x68;i&#116;&#97;&#x6b;&#101;&#x72;&#x40;&#x6e;&#x6f;a&#x61;.&#x67;&#111;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;:&#106;&#101;&#x66;&#x66;&#114;&#101;&#x79;.&#115;.&#119;&#104;&#x69;&#x74;&#x61;&#107;&#x65;&#x72;&#64;&#110;&#x6f;&#x61;&#x61;&#x2e;&#103;&#x6f;&#x76;">&#106;&#101;&#x66;&#x66;&#114;&#101;&#x79;.&#115;.&#119;&#104;&#x69;&#x74;&#x61;&#107;&#x65;&#x72;&#64;&#110;&#x6f;&#x61;&#x61;&#x2e;&#103;&#x6f;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -2141,7 +2141,10 @@ retained (in this case bits=4). From the
 in unpacked data that is a reliable value." Default is <code>None</code>, or no
 quantization, or 'lossless' compression.  If <code>significant_digits=3</code>
 then the data will be quantized so that three significant digits are retained, independent
-of the floating point exponent. This option is available only with netcdf-c &gt;= 4.8.2, and 
+of the floating point exponent. If <code>significant_digits</code> is given as a negative
+number, then an alternate algorithm for quantization ('granular bitgrooming') is used
+that may results in better compression for typical geophysical datasets. 
+This <code>significant_digits</code> kwarg is only available  with netcdf-c &gt;= 4.8.2, and 
 only works with <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted files.</p>
 
 <p>When creating variables in a <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted file,
@@ -2781,10 +2784,13 @@ smallest decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the <code><a href="#Variable">Variable</a></code>
 instance. If <code>None</code>, the data is not truncated.</p>
 
-<p><strong><code><a href="#Variable.significant_digits">significant_digits</a></code></strong>: New in version 1.6.0. Describes the number of significant digits
-in the data the contains a reliable value.  Data is
-truncated to retain this number of significant digits when it is assigned to the <code><a href="#Variable">Variable</a></code>
-instance. If <code>None</code>, the data is not truncated. Only available with netcdf-c &gt;= 4.8.2,
+<p><strong><code><a href="#Variable.significant_digits">significant_digits</a></code></strong>: New in version 1.6.0. Describes the number of significant
+digits in the data the contains a reliable value.  Data is
+truncated to retain this number of significant digits when it is assigned to the
+<code><a href="#Variable">Variable</a></code> instance. If <code>None</code>, the data is not truncated.
+If specified as a negative number, an alternative quantization algorithm is used
+that often produces better compression.
+Only available with netcdf-c &gt;= 4.8.2,
 and only works with <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted files.
 The number of significant digits used in the quantization of variable data can be
 obtained using the <code><a href="#Variable.significant_digits">Variable.significant_digits</a></code> method.</p>
@@ -2898,7 +2904,9 @@ so that a precision of 0.1 is retained (in this case bits=4). Default is
 <p><strong><code><a href="#Variable.significant_digits">significant_digits</a></code></strong>: New in version 1.6.0. 
 As described for <code>least_significant_digit</code>
 except the number of significant digits retained is prescribed independent
-of the floating point exponent.  Only available with netcdf-c &gt;= 4.8.2.</p>
+of the floating point exponent.  If specified as a negative number,
+an alternative quantization algorithm is used that often produces
+better compression. Only available with netcdf-c &gt;= 4.8.2.</p>
 
 <p><strong><code>fill_value</code></strong>:  If specified, the default netCDF <code>_FillValue</code> (the
 value that the variable gets filled with before any data is written to it)

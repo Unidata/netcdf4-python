@@ -2722,7 +2722,10 @@ retained (in this case bits=4). From the
 in unpacked data that is a reliable value." Default is `None`, or no
 quantization, or 'lossless' compression.  If `significant_digits=3`
 then the data will be quantized so that three significant digits are retained, independent
-of the floating point exponent. This option is available only with netcdf-c >= 4.8.2, and 
+of the floating point exponent. If `significant_digits` is given as a negative
+number, then an alternate algorithm for quantization ('granular bitgrooming') is used
+that may results in better compression for typical geophysical datasets. 
+This `significant_digits` kwarg is only available  with netcdf-c >= 4.8.2, and 
 only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 
 When creating variables in a `NETCDF4` or `NETCDF4_CLASSIC` formatted file,
@@ -3574,10 +3577,13 @@ smallest decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the `Variable`
 instance. If `None`, the data is not truncated.
 
-**`significant_digits`**: New in version 1.6.0. Describes the number of significant digits
-in the data the contains a reliable value.  Data is
-truncated to retain this number of significant digits when it is assigned to the `Variable`
-instance. If `None`, the data is not truncated. Only available with netcdf-c >= 4.8.2,
+**`significant_digits`**: New in version 1.6.0. Describes the number of significant
+digits in the data the contains a reliable value.  Data is
+truncated to retain this number of significant digits when it is assigned to the
+`Variable` instance. If `None`, the data is not truncated.
+If specified as a negative number, an alternative quantization algorithm is used
+that often produces better compression.
+Only available with netcdf-c >= 4.8.2,
 and only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 The number of significant digits used in the quantization of variable data can be
 obtained using the `Variable.significant_digits` method.
@@ -3691,7 +3697,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         **`significant_digits`**: New in version 1.6.0. 
         As described for `least_significant_digit`
         except the number of significant digits retained is prescribed independent
-        of the floating point exponent.  Only available with netcdf-c >= 4.8.2.
+        of the floating point exponent.  If specified as a negative number,
+        an alternative quantization algorithm is used that often produces
+        better compression. Only available with netcdf-c >= 4.8.2.
 
         **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
         value that the variable gets filled with before any data is written to it)
