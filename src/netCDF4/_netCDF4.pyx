@@ -2733,7 +2733,7 @@ quantization, or 'lossless' compression.  If `significant_digits=3`
 then the data will be quantized so that three significant digits are retained, independent
 of the floating point exponent. If `significant_digits` is given as a negative
 number, then an alternate algorithm for quantization ('granular bitgrooming') is used
-that may results in better compression for typical geophysical datasets. 
+that may result in better compression for typical geophysical datasets. 
 This `significant_digits` kwarg is only available  with netcdf-c >= 4.8.2, and 
 only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 
