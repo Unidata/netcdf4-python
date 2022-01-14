@@ -6,6 +6,7 @@ include Changelog
 include setup.cfg
 include examples/*py
 include examples/README.md
+exclude examples/data
 include test/*py
 include test/*nc
 include src/netCDF4/__init__.py

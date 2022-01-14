@@ -97,6 +97,7 @@ jobs:
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         python setup.py --version  
-        pip wheel . -w dist --no-deps 
+        check-manifest --version
         check-manifest --verbose 
+        pip wheel . -w dist --no-deps 
         twine check dist/* 
