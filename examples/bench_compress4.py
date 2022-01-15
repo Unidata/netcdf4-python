@@ -17,10 +17,7 @@ n4dim = 144
 ntrials = 10
 sys.stdout.write('reading and writing a %s by %s by %s random array ..\n'%(n1dim,n3dim,n4dim))
 sys.stdout.write('(average of %s trials)\n\n' % ntrials)
-print(nc)
-print(nc.variables['hgt'])
 array = nc.variables['hgt'][0:n1dim,5,:,:]
-print(array.min(), array.max(), array.shape, array.dtype)
 
 
 def write_netcdf(filename,nsd):
@@ -40,7 +37,7 @@ def read_netcdf(filename):
     data = file.variables['data'][:]
     file.close()
 
-for sigdigits in range(1,6,1):
+for sigdigits in range(1,5,1):
     sys.stdout.write('testing compression with significant_digits=%s...\n' %\
             sigdigits)
     write_netcdf('test.nc',sigdigits)
