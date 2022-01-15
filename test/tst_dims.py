@@ -20,6 +20,7 @@ TIME_LEN = None
 TIME_LENG = None
 GROUP_NAME='forecasts'
 VAR_NAME='temp'
+VAR_NAME2='wind'
 VAR_TYPE='f8'
 
 
@@ -28,11 +29,14 @@ class DimensionsTestCase(unittest.TestCase):
     def setUp(self):
         self.file = FILE_NAME
         f  = netCDF4.Dataset(self.file, 'w')
-        f.createDimension(LAT_NAME,LAT_LEN)
-        f.createDimension(LON_NAME,LON_LEN)
-        f.createDimension(LEVEL_NAME,LEVEL_LEN)
-        f.createDimension(TIME_NAME,TIME_LEN)
-        f.createVariable(VAR_NAME,VAR_TYPE,(LEVEL_NAME, LAT_NAME, LON_NAME, TIME_NAME))
+        lat_dim=f.createDimension(LAT_NAME,LAT_LEN)
+        lon_dim=f.createDimension(LON_NAME,LON_LEN)
+        lev_dim=f.createDimension(LEVEL_NAME,LEVEL_LEN)
+        time_dim=f.createDimension(TIME_NAME,TIME_LEN)
+        # specify dimensions with names
+        fv1 = f.createVariable(VAR_NAME,VAR_TYPE,(LEVEL_NAME, LAT_NAME, LON_NAME, TIME_NAME))
+        # specify dimensions using a mix of names and instances
+        fv2 = f.createVariable(VAR_NAME2,VAR_TYPE,(lev_dim, LAT_NAME, lon_dim, TIME_NAME))
         g = f.createGroup(GROUP_NAME)
         g.createDimension(LAT_NAME,LAT_LENG)
         g.createDimension(LON_NAME,LON_LENG)
@@ -40,7 +44,7 @@ class DimensionsTestCase(unittest.TestCase):
         # (did not work prior to alpha 18)
         #g.createDimension(LEVEL_NAME,LEVEL_LENG)
         #g.createDimension(TIME_NAME,TIME_LENG)
-        g.createVariable(VAR_NAME,VAR_TYPE,(LEVEL_NAME, LAT_NAME, LON_NAME, TIME_NAME))
+        gv = g.createVariable(VAR_NAME,VAR_TYPE,(LEVEL_NAME, LAT_NAME, LON_NAME, TIME_NAME))
         f.close()
 
     def tearDown(self):
@@ -52,6 +56,7 @@ class DimensionsTestCase(unittest.TestCase):
         # check dimensions in root group.
         f  = netCDF4.Dataset(self.file, 'r+')
         v = f.variables[VAR_NAME]
+        v2 = f.variables[VAR_NAME2]
         isunlim = [dim.isunlimited() for dim in f.dimensions.values()]
         dimlens = [len(dim) for dim in f.dimensions.values()]
         names_check = [LAT_NAME, LON_NAME, LEVEL_NAME, TIME_NAME]
@@ -64,6 +69,10 @@ class DimensionsTestCase(unittest.TestCase):
         unlimdict = dict(zip(names_check,isunlim))
         # check that dimension names are correct.
         for name in f.dimensions.keys():
+            self.assertTrue(name in names_check)
+        for name in v.dimensions:
+            self.assertTrue(name in names_check)
+        for name in v2.dimensions:
             self.assertTrue(name in names_check)
         # check that dimension lengths are correct.
         for name,dim in f.dimensions.items():

@@ -2653,8 +2653,9 @@ length greater than one are aliases for `str`.
 Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.
 
-`dimensions` must be a tuple containing dimension names (strings) that
-have been defined previously using `Dataset.createDimension`. The default value
+`dimensions` must be a tuple containing `Dimension` instances or
+dimension names (strings) that have been defined
+previously using `Dataset.createDimension`. The default value
 is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
@@ -2757,6 +2758,17 @@ is the number of variable dimensions."""
             group = self
         else:
             group = self.createGroup(dirname)
+        # if dimensions is a single string or Dimension instance, 
+        # convert to a tuple.
+        # This prevents a common error that occurs when
+        # dimensions = 'lat' instead of ('lat',)
+        if type(dimensions) == str or type(dimensions) == bytes or\
+           type(dimensions) == unicode or type(dimensions) == Dimension:
+            dimensions = dimensions,
+        # convert elements of dimensions tuple to names if they are
+        # Dimension instances.
+        dimensions =\
+        tuple(d.name if isinstance(d,Dimension) else d for d in dimensions)
         # create variable.
         group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
@@ -3696,11 +3708,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # if complevel is set to zero, set zlib to False.
         if not complevel:
             zlib = False
-        # if dimensions is a string, convert to a tuple
-        # this prevents a common error that occurs when
-        # dimensions = 'lat' instead of ('lat',)
-        if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
-            dimensions = dimensions,
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
