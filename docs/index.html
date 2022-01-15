@@ -1612,7 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x6a;&#101;&#x66;&#102;&#114;&#101;&#121;&#x2e;&#x73;&#46;wh&#x69;&#116;&#x61;&#x6b;&#101;&#x72;&#64;&#110;&#111;&#97;&#x61;&#x2e;&#103;&#x6f;&#118;">&#x6a;&#101;&#x66;&#102;&#114;&#101;&#121;&#x2e;&#x73;&#46;wh&#x69;&#116;&#x61;&#x6b;&#101;&#x72;&#64;&#110;&#111;&#97;&#x61;&#x2e;&#103;&#x6f;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#x6c;&#116;o&#x3a;&#106;&#101;&#102;&#102;&#x72;&#x65;&#x79;&#x2e;&#x73;&#x2e;&#x77;&#104;&#x69;&#116;&#x61;&#107;&#x65;&#x72;&#x40;&#x6e;&#111;&#x61;&#x61;&#x2e;&#103;&#111;&#x76;">&#106;&#101;&#102;&#102;&#x72;&#x65;&#x79;&#x2e;&#x73;&#x2e;&#x77;&#104;&#x69;&#116;&#x61;&#107;&#x65;&#x72;&#x40;&#x6e;&#111;&#x61;&#x61;&#x2e;&#103;&#111;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -3082,7 +3082,9 @@ attributes.</p>
         
             <div class="docstring"><p><strong><code>significant_digits(self)</code></strong></p>
 
-<p>return number of significant digits used in quantization</p>
+<p>return number of significant digits used in quantization.
+if returned value is negative, alternate quantization method
+('granular bitgrooming') is used.</p>
 </div>
 
 

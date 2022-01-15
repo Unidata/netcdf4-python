@@ -4282,7 +4282,10 @@ return dictionary containing HDF5 filter parameters."""
         """
 **`significant_digits(self)`**
 
-return number of significant digits used in quantization"""
+return number of significant digits used in quantization.
+if returned value is negative, alternate quantization method
+('granular bitgrooming') is used.
+"""
         IF HAS_QUANTIZATION_SUPPORT:
             cdef int ierr, nsd, quantize_mode
             if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']:
