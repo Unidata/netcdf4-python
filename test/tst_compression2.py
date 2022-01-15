@@ -90,7 +90,7 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[5]).st_size
         errmax = (np.abs(array-f.variables['data'][:])).max()
         print('compressed lossy with shuffle and alternate quantization = ',size,' max err = ',errmax)
-        assert(f.variables['data'].significant_digits() == nsd)
+        assert(f.variables['data'].significant_digits() == -nsd)
         assert(errmax < 1.e-3)
         assert(size < 0.24*uncompressed_size)
         f.close()
