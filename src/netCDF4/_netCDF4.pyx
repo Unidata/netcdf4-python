@@ -2408,9 +2408,9 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         ncdump = [repr(type(self))]
         dimnames = tuple(_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys())
@@ -2763,7 +2763,7 @@ is the number of variable dimensions."""
         # This prevents a common error that occurs when
         # dimensions = 'lat' instead of ('lat',)
         if type(dimensions) == str or type(dimensions) == bytes or\
-           type(dimensions) == unicode or type(dimensions) == Dimension:
+           type(dimensions) == Dimension:
             dimensions = dimensions,
         # convert elements of dimensions tuple to names if they are
         # Dimension instances.
@@ -3466,9 +3466,9 @@ Read-only class variables:
             raise AttributeError("size cannot be altered")
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         if not dir(self._grp):
             return 'Dimension object no longer valid'
         if self.isunlimited():
@@ -3971,9 +3971,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         return self[...]
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         cdef int ierr, no_fill
         if not dir(self._grp):
             return 'Variable object no longer valid'
@@ -5566,9 +5566,9 @@ the user.
         self.name = dtype_name
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         return "%r: name = '%s', numpy dtype = %s" %\
             (type(self), self.name, self.dtype)
 
@@ -5848,9 +5848,9 @@ the user.
             self.name = dtype_name
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         if self.dtype == str:
             return '%r: string type' % (type(self),)
         else:
@@ -5958,9 +5958,9 @@ the user.
         self.enum_dict = enum_dict
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         return "%r: name = '%s', numpy dtype = %s, fields/values =%s" %\
             (type(self), self.name, self.dtype, self.enum_dict)
 
