@@ -3688,7 +3688,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
         in the dictionary `netCDF4.default_fillvals`.
-      
+
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
         Persists as long as Dataset is open. Use `set_var_chunk_cache` to 
         change it when Dataset is re-opened. 
@@ -3793,12 +3793,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ndims = len(dimensions)
             # find dimension ids.
             if ndims:
-                dims = []
                 dimids = <int *>malloc(sizeof(int) * ndims)
                 for n from 0 <= n < ndims:
-                    dim = dimensions[n]
-                    dimids[n] = dim._dimid
-                    dims.append(dim)
+                    dimids[n] = dimensions[n]._dimid
             # go into define mode if it's a netCDF 3 compatible
             # file format.  Be careful to exit define mode before
             # any exceptions are raised.
@@ -3866,8 +3863,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             raise ValueError('chunksizes must be a sequence with the same length as dimensions')
                         chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
                         for n from 0 <= n < ndims:
-                            if not dims[n].isunlimited() and \
-                               chunksizes[n] > dims[n].size:
+                            if not dimensions[n].isunlimited() and \
+                               chunksizes[n] > dimensions[n].size:
                                 msg = 'chunksize cannot exceed dimension size'
                                 raise ValueError(msg)
                             chunksizesp[n] = chunksizes[n]
