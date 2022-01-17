@@ -1909,6 +1909,7 @@ cdef _get_vars(group):
                     grp = grp.parent
             free(dimids)
             # create new variable instance.
+            dimensions = tuple(_find_dim(group,d) for d in dimensions)
             if endianness == '>':
                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
             elif endianness == '<':
@@ -2653,7 +2654,7 @@ length greater than one are aliases for `str`.
 Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.
 
-`dimensions` must be a tuple containing `Dimension` instances or
+`dimensions` must be a tuple containing `Dimension` instances and/or
 dimension names (strings) that have been defined
 previously using `Dataset.createDimension`. The default value
 is an empty tuple, which means the variable is a scalar.
@@ -2758,17 +2759,18 @@ is the number of variable dimensions."""
             group = self
         else:
             group = self.createGroup(dirname)
-        # if dimensions is a single string or Dimension instance, 
+        # if dimensions is a single string or Dimension instance,
         # convert to a tuple.
         # This prevents a common error that occurs when
         # dimensions = 'lat' instead of ('lat',)
-        if type(dimensions) == str or type(dimensions) == bytes or\
-           type(dimensions) == Dimension:
+        if isinstance(dimensions, (str, bytes, Dimension)):
             dimensions = dimensions,
-        # convert elements of dimensions tuple to names if they are
-        # Dimension instances.
+        # convert elements of dimensions tuple to Dimension
+        # instances if they are strings.
+        # _find_dim looks for dimension in this group, and if not
+        # found there, looks in parent (and it's parent, etc, back to root).
         dimensions =\
-        tuple(d.name if isinstance(d,Dimension) else d for d in dimensions)
+        tuple(_find_dim(group,d) if isinstance(d,(str,bytes)) else d for d in dimensions)
         # create variable.
         group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
@@ -3628,7 +3630,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (for a variable-length string array). Numpy string and unicode datatypes with
         length greater than one are aliases for `str`.
 
-        **`dimensions`**: a tuple containing the variable's dimension names
+        **`dimensions`**: a tuple containing the variable's Dimension instances
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
 
@@ -3794,12 +3796,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 dims = []
                 dimids = <int *>malloc(sizeof(int) * ndims)
                 for n from 0 <= n < ndims:
-                    dimname = dimensions[n]
-                    # look for dimension in this group, and if not
-                    # found there, look in parent (and it's parent, etc, back to root).
-                    dim = _find_dim(grp, dimname)
-                    if dim is None:
-                        raise KeyError("dimension %s not defined in group %s or any group in it's family tree" % (dimname, grp.path))
+                    dim = dimensions[n]
                     dimids[n] = dim._dimid
                     dims.append(dim)
             # go into define mode if it's a netCDF 3 compatible
@@ -3930,9 +3927,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             if grp.data_model != 'NETCDF4': grp._enddef()
         # count how many unlimited dimensions there are.
         self._nunlimdim = 0
-        for dimname in dimensions:
-            # look in current group, and parents for dim.
-            dim = _find_dim(self._grp, dimname)
+        for dim in dimensions:
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
         # set ndim attribute (number of dimensions).
         with nogil:

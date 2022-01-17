@@ -45,7 +45,10 @@ def _find_dim(grp, dimname):
                 group = group.parent
             except:
                 raise ValueError("cannot find dimension %s in this group or parent groups" % dimname)
-    return dim
+    if dim is None:
+        raise KeyError("dimension %s not defined in group %s or any group in it's family tree" % (dimname, grp.path))
+    else:
+        return dim
 
 def _walk_grps(topgrp):
     """Iterate through all (sub-) groups of topgrp, similar to os.walktree.
