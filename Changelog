@@ -7,6 +7,10 @@
    if one does not already exist (similar to python open builtin).  Issue #1144.
    Added a mode='x' option (as in python open) which is the same as mode='w' with
    clobber=False.
+ * allow createVariable to accept either Dimension instances or Dimension
+   names in "dimensions" tuple kwarg (issue #1145).
+ * remove all vestiges of python 2 in _netCDF4.pyx and set cython language_level
+   directive to 3 in setup.py.
 
  version 1.5.8 (tag v1.5.8rel)
 ==============================

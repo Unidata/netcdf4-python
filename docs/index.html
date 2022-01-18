@@ -1612,6 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
+
 <p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#x6c;&#116;o&#x3a;&#106;&#101;&#102;&#102;&#x72;&#x65;&#x79;&#x2e;&#x73;&#x2e;&#x77;&#104;&#x69;&#116;&#x61;&#107;&#x65;&#x72;&#x40;&#x6e;&#111;&#x61;&#x61;&#x2e;&#103;&#111;&#x76;">&#106;&#101;&#102;&#102;&#x72;&#x65;&#x79;&#x2e;&#x73;&#x2e;&#x77;&#104;&#x69;&#116;&#x61;&#107;&#x65;&#x72;&#x40;&#x6e;&#111;&#x61;&#x61;&#x2e;&#103;&#111;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
@@ -2082,8 +2083,9 @@ length greater than one are aliases for <code>str</code>.</p>
 <p>Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.</p>
 
-<p><code><a href="#Dataset.dimensions">dimensions</a></code> must be a tuple containing dimension names (strings) that
-have been defined previously using <code><a href="#Dataset.createDimension">Dataset.createDimension</a></code>. The default value
+<p><code><a href="#Dataset.dimensions">dimensions</a></code> must be a tuple containing <code><a href="#Dimension">Dimension</a></code> instances and/or
+dimension names (strings) that have been defined
+previously using <code><a href="#Dataset.createDimension">Dataset.createDimension</a></code>. The default value
 is an empty tuple, which means the variable is a scalar.</p>
 
 <p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
@@ -2850,7 +2852,7 @@ typecodes can also be used (<code>'f'</code> instead of <code>'f4'</code>, <code
 (for a variable-length string array). Numpy string and unicode datatypes with
 length greater than one are aliases for <code>str</code>.</p>
 
-<p><strong><code><a href="#Variable.dimensions">dimensions</a></code></strong>: a tuple containing the variable's dimension names
+<p><strong><code><a href="#Variable.dimensions">dimensions</a></code></strong>: a tuple containing the variable's Dimension instances
 (defined previously with <code>createDimension</code>). Default is an empty tuple
 which means the variable is a scalar (and therefore has no dimensions).</p>
 
