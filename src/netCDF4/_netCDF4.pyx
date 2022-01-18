@@ -1909,6 +1909,7 @@ cdef _get_vars(group):
                     grp = grp.parent
             free(dimids)
             # create new variable instance.
+            dimensions = tuple(_find_dim(group,d) for d in dimensions)
             if endianness == '>':
                 variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
             elif endianness == '<':
@@ -2408,9 +2409,9 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             raise ValueError(msg)
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         ncdump = [repr(type(self))]
         dimnames = tuple(_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys())
@@ -2653,8 +2654,9 @@ length greater than one are aliases for `str`.
 Data from netCDF variables is presented to python as numpy arrays with
 the corresponding data type.
 
-`dimensions` must be a tuple containing dimension names (strings) that
-have been defined previously using `Dataset.createDimension`. The default value
+`dimensions` must be a tuple containing `Dimension` instances and/or
+dimension names (strings) that have been defined
+previously using `Dataset.createDimension`. The default value
 is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
@@ -2757,6 +2759,18 @@ is the number of variable dimensions."""
             group = self
         else:
             group = self.createGroup(dirname)
+        # if dimensions is a single string or Dimension instance,
+        # convert to a tuple.
+        # This prevents a common error that occurs when
+        # dimensions = 'lat' instead of ('lat',)
+        if isinstance(dimensions, (str, bytes, Dimension)):
+            dimensions = dimensions,
+        # convert elements of dimensions tuple to Dimension
+        # instances if they are strings.
+        # _find_dim looks for dimension in this group, and if not
+        # found there, looks in parent (and it's parent, etc, back to root).
+        dimensions =\
+        tuple(_find_dim(group,d) if isinstance(d,(str,bytes)) else d for d in dimensions)
         # create variable.
         group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
@@ -3454,9 +3468,9 @@ Read-only class variables:
             raise AttributeError("size cannot be altered")
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         if not dir(self._grp):
             return 'Dimension object no longer valid'
         if self.isunlimited():
@@ -3616,7 +3630,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (for a variable-length string array). Numpy string and unicode datatypes with
         length greater than one are aliases for `str`.
 
-        **`dimensions`**: a tuple containing the variable's dimension names
+        **`dimensions`**: a tuple containing the variable's Dimension instances
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
 
@@ -3674,7 +3688,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
         in the dictionary `netCDF4.default_fillvals`.
-      
+
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
         Persists as long as Dataset is open. Use `set_var_chunk_cache` to 
         change it when Dataset is re-opened. 
@@ -3696,11 +3710,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # if complevel is set to zero, set zlib to False.
         if not complevel:
             zlib = False
-        # if dimensions is a string, convert to a tuple
-        # this prevents a common error that occurs when
-        # dimensions = 'lat' instead of ('lat',)
-        if type(dimensions) == str or type(dimensions) == bytes or type(dimensions) == unicode:
-            dimensions = dimensions,
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
@@ -3784,17 +3793,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             ndims = len(dimensions)
             # find dimension ids.
             if ndims:
-                dims = []
                 dimids = <int *>malloc(sizeof(int) * ndims)
                 for n from 0 <= n < ndims:
-                    dimname = dimensions[n]
-                    # look for dimension in this group, and if not
-                    # found there, look in parent (and it's parent, etc, back to root).
-                    dim = _find_dim(grp, dimname)
-                    if dim is None:
-                        raise KeyError("dimension %s not defined in group %s or any group in it's family tree" % (dimname, grp.path))
-                    dimids[n] = dim._dimid
-                    dims.append(dim)
+                    dimids[n] = dimensions[n]._dimid
             # go into define mode if it's a netCDF 3 compatible
             # file format.  Be careful to exit define mode before
             # any exceptions are raised.
@@ -3862,8 +3863,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             raise ValueError('chunksizes must be a sequence with the same length as dimensions')
                         chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
                         for n from 0 <= n < ndims:
-                            if not dims[n].isunlimited() and \
-                               chunksizes[n] > dims[n].size:
+                            if not dimensions[n].isunlimited() and \
+                               chunksizes[n] > dimensions[n].size:
                                 msg = 'chunksize cannot exceed dimension size'
                                 raise ValueError(msg)
                             chunksizesp[n] = chunksizes[n]
@@ -3923,9 +3924,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             if grp.data_model != 'NETCDF4': grp._enddef()
         # count how many unlimited dimensions there are.
         self._nunlimdim = 0
-        for dimname in dimensions:
-            # look in current group, and parents for dim.
-            dim = _find_dim(self._grp, dimname)
+        for dim in dimensions:
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
         # set ndim attribute (number of dimensions).
         with nogil:
@@ -3964,9 +3963,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         return self[...]
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         cdef int ierr, no_fill
         if not dir(self._grp):
             return 'Variable object no longer valid'
@@ -5559,9 +5558,9 @@ the user.
         self.name = dtype_name
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         return "%r: name = '%s', numpy dtype = %s" %\
             (type(self), self.name, self.dtype)
 
@@ -5841,9 +5840,9 @@ the user.
             self.name = dtype_name
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         if self.dtype == str:
             return '%r: string type' % (type(self),)
         else:
@@ -5951,9 +5950,9 @@ the user.
         self.enum_dict = enum_dict
 
     def __repr__(self):
-        return self.__unicode__()
+        return self.__str__()
 
-    def __unicode__(self):
+    def __str__(self):
         return "%r: name = '%s', numpy dtype = %s, fields/values =%s" %\
             (type(self), self.name, self.dtype, self.enum_dict)
 
