@@ -55,9 +55,6 @@ jobs:
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         python checkversion.py
-        cd examples
-        python bench_compress4.py
-        cd ..
         # serial
         cd test
         python run_all.py
