@@ -65,6 +65,7 @@ def check_api(inc_dirs,netcdf_lib_version):
     has_parallel_support = False
     has_parallel4_support = False
     has_pnetcdf_support = False
+    has_quantize = False
 
     for d in inc_dirs:
         try:
@@ -83,6 +84,8 @@ def check_api(inc_dirs,netcdf_lib_version):
                 has_nc_inq_format_extended = True
             if line.startswith('#define NC_FORMAT_64BIT_DATA'):
                 has_cdf5_format = True
+            if line.startswith('nc_def_var_quantize'):
+                has_quantize = True
 
         if has_nc_open_mem:
             try:
@@ -116,7 +119,7 @@ def check_api(inc_dirs,netcdf_lib_version):
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
            has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
-           has_parallel4_support, has_pnetcdf_support
+           has_parallel4_support, has_pnetcdf_support, has_quantize
 
 
 def getnetcdfvers(libdirs):
@@ -529,7 +532,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
     has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
-    has_parallel4_support, has_pnetcdf_support = \
+    has_parallel4_support, has_pnetcdf_support, has_quantize = \
     check_api(inc_dirs,netcdf_lib_version)
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
@@ -600,6 +603,13 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     else:
         sys.stdout.write('netcdf lib does not have pnetcdf parallel functions\n')
         f.write('DEF HAS_PNETCDF_SUPPORT = 0\n')
+
+    if has_quantize:
+        sys.stdout.write('netcdf lib has bit-grooming/quantization functions\n')
+        f.write('DEF HAS_QUANTIZATION_SUPPORT = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not bit-grooming/quantization functions\n')
+        f.write('DEF HAS_QUANTIZATION_SUPPORT = 0\n')
 
     f.close()
 

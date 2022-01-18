@@ -691,6 +691,15 @@ cdef extern from "netcdf.h":
     int nc_inq_enum_ident(int ncid, nc_type xtype, long long value, char *identifier) nogil
 
 
+IF HAS_QUANTIZATION_SUPPORT:
+    cdef extern from "netcdf.h":
+        cdef enum:
+            NC_NOQUANTIZE
+            NC_QUANTIZE_BITGROOM
+            NC_QUANTIZE_GRANULARBG
+        int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) 
+        int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
+
 IF HAS_NC_OPEN_MEM:
     cdef extern from "netcdf_mem.h":
         int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp)
