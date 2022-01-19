@@ -10,7 +10,9 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-10/31/2021:  Version [1.5.8](https://pypi.python.org/pypi/netCDF4/1.5.8) released. Fix Enum bug, add binary wheels for aarch64 and python 3.10.
+1/19/2022:  Version [1.5.9](https://pypi.python.org/pypi/netCDF4/1.5.9) released. Allow createDimension to accept Dimension instances, have mode='a' create file if it does not exist (like python open). Add universal2 wheels for python 3.9/3.10 that work on Apple M1.
+
+10/31/2021: Version [1.5.8](https://pypi.python.org/pypi/netCDF4/1.5.8) released. Fix Enum bug, add binary wheels for aarch64 and python 3.10.
 
 6/22/2021:  Version [1.5.7](https://pypi.python.org/pypi/netCDF4/1.5.7) released.
 Fixed OverflowError on Windows when reading data with dimension sizes greater than 2**32-1.
