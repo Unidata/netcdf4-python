@@ -707,7 +707,7 @@ and then
 or with netcdf-c >= 4.8.2
 
 ```python
->>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),compresson='zlib',significant_digits=4)
+>>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),compression='zlib',significant_digits=4)
 ```
 
 and see how much smaller the resulting files are.
