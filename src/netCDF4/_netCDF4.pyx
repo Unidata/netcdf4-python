@@ -3762,7 +3762,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self.__orthogonal_indexing__ = True
         # For backwards compatibility, deprecated zlib kwarg takes 
         # precedence if compression kwarg not set.
-        if zlib and compression is None:
+        if zlib and not compression:
             compression = 'zlib'
         # if complevel is set to zero, turn off compression
         if not complevel:
@@ -3774,7 +3774,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             zlib = True
         #elif compression == 'zstd':
         #    zstd = True
-        elif compression is None:
+        elif not compression:
+            compression = None # if compression evaluates to False, set to None.
             pass
         else:
             raise ValueError("Unsupported value for compression kwarg")
@@ -3900,7 +3901,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # endian='native' allowed for NETCDF3.
             if grp.data_model in ['NETCDF4','NETCDF4_CLASSIC']:
                 # set compression and shuffle parameters.
-                if compression is None and ndims: # don't bother for scalar variable
+                if compression is not None and ndims: # don't bother for scalar variable
                     if zlib:
                         icomplevel = complevel
                         if shuffle:
