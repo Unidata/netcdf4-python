@@ -12,6 +12,10 @@
    names in "dimensions" tuple kwarg (issue #1145).
  * remove all vestiges of python 2 in _netCDF4.pyx and set cython language_level
    directive to 3 in setup.py.
+ * add 'compression' kwarg to createVariable.  Only 'None' and 'zlib' currently
+   allowed (compression='zlib' is equivalent to zlib=True), but allows
+   for new compression algorithms to be added when they become available
+   in netcdf-c. The 'zlib' kwarg is now deprecated.
 
  version 1.5.8 (tag v1.5.8rel)
 ==============================
