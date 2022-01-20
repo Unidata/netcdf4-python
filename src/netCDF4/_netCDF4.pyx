@@ -2642,7 +2642,7 @@ datatype."""
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,fill_value=None, chunk_cache=None):
         """
-**`createVariable(self, varname, datatype, dimensions=(), zlib=False,
+**`createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
 endian='native', least_significant_digit=None, significant_digits=None, fill_value=None, chunk_cache=None)`**
 
