@@ -6527,6 +6527,7 @@ class _Variable:
     def __getattr__(self,name):
         if name == 'shape': return self._shape()
         if name == 'ndim': return len(self._shape())
+        if name == 'name':  return self._name
         try:
             return self.__dict__[name]
         except:
