@@ -4897,15 +4897,20 @@ rename a `Variable` attribute named `oldname` to `newname`."""
     def _check_safecast(self, attname):
         # check to see that variable attribute exists
         # can can be safely cast to variable data type.
+        msg="""WARNING: %s not used since it
+cannot be safely cast to variable data type""" % attname
         if hasattr(self, attname):
             att = numpy.array(self.getncattr(attname))
         else:
             return False
-        atta = numpy.array(att, self.dtype)
+        try:
+            atta = numpy.array(att, self.dtype)
+        except ValueError:
+            is_safe = False
+            warnings.warn(msg)
+            return is_safe
         is_safe = _safecast(att,atta)
         if not is_safe:
-            msg="""WARNING: %s not used since it
-cannot be safely cast to variable data type""" % attname
             warnings.warn(msg)
         return is_safe
 
