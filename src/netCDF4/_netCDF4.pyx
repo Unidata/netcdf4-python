@@ -3934,7 +3934,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         else:
                             nsd = -significant_digits
                             ierr = nc_def_var_quantize(self._grpid,
-                                    self._varid, NC_QUANTIZE_GRANULARBG, nsd)
+                                    self._varid, NC_QUANTIZE_GRANULARBR, nsd)
 
                 ELSE:
                     if significant_digits is not None:
@@ -4296,7 +4296,7 @@ if returned value is negative, alternate quantization method
                 if quantize_mode == NC_NOQUANTIZE:
                     return None
                 else:
-                    if quantize_mode == NC_QUANTIZE_GRANULARBG:
+                    if quantize_mode == NC_QUANTIZE_GRANULARBR:
                         sig_digits = -nsd
                     else:
                         sig_digits = nsd
