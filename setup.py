@@ -385,7 +385,7 @@ if os.environ.get("CONDA_PREFIX"):
     dirstosearch.append(os.environ["CONDA_PREFIX"]) # linux,macosx
     dirstosearch.append(os.path.join(os.environ["CONDA_PREFIX"],'Library')) # windows
 dirstosearch += [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
-                '/opt/local', '/usr']
+                '/opt/local', '/opt/homebrew', '/usr']
 
 # try nc-config first
 if USE_NCCONFIG and HAS_NCCONFIG:  # Try nc-config.

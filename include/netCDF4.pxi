@@ -696,7 +696,7 @@ IF HAS_QUANTIZATION_SUPPORT:
         cdef enum:
             NC_NOQUANTIZE
             NC_QUANTIZE_BITGROOM
-            NC_QUANTIZE_GRANULARBG
+            NC_QUANTIZE_GRANULARBR
         int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) 
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
 

@@ -85,6 +85,14 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         var2[:] = masked_all((10,), "u1")
         dataset.close()
 
+        # issue #1152: if missing_value is a string that can't
+        # be cast to the variable type, issue a warning instead
+        # of raising an exception when auto-converted slice to a
+        # masked array
+        dataset = netCDF4.Dataset('issue1152.nc')
+        data = dataset['v'][:]
+        dataset.close()
+
     def tearDown(self):
         # Remove the temporary files
         os.remove(self.file)

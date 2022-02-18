@@ -15,6 +15,10 @@
    allowed (compression='zlib' is equivalent to zlib=True), but allows
    for new compression algorithms to be added when they become available
    in netcdf-c. The 'zlib' kwarg is now deprecated.
+ * MFDataset did not aggregate 'name' variable attribute (issue #1153).
+ * issue warning instead of raising an exception if missing_value or
+   _FillValue can't be cast to the variable type when creating a 
+   masked array (issue #1152).  
 
  version 1.5.8 (tag v1.5.8rel)
 ==============================
