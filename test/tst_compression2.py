@@ -8,7 +8,7 @@ import os, tempfile, unittest
 ndim = 100000
 nfiles = 6
 files = [tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name for nfile in range(nfiles)]
-array = uniform(size=(ndim,))
+data_array = uniform(size=(ndim,))
 nsd = 3
 complevel = 6
 
@@ -30,17 +30,17 @@ class CompressionTestCase(unittest.TestCase):
     def setUp(self):
         self.files = files
         # no compression
-        write_netcdf(self.files[0],False,None,array)
+        write_netcdf(self.files[0],False,None,data_array)
         # compressed, lossless, no shuffle.
-        write_netcdf(self.files[1],True,None,array)
+        write_netcdf(self.files[1],True,None,data_array)
         # compressed, lossless, with shuffle.
-        write_netcdf(self.files[2],True,None,array,shuffle=True)
+        write_netcdf(self.files[2],True,None,data_array,shuffle=True)
         # compressed, lossy, no shuffle.
-        write_netcdf(self.files[3],True,nsd,array)
+        write_netcdf(self.files[3],True,nsd,data_array)
         # compressed, lossy, with shuffle.
-        write_netcdf(self.files[4],True,nsd,array,shuffle=True)
+        write_netcdf(self.files[4],True,nsd,data_array,shuffle=True)
         # compressed, lossy, with shuffle, and alternate quantization.
-        write_netcdf(self.files[5],True,-nsd,array,shuffle=True)
+        write_netcdf(self.files[5],True,nsd,data_array,quantize_mode='GranularBitRound',shuffle=True)
 
     def tearDown(self):
         # Remove the temporary files
@@ -72,7 +72,7 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[3]).st_size
         errmax = (np.abs(array-f.variables['data'][:])).max()
         #print('compressed lossy no shuffle = ',size,' max err = ',errmax)
-        assert(f.variables['data'].significant_digits() == nsd)
+        assert(f.variables['data'].quantization() == (nsd,'BitGroom'))
         assert(errmax < 1.e-3)
         assert(size < 0.35*uncompressed_size)
         f.close()
@@ -81,7 +81,7 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[4]).st_size
         errmax = (np.abs(array-f.variables['data'][:])).max()
         #print('compressed lossy with shuffle and standard quantization = ',size,' max err = ',errmax)
-        assert(f.variables['data'].significant_digits() == nsd)
+        assert(f.variables['data'].quantization() == (nsd,'BitGroom'))
         assert(errmax < 1.e-3)
         assert(size < 0.24*uncompressed_size)
         f.close()
@@ -90,7 +90,7 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[5]).st_size
         errmax = (np.abs(array-f.variables['data'][:])).max()
         #print('compressed lossy with shuffle and alternate quantization = ',size,' max err = ',errmax)
-        assert(f.variables['data'].significant_digits() == -nsd)
+        assert(f.variables['data'].quantization() == (nsd,'GranularBitRound'))
         assert(errmax < 1.e-3)
         assert(size < 0.24*uncompressed_size)
         f.close()

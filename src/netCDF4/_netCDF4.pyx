@@ -2640,11 +2640,12 @@ datatype."""
             compression=None, zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
-            significant_digits=None,fill_value=None, chunk_cache=None):
+            significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None):
         """
 **`createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-endian='native', least_significant_digit=None, significant_digits=None, fill_value=None, chunk_cache=None)`**
+endian='native', least_significant_digit=None, significant_digits=None, quantize_mode='BitGroom',
+fill_value=None, chunk_cache=None)`**
 
 Creates a new variable with the given `varname`, `datatype`, and
 `dimensions`. If dimensions are not given, the variable is assumed to be
@@ -2740,9 +2741,9 @@ retained (in this case bits=4). From the
 in unpacked data that is a reliable value." Default is `None`, or no
 quantization, or 'lossless' compression.  If `significant_digits=3`
 then the data will be quantized so that three significant digits are retained, independent
-of the floating point exponent. If `significant_digits` is given as a negative
-number, then an alternate algorithm for quantization ('granular bitgrooming') is used
-that may result in better compression for typical geophysical datasets. 
+of the floating point exponent. The keyword argument `quantize_mode` controls
+the quantization algorithm (default 'BitGroom').  The alternate 'GranularBitRound'
+algorithm may result in better compression for typical geophysical datasets. 
 This `significant_digits` kwarg is only available  with netcdf-c >= 4.8.2, and 
 only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 
@@ -2805,7 +2806,7 @@ is the number of variable dimensions."""
         dimensions=dimensions, compression=compression, zlib=zlib, complevel=complevel, shuffle=shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
-        significant_digits=significant_digits,fill_value=fill_value, chunk_cache=chunk_cache)
+        significant_digits=significant_digits,quantize_mode=quantize_mode,fill_value=fill_value, chunk_cache=chunk_cache)
         return group.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -3611,12 +3612,16 @@ instance. If `None`, the data is not truncated.
 digits in the data the contains a reliable value.  Data is
 truncated to retain this number of significant digits when it is assigned to the
 `Variable` instance. If `None`, the data is not truncated.
-If specified as a negative number, an alternative quantization algorithm is used
-that often produces better compression.
 Only available with netcdf-c >= 4.8.2,
 and only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 The number of significant digits used in the quantization of variable data can be
-obtained using the `Variable.significant_digits` method.
+obtained using the `Variable.significant_digits` method. Default `None` - 
+no quantization done.
+
+**`quantize_mode`**: New in version 1.6.0. Controls
+the quantization algorithm (default 'BitGroom').  The alternate 'GranularBitRound'
+algorithm may result in better compression for typical geophysical datasets. 
+Ignored if `significant_digts` not specified.
 
 **`__orthogonal_indexing__`**: Always `True`.  Indicates to client code
 that the object supports 'orthogonal indexing', which means that slices
@@ -3732,9 +3737,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         **`significant_digits`**: New in version 1.6.0. 
         As described for `least_significant_digit`
         except the number of significant digits retained is prescribed independent
-        of the floating point exponent.  If specified as a negative number,
-        an alternative quantization algorithm is used that often produces
-        better compression. Only available with netcdf-c >= 4.8.2.
+        of the floating point exponent. Default `None` - no quantization done.
+
+        **`quantize_mode`**: New in version 1.6.0. Controls
+        the quantization algorithm (default 'BitGroom').  The alternate 'GranularBitRound'
+        algorithm may result in better compression for typical geophysical datasets. 
+        Ignored if `significant_digts` not specified.
 
         **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
         value that the variable gets filled with before any data is written to it)
@@ -3962,14 +3970,15 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 # set quantization
                 IF HAS_QUANTIZATION_SUPPORT:
                     if significant_digits is not None:
-                        if significant_digits > 0:
-                            nsd = significant_digits
+                        nsd = significant_digits
+                        if quantize_mode == 'BitGroom':
                             ierr = nc_def_var_quantize(self._grpid,
                                     self._varid, NC_QUANTIZE_BITGROOM, nsd)
-                        else:
-                            nsd = -significant_digits
+                        elif quantize_mode == 'GranularBitRound':
                             ierr = nc_def_var_quantize(self._grpid,
                                     self._varid, NC_QUANTIZE_GRANULARBG, nsd)
+                        else:
+                            raise ValueError("unknown quantize_mode ('BitGroom and 'GranularBitRound' supported)") 
 
                 ELSE:
                     if significant_digits is not None:
@@ -4313,13 +4322,12 @@ return dictionary containing HDF5 filter parameters."""
             filtdict['fletcher32']=True
         return filtdict
 
-    def significant_digits(self):
+    def quantization(self):
         """
-**`significant_digits(self)`**
+**`quantization(self)`**
 
-return number of significant digits used in quantization.
-if returned value is negative, alternate quantization method
-('granular bitgrooming') is used.
+return number of significant digits and the algorithm used in quantization.
+Returns None if quantization not active.
 """
         IF HAS_QUANTIZATION_SUPPORT:
             cdef int ierr, nsd, quantize_mode
@@ -4333,10 +4341,12 @@ if returned value is negative, alternate quantization method
                     return None
                 else:
                     if quantize_mode == NC_QUANTIZE_GRANULARBG:
-                        sig_digits = -nsd
+                        sig_digits = nsd
+                        quant_mode = 'GranularBitRound'
                     else:
                         sig_digits = nsd
-                    return sig_digits
+                        quant_mode = 'BitGroom'
+                    return sig_digits, quant_mode
         ELSE:
             return None
 
