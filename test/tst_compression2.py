@@ -55,7 +55,7 @@ class CompressionTestCase(unittest.TestCase):
         f = Dataset(self.files[1])
         size = os.stat(self.files[1]).st_size
         #print('compressed lossless no shuffle = ',size)
-        assert_almost_equal(array,f.variables['data'][:])
+        assert_almost_equal(data_array,f.variables['data'][:])
         assert f.variables['data'].filters() == {'compression':'zlib','zlib':True,'shuffle':False,'complevel':complevel,'fletcher32':False}
         assert(size < 0.95*uncompressed_size)
         f.close()
@@ -63,14 +63,14 @@ class CompressionTestCase(unittest.TestCase):
         f = Dataset(self.files[2])
         size = os.stat(self.files[2]).st_size
         #print('compressed lossless with shuffle ',size)
-        assert_almost_equal(array,f.variables['data'][:])
+        assert_almost_equal(data_array,f.variables['data'][:])
         assert f.variables['data'].filters() == {'compression':'zlib','zlib':True,'shuffle':True,'complevel':complevel,'fletcher32':False}
         assert(size < 0.85*uncompressed_size)
         f.close()
         # check lossy compression without shuffle
         f = Dataset(self.files[3])
         size = os.stat(self.files[3]).st_size
-        errmax = (np.abs(array-f.variables['data'][:])).max()
+        errmax = (np.abs(data_array-f.variables['data'][:])).max()
         #print('compressed lossy no shuffle = ',size,' max err = ',errmax)
         assert(f.variables['data'].quantization() == (nsd,'BitGroom'))
         assert(errmax < 1.e-3)
@@ -79,7 +79,7 @@ class CompressionTestCase(unittest.TestCase):
         # check lossy compression with shuffle
         f = Dataset(self.files[4])
         size = os.stat(self.files[4]).st_size
-        errmax = (np.abs(array-f.variables['data'][:])).max()
+        errmax = (np.abs(data_array-f.variables['data'][:])).max()
         #print('compressed lossy with shuffle and standard quantization = ',size,' max err = ',errmax)
         assert(f.variables['data'].quantization() == (nsd,'BitGroom'))
         assert(errmax < 1.e-3)
@@ -88,7 +88,7 @@ class CompressionTestCase(unittest.TestCase):
         # check lossy compression with shuffle and alternate quantization
         f = Dataset(self.files[5])
         size = os.stat(self.files[5]).st_size
-        errmax = (np.abs(array-f.variables['data'][:])).max()
+        errmax = (np.abs(data_array-f.variables['data'][:])).max()
         #print('compressed lossy with shuffle and alternate quantization = ',size,' max err = ',errmax)
         assert(f.variables['data'].quantization() == (nsd,'GranularBitRound'))
         assert(errmax < 1.e-3)
