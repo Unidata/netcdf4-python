@@ -3644,7 +3644,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             compression=None, zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
-            significant_digits=None,fill_value=None, chunk_cache=None, **kwargs):
+            significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
         """
         **`__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
         complevel=4, shuffle=True, fletcher32=False, contiguous=False,
