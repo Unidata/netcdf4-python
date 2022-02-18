@@ -60,6 +60,7 @@ jobs:
         python run_all.py
         # parallel
         cd ../examples
+        python bench_compress4.py
         mpirun.mpich -np 4 python mpi_example.py
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"
