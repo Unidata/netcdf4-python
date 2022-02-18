@@ -3976,7 +3976,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                                     self._varid, NC_QUANTIZE_BITGROOM, nsd)
                         elif quantize_mode == 'GranularBitRound':
                             ierr = nc_def_var_quantize(self._grpid,
-                                    self._varid, NC_QUANTIZE_GRANULARBG, nsd)
+                                    self._varid, NC_QUANTIZE_GRANULARBR, nsd)
                         else:
                             raise ValueError("unknown quantize_mode ('BitGroom and 'GranularBitRound' supported)") 
 
@@ -4340,7 +4340,7 @@ Returns None if quantization not active.
                 if quantize_mode == NC_NOQUANTIZE:
                     return None
                 else:
-                    if quantize_mode == NC_QUANTIZE_GRANULARBG:
+                    if quantize_mode == NC_QUANTIZE_GRANULARBR:
                         sig_digits = nsd
                         quant_mode = 'GranularBitRound'
                     else:
