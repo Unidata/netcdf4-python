@@ -13,12 +13,12 @@ nsd = 3
 complevel = 6
 
 def write_netcdf(filename,zlib,significant_digits,data,dtype='f8',shuffle=False,\
-                 complevel=6):
+                 complevel=6,quantize_mode="BitGroom"):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
     foo = file.createVariable('data',\
             dtype,('n'),zlib=zlib,significant_digits=significant_digits,\
-            shuffle=shuffle,complevel=complevel)
+            shuffle=shuffle,complevel=complevel,quantize_mode=quantize_mode)
     foo[:] = data
     file.close()
     file = Dataset(filename)
