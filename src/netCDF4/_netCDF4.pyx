@@ -3934,7 +3934,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         else:
                             nsd = -significant_digits
                             ierr = nc_def_var_quantize(self._grpid,
-                                    self._varid, NC_QUANTIZE_GRANULARBG, nsd)
+                                    self._varid, NC_QUANTIZE_GRANULARBR, nsd)
 
                 ELSE:
                     if significant_digits is not None:
@@ -4296,7 +4296,7 @@ if returned value is negative, alternate quantization method
                 if quantize_mode == NC_NOQUANTIZE:
                     return None
                 else:
-                    if quantize_mode == NC_QUANTIZE_GRANULARBG:
+                    if quantize_mode == NC_QUANTIZE_GRANULARBR:
                         sig_digits = -nsd
                     else:
                         sig_digits = nsd
@@ -4897,15 +4897,20 @@ rename a `Variable` attribute named `oldname` to `newname`."""
     def _check_safecast(self, attname):
         # check to see that variable attribute exists
         # can can be safely cast to variable data type.
+        msg="""WARNING: %s not used since it
+cannot be safely cast to variable data type""" % attname
         if hasattr(self, attname):
             att = numpy.array(self.getncattr(attname))
         else:
             return False
-        atta = numpy.array(att, self.dtype)
+        try:
+            atta = numpy.array(att, self.dtype)
+        except ValueError:
+            is_safe = False
+            warnings.warn(msg)
+            return is_safe
         is_safe = _safecast(att,atta)
         if not is_safe:
-            msg="""WARNING: %s not used since it
-cannot be safely cast to variable data type""" % attname
             warnings.warn(msg)
         return is_safe
 
@@ -6527,6 +6532,7 @@ class _Variable:
     def __getattr__(self,name):
         if name == 'shape': return self._shape()
         if name == 'ndim': return len(self._shape())
+        if name == 'name':  return self._name
         try:
             return self.__dict__[name]
         except:
