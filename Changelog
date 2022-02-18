@@ -3,7 +3,7 @@
  * add support for new bit-grooming/quantization functions in netcdf-c 4.8.2 via "signficant_digits"
    kwarg in Dataset.createVariable. "signficant_digits" Dataset method returns value associated with
    Variable. If significant_digits < 0, alterate quantization method used
-   ("granular bit grooming").
+   ("granular bit round").
  * opening a Dataset in append mode (mode = 'a' or 'r+') creates a Dataset
    if one does not already exist (similar to python open builtin).  Issue #1144.
    Added a mode='x' option (as in python open) which is the same as mode='w' with
