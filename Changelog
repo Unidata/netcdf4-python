@@ -16,6 +16,7 @@
  * issue warning instead of raising an exception if missing_value or
    _FillValue can't be cast to the variable type when creating a 
    masked array (issue #1152).  
+ * Define MPI_Session for compatibility with current mpi4py (PR #1156).
 
  version 1.5.8 (tag v1.5.8rel)
 ==============================
