@@ -2,7 +2,7 @@
 =================================
  * add support for new quantization functionality in netcdf-c 4.8.2 via "signficant_digits"
    and "quantize_mode" kwargs in Dataset.createVariable. Default quantization_mode is "BitGroom",
-   but alternate method "GranularBitRound" also supported.
+   but alternate methods "BitRound" and GranularBitRound" also supported.
  * opening a Dataset in append mode (mode = 'a' or 'r+') creates a Dataset
    if one does not already exist (similar to python open builtin).  Issue #1144.
    Added a mode='x' option (as in python open) which is the same as mode='w' with

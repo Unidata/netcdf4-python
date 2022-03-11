@@ -675,7 +675,7 @@ precision of 0.1, then setting `least_significant_digit=1` will cause
 data the data to be quantized using `numpy.around(scale*data)/scale`, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
 retained (in this case bits=4).  This is done at the python level and is
-not a part of the underlying C library.  Starting with netcdf-c version 4.8.2,
+not a part of the underlying C library.  Starting with netcdf-c version 4.9.0,
 a quantization capability is provided in the library.  This can be
 used via the `significant_digits` `Dataset.createVariable` kwarg (new in
 version 1.6.0).
@@ -704,7 +704,7 @@ and then
 >>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),compression='zlib',least_significant_digit=3)
 ```
 
-or with netcdf-c >= 4.8.2
+or with netcdf-c >= 4.9.0
 
 ```python
 >>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),compression='zlib',significant_digits=4)
@@ -2742,9 +2742,10 @@ in unpacked data that is a reliable value." Default is `None`, or no
 quantization, or 'lossless' compression.  If `significant_digits=3`
 then the data will be quantized so that three significant digits are retained, independent
 of the floating point exponent. The keyword argument `quantize_mode` controls
-the quantization algorithm (default 'BitGroom').  The alternate 'GranularBitRound'
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
 algorithm may result in better compression for typical geophysical datasets. 
-This `significant_digits` kwarg is only available  with netcdf-c >= 4.8.2, and 
+This `significant_digits` kwarg is only available  with netcdf-c >= 4.9.0, and 
 only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 
 When creating variables in a `NETCDF4` or `NETCDF4_CLASSIC` formatted file,
@@ -3612,16 +3613,18 @@ instance. If `None`, the data is not truncated.
 digits in the data the contains a reliable value.  Data is
 truncated to retain this number of significant digits when it is assigned to the
 `Variable` instance. If `None`, the data is not truncated.
-Only available with netcdf-c >= 4.8.2,
+Only available with netcdf-c >= 4.9.0,
 and only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 The number of significant digits used in the quantization of variable data can be
 obtained using the `Variable.significant_digits` method. Default `None` - 
 no quantization done.
 
 **`quantize_mode`**: New in version 1.6.0. Controls
-the quantization algorithm (default 'BitGroom').  The alternate 'GranularBitRound'
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
 algorithm may result in better compression for typical geophysical datasets. 
-Ignored if `significant_digts` not specified.
+Ignored if `significant_digits` not specified. If 'BitRound' is used, then
+`significant_digits` is interpreted as binary (not decimal) digits.
 
 **`__orthogonal_indexing__`**: Always `True`.  Indicates to client code
 that the object supports 'orthogonal indexing', which means that slices
@@ -3740,9 +3743,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         of the floating point exponent. Default `None` - no quantization done.
 
         **`quantize_mode`**: New in version 1.6.0. Controls
-        the quantization algorithm (default 'BitGroom').  The alternate 'GranularBitRound'
+        the quantization algorithm (default 'BitGroom', 'BitRound' and
+        'GranularBitRound' also available).  The 'GranularBitRound'
         algorithm may result in better compression for typical geophysical datasets. 
-        Ignored if `significant_digts` not specified.
+        Ignored if `significant_digts` not specified. If 'BitRound' is used, then
+        `significant_digits` is interpreted as binary (not decimal) digits.
 
         **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
         value that the variable gets filled with before any data is written to it)
@@ -3977,14 +3982,17 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         elif quantize_mode == 'GranularBitRound':
                             ierr = nc_def_var_quantize(self._grpid,
                                     self._varid, NC_QUANTIZE_GRANULARBR, nsd)
+                        elif quantize_mode == 'BitRound':
+                            ierr = nc_def_var_quantize(self._grpid,
+                                    self._varid, NC_QUANTIZE_BITROUND, nsd)
                         else:
                             raise ValueError("unknown quantize_mode ('BitGroom and 'GranularBitRound' supported)") 
 
                 ELSE:
                     if significant_digits is not None:
                         msg = """
-significant_digits kwarg only works with netcdf-c >= 4.8.2.  To enable, install Cython, make sure you have
-version 4.8.2 or higher netcdf-c, and rebuild netcdf4-python. Otherwise, use least_significant_digit
+significant_digits kwarg only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
+version 4.9.0 or higher netcdf-c, and rebuild netcdf4-python. Otherwise, use least_significant_digit
 kwarg for quantization."""
                         raise ValueError(msg)
                 if ierr != NC_NOERR:
@@ -4343,6 +4351,9 @@ Returns None if quantization not active.
                     if quantize_mode == NC_QUANTIZE_GRANULARBR:
                         sig_digits = nsd
                         quant_mode = 'GranularBitRound'
+                    elif quantize_mode == NC_QUANTIZE_BITROUND:
+                        sig_digits = nsd
+                        quant_mode = 'BitRound'
                     else:
                         sig_digits = nsd
                         quant_mode = 'BitGroom'
