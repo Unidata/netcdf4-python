@@ -6,10 +6,11 @@ import numpy as np
 import os, tempfile, unittest
 
 ndim = 100000
-nfiles = 6
+nfiles = 7
 files = [tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name for nfile in range(nfiles)]
 data_array = uniform(size=(ndim,))
 nsd = 3
+nsb = 10 # for BitRound, use significant bits (~3.32 sig digits)
 complevel = 6
 
 def write_netcdf(filename,zlib,significant_digits,data,dtype='f8',shuffle=False,\
@@ -41,6 +42,8 @@ class CompressionTestCase(unittest.TestCase):
         write_netcdf(self.files[4],True,nsd,data_array,shuffle=True)
         # compressed, lossy, with shuffle, and alternate quantization.
         write_netcdf(self.files[5],True,nsd,data_array,quantize_mode='GranularBitRound',shuffle=True)
+        # compressed, lossy, with shuffle, and alternate quantization.
+        write_netcdf(self.files[6],True,nsb,data_array,quantize_mode='BitRound',shuffle=True)
 
     def tearDown(self):
         # Remove the temporary files
@@ -89,8 +92,17 @@ class CompressionTestCase(unittest.TestCase):
         f = Dataset(self.files[5])
         size = os.stat(self.files[5]).st_size
         errmax = (np.abs(data_array-f.variables['data'][:])).max()
-        #print('compressed lossy with shuffle and alternate quantization = ',size,' max err = ',errmax)
+        print('compressed lossy with shuffle and alternate quantization = ',size,' max err = ',errmax)
         assert(f.variables['data'].quantization() == (nsd,'GranularBitRound'))
+        assert(errmax < 1.e-3)
+        assert(size < 0.24*uncompressed_size)
+        f.close()
+        # check lossy compression with shuffle and alternate quantization
+        f = Dataset(self.files[6])
+        size = os.stat(self.files[6]).st_size
+        errmax = (np.abs(data_array-f.variables['data'][:])).max()
+        print('compressed lossy with shuffle and alternate quantization = ',size,' max err = ',errmax)
+        assert(f.variables['data'].quantization() == (nsd,'BitRound'))
         assert(errmax < 1.e-3)
         assert(size < 0.24*uncompressed_size)
         f.close()
