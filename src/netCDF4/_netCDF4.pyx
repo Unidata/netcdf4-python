@@ -2744,8 +2744,8 @@ then the data will be quantized so that three significant digits are retained, i
 of the floating point exponent. The keyword argument `quantize_mode` controls
 the quantization algorithm (default 'BitGroom', 'BitRound' and
 'GranularBitRound' also available).  The 'GranularBitRound'
-algorithm may result in better compression for typical geophysical datasets. 
-This `significant_digits` kwarg is only available  with netcdf-c >= 4.9.0, and 
+algorithm may result in better compression for typical geophysical datasets.
+This `significant_digits` kwarg is only available  with netcdf-c >= 4.9.0, and
 only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 
 When creating variables in a `NETCDF4` or `NETCDF4_CLASSIC` formatted file,
@@ -3986,7 +3986,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             ierr = nc_def_var_quantize(self._grpid,
                                     self._varid, NC_QUANTIZE_BITROUND, nsd)
                         else:
-                            raise ValueError("unknown quantize_mode ('BitGroom and 'GranularBitRound' supported)") 
+                            raise ValueError("unknown quantize_mode value")
 
                 ELSE:
                     if significant_digits is not None:
@@ -4352,7 +4352,7 @@ Returns None if quantization not active.
                         sig_digits = nsd
                         quant_mode = 'GranularBitRound'
                     elif quantize_mode == NC_QUANTIZE_BITROUND:
-                        sig_digits = nsd
+                        sig_digits = nsd # interpreted as bits, not decimal
                         quant_mode = 'BitRound'
                     else:
                         sig_digits = nsd
