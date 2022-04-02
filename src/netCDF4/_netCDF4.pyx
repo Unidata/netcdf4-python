@@ -3986,7 +3986,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             ierr = nc_def_var_quantize(self._grpid,
                                     self._varid, NC_QUANTIZE_BITROUND, nsd)
                         else:
-                            raise ValueError("unknown quantize_mode value")
+                            raise ValueError("'quantize_mode' keyword argument must be 'BitGroom','GranularBitRound' or 'BitRound', got '%s'" % quantize_mode)
 
                 ELSE:
                     if significant_digits is not None:

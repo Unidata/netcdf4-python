@@ -101,8 +101,8 @@ class CompressionTestCase(unittest.TestCase):
         f = Dataset(self.files[6])
         size = os.stat(self.files[6]).st_size
         errmax = (np.abs(data_array-f.variables['data'][:])).max()
+        print('should be nsd,BitRound: ',f.variables['data'].quantization())
         print('compressed lossy with shuffle and alternate quantization = ',size,' max err = ',errmax)
-        print(f.variables['data'].quantization())
         assert(f.variables['data'].quantization() == (nsd,'BitRound'))
         assert(errmax < 1.e-3)
         assert(size < 0.24*uncompressed_size)
