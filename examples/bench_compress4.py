@@ -20,7 +20,7 @@ sys.stdout.write('(average of %s trials)\n\n' % ntrials)
 array = nc.variables['hgt'][0:n1dim,5,:,:]
 
 
-def write_netcdf(filename,nsd):
+def write_netcdf(filename,nsd,quantize_mode='BitGroom'):
     file = netCDF4.Dataset(filename,'w',format='NETCDF4')
     file.createDimension('n1', None)
     file.createDimension('n3', n3dim)
@@ -28,6 +28,7 @@ def write_netcdf(filename,nsd):
     foo = file.createVariable('data',\
                               'f4',('n1','n3','n4'),\
                               zlib=True,shuffle=True,\
+                              quantize_mode=quantize_mode,\
                               significant_digits=nsd)
     foo[:] = array
     file.close()
@@ -44,10 +45,9 @@ for sigdigits in range(1,5,1):
     read_netcdf('test.nc')
     # print out size of resulting files with standard quantization.
     sys.stdout.write('size of test.nc = %s\n'%repr(os.stat('test.nc').st_size))
-    sigdigits_neg = -sigdigits
-    sys.stdout.write('testing compression with significant_digits=%s...\n' %\
-            sigdigits_neg)
-    write_netcdf('test.nc',sigdigits_neg)
+    sys.stdout.write("testing compression with significant_digits=%s and 'GranularBitRound'...\n" %\
+            sigdigits)
+    write_netcdf('test.nc',sigdigits,quantize_mode='GranularBitRound')
     read_netcdf('test.nc')
     # print out size of resulting files with alternate quantization.
     sys.stdout.write('size of test.nc = %s\n'%repr(os.stat('test.nc').st_size))

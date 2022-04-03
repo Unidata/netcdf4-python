@@ -15,7 +15,7 @@ files that are readable by HDF5 clients. The API modelled after
 and should be familiar to users of that module.
 
 Most new features of netCDF 4 are implemented, such as multiple
-unlimited dimensions, groups and zlib data compression.  All the new
+unlimited dimensions, groups and data compression.  All the new
 numeric data types (such as 64 bit and unsigned integer types) are
 implemented. Compound (struct), variable length (vlen) and
 enumerated (enum) data types are supported, but not the opaque data type.
@@ -643,9 +643,9 @@ datasets.
 
 Data stored in netCDF 4 `Variable` objects can be compressed and
 decompressed on the fly. The parameters for the compression are
-determined by the `zlib`, `complevel` and `shuffle` keyword arguments
+determined by the `compression`, `complevel` and `shuffle` keyword arguments
 to the `Dataset.createVariable` method. To turn on
-compression, set `zlib=True`.  The `complevel` keyword regulates the
+compression, set compression=`zlib`.  The `complevel` keyword regulates the
 speed and efficiency of the compression (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
 default value of `complevel` is 4. Setting `shuffle=False` will turn
@@ -665,7 +665,7 @@ format is `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`.
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
-0.1 degrees), you can dramatically improve zlib compression by
+0.1 degrees), you can dramatically improve compression by
 quantizing (or truncating) the data. There are two methods supplied for
 doing this.  You can use the `least_significant_digit`
 keyword argument to `Dataset.createVariable` to specify
@@ -675,7 +675,7 @@ precision of 0.1, then setting `least_significant_digit=1` will cause
 data the data to be quantized using `numpy.around(scale*data)/scale`, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
 retained (in this case bits=4).  This is done at the python level and is
-not a part of the underlying C library.  Starting with netcdf-c version 4.8.2,
+not a part of the underlying C library.  Starting with netcdf-c version 4.9.0,
 a quantization capability is provided in the library.  This can be
 used via the `significant_digits` `Dataset.createVariable` kwarg (new in
 version 1.6.0).
@@ -695,19 +695,19 @@ In our example, try replacing the line
 with
 
 ```python
->>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),zlib=True)
+>>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),compression='zlib')
 ```
 
 and then
 
 ```python
->>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),zlib=True,least_significant_digit=3)
+>>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),compression='zlib',least_significant_digit=3)
 ```
 
-or with netcdf-c >= 4.8.2
+or with netcdf-c >= 4.9.0
 
 ```python
->>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),zlib=True,significant_digits=4)
+>>> temp = rootgrp.createVariable("temp","f4",("time","level","lat","lon",),compression='zlib',significant_digits=4)
 ```
 
 and see how much smaller the resulting files are.
@@ -2636,14 +2636,16 @@ datatype."""
                 enum_dict)
         return self.enumtypes[datatype_name]
 
-    def createVariable(self, varname, datatype, dimensions=(), zlib=False,
+    def createVariable(self, varname, datatype, dimensions=(), 
+            compression=None, zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
-            significant_digits=None,fill_value=None, chunk_cache=None):
+            significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None):
         """
-**`createVariable(self, varname, datatype, dimensions=(), zlib=False,
+**`createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-endian='native', least_significant_digit=None, significant_digits=None, fill_value=None, chunk_cache=None)`**
+endian='native', least_significant_digit=None, significant_digits=None, quantize_mode='BitGroom',
+fill_value=None, chunk_cache=None)`**
 
 Creates a new variable with the given `varname`, `datatype`, and
 `dimensions`. If dimensions are not given, the variable is assumed to be
@@ -2675,11 +2677,17 @@ dimension names (strings) that have been defined
 previously using `Dataset.createDimension`. The default value
 is an empty tuple, which means the variable is a scalar.
 
-If the optional keyword `zlib` is `True`, the data will be compressed in
-the netCDF file using gzip compression (default `False`).
+If the optional keyword argument `compression` is set, the data will be
+compressed in the netCDF file using the specified compression algorithm.
+Currently only 'zlib' is supported. Default is `None` (no compression).
 
-The optional keyword `complevel` is an integer between 1 and 9 describing
-the level of compression desired (default 4). Ignored if `zlib=False`.
+If the optional keyword `zlib` is `True`, the data will be compressed in
+the netCDF file using zlib compression (default `False`).  The use of this option is 
+deprecated in favor of `compression='zlib'`.
+
+The optional keyword `complevel` is an integer between 0 and 9 describing
+the level of compression desired (default 4). Ignored if `compression=None`.
+A value of zero disables compression.
 
 If the optional keyword `shuffle` is `True`, the HDF5 shuffle filter
 will be applied before compressing the data (default `True`).  This
@@ -2713,7 +2721,7 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 
-The `zlib, complevel, shuffle, fletcher32, contiguous, chunksizes` and `endian`
+The `compression, zlib, complevel, shuffle, fletcher32, contiguous, chunksizes` and `endian`
 keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword `fill_value` can be used to override the default
@@ -2723,7 +2731,7 @@ If fill_value is set to `False`, then the variable is not pre-filled.
 
 If the optional keyword parameters `least_significant_digit` or `significant_digits` are
 specified, variable data will be truncated (quantized). In conjunction
-with `zlib=True` this produces 'lossy', but significantly more
+with `compression='zlib'` this produces 'lossy', but significantly more
 efficient compression. For example, if `least_significant_digit=1`,
 data will be quantized using `numpy.around(scale*data)/scale`, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
@@ -2733,10 +2741,11 @@ retained (in this case bits=4). From the
 in unpacked data that is a reliable value." Default is `None`, or no
 quantization, or 'lossless' compression.  If `significant_digits=3`
 then the data will be quantized so that three significant digits are retained, independent
-of the floating point exponent. If `significant_digits` is given as a negative
-number, then an alternate algorithm for quantization ('granular bit round') is used
-that may result in better compression for typical geophysical datasets. 
-This `significant_digits` kwarg is only available  with netcdf-c >= 4.8.2, and 
+of the floating point exponent. The keyword argument `quantize_mode` controls
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
+algorithm may result in better compression for typical geophysical datasets.
+This `significant_digits` kwarg is only available  with netcdf-c >= 4.9.0, and
 only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 
 When creating variables in a `NETCDF4` or `NETCDF4_CLASSIC` formatted file,
@@ -2795,10 +2804,10 @@ is the number of variable dimensions."""
         tuple(_find_dim(group,d) if isinstance(d,(str,bytes)) else d for d in dimensions)
         # create variable.
         group.variables[varname] = Variable(group, varname, datatype,
-        dimensions=dimensions, zlib=zlib, complevel=complevel, shuffle=shuffle,
+        dimensions=dimensions, compression=compression, zlib=zlib, complevel=complevel, shuffle=shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
-        significant_digits=significant_digits,fill_value=fill_value, chunk_cache=chunk_cache)
+        significant_digits=significant_digits,quantize_mode=quantize_mode,fill_value=fill_value, chunk_cache=chunk_cache)
         return group.variables[varname]
 
     def renameVariable(self, oldname, newname):
@@ -3604,12 +3613,18 @@ instance. If `None`, the data is not truncated.
 digits in the data the contains a reliable value.  Data is
 truncated to retain this number of significant digits when it is assigned to the
 `Variable` instance. If `None`, the data is not truncated.
-If specified as a negative number, an alternative quantization algorithm is used
-that often produces better compression.
-Only available with netcdf-c >= 4.8.2,
+Only available with netcdf-c >= 4.9.0,
 and only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 The number of significant digits used in the quantization of variable data can be
-obtained using the `Variable.significant_digits` method.
+obtained using the `Variable.significant_digits` method. Default `None` - 
+no quantization done.
+
+**`quantize_mode`**: New in version 1.6.0. Controls
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
+algorithm may result in better compression for typical geophysical datasets. 
+Ignored if `significant_digits` not specified. If 'BitRound' is used, then
+`significant_digits` is interpreted as binary (not decimal) digits.
 
 **`__orthogonal_indexing__`**: Always `True`.  Indicates to client code
 that the object supports 'orthogonal indexing', which means that slices
@@ -3628,12 +3643,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     _iscompound, _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
     __orthogonal_indexing__, _has_lsd, _use_get_vars, _ncstring_attrs__
 
-    def __init__(self, grp, name, datatype, dimensions=(), zlib=False,
+    def __init__(self, grp, name, datatype, dimensions=(),
+            compression=None, zlib=False,
             complevel=4, shuffle=True, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
-            significant_digits=None,fill_value=None, chunk_cache=None, **kwargs):
+            significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
         """
-        **`__init__(self, group, name, datatype, dimensions=(), zlib=False,
+        **`__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
         complevel=4, shuffle=True, fletcher32=False, contiguous=False,
         chunksizes=None, endian='native',
         least_significant_digit=None,fill_value=None,chunk_cache=None)`**
@@ -3667,15 +3683,19 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
 
-        **`zlib`**: if `True`, data assigned to the `Variable`
-        instance is compressed on disk. Default `False`.
+        **`compression`**: compression algorithm to use. Default None.  Currently
+        only 'zlib' is supported.
 
-        **`complevel`**: the level of zlib compression to use (1 is the fastest,
+        **`zlib`**: if `True`, data assigned to the `Variable`
+        instance is compressed on disk. Default `False`. Deprecated - use
+        `compression='zlib'` instead.
+
+        **`complevel`**: the level of compression to use (1 is the fastest,
         but poorest compression, 9 is the slowest but best compression). Default 4.
-        Ignored if `zlib=False`.
+        Ignored if `compression=None`. A value of 0 disables compression.
 
         **`shuffle`**: if `True`, the HDF5 shuffle filter is applied
-        to improve compression. Default `True`. Ignored if `zlib=False`.
+        to improve compression. Default `True`. Ignored if `compression=None`.
 
         **`fletcher32`**: if `True` (default `False`), the Fletcher32 checksum
         algorithm is used for error detection.
@@ -3705,12 +3725,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         some performance advantage to be gained by setting the endian-ness.
         For netCDF 3 files (that don't use HDF5), only `endian='native'` is allowed.
 
-        The `zlib, complevel, shuffle, fletcher32, contiguous` and `chunksizes`
+        The `compression, zlib, complevel, shuffle, fletcher32, contiguous` and `chunksizes`
         keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
         **`least_significant_digit`**: If this or `significant_digits` are specified, 
         variable data will be truncated (quantized).  
-        In conjunction with `zlib=True` this produces
+        In conjunction with `compression='zlib'` this produces
         'lossy', but significantly more efficient compression. For example, if
         `least_significant_digit=1`, data will be quantized using
         around(scale*data)/scale, where scale = 2**bits, and bits is determined
@@ -3720,9 +3740,14 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         **`significant_digits`**: New in version 1.6.0. 
         As described for `least_significant_digit`
         except the number of significant digits retained is prescribed independent
-        of the floating point exponent.  If specified as a negative number,
-        an alternative quantization algorithm is used that often produces
-        better compression. Only available with netcdf-c >= 4.8.2.
+        of the floating point exponent. Default `None` - no quantization done.
+
+        **`quantize_mode`**: New in version 1.6.0. Controls
+        the quantization algorithm (default 'BitGroom', 'BitRound' and
+        'GranularBitRound' also available).  The 'GranularBitRound'
+        algorithm may result in better compression for typical geophysical datasets. 
+        Ignored if `significant_digts` not specified. If 'BitRound' is used, then
+        `significant_digits` is interpreted as binary (not decimal) digits.
 
         **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
         value that the variable gets filled with before any data is written to it)
@@ -3738,7 +3763,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         `Dataset.createVariable` method of a `Dataset` or
         `Group` instance, not using this class directly.
         """
-        cdef int ierr, ndims, icontiguous, ideflate_level, numdims, _grpid, nsd
+        cdef int ierr, ndims, icontiguous, icomplevel, numdims, _grpid, nsd
         cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
@@ -3748,9 +3773,25 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef float preemptionp
         # flag to indicate that orthogonal indexing is supported
         self.__orthogonal_indexing__ = True
-        # if complevel is set to zero, set zlib to False.
+        # For backwards compatibility, deprecated zlib kwarg takes 
+        # precedence if compression kwarg not set.
+        if zlib and not compression:
+            compression = 'zlib'
+        # if complevel is set to zero, turn off compression
         if not complevel:
-            zlib = False
+            compression = None
+        # possible future options include 'zstd' and 'bzip2',
+        zlib = False
+        #zstd = False
+        if compression == 'zlib':
+            zlib = True
+        #elif compression == 'zstd':
+        #    zstd = True
+        elif not compression:
+            compression = None # if compression evaluates to False, set to None.
+            pass
+        else:
+            raise ValueError("Unsupported value for compression kwarg")
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
@@ -3865,23 +3906,30 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             if ierr != NC_NOERR:
                 if grp.data_model != 'NETCDF4': grp._enddef()
                 _ensure_nc_success(ierr)
-            # set zlib, shuffle, chunking, fletcher32 and endian
+            # set compression, shuffle, chunking, fletcher32 and endian
             # variable settings.
             # don't bother for NETCDF3* formats.
-            # for NETCDF3* formats, the zlib,shuffle,chunking,
-            # and fletcher32 are silently ignored. Only
+            # for NETCDF3* formats, the comopression,zlib,shuffle,chunking,
+            # and fletcher32 flags are silently ignored. Only
             # endian='native' allowed for NETCDF3.
             if grp.data_model in ['NETCDF4','NETCDF4_CLASSIC']:
-                # set zlib and shuffle parameters.
-                if zlib and ndims: # don't bother for scalar variable
-                    ideflate_level = complevel
-                    if shuffle:
-                        ierr = nc_def_var_deflate(self._grpid, self._varid, 1, 1, ideflate_level)
-                    else:
-                        ierr = nc_def_var_deflate(self._grpid, self._varid, 0, 1, ideflate_level)
-                    if ierr != NC_NOERR:
-                        if grp.data_model != 'NETCDF4': grp._enddef()
-                        _ensure_nc_success(ierr)
+                # set compression and shuffle parameters.
+                if compression is not None and ndims: # don't bother for scalar variable
+                    if zlib:
+                        icomplevel = complevel
+                        if shuffle:
+                            ierr = nc_def_var_deflate(self._grpid, self._varid, 1, 1, icomplevel)
+                        else:
+                            ierr = nc_def_var_deflate(self._grpid, self._varid, 0, 1, icomplevel)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4': grp._enddef()
+                            _ensure_nc_success(ierr)
+                    #if zstd:
+                    #    icomplevel = complevel
+                    #    ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
+                    #    if ierr != NC_NOERR:
+                    #        if grp.data_model != 'NETCDF4': grp._enddef()
+                    #        _ensure_nc_success(ierr)
                 # set checksum.
                 if fletcher32 and ndims: # don't bother for scalar variable
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
@@ -3927,20 +3975,24 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 # set quantization
                 IF HAS_QUANTIZATION_SUPPORT:
                     if significant_digits is not None:
-                        if significant_digits > 0:
-                            nsd = significant_digits
+                        nsd = significant_digits
+                        if quantize_mode == 'BitGroom':
                             ierr = nc_def_var_quantize(self._grpid,
                                     self._varid, NC_QUANTIZE_BITGROOM, nsd)
-                        else:
-                            nsd = -significant_digits
+                        elif quantize_mode == 'GranularBitRound':
                             ierr = nc_def_var_quantize(self._grpid,
                                     self._varid, NC_QUANTIZE_GRANULARBR, nsd)
+                        elif quantize_mode == 'BitRound':
+                            ierr = nc_def_var_quantize(self._grpid,
+                                    self._varid, NC_QUANTIZE_BITROUND, nsd)
+                        else:
+                            raise ValueError("'quantize_mode' keyword argument must be 'BitGroom','GranularBitRound' or 'BitRound', got '%s'" % quantize_mode)
 
                 ELSE:
                     if significant_digits is not None:
                         msg = """
-significant_digits kwarg only works with netcdf-c >= 4.8.2.  To enable, install Cython, make sure you have
-version 4.8.2 or higher netcdf-c, and rebuild netcdf4-python. Otherwise, use least_significant_digit
+significant_digits kwarg only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
+version 4.9.0 or higher netcdf-c, and rebuild netcdf4-python. Otherwise, use least_significant_digit
 kwarg for quantization."""
                         raise ValueError(msg)
                 if ierr != NC_NOERR:
@@ -4259,31 +4311,31 @@ attributes."""
 **`filters(self)`**
 
 return dictionary containing HDF5 filter parameters."""
-        cdef int ierr,ideflate,ishuffle,ideflate_level,ifletcher32
-        filtdict = {'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
+        cdef int ierr,ideflate,ishuffle,icomplevel,ifletcher32
+        filtdict = {'compression':None,'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
         with nogil:
-            ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &ideflate_level)
+            ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &icomplevel)
         _ensure_nc_success(ierr)
         with nogil:
             ierr = nc_inq_var_fletcher32(self._grpid, self._varid, &ifletcher32)
         _ensure_nc_success(ierr)
         if ideflate:
+            filtdict['compression']='zlib'
             filtdict['zlib']=True
-            filtdict['complevel']=ideflate_level
+            filtdict['complevel']=icomplevel
         if ishuffle:
             filtdict['shuffle']=True
         if ifletcher32:
             filtdict['fletcher32']=True
         return filtdict
 
-    def significant_digits(self):
+    def quantization(self):
         """
-**`significant_digits(self)`**
+**`quantization(self)`**
 
-return number of significant digits used in quantization.
-if returned value is negative, alternate quantization method
-('granular bit round') is used.
+return number of significant digits and the algorithm used in quantization.
+Returns None if quantization not active.
 """
         IF HAS_QUANTIZATION_SUPPORT:
             cdef int ierr, nsd, quantize_mode
@@ -4297,10 +4349,15 @@ if returned value is negative, alternate quantization method
                     return None
                 else:
                     if quantize_mode == NC_QUANTIZE_GRANULARBR:
-                        sig_digits = -nsd
+                        sig_digits = nsd
+                        quant_mode = 'GranularBitRound'
+                    elif quantize_mode == NC_QUANTIZE_BITROUND:
+                        sig_digits = nsd # interpreted as bits, not decimal
+                        quant_mode = 'BitRound'
                     else:
                         sig_digits = nsd
-                    return sig_digits
+                        quant_mode = 'BitGroom'
+                    return sig_digits, quant_mode
         ELSE:
             return None
 
