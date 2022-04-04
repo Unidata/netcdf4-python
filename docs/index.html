@@ -223,7 +223,7 @@
                                 <a class="function" href="#Variable.filters">filters</a>
                         </li>
                         <li>
-                                <a class="function" href="#Variable.significant_digits">significant_digits</a>
+                                <a class="function" href="#Variable.quantization">quantization</a>
                         </li>
                         <li>
                                 <a class="function" href="#Variable.endian">endian</a>
@@ -474,7 +474,7 @@ files that are readable by HDF5 clients. The API modelled after
 and should be familiar to users of that module.</p>
 
 <p>Most new features of netCDF 4 are implemented, such as multiple
-unlimited dimensions, groups and zlib data compression.  All the new
+unlimited dimensions, groups and data compression.  All the new
 numeric data types (such as 64 bit and unsigned integer types) are
 implemented. Compound (struct), variable length (vlen) and
 enumerated (enum) data types are supported, but not the opaque data type.
@@ -1078,9 +1078,9 @@ datasets.</p>
 
 <p>Data stored in netCDF 4 <code><a href="#Variable">Variable</a></code> objects can be compressed and
 decompressed on the fly. The parameters for the compression are
-determined by the <code>zlib</code>, <code>complevel</code> and <code>shuffle</code> keyword arguments
+determined by the <code>compression</code>, <code>complevel</code> and <code>shuffle</code> keyword arguments
 to the <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method. To turn on
-compression, set <code>zlib=True</code>.  The <code>complevel</code> keyword regulates the
+compression, set compression=<code>zlib</code>.  The <code>complevel</code> keyword regulates the
 speed and efficiency of the compression (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
 default value of <code>complevel</code> is 4. Setting <code>shuffle=False</code> will turn
@@ -1100,7 +1100,7 @@ format is <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code> or <co
 
 <p>If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
-0.1 degrees), you can dramatically improve zlib compression by
+0.1 degrees), you can dramatically improve compression by
 quantizing (or truncating) the data. There are two methods supplied for
 doing this.  You can use the <code>least_significant_digit</code>
 keyword argument to <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> to specify
@@ -1110,7 +1110,7 @@ precision of 0.1, then setting <code>least_significant_digit=1</code> will cause
 data the data to be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
 retained (in this case bits=4).  This is done at the python level and is
-not a part of the underlying C library.  Starting with netcdf-c version 4.8.2,
+not a part of the underlying C library.  Starting with netcdf-c version 4.9.0,
 a quantization capability is provided in the library.  This can be
 used via the <code>significant_digits</code> <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> kwarg (new in
 version 1.6.0).
@@ -1128,17 +1128,17 @@ sacrificed for the sake of disk space.</p>
 
 <p>with</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>and then</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">least_significant_digit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span><span class="n">least_significant_digit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 
-<p>or with netcdf-c &gt;= 4.8.2</p>
+<p>or with netcdf-c &gt;= 4.9.0</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">zlib</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">significant_digits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span><span class="n">significant_digits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 
 <p>and see how much smaller the resulting files are.</p>
@@ -1612,7 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;:&#106;&#101;&#x66;&#102;&#114;&#x65;&#x79;&#46;&#115;&#x2e;&#x77;&#104;&#105;&#x74;&#x61;&#107;&#101;&#114;&#64;&#110;&#111;&#97;a&#46;&#103;&#111;&#x76;">&#106;&#101;&#x66;&#102;&#114;&#x65;&#x79;&#46;&#115;&#x2e;&#x77;&#104;&#105;&#x74;&#x61;&#107;&#101;&#114;&#64;&#110;&#111;&#97;a&#46;&#103;&#111;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;j&#101;&#102;&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#46;&#119;&#x68;&#x69;&#x74;&#x61;&#x6b;&#x65;&#x72;&#64;&#110;&#x6f;&#x61;&#x61;&#46;&#103;o&#x76;">j&#101;&#102;&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#46;&#119;&#x68;&#x69;&#x74;&#x61;&#x6b;&#x65;&#x72;&#64;&#110;&#x6f;&#x61;&#x61;&#46;&#103;o&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -2053,9 +2053,10 @@ datatype.</p>
     </div>
 
         
-            <div class="docstring"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), zlib=False,
+            <div class="docstring"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-endian='native', least_significant_digit=None, significant_digits=None, fill_value=None, chunk_cache=None)</code></strong></p>
+endian='native', least_significant_digit=None, significant_digits=None, quantize_mode='BitGroom',
+fill_value=None, chunk_cache=None)</code></strong></p>
 
 <p>Creates a new variable with the given <code>varname</code>, <code>datatype</code>, and
 <code><a href="#Dataset.dimensions">dimensions</a></code>. If dimensions are not given, the variable is assumed to be
@@ -2087,11 +2088,17 @@ dimension names (strings) that have been defined
 previously using <code><a href="#Dataset.createDimension">Dataset.createDimension</a></code>. The default value
 is an empty tuple, which means the variable is a scalar.</p>
 
-<p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
-the netCDF file using gzip compression (default <code>False</code>).</p>
+<p>If the optional keyword argument <code>compression</code> is set, the data will be
+compressed in the netCDF file using the specified compression algorithm.
+Currently only 'zlib' is supported. Default is <code>None</code> (no compression).</p>
 
-<p>The optional keyword <code>complevel</code> is an integer between 1 and 9 describing
-the level of compression desired (default 4). Ignored if <code>zlib=False</code>.</p>
+<p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
+the netCDF file using zlib compression (default <code>False</code>).  The use of this option is 
+deprecated in favor of <code>compression='zlib'</code>.</p>
+
+<p>The optional keyword <code>complevel</code> is an integer between 0 and 9 describing
+the level of compression desired (default 4). Ignored if <code>compression=None</code>.
+A value of zero disables compression.</p>
 
 <p>If the optional keyword <code>shuffle</code> is <code>True</code>, the HDF5 shuffle filter
 will be applied before compressing the data (default <code>True</code>).  This
@@ -2125,7 +2132,7 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.</p>
 
-<p>The <code>zlib, complevel, shuffle, fletcher32, contiguous, chunksizes</code> and <code>endian</code>
+<p>The <code>compression, zlib, complevel, shuffle, fletcher32, contiguous, chunksizes</code> and <code>endian</code>
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 
 <p>The optional keyword <code>fill_value</code> can be used to override the default
@@ -2135,7 +2142,7 @@ If fill_value is set to <code>False</code>, then the variable is not pre-filled.
 
 <p>If the optional keyword parameters <code>least_significant_digit</code> or <code>significant_digits</code> are
 specified, variable data will be truncated (quantized). In conjunction
-with <code>zlib=True</code> this produces 'lossy', but significantly more
+with <code>compression='zlib'</code> this produces 'lossy', but significantly more
 efficient compression. For example, if <code>least_significant_digit=1</code>,
 data will be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
@@ -2145,10 +2152,11 @@ retained (in this case bits=4). From the
 in unpacked data that is a reliable value." Default is <code>None</code>, or no
 quantization, or 'lossless' compression.  If <code>significant_digits=3</code>
 then the data will be quantized so that three significant digits are retained, independent
-of the floating point exponent. If <code>significant_digits</code> is given as a negative
-number, then an alternate algorithm for quantization ('granular bitgrooming') is used
-that may result in better compression for typical geophysical datasets. 
-This <code>significant_digits</code> kwarg is only available  with netcdf-c &gt;= 4.8.2, and 
+of the floating point exponent. The keyword argument <code>quantize_mode</code> controls
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
+algorithm may result in better compression for typical geophysical datasets.
+This <code>significant_digits</code> kwarg is only available  with netcdf-c &gt;= 4.9.0, and
 only works with <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted files.</p>
 
 <p>When creating variables in a <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted file,
@@ -2788,16 +2796,22 @@ smallest decimal place in the data the contains a reliable value.  Data is
 truncated to this decimal place when it is assigned to the <code><a href="#Variable">Variable</a></code>
 instance. If <code>None</code>, the data is not truncated.</p>
 
-<p><strong><code><a href="#Variable.significant_digits">significant_digits</a></code></strong>: New in version 1.6.0. Describes the number of significant
+<p><strong><code>significant_digits</code></strong>: New in version 1.6.0. Describes the number of significant
 digits in the data the contains a reliable value.  Data is
 truncated to retain this number of significant digits when it is assigned to the
 <code><a href="#Variable">Variable</a></code> instance. If <code>None</code>, the data is not truncated.
-If specified as a negative number, an alternative quantization algorithm is used
-that often produces better compression.
-Only available with netcdf-c &gt;= 4.8.2,
+Only available with netcdf-c &gt;= 4.9.0,
 and only works with <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted files.
 The number of significant digits used in the quantization of variable data can be
-obtained using the <code><a href="#Variable.significant_digits">Variable.significant_digits</a></code> method.</p>
+obtained using the <code>Variable.significant_digits</code> method. Default <code>None</code> - 
+no quantization done.</p>
+
+<p><strong><code>quantize_mode</code></strong>: New in version 1.6.0. Controls
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
+algorithm may result in better compression for typical geophysical datasets. 
+Ignored if <code>significant_digits</code> not specified. If 'BitRound' is used, then
+<code>significant_digits</code> is interpreted as binary (not decimal) digits.</p>
 
 <p><strong><code>__orthogonal_indexing__</code></strong>: Always <code>True</code>.  Indicates to client code
 that the object supports 'orthogonal indexing', which means that slices
@@ -2821,7 +2835,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.</p>
     </div>
 
         
-            <div class="docstring"><p><strong><code>__init__(self, group, name, datatype, dimensions=(), zlib=False,
+            <div class="docstring"><p><strong><code>__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False,
 chunksizes=None, endian='native',
 least_significant_digit=None,fill_value=None,chunk_cache=None)</code></strong></p>
@@ -2855,15 +2869,19 @@ length greater than one are aliases for <code>str</code>.</p>
 (defined previously with <code>createDimension</code>). Default is an empty tuple
 which means the variable is a scalar (and therefore has no dimensions).</p>
 
-<p><strong><code>zlib</code></strong>: if <code>True</code>, data assigned to the <code><a href="#Variable">Variable</a></code>
-instance is compressed on disk. Default <code>False</code>.</p>
+<p><strong><code>compression</code></strong>: compression algorithm to use. Default None.  Currently
+only 'zlib' is supported.</p>
 
-<p><strong><code>complevel</code></strong>: the level of zlib compression to use (1 is the fastest,
+<p><strong><code>zlib</code></strong>: if <code>True</code>, data assigned to the <code><a href="#Variable">Variable</a></code>
+instance is compressed on disk. Default <code>False</code>. Deprecated - use
+<code>compression='zlib'</code> instead.</p>
+
+<p><strong><code>complevel</code></strong>: the level of compression to use (1 is the fastest,
 but poorest compression, 9 is the slowest but best compression). Default 4.
-Ignored if <code>zlib=False</code>.</p>
+Ignored if <code>compression=None</code>. A value of 0 disables compression.</p>
 
 <p><strong><code>shuffle</code></strong>: if <code>True</code>, the HDF5 shuffle filter is applied
-to improve compression. Default <code>True</code>. Ignored if <code>zlib=False</code>.</p>
+to improve compression. Default <code>True</code>. Ignored if <code>compression=None</code>.</p>
 
 <p><strong><code>fletcher32</code></strong>: if <code>True</code> (default <code>False</code>), the Fletcher32 checksum
 algorithm is used for error detection.</p>
@@ -2893,24 +2911,29 @@ opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
 For netCDF 3 files (that don't use HDF5), only <code>endian='native'</code> is allowed.</p>
 
-<p>The <code>zlib, complevel, shuffle, fletcher32, contiguous</code> and <code>chunksizes</code>
+<p>The <code>compression, zlib, complevel, shuffle, fletcher32, contiguous</code> and <code>chunksizes</code>
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 
-<p><strong><code>least_significant_digit</code></strong>: If this or <code><a href="#Variable.significant_digits">significant_digits</a></code> are specified, 
+<p><strong><code>least_significant_digit</code></strong>: If this or <code>significant_digits</code> are specified, 
 variable data will be truncated (quantized). <br />
-In conjunction with <code>zlib=True</code> this produces
+In conjunction with <code>compression='zlib'</code> this produces
 'lossy', but significantly more efficient compression. For example, if
 <code>least_significant_digit=1</code>, data will be quantized using
 around(scale<em>data)/scale, where scale = 2</em>*bits, and bits is determined
 so that a precision of 0.1 is retained (in this case bits=4). Default is
 <code>None</code>, or no quantization.</p>
 
-<p><strong><code><a href="#Variable.significant_digits">significant_digits</a></code></strong>: New in version 1.6.0. 
+<p><strong><code>significant_digits</code></strong>: New in version 1.6.0. 
 As described for <code>least_significant_digit</code>
 except the number of significant digits retained is prescribed independent
-of the floating point exponent.  If specified as a negative number,
-an alternative quantization algorithm is used that often produces
-better compression. Only available with netcdf-c &gt;= 4.8.2.</p>
+of the floating point exponent. Default <code>None</code> - no quantization done.</p>
+
+<p><strong><code>quantize_mode</code></strong>: New in version 1.6.0. Controls
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
+algorithm may result in better compression for typical geophysical datasets. 
+Ignored if <code>significant_digts</code> not specified. If 'BitRound' is used, then
+<code>significant_digits</code> is interpreted as binary (not decimal) digits.</p>
 
 <p><strong><code>fill_value</code></strong>:  If specified, the default netCDF <code>_FillValue</code> (the
 value that the variable gets filled with before any data is written to it)
@@ -3072,20 +3095,19 @@ attributes.</p>
 
 
                             </div>
-                            <div id="Variable.significant_digits" class="classattr">
-                                        <div class="attr function"><a class="headerlink" href="#Variable.significant_digits">#&nbsp;&nbsp</a>
+                            <div id="Variable.quantization" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#Variable.quantization">#&nbsp;&nbsp</a>
 
         
             <span class="def">def</span>
-            <span class="name">significant_digits</span><span class="signature">(unknown)</span>:
+            <span class="name">quantization</span><span class="signature">(unknown)</span>:
     </div>
 
         
-            <div class="docstring"><p><strong><code>significant_digits(self)</code></strong></p>
+            <div class="docstring"><p><strong><code>quantization(self)</code></strong></p>
 
-<p>return number of significant digits used in quantization.
-if returned value is negative, alternate quantization method
-('granular bitgrooming') is used.</p>
+<p>return number of significant digits and the algorithm used in quantization.
+Returns None if quantization not active.</p>
 </div>
 
 
