@@ -10,6 +10,14 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+??/??/2022:  Version [1.6.0](https://pypi.python.org/pypi/netCDF4/1.6.0) released.  Support
+for quantization (bit-grooming and bit-rounding) functionality in netcdf-c 4.9.0 which can
+dramatically improve compression.  Dataset.createVariable now accepts dimension instances (instead
+of just dimension names). 'compression' kwarg added to Dataset.createVariable (in preparation for
+the available of new compression algorithms in netcdf-c (such as zstd).  Currently only 'zlib'
+supported.  Opening a Dataset in 'append' mode now creates one if it doesn't already exist (just
+like python open).
+
 10/31/2021:  Version [1.5.8](https://pypi.python.org/pypi/netCDF4/1.5.8) released. Fix Enum bug, add binary wheels for aarch64 and python 3.10.
 
 6/22/2021:  Version [1.5.7](https://pypi.python.org/pypi/netCDF4/1.5.7) released.

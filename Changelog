@@ -1,5 +1,5 @@
- version 1.6.0 (not yet released)
-=================================
+ version 1.6.0 (tag v1.6.0rel)
+==============================
  * add support for new quantization functionality in netcdf-c 4.8.2 via "signficant_digits"
    and "quantize_mode" kwargs in Dataset.createVariable. Default quantization_mode is "BitGroom",
    but alternate methods "BitRound" and GranularBitRound" also supported.
