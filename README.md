@@ -14,8 +14,9 @@ For details on the latest updates, see the [Changelog](https://github.com/Unidat
 for quantization (bit-grooming and bit-rounding) functionality in netcdf-c 4.9.0 which can
 dramatically improve compression.  Dataset.createVariable now accepts dimension instances (instead
 of just dimension names). 'compression' kwarg added to Dataset.createVariable (in preparation for
-the available of new compression algorithms in netcdf-c (such as zstd).  Currently only 'zlib'
-supported.  Opening a Dataset in 'append' mode now creates one if it doesn't already exist (just
+the available of new compression algorithms, such as
+ [zstd](https://github.com/facebook/zstd), in netcdf-c).  Currently only 'zlib' supported.
+Opening a Dataset in 'append' mode now creates one if it doesn't already exist (just
 like python open). Working arm64 and universal2 wheels for Apple Silicon now available on pypi.
 
 10/31/2021:  Version [1.5.8](https://pypi.python.org/pypi/netCDF4/1.5.8) released. Fix Enum bug, add binary wheels for aarch64 and python 3.10.
