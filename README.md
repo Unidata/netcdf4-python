@@ -16,7 +16,7 @@ dramatically improve compression.  Dataset.createVariable now accepts dimension 
 of just dimension names). 'compression' kwarg added to Dataset.createVariable (in preparation for
 the available of new compression algorithms in netcdf-c (such as zstd).  Currently only 'zlib'
 supported.  Opening a Dataset in 'append' mode now creates one if it doesn't already exist (just
-like python open).
+like python open). Working arm64 and universal2 wheels for Apple Silicon now available on pypi.
 
 10/31/2021:  Version [1.5.8](https://pypi.python.org/pypi/netCDF4/1.5.8) released. Fix Enum bug, add binary wheels for aarch64 and python 3.10.
 
