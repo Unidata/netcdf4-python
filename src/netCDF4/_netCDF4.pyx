@@ -3940,7 +3940,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             msg = """
 compression='zstd' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
 version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-python."""
-                        raise ValueError(msg)
+                            raise ValueError(msg)
                     if bzip2:
                         IF HAS_BZIP2_SUPPORT:
                             icomplevel = complevel
@@ -3952,7 +3952,7 @@ version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-pyt
                             msg = """
 compression='bzip2' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
 version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python."""
-                        raise ValueError(msg)
+                            raise ValueError(msg)
                 # set checksum.
                 if fletcher32 and ndims: # don't bother for scalar variable
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
