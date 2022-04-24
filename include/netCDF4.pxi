@@ -703,11 +703,16 @@ IF HAS_QUANTIZATION_SUPPORT:
 
 IF HAS_ZSTANDARD_SUPPORT:
     cdef extern from "netcdf_filter.h":
+        cdef enum:
+            H5Z_FILTER_ZSTANDARD
         int nc_def_var_zstandard(int ncid, int varid, int level)
         int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp)
+        int nc_inq_filter_avail(int ncid, unsigned id)
 
 IF HAS_BZIP2_SUPPORT:
     cdef extern from "netcdf_filter.h":
+        cdef enum:
+            H5Z_FILTER_BZIP2
         int nc_def_var_bzip2(int ncid, int varid, int level)
         int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp)
 

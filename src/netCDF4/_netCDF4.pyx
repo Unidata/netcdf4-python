@@ -1321,6 +1321,8 @@ __has_nc_create_mem__ = HAS_NC_CREATE_MEM
 __has_parallel4_support__ = HAS_PARALLEL4_SUPPORT
 __has_pnetcdf_support__ = HAS_PNETCDF_SUPPORT
 __has_quantization_support__ = HAS_QUANTIZATION_SUPPORT
+__has_zstandard_support__ = HAS_ZSTANDARD_SUPPORT
+__has_bzip2_support__ = HAS_BZIP2_SUPPORT
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
