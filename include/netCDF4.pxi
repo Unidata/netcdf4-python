@@ -701,6 +701,21 @@ IF HAS_QUANTIZATION_SUPPORT:
         int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) 
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
 
+IF HAS_ZSTANDARD_SUPPORT:
+    cdef extern from "netcdf_filter.h":
+        int nc_def_var_zstandard(int ncid, int varid, int level)
+        int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp)
+
+IF HAS_BZIP2_SUPPORT:
+    cdef extern from "netcdf_filter.h":
+        int nc_def_var_bzip2(int ncid, int varid, int level)
+        int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp)
+
+IF HAS_BLOSC_SUPPORT:
+    cdef extern from "netcdf_filter.h":
+        int nc_def_var_blosc(int ncid, int varid, unsigned subcompressor, unsigned level, unsigned blocksize, unsigned addshuffle)
+        int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigned* subcompressorp, unsigned* levelp, unsigned* blocksizep, unsigned* addshufflep)
+
 IF HAS_NC_OPEN_MEM:
     cdef extern from "netcdf_mem.h":
         int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp)

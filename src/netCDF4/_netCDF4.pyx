@@ -2679,7 +2679,7 @@ is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword argument `compression` is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
-Currently only 'zlib' is supported. Default is `None` (no compression).
+Currently 'zlib','zstd' and 'bzip2' are supported. Default is `None` (no compression).
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
 the netCDF file using zlib compression (default `False`).  The use of this option is 
@@ -3684,7 +3684,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         which means the variable is a scalar (and therefore has no dimensions).
 
         **`compression`**: compression algorithm to use. Default None.  Currently
-        only 'zlib' is supported.
+        'zlib','zstd' and 'bzip2' are supported.
 
         **`zlib`**: if `True`, data assigned to the `Variable`
         instance is compressed on disk. Default `False`. Deprecated - use
@@ -3780,13 +3780,15 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # if complevel is set to zero, turn off compression
         if not complevel:
             compression = None
-        # possible future options include 'zstd' and 'bzip2',
         zlib = False
-        #zstd = False
+        zstd = False
+        bzip2 = False
         if compression == 'zlib':
             zlib = True
-        #elif compression == 'zstd':
-        #    zstd = True
+        elif compression == 'zstd':
+            zstd = True
+        elif compression == 'bzip2':
+            bzip2 = True
         elif not compression:
             compression = None # if compression evaluates to False, set to None.
             pass
@@ -3924,12 +3926,30 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         if ierr != NC_NOERR:
                             if grp.data_model != 'NETCDF4': grp._enddef()
                             _ensure_nc_success(ierr)
-                    #if zstd:
-                    #    icomplevel = complevel
-                    #    ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
-                    #    if ierr != NC_NOERR:
-                    #        if grp.data_model != 'NETCDF4': grp._enddef()
-                    #        _ensure_nc_success(ierr)
+                    if zstd:
+                        IF HAS_ZSTANDARD_SUPPORT:
+                            icomplevel = complevel
+                            ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
+                            if ierr != NC_NOERR:
+                                if grp.data_model != 'NETCDF4': grp._enddef()
+                                _ensure_nc_success(ierr)
+                        ELSE:
+                            msg = """
+compression='zstd' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
+version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-python."""
+                        raise ValueError(msg)
+                    if bzip2:
+                        IF HAS_BZIP2_SUPPORT:
+                            icomplevel = complevel
+                            ierr = nc_def_var_bzip2(self._grpid, self._varid, icomplevel)
+                            if ierr != NC_NOERR:
+                                if grp.data_model != 'NETCDF4': grp._enddef()
+                                _ensure_nc_success(ierr)
+                        ELSE:
+                            msg = """
+compression='bzip2' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
+version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python."""
+                        raise ValueError(msg)
                 # set checksum.
                 if fletcher32 and ndims: # don't bother for scalar variable
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
