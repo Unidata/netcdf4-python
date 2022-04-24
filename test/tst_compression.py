@@ -101,7 +101,8 @@ class CompressionTestCase(unittest.TestCase):
         assert_almost_equal(array,f.variables['data2'][:])
         assert f.variables['data'].filters() ==\
         {'zlib':True,'zstd':False,'bzip2':False,'shuffle':False,'complevel':6,'fletcher32':False}
-        assert f.variables['data2'].filters() == {'zlib':True,'shuffle':False,'complevel':6,'fletcher32':False}
+        assert f.variables['data2'].filters() ==\
+        {'zlib':True,'zstd':False,'bzip2':False,'shuffle':False,'complevel':6,'fletcher32':False}
         assert(size < 0.95*uncompressed_size)
         f.close()
         # check compression with shuffle
