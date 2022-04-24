@@ -4334,7 +4334,7 @@ attributes."""
 **`filters(self)`**
 
 return dictionary containing HDF5 filter parameters."""
-        cdef int ierr,ideflate,ishuffle,icomplevel,ifletcher32
+        cdef int ierr,ideflate,ishuffle,icomplevel,icomplevel_zstd,icomplevel_bzip2,ifletcher32
         cdef int izstd=0
         cdef int ibzip2=0
         filtdict = {'zlib':False,'zstd':False,'bzip2':False,'shuffle':False,'complevel':0,'fletcher32':False}
@@ -4346,20 +4346,22 @@ return dictionary containing HDF5 filter parameters."""
             ierr = nc_inq_var_fletcher32(self._grpid, self._varid, &ifletcher32)
         _ensure_nc_success(ierr)
         IF HAS_ZSTANDARD_SUPPORT:
-            ierr = nc_inq_var_zstandard(self._grpid, self._varid, &izstd, &icomplevel)
+            ierr = nc_inq_var_zstandard(self._grpid, self._varid, &izstd,\
+                    &icomplevel_zstd)
             _ensure_nc_success(ierr)
         IF HAS_BZIP2_SUPPORT:
-            ierr = nc_inq_var_bzip2(self._grpid, self._varid, &ibzip2, &icomplevel)
+            ierr = nc_inq_var_bzip2(self._grpid, self._varid, &ibzip2,\
+                    &icomplevel_bzip2)
             _ensure_nc_success(ierr)
         if ideflate:
             filtdict['zlib']=True
             filtdict['complevel']=icomplevel
         if izstd:
             filtdict['zstd']=True
-            filtdict['complevel']=icomplevel
+            filtdict['complevel']=icomplevel_zstd
         if ibzip2:
             filtdict['bzip2']=True
-            filtdict['complevel']=icomplevel
+            filtdict['complevel']=icomplevel_bzip2
         if ishuffle:
             filtdict['shuffle']=True
         if ifletcher32:
