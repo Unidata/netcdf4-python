@@ -88,8 +88,10 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[0]).st_size
         assert_almost_equal(array,f.variables['data'][:])
         assert_almost_equal(array,f.variables['data2'][:])
-        assert f.variables['data'].filters() == {'compression':None,'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
-        assert f.variables['data2'].filters() == {'compression':None,'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
+        assert f.variables['data'].filters() ==\
+        {'zlib':False,'zstd':False,'bzip2':False,'shuffle':False,'complevel':0,'fletcher32':False}
+        assert f.variables['data2'].filters() ==\
+        {'zlib':False,'zstd':False,'bzip2':False,'shuffle':False,'complevel':0,'fletcher32':False}
         assert_almost_equal(size,uncompressed_size)
         f.close()
         # check compressed data.
@@ -97,7 +99,8 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[1]).st_size
         assert_almost_equal(array,f.variables['data'][:])
         assert_almost_equal(array,f.variables['data2'][:])
-        assert f.variables['data'].filters() == {'zlib':True,'shuffle':False,'complevel':6,'fletcher32':False}
+        assert f.variables['data'].filters() ==\
+        {'zlib':True,'zstd':False,'bzip2':False,'shuffle':False,'complevel':6,'fletcher32':False}
         assert f.variables['data2'].filters() == {'zlib':True,'shuffle':False,'complevel':6,'fletcher32':False}
         assert(size < 0.95*uncompressed_size)
         f.close()
@@ -106,8 +109,10 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[2]).st_size
         assert_almost_equal(array,f.variables['data'][:])
         assert_almost_equal(array,f.variables['data2'][:])
-        assert f.variables['data'].filters() == {'zlib':True,'shuffle':True,'complevel':6,'fletcher32':False}
-        assert f.variables['data2'].filters() == {'zlib':True,'shuffle':True,'complevel':6,'fletcher32':False}
+        assert f.variables['data'].filters() ==\
+        {'zlib':True,'zstd':False,'bzip2':False,'shuffle':True,'complevel':6,'fletcher32':False}
+        assert f.variables['data2'].filters() ==\
+        {'zlib':True,'zstd':False,'bzip2':False,'shuffle':True,'complevel':6,'fletcher32':False}
         assert(size < 0.85*uncompressed_size)
         f.close()
         # check lossy compression without shuffle
