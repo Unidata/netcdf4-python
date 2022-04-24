@@ -9,6 +9,6 @@ from ._netCDF4 import (__version__, __netcdf4libversion__, __hdf5libversion__,
                        __has_nc_create_mem__, __has_cdf5_format__,
                        __has_parallel4_support__, __has_pnetcdf_support__,
                        __has_quantization_support__, __has_zstandard_support__,
-                       __has_bzip2_support__)
+                       __has_bzip2_support__, __has_blosc_support__)
 __all__ =\
 ['Dataset','Variable','Dimension','Group','MFDataset','MFTime','CompoundType','VLType','date2num','num2date','date2index','stringtochar','chartostring','stringtoarr','getlibversion','EnumType','get_chunk_cache','set_chunk_cache']
