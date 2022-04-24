@@ -34,6 +34,8 @@ jobs:
         ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 
         make -j 2
         make install
+        mkdir -p /usr/local/hdf5/lib
+        /bin/cp -R plugins/.libs/* /usr/local/hdf5/lib
         popd
 
 #   - name: The job has failed
