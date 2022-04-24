@@ -23,7 +23,7 @@ jobs:
     - name: Install Ubuntu Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libblosc-dev zstd
+        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libblosc-dev libzstd-dev
         echo "Download and build netCDF github master"
         git clone https://github.com/Unidata/netcdf-c
         pushd netcdf-c
