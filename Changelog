@@ -1,6 +1,6 @@
  version 1.6.0 (tag v1.6.0rel)
 ==============================
- * add support for new quantization functionality in netcdf-c 4.8.2 via "signficant_digits"
+ * add support for new quantization functionality in netcdf-c 4.9.0 via "signficant_digits"
    and "quantize_mode" kwargs in Dataset.createVariable. Default quantization_mode is "BitGroom",
    but alternate methods "BitRound" and GranularBitRound" also supported.
  * opening a Dataset in append mode (mode = 'a' or 'r+') creates a Dataset
@@ -11,10 +11,12 @@
    names in "dimensions" tuple kwarg (issue #1145).
  * remove all vestiges of python 2 in _netCDF4.pyx and set cython language_level
    directive to 3 in setup.py.
- * add 'compression' kwarg to createVariable.  Only 'None' and 'zlib' currently
+ * add 'compression' kwarg to createVariable to enable new compression
+   functionality in netcdf-c 4.9.0.  'None', 'zlib', 'zstd' and 'bzip2 are currently
    allowed (compression='zlib' is equivalent to zlib=True), but allows
    for new compression algorithms to be added when they become available
-   in netcdf-c. The 'zlib' kwarg is now deprecated.
+   in netcdf-c. The 'zlib' kwarg is now deprecated. Blosc compression feature
+   in netcdf-c 4.9.0 not yet supported.
  * MFDataset did not aggregate 'name' variable attribute (issue #1153).
  * issue warning instead of raising an exception if missing_value or
    _FillValue can't be cast to the variable type when creating a 
