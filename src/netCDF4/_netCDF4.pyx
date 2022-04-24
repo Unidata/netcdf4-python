@@ -4334,7 +4334,9 @@ attributes."""
 
 return dictionary containing HDF5 filter parameters."""
         cdef int ierr,ideflate,ishuffle,icomplevel,ifletcher32
-        filtdict = {'compression':None,'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
+        cdef int izstd=0
+        cdef int ibzip2=0
+        filtdict = {'zlib':False,'zstd':False,'bzip2':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
         with nogil:
             ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &icomplevel)
@@ -4342,9 +4344,20 @@ return dictionary containing HDF5 filter parameters."""
         with nogil:
             ierr = nc_inq_var_fletcher32(self._grpid, self._varid, &ifletcher32)
         _ensure_nc_success(ierr)
+        IF HAS_ZSTANDARD_SUPPORT:
+            ierr = nc_inq_var_zstandard(self._grpid, self._varid, &izstd, &icomplevel)
+            _ensure_nc_success(ierr)
+        IF HAS_BZIP2_SUPPORT:
+            ierr = nc_inq_var_bzip2(self._grpid, self._varid, &ibzip2, &icomplevel)
+            _ensure_nc_success(ierr)
         if ideflate:
-            filtdict['compression']='zlib'
             filtdict['zlib']=True
+            filtdict['complevel']=icomplevel
+        if izstd:
+            filtdict['zstd']=True
+            filtdict['complevel']=icomplevel
+        if ibzip2:
+            filtdict['bzip2']=True
             filtdict['complevel']=icomplevel
         if ishuffle:
             filtdict['shuffle']=True
