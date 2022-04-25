@@ -1612,7 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="m&#97;&#x69;&#108;&#x74;&#111;&#58;&#x6a;&#101;&#102;&#102;&#x72;&#101;&#x79;.&#115;&#x2e;&#119;&#104;&#105;&#116;&#x61;&#x6b;&#x65;&#x72;&#64;&#x6e;&#111;&#x61;&#97;&#x2e;&#103;&#111;&#x76;">&#x6a;&#101;&#102;&#102;&#x72;&#101;&#x79;.&#115;&#x2e;&#119;&#104;&#105;&#116;&#x61;&#x6b;&#x65;&#x72;&#64;&#x6e;&#111;&#x61;&#97;&#x2e;&#103;&#111;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#106;e&#102;f&#114;&#101;&#121;&#x2e;&#115;&#46;w&#x68;&#105;&#x74;&#97;&#x6b;&#101;&#x72;&#x40;&#110;o&#x61;&#x61;&#x2e;&#x67;&#x6f;&#x76;">&#106;e&#102;f&#114;&#101;&#121;&#x2e;&#115;&#46;w&#x68;&#105;&#x74;&#97;&#x6b;&#101;&#x72;&#x40;&#110;o&#x61;&#x61;&#x2e;&#x67;&#x6f;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -2094,7 +2094,11 @@ is an empty tuple, which means the variable is a scalar.</p>
 compressed in the netCDF file using the specified compression algorithm.
 Currently <code>zlib</code>,<code>zstd</code>,<code>bzip2</code>,<code>blosc_lz</code>,<code>blosc_lz4</code>,<code>blosc_lz4hc</code>,
 <code>blosc_zlib</code>,<code>blosc_zstd</code> and <code>blosc_snappy</code> are supported.
-Default is <code>None</code> (no compression).</p>
+Default is <code>None</code> (no compression).  All of the compressors except
+<code>zlib</code> use the HDF5 plugin architecture, which requires that the
+environment variable <code>HDF5_PLUGIN_PATH</code> be set to the location of the
+plugins built by netcdf-c (unless the plugins are installed in the
+default location <code>/usr/local/hdf5/lib</code>).</p>
 
 <p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
 the netCDF file using zlib compression (default <code>False</code>).  The use of this option is 
@@ -2882,7 +2886,11 @@ which means the variable is a scalar (and therefore has no dimensions).</p>
 <p><strong><code>compression</code></strong>: compression algorithm to use. 
 Currently <code>zlib</code>,<code>zstd</code>,<code>bzip2</code>,<code>blosc_lz</code>,<code>blosc_lz4</code>,<code>blosc_lz4hc</code>,
 <code>blosc_zlib</code>,<code>blosc_zstd</code> and <code>blosc_snappy</code> are supported.
-Default is <code>None</code> (no compression).</p>
+Default is <code>None</code> (no compression).  All of the compressors except
+<code>zlib</code> use the HDF5 plugin architecture, which requires that the
+environment variable <code>HDF5_PLUGIN_PATH</code> be set to the location of the
+plugins built by netcdf-c (unless the plugins are installed in the
+default location <code>/usr/local/hdf5/lib</code>).</p>
 
 <p><strong><code>zlib</code></strong>: if <code>True</code>, data assigned to the <code><a href="#Variable">Variable</a></code>
 instance is compressed on disk. Default <code>False</code>. Deprecated - use

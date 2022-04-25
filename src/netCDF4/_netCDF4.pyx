@@ -2688,7 +2688,11 @@ If the optional keyword argument `compression` is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
 Currently `zlib`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
 `blosc_zlib`,`blosc_zstd` and `blosc_snappy` are supported.
-Default is `None` (no compression).
+Default is `None` (no compression).  All of the compressors except
+`zlib` use the HDF5 plugin architecture, which requires that the
+environment variable `HDF5_PLUGIN_PATH` be set to the location of the
+plugins built by netcdf-c (unless the plugins are installed in the
+default location `/usr/local/hdf5/lib`).
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
 the netCDF file using zlib compression (default `False`).  The use of this option is 
@@ -3703,7 +3707,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         **`compression`**: compression algorithm to use. 
         Currently `zlib`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
         `blosc_zlib`,`blosc_zstd` and `blosc_snappy` are supported.
-        Default is `None` (no compression).
+        Default is `None` (no compression).  All of the compressors except
+        `zlib` use the HDF5 plugin architecture, which requires that the
+        environment variable `HDF5_PLUGIN_PATH` be set to the location of the
+        plugins built by netcdf-c (unless the plugins are installed in the
+        default location `/usr/local/hdf5/lib`).
 
         **`zlib`**: if `True`, data assigned to the `Variable`
         instance is compressed on disk. Default `False`. Deprecated - use
