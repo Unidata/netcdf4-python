@@ -31,6 +31,9 @@ if not __has_zstandard_support__:
 if not __has_bzip2_support__:
     test_files.remove('tst_compression_bzip2.py')
     sys.stdout.write('not running tst_compression_bzip2.py ...\n')
+if not __has_blosc_support__:
+    test_files.remove('tst_compression_blosc.py')
+    sys.stdout.write('not running tst_compression_bzip2.py ...\n')
 
 # Don't run tests that require network connectivity
 if os.getenv('NO_NET'):
