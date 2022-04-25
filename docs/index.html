@@ -1612,7 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#58;j&#101;&#102;&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#46;&#119;&#x68;&#x69;&#x74;&#x61;&#x6b;&#x65;&#x72;&#64;&#110;&#x6f;&#x61;&#x61;&#46;&#103;o&#x76;">j&#101;&#102;&#102;&#x72;&#x65;&#x79;&#x2e;&#115;&#46;&#119;&#x68;&#x69;&#x74;&#x61;&#x6b;&#x65;&#x72;&#64;&#110;&#x6f;&#x61;&#x61;&#46;&#103;o&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#x69;l&#x74;&#111;&#x3a;j&#101;&#102;&#102;&#x72;&#101;&#121;&#x2e;&#115;&#x2e;&#x77;&#104;&#x69;tak&#101;&#x72;&#64;n&#x6f;&#x61;&#x61;&#x2e;&#x67;&#111;&#x76;">j&#101;&#102;&#102;&#x72;&#101;&#121;&#x2e;&#115;&#x2e;&#x77;&#104;&#x69;tak&#101;&#x72;&#64;n&#x6f;&#x61;&#x61;&#x2e;&#x67;&#111;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -1634,7 +1634,9 @@ Unit tests are in the <code>test</code> directory.</p>
                        <span class="n">__has_rename_grp__</span><span class="p">,</span> <span class="n">__has_nc_inq_path__</span><span class="p">,</span>
                        <span class="n">__has_nc_inq_format_extended__</span><span class="p">,</span> <span class="n">__has_nc_open_mem__</span><span class="p">,</span>
                        <span class="n">__has_nc_create_mem__</span><span class="p">,</span> <span class="n">__has_cdf5_format__</span><span class="p">,</span>
-                       <span class="n">__has_parallel4_support__</span><span class="p">,</span> <span class="n">__has_pnetcdf_support__</span><span class="p">,</span><span class="n">__has_quantization_support__</span><span class="p">)</span>
+                       <span class="n">__has_parallel4_support__</span><span class="p">,</span> <span class="n">__has_pnetcdf_support__</span><span class="p">,</span>
+                       <span class="n">__has_quantization_support__</span><span class="p">,</span> <span class="n">__has_zstandard_support__</span><span class="p">,</span>
+                       <span class="n">__has_bzip2_support__</span><span class="p">,</span> <span class="n">__has_blosc_support__</span><span class="p">)</span>
 <span class="n">__all__</span> <span class="o">=</span>\
 <span class="p">[</span><span class="s1">&#39;Dataset&#39;</span><span class="p">,</span><span class="s1">&#39;Variable&#39;</span><span class="p">,</span><span class="s1">&#39;Dimension&#39;</span><span class="p">,</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span><span class="s1">&#39;MFDataset&#39;</span><span class="p">,</span><span class="s1">&#39;MFTime&#39;</span><span class="p">,</span><span class="s1">&#39;CompoundType&#39;</span><span class="p">,</span><span class="s1">&#39;VLType&#39;</span><span class="p">,</span><span class="s1">&#39;date2num&#39;</span><span class="p">,</span><span class="s1">&#39;num2date&#39;</span><span class="p">,</span><span class="s1">&#39;date2index&#39;</span><span class="p">,</span><span class="s1">&#39;stringtochar&#39;</span><span class="p">,</span><span class="s1">&#39;chartostring&#39;</span><span class="p">,</span><span class="s1">&#39;stringtoarr&#39;</span><span class="p">,</span><span class="s1">&#39;getlibversion&#39;</span><span class="p">,</span><span class="s1">&#39;EnumType&#39;</span><span class="p">,</span><span class="s1">&#39;get_chunk_cache&#39;</span><span class="p">,</span><span class="s1">&#39;set_chunk_cache&#39;</span><span class="p">]</span>
 </pre></div>
@@ -2090,7 +2092,9 @@ is an empty tuple, which means the variable is a scalar.</p>
 
 <p>If the optional keyword argument <code>compression</code> is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
-Currently only 'zlib' is supported. Default is <code>None</code> (no compression).</p>
+Currently 'zlib','zstd','bzip2','blosc_<compressor>' are supported
+(where <compressor> can be one of lz,lz4,lz4hc,zlib,zstd,snappy).
+Default is <code>None</code> (no compression).</p>
 
 <p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
 the netCDF file using zlib compression (default <code>False</code>).  The use of this option is 
@@ -2104,6 +2108,12 @@ A value of zero disables compression.</p>
 will be applied before compressing the data (default <code>True</code>).  This
 significantly improves compression. Default is <code>True</code>. Ignored if
 <code>zlib=False</code>.</p>
+
+<p>The optional kwargs 'blosc_shuffle<code>and</code>blosc_blocksize<code>are ignored
+unless the blosc compressor is used.</code>blosc_shuffle<code>can be 0 (no shuffle),
+1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 0.</code>blosc_blocksize`
+is the tunable blosc blocksize in bytes (Default 0 means the blocksize is
+chosen internally).</p>
 
 <p>If the optional keyword <code>fletcher32</code> is <code>True</code>, the Fletcher32 HDF5
 checksum algorithm is activated to detect errors. Default <code>False</code>.</p>
@@ -2836,7 +2846,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.</p>
 
         
             <div class="docstring"><p><strong><code>__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
-complevel=4, shuffle=True, fletcher32=False, contiguous=False,
+complevel=4, shuffle=True, blosc_shuffle=0, blosc_blocksize=0, fletcher32=False, contiguous=False,
 chunksizes=None, endian='native',
 least_significant_digit=None,fill_value=None,chunk_cache=None)</code></strong></p>
 
@@ -2870,7 +2880,9 @@ length greater than one are aliases for <code>str</code>.</p>
 which means the variable is a scalar (and therefore has no dimensions).</p>
 
 <p><strong><code>compression</code></strong>: compression algorithm to use. Default None.  Currently
-only 'zlib' is supported.</p>
+'zlib','zstd','bzip2','blosc_<compressor>' are supported
+(where <compressor> can be one of lz,lz4,lz4hc,zlib,zstd,snappy).
+Default is <code>None</code> (no compression).</p>
 
 <p><strong><code>zlib</code></strong>: if <code>True</code>, data assigned to the <code><a href="#Variable">Variable</a></code>
 instance is compressed on disk. Default <code>False</code>. Deprecated - use
@@ -2882,6 +2894,14 @@ Ignored if <code>compression=None</code>. A value of 0 disables compression.</p>
 
 <p><strong><code>shuffle</code></strong>: if <code>True</code>, the HDF5 shuffle filter is applied
 to improve compression. Default <code>True</code>. Ignored if <code>compression=None</code>.</p>
+
+<p><strong><code>blosc_shuffle</code></strong>: shuffle filter inside blosc compressor (only
+relevant if compression kwarg set to one of the blosc compressors).
+Can be 0 (no blosc shuffle), 1 (bytewise shuffle) or 2 (bitwise
+shuffle)). Default is 0.</p>
+
+<p><strong><code>blosc_blocksize</code></strong>: tunable blocksize in bytes for blosc
+compressors. Default of 0 means blosc library chooses a blocksize.</p>
 
 <p><strong><code>fletcher32</code></strong>: if <code>True</code> (default <code>False</code>), the Fletcher32 checksum
 algorithm is used for error detection.</p>
@@ -2914,8 +2934,8 @@ For netCDF 3 files (that don't use HDF5), only <code>endian='native'</code> is a
 <p>The <code>compression, zlib, complevel, shuffle, fletcher32, contiguous</code> and <code>chunksizes</code>
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 
-<p><strong><code>least_significant_digit</code></strong>: If this or <code>significant_digits</code> are specified, 
-variable data will be truncated (quantized). <br />
+<p><strong><code>least_significant_digit</code></strong>: If this or <code>significant_digits</code> are specified,
+variable data will be truncated (quantized).
 In conjunction with <code>compression='zlib'</code> this produces
 'lossy', but significantly more efficient compression. For example, if
 <code>least_significant_digit=1</code>, data will be quantized using
@@ -2923,7 +2943,7 @@ around(scale<em>data)/scale, where scale = 2</em>*bits, and bits is determined
 so that a precision of 0.1 is retained (in this case bits=4). Default is
 <code>None</code>, or no quantization.</p>
 
-<p><strong><code>significant_digits</code></strong>: New in version 1.6.0. 
+<p><strong><code>significant_digits</code></strong>: New in version 1.6.0.
 As described for <code>least_significant_digit</code>
 except the number of significant digits retained is prescribed independent
 of the floating point exponent. Default <code>None</code> - no quantization done.</p>
@@ -2931,7 +2951,7 @@ of the floating point exponent. Default <code>None</code> - no quantization done
 <p><strong><code>quantize_mode</code></strong>: New in version 1.6.0. Controls
 the quantization algorithm (default 'BitGroom', 'BitRound' and
 'GranularBitRound' also available).  The 'GranularBitRound'
-algorithm may result in better compression for typical geophysical datasets. 
+algorithm may result in better compression for typical geophysical datasets.
 Ignored if <code>significant_digts</code> not specified. If 'BitRound' is used, then
 <code>significant_digits</code> is interpreted as binary (not decimal) digits.</p>
 
@@ -2942,8 +2962,8 @@ the variable is not pre-filled. The default netCDF fill values can be found
 in the dictionary <code><a href="#default_fillvals">netCDF4.default_fillvals</a></code>.</p>
 
 <p><strong><code>chunk_cache</code></strong>: If specified, sets the chunk cache size for this variable.
-Persists as long as Dataset is open. Use <code><a href="#Variable.set_var_chunk_cache">set_var_chunk_cache</a></code> to 
-change it when Dataset is re-opened. </p>
+Persists as long as Dataset is open. Use <code><a href="#Variable.set_var_chunk_cache">set_var_chunk_cache</a></code> to
+change it when Dataset is re-opened.</p>
 
 <p><strong><em>Note</em></strong>: <code><a href="#Variable">Variable</a></code> instances should be created using the
 <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method of a <code><a href="#Dataset">Dataset</a></code> or
