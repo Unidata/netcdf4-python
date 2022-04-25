@@ -54,7 +54,7 @@ jobs:
     - name: Test
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
-        export HDF5_PLUGIN_PATH=${NETCDF_DIR}/plugins/.libs
+        export HDF5_PLUGIN_PATH=${NETCDF_DIR}/netcdf4-python/plugins/.libs
         ls -l $HDF5_PLUGIN_PATH
         python checkversion.py
         # serial
