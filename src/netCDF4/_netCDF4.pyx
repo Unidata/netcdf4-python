@@ -3786,8 +3786,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         `Dataset.createVariable` method of a `Dataset` or
         `Group` instance, not using this class directly.
         """
-        cdef int ierr, ndims, icontiguous, icomplevel, numdims, _grpid, nsd,\
-                 iblosc_blocksize,iblosc_compressor,iblosc_shuffle
+        cdef int ierr, ndims, icontiguous, icomplevel, numdims, _grpid, nsd,
+        cdef unsigned iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
         cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
@@ -3821,7 +3821,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             bzip2 = True
         elif compression == 'blosc_lz':
             blosc_lz = True
-        elif compression == 'blosc_lz':
+        elif compression == 'blosc_lz4':
             blosc_lz4 = True
         elif compression == 'blosc_lz4hc':
             blosc_lz4hc = True
@@ -3995,14 +3995,14 @@ version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python.
                     if blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib or\
                        blosc_zstd or blosc_snappy:
                         IF HAS_BLOSC_SUPPORT:
-                            icomplevel = complevel
                             blosc_dict={'blosc_lz':0,'blosc_lz4':1,'blosc_lz4hc':2,'blosc_snappy':3,'blosc_zlib':4,'blosc_zstd':5}
                             iblosc_compression = blosc_dict[compression]
                             iblosc_shuffle = blosc_shuffle
                             iblosc_blocksize = blosc_blocksize
+                            iblosc_complevel = complevel
                             ierr = nc_def_var_blosc(self._grpid, self._varid,\
                                     iblosc_compressor,\
-                                    icomplevel,iblosc_blocksize,\
+                                    iblosc_complevel,iblosc_blocksize,\
                                     iblosc_shuffle)
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
