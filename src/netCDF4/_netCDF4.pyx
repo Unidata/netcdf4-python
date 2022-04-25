@@ -2686,9 +2686,8 @@ is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword argument `compression` is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
-Currently 'zlib','zstd','bzip2','blosc_<compressor>' are supported
-(where <compressor> can be one of lz,lz4,lz4hc,zlib,zstd,snappy).
-Default is `None` (no compression).
+Currently zlib,zstd,bzip2,blosc_lz,blosc_lz4,blosc_lz4hc,blosc_zlib,blosc_zstd
+and blosc_snappy are supported. Default is `None` (no compression).
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
 the netCDF file using zlib compression (default `False`).  The use of this option is 
@@ -3700,10 +3699,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
 
-        **`compression`**: compression algorithm to use. Default None.  Currently
-        'zlib','zstd','bzip2','blosc_<compressor>' are supported
-        (where <compressor> can be one of lz,lz4,lz4hc,zlib,zstd,snappy).
-        Default is `None` (no compression).
+        **`compression`**: compression algorithm to use. Default None.  
+        Currently zlib,zstd,bzip2,blosc_lz,blosc_lz4,blosc_lz4hc,blosc_zlib,blosc_zstd
+        and blosc_snappy are supported. Default is `None` (no compression).
 
         **`zlib`**: if `True`, data assigned to the `Variable`
         instance is compressed on disk. Default `False`. Deprecated - use

@@ -1612,7 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#x69;l&#x74;&#111;&#x3a;j&#101;&#102;&#102;&#x72;&#101;&#121;&#x2e;&#115;&#x2e;&#x77;&#104;&#x69;tak&#101;&#x72;&#64;n&#x6f;&#x61;&#x61;&#x2e;&#x67;&#111;&#x76;">j&#101;&#102;&#102;&#x72;&#101;&#121;&#x2e;&#115;&#x2e;&#x77;&#104;&#x69;tak&#101;&#x72;&#64;n&#x6f;&#x61;&#x61;&#x2e;&#x67;&#111;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;j&#x65;f&#102;&#114;&#x65;&#x79;&#46;s&#46;&#119;&#x68;&#x69;&#x74;&#x61;k&#101;&#114;&#x40;&#x6e;&#x6f;&#97;&#x61;&#46;&#103;&#111;&#x76;">j&#x65;f&#102;&#114;&#x65;&#x79;&#46;s&#46;&#119;&#x68;&#x69;&#x74;&#x61;k&#101;&#114;&#x40;&#x6e;&#x6f;&#97;&#x61;&#46;&#103;&#111;&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -2092,9 +2092,8 @@ is an empty tuple, which means the variable is a scalar.</p>
 
 <p>If the optional keyword argument <code>compression</code> is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
-Currently 'zlib','zstd','bzip2','blosc_<compressor>' are supported
-(where <compressor> can be one of lz,lz4,lz4hc,zlib,zstd,snappy).
-Default is <code>None</code> (no compression).</p>
+Currently zlib,zstd,bzip2,blosc_lz,blosc_lz4,blosc_lz4hc,blosc_zlib,blosc_zstd
+and blosc_snappy are supported. Default is <code>None</code> (no compression).</p>
 
 <p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
 the netCDF file using zlib compression (default <code>False</code>).  The use of this option is 
@@ -2879,10 +2878,9 @@ length greater than one are aliases for <code>str</code>.</p>
 (defined previously with <code>createDimension</code>). Default is an empty tuple
 which means the variable is a scalar (and therefore has no dimensions).</p>
 
-<p><strong><code>compression</code></strong>: compression algorithm to use. Default None.  Currently
-'zlib','zstd','bzip2','blosc_<compressor>' are supported
-(where <compressor> can be one of lz,lz4,lz4hc,zlib,zstd,snappy).
-Default is <code>None</code> (no compression).</p>
+<p><strong><code>compression</code></strong>: compression algorithm to use. Default None. <br />
+Currently zlib,zstd,bzip2,blosc_lz,blosc_lz4,blosc_lz4hc,blosc_zlib,blosc_zstd
+and blosc_snappy are supported. Default is <code>None</code> (no compression).</p>
 
 <p><strong><code>zlib</code></strong>: if <code>True</code>, data assigned to the <code><a href="#Variable">Variable</a></code>
 instance is compressed on disk. Default <code>False</code>. Deprecated - use
