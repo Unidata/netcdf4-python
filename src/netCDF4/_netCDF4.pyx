@@ -1369,6 +1369,9 @@ _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
 _cmode_dict  = {'NETCDF3_CLASSIC' : NC_CLASSIC_MODEL,
                 'NETCDF4_CLASSIC' : NC_CLASSIC_MODEL | NC_NETCDF4,
                 'NETCDF4'         : NC_NETCDF4}
+# dicts for blosc compressors.
+_blosc_dict={'blosc_lz':0,'blosc_lz4':1,'blosc_lz4hc':2,'blosc_snappy':3,'blosc_zlib':4,'blosc_zstd':5}
+_blosc_dict_inv = {v: k for k, v in _blosc_dict.items()}
 IF HAS_CDF5_FORMAT:
     # NETCDF3_64BIT deprecated, saved for compatibility.
     # use NETCDF3_64BIT_OFFSET instead.
@@ -2817,6 +2820,7 @@ is the number of variable dimensions."""
         # create variable.
         group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, compression=compression, zlib=zlib, complevel=complevel, shuffle=shuffle,
+        blosc_shuffle=blosc_shuffle,blosc_blocksize=blosc_blocksize,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
         significant_digits=significant_digits,quantize_mode=quantize_mode,fill_value=fill_value, chunk_cache=chunk_cache)
@@ -3657,7 +3661,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
     def __init__(self, grp, name, datatype, dimensions=(),
             compression=None, zlib=False,
-            complevel=4, shuffle=True, blosc_shuffle=0, blosc_blocksize=0, 
+            complevel=4, shuffle=True, blosc_shuffle=0, blosc_blocksize=0,
             fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
@@ -3787,7 +3791,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         `Group` instance, not using this class directly.
         """
         cdef int ierr, ndims, icontiguous, icomplevel, numdims, _grpid, nsd,
-        cdef unsigned iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
+        cdef unsigned int iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
         cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
@@ -3995,8 +3999,7 @@ version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python.
                     if blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib or\
                        blosc_zstd or blosc_snappy:
                         IF HAS_BLOSC_SUPPORT:
-                            blosc_dict={'blosc_lz':0,'blosc_lz4':1,'blosc_lz4hc':2,'blosc_snappy':3,'blosc_zlib':4,'blosc_zstd':5}
-                            iblosc_compression = blosc_dict[compression]
+                            iblosc_compressor = _blosc_dict[compression]
                             iblosc_shuffle = blosc_shuffle
                             iblosc_blocksize = blosc_blocksize
                             iblosc_complevel = complevel
@@ -4396,7 +4399,9 @@ return dictionary containing HDF5 filter parameters."""
         cdef int ierr,ideflate,ishuffle,icomplevel,icomplevel_zstd,icomplevel_bzip2,ifletcher32
         cdef int izstd=0
         cdef int ibzip2=0
-        filtdict = {'zlib':False,'zstd':False,'bzip2':False,'shuffle':False,'complevel':0,'fletcher32':False}
+        cdef int iblosc=0
+        cdef unsigned int iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
+        filtdict = {'zlib':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
         with nogil:
             ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &icomplevel)
@@ -4412,6 +4417,10 @@ return dictionary containing HDF5 filter parameters."""
             ierr = nc_inq_var_bzip2(self._grpid, self._varid, &ibzip2,\
                     &icomplevel_bzip2)
             _ensure_nc_success(ierr)
+        IF HAS_BLOSC_SUPPORT:
+            ierr = nc_inq_var_blosc(self._grpid, self._varid, &iblosc,\
+                    &iblosc_compressor,&iblosc_complevel,&iblosc_blocksize,&iblosc_shuffle)
+            _ensure_nc_success(ierr)
         if ideflate:
             filtdict['zlib']=True
             filtdict['complevel']=icomplevel
@@ -4421,6 +4430,11 @@ return dictionary containing HDF5 filter parameters."""
         if ibzip2:
             filtdict['bzip2']=True
             filtdict['complevel']=icomplevel_bzip2
+        if iblosc:
+            #filtdict['blosc']=True
+            blosc_compressor = iblosc_compressor
+            filtdict['blosc']={'compressor':_blosc_dict_inv[blosc_compressor],'shuffle':iblosc_shuffle,'blocksize':iblosc_blocksize}
+            filtdict['complevel']=iblosc_complevel
         if ishuffle:
             filtdict['shuffle']=True
         if ifletcher32:

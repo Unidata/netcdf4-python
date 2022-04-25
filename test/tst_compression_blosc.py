@@ -12,7 +12,7 @@ def write_netcdf(filename,dtype='f8',complevel=6):
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
     foo = nc.createVariable('data',\
-            dtype,('n'),compression='bzip2',complevel=complevel)
+            dtype,('n'),compression='blosc_lz4',blosc_shuffle=2,complevel=complevel)
     foo[:] = array
     nc.close()
 
@@ -43,8 +43,10 @@ class CompressionTestCase(unittest.TestCase):
         f = Dataset(self.filename2)
         size = os.stat(self.filename2).st_size
         assert_almost_equal(array,f.variables['data'][:])
-        assert f.variables['data'].filters() ==\
-        {'zlib':False,'zstd':False,'bzip2':True,'blosc':False,'shuffle':False,'complevel':4,'fletcher32':False}
+        dtest= {'zlib': False, 'zstd': False, 'bzip2': False, 'blosc':\
+        {'compressor': 'blosc_lz4', 'shuffle': 2, 'blocksize': 800000},\
+        'shuffle': False, 'complevel': 4, 'fletcher32': False}
+        assert f.variables['data'].filters() == dtest
         assert(size < 0.96*uncompressed_size)
         f.close()
 
