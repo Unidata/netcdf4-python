@@ -2686,8 +2686,9 @@ is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword argument `compression` is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
-Currently zlib,zstd,bzip2,blosc_lz,blosc_lz4,blosc_lz4hc,blosc_zlib,blosc_zstd
-and blosc_snappy are supported. Default is `None` (no compression).
+Currently `zlib`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
+`blosc_zlib`,`blosc_zstd` and `blosc_snappy` are supported.
+Default is `None` (no compression).
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
 the netCDF file using zlib compression (default `False`).  The use of this option is 
@@ -2702,7 +2703,7 @@ will be applied before compressing the data (default `True`).  This
 significantly improves compression. Default is `True`. Ignored if
 `zlib=False`.
 
-The optional kwargs 'blosc_shuffle` and `blosc_blocksize` are ignored
+The optional kwargs `blosc_shuffle` and `blosc_blocksize` are ignored
 unless the blosc compressor is used. `blosc_shuffle` can be 0 (no shuffle),
 1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 0. `blosc_blocksize`
 is the tunable blosc blocksize in bytes (Default 0 means the blocksize is
@@ -3699,9 +3700,10 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
 
-        **`compression`**: compression algorithm to use. Default None.  
-        Currently zlib,zstd,bzip2,blosc_lz,blosc_lz4,blosc_lz4hc,blosc_zlib,blosc_zstd
-        and blosc_snappy are supported. Default is `None` (no compression).
+        **`compression`**: compression algorithm to use. 
+        Currently `zlib`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
+        `blosc_zlib`,`blosc_zstd` and `blosc_snappy` are supported.
+        Default is `None` (no compression).
 
         **`zlib`**: if `True`, data assigned to the `Variable`
         instance is compressed on disk. Default `False`. Deprecated - use
