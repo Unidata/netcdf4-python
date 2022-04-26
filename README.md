@@ -15,7 +15,7 @@ for quantization (bit-grooming and bit-rounding) functionality in netcdf-c 4.9.0
 dramatically improve compression.  Dataset.createVariable now accepts dimension instances (instead
 of just dimension names). 'compression' kwarg added to Dataset.createVariable to support 
 new compression algorithms available in netcdf-c 4.9.0 through HDF5 filter plugsins (such
-as zstd, bzip and blosc). Working arm64 wheels for Apple M1 Silicon now available on pypi.
+as zstd, bzip2 and blosc). Working arm64 wheels for Apple M1 Silicon now available on pypi.
 
 10/31/2021:  Version [1.5.8](https://pypi.python.org/pypi/netCDF4/1.5.8) released. Fix Enum bug, add binary wheels for aarch64 and python 3.10.
 
