@@ -1612,7 +1612,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#106;e&#102;f&#114;&#101;&#121;&#x2e;&#115;&#46;w&#x68;&#105;&#x74;&#97;&#x6b;&#101;&#x72;&#x40;&#110;o&#x61;&#x61;&#x2e;&#x67;&#x6f;&#x76;">&#106;e&#102;f&#114;&#101;&#121;&#x2e;&#115;&#46;w&#x68;&#105;&#x74;&#97;&#x6b;&#101;&#x72;&#x40;&#110;o&#x61;&#x61;&#x2e;&#x67;&#x6f;&#x76;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#97;i&#108;&#116;&#x6f;:&#x6a;&#101;f&#102;&#x72;&#101;&#x79;&#x2e;&#x73;&#x2e;&#119;&#104;&#x69;&#x74;&#97;&#107;&#x65;&#x72;&#x40;&#110;&#111;&#97;&#97;.&#x67;o&#x76;">&#x6a;&#101;f&#102;&#x72;&#101;&#x79;&#x2e;&#x73;&#x2e;&#119;&#104;&#x69;&#x74;&#97;&#107;&#x65;&#x72;&#x40;&#110;&#111;&#97;&#97;.&#x67;o&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -2093,7 +2093,7 @@ is an empty tuple, which means the variable is a scalar.</p>
 <p>If the optional keyword argument <code>compression</code> is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
 Currently <code>zlib</code>,<code>zstd</code>,<code>bzip2</code>,<code>blosc_lz</code>,<code>blosc_lz4</code>,<code>blosc_lz4hc</code>,
-<code>blosc_zlib</code>,<code>blosc_zstd</code> and <code>blosc_snappy</code> are supported.
+<code>blosc_zlib</code> and <code>blosc_zstd</code> are supported.
 Default is <code>None</code> (no compression).  All of the compressors except
 <code>zlib</code> use the HDF5 plugin architecture, which requires that the
 environment variable <code>HDF5_PLUGIN_PATH</code> be set to the location of the
@@ -2115,7 +2115,7 @@ significantly improves compression. Default is <code>True</code>. Ignored if
 
 <p>The optional kwargs <code>blosc_shuffle</code> and <code>blosc_blocksize</code> are ignored
 unless the blosc compressor is used. <code>blosc_shuffle</code> can be 0 (no shuffle),
-1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 0. <code>blosc_blocksize</code>
+1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 1. <code>blosc_blocksize</code>
 is the tunable blosc blocksize in bytes (Default 0 means the blocksize is
 chosen internally).</p>
 
@@ -2850,7 +2850,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.</p>
 
         
             <div class="docstring"><p><strong><code>__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
-complevel=4, shuffle=True, blosc_shuffle=0, blosc_blocksize=0, fletcher32=False, contiguous=False,
+complevel=4, shuffle=True, blosc_shuffle=1, blosc_blocksize=0, fletcher32=False, contiguous=False,
 chunksizes=None, endian='native',
 least_significant_digit=None,fill_value=None,chunk_cache=None)</code></strong></p>
 
@@ -2885,7 +2885,7 @@ which means the variable is a scalar (and therefore has no dimensions).</p>
 
 <p><strong><code>compression</code></strong>: compression algorithm to use. 
 Currently <code>zlib</code>,<code>zstd</code>,<code>bzip2</code>,<code>blosc_lz</code>,<code>blosc_lz4</code>,<code>blosc_lz4hc</code>,
-<code>blosc_zlib</code>,<code>blosc_zstd</code> and <code>blosc_snappy</code> are supported.
+<code>blosc_zlib</code> and <code>blosc_zstd</code> are supported.
 Default is <code>None</code> (no compression).  All of the compressors except
 <code>zlib</code> use the HDF5 plugin architecture, which requires that the
 environment variable <code>HDF5_PLUGIN_PATH</code> be set to the location of the
@@ -2906,7 +2906,7 @@ to improve compression. Default <code>True</code>. Ignored if <code>compression=
 <p><strong><code>blosc_shuffle</code></strong>: shuffle filter inside blosc compressor (only
 relevant if compression kwarg set to one of the blosc compressors).
 Can be 0 (no blosc shuffle), 1 (bytewise shuffle) or 2 (bitwise
-shuffle)). Default is 0.</p>
+shuffle)). Default is 1.</p>
 
 <p><strong><code>blosc_blocksize</code></strong>: tunable blocksize in bytes for blosc
 compressors. Default of 0 means blosc library chooses a blocksize.</p>
