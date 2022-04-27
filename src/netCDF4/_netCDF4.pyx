@@ -2687,7 +2687,7 @@ is an empty tuple, which means the variable is a scalar.
 If the optional keyword argument `compression` is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
 Currently `zlib`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
-`blosc_zlib`,`blosc_zstd` and `blosc_snappy` are supported.
+`blosc_zlib` and `blosc_zstd` are supported.
 Default is `None` (no compression).  All of the compressors except
 `zlib` use the HDF5 plugin architecture, which requires that the
 environment variable `HDF5_PLUGIN_PATH` be set to the location of the
@@ -3706,7 +3706,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
         **`compression`**: compression algorithm to use. 
         Currently `zlib`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
-        `blosc_zlib`,`blosc_zstd` and `blosc_snappy` are supported.
+        `blosc_zlib` and `blosc_zstd` are supported.
         Default is `None` (no compression).  All of the compressors except
         `zlib` use the HDF5 plugin architecture, which requires that the
         environment variable `HDF5_PLUGIN_PATH` be set to the location of the
@@ -3822,7 +3822,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         blosc_lz = False
         blosc_lz4 = False
         blosc_lz4hc = False
-        blosc_snappy = False
+        #blosc_snappy = False
         blosc_zlib = False
         blosc_zstd = False
         if compression == 'zlib':
@@ -3837,8 +3837,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             blosc_lz4 = True
         elif compression == 'blosc_lz4hc':
             blosc_lz4hc = True
-        elif compression == 'blosc_snappy':
-            blosc_snappy = True
+        #elif compression == 'blosc_snappy':
+        #    blosc_snappy = True
         elif compression == 'blosc_zlib':
             blosc_zlib = True
         elif compression == 'blosc_zstd':
@@ -4004,8 +4004,9 @@ version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-pyt
 compression='bzip2' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
 version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python."""
                             raise ValueError(msg)
-                    if blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib or\
-                       blosc_zstd or blosc_snappy:
+                    if blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib or
+                       blosc_zstd:
+                       #blosc_zstd or blosc_snappy:
                         IF HAS_BLOSC_SUPPORT:
                             iblosc_compressor = _blosc_dict[compression]
                             iblosc_shuffle = blosc_shuffle
