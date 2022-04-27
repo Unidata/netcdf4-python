@@ -2645,7 +2645,7 @@ datatype."""
     def createVariable(self, varname, datatype, dimensions=(), 
             compression=None, zlib=False,
             complevel=4, shuffle=True,
-            blosc_shuffle=0, blosc_blocksize=0, fletcher32=False, contiguous=False,
+            blosc_shuffle=1, blosc_blocksize=0, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None):
         """
@@ -2709,7 +2709,7 @@ significantly improves compression. Default is `True`. Ignored if
 
 The optional kwargs `blosc_shuffle` and `blosc_blocksize` are ignored
 unless the blosc compressor is used. `blosc_shuffle` can be 0 (no shuffle),
-1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 0. `blosc_blocksize`
+1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 1. `blosc_blocksize`
 is the tunable blosc blocksize in bytes (Default 0 means the blocksize is
 chosen internally).
 
@@ -3665,13 +3665,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
     def __init__(self, grp, name, datatype, dimensions=(),
             compression=None, zlib=False,
-            complevel=4, shuffle=True, blosc_shuffle=0, blosc_blocksize=0,
+            complevel=4, shuffle=True, blosc_shuffle=1, blosc_blocksize=0,
             fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
         """
         **`__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
-        complevel=4, shuffle=True, blosc_shuffle=0, blosc_blocksize=0, fletcher32=False, contiguous=False,
+        complevel=4, shuffle=True, blosc_shuffle=1, blosc_blocksize=0, fletcher32=False, contiguous=False,
         chunksizes=None, endian='native',
         least_significant_digit=None,fill_value=None,chunk_cache=None)`**
 
@@ -3727,7 +3727,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         **`blosc_shuffle`**: shuffle filter inside blosc compressor (only
         relevant if compression kwarg set to one of the blosc compressors).
         Can be 0 (no blosc shuffle), 1 (bytewise shuffle) or 2 (bitwise
-        shuffle)). Default is 0.
+        shuffle)). Default is 1.
 
         **`blosc_blocksize`**: tunable blocksize in bytes for blosc
         compressors. Default of 0 means blosc library chooses a blocksize.
