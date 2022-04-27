@@ -2055,7 +2055,7 @@ strings.
 
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
-        the same name is deleted. 'x' means write, but fail if an existing
+        the same name is deleted. `x` means write, but fail if an existing
         file with the same name already exists. `a` and `r+` mean append; 
         an existing file is opened for reading and writing, if 
         file does not exist already, one is created.
@@ -2070,7 +2070,7 @@ strings.
         **`clobber`**: if `True` (default), opening a file with `mode='w'`
         will clobber an existing file with the same name.  if `False`, an
         exception will be raised if a file with the same name already exists.
-        mode='x' is identical to mode='w' with clobber=False.
+        mode=`x` is identical to mode=`w` with clobber=False.
 
         **`format`**: underlying file format (one of `'NETCDF4',
         'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
@@ -2113,14 +2113,14 @@ strings.
         rendered unusable when the parent Dataset instance is garbage collected.
 
         **`memory`**: if not `None`, create or open an in-memory Dataset.
-        If mode = 'r', the memory kwarg must contain a memory buffer object
+        If mode = `r`, the memory kwarg must contain a memory buffer object
         (an object that supports the python buffer interface).
         The Dataset will then be created with contents taken from this block of memory.
-        If mode = 'w', the memory kwarg should contain the anticipated size
+        If mode = `w`, the memory kwarg should contain the anticipated size
         of the Dataset in bytes (used only for NETCDF3 files).  A memory
         buffer containing a copy of the Dataset is returned by the
-        `Dataset.close` method. Requires netcdf-c version 4.4.1 for mode='r,
-        netcdf-c 4.6.2 for mode='w'. To persist the file to disk, the raw
+        `Dataset.close` method. Requires netcdf-c version 4.4.1 for mode=`r`
+        netcdf-c 4.6.2 for mode=`w`. To persist the file to disk, the raw
         bytes from the returned buffer can be written into a binary file.
         The Dataset can also be re-opened using this memory buffer.
 
@@ -2334,7 +2334,7 @@ strings.
                 else:
                     ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
         else:
-            raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
+            raise ValueError("mode must be 'w', 'x', 'r', 'a' or 'r+', got '%s'" % mode)
 
         _ensure_nc_success(ierr, err_cls=IOError, filename=path)
 
