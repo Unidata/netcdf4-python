@@ -13,8 +13,8 @@
    directive to 3 in setup.py.
  * add 'compression' kwarg to createVariable to enable new compression
    functionality in netcdf-c 4.9.0.  'None','zlib','zstd','bzip2'
-   'blosc_lz','blosc_lz4','blosc_lz4hc','blosc_zlib','blosc_zstd' and 
-   'blosc_snappy' are currently supported. 'blosc_shuffle' and
+   'blosc_lz','blosc_lz4','blosc_lz4hc','blosc_zlib' and 'blosc_zstd'
+   are currently supported. 'blosc_shuffle' and
    'blosc_blocksize' kwargs also added.
    compression='zlib' is equivalent to (the now deprecated) zlib=True.
  * MFDataset did not aggregate 'name' variable attribute (issue #1153).
