@@ -4004,9 +4004,7 @@ version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-pyt
 compression='bzip2' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
 version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python."""
                             raise ValueError(msg)
-                    if blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib or
-                       blosc_zstd:
-                       #blosc_zstd or blosc_snappy:
+                    if blosc_zstd or blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib:
                         IF HAS_BLOSC_SUPPORT:
                             iblosc_compressor = _blosc_dict[compression]
                             iblosc_shuffle = blosc_shuffle
