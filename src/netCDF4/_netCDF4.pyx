@@ -4419,15 +4419,18 @@ return dictionary containing HDF5 filter parameters."""
         IF HAS_ZSTANDARD_SUPPORT:
             ierr = nc_inq_var_zstandard(self._grpid, self._varid, &izstd,\
                     &icomplevel_zstd)
-            _ensure_nc_success(ierr)
+            if ierr != 0: izstd=0
+            # _ensure_nc_success(ierr)
         IF HAS_BZIP2_SUPPORT:
             ierr = nc_inq_var_bzip2(self._grpid, self._varid, &ibzip2,\
                     &icomplevel_bzip2)
-            _ensure_nc_success(ierr)
+            if ierr != 0: ibzip2=0
+            #_ensure_nc_success(ierr)
         IF HAS_BLOSC_SUPPORT:
             ierr = nc_inq_var_blosc(self._grpid, self._varid, &iblosc,\
                     &iblosc_compressor,&iblosc_complevel,&iblosc_blocksize,&iblosc_shuffle)
-            _ensure_nc_success(ierr)
+            if ierr != 0: iblosc=0
+            #_ensure_nc_success(ierr)
         if ideflate:
             filtdict['zlib']=True
             filtdict['complevel']=icomplevel
@@ -4438,7 +4441,6 @@ return dictionary containing HDF5 filter parameters."""
             filtdict['bzip2']=True
             filtdict['complevel']=icomplevel_bzip2
         if iblosc:
-            #filtdict['blosc']=True
             blosc_compressor = iblosc_compressor
             filtdict['blosc']={'compressor':_blosc_dict_inv[blosc_compressor],'shuffle':iblosc_shuffle,'blocksize':iblosc_blocksize}
             filtdict['complevel']=iblosc_complevel
