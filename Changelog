@@ -17,6 +17,8 @@
    are currently supported. 'blosc_shuffle' and
    'blosc_blocksize' kwargs also added.
    compression='zlib' is equivalent to (the now deprecated) zlib=True.
+   Using new compressors requires setting HDF5_PLUGIN_PATH to point to 
+   the installation location of the netcdf-c filter plugins.
  * MFDataset did not aggregate 'name' variable attribute (issue #1153).
  * issue warning instead of raising an exception if missing_value or
    _FillValue can't be cast to the variable type when creating a 
