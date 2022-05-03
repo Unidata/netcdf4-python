@@ -3994,7 +3994,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             _ensure_nc_success(ierr)
                     if szip:
                         IF HAS_SZIP_SUPPORT:
-                            iszip_coding = _szip_dict[szip_coding]
+                            try:
+                                iszip_coding = _szip_dict[szip_coding]
+                            except KeyError:
+                                msg="unknown szip coding ('ec' or 'nn' supported)"
+                                raise ValueError(msg)
                             iszip_pixels_per_block = szip_pixels_per_block
                             ierr = nc_def_var_szip(self._grpid, self._varid, iszip_coding, iszip_pixels_per_block)
                             if ierr != NC_NOERR:
@@ -4463,8 +4467,11 @@ return dictionary containing HDF5 filter parameters."""
             if ierr != 0:
                 iszip=0
             else:
-                iszip=1
-            _ensure_nc_success(ierr)
+                if iszip_coding:
+                    iszip=1
+                else:
+                    iszip=0
+            #_ensure_nc_success(ierr)
         if ideflate:
             filtdict['zlib']=True
             filtdict['complevel']=icomplevel
@@ -4479,7 +4486,6 @@ return dictionary containing HDF5 filter parameters."""
             filtdict['blosc']={'compressor':_blosc_dict_inv[blosc_compressor],'shuffle':iblosc_shuffle,'blocksize':iblosc_blocksize}
             filtdict['complevel']=iblosc_complevel
         if iszip:
-            print(iszip_coding, iszip_pixels_per_block)
             szip_coding = iszip_coding
             filtdict['szip']={'coding':_szip_dict_inv[szip_coding],'pixels_per_block':iszip_pixels_per_block}
         if ishuffle:
