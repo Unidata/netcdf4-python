@@ -1370,7 +1370,7 @@ _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
 _cmode_dict  = {'NETCDF3_CLASSIC' : NC_CLASSIC_MODEL,
                 'NETCDF4_CLASSIC' : NC_CLASSIC_MODEL | NC_NETCDF4,
                 'NETCDF4'         : NC_NETCDF4}
-# dicts for blosc compressors.
+# dicts for blosc, szip compressors.
 _blosc_dict={'blosc_lz':0,'blosc_lz4':1,'blosc_lz4hc':2,'blosc_snappy':3,'blosc_zlib':4,'blosc_zstd':5}
 _blosc_dict_inv = {v: k for k, v in _blosc_dict.items()}
 _szip_dict = {'ec': 4, 'nn': 32}
@@ -2648,14 +2648,14 @@ datatype."""
     def createVariable(self, varname, datatype, dimensions=(), 
             compression=None, zlib=False,
             complevel=4, shuffle=True,
-            szip_mask='nn',szip_pixels_per_block=8,
+            szip_coding='nn',szip_pixels_per_block=8,
             blosc_shuffle=1, blosc_blocksize=0, fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None):
         """
 **`createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-szip_mask='nn', szip_pixels_per_block=8, blosc_shuffle=1, blosc_blocksize=0,
+szip_coding='nn', szip_pixels_per_block=8, blosc_shuffle=1, blosc_blocksize=0,
 endian='native', least_significant_digit=None, significant_digits=None, quantize_mode='BitGroom',
 fill_value=None, chunk_cache=None)`**
 
@@ -2829,7 +2829,7 @@ is the number of variable dimensions."""
         # create variable.
         group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, compression=compression, zlib=zlib, complevel=complevel, shuffle=shuffle,
-        szip_mask=szip_mask, szip_pixels_per_block=szip_pixels_per_block,
+        szip_coding=szip_coding, szip_pixels_per_block=szip_pixels_per_block,
         blosc_shuffle=blosc_shuffle,blosc_blocksize=blosc_blocksize,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
@@ -3671,14 +3671,14 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
     def __init__(self, grp, name, datatype, dimensions=(),
             compression=None, zlib=False,
-            complevel=4, shuffle=True, szip_mask='nn', szip_pixels_per_block=8,
+            complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
             blosc_shuffle=1, blosc_blocksize=0,
             fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
         """
         **`__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
-        complevel=4, shuffle=True, szip_mask='nn', szip_pixels_per_block=8,
+        complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
         blosc_shuffle=1, blosc_blocksize=0, fletcher32=False, contiguous=False,
         chunksizes=None, endian='native',
         least_significant_digit=None,fill_value=None,chunk_cache=None)`**
@@ -3808,7 +3808,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         """
         cdef int ierr, ndims, icontiguous, icomplevel, numdims, _grpid, nsd,
         cdef unsigned int iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
-        cdef int iszip_mask, iszip_pixels_per_block
+        cdef int iszip_coding, iszip_pixels_per_block
         cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
@@ -3994,9 +3994,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             _ensure_nc_success(ierr)
                     if szip:
                         IF HAS_SZIP_SUPPORT:
-                            iszip_mask = _szip_dict[szip_mask]
+                            iszip_coding = _szip_dict[szip_coding]
                             iszip_pixels_per_block = szip_pixels_per_block
-                            ierr = nc_def_var_szip(self._grpid, self._varid, iszip_mask, iszip_pixels_per_block)
+                            ierr = nc_def_var_szip(self._grpid, self._varid, iszip_coding, iszip_pixels_per_block)
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
                                 _ensure_nc_success(ierr)
@@ -4433,7 +4433,7 @@ return dictionary containing HDF5 filter parameters."""
         cdef int iblosc=0
         cdef int iszip=0
         cdef unsigned int iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
-        cdef int iszip_mask, iszip_pixels_per_block
+        cdef int iszip_coding, iszip_pixels_per_block
         filtdict = {'zlib':False,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
         with nogil:
@@ -4458,7 +4458,7 @@ return dictionary containing HDF5 filter parameters."""
             if ierr != 0: iblosc=0
             #_ensure_nc_success(ierr)
         IF HAS_SZIP_SUPPORT:
-            ierr = nc_inq_var_szip(self._grpid, self._varid, &iszip_mask,\
+            ierr = nc_inq_var_szip(self._grpid, self._varid, &iszip_coding,\
                     &iszip_pixels_per_block)
             if ierr != 0: iszip=0
             #_ensure_nc_success(ierr)
@@ -4476,7 +4476,7 @@ return dictionary containing HDF5 filter parameters."""
             filtdict['blosc']={'compressor':_blosc_dict_inv[blosc_compressor],'shuffle':iblosc_shuffle,'blocksize':iblosc_blocksize}
             filtdict['complevel']=iblosc_complevel
         if iszip:
-            filtdict['szip']={'mask':_szip_dict_inv[iszip_mask],'pixels_per_block':iszip_pixels_per_block}
+            filtdict['szip']={'coding':_szip_dict_inv[iszip_coding],'pixels_per_block':iszip_pixels_per_block}
         if ishuffle:
             filtdict['shuffle']=True
         if ifletcher32:

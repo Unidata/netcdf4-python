@@ -13,7 +13,7 @@ def write_netcdf(filename,dtype='f8'):
     foo = nc.createVariable('data',\
             dtype,('n'),compression=None)
     foo_szip = nc.createVariable('data_szip',\
-            dtype,('n'),compression='szip',szip_mask='ec',szip_pixels_per_block=32)
+            dtype,('n'),compression='szip',szip_coding='ec',szip_pixels_per_block=32)
     foo[:] = datarr
     foo_szip[:] = datarr
     nc.close()
@@ -35,7 +35,7 @@ class CompressionTestCase(unittest.TestCase):
         {'zlib':False,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':0,'fletcher32':False}
         assert_almost_equal(datarr,f.variables['data_szip'][:])
         dtest = {'zlib': False, 'zstd': False, 'bzip2': False, 'blosc': False, 'szip':
-                {'mask': 'ec', 'pixels_per_block': 32},
+                {'coding': 'ec', 'pixels_per_block': 32},
                 'shuffle': False, 'complevel': 4, 'fletcher32': False}
         print(f.variables['data_szip'].filters())
         #assert f.variables['data_szip'].filters() == dtest

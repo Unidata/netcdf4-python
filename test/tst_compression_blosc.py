@@ -43,29 +43,29 @@ class CompressionTestCase(unittest.TestCase):
         f = Dataset(self.filename)
         assert_almost_equal(datarr,f.variables['data'][:])
         assert f.variables['data'].filters() ==\
-        {'zlib':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':0,'fletcher32':False}
+        {'zlib':False,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':0,'fletcher32':False}
         assert_almost_equal(datarr,f.variables['data_lz'][:])
-        dtest = {'zlib': False, 'zstd': False, 'bzip2': False, 'blosc':
+        dtest = {'zlib': False, 'szip':False, 'zstd': False, 'bzip2': False, 'blosc':
                 {'compressor': 'blosc_lz', 'shuffle': 2, 'blocksize': 800000},
                 'shuffle': False, 'complevel': 4, 'fletcher32': False}
         assert f.variables['data_lz'].filters() == dtest
         assert_almost_equal(datarr,f.variables['data_lz4'][:])
-        dtest = {'zlib': False, 'zstd': False, 'bzip2': False, 'blosc':
+        dtest = {'zlib': False, 'szip':False, 'zstd': False, 'bzip2': False, 'blosc':
                 {'compressor': 'blosc_lz4', 'shuffle': 2, 'blocksize': 800000},
                 'shuffle': False, 'complevel': 4, 'fletcher32': False}
         assert f.variables['data_lz4'].filters() == dtest
         assert_almost_equal(datarr,f.variables['data_lz4hc'][:])
-        dtest = {'zlib': False, 'zstd': False, 'bzip2': False, 'blosc':
+        dtest = {'zlib': False, 'szip':False, 'zstd': False, 'bzip2': False, 'blosc':
                 {'compressor': 'blosc_lz4hc', 'shuffle': 2, 'blocksize': 800000},
                 'shuffle': False, 'complevel': 4, 'fletcher32': False}
         assert f.variables['data_lz4hc'].filters() == dtest
         assert_almost_equal(datarr,f.variables['data_zlib'][:])
-        dtest = {'zlib': False, 'zstd': False, 'bzip2': False, 'blosc':
+        dtest = {'zlib': False, 'szip':False, 'zstd': False, 'bzip2': False, 'blosc':
                 {'compressor': 'blosc_zlib', 'shuffle': 2, 'blocksize': 800000},
                 'shuffle': False, 'complevel': 4, 'fletcher32': False}
         assert f.variables['data_zlib'].filters() == dtest
         assert_almost_equal(datarr,f.variables['data_zstd'][:])
-        dtest = {'zlib': False, 'zstd': False, 'bzip2': False, 'blosc':
+        dtest = {'zlib': False, 'szip':False, 'zstd': False, 'bzip2': False, 'blosc':
                 {'compressor': 'blosc_zstd', 'shuffle': 2, 'blocksize': 800000},
                 'shuffle': False, 'complevel': 4, 'fletcher32': False}
         assert f.variables['data_zstd'].filters() == dtest
