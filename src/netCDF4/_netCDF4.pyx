@@ -1324,6 +1324,7 @@ __has_quantization_support__ = HAS_QUANTIZATION_SUPPORT
 __has_zstandard_support__ = HAS_ZSTANDARD_SUPPORT
 __has_bzip2_support__ = HAS_BZIP2_SUPPORT
 __has_blosc_support__ = HAS_BLOSC_SUPPORT
+__has_szip_support__ = HAS_SZIP_SUPPORT
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
