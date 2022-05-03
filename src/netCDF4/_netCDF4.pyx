@@ -4460,7 +4460,10 @@ return dictionary containing HDF5 filter parameters."""
         IF HAS_SZIP_SUPPORT:
             ierr = nc_inq_var_szip(self._grpid, self._varid, &iszip_coding,\
                     &iszip_pixels_per_block)
-            #if ierr != 0: iszip=0
+            if ierr != 0:
+                iszip=0
+            else:
+                iszip=1
             _ensure_nc_success(ierr)
         if ideflate:
             filtdict['zlib']=True
