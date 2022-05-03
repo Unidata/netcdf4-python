@@ -4479,7 +4479,9 @@ return dictionary containing HDF5 filter parameters."""
             filtdict['blosc']={'compressor':_blosc_dict_inv[blosc_compressor],'shuffle':iblosc_shuffle,'blocksize':iblosc_blocksize}
             filtdict['complevel']=iblosc_complevel
         if iszip:
-            filtdict['szip']={'coding':_szip_dict_inv[iszip_coding],'pixels_per_block':iszip_pixels_per_block}
+            print(iszip_coding, iszip_pixels_per_block)
+            szip_coding = iszip_coding
+            filtdict['szip']={'coding':_szip_dict_inv[szip_coding],'pixels_per_block':iszip_pixels_per_block}
         if ishuffle:
             filtdict['shuffle']=True
         if ifletcher32:
