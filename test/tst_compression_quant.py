@@ -59,7 +59,7 @@ class CompressionTestCase(unittest.TestCase):
         #print('compressed lossless no shuffle = ',size)
         assert_almost_equal(data_array,f.variables['data'][:])
         assert f.variables['data'].filters() ==\
-        {'zlib':True,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':complevel,'fletcher32':False}
+        {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':complevel,'fletcher32':False}
         assert(size < 0.95*uncompressed_size)
         f.close()
         # check compression with shuffle
@@ -68,7 +68,7 @@ class CompressionTestCase(unittest.TestCase):
         #print('compressed lossless with shuffle ',size)
         assert_almost_equal(data_array,f.variables['data'][:])
         assert f.variables['data'].filters() ==\
-        {'zlib':True,'zstd':False,'bzip2':False,'blosc':False,'shuffle':True,'complevel':complevel,'fletcher32':False}
+        {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':True,'complevel':complevel,'fletcher32':False}
         assert(size < 0.85*uncompressed_size)
         f.close()
         # check lossy compression without shuffle
