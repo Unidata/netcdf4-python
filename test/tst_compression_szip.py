@@ -34,11 +34,12 @@ class CompressionTestCase(unittest.TestCase):
         assert f.variables['data'].filters() ==\
         {'zlib':False,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':0,'fletcher32':False}
         assert_almost_equal(datarr,f.variables['data_szip'][:])
-        dtest = {'zlib': False, 'zstd': False, 'bzip2': False, 'blosc': False, 'szip':
+        dtest = {'zlib': False, 'szip':
                 {'coding': 'ec', 'pixels_per_block': 32},
+                'zstd': False, 'bzip2': False, 'blosc': False, 
                 'shuffle': False, 'complevel': 4, 'fletcher32': False}
         print(f.variables['data_szip'].filters())
-        #assert f.variables['data_szip'].filters() == dtest
+        assert f.variables['data_szip'].filters() == dtest
         f.close()
 
 if __name__ == '__main__':
