@@ -65,6 +65,7 @@ def check_api(inc_dirs,netcdf_lib_version):
     has_parallel_support = False
     has_parallel4_support = False
     has_pnetcdf_support = False
+    has_szip_support = False
     has_quantize = False
     has_zstandard = False
     has_bzip2 = False
@@ -124,6 +125,8 @@ def check_api(inc_dirs,netcdf_lib_version):
                     has_parallel4_support = bool(int(line.split()[2]))
                 if line.startswith('#define NC_HAS_PNETCDF'):
                     has_pnetcdf_support = bool(int(line.split()[2]))
+                if line.startswith('#define NC_HAS_SZIP_WRITE'):
+                    has_szip_support = bool(int(line.split()[2]))
         # NC_HAS_PARALLEL4 missing in 4.6.1 (issue #964)
         if not has_parallel4_support and has_parallel_support and not has_pnetcdf_support:
             has_parallel4_support = True
@@ -136,7 +139,7 @@ def check_api(inc_dirs,netcdf_lib_version):
 
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
            has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
-           has_parallel4_support, has_pnetcdf_support, has_quantize, \
+           has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
            has_zstandard, has_bzip2, has_blosc
 
 
@@ -550,7 +553,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     # this determines whether renameGroup and filepath methods will work.
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
     has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
-    has_parallel4_support, has_pnetcdf_support, has_quantize, \
+    has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
     has_zstandard, has_bzip2, has_blosc = \
     check_api(inc_dirs,netcdf_lib_version)
     # for netcdf 4.4.x CDF5 format is always enabled.
@@ -650,6 +653,13 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     else:
         sys.stdout.write('netcdf lib does not have blosc compression functions\n')
         f.write('DEF HAS_BLOSC_SUPPORT = 0\n')
+
+    if has_szip_support:
+        sys.stdout.write('netcdf lib has szip compression functions\n')
+        f.write('DEF HAS_SZIP_SUPPORT = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have szip compression functions\n')
+        f.write('DEF HAS_SZIP_SUPPORT = 0\n')
 
     f.close()
 

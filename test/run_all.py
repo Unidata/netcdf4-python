@@ -3,7 +3,8 @@ from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__ver
 from netCDF4 import __has_cdf5_format__, __has_nc_inq_path__, __has_nc_create_mem__, \
                     __has_parallel4_support__, __has_pnetcdf_support__, \
                     __has_zstandard_support__, __has_bzip2_support__, \
-                    __has_blosc_support__,__has_quantization_support__
+                    __has_blosc_support__,__has_quantization_support__,\
+                    __has_szip_support__
 
 # can also just run
 # python -m unittest discover . 'tst*py'
@@ -34,6 +35,9 @@ if not __has_bzip2_support__:
 if not __has_blosc_support__:
     test_files.remove('tst_compression_blosc.py')
     sys.stdout.write('not running tst_compression_bzip2.py ...\n')
+if not __has_szip_support__:
+    test_files.remove('tst_compression_szip.py')
+    sys.stdout.write('not running tst_compression_szip.py ...\n')
 
 # Don't run tests that require network connectivity
 if os.getenv('NO_NET'):
