@@ -2691,7 +2691,7 @@ is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword argument `compression` is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
-Currently `zlib`,`szip`, `zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
+Currently `zlib`,`szip`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
 `blosc_zlib` and `blosc_zstd` are supported.
 Default is `None` (no compression).  All of the compressors except
 `zlib` and `szip` use the HDF5 plugin architecture, which requires that the
@@ -2717,6 +2717,11 @@ unless the blosc compressor is used. `blosc_shuffle` can be 0 (no shuffle),
 1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 1. `blosc_blocksize`
 is the tunable blosc blocksize in bytes (Default 0 means the blocksize is
 chosen internally).
+
+The optional kwargs `szip_coding` and `szip_pixels_per_block` are ignored
+unless the szip compressor is used. `szip_coding` can be `ec` (entropy coding)
+or `nn` (nearest neighbor coding). Default is `nn`. `szip_pixels_per_block`
+can be 4, 8, 16 or 32 (default 8).
 
 If the optional keyword `fletcher32` is `True`, the Fletcher32 HDF5
 checksum algorithm is activated to detect errors. Default `False`.
@@ -3713,7 +3718,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         which means the variable is a scalar (and therefore has no dimensions).
 
         **`compression`**: compression algorithm to use. 
-        Currently `zlib`,`szip`, `zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
+        Currently `zlib`,`szip`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
         `blosc_zlib` and `blosc_zstd` are supported.
         Default is `None` (no compression).  All of the compressors except
         `zlib` use the HDF5 plugin architecture, which requires that the
@@ -3727,7 +3732,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
         **`complevel`**: the level of compression to use (1 is the fastest,
         but poorest compression, 9 is the slowest but best compression). Default 4.
-        Ignored if `compression=None`. A value of 0 disables compression.
+        Ignored if `compression=None` or `szip`. A value of 0 disables compression.
 
         **`shuffle`**: if `True`, the HDF5 shuffle filter is applied
         to improve zlib compression. Default `True`. Ignored unless `compression = 'zlib'`.
@@ -3735,10 +3740,18 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         **`blosc_shuffle`**: shuffle filter inside blosc compressor (only
         relevant if compression kwarg set to one of the blosc compressors).
         Can be 0 (no blosc shuffle), 1 (bytewise shuffle) or 2 (bitwise
-        shuffle)). Default is 1.
+        shuffle)). Default is 1. Ignored if blosc compressor not used.
 
         **`blosc_blocksize`**: tunable blocksize in bytes for blosc
         compressors. Default of 0 means blosc library chooses a blocksize.
+        Ignored if blosc compressor not used.
+
+        **`szip_coding`**: szip coding method. Can be `ec` (entropy coding)
+        or `nn` (nearest neighbor coding). Default is `nn`.
+        Ignored if szip compressor not used.
+
+        **`szip_pixels_per_block`**: Can be 4,8,16 or 32 (Default 8). 
+        Ignored if szip compressor not used.
 
         **`fletcher32`**: if `True` (default `False`), the Fletcher32 checksum
         algorithm is used for error detection.
