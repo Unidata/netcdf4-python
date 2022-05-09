@@ -27,6 +27,11 @@ types) are not supported.
 
  - the easiest way to get going is to install via `pip install netCDF4`.
    (or if you use the [conda](http://conda.io) package manager `conda install -c conda-forge netCDF4`).
+ - installing binary wheels with pip will not get you the optional compression filters (which are enabled
+   via external plugins).  Starting with version 4.9.0, The plugins are available 
+   via the netcdf-c library install, and are installed
+   in `/usr/local/hdf5/lib/plugin` by default.  The environment variable `HDF5_PLUGIN_PATH` should be set
+   to point to the location of the plugin install directory. 
 
 ## Developer Install
 
@@ -641,17 +646,19 @@ datasets.
 
 ## Efficient compression of netCDF variables
 
-Data stored in netCDF 4 `Variable` objects can be compressed and
-decompressed on the fly. The parameters for the compression are
-determined by the `compression`, `complevel` and `shuffle` keyword arguments
-to the `Dataset.createVariable` method. To turn on
-compression, set compression=`zlib`.  The `complevel` keyword regulates the
-speed and efficiency of the compression (1 being fastest, but lowest
+Data stored in netCDF `Variable` objects can be compressed and
+decompressed on the fly. The compression algorithm used is determined
+by the `compression` keyword argument to the `Dataset.createVariable` method.
+`zlib` compression is always available, `szip` is available if the linked HDF5
+library supports it, and `zstd`, `bzip2`, `blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
+`blosc_zlib` and `blosc_zstd` are available via optional external plugins.
+The `complevel` keyword regulates the
+speed and efficiency of the compression for `zlib`, `bzip` and `zstd` (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
 default value of `complevel` is 4. Setting `shuffle=False` will turn
 off the HDF5 shuffle filter, which de-interlaces a block of data before
-compression by reordering the bytes.  The shuffle filter can
-significantly improve compression ratios, and is on by default.  Setting
+`zlib` compression by reordering the bytes.  The shuffle filter can
+significantly improve compression ratios, and is on by default if `compression=zlib`.  Setting
 `fletcher32` keyword argument to
 `Dataset.createVariable` to `True` (it's `False` by
 default) enables the Fletcher32 checksum algorithm for error detection.
@@ -662,6 +669,12 @@ and `endian` keyword arguments to
 are relevant for `NETCDF4` and `NETCDF4_CLASSIC` files (where the
 underlying file format is HDF5) and are silently ignored if the file
 format is `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`.
+If netcdf-c compression filter plugins are installed, and the
+`HDF5_PLUGIN_PATH` environment variable is set to point to where the plugins
+are installed, then `zstd`, `bzip2`, and the `blosc` family of compressors
+can be used. If the HDF5 library is built with szip support, compression=`szip` can also
+be used (in conjunction with the `szip_coding` and `szip_pixels_per_block` keyword
+arguments).  
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
@@ -2695,9 +2708,9 @@ Currently `zlib`,`szip`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
 `blosc_zlib` and `blosc_zstd` are supported.
 Default is `None` (no compression).  All of the compressors except
 `zlib` and `szip` use the HDF5 plugin architecture, which requires that the
-environment variable `HDF5_PLUGIN_PATH` be set to the location of the
+environment variable `HDF5_PLUGIN_PATH` be set to the location of the external
 plugins built by netcdf-c (unless the plugins are installed in the
-default location `/usr/local/hdf5/lib`).
+default location `/usr/local/hdf5/lib/plugin`).
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
 the netCDF file using zlib compression (default `False`).  The use of this option is 
@@ -2749,9 +2762,6 @@ will automatically handle endian conversions when the data is read,
 but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
-
-The `compression, zlib, complevel, shuffle, fletcher32, contiguous, chunksizes` and `endian`
-keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword `fill_value` can be used to override the default
 netCDF `_FillValue` (the value that the variable gets filled with before
