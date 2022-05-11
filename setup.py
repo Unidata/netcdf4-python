@@ -1,4 +1,4 @@
-import os, sys, subprocess
+import os, sys, subprocess, glob
 import os.path as osp
 import configparser
 from setuptools import setup, Extension
@@ -682,6 +682,15 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
 else:
     ext_modules = None
 
+# if NETCDF_PLUGIN_DIR set, install netcdf-c plugin shared objects in package
+# (should point to location of .so files built by netcdf-c)
+if os.environ.get("NETCDF_PLUGIN_DIR"):
+    plugin_dir = os.environ.get("NETCDF_PLUGIN_DIR")
+    plugins = glob.glob(os.path.join(plugin_dir, "*.so"))
+    data_files = plugins
+else:
+    data_files = None
+
 setup(name="netCDF4",
       cmdclass=cmdclass,
       version=extract_version(netcdf4_src_pyx),
@@ -707,5 +716,6 @@ setup(name="netCDF4",
                    "Operating System :: OS Independent"],
       packages=['netCDF4'],
       package_dir={'':'src'},
+      data_files=[('netCDF4',data_files)],
       ext_modules=ext_modules,
       **setuptools_extra_kwargs)
