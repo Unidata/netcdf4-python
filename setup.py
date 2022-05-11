@@ -687,8 +687,16 @@ else:
 if os.environ.get("NETCDF_PLUGIN_DIR"):
     plugin_dir = os.environ.get("NETCDF_PLUGIN_DIR")
     plugins = glob.glob(os.path.join(plugin_dir, "*.so"))
-    data_files = plugins
+    if not plugins:
+        sys.stdout.write('no .so files in NETCDF_PLUGIN_DIR, no plugin shared objects installed\n')
+        data_files = []
+    else:
+        data_files = plugins
+        sys.stdout.write('installing plugin shared objects from %s ...\n' % plugin_dir)
+        sofiles = [os.path.basename(sofilepath) for sofilepath in data_files]
+        sys.stdout.write(repr(sofiles)+'\n')
 else:
+    sys.stdout.write('NETCDF_PLUGIN_DIR not set, no plugin shared objects installed\n')
     data_files = []
 
 setup(name="netCDF4",
