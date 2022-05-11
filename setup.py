@@ -689,7 +689,7 @@ if os.environ.get("NETCDF_PLUGIN_DIR"):
     plugins = glob.glob(os.path.join(plugin_dir, "*.so"))
     data_files = plugins
 else:
-    data_files = None
+    data_files = []
 
 setup(name="netCDF4",
       cmdclass=cmdclass,
