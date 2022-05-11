@@ -488,11 +488,6 @@ types) are not supported.</p>
 <ul>
 <li>the easiest way to get going is to install via <code>pip install netCDF4</code>.
 (or if you use the <a href="http://conda.io">conda</a> package manager <code>conda install -c conda-forge netCDF4</code>).</li>
-<li>installing binary wheels with pip will not get you the optional compression filters (which are enabled
-via external plugins).  Starting with version 4.9.0, The plugins are available 
-via the netcdf-c library install, and are installed
-in <code>/usr/local/hdf5/lib/plugin</code> by default.  The environment variable <code>HDF5_PLUGIN_PATH</code> should be set
-to point to the location of the plugin install directory. </li>
 </ul>
 
 <h2 id="developer-install">Developer Install</h2>
@@ -1105,10 +1100,6 @@ and <code>endian</code> keyword arguments to
 are relevant for <code>NETCDF4</code> and <code>NETCDF4_CLASSIC</code> files (where the
 underlying file format is HDF5) and are silently ignored if the file
 format is <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code> or <code>NETCDF3_64BIT_DATA</code>.
-If netcdf-c compression filter plugins are installed, and the
-<code>HDF5_PLUGIN_PATH</code> environment variable is set to point to where the plugins
-are installed, then <code>zstd</code>, <code>bzip2</code>, and the <code>blosc</code> family of compressors
-can be used. <br />
 If the HDF5 library is built with szip support, compression=<code>szip</code> can also
 be used (in conjunction with the <code>szip_coding</code> and <code>szip_pixels_per_block</code> keyword
 arguments).  </p>
@@ -1627,7 +1618,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;j&#101;&#102;&#102;r&#x65;&#121;.&#115;&#x2e;w&#104;&#105;&#116;&#x61;&#107;&#x65;&#x72;&#64;&#110;&#111;&#97;&#97;&#x2e;g&#111;&#118;">j&#101;&#102;&#102;r&#x65;&#121;.&#115;&#x2e;w&#104;&#105;&#116;&#x61;&#107;&#x65;&#x72;&#64;&#110;&#111;&#97;&#97;&#x2e;g&#111;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;a&#x69;&#108;&#116;&#111;&#58;&#106;&#x65;&#x66;&#x66;&#114;&#101;&#x79;&#x2e;&#x73;&#x2e;&#x77;h&#105;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#110;&#x6f;&#97;&#x61;&#x2e;&#x67;&#x6f;&#118;">&#106;&#x65;&#x66;&#x66;&#114;&#101;&#x79;&#x2e;&#x73;&#x2e;&#x77;h&#105;&#x74;&#x61;&#x6b;&#101;&#114;&#64;&#110;&#x6f;&#97;&#x61;&#x2e;&#x67;&#x6f;&#118;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -1652,8 +1643,12 @@ Unit tests are in the <code>test</code> directory.</p>
                        <span class="n">__has_parallel4_support__</span><span class="p">,</span> <span class="n">__has_pnetcdf_support__</span><span class="p">,</span>
                        <span class="n">__has_quantization_support__</span><span class="p">,</span> <span class="n">__has_zstandard_support__</span><span class="p">,</span>
                        <span class="n">__has_bzip2_support__</span><span class="p">,</span> <span class="n">__has_blosc_support__</span><span class="p">,</span> <span class="n">__has_szip_support__</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="n">__all__</span> <span class="o">=</span>\
 <span class="p">[</span><span class="s1">&#39;Dataset&#39;</span><span class="p">,</span><span class="s1">&#39;Variable&#39;</span><span class="p">,</span><span class="s1">&#39;Dimension&#39;</span><span class="p">,</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span><span class="s1">&#39;MFDataset&#39;</span><span class="p">,</span><span class="s1">&#39;MFTime&#39;</span><span class="p">,</span><span class="s1">&#39;CompoundType&#39;</span><span class="p">,</span><span class="s1">&#39;VLType&#39;</span><span class="p">,</span><span class="s1">&#39;date2num&#39;</span><span class="p">,</span><span class="s1">&#39;num2date&#39;</span><span class="p">,</span><span class="s1">&#39;date2index&#39;</span><span class="p">,</span><span class="s1">&#39;stringtochar&#39;</span><span class="p">,</span><span class="s1">&#39;chartostring&#39;</span><span class="p">,</span><span class="s1">&#39;stringtoarr&#39;</span><span class="p">,</span><span class="s1">&#39;getlibversion&#39;</span><span class="p">,</span><span class="s1">&#39;EnumType&#39;</span><span class="p">,</span><span class="s1">&#39;get_chunk_cache&#39;</span><span class="p">,</span><span class="s1">&#39;set_chunk_cache&#39;</span><span class="p">]</span>
+<span class="c1"># if HDF5_PLUGIN_PATH not set, point to plugins directory inside package</span>
+<span class="k">if</span> <span class="s1">&#39;HDF5_PLUGIN_PATH&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;HDF5_PLUGIN_PATH&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
         </details>
@@ -2111,10 +2106,7 @@ compressed in the netCDF file using the specified compression algorithm.
 Currently <code>zlib</code>,<code>szip</code>,<code>zstd</code>,<code>bzip2</code>,<code>blosc_lz</code>,<code>blosc_lz4</code>,<code>blosc_lz4hc</code>,
 <code>blosc_zlib</code> and <code>blosc_zstd</code> are supported.
 Default is <code>None</code> (no compression).  All of the compressors except
-<code>zlib</code> and <code>szip</code> use the HDF5 plugin architecture, which requires that the
-environment variable <code>HDF5_PLUGIN_PATH</code> be set to the location of the external
-plugins built by netcdf-c (unless the plugins are installed in the
-default location <code>/usr/local/hdf5/lib/plugin</code>).</p>
+<code>zlib</code> and <code>szip</code> use the HDF5 plugin architecture.</p>
 
 <p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
 the netCDF file using zlib compression (default <code>False</code>).  The use of this option is 
@@ -2919,10 +2911,7 @@ which means the variable is a scalar (and therefore has no dimensions).</p>
 Currently <code>zlib</code>,<code>szip</code>,<code>zstd</code>,<code>bzip2</code>,<code>blosc_lz</code>,<code>blosc_lz4</code>,<code>blosc_lz4hc</code>,
 <code>blosc_zlib</code> and <code>blosc_zstd</code> are supported.
 Default is <code>None</code> (no compression).  All of the compressors except
-<code>zlib</code> use the HDF5 plugin architecture, which requires that the
-environment variable <code>HDF5_PLUGIN_PATH</code> be set to the location of the
-plugins built by netcdf-c (unless the plugins are installed in the
-default location <code>/usr/local/hdf5/lib</code>).</p>
+<code>zlib</code> and <code>szip</code> use the HDF5 plugin architecture.</p>
 
 <p><strong><code>zlib</code></strong>: if <code>True</code>, data assigned to the <code><a href="#Variable">Variable</a></code>
 instance is compressed on disk. Default <code>False</code>. Deprecated - use

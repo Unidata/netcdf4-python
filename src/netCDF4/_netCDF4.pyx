@@ -27,11 +27,6 @@ types) are not supported.
 
  - the easiest way to get going is to install via `pip install netCDF4`.
    (or if you use the [conda](http://conda.io) package manager `conda install -c conda-forge netCDF4`).
- - installing binary wheels with pip will not get you the optional compression filters (which are enabled
-   via external plugins).  Starting with version 4.9.0, The plugins are available 
-   via the netcdf-c library install, and are installed
-   in `/usr/local/hdf5/lib/plugin` by default.  The environment variable `HDF5_PLUGIN_PATH` should be set
-   to point to the location of the plugin install directory. 
 
 ## Developer Install
 
@@ -669,10 +664,7 @@ and `endian` keyword arguments to
 are relevant for `NETCDF4` and `NETCDF4_CLASSIC` files (where the
 underlying file format is HDF5) and are silently ignored if the file
 format is `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`.
-If netcdf-c compression filter plugins are installed, and the
-`HDF5_PLUGIN_PATH` environment variable is set to point to where the plugins
-are installed, then `zstd`, `bzip2`, and the `blosc` family of compressors
-can be used. If the HDF5 library is built with szip support, compression=`szip` can also
+If the HDF5 library is built with szip support, compression=`szip` can also
 be used (in conjunction with the `szip_coding` and `szip_pixels_per_block` keyword
 arguments).  
 
@@ -2707,10 +2699,7 @@ compressed in the netCDF file using the specified compression algorithm.
 Currently `zlib`,`szip`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
 `blosc_zlib` and `blosc_zstd` are supported.
 Default is `None` (no compression).  All of the compressors except
-`zlib` and `szip` use the HDF5 plugin architecture, which requires that the
-environment variable `HDF5_PLUGIN_PATH` be set to the location of the external
-plugins built by netcdf-c (unless the plugins are installed in the
-default location `/usr/local/hdf5/lib/plugin`).
+`zlib` and `szip` use the HDF5 plugin architecture.
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
 the netCDF file using zlib compression (default `False`).  The use of this option is 
@@ -3731,10 +3720,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         Currently `zlib`,`szip`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
         `blosc_zlib` and `blosc_zstd` are supported.
         Default is `None` (no compression).  All of the compressors except
-        `zlib` use the HDF5 plugin architecture, which requires that the
-        environment variable `HDF5_PLUGIN_PATH` be set to the location of the
-        plugins built by netcdf-c (unless the plugins are installed in the
-        default location `/usr/local/hdf5/lib`).
+        `zlib` and `szip` use the HDF5 plugin architecture.
 
         **`zlib`**: if `True`, data assigned to the `Variable`
         instance is compressed on disk. Default `False`. Deprecated - use
