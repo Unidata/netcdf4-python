@@ -2654,13 +2654,13 @@ datatype."""
             compression=None, zlib=False,
             complevel=4, shuffle=True,
             szip_coding='nn',szip_pixels_per_block=8,
-            blosc_shuffle=1, blosc_blocksize=0, fletcher32=False, contiguous=False,
+            blosc_shuffle=1,fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None):
         """
 **`createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
-szip_coding='nn', szip_pixels_per_block=8, blosc_shuffle=1, blosc_blocksize=0,
+szip_coding='nn', szip_pixels_per_block=8, blosc_shuffle=1,
 endian='native', least_significant_digit=None, significant_digits=None, quantize_mode='BitGroom',
 fill_value=None, chunk_cache=None)`**
 
@@ -2714,11 +2714,9 @@ will be applied before compressing the data with zlib (default `True`).  This
 significantly improves compression. Default is `True`. Ignored if
 `zlib=False`.
 
-The optional kwargs `blosc_shuffle` and `blosc_blocksize` are ignored
+The optional kwarg `blosc_shuffle`is  ignored
 unless the blosc compressor is used. `blosc_shuffle` can be 0 (no shuffle),
-1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 1. `blosc_blocksize`
-is the tunable blosc blocksize in bytes (Default 0 means the blocksize is
-chosen internally).
+1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 1.
 
 The optional kwargs `szip_coding` and `szip_pixels_per_block` are ignored
 unless the szip compressor is used. `szip_coding` can be `ec` (entropy coding)
@@ -2834,7 +2832,7 @@ is the number of variable dimensions."""
         group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, compression=compression, zlib=zlib, complevel=complevel, shuffle=shuffle,
         szip_coding=szip_coding, szip_pixels_per_block=szip_pixels_per_block,
-        blosc_shuffle=blosc_shuffle,blosc_blocksize=blosc_blocksize,
+        blosc_shuffle=blosc_shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
         significant_digits=significant_digits,quantize_mode=quantize_mode,fill_value=fill_value, chunk_cache=chunk_cache)
@@ -3676,14 +3674,14 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     def __init__(self, grp, name, datatype, dimensions=(),
             compression=None, zlib=False,
             complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
-            blosc_shuffle=1, blosc_blocksize=0,
+            blosc_shuffle=1, 
             fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
         """
         **`__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
         complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
-        blosc_shuffle=1, blosc_blocksize=0, fletcher32=False, contiguous=False,
+        blosc_shuffle=1, fletcher32=False, contiguous=False,
         chunksizes=None, endian='native',
         least_significant_digit=None,fill_value=None,chunk_cache=None)`**
 
@@ -3737,10 +3735,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         relevant if compression kwarg set to one of the blosc compressors).
         Can be 0 (no blosc shuffle), 1 (bytewise shuffle) or 2 (bitwise
         shuffle)). Default is 1. Ignored if blosc compressor not used.
-
-        **`blosc_blocksize`**: tunable blocksize in bytes for blosc
-        compressors. Default of 0 means blosc library chooses a blocksize.
-        Ignored if blosc compressor not used.
 
         **`szip_coding`**: szip coding method. Can be `ec` (entropy coding)
         or `nn` (nearest neighbor coding). Default is `nn`.
@@ -4045,7 +4039,7 @@ version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python.
                         IF HAS_BLOSC_SUPPORT:
                             iblosc_compressor = _blosc_dict[compression]
                             iblosc_shuffle = blosc_shuffle
-                            iblosc_blocksize = blosc_blocksize
+                            iblosc_blocksize = 0 # not currently used by c lib
                             iblosc_complevel = complevel
                             ierr = nc_def_var_blosc(self._grpid, self._varid,\
                                     iblosc_compressor,\
@@ -4492,7 +4486,7 @@ return dictionary containing HDF5 filter parameters."""
             filtdict['complevel']=icomplevel_bzip2
         if iblosc:
             blosc_compressor = iblosc_compressor
-            filtdict['blosc']={'compressor':_blosc_dict_inv[blosc_compressor],'shuffle':iblosc_shuffle,'blocksize':iblosc_blocksize}
+            filtdict['blosc']={'compressor':_blosc_dict_inv[blosc_compressor],'shuffle':iblosc_shuffle}
             filtdict['complevel']=iblosc_complevel
         if iszip:
             szip_coding = iszip_coding
