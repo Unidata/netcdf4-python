@@ -14,11 +14,15 @@
  * add 'compression' kwarg to createVariable to enable new compression
    functionality in netcdf-c 4.9.0.  'None','zlib','szip','zstd','bzip2'
    'blosc_lz','blosc_lz4','blosc_lz4hc','blosc_zlib' and 'blosc_zstd'
-   are currently supported. 'blosc_shuffle', 'blosc_blocksize',
+   are currently supported. 'blosc_shuffle',
    'szip_mask' and 'szip_pixels_per_block' kwargs also added.
    compression='zlib' is equivalent to (the now deprecated) zlib=True.
-   Using new compressors (except 'szip') requires setting HDF5_PLUGIN_PATH to point to 
-   the installation location of the netcdf-c filter plugins.
+   If the environment variable NETCDF_PLUGIN_DIR is set to point to the
+   directory with the HDF5 plugin .so files, then the compression plugins will
+   be installed within the package and be automatically available (the binary
+   wheels have this).  Otherwise, the environment variable HDF5_PLUGIN_PATH
+   needs to be se to point to plugins in order to use the new compression
+   options.
  * MFDataset did not aggregate 'name' variable attribute (issue #1153).
  * issue warning instead of raising an exception if missing_value or
    _FillValue can't be cast to the variable type when creating a 
