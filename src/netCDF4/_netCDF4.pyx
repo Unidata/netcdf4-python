@@ -58,10 +58,10 @@ types) are not supported.
    If the dependencies are not found
    in any of the paths specified by environment variables, then standard locations
    (such as `/usr` and `/usr/local`) are searched.
- - if the env var `NETCDF_PLUGIN_DIR` is set to point to the location netcdf-c compression
-   plugin shared objects, they will be installed inside the package.  In this
+ - if the env var `NETCDF_PLUGIN_DIR` is set to point to the location of the netcdf-c compression
+   plugin shared objects built by netcdf >= 4.9.0, they will be installed inside the package.  In this
    case `HDF5_PLUGIN_PATH` will be set to the package installation path on import,
-   so the extra compression algorithms available in netcdf-c 4.9.0 will automatically
+   so the extra compression algorithms available in netcdf-c >= 4.9.0 will automatically
    be available.  Otherwise, the user will have to set `HDF5_PLUGIN_PATH` explicitly
    to have access to the extra compression plugins.
  - run `python setup.py build`, then `python setup.py install` (as root if

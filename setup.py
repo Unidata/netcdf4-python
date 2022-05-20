@@ -686,7 +686,7 @@ else:
 # (should point to location of .so files built by netcdf-c)
 if os.environ.get("NETCDF_PLUGIN_DIR"):
     plugin_dir = os.environ.get("NETCDF_PLUGIN_DIR")
-    plugins = glob.glob(os.path.join(plugin_dir, "*.so"))
+    plugins = glob.glob(os.path.join(plugin_dir, "lib__nc*"))
     if not plugins:
         sys.stdout.write('no .so files in NETCDF_PLUGIN_DIR, no plugin shared objects installed\n')
         data_files = []
