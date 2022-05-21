@@ -682,21 +682,21 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
 else:
     ext_modules = None
 
-# if NETCDF_PLUGIN_DIR set, install netcdf-c plugin shared objects in package
-# (should point to location of .so files built by netcdf-c)
+# if NETCDF_PLUGIN_DIR set, install netcdf-c compression plugins inside package
+# (should point to location of lib__nc* files built by netcdf-c)
 if os.environ.get("NETCDF_PLUGIN_DIR"):
     plugin_dir = os.environ.get("NETCDF_PLUGIN_DIR")
     plugins = glob.glob(os.path.join(plugin_dir, "lib__nc*"))
     if not plugins:
-        sys.stdout.write('no .so files in NETCDF_PLUGIN_DIR, no plugin shared objects installed\n')
+        sys.stdout.write('no plugin files in NETCDF_PLUGIN_DIR, not installing..\n')
         data_files = []
     else:
         data_files = plugins
-        sys.stdout.write('installing plugin shared objects from %s ...\n' % plugin_dir)
+        sys.stdout.write('installing netcdf compression plugins from %s ...\n' % plugin_dir)
         sofiles = [os.path.basename(sofilepath) for sofilepath in data_files]
         sys.stdout.write(repr(sofiles)+'\n')
 else:
-    sys.stdout.write('NETCDF_PLUGIN_DIR not set, no plugin shared objects installed\n')
+    sys.stdout.write('NETCDF_PLUGIN_DIR not set, no netcdf compression plugins installed\n')
     data_files = []
 
 setup(name="netCDF4",
