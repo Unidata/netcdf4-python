@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PNETCDF_VERSION: 1.12.1
-      NETCDF_VERSION: 4.8.0
+      NETCDF_VERSION: 4.9.0
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
       CC: mpicc.mpich
