@@ -31,7 +31,7 @@ jobs:
         export LDFLAGS="-L${NETCDF_DIR}/lib"
         export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
         autoreconf -i
-        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4
+        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 
         make -j 2
         make install
         popd
@@ -50,12 +50,12 @@ jobs:
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
-        export NETCDF_PLUGIN_DIR=${NETCDF_DIR}/plugins/.libs
+        export NETCDF_PLUGIN_DIR=${NETCDF_DIR}/plugins/plugindir
         python setup.py install
     - name: Test
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
-        #export HDF5_PLUGIN_PATH=${NETCDF_DIR}/plugins/.libs
+        #export HDF5_PLUGIN_PATH=${NETCDF_DIR}/plugins/plugindir
         python checkversion.py
         # serial
         cd test
