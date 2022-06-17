@@ -36,7 +36,7 @@ jobs:
         make install
         popd
         echo "Download and build netCDF version ${NETCDF_VERSION}"
-        wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-${NETCDF_VERSION}.tar.gz
+        wget https://downloads.unidata.ucar.edu/netcdf-c/4.9.0/netcdf-c-${NETCDF_VERSION}.tar.gz
         tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
         pushd netcdf-c-${NETCDF_VERSION}
         export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
@@ -61,6 +61,7 @@ jobs:
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
+        export NETCDF_PLUGIN_DIR=${NETCDF_DIR}/plugins/.libs
         python setup.py install
     - name: Test
       run: |
