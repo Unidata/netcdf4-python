@@ -45,7 +45,7 @@ jobs:
         ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 --with-plugin-dir $NETCDF_EXTRA_CONFIG
         make -j 2
         make install
-        ls -l plugins/.libs
+        ls -l plugins/plugindir
         popd
 
 #   - name: The job has failed
@@ -62,7 +62,7 @@ jobs:
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
-        export NETCDF_PLUGIN_DIR=${NETCDF_DIR}/plugins/.libs
+        export NETCDF_PLUGIN_DIR=${NETCDF_DIR}/plugins/plugindir
         python setup.py install
     - name: Test
       run: |
