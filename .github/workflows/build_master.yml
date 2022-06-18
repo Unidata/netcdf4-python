@@ -51,6 +51,8 @@ jobs:
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         export NETCDF_PLUGIN_DIR=${NETCDF_DIR}/plugins/plugindir
+        ls -l /home/runner/work/netcdf4-python/netcdf4-python/netcdf-c/plugins/plugindir
+        ls -l $NETCDF_PLUGIN_DIR
         python setup.py install
     - name: Test
       run: |
