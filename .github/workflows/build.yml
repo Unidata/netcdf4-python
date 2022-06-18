@@ -42,10 +42,9 @@ jobs:
         export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
         export LDFLAGS="-L${NETCDF_DIR}/lib"
         export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
-        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 --with-plugin-dir $NETCDF_EXTRA_CONFIG
+        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
         make -j 2
         make install
-        ls -l plugins/plugindir
         popd
 
 #   - name: The job has failed
@@ -62,7 +61,7 @@ jobs:
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
-        export NETCDF_PLUGIN_DIR=${NETCDF_DIR}/plugins/plugindir
+        export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c/plugins/plugindir
         python setup.py install
     - name: Test
       run: |
