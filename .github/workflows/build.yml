@@ -26,7 +26,7 @@ jobs:
     - name: Install Ubuntu Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev 
+        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
         echo "Download and build PnetCDF version ${PNETCDF_VERSION}"
         wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
         tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
@@ -61,7 +61,7 @@ jobs:
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
-        export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c/plugins/plugindir
+        export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c-${NETCDF_VERSION}/plugins/plugindir
         python setup.py install
     - name: Test
       run: |
