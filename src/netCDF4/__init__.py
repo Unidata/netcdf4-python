@@ -13,7 +13,8 @@ from ._netCDF4 import (__version__, __netcdf4libversion__, __hdf5libversion__,
 import os
 __all__ =\
 ['Dataset','Variable','Dimension','Group','MFDataset','MFTime','CompoundType','VLType','date2num','num2date','date2index','stringtochar','chartostring','stringtoarr','getlibversion','EnumType','get_chunk_cache','set_chunk_cache']
-# if HDF5_PLUGIN_PATH not set, point to package path if libh5noop.so exists there
-if 'HDF5_PLUGIN_PATH' not in os.environ and os.path.exists(os.path.join(__path__[0],'lib__nczhdf5filters.so')):
-    print('setting HDF5_PLUGIN_PATH to %s' % __path__[0])
+# if HDF5_PLUGIN_PATH not set, point to package path if plugins live there
+if 'HDF5_PLUGIN_PATH' not in os.environ and\
+    (os.path.exists(os.path.join(__path__[0],'lib__nczhdf5filters.so')) or\
+    os.path.exists(os.path.join(__path__[0],'lib__nczhdf5filters.dylib'))):
     os.environ['HDF5_PLUGIN_PATH']=__path__[0]
