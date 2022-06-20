@@ -1,5 +1,6 @@
 import os, sys, subprocess, glob
 import os.path as osp
+import shutil
 import configparser
 from setuptools import setup, Extension
 from distutils.dist import Distribution
@@ -695,6 +696,8 @@ if os.environ.get("NETCDF_PLUGIN_DIR"):
         sys.stdout.write('installing netcdf compression plugins from %s ...\n' % plugin_dir)
         sofiles = [os.path.basename(sofilepath) for sofilepath in data_files]
         sys.stdout.write(repr(sofiles)+'\n')
+        for f in data_files:
+            shutil.copy(f, osp.join(os.getcwd(),osp.join('src','netCDF4')))
 else:
     sys.stdout.write('NETCDF_PLUGIN_DIR not set, no netcdf compression plugins installed\n')
     data_files = []
@@ -724,6 +727,8 @@ setup(name="netCDF4",
                    "Operating System :: OS Independent"],
       packages=['netCDF4'],
       package_dir={'':'src'},
-      data_files=[('netCDF4',data_files)],
+      #data_files=[('netCDF4',data_files)], # doesn't work with pip install
+      include_package_data = True,
+      package_data={"netCDF4": ["lib__nc*"]},
       ext_modules=ext_modules,
       **setuptools_extra_kwargs)
