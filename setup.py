@@ -685,6 +685,7 @@ else:
 
 # if NETCDF_PLUGIN_DIR set, install netcdf-c compression plugins inside package
 # (should point to location of lib__nc* files built by netcdf-c)
+copied_plugins=False
 if os.environ.get("NETCDF_PLUGIN_DIR"):
     plugin_dir = os.environ.get("NETCDF_PLUGIN_DIR")
     plugins = glob.glob(os.path.join(plugin_dir, "lib__nc*"))
@@ -698,6 +699,7 @@ if os.environ.get("NETCDF_PLUGIN_DIR"):
         sys.stdout.write(repr(sofiles)+'\n')
         for f in data_files:
             shutil.copy(f, osp.join(os.getcwd(),osp.join('src','netCDF4')))
+        copied_plugins=True
 else:
     sys.stdout.write('NETCDF_PLUGIN_DIR not set, no netcdf compression plugins installed\n')
     data_files = []
@@ -732,3 +734,8 @@ setup(name="netCDF4",
       package_data={"netCDF4": ["lib__nc*"]},
       ext_modules=ext_modules,
       **setuptools_extra_kwargs)
+
+# remove plugin files copied from outside source tree
+if copied_plugins:
+    for f in sofiles:
+        os.remove(osp.join(osp.join('src','netCDF4'),f))
