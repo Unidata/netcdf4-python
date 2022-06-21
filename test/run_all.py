@@ -26,15 +26,15 @@ if not __has_cdf5_format__ or struct.calcsize("P") < 8:
 if not __has_quantization_support__:
     test_files.remove('tst_compression_quant.py')
     sys.stdout.write('not running tst_compression_quant.py ...\n')
-if not __has_zstandard_support__:
+if not __has_zstandard_support__ or os.getenv('NO_PLUGINS'):
     test_files.remove('tst_compression_zstd.py')
     sys.stdout.write('not running tst_compression_zstd.py ...\n')
-if not __has_bzip2_support__:
+if not __has_bzip2_support__ or os.getenv('NO_PLUGINS'):
     test_files.remove('tst_compression_bzip2.py')
     sys.stdout.write('not running tst_compression_bzip2.py ...\n')
-if not __has_blosc_support__:
+if not __has_blosc_support__ or os.getenv('NO_PLUGINS'):
     test_files.remove('tst_compression_blosc.py')
-    sys.stdout.write('not running tst_compression_blosc2.py ...\n')
+    sys.stdout.write('not running tst_compression_blosc.py ...\n')
 if not __has_szip_support__:
     test_files.remove('tst_compression_szip.py')
     sys.stdout.write('not running tst_compression_szip.py ...\n')
