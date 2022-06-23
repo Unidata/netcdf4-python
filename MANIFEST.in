@@ -13,6 +13,7 @@ include src/netCDF4/__init__.py
 include src/netCDF4/_netCDF4.pyx
 exclude src/netCDF4/_netCDF4.c
 include src/netCDF4/utils.py
+include src/netCDF4/plugins/empty.txt
 include include/netCDF4.pxi
 include include/mpi-compat.h
 include include/membuf.pyx

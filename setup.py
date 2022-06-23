@@ -697,9 +697,10 @@ if os.environ.get("NETCDF_PLUGIN_DIR"):
         sys.stdout.write('installing netcdf compression plugins from %s ...\n' % plugin_dir)
         sofiles = [os.path.basename(sofilepath) for sofilepath in data_files]
         sys.stdout.write(repr(sofiles)+'\n')
-        for f in data_files:
-            shutil.copy(f, osp.join(os.getcwd(),osp.join(osp.join('src','netCDF4'),'plugins')))
-        copied_plugins=True
+        if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' not in sys.argv[1:]:
+            for f in data_files:
+                shutil.copy(f, osp.join(os.getcwd(),osp.join(osp.join('src','netCDF4'),'plugins')))
+            copied_plugins=True
 else:
     sys.stdout.write('NETCDF_PLUGIN_DIR not set, no netcdf compression plugins installed\n')
     data_files = []
