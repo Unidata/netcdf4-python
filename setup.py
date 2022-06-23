@@ -728,11 +728,8 @@ setup(name="netCDF4",
                    "Topic :: Software Development :: Libraries :: Python Modules",
                    "Topic :: System :: Archiving :: Compression",
                    "Operating System :: OS Independent"],
-      #packages=['netCDF4'],
       packages=find_namespace_packages(where="src"),
       package_dir={'':'src'},
-      #data_files=[('netCDF4',data_files)], # doesn't work with pip install
-      #include_package_data = True,
       package_data={"netCDF4.plugins": ["lib__nc*"]},
       ext_modules=ext_modules,
       **setuptools_extra_kwargs)
