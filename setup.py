@@ -740,4 +740,6 @@ setup(name="netCDF4",
 # remove plugin files copied from outside source tree
 if copied_plugins:
     for f in sofiles:
-        os.remove(osp.join(osp.join(osp.join('src','netCDF4'),'plugins'),f))
+        filepath = osp.join(osp.join(osp.join('src','netCDF4'),'plugins'),f)
+        if os.path.exists(filepath):
+            os.remove(filepath)
