@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PNETCDF_VERSION: 1.12.1
-      NETCDF_VERSION: 4.8.0
+      NETCDF_VERSION: 4.9.0
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
       CC: mpicc.mpich
@@ -26,7 +26,7 @@ jobs:
     - name: Install Ubuntu Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev 
+        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
         echo "Download and build PnetCDF version ${PNETCDF_VERSION}"
         wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
         tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
@@ -36,7 +36,7 @@ jobs:
         make install
         popd
         echo "Download and build netCDF version ${NETCDF_VERSION}"
-        wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-${NETCDF_VERSION}.tar.gz
+        wget https://downloads.unidata.ucar.edu/netcdf-c/4.9.0/netcdf-c-${NETCDF_VERSION}.tar.gz
         tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
         pushd netcdf-c-${NETCDF_VERSION}
         export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
@@ -61,6 +61,7 @@ jobs:
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
+        export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c-${NETCDF_VERSION}/plugins/plugindir
         python setup.py install
     - name: Test
       run: |

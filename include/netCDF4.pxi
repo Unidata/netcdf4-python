@@ -216,8 +216,6 @@ cdef extern from "netcdf.h":
         NC_ENDIAN_NATIVE 
         NC_ENDIAN_LITTLE 
         NC_ENDIAN_BIG 
-        NC_SZIP_EC_OPTION_MASK  # entropy encoding
-        NC_SZIP_NN_OPTION_MASK  # nearest neighbor encoding
     const_char_ptr *nc_inq_libvers() nogil
     const_char_ptr *nc_strerror(int ncerr)
     int nc_create(char *path, int cmode, int *ncidp)
@@ -700,6 +698,33 @@ IF HAS_QUANTIZATION_SUPPORT:
             NC_QUANTIZE_BITROUND
         int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) 
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
+
+IF HAS_SZIP_SUPPORT:
+    cdef extern from "netcdf.h":
+        int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) 
+        int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
+        int nc_def_var_szip(int ncid, int varid, int options_mask, int pixels_per_bloc)
+        int nc_inq_var_szip(int ncid, int varid, int *options_maskp, int *pixels_per_blockp)
+
+IF HAS_ZSTANDARD_SUPPORT:
+    cdef extern from "netcdf_filter.h":
+        cdef enum:
+            H5Z_FILTER_ZSTANDARD
+        int nc_def_var_zstandard(int ncid, int varid, int level)
+        int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp)
+        int nc_inq_filter_avail(int ncid, unsigned id)
+
+IF HAS_BZIP2_SUPPORT:
+    cdef extern from "netcdf_filter.h":
+        cdef enum:
+            H5Z_FILTER_BZIP2
+        int nc_def_var_bzip2(int ncid, int varid, int level)
+        int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp)
+
+IF HAS_BLOSC_SUPPORT:
+    cdef extern from "netcdf_filter.h":
+        int nc_def_var_blosc(int ncid, int varid, unsigned subcompressor, unsigned level, unsigned blocksize, unsigned addshuffle)
+        int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigned* subcompressorp, unsigned* levelp, unsigned* blocksizep, unsigned* addshufflep)
 
 IF HAS_NC_OPEN_MEM:
     cdef extern from "netcdf_mem.h":

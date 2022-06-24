@@ -521,6 +521,12 @@ If you go this route, set <code>USE_NCCONFIG</code> and <code>USE_SETUPCFG</code
 If the dependencies are not found
 in any of the paths specified by environment variables, then standard locations
 (such as <code>/usr</code> and <code>/usr/local</code>) are searched.</li>
+<li>if the env var <code>NETCDF_PLUGIN_DIR</code> is set to point to the location netcdf-c compression
+plugin shared objects, they will be installed inside the package.  In this
+case <code>HDF5_PLUGIN_PATH</code> will be set to the package installation path on import,
+so the extra compression algorithms available in netcdf-c 4.9.0 will automatically
+be available.  Otherwise, the user will have to set <code>HDF5_PLUGIN_PATH</code> explicitly
+to have access to the extra compression plugins.</li>
 <li>run <code>python setup.py build</code>, then <code>python setup.py install</code> (as root if
 necessary).</li>
 <li>run the tests in the 'test' directory by running <code>python run_all.py</code>.</li>
@@ -1077,17 +1083,19 @@ datasets.</p>
 
 <h2 id="efficient-compression-of-netcdf-variables">Efficient compression of netCDF variables</h2>
 
-<p>Data stored in netCDF 4 <code><a href="#Variable">Variable</a></code> objects can be compressed and
-decompressed on the fly. The parameters for the compression are
-determined by the <code>compression</code>, <code>complevel</code> and <code>shuffle</code> keyword arguments
-to the <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method. To turn on
-compression, set compression=<code>zlib</code>.  The <code>complevel</code> keyword regulates the
-speed and efficiency of the compression (1 being fastest, but lowest
+<p>Data stored in netCDF <code><a href="#Variable">Variable</a></code> objects can be compressed and
+decompressed on the fly. The compression algorithm used is determined
+by the <code>compression</code> keyword argument to the <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method.
+<code>zlib</code> compression is always available, <code>szip</code> is available if the linked HDF5
+library supports it, and <code>zstd</code>, <code>bzip2</code>, <code>blosc_lz</code>,<code>blosc_lz4</code>,<code>blosc_lz4hc</code>,
+<code>blosc_zlib</code> and <code>blosc_zstd</code> are available via optional external plugins.
+The <code>complevel</code> keyword regulates the
+speed and efficiency of the compression for <code>zlib</code>, <code>bzip</code> and <code>zstd</code> (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
 default value of <code>complevel</code> is 4. Setting <code>shuffle=False</code> will turn
 off the HDF5 shuffle filter, which de-interlaces a block of data before
-compression by reordering the bytes.  The shuffle filter can
-significantly improve compression ratios, and is on by default.  Setting
+<code>zlib</code> compression by reordering the bytes.  The shuffle filter can
+significantly improve compression ratios, and is on by default if <code>compression=zlib</code>.  Setting
 <code>fletcher32</code> keyword argument to
 <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> to <code>True</code> (it's <code>False</code> by
 default) enables the Fletcher32 checksum algorithm for error detection.
@@ -1097,7 +1105,10 @@ and <code>endian</code> keyword arguments to
 <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code>.  These keyword arguments only
 are relevant for <code>NETCDF4</code> and <code>NETCDF4_CLASSIC</code> files (where the
 underlying file format is HDF5) and are silently ignored if the file
-format is <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code> or <code>NETCDF3_64BIT_DATA</code>.</p>
+format is <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code> or <code>NETCDF3_64BIT_DATA</code>.
+If the HDF5 library is built with szip support, compression=<code>szip</code> can also
+be used (in conjunction with the <code>szip_coding</code> and <code>szip_pixels_per_block</code> keyword
+arguments).  </p>
 
 <p>If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
@@ -1111,7 +1122,7 @@ precision of 0.1, then setting <code>least_significant_digit=1</code> will cause
 data the data to be quantized using <code>numpy.around(scale*data)/scale</code>, where
 scale = 2**bits, and bits is determined so that a precision of 0.1 is
 retained (in this case bits=4).  This is done at the python level and is
-not a part of the underlying C library.  Starting with netcdf-c version 4.8.2,
+not a part of the underlying C library.  Starting with netcdf-c version 4.9.0,
 a quantization capability is provided in the library.  This can be
 used via the <code>significant_digits</code> <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> kwarg (new in
 version 1.6.0).
@@ -1137,7 +1148,7 @@ sacrificed for the sake of disk space.</p>
 <div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span><span class="n">least_significant_digit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 
-<p>or with netcdf-c &gt;= 4.8.2</p>
+<p>or with netcdf-c &gt;= 4.9.0</p>
 
 <div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span><span class="n">significant_digits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
@@ -1613,7 +1624,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;a&#105;&#108;&#x74;&#111;&#x3a;&#106;&#101;&#x66;&#102;&#114;&#101;&#121;&#x2e;&#115;&#46;w&#104;i&#x74;a&#107;&#x65;r&#x40;&#110;&#111;&#x61;&#97;&#46;&#103;&#111;&#118;">&#106;&#101;&#x66;&#102;&#114;&#101;&#121;&#x2e;&#115;&#46;w&#104;i&#x74;a&#107;&#x65;r&#x40;&#110;&#111;&#x61;&#97;&#46;&#103;&#111;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#x6a;&#x65;&#102;&#102;&#114;e&#x79;&#46;&#x73;&#46;&#119;&#x68;&#x69;&#116;&#x61;&#x6b;&#101;&#x72;&#64;&#x6e;&#x6f;&#x61;&#x61;&#46;&#x67;o&#x76;">&#x6a;&#x65;&#102;&#102;&#114;e&#x79;&#46;&#x73;&#46;&#119;&#x68;&#x69;&#116;&#x61;&#x6b;&#101;&#x72;&#64;&#x6e;&#x6f;&#x61;&#x61;&#46;&#x67;o&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -1635,9 +1646,15 @@ Unit tests are in the <code>test</code> directory.</p>
                        <span class="n">__has_rename_grp__</span><span class="p">,</span> <span class="n">__has_nc_inq_path__</span><span class="p">,</span>
                        <span class="n">__has_nc_inq_format_extended__</span><span class="p">,</span> <span class="n">__has_nc_open_mem__</span><span class="p">,</span>
                        <span class="n">__has_nc_create_mem__</span><span class="p">,</span> <span class="n">__has_cdf5_format__</span><span class="p">,</span>
-                       <span class="n">__has_parallel4_support__</span><span class="p">,</span> <span class="n">__has_pnetcdf_support__</span><span class="p">,</span><span class="n">__has_quantization_support__</span><span class="p">)</span>
+                       <span class="n">__has_parallel4_support__</span><span class="p">,</span> <span class="n">__has_pnetcdf_support__</span><span class="p">,</span>
+                       <span class="n">__has_quantization_support__</span><span class="p">,</span> <span class="n">__has_zstandard_support__</span><span class="p">,</span>
+                       <span class="n">__has_bzip2_support__</span><span class="p">,</span> <span class="n">__has_blosc_support__</span><span class="p">,</span> <span class="n">__has_szip_support__</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="n">__all__</span> <span class="o">=</span>\
 <span class="p">[</span><span class="s1">&#39;Dataset&#39;</span><span class="p">,</span><span class="s1">&#39;Variable&#39;</span><span class="p">,</span><span class="s1">&#39;Dimension&#39;</span><span class="p">,</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span><span class="s1">&#39;MFDataset&#39;</span><span class="p">,</span><span class="s1">&#39;MFTime&#39;</span><span class="p">,</span><span class="s1">&#39;CompoundType&#39;</span><span class="p">,</span><span class="s1">&#39;VLType&#39;</span><span class="p">,</span><span class="s1">&#39;date2num&#39;</span><span class="p">,</span><span class="s1">&#39;num2date&#39;</span><span class="p">,</span><span class="s1">&#39;date2index&#39;</span><span class="p">,</span><span class="s1">&#39;stringtochar&#39;</span><span class="p">,</span><span class="s1">&#39;chartostring&#39;</span><span class="p">,</span><span class="s1">&#39;stringtoarr&#39;</span><span class="p">,</span><span class="s1">&#39;getlibversion&#39;</span><span class="p">,</span><span class="s1">&#39;EnumType&#39;</span><span class="p">,</span><span class="s1">&#39;get_chunk_cache&#39;</span><span class="p">,</span><span class="s1">&#39;set_chunk_cache&#39;</span><span class="p">]</span>
+<span class="c1"># if HDF5_PLUGIN_PATH not set, point to package path if libh5noop.so exists there</span>
+<span class="k">if</span> <span class="s1">&#39;HDF5_PLUGIN_PATH&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;libh5noop.so&#39;</span><span class="p">)):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;HDF5_PLUGIN_PATH&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
         </details>
@@ -1743,7 +1760,7 @@ set this is just used to set the <code><a href="#Dataset.filepath">filepath()</a
 
 <p><strong><code>mode</code></strong>: access mode. <code>r</code> means read-only; no data can be
 modified. <code>w</code> means write; a new file is created, an existing file with
-the same name is deleted. 'x' means write, but fail if an existing
+the same name is deleted. <code>x</code> means write, but fail if an existing
 file with the same name already exists. <code>a</code> and <code>r+</code> mean append; 
 an existing file is opened for reading and writing, if 
 file does not exist already, one is created.
@@ -1758,7 +1775,7 @@ formatted files.</p>
 <p><strong><code>clobber</code></strong>: if <code>True</code> (default), opening a file with <code>mode='w'</code>
 will clobber an existing file with the same name.  if <code>False</code>, an
 exception will be raised if a file with the same name already exists.
-mode='x' is identical to mode='w' with clobber=False.</p>
+mode=<code>x</code> is identical to mode=<code>w</code> with clobber=False.</p>
 
 <p><strong><code>format</code></strong>: underlying file format (one of <code>'NETCDF4',
 'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'</code>, <code>'NETCDF3_64BIT_OFFSET'</code> or
@@ -1801,14 +1818,14 @@ desirable, since the associated Variable instances may still be needed, but are
 rendered unusable when the parent Dataset instance is garbage collected.</p>
 
 <p><strong><code>memory</code></strong>: if not <code>None</code>, create or open an in-memory Dataset.
-If mode = 'r', the memory kwarg must contain a memory buffer object
+If mode = <code>r</code>, the memory kwarg must contain a memory buffer object
 (an object that supports the python buffer interface).
 The Dataset will then be created with contents taken from this block of memory.
-If mode = 'w', the memory kwarg should contain the anticipated size
+If mode = <code>w</code>, the memory kwarg should contain the anticipated size
 of the Dataset in bytes (used only for NETCDF3 files).  A memory
 buffer containing a copy of the Dataset is returned by the
-<code><a href="#Dataset.close">Dataset.close</a></code> method. Requires netcdf-c version 4.4.1 for mode='r,
-netcdf-c 4.6.2 for mode='w'. To persist the file to disk, the raw
+<code><a href="#Dataset.close">Dataset.close</a></code> method. Requires netcdf-c version 4.4.1 for mode=<code>r</code>
+netcdf-c 4.6.2 for mode=<code>w</code>. To persist the file to disk, the raw
 bytes from the returned buffer can be written into a binary file.
 The Dataset can also be re-opened using this memory buffer.</p>
 
@@ -2056,6 +2073,7 @@ datatype.</p>
     
             <div class="docstring"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
+szip_coding='nn', szip_pixels_per_block=8, blosc_shuffle=1,
 endian='native', least_significant_digit=None, significant_digits=None, quantize_mode='BitGroom',
 fill_value=None, chunk_cache=None)</code></strong></p>
 
@@ -2091,7 +2109,10 @@ is an empty tuple, which means the variable is a scalar.</p>
 
 <p>If the optional keyword argument <code>compression</code> is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
-Currently only 'zlib' is supported. Default is <code>None</code> (no compression).</p>
+Currently <code>zlib</code>,<code>szip</code>,<code>zstd</code>,<code>bzip2</code>,<code>blosc_lz</code>,<code>blosc_lz4</code>,<code>blosc_lz4hc</code>,
+<code>blosc_zlib</code> and <code>blosc_zstd</code> are supported.
+Default is <code>None</code> (no compression).  All of the compressors except
+<code>zlib</code> and <code>szip</code> use the HDF5 plugin architecture.</p>
 
 <p>If the optional keyword <code>zlib</code> is <code>True</code>, the data will be compressed in
 the netCDF file using zlib compression (default <code>False</code>).  The use of this option is 
@@ -2102,9 +2123,18 @@ the level of compression desired (default 4). Ignored if <code>compression=None<
 A value of zero disables compression.</p>
 
 <p>If the optional keyword <code>shuffle</code> is <code>True</code>, the HDF5 shuffle filter
-will be applied before compressing the data (default <code>True</code>).  This
+will be applied before compressing the data with zlib (default <code>True</code>).  This
 significantly improves compression. Default is <code>True</code>. Ignored if
 <code>zlib=False</code>.</p>
+
+<p>The optional kwarg <code>blosc_shuffle</code>is  ignored
+unless the blosc compressor is used. <code>blosc_shuffle</code> can be 0 (no shuffle),
+1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 1.</p>
+
+<p>The optional kwargs <code>szip_coding</code> and <code>szip_pixels_per_block</code> are ignored
+unless the szip compressor is used. <code>szip_coding</code> can be <code>ec</code> (entropy coding)
+or <code>nn</code> (nearest neighbor coding). Default is <code>nn</code>. <code>szip_pixels_per_block</code>
+can be 4, 8, 16 or 32 (default 8).</p>
 
 <p>If the optional keyword <code>fletcher32</code> is <code>True</code>, the Fletcher32 HDF5
 checksum algorithm is activated to detect errors. Default <code>False</code>.</p>
@@ -2133,9 +2163,6 @@ but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.</p>
 
-<p>The <code>compression, zlib, complevel, shuffle, fletcher32, contiguous, chunksizes</code> and <code>endian</code>
-keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
-
 <p>The optional keyword <code>fill_value</code> can be used to override the default
 netCDF <code>_FillValue</code> (the value that the variable gets filled with before
 any data is written to it, defaults given in the dict <code>netCDF4.default_fillvals</code>).
@@ -2154,9 +2181,10 @@ in unpacked data that is a reliable value." Default is <code>None</code>, or no
 quantization, or 'lossless' compression.  If <code>significant_digits=3</code>
 then the data will be quantized so that three significant digits are retained, independent
 of the floating point exponent. The keyword argument <code>quantize_mode</code> controls
-the quantization algorithm (default 'BitGroom').  The alternate 'GranularBitRound'
-algorithm may result in better compression for typical geophysical datasets. 
-This <code>significant_digits</code> kwarg is only available  with netcdf-c &gt;= 4.8.2, and 
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
+algorithm may result in better compression for typical geophysical datasets.
+This <code>significant_digits</code> kwarg is only available  with netcdf-c &gt;= 4.9.0, and
 only works with <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted files.</p>
 
 <p>When creating variables in a <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted file,
@@ -2813,16 +2841,18 @@ instance. If <code>None</code>, the data is not truncated.</p>
 digits in the data the contains a reliable value.  Data is
 truncated to retain this number of significant digits when it is assigned to the
 <code><a href="#Variable">Variable</a></code> instance. If <code>None</code>, the data is not truncated.
-Only available with netcdf-c &gt;= 4.8.2,
+Only available with netcdf-c &gt;= 4.9.0,
 and only works with <code>NETCDF4</code> or <code>NETCDF4_CLASSIC</code> formatted files.
 The number of significant digits used in the quantization of variable data can be
 obtained using the <code>Variable.significant_digits</code> method. Default <code>None</code> - 
 no quantization done.</p>
 
 <p><strong><code>quantize_mode</code></strong>: New in version 1.6.0. Controls
-the quantization algorithm (default 'BitGroom').  The alternate 'GranularBitRound'
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
 algorithm may result in better compression for typical geophysical datasets. 
-Ignored if <code>significant_digts</code> not specified.</p>
+Ignored if <code>significant_digits</code> not specified. If 'BitRound' is used, then
+<code>significant_digits</code> is interpreted as binary (not decimal) digits.</p>
 
 <p><strong><code>__orthogonal_indexing__</code></strong>: Always <code>True</code>.  Indicates to client code
 that the object supports 'orthogonal indexing', which means that slices
@@ -2847,7 +2877,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.</p>
 
     
             <div class="docstring"><p><strong><code>__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
-complevel=4, shuffle=True, fletcher32=False, contiguous=False,
+complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
+blosc_shuffle=1, fletcher32=False, contiguous=False,
 chunksizes=None, endian='native',
 least_significant_digit=None,fill_value=None,chunk_cache=None)</code></strong></p>
 
@@ -2880,8 +2911,11 @@ length greater than one are aliases for <code>str</code>.</p>
 (defined previously with <code>createDimension</code>). Default is an empty tuple
 which means the variable is a scalar (and therefore has no dimensions).</p>
 
-<p><strong><code>compression</code></strong>: compression algorithm to use. Default None.  Currently
-only 'zlib' is supported.</p>
+<p><strong><code>compression</code></strong>: compression algorithm to use. 
+Currently <code>zlib</code>,<code>szip</code>,<code>zstd</code>,<code>bzip2</code>,<code>blosc_lz</code>,<code>blosc_lz4</code>,<code>blosc_lz4hc</code>,
+<code>blosc_zlib</code> and <code>blosc_zstd</code> are supported.
+Default is <code>None</code> (no compression).  All of the compressors except
+<code>zlib</code> and <code>szip</code> use the HDF5 plugin architecture.</p>
 
 <p><strong><code>zlib</code></strong>: if <code>True</code>, data assigned to the <code><a href="#Variable">Variable</a></code>
 instance is compressed on disk. Default <code>False</code>. Deprecated - use
@@ -2889,10 +2923,22 @@ instance is compressed on disk. Default <code>False</code>. Deprecated - use
 
 <p><strong><code>complevel</code></strong>: the level of compression to use (1 is the fastest,
 but poorest compression, 9 is the slowest but best compression). Default 4.
-Ignored if <code>compression=None</code>. A value of 0 disables compression.</p>
+Ignored if <code>compression=None</code> or <code>szip</code>. A value of 0 disables compression.</p>
 
 <p><strong><code>shuffle</code></strong>: if <code>True</code>, the HDF5 shuffle filter is applied
-to improve compression. Default <code>True</code>. Ignored if <code>compression=None</code>.</p>
+to improve zlib compression. Default <code>True</code>. Ignored unless <code>compression = 'zlib'</code>.</p>
+
+<p><strong><code>blosc_shuffle</code></strong>: shuffle filter inside blosc compressor (only
+relevant if compression kwarg set to one of the blosc compressors).
+Can be 0 (no blosc shuffle), 1 (bytewise shuffle) or 2 (bitwise
+shuffle)). Default is 1. Ignored if blosc compressor not used.</p>
+
+<p><strong><code>szip_coding</code></strong>: szip coding method. Can be <code>ec</code> (entropy coding)
+or <code>nn</code> (nearest neighbor coding). Default is <code>nn</code>.
+Ignored if szip compressor not used.</p>
+
+<p><strong><code>szip_pixels_per_block</code></strong>: Can be 4,8,16 or 32 (Default 8). 
+Ignored if szip compressor not used.</p>
 
 <p><strong><code>fletcher32</code></strong>: if <code>True</code> (default <code>False</code>), the Fletcher32 checksum
 algorithm is used for error detection.</p>
@@ -2925,8 +2971,8 @@ For netCDF 3 files (that don't use HDF5), only <code>endian='native'</code> is a
 <p>The <code>compression, zlib, complevel, shuffle, fletcher32, contiguous</code> and <code>chunksizes</code>
 keywords are silently ignored for netCDF 3 files that do not use HDF5.</p>
 
-<p><strong><code>least_significant_digit</code></strong>: If this or <code>significant_digits</code> are specified, 
-variable data will be truncated (quantized). <br />
+<p><strong><code>least_significant_digit</code></strong>: If this or <code>significant_digits</code> are specified,
+variable data will be truncated (quantized).
 In conjunction with <code>compression='zlib'</code> this produces
 'lossy', but significantly more efficient compression. For example, if
 <code>least_significant_digit=1</code>, data will be quantized using
@@ -2934,15 +2980,17 @@ around(scale<em>data)/scale, where scale = 2</em>*bits, and bits is determined
 so that a precision of 0.1 is retained (in this case bits=4). Default is
 <code>None</code>, or no quantization.</p>
 
-<p><strong><code>significant_digits</code></strong>: New in version 1.6.0. 
+<p><strong><code>significant_digits</code></strong>: New in version 1.6.0.
 As described for <code>least_significant_digit</code>
 except the number of significant digits retained is prescribed independent
 of the floating point exponent. Default <code>None</code> - no quantization done.</p>
 
 <p><strong><code>quantize_mode</code></strong>: New in version 1.6.0. Controls
-the quantization algorithm (default 'BitGroom').  The alternate 'GranularBitRound'
-algorithm may result in better compression for typical geophysical datasets. 
-Ignored if <code>significant_digts</code> not specified.</p>
+the quantization algorithm (default 'BitGroom', 'BitRound' and
+'GranularBitRound' also available).  The 'GranularBitRound'
+algorithm may result in better compression for typical geophysical datasets.
+Ignored if <code>significant_digts</code> not specified. If 'BitRound' is used, then
+<code>significant_digits</code> is interpreted as binary (not decimal) digits.</p>
 
 <p><strong><code>fill_value</code></strong>:  If specified, the default netCDF <code>_FillValue</code> (the
 value that the variable gets filled with before any data is written to it)
@@ -2951,8 +2999,8 @@ the variable is not pre-filled. The default netCDF fill values can be found
 in the dictionary <code>netCDF4.default_fillvals</code>.</p>
 
 <p><strong><code>chunk_cache</code></strong>: If specified, sets the chunk cache size for this variable.
-Persists as long as Dataset is open. Use <code><a href="#Variable.set_var_chunk_cache">set_var_chunk_cache</a></code> to 
-change it when Dataset is re-opened. </p>
+Persists as long as Dataset is open. Use <code><a href="#Variable.set_var_chunk_cache">set_var_chunk_cache</a></code> to
+change it when Dataset is re-opened.</p>
 
 <p><strong><em>Note</em></strong>: <code><a href="#Variable">Variable</a></code> instances should be created using the
 <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method of a <code><a href="#Dataset">Dataset</a></code> or

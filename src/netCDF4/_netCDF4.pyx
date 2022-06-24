@@ -58,6 +58,12 @@ types) are not supported.
    If the dependencies are not found
    in any of the paths specified by environment variables, then standard locations
    (such as `/usr` and `/usr/local`) are searched.
+ - if the env var `NETCDF_PLUGIN_DIR` is set to point to the location of the netcdf-c compression
+   plugins built by netcdf >= 4.9.0, they will be installed inside the package.  In this
+   case `HDF5_PLUGIN_PATH` will be set to the package installation path on import,
+   so the extra compression algorithms available in netcdf-c >= 4.9.0 will automatically
+   be available.  Otherwise, the user will have to set `HDF5_PLUGIN_PATH` explicitly
+   to have access to the extra compression plugins.
  - run `python setup.py build`, then `python setup.py install` (as root if
    necessary).
  - run the tests in the 'test' directory by running `python run_all.py`.
@@ -641,17 +647,19 @@ datasets.
 
 ## Efficient compression of netCDF variables
 
-Data stored in netCDF 4 `Variable` objects can be compressed and
-decompressed on the fly. The parameters for the compression are
-determined by the `compression`, `complevel` and `shuffle` keyword arguments
-to the `Dataset.createVariable` method. To turn on
-compression, set compression=`zlib`.  The `complevel` keyword regulates the
-speed and efficiency of the compression (1 being fastest, but lowest
+Data stored in netCDF `Variable` objects can be compressed and
+decompressed on the fly. The compression algorithm used is determined
+by the `compression` keyword argument to the `Dataset.createVariable` method.
+`zlib` compression is always available, `szip` is available if the linked HDF5
+library supports it, and `zstd`, `bzip2`, `blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
+`blosc_zlib` and `blosc_zstd` are available via optional external plugins.
+The `complevel` keyword regulates the
+speed and efficiency of the compression for `zlib`, `bzip` and `zstd` (1 being fastest, but lowest
 compression ratio, 9 being slowest but best compression ratio). The
 default value of `complevel` is 4. Setting `shuffle=False` will turn
 off the HDF5 shuffle filter, which de-interlaces a block of data before
-compression by reordering the bytes.  The shuffle filter can
-significantly improve compression ratios, and is on by default.  Setting
+`zlib` compression by reordering the bytes.  The shuffle filter can
+significantly improve compression ratios, and is on by default if `compression=zlib`.  Setting
 `fletcher32` keyword argument to
 `Dataset.createVariable` to `True` (it's `False` by
 default) enables the Fletcher32 checksum algorithm for error detection.
@@ -662,6 +670,9 @@ and `endian` keyword arguments to
 are relevant for `NETCDF4` and `NETCDF4_CLASSIC` files (where the
 underlying file format is HDF5) and are silently ignored if the file
 format is `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`.
+If the HDF5 library is built with szip support, compression=`szip` can also
+be used (in conjunction with the `szip_coding` and `szip_pixels_per_block` keyword
+arguments).  
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
@@ -1321,6 +1332,10 @@ __has_nc_create_mem__ = HAS_NC_CREATE_MEM
 __has_parallel4_support__ = HAS_PARALLEL4_SUPPORT
 __has_pnetcdf_support__ = HAS_PNETCDF_SUPPORT
 __has_quantization_support__ = HAS_QUANTIZATION_SUPPORT
+__has_zstandard_support__ = HAS_ZSTANDARD_SUPPORT
+__has_bzip2_support__ = HAS_BZIP2_SUPPORT
+__has_blosc_support__ = HAS_BLOSC_SUPPORT
+__has_szip_support__ = HAS_SZIP_SUPPORT
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
@@ -1366,6 +1381,11 @@ _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
 _cmode_dict  = {'NETCDF3_CLASSIC' : NC_CLASSIC_MODEL,
                 'NETCDF4_CLASSIC' : NC_CLASSIC_MODEL | NC_NETCDF4,
                 'NETCDF4'         : NC_NETCDF4}
+# dicts for blosc, szip compressors.
+_blosc_dict={'blosc_lz':0,'blosc_lz4':1,'blosc_lz4hc':2,'blosc_snappy':3,'blosc_zlib':4,'blosc_zstd':5}
+_blosc_dict_inv = {v: k for k, v in _blosc_dict.items()}
+_szip_dict = {'ec': 4, 'nn': 32}
+_szip_dict_inv = {v: k for k, v in _szip_dict.items()}
 IF HAS_CDF5_FORMAT:
     # NETCDF3_64BIT deprecated, saved for compatibility.
     # use NETCDF3_64BIT_OFFSET instead.
@@ -2049,7 +2069,7 @@ strings.
 
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
-        the same name is deleted. 'x' means write, but fail if an existing
+        the same name is deleted. `x` means write, but fail if an existing
         file with the same name already exists. `a` and `r+` mean append; 
         an existing file is opened for reading and writing, if 
         file does not exist already, one is created.
@@ -2064,7 +2084,7 @@ strings.
         **`clobber`**: if `True` (default), opening a file with `mode='w'`
         will clobber an existing file with the same name.  if `False`, an
         exception will be raised if a file with the same name already exists.
-        mode='x' is identical to mode='w' with clobber=False.
+        mode=`x` is identical to mode=`w` with clobber=False.
 
         **`format`**: underlying file format (one of `'NETCDF4',
         'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
@@ -2107,14 +2127,14 @@ strings.
         rendered unusable when the parent Dataset instance is garbage collected.
 
         **`memory`**: if not `None`, create or open an in-memory Dataset.
-        If mode = 'r', the memory kwarg must contain a memory buffer object
+        If mode = `r`, the memory kwarg must contain a memory buffer object
         (an object that supports the python buffer interface).
         The Dataset will then be created with contents taken from this block of memory.
-        If mode = 'w', the memory kwarg should contain the anticipated size
+        If mode = `w`, the memory kwarg should contain the anticipated size
         of the Dataset in bytes (used only for NETCDF3 files).  A memory
         buffer containing a copy of the Dataset is returned by the
-        `Dataset.close` method. Requires netcdf-c version 4.4.1 for mode='r,
-        netcdf-c 4.6.2 for mode='w'. To persist the file to disk, the raw
+        `Dataset.close` method. Requires netcdf-c version 4.4.1 for mode=`r`
+        netcdf-c 4.6.2 for mode=`w`. To persist the file to disk, the raw
         bytes from the returned buffer can be written into a binary file.
         The Dataset can also be re-opened using this memory buffer.
 
@@ -2328,7 +2348,7 @@ strings.
                 else:
                     ierr = nc_create(path, NC_SHARE | NC_NOCLOBBER, &grpid)
         else:
-            raise ValueError("mode must be 'w', 'r', 'a' or 'r+', got '%s'" % mode)
+            raise ValueError("mode must be 'w', 'x', 'r', 'a' or 'r+', got '%s'" % mode)
 
         _ensure_nc_success(ierr, err_cls=IOError, filename=path)
 
@@ -2638,12 +2658,15 @@ datatype."""
 
     def createVariable(self, varname, datatype, dimensions=(), 
             compression=None, zlib=False,
-            complevel=4, shuffle=True, fletcher32=False, contiguous=False,
+            complevel=4, shuffle=True,
+            szip_coding='nn',szip_pixels_per_block=8,
+            blosc_shuffle=1,fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None):
         """
 **`createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
+szip_coding='nn', szip_pixels_per_block=8, blosc_shuffle=1,
 endian='native', least_significant_digit=None, significant_digits=None, quantize_mode='BitGroom',
 fill_value=None, chunk_cache=None)`**
 
@@ -2679,7 +2702,10 @@ is an empty tuple, which means the variable is a scalar.
 
 If the optional keyword argument `compression` is set, the data will be
 compressed in the netCDF file using the specified compression algorithm.
-Currently only 'zlib' is supported. Default is `None` (no compression).
+Currently `zlib`,`szip`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
+`blosc_zlib` and `blosc_zstd` are supported.
+Default is `None` (no compression).  All of the compressors except
+`zlib` and `szip` use the HDF5 plugin architecture.
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
 the netCDF file using zlib compression (default `False`).  The use of this option is 
@@ -2690,9 +2716,18 @@ the level of compression desired (default 4). Ignored if `compression=None`.
 A value of zero disables compression.
 
 If the optional keyword `shuffle` is `True`, the HDF5 shuffle filter
-will be applied before compressing the data (default `True`).  This
+will be applied before compressing the data with zlib (default `True`).  This
 significantly improves compression. Default is `True`. Ignored if
 `zlib=False`.
+
+The optional kwarg `blosc_shuffle`is  ignored
+unless the blosc compressor is used. `blosc_shuffle` can be 0 (no shuffle),
+1 (byte-wise shuffle) or 2 (bit-wise shuffle). Default is 1.
+
+The optional kwargs `szip_coding` and `szip_pixels_per_block` are ignored
+unless the szip compressor is used. `szip_coding` can be `ec` (entropy coding)
+or `nn` (nearest neighbor coding). Default is `nn`. `szip_pixels_per_block`
+can be 4, 8, 16 or 32 (default 8).
 
 If the optional keyword `fletcher32` is `True`, the Fletcher32 HDF5
 checksum algorithm is activated to detect errors. Default `False`.
@@ -2720,9 +2755,6 @@ will automatically handle endian conversions when the data is read,
 but if the data is always going to be read on a computer with the
 opposite format as the one used to create the file, there may be
 some performance advantage to be gained by setting the endian-ness.
-
-The `compression, zlib, complevel, shuffle, fletcher32, contiguous, chunksizes` and `endian`
-keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
 The optional keyword `fill_value` can be used to override the default
 netCDF `_FillValue` (the value that the variable gets filled with before
@@ -2805,6 +2837,8 @@ is the number of variable dimensions."""
         # create variable.
         group.variables[varname] = Variable(group, varname, datatype,
         dimensions=dimensions, compression=compression, zlib=zlib, complevel=complevel, shuffle=shuffle,
+        szip_coding=szip_coding, szip_pixels_per_block=szip_pixels_per_block,
+        blosc_shuffle=blosc_shuffle,
         fletcher32=fletcher32, contiguous=contiguous, chunksizes=chunksizes,
         endian=endian, least_significant_digit=least_significant_digit,
         significant_digits=significant_digits,quantize_mode=quantize_mode,fill_value=fill_value, chunk_cache=chunk_cache)
@@ -3645,12 +3679,15 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
     def __init__(self, grp, name, datatype, dimensions=(),
             compression=None, zlib=False,
-            complevel=4, shuffle=True, fletcher32=False, contiguous=False,
+            complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
+            blosc_shuffle=1, 
+            fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
         """
         **`__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
-        complevel=4, shuffle=True, fletcher32=False, contiguous=False,
+        complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
+        blosc_shuffle=1, fletcher32=False, contiguous=False,
         chunksizes=None, endian='native',
         least_significant_digit=None,fill_value=None,chunk_cache=None)`**
 
@@ -3683,8 +3720,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
 
-        **`compression`**: compression algorithm to use. Default None.  Currently
-        only 'zlib' is supported.
+        **`compression`**: compression algorithm to use. 
+        Currently `zlib`,`szip`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
+        `blosc_zlib` and `blosc_zstd` are supported.
+        Default is `None` (no compression).  All of the compressors except
+        `zlib` and `szip` use the HDF5 plugin architecture.
 
         **`zlib`**: if `True`, data assigned to the `Variable`
         instance is compressed on disk. Default `False`. Deprecated - use
@@ -3692,10 +3732,22 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
         **`complevel`**: the level of compression to use (1 is the fastest,
         but poorest compression, 9 is the slowest but best compression). Default 4.
-        Ignored if `compression=None`. A value of 0 disables compression.
+        Ignored if `compression=None` or `szip`. A value of 0 disables compression.
 
         **`shuffle`**: if `True`, the HDF5 shuffle filter is applied
-        to improve compression. Default `True`. Ignored if `compression=None`.
+        to improve zlib compression. Default `True`. Ignored unless `compression = 'zlib'`.
+
+        **`blosc_shuffle`**: shuffle filter inside blosc compressor (only
+        relevant if compression kwarg set to one of the blosc compressors).
+        Can be 0 (no blosc shuffle), 1 (bytewise shuffle) or 2 (bitwise
+        shuffle)). Default is 1. Ignored if blosc compressor not used.
+
+        **`szip_coding`**: szip coding method. Can be `ec` (entropy coding)
+        or `nn` (nearest neighbor coding). Default is `nn`.
+        Ignored if szip compressor not used.
+
+        **`szip_pixels_per_block`**: Can be 4,8,16 or 32 (Default 8). 
+        Ignored if szip compressor not used.
 
         **`fletcher32`**: if `True` (default `False`), the Fletcher32 checksum
         algorithm is used for error detection.
@@ -3728,8 +3780,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         The `compression, zlib, complevel, shuffle, fletcher32, contiguous` and `chunksizes`
         keywords are silently ignored for netCDF 3 files that do not use HDF5.
 
-        **`least_significant_digit`**: If this or `significant_digits` are specified, 
-        variable data will be truncated (quantized).  
+        **`least_significant_digit`**: If this or `significant_digits` are specified,
+        variable data will be truncated (quantized).
         In conjunction with `compression='zlib'` this produces
         'lossy', but significantly more efficient compression. For example, if
         `least_significant_digit=1`, data will be quantized using
@@ -3737,7 +3789,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         so that a precision of 0.1 is retained (in this case bits=4). Default is
         `None`, or no quantization.
 
-        **`significant_digits`**: New in version 1.6.0. 
+        **`significant_digits`**: New in version 1.6.0.
         As described for `least_significant_digit`
         except the number of significant digits retained is prescribed independent
         of the floating point exponent. Default `None` - no quantization done.
@@ -3745,7 +3797,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         **`quantize_mode`**: New in version 1.6.0. Controls
         the quantization algorithm (default 'BitGroom', 'BitRound' and
         'GranularBitRound' also available).  The 'GranularBitRound'
-        algorithm may result in better compression for typical geophysical datasets. 
+        algorithm may result in better compression for typical geophysical datasets.
         Ignored if `significant_digts` not specified. If 'BitRound' is used, then
         `significant_digits` is interpreted as binary (not decimal) digits.
 
@@ -3756,14 +3808,16 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         in the dictionary `netCDF4.default_fillvals`.
 
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
-        Persists as long as Dataset is open. Use `set_var_chunk_cache` to 
-        change it when Dataset is re-opened. 
+        Persists as long as Dataset is open. Use `set_var_chunk_cache` to
+        change it when Dataset is re-opened.
 
         ***Note***: `Variable` instances should be created using the
         `Dataset.createVariable` method of a `Dataset` or
         `Group` instance, not using this class directly.
         """
-        cdef int ierr, ndims, icontiguous, icomplevel, numdims, _grpid, nsd
+        cdef int ierr, ndims, icontiguous, icomplevel, numdims, _grpid, nsd,
+        cdef unsigned int iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
+        cdef int iszip_coding, iszip_pixels_per_block
         cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
@@ -3780,13 +3834,36 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         # if complevel is set to zero, turn off compression
         if not complevel:
             compression = None
-        # possible future options include 'zstd' and 'bzip2',
         zlib = False
-        #zstd = False
+        szip = False
+        zstd = False
+        bzip2 = False
+        blosc_lz = False
+        blosc_lz4 = False
+        blosc_lz4hc = False
+        #blosc_snappy = False
+        blosc_zlib = False
+        blosc_zstd = False
         if compression == 'zlib':
             zlib = True
-        #elif compression == 'zstd':
-        #    zstd = True
+        elif compression == 'szip':
+            szip = True
+        elif compression == 'zstd':
+            zstd = True
+        elif compression == 'bzip2':
+            bzip2 = True
+        elif compression == 'blosc_lz':
+            blosc_lz = True
+        elif compression == 'blosc_lz4':
+            blosc_lz4 = True
+        elif compression == 'blosc_lz4hc':
+            blosc_lz4hc = True
+        #elif compression == 'blosc_snappy':
+        #    blosc_snappy = True
+        elif compression == 'blosc_zlib':
+            blosc_zlib = True
+        elif compression == 'blosc_zstd':
+            blosc_zstd = True
         elif not compression:
             compression = None # if compression evaluates to False, set to None.
             pass
@@ -3924,12 +4001,64 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         if ierr != NC_NOERR:
                             if grp.data_model != 'NETCDF4': grp._enddef()
                             _ensure_nc_success(ierr)
-                    #if zstd:
-                    #    icomplevel = complevel
-                    #    ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
-                    #    if ierr != NC_NOERR:
-                    #        if grp.data_model != 'NETCDF4': grp._enddef()
-                    #        _ensure_nc_success(ierr)
+                    if szip:
+                        IF HAS_SZIP_SUPPORT:
+                            try:
+                                iszip_coding = _szip_dict[szip_coding]
+                            except KeyError:
+                                msg="unknown szip coding ('ec' or 'nn' supported)"
+                                raise ValueError(msg)
+                            iszip_pixels_per_block = szip_pixels_per_block
+                            ierr = nc_def_var_szip(self._grpid, self._varid, iszip_coding, iszip_pixels_per_block)
+                            if ierr != NC_NOERR:
+                                if grp.data_model != 'NETCDF4': grp._enddef()
+                                _ensure_nc_success(ierr)
+                        ELSE:
+                            msg = """
+compression='szip' only works if linked version of hdf5 has szip functionality enabled"""
+                            raise ValueError(msg)
+                    if zstd:
+                        IF HAS_ZSTANDARD_SUPPORT:
+                            icomplevel = complevel
+                            ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
+                            if ierr != NC_NOERR:
+                                if grp.data_model != 'NETCDF4': grp._enddef()
+                                _ensure_nc_success(ierr)
+                        ELSE:
+                            msg = """
+compression='zstd' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
+version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-python."""
+                            raise ValueError(msg)
+                    if bzip2:
+                        IF HAS_BZIP2_SUPPORT:
+                            icomplevel = complevel
+                            ierr = nc_def_var_bzip2(self._grpid, self._varid, icomplevel)
+                            if ierr != NC_NOERR:
+                                if grp.data_model != 'NETCDF4': grp._enddef()
+                                _ensure_nc_success(ierr)
+                        ELSE:
+                            msg = """
+compression='bzip2' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
+version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python."""
+                            raise ValueError(msg)
+                    if blosc_zstd or blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib:
+                        IF HAS_BLOSC_SUPPORT:
+                            iblosc_compressor = _blosc_dict[compression]
+                            iblosc_shuffle = blosc_shuffle
+                            iblosc_blocksize = 0 # not currently used by c lib
+                            iblosc_complevel = complevel
+                            ierr = nc_def_var_blosc(self._grpid, self._varid,\
+                                    iblosc_compressor,\
+                                    iblosc_complevel,iblosc_blocksize,\
+                                    iblosc_shuffle)
+                            if ierr != NC_NOERR:
+                                if grp.data_model != 'NETCDF4': grp._enddef()
+                                _ensure_nc_success(ierr)
+                        ELSE:
+                            msg = """
+compression='blosc_*' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
+version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python."""
+                            raise ValueError(msg)
                 # set checksum.
                 if fletcher32 and ndims: # don't bother for scalar variable
                     ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
@@ -4311,8 +4440,14 @@ attributes."""
 **`filters(self)`**
 
 return dictionary containing HDF5 filter parameters."""
-        cdef int ierr,ideflate,ishuffle,icomplevel,ifletcher32
-        filtdict = {'compression':None,'zlib':False,'shuffle':False,'complevel':0,'fletcher32':False}
+        cdef int ierr,ideflate,ishuffle,icomplevel,icomplevel_zstd,icomplevel_bzip2,ifletcher32
+        cdef int izstd=0
+        cdef int ibzip2=0
+        cdef int iblosc=0
+        cdef int iszip=0
+        cdef unsigned int iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
+        cdef int iszip_coding, iszip_pixels_per_block
+        filtdict = {'zlib':False,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
         with nogil:
             ierr = nc_inq_var_deflate(self._grpid, self._varid, &ishuffle, &ideflate, &icomplevel)
@@ -4320,10 +4455,48 @@ return dictionary containing HDF5 filter parameters."""
         with nogil:
             ierr = nc_inq_var_fletcher32(self._grpid, self._varid, &ifletcher32)
         _ensure_nc_success(ierr)
+        IF HAS_ZSTANDARD_SUPPORT:
+            ierr = nc_inq_var_zstandard(self._grpid, self._varid, &izstd,\
+                    &icomplevel_zstd)
+            if ierr != 0: izstd=0
+            # _ensure_nc_success(ierr)
+        IF HAS_BZIP2_SUPPORT:
+            ierr = nc_inq_var_bzip2(self._grpid, self._varid, &ibzip2,\
+                    &icomplevel_bzip2)
+            if ierr != 0: ibzip2=0
+            #_ensure_nc_success(ierr)
+        IF HAS_BLOSC_SUPPORT:
+            ierr = nc_inq_var_blosc(self._grpid, self._varid, &iblosc,\
+                    &iblosc_compressor,&iblosc_complevel,&iblosc_blocksize,&iblosc_shuffle)
+            if ierr != 0: iblosc=0
+            #_ensure_nc_success(ierr)
+        IF HAS_SZIP_SUPPORT:
+            ierr = nc_inq_var_szip(self._grpid, self._varid, &iszip_coding,\
+                    &iszip_pixels_per_block)
+            if ierr != 0:
+                iszip=0
+            else:
+                if iszip_coding:
+                    iszip=1
+                else:
+                    iszip=0
+            #_ensure_nc_success(ierr)
         if ideflate:
-            filtdict['compression']='zlib'
             filtdict['zlib']=True
             filtdict['complevel']=icomplevel
+        if izstd:
+            filtdict['zstd']=True
+            filtdict['complevel']=icomplevel_zstd
+        if ibzip2:
+            filtdict['bzip2']=True
+            filtdict['complevel']=icomplevel_bzip2
+        if iblosc:
+            blosc_compressor = iblosc_compressor
+            filtdict['blosc']={'compressor':_blosc_dict_inv[blosc_compressor],'shuffle':iblosc_shuffle}
+            filtdict['complevel']=iblosc_complevel
+        if iszip:
+            szip_coding = iszip_coding
+            filtdict['szip']={'coding':_szip_dict_inv[szip_coding],'pixels_per_block':iszip_pixels_per_block}
         if ishuffle:
             filtdict['shuffle']=True
         if ifletcher32:

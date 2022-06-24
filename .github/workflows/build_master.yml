@@ -23,7 +23,7 @@ jobs:
     - name: Install Ubuntu Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev 
+        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
         echo "Download and build netCDF github master"
         git clone https://github.com/Unidata/netcdf-c
         pushd netcdf-c
@@ -50,17 +50,18 @@ jobs:
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
+        export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c/plugins/plugindir
         python setup.py install
     - name: Test
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
+        #export HDF5_PLUGIN_PATH=${NETCDF_DIR}/plugins/plugindir
         python checkversion.py
         # serial
         cd test
         python run_all.py
         # parallel
         cd ../examples
-        python bench_compress4.py
         mpirun.mpich -np 4 python mpi_example.py
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"

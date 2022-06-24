@@ -1,6 +1,5 @@
 from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
-from netCDF4.utils import _quantize
 from numpy.testing import assert_almost_equal
 import numpy as np
 import os, tempfile, unittest
@@ -59,7 +58,8 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[1]).st_size
         #print('compressed lossless no shuffle = ',size)
         assert_almost_equal(data_array,f.variables['data'][:])
-        assert f.variables['data'].filters() == {'compression':'zlib','zlib':True,'shuffle':False,'complevel':complevel,'fletcher32':False}
+        assert f.variables['data'].filters() ==\
+        {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':complevel,'fletcher32':False}
         assert(size < 0.95*uncompressed_size)
         f.close()
         # check compression with shuffle
@@ -67,7 +67,8 @@ class CompressionTestCase(unittest.TestCase):
         size = os.stat(self.files[2]).st_size
         #print('compressed lossless with shuffle ',size)
         assert_almost_equal(data_array,f.variables['data'][:])
-        assert f.variables['data'].filters() == {'compression':'zlib','zlib':True,'shuffle':True,'complevel':complevel,'fletcher32':False}
+        assert f.variables['data'].filters() ==\
+        {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':True,'complevel':complevel,'fletcher32':False}
         assert(size < 0.85*uncompressed_size)
         f.close()
         # check lossy compression without shuffle
