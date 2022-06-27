@@ -1446,6 +1446,18 @@ _nctonptype[NC_CHAR]='S1'
 
 # internal C functions.
 
+def has_blasc_filter():
+    """check to see if blosc compression filter is available"""
+    cdef int ierr
+    IF HAS_BLOSC_SUPPORT:
+        ierr = nc_inq_filter_avail(0, H5Z_FILTER_BLOSC)
+        if ierr:
+            return False
+        else:
+            return True
+    ELSE:
+        return False
+
 cdef _get_att_names(int grpid, int varid):
     # Private function to get all the attribute names in a group
     cdef int ierr, numatts, n
