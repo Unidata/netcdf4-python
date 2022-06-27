@@ -713,7 +713,7 @@ IF HAS_SZIP_SUPPORT:
 IF HAS_ZSTANDARD_SUPPORT:
     cdef extern from "netcdf_filter.h":
         cdef enum:
-            H5Z_FILTER_ZSTANDARD
+            H5Z_FILTER_ZSTD
         int nc_def_var_zstandard(int ncid, int varid, int level)
         int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp)
         int nc_inq_filter_avail(int ncid, unsigned id)
