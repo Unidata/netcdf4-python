@@ -1,7 +1,7 @@
 from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
-import os, tempfile, unittest
+import os, tempfile, unittest, sys
 
 ndim = 100000
 filename1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
