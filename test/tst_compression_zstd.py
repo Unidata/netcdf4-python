@@ -49,4 +49,9 @@ class CompressionTestCase(unittest.TestCase):
         f.close()
 
 if __name__ == '__main__':
-    unittest.main()
+    nc = Dataset(filename1,'w')
+    if not nc.has_zstd_filter():
+        sys.stdout.write('blosc filter not available, skipping tests ...\n')
+    else:
+        nc.close()
+        unittest.main()

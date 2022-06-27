@@ -39,4 +39,9 @@ class CompressionTestCase(unittest.TestCase):
         f.close()
 
 if __name__ == '__main__':
-    unittest.main()
+    nc = Dataset(filename,'w')
+    if not nc.has_szip_filter():
+        sys.stdout.write('szip filter not available, skipping tests ...\n')
+    else:
+        nc.close()
+        unittest.main()
