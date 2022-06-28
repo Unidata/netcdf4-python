@@ -1,3 +1,8 @@
+ since version 1.6.0 release
+==============================
+ * add Dataset methods has_<name>_filter (where <name>=zstd,blosc,bzip2,szip)
+ to check for availability of extra compression filters.
+
  version 1.6.0 (tag v1.6.0rel)
 ==============================
  * add support for new quantization functionality in netcdf-c 4.9.0 via "signficant_digits"
