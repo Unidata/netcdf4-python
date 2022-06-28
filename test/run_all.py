@@ -1,5 +1,5 @@
-import glob, os, sys, unittest, struct
-from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__version__
+import glob, os, sys, unittest, struct, tempfile
+from netCDF4 import getlibversion,__hdf5libversion__,__netcdf4libversion__,__version__, Dataset
 from netCDF4 import __has_cdf5_format__, __has_nc_inq_path__, __has_nc_create_mem__, \
                     __has_parallel4_support__, __has_pnetcdf_support__, \
                     __has_zstandard_support__, __has_bzip2_support__, \
@@ -26,18 +26,22 @@ if not __has_cdf5_format__ or struct.calcsize("P") < 8:
 if not __has_quantization_support__:
     test_files.remove('tst_compression_quant.py')
     sys.stdout.write('not running tst_compression_quant.py ...\n')
-if not __has_zstandard_support__ or os.getenv('NO_PLUGINS'):
+filename = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+nc = Dataset(filename,'w')
+if not __has_zstandard_support__ or os.getenv('NO_PLUGINS') or not nc.has_zstd_filter():
     test_files.remove('tst_compression_zstd.py')
     sys.stdout.write('not running tst_compression_zstd.py ...\n')
-if not __has_bzip2_support__ or os.getenv('NO_PLUGINS'):
+if not __has_bzip2_support__ or os.getenv('NO_PLUGINS') or not nc.has_bzip2_filter():
     test_files.remove('tst_compression_bzip2.py')
     sys.stdout.write('not running tst_compression_bzip2.py ...\n')
-if not __has_blosc_support__ or os.getenv('NO_PLUGINS'):
+if not __has_blosc_support__ or os.getenv('NO_PLUGINS') or not nc.has_blosc_filter():
     test_files.remove('tst_compression_blosc.py')
     sys.stdout.write('not running tst_compression_blosc.py ...\n')
-if not __has_szip_support__:
+if not __has_szip_support__ or not nc.has_szip_filter():
     test_files.remove('tst_compression_szip.py')
     sys.stdout.write('not running tst_compression_szip.py ...\n')
+nc.close()
+os.remove(filename)
 
 # Don't run tests that require network connectivity
 if os.getenv('NO_NET'):
