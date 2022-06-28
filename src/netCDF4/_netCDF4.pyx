@@ -3361,6 +3361,58 @@ to be installed and in `$PATH`.
             f = open(outfile,'w')
             f.write(result.stdout)
             f.close()
+    def has_blosc_filter(self):
+        """
+**`has_blosc_filter(self)`**
+returns True if blosc compression filter is available"""
+        cdef int ierr
+        IF HAS_BLOSC_SUPPORT:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BLOSC)
+            if ierr:
+                return False
+            else:
+                return True
+        ELSE:
+            return False
+    def has_zstd_filter(self):
+        """
+**`has_zstd_filter(self)`**
+returns True if zstd compression filter is available"""
+        cdef int ierr
+        IF HAS_ZSTANDARD_SUPPORT:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_ZSTD)
+            if ierr:
+                return False
+            else:
+                return True
+        ELSE:
+            return False
+    def has_bzip2_filter(self):
+        """
+**`has_bzip2_filter(self)`**
+returns True if bzip2 compression filter is available"""
+        cdef int ierr
+        IF HAS_BZIP2_SUPPORT:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BZIP2)
+            if ierr:
+                return False
+            else:
+                return True
+        ELSE:
+            return False
+    def has_szip_filter(self):
+        """
+**`has_szip_filter(self)`**
+returns True if szip compression filter is available"""
+        cdef int ierr
+        IF HAS_SZIP_SUPPORT:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
+            if ierr:
+                return False
+            else:
+                return True
+        ELSE:
+            return False
 
 cdef class Group(Dataset):
     """

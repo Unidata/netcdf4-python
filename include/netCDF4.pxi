@@ -698,9 +698,13 @@ IF HAS_QUANTIZATION_SUPPORT:
             NC_QUANTIZE_BITROUND
         int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) 
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
+    cdef extern from "netcdf_filter.h":
+        int nc_inq_filter_avail(int ncid, unsigned filterid);
 
 IF HAS_SZIP_SUPPORT:
     cdef extern from "netcdf.h":
+        cdef enum:
+            H5Z_FILTER_SZIP
         int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) 
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
         int nc_def_var_szip(int ncid, int varid, int options_mask, int pixels_per_bloc)
@@ -709,7 +713,7 @@ IF HAS_SZIP_SUPPORT:
 IF HAS_ZSTANDARD_SUPPORT:
     cdef extern from "netcdf_filter.h":
         cdef enum:
-            H5Z_FILTER_ZSTANDARD
+            H5Z_FILTER_ZSTD
         int nc_def_var_zstandard(int ncid, int varid, int level)
         int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp)
         int nc_inq_filter_avail(int ncid, unsigned id)
@@ -723,6 +727,8 @@ IF HAS_BZIP2_SUPPORT:
 
 IF HAS_BLOSC_SUPPORT:
     cdef extern from "netcdf_filter.h":
+        cdef enum:
+            H5Z_FILTER_BLOSC
         int nc_def_var_blosc(int ncid, int varid, unsigned subcompressor, unsigned level, unsigned blocksize, unsigned addshuffle)
         int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigned* subcompressorp, unsigned* levelp, unsigned* blocksizep, unsigned* addshufflep)
 

@@ -1,7 +1,7 @@
 from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
-import os, tempfile, unittest
+import os, tempfile, unittest, sys
 
 ndim = 100000
 iblosc_shuffle=2
@@ -74,4 +74,9 @@ class CompressionTestCase(unittest.TestCase):
         f.close()
 
 if __name__ == '__main__':
-    unittest.main()
+    nc = Dataset(filename,'w')
+    if not nc.has_blosc_filter():
+        sys.stdout.write('blosc filter not available, skipping tests ...\n')
+    else:
+        nc.close()
+        unittest.main()
