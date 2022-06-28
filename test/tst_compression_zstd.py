@@ -51,7 +51,7 @@ class CompressionTestCase(unittest.TestCase):
 if __name__ == '__main__':
     nc = Dataset(filename1,'w')
     if not nc.has_zstd_filter():
-        sys.stdout.write('blosc filter not available, skipping tests ...\n')
+        sys.stdout.write('zstd filter not available, skipping tests ...\n')
     else:
         nc.close()
         unittest.main()
