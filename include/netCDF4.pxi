@@ -218,9 +218,9 @@ cdef extern from "netcdf.h":
         NC_ENDIAN_BIG 
     const_char_ptr *nc_inq_libvers() nogil
     const_char_ptr *nc_strerror(int ncerr)
-    int nc_create(char *path, int cmode, int *ncidp)
+    int nc_create(char *path, int cmode, int *ncidp) nogil
     int nc__create(char *path, int cmode, size_t initialsz, size_t *chunksizehintp, int *ncidp)
-    int nc_open(char *path, int mode, int *ncidp)
+    int nc_open(char *path, int mode, int *ncidp) nogil
     int nc__open(char *path, int mode, size_t *chunksizehintp, int *ncidp)
     int nc_inq_path(int ncid, size_t *pathlen, char *path) nogil
     int nc_inq_format_extended(int ncid, int *formatp, int* modep) nogil
@@ -230,13 +230,13 @@ cdef extern from "netcdf.h":
     int nc_inq_grp_parent(int ncid, int *parent_ncid) nogil
     int nc_inq_varids(int ncid, int *nvars, int *varids) nogil
     int nc_inq_dimids(int ncid, int *ndims, int *dimids, int include_parents) nogil
-    int nc_def_grp(int parent_ncid, char *name, int *new_ncid)
-    int nc_def_compound(int ncid, size_t size, char *name, nc_type *typeidp)
+    int nc_def_grp(int parent_ncid, char *name, int *new_ncid) nogil
+    int nc_def_compound(int ncid, size_t size, char *name, nc_type *typeidp) nogil
     int nc_insert_compound(int ncid, nc_type xtype, char *name, 
-                   size_t offset, nc_type field_typeid)
+                   size_t offset, nc_type field_typeid) nogil
     int nc_insert_array_compound(int ncid, nc_type xtype, char *name, 
                          size_t offset, nc_type field_typeid,
-                         int ndims, int *dim_sizes)
+                         int ndims, int *dim_sizes) nogil
     int nc_inq_type(int ncid, nc_type xtype, char *name, size_t *size) nogil
     int nc_inq_compound(int ncid, nc_type xtype, char *name, size_t *size, 
                 size_t *nfieldsp) nogil
@@ -258,14 +258,14 @@ cdef extern from "netcdf.h":
                            int *ndimsp) nogil
     int nc_inq_compound_fielddim_sizes(int ncid, nc_type xtype, int fieldid, 
                                int *dim_sizes) nogil
-    int nc_def_vlen(int ncid, char *name, nc_type base_typeid, nc_type *xtypep)
+    int nc_def_vlen(int ncid, char *name, nc_type base_typeid, nc_type *xtypep) nogil
     int nc_inq_vlen(int ncid, nc_type xtype, char *name, size_t *datum_sizep, 
             nc_type *base_nc_typep) nogil
     int nc_inq_user_type(int ncid, nc_type xtype, char *name, size_t *size, 
                      nc_type *base_nc_typep, size_t *nfieldsp, int *classp) nogil
     int nc_inq_typeids(int ncid, int *ntypes, int *typeids) nogil
     int nc_put_att(int ncid, int varid, char *name, nc_type xtype, 
-               size_t len, void *op)
+               size_t len, void *op) nogil
     int nc_get_att(int ncid, int varid, char *name, void *ip) nogil
     int nc_get_att_string(int ncid, int varid, char *name, char **ip) nogil
     int nc_put_att_string(int ncid, int varid, char *name, size_t len, char **op) nogil
@@ -284,12 +284,12 @@ cdef extern from "netcdf.h":
     int nc_get_var1(int ncid, int varid,  size_t *indexp,
                 void *ip)
     int nc_put_vara(int ncid, int varid,  size_t *startp, 
-                size_t *countp, void *op) 
+                size_t *countp, void *op) nogil
     int nc_get_vara(int ncid, int varid,  size_t *startp, 
                 size_t *countp, void *ip) nogil
     int nc_put_vars(int ncid, int varid,  size_t *startp, 
                 size_t *countp, ptrdiff_t *stridep,
-                void *op) 
+                void *op)  nogil
     int nc_get_vars(int ncid, int varid,  size_t *startp, 
                 size_t *countp, ptrdiff_t *stridep,
                 void *ip) nogil
@@ -302,39 +302,39 @@ cdef extern from "netcdf.h":
     int nc_put_var(int ncid, int varid,  void *op)
     int nc_get_var(int ncid, int varid,  void *ip)
     int nc_def_var_deflate(int ncid, int varid, int shuffle, int deflate, 
-	           	   int deflate_level)
-    int nc_def_var_fletcher32(int ncid, int varid, int fletcher32)
+	           	   int deflate_level) nogil
+    int nc_def_var_fletcher32(int ncid, int varid, int fletcher32) nogil
     int nc_inq_var_fletcher32(int ncid, int varid, int *fletcher32p) nogil
-    int nc_def_var_chunking(int ncid, int varid, int contiguous, size_t *chunksizesp)
-    int nc_def_var_fill(int ncid, int varid, int no_fill, void *fill_value)
-    int nc_def_var_endian(int ncid, int varid, int endian)
+    int nc_def_var_chunking(int ncid, int varid, int contiguous, size_t *chunksizesp) nogil
+    int nc_def_var_fill(int ncid, int varid, int no_fill, void *fill_value) nogil
+    int nc_def_var_endian(int ncid, int varid, int endian) nogil
     int nc_inq_var_chunking(int ncid, int varid, int *contiguousp, size_t *chunksizesp) nogil
     int nc_inq_var_deflate(int ncid, int varid, int *shufflep, 
       		   int *deflatep, int *deflate_levelp) nogil
     int nc_inq_var_fill(int ncid, int varid, int *no_fill, void *fill_value) nogil
     int nc_inq_var_endian(int ncid, int varid, int *endianp) nogil
-    int nc_set_fill(int ncid, int fillmode, int *old_modep)
-    int nc_set_default_format(int format, int *old_formatp)
-    int nc_redef(int ncid)
+    int nc_set_fill(int ncid, int fillmode, int *old_modep) nogil 
+    int nc_set_default_format(int format, int *old_formatp) nogil
+    int nc_redef(int ncid) nogil
     int nc__enddef(int ncid, size_t h_minfree, size_t v_align,
-            size_t v_minfree, size_t r_align)
-    int nc_enddef(int ncid)
-    int nc_sync(int ncid)
-    int nc_abort(int ncid)
-    int nc_close(int ncid)
+            size_t v_minfree, size_t r_align) nogil
+    int nc_enddef(int ncid) nogil
+    int nc_sync(int ncid) nogil
+    int nc_abort(int ncid) nogil
+    int nc_close(int ncid) nogil
     int nc_inq(int ncid, int *ndimsp, int *nvarsp, int *nattsp, int *unlimdimidp) nogil
-    int nc_inq_ndims(int ncid, int *ndimsp) nogil
+    int nc_inq_ndims(int ncid, int *ndimsp) nogil 
     int nc_inq_nvars(int ncid, int *nvarsp) nogil
-    int nc_inq_natts(int ncid, int *nattsp) nogil
+    int nc_inq_natts(int ncid, int *nattsp) nogil 
     int nc_inq_unlimdim(int ncid, int *unlimdimidp) nogil
     int nc_inq_unlimdims(int ncid, int *nunlimdimsp, int *unlimdimidsp) nogil
     int nc_inq_format(int ncid, int *formatp) nogil
-    int nc_def_dim(int ncid, char *name, size_t len, int *idp)
+    int nc_def_dim(int ncid, char *name, size_t len, int *idp) nogil
     int nc_inq_dimid(int ncid, char *name, int *idp) nogil
     int nc_inq_dim(int ncid, int dimid, char *name, size_t *lenp) nogil
     int nc_inq_dimname(int ncid, int dimid, char *name) nogil
     int nc_inq_dimlen(int ncid, int dimid, size_t *lenp) nogil
-    int nc_rename_dim(int ncid, int dimid, char *name)
+    int nc_rename_dim(int ncid, int dimid, char *name) nogil
     int nc_inq_att(int ncid, int varid, char *name,
                nc_type *xtypep, size_t *lenp) nogil
     int nc_inq_attid(int ncid, int varid, char *name, int *idp) nogil
@@ -342,10 +342,10 @@ cdef extern from "netcdf.h":
     int nc_inq_attlen(int ncid, int varid, char *name, size_t *lenp) nogil
     int nc_inq_attname(int ncid, int varid, int attnum, char *name) nogil
     int nc_copy_att(int ncid_in, int varid_in, char *name, int ncid_out, int varid_out)
-    int nc_rename_att(int ncid, int varid, char *name, char *newname)
-    int nc_del_att(int ncid, int varid, char *name)
+    int nc_rename_att(int ncid, int varid, char *name, char *newname) nogil
+    int nc_del_att(int ncid, int varid, char *name) nogil
     int nc_put_att_text(int ncid, int varid, char *name,
-                    size_t len, char *op)
+                    size_t len, char *op) nogil
     int nc_get_att_text(int ncid, int varid, char *name, char *ip) nogil
     int nc_put_att_uchar(int ncid, int varid, char *name, nc_type xtype,
                      size_t len, unsigned char *op)
@@ -382,7 +382,7 @@ cdef extern from "netcdf.h":
     int nc_get_att_ulonglong(int ncid, int varid, char *name, 
                          unsigned long long *ip)
     int nc_def_var(int ncid, char *name, nc_type xtype, int ndims, 
-               int *dimidsp, int *varidp)
+               int *dimidsp, int *varidp) nogil
     int nc_inq_var(int ncid, int varid, char *name, nc_type *xtypep, 
                int *ndimsp, int *dimidsp, int *nattsp) nogil
     int nc_inq_varid(int ncid, char *name, int *varidp) nogil
@@ -391,7 +391,7 @@ cdef extern from "netcdf.h":
     int nc_inq_varndims(int ncid, int varid, int *ndimsp) nogil
     int nc_inq_vardimid(int ncid, int varid, int *dimidsp) nogil
     int nc_inq_varnatts(int ncid, int varid, int *nattsp) nogil
-    int nc_rename_var(int ncid, int varid, char *name)
+    int nc_rename_var(int ncid, int varid, char *name) nogil
     int nc_copy_var(int ncid_in, int varid, int ncid_out)
     int nc_put_var1_text(int ncid, int varid, size_t *indexp, char *op)
     int nc_get_var1_text(int ncid, int varid, size_t *indexp, char *ip)
@@ -670,18 +670,18 @@ cdef extern from "netcdf.h":
     int nc_put_var_ulonglong(int ncid, int varid, unsigned long long *op)
     int nc_get_var_ulonglong(int ncid, int varid, unsigned long long *ip)
     # set logging verbosity level.
-    void nc_set_log_level(int new_level)
-    int nc_show_metadata(int ncid)
-    int nc_free_vlen(nc_vlen_t *vl)
-    int nc_free_vlens(size_t len, nc_vlen_t *vl)
-    int nc_free_string(size_t len, char **data)
-    int nc_set_chunk_cache(size_t size, size_t nelems, float preemption)
-    int nc_get_chunk_cache(size_t *sizep, size_t *nelemsp, float *preemptionp)
-    int nc_set_var_chunk_cache(int ncid, int varid, size_t size, size_t nelems, float preemption)
+    void nc_set_log_level(int new_level) nogil
+    int nc_show_metadata(int ncid) nogil
+    int nc_free_vlen(nc_vlen_t *vl) nogil
+    int nc_free_vlens(size_t len, nc_vlen_t *vl) nogil
+    int nc_free_string(size_t len, char **data) nogil
+    int nc_get_chunk_cache(size_t *sizep, size_t *nelemsp, float *preemptionp) nogil
+    int nc_set_chunk_cache(size_t size, size_t nelems, float preemption) nogil
+    int nc_set_var_chunk_cache(int ncid, int varid, size_t size, size_t nelems, float preemption) nogil
     int nc_get_var_chunk_cache(int ncid, int varid, size_t *sizep, size_t *nelemsp, float *preemptionp) nogil
-    int nc_rename_grp(int grpid, char *name)
-    int nc_def_enum(int ncid, nc_type base_typeid, char *name, nc_type *typeidp)
-    int nc_insert_enum(int ncid, nc_type xtype, char *name, void *value)
+    int nc_rename_grp(int grpid, char *name) nogil
+    int nc_def_enum(int ncid, nc_type base_typeid, char *name, nc_type *typeidp) nogil
+    int nc_insert_enum(int ncid, nc_type xtype, char *name, void *value) nogil
     int nc_inq_enum(int ncid, nc_type xtype, char *name, nc_type *base_nc_typep,\
 	    size_t *base_sizep, size_t *num_membersp) nogil
     int nc_inq_enum_member(int ncid, nc_type xtype, int idx, char *name, void *value) nogil
@@ -696,63 +696,63 @@ IF HAS_QUANTIZATION_SUPPORT:
             NC_QUANTIZE_BITGROOM
             NC_QUANTIZE_GRANULARBR
             NC_QUANTIZE_BITROUND
-        int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) 
+        int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) nogil
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
     cdef extern from "netcdf_filter.h":
-        int nc_inq_filter_avail(int ncid, unsigned filterid);
+        int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
 
 IF HAS_SZIP_SUPPORT:
     cdef extern from "netcdf.h":
         cdef enum:
             H5Z_FILTER_SZIP
-        int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) 
+        int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) nogil
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
-        int nc_def_var_szip(int ncid, int varid, int options_mask, int pixels_per_bloc)
-        int nc_inq_var_szip(int ncid, int varid, int *options_maskp, int *pixels_per_blockp)
+        int nc_def_var_szip(int ncid, int varid, int options_mask, int pixels_per_bloc) nogil
+        int nc_inq_var_szip(int ncid, int varid, int *options_maskp, int *pixels_per_blockp) nogil
 
 IF HAS_ZSTANDARD_SUPPORT:
     cdef extern from "netcdf_filter.h":
         cdef enum:
             H5Z_FILTER_ZSTD
-        int nc_def_var_zstandard(int ncid, int varid, int level)
-        int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp)
-        int nc_inq_filter_avail(int ncid, unsigned id)
+        int nc_def_var_zstandard(int ncid, int varid, int level) nogil
+        int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp) nogil
+        int nc_inq_filter_avail(int ncid, unsigned id) nogil
 
 IF HAS_BZIP2_SUPPORT:
     cdef extern from "netcdf_filter.h":
         cdef enum:
             H5Z_FILTER_BZIP2
-        int nc_def_var_bzip2(int ncid, int varid, int level)
-        int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp)
+        int nc_def_var_bzip2(int ncid, int varid, int level) nogil
+        int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp) nogil
 
 IF HAS_BLOSC_SUPPORT:
     cdef extern from "netcdf_filter.h":
         cdef enum:
             H5Z_FILTER_BLOSC
-        int nc_def_var_blosc(int ncid, int varid, unsigned subcompressor, unsigned level, unsigned blocksize, unsigned addshuffle)
-        int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigned* subcompressorp, unsigned* levelp, unsigned* blocksizep, unsigned* addshufflep)
+        int nc_def_var_blosc(int ncid, int varid, unsigned subcompressor, unsigned level, unsigned blocksize, unsigned addshuffle) nogil
+        int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigned* subcompressorp, unsigned* levelp, unsigned* blocksizep, unsigned* addshufflep) nogil
 
 IF HAS_NC_OPEN_MEM:
     cdef extern from "netcdf_mem.h":
-        int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp)
+        int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp) nogil
 
 IF HAS_NC_CREATE_MEM:
     cdef extern from "netcdf_mem.h":
-        int nc_create_mem(const char *path, int mode, size_t initialize, int *ncidp);
+        int nc_create_mem(const char *path, int mode, size_t initialize, int *ncidp) nogil
         ctypedef struct NC_memio:
             size_t size
             void* memory
             int flags
-        int nc_close_memio(int ncid, NC_memio* info);
+        int nc_close_memio(int ncid, NC_memio* info) nogil
 
 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
     cdef extern from "mpi-compat.h": pass
     cdef extern from "netcdf_par.h":
         ctypedef int MPI_Comm
         ctypedef int MPI_Info
-        int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp);
-        int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp);
-        int nc_var_par_access(int ncid, int varid, int par_access);
+        int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
+        int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
+        int nc_var_par_access(int ncid, int varid, int par_access) nogil
         cdef enum:
             NC_COLLECTIVE
             NC_INDEPENDENT
