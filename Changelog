@@ -1,7 +1,8 @@
  since version 1.6.0 release
 ==============================
  * add Dataset methods has_<name>_filter (where <name>=zstd,blosc,bzip2,szip)
- to check for availability of extra compression filters.
+   to check for availability of extra compression filters.
+ * release GIL for all C-lib calls (issue #1180).
 
  version 1.6.0 (tag v1.6.0rel)
 ==============================

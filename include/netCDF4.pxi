@@ -6,7 +6,7 @@ cdef extern from "stdlib.h":
 # hdf5 version info.
 cdef extern from "H5public.h":
     ctypedef int herr_t
-    int H5get_libversion( unsigned int *majnum, unsigned int *minnum, unsigned int *relnum )
+    int H5get_libversion( unsigned int *majnum, unsigned int *minnum, unsigned int *relnum ) nogil
  
 cdef extern from *:
     ctypedef char* const_char_ptr "const char*"
@@ -269,20 +269,20 @@ cdef extern from "netcdf.h":
     int nc_get_att(int ncid, int varid, char *name, void *ip) nogil
     int nc_get_att_string(int ncid, int varid, char *name, char **ip) nogil
     int nc_put_att_string(int ncid, int varid, char *name, size_t len, char **op) nogil
-    int nc_def_opaque(int ncid, size_t size, char *name, nc_type *xtypep)
-    int nc_inq_opaque(int ncid, nc_type xtype, char *name, size_t *sizep)
+    int nc_def_opaque(int ncid, size_t size, char *name, nc_type *xtypep) nogil
+    int nc_inq_opaque(int ncid, nc_type xtype, char *name, size_t *sizep) nogil
     int nc_put_att_opaque(int ncid, int varid, char *name,
-                      size_t len, void *op)
+                      size_t len, void *op) nogil
     int nc_get_att_opaque(int ncid, int varid, char *name, 
-                      void *ip)
+                      void *ip) nogil
     int nc_put_cmp_att_opaque(int ncid, nc_type xtype, int fieldid, 
-                          char *name, size_t len, void *op)
+                          char *name, size_t len, void *op) nogil
     int nc_get_cmp_att_opaque(int ncid, nc_type xtype, int fieldid, 
-                          char *name, void *ip)
+                          char *name, void *ip) nogil
     int nc_put_var1(int ncid, int varid, size_t *indexp,
-                void *op)
+                void *op) nogil
     int nc_get_var1(int ncid, int varid,  size_t *indexp,
-                void *ip)
+                void *ip) nogil
     int nc_put_vara(int ncid, int varid,  size_t *startp, 
                 size_t *countp, void *op) nogil
     int nc_get_vara(int ncid, int varid,  size_t *startp, 
@@ -392,283 +392,7 @@ cdef extern from "netcdf.h":
     int nc_inq_vardimid(int ncid, int varid, int *dimidsp) nogil
     int nc_inq_varnatts(int ncid, int varid, int *nattsp) nogil
     int nc_rename_var(int ncid, int varid, char *name) nogil
-    int nc_copy_var(int ncid_in, int varid, int ncid_out)
-    int nc_put_var1_text(int ncid, int varid, size_t *indexp, char *op)
-    int nc_get_var1_text(int ncid, int varid, size_t *indexp, char *ip)
-    int nc_put_var1_uchar(int ncid, int varid, size_t *indexp,
-                      unsigned char *op)
-    int nc_get_var1_uchar(int ncid, int varid, size_t *indexp,
-                      unsigned char *ip)
-    int nc_put_var1_schar(int ncid, int varid, size_t *indexp,
-                      signed char *op)
-    int nc_get_var1_schar(int ncid, int varid, size_t *indexp,
-                      signed char *ip)
-    int nc_put_var1_short(int ncid, int varid, size_t *indexp,
-                      short *op)
-    int nc_get_var1_short(int ncid, int varid, size_t *indexp,
-                      short *ip)
-    int nc_put_var1_int(int ncid, int varid, size_t *indexp, int *op)
-    int nc_get_var1_int(int ncid, int varid, size_t *indexp, int *ip)
-    int nc_put_var1_long(int ncid, int varid, size_t *indexp, long *op)
-    int nc_get_var1_long(int ncid, int varid, size_t *indexp, long *ip)
-    int nc_put_var1_float(int ncid, int varid, size_t *indexp, float *op)
-    int nc_get_var1_float(int ncid, int varid, size_t *indexp, float *ip)
-    int nc_put_var1_double(int ncid, int varid, size_t *indexp, double *op)
-    int nc_get_var1_double(int ncid, int varid, size_t *indexp, double *ip)
-    int nc_put_var1_ubyte(int ncid, int varid, size_t *indexp, 
-                      unsigned char *op)
-    int nc_get_var1_ubyte(int ncid, int varid, size_t *indexp, 
-                      unsigned char *ip)
-    int nc_put_var1_ushort(int ncid, int varid, size_t *indexp, 
-                       unsigned short *op)
-    int nc_get_var1_ushort(int ncid, int varid, size_t *indexp, 
-                       unsigned short *ip)
-    int nc_put_var1_uint(int ncid, int varid, size_t *indexp, 
-                     unsigned int *op)
-    int nc_get_var1_uint(int ncid, int varid, size_t *indexp, 
-                     unsigned int *ip)
-    int nc_put_var1_longlong(int ncid, int varid, size_t *indexp, 
-                         long long *op)
-    int nc_get_var1_longlong(int ncid, int varid, size_t *indexp, 
-                      long long *ip)
-    int nc_put_var1_ulonglong(int ncid, int varid, size_t *indexp, 
-                       unsigned long long *op)
-    int nc_get_var1_ulonglong(int ncid, int varid, size_t *indexp, 
-                       unsigned long long *ip)
-    int nc_put_vara_text(int ncid, int varid,
-            size_t *startp, size_t *countp, char *op)
-    int nc_get_vara_text(int ncid, int varid,
-            size_t *startp, size_t *countp, char *ip)
-    int nc_put_vara_uchar(int ncid, int varid,
-            size_t *startp, size_t *countp, unsigned char *op)
-    int nc_get_vara_uchar(int ncid, int varid, size_t *startp, 
-                      size_t *countp, unsigned char *ip)
-    int nc_put_vara_schar(int ncid, int varid, size_t *startp, 
-                      size_t *countp, signed char *op)
-    int nc_get_vara_schar(int ncid, int varid, size_t *startp, 
-                      size_t *countp, signed char *ip)
-    int nc_put_vara_short(int ncid, int varid, size_t *startp, 
-                      size_t *countp, short *op)
-    int nc_get_vara_short(int ncid, int varid, size_t *startp, 
-                      size_t *countp, short *ip)
-    int nc_put_vara_int(int ncid, int varid, size_t *startp, 
-                    size_t *countp, int *op)
-    int nc_get_vara_int(int ncid, int varid, size_t *startp, 
-                    size_t *countp, int *ip)
-    int nc_put_vara_long(int ncid, int varid, size_t *startp, 
-                     size_t *countp, long *op)
-    int nc_get_vara_long(int ncid, int varid,
-            size_t *startp, size_t *countp, long *ip)
-    int nc_put_vara_float(int ncid, int varid,
-            size_t *startp, size_t *countp, float *op)
-    int nc_get_vara_float(int ncid, int varid,
-            size_t *startp, size_t *countp, float *ip)
-    int nc_put_vara_double(int ncid, int varid, size_t *startp, 
-                       size_t *countp, double *op)
-    int nc_get_vara_double(int ncid, int varid, size_t *startp, 
-                       size_t *countp, double *ip)
-    int nc_put_vara_ubyte(int ncid, int varid, size_t *startp, 
-                      size_t *countp, unsigned char *op)
-    int nc_get_vara_ubyte(int ncid, int varid, size_t *startp, 
-                      size_t *countp, unsigned char *ip)
-    int nc_put_vara_ushort(int ncid, int varid, size_t *startp, 
-                       size_t *countp, unsigned short *op)
-    int nc_get_vara_ushort(int ncid, int varid, size_t *startp, 
-                       size_t *countp, unsigned short *ip)
-    int nc_put_vara_uint(int ncid, int varid, size_t *startp, 
-                     size_t *countp, unsigned int *op)
-    int nc_get_vara_uint(int ncid, int varid, size_t *startp, 
-                     size_t *countp, unsigned int *ip)
-    int nc_put_vara_longlong(int ncid, int varid, size_t *startp, 
-                      size_t *countp, long long *op)
-    int nc_get_vara_longlong(int ncid, int varid, size_t *startp, 
-                      size_t *countp, long long *ip)
-    int nc_put_vara_ulonglong(int ncid, int varid, size_t *startp, 
-                       size_t *countp, unsigned long long *op)
-    int nc_get_vara_ulonglong(int ncid, int varid, size_t *startp, 
-                       size_t *countp, unsigned long long *ip)
-    int nc_put_vars_text(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            char *op)
-    int nc_get_vars_text(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            char *ip)
-    int nc_put_vars_uchar(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            unsigned char *op)
-    int nc_get_vars_uchar(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            unsigned char *ip)
-    int nc_put_vars_schar(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            signed char *op)
-    int nc_get_vars_schar(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            signed char *ip)
-    int nc_put_vars_short(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            short *op)
-    int nc_get_vars_short(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep,
-                      short *ip)
-    int nc_put_vars_int(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            int *op)
-    int nc_get_vars_int(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            int *ip)
-    int nc_put_vars_long(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            long *op) 
-    int nc_get_vars_long(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            long *ip)
-    int nc_put_vars_float(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            float *op) 
-    int nc_get_vars_float(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            float *ip)
-    int nc_put_vars_double(int ncid, int varid,
-            size_t *startp, size_t *countp, ptrdiff_t *stridep,
-            double *op)
-    int nc_get_vars_double(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep,
-                       double *ip)
-    int nc_put_vars_ubyte(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep, 
-                      unsigned char *op)
-    int nc_get_vars_ubyte(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep, 
-                      unsigned char *ip)
-    int nc_put_vars_ushort(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep, 
-                       unsigned short *op)
-    int nc_get_vars_ushort(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep, 
-                       unsigned short *ip)
-    int nc_put_vars_uint(int ncid, int varid, size_t *startp, 
-                     size_t *countp, ptrdiff_t *stridep, 
-                     unsigned int *op)
-    int nc_get_vars_uint(int ncid, int varid, size_t *startp, 
-                     size_t *countp, ptrdiff_t *stridep, 
-                     unsigned int *ip)
-    int nc_put_vars_longlong(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep, 
-                      long long *op)
-    int nc_get_vars_longlong(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep, 
-                      long long *ip)
-    int nc_put_vars_ulonglong(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep, 
-                       unsigned long long *op)
-    int nc_get_vars_ulonglong(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep, 
-                       unsigned long long *ip)
-    int nc_put_varm_text(int ncid, int varid, size_t *startp, 
-                     size_t *countp, ptrdiff_t *stridep,
-                     ptrdiff_t *imapp, char *op)
-    int nc_get_varm_text(int ncid, int varid, size_t *startp, 
-                     size_t *countp, ptrdiff_t *stridep,
-                     ptrdiff_t *imapp, char *ip)
-    int nc_put_varm_uchar(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep,
-                      ptrdiff_t *imapp, unsigned char *op)
-    int nc_get_varm_uchar(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep,
-                      ptrdiff_t *imapp, unsigned char *ip)
-    int nc_put_varm_schar(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep,
-                      ptrdiff_t *imapp, signed char *op)
-    int nc_get_varm_schar(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep,
-                      ptrdiff_t *imapp, signed char *ip)
-    int nc_put_varm_short(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep,
-                      ptrdiff_t *imapp, short *op)
-    int nc_get_varm_short(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep,
-                      ptrdiff_t *imapp, short *ip)
-    int nc_put_varm_int(int ncid, int varid, size_t *startp, 
-                    size_t *countp, ptrdiff_t *stridep,
-                    ptrdiff_t *imapp, int *op)
-    int nc_get_varm_int(int ncid, int varid, size_t *startp, 
-                    size_t *countp, ptrdiff_t *stridep,
-                    ptrdiff_t *imapp, int *ip)
-    int nc_put_varm_long(int ncid, int varid, size_t *startp, 
-                     size_t *countp, ptrdiff_t *stridep,
-                     ptrdiff_t *imapp, long *op)
-    int nc_get_varm_long(int ncid, int varid, size_t *startp, 
-                     size_t *countp, ptrdiff_t *stridep,
-                     ptrdiff_t *imapp, long *ip)
-    int nc_put_varm_float(int ncid, int varid,size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep,
-                      ptrdiff_t *imapp, float *op)
-    int nc_get_varm_float(int ncid, int varid,size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep,
-                      ptrdiff_t *imapp, float *ip)
-    int nc_put_varm_double(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep,
-                       ptrdiff_t *imapp, double *op)
-    int nc_get_varm_double(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep,
-                       ptrdiff_t * imapp, double *ip)
-    int nc_put_varm_ubyte(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep, 
-                      ptrdiff_t * imapp, unsigned char *op)
-    int nc_get_varm_ubyte(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep, 
-                      ptrdiff_t * imapp, unsigned char *ip)
-    int nc_put_varm_ushort(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep, 
-                       ptrdiff_t * imapp, unsigned short *op)
-    int nc_get_varm_ushort(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep, 
-                       ptrdiff_t * imapp, unsigned short *ip)
-    int nc_put_varm_uint(int ncid, int varid, size_t *startp, 
-                     size_t *countp, ptrdiff_t *stridep, 
-                     ptrdiff_t * imapp, unsigned int *op)
-    int nc_get_varm_uint(int ncid, int varid, size_t *startp, 
-                     size_t *countp, ptrdiff_t *stridep, 
-                     ptrdiff_t * imapp, unsigned int *ip)
-    int nc_put_varm_longlong(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep, 
-                      ptrdiff_t * imapp, long long *op)
-    int nc_get_varm_longlong(int ncid, int varid, size_t *startp, 
-                      size_t *countp, ptrdiff_t *stridep, 
-                      ptrdiff_t * imapp, long long *ip)
-    int nc_put_varm_ulonglong(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep, 
-                       ptrdiff_t * imapp, unsigned long long *op)
-    int nc_get_varm_ulonglong(int ncid, int varid, size_t *startp, 
-                       size_t *countp, ptrdiff_t *stridep, 
-                       ptrdiff_t * imapp, unsigned long long *ip)
-    int nc_put_var_text(int ncid, int varid, char *op)
-    int nc_get_var_text(int ncid, int varid, char *ip)
-    int nc_put_var_uchar(int ncid, int varid, unsigned char *op)
-    int nc_get_var_uchar(int ncid, int varid, unsigned char *ip)
-    int nc_put_var_schar(int ncid, int varid, signed char *op)
-    int nc_get_var_schar(int ncid, int varid, signed char *ip)
-    int nc_put_var_short(int ncid, int varid, short *op)
-    int nc_get_var_short(int ncid, int varid, short *ip)
-    int nc_put_var_int(int ncid, int varid, int *op)
-    int nc_get_var_int(int ncid, int varid, int *ip)
-    int nc_put_var_long(int ncid, int varid, long *op)
-    int nc_get_var_long(int ncid, int varid, long *ip)
-    int nc_put_var_float(int ncid, int varid, float *op)
-    int nc_get_var_float(int ncid, int varid, float *ip)
-    int nc_put_var_double(int ncid, int varid, double *op)
-    int nc_get_var_double(int ncid, int varid, double *ip)
-    int nc_put_var_ubyte(int ncid, int varid, unsigned char *op)
-    int nc_get_var_ubyte(int ncid, int varid, unsigned char *ip)
-    int nc_put_var_ushort(int ncid, int varid, unsigned short *op)
-    int nc_get_var_ushort(int ncid, int varid, unsigned short *ip)
-    int nc_put_var_uint(int ncid, int varid, unsigned int *op)
-    int nc_get_var_uint(int ncid, int varid, unsigned int *ip)
-    int nc_put_var_longlong(int ncid, int varid, long long *op)
-    int nc_get_var_longlong(int ncid, int varid, long long *ip)
-    int nc_put_var_ulonglong(int ncid, int varid, unsigned long long *op)
-    int nc_get_var_ulonglong(int ncid, int varid, unsigned long long *ip)
+    int nc_copy_var(int ncid_in, int varid, int ncid_out) nogil
     # set logging verbosity level.
     void nc_set_log_level(int new_level) nogil
     int nc_show_metadata(int ncid) nogil
@@ -767,9 +491,9 @@ cdef extern from "numpy/arrayobject.h":
     ctypedef int npy_intp 
     ctypedef extern class numpy.ndarray [object PyArrayObject]:
         pass
-    npy_intp PyArray_SIZE(ndarray arr)
-    npy_intp PyArray_ISCONTIGUOUS(ndarray arr)
-    npy_intp PyArray_ISALIGNED(ndarray arr)
+    npy_intp PyArray_SIZE(ndarray arr) nogil
+    npy_intp PyArray_ISCONTIGUOUS(ndarray arr) nogil
+    npy_intp PyArray_ISALIGNED(ndarray arr) nogil
     void* PyArray_DATA(ndarray) nogil
     char* PyArray_BYTES(ndarray) nogil
     npy_intp* PyArray_STRIDES(ndarray) nogil
