@@ -126,10 +126,7 @@ cdef extern from "netcdf.h":
         NC_FORMAT_DAP4
         NC_FORMAT_PNETCDF
         NC_FORMAT_UNDEFINED
-        # Let nc__create() or nc__open() figure out
-        # as suitable chunk size.
         NC_SIZEHINT_DEFAULT 
-        # In nc__enddef(), align to the chunk size.
         NC_ALIGN_CHUNK 
         # 'size' argument to ncdimdef for an unlimited dimension
         NC_UNLIMITED 
@@ -219,9 +216,7 @@ cdef extern from "netcdf.h":
     const_char_ptr *nc_inq_libvers() nogil
     const_char_ptr *nc_strerror(int ncerr)
     int nc_create(char *path, int cmode, int *ncidp) nogil
-    int nc__create(char *path, int cmode, size_t initialsz, size_t *chunksizehintp, int *ncidp)
     int nc_open(char *path, int mode, int *ncidp) nogil
-    int nc__open(char *path, int mode, size_t *chunksizehintp, int *ncidp)
     int nc_inq_path(int ncid, size_t *pathlen, char *path) nogil
     int nc_inq_format_extended(int ncid, int *formatp, int* modep) nogil
     int nc_inq_ncid(int ncid, char *name, int *grp_ncid) nogil
@@ -316,8 +311,6 @@ cdef extern from "netcdf.h":
     int nc_set_fill(int ncid, int fillmode, int *old_modep) nogil 
     int nc_set_default_format(int format, int *old_formatp) nogil
     int nc_redef(int ncid) nogil
-    int nc__enddef(int ncid, size_t h_minfree, size_t v_align,
-            size_t v_minfree, size_t r_align) nogil
     int nc_enddef(int ncid) nogil
     int nc_sync(int ncid) nogil
     int nc_abort(int ncid) nogil
@@ -347,40 +340,6 @@ cdef extern from "netcdf.h":
     int nc_put_att_text(int ncid, int varid, char *name,
                     size_t len, char *op) nogil
     int nc_get_att_text(int ncid, int varid, char *name, char *ip) nogil
-    int nc_put_att_uchar(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, unsigned char *op) nogil
-    int nc_get_att_uchar(int ncid, int varid, char *name, unsigned char *ip) nogil
-    int nc_put_att_schar(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, signed char *op) nogil
-    int nc_get_att_schar(int ncid, int varid, char *name, signed char *ip) nogil
-    int nc_put_att_short(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, short *op) nogil
-    int nc_get_att_short(int ncid, int varid, char *name, short *ip) nogil
-    int nc_put_att_int(int ncid, int varid, char *name, nc_type xtype,
-                   size_t len, int *op) nogil
-    int nc_get_att_int(int ncid, int varid, char *name, int *ip) nogil
-    int nc_put_att_long(int ncid, int varid, char *name, nc_type xtype,
-                    size_t len, long *op) nogil
-    int nc_get_att_long(int ncid, int varid, char *name, long *ip) nogil
-    int nc_put_att_float(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, float *op) nogil
-    int nc_get_att_float(int ncid, int varid, char *name, float *ip) nogil
-    int nc_put_att_double(int ncid, int varid, char *name, nc_type xtype,
-                      size_t len, double *op) nogil
-    int nc_get_att_double(int ncid, int varid, char *name, double *ip) nogil
-    int nc_put_att_ushort(int ncid, int varid, char *name, nc_type xtype,
-                      size_t len, unsigned short *op) nogil
-    int nc_get_att_ushort(int ncid, int varid, char *name, unsigned short *ip) nogil
-    int nc_put_att_uint(int ncid, int varid, char *name, nc_type xtype,
-                    size_t len, unsigned int *op) nogil
-    int nc_get_att_uint(int ncid, int varid, char *name, unsigned int *ip) nogil
-    int nc_put_att_longlong(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, long long *op) nogil
-    int nc_get_att_longlong(int ncid, int varid, char *name, long long *ip) nogil
-    int nc_put_att_ulonglong(int ncid, int varid, char *name, nc_type xtype,
-                         size_t len, unsigned long long *op) nogil
-    int nc_get_att_ulonglong(int ncid, int varid, char *name, 
-                         unsigned long long *ip) nogil
     int nc_def_var(int ncid, char *name, nc_type xtype, int ndims, 
                int *dimidsp, int *varidp) nogil
     int nc_inq_var(int ncid, int varid, char *name, nc_type *xtypep, 
@@ -392,10 +351,6 @@ cdef extern from "netcdf.h":
     int nc_inq_vardimid(int ncid, int varid, int *dimidsp) nogil
     int nc_inq_varnatts(int ncid, int varid, int *nattsp) nogil
     int nc_rename_var(int ncid, int varid, char *name) nogil
-    int nc_copy_var(int ncid_in, int varid, int ncid_out) nogil
-    # set logging verbosity level.
-    void nc_set_log_level(int new_level) nogil
-    int nc_show_metadata(int ncid) nogil
     int nc_free_vlen(nc_vlen_t *vl) nogil
     int nc_free_vlens(size_t len, nc_vlen_t *vl) nogil
     int nc_free_string(size_t len, char **data) nogil

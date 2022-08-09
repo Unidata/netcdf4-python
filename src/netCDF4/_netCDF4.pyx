@@ -1265,7 +1265,8 @@ ELSE:
 def _gethdf5libversion():
     cdef unsigned int majorvers, minorvers, releasevers
     cdef herr_t ierr
-    ierr = H5get_libversion( &majorvers, &minorvers, &releasevers)
+    with nogil:
+        ierr = H5get_libversion( &majorvers, &minorvers, &releasevers)
     if ierr < 0:
         raise RuntimeError('error getting HDF5 library version info')
     return '%d.%d.%d' % (majorvers,minorvers,releasevers)
@@ -4614,7 +4615,8 @@ return dictionary containing HDF5 filter parameters."""
         cdef int iblosc=0
         cdef int iszip=0
         cdef unsigned int iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
-        cdef int iszip_coding, iszip_pixels_per_block
+        cdef int iszip_coding=0
+        cdef int iszip_pixels_per_block=0
         filtdict = {'zlib':False,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
         with nogil:
