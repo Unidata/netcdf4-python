@@ -1612,16 +1612,17 @@ cdef issue485_workaround(int grpid, int varid, char* attname):
         _ensure_nc_success(ierr)
 
 
-cdef _set_att(Group grp, int varid, name, value,\
+cdef _set_att(grp, int varid, name, value,\
               nc_type xtype=-99, force_ncstring=False):
     # Private function to set an attribute name/value pair
-    cdef int ierr, lenarr, N
+    cdef int ierr, lenarr, N, grpid
     cdef char *attname
     cdef char *datstring
     cdef char **string_ptrs
     cdef ndarray value_arr
     bytestr = _strencode(name)
     attname = bytestr
+    grpid = grp._grpid
     # put attribute value into a numpy array.
     value_arr = numpy.array(value)
     if value_arr.ndim > 1: # issue #841
@@ -1635,7 +1636,7 @@ be raised in the next release."""
             warnings.warn(msg,FutureWarning)
     # if array is 64 bit integers or
     # if 64-bit datatype not supported, cast to 32 bit integers.
-    fmt = _get_format(grp._grpid)
+    fmt = _get_format(grpid)
     is_netcdf3 = fmt.startswith('NETCDF3') or fmt == 'NETCDF4_CLASSIC'
     if value_arr.dtype.str[1:] == 'i8' and ('i8' not in _supportedtypes or\
        (is_netcdf3 and fmt != 'NETCDF3_64BIT_DATA')):
@@ -1657,9 +1658,9 @@ be raised in the next release."""
                     if len(strings[j]) == 0:
                         strings[j] = _strencode('\x00')
                     string_ptrs[j] = strings[j]
-                issue485_workaround(grp._grpid, varid, attname)
+                issue485_workaround(grpid, varid, attname)
                 with nogil:
-                    ierr = nc_put_att_string(grp._grpid, varid, attname, N, string_ptrs)
+                    ierr = nc_put_att_string(grpid, varid, attname, N, string_ptrs)
             finally:
                 PyMem_Free(string_ptrs)
         else:
@@ -1684,14 +1685,14 @@ be raised in the next release."""
                     if force_ncstring: raise UnicodeError
                     dats_ascii = _to_ascii(dats) # try to encode bytes as ascii string
                     with nogil:
-                        ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
+                        ierr = nc_put_att_text(grpid, varid, attname, lenarr, datstring)
                 except UnicodeError:
-                    issue485_workaround(grp._grpid, varid, attname)
+                    issue485_workaround(grpid, varid, attname)
                     with nogil:
-                        ierr = nc_put_att_string(grp._grpid, varid, attname, 1, &datstring)
+                        ierr = nc_put_att_string(grpid, varid, attname, 1, &datstring)
             else:
                 with nogil:
-                    ierr = nc_put_att_text(grp._grpid, varid, attname, lenarr, datstring)
+                    ierr = nc_put_att_text(grpid, varid, attname, lenarr, datstring)
         _ensure_nc_success(ierr, err_cls=AttributeError)
     # a 'regular' array type ('f4','i4','f8' etc)
     else:
@@ -1703,7 +1704,7 @@ be raised in the next release."""
             xtype = _nptonctype[value_arr.dtype.str[1:]]
         lenarr = PyArray_SIZE(value_arr)
         with nogil:
-            ierr = nc_put_att(grp._grpid, varid, attname, xtype, lenarr,
+            ierr = nc_put_att(grpid, varid, attname, xtype, lenarr,
                 PyArray_DATA(value_arr))
         _ensure_nc_success(ierr, err_cls=AttributeError)
 
@@ -3113,17 +3114,18 @@ rename a `Dataset` or `Group` attribute named `oldname` to `newname`."""
 
 rename a `Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)."""
         cdef char *newnamec
-        cdef Group grp
+        cdef int grpid
         IF HAS_RENAME_GRP:
             cdef int ierr
             bytestr = _strencode(newname)
             newnamec = bytestr
             try:
                 grp = self.groups[oldname]
+                grpid = grp._grpid
             except KeyError:
                 raise KeyError('%s not a valid group name' % oldname)
             with nogil:
-                ierr = nc_rename_grp(grp._grpid, newnamec)
+                ierr = nc_rename_grp(grpid, newnamec)
             _ensure_nc_success(ierr)
             # remove old key from groups dict.
             self.groups.pop(oldname)
@@ -6124,11 +6126,11 @@ def _set_viewdtype(dt):
     dtype_dict = {'names':names,'formats':formats}
     return numpy.dtype(dtype_dict, align=True)
 
-cdef _def_compound(Group grp, object dt, object dtype_name):
+cdef _def_compound(grp, object dt, object dtype_name):
     # private function used to construct a netcdf compound data type
     # from a numpy dtype object by CompoundType.__init__.
     cdef nc_type xtype, xtype_tmp
-    cdef int ierr, ndims
+    cdef int ierr, ndims, grpid
     cdef size_t offset, size
     cdef char *namstring
     cdef char *nested_namstring
@@ -6136,8 +6138,9 @@ cdef _def_compound(Group grp, object dt, object dtype_name):
     bytestr = _strencode(dtype_name)
     namstring = bytestr
     size = dt.itemsize
+    grpid = grp._grpid
     with nogil:
-        ierr = nc_def_compound(grp._grpid, size, namstring, &xtype)
+        ierr = nc_def_compound(grpid, size, namstring, &xtype)
     _ensure_nc_success(ierr)
     names = list(dt.fields.keys())
     formats = [v[0] for v in dt.fields.values()]
@@ -6156,7 +6159,7 @@ cdef _def_compound(Group grp, object dt, object dtype_name):
             except KeyError:
                 raise ValueError('Unsupported compound type element')
             with nogil:
-                ierr = nc_insert_compound(grp._grpid, xtype, namstring,
+                ierr = nc_insert_compound(grpid, xtype, namstring,
                                           offset, xtype_tmp)
             _ensure_nc_success(ierr)
         else:
@@ -6166,9 +6169,9 @@ cdef _def_compound(Group grp, object dt, object dtype_name):
                 bytestr = _strencode(name)
                 nested_namstring = bytestr
                 with nogil:
-                    ierr = nc_insert_compound(grp._grpid, xtype,\
+                    ierr = nc_insert_compound(grpid, xtype,\
                                               nested_namstring,\
-                                          offset, xtype_tmp)
+                                              offset, xtype_tmp)
                 _ensure_nc_success(ierr)
             else: # nested array compound element
                 ndims = len(format.shape)
@@ -6181,7 +6184,7 @@ cdef _def_compound(Group grp, object dt, object dtype_name):
                     except KeyError:
                         raise ValueError('Unsupported compound type element')
                     with nogil:
-                        ierr = nc_insert_array_compound(grp._grpid,xtype,namstring,
+                        ierr = nc_insert_array_compound(grpid,xtype,namstring,
                            offset,xtype_tmp,ndims,dim_sizes)
                     _ensure_nc_success(ierr)
                 else: # nested array compound type.
@@ -6193,7 +6196,7 @@ cdef _def_compound(Group grp, object dt, object dtype_name):
                 #   bytestr = _strencode(name)
                 #   nested_namstring = bytestr
                 #   with nogil:
-                #       ierr = nc_insert_array_compound(grp._grpid,xtype,\
+                #       ierr = nc_insert_array_compound(grpid,xtype,\
                 #                                       nested_namstring,\
                 #                                       offset,xtype_tmp,\
                 #                                       ndims,dim_sizes)
@@ -6366,14 +6369,15 @@ the user.
         # raise error is user tries to pickle a VLType object.
         raise NotImplementedError('VLType is not picklable')
 
-cdef _def_vlen(Group grp, object dt, object dtype_name):
+cdef _def_vlen(grp, object dt, object dtype_name):
     # private function used to construct a netcdf VLEN data type
     # from a numpy dtype object or python str object by VLType.__init__.
     cdef nc_type xtype, xtype_tmp
-    cdef int ierr, ndims
+    cdef int ierr, ndims, grpid
     cdef size_t offset, size
     cdef char *namstring
     cdef char *nested_namstring
+    grpid = grp._grpid
     if dt == str: # python string, use NC_STRING
         xtype = NC_STRING
         # dtype_name ignored
@@ -6386,28 +6390,28 @@ cdef _def_vlen(Group grp, object dt, object dtype_name):
             # specified numpy data type.
             xtype_tmp = _nptonctype[dt.str[1:]]
             with nogil:
-                ierr = nc_def_vlen(grp._grpid, namstring, xtype_tmp, &xtype);
+                ierr = nc_def_vlen(grpid, namstring, xtype_tmp, &xtype);
             _ensure_nc_success(ierr)
         else:
             raise KeyError("unsupported datatype specified for VLEN")
     return xtype, dt
 
-cdef _read_vlen(Group group, nc_type xtype, endian=None):
+cdef _read_vlen(group, nc_type xtype, endian=None):
     # read a VLEN data type id from an existing file,
     # construct a corresponding numpy dtype instance,
     # then use that to create a VLType instance.
     # called by _get_types, _get_vars.
-    cdef int ierr, _grpid
+    cdef int ierr, grpid
     cdef size_t vlsize
     cdef nc_type base_xtype
     cdef char vl_namstring[NC_MAX_NAME+1]
-    _grpid = group._grpid
+    grpid = group._grpid
     if xtype == NC_STRING:
         dt = str
         name = None
     else:
         with nogil:
-            ierr = nc_inq_vlen(_grpid, xtype, vl_namstring, &vlsize, &base_xtype)
+            ierr = nc_inq_vlen(grpid, xtype, vl_namstring, &vlsize, &base_xtype)
         _ensure_nc_success(ierr)
         name = vl_namstring.decode('utf-8')
         try:
@@ -6474,22 +6478,23 @@ the user.
         # raise error is user tries to pickle a EnumType object.
         raise NotImplementedError('EnumType is not picklable')
 
-cdef _def_enum(Group grp, object dt, object dtype_name, object enum_dict):
+cdef _def_enum(grp, object dt, object dtype_name, object enum_dict):
     # private function used to construct a netCDF Enum data type
     # from a numpy dtype object or python str object by EnumType.__init__.
     cdef nc_type xtype, xtype_tmp
-    cdef int ierr
+    cdef int ierr, grpid
     cdef char *namstring
     cdef ndarray value_arr
     bytestr = _strencode(dtype_name)
     namstring = bytestr
+    grpid = grp._grpid
     dt = numpy.dtype(dt) # convert to numpy datatype.
     if dt.str[1:] in _intnptonctype.keys():
         # find netCDF primitive data type corresponding to
         # specified numpy data type.
         xtype_tmp = _intnptonctype[dt.str[1:]]
         with nogil:
-            ierr = nc_def_enum(grp._grpid, xtype_tmp, namstring, &xtype)
+            ierr = nc_def_enum(grpid, xtype_tmp, namstring, &xtype)
         _ensure_nc_success(ierr)
     else:
         msg="unsupported datatype specified for ENUM (must be integer)"
@@ -6500,25 +6505,25 @@ cdef _def_enum(Group grp, object dt, object dtype_name, object enum_dict):
         bytestr = _strencode(field)
         namstring = bytestr
         with nogil:
-            ierr = nc_insert_enum(grp._grpid, xtype, namstring,
+            ierr = nc_insert_enum(grpid, xtype, namstring,
                    PyArray_DATA(value_arr))
         _ensure_nc_success(ierr)
     return xtype, dt
 
-cdef _read_enum(Group group, nc_type xtype, endian=None):
+cdef _read_enum(group, nc_type xtype, endian=None):
     # read a Enum data type id from an existing file,
     # construct a corresponding numpy dtype instance,
     # then use that to create a EnumType instance.
     # called by _get_types, _get_vars.
-    cdef int ierr, _grpid, nmem
+    cdef int ierr, grpid, nmem
     cdef ndarray enum_val
     cdef nc_type base_xtype
     cdef char enum_namstring[NC_MAX_NAME+1]
     cdef size_t nmembers
-    _grpid = group._grpid
+    grpid = group._grpid
     # get name, datatype, and number of members.
     with nogil:
-        ierr = nc_inq_enum(_grpid, xtype, enum_namstring, &base_xtype, NULL,\
+        ierr = nc_inq_enum(grpid, xtype, enum_namstring, &base_xtype, NULL,\
                 &nmembers)
     _ensure_nc_success(ierr)
     enum_name = enum_namstring.decode('utf-8')
@@ -6533,7 +6538,7 @@ cdef _read_enum(Group group, nc_type xtype, endian=None):
     enum_val = numpy.empty(1,dt)
     for nmem from 0 <= nmem < nmembers:
         with nogil:
-            ierr = nc_inq_enum_member(_grpid, xtype, nmem, \
+            ierr = nc_inq_enum_member(grpid, xtype, nmem, \
                                       enum_namstring,PyArray_DATA(enum_val))
         _ensure_nc_success(ierr)
         name = enum_namstring.decode('utf-8')

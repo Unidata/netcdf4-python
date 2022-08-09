@@ -289,18 +289,18 @@ cdef extern from "netcdf.h":
                 size_t *countp, void *ip) nogil
     int nc_put_vars(int ncid, int varid,  size_t *startp, 
                 size_t *countp, ptrdiff_t *stridep,
-                void *op)  nogil
+                void *op) nogil
     int nc_get_vars(int ncid, int varid,  size_t *startp, 
                 size_t *countp, ptrdiff_t *stridep,
                 void *ip) nogil
     int nc_put_varm(int ncid, int varid,  size_t *startp, 
                 size_t *countp, ptrdiff_t *stridep,
-                ptrdiff_t *imapp, void *op)
+                ptrdiff_t *imapp, void *op) nogil
     int nc_get_varm(int ncid, int varid,  size_t *startp, 
                 size_t *countp, ptrdiff_t *stridep,
-                ptrdiff_t *imapp, void *ip)
-    int nc_put_var(int ncid, int varid,  void *op)
-    int nc_get_var(int ncid, int varid,  void *ip)
+                ptrdiff_t *imapp, void *ip) nogil
+    int nc_put_var(int ncid, int varid,  void *op) nogil
+    int nc_get_var(int ncid, int varid,  void *ip) nogil
     int nc_def_var_deflate(int ncid, int varid, int shuffle, int deflate, 
 	           	   int deflate_level) nogil
     int nc_def_var_fletcher32(int ncid, int varid, int fletcher32) nogil
@@ -348,39 +348,39 @@ cdef extern from "netcdf.h":
                     size_t len, char *op) nogil
     int nc_get_att_text(int ncid, int varid, char *name, char *ip) nogil
     int nc_put_att_uchar(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, unsigned char *op)
-    int nc_get_att_uchar(int ncid, int varid, char *name, unsigned char *ip)
+                     size_t len, unsigned char *op) nogil
+    int nc_get_att_uchar(int ncid, int varid, char *name, unsigned char *ip) nogil
     int nc_put_att_schar(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, signed char *op)
-    int nc_get_att_schar(int ncid, int varid, char *name, signed char *ip)
+                     size_t len, signed char *op) nogil
+    int nc_get_att_schar(int ncid, int varid, char *name, signed char *ip) nogil
     int nc_put_att_short(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, short *op)
-    int nc_get_att_short(int ncid, int varid, char *name, short *ip)
+                     size_t len, short *op) nogil
+    int nc_get_att_short(int ncid, int varid, char *name, short *ip) nogil
     int nc_put_att_int(int ncid, int varid, char *name, nc_type xtype,
-                   size_t len, int *op)
-    int nc_get_att_int(int ncid, int varid, char *name, int *ip)
+                   size_t len, int *op) nogil
+    int nc_get_att_int(int ncid, int varid, char *name, int *ip) nogil
     int nc_put_att_long(int ncid, int varid, char *name, nc_type xtype,
-                    size_t len, long *op)
-    int nc_get_att_long(int ncid, int varid, char *name, long *ip)
+                    size_t len, long *op) nogil
+    int nc_get_att_long(int ncid, int varid, char *name, long *ip) nogil
     int nc_put_att_float(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, float *op)
-    int nc_get_att_float(int ncid, int varid, char *name, float *ip)
+                     size_t len, float *op) nogil
+    int nc_get_att_float(int ncid, int varid, char *name, float *ip) nogil
     int nc_put_att_double(int ncid, int varid, char *name, nc_type xtype,
-                      size_t len, double *op)
-    int nc_get_att_double(int ncid, int varid, char *name, double *ip)
+                      size_t len, double *op) nogil
+    int nc_get_att_double(int ncid, int varid, char *name, double *ip) nogil
     int nc_put_att_ushort(int ncid, int varid, char *name, nc_type xtype,
-                      size_t len, unsigned short *op)
-    int nc_get_att_ushort(int ncid, int varid, char *name, unsigned short *ip)
+                      size_t len, unsigned short *op) nogil
+    int nc_get_att_ushort(int ncid, int varid, char *name, unsigned short *ip) nogil
     int nc_put_att_uint(int ncid, int varid, char *name, nc_type xtype,
-                    size_t len, unsigned int *op)
-    int nc_get_att_uint(int ncid, int varid, char *name, unsigned int *ip)
+                    size_t len, unsigned int *op) nogil
+    int nc_get_att_uint(int ncid, int varid, char *name, unsigned int *ip) nogil
     int nc_put_att_longlong(int ncid, int varid, char *name, nc_type xtype,
-                     size_t len, long long *op)
-    int nc_get_att_longlong(int ncid, int varid, char *name, long long *ip)
+                     size_t len, long long *op) nogil
+    int nc_get_att_longlong(int ncid, int varid, char *name, long long *ip) nogil
     int nc_put_att_ulonglong(int ncid, int varid, char *name, nc_type xtype,
-                         size_t len, unsigned long long *op)
+                         size_t len, unsigned long long *op) nogil
     int nc_get_att_ulonglong(int ncid, int varid, char *name, 
-                         unsigned long long *ip)
+                         unsigned long long *ip) nogil
     int nc_def_var(int ncid, char *name, nc_type xtype, int ndims, 
                int *dimidsp, int *varidp) nogil
     int nc_inq_var(int ncid, int varid, char *name, nc_type *xtypep, 
