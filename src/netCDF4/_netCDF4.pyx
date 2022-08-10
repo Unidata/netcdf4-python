@@ -2246,8 +2246,7 @@ strings.
                     if parallel:
                         IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                             cmode = NC_CLOBBER | parmode
-                            #with nogil:
-                            if 1:
+                            with nogil:
                                 ierr = nc_create_par(path, cmode, \
                                        mpicomm, mpiinfo, &grpid)
                         ELSE:
@@ -2268,8 +2267,7 @@ strings.
                     if parallel:
                         IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                             cmode = NC_NOCLOBBER | parmode
-                            #with nogil:
-                            if 1:
+                            with nogil:
                                 ierr = nc_create_par(path, cmode, \
                                        mpicomm, mpiinfo, &grpid)
                         ELSE:
@@ -2311,8 +2309,7 @@ strings.
             elif parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     cmode = NC_NOWRITE | NC_MPIIO
-                    #with nogil:
-                    if 1:
+                    with nogil:
                         ierr = nc_open_par(path, cmode, \
                                mpicomm, mpiinfo, &grpid)
                 ELSE:
@@ -2336,8 +2333,7 @@ strings.
             if parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     cmode = NC_NOWRITE | NC_SHARE 
-                    #with nogil:
-                    if 1:
+                    with nogil:
                         ierr = nc_open_par(path, cmode, \
                                mpicomm, mpiinfo, &grpid)
                 ELSE:
@@ -2354,8 +2350,7 @@ strings.
                 # NC_SHARE ignored
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     cmode =  NC_WRITE | NC_MPIIO
-                    #with nogil:
-                    if 1:
+                    with nogil:
                         ierr = nc_open_par(path, cmode, \
                                mpicomm, mpiinfo, &grpid)
                 ELSE:
@@ -2374,8 +2369,7 @@ strings.
                     # NC_SHARE ignored
                     IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                         cmode = NC_CLOBBER | parmode 
-                        #with nogil:
-                        if 1:
+                        with nogil:
                             ierr = nc_create_par(path, NC_CLOBBER | cmode, \
                                    mpicomm, mpiinfo, &grpid)
                     ELSE:
@@ -2398,8 +2392,7 @@ strings.
                     # NC_SHARE ignored
                     IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                         cmode = NC_NOCLOBBER | parmode
-                        #with nogil:
-                        if 1:
+                        with nogil:
                             ierr = nc_create_par(path, cmode, \
                                    mpicomm, mpiinfo, &grpid)
                     ELSE:
@@ -5741,11 +5734,13 @@ NC_CHAR).
                 data = data.byteswap()
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
-                with nogil:
+                #with nogil:
+                if 1:
                     ierr = nc_put_vara(self._grpid, self._varid,
                                        startp, countp, PyArray_DATA(data))
             else:
-                with nogil:
+                #with nogil:
+                if 1:
                     ierr = nc_put_vars(self._grpid, self._varid,
                                        startp, countp, stridep, PyArray_DATA(data))
             _ensure_nc_success(ierr)
