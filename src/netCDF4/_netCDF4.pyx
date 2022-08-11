@@ -4609,14 +4609,19 @@ attributes."""
 **`filters(self)`**
 
 return dictionary containing HDF5 filter parameters."""
-        cdef int ierr,ideflate,ishuffle,icomplevel,icomplevel_zstd,icomplevel_bzip2,ifletcher32
+        cdef int ierr,ideflate,ishuffle,icomplevel,ifletcher32
         cdef int izstd=0
         cdef int ibzip2=0
         cdef int iblosc=0
         cdef int iszip=0
-        cdef unsigned int iblosc_complevel,iblosc_blocksize,iblosc_compressor,iblosc_shuffle
         cdef int iszip_coding=0
         cdef int iszip_pixels_per_block=0
+        cdef int icomplevel_zstd=0 
+        cdef int icomplevel_bzip2=0 
+        cdef unsigned int iblosc_shuffle=0
+        cdef unsigned int iblosc_compressor=0
+        cdef unsigned int iblosc_blocksize=0
+        cdef unsigned int iblosc_complevel=0
         filtdict = {'zlib':False,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':0,'fletcher32':False}
         if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']: return
         with nogil:
