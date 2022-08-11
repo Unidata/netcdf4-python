@@ -5734,13 +5734,11 @@ NC_CHAR).
                 data = data.byteswap()
             # strides all 1 or scalar variable, use put_vara (faster)
             if sum(stride) == ndims or ndims == 0:
-                #with nogil:
-                if 1:
+                with nogil:
                     ierr = nc_put_vara(self._grpid, self._varid,
                                        startp, countp, PyArray_DATA(data))
             else:
-                #with nogil:
-                if 1:
+                with nogil:
                     ierr = nc_put_vars(self._grpid, self._varid,
                                        startp, countp, stridep, PyArray_DATA(data))
             _ensure_nc_success(ierr)
