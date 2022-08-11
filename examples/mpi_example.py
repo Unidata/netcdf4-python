@@ -29,14 +29,14 @@ nc.close()
 # reopen the file in append mode, modify the data on the last rank.
 nc = Dataset('parallel_test.nc', 'a',parallel=True, comm=MPI.COMM_WORLD,
              info=MPI.Info())
-#if rank == 3: v[rank] = 2*rank
+if rank == 3: v[rank] = 2*rank
 nc.close()
 # reopen the file read-only again, check the data.
 # leave out the comm and info kwargs to check that the defaults
 # (MPI_COMM_WORLD and MPI_INFO_NULL) work.
 nc = Dataset('parallel_test.nc', parallel=True)
 if rank == 3:
-    #assert 2*rank==nc['var'][rank]
+    assert 2*rank==nc['var'][rank]
     assert rank==nc['var'][rank]
 else:
     assert rank==nc['var'][rank]

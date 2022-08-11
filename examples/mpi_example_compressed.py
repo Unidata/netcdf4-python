@@ -14,5 +14,5 @@ nc = Dataset('parallel_test_compressed.nc', 'a', parallel=True)
 v = nc['var']
 assert rank==v[rank]
 v.set_collective(True) # issue #1108 (var must be in collective mode or write will fail)
-#v[rank]=2*rank
+v[rank]=2*rank
 nc.close()

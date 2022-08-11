@@ -2332,7 +2332,7 @@ strings.
         elif mode in ['a','r+'] and os.path.exists(filename):
             if parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-                    cmode = NC_NOWRITE | NC_SHARE 
+                    cmode = NC_WRITE | NC_MPIIO
                     with nogil:
                         ierr = nc_open_par(path, cmode, \
                                mpicomm, mpiinfo, &grpid)
