@@ -1324,6 +1324,52 @@ details."""
         ierr = nc_set_chunk_cache(sizep,nelemsp, preemptionp)
     _ensure_nc_success(ierr)
 
+IF HAS_SET_ALIGNMENT:
+    def get_alignment():
+        """
+    **`get_alignment()`**
+
+    return current netCDF alignment within HDF5 files in a tuple
+    (threshold,alignment). See netcdf C library documentation for
+    `nc_get_alignment` for details. Values can be reset with
+    `set_alignment`.
+
+    This function was added in netcdf 4.9.0."""
+        cdef int ierr
+        cdef int thresholdp, alignmentp
+        ierr = nc_get_alignment(&thresholdp, &alignmentp)
+        _ensure_nc_success(ierr)
+        threshold = thresholdp
+        alignment = alignmentp
+        return (threshold,alignment)
+
+    def set_alignment(threshold, alignment):
+        """
+    **`set_alignment(threshold,alignment)`**
+
+    Change the HDF5 file alignment.
+    See netcdf C library documentation for `nc_set_alignment` for
+    details.
+
+    This function was added in netcdf 4.9.0."""
+        cdef int ierr
+        cdef int thresholdp, alignmentp
+        thresholdp = threshold
+        alignmentp = alignment
+
+        ierr = nc_set_alignment(thresholdp, alignmentp)
+        _ensure_nc_success(ierr)
+ELSE:
+    def get_alignment():
+        raise RuntimeError(
+            "This function requires netcdf4 4.9.0+ to be used at compile time"
+        )
+
+    def set_alignment(threshold, alignment):
+        raise RuntimeError(
+            "This function requires netcdf4 4.9.0+ to be used at compile time"
+        )
+
 __netcdf4libversion__ = getlibversion().split()[0]
 __hdf5libversion__ = _gethdf5libversion()
 __has_rename_grp__ = HAS_RENAME_GRP
@@ -1339,6 +1385,7 @@ __has_zstandard_support__ = HAS_ZSTANDARD_SUPPORT
 __has_bzip2_support__ = HAS_BZIP2_SUPPORT
 __has_blosc_support__ = HAS_BLOSC_SUPPORT
 __has_szip_support__ = HAS_SZIP_SUPPORT
+__has_set_alignment__ = HAS_SET_ALIGNMENT
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)

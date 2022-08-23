@@ -71,6 +71,7 @@ def check_api(inc_dirs,netcdf_lib_version):
     has_zstandard = False
     has_bzip2 = False
     has_blosc = False
+    has_set_alignment = False
 
     for d in inc_dirs:
         try:
@@ -92,6 +93,8 @@ def check_api(inc_dirs,netcdf_lib_version):
                 has_cdf5_format = True
             if line.startswith('nc_def_var_quantize'):
                 has_quantize = True
+            if line.startswith('nc_set_alignment'):
+                has_set_alignment = True
 
         if has_nc_open_mem:
             try:
@@ -141,7 +144,7 @@ def check_api(inc_dirs,netcdf_lib_version):
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
            has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
            has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-           has_zstandard, has_bzip2, has_blosc
+           has_zstandard, has_bzip2, has_blosc, has_set_alignment
 
 
 def getnetcdfvers(libdirs):
@@ -228,7 +231,7 @@ else:
 
 setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars, unless
-# USE_SETUPCFG evaluates to False. 
+# USE_SETUPCFG evaluates to False.
 ncconfig = None
 use_ncconfig = None
 if USE_SETUPCFG and os.path.exists(setup_cfg):
@@ -338,7 +341,7 @@ if USE_NCCONFIG is None and use_ncconfig is not None:
 elif USE_NCCONFIG is None:
     # if nc-config exists, and USE_NCCONFIG not set, try to use it.
     if HAS_NCCONFIG: USE_NCCONFIG=True
-#elif USE_NCCONFIG is None: 
+#elif USE_NCCONFIG is None:
 #    USE_NCCONFIG = False # don't try to use nc-config if USE_NCCONFIG not set
 
 try:
@@ -555,7 +558,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
     has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
     has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-    has_zstandard, has_bzip2, has_blosc = \
+    has_zstandard, has_bzip2, has_blosc, has_set_alignment = \
     check_api(inc_dirs,netcdf_lib_version)
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
@@ -661,6 +664,13 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     else:
         sys.stdout.write('netcdf lib does not have szip compression functions\n')
         f.write('DEF HAS_SZIP_SUPPORT = 0\n')
+
+    if has_set_alignment:
+        sys.stdout.write('netcdf lib has nc_set_alignment function\n')
+        f.write('DEF HAS_SET_ALIGNMENT = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have nc_set_alignment function\n')
+        f.write('DEF HAS_SET_ALIGNMENT = 0\n')
 
     f.close()
 
