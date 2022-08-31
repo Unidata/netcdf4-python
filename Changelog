@@ -3,6 +3,8 @@
  * add Dataset methods has_<name>_filter (where <name>=zstd,blosc,bzip2,szip)
    to check for availability of extra compression filters.
  * release GIL for all C-lib calls (issue #1180).
+ * Add support for nc_set_alignment and nc_get_alignment to control alignment
+   of data within HDF5 files.
 
  version 1.6.0 (tag v1.6.0rel)
 ==============================

@@ -441,6 +441,11 @@ IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
             NC_MPIPOSIX
             NC_PNETCDF
 
+IF HAS_SET_ALIGNMENT:
+    cdef extern from "netcdf.h":
+        int nc_set_alignment(int threshold, int alignment)
+        int nc_get_alignment(int *threshold, int *alignment)
+
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
     ctypedef int npy_intp 
