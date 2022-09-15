@@ -3,25 +3,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="pdoc 7.1.0" />
+    <meta name="generator" content="pdoc 10.0.1"/>
     <title>netCDF4 API documentation</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%2244.5%202.5%2015%2015%22%3E%3Cpath%20d%3D%22M49.351%2021.041c-.233-.721-.546-2.408-.772-4.076-.042-.09-.067-.187-.046-.288-.166-1.347-.277-2.625-.241-3.351-1.378-1.008-2.271-2.586-2.271-4.362%200-.976.272-1.935.788-2.774.057-.094.122-.18.184-.268-.033-.167-.052-.339-.052-.516%200-1.477%201.202-2.679%202.679-2.679.791%200%201.496.352%201.987.9a6.3%206.3%200%200%201%201.001.029c.492-.564%201.207-.929%202.012-.929%201.477%200%202.679%201.202%202.679%202.679a2.65%202.65%200%200%201-.269%201.148c.383.747.595%201.572.595%202.41%200%202.311-1.507%204.29-3.635%205.107.037.699.147%202.27.423%203.294l.137.461c.156%202.136-4.612%205.166-5.199%203.215zm.127-4.919a4.78%204.78%200%200%200%20.775-.584c-.172-.115-.505-.254-.88-.378zm.331%202.302l.828-.502c-.202-.143-.576-.328-.984-.49zm.45%202.157l.701-.403c-.214-.115-.536-.249-.891-.376l.19.779zM49.13%204.141c0%20.152.123.276.276.276s.275-.124.275-.276-.123-.276-.276-.276-.275.124-.275.276zm.735-.389a1.15%201.15%200%200%201%20.314.783%201.16%201.16%200%200%201-1.162%201.162c-.457%200-.842-.27-1.032-.653-.026.117-.042.238-.042.362a1.68%201.68%200%200%200%201.679%201.679%201.68%201.68%200%200%200%201.679-1.679c0-.843-.626-1.535-1.436-1.654zm3.076%201.654a1.68%201.68%200%200%200%201.679%201.679%201.68%201.68%200%200%200%201.679-1.679c0-.037-.009-.072-.011-.109-.21.3-.541.508-.935.508a1.16%201.16%200%200%201-1.162-1.162%201.14%201.14%200%200%201%20.474-.912c-.015%200-.03-.005-.045-.005-.926.001-1.679.754-1.679%201.68zm1.861-1.265c0%20.152.123.276.276.276s.275-.124.275-.276-.123-.276-.276-.276-.275.124-.275.276zm1.823%204.823c0-.52-.103-1.035-.288-1.52-.466.394-1.06.64-1.717.64-1.144%200-2.116-.725-2.499-1.738-.383%201.012-1.355%201.738-2.499%201.738-.867%200-1.631-.421-2.121-1.062-.307.605-.478%201.267-.478%201.942%200%202.486%202.153%204.51%204.801%204.51s4.801-2.023%204.801-4.51zm-3.032%209.156l-.146-.492c-.276-1.02-.395-2.457-.444-3.268a6.11%206.11%200%200%201-1.18.115%206.01%206.01%200%200%201-2.536-.562l.006.175c.802.215%201.848.612%202.021%201.25.079.295-.021.601-.274.837l-.598.501c.667.304%201.243.698%201.311%201.179.02.144.022.507-.393.787l-.564.365c1.285.521%201.361.96%201.381%201.126.018.142.011.496-.427.746l-.854.489c.064-1.19%201.985-2.585%202.697-3.248zM49.34%209.925c0-.667%201-.667%201%200%200%20.653.818%201.205%201.787%201.205s1.787-.552%201.787-1.205c0-.667%201-.667%201%200%200%201.216-1.25%202.205-2.787%202.205s-2.787-.989-2.787-2.205zm-.887-7.633c-.093.077-.205.114-.317.114a.5.5%200%200%201-.318-.886L49.183.397a.5.5%200%200%201%20.703.068.5.5%200%200%201-.069.703zm7.661-.065c-.086%200-.173-.022-.253-.068l-1.523-.893c-.575-.337-.069-1.2.506-.863l1.523.892a.5.5%200%200%201%20.179.685c-.094.158-.261.247-.432.247z%22%20fill%3D%22%233bb300%22/%3E%3C/svg%3E"/>
+
+    <style>/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
+    <style>/*! syntax-highlighting.css */pre{line-height:125%;}span.linenos{color:inherit; background-color:transparent; padding-left:5px; padding-right:20px;}.pdoc-code .hll{background-color:#ffffcc}.pdoc-code{background:#f8f8f8;}.pdoc-code .c{color:#3D7B7B; font-style:italic}.pdoc-code .err{border:1px solid #FF0000}.pdoc-code .k{color:#008000; font-weight:bold}.pdoc-code .o{color:#666666}.pdoc-code .ch{color:#3D7B7B; font-style:italic}.pdoc-code .cm{color:#3D7B7B; font-style:italic}.pdoc-code .cp{color:#9C6500}.pdoc-code .cpf{color:#3D7B7B; font-style:italic}.pdoc-code .c1{color:#3D7B7B; font-style:italic}.pdoc-code .cs{color:#3D7B7B; font-style:italic}.pdoc-code .gd{color:#A00000}.pdoc-code .ge{font-style:italic}.pdoc-code .gr{color:#E40000}.pdoc-code .gh{color:#000080; font-weight:bold}.pdoc-code .gi{color:#008400}.pdoc-code .go{color:#717171}.pdoc-code .gp{color:#000080; font-weight:bold}.pdoc-code .gs{font-weight:bold}.pdoc-code .gu{color:#800080; font-weight:bold}.pdoc-code .gt{color:#0044DD}.pdoc-code .kc{color:#008000; font-weight:bold}.pdoc-code .kd{color:#008000; font-weight:bold}.pdoc-code .kn{color:#008000; font-weight:bold}.pdoc-code .kp{color:#008000}.pdoc-code .kr{color:#008000; font-weight:bold}.pdoc-code .kt{color:#B00040}.pdoc-code .m{color:#666666}.pdoc-code .s{color:#BA2121}.pdoc-code .na{color:#687822}.pdoc-code .nb{color:#008000}.pdoc-code .nc{color:#0000FF; font-weight:bold}.pdoc-code .no{color:#880000}.pdoc-code .nd{color:#AA22FF}.pdoc-code .ni{color:#717171; font-weight:bold}.pdoc-code .ne{color:#CB3F38; font-weight:bold}.pdoc-code .nf{color:#0000FF}.pdoc-code .nl{color:#767600}.pdoc-code .nn{color:#0000FF; font-weight:bold}.pdoc-code .nt{color:#008000; font-weight:bold}.pdoc-code .nv{color:#19177C}.pdoc-code .ow{color:#AA22FF; font-weight:bold}.pdoc-code .w{color:#bbbbbb}.pdoc-code .mb{color:#666666}.pdoc-code .mf{color:#666666}.pdoc-code .mh{color:#666666}.pdoc-code .mi{color:#666666}.pdoc-code .mo{color:#666666}.pdoc-code .sa{color:#BA2121}.pdoc-code .sb{color:#BA2121}.pdoc-code .sc{color:#BA2121}.pdoc-code .dl{color:#BA2121}.pdoc-code .sd{color:#BA2121; font-style:italic}.pdoc-code .s2{color:#BA2121}.pdoc-code .se{color:#AA5D1F; font-weight:bold}.pdoc-code .sh{color:#BA2121}.pdoc-code .si{color:#A45A77; font-weight:bold}.pdoc-code .sx{color:#008000}.pdoc-code .sr{color:#A45A77}.pdoc-code .s1{color:#BA2121}.pdoc-code .ss{color:#19177C}.pdoc-code .bp{color:#008000}.pdoc-code .fm{color:#0000FF}.pdoc-code .vc{color:#19177C}.pdoc-code .vg{color:#19177C}.pdoc-code .vi{color:#19177C}.pdoc-code .vm{color:#19177C}.pdoc-code .il{color:#666666}</style>
+    <style>/*! theme.css */:root{--pdoc-background:#fff;}.pdoc{--text:#212529;--muted:#6c757d;--link:#3660a5;--link-hover:#1659c5;--code:#f8f8f8;--active:#fff598;--accent:#eee;--accent2:#c1c1c1;--nav-hover:rgba(255, 255, 255, 0.5);--name:#0066BB;--def:#008800;--annotation:#007020;}</style>
+    <style>/*! layout.css */html, body{width:100%;height:100%;}html, main{scroll-behavior:smooth;}body{background-color:var(--pdoc-background);}@media (max-width:769px){#navtoggle{cursor:pointer;position:absolute;width:50px;height:40px;top:1rem;right:1rem;border-color:var(--text);color:var(--text);display:flex;opacity:0.8;}#navtoggle:hover{opacity:1;}#togglestate + div{display:none;}#togglestate:checked + div{display:inherit;}main, header{padding:2rem 3vw;}header + main{margin-top:-3rem;}.git-button{display:none !important;}nav input[type="search"]{max-width:77%;}nav input[type="search"]:first-child{margin-top:-6px;}nav input[type="search"]:valid ~ *{display:none !important;}}@media (min-width:770px){:root{--sidebar-width:clamp(12.5rem, 28vw, 22rem);}nav{position:fixed;overflow:auto;height:100vh;width:var(--sidebar-width);}main, header{padding:3rem 2rem 3rem calc(var(--sidebar-width) + 3rem);width:calc(54rem + var(--sidebar-width));max-width:100%;}header + main{margin-top:-4rem;}#navtoggle{display:none;}}#togglestate{position:absolute;height:0;}nav.pdoc{--pad:1.75rem;--indent:1.5rem;background-color:var(--accent);border-right:1px solid var(--accent2);box-shadow:0 0 20px rgba(50, 50, 50, .2) inset;padding:0 0 0 var(--pad);overflow-wrap:anywhere;scrollbar-width:thin; scrollbar-color:var(--accent2) transparent }nav.pdoc::-webkit-scrollbar{width:.4rem; }nav.pdoc::-webkit-scrollbar-thumb{background-color:var(--accent2); }nav.pdoc > div{padding:var(--pad) 0;}nav.pdoc .module-list-button{display:inline-flex;align-items:center;color:var(--text);border-color:var(--muted);margin-bottom:1rem;}nav.pdoc .module-list-button:hover{border-color:var(--text);}nav.pdoc input[type=search]{display:block;outline-offset:0;width:calc(100% - var(--pad));}nav.pdoc .logo{max-width:calc(100% - var(--pad));max-height:35vh;display:block;margin:0 auto 1rem;transform:translate(calc(-.5 * var(--pad)), 0);}nav.pdoc ul{list-style:none;padding-left:0;}nav.pdoc li{display:block;margin:0;padding:.2rem 0 .2rem var(--indent);transition:all 100ms;}nav.pdoc > div > ul > li{padding-left:0;}nav.pdoc li:hover{background-color:var(--nav-hover);}nav.pdoc a, nav.pdoc a:hover{color:var(--text);}nav.pdoc a{display:block;}nav.pdoc > h2:first-of-type{margin-top:1.5rem;}nav.pdoc .class:before{content:"class ";color:var(--muted);}nav.pdoc .function:after{content:"()";color:var(--muted);}nav.pdoc footer:before{content:"";display:block;width:calc(100% - var(--pad));border-top:solid var(--accent2) 1px;margin-top:1.5rem;padding-top:.5rem;}nav.pdoc footer{font-size:small;}</style>
+    <style>/*! content.css */.pdoc{color:var(--text);box-sizing:border-box;line-height:1.5;background:none;}.pdoc .pdoc-button{display:inline-block;border:solid black 1px;border-radius:2px;font-size:.75rem;padding:calc(0.5em - 1px) 1em;transition:100ms all;}.pdoc .visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0, 0, 0, 0) !important;white-space:nowrap !important;border:0 !important;}.pdoc h1, .pdoc h2, .pdoc h3{font-weight:300;margin:.3em 0;padding:.2em 0;}.pdoc a{text-decoration:none;color:var(--link);}.pdoc a:hover{color:var(--link-hover);}.pdoc blockquote{margin-left:2rem;}.pdoc pre{border-top:1px solid var(--accent2);border-bottom:1px solid var(--accent2);margin-top:0;margin-bottom:1em;padding:.5rem 0 .5rem .5rem;overflow-x:auto;background-color:var(--code);}.pdoc code{color:var(--text);padding:.2em .4em;margin:0;font-size:85%;background-color:var(--code);border-radius:6px;}.pdoc a > code{color:inherit;}.pdoc pre > code{display:inline-block;font-size:inherit;background:none;border:none;padding:0;}.pdoc .modulename{margin-top:0;font-weight:bold;}.pdoc .modulename a{color:var(--link);transition:100ms all;}.pdoc .git-button{float:right;border:solid var(--link) 1px;}.pdoc .git-button:hover{background-color:var(--link);color:var(--pdoc-background);}.pdoc details{filter:opacity(1);}.pdoc details:not([open]){height:0;}.pdoc details > summary{position:absolute;top:-35px;right:0;font-size:.75rem;color:var(--muted);padding:0 .7em;user-select:none;cursor:pointer;}.pdoc details > summary:focus{outline:0;}.pdoc .docstring{margin-bottom:1.5rem;}.pdoc > section:first-of-type > .docstring{margin-bottom:2.5rem;}.pdoc .docstring .pdoc-code{margin-left:1em;margin-right:1em;}.pdoc h1:target,.pdoc h2:target,.pdoc h3:target,.pdoc h4:target,.pdoc h5:target,.pdoc h6:target{background-color:var(--active);box-shadow:-1rem 0 0 0 var(--active);}.pdoc div:target > .attr,.pdoc section:target > .attr,.pdoc dd:target > a{background-color:var(--active);}.pdoc .attr:hover{filter:contrast(0.95);}.pdoc .headerlink{position:absolute;width:0;margin-left:-1.5rem;line-height:1.4rem;font-size:1.5rem;font-weight:normal;transition:all 100ms ease-in-out;opacity:0;user-select:none;}.pdoc .attr > .headerlink{margin-left:-2.5rem;}.pdoc *:hover > .headerlink,.pdoc *:target > .attr > .headerlink{opacity:1;}.pdoc .attr{display:block;color:var(--text);margin:.5rem 0 .5rem;padding:.4rem 5rem .4rem 1rem;background-color:var(--accent);}.pdoc .classattr{margin-left:2rem;}.pdoc .name{color:var(--name);font-weight:bold;}.pdoc .def{color:var(--def);font-weight:bold;}.pdoc .signature{white-space:pre-wrap;}.pdoc .annotation{color:var(--annotation);}.pdoc .inherited{margin-left:2rem;}.pdoc .inherited dt{font-weight:700;}.pdoc .inherited dt, .pdoc .inherited dd{display:inline;margin-left:0;margin-bottom:.5rem;}.pdoc .inherited dd:not(:last-child):after{content:", ";}.pdoc .inherited .class:before{content:"class ";}.pdoc .inherited .function a:after{content:"()";}.pdoc .search-result .docstring{overflow:auto;max-height:25vh;}.pdoc .search-result.focused > .attr{background-color:var(--active);}.pdoc .attribution{margin-top:2rem;display:block;opacity:0.5;transition:all 200ms;filter:grayscale(100%);}.pdoc .attribution:hover{opacity:1;filter:grayscale(0%);}.pdoc .attribution img{margin-left:5px;height:35px;vertical-align:middle;width:70px;transition:all 200ms;}.pdoc table{display:block;width:max-content;max-width:100%;overflow:auto;margin-bottom:1rem;}.pdoc table th{font-weight:600;}.pdoc table th, .pdoc table td{padding:6px 13px;border:1px solid var(--accent2);}</style>
+    <style>/*! custom.css */</style></head>
+<body>
+    <nav class="pdoc">
+        <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
+        <input id="togglestate" type="checkbox" aria-hidden="true" tabindex="-1">
+        <div>
 
 
-<style type="text/css">/*! * Bootstrap Reboot v5.0.0 (https://getbootstrap.com/) * Copyright 2011-2021 The Bootstrap Authors * Copyright 2011-2021 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE) * Forked from Normalize.css, licensed MIT (https://github.com/necolas/normalize.css/blob/master/LICENSE.md) */*,::after,::before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";font-size:1rem;font-weight:400;line-height:1.5;color:#212529;background-color:#fff;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}hr{margin:1rem 0;color:inherit;background-color:currentColor;border:0;opacity:.25}hr:not([size]){height:1px}h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:.5rem;font-weight:500;line-height:1.2}h1{font-size:calc(1.375rem + 1.5vw)}@media (min-width:1200px){h1{font-size:2.5rem}}h2{font-size:calc(1.325rem + .9vw)}@media (min-width:1200px){h2{font-size:2rem}}h3{font-size:calc(1.3rem + .6vw)}@media (min-width:1200px){h3{font-size:1.75rem}}h4{font-size:calc(1.275rem + .3vw)}@media (min-width:1200px){h4{font-size:1.5rem}}h5{font-size:1.25rem}h6{font-size:1rem}p{margin-top:0;margin-bottom:1rem}abbr[data-bs-original-title],abbr[title]{-webkit-text-decoration:underline dotted;text-decoration:underline dotted;cursor:help;-webkit-text-decoration-skip-ink:none;text-decoration-skip-ink:none}address{margin-bottom:1rem;font-style:normal;line-height:inherit}ol,ul{padding-left:2rem}dl,ol,ul{margin-top:0;margin-bottom:1rem}ol ol,ol ul,ul ol,ul ul{margin-bottom:0}dt{font-weight:700}dd{margin-bottom:.5rem;margin-left:0}blockquote{margin:0 0 1rem}b,strong{font-weight:bolder}small{font-size:.875em}mark{padding:.2em;background-color:#fcf8e3}sub,sup{position:relative;font-size:.75em;line-height:0;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}a{color:#0d6efd;text-decoration:underline}a:hover{color:#0a58ca}a:not([href]):not([class]),a:not([href]):not([class]):hover{color:inherit;text-decoration:none}code,kbd,pre,samp{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:1em;direction:ltr;unicode-bidi:bidi-override}pre{display:block;margin-top:0;margin-bottom:1rem;overflow:auto;font-size:.875em}pre code{font-size:inherit;color:inherit;word-break:normal}code{font-size:.875em;color:#d63384;word-wrap:break-word}a>code{color:inherit}kbd{padding:.2rem .4rem;font-size:.875em;color:#fff;background-color:#212529;border-radius:.2rem}kbd kbd{padding:0;font-size:1em;font-weight:700}figure{margin:0 0 1rem}img,svg{vertical-align:middle}table{caption-side:bottom;border-collapse:collapse}caption{padding-top:.5rem;padding-bottom:.5rem;color:#6c757d;text-align:left}th{text-align:inherit;text-align:-webkit-match-parent}tbody,td,tfoot,th,thead,tr{border-color:inherit;border-style:solid;border-width:0}label{display:inline-block}button{border-radius:0}button:focus:not(:focus-visible){outline:0}button,input,optgroup,select,textarea{margin:0;font-family:inherit;font-size:inherit;line-height:inherit}button,select{text-transform:none}[role=button]{cursor:pointer}select{word-wrap:normal}select:disabled{opacity:1}[list]::-webkit-calendar-picker-indicator{display:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){cursor:pointer}::-moz-focus-inner{padding:0;border-style:none}textarea{resize:vertical}fieldset{min-width:0;padding:0;margin:0;border:0}legend{float:left;width:100%;padding:0;margin-bottom:.5rem;font-size:calc(1.275rem + .3vw);line-height:inherit}@media (min-width:1200px){legend{font-size:1.5rem}}legend+*{clear:left}::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-fields-wrapper,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-text,::-webkit-datetime-edit-year-field{padding:0}::-webkit-inner-spin-button{height:auto}[type=search]{outline-offset:-2px;-webkit-appearance:textfield}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-color-swatch-wrapper{padding:0}::file-selector-button{font:inherit}::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}iframe{border:0}summary{display:list-item;cursor:pointer}progress{vertical-align:baseline}[hidden]{display:none!important}</style>
-<style>/*! pygments syntax highlighting */pre{line-height:125%;}td.linenos pre{color:#000000; background-color:#f0f0f0; padding-left:5px; padding-right:5px;}span.linenos{color:#000000; background-color:#f0f0f0; padding-left:5px; padding-right:5px;}td.linenos pre.special{color:#000000; background-color:#ffffc0; padding-left:5px; padding-right:5px;}span.linenos.special{color:#000000; background-color:#ffffc0; padding-left:5px; padding-right:5px;}.pdoc .hll{background-color:#ffffcc}.pdoc{background:#f8f8f8;}.pdoc .c{color:#408080; font-style:italic}.pdoc .err{border:1px solid #FF0000}.pdoc .k{color:#008000; font-weight:bold}.pdoc .o{color:#666666}.pdoc .ch{color:#408080; font-style:italic}.pdoc .cm{color:#408080; font-style:italic}.pdoc .cp{color:#BC7A00}.pdoc .cpf{color:#408080; font-style:italic}.pdoc .c1{color:#408080; font-style:italic}.pdoc .cs{color:#408080; font-style:italic}.pdoc .gd{color:#A00000}.pdoc .ge{font-style:italic}.pdoc .gr{color:#FF0000}.pdoc .gh{color:#000080; font-weight:bold}.pdoc .gi{color:#00A000}.pdoc .go{color:#888888}.pdoc .gp{color:#000080; font-weight:bold}.pdoc .gs{font-weight:bold}.pdoc .gu{color:#800080; font-weight:bold}.pdoc .gt{color:#0044DD}.pdoc .kc{color:#008000; font-weight:bold}.pdoc .kd{color:#008000; font-weight:bold}.pdoc .kn{color:#008000; font-weight:bold}.pdoc .kp{color:#008000}.pdoc .kr{color:#008000; font-weight:bold}.pdoc .kt{color:#B00040}.pdoc .m{color:#666666}.pdoc .s{color:#BA2121}.pdoc .na{color:#7D9029}.pdoc .nb{color:#008000}.pdoc .nc{color:#0000FF; font-weight:bold}.pdoc .no{color:#880000}.pdoc .nd{color:#AA22FF}.pdoc .ni{color:#999999; font-weight:bold}.pdoc .ne{color:#D2413A; font-weight:bold}.pdoc .nf{color:#0000FF}.pdoc .nl{color:#A0A000}.pdoc .nn{color:#0000FF; font-weight:bold}.pdoc .nt{color:#008000; font-weight:bold}.pdoc .nv{color:#19177C}.pdoc .ow{color:#AA22FF; font-weight:bold}.pdoc .w{color:#bbbbbb}.pdoc .mb{color:#666666}.pdoc .mf{color:#666666}.pdoc .mh{color:#666666}.pdoc .mi{color:#666666}.pdoc .mo{color:#666666}.pdoc .sa{color:#BA2121}.pdoc .sb{color:#BA2121}.pdoc .sc{color:#BA2121}.pdoc .dl{color:#BA2121}.pdoc .sd{color:#BA2121; font-style:italic}.pdoc .s2{color:#BA2121}.pdoc .se{color:#BB6622; font-weight:bold}.pdoc .sh{color:#BA2121}.pdoc .si{color:#BB6688; font-weight:bold}.pdoc .sx{color:#008000}.pdoc .sr{color:#BB6688}.pdoc .s1{color:#BA2121}.pdoc .ss{color:#19177C}.pdoc .bp{color:#008000}.pdoc .fm{color:#0000FF}.pdoc .vc{color:#19177C}.pdoc .vg{color:#19177C}.pdoc .vi{color:#19177C}.pdoc .vm{color:#19177C}.pdoc .il{color:#666666}</style>
-<style>/*! pdoc */:root{--pdoc-background:#fff;}.pdoc{--text:#212529;--muted:#6c757d;--link:#3660a5;--link-hover:#1659c5;--code:#f7f7f7;--active:#fff598;--accent:#eee;--accent2:#c1c1c1;--nav-hover:rgba(255, 255, 255, 0.5);--name:#0066BB;--def:#008800;--annotation:#007020;}body{background-color:var(--pdoc-background);}html, body{width:100%;height:100%;}@media (max-width:769px){#navtoggle{cursor:pointer;position:absolute;width:50px;height:40px;top:1rem;right:1rem;border-color:var(--text);color:var(--text);display:flex;opacity:0.8;}#navtoggle:hover{opacity:1;}#togglestate + div{display:none;}#togglestate:checked + div{display:inherit;}main, header{padding:2rem 3vw;}.git-button{display:none !important;}nav input[type="search"]:valid ~ *{display:none !important;}}@media (min-width:770px){:root{--sidebar-width:clamp(12.5rem, 28vw, 22rem);}nav{position:fixed;overflow:auto;height:100vh;width:var(--sidebar-width);}main, header{padding:3rem 2rem 3rem calc(var(--sidebar-width) + 3rem);width:calc(54rem + var(--sidebar-width));max-width:100%;}#navtoggle{display:none;}}#togglestate{display:none;}nav.pdoc{--pad:1.75rem;--indent:1.5rem;background-color:var(--accent);border-right:1px solid var(--accent2);box-shadow:0 0 20px rgba(50, 50, 50, .2) inset;padding:0 0 0 var(--pad);overflow-wrap:anywhere;scrollbar-width:thin; scrollbar-color:var(--accent2) transparent }nav.pdoc::-webkit-scrollbar{width:.4rem; }nav.pdoc::-webkit-scrollbar-thumb{background-color:var(--accent2); }nav.pdoc > div{padding:var(--pad) 0;}nav.pdoc .module-list-button{display:inline-flex;align-items:center;color:var(--text);border-color:var(--muted);margin-bottom:1rem;}nav.pdoc .module-list-button:hover{border-color:var(--text);}nav.pdoc input[type=search]{display:block;outline-offset:0;width:calc(100% - var(--pad));}nav.pdoc ul{list-style:none;padding-left:0;}nav.pdoc li{display:block;margin:0;padding:.2rem 0 .2rem var(--indent);transition:all 100ms;}nav.pdoc > div > ul > li{padding-left:0;}nav.pdoc li:hover{background-color:var(--nav-hover);}nav.pdoc a, nav.pdoc a:hover{color:var(--text);}nav.pdoc a{display:block;}nav.pdoc > h2:first-of-type{margin-top:1.5rem;}nav.pdoc .class:before{content:"class ";color:var(--muted);}nav.pdoc .function:after{content:"()";color:var(--muted);}html, main{scroll-behavior:smooth;}.pdoc{color:var(--text);box-sizing:border-box;line-height:1.5;background:none;}.pdoc .pdoc-button{display:inline-block;border:solid black 1px;border-radius:2px;font-size:.75rem;padding:calc(0.5em - 1px) 1em;transition:100ms all;}.pdoc .visually-hidden{position:absolute !important;width:1px !important;height:1px !important;padding:0 !important;margin:-1px !important;overflow:hidden !important;clip:rect(0, 0, 0, 0) !important;white-space:nowrap !important;border:0 !important;}.pdoc h1, .pdoc h2, .pdoc h3{font-weight:300;margin:.3em 0;padding:.2em 0;}.pdoc a{text-decoration:none;color:var(--link);}.pdoc a:hover{color:var(--link-hover);}.pdoc blockquote{margin-left:2rem;}.pdoc pre{background-color:var(--code);border-top:1px solid var(--accent2);border-bottom:1px solid var(--accent2);margin-bottom:1em;padding:.5rem 0 .5rem .5rem;overflow-x:auto;}.pdoc code{color:var(--text);padding:.2em .4em;margin:0;font-size:85%;background-color:var(--code);border-radius:6px;}.pdoc a > code{color:inherit;}.pdoc pre > code{display:inline-block;font-size:inherit;background:none;border:none;padding:0;}.pdoc .modulename{margin-top:0;font-weight:bold;}.pdoc .modulename a{color:var(--link);transition:100ms all;}.pdoc .git-button{float:right;border:solid var(--link) 1px;}.pdoc .git-button:hover{background-color:var(--link);color:var(--pdoc-background);}.pdoc details{--shift:-40px;text-align:right;margin-top:var(--shift);margin-bottom:calc(0px - var(--shift));clear:both;filter:opacity(1);}.pdoc details:not([open]){height:0;overflow:visible;}.pdoc details > summary{font-size:.75rem;cursor:pointer;color:var(--muted);border-width:0;padding:0 .7em;display:inline-block;display:inline list-item;user-select:none;}.pdoc details > summary:focus{outline:0;}.pdoc details > div{margin-top:calc(0px - var(--shift) / 2);text-align:left;}.pdoc .docstring{margin-bottom:1.5rem;}.pdoc > section:first-of-type > .docstring{margin-bottom:3rem;}.pdoc .docstring pre{margin-left:1em;margin-right:1em;}.pdoc h1:target,.pdoc h2:target,.pdoc h3:target,.pdoc h4:target,.pdoc h5:target,.pdoc h6:target{background-color:var(--active);box-shadow:-1rem 0 0 0 var(--active);}.pdoc div:target > .attr,.pdoc section:target > .attr,.pdoc dd:target > a{background-color:var(--active);}.pdoc .attr:hover{filter:contrast(0.95);}.pdoc .headerlink{position:absolute;width:0;margin-left:-1.5rem;line-height:1.4rem;font-size:1.5rem;font-weight:normal;transition:all 100ms ease-in-out;opacity:0;}.pdoc .attr > .headerlink{margin-left:-2.5rem;}.pdoc *:hover > .headerlink,.pdoc *:target > .attr > .headerlink{opacity:1;}.pdoc .attr{display:block;color:var(--text);margin:1rem 0 .5rem;padding:.4rem 5rem .4rem 1rem;background-color:var(--accent);}.pdoc .classattr{margin-left:2rem;}.pdoc .name{color:var(--name);font-weight:bold;}.pdoc .def{color:var(--def);font-weight:bold;}.pdoc .signature{white-space:pre-wrap;}.pdoc .annotation{color:var(--annotation);}.pdoc .inherited{margin-left:2rem;}.pdoc .inherited dt{font-weight:700;}.pdoc .inherited dt, .pdoc .inherited dd{display:inline;margin-left:0;margin-bottom:.5rem;}.pdoc .inherited dd:not(:last-child):after{content:", ";}.pdoc .inherited .class:before{content:"class ";}.pdoc .inherited .function a:after{content:"()";}.pdoc .search-result .docstring{overflow:auto;max-height:25vh;}.pdoc .search-result.focused > .attr{background-color:var(--active);}.pdoc .attribution{margin-top:2rem;display:block;opacity:0.5;transition:all 200ms;filter:grayscale(100%);}.pdoc .attribution:hover{opacity:1;filter:grayscale(0%);}.pdoc .attribution img{margin-left:5px;height:35px;vertical-align:middle;width:70px;transition:all 200ms;}</style>
-</head>
-<body>        <nav class="pdoc">
-            <label id="navtoggle" for="togglestate" class="pdoc-button"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke-linecap='round' stroke="currentColor" stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg></label>
-            <input id="togglestate" type="checkbox">
-            <div>
-
-
-
-                    <h2>Contents</h2>
-                    <ul>
-  <li><a href="#version-160">Version 1.6.0</a></li>
+        <h2>Contents</h2>
+        <ul>
+  <li><a href="#version-161">Version 1.6.1</a></li>
 </ul></li>
 <li><a href="#introduction">Introduction</a>
 <ul>
@@ -49,8 +49,8 @@
 
 
 
-                    <h2>API Documentation</h2>
-                        <ul class="memberlist">
+        <h2>API Documentation</h2>
+            <ul class="memberlist">
             <li>
                     <a class="class" href="#Dataset">Dataset</a>
                             <ul class="memberlist">
@@ -149,6 +149,18 @@
                         </li>
                         <li>
                                 <a class="function" href="#Dataset.tocdl">tocdl</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Dataset.has_blosc_filter">has_blosc_filter</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Dataset.has_zstd_filter">has_zstd_filter</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Dataset.has_bzip2_filter">has_bzip2_filter</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Dataset.has_szip_filter">has_szip_filter</a>
                         </li>
                         <li>
                                 <a class="variable" href="#Dataset.name">name</a>
@@ -444,22 +456,29 @@
             <li>
                     <a class="function" href="#set_chunk_cache">set_chunk_cache</a>
             </li>
+            <li>
+                    <a class="function" href="#set_alignment">set_alignment</a>
+            </li>
+            <li>
+                    <a class="function" href="#get_alignment">get_alignment</a>
+            </li>
     </ul>
 
 
-                    <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev">
-                        built with <span class="visually-hidden">pdoc</span><img
-                            alt="pdoc logo"
-                            src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20role%3D%22img%22%20aria-label%3D%22pdoc%20logo%22%20width%3D%22300%22%20height%3D%22150%22%20viewBox%3D%22-1%200%2060%2030%22%3E%3Ctitle%3Epdoc%3C/title%3E%3Cpath%20d%3D%22M29.621%2021.293c-.011-.273-.214-.475-.511-.481a.5.5%200%200%200-.489.503l-.044%201.393c-.097.551-.695%201.215-1.566%201.704-.577.428-1.306.486-2.193.182-1.426-.617-2.467-1.654-3.304-2.487l-.173-.172a3.43%203.43%200%200%200-.365-.306.49.49%200%200%200-.286-.196c-1.718-1.06-4.931-1.47-7.353.191l-.219.15c-1.707%201.187-3.413%202.131-4.328%201.03-.02-.027-.49-.685-.141-1.763.233-.721.546-2.408.772-4.076.042-.09.067-.187.046-.288.166-1.347.277-2.625.241-3.351%201.378-1.008%202.271-2.586%202.271-4.362%200-.976-.272-1.935-.788-2.774-.057-.094-.122-.18-.184-.268.033-.167.052-.339.052-.516%200-1.477-1.202-2.679-2.679-2.679-.791%200-1.496.352-1.987.9a6.3%206.3%200%200%200-1.001.029c-.492-.564-1.207-.929-2.012-.929-1.477%200-2.679%201.202-2.679%202.679A2.65%202.65%200%200%200%20.97%206.554c-.383.747-.595%201.572-.595%202.41%200%202.311%201.507%204.29%203.635%205.107-.037.699-.147%202.27-.423%203.294l-.137.461c-.622%202.042-2.515%208.257%201.727%2010.643%201.614.908%203.06%201.248%204.317%201.248%202.665%200%204.492-1.524%205.322-2.401%201.476-1.559%202.886-1.854%206.491.82%201.877%201.393%203.514%201.753%204.861%201.068%202.223-1.713%202.811-3.867%203.399-6.374.077-.846.056-1.469.054-1.537zm-4.835%204.313c-.054.305-.156.586-.242.629-.034-.007-.131-.022-.307-.157-.145-.111-.314-.478-.456-.908.221.121.432.25.675.355.115.039.219.051.33.081zm-2.251-1.238c-.05.33-.158.648-.252.694-.022.001-.125-.018-.307-.157-.217-.166-.488-.906-.639-1.573.358.344.754.693%201.198%201.036zm-3.887-2.337c-.006-.116-.018-.231-.041-.342.635.145%201.189.368%201.599.625.097.231.166.481.174.642-.03.049-.055.101-.067.158-.046.013-.128.026-.298.004-.278-.037-.901-.57-1.367-1.087zm-1.127-.497c.116.306.176.625.12.71-.019.014-.117.045-.345.016-.206-.027-.604-.332-.986-.695.41-.051.816-.056%201.211-.031zm-4.535%201.535c.209.22.379.47.358.598-.006.041-.088.138-.351.234-.144.055-.539-.063-.979-.259a11.66%2011.66%200%200%200%20.972-.573zm.983-.664c.359-.237.738-.418%201.126-.554.25.237.479.548.457.694-.006.042-.087.138-.351.235-.174.064-.694-.105-1.232-.375zm-3.381%201.794c-.022.145-.061.29-.149.401-.133.166-.358.248-.69.251h-.002c-.133%200-.306-.26-.45-.621.417.091.854.07%201.291-.031zm-2.066-8.077a4.78%204.78%200%200%201-.775-.584c.172-.115.505-.254.88-.378l-.105.962zm-.331%202.302a10.32%2010.32%200%200%201-.828-.502c.202-.143.576-.328.984-.49l-.156.992zm-.45%202.157l-.701-.403c.214-.115.536-.249.891-.376a11.57%2011.57%200%200%201-.19.779zm-.181%201.716c.064.398.194.702.298.893-.194-.051-.435-.162-.736-.398.061-.119.224-.3.438-.495zM8.87%204.141c0%20.152-.123.276-.276.276s-.275-.124-.275-.276.123-.276.276-.276.275.124.275.276zm-.735-.389a1.15%201.15%200%200%200-.314.783%201.16%201.16%200%200%200%201.162%201.162c.457%200%20.842-.27%201.032-.653.026.117.042.238.042.362a1.68%201.68%200%200%201-1.679%201.679%201.68%201.68%200%200%201-1.679-1.679c0-.843.626-1.535%201.436-1.654zM5.059%205.406A1.68%201.68%200%200%201%203.38%207.085a1.68%201.68%200%200%201-1.679-1.679c0-.037.009-.072.011-.109.21.3.541.508.935.508a1.16%201.16%200%200%200%201.162-1.162%201.14%201.14%200%200%200-.474-.912c.015%200%20.03-.005.045-.005.926.001%201.679.754%201.679%201.68zM3.198%204.141c0%20.152-.123.276-.276.276s-.275-.124-.275-.276.123-.276.276-.276.275.124.275.276zM1.375%208.964c0-.52.103-1.035.288-1.52.466.394%201.06.64%201.717.64%201.144%200%202.116-.725%202.499-1.738.383%201.012%201.355%201.738%202.499%201.738.867%200%201.631-.421%202.121-1.062.307.605.478%201.267.478%201.942%200%202.486-2.153%204.51-4.801%204.51s-4.801-2.023-4.801-4.51zm24.342%2019.349c-.985.498-2.267.168-3.813-.979-3.073-2.281-5.453-3.199-7.813-.705-1.315%201.391-4.163%203.365-8.423.97-3.174-1.786-2.239-6.266-1.261-9.479l.146-.492c.276-1.02.395-2.457.444-3.268a6.11%206.11%200%200%200%201.18.115%206.01%206.01%200%200%200%202.536-.562l-.006.175c-.802.215-1.848.612-2.021%201.25-.079.295.021.601.274.837.219.203.415.364.598.501-.667.304-1.243.698-1.311%201.179-.02.144-.022.507.393.787.213.144.395.26.564.365-1.285.521-1.361.96-1.381%201.126-.018.142-.011.496.427.746l.854.489c-.473.389-.971.914-.999%201.429-.018.278.095.532.316.713.675.556%201.231.721%201.653.721.059%200%20.104-.014.158-.02.207.707.641%201.64%201.513%201.64h.013c.8-.008%201.236-.345%201.462-.626.173-.216.268-.457.325-.692.424.195.93.374%201.372.374.151%200%20.294-.021.423-.068.732-.27.944-.704.993-1.021.009-.061.003-.119.002-.179.266.086.538.147.789.147.15%200%20.294-.021.423-.069.542-.2.797-.489.914-.754.237.147.478.258.704.288.106.014.205.021.296.021.356%200%20.595-.101.767-.229.438.435%201.094.992%201.656%201.067.106.014.205.021.296.021a1.56%201.56%200%200%200%20.323-.035c.17.575.453%201.289.866%201.605.358.273.665.362.914.362a.99.99%200%200%200%20.421-.093%201.03%201.03%200%200%200%20.245-.164c.168.428.39.846.68%201.068.358.273.665.362.913.362a.99.99%200%200%200%20.421-.093c.317-.148.512-.448.639-.762.251.157.495.257.726.257.127%200%20.25-.024.37-.071.427-.17.706-.617.841-1.314.022-.015.047-.022.068-.038.067-.051.133-.104.196-.159-.443%201.486-1.107%202.761-2.086%203.257zM8.66%209.925a.5.5%200%201%200-1%200c0%20.653-.818%201.205-1.787%201.205s-1.787-.552-1.787-1.205a.5.5%200%201%200-1%200c0%201.216%201.25%202.205%202.787%202.205s2.787-.989%202.787-2.205zm4.4%2015.965l-.208.097c-2.661%201.258-4.708%201.436-6.086.527-1.542-1.017-1.88-3.19-1.844-4.198a.4.4%200%200%200-.385-.414c-.242-.029-.406.164-.414.385-.046%201.249.367%203.686%202.202%204.896.708.467%201.547.7%202.51.7%201.248%200%202.706-.392%204.362-1.174l.185-.086a.4.4%200%200%200%20.205-.527c-.089-.204-.326-.291-.527-.206zM9.547%202.292c.093.077.205.114.317.114a.5.5%200%200%200%20.318-.886L8.817.397a.5.5%200%200%200-.703.068.5.5%200%200%200%20.069.703l1.364%201.124zm-7.661-.065c.086%200%20.173-.022.253-.068l1.523-.893a.5.5%200%200%200-.506-.863l-1.523.892a.5.5%200%200%200-.179.685c.094.158.261.247.432.247z%22%20transform%3D%22matrix%28-1%200%200%201%2058%200%29%22%20fill%3D%22%233bb300%22/%3E%3Cpath%20d%3D%22M.3%2021.86V10.18q0-.46.02-.68.04-.22.18-.5.28-.54%201.34-.54%201.06%200%201.42.28.38.26.44.78.76-1.04%202.38-1.04%201.64%200%203.1%201.54%201.46%201.54%201.46%203.58%200%202.04-1.46%203.58-1.44%201.54-3.08%201.54-1.64%200-2.38-.92v4.04q0%20.46-.04.68-.02.22-.18.5-.14.3-.5.42-.36.12-.98.12-.62%200-1-.12-.36-.12-.52-.4-.14-.28-.18-.5-.02-.22-.02-.68zm3.96-9.42q-.46.54-.46%201.18%200%20.64.46%201.18.48.52%201.2.52.74%200%201.24-.52.52-.52.52-1.18%200-.66-.48-1.18-.48-.54-1.26-.54-.76%200-1.22.54zm14.741-8.36q.16-.3.54-.42.38-.12%201-.12.64%200%201.02.12.38.12.52.42.16.3.18.54.04.22.04.68v11.94q0%20.46-.04.7-.02.22-.18.5-.3.54-1.7.54-1.38%200-1.54-.98-.84.96-2.34.96-1.8%200-3.28-1.56-1.48-1.58-1.48-3.66%200-2.1%201.48-3.68%201.5-1.58%203.28-1.58%201.48%200%202.3%201v-4.2q0-.46.02-.68.04-.24.18-.52zm-3.24%2010.86q.52.54%201.26.54.74%200%201.22-.54.5-.54.5-1.18%200-.66-.48-1.22-.46-.56-1.26-.56-.8%200-1.28.56-.48.54-.48%201.2%200%20.66.52%201.2zm7.833-1.2q0-2.4%201.68-3.96%201.68-1.56%203.84-1.56%202.16%200%203.82%201.56%201.66%201.54%201.66%203.94%200%201.66-.86%202.96-.86%201.28-2.1%201.9-1.22.6-2.54.6-1.32%200-2.56-.64-1.24-.66-2.1-1.92-.84-1.28-.84-2.88zm4.18%201.44q.64.48%201.3.48.66%200%201.32-.5.66-.5.66-1.48%200-.98-.62-1.46-.62-.48-1.34-.48-.72%200-1.34.5-.62.5-.62%201.48%200%20.96.64%201.46zm11.412-1.44q0%20.84.56%201.32.56.46%201.18.46.64%200%201.18-.36.56-.38.9-.38.6%200%201.46%201.06.46.58.46%201.04%200%20.76-1.1%201.42-1.14.8-2.8.8-1.86%200-3.58-1.34-.82-.64-1.34-1.7-.52-1.08-.52-2.36%200-1.3.52-2.34.52-1.06%201.34-1.7%201.66-1.32%203.54-1.32.76%200%201.48.22.72.2%201.06.4l.32.2q.36.24.56.38.52.4.52.92%200%20.5-.42%201.14-.72%201.1-1.38%201.1-.38%200-1.08-.44-.36-.34-1.04-.34-.66%200-1.24.48-.58.48-.58%201.34z%22%20fill%3D%22green%22/%3E%3C/svg%3E"/>
-                    </a>
-            </div>
-        </nav>
+
+        <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev">
+            built with <span class="visually-hidden">pdoc</span><img
+                alt="pdoc logo"
+                src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20role%3D%22img%22%20aria-label%3D%22pdoc%20logo%22%20width%3D%22300%22%20height%3D%22150%22%20viewBox%3D%22-1%200%2060%2030%22%3E%3Ctitle%3Epdoc%3C/title%3E%3Cpath%20d%3D%22M29.621%2021.293c-.011-.273-.214-.475-.511-.481a.5.5%200%200%200-.489.503l-.044%201.393c-.097.551-.695%201.215-1.566%201.704-.577.428-1.306.486-2.193.182-1.426-.617-2.467-1.654-3.304-2.487l-.173-.172a3.43%203.43%200%200%200-.365-.306.49.49%200%200%200-.286-.196c-1.718-1.06-4.931-1.47-7.353.191l-.219.15c-1.707%201.187-3.413%202.131-4.328%201.03-.02-.027-.49-.685-.141-1.763.233-.721.546-2.408.772-4.076.042-.09.067-.187.046-.288.166-1.347.277-2.625.241-3.351%201.378-1.008%202.271-2.586%202.271-4.362%200-.976-.272-1.935-.788-2.774-.057-.094-.122-.18-.184-.268.033-.167.052-.339.052-.516%200-1.477-1.202-2.679-2.679-2.679-.791%200-1.496.352-1.987.9a6.3%206.3%200%200%200-1.001.029c-.492-.564-1.207-.929-2.012-.929-1.477%200-2.679%201.202-2.679%202.679A2.65%202.65%200%200%200%20.97%206.554c-.383.747-.595%201.572-.595%202.41%200%202.311%201.507%204.29%203.635%205.107-.037.699-.147%202.27-.423%203.294l-.137.461c-.622%202.042-2.515%208.257%201.727%2010.643%201.614.908%203.06%201.248%204.317%201.248%202.665%200%204.492-1.524%205.322-2.401%201.476-1.559%202.886-1.854%206.491.82%201.877%201.393%203.514%201.753%204.861%201.068%202.223-1.713%202.811-3.867%203.399-6.374.077-.846.056-1.469.054-1.537zm-4.835%204.313c-.054.305-.156.586-.242.629-.034-.007-.131-.022-.307-.157-.145-.111-.314-.478-.456-.908.221.121.432.25.675.355.115.039.219.051.33.081zm-2.251-1.238c-.05.33-.158.648-.252.694-.022.001-.125-.018-.307-.157-.217-.166-.488-.906-.639-1.573.358.344.754.693%201.198%201.036zm-3.887-2.337c-.006-.116-.018-.231-.041-.342.635.145%201.189.368%201.599.625.097.231.166.481.174.642-.03.049-.055.101-.067.158-.046.013-.128.026-.298.004-.278-.037-.901-.57-1.367-1.087zm-1.127-.497c.116.306.176.625.12.71-.019.014-.117.045-.345.016-.206-.027-.604-.332-.986-.695.41-.051.816-.056%201.211-.031zm-4.535%201.535c.209.22.379.47.358.598-.006.041-.088.138-.351.234-.144.055-.539-.063-.979-.259a11.66%2011.66%200%200%200%20.972-.573zm.983-.664c.359-.237.738-.418%201.126-.554.25.237.479.548.457.694-.006.042-.087.138-.351.235-.174.064-.694-.105-1.232-.375zm-3.381%201.794c-.022.145-.061.29-.149.401-.133.166-.358.248-.69.251h-.002c-.133%200-.306-.26-.45-.621.417.091.854.07%201.291-.031zm-2.066-8.077a4.78%204.78%200%200%201-.775-.584c.172-.115.505-.254.88-.378l-.105.962zm-.331%202.302a10.32%2010.32%200%200%201-.828-.502c.202-.143.576-.328.984-.49l-.156.992zm-.45%202.157l-.701-.403c.214-.115.536-.249.891-.376a11.57%2011.57%200%200%201-.19.779zm-.181%201.716c.064.398.194.702.298.893-.194-.051-.435-.162-.736-.398.061-.119.224-.3.438-.495zM8.87%204.141c0%20.152-.123.276-.276.276s-.275-.124-.275-.276.123-.276.276-.276.275.124.275.276zm-.735-.389a1.15%201.15%200%200%200-.314.783%201.16%201.16%200%200%200%201.162%201.162c.457%200%20.842-.27%201.032-.653.026.117.042.238.042.362a1.68%201.68%200%200%201-1.679%201.679%201.68%201.68%200%200%201-1.679-1.679c0-.843.626-1.535%201.436-1.654zM5.059%205.406A1.68%201.68%200%200%201%203.38%207.085a1.68%201.68%200%200%201-1.679-1.679c0-.037.009-.072.011-.109.21.3.541.508.935.508a1.16%201.16%200%200%200%201.162-1.162%201.14%201.14%200%200%200-.474-.912c.015%200%20.03-.005.045-.005.926.001%201.679.754%201.679%201.68zM3.198%204.141c0%20.152-.123.276-.276.276s-.275-.124-.275-.276.123-.276.276-.276.275.124.275.276zM1.375%208.964c0-.52.103-1.035.288-1.52.466.394%201.06.64%201.717.64%201.144%200%202.116-.725%202.499-1.738.383%201.012%201.355%201.738%202.499%201.738.867%200%201.631-.421%202.121-1.062.307.605.478%201.267.478%201.942%200%202.486-2.153%204.51-4.801%204.51s-4.801-2.023-4.801-4.51zm24.342%2019.349c-.985.498-2.267.168-3.813-.979-3.073-2.281-5.453-3.199-7.813-.705-1.315%201.391-4.163%203.365-8.423.97-3.174-1.786-2.239-6.266-1.261-9.479l.146-.492c.276-1.02.395-2.457.444-3.268a6.11%206.11%200%200%200%201.18.115%206.01%206.01%200%200%200%202.536-.562l-.006.175c-.802.215-1.848.612-2.021%201.25-.079.295.021.601.274.837.219.203.415.364.598.501-.667.304-1.243.698-1.311%201.179-.02.144-.022.507.393.787.213.144.395.26.564.365-1.285.521-1.361.96-1.381%201.126-.018.142-.011.496.427.746l.854.489c-.473.389-.971.914-.999%201.429-.018.278.095.532.316.713.675.556%201.231.721%201.653.721.059%200%20.104-.014.158-.02.207.707.641%201.64%201.513%201.64h.013c.8-.008%201.236-.345%201.462-.626.173-.216.268-.457.325-.692.424.195.93.374%201.372.374.151%200%20.294-.021.423-.068.732-.27.944-.704.993-1.021.009-.061.003-.119.002-.179.266.086.538.147.789.147.15%200%20.294-.021.423-.069.542-.2.797-.489.914-.754.237.147.478.258.704.288.106.014.205.021.296.021.356%200%20.595-.101.767-.229.438.435%201.094.992%201.656%201.067.106.014.205.021.296.021a1.56%201.56%200%200%200%20.323-.035c.17.575.453%201.289.866%201.605.358.273.665.362.914.362a.99.99%200%200%200%20.421-.093%201.03%201.03%200%200%200%20.245-.164c.168.428.39.846.68%201.068.358.273.665.362.913.362a.99.99%200%200%200%20.421-.093c.317-.148.512-.448.639-.762.251.157.495.257.726.257.127%200%20.25-.024.37-.071.427-.17.706-.617.841-1.314.022-.015.047-.022.068-.038.067-.051.133-.104.196-.159-.443%201.486-1.107%202.761-2.086%203.257zM8.66%209.925a.5.5%200%201%200-1%200c0%20.653-.818%201.205-1.787%201.205s-1.787-.552-1.787-1.205a.5.5%200%201%200-1%200c0%201.216%201.25%202.205%202.787%202.205s2.787-.989%202.787-2.205zm4.4%2015.965l-.208.097c-2.661%201.258-4.708%201.436-6.086.527-1.542-1.017-1.88-3.19-1.844-4.198a.4.4%200%200%200-.385-.414c-.242-.029-.406.164-.414.385-.046%201.249.367%203.686%202.202%204.896.708.467%201.547.7%202.51.7%201.248%200%202.706-.392%204.362-1.174l.185-.086a.4.4%200%200%200%20.205-.527c-.089-.204-.326-.291-.527-.206zM9.547%202.292c.093.077.205.114.317.114a.5.5%200%200%200%20.318-.886L8.817.397a.5.5%200%200%200-.703.068.5.5%200%200%200%20.069.703l1.364%201.124zm-7.661-.065c.086%200%20.173-.022.253-.068l1.523-.893a.5.5%200%200%200-.506-.863l-1.523.892a.5.5%200%200%200-.179.685c.094.158.261.247.432.247z%22%20transform%3D%22matrix%28-1%200%200%201%2058%200%29%22%20fill%3D%22%233bb300%22/%3E%3Cpath%20d%3D%22M.3%2021.86V10.18q0-.46.02-.68.04-.22.18-.5.28-.54%201.34-.54%201.06%200%201.42.28.38.26.44.78.76-1.04%202.38-1.04%201.64%200%203.1%201.54%201.46%201.54%201.46%203.58%200%202.04-1.46%203.58-1.44%201.54-3.08%201.54-1.64%200-2.38-.92v4.04q0%20.46-.04.68-.02.22-.18.5-.14.3-.5.42-.36.12-.98.12-.62%200-1-.12-.36-.12-.52-.4-.14-.28-.18-.5-.02-.22-.02-.68zm3.96-9.42q-.46.54-.46%201.18%200%20.64.46%201.18.48.52%201.2.52.74%200%201.24-.52.52-.52.52-1.18%200-.66-.48-1.18-.48-.54-1.26-.54-.76%200-1.22.54zm14.741-8.36q.16-.3.54-.42.38-.12%201-.12.64%200%201.02.12.38.12.52.42.16.3.18.54.04.22.04.68v11.94q0%20.46-.04.7-.02.22-.18.5-.3.54-1.7.54-1.38%200-1.54-.98-.84.96-2.34.96-1.8%200-3.28-1.56-1.48-1.58-1.48-3.66%200-2.1%201.48-3.68%201.5-1.58%203.28-1.58%201.48%200%202.3%201v-4.2q0-.46.02-.68.04-.24.18-.52zm-3.24%2010.86q.52.54%201.26.54.74%200%201.22-.54.5-.54.5-1.18%200-.66-.48-1.22-.46-.56-1.26-.56-.8%200-1.28.56-.48.54-.48%201.2%200%20.66.52%201.2zm7.833-1.2q0-2.4%201.68-3.96%201.68-1.56%203.84-1.56%202.16%200%203.82%201.56%201.66%201.54%201.66%203.94%200%201.66-.86%202.96-.86%201.28-2.1%201.9-1.22.6-2.54.6-1.32%200-2.56-.64-1.24-.66-2.1-1.92-.84-1.28-.84-2.88zm4.18%201.44q.64.48%201.3.48.66%200%201.32-.5.66-.5.66-1.48%200-.98-.62-1.46-.62-.48-1.34-.48-.72%200-1.34.5-.62.5-.62%201.48%200%20.96.64%201.46zm11.412-1.44q0%20.84.56%201.32.56.46%201.18.46.64%200%201.18-.36.56-.38.9-.38.6%200%201.46%201.06.46.58.46%201.04%200%20.76-1.1%201.42-1.14.8-2.8.8-1.86%200-3.58-1.34-.82-.64-1.34-1.7-.52-1.08-.52-2.36%200-1.3.52-2.34.52-1.06%201.34-1.7%201.66-1.32%203.54-1.32.76%200%201.48.22.72.2%201.06.4l.32.2q.36.24.56.38.52.4.52.92%200%20.5-.42%201.14-.72%201.1-1.38%201.1-.38%200-1.08-.44-.36-.34-1.04-.34-.66%200-1.24.48-.58.48-.58%201.34z%22%20fill%3D%22green%22/%3E%3C/svg%3E"/>
+        </a>
+</div>
+    </nav>
     <main class="pdoc">
             <section>
                     <h1 class="modulename">
 netCDF4    </h1>
 
-                        <div class="docstring"><h2 id="version-160">Version 1.6.0</h2>
+                        <div class="docstring"><h2 id="version-161">Version 1.6.1</h2>
 
 <h1 id="introduction">Introduction</h1>
 
@@ -582,7 +601,7 @@ instance.</p>
 
 <p>Here's an example:</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">rootgrp</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;test.nc&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;NETCDF4&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">data_model</span><span class="p">)</span>
 <span class="n">NETCDF4</span>
@@ -611,7 +630,7 @@ the <code>groups</code> dictionary attribute of the <code><a href="#Dataset">Dat
 <code>NETCDF4</code> formatted files support Groups, if you try to create a Group
 in a netCDF 3 file you will get an error message.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rootgrp</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;test.nc&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">rootgrp</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;test.nc&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">fcstgrp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s2">&quot;forecasts&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">analgrp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s2">&quot;analyses&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">groups</span><span class="p">)</span>
@@ -635,7 +654,7 @@ instances contained within that group. Each <code><a href="#Group">Group</a></co
 that group.  To simplify the creation of nested groups, you can
 use a unix-like path as an argument to <code><a href="#Dataset.createGroup">Dataset.createGroup</a></code>.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">fcstgrp1</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s2">&quot;/forecasts/model1&quot;</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">fcstgrp1</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s2">&quot;/forecasts/model1&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">fcstgrp2</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="s2">&quot;/forecasts/model2&quot;</span><span class="p">)</span>
 </code></pre></div>
 
@@ -649,7 +668,7 @@ returned.</p>
 to walk the directory tree. Note that printing the <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code>
 object yields summary information about it's contents.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">walktree</span><span class="p">(</span><span class="n">top</span><span class="p">):</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span> <span class="nf">walktree</span><span class="p">(</span><span class="n">top</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">yield</span> <span class="n">top</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 <span class="o">...</span>     <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">top</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
 <span class="o">...</span>         <span class="k">yield from</span> <span class="n">walktree</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -699,7 +718,7 @@ value is set to <code>None</code> or 0. In this example, there both the <code>ti
 dimension is a new netCDF 4 feature, in netCDF 3 files there may be only
 one, and it must be the first (leftmost) dimension of the variable.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">level</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">level</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">time</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="mi">73</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="mi">144</span><span class="p">)</span>
@@ -707,7 +726,7 @@ one, and it must be the first (leftmost) dimension of the variable.</p>
 
 <p>All of the <code><a href="#Dimension">Dimension</a></code> instances are stored in a python dictionary.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="p">)</span>
 <span class="p">{</span><span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dimension</span><span class="s1">&#39;&gt; (unlimited): name = &#39;</span><span class="n">level</span><span class="s1">&#39;, size = 0, &#39;</span><span class="n">time</span><span class="s1">&#39;: &lt;class &#39;</span><span class="n">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dimension</span><span class="s1">&#39;&gt; (unlimited): name = &#39;</span><span class="n">time</span><span class="s1">&#39;, size = 0, &#39;</span><span class="n">lat</span><span class="s1">&#39;: &lt;class &#39;</span><span class="n">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dimension</span><span class="s1">&#39;&gt;: name = &#39;</span><span class="n">lat</span><span class="s1">&#39;, size = 73, &#39;</span><span class="n">lon</span><span class="s1">&#39;: &lt;class &#39;</span><span class="n">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dimension</span><span class="s1">&#39;&gt;: name = &#39;</span><span class="n">lon</span><span class="s1">&#39;, size = 144}</span>
 </code></pre></div>
 
@@ -716,7 +735,7 @@ current size of that dimension.
 <code><a href="#Dimension.isunlimited">Dimension.isunlimited</a></code> method of a <code><a href="#Dimension">Dimension</a></code> instance
 be used to determine if the dimensions is unlimited, or appendable.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span>
 <span class="mi">144</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">lon</span><span class="o">.</span><span class="n">isunlimited</span><span class="p">())</span>
 <span class="kc">False</span>
@@ -728,7 +747,7 @@ be used to determine if the dimensions is unlimited, or appendable.</p>
 provides useful summary info, including the name and length of the dimension,
 and whether it is unlimited.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">dimobj</span> <span class="ow">in</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">dimobj</span> <span class="ow">in</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
 <span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">dimobj</span><span class="p">)</span>
 <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dimension</span><span class="s1">&#39;&gt; (unlimited): name = &#39;</span><span class="n">level</span><span class="s1">&#39;, size = 0</span>
 <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dimension</span><span class="s1">&#39;&gt; (unlimited): name = &#39;</span><span class="n">time</span><span class="s1">&#39;, size = 0</span>
@@ -773,7 +792,7 @@ coordinate variables. The <code><a href="#Dataset.createVariable">Dataset.create
 method returns an instance of the <code><a href="#Variable">Variable</a></code> class whose methods can be
 used later to access and set variable data and attributes.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">times</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;f8&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,))</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">times</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;f8&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">levels</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;i4&quot;</span><span class="p">,(</span><span class="s2">&quot;level&quot;</span><span class="p">,))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">latitudes</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;lat&quot;</span><span class="p">,))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">longitudes</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;lon&quot;</span><span class="p">,))</span>
@@ -785,7 +804,7 @@ used later to access and set variable data and attributes.</p>
 <p>To get summary info on a <code><a href="#Variable">Variable</a></code> instance in an interactive session,
 just print it.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
 <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Variable</span><span class="s1">&#39;&gt;</span>
 <span class="n">float32</span> <span class="n">temp</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
     <span class="n">units</span><span class="p">:</span> <span class="n">K</span>
@@ -796,7 +815,7 @@ just print it.</p>
 
 <p>You can use a path to create a Variable inside a hierarchy of groups.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">ftemp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;/forecasts/model1/temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,))</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">ftemp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;/forecasts/model1/temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,))</span>
 </code></pre></div>
 
 <p>If the intermediate groups do not yet exist, they will be created.</p>
@@ -804,7 +823,7 @@ just print it.</p>
 <p>You can also query a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance directly to obtain <code><a href="#Group">Group</a></code> or
 <code><a href="#Variable">Variable</a></code> instances using paths.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="p">[</span><span class="s2">&quot;/forecasts/model1&quot;</span><span class="p">])</span>  <span class="c1"># a Group instance</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="p">[</span><span class="s2">&quot;/forecasts/model1&quot;</span><span class="p">])</span>  <span class="c1"># a Group instance</span>
 <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Group</span><span class="s1">&#39;&gt;</span>
 <span class="n">group</span> <span class="o">/</span><span class="n">forecasts</span><span class="o">/</span><span class="n">model1</span><span class="p">:</span>
     <span class="n">dimensions</span><span class="p">(</span><span class="n">sizes</span><span class="p">):</span> 
@@ -822,7 +841,7 @@ just print it.</p>
 <p>All of the variables in the <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> are stored in a
 Python dictionary, in the same way as the dimensions:</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
 <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Variable</span><span class="s1">&#39;&gt;</span>
 <span class="n">float64</span> <span class="n">time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
 <span class="n">unlimited</span> <span class="n">dimensions</span><span class="p">:</span> <span class="n">time</span>
@@ -865,7 +884,7 @@ attributes are set by assigning values to <code><a href="#Variable">Variable</a>
 variables. Attributes can be strings, numbers or sequences. Returning to
 our example,</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;bogus example script&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="s2">&quot;Created &quot;</span> <span class="o">+</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;netCDF4 python module tutorial&quot;</span>
@@ -883,7 +902,7 @@ attributes. This method is provided as a convenience, since using the
 built-in <code>dir</code> Python function will return a bunch of private methods
 and attributes that cannot (or should not) be modified by the user.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">ncattrs</span><span class="p">():</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">ncattrs</span><span class="p">():</span>
 <span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Global attr </span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">rootgrp</span><span class="p">,</span> <span class="n">name</span><span class="p">)))</span>
 <span class="n">Global</span> <span class="n">attr</span> <span class="n">description</span> <span class="o">=</span> <span class="n">bogus</span> <span class="n">example</span> <span class="n">script</span>
 <span class="n">Global</span> <span class="n">attr</span> <span class="n">history</span> <span class="o">=</span> <span class="n">Created</span> <span class="n">Mon</span> <span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">14</span><span class="p">:</span><span class="mi">19</span><span class="p">:</span><span class="mi">41</span> <span class="mi">2019</span>
@@ -894,7 +913,7 @@ and attributes that cannot (or should not) be modified by the user.</p>
 instance provides all the netCDF attribute name/value pairs in a python
 dictionary:</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
 <span class="p">{</span><span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;bogus example script&#39;</span><span class="p">,</span> <span class="s1">&#39;history&#39;</span><span class="p">:</span> <span class="s1">&#39;Created Mon Jul  8 14:19:41 2019&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="s1">&#39;netCDF4 python module tutorial&#39;</span><span class="p">}</span>
 </code></pre></div>
 
@@ -907,7 +926,7 @@ removes the attribute <code>foo</code> the the group <code>grp</code>).</p>
 <p>Now that you have a netCDF <code><a href="#Variable">Variable</a></code> instance, how do you put data
 into it? You can just treat it like an array and assign data to a slice.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">lats</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span><span class="mi">91</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">lons</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">latitudes</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">lats</span>
@@ -927,7 +946,7 @@ into it? You can just treat it like an array and assign data to a slice.</p>
 objects with unlimited dimensions will grow along those dimensions if you
 assign data outside the currently defined range of indices.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># append along two unlimited dimensions by assigning to slice.</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># append along two unlimited dimensions by assigning to slice.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nlats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nlons</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rootgrp</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;temp shape before adding data = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
@@ -947,7 +966,7 @@ assign data outside the currently defined range of indices.</p>
 along the <code>level</code> dimension of the variable <code>temp</code>, even though no
 data has yet been assigned to levels.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># now, assign data to levels dimension variable.</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># now, assign data to levels dimension variable.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">levels</span><span class="p">[:]</span> <span class="o">=</span>  <span class="p">[</span><span class="mf">1000.</span><span class="p">,</span><span class="mf">850.</span><span class="p">,</span><span class="mf">700.</span><span class="p">,</span><span class="mf">500.</span><span class="p">,</span><span class="mf">300.</span><span class="p">,</span><span class="mf">250.</span><span class="p">,</span><span class="mf">200.</span><span class="p">,</span><span class="mf">150.</span><span class="p">,</span><span class="mf">100.</span><span class="p">,</span><span class="mf">50.</span><span class="p">]</span>
 </code></pre></div>
 
@@ -960,7 +979,7 @@ than for numpy arrays.  Only 1-d boolean arrays and integer sequences are
 allowed, and these indices work independently along each dimension (similar
 to the way vector subscripts work in fortran).  This means that</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span>
 <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 
@@ -978,14 +997,14 @@ variables by using logical operations on the dimension arrays to create slices.<
 
 <p>For example,</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">tempdat</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[::</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="n">lats</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="n">lons</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">tempdat</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[::</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="n">lats</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="n">lons</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
 
 <p>will extract time indices 0,2 and 4, pressure levels
 850, 500 and 200 hPa, all Northern Hemisphere latitudes and Eastern
 Hemisphere longitudes, resulting in a numpy array of shape  (3, 3, 36, 71).</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;shape of fancy temp slice = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tempdat</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;shape of fancy temp slice = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tempdat</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
 <span class="n">shape</span> <span class="n">of</span> <span class="n">fancy</span> <span class="n">temp</span> <span class="nb">slice</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">71</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1018,7 +1037,7 @@ and <a href="https://unidata.github.io/cftime/api.html">date2num</a> are
 provided by <a href="https://unidata.github.io/cftime">cftime</a> to do just that.
 Here's an example of how they can be used:</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># fill in times.</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># fill in times.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">cftime</span> <span class="kn">import</span> <span class="n">num2date</span><span class="p">,</span> <span class="n">date2num</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2001</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">n</span><span class="o">*</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
@@ -1058,7 +1077,7 @@ must in be in <code>NETCDF3_64BIT_OFFSET</code>, <code>NETCDF3_64BIT_DATA</code>
 <code>NETCDF4_CLASSIC</code> format (<code>NETCDF4</code> formatted multi-file
 datasets are not supported).</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">nf</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">nf</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
 <span class="o">...</span>     <span class="k">with</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;mftest</span><span class="si">%s</span><span class="s2">.nc&quot;</span> <span class="o">%</span> <span class="n">nf</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;NETCDF4_CLASSIC&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="o">...</span>         <span class="n">_</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
 <span class="o">...</span>         <span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="s2">&quot;i&quot;</span><span class="p">,(</span><span class="s2">&quot;x&quot;</span><span class="p">,))</span>
@@ -1067,7 +1086,7 @@ datasets are not supported).</p>
 
 <p>Now read all the files back in at once with <code><a href="#MFDataset">MFDataset</a></code></p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">MFDataset</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">MFDataset</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">MFDataset</span><span class="p">(</span><span class="s2">&quot;mftest*nc&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">][:])</span>
 <span class="p">[</span> <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span>  <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span>  <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span> <span class="mi">12</span> <span class="mi">13</span> <span class="mi">14</span> <span class="mi">15</span> <span class="mi">16</span> <span class="mi">17</span> <span class="mi">18</span> <span class="mi">19</span> <span class="mi">20</span> <span class="mi">21</span> <span class="mi">22</span> <span class="mi">23</span>
@@ -1134,22 +1153,22 @@ sacrificed for the sake of disk space.</p>
 
 <p>In our example, try replacing the line</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,))</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,))</span>
 </code></pre></div>
 
 <p>with</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>and then</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span><span class="n">least_significant_digit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span><span class="n">least_significant_digit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 
 <p>or with netcdf-c &gt;= 4.9.0</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span><span class="n">significant_digits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">rootgrp</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;temp&quot;</span><span class="p">,</span><span class="s2">&quot;f4&quot;</span><span class="p">,(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="s2">&quot;level&quot;</span><span class="p">,</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span><span class="s2">&quot;lon&quot;</span><span class="p">,),</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zlib&#39;</span><span class="p">,</span><span class="n">significant_digits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 
 <p>and see how much smaller the resulting files are.</p>
@@ -1170,7 +1189,7 @@ are created from the corresponding numpy data type using the
 Since there is no native complex data type in netcdf, compound types are handy
 for storing numpy complex arrays.  Here's an example:</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;complex.nc&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;complex.nc&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1"># length of 1-d complex array</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># create sample complex data.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">datac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">size</span><span class="p">)))</span>
@@ -1206,7 +1225,7 @@ All of the compound types defined for a <code><a href="#Dataset">Dataset</a></co
 in a Python dictionary, just like variables and dimensions. As always, printing
 objects gives useful summary information in an interactive session:</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="o">&lt;</span><span class="k">class</span> <span class="err">&#39;</span><span class="nc">netCDF4</span><span class="o">.</span><span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="s1">&#39;&gt;</span>
 <span class="n">root</span> <span class="n">group</span> <span class="p">(</span><span class="n">NETCDF4</span> <span class="n">data</span> <span class="n">model</span><span class="p">,</span> <span class="n">file</span> <span class="nb">format</span> <span class="n">HDF5</span><span class="p">):</span>
     <span class="n">dimensions</span><span class="p">(</span><span class="n">sizes</span><span class="p">):</span> <span class="n">x_dim</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -1231,7 +1250,7 @@ of variable length sequences having the same type. To create a variable-length
 data type, use the <code><a href="#Dataset.createVLType">Dataset.createVLType</a></code> method
 method of a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;tst_vlen.nc&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;tst_vlen.nc&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vlen_t</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createVLType</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="s2">&quot;phony_vlen&quot;</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1241,7 +1260,7 @@ used (signed and unsigned integers, 32 and 64 bit floats, and characters),
 but compound data types cannot.
 A new variable can then be created using this datatype.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vlvar</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;phony_vlen_var&quot;</span><span class="p">,</span> <span class="n">vlen_t</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="s2">&quot;x&quot;</span><span class="p">))</span>
 </code></pre></div>
@@ -1254,7 +1273,7 @@ but of varying length.
 In this case, they contain 1-D numpy <code>int32</code> arrays of random length between
 1 and 10.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">random</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">random</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">54321</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="nb">object</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
@@ -1294,7 +1313,7 @@ Instead, simply use the python <code>str</code> builtin (or a numpy string datat
 with fixed length greater than 1) when calling the
 <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">z</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">z</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">strvar</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s2">&quot;strvar&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">)</span>
 </code></pre></div>
 
@@ -1302,7 +1321,7 @@ with fixed length greater than 1) when calling the
 random lengths between 2 and 12 characters, and the data in the object
 array is assigned to the vlen string variable.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">chars</span> <span class="o">=</span> <span class="s2">&quot;1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">chars</span> <span class="o">=</span> <span class="s2">&quot;1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="s2">&quot;O&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
 <span class="o">...</span>     <span class="n">stringlen</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">12</span><span class="p">)</span>
@@ -1341,7 +1360,7 @@ The base integer data type and a python dictionary describing the allowed
 values and their names are used to define an Enum data type using
 <code><a href="#Dataset.createEnumType">Dataset.createEnumType</a></code>.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;clouds.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;clouds.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># python dict with allowed values and their names.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">enum_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Altocumulus&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;Missing&#39;</span><span class="p">:</span> <span class="mi">255</span><span class="p">,</span>
 <span class="o">...</span> <span class="s1">&#39;Stratus&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;Clear&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
@@ -1359,7 +1378,7 @@ cloud types in enum_dict. A <code>ValueError</code> will be raised if an attempt
 is made to write an integer value not associated with one of the
 specified names.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">time</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">time</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a 1d variable of type &#39;cloud_type&#39;.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># The fill_value is set to the &#39;Missing&#39; named value.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">cloud_var</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;primary_cloud&#39;</span><span class="p">,</span><span class="n">cloud_type</span><span class="p">,</span><span class="s1">&#39;time&#39;</span><span class="p">,</span>
@@ -1396,7 +1415,7 @@ available if the <a href="https://parallel-netcdf.github.io/">PnetCDF</a> librar
 available. To use parallel IO, your program must be running in an MPI
 environment using <a href="https://mpi4py.scipy.org">mpi4py</a>.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">rank</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">rank</span>  <span class="c1"># The process ID (integer 0-3 for 4-process run)</span>
@@ -1408,7 +1427,7 @@ The parallel features of netcdf4-python are mostly transparent -
 when a new dataset is created or an existing dataset is opened,
 use the <code>parallel</code> keyword to enable parallel access.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;parallel_test.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;parallel_test.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 
 <p>The optional <code>comm</code> keyword may be used to specify a particular
@@ -1416,7 +1435,7 @@ MPI communicator (<code>MPI_COMM_WORLD</code> is used by default).  Each process
 can now write to the file indepedently.  In this example the process rank is
 written to a different variable index on each task</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;dim&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;dim&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;var&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="s1">&#39;dim&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[</span><span class="n">rank</span><span class="p">]</span> <span class="o">=</span> <span class="n">rank</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1483,7 +1502,7 @@ fixed-width byte string array (dtype <code>S#</code>), otherwise a numpy unicode
 <code><a href="#stringtochar">stringtochar</a></code> is used to convert the numpy string array to an array of
 characters with one more dimension. For example,</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">stringtochar</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">stringtochar</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;stringtest.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;NETCDF4_CLASSIC&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;nchars&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;nstrings&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
@@ -1516,7 +1535,7 @@ define the compound data type - the string dtype will be converted to
 character array dtype under the hood when creating the netcdf compound type.
 Here's an example:</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;compoundstring_example.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;compoundstring_example.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s1">&#39;observation&#39;</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">),</span>
 <span class="o">...</span>                      <span class="p">(</span><span class="s1">&#39;station_name&#39;</span><span class="p">,</span><span class="s1">&#39;S10&#39;</span><span class="p">)])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">station_data_t</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createCompoundType</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span><span class="s1">&#39;station_data&#39;</span><span class="p">)</span>
@@ -1561,7 +1580,7 @@ estimated size of the Dataset in bytes when creating the Dataset with
 object representing the Dataset. Below are examples illustrating both
 approaches.</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a diskless (in-memory) Dataset,</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a diskless (in-memory) Dataset,</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># and persist the file to disk when it is closed.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s1">&#39;diskless_example.nc&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="n">diskless</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">persist</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
@@ -1623,7 +1642,7 @@ approaches.</p>
 the parallel IO example, which is in <code>examples/mpi_example.py</code>.
 Unit tests are in the <code>test</code> directory.</p>
 
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#58;&#106;&#101;f&#x66;&#x72;&#x65;y&#x2e;&#x73;&#x2e;&#x77;&#x68;&#105;&#116;&#97;&#107;&#101;&#x72;&#x40;&#x6e;&#x6f;&#x61;&#97;.&#103;&#x6f;&#118;">&#106;&#101;f&#x66;&#x72;&#x65;y&#x2e;&#x73;&#x2e;&#x77;&#x68;&#105;&#116;&#97;&#107;&#101;&#x72;&#x40;&#x6e;&#x6f;&#x61;&#97;.&#103;&#x6f;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="m&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#106;&#101;&#x66;&#102;r&#101;y&#x2e;&#x73;&#x2e;&#x77;&#x68;&#105;&#x74;&#x61;&#107;&#101;&#x72;&#64;&#x6e;&#111;&#x61;&#x61;&#46;&#x67;o&#x76;">&#106;&#101;&#x66;&#102;r&#101;y&#x2e;&#x73;&#x2e;&#x77;&#x68;&#105;&#x74;&#x61;&#107;&#101;&#x72;&#64;&#x6e;&#111;&#x61;&#x61;&#46;&#x67;o&#x76;</a></p>
 
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 
@@ -1636,7 +1655,7 @@ Unit tests are in the <code>test</code> directory.</p>
 
                         <details>
             <summary>View Source</summary>
-            <div class="codehilite"><pre><span></span><span class="c1"># init for netCDF4. package</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span class="c1"># init for netCDF4. package</span>
 <span class="c1"># Docstring comes from extension module _netCDF4.</span>
 <span class="kn">from</span> <span class="nn">._netCDF4</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="c1"># Need explicit imports for names beginning with underscores</span>
@@ -1650,12 +1669,13 @@ Unit tests are in the <code>test</code> directory.</p>
                        <span class="n">__has_bzip2_support__</span><span class="p">,</span> <span class="n">__has_blosc_support__</span><span class="p">,</span> <span class="n">__has_szip_support__</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="n">__all__</span> <span class="o">=</span>\
-<span class="p">[</span><span class="s1">&#39;Dataset&#39;</span><span class="p">,</span><span class="s1">&#39;Variable&#39;</span><span class="p">,</span><span class="s1">&#39;Dimension&#39;</span><span class="p">,</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span><span class="s1">&#39;MFDataset&#39;</span><span class="p">,</span><span class="s1">&#39;MFTime&#39;</span><span class="p">,</span><span class="s1">&#39;CompoundType&#39;</span><span class="p">,</span><span class="s1">&#39;VLType&#39;</span><span class="p">,</span><span class="s1">&#39;date2num&#39;</span><span class="p">,</span><span class="s1">&#39;num2date&#39;</span><span class="p">,</span><span class="s1">&#39;date2index&#39;</span><span class="p">,</span><span class="s1">&#39;stringtochar&#39;</span><span class="p">,</span><span class="s1">&#39;chartostring&#39;</span><span class="p">,</span><span class="s1">&#39;stringtoarr&#39;</span><span class="p">,</span><span class="s1">&#39;getlibversion&#39;</span><span class="p">,</span><span class="s1">&#39;EnumType&#39;</span><span class="p">,</span><span class="s1">&#39;get_chunk_cache&#39;</span><span class="p">,</span><span class="s1">&#39;set_chunk_cache&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;Dataset&#39;</span><span class="p">,</span><span class="s1">&#39;Variable&#39;</span><span class="p">,</span><span class="s1">&#39;Dimension&#39;</span><span class="p">,</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span><span class="s1">&#39;MFDataset&#39;</span><span class="p">,</span><span class="s1">&#39;MFTime&#39;</span><span class="p">,</span><span class="s1">&#39;CompoundType&#39;</span><span class="p">,</span><span class="s1">&#39;VLType&#39;</span><span class="p">,</span><span class="s1">&#39;date2num&#39;</span><span class="p">,</span><span class="s1">&#39;num2date&#39;</span><span class="p">,</span><span class="s1">&#39;date2index&#39;</span><span class="p">,</span><span class="s1">&#39;stringtochar&#39;</span><span class="p">,</span><span class="s1">&#39;chartostring&#39;</span><span class="p">,</span><span class="s1">&#39;stringtoarr&#39;</span><span class="p">,</span><span class="s1">&#39;getlibversion&#39;</span><span class="p">,</span><span class="s1">&#39;EnumType&#39;</span><span class="p">,</span><span class="s1">&#39;get_chunk_cache&#39;</span><span class="p">,</span><span class="s1">&#39;set_chunk_cache&#39;</span><span class="p">,</span><span class="s1">&#39;set_alignment&#39;</span><span class="p">,</span><span class="s1">&#39;get_alignment&#39;</span><span class="p">]</span>
 <span class="c1"># if HDF5_PLUGIN_PATH not set, point to package path if plugins live there</span>
+<span class="n">pluginpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;plugins&#39;</span><span class="p">)</span>
 <span class="k">if</span> <span class="s1">&#39;HDF5_PLUGIN_PATH&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">and</span>\
-    <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;lib__nczhdf5filters.so&#39;</span><span class="p">))</span> <span class="ow">or</span>\
-    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;lib__nczhdf5filters.dylib&#39;</span><span class="p">))):</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;HDF5_PLUGIN_PATH&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pluginpath</span><span class="p">,</span><span class="s1">&#39;lib__nczhdf5filters.so&#39;</span><span class="p">))</span> <span class="ow">or</span>\
+     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pluginpath</span><span class="p">,</span><span class="s1">&#39;lib__nczhdf5filters.dylib&#39;</span><span class="p">))):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;HDF5_PLUGIN_PATH&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">pluginpath</span>
 </pre></div>
 
         </details>
@@ -1670,7 +1690,7 @@ Unit tests are in the <code>test</code> directory.</p>
         <span class="name">Dataset</span>:
     </div>
 
-        
+    
             <div class="docstring"><p>A netCDF <code><a href="#Dataset">Dataset</a></code> is a collection of dimensions, groups, variables and
 attributes. Together they describe the meaning of data and relations among
 data fields stored in a netCDF file. See <code><a href="#Dataset.__init__">Dataset.__init__</a></code> for more
@@ -1748,7 +1768,7 @@ strings.</p>
             <span class="name">Dataset</span><span class="signature">()</span>
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>__init__(self, filename, mode="r", clobber=True, diskless=False,
 persist=False, keepweakref=False, memory=None, encoding=None,
 parallel=False, comm=None, info=None, format='NETCDF4')</code></strong></p>
@@ -1854,7 +1874,7 @@ means MPI_INFO_NULL will be used.  Ignored if <code>parallel=False</code>.</p>
             <span class="name">filepath</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>filepath(self,encoding=None)</code></strong></p>
 
 <p>Get the file system path (or the opendap URL) which was used to
@@ -1873,7 +1893,7 @@ changed using the <code>encoding</code> kwarg.</p>
             <span class="name">close</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>close(self)</code></strong></p>
 
 <p>Close the Dataset.</p>
@@ -1889,7 +1909,7 @@ changed using the <code>encoding</code> kwarg.</p>
             <span class="name">isopen</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>isopen(self)</code></strong></p>
 
 <p>Is the Dataset open or closed?</p>
@@ -1905,7 +1925,7 @@ changed using the <code>encoding</code> kwarg.</p>
             <span class="name">sync</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>sync(self)</code></strong></p>
 
 <p>Writes all buffered data in the <code><a href="#Dataset">Dataset</a></code> to the disk file.</p>
@@ -1921,7 +1941,7 @@ changed using the <code>encoding</code> kwarg.</p>
             <span class="name">set_fill_on</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_fill_on(self)</code></strong></p>
 
 <p>Sets the fill mode for a <code><a href="#Dataset">Dataset</a></code> open for writing to <code>on</code>.</p>
@@ -1945,7 +1965,7 @@ to.</p>
             <span class="name">set_fill_off</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_fill_off(self)</code></strong></p>
 
 <p>Sets the fill mode for a <code><a href="#Dataset">Dataset</a></code> open for writing to <code>off</code>.</p>
@@ -1965,7 +1985,7 @@ sure the data is actually written before being read.</p>
             <span class="name">createDimension</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>createDimension(self, dimname, size=None)</code></strong></p>
 
 <p>Creates a new dimension with the given <code>dimname</code> and <code>size</code>.</p>
@@ -1989,7 +2009,7 @@ instance. To determine if a dimension is 'unlimited', use the
             <span class="name">renameDimension</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>renameDimension(self, oldname, newname)</code></strong></p>
 
 <p>rename a <code><a href="#Dimension">Dimension</a></code> named <code>oldname</code> to <code>newname</code>.</p>
@@ -2005,7 +2025,7 @@ instance. To determine if a dimension is 'unlimited', use the
             <span class="name">createCompoundType</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>createCompoundType(self, datatype, datatype_name)</code></strong></p>
 
 <p>Creates a new compound data type named <code>datatype_name</code> from the numpy
@@ -2030,7 +2050,7 @@ datatype.</p>
             <span class="name">createVLType</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>createVLType(self, datatype, datatype_name)</code></strong></p>
 
 <p>Creates a new VLEN data type named <code>datatype_name</code> from a numpy
@@ -2050,7 +2070,7 @@ datatype.</p>
             <span class="name">createEnumType</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>createEnumType(self, datatype, datatype_name, enum_dict)</code></strong></p>
 
 <p>Creates a new Enum data type named <code>datatype_name</code> from a numpy
@@ -2071,7 +2091,7 @@ datatype.</p>
             <span class="name">createVariable</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, fletcher32=False, contiguous=False, chunksizes=None,
 szip_coding='nn', szip_pixels_per_block=8, blosc_shuffle=1,
@@ -2166,7 +2186,7 @@ some performance advantage to be gained by setting the endian-ness.</p>
 
 <p>The optional keyword <code>fill_value</code> can be used to override the default
 netCDF <code>_FillValue</code> (the value that the variable gets filled with before
-any data is written to it, defaults given in the dict <code><a href="#default_fillvals">netCDF4.default_fillvals</a></code>).
+any data is written to it, defaults given in the dict <code>netCDF4.default_fillvals</code>).
 If fill_value is set to <code>False</code>, then the variable is not pre-filled.</p>
 
 <p>If the optional keyword parameters <code>least_significant_digit</code> or <code>significant_digits</code> are
@@ -2234,7 +2254,7 @@ is the number of variable dimensions.</p>
             <span class="name">renameVariable</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>renameVariable(self, oldname, newname)</code></strong></p>
 
 <p>rename a <code><a href="#Variable">Variable</a></code> named <code>oldname</code> to <code>newname</code></p>
@@ -2250,7 +2270,7 @@ is the number of variable dimensions.</p>
             <span class="name">createGroup</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>createGroup(self, groupname)</code></strong></p>
 
 <p>Creates a new <code><a href="#Group">Group</a></code> with the given <code>groupname</code>.</p>
@@ -2276,7 +2296,7 @@ raised.</p>
             <span class="name">ncattrs</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>ncattrs(self)</code></strong></p>
 
 <p>return netCDF global attribute names for this <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> in a list.</p>
@@ -2292,7 +2312,7 @@ raised.</p>
             <span class="name">setncattr</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>setncattr(self,name,value)</code></strong></p>
 
 <p>set a netCDF dataset or group attribute using name,value pair.
@@ -2310,7 +2330,7 @@ with the same name as one of the reserved python attributes.</p>
             <span class="name">setncattr_string</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>setncattr_string(self,name,value)</code></strong></p>
 
 <p>set a netCDF dataset or group string attribute using name,value pair.
@@ -2328,7 +2348,7 @@ Use if you need to ensure that a netCDF attribute is created with type
             <span class="name">setncatts</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>setncatts(self,attdict)</code></strong></p>
 
 <p>set a bunch of netCDF dataset or group attributes at once using a python dictionary.
@@ -2347,7 +2367,7 @@ each attribute</p>
             <span class="name">getncattr</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>getncattr(self,name)</code></strong></p>
 
 <p>retrieve a netCDF dataset or group attribute.
@@ -2368,7 +2388,7 @@ character encoding of a string attribute (default is <code>utf-8</code>).</p>
             <span class="name">delncattr</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>delncattr(self,name,value)</code></strong></p>
 
 <p>delete a netCDF dataset or group attribute.  Use if you need to delete a
@@ -2386,7 +2406,7 @@ attributes.</p>
             <span class="name">renameAttribute</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>renameAttribute(self, oldname, newname)</code></strong></p>
 
 <p>rename a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> attribute named <code>oldname</code> to <code>newname</code>.</p>
@@ -2402,7 +2422,7 @@ attributes.</p>
             <span class="name">renameGroup</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>renameGroup(self, oldname, newname)</code></strong></p>
 
 <p>rename a <code><a href="#Group">Group</a></code> named <code>oldname</code> to <code>newname</code> (requires netcdf &gt;= 4.3.1).</p>
@@ -2418,7 +2438,7 @@ attributes.</p>
             <span class="name">set_auto_chartostring</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_auto_chartostring(self, True_or_False)</code></strong></p>
 
 <p>Call <code><a href="#Variable.set_auto_chartostring">Variable.set_auto_chartostring</a></code> for all variables contained in this <code><a href="#Dataset">Dataset</a></code> or
@@ -2443,7 +2463,7 @@ after calling this function will follow the default behaviour.</p>
             <span class="name">set_auto_maskandscale</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_auto_maskandscale(self, True_or_False)</code></strong></p>
 
 <p>Call <code><a href="#Variable.set_auto_maskandscale">Variable.set_auto_maskandscale</a></code> for all variables contained in this <code><a href="#Dataset">Dataset</a></code> or
@@ -2466,7 +2486,7 @@ after calling this function will follow the default behaviour.</p>
             <span class="name">set_auto_mask</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_auto_mask(self, True_or_False)</code></strong></p>
 
 <p>Call <code><a href="#Variable.set_auto_mask">Variable.set_auto_mask</a></code> for all variables contained in this <code><a href="#Dataset">Dataset</a></code> or
@@ -2490,7 +2510,7 @@ after calling this function will follow the default behaviour.</p>
             <span class="name">set_auto_scale</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_auto_scale(self, True_or_False)</code></strong></p>
 
 <p>Call <code><a href="#Variable.set_auto_scale">Variable.set_auto_scale</a></code> for all variables contained in this <code><a href="#Dataset">Dataset</a></code> or
@@ -2513,7 +2533,7 @@ after calling this function will follow the default behaviour.</p>
             <span class="name">set_always_mask</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_always_mask(self, True_or_False)</code></strong></p>
 
 <p>Call <code><a href="#Variable.set_always_mask">Variable.set_always_mask</a></code> for all variables contained in
@@ -2541,7 +2561,7 @@ the default behaviour.</p>
             <span class="name">set_ncstring_attrs</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_ncstring_attrs(self, True_or_False)</code></strong></p>
 
 <p>Call <code><a href="#Variable.set_ncstring_attrs">Variable.set_ncstring_attrs</a></code> for all variables contained in
@@ -2566,7 +2586,7 @@ of existing (sub-) groups and their variables.</p>
             <span class="name">get_variables_by_attributes</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>get_variables_by_attribute(self, **kwargs)</code></strong></p>
 
 <p>Returns a list of variables that match specific conditions.</p>
@@ -2574,7 +2594,7 @@ of existing (sub-) groups and their variables.</p>
 <p>Can pass in key=value parameters and variables are returned that
 contain all of the matches. For example,</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with x-axis attribute.</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with x-axis attribute.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables with matching &quot;standard_name&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">standard_name</span><span class="o">=</span><span class="s1">&#39;northward_sea_water_velocity&#39;</span><span class="p">)</span>
@@ -2585,7 +2605,7 @@ callable returns True.  The callable should accept a single parameter,
 the attribute value.  None is given as the attribute value when the
 attribute does not exist on the variable. For example,</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get Axis variables</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get Axis variables</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get variables that don&#39;t have an &quot;axis&quot; attribute</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">vs</span> <span class="o">=</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_variables_by_attributes</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
@@ -2604,7 +2624,7 @@ attribute does not exist on the variable. For example,</p>
             <span class="name">fromcdl</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>fromcdl(cdlfilename, ncfilename=None, mode='a',format='NETCDF4')</code></strong></p>
 
 <p>call <a href="https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#ncgen_guide">ncgen</a> via subprocess to create Dataset from <a href="https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide">CDL</a>
@@ -2634,7 +2654,7 @@ suffix replaced by <code>.nc</code> is used..</p>
             <span class="name">tocdl</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>tocdl(self, coordvars=False, data=False, outfile=None)</code></strong></p>
 
 <p>call <a href="https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#ncdump_guide">ncdump</a> via subprocess to create <a href="https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide">CDL</a>
@@ -2650,12 +2670,73 @@ to be installed and in <code>$PATH</code>.</p>
 
 
                             </div>
+                            <div id="Dataset.has_blosc_filter" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#Dataset.has_blosc_filter">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">has_blosc_filter</span><span class="signature">(unknown)</span>:
+    </div>
+
+    
+            <div class="docstring"><p><strong><code>has_blosc_filter(self)</code></strong>
+returns True if blosc compression filter is available</p>
+</div>
+
+
+                            </div>
+                            <div id="Dataset.has_zstd_filter" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#Dataset.has_zstd_filter">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">has_zstd_filter</span><span class="signature">(unknown)</span>:
+    </div>
+
+    
+            <div class="docstring"><p><strong><code>has_zstd_filter(self)</code></strong>
+returns True if zstd compression filter is available</p>
+</div>
+
+
+                            </div>
+                            <div id="Dataset.has_bzip2_filter" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#Dataset.has_bzip2_filter">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">has_bzip2_filter</span><span class="signature">(unknown)</span>:
+    </div>
+
+    
+            <div class="docstring"><p><strong><code>has_bzip2_filter(self)</code></strong>
+returns True if bzip2 compression filter is available</p>
+</div>
+
+
+                            </div>
+                            <div id="Dataset.has_szip_filter" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#Dataset.has_szip_filter">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">has_szip_filter</span><span class="signature">(unknown)</span>:
+    </div>
+
+    
+            <div class="docstring"><p><strong><code>has_szip_filter(self)</code></strong>
+returns True if szip compression filter is available</p>
+</div>
+
+
+                            </div>
                             <div id="Dataset.name" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.name">#&nbsp;&nbsp</a>
 
-        <span class="name">name</span><span class="default_value"> = &lt;attribute &#39;name&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">name</span>
     </div>
 
+    
             <div class="docstring"><p>string name of Group instance</p>
 </div>
 
@@ -2664,108 +2745,120 @@ to be installed and in <code>$PATH</code>.</p>
                             <div id="Dataset.groups" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.groups">#&nbsp;&nbsp</a>
 
-        <span class="name">groups</span><span class="default_value"> = &lt;attribute &#39;groups&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">groups</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.dimensions" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.dimensions">#&nbsp;&nbsp</a>
 
-        <span class="name">dimensions</span><span class="default_value"> = &lt;attribute &#39;dimensions&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">dimensions</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.variables" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.variables">#&nbsp;&nbsp</a>
 
-        <span class="name">variables</span><span class="default_value"> = &lt;attribute &#39;variables&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">variables</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.disk_format" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.disk_format">#&nbsp;&nbsp</a>
 
-        <span class="name">disk_format</span><span class="default_value"> = &lt;attribute &#39;disk_format&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">disk_format</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.path" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.path">#&nbsp;&nbsp</a>
 
-        <span class="name">path</span><span class="default_value"> = &lt;attribute &#39;path&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">path</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.parent" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.parent">#&nbsp;&nbsp</a>
 
-        <span class="name">parent</span><span class="default_value"> = &lt;attribute &#39;parent&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">parent</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.file_format" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.file_format">#&nbsp;&nbsp</a>
 
-        <span class="name">file_format</span><span class="default_value"> = &lt;attribute &#39;file_format&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">file_format</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.data_model" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.data_model">#&nbsp;&nbsp</a>
 
-        <span class="name">data_model</span><span class="default_value"> = &lt;attribute &#39;data_model&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">data_model</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.cmptypes" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.cmptypes">#&nbsp;&nbsp</a>
 
-        <span class="name">cmptypes</span><span class="default_value"> = &lt;attribute &#39;cmptypes&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">cmptypes</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.vltypes" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.vltypes">#&nbsp;&nbsp</a>
 
-        <span class="name">vltypes</span><span class="default_value"> = &lt;attribute &#39;vltypes&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">vltypes</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.enumtypes" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.enumtypes">#&nbsp;&nbsp</a>
 
-        <span class="name">enumtypes</span><span class="default_value"> = &lt;attribute &#39;enumtypes&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">enumtypes</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Dataset.keepweakref" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dataset.keepweakref">#&nbsp;&nbsp</a>
 
-        <span class="name">keepweakref</span><span class="default_value"> = &lt;attribute &#39;keepweakref&#39; of &#39;<a href="#_netCDF4.Dataset">netCDF4._netCDF4.Dataset</a>&#39; objects&gt;</span>
+        <span class="name">keepweakref</span>
     </div>
 
+    
     
 
                             </div>
@@ -2779,7 +2872,7 @@ to be installed and in <code>$PATH</code>.</p>
         <span class="name">Variable</span>:
     </div>
 
-        
+    
             <div class="docstring"><p>A netCDF <code><a href="#Variable">Variable</a></code> is used to read and write netCDF data.  They are
 analogous to numpy array objects. See <code><a href="#Variable.__init__">Variable.__init__</a></code> for more
 details.</p>
@@ -2863,7 +2956,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.</p>
             <span class="name">Variable</span><span class="signature">()</span>
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
 complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
 blosc_shuffle=1, fletcher32=False, contiguous=False,
@@ -2984,7 +3077,7 @@ Ignored if <code>significant_digts</code> not specified. If 'BitRound' is used, 
 value that the variable gets filled with before any data is written to it)
 is replaced with this value.  If fill_value is set to <code>False</code>, then
 the variable is not pre-filled. The default netCDF fill values can be found
-in the dictionary <code><a href="#default_fillvals">netCDF4.default_fillvals</a></code>.</p>
+in the dictionary <code>netCDF4.default_fillvals</code>.</p>
 
 <p><strong><code>chunk_cache</code></strong>: If specified, sets the chunk cache size for this variable.
 Persists as long as Dataset is open. Use <code><a href="#Variable.set_var_chunk_cache">set_var_chunk_cache</a></code> to
@@ -3005,7 +3098,7 @@ change it when Dataset is re-opened.</p>
             <span class="name">group</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>group(self)</code></strong></p>
 
 <p>return the group that this <code><a href="#Variable">Variable</a></code> is a member of.</p>
@@ -3021,7 +3114,7 @@ change it when Dataset is re-opened.</p>
             <span class="name">ncattrs</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>ncattrs(self)</code></strong></p>
 
 <p>return netCDF attribute names for this <code><a href="#Variable">Variable</a></code> in a list.</p>
@@ -3037,7 +3130,7 @@ change it when Dataset is re-opened.</p>
             <span class="name">setncattr</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>setncattr(self,name,value)</code></strong></p>
 
 <p>set a netCDF variable attribute using name,value pair.  Use if you need to set a
@@ -3055,7 +3148,7 @@ attributes.</p>
             <span class="name">setncattr_string</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>setncattr_string(self,name,value)</code></strong></p>
 
 <p>set a netCDF variable string attribute using name,value pair.
@@ -3074,7 +3167,7 @@ Use if you need to set an attribute to an array of variable-length strings.</p>
             <span class="name">setncatts</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>setncatts(self,attdict)</code></strong></p>
 
 <p>set a bunch of netCDF variable attributes at once using a python dictionary.
@@ -3093,7 +3186,7 @@ each attribute</p>
             <span class="name">getncattr</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>getncattr(self,name)</code></strong></p>
 
 <p>retrieve a netCDF variable attribute.  Use if you need to set a
@@ -3114,7 +3207,7 @@ character encoding of a string attribute (default is <code>utf-8</code>).</p>
             <span class="name">delncattr</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>delncattr(self,name,value)</code></strong></p>
 
 <p>delete a netCDF variable attribute.  Use if you need to delete a
@@ -3132,7 +3225,7 @@ attributes.</p>
             <span class="name">filters</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>filters(self)</code></strong></p>
 
 <p>return dictionary containing HDF5 filter parameters.</p>
@@ -3148,7 +3241,7 @@ attributes.</p>
             <span class="name">quantization</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>quantization(self)</code></strong></p>
 
 <p>return number of significant digits and the algorithm used in quantization.
@@ -3165,7 +3258,7 @@ Returns None if quantization not active.</p>
             <span class="name">endian</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>endian(self)</code></strong></p>
 
 <p>return endian-ness (<code>little,big,native</code>) of variable (as stored in HDF5 file).</p>
@@ -3181,7 +3274,7 @@ Returns None if quantization not active.</p>
             <span class="name">chunking</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>chunking(self)</code></strong></p>
 
 <p>return variable chunking information.  If the dataset is
@@ -3200,7 +3293,7 @@ each dimension is returned.</p>
             <span class="name">get_var_chunk_cache</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>get_var_chunk_cache(self)</code></strong></p>
 
 <p>return variable chunk cache information in a tuple (size,nelems,preemption).
@@ -3218,7 +3311,7 @@ details.</p>
             <span class="name">set_var_chunk_cache</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_var_chunk_cache(self,size=None,nelems=None,preemption=None)</code></strong></p>
 
 <p>change variable chunk cache settings.
@@ -3236,7 +3329,7 @@ details.</p>
             <span class="name">renameAttribute</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>renameAttribute(self, oldname, newname)</code></strong></p>
 
 <p>rename a <code><a href="#Variable">Variable</a></code> attribute named <code>oldname</code> to <code>newname</code>.</p>
@@ -3252,7 +3345,7 @@ details.</p>
             <span class="name">assignValue</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>assignValue(self, val)</code></strong></p>
 
 <p>assign a value to a scalar variable.  Provided for compatibility with
@@ -3269,7 +3362,7 @@ Scientific.IO.NetCDF, can also be done by assigning to an Ellipsis slice ([...])
             <span class="name">getValue</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>getValue(self)</code></strong></p>
 
 <p>get the value of a scalar variable.  Provided for compatibility with
@@ -3286,7 +3379,7 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([...]).</p>
             <span class="name">set_auto_chartostring</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_auto_chartostring(self,chartostring)</code></strong></p>
 
 <p>turn on or off automatic conversion of character variable data to and
@@ -3317,7 +3410,7 @@ rightmost dimension of the variable.</p>
             <span class="name">use_nc_get_vars</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>use_nc_get_vars(self,_use_get_vars)</code></strong></p>
 
 <p>enable the use of netcdf library routine <code>nc_get_vars</code>
@@ -3337,7 +3430,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
             <span class="name">set_auto_maskandscale</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_auto_maskandscale(self,maskandscale)</code></strong></p>
 
 <p>turn on or off automatic conversion of variable data to and
@@ -3401,7 +3494,7 @@ data model does not have unsigned integer data types).</p>
             <span class="name">set_auto_scale</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_auto_scale(self,scale)</code></strong></p>
 
 <p>turn on or off automatic packing/unpacking of variable
@@ -3450,7 +3543,7 @@ data model does not have unsigned integer data types).</p>
             <span class="name">set_auto_mask</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_auto_mask(self,mask)</code></strong></p>
 
 <p>turn on or off automatic conversion of variable data to and
@@ -3485,7 +3578,7 @@ is used instead. </p>
             <span class="name">set_always_mask</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_always_mask(self,always_mask)</code></strong></p>
 
 <p>turn on or off conversion of data without missing values to regular
@@ -3508,7 +3601,7 @@ otherwise masked array returned).</p>
             <span class="name">set_ncstring_attrs</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_always_mask(self,ncstring_attrs)</code></strong></p>
 
 <p>turn on or off creating NC_STRING string attributes.</p>
@@ -3530,7 +3623,7 @@ NC_CHAR).</p>
             <span class="name">set_collective</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_collective(self,True_or_False)</code></strong></p>
 
 <p>turn on or off collective parallel IO access. Ignored if file is not
@@ -3547,7 +3640,7 @@ open for parallel access.</p>
             <span class="name">get_dims</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>get_dims(self)</code></strong></p>
 
 <p>return a tuple of <code><a href="#Dimension">Dimension</a></code> instances associated with this
@@ -3559,9 +3652,10 @@ open for parallel access.</p>
                             <div id="Variable.name" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.name">#&nbsp;&nbsp</a>
 
-        <span class="name">name</span><span class="default_value"> = &lt;attribute &#39;name&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">name</span>
     </div>
 
+    
             <div class="docstring"><p>string name of Variable instance</p>
 </div>
 
@@ -3570,9 +3664,10 @@ open for parallel access.</p>
                             <div id="Variable.datatype" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.datatype">#&nbsp;&nbsp</a>
 
-        <span class="name">datatype</span><span class="default_value"> = &lt;attribute &#39;datatype&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">datatype</span>
     </div>
 
+    
             <div class="docstring"><p>numpy data type (for primitive data types) or
 VLType/CompoundType/EnumType instance 
 (for compound, vlen  or enum data types)</p>
@@ -3583,9 +3678,10 @@ VLType/CompoundType/EnumType instance
                             <div id="Variable.shape" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.shape">#&nbsp;&nbsp</a>
 
-        <span class="name">shape</span><span class="default_value"> = &lt;attribute &#39;shape&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">shape</span>
     </div>
 
+    
             <div class="docstring"><p>find current sizes of all variable dimensions</p>
 </div>
 
@@ -3594,9 +3690,10 @@ VLType/CompoundType/EnumType instance
                             <div id="Variable.size" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.size">#&nbsp;&nbsp</a>
 
-        <span class="name">size</span><span class="default_value"> = &lt;attribute &#39;size&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">size</span>
     </div>
 
+    
             <div class="docstring"><p>Return the number of stored elements.</p>
 </div>
 
@@ -3605,9 +3702,10 @@ VLType/CompoundType/EnumType instance
                             <div id="Variable.dimensions" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.dimensions">#&nbsp;&nbsp</a>
 
-        <span class="name">dimensions</span><span class="default_value"> = &lt;attribute &#39;dimensions&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">dimensions</span>
     </div>
 
+    
             <div class="docstring"><p>get variables's dimension names</p>
 </div>
 
@@ -3616,54 +3714,60 @@ VLType/CompoundType/EnumType instance
                             <div id="Variable.ndim" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.ndim">#&nbsp;&nbsp</a>
 
-        <span class="name">ndim</span><span class="default_value"> = &lt;attribute &#39;ndim&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">ndim</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Variable.dtype" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.dtype">#&nbsp;&nbsp</a>
 
-        <span class="name">dtype</span><span class="default_value"> = &lt;attribute &#39;dtype&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">dtype</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Variable.mask" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.mask">#&nbsp;&nbsp</a>
 
-        <span class="name">mask</span><span class="default_value"> = &lt;attribute &#39;mask&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">mask</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Variable.scale" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.scale">#&nbsp;&nbsp</a>
 
-        <span class="name">scale</span><span class="default_value"> = &lt;attribute &#39;scale&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">scale</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Variable.always_mask" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.always_mask">#&nbsp;&nbsp</a>
 
-        <span class="name">always_mask</span><span class="default_value"> = &lt;attribute &#39;always_mask&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">always_mask</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="Variable.chartostring" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Variable.chartostring">#&nbsp;&nbsp</a>
 
-        <span class="name">chartostring</span><span class="default_value"> = &lt;attribute &#39;chartostring&#39; of &#39;<a href="#_netCDF4.Variable">netCDF4._netCDF4.Variable</a>&#39; objects&gt;</span>
+        <span class="name">chartostring</span>
     </div>
 
+    
     
 
                             </div>
@@ -3677,7 +3781,7 @@ VLType/CompoundType/EnumType instance
         <span class="name">Dimension</span>:
     </div>
 
-        
+    
             <div class="docstring"><p>A netCDF <code><a href="#Dimension">Dimension</a></code> is used to describe the coordinates of a <code><a href="#Variable">Variable</a></code>.
 See <code><a href="#Dimension.__init__">Dimension.__init__</a></code> for more details.</p>
 
@@ -3703,7 +3807,7 @@ determine if the dimension is unlimited.</p>
             <span class="name">Dimension</span><span class="signature">()</span>
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>__init__(self, group, name, size=None)</code></strong></p>
 
 <p><code><a href="#Dimension">Dimension</a></code> constructor.</p>
@@ -3729,7 +3833,7 @@ determine if the dimension is unlimited.</p>
             <span class="name">group</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>group(self)</code></strong></p>
 
 <p>return the group that this <code><a href="#Dimension">Dimension</a></code> is a member of.</p>
@@ -3745,7 +3849,7 @@ determine if the dimension is unlimited.</p>
             <span class="name">isunlimited</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>isunlimited(self)</code></strong></p>
 
 <p>returns <code>True</code> if the <code><a href="#Dimension">Dimension</a></code> instance is unlimited, <code>False</code> otherwise.</p>
@@ -3756,9 +3860,10 @@ determine if the dimension is unlimited.</p>
                             <div id="Dimension.name" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dimension.name">#&nbsp;&nbsp</a>
 
-        <span class="name">name</span><span class="default_value"> = &lt;attribute &#39;name&#39; of &#39;<a href="#_netCDF4.Dimension">netCDF4._netCDF4.Dimension</a>&#39; objects&gt;</span>
+        <span class="name">name</span>
     </div>
 
+    
             <div class="docstring"><p>string name of Dimension instance</p>
 </div>
 
@@ -3767,9 +3872,10 @@ determine if the dimension is unlimited.</p>
                             <div id="Dimension.size" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#Dimension.size">#&nbsp;&nbsp</a>
 
-        <span class="name">size</span><span class="default_value"> = &lt;attribute &#39;size&#39; of &#39;<a href="#_netCDF4.Dimension">netCDF4._netCDF4.Dimension</a>&#39; objects&gt;</span>
+        <span class="name">size</span>
     </div>
 
+    
             <div class="docstring"><p>current size of Dimension (calls <code>len</code> on Dimension instance)</p>
 </div>
 
@@ -3785,7 +3891,7 @@ determine if the dimension is unlimited.</p>
         <span class="name">Group</span><wbr>(<span class="base"><a href="#Dataset">netCDF4.Dataset</a></span>):
     </div>
 
-        
+    
             <div class="docstring"><p>Groups define a hierarchical namespace within a netCDF file. They are
 analogous to directories in a unix filesystem. Each <code><a href="#Group">Group</a></code> behaves like
 a <code><a href="#Dataset">Dataset</a></code> within a Dataset, and can contain it's own variables,
@@ -3809,7 +3915,7 @@ to a <code><a href="#Group">Group</a></code> instance (except the <code><a href=
             <span class="name">Group</span><span class="signature">()</span>
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>__init__(self, parent, name)</code></strong>
 <code><a href="#Group">Group</a></code> constructor.</p>
 
@@ -3833,7 +3939,7 @@ another <code><a href="#Group">Group</a></code> instance, not using this class d
             <span class="name">close</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>close(self)</code></strong></p>
 
 <p>overrides <code><a href="#Dataset">Dataset</a></code> close method which does not apply to <code><a href="#Group">Group</a></code>
@@ -3876,6 +3982,10 @@ instances, raises IOError.</p>
                 <dd id="Group.get_variables_by_attributes" class="function"><a href="#Dataset.get_variables_by_attributes">get_variables_by_attributes</a></dd>
                 <dd id="Group.fromcdl" class="function"><a href="#Dataset.fromcdl">fromcdl</a></dd>
                 <dd id="Group.tocdl" class="function"><a href="#Dataset.tocdl">tocdl</a></dd>
+                <dd id="Group.has_blosc_filter" class="function"><a href="#Dataset.has_blosc_filter">has_blosc_filter</a></dd>
+                <dd id="Group.has_zstd_filter" class="function"><a href="#Dataset.has_zstd_filter">has_zstd_filter</a></dd>
+                <dd id="Group.has_bzip2_filter" class="function"><a href="#Dataset.has_bzip2_filter">has_bzip2_filter</a></dd>
+                <dd id="Group.has_szip_filter" class="function"><a href="#Dataset.has_szip_filter">has_szip_filter</a></dd>
                 <dd id="Group.name" class="variable"><a href="#Dataset.name">name</a></dd>
                 <dd id="Group.groups" class="variable"><a href="#Dataset.groups">groups</a></dd>
                 <dd id="Group.dimensions" class="variable"><a href="#Dataset.dimensions">dimensions</a></dd>
@@ -3903,7 +4013,7 @@ instances, raises IOError.</p>
         <span class="name">MFDataset</span><wbr>(<span class="base"><a href="#Dataset">netCDF4.Dataset</a></span>):
     </div>
 
-        
+    
             <div class="docstring"><p>Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
 Datasets must be in <code>NETCDF4_CLASSIC, NETCDF3_CLASSIC, NETCDF3_64BIT_OFFSET
@@ -3913,7 +4023,7 @@ or NETCDF3_64BIT_DATA</code> format (<code>NETCDF4</code> Datasets won't work).<
 
 <p>Example usage (See <code><a href="#MFDataset.__init__">MFDataset.__init__</a></code> for more details):</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># create a series of netCDF files with a variable sharing</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># the same unlimited dimension.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">nf</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
@@ -3940,7 +4050,7 @@ or NETCDF3_64BIT_DATA</code> format (<code>NETCDF4</code> Datasets won't work).<
             <span class="name">MFDataset</span><span class="signature">(files, check=False, aggdim=None, exclude=[], master_file=None)</span>
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>__init__(self, files, check=False, aggdim=None, exclude=[],
 master_file=None)</code></strong></p>
 
@@ -3985,7 +4095,7 @@ variables with an aggregation dimension and all global attributes.</p>
             <span class="name">ncattrs</span><span class="signature">(self)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>ncattrs(self)</code></strong></p>
 
 <p>return the netcdf attribute names from the master file.</p>
@@ -4001,7 +4111,7 @@ variables with an aggregation dimension and all global attributes.</p>
             <span class="name">close</span><span class="signature">(self)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>close(self)</code></strong></p>
 
 <p>close all the open files.</p>
@@ -4042,6 +4152,10 @@ variables with an aggregation dimension and all global attributes.</p>
                 <dd id="MFDataset.get_variables_by_attributes" class="function"><a href="#Dataset.get_variables_by_attributes">get_variables_by_attributes</a></dd>
                 <dd id="MFDataset.fromcdl" class="function"><a href="#Dataset.fromcdl">fromcdl</a></dd>
                 <dd id="MFDataset.tocdl" class="function"><a href="#Dataset.tocdl">tocdl</a></dd>
+                <dd id="MFDataset.has_blosc_filter" class="function"><a href="#Dataset.has_blosc_filter">has_blosc_filter</a></dd>
+                <dd id="MFDataset.has_zstd_filter" class="function"><a href="#Dataset.has_zstd_filter">has_zstd_filter</a></dd>
+                <dd id="MFDataset.has_bzip2_filter" class="function"><a href="#Dataset.has_bzip2_filter">has_bzip2_filter</a></dd>
+                <dd id="MFDataset.has_szip_filter" class="function"><a href="#Dataset.has_szip_filter">has_szip_filter</a></dd>
                 <dd id="MFDataset.name" class="variable"><a href="#Dataset.name">name</a></dd>
                 <dd id="MFDataset.groups" class="variable"><a href="#Dataset.groups">groups</a></dd>
                 <dd id="MFDataset.dimensions" class="variable"><a href="#Dataset.dimensions">dimensions</a></dd>
@@ -4069,13 +4183,13 @@ variables with an aggregation dimension and all global attributes.</p>
         <span class="name">MFTime</span><wbr>(<span class="base">netCDF4._netCDF4._Variable</span>):
     </div>
 
-        
+    
             <div class="docstring"><p>Class providing an interface to a MFDataset time Variable by imposing a unique common
 time unit and/or calendar to all files.</p>
 
 <p>Example usage (See <code><a href="#MFTime.__init__">MFTime.__init__</a></code> for more details):</p>
 
-<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;mftest_1.nc&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;NETCDF4_CLASSIC&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s2">&quot;mftest_2.nc&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;NETCDF4_CLASSIC&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">f1</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
@@ -4111,7 +4225,7 @@ time unit and/or calendar to all files.</p>
             <span class="name">MFTime</span><span class="signature">(time, units=None, calendar=None)</span>
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>__init__(self, time, units=None, calendar=None)</code></strong></p>
 
 <p>Create a time Variable with units consistent across a multifile
@@ -4155,7 +4269,7 @@ is present on each variable and values are unique across files raising a
         <span class="name">CompoundType</span>:
     </div>
 
-        
+    
             <div class="docstring"><p>A <code><a href="#CompoundType">CompoundType</a></code> instance is used to describe a compound data
 type, and can be passed to the the <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method of
 a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance.
@@ -4174,7 +4288,7 @@ the user.</p>
             <span class="name">CompoundType</span><span class="signature">()</span>
     </div>
 
-        
+    
             <div class="docstring"><p><strong><em><code>__init__(group, datatype, datatype_name)</code></em></strong></p>
 
 <p>CompoundType constructor.</p>
@@ -4203,27 +4317,30 @@ first).</p>
                             <div id="CompoundType.dtype" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#CompoundType.dtype">#&nbsp;&nbsp</a>
 
-        <span class="name">dtype</span><span class="default_value"> = &lt;attribute &#39;dtype&#39; of &#39;<a href="#_netCDF4.CompoundType">netCDF4._netCDF4.CompoundType</a>&#39; objects&gt;</span>
+        <span class="name">dtype</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="CompoundType.dtype_view" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#CompoundType.dtype_view">#&nbsp;&nbsp</a>
 
-        <span class="name">dtype_view</span><span class="default_value"> = &lt;attribute &#39;dtype_view&#39; of &#39;<a href="#_netCDF4.CompoundType">netCDF4._netCDF4.CompoundType</a>&#39; objects&gt;</span>
+        <span class="name">dtype_view</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="CompoundType.name" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#CompoundType.name">#&nbsp;&nbsp</a>
 
-        <span class="name">name</span><span class="default_value"> = &lt;attribute &#39;name&#39; of &#39;<a href="#_netCDF4.CompoundType">netCDF4._netCDF4.CompoundType</a>&#39; objects&gt;</span>
+        <span class="name">name</span>
     </div>
 
+    
     
 
                             </div>
@@ -4237,7 +4354,7 @@ first).</p>
         <span class="name">VLType</span>:
     </div>
 
-        
+    
             <div class="docstring"><p>A <code><a href="#VLType">VLType</a></code> instance is used to describe a variable length (VLEN) data
 type, and can be passed to the the <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method of
 a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance. See
@@ -4255,7 +4372,7 @@ the user.</p>
             <span class="name">VLType</span><span class="signature">()</span>
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>__init__(group, datatype, datatype_name)</code></strong></p>
 
 <p>VLType constructor.</p>
@@ -4278,18 +4395,20 @@ VLEN data type.</p>
                             <div id="VLType.dtype" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#VLType.dtype">#&nbsp;&nbsp</a>
 
-        <span class="name">dtype</span><span class="default_value"> = &lt;attribute &#39;dtype&#39; of &#39;<a href="#_netCDF4.VLType">netCDF4._netCDF4.VLType</a>&#39; objects&gt;</span>
+        <span class="name">dtype</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="VLType.name" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#VLType.name">#&nbsp;&nbsp</a>
 
-        <span class="name">name</span><span class="default_value"> = &lt;attribute &#39;name&#39; of &#39;<a href="#_netCDF4.VLType">netCDF4._netCDF4.VLType</a>&#39; objects&gt;</span>
+        <span class="name">name</span>
     </div>
 
+    
     
 
                             </div>
@@ -4302,8 +4421,8 @@ VLEN data type.</p>
             <span class="name">date2num</span><span class="signature">(unknown)</span>:
     </div>
 
-        
-            <div class="docstring"><p>date2num(dates, units, calendar=None, has_year_zero=None)</p>
+    
+            <div class="docstring"><p>date2num(dates, units, calendar=None, has_year_zero=None, longdouble=False)</p>
 
 <p>Return numeric time values given datetime objects. The units
 of the numeric time values are described by the <strong>units</strong> argument
@@ -4348,6 +4467,12 @@ always exists and the has_year_zero kwarg is ignored.
 This kwarg is not needed to define calendar systems allowed by CF
 (the calendar-specific defaults do this).</p>
 
+<p><strong>longdouble</strong>: If set True, output is in the long double float type
+(numpy.float128) instead of float (numpy.float64), allowing microsecond
+accuracy when converting a time value to a date and back again. Otherwise
+this is only possible if the discretization of the time variable is an
+integer multiple of the units.</p>
+
 <p>returns a numeric time value, or an array of numeric time values
 with approximately 1 microsecond accuracy.</p>
 </div>
@@ -4362,7 +4487,7 @@ with approximately 1 microsecond accuracy.</p>
             <span class="name">num2date</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p>num2date(times, units, calendar=u'standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</p>
 
 <p>Return datetime objects given numeric time values. The units
@@ -4434,7 +4559,7 @@ contains one.</p>
             <span class="name">date2index</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p>date2index(dates, nctime, calendar=None, select=u'exact', has_year_zero=None)</p>
 
 <p>Return indices of a netCDF time variable corresponding to the given dates.</p>
@@ -4488,7 +4613,7 @@ to the given datetime object(s).</p>
             <span class="name">stringtochar</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>stringtochar(a,encoding='utf-8')</code></strong></p>
 
 <p>convert a string array to a character array with one extra dimension</p>
@@ -4515,7 +4640,7 @@ and shape <code>a.shape + (N,)</code>, where N is the length of each string in a
             <span class="name">chartostring</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>chartostring(b,encoding='utf-8')</code></strong></p>
 
 <p>convert a character array to a string array with one less dimension.</p>
@@ -4542,7 +4667,7 @@ returned.</p>
             <span class="name">stringtoarr</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>stringtoarr(a, NUMCHARS,dtype='S')</code></strong></p>
 
 <p>convert a string to a character array of length <code>NUMCHARS</code></p>
@@ -4570,7 +4695,7 @@ unicode array (dtype = <code>'U1'</code>) will be returned.</p>
             <span class="name">getlibversion</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code><a href="#getlibversion">getlibversion()</a></code></strong></p>
 
 <p>returns a string describing the version of the netcdf library
@@ -4588,7 +4713,7 @@ used to build the module, and when it was built.</p>
         <span class="name">EnumType</span>:
     </div>
 
-        
+    
             <div class="docstring"><p>A <code><a href="#EnumType">EnumType</a></code> instance is used to describe an Enum data
 type, and can be passed to the the <code><a href="#Dataset.createVariable">Dataset.createVariable</a></code> method of
 a <code><a href="#Dataset">Dataset</a></code> or <code><a href="#Group">Group</a></code> instance. See
@@ -4606,7 +4731,7 @@ the user.</p>
             <span class="name">EnumType</span><span class="signature">()</span>
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>__init__(group, datatype, datatype_name, enum_dict)</code></strong></p>
 
 <p>EnumType constructor.</p>
@@ -4632,27 +4757,30 @@ pairs.</p>
                             <div id="EnumType.dtype" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#EnumType.dtype">#&nbsp;&nbsp</a>
 
-        <span class="name">dtype</span><span class="default_value"> = &lt;attribute &#39;dtype&#39; of &#39;<a href="#_netCDF4.EnumType">netCDF4._netCDF4.EnumType</a>&#39; objects&gt;</span>
+        <span class="name">dtype</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="EnumType.name" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#EnumType.name">#&nbsp;&nbsp</a>
 
-        <span class="name">name</span><span class="default_value"> = &lt;attribute &#39;name&#39; of &#39;<a href="#_netCDF4.EnumType">netCDF4._netCDF4.EnumType</a>&#39; objects&gt;</span>
+        <span class="name">name</span>
     </div>
 
+    
     
 
                             </div>
                             <div id="EnumType.enum_dict" class="classattr">
                                             <div class="attr variable"><a class="headerlink" href="#EnumType.enum_dict">#&nbsp;&nbsp</a>
 
-        <span class="name">enum_dict</span><span class="default_value"> = &lt;attribute &#39;enum_dict&#39; of &#39;<a href="#_netCDF4.EnumType">netCDF4._netCDF4.EnumType</a>&#39; objects&gt;</span>
+        <span class="name">enum_dict</span>
     </div>
 
+    
     
 
                             </div>
@@ -4665,7 +4793,7 @@ pairs.</p>
             <span class="name">get_chunk_cache</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code><a href="#get_chunk_cache">get_chunk_cache()</a></code></strong></p>
 
 <p>return current netCDF chunk cache information in a tuple (size,nelems,preemption).
@@ -4683,12 +4811,53 @@ details. Values can be reset with <code><a href="#set_chunk_cache">set_chunk_cac
             <span class="name">set_chunk_cache</span><span class="signature">(unknown)</span>:
     </div>
 
-        
+    
             <div class="docstring"><p><strong><code>set_chunk_cache(self,size=None,nelems=None,preemption=None)</code></strong></p>
 
 <p>change netCDF4 chunk cache settings.
 See netcdf C library documentation for <code>nc_set_chunk_cache</code> for
 details.</p>
+</div>
+
+
+                </section>
+                <section id="set_alignment">
+                            <div class="attr function"><a class="headerlink" href="#set_alignment">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">set_alignment</span><span class="signature">(unknown)</span>:
+    </div>
+
+    
+            <div class="docstring"><p><strong><code>set_alignment(threshold,alignment)</code></strong></p>
+
+<p>Change the HDF5 file alignment.
+See netcdf C library documentation for <code>nc_set_alignment</code> for
+details.</p>
+
+<p>This function was added in netcdf 4.9.0.</p>
+</div>
+
+
+                </section>
+                <section id="get_alignment">
+                            <div class="attr function"><a class="headerlink" href="#get_alignment">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">get_alignment</span><span class="signature">(unknown)</span>:
+    </div>
+
+    
+            <div class="docstring"><p><strong><code><a href="#get_alignment">get_alignment()</a></code></strong></p>
+
+<p>return current netCDF alignment within HDF5 files in a tuple
+(threshold,alignment). See netcdf C library documentation for
+<code>nc_get_alignment</code> for details. Values can be reset with
+<code><a href="#set_alignment">set_alignment</a></code>.</p>
+
+<p>This function was added in netcdf 4.9.0.</p>
 </div>
 
 

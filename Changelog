@@ -1,4 +1,4 @@
- since version 1.6.0 release
+ version 1.6.1 (tag v1.6.1rel)
 ==============================
  * add Dataset methods has_<name>_filter (where <name>=zstd,blosc,bzip2,szip)
    to check for availability of extra compression filters.

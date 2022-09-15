@@ -10,6 +10,11 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+09/18/2022:  Version [1.6.1](https://pypi.python.org/pypi/netCDF4/1.6.1) released.  GIL now
+released for all C lib calls, `set_alignment` and `get_alignment` module functions
+added to modify/retrieve HDF5 data alignment properties. Added `Dataset` methods to 
+query availability of optional compression filters.
+
 06/24/2022:  Version [1.6.0](https://pypi.python.org/pypi/netCDF4/1.6.0) released.  Support
 for quantization (bit-grooming and bit-rounding) functionality in netcdf-c 4.9.0 which can
 dramatically improve compression.  Dataset.createVariable now accepts dimension instances (instead
