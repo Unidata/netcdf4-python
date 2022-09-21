@@ -2580,8 +2580,9 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
     def _close(self, check_err):
         cdef int ierr
-        with nogil:
-            ierr = nc_close(self._grpid)
+        #with nogil:
+        #    ierr = nc_close(self._grpid)
+        ierr = nc_close(self._grpid)
 
         if check_err:
             _ensure_nc_success(ierr)
