@@ -2578,11 +2578,13 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         ncdump.append('    groups: %s' % ', '.join(grpnames))
         return '\n'.join(ncdump)
 
-    def _close(self, check_err):
+    def _close(self, check_err, release_GIL=False):
         cdef int ierr
-        #with nogil:
-        #    ierr = nc_close(self._grpid)
-        ierr = nc_close(self._grpid)
+        if release_GIL:
+            with nogil:
+                ierr = nc_close(self._grpid)
+        else:
+            ierr = nc_close(self._grpid)
 
         if check_err:
             _ensure_nc_success(ierr)
@@ -2595,10 +2597,13 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         PyBuffer_Release(&self._buffer)
 
     IF HAS_NC_CREATE_MEM:
-        def _close_mem(self, check_err):
+        def _close_mem(self, check_err, release_GIL=release_GIL):
             cdef int ierr
             cdef NC_memio memio
-            with nogil:
+            if release_GIL:
+                with nogil:
+                    ierr = nc_close_memio(self._grpid, &memio)
+            else:
                 ierr = nc_close_memio(self._grpid, &memio)
 
             if check_err:
@@ -2612,19 +2617,20 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
             return memview_fromptr(<char *>memio.memory, memio.size)
 
 
-    def close(self):
+    def close(self,release_GIL=False):
         """
-**`close(self)`**
+**`close(self,release_GIL=False)`**
 
-Close the Dataset.
+Close the Dataset. If `release_GIL=True, the GIL is released before calling the
+netcdf-c library close function.
         """
         IF HAS_NC_CREATE_MEM:
             if self._inmemory:
-                return self._close_mem(True)
+                return self._close_mem(True,release_GIL=release_GIL)
             else:
-                self._close(True)
+                self._close(True,release_GIL=release_GIL)
         ELSE:
-            self._close(True)
+            self._close(True,release_GIL=release_GIL)
 
     def isopen(self):
         """
