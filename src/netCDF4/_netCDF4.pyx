@@ -3638,9 +3638,9 @@ Additional read-only class variables:
                 self.groups = dict()
 
 
-    def close(self):
+    def close(self,release_GIL=False):
         """
-**`close(self)`**
+**`close(self,release_GIL==False)`**
 
 overrides `Dataset` close method which does not apply to `Group`
 instances, raises IOError."""
