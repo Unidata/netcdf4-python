@@ -2597,7 +2597,7 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         PyBuffer_Release(&self._buffer)
 
     IF HAS_NC_CREATE_MEM:
-        def _close_mem(self, check_err, release_GIL=release_GIL):
+        def _close_mem(self, check_err, release_GIL=False):
             cdef int ierr
             cdef NC_memio memio
             if release_GIL:
