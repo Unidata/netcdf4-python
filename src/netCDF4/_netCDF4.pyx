@@ -1,5 +1,5 @@
 """
-Version 1.6.1
+Version 1.6.2
 -------------
 
 # Introduction
@@ -1230,7 +1230,7 @@ if sys.version_info[0:2] < (3, 7):
     # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
 
-__version__ = "1.6.1"
+__version__ = "1.6.2"
 
 # Initialize numpy
 import posixpath
@@ -2280,8 +2280,7 @@ strings.
                 # kwarg is interpreted as advisory size.
                 IF HAS_NC_CREATE_MEM:
                    initialsize = <size_t>memory
-                   with nogil:
-                       ierr = nc_create_mem(path, 0, initialsize, &grpid)
+                   ierr = nc_create_mem(path, 0, initialsize, &grpid)
                    self._inmemory = True # checked in close method
                 ELSE:
                     msg = """
@@ -2293,44 +2292,36 @@ strings.
                     if parallel:
                         IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                             cmode = NC_CLOBBER | parmode
-                            with nogil:
-                                ierr = nc_create_par(path, cmode, \
-                                       mpicomm, mpiinfo, &grpid)
+                            ierr = nc_create_par(path, cmode, \
+                                   mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
                     elif diskless:
                         if persist:
                             cmode = NC_WRITE | NC_CLOBBER | NC_DISKLESS | NC_PERSIST
-                            with nogil:
-                                ierr = nc_create(path, cmode, &grpid)
+                            ierr = nc_create(path, cmode, &grpid)
                         else:
                             cmode = NC_CLOBBER | NC_DISKLESS
-                            with nogil:
-                                ierr = nc_create(path, cmode , &grpid)
+                            ierr = nc_create(path, cmode , &grpid)
                     else:
-                        with nogil:
-                            ierr = nc_create(path, NC_CLOBBER, &grpid)
+                        ierr = nc_create(path, NC_CLOBBER, &grpid)
                 else:
                     if parallel:
                         IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                             cmode = NC_NOCLOBBER | parmode
-                            with nogil:
-                                ierr = nc_create_par(path, cmode, \
+                            ierr = nc_create_par(path, cmode, \
                                        mpicomm, mpiinfo, &grpid)
                         ELSE:
                             pass
                     elif diskless:
                         if persist:
                             cmode = NC_WRITE | NC_NOCLOBBER | NC_DISKLESS | NC_PERSIST
-                            with nogil:
-                                ierr = nc_create(path, cmode, &grpid)
+                            ierr = nc_create(path, cmode, &grpid)
                         else:
                             cmode = NC_NOCLOBBER | NC_DISKLESS
-                            with nogil:
-                                ierr = nc_create(path, cmode , &grpid)
+                            ierr = nc_create(path, cmode , &grpid)
                     else:
-                        with nogil:
-                            ierr = nc_create(path, NC_NOCLOBBER, &grpid)
+                        ierr = nc_create(path, NC_NOCLOBBER, &grpid)
             # reset default format to netcdf3 - this is a workaround
             # for issue 170 (nc_open'ing a DAP dataset after switching
             # format to NETCDF4). This bug should be fixed in version
@@ -2346,8 +2337,7 @@ strings.
                     if result != 0:
                         raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
 
-                    with nogil:
-                        ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
+                    ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
                 ELSE:
                     msg = """
         nc_open_mem functionality not enabled.  To enable, install Cython, make sure you have
@@ -2356,59 +2346,49 @@ strings.
             elif parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     cmode = NC_NOWRITE | NC_MPIIO
-                    with nogil:
-                        ierr = nc_open_par(path, cmode, \
-                               mpicomm, mpiinfo, &grpid)
+                    ierr = nc_open_par(path, cmode, \
+                           mpicomm, mpiinfo, &grpid)
                 ELSE:
                     pass
             elif diskless:
                 cmode = NC_NOWRITE | NC_DISKLESS
-                with nogil:
-                    ierr = nc_open(path, cmode, &grpid)
+                ierr = nc_open(path, cmode, &grpid)
             else:
                 if mode == 'rs':
                     # NC_SHARE is very important for speed reading
                     # large netcdf3 files with a record dimension
                     # (pull request #902).
                     cmode = NC_NOWRITE | NC_SHARE
-                    with nogil:
-                        ierr = nc_open(path, cmode, &grpid)
+                    ierr = nc_open(path, cmode, &grpid)
                 else:
-                    with nogil:
-                        ierr = nc_open(path, NC_NOWRITE, &grpid)
+                    ierr = nc_open(path, NC_NOWRITE, &grpid)
         elif mode in ['a','r+'] and os.path.exists(filename):
             if parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     cmode = NC_WRITE | NC_MPIIO
-                    with nogil:
-                        ierr = nc_open_par(path, cmode, \
-                               mpicomm, mpiinfo, &grpid)
+                    ierr = nc_open_par(path, cmode, \
+                           mpicomm, mpiinfo, &grpid)
                 ELSE:
                     pass
             elif diskless:
                 cmode = NC_WRITE | NC_DISKLESS
-                with nogil:
-                    ierr = nc_open(path, cmode, &grpid)
+                ierr = nc_open(path, cmode, &grpid)
             else:
-                with nogil:
-                    ierr = nc_open(path, NC_WRITE, &grpid)
+                ierr = nc_open(path, NC_WRITE, &grpid)
         elif mode in ['as','r+s'] and os.path.exists(filename):
             if parallel:
                 # NC_SHARE ignored
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     cmode =  NC_WRITE | NC_MPIIO
-                    with nogil:
-                        ierr = nc_open_par(path, cmode, \
+                    ierr = nc_open_par(path, cmode, \
                                mpicomm, mpiinfo, &grpid)
                 ELSE:
                     pass
             elif diskless:
                 cmode = NC_SHARE | NC_DISKLESS
-                with nogil:
-                    ierr = nc_open(path, cmode, &grpid)
+                ierr = nc_open(path, cmode, &grpid)
             else:
-                with nogil:
-                    ierr = nc_open(path, NC_SHARE, &grpid)
+                ierr = nc_open(path, NC_SHARE, &grpid)
         elif mode == 'ws' or (mode in ['as','r+s'] and not os.path.exists(filename)):
             _set_default_format(format=format)
             if clobber:
@@ -2416,47 +2396,39 @@ strings.
                     # NC_SHARE ignored
                     IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                         cmode = NC_CLOBBER | parmode 
-                        with nogil:
-                            ierr = nc_create_par(path, NC_CLOBBER | cmode, \
-                                   mpicomm, mpiinfo, &grpid)
+                        ierr = nc_create_par(path, NC_CLOBBER | cmode, \
+                               mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
                 elif diskless:
                     if persist:
                         cmode = NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode, &grpid)
+                        ierr = nc_create(path, cmode, &grpid)
                     else:
                         cmode = NC_SHARE | NC_CLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode , &grpid)
+                        ierr = nc_create(path, cmode , &grpid)
                 else:
                     cmode = NC_SHARE | NC_CLOBBER
-                    with nogil:
-                        ierr = nc_create(path, cmode, &grpid)
+                    ierr = nc_create(path, cmode, &grpid)
             else:
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                         cmode = NC_NOCLOBBER | parmode
-                        with nogil:
-                            ierr = nc_create_par(path, cmode, \
-                                   mpicomm, mpiinfo, &grpid)
+                        ierr = nc_create_par(path, cmode, \
+                               mpicomm, mpiinfo, &grpid)
                     ELSE:
                         pass
                 elif diskless:
                     if persist:
                         cmode = NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode , &grpid)
+                        ierr = nc_create(path, cmode , &grpid)
                     else:
                         cmode = NC_SHARE | NC_NOCLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode , &grpid)
+                        ierr = nc_create(path, cmode , &grpid)
                 else:
                     cmode = NC_SHARE | NC_NOCLOBBER
-                    with nogil:
-                        ierr = nc_create(path, cmode, &grpid)
+                    ierr = nc_create(path, cmode, &grpid)
         else:
             raise ValueError("mode must be 'w', 'x', 'r', 'a' or 'r+', got '%s'" % mode)
 

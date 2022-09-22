@@ -1,3 +1,7 @@
+ version 1.6.2 (not yet released)
+=================================
+ * do not release GIL for netcdf-c calls in Dataset.__init__ (to avoid segfaults in threaded code).
+
  version 1.6.1 (tag v1.6.1rel)
 ==============================
  * add Dataset methods has_<name>_filter (where <name>=zstd,blosc,bzip2,szip)
