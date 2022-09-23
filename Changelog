@@ -1,3 +1,8 @@
+ version 1.6.2 (Unrelease)
+==========================
+ * Added ``netCDF4.__has_set_alignment__`` property to help identify if the
+   underlying netcdf4 supports setting the HDF5 alignment.
+
  version 1.6.1 (tag v1.6.1rel)
 ==============================
  * add Dataset methods has_<name>_filter (where <name>=zstd,blosc,bzip2,szip)
