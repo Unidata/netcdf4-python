@@ -1,5 +1,6 @@
 import numpy as np
 from netCDF4 import set_alignment, get_alignment, Dataset
+from netCDF4 import __has_set_alignment__
 import netCDF4
 import os
 import subprocess
@@ -23,6 +24,7 @@ file_name = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
 class AlignmentTestCase(unittest.TestCase):
     def setUp(self):
+
         self.file = file_name
 
         # This is a global variable in netcdf4, it must be set before File
@@ -56,6 +58,10 @@ class AlignmentTestCase(unittest.TestCase):
                 set_alignment(1, 1)
             with self.assertRaises(RuntimeError):
                 get_alignment()
+
+    def test_reports_alignment_capabilities(self):
+        # Assert that the library reports that it supports alignment correctly
+        assert has_alignment == __has_set_alignment__
 
     # if we have no support for alignment, we have no guarantees on
     # how the data can be aligned
