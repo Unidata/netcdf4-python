@@ -208,12 +208,6 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     if sum(1 for e in elem if e is Ellipsis) > 1:
         raise IndexError("At most one ellipsis allowed in a slicing expression")
 
-    # Check if elem is valid for bool array.
-    if type(elem) is np.ndarray:
-        if elem.dtype is np.dtype(bool) and np.logical_not(np.any(elem))
-            raise IndexError("All elements of bool indexing array are False. "
-                    "At least one element must be True to be valid.")
-
     # replace boolean arrays with sequences of integers.
     newElem = []
     IndexErrorMsg=\
@@ -244,6 +238,10 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             unlim = False
         # convert boolean index to integer array.
         if np.iterable(ea) and ea.dtype.kind =='b':
+            # check that boolean array is not all False.
+            if not ea.any():
+                msg='Boolean index array is all False, at least one element must be True'
+                raise IndexError(msg)
             # check that boolean array not too long
             if not unlim and shape[i] != len(ea):
                 msg="""
