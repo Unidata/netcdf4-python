@@ -4953,7 +4953,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
         # put_ind for this dimension is set to -1 by _StartCountStride.
         squeeze = data.ndim * [slice(None),]
         for i,n in enumerate(put_ind.shape[:-1]):
-            if n == 1 and put_ind[...,i].ravel()[0] == -1:
+            if n == 1 and put_ind.size > 0 and put_ind[...,i].ravel()[0] == -1:
                 squeeze[i] = 0
 
         # Reshape the arrays so we can iterate over them.
