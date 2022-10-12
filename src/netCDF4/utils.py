@@ -240,8 +240,8 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         if np.iterable(ea) and ea.dtype.kind =='b':
             # check that boolean array is not all False.
             if not ea.any():
-                msg='Boolean index array is all False, at least one element must be True'
-                raise IndexError(msg)
+                msg='Boolean index array is all False. Empty array will be returned.'
+                warnings.warn(msg)
             # check that boolean array not too long
             if not unlim and shape[i] != len(ea):
                 msg="""
