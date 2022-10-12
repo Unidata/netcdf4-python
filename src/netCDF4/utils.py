@@ -461,7 +461,7 @@ def _out_array_shape(count):
     out = []
 
     for i, n in enumerate(s):
-        if n == 1:
+        if n == 1 and count.size > 0:
             c = count[..., i].ravel()[0] # All elements should be identical.
             out.append(c)
         else:
