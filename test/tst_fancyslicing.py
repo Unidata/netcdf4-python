@@ -142,6 +142,11 @@ class VariablesTestCase(unittest.TestCase):
 
         assert_array_equal(v[0], self.data[0])
 
+        # slicing with all False booleans (PR #1197)
+        iby[:] = False
+        data = v[ibx,iby,ibz]
+        assert(data.size == 0)
+
         f.close()
 
     def test_set(self):
