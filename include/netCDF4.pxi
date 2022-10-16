@@ -388,6 +388,8 @@ IF HAS_SZIP_SUPPORT:
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
         int nc_def_var_szip(int ncid, int varid, int options_mask, int pixels_per_bloc) nogil
         int nc_inq_var_szip(int ncid, int varid, int *options_maskp, int *pixels_per_blockp) nogil
+    cdef extern from "netcdf_filter.h":
+        int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
 
 IF HAS_ZSTANDARD_SUPPORT:
     cdef extern from "netcdf_filter.h":
