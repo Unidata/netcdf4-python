@@ -405,6 +405,7 @@ IF HAS_BZIP2_SUPPORT:
             H5Z_FILTER_BZIP2
         int nc_def_var_bzip2(int ncid, int varid, int level) nogil
         int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp) nogil
+        int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
 
 IF HAS_BLOSC_SUPPORT:
     cdef extern from "netcdf_filter.h":
@@ -412,6 +413,7 @@ IF HAS_BLOSC_SUPPORT:
             H5Z_FILTER_BLOSC
         int nc_def_var_blosc(int ncid, int varid, unsigned subcompressor, unsigned level, unsigned blocksize, unsigned addshuffle) nogil
         int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigned* subcompressorp, unsigned* levelp, unsigned* blocksizep, unsigned* addshufflep) nogil
+        int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
 
 IF HAS_NC_OPEN_MEM:
     cdef extern from "netcdf_mem.h":
