@@ -742,6 +742,7 @@ setup(name="netCDF4",
       package_dir={'':'src'},
       package_data={"netCDF4.plugins": ["lib__nc*"]},
       ext_modules=ext_modules,
+      python_requires=">=3.6",
       **setuptools_extra_kwargs)
 
 # remove plugin files copied from outside source tree
