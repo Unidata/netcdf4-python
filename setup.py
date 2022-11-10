@@ -3,7 +3,7 @@ import os.path as osp
 import shutil
 import configparser
 from setuptools import setup, Extension, find_namespace_packages
-from distutils.dist import Distribution
+from setuptools.dist import Distribution
 
 setuptools_extra_kwargs = {
     "install_requires": ["numpy>=1.9","cftime"],
