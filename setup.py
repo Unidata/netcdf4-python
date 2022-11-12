@@ -674,7 +674,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         sys.stdout.write('netcdf lib does not have nc_set_alignment function\n')
         f.write('DEF HAS_SET_ALIGNMENT = 0\n')
 
-    if has_blosc:
+    if has_ncfilter:
         sys.stdout.write('netcdf lib has nc_inq_filter_avail function\n')
         f.write('DEF HAS_NCFILTER = 1\n')
     else:
