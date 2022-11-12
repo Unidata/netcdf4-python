@@ -3543,15 +3543,21 @@ returns True if bzip2 compression filter is available"""
 **`has_szip_filter(self)`**
 returns True if szip compression filter is available"""
         cdef int ierr
-        IF HAS_SZIP_SUPPORT:
-            with nogil:
-                ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
-            if ierr:
+        IF HAS_NCFILTER:
+            IF HAS_SZIP_SUPPORT:
+                with nogil:
+                    ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
+                if ierr:
+                    return False
+                else:
+                    return True
+            ELSE:
                 return False
-            else:
+       ELSE:
+            IF HAS_SZIP_SUPPORT:
                 return True
-        ELSE:
-            return False
+            ELSE:
+                return False
 
 cdef class Group(Dataset):
     """
