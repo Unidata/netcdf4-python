@@ -100,5 +100,5 @@ jobs:
         python setup.py --version  
         check-manifest --version
         check-manifest --verbose 
-        pip wheel . -w dist --no-build-isolation --no-deps 
+        pip wheel . -w dist --no-deps 
         twine check dist/* 
