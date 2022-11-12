@@ -73,7 +73,7 @@ jobs:
         which nc-config
         nc-config --all
         python -c "import mpi4py"
-        pip install -v -v -v -e . --no-deps --force-reinstall
+        pip install -v -v -v -e . --no-deps --no-build-isolation --force-reinstall
 
     - name: Debug conda
       shell: bash -l {0}
