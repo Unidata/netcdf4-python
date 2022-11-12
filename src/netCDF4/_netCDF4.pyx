@@ -3553,11 +3553,11 @@ returns True if szip compression filter is available"""
                     return True
             ELSE:
                 return False
-       ELSE:
-            IF HAS_SZIP_SUPPORT:
-                return True
-            ELSE:
-                return False
+        ELSE:
+             IF HAS_SZIP_SUPPORT:
+                 return True
+             ELSE:
+                 return False
 
 cdef class Group(Dataset):
     """
