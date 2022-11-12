@@ -131,6 +131,7 @@ def check_api(inc_dirs,netcdf_lib_version):
                 if line.startswith('#define NC_HAS_PARALLEL4'):
                     print('nc_has_paralle4',line)
                     has_parallel4_support = bool(int(line.split()[2]))
+                    print('has_parallel4_support',has_parallel4_support)
                 if line.startswith('#define NC_HAS_PNETCDF'):
                     has_pnetcdf_support = bool(int(line.split()[2]))
                 if line.startswith('#define NC_HAS_SZIP_WRITE'):
@@ -563,6 +564,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
     has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
     has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter = \
+
     check_api(inc_dirs,netcdf_lib_version)
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
@@ -573,6 +575,8 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     try:
         import mpi4py
     except ImportError:
+        if has_parallel4_support or has_pnetcdf_support:
+            print('no mpi4py found, disabling mpi parallel support')
         has_parallel4_support = False
         has_pnetcdf_support = False
 
