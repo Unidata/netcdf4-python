@@ -568,11 +568,11 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         has_cdf5_format = True
 
     # disable parallel support if mpi4py not available.
-    try:
-        import mpi4py
-    except ImportError:
-        has_parallel4_support = False
-        has_pnetcdf_support = False
+    #try:
+    #    import mpi4py
+    #except ImportError:
+    #    has_parallel4_support = False
+    #    has_pnetcdf_support = False
 
     f = open(osp.join('include', 'constants.pyx'), 'w')
     if has_rename_grp:
