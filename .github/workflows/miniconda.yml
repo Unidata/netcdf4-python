@@ -71,7 +71,9 @@ jobs:
         micromamba activate TEST
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
         nc-config --all
-        pip install -v -v -v -e . --no-deps --force-reinstall
+        #pip install -v -v -v -e . --no-deps --force-reinstall
+        # don't use pip to install since mpi4py will not be found
+        python setup.py install
 
     - name: Debug conda
       shell: bash -l {0}
