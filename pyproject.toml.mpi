@@ -1,3 +1,0 @@
-[build-system]
-requires = ["setuptools>=41.2", "cython>=0.19", "oldest-supported-numpy", "mpi4py"]
-build-backend = "setuptools.build_meta"

@@ -71,8 +71,6 @@ jobs:
         micromamba activate TEST
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
         nc-config --all
-        mv pyproject.toml pyproject.toml.save
-        cp pyproject.toml.mpi pyproject.toml
         pip install -v -v -v -e . --no-deps --force-reinstall
 
     - name: Debug conda
