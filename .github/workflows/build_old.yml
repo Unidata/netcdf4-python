@@ -1,4 +1,4 @@
-name: Build and Test Linux
+name: Build and Test Linux with older netcdf-c
 on: [push, pull_request]
 jobs:
   build-linux:
@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PNETCDF_VERSION: 1.12.1
-      NETCDF_VERSION: 4.9.0
+      NETCDF_VERSION: 4.7.4
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
       CC: mpicc.mpich
