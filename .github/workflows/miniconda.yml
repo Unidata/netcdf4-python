@@ -72,7 +72,7 @@ jobs:
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
         nc-config --all
         mv pyproject.toml pyproject.toml.save
-        pip install -v -v -v -e . --no-deps --force-reinstall
+        pip install -v -v -v --no-build-isolation -e . --no-deps --force-reinstall
 
     - name: Debug conda
       shell: bash -l {0}
