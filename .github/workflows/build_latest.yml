@@ -13,7 +13,7 @@ jobs:
       #NO_NET: 1
     strategy:
       matrix:
-        python-version: ["3.9"]
+        python-version: ["3.10"]
     steps:
 
     - uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
         make install
         popd
         echo "Download and build netCDF version ${NETCDF_VERSION}"
-        wget https://downloads.unidata.ucar.edu/netcdf-c/4.9.0/netcdf-c-${NETCDF_VERSION}.tar.gz
+        wget https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
         tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
         pushd netcdf-c-${NETCDF_VERSION}
         export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
