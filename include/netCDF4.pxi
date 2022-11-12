@@ -367,8 +367,6 @@ cdef extern from "netcdf.h":
 
     int nc_inq_enum_ident(int ncid, nc_type xtype, long long value, char *identifier) nogil
 
-
-
 IF HAS_QUANTIZATION_SUPPORT:
     cdef extern from "netcdf.h":
         cdef enum:
