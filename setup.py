@@ -562,7 +562,6 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
     has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
     has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter = \
-
     check_api(inc_dirs,netcdf_lib_version)
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
