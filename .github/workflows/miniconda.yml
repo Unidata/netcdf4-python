@@ -70,6 +70,8 @@ jobs:
         micromamba create --name TEST python=${{ matrix.python-version }} numpy cython pip pytest mpi4py hdf5=*=mpi* libnetcdf=*=mpi* cftime zlib --channel conda-forge
         micromamba activate TEST
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
+        which nc-config
+        nc-config --all
         pip install -v -v -v -e . --no-deps --force-reinstall
 
     - name: Debug conda
