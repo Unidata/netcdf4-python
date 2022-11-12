@@ -72,6 +72,7 @@ jobs:
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
         which nc-config
         nc-config --all
+        python -c "import mpi4py"
         pip install -v -v -v -e . --no-deps --force-reinstall
 
     - name: Debug conda
