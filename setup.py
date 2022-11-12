@@ -121,7 +121,6 @@ def check_api(inc_dirs,netcdf_lib_version):
                     has_ncfilter = True
 
         ncmetapath = os.path.join(d,'netcdf_meta.h')
-        print('ncmetapath = %s' % ncmetapath)
         if os.path.exists(ncmetapath):
             for line in open(ncmetapath):
                 if line.startswith('#define NC_HAS_CDF5'):
@@ -129,7 +128,6 @@ def check_api(inc_dirs,netcdf_lib_version):
                 if line.startswith('#define NC_HAS_PARALLEL'):
                     has_parallel_support = bool(int(line.split()[2]))
                 if line.startswith('#define NC_HAS_PARALLEL4'):
-                    print('nc_has_paralle4',line)
                     has_parallel4_support = bool(int(line.split()[2]))
                     print('has_parallel4_support',has_parallel4_support)
                 if line.startswith('#define NC_HAS_PNETCDF'):
@@ -576,7 +574,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         import mpi4py
     except ImportError:
         if has_parallel4_support or has_pnetcdf_support:
-            print('no mpi4py found, disabling mpi parallel support')
+            f.write('no mpi4py found, disabling mpi parallel support\n')
         has_parallel4_support = False
         has_pnetcdf_support = False
 
