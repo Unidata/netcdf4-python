@@ -693,6 +693,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         # mpi_incdir should not be needed if using nc-config
         # (should be included in nc-config --cflags)
         if mpi_incdir is not None: inc_dirs.append(mpi_incdir)
+        print('inc_dirs=',inc_dirs)
 
     ext_modules = [Extension("netCDF4._netCDF4",
                              [netcdf4_src_pyx],
