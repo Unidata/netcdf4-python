@@ -94,11 +94,12 @@ jobs:
           echo "pnetcdf mpi test passed!"
         fi
 
-#   - name: Tarball
-#     run: |
-#       export PATH=${NETCDF_DIR}/bin:${PATH} 
-#       python setup.py --version  
-#       check-manifest --version
-#       check-manifest --verbose 
-#       pip wheel . -w dist --no-deps 
-#       twine check dist/* 
+    - name: Tarball
+      run: |
+        export PATH=${NETCDF_DIR}/bin:${PATH} 
+        python setup.py --version  
+        check-manifest --version
+        check-manifest --verbose 
+        export MPI4PY_INCLUDE=`python -c 'import mpi4py; print(mpi4py.get_include())'`
+        pip wheel . -w dist --no-deps 
+        twine check dist/* 
