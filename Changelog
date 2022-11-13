@@ -1,10 +1,11 @@
- version 1.6.2 (Unrelease)
-==========================
+ version 1.6.2 (not yet released)
+==============================
  * Added ``netCDF4.__has_set_alignment__`` property to help identify if the
    underlying netcdf4 supports setting the HDF5 alignment.
  * Slicing multi-dimensional variables with an all False boolean index array
    now returns an empty numpy array (instead of raising an exception - issue #1197).
    Behavior now consistent with numpy slicing.
+ * fix problem with compiling using netcdf-c < 4.9.0 (issue #1209)
 
  version 1.6.1 (tag v1.6.1rel)
 ==============================

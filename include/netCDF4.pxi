@@ -367,7 +367,6 @@ cdef extern from "netcdf.h":
 
     int nc_inq_enum_ident(int ncid, nc_type xtype, long long value, char *identifier) nogil
 
-
 IF HAS_QUANTIZATION_SUPPORT:
     cdef extern from "netcdf.h":
         cdef enum:
@@ -377,6 +376,8 @@ IF HAS_QUANTIZATION_SUPPORT:
             NC_QUANTIZE_BITROUND
         int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) nogil
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
+
+IF HAS_NCFILTER:
     cdef extern from "netcdf_filter.h":
         int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
 
@@ -388,8 +389,6 @@ IF HAS_SZIP_SUPPORT:
         int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
         int nc_def_var_szip(int ncid, int varid, int options_mask, int pixels_per_bloc) nogil
         int nc_inq_var_szip(int ncid, int varid, int *options_maskp, int *pixels_per_blockp) nogil
-    cdef extern from "netcdf_filter.h":
-        int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
 
 IF HAS_ZSTANDARD_SUPPORT:
     cdef extern from "netcdf_filter.h":
@@ -397,7 +396,6 @@ IF HAS_ZSTANDARD_SUPPORT:
             H5Z_FILTER_ZSTD
         int nc_def_var_zstandard(int ncid, int varid, int level) nogil
         int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp) nogil
-        int nc_inq_filter_avail(int ncid, unsigned id) nogil
 
 IF HAS_BZIP2_SUPPORT:
     cdef extern from "netcdf_filter.h":
@@ -405,7 +403,6 @@ IF HAS_BZIP2_SUPPORT:
             H5Z_FILTER_BZIP2
         int nc_def_var_bzip2(int ncid, int varid, int level) nogil
         int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp) nogil
-        int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
 
 IF HAS_BLOSC_SUPPORT:
     cdef extern from "netcdf_filter.h":
@@ -413,7 +410,6 @@ IF HAS_BLOSC_SUPPORT:
             H5Z_FILTER_BLOSC
         int nc_def_var_blosc(int ncid, int varid, unsigned subcompressor, unsigned level, unsigned blocksize, unsigned addshuffle) nogil
         int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigned* subcompressorp, unsigned* levelp, unsigned* blocksizep, unsigned* addshufflep) nogil
-        int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
 
 IF HAS_NC_OPEN_MEM:
     cdef extern from "netcdf_mem.h":

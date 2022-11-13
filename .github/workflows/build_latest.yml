@@ -1,11 +1,14 @@
-name: Build and Test on Linux with netcdf-c github master
+name: Build and Test Linux with latest netcdf-c
 on: [push, pull_request]
 jobs:
   build-linux:
     name: Python (${{ matrix.python-version }})
     runs-on: ubuntu-latest
     env:
+      PNETCDF_VERSION: 1.12.1
+      NETCDF_VERSION: 4.9.0
       NETCDF_DIR: ${{ github.workspace }}/..
+      NETCDF_EXTRA_CONFIG: --enable-pnetcdf
       CC: mpicc.mpich
       #NO_NET: 1
     strategy:
@@ -24,14 +27,22 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
-        echo "Download and build netCDF github master"
-        git clone https://github.com/Unidata/netcdf-c
-        pushd netcdf-c
+        echo "Download and build PnetCDF version ${PNETCDF_VERSION}"
+        wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
+        tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
+        pushd pnetcdf-${PNETCDF_VERSION}
+        ./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
+        make -j 2
+        make install
+        popd
+        echo "Download and build netCDF version ${NETCDF_VERSION}"
+        wget https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+        tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
+        pushd netcdf-c-${NETCDF_VERSION}
         export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
         export LDFLAGS="-L${NETCDF_DIR}/lib"
         export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
-        autoreconf -i
-        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 
+        ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
         make -j 2
         make install
         popd
@@ -50,17 +61,16 @@ jobs:
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
-        export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c/plugins/plugindir
+        export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c-${NETCDF_VERSION}/plugins/plugindir
         python setup.py install
     - name: Test
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
-        #export HDF5_PLUGIN_PATH=${NETCDF_DIR}/plugins/plugindir
         python checkversion.py
         # serial
         cd test
         python run_all.py
-        # parallel
+        # parallel (hdf5 for netcdf4, pnetcdf for netcdf3)
         cd ../examples
         mpirun.mpich -np 4 python mpi_example.py
         if [ $? -ne 0 ] ; then
@@ -76,3 +86,19 @@ jobs:
         else
           echo "hdf5 compressed mpi test passed!"
         fi
+        mpirun.mpich -np 4 python mpi_example.py NETCDF3_64BIT_DATA
+        if [ $? -ne 0 ] ; then
+          echo "pnetcdf mpi test failed!"
+          exit 1
+        else
+          echo "pnetcdf mpi test passed!"
+        fi
+
+#   - name: Tarball
+#     run: |
+#       export PATH=${NETCDF_DIR}/bin:${PATH} 
+#       python setup.py --version  
+#       check-manifest --version
+#       check-manifest --verbose 
+#       pip wheel . -w dist --no-deps 
+#       twine check dist/* 

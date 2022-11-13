@@ -70,6 +70,7 @@ def check_api(inc_dirs,netcdf_lib_version):
     has_zstandard = False
     has_bzip2 = False
     has_blosc = False
+    has_ncfilter = False
     has_set_alignment = False
 
     for d in inc_dirs:
@@ -116,6 +117,8 @@ def check_api(inc_dirs,netcdf_lib_version):
                     has_bzip2 = True
                 if line.startswith('EXTERNL int nc_def_var_blosc'):
                     has_blosc = True
+                if line.startswith('EXTERNL int nc_inq_filter_avail'):
+                    has_ncfilter = True
 
         ncmetapath = os.path.join(d,'netcdf_meta.h')
         if os.path.exists(ncmetapath):
@@ -143,7 +146,7 @@ def check_api(inc_dirs,netcdf_lib_version):
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
            has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
            has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-           has_zstandard, has_bzip2, has_blosc, has_set_alignment
+           has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter
 
 
 def getnetcdfvers(libdirs):
@@ -557,7 +560,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
     has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
     has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-    has_zstandard, has_bzip2, has_blosc, has_set_alignment = \
+    has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter = \
     check_api(inc_dirs,netcdf_lib_version)
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
@@ -565,11 +568,12 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         has_cdf5_format = True
 
     # disable parallel support if mpi4py not available.
-    try:
-        import mpi4py
-    except ImportError:
-        has_parallel4_support = False
-        has_pnetcdf_support = False
+    #try:
+    #    import mpi4py
+    #except ImportError:
+    #    f.write('disabling mpi parallel support because mpi4py not found\n')
+    #    has_parallel4_support = False
+    #    has_pnetcdf_support = False
 
     f = open(osp.join('include', 'constants.pyx'), 'w')
     if has_rename_grp:
@@ -671,9 +675,17 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         sys.stdout.write('netcdf lib does not have nc_set_alignment function\n')
         f.write('DEF HAS_SET_ALIGNMENT = 0\n')
 
+    if has_ncfilter:
+        sys.stdout.write('netcdf lib has nc_inq_filter_avail function\n')
+        f.write('DEF HAS_NCFILTER = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have nc_inq_filter_avail function\n')
+        f.write('DEF HAS_NCFILTER = 0\n')
+
     f.close()
 
     if has_parallel4_support or has_pnetcdf_support:
+        import mpi4py
         inc_dirs.append(mpi4py.get_include())
         # mpi_incdir should not be needed if using nc-config
         # (should be included in nc-config --cflags)

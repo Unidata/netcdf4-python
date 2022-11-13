@@ -1,5 +1,5 @@
 """
-Version 1.6.1
+Version 1.6.2
 -------------
 
 # Introduction
@@ -1230,7 +1230,7 @@ if sys.version_info[0:2] < (3, 7):
     # Python 3.7+ guarantees order; older versions need OrderedDict
     from collections import OrderedDict
 
-__version__ = "1.6.1"
+__version__ = "1.6.2"
 
 # Initialize numpy
 import posixpath
@@ -3543,15 +3543,21 @@ returns True if bzip2 compression filter is available"""
 **`has_szip_filter(self)`**
 returns True if szip compression filter is available"""
         cdef int ierr
-        IF HAS_SZIP_SUPPORT:
-            with nogil:
-                ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
-            if ierr:
+        IF HAS_NCFILTER:
+            IF HAS_SZIP_SUPPORT:
+                with nogil:
+                    ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
+                if ierr:
+                    return False
+                else:
+                    return True
+            ELSE:
                 return False
-            else:
-                return True
         ELSE:
-            return False
+             IF HAS_SZIP_SUPPORT:
+                 return True
+             ELSE:
+                 return False
 
 cdef class Group(Dataset):
     """
