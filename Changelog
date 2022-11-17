@@ -1,4 +1,4 @@
- version 1.6.2 (not yet released)
+ version 1.6.2 (tag v1.6.2rel)
 ==============================
  * Added ``netCDF4.__has_set_alignment__`` property to help identify if the
    underlying netcdf4 supports setting the HDF5 alignment.
