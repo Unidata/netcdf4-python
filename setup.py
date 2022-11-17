@@ -22,7 +22,7 @@ open_kwargs = {'encoding': 'utf-8'}
 def check_hdf5version(hdf5_includedir):
     try:
         f = open(os.path.join(hdf5_includedir, 'H5public.h'), **open_kwargs)
-    except IOError:
+    except OSError:
         return None
     hdf5_version = None
     for line in f:
@@ -46,7 +46,7 @@ def get_hdf5_version(direc):
 def check_ifnetcdf4(netcdf4_includedir):
     try:
         f = open(os.path.join(netcdf4_includedir, 'netcdf.h'), **open_kwargs)
-    except IOError:
+    except OSError:
         return False
     isnetcdf4 = False
     for line in f:
@@ -76,7 +76,7 @@ def check_api(inc_dirs,netcdf_lib_version):
     for d in inc_dirs:
         try:
             f = open(os.path.join(d, 'netcdf.h'), **open_kwargs)
-        except IOError:
+        except OSError:
             continue
 
         has_nc_open_mem = os.path.exists(os.path.join(d, 'netcdf_mem.h'))
@@ -99,7 +99,7 @@ def check_api(inc_dirs,netcdf_lib_version):
         if has_nc_open_mem:
             try:
                 f = open(os.path.join(d, 'netcdf_mem.h'), **open_kwargs)
-            except IOError:
+            except OSError:
                 continue
             for line in f:
                 if line.startswith('EXTERNL int nc_create_mem'):
@@ -108,7 +108,7 @@ def check_api(inc_dirs,netcdf_lib_version):
         if has_nc_filter:
             try:
                 f = open(os.path.join(d, 'netcdf_filter.h'), **open_kwargs)
-            except IOError:
+            except OSError:
                 continue
             for line in f:
                 if line.startswith('EXTERNL int nc_def_var_zstandard'):
@@ -741,9 +741,11 @@ setup(name="netCDF4",
                 'meteorology', 'climate'],
       classifiers=["Development Status :: 3 - Alpha",
                    "Programming Language :: Python :: 3",
-                   "Programming Language :: Python :: 3.6",
                    "Programming Language :: Python :: 3.7",
                    "Programming Language :: Python :: 3.8",
+                   "Programming Language :: Python :: 3.9",
+                   "Programming Language :: Python :: 3.10",
+                   "Programming Language :: Python :: 3.11",
                    "Intended Audience :: Science/Research",
                    "License :: OSI Approved :: MIT License",
                    "Topic :: Software Development :: Libraries :: Python Modules",
@@ -753,7 +755,7 @@ setup(name="netCDF4",
       package_dir={'':'src'},
       package_data={"netCDF4.plugins": ["lib__nc*"]},
       ext_modules=ext_modules,
-      python_requires=">=3.6",
+      python_requires=">=3.7",
       **setuptools_extra_kwargs)
 
 # remove plugin files copied from outside source tree

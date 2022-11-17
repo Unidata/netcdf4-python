@@ -1,4 +1,3 @@
-from __future__ import print_function
 # benchmark reads and writes, with and without compression.
 # tests all four supported file formats.
 from numpy.random.mtrand import uniform

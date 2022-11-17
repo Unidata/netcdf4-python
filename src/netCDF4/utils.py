@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import sys
 import numpy as np
 from numpy import ma
@@ -578,7 +576,7 @@ def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NE
 
     ncfile4 = Dataset(filename4,'r')
     if ncfile4.file_format != 'NETCDF4_CLASSIC':
-        raise IOError('input file must be in NETCDF4_CLASSIC format')
+        raise OSError('input file must be in NETCDF4_CLASSIC format')
     ncfile3 = Dataset(filename3,'w',clobber=clobber,format=format)
     # create dimensions. Check for unlimited dim.
     unlimdimname = False
