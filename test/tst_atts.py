@@ -115,7 +115,7 @@ class VariablesTestCase(unittest.TestCase):
             f.charatt = 'foo' # will be written as NC_CHAR
             f.setncattr_string('stringatt','bar') # NC_STRING
             f.cafe = 'caf\xe9' # NC_STRING
-            f.batt = 'caf\xe9'.encode('utf-8') #NC_CHAR
+            f.batt = 'caf\xe9'.encode() #NC_CHAR
             v.setncattr_string('stringatt','bar') # NC_STRING
             # issue #882 - provide an option to always string attribute
             # as NC_STRINGs. Testing various approaches to setting text attributes...
@@ -123,7 +123,7 @@ class VariablesTestCase(unittest.TestCase):
             f.stringatt_ncstr = 'foo' # will now be written as NC_STRING
             f.setncattr_string('stringatt_ncstr','bar') # NC_STRING anyway
             f.caf_ncstr = 'caf\xe9' # NC_STRING anyway
-            f.bat_ncstr = 'caf\xe9'.encode('utf-8') # now NC_STRING
+            f.bat_ncstr = 'caf\xe9'.encode() # now NC_STRING
             g.stratt_ncstr = STRATT # now NC_STRING
             #g.renameAttribute('stratt_tmp','stratt_ncstr')
             v.setncattr_string('stringatt_ncstr','bar') # NC_STRING anyway
