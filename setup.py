@@ -2,19 +2,8 @@ import os, sys, subprocess, glob
 import os.path as osp
 import shutil
 import configparser
-from setuptools import setup, Extension, find_namespace_packages
+from setuptools import setup, Extension
 from setuptools.dist import Distribution
-
-setuptools_extra_kwargs = {
-    "install_requires": ["numpy>=1.9","cftime"],
-    "entry_points": {
-        'console_scripts': [
-            'ncinfo = netCDF4.utils:ncinfo',
-            'nc4tonc3 = netCDF4.utils:nc4tonc3',
-            'nc3tonc4 = netCDF4.utils:nc3tonc4',
-        ]
-    },
-}
 
 open_kwargs = {'encoding': 'utf-8'}
 
@@ -726,37 +715,11 @@ else:
     sys.stdout.write('NETCDF_PLUGIN_DIR not set, no netcdf compression plugins installed\n')
     data_files = []
 
-setup(name="netCDF4",
-      cmdclass=cmdclass,
-      version=extract_version(netcdf4_src_pyx),
-      long_description="netCDF version 4 has many features not found in earlier versions of the library, such as hierarchical groups, zlib compression, multiple unlimited dimensions, and new data types.  It is implemented on top of HDF5.  This module implements most of the new features, and can read and write netCDF files compatible with older versions of the library.  The API is modelled after Scientific.IO.NetCDF, and should be familiar to users of that module.\n\nThis project is hosted on a `GitHub repository <https://github.com/Unidata/netcdf4-python>`_ where you may access the most up-to-date source.",
-      author="Jeff Whitaker",
-      author_email="jeffrey.s.whitaker@noaa.gov",
-      url="http://github.com/Unidata/netcdf4-python",
-      download_url="http://python.org/pypi/netCDF4",
-      platforms=["any"],
-      license='License :: OSI Approved :: MIT License',
-      description="Provides an object-oriented python interface to the netCDF version 4 library.",
-      keywords=['numpy', 'netcdf', 'data', 'science', 'network', 'oceanography',
-                'meteorology', 'climate'],
-      classifiers=["Development Status :: 3 - Alpha",
-                   "Programming Language :: Python :: 3",
-                   "Programming Language :: Python :: 3.7",
-                   "Programming Language :: Python :: 3.8",
-                   "Programming Language :: Python :: 3.9",
-                   "Programming Language :: Python :: 3.10",
-                   "Programming Language :: Python :: 3.11",
-                   "Intended Audience :: Science/Research",
-                   "License :: OSI Approved :: MIT License",
-                   "Topic :: Software Development :: Libraries :: Python Modules",
-                   "Topic :: System :: Archiving :: Compression",
-                   "Operating System :: OS Independent"],
-      packages=find_namespace_packages(where="src"),
-      package_dir={'':'src'},
-      package_data={"netCDF4.plugins": ["lib__nc*"]},
-      ext_modules=ext_modules,
-      python_requires=">=3.7",
-      **setuptools_extra_kwargs)
+# See pyproject.toml for project metadata
+setup(
+    version=extract_version(netcdf4_src_pyx),
+    ext_modules=ext_modules,
+)
 
 # remove plugin files copied from outside source tree
 if copied_plugins:

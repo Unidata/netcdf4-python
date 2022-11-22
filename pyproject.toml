@@ -1,3 +1,62 @@
 [build-system]
-requires = ["setuptools>=41.2", "cython>=0.19", "oldest-supported-numpy"]
+requires = [
+    "Cython>=0.29",
+    "oldest-supported-numpy",
+    "setuptools>=61",
+]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "netCDF4"
+description = "Provides an object-oriented python interface to the netCDF version 4 library"
+readme = {text = """\
+netCDF version 4 has many features not found in earlier versions of the library,
+such as hierarchical groups, zlib compression, multiple unlimited dimensions,
+and new data types.  It is implemented on top of HDF5.  This module implements
+most of the new features, and can read and write netCDF files compatible with
+older versions of the library.  The API is modelled after Scientific.IO.NetCDF,
+and should be familiar to users of that module.
+""", content-type = "text/x-rst"}
+authors = [
+  {name = "Jeff Whitaker", email = "jeffrey.s.whitaker@noaa.gov"},
+]
+requires-python = ">=3.7"
+keywords = [
+    "numpy", "netcdf", "data", "science", "network", "oceanography",
+    "meteorology", "climate",
+]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Archiving :: Compression",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "cftime",
+    "numpy",
+]
+dynamic = ["version"]
+
+[project.scripts]
+nc3tonc4 = "netCDF4.utils:nc3tonc4"
+nc4tonc3 = "netCDF4.utils:nc4tonc3"
+ncinfo = "netCDF4.utils:ncinfo"
+
+[project.urls]
+Documentation = "https://unidata.github.io/netcdf4-python/"
+Repository = "https://github.com/Unidata/netcdf4-python"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"netCDF4.plugins" = ["lib__nc*"]
