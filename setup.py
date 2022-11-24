@@ -43,7 +43,6 @@ def check_ifnetcdf4(netcdf4_includedir):
             isnetcdf4 = True
     return isnetcdf4
 
-
 def check_api(inc_dirs,netcdf_lib_version):
     has_rename_grp = False
     has_nc_inq_path = False
@@ -113,15 +112,26 @@ def check_api(inc_dirs,netcdf_lib_version):
         if os.path.exists(ncmetapath):
             for line in open(ncmetapath):
                 if line.startswith('#define NC_HAS_CDF5'):
-                    has_cdf5_format = bool(int(line.split()[2]))
+                    try:
+                        has_cdf5_format = bool(int(line.split()[2]))
+                    except ValueError: ...  # keep default False if value cannot be parsed
                 if line.startswith('#define NC_HAS_PARALLEL'):
-                    has_parallel_support = bool(int(line.split()[2]))
+                    try:
+                        has_parallel_support = bool(int(line.split()[2]))
+                    except ValueError: ...
                 if line.startswith('#define NC_HAS_PARALLEL4'):
-                    has_parallel4_support = bool(int(line.split()[2]))
+                    try:
+                        has_parallel4_support = bool(int(line.split()[2]))
+                    except ValueError: ...
                 if line.startswith('#define NC_HAS_PNETCDF'):
-                    has_pnetcdf_support = bool(int(line.split()[2]))
+                    try:
+                        has_pnetcdf_support = bool(int(line.split()[2]))
+                    except ValueError: ...
                 if line.startswith('#define NC_HAS_SZIP_WRITE'):
-                    has_szip_support = bool(int(line.split()[2]))
+                    try:
+                        has_szip_support = bool(int(line.split()[2]))
+                    except ValueError: ...
+
         # NC_HAS_PARALLEL4 missing in 4.6.1 (issue #964)
         if not has_parallel4_support and has_parallel_support and not has_pnetcdf_support:
             has_parallel4_support = True
