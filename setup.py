@@ -717,6 +717,7 @@ else:
 
 # See pyproject.toml for project metadata
 setup(
+    name="netCDF4",  # need by GitHub dependency graph
     version=extract_version(netcdf4_src_pyx),
     ext_modules=ext_modules,
 )
