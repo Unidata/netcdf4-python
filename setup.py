@@ -114,23 +114,28 @@ def check_api(inc_dirs,netcdf_lib_version):
                 if line.startswith('#define NC_HAS_CDF5'):
                     try:
                         has_cdf5_format = bool(int(line.split()[2]))
-                    except ValueError: ...  # keep default False if value cannot be parsed
+                    except ValueError:
+                        pass  # keep default False if value cannot be parsed
                 if line.startswith('#define NC_HAS_PARALLEL'):
                     try:
                         has_parallel_support = bool(int(line.split()[2]))
-                    except ValueError: ...
+                    except ValueError:
+                        pass
                 if line.startswith('#define NC_HAS_PARALLEL4'):
                     try:
                         has_parallel4_support = bool(int(line.split()[2]))
-                    except ValueError: ...
+                    except ValueError:
+                        pass
                 if line.startswith('#define NC_HAS_PNETCDF'):
                     try:
                         has_pnetcdf_support = bool(int(line.split()[2]))
-                    except ValueError: ...
+                    except ValueError:
+                        pass
                 if line.startswith('#define NC_HAS_SZIP_WRITE'):
                     try:
                         has_szip_support = bool(int(line.split()[2]))
-                    except ValueError: ...
+                    except ValueError:
+                        pass
 
         # NC_HAS_PARALLEL4 missing in 4.6.1 (issue #964)
         if not has_parallel4_support and has_parallel_support and not has_pnetcdf_support:
