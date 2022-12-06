@@ -79,7 +79,7 @@ least_significant_digit=1, bits will be 4.
         return datout
 
 def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
-        put=False, use_get_vars = False):
+        put=False, use_get_vars = True):
     """Return start, count, stride and indices needed to store/extract data
     into/from a netCDF variable.
 

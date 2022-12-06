@@ -1,3 +1,7 @@
+ version 1.6.3 (not yet released)
+==============================
+ * Use ``nc_put_vars`` for strided writes for netcdf-c >= 4.6.2 (issue #1222).
+
  version 1.6.2 (tag v1.6.2rel)
 ==============================
  * Added ``netCDF4.__has_set_alignment__`` property to help identify if the
