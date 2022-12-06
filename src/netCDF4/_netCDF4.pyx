@@ -5760,7 +5760,6 @@ NC_CHAR).
                     ierr = nc_put_vara(self._grpid, self._varid,
                                        startp, countp, PyArray_DATA(data))
             else:
-                # Start counter
                 with nogil:
                     ierr = nc_put_vars(self._grpid, self._varid,
                                        startp, countp, stridep, PyArray_DATA(data))
