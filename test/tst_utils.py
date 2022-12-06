@@ -63,8 +63,8 @@ class TestgetStartCountStride(unittest.TestCase):
         start, count, stride, put_ind = _StartCountStride(elem, (50, 6, 10))
         # pull request #683 now does not convert integer sequences to strided
         # slices.
-        #assert_equal(put_ind[...,1].squeeze(), slice(None,None,None))
-        assert_equal(put_ind[...,1].squeeze(), [0,1,2])
+        assert_equal(put_ind[...,1].squeeze(), slice(None,None,None))
+        #assert_equal(put_ind[...,1].squeeze(), [0,1,2])
 
 
     def test_multiple_sequences(self):
