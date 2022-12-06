@@ -5755,20 +5755,15 @@ NC_CHAR).
             if not data.dtype.isnative:
                 data = data.byteswap()
             # strides all 1 or scalar variable, use put_vara (faster)
-            print(stride)
             if sum(stride) == ndims or ndims == 0:
                 with nogil:
                     ierr = nc_put_vara(self._grpid, self._varid,
                                        startp, countp, PyArray_DATA(data))
             else:
                 # Start counter
-                from time import perf_counter
-                tInit = perf_counter()
                 with nogil:
                     ierr = nc_put_vars(self._grpid, self._varid,
                                        startp, countp, stridep, PyArray_DATA(data))
-                execTime = perf_counter() - tInit
-                print("===Time taken:%f===" % (execTime))
             _ensure_nc_success(ierr)
         elif self._isvlen:
             if data.dtype.char !='O':
