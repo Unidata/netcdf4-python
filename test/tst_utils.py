@@ -62,7 +62,7 @@ class TestgetStartCountStride(unittest.TestCase):
         elem = [slice(None), [1,3,5], 8]
         start, count, stride, put_ind = _StartCountStride(elem, (50, 6, 10))
         # pull request #683 now does not convert integer sequences to strided
-        # slices.
+        # slices. PR #1224 reverts this behavior.
         assert_equal(put_ind[...,1].squeeze(), slice(None,None,None))
         #assert_equal(put_ind[...,1].squeeze(), [0,1,2])
 
