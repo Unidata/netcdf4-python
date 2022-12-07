@@ -1,5 +1,5 @@
 """
-Version 1.6.2
+Version 1.6.3
 -------------
 
 # Introduction
@@ -1227,7 +1227,7 @@ from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 import sys
 
-__version__ = "1.6.2"
+__version__ = "1.6.3"
 
 # Initialize numpy
 import posixpath
@@ -5438,7 +5438,7 @@ cannot be safely cast to variable data type""" % attname
                 raise ValueError(msg)
 
         start, count, stride, put_ind =\
-        _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape,put=True)
+        _StartCountStride(elem,self.shape,self.dimensions,self._grp,datashape=data.shape,put=True,use_get_vars=self._use_get_vars)
         datashape = _out_array_shape(count)
 
         # if a numpy scalar, create an array of the right size
