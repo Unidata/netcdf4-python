@@ -26,7 +26,7 @@ class test_filepath(unittest.TestCase):
 
     def test_no_such_file_raises(self):
         fname = 'not_a_nc_file.nc'
-        with self.assertRaisesRegex(IOError, fname):
+        with self.assertRaisesRegex(OSError, fname):
             netCDF4.Dataset(fname, 'r')
 
 

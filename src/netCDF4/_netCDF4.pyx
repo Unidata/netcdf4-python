@@ -1712,7 +1712,7 @@ be raised in the next release."""
             # don't allow string array attributes in NETCDF3 files.
             if is_netcdf3 and N > 1:
                 msg='array string attributes can only be written with NETCDF4'
-                raise IOError(msg)
+                raise OSError(msg)
             if not value_arr.shape:
                 dats = _strencode(value_arr.item())
             else:
@@ -2005,7 +2005,9 @@ cdef _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None):
     # print netcdf error message, raise error.
     if ierr != NC_NOERR:
         err_str = (<char *>nc_strerror(ierr)).decode('ascii')
-        if issubclass(err_cls, EnvironmentError):
+        if issubclass(err_cls, OSError):
+            if isinstance(filename, bytes):
+                filename = filename.decode()
             raise err_cls(ierr, err_str, filename)
         else:
             raise err_cls(err_str)
@@ -2443,7 +2445,7 @@ strings.
         else:
             raise ValueError("mode must be 'w', 'x', 'r', 'a' or 'r+', got '%s'" % mode)
 
-        _ensure_nc_success(ierr, err_cls=IOError, filename=path)
+        _ensure_nc_success(ierr, err_cls=OSError, filename=path)
 
         # data model and file format attributes
         self.data_model = _get_format(grpid)
@@ -3033,7 +3035,7 @@ Use if you need to ensure that a netCDF attribute is created with type
         xtype=-99
         if self.data_model != 'NETCDF4':
             msg='file format does not support NC_STRING attributes'
-            raise IOError(msg)
+            raise OSError(msg)
         _set_att(self, NC_GLOBAL, name, value, xtype=xtype, force_ncstring=True)
 
     def setncatts(self,attdict):
@@ -3610,8 +3612,8 @@ Additional read-only class variables:
 **`close(self)`**
 
 overrides `Dataset` close method which does not apply to `Group`
-instances, raises IOError."""
-        raise IOError('cannot close a `Group` (only applies to Dataset)')
+instances, raises OSError."""
+        raise OSError('cannot close a `Group` (only applies to Dataset)')
 
 
 cdef class Dimension:
@@ -4581,7 +4583,7 @@ Use if you need to set an attribute to an array of variable-length strings."""
         xtype=-99
         if self._grp.data_model != 'NETCDF4':
             msg='file format does not support NC_STRING attributes'
-            raise IOError(msg)
+            raise OSError(msg)
         _set_att(self._grp, self._varid, name, value, xtype=xtype, force_ncstring=True)
 
     def setncatts(self,attdict):
@@ -6742,7 +6744,7 @@ Example usage (See `MFDataset.__init__` for more details):
 
         if not files:
            msg='no files specified (file list is empty)'
-           raise IOError(msg)
+           raise OSError(msg)
 
         if master_file is not None:
             if master_file not in files:
@@ -6772,7 +6774,7 @@ Example usage (See `MFDataset.__init__` for more details):
                     aggDimId = dim
                     aggDimName = dimname
         if aggDimId is None:
-            raise IOError("master dataset %s does not have a aggregation dimension" % master)
+            raise OSError("master dataset %s does not have a aggregation dimension" % master)
 
         # Get info on all aggregation variables defined in the master.
         # Make sure the master defines at least one aggregation variable.
@@ -6788,7 +6790,7 @@ Example usage (See `MFDataset.__init__` for more details):
             if (len(dims) > 0 and aggDimName == dims[0]):
                 masterRecVar[vName] = (dims, shape, dtype)
         if len(masterRecVar) == 0:
-            raise IOError("master dataset %s does not have any variables to aggregate" % master)
+            raise OSError("master dataset %s does not have any variables to aggregate" % master)
 
         # Create the following:
         #   cdf       list of Dataset instances
@@ -6818,7 +6820,7 @@ Example usage (See `MFDataset.__init__` for more details):
                 if check:
                     # Make sure master rec var is also defined here.
                     if v not in varInfo.keys():
-                        raise IOError("aggregation variable %s not defined in %s" % (v, f))
+                        raise OSError("aggregation variable %s not defined in %s" % (v, f))
 
                     #if not vInst.dimensions[0] != aggDimName:
 
@@ -6828,7 +6830,7 @@ Example usage (See `MFDataset.__init__` for more details):
                     extType = varInfo[v].dtype
                     # Check that dimension names are identical.
                     if masterDims != extDims:
-                        raise IOError("variable %s : dimensions mismatch between "
+                        raise OSError("variable %s : dimensions mismatch between "
                                        "master %s (%s) and extension %s (%s)" %
                                        (v, master, masterDims, f, extDims))
 
@@ -6836,17 +6838,17 @@ Example usage (See `MFDataset.__init__` for more details):
                     # identical (except for that of the unlimited dimension, which of
                     # course may vary.
                     if len(masterShape) != len(extShape):
-                        raise IOError("variable %s : rank mismatch between "
+                        raise OSError("variable %s : rank mismatch between "
                                        "master %s (%s) and extension %s (%s)" %
                                        (v, master, len(masterShape), f, len(extShape)))
                     if masterShape[1:] != extShape[1:]:
-                        raise IOError("variable %s : shape mismatch between "
+                        raise OSError("variable %s : shape mismatch between "
                                        "master %s (%s) and extension %s (%s)" %
                                        (v, master, masterShape, f, extShape))
 
                     # Check that the data types are identical.
                     if masterType != extType:
-                        raise IOError("variable %s : data type mismatch between "
+                        raise OSError("variable %s : data type mismatch between "
                                        "master %s (%s) and extension %s (%s)" %
                                        (v, master, masterType, f, extType))
 
