@@ -19,7 +19,7 @@ class TestOpenMem(unittest.TestCase):
 
             # Needs: https://github.com/Unidata/netcdf-c/pull/400
             if netCDF4.__netcdf4libversion__ < '4.4.1.2':
-                with self.assertRaises(IOError):
+                with self.assertRaises(OSError):
                     netCDF4.Dataset('foo_bar', memory=nc_bytes)
                 return
 
