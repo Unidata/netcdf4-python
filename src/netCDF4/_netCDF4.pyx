@@ -1233,6 +1233,7 @@ __version__ = "1.6.3"
 import posixpath
 from cftime import date2num, num2date, date2index
 import numpy
+cimport numpy
 import weakref
 import warnings
 import subprocess
@@ -1242,7 +1243,7 @@ from glob import glob
 from numpy import ma
 from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
-import_array()
+numpy.import_array()
 include "constants.pyx"
 include "membuf.pyx"
 include "netCDF4.pxi"
@@ -1468,8 +1469,8 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
                      'f8':NC_FILL_DOUBLE}
 
 # logical for native endian type.
-is_native_little = numpy.dtype('<f4').byteorder == '='
-is_native_big = numpy.dtype('>f4').byteorder == '='
+is_native_little = numpy.dtype('<f4').byteorder == c'='
+is_native_big = numpy.dtype('>f4').byteorder == c'='
 
 # hard code these here, instead of importing from netcdf.h
 # so it will compile with versions <= 4.2.
