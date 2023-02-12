@@ -1,6 +1,7 @@
  version 1.6.3 (not yet released)
 ==============================
  * Use ``nc_put_vars`` for strided writes for netcdf-c >= 4.6.2 (issue #1222).
+ * _Unsigned="false" should be same as not having _Unsigned set (issue #1232).
 
  version 1.6.2 (tag v1.6.2rel)
 ==============================
