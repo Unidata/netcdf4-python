@@ -5036,7 +5036,8 @@ rename a `Variable` attribute named `oldname` to `newname`."""
         # if attribute _Unsigned is True, and variable has signed integer
         # dtype, return view with corresponding unsigned dtype (issues #656,
         # #794)
-        is_unsigned = getattr(self, '_Unsigned', False)
+        # _Unsigned attribute must be "true" or "True" (string). Issue #1232.
+        is_unsigned = getattr(self, '_Unsigned', False) in ["True","true"]
         is_unsigned_int = is_unsigned and data.dtype.kind == 'i'
         if self.scale and is_unsigned_int:  # only do this if autoscale option is on.
             dtype_unsigned_int='%su%s' % (data.dtype.byteorder,data.dtype.itemsize)
