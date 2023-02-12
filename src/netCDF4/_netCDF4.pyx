@@ -3797,7 +3797,7 @@ variable's data type.
 
 **`scale`**: If True, `scale_factor` and `add_offset` are
 applied, and signed integer data is automatically converted to
-unsigned integer data if the `_Unsigned` attribute is set.
+unsigned integer data if the `_Unsigned` attribute is set to "true" or "True".
 Default is `True`, can be reset using `Variable.set_auto_scale` and
 `Variable.set_auto_maskandscale` methods.
 
@@ -4981,7 +4981,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
             # if attribute _Unsigned is True, and variable has signed integer
             # dtype, return view with corresponding unsigned dtype (issue #656)
             if self.scale:  # only do this if autoscale option is on.
-                is_unsigned = getattr(self, '_Unsigned', False)
+                is_unsigned = getattr(self, '_Unsigned', False) in ["true","True"]
                 if is_unsigned and data.dtype.kind == 'i':
                     data=data.view('%su%s'%(data.dtype.byteorder,data.dtype.itemsize))
 
@@ -5557,7 +5557,7 @@ turn on or off automatic conversion of variable data to and
 from masked arrays, automatic packing/unpacking of variable
 data using `scale_factor` and `add_offset` attributes and
 automatic conversion of signed integer data to unsigned integer
-data if the `_Unsigned` attribute exists.
+data if the `_Unsigned` attribute exists and is set to "true" (or "True").
 
 If `maskandscale` is set to `True`, when data is read from a variable
 it is converted to a masked array if any of the values are exactly
@@ -5592,7 +5592,7 @@ used to provide simple compression, see the
 [PSL metadata conventions](http://www.esrl.noaa.gov/psl/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
 In addition, if `maskandscale` is set to `True`, and if the variable has an
-attribute `_Unsigned` set, and the variable has a signed integer data type,
+attribute `_Unsigned` set to "true", and the variable has a signed integer data type,
 a view to the data is returned with the corresponding unsigned integer data type.
 This convention is used by the netcdf-java library to save unsigned integer
 data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3`
@@ -5611,7 +5611,7 @@ turn on or off automatic packing/unpacking of variable
 data using `scale_factor` and `add_offset` attributes.
 Also turns on and off automatic conversion of signed integer data
 to unsigned integer data if the variable has an `_Unsigned`
-attribute.
+attribute set to "true" or "True".
 
 If `scale` is set to `True`, and the variable has a
 `scale_factor` or an `add_offset` attribute, then data read
@@ -5631,7 +5631,7 @@ used to provide simple compression, see the
 [PSL metadata conventions](http://www.esrl.noaa.gov/psl/data/gridded/conventions/cdc_netcdf_standard.shtml).
 
 In addition, if `scale` is set to `True`, and if the variable has an
-attribute `_Unsigned` set, and the variable has a signed integer data type,
+attribute `_Unsigned` set to "true", and the variable has a signed integer data type,
 a view to the data is returned with the corresponding unsigned integer datatype.
 This convention is used by the netcdf-java library to save unsigned integer
 data in `NETCDF3` or `NETCDF4_CLASSIC` files (since the `NETCDF3`
