@@ -4978,7 +4978,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
         if self.mask and (self._isprimitive or self._isenum):\
             data = self._toma(data)
         else:
-            # if attribute _Unsigned is True, and variable has signed integer
+            # if attribute _Unsigned is "true", and variable has signed integer
             # dtype, return view with corresponding unsigned dtype (issue #656)
             if self.scale:  # only do this if autoscale option is on.
                 is_unsigned = getattr(self, '_Unsigned', False) in ["true","True"]
@@ -5033,7 +5033,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
 
     def _toma(self,data):
         cdef int ierr, no_fill
-        # if attribute _Unsigned is True, and variable has signed integer
+        # if attribute _Unsigned is "true", and variable has signed integer
         # dtype, return view with corresponding unsigned dtype (issues #656,
         # #794)
         # _Unsigned attribute must be "true" or "True" (string). Issue #1232.
