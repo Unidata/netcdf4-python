@@ -9,6 +9,8 @@ variables:
 	byte ub(d) ;
 		ub:_Unsigned = "true" ;
 	byte sb(d) ;
+	byte sb2(d) ;
+		sb2:_Unsigned = "false" ;
 
 // global attributes:
 		:_Format = "classic" ;
@@ -21,6 +23,8 @@ variables:
 	byte ub(d) ;
 		ub:_Unsigned = "true" ;
 	byte sb(d) ;
+	byte sb2(d) ;
+		sb2:_Unsigned = "false" ;
 
 // global attributes:
 		:_Format = "classic" ;
@@ -29,6 +33,8 @@ data:
  ub = 0, -1 ;
 
  sb = -128, 127 ;
+
+ sb2 = -127, -127 ;
 }
 """
 
