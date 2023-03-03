@@ -10,6 +10,8 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+3/3/2023:  Version [1.6.3](https://pypi.python.org/pypi/netCDF4/1.6.3) released.
+
 11/15/2022:  Version [1.6.2](https://pypi.python.org/pypi/netCDF4/1.6.2) released. Fix for
 compilation with netcdf-c < 4.9.0 (issue [#1209](https://github.com/Unidata/netcdf4-python/issues/1209)).  
 Slicing multi-dimensional variables with an all False boolean index array
