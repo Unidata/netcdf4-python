@@ -6,14 +6,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PNETCDF_VERSION: 1.12.1
-      NETCDF_VERSION: 4.9.0
+      NETCDF_VERSION: 4.9.1
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
       CC: mpicc.mpich
       #NO_NET: 1
     strategy:
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.11"]
     steps:
 
     - uses: actions/checkout@v2
