@@ -2,7 +2,7 @@
 [Python](http://python.org)/[numpy](http://numpy.org) interface to the netCDF [C library](https://github.com/Unidata/netcdf-c).
 
 [![Build status](https://github.com/Unidata/netcdf4-python/workflows/Build%20and%20Test/badge.svg)](https://github.com/Unidata/netcdf4-python/actions)
-[![PyPI package](https://badge.fury.io/py/netCDF4.svg)](http://python.org/pypi/netCDF4)
+[![PyPI package](https://img.shields.io/pypi/v/netCDF4.svg)](http://python.org/pypi/netCDF4)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/netCDF4/badges/version.svg)](https://anaconda.org/conda-forge/netCDF4)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2592291.svg)](https://doi.org/10.5281/zenodo.2592290)
 
