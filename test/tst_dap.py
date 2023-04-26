@@ -8,7 +8,7 @@ from numpy.testing import assert_array_almost_equal
 
 yesterday = datetime.utcnow() - timedelta(days=1)
 URL = "http://nomads.ncep.noaa.gov/dods/gfs_1p00/gfs%s/gfs_1p00_00z" % yesterday.strftime('%Y%m%d')
-URL_https = 'https://podaac-opendap.jpl.nasa.gov/opendap/allData/modis/L3/aqua/11um/v2019.0/4km/daily/2017/365/AQUA_MODIS.20171231.L3m.DAY.NSST.sst.4km.nc'
+URL_https='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide//m2.hamtide11a.nc'
 varname = 'hgtsfc'
 data_min = -40; data_max = 5900
 varshape = (181, 360)
@@ -33,10 +33,8 @@ class DapTestCase(unittest.TestCase):
         ncfile.close()
         # test https support (linked curl lib must built with openssl support)
         ncfile = netCDF4.Dataset(URL_https)
-        assert(ncfile['sst'].long_name=='Sea Surface Temperature')    
+        assert(ncfile['PHAS'].long_name=='Phase')
         ncfile.close()
-        # check for SSL error on linux (issue #1246)
-        ncfile=Dataset('https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide//m2.hamtide11a.nc')
 
 
 if __name__ == '__main__':
