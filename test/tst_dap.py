@@ -35,6 +35,9 @@ class DapTestCase(unittest.TestCase):
         ncfile = netCDF4.Dataset(URL_https)
         assert(ncfile['sst'].long_name=='Sea Surface Temperature')    
         ncfile.close()
+        # check for SSL error on linux (issue #1246)
+        ncfile=Dataset('https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide//m2.hamtide11a.nc')
+
 
 if __name__ == '__main__':
     unittest.main()
