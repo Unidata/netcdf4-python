@@ -10,6 +10,10 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+?/?/2023:  Version [1.6.4](https://pypi.python.org/pypi/netCDF4/1.6.4) released.  Now requires 
+[certifi](https://github.com/certifi/python-certifi) to locate SSL certificates - this allows 
+OpenDAP https URLs to work with wheels (issue [#1246)(https://github.com/Unidata/netcdf4-python/issues/1246).
+
 3/3/2023:  Version [1.6.3](https://pypi.python.org/pypi/netCDF4/1.6.3) released.
 
 11/15/2022:  Version [1.6.2](https://pypi.python.org/pypi/netCDF4/1.6.2) released. Fix for
