@@ -1,5 +1,5 @@
 """
-Version 1.6.3
+Version 1.6.4
 -------------
 
 # Introduction
@@ -1227,7 +1227,7 @@ from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 import sys
 
-__version__ = "1.6.3"
+__version__ = "1.6.4"
 
 # Initialize numpy
 import posixpath
@@ -1258,19 +1258,19 @@ ELSE:
     ctypedef object Comm
     ctypedef object Info
 
-import certifi
-
 # set path to SSL certificates (issue #1246)
-cdef _set_curl_certpath(certpath):
-    cdef char *cert_path
-    cdef char *key
-    cdef int ierr
-    bytestr = _strencode(certpath)
-    cert_path = bytestr
-    ierr = nc_rc_set("HTTP.SSL.CAINFO",cert_path)
-    if ierr != 0:
-        raise RuntimeError('error setting path to SSL certificates')
-_set_curl_certpath(certifi.where())
+IF HAS_NCRCSET: # available starting in version 4.9.2
+    import certifi
+    cdef _set_curl_certpath(certpath):
+        cdef char *cert_path
+        cdef char *key
+        cdef int ierr
+        bytestr = _strencode(certpath)
+        cert_path = bytestr
+        ierr = nc_rc_set("HTTP.SSL.CAINFO",cert_path)
+        if ierr != 0:
+            raise RuntimeError('error setting path to SSL certificates')
+    _set_curl_certpath(certifi.where())
 
 # check for required version of netcdf-4 and hdf5.
 

@@ -1,3 +1,9 @@
+ version 1.6.4 (not yet released)
+=================================
+ * set path to SSL certificates internally, so https DAP URLs work with wheels
+   (issue #1246, requires nc_rc_set function available starting with netcdf-c 4.9.2).
+   Added certifi as a dependency.
+
  version 1.6.3 (tag v1.6.3rel)
 ==============================
  * Use ``nc_put_vars`` for strided writes for netcdf-c >= 4.6.2 (issue #1222).

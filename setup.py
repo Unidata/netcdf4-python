@@ -60,6 +60,7 @@ def check_api(inc_dirs,netcdf_lib_version):
     has_blosc = False
     has_ncfilter = False
     has_set_alignment = False
+    has_nc_rc_set = False
 
     for d in inc_dirs:
         try:
@@ -83,6 +84,8 @@ def check_api(inc_dirs,netcdf_lib_version):
                 has_quantize = True
             if line.startswith('nc_set_alignment'):
                 has_set_alignment = True
+            if line.startswith('nc_rc_set'):
+                has_nc_rc_set = True
 
         if has_nc_open_mem:
             try:
@@ -150,7 +153,8 @@ def check_api(inc_dirs,netcdf_lib_version):
     return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
            has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
            has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-           has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter
+           has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter, \
+           has_nc_rc_set
 
 
 def getnetcdfvers(libdirs):
@@ -564,7 +568,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
     has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
     has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-    has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter = \
+    has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter, has_nc_rc_set = \
     check_api(inc_dirs,netcdf_lib_version)
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
@@ -685,6 +689,13 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     else:
         sys.stdout.write('netcdf lib does not have nc_inq_filter_avail function\n')
         f.write('DEF HAS_NCFILTER = 0\n')
+
+    if has_nc_rc_set:
+        sys.stdout.write('netcdf lib has nc_rc_set function\n')
+        f.write('DEF HAS_NCRCSET = 1\n')
+    else:
+        sys.stdout.write('netcdf lib does not have nc_rc_set function\n')
+        f.write('DEF HAS_NCRCSET = 0\n')
 
     f.close()
 
