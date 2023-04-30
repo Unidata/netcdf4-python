@@ -42,6 +42,7 @@ classifiers = [
 ]
 dependencies = [
     "cftime",
+    "certifi",
     "numpy",
 ]
 dynamic = ["version"]
