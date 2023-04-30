@@ -1258,6 +1258,20 @@ ELSE:
     ctypedef object Comm
     ctypedef object Info
 
+import certifi
+
+# set path to SSL certificates (issue #1246)
+cdef _set_curl_certpath(certpath):
+    cdef char *cert_path
+    cdef char *key
+    cdef int ierr
+    bytestr = _strencode(certpath)
+    cert_path = bytestr
+    ierr = nc_rc_set("HTTP.SSL.CAINFO",cert_path)
+    if ierr != 0:
+        raise RuntimeError('error setting path to SSL certificates')
+_set_curl_certpath(certifi.where())
+
 # check for required version of netcdf-4 and hdf5.
 
 def _gethdf5libversion():
@@ -1265,7 +1279,7 @@ def _gethdf5libversion():
     cdef herr_t ierr
     with nogil:
         ierr = H5get_libversion( &majorvers, &minorvers, &releasevers)
-    if ierr < 0:
+    if ierr != 0:
         raise RuntimeError('error getting HDF5 library version info')
     return '%d.%d.%d' % (majorvers,minorvers,releasevers)
 
