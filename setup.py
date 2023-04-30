@@ -84,7 +84,7 @@ def check_api(inc_dirs,netcdf_lib_version):
                 has_quantize = True
             if line.startswith('nc_set_alignment'):
                 has_set_alignment = True
-            if line.startswith('nc_rc_set'):
+            if line.startswith('EXTERNL int nc_rc_set'):
                 has_nc_rc_set = True
 
         if has_nc_open_mem:
