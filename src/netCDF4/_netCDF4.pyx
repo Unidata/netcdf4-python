@@ -1259,7 +1259,7 @@ ELSE:
     ctypedef object Info
 
 # set path to SSL certificates (issue #1246)
-IF HAS_NCRCSET: # available starting in version 4.9.2
+IF HAS_NCRCSET: # available starting in version 4.9.1
     import certifi
     cdef _set_curl_certpath(certpath):
         cdef char *cert_path
