@@ -31,7 +31,7 @@ jobs:
     - name: Python ${{ matrix.python-version }}
       shell: bash -l {0}
       run: |
-        micromamba create --name TEST python=${{ matrix.python-version }} numpy cython pip pytest hdf5 libnetcdf cftime zlib --channel conda-forge
+        micromamba create --name TEST python=${{ matrix.python-version }} numpy cython pip pytest hdf5 libnetcdf cftime certifi zlib --channel conda-forge
         micromamba activate TEST
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
         pip install -v -e . --no-deps --force-reinstall
@@ -67,7 +67,7 @@ jobs:
     - name: Python ${{ matrix.python-version }}
       shell: bash -l {0}
       run: |
-        micromamba create --name TEST python=${{ matrix.python-version }} numpy cython pip pytest mpi4py hdf5=*=mpi* libnetcdf=*=mpi* cftime zlib --channel conda-forge
+        micromamba create --name TEST python=${{ matrix.python-version }} numpy cython pip pytest mpi4py hdf5=*=mpi* libnetcdf=*=mpi* cftime certifi zlib --channel conda-forge
         micromamba activate TEST
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
         nc-config --all
