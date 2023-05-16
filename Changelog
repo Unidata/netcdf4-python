@@ -1,7 +1,11 @@
+ version 1.6.4 (tag v1.6.4rel)
+==============================
+ * Added `isopen` method to `MFDataset` object to check if underlying files are open.
+
  version 1.6.3 (tag v1.6.3rel)
 ==============================
  * Use ``nc_put_vars`` for strided writes for netcdf-c >= 4.6.2 (issue #1222).
- * _Unsigned="false" should be same as not having _Unsigned set (issue #1232). 
+ * _Unsigned="false" should be same as not having _Unsigned set (issue #1232).
    _Unsigned now must be set to "true" or "True" for variable to be interpreted
    as unsigned, instead of just having _Unsigned be set (to anything).
  * pypi wheels built with netcdf-c 4.9.1.
@@ -51,15 +55,15 @@
    options.
  * MFDataset did not aggregate 'name' variable attribute (issue #1153).
  * issue warning instead of raising an exception if missing_value or
-   _FillValue can't be cast to the variable type when creating a 
-   masked array (issue #1152).  
+   _FillValue can't be cast to the variable type when creating a
+   masked array (issue #1152).
  * Define MPI_Session for compatibility with current mpi4py (PR #1156).
 
  version 1.5.8 (tag v1.5.8rel)
 ==============================
  * Fix Enum bug (issue #1128): the enum_dict member of an EnumType read from a file
    contains invalid values when the enum is large enough (more than 127 or 255
-   members). 
+   members).
  * Binary wheels for aarch64 and python 3.10.
 
  version 1.5.7 (tag v1.5.7rel)
@@ -114,7 +118,7 @@
 
  version 1.5.3 (tag v1.5.3rel)
 ==============================
- * make sure arrays are masked that are not filled when auto_fill is off 
+ * make sure arrays are masked that are not filled when auto_fill is off
    (issue #972).
  * python 3.8 binary wheels.
 
@@ -156,7 +160,7 @@
  version 1.5.0.1 (tag v1.5.0.1rel)
 ==================================
  * binary wheels for linux and macosx rebuilt against netcdf-c 4.6.3 (instead
-   of 4.4.1.1).  
+   of 4.4.1.1).
  * add read-shared mode (mode='rs'). Significantly speeds up reads of NETCDF3
    files (pull request #902).
 
