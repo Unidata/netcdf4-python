@@ -1226,6 +1226,7 @@ from cpython.bytes cimport PyBytes_FromStringAndSize
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 import sys
+import functools
 
 __version__ = "1.6.3"
 
@@ -2099,7 +2100,7 @@ strings.
     cdef Py_buffer _buffer
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
-    keepweakref, _ncstring_attrs__
+    keepweakref, _ncstring_attrs__, get_variables_by_attributes
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                      diskless=False, persist=False, keepweakref=False,
@@ -2210,6 +2211,10 @@ strings.
             cdef MPI_Info mpiinfo
 
         memset(&self._buffer, 0, sizeof(self._buffer))
+
+        self.get_variables_by_attributes = functools.lru_cache(maxsize=128)(
+            self._get_variables_by_attributes_uncached,
+        )
 
         # flag to indicate that Variables in this Dataset support orthogonal indexing.
         self.__orthogonal_indexing__ = True
@@ -3333,9 +3338,9 @@ of existing (sub-) groups and their variables.
             for group in groups:
                 group.set_ncstring_attrs(value) # recurse into subgroups...
 
-    def get_variables_by_attributes(self, **kwargs):
+    def _get_variables_by_attributes_uncached(self, **kwargs):
         """
-**`get_variables_by_attribute(self, **kwargs)`**
+**`get_variables_by_attributes(self, **kwargs)`**
 
 Returns a list of variables that match specific conditions.
 
@@ -6912,6 +6917,9 @@ Example usage (See `MFDataset.__init__` for more details):
             if name == 'groups': return self._grps
         else:
             return Dataset.__getattribute__(self, name)
+
+    def get_variables_by_attributes(self, **kwargs):
+        return Dataset._get_variables_by_attributes_uncached(self, **kwargs)
 
     def ncattrs(self):
         """
