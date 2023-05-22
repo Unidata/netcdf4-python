@@ -2622,7 +2622,9 @@ Is the Dataset open or closed?
         return bool(self._isopen)
 
     def __dealloc__(self):
-        # close file when there are no references to object left
+        # close file when there are no references to object left and clear the cache.
+        if self.get_variables_by_attributes:
+            self.get_variables_by_attributes.cache_clear()
         if self._isopen:
            self._close(False)
 
