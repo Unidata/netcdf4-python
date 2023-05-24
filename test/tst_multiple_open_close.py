@@ -9,9 +9,9 @@ class MultipleVariablesByAttributesCallsTests(unittest.TestCase):
 
     def test_multiple_calls(self):
         netcdf_file = os.path.join(os.path.dirname(__file__), "netcdf_dummy_file.nc")
+        tracemalloc.start()
         snapshot = tracemalloc.take_snapshot()
 
-        # k_times = 1000_000
         k_times = 10
         for _k in range(k_times):
             nc = netCDF4.Dataset(netcdf_file)
@@ -41,11 +41,10 @@ class MultipleVariablesByAttributesCallsTests(unittest.TestCase):
             self.assertEqual(len(vs), 1)
             nc.close()
         stats = tracemalloc.take_snapshot().compare_to(snapshot, 'filename')
+        tracemalloc.stop()
         print("[ Top 10 differences ]")
         for stat in stats[:10]:
             print(stat)
 
-if __name__ == '__main__':
-    tracemalloc.start()
+if __name__ == '__main__':    
     unittest.main()
-    tracemalloc.stop()
