@@ -58,7 +58,7 @@ if os.getenv('NO_CDL'):
     sys.stdout.write('not running tst_cdl.py ...\n')
 
 # Don't run computationally intensive test
-if os.getenv('MEMORY_LEAK_TEST'):
+if not os.getenv('MEMORY_LEAK_TEST'):
     test_files.remove('tst_multiple_open_close.py');
     sys.stdout.write('not running tst_multiple_open_close.py ...\n')
 
