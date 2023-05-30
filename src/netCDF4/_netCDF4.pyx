@@ -33,7 +33,7 @@ types) are not supported.
  - Clone the
    [github repository](http://github.com/Unidata/netcdf4-python).
  - Make sure the dependencies are satisfied (Python 3.7 or later,
-   [numpy](http://numpy.scipy.org), 
+   [numpy](http://numpy.scipy.org),
    [Cython](http://cython.org),
    [cftime](https://github.com/Unidata/cftime),
    [setuptools](https://pypi.python.org/pypi/setuptools),
@@ -155,12 +155,12 @@ in a netCDF 3 file you will get an error message.
 >>> print(rootgrp.groups)
 {'forecasts': <class 'netCDF4._netCDF4.Group'>
 group /forecasts:
-    dimensions(sizes): 
-    variables(dimensions): 
+    dimensions(sizes):
+    variables(dimensions):
     groups: , 'analyses': <class 'netCDF4._netCDF4.Group'>
 group /analyses:
-    dimensions(sizes): 
-    variables(dimensions): 
+    dimensions(sizes):
+    variables(dimensions):
     groups: }
 >>>
 ```
@@ -196,32 +196,32 @@ object yields summary information about it's contents.
 >>> print(rootgrp)
 <class 'netCDF4._netCDF4.Dataset'>
 root group (NETCDF4 data model, file format HDF5):
-    dimensions(sizes): 
-    variables(dimensions): 
+    dimensions(sizes):
+    variables(dimensions):
     groups: forecasts, analyses
 >>> for children in walktree(rootgrp):
 ...     for child in children:
 ...         print(child)
 <class 'netCDF4._netCDF4.Group'>
 group /forecasts:
-    dimensions(sizes): 
-    variables(dimensions): 
+    dimensions(sizes):
+    variables(dimensions):
     groups: model1, model2
 <class 'netCDF4._netCDF4.Group'>
 group /analyses:
-    dimensions(sizes): 
-    variables(dimensions): 
-    groups: 
+    dimensions(sizes):
+    variables(dimensions):
+    groups:
 <class 'netCDF4._netCDF4.Group'>
 group /forecasts/model1:
-    dimensions(sizes): 
-    variables(dimensions): 
-    groups: 
+    dimensions(sizes):
+    variables(dimensions):
+    groups:
 <class 'netCDF4._netCDF4.Group'>
 group /forecasts/model2:
-    dimensions(sizes): 
-    variables(dimensions): 
-    groups: 
+    dimensions(sizes):
+    variables(dimensions):
+    groups:
 ```
 
 ## Dimensions in a netCDF file
@@ -356,9 +356,9 @@ You can also query a `Dataset` or `Group` instance directly to obtain `Group` or
 >>> print(rootgrp["/forecasts/model1"])  # a Group instance
 <class 'netCDF4._netCDF4.Group'>
 group /forecasts/model1:
-    dimensions(sizes): 
+    dimensions(sizes):
     variables(dimensions): float32 temp(time,level,lat,lon)
-    groups: 
+    groups:
 >>> print(rootgrp["/forecasts/model1/temp"])  # a Variable instance
 <class 'netCDF4._netCDF4.Variable'>
 float32 temp(time, level, lat, lon)
@@ -384,11 +384,11 @@ unlimited dimensions: level
 current shape = (0,)
 filling on, default _FillValue of -2147483647 used, 'lat': <class 'netCDF4._netCDF4.Variable'>
 float32 lat(lat)
-unlimited dimensions: 
+unlimited dimensions:
 current shape = (73,)
 filling on, default _FillValue of 9.969209968386869e+36 used, 'lon': <class 'netCDF4._netCDF4.Variable'>
 float32 lon(lon)
-unlimited dimensions: 
+unlimited dimensions:
 current shape = (144,)
 filling on, default _FillValue of 9.969209968386869e+36 used, 'temp': <class 'netCDF4._netCDF4.Variable'>
 float32 temp(time, level, lat, lon)
@@ -672,7 +672,7 @@ underlying file format is HDF5) and are silently ignored if the file
 format is `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or `NETCDF3_64BIT_DATA`.
 If the HDF5 library is built with szip support, compression=`szip` can also
 be used (in conjunction with the `szip_coding` and `szip_pixels_per_block` keyword
-arguments).  
+arguments).
 
 If your data only has a certain number of digits of precision (say for
 example, it is temperature data that was measured with a precision of
@@ -782,7 +782,7 @@ objects gives useful summary information in an interactive session:
 root group (NETCDF4 data model, file format HDF5):
     dimensions(sizes): x_dim(3)
     variables(dimensions): {'names':['real','imag'], 'formats':['<f8','<f8'], 'offsets':[0,8], 'itemsize':16, 'aligned':True} cmplx_var(x_dim)
-    groups: 
+    groups:
 >>> print(f.variables["cmplx_var"])
 <class 'netCDF4._netCDF4.Variable'>
 compound cmplx_var(x_dim)
@@ -851,12 +851,12 @@ vlen variable =
 root group (NETCDF4 data model, file format HDF5):
     dimensions(sizes): x(3), y(4)
     variables(dimensions): int32 phony_vlen_var(y,x)
-    groups: 
+    groups:
 >>> print(f.variables["phony_vlen_var"])
 <class 'netCDF4._netCDF4.Variable'>
 vlen phony_vlen_var(y, x)
 vlen data type: int32
-unlimited dimensions: 
+unlimited dimensions:
 current shape = (4, 3)
 >>> print(f.vltypes["phony_vlen"])
 <class 'netCDF4._netCDF4.VLType'>: name = 'phony_vlen', numpy dtype = int32
@@ -893,12 +893,12 @@ variable-length string variable:
 root group (NETCDF4 data model, file format HDF5):
     dimensions(sizes): x(3), y(4), z(10)
     variables(dimensions): int32 phony_vlen_var(y,x), <class 'str'> strvar(z)
-    groups: 
+    groups:
 >>> print(f.variables["strvar"])
 <class 'netCDF4._netCDF4.Variable'>
 vlen strvar(z)
 vlen data type: <class 'str'>
-unlimited dimensions: 
+unlimited dimensions:
 current shape = (10,)
 ```
 
@@ -967,7 +967,7 @@ current shape = (5,)
 
 If MPI parallel enabled versions of netcdf and hdf5 or pnetcdf are detected,
 and [mpi4py](https://mpi4py.scipy.org) is installed, netcdf4-python will
-be built with parallel IO capabilities enabled. Parallel IO of NETCDF4 or 
+be built with parallel IO capabilities enabled. Parallel IO of NETCDF4 or
 NETCDF4_CLASSIC formatted files is only available if the MPI parallel HDF5
 library is available. Parallel IO of classic netcdf-3 file formats is only
 available if the [PnetCDF](https://parallel-netcdf.github.io/) library is
@@ -1154,7 +1154,7 @@ approaches.
 root group (NETCDF4 data model, file format HDF5):
     dimensions(sizes): x(5)
     variables(dimensions): int32 v(x)
-    groups: 
+    groups:
 >>> print(nc['v'][:])
 [0 1 2 3 4]
 >>> nc.close() # file saved to disk
@@ -1171,7 +1171,7 @@ root group (NETCDF4 data model, file format HDF5):
 root group (NETCDF4 data model, file format HDF5):
     dimensions(sizes): x(5)
     variables(dimensions): int32 v(x)
-    groups: 
+    groups:
 >>> print(nc['v'][:])
 [0 1 2 3 4]
 >>> nc.close()
@@ -1226,6 +1226,7 @@ from cpython.bytes cimport PyBytes_FromStringAndSize
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 import sys
+import functools
 
 __version__ = "1.6.4"
 
@@ -1406,9 +1407,9 @@ _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
 if __netcdf4libversion__[0:5] < "4.4.1" and\
    __hdf5libversion__.startswith("1.10"):
     msg = """
-WARNING: Backwards incompatible files will be created with HDF5 1.10.x 
-and netCDF < 4.4.1. Upgrading to netCDF4 >= 4.4.1 or downgrading to 
-to HDF5 version 1.8.x is highly recommended 
+WARNING: Backwards incompatible files will be created with HDF5 1.10.x
+and netCDF < 4.4.1. Upgrading to netCDF4 >= 4.4.1 or downgrading to
+to HDF5 version 1.8.x is highly recommended
 (see https://github.com/Unidata/netcdf-c/issues/250)."""
     warnings.warn(msg)
 
@@ -2133,8 +2134,8 @@ strings.
         **`mode`**: access mode. `r` means read-only; no data can be
         modified. `w` means write; a new file is created, an existing file with
         the same name is deleted. `x` means write, but fail if an existing
-        file with the same name already exists. `a` and `r+` mean append; 
-        an existing file is opened for reading and writing, if 
+        file with the same name already exists. `a` and `r+` mean append;
+        an existing file is opened for reading and writing, if
         file does not exist already, one is created.
         Appending `s` to modes `r`, `w`, `r+` or `a` will enable unbuffered shared
         access to `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET` or
@@ -2415,7 +2416,7 @@ strings.
                 if parallel:
                     # NC_SHARE ignored
                     IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-                        cmode = NC_CLOBBER | parmode 
+                        cmode = NC_CLOBBER | parmode
                         with nogil:
                             ierr = nc_create_par(path, NC_CLOBBER | cmode, \
                                    mpicomm, mpiinfo, &grpid)
@@ -2631,7 +2632,9 @@ Is the Dataset open or closed?
         return bool(self._isopen)
 
     def __dealloc__(self):
-        # close file when there are no references to object left
+        # close file when there are no references to object left and clear the cache.
+        if self.get_variables_by_attributes:
+            self.get_variables_by_attributes.cache_clear()
         if self._isopen:
            self._close(False)
 
@@ -2777,7 +2780,7 @@ datatype."""
                 enum_dict)
         return self.enumtypes[datatype_name]
 
-    def createVariable(self, varname, datatype, dimensions=(), 
+    def createVariable(self, varname, datatype, dimensions=(),
             compression=None, zlib=False,
             complevel=4, shuffle=True,
             szip_coding='nn',szip_pixels_per_block=8,
@@ -2829,7 +2832,7 @@ Default is `None` (no compression).  All of the compressors except
 `zlib` and `szip` use the HDF5 plugin architecture.
 
 If the optional keyword `zlib` is `True`, the data will be compressed in
-the netCDF file using zlib compression (default `False`).  The use of this option is 
+the netCDF file using zlib compression (default `False`).  The use of this option is
 deprecated in favor of `compression='zlib'`.
 
 The optional keyword `complevel` is an integer between 0 and 9 describing
@@ -3347,9 +3350,10 @@ of existing (sub-) groups and their variables.
             for group in groups:
                 group.set_ncstring_attrs(value) # recurse into subgroups...
 
+    @functools.lru_cache(maxsize=128)
     def get_variables_by_attributes(self, **kwargs):
         """
-**`get_variables_by_attribute(self, **kwargs)`**
+**`get_variables_by_attributes(self, **kwargs)`**
 
 Returns a list of variables that match specific conditions.
 
@@ -3436,15 +3440,15 @@ suffix replaced by `.nc` is used..
 **`format`**: underlying file format to use (one of `'NETCDF4',
 'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
 `'NETCDF3_64BIT_DATA'`. Default `'NETCDF4'`.
-       
+
 Dataset instance for `ncfilename` is returned.
- 
+
 [ncgen]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#ncgen_guide
 [cdl]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide
         """
         if ncfilename is None:
             filepath = pathlib.Path(cdlfilename)
-            ncfilename = filepath.with_suffix('.nc') 
+            ncfilename = filepath.with_suffix('.nc')
         formatcodes = {'NETCDF4': 4,
                        'NETCDF4_CLASSIC': 7,
                        'NETCDF3_CLASSIC': 3,
@@ -3838,13 +3842,13 @@ truncated to retain this number of significant digits when it is assigned to the
 Only available with netcdf-c >= 4.9.0,
 and only works with `NETCDF4` or `NETCDF4_CLASSIC` formatted files.
 The number of significant digits used in the quantization of variable data can be
-obtained using the `Variable.significant_digits` method. Default `None` - 
+obtained using the `Variable.significant_digits` method. Default `None` -
 no quantization done.
 
 **`quantize_mode`**: New in version 1.6.0. Controls
 the quantization algorithm (default 'BitGroom', 'BitRound' and
 'GranularBitRound' also available).  The 'GranularBitRound'
-algorithm may result in better compression for typical geophysical datasets. 
+algorithm may result in better compression for typical geophysical datasets.
 Ignored if `significant_digits` not specified. If 'BitRound' is used, then
 `significant_digits` is interpreted as binary (not decimal) digits.
 
@@ -3868,7 +3872,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     def __init__(self, grp, name, datatype, dimensions=(),
             compression=None, zlib=False,
             complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
-            blosc_shuffle=1, 
+            blosc_shuffle=1,
             fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
@@ -3908,7 +3912,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         (defined previously with `createDimension`). Default is an empty tuple
         which means the variable is a scalar (and therefore has no dimensions).
 
-        **`compression`**: compression algorithm to use. 
+        **`compression`**: compression algorithm to use.
         Currently `zlib`,`szip`,`zstd`,`bzip2`,`blosc_lz`,`blosc_lz4`,`blosc_lz4hc`,
         `blosc_zlib` and `blosc_zstd` are supported.
         Default is `None` (no compression).  All of the compressors except
@@ -3934,7 +3938,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         or `nn` (nearest neighbor coding). Default is `nn`.
         Ignored if szip compressor not used.
 
-        **`szip_pixels_per_block`**: Can be 4,8,16 or 32 (Default 8). 
+        **`szip_pixels_per_block`**: Can be 4,8,16 or 32 (Default 8).
         Ignored if szip compressor not used.
 
         **`fletcher32`**: if `True` (default `False`), the Fletcher32 checksum
@@ -4015,7 +4019,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef float preemptionp
         # flag to indicate that orthogonal indexing is supported
         self.__orthogonal_indexing__ = True
-        # For backwards compatibility, deprecated zlib kwarg takes 
+        # For backwards compatibility, deprecated zlib kwarg takes
         # precedence if compression kwarg not set.
         if zlib and not compression:
             compression = 'zlib'
@@ -4514,7 +4518,7 @@ kwarg for quantization."""
 
     property datatype:
         """numpy data type (for primitive data types) or
-        VLType/CompoundType/EnumType instance 
+        VLType/CompoundType/EnumType instance
         (for compound, vlen  or enum data types)"""
         def __get__(self):
             if self._iscompound:
@@ -4654,8 +4658,8 @@ return dictionary containing HDF5 filter parameters."""
         cdef int iszip=0
         cdef int iszip_coding=0
         cdef int iszip_pixels_per_block=0
-        cdef int icomplevel_zstd=0 
-        cdef int icomplevel_bzip2=0 
+        cdef int icomplevel_zstd=0
+        cdef int icomplevel_bzip2=0
         cdef unsigned int iblosc_shuffle=0
         cdef unsigned int iblosc_compressor=0
         cdef unsigned int iblosc_blocksize=0
@@ -5586,7 +5590,7 @@ When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. 
+is used instead.
 
 If `maskandscale` is set to `True`, and the variable has a
 `scale_factor` or an `add_offset` attribute, then data read
@@ -5676,7 +5680,7 @@ When data is written to a variable, the masked
 array is converted back to a regular numpy array by replacing all the
 masked values by the missing_value attribute of the variable (if it
 exists).  If the variable has no missing_value attribute, the _FillValue
-is used instead. 
+is used instead.
 
 The default value of `mask` is `True`
 (automatic conversions are performed).
@@ -6943,6 +6947,14 @@ Example usage (See `MFDataset.__init__` for more details):
         """
         for dset in self._cdf:
             dset.close()
+
+    def isopen(self):
+        """
+        **`isopen(self)`**
+
+        True if all files are open, False otherwise.
+        """
+        return all(map(lambda dset: dset.isopen(), self._cdf))
 
     def __repr__(self):
         ncdump = [repr(type(self))]

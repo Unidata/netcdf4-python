@@ -74,7 +74,9 @@ class VariablesTestCase(unittest.TestCase):
         f = MFDataset(self.files,check=True)
         assert f.get_variables_by_attributes(axis='T') == []
         f.get_variables_by_attributes(units='zlotys')[0] == f['x']
+        assert f.isopen()
         f.close()
+        assert not f.isopen()
 
 class NonuniformTimeTestCase(unittest.TestCase):
     ninc = 365

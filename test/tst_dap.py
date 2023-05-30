@@ -7,8 +7,8 @@ from numpy.testing import assert_array_almost_equal
 # test accessing data over http with opendap.
 
 yesterday = datetime.utcnow() - timedelta(days=1)
-URL = "http://nomads.ncep.noaa.gov/dods/gfs_1p00/gfs%s/gfs_1p00_00z" % yesterday.strftime('%Y%m%d')
-URL_https='https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide//m2.hamtide11a.nc'
+URL = f'http://nomads.ncep.noaa.gov/dods/gfs_1p00/gfs{yesterday:%Y%m%d}/gfs_1p00_00z'
+URL_https = 'https://www.neracoos.org/erddap/griddap/WW3_EastCoast_latest'
 varname = 'hgtsfc'
 data_min = -40; data_max = 5900
 varshape = (181, 360)
@@ -33,7 +33,7 @@ class DapTestCase(unittest.TestCase):
         ncfile.close()
         # test https support (linked curl lib must built with openssl support)
         ncfile = netCDF4.Dataset(URL_https)
-        assert(ncfile['PHAS'].long_name=='Phase')
+        assert(ncfile['hs'].long_name=='Significant Wave Height')
         ncfile.close()
 
 
