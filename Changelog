@@ -1,6 +1,5 @@
-
- version 1.6.4 (not yet released)
-=================================
+ version 1.6.4 (tag v1.6.4rel)
+===============================
  * set path to SSL certificates internally, so https DAP URLs work with wheels
    (issue #1246, requires nc_rc_set function available starting with netcdf-c
    4.9.1, plus bugfix in netcdf-c PR #2690).
