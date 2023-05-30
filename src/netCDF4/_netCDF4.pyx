@@ -1226,6 +1226,7 @@ from cpython.bytes cimport PyBytes_FromStringAndSize
 from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 import sys
+import functools
 
 __version__ = "1.6.4"
 
@@ -2631,7 +2632,9 @@ Is the Dataset open or closed?
         return bool(self._isopen)
 
     def __dealloc__(self):
-        # close file when there are no references to object left
+        # close file when there are no references to object left and clear the cache.
+        if self.get_variables_by_attributes:
+            self.get_variables_by_attributes.cache_clear()
         if self._isopen:
            self._close(False)
 
@@ -3347,9 +3350,10 @@ of existing (sub-) groups and their variables.
             for group in groups:
                 group.set_ncstring_attrs(value) # recurse into subgroups...
 
+    @functools.lru_cache(maxsize=128)
     def get_variables_by_attributes(self, **kwargs):
         """
-**`get_variables_by_attribute(self, **kwargs)`**
+**`get_variables_by_attributes(self, **kwargs)`**
 
 Returns a list of variables that match specific conditions.
 
