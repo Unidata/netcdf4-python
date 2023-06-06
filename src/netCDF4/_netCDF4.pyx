@@ -64,8 +64,7 @@ types) are not supported.
    so the extra compression algorithms available in netcdf-c >= 4.9.0 will automatically
    be available.  Otherwise, the user will have to set `HDF5_PLUGIN_PATH` explicitly
    to have access to the extra compression plugins.
- - run `python setup.py build`, then `python setup.py install` (as root if
-   necessary).
+ - run `pip install -v .` (as root if necessary)
  - run the tests in the 'test' directory by running `python run_all.py`.
 
 # Tutorial
