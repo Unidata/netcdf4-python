@@ -9,17 +9,6 @@ requires = [
 [project]
 name = "netcdf4"
 description = "Provides an object-oriented python interface to the netCDF version 4 library"
-[project.readme]
-text = """\
-netCDF version 4 has many features not found in earlier versions of the library,
-such as hierarchical groups, zlib compression, multiple unlimited dimensions,
-and new data types.  It is implemented on top of HDF5.  This module implements
-most of the new features, and can read and write netCDF files compatible with
-older versions of the library.  The API is modelled after Scientific.IO.NetCDF,
-and should be familiar to users of that module.
-"""
-content-type = "text/x-rst"
-
 keywords = [
   "climate",
   "data",
@@ -51,6 +40,16 @@ classifiers = [
 dynamic = [
   "version",
 ]
+[project.readme]
+text = """\
+netCDF version 4 has many features not found in earlier versions of the library,
+such as hierarchical groups, zlib compression, multiple unlimited dimensions,
+and new data types.  It is implemented on top of HDF5.  This module implements
+most of the new features, and can read and write netCDF files compatible with
+older versions of the library.  The API is modelled after Scientific.IO.NetCDF,
+and should be familiar to users of that module.
+"""
+content-type = "text/x-rst"
 dependencies = [
   "certifi",
   "cftime",
