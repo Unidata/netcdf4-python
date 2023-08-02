@@ -2016,7 +2016,7 @@ cdef _get_vars(group):
         free(varids) # free pointer holding variable ids.
     return variables
 
-cdef _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None):
+def _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None, extra_msg=None):
     # print netcdf error message, raise error.
     if ierr == NC_NOERR:
         return
@@ -2027,6 +2027,10 @@ cdef _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None):
             filename = filename.decode()
         raise err_cls(ierr, err_str, filename)
 
+    if extra_msg:
+        if isinstance(extra_msg, bytes):
+            extra_msg = extra_msg.decode()
+        err_str = f"{err_str}: {extra_msg}"
     raise err_cls(err_str)
 
 # these are class attributes that
@@ -4018,6 +4022,10 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
+
+        # Extra information for more helpful error messages
+        error_info = f"(variable '{name}', group '{grp.name}')"
+
         # flag to indicate that orthogonal indexing is supported
         self.__orthogonal_indexing__ = True
         # For backwards compatibility, deprecated zlib kwarg takes
@@ -4061,7 +4069,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             compression = None # if compression evaluates to False, set to None.
             pass
         else:
-            raise ValueError("Unsupported value for compression kwarg")
+            raise ValueError(f"Unsupported value for compression kwarg {error_info}")
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
@@ -4119,14 +4127,15 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         'Variable length strings are only supported for the '
                         'NETCDF4 format. For other formats, consider using '
                         'netCDF4.stringtochar to convert string arrays into '
-                        'character arrays with an additional dimension.')
+                        'character arrays with an additional dimension.'
+                        f' {error_info}')
                 datatype = VLType(self._grp, str, None)
                 self._vltype = datatype
             xtype = datatype._nc_type
             # make sure this a valid user defined datatype defined in this Group
             with nogil:
                 ierr = nc_inq_type(self._grpid, xtype, namstring, NULL)
-            _ensure_nc_success(ierr)
+            _ensure_nc_success(ierr, extra_msg=error_info)
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype.dtype
         elif datatype.str[1:] in _supportedtypes:
@@ -4137,7 +4146,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype
         else:
-            raise TypeError('illegal primitive data type, must be one of %s, got %s' % (_supportedtypes,datatype))
+            raise TypeError(f'Illegal primitive data type, must be one of {_supportedtypes}, got {datatype} {error_info}')
         if 'id' in kwargs:
             self._varid = kwargs['id']
         else:
@@ -4163,6 +4172,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 with nogil:
                     ierr = nc_def_var(self._grpid, varname, xtype, ndims,
                                       NULL, &self._varid)
+
+            if ierr != NC_NOERR:
+                if grp.data_model != 'NETCDF4':
+                    grp._enddef()
+                _ensure_nc_success(ierr, extra_msg=error_info)
+
             # set chunk cache size if desired
             # default is 1mb per var, can cause problems when many (1000's)
             # of vars are created.  This change only lasts as long as file is
@@ -4171,16 +4186,14 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 with nogil:
                     ierr = nc_get_var_chunk_cache(self._grpid, self._varid, &sizep,
                            &nelemsp, &preemptionp)
-                _ensure_nc_success(ierr)
+                _ensure_nc_success(ierr, extra_msg=error_info)
                 # reset chunk cache size, leave other parameters unchanged.
                 sizep = chunk_cache
                 with nogil:
                     ierr = nc_set_var_chunk_cache(self._grpid, self._varid, sizep,
                            nelemsp, preemptionp)
-                _ensure_nc_success(ierr)
-            if ierr != NC_NOERR:
-                if grp.data_model != 'NETCDF4': grp._enddef()
-                _ensure_nc_success(ierr)
+                _ensure_nc_success(ierr, extra_msg=error_info)
+
             # set compression, shuffle, chunking, fletcher32 and endian
             # variable settings.
             # don't bother for NETCDF3* formats.
@@ -4200,7 +4213,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                                 ierr = nc_def_var_deflate(self._grpid, self._varid, 0, 1, icomplevel)
                         if ierr != NC_NOERR:
                             if grp.data_model != 'NETCDF4': grp._enddef()
-                            _ensure_nc_success(ierr)
+                            _ensure_nc_success(ierr, extra_msg=error_info)
                     if szip:
                         IF HAS_SZIP_SUPPORT:
                             try:
@@ -4213,7 +4226,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                                 ierr = nc_def_var_szip(self._grpid, self._varid, iszip_coding, iszip_pixels_per_block)
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr)
+                                _ensure_nc_success(ierr, extra_msg=error_info)
                         ELSE:
                             msg = """
 compression='szip' only works if linked version of hdf5 has szip functionality enabled"""
@@ -4225,7 +4238,7 @@ compression='szip' only works if linked version of hdf5 has szip functionality e
                                 ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr)
+                                _ensure_nc_success(ierr, extra_msg=error_info)
                         ELSE:
                             msg = """
 compression='zstd' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
@@ -4238,7 +4251,7 @@ version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-pyt
                                 ierr = nc_def_var_bzip2(self._grpid, self._varid, icomplevel)
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr)
+                                _ensure_nc_success(ierr, extra_msg=error_info)
                         ELSE:
                             msg = """
 compression='bzip2' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
@@ -4257,7 +4270,7 @@ version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python.
                                     iblosc_shuffle)
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr)
+                                _ensure_nc_success(ierr, extra_msg=error_info)
                         ELSE:
                             msg = """
 compression='blosc_*' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
@@ -4269,7 +4282,7 @@ version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python.
                         ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
-                        _ensure_nc_success(ierr)
+                        _ensure_nc_success(ierr, extra_msg=error_info)
                 # set chunking stuff.
                 if ndims: # don't bother for scalar variable.
                     if contiguous:
@@ -4297,7 +4310,7 @@ version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python.
                         free(chunksizesp)
                         if ierr != NC_NOERR:
                             if grp.data_model != 'NETCDF4': grp._enddef()
-                            _ensure_nc_success(ierr)
+                            _ensure_nc_success(ierr, extra_msg=error_info)
                 # set endian-ness of variable
                 if endian == 'little':
                     with nogil:
@@ -4329,17 +4342,17 @@ version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python.
 
                 ELSE:
                     if significant_digits is not None:
-                        msg = """
+                        msg = f"""
 significant_digits kwarg only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
 version 4.9.0 or higher netcdf-c, and rebuild netcdf4-python. Otherwise, use least_significant_digit
-kwarg for quantization."""
+kwarg for quantization. {error_info}"""
                         raise ValueError(msg)
                 if ierr != NC_NOERR:
                     if grp.data_model != 'NETCDF4': grp._enddef()
-                    _ensure_nc_success(ierr)
+                    _ensure_nc_success(ierr, extra_msg=error_info)
             else:
                 if endian != 'native':
-                    msg="only endian='native' allowed for NETCDF3 files"
+                    msg=f"only endian='native' allowed for NETCDF3 files {error_info}"
                     raise RuntimeError(msg)
             # set a fill value for this variable if fill_value keyword
             # given.  This avoids the HDF5 overhead of deleting and
@@ -4356,7 +4369,7 @@ kwarg for quantization."""
                             ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
-                        _ensure_nc_success(ierr)
+                        _ensure_nc_success(ierr, extra_msg=error_info)
                 else:
                     if self._isprimitive or self._isenum or \
                        (self._isvlen and self.dtype == str):
@@ -4381,7 +4394,7 @@ kwarg for quantization."""
         # set ndim attribute (number of dimensions).
         with nogil:
             ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
-        _ensure_nc_success(ierr)
+        _ensure_nc_success(ierr, extra_msg=error_info)
         self.ndim = numdims
         self._name = name
         # default for automatically applying scale_factor and
