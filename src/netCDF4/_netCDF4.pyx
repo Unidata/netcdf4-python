@@ -2018,14 +2018,16 @@ cdef _get_vars(group):
 
 cdef _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None):
     # print netcdf error message, raise error.
-    if ierr != NC_NOERR:
-        err_str = (<char *>nc_strerror(ierr)).decode('ascii')
-        if issubclass(err_cls, OSError):
-            if isinstance(filename, bytes):
-                filename = filename.decode()
-            raise err_cls(ierr, err_str, filename)
-        else:
-            raise err_cls(err_str)
+    if ierr == NC_NOERR:
+        return
+
+    err_str = (<char *>nc_strerror(ierr)).decode('ascii')
+    if issubclass(err_cls, OSError):
+        if isinstance(filename, bytes):
+            filename = filename.decode()
+        raise err_cls(ierr, err_str, filename)
+
+    raise err_cls(err_str)
 
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
