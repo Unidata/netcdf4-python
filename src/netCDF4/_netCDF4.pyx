@@ -5233,6 +5233,8 @@ rename a `Variable` attribute named `oldname` to `newname`."""
         elif hasattr(self, 'add_offset'):
             data = data - self.add_offset
             if self.dtype.kind in 'iu': data = numpy.around(data)
+        if self.dtype != data.dtype:
+            data = data.astype(self.dtype) # cast data to var type, if necessary.
         if ma.isMA(data):
             # if underlying data in masked regions of masked array
             # corresponds to missing values, don't fill masked array -
@@ -5263,8 +5265,6 @@ rename a `Variable` attribute named `oldname` to `newname`."""
                     data = numpy.array([fillval],self.dtype)
                 else:
                     data = data.filled(fill_value=fillval)
-        if self.dtype != data.dtype:
-            data = data.astype(self.dtype) # cast data to var type, if necessary.
         return data
 
     def _assign_vlen(self, elem, data):
