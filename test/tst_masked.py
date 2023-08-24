@@ -15,6 +15,7 @@ from numpy.ma import masked_all
 # create an n1dim by n2dim random ranarr.
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
+FILE_NAME3 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 ndim = 10
 ranarr = 100.*uniform(size=(ndim))
 ranarr2 = 100.*uniform(size=(ndim))
@@ -41,6 +42,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
     def setUp(self):
         self.file = FILE_NAME
         self.file2 = FILE_NAME2
+        self.file3 = FILE_NAME3
         file = netCDF4.Dataset(self.file,'w')
         file.createDimension('n', ndim)
         foo = file.createVariable('maskeddata', 'f8', ('n',))
@@ -92,6 +94,19 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         dataset = netCDF4.Dataset('issue1152.nc')
         data = dataset['v'][:]
         dataset.close()
+
+        # issue #1271 (mask is ignored when assigning bool array to uint8 var)
+        ds = netCDF4.Dataset(self.file3, "w")
+        dim = ds.createDimension('time', 48)
+        var = ds.createVariable('blaat', np.uint8, ('time',),
+              zlib=True, complevel=4, shuffle=True, fletcher32=True,
+              fill_value=240)
+        mask = np.full((48,), False)
+        for x in range(30):
+            mask[x] = True
+        mama = ma.array(np.full((48,), True), mask=mask)
+        var[:] = mama
+        ds.close()
 
     def tearDown(self):
         # Remove the temporary files
@@ -148,6 +163,11 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         assert var1[:].mask.all()
         assert var2[:].mask.any() == False
         dataset.close()
+        # issue #1271
+        ds = netCDF4.Dataset(self.file3,"r")
+        var = ds['blaat']
+        assert np.count_nonzero(var[:].mask) == 30
+        ds.close()
 
 if __name__ == '__main__':
     unittest.main()
