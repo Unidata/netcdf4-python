@@ -1,6 +1,7 @@
  version 1.6.5 (not yet released)
 ===============================
  * fix for issue #1271 (mask ignored if bool MA assinged to uint8 var)
+ * include information on specific object when reporting errors from netcdf-c
 
  version 1.6.4 (tag v1.6.4rel)
 ===============================
