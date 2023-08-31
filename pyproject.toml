@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    "Cython==0.29.36",
+    "Cython>=0.29",
 	"mpi4py>=3.1",
     "oldest-supported-numpy",
     "setuptools>=65.5.0",
