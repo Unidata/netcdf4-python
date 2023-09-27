@@ -96,6 +96,20 @@ static inline int nc_close_memio(int ncid, NC_memio* info) { return NC_EINVAL; }
 #define HAS_PARALLEL_SUPPORT 1
 #else
 #define HAS_PARALLEL_SUPPORT 0
+typedef int MPI_Comm;
+typedef int MPI_Info;
+static inline int nc_create_par(const char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp) { return NC_EINVAL; }
+static inline int nc_open_par(const char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp) { return NC_EINVAL; }
+static inline int nc_var_par_access(int ncid, int varid, int par_access) { return NC_EINVAL; }
+# ifndef NC_INDEPENDENT
+#  define NC_INDEPENDENT 0
+#  define NC_COLLECTIVE 1
+# endif
+# ifndef NC_MPIIO
+#  define NC_MPIIO 0x2000
+#  define NC_MPIPOSIX NC_MPIIO
+#  define NC_PNETCDF (NC_MPIIO)
+# endif
 #endif
 
 #if defined(NC_HAS_PARALLEL4) && NC_HAS_PARALLEL4

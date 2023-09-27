@@ -368,20 +368,7 @@ cdef extern from "netcdf.h":
 
 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
     cdef extern from "mpi-compat.h": pass
-    cdef extern from "netcdf_par.h":
-        ctypedef int MPI_Comm
-        ctypedef int MPI_Info
-        int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
-        int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
-        int nc_var_par_access(int ncid, int varid, int par_access) nogil
-        cdef enum:
-            NC_COLLECTIVE
-            NC_INDEPENDENT
-    cdef extern from "netcdf.h":
-        cdef enum:
-            NC_MPIIO
-            NC_MPIPOSIX
-            NC_PNETCDF
+
 
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
@@ -436,6 +423,13 @@ cdef extern from "netcdf-compat.h":
                          unsigned* levelp, unsigned* blocksizep,
                          unsigned* addshufflep) nogil
 
+    # Parallel shims
+    ctypedef int MPI_Comm
+    ctypedef int MPI_Info
+    int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
+    int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
+    int nc_var_par_access(int ncid, int varid, int par_access) nogil
+
     cdef enum:
         HAS_RENAME_GRP
         HAS_NC_INQ_PATH
@@ -464,3 +458,10 @@ cdef extern from "netcdf-compat.h":
         H5Z_FILTER_ZSTD
         H5Z_FILTER_BZIP2
         H5Z_FILTER_BLOSC
+
+        NC_COLLECTIVE
+        NC_INDEPENDENT
+
+        NC_MPIIO
+        NC_MPIPOSIX
+        NC_PNETCDF
