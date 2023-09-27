@@ -1247,6 +1247,24 @@ numpy.import_array()
 include "constants.pyx"
 include "membuf.pyx"
 include "netCDF4.pxi"
+
+__has_rename_grp__ = HAS_RENAME_GRP
+__has_nc_inq_path__ = HAS_NC_INQ_PATH
+__has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
+__has_cdf5_format__ = HAS_CDF5_FORMAT
+__has_nc_open_mem__ = HAS_NC_OPEN_MEM
+__has_nc_create_mem__ = HAS_NC_CREATE_MEM
+__has_parallel4_support__ = HAS_PARALLEL4_SUPPORT
+__has_pnetcdf_support__ = HAS_PNETCDF_SUPPORT
+__has_quantization_support__ = HAS_QUANTIZATION_SUPPORT
+__has_zstandard_support__ = HAS_ZSTANDARD_SUPPORT
+__has_bzip2_support__ = HAS_BZIP2_SUPPORT
+__has_blosc_support__ = HAS_BLOSC_SUPPORT
+__has_szip_support__ = HAS_SZIP_SUPPORT
+__has_set_alignment__ = HAS_SET_ALIGNMENT
+__has_ncfilter__ = HAS_NCFILTER
+
+
 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
     cimport mpi4py.MPI as MPI
     from mpi4py.libmpi cimport MPI_Comm, MPI_Info, MPI_Comm_dup, MPI_Info_dup, \
@@ -1259,21 +1277,14 @@ ELSE:
     ctypedef object Info
 
 # set path to SSL certificates (issue #1246)
-IF HAS_NCRCSET: # available starting in version 4.9.1
+# available starting in version 4.9.1
+if HAS_NCRCSET:
     import certifi
-    cdef _set_curl_certpath(certpath):
-        cdef char *cert_path
-        cdef char *key
-        cdef int ierr
-        bytestr = _strencode(certpath)
-        cert_path = bytestr
-        ierr = nc_rc_set("HTTP.SSL.CAINFO",cert_path)
-        if ierr != 0:
-            raise RuntimeError('error setting path to SSL certificates')
-    _set_curl_certpath(certifi.where())
+    if nc_rc_set("HTTP.SSL.CAINFO", _strencode(certifi.where())) != 0:
+        raise RuntimeError('error setting path to SSL certificates')
+
 
 # check for required version of netcdf-4 and hdf5.
-
 def _gethdf5libversion():
     cdef unsigned int majorvers, minorvers, releasevers
     cdef herr_t ierr
@@ -1336,10 +1347,9 @@ details."""
         ierr = nc_set_chunk_cache(sizep,nelemsp, preemptionp)
     _ensure_nc_success(ierr)
 
-IF HAS_SET_ALIGNMENT:
-    def get_alignment():
-        """
-    **`get_alignment()`**
+
+def get_alignment():
+    """**`get_alignment()`**
 
     return current netCDF alignment within HDF5 files in a tuple
     (threshold,alignment). See netcdf C library documentation for
@@ -1347,57 +1357,46 @@ IF HAS_SET_ALIGNMENT:
     `set_alignment`.
 
     This function was added in netcdf 4.9.0."""
-        cdef int ierr
-        cdef int thresholdp, alignmentp
-        ierr = nc_get_alignment(&thresholdp, &alignmentp)
-        _ensure_nc_success(ierr)
-        threshold = thresholdp
-        alignment = alignmentp
-        return (threshold,alignment)
 
-    def set_alignment(threshold, alignment):
-        """
-    **`set_alignment(threshold,alignment)`**
+    if not __has_set_alignment__:
+        raise RuntimeError(
+            "This function requires netcdf4 4.9.0+ to be used at compile time"
+        )
+
+    cdef int ierr
+    cdef int thresholdp, alignmentp
+    ierr = nc_get_alignment(&thresholdp, &alignmentp)
+    _ensure_nc_success(ierr)
+    threshold = thresholdp
+    alignment = alignmentp
+    return (threshold, alignment)
+
+
+def set_alignment(threshold, alignment):
+    """**`set_alignment(threshold,alignment)`**
 
     Change the HDF5 file alignment.
     See netcdf C library documentation for `nc_set_alignment` for
     details.
 
     This function was added in netcdf 4.9.0."""
-        cdef int ierr
-        cdef int thresholdp, alignmentp
-        thresholdp = threshold
-        alignmentp = alignment
 
-        ierr = nc_set_alignment(thresholdp, alignmentp)
-        _ensure_nc_success(ierr)
-ELSE:
-    def get_alignment():
+    if not __has_set_alignment__:
         raise RuntimeError(
             "This function requires netcdf4 4.9.0+ to be used at compile time"
         )
 
-    def set_alignment(threshold, alignment):
-        raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
-        )
+    cdef int ierr
+    cdef int thresholdp, alignmentp
+    thresholdp = threshold
+    alignmentp = alignment
+
+    ierr = nc_set_alignment(thresholdp, alignmentp)
+    _ensure_nc_success(ierr)
+
 
 __netcdf4libversion__ = getlibversion().split()[0]
 __hdf5libversion__ = _gethdf5libversion()
-__has_rename_grp__ = HAS_RENAME_GRP
-__has_nc_inq_path__ = HAS_NC_INQ_PATH
-__has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
-__has_cdf5_format__ = HAS_CDF5_FORMAT
-__has_nc_open_mem__ = HAS_NC_OPEN_MEM
-__has_nc_create_mem__ = HAS_NC_CREATE_MEM
-__has_parallel4_support__ = HAS_PARALLEL4_SUPPORT
-__has_pnetcdf_support__ = HAS_PNETCDF_SUPPORT
-__has_quantization_support__ = HAS_QUANTIZATION_SUPPORT
-__has_zstandard_support__ = HAS_ZSTANDARD_SUPPORT
-__has_bzip2_support__ = HAS_BZIP2_SUPPORT
-__has_blosc_support__ = HAS_BLOSC_SUPPORT
-__has_szip_support__ = HAS_SZIP_SUPPORT
-__has_set_alignment__ = HAS_SET_ALIGNMENT
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
@@ -1448,23 +1447,23 @@ _blosc_dict={'blosc_lz':0,'blosc_lz4':1,'blosc_lz4hc':2,'blosc_snappy':3,'blosc_
 _blosc_dict_inv = {v: k for k, v in _blosc_dict.items()}
 _szip_dict = {'ec': 4, 'nn': 32}
 _szip_dict_inv = {v: k for k, v in _szip_dict.items()}
-IF HAS_CDF5_FORMAT:
+if __has_cdf5_format__:
     # NETCDF3_64BIT deprecated, saved for compatibility.
     # use NETCDF3_64BIT_OFFSET instead.
     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT_OFFSET
     _format_dict['NETCDF3_64BIT_DATA'] = NC_FORMAT_64BIT_DATA
     _cmode_dict['NETCDF3_64BIT_OFFSET'] = NC_64BIT_OFFSET
     _cmode_dict['NETCDF3_64BIT_DATA'] = NC_64BIT_DATA
-ELSE:
+else:
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
     _cmode_dict['NETCDF3_64BIT'] = NC_64BIT_OFFSET
 # invert dictionary mapping
 _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())
 # add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET)
-IF HAS_CDF5_FORMAT:
+if __has_cdf5_format__:
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
     _cmode_dict['NETCDF3_64BIT'] = NC_64BIT_OFFSET
-ELSE:
+else:
     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT
     _cmode_dict['NETCDF3_64BIT_OFFSET'] = NC_64BIT_OFFSET
 
@@ -1632,7 +1631,7 @@ cdef _get_format(int grpid):
 cdef _get_full_format(int grpid):
     # Private function to get the underlying disk format
     cdef int ierr, formatp, modep
-    IF HAS_NC_INQ_FORMAT_EXTENDED:
+    if __has_nc_inq_format_extended__:
         with nogil:
             ierr = nc_inq_format_extended(grpid, &formatp, &modep)
         _ensure_nc_success(ierr)
@@ -1650,7 +1649,7 @@ cdef _get_full_format(int grpid):
             return 'DAP4'
         elif formatp == NC_FORMAT_UNDEFINED:
             return 'UNDEFINED'
-    ELSE:
+    else:
         return 'UNDEFINED'
 
 cdef issue485_workaround(int grpid, int varid, char* attname):
@@ -2253,9 +2252,9 @@ strings.
                 raise ValueError(msg)
             ELSE:
                 parallel_formats = []
-                IF HAS_PARALLEL4_SUPPORT:
+                if __has_parallel4_support__:
                     parallel_formats += ['NETCDF4','NETCDF4_CLASSIC']
-                IF HAS_PNETCDF_SUPPORT:
+                if __has_pnetcdf_support__:
                     parallel_formats += ['NETCDF3_CLASSIC',
                                          'NETCDF3_64BIT_OFFSET',
                                          'NETCDF3_64BIT_DATA',
@@ -2284,12 +2283,12 @@ strings.
             if memory is not None:
                 # if memory is not None and mode='w', memory
                 # kwarg is interpreted as advisory size.
-                IF HAS_NC_CREATE_MEM:
+                if __has_nc_create_mem__:
                    initialsize = <size_t>memory
                    with nogil:
                        ierr = nc_create_mem(path, 0, initialsize, &grpid)
                    self._inmemory = True # checked in close method
-                ELSE:
+                else:
                     msg = """
         nc_create_mem functionality not enabled.  To enable, install Cython, make sure you have
         version 4.6.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
@@ -2346,7 +2345,7 @@ strings.
             #_set_default_format(format='NETCDF3_64BIT_OFFSET')
         elif mode in ('r', 'rs'):
             if memory is not None:
-                IF HAS_NC_OPEN_MEM:
+                if __has_nc_open_mem__:
                     # Store reference to memory
                     result = PyObject_GetBuffer(memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS)
                     if result != 0:
@@ -2354,7 +2353,7 @@ strings.
 
                     with nogil:
                         ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
-                ELSE:
+                else:
                     msg = """
         nc_open_mem functionality not enabled.  To enable, install Cython, make sure you have
         version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
@@ -2534,7 +2533,7 @@ changed using the `encoding` kwarg."""
         cdef char *c_path
         if encoding is None:
             encoding = sys.getfilesystemencoding()
-        IF HAS_NC_INQ_PATH:
+        if __has_nc_inq_path__:
             with nogil:
                 ierr = nc_inq_path(self._grpid, &pathlen, NULL)
             _ensure_nc_success(ierr)
@@ -2551,7 +2550,7 @@ changed using the `encoding` kwarg."""
             finally:
                 free(c_path)
             return py_path.decode(encoding)
-        ELSE:
+        else:
             msg = """
 filepath method not enabled.  To enable, install Cython, make sure you have
 version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
@@ -2596,22 +2595,21 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         # view.obj is checked, ref on obj is decremented and obj will be null'd out
         PyBuffer_Release(&self._buffer)
 
-    IF HAS_NC_CREATE_MEM:
-        def _close_mem(self, check_err):
-            cdef int ierr
-            cdef NC_memio memio
-            with nogil:
-                ierr = nc_close_memio(self._grpid, &memio)
+    def _close_mem(self, check_err):
+        cdef int ierr
+        cdef NC_memio memio
+        with nogil:
+            ierr = nc_close_memio(self._grpid, &memio)
 
-            if check_err:
-                _ensure_nc_success(ierr)
+        if check_err:
+            _ensure_nc_success(ierr)
 
-            self._isopen = 0
-            PyBuffer_Release(&self._buffer)
+        self._isopen = 0
+        PyBuffer_Release(&self._buffer)
 
-            # membuf_fromptr from membuf.pyx - creates a python memoryview
-            # from a raw pointer without making a copy.
-            return memview_fromptr(<char *>memio.memory, memio.size)
+        # membuf_fromptr from membuf.pyx - creates a python memoryview
+        # from a raw pointer without making a copy.
+        return memview_fromptr(<char *>memio.memory, memio.size)
 
 
     def close(self):
@@ -2620,12 +2618,12 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
 
 Close the Dataset.
         """
-        IF HAS_NC_CREATE_MEM:
+        if __has_nc_create_mem__:
             if self._inmemory:
                 return self._close_mem(True)
             else:
                 self._close(True)
-        ELSE:
+        else:
             self._close(True)
 
     def isopen(self):
@@ -3164,27 +3162,27 @@ rename a `Dataset` or `Group` attribute named `oldname` to `newname`."""
 rename a `Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)."""
         cdef char *newnamec
         cdef int grpid
-        IF HAS_RENAME_GRP:
-            cdef int ierr
-            bytestr = _strencode(newname)
-            newnamec = bytestr
-            try:
-                grp = self.groups[oldname]
-                grpid = grp._grpid
-            except KeyError:
-                raise KeyError('%s not a valid group name' % oldname)
-            with nogil:
-                ierr = nc_rename_grp(grpid, newnamec)
-            _ensure_nc_success(ierr)
-            # remove old key from groups dict.
-            self.groups.pop(oldname)
-            # add new key.
-            self.groups[newname] = grp
-        ELSE:
-            msg = """
-renameGroup method not enabled.  To enable, install Cython, make sure you have
-version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
-            raise ValueError(msg)
+        cdef int ierr
+        if not __has_rename_grp__:
+            raise ValueError(
+                "renameGroup method not enabled.  To enable, install Cython, make sure you have"
+                "version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."
+            )
+
+        bytestr = _strencode(newname)
+        newnamec = bytestr
+        try:
+            grp = self.groups[oldname]
+            grpid = grp._grpid
+        except KeyError:
+            raise KeyError('%s not a valid group name' % oldname)
+        with nogil:
+            ierr = nc_rename_grp(grpid, newnamec)
+        _ensure_nc_success(ierr)
+        # remove old key from groups dict.
+        self.groups.pop(oldname)
+        # add new key.
+        self.groups[newname] = grp
 
     def set_auto_chartostring(self, value):
         """
@@ -3503,62 +3501,62 @@ to be installed and in `$PATH`.
 **`has_blosc_filter(self)`**
 returns True if blosc compression filter is available"""
         cdef int ierr
-        IF HAS_BLOSC_SUPPORT:
+        if __has_blosc_support__:
             with nogil:
                 ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BLOSC)
             if ierr:
                 return False
             else:
                 return True
-        ELSE:
+        else:
             return False
     def has_zstd_filter(self):
         """
 **`has_zstd_filter(self)`**
 returns True if zstd compression filter is available"""
         cdef int ierr
-        IF HAS_ZSTANDARD_SUPPORT:
+        if __has_zstandard_support__:
             with nogil:
                 ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_ZSTD)
             if ierr:
                 return False
             else:
                 return True
-        ELSE:
+        else:
             return False
     def has_bzip2_filter(self):
         """
 **`has_bzip2_filter(self)`**
 returns True if bzip2 compression filter is available"""
         cdef int ierr
-        IF HAS_BZIP2_SUPPORT:
+        if __has_bzip2_support__:
             with nogil:
                 ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BZIP2)
             if ierr:
                 return False
             else:
                 return True
-        ELSE:
+        else:
             return False
     def has_szip_filter(self):
         """
 **`has_szip_filter(self)`**
 returns True if szip compression filter is available"""
         cdef int ierr
-        IF HAS_NCFILTER:
-            IF HAS_SZIP_SUPPORT:
+        if __has_ncfilter__:
+            if __has_szip_support__:
                 with nogil:
                     ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
                 if ierr:
                     return False
                 else:
                     return True
-            ELSE:
+            else:
                 return False
-        ELSE:
-             IF HAS_SZIP_SUPPORT:
+        else:
+             if __has_szip_support__:
                  return True
-             ELSE:
+             else:
                  return False
 
 cdef class Group(Dataset):
@@ -4215,7 +4213,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             if grp.data_model != 'NETCDF4': grp._enddef()
                             _ensure_nc_success(ierr, extra_msg=error_info)
                     if szip:
-                        IF HAS_SZIP_SUPPORT:
+                        if __has_szip_support__:
                             try:
                                 iszip_coding = _szip_dict[szip_coding]
                             except KeyError:
@@ -4227,38 +4225,38 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
                                 _ensure_nc_success(ierr, extra_msg=error_info)
-                        ELSE:
+                        else:
                             msg = """
 compression='szip' only works if linked version of hdf5 has szip functionality enabled"""
                             raise ValueError(msg)
                     if zstd:
-                        IF HAS_ZSTANDARD_SUPPORT:
+                        if __has_zstandard_support__:
                             icomplevel = complevel
                             with nogil:
                                 ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
                                 _ensure_nc_success(ierr, extra_msg=error_info)
-                        ELSE:
+                        else:
                             msg = """
 compression='zstd' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
 version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-python."""
                             raise ValueError(msg)
                     if bzip2:
-                        IF HAS_BZIP2_SUPPORT:
+                        if __has_bzip2_support__:
                             icomplevel = complevel
                             with nogil:
                                 ierr = nc_def_var_bzip2(self._grpid, self._varid, icomplevel)
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
                                 _ensure_nc_success(ierr, extra_msg=error_info)
-                        ELSE:
+                        else:
                             msg = """
 compression='bzip2' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
 version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python."""
                             raise ValueError(msg)
                     if blosc_zstd or blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib:
-                        IF HAS_BLOSC_SUPPORT:
+                        if __has_blosc_support__:
                             iblosc_compressor = _blosc_dict[compression]
                             iblosc_shuffle = blosc_shuffle
                             iblosc_blocksize = 0 # not currently used by c lib
@@ -4271,7 +4269,7 @@ version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python.
                             if ierr != NC_NOERR:
                                 if grp.data_model != 'NETCDF4': grp._enddef()
                                 _ensure_nc_success(ierr, extra_msg=error_info)
-                        ELSE:
+                        else:
                             msg = """
 compression='blosc_*' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
 version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python."""
@@ -4323,7 +4321,7 @@ version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python.
                 else:
                     raise ValueError("'endian' keyword argument must be 'little','big' or 'native', got '%s'" % endian)
                 # set quantization
-                IF HAS_QUANTIZATION_SUPPORT:
+                if __has_quantization_support__:
                     if significant_digits is not None:
                         nsd = significant_digits
                         if quantize_mode == 'BitGroom':
@@ -4340,7 +4338,7 @@ version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python.
                         else:
                             raise ValueError("'quantize_mode' keyword argument must be 'BitGroom','GranularBitRound' or 'BitRound', got '%s'" % quantize_mode)
 
-                ELSE:
+                else:
                     if significant_digits is not None:
                         msg = f"""
 significant_digits kwarg only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
@@ -4686,25 +4684,25 @@ return dictionary containing HDF5 filter parameters."""
         with nogil:
             ierr = nc_inq_var_fletcher32(self._grpid, self._varid, &ifletcher32)
         _ensure_nc_success(ierr)
-        IF HAS_ZSTANDARD_SUPPORT:
+        if __has_zstandard_support__:
             with nogil:
                 ierr = nc_inq_var_zstandard(self._grpid, self._varid, &izstd,\
                        &icomplevel_zstd)
             if ierr != 0: izstd=0
             # _ensure_nc_success(ierr)
-        IF HAS_BZIP2_SUPPORT:
+        if __has_bzip2_support__:
             with nogil:
                 ierr = nc_inq_var_bzip2(self._grpid, self._varid, &ibzip2,\
                        &icomplevel_bzip2)
             if ierr != 0: ibzip2=0
             #_ensure_nc_success(ierr)
-        IF HAS_BLOSC_SUPPORT:
+        if __has_blosc_support__:
             with nogil:
                 ierr = nc_inq_var_blosc(self._grpid, self._varid, &iblosc,\
                        &iblosc_compressor,&iblosc_complevel,&iblosc_blocksize,&iblosc_shuffle)
             if ierr != 0: iblosc=0
             #_ensure_nc_success(ierr)
-        IF HAS_SZIP_SUPPORT:
+        if __has_szip_support__:
             with nogil:
                 ierr = nc_inq_var_szip(self._grpid, self._varid, &iszip_coding,\
                        &iszip_pixels_per_block)
@@ -4745,29 +4743,29 @@ return dictionary containing HDF5 filter parameters."""
 return number of significant digits and the algorithm used in quantization.
 Returns None if quantization not active.
 """
-        IF HAS_QUANTIZATION_SUPPORT:
-            cdef int ierr, nsd, quantize_mode
-            if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']:
-                return None
-            else:
-                with nogil:
-                    ierr = nc_inq_var_quantize(self._grpid, self._varid, &quantize_mode, &nsd)
-                _ensure_nc_success(ierr)
-                if quantize_mode == NC_NOQUANTIZE:
-                    return None
-                else:
-                    if quantize_mode == NC_QUANTIZE_GRANULARBR:
-                        sig_digits = nsd
-                        quant_mode = 'GranularBitRound'
-                    elif quantize_mode == NC_QUANTIZE_BITROUND:
-                        sig_digits = nsd # interpreted as bits, not decimal
-                        quant_mode = 'BitRound'
-                    else:
-                        sig_digits = nsd
-                        quant_mode = 'BitGroom'
-                    return sig_digits, quant_mode
-        ELSE:
+        if not __has_quantization_support__:
             return None
+
+        cdef int ierr, nsd, quantize_mode
+        if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']:
+            return None
+
+        with nogil:
+            ierr = nc_inq_var_quantize(self._grpid, self._varid, &quantize_mode, &nsd)
+        _ensure_nc_success(ierr)
+        if quantize_mode == NC_NOQUANTIZE:
+            return None
+
+        if quantize_mode == NC_QUANTIZE_GRANULARBR:
+            sig_digits = nsd
+            quant_mode = 'GranularBitRound'
+        elif quantize_mode == NC_QUANTIZE_BITROUND:
+            sig_digits = nsd # interpreted as bits, not decimal
+            quant_mode = 'BitRound'
+        else:
+            sig_digits = nsd
+            quant_mode = 'BitGroom'
+        return sig_digits, quant_mode
 
     def endian(self):
         """
