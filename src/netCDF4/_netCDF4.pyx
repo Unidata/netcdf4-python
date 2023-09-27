@@ -1411,6 +1411,17 @@ to HDF5 version 1.8.x is highly recommended
 (see https://github.com/Unidata/netcdf-c/issues/250)."""
     warnings.warn(msg)
 
+
+class NetCDF4MissingFeatureException(Exception):
+    """Custom exception when trying to use features missing from the linked netCDF library"""
+    def __init__(self, feature: str, version: str):
+        super().__init__(
+            f"{feature} requires netCDF lib >= {version} (using {__netcdf4libversion__}). "
+            f"To enable, rebuild netcdf4-python using netCDF {version} or higher "
+            f"(and possibly enable {feature})"
+        )
+
+
 # numpy data type <--> netCDF 4 data type mapping.
 _nptonctype  = {'S1' : NC_CHAR,
                 'i1' : NC_BYTE,
@@ -1628,29 +1639,32 @@ cdef _get_format(int grpid):
         raise ValueError('format not supported by python interface')
     return _reverse_format_dict[formatp]
 
+
 cdef _get_full_format(int grpid):
-    # Private function to get the underlying disk format
+    """Private function to get the underlying disk format"""
+
+    if not __has_nc_inq_format_extended__:
+        return "UNDEFINED"
+
     cdef int ierr, formatp, modep
-    if __has_nc_inq_format_extended__:
-        with nogil:
-            ierr = nc_inq_format_extended(grpid, &formatp, &modep)
-        _ensure_nc_success(ierr)
-        if formatp == NC_FORMAT_NC3:
-            return 'NETCDF3'
-        elif formatp == NC_FORMAT_NC_HDF5:
-            return 'HDF5'
-        elif formatp == NC_FORMAT_NC_HDF4:
-            return 'HDF4'
-        elif formatp == NC_FORMAT_PNETCDF:
-            return 'PNETCDF'
-        elif formatp == NC_FORMAT_DAP2:
-            return 'DAP2'
-        elif formatp == NC_FORMAT_DAP4:
-            return 'DAP4'
-        elif formatp == NC_FORMAT_UNDEFINED:
-            return 'UNDEFINED'
-    else:
+    with nogil:
+        ierr = nc_inq_format_extended(grpid, &formatp, &modep)
+    _ensure_nc_success(ierr)
+    if formatp == NC_FORMAT_NC3:
+        return 'NETCDF3'
+    if formatp == NC_FORMAT_NC_HDF5:
+        return 'HDF5'
+    if formatp == NC_FORMAT_NC_HDF4:
+        return 'HDF4'
+    if formatp == NC_FORMAT_PNETCDF:
+        return 'PNETCDF'
+    if formatp == NC_FORMAT_DAP2:
+        return 'DAP2'
+    if formatp == NC_FORMAT_DAP4:
+        return 'DAP4'
+    if formatp == NC_FORMAT_UNDEFINED:
         return 'UNDEFINED'
+
 
 cdef issue485_workaround(int grpid, int varid, char* attname):
     # check to see if attribute already exists
@@ -2281,18 +2295,16 @@ strings.
         if mode == 'w' or (mode in ['a','r+'] and not os.path.exists(filename)):
             _set_default_format(format=format)
             if memory is not None:
+                if not __has_nc_create_mem__:
+                    raise NetCDF4MissingFeatureException("nc_create_mem", "4.6.2")
+
                 # if memory is not None and mode='w', memory
                 # kwarg is interpreted as advisory size.
-                if __has_nc_create_mem__:
-                   initialsize = <size_t>memory
-                   with nogil:
-                       ierr = nc_create_mem(path, 0, initialsize, &grpid)
-                   self._inmemory = True # checked in close method
-                else:
-                    msg = """
-        nc_create_mem functionality not enabled.  To enable, install Cython, make sure you have
-        version 4.6.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
-                    raise ValueError(msg)
+                initialsize = <size_t>memory
+                with nogil:
+                    ierr = nc_create_mem(path, 0, initialsize, &grpid)
+                self._inmemory = True # checked in close method
+
             else:
                 if clobber:
                     if parallel:
@@ -2345,19 +2357,17 @@ strings.
             #_set_default_format(format='NETCDF3_64BIT_OFFSET')
         elif mode in ('r', 'rs'):
             if memory is not None:
-                if __has_nc_open_mem__:
-                    # Store reference to memory
-                    result = PyObject_GetBuffer(memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS)
-                    if result != 0:
-                        raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
+                if not __has_nc_open_mem__:
+                    raise NetCDF4MissingFeatureException("nc_open_mem", "4.4.1")
 
-                    with nogil:
-                        ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
-                else:
-                    msg = """
-        nc_open_mem functionality not enabled.  To enable, install Cython, make sure you have
-        version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
-                    raise ValueError(msg)
+                # Store reference to memory
+                result = PyObject_GetBuffer(memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS)
+                if result != 0:
+                    raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
+
+                with nogil:
+                    ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
+
             elif parallel:
                 IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
                     cmode = NC_NOWRITE | NC_MPIIO
@@ -2521,40 +2531,38 @@ strings.
             raise IndexError('%s not found in %s' % (lastname,group.path))
 
     def filepath(self,encoding=None):
-        """
-**`filepath(self,encoding=None)`**
+        """**`filepath(self,encoding=None)`**
 
-Get the file system path (or the opendap URL) which was used to
-open/create the Dataset. Requires netcdf >= 4.1.2.  The path
-is decoded into a string using `sys.getfilesystemencoding()` by default, this can be
-changed using the `encoding` kwarg."""
+        Get the file system path (or the opendap URL) which was used to
+        open/create the Dataset. Requires netcdf >= 4.1.2.  The path
+        is decoded into a string using `sys.getfilesystemencoding()` by default, this can be
+        changed using the `encoding` kwarg.
+        """
+        if not __has_nc_inq_path__:
+            raise NetCDF4MissingFeatureException("filepath method", "4.1.2")
+
         cdef int ierr
         cdef size_t pathlen
         cdef char *c_path
         if encoding is None:
             encoding = sys.getfilesystemencoding()
-        if __has_nc_inq_path__:
+
+        with nogil:
+            ierr = nc_inq_path(self._grpid, &pathlen, NULL)
+        _ensure_nc_success(ierr)
+
+        c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
+        if not c_path:
+            raise MemoryError()
+        try:
             with nogil:
-                ierr = nc_inq_path(self._grpid, &pathlen, NULL)
+                ierr = nc_inq_path(self._grpid, &pathlen, c_path)
             _ensure_nc_success(ierr)
 
-            c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
-            if not c_path:
-                raise MemoryError()
-            try:
-                with nogil:
-                    ierr = nc_inq_path(self._grpid, &pathlen, c_path)
-                _ensure_nc_success(ierr)
-
-                py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
-            finally:
-                free(c_path)
-            return py_path.decode(encoding)
-        else:
-            msg = """
-filepath method not enabled.  To enable, install Cython, make sure you have
-version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
-            raise ValueError(msg)
+            py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
+        finally:
+            free(c_path)
+        return py_path.decode(encoding)
 
     def __repr__(self):
         return self.__str__()
@@ -2611,20 +2619,15 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         # from a raw pointer without making a copy.
         return memview_fromptr(<char *>memio.memory, memio.size)
 
-
     def close(self):
-        """
-**`close(self)`**
+        """**`close(self)`**
 
-Close the Dataset.
+        Close the Dataset.
         """
-        if __has_nc_create_mem__:
-            if self._inmemory:
-                return self._close_mem(True)
-            else:
-                self._close(True)
-        else:
-            self._close(True)
+        if __has_nc_create_mem__ and self._inmemory:
+            return self._close_mem(True)
+
+        self._close(True)
 
     def isopen(self):
         """
@@ -3496,68 +3499,61 @@ to be installed and in `$PATH`.
             f = open(outfile,'w')
             f.write(result.stdout)
             f.close()
+
     def has_blosc_filter(self):
+        """**`has_blosc_filter(self)`**
+        returns True if blosc compression filter is available
         """
-**`has_blosc_filter(self)`**
-returns True if blosc compression filter is available"""
-        cdef int ierr
         if __has_blosc_support__:
-            with nogil:
-                ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BLOSC)
-            if ierr:
-                return False
-            else:
-                return True
-        else:
             return False
+
+        cdef int ierr
+        with nogil:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BLOSC)
+        return ierr == 0
+
     def has_zstd_filter(self):
+        """**`has_zstd_filter(self)`**
+        returns True if zstd compression filter is available
         """
-**`has_zstd_filter(self)`**
-returns True if zstd compression filter is available"""
-        cdef int ierr
+
         if __has_zstandard_support__:
-            with nogil:
-                ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_ZSTD)
-            if ierr:
-                return False
-            else:
-                return True
-        else:
             return False
+
+        cdef int ierr
+        with nogil:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_ZSTD)
+        return ierr == 0
+
     def has_bzip2_filter(self):
+        """**`has_bzip2_filter(self)`**
+        returns True if bzip2 compression filter is available
         """
-**`has_bzip2_filter(self)`**
-returns True if bzip2 compression filter is available"""
-        cdef int ierr
+
         if __has_bzip2_support__:
-            with nogil:
-                ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BZIP2)
-            if ierr:
-                return False
-            else:
-                return True
-        else:
             return False
-    def has_szip_filter(self):
-        """
-**`has_szip_filter(self)`**
-returns True if szip compression filter is available"""
+
         cdef int ierr
-        if __has_ncfilter__:
-            if __has_szip_support__:
-                with nogil:
-                    ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
-                if ierr:
-                    return False
-                else:
-                    return True
-            else:
-                return False
-        else:
-             if __has_szip_support__:
-                 return True
-             else:
-                 return False
+        with nogil:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BZIP2)
+        return ierr == 0
+
+    def has_szip_filter(self):
+        """**`has_szip_filter(self)`**
+        returns True if szip compression filter is available
+        """
+
+        if not __has_ncfilter__:
+            return __has_szip_support__
+
+        if not __has_szip_support__:
+            return False
+
+        cdef int ierr
+        with nogil:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
+        return ierr == 0
+
 
 cdef class Group(Dataset):
     """
@@ -4212,68 +4208,64 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         if ierr != NC_NOERR:
                             if grp.data_model != 'NETCDF4': grp._enddef()
                             _ensure_nc_success(ierr, extra_msg=error_info)
+
                     if szip:
-                        if __has_szip_support__:
-                            try:
-                                iszip_coding = _szip_dict[szip_coding]
-                            except KeyError:
-                                msg="unknown szip coding ('ec' or 'nn' supported)"
-                                raise ValueError(msg)
-                            iszip_pixels_per_block = szip_pixels_per_block
-                            with nogil:
-                                ierr = nc_def_var_szip(self._grpid, self._varid, iszip_coding, iszip_pixels_per_block)
-                            if ierr != NC_NOERR:
-                                if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr, extra_msg=error_info)
-                        else:
-                            msg = """
-compression='szip' only works if linked version of hdf5 has szip functionality enabled"""
-                            raise ValueError(msg)
+                        if not __has_szip_support__:
+                            raise ValueError("compression='szip' only works if linked version of hdf5 has szip functionality enabled")
+                        try:
+                            iszip_coding = _szip_dict[szip_coding]
+                        except KeyError:
+                            raise ValueError("unknown szip coding ('ec' or 'nn' supported)")
+                        iszip_pixels_per_block = szip_pixels_per_block
+                        with nogil:
+                            ierr = nc_def_var_szip(self._grpid, self._varid, iszip_coding, iszip_pixels_per_block)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4':
+                                grp._enddef()
+                            _ensure_nc_success(ierr, extra_msg=error_info)
+
                     if zstd:
-                        if __has_zstandard_support__:
-                            icomplevel = complevel
-                            with nogil:
-                                ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
-                            if ierr != NC_NOERR:
-                                if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr, extra_msg=error_info)
-                        else:
-                            msg = """
-compression='zstd' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
-version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-python."""
-                            raise ValueError(msg)
+                        if not __has_zstandard_support__:
+                            raise NetCDF4MissingFeatureException("compression='zstd'", "4.9.0")
+
+                        icomplevel = complevel
+                        with nogil:
+                            ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4':
+                                grp._enddef()
+                            _ensure_nc_success(ierr, extra_msg=error_info)
+
                     if bzip2:
-                        if __has_bzip2_support__:
-                            icomplevel = complevel
-                            with nogil:
-                                ierr = nc_def_var_bzip2(self._grpid, self._varid, icomplevel)
-                            if ierr != NC_NOERR:
-                                if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr, extra_msg=error_info)
-                        else:
-                            msg = """
-compression='bzip2' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
-version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python."""
-                            raise ValueError(msg)
+                        if not __has_bzip2_support__:
+                            raise NetCDF4MissingFeatureException("compression='bzip2'", "4.9.0")
+
+                        icomplevel = complevel
+                        with nogil:
+                            ierr = nc_def_var_bzip2(self._grpid, self._varid, icomplevel)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4':
+                                grp._enddef()
+                            _ensure_nc_success(ierr, extra_msg=error_info)
+
                     if blosc_zstd or blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib:
-                        if __has_blosc_support__:
-                            iblosc_compressor = _blosc_dict[compression]
-                            iblosc_shuffle = blosc_shuffle
-                            iblosc_blocksize = 0 # not currently used by c lib
-                            iblosc_complevel = complevel
-                            with nogil:
-                                ierr = nc_def_var_blosc(self._grpid, self._varid,\
-                                    iblosc_compressor,\
-                                    iblosc_complevel,iblosc_blocksize,\
-                                    iblosc_shuffle)
-                            if ierr != NC_NOERR:
-                                if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr, extra_msg=error_info)
-                        else:
-                            msg = """
-compression='blosc_*' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
-version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python."""
-                            raise ValueError(msg)
+                        if not __has_blosc_support__:
+                            raise NetCDF4MissingFeatureException("compression='blosc_*'", "4.9.0")
+
+                        iblosc_compressor = _blosc_dict[compression]
+                        iblosc_shuffle = blosc_shuffle
+                        iblosc_blocksize = 0 # not currently used by c lib
+                        iblosc_complevel = complevel
+                        with nogil:
+                            ierr = nc_def_var_blosc(self._grpid, self._varid,
+                                                    iblosc_compressor,
+                                                    iblosc_complevel,iblosc_blocksize,
+                                                    iblosc_shuffle)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4':
+                                grp._enddef()
+                            _ensure_nc_success(ierr, extra_msg=error_info)
+
                 # set checksum.
                 if fletcher32 and ndims: # don't bother for scalar variable
                     with nogil:
@@ -4320,31 +4312,32 @@ version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python.
                     pass # this is the default format.
                 else:
                     raise ValueError("'endian' keyword argument must be 'little','big' or 'native', got '%s'" % endian)
-                # set quantization
-                if __has_quantization_support__:
-                    if significant_digits is not None:
-                        nsd = significant_digits
-                        if quantize_mode == 'BitGroom':
-                            with nogil:
-                                ierr = nc_def_var_quantize(self._grpid,
-                                       self._varid, NC_QUANTIZE_BITGROOM, nsd)
-                        elif quantize_mode == 'GranularBitRound':
-                            with nogil:
-                                ierr = nc_def_var_quantize(self._grpid,
-                                       self._varid, NC_QUANTIZE_GRANULARBR, nsd)
-                        elif quantize_mode == 'BitRound':
-                            ierr = nc_def_var_quantize(self._grpid,
-                                       self._varid, NC_QUANTIZE_BITROUND, nsd)
-                        else:
-                            raise ValueError("'quantize_mode' keyword argument must be 'BitGroom','GranularBitRound' or 'BitRound', got '%s'" % quantize_mode)
 
-                else:
-                    if significant_digits is not None:
-                        msg = f"""
-significant_digits kwarg only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
-version 4.9.0 or higher netcdf-c, and rebuild netcdf4-python. Otherwise, use least_significant_digit
-kwarg for quantization. {error_info}"""
-                        raise ValueError(msg)
+                # set quantization
+                if significant_digits is not None:
+                    if not __has_quantization_support__:
+                        raise ValueError(
+                            "significant_digits kwarg only works with netcdf-c >= 4.9.0. "
+                            "To enable, install Cython, make sure you have version 4.9.0 "
+                            "or higher netcdf-c, and rebuild netcdf4-python. Otherwise, "
+                            f"use least_significant_digit kwarg for quantization. {error_info}"
+                        )
+
+                    nsd = significant_digits
+                    if quantize_mode == 'BitGroom':
+                        with nogil:
+                            ierr = nc_def_var_quantize(self._grpid,
+                                   self._varid, NC_QUANTIZE_BITGROOM, nsd)
+                    elif quantize_mode == 'GranularBitRound':
+                        with nogil:
+                            ierr = nc_def_var_quantize(self._grpid,
+                                   self._varid, NC_QUANTIZE_GRANULARBR, nsd)
+                    elif quantize_mode == 'BitRound':
+                        ierr = nc_def_var_quantize(self._grpid,
+                                   self._varid, NC_QUANTIZE_BITROUND, nsd)
+                    else:
+                        raise ValueError("'quantize_mode' keyword argument must be 'BitGroom','GranularBitRound' or 'BitRound', got '%s'" % quantize_mode)
+
                 if ierr != NC_NOERR:
                     if grp.data_model != 'NETCDF4': grp._enddef()
                     _ensure_nc_success(ierr, extra_msg=error_info)
