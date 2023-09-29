@@ -43,82 +43,16 @@ def check_ifnetcdf4(netcdf4_includedir):
             isnetcdf4 = True
     return isnetcdf4
 
-def check_api(inc_dirs,netcdf_lib_version):
-    has_rename_grp = False
-    has_nc_inq_path = False
-    has_nc_inq_format_extended = False
-    has_cdf5_format = False
-    has_nc_open_mem = False
-    has_nc_create_mem = False
+
+def check_api(inc_dirs, netcdf_lib_version):
     has_parallel_support = False
     has_parallel4_support = False
     has_pnetcdf_support = False
-    has_szip_support = False
-    has_quantize = False
-    has_zstandard = False
-    has_bzip2 = False
-    has_blosc = False
-    has_ncfilter = False
-    has_set_alignment = False
-    has_nc_rc_set = False
 
     for d in inc_dirs:
-        try:
-            f = open(os.path.join(d, 'netcdf.h'), **open_kwargs)
-        except OSError:
-            continue
-
-        has_nc_open_mem = os.path.exists(os.path.join(d, 'netcdf_mem.h'))
-        has_nc_filter = os.path.exists(os.path.join(d, 'netcdf_filter.h'))
-
-        for line in f:
-            if line.startswith('nc_rename_grp'):
-                has_rename_grp = True
-            if line.startswith('nc_inq_path'):
-                has_nc_inq_path = True
-            if line.startswith('nc_inq_format_extended'):
-                has_nc_inq_format_extended = True
-            if line.startswith('#define NC_FORMAT_64BIT_DATA'):
-                has_cdf5_format = True
-            if line.startswith('nc_def_var_quantize'):
-                has_quantize = True
-            if line.startswith('nc_set_alignment'):
-                has_set_alignment = True
-            if line.startswith('EXTERNL int nc_rc_set'):
-                has_nc_rc_set = True
-
-        if has_nc_open_mem:
-            try:
-                f = open(os.path.join(d, 'netcdf_mem.h'), **open_kwargs)
-            except OSError:
-                continue
-            for line in f:
-                if line.startswith('EXTERNL int nc_create_mem'):
-                    has_nc_create_mem = True
-
-        if has_nc_filter:
-            try:
-                f = open(os.path.join(d, 'netcdf_filter.h'), **open_kwargs)
-            except OSError:
-                continue
-            for line in f:
-                if line.startswith('EXTERNL int nc_def_var_zstandard'):
-                    has_zstandard = True
-                if line.startswith('EXTERNL int nc_def_var_bzip2'):
-                    has_bzip2 = True
-                if line.startswith('EXTERNL int nc_def_var_blosc'):
-                    has_blosc = True
-                if line.startswith('EXTERNL int nc_inq_filter_avail'):
-                    has_ncfilter = True
-
         ncmetapath = os.path.join(d,'netcdf_meta.h')
         if os.path.exists(ncmetapath):
             for line in open(ncmetapath):
-                if line.startswith('#define NC_HAS_CDF5'):
-                    try:
-                        has_cdf5_format = bool(int(line.split()[2]))
-                    except ValueError:
-                        pass  # keep default False if value cannot be parsed
                 if line.startswith('#define NC_HAS_PARALLEL'):
                     try:
                         has_parallel_support = bool(int(line.split()[2]))
@@ -134,11 +68,6 @@ def check_api(inc_dirs,netcdf_lib_version):
                         has_pnetcdf_support = bool(int(line.split()[2]))
                     except ValueError:
                         pass
-                if line.startswith('#define NC_HAS_SZIP_WRITE'):
-                    try:
-                        has_szip_support = bool(int(line.split()[2]))
-                    except ValueError:
-                        pass
 
         # NC_HAS_PARALLEL4 missing in 4.6.1 (issue #964)
         if not has_parallel4_support and has_parallel_support and not has_pnetcdf_support:
@@ -148,13 +77,8 @@ def check_api(inc_dirs,netcdf_lib_version):
         # NC_HAS_PARALLEL4)
         elif netcdf_lib_version == "4.6.1" and not has_parallel4_support and has_parallel_support:
             has_parallel4_support = True
-        break
 
-    return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-           has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
-           has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-           has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter, \
-           has_nc_rc_set
+    return has_parallel4_support, has_pnetcdf_support
 
 
 def getnetcdfvers(libdirs):
@@ -564,12 +488,9 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     if len(sys.argv) >= 2:
         if os.path.exists(netcdf4_src_c):
             os.remove(netcdf4_src_c)
-    # this determines whether renameGroup and filepath methods will work.
-    has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-    has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
-    has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-    has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter, has_nc_rc_set = \
-    check_api(inc_dirs,netcdf_lib_version)
+
+    has_parallel4_support, has_pnetcdf_support = check_api(inc_dirs, netcdf_lib_version)
+
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
        (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
