@@ -487,7 +487,20 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         inc_dirs.append(mpi4py.get_include())
         # mpi_incdir should not be needed if using nc-config
         # (should be included in nc-config --cflags)
-        if mpi_incdir is not None: inc_dirs.append(mpi_incdir)
+        if mpi_incdir is not None:
+            inc_dirs.append(mpi_incdir)
+
+        # Name of file containing imports required for parallel support
+        parallel_support_imports = "parallel_support_imports.pxi.in"
+    else:
+        parallel_support_imports = "no_parallel_support_imports.pxi.in"
+
+    # Copy the specific version of the file containing parallel
+    # support imports
+    shutil.copyfile(
+        osp.join("include", parallel_support_imports),
+        osp.join("include", "parallel_support_imports.pxi")
+    )
 
     ext_modules = [Extension("netCDF4._netCDF4",
                              [netcdf4_src_pyx],

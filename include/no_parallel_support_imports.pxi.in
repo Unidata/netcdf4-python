@@ -1,0 +1,8 @@
+# Stubs for when parallel support is not enabled
+
+ctypedef int Comm
+ctypedef int Info
+cdef Comm MPI_COMM_WORLD
+cdef Info MPI_INFO_NULL
+MPI_COMM_WORLD = 0
+MPI_INFO_NULL = 0

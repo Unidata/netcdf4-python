@@ -1244,7 +1244,7 @@ from numpy import ma
 from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 numpy.import_array()
-include "constants.pyx"
+include "parallel_support_imports.pxi"
 include "membuf.pyx"
 include "netCDF4.pxi"
 
@@ -1265,21 +1265,6 @@ __has_szip_support__ = HAS_SZIP_SUPPORT
 __has_set_alignment__ = HAS_SET_ALIGNMENT
 __has_ncfilter__ = HAS_NCFILTER
 
-
-IF HAS_PARALLEL_SUPPORT:
-    cimport mpi4py.MPI as MPI
-    from mpi4py.libmpi cimport MPI_Comm, MPI_Info, MPI_Comm_dup, MPI_Info_dup, \
-                               MPI_Comm_free, MPI_Info_free, MPI_INFO_NULL,\
-                               MPI_COMM_WORLD
-    ctypedef MPI.Comm Comm
-    ctypedef MPI.Info Info
-ELSE:
-    ctypedef int Comm
-    ctypedef int Info
-    cdef Comm MPI_COMM_WORLD
-    cdef Info MPI_INFO_NULL
-    MPI_COMM_WORLD = 0
-    MPI_INFO_NULL = 0
 
 # set path to SSL certificates (issue #1246)
 # available starting in version 4.9.1
