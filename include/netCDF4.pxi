@@ -366,7 +366,7 @@ cdef extern from "netcdf.h":
     int nc_inq_enum_ident(int ncid, nc_type xtype, long long value, char *identifier) nogil
 
 
-IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
+IF HAS_PARALLEL_SUPPORT:
     cdef extern from "mpi-compat.h": pass
 
 

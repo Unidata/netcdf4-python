@@ -44,41 +44,23 @@ def check_ifnetcdf4(netcdf4_includedir):
     return isnetcdf4
 
 
-def check_api(inc_dirs, netcdf_lib_version):
+def check_has_parallel_support(inc_dirs: list) -> bool:
     has_parallel_support = False
-    has_parallel4_support = False
-    has_pnetcdf_support = False
 
     for d in inc_dirs:
         ncmetapath = os.path.join(d,'netcdf_meta.h')
-        if os.path.exists(ncmetapath):
-            for line in open(ncmetapath):
+        if not os.path.exists(ncmetapath):
+            continue
+
+        with open(ncmetapath) as f:
+            for line in f:
                 if line.startswith('#define NC_HAS_PARALLEL'):
                     try:
                         has_parallel_support = bool(int(line.split()[2]))
                     except ValueError:
                         pass
-                if line.startswith('#define NC_HAS_PARALLEL4'):
-                    try:
-                        has_parallel4_support = bool(int(line.split()[2]))
-                    except ValueError:
-                        pass
-                if line.startswith('#define NC_HAS_PNETCDF'):
-                    try:
-                        has_pnetcdf_support = bool(int(line.split()[2]))
-                    except ValueError:
-                        pass
 
-        # NC_HAS_PARALLEL4 missing in 4.6.1 (issue #964)
-        if not has_parallel4_support and has_parallel_support and not has_pnetcdf_support:
-            has_parallel4_support = True
-        # for 4.6.1, if NC_HAS_PARALLEL=NC_HAS_PNETCDF=1, guess that
-        # parallel HDF5 is enabled (must guess since there is no
-        # NC_HAS_PARALLEL4)
-        elif netcdf_lib_version == "4.6.1" and not has_parallel4_support and has_parallel_support:
-            has_parallel4_support = True
-
-    return has_parallel4_support, has_pnetcdf_support
+    return has_parallel_support
 
 
 def getnetcdfvers(libdirs):
@@ -489,29 +471,18 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         if os.path.exists(netcdf4_src_c):
             os.remove(netcdf4_src_c)
 
-    has_parallel4_support, has_pnetcdf_support = check_api(inc_dirs, netcdf_lib_version)
-
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
        (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
         has_cdf5_format = True
 
     with open(osp.join('include', 'constants.pyx'), 'w') as f:
-        if has_parallel4_support:
-            sys.stdout.write('netcdf lib has netcdf4 parallel functions\n')
-            f.write('DEF HAS_PARALLEL4_SUPPORT = 1\n')
-        else:
-            sys.stdout.write('netcdf lib does not have netcdf4 parallel functions\n')
-            f.write('DEF HAS_PARALLEL4_SUPPORT = 0\n')
+        has_parallel_support = check_has_parallel_support(inc_dirs)
+        has_has_not = "has" if has_parallel_support else "does not have"
+        sys.stdout.write(f"netcdf lib {has_has_not} parallel functions\n")
+        f.write(f'DEF HAS_PARALLEL_SUPPORT = {int(has_parallel_support)}\n')
 
-        if has_pnetcdf_support:
-            sys.stdout.write('netcdf lib has pnetcdf parallel functions\n')
-            f.write('DEF HAS_PNETCDF_SUPPORT = 1\n')
-        else:
-            sys.stdout.write('netcdf lib does not have pnetcdf parallel functions\n')
-            f.write('DEF HAS_PNETCDF_SUPPORT = 0\n')
-
-    if has_parallel4_support or has_pnetcdf_support:
+    if has_parallel_support:
         import mpi4py
         inc_dirs.append(mpi4py.get_include())
         # mpi_incdir should not be needed if using nc-config

@@ -1266,7 +1266,7 @@ __has_set_alignment__ = HAS_SET_ALIGNMENT
 __has_ncfilter__ = HAS_NCFILTER
 
 
-IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
+IF HAS_PARALLEL_SUPPORT:
     cimport mpi4py.MPI as MPI
     from mpi4py.libmpi cimport MPI_Comm, MPI_Info, MPI_Comm_dup, MPI_Info_dup, \
                                MPI_Comm_free, MPI_Info_free, MPI_INFO_NULL,\
