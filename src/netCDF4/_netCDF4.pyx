@@ -1244,7 +1244,6 @@ from numpy import ma
 from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 numpy.import_array()
-include "parallel_support_imports.pxi"
 include "membuf.pyx"
 include "netCDF4.pxi"
 
@@ -2265,11 +2264,11 @@ strings.
                 msg='parallel mode only works with the following formats: ' + ' '.join(parallel_formats)
                 raise ValueError(msg)
             if comm is not None:
-                mpicomm = comm.ob_mpi
+                mpicomm = (<Comm?>comm).ob_mpi
             else:
                 mpicomm = MPI_COMM_WORLD
             if info is not None:
-                mpiinfo = info.ob_mpi
+                mpiinfo = (<Info?>info).ob_mpi
             else:
                 mpiinfo = MPI_INFO_NULL
             parmode = NC_MPIIO | _cmode_dict[format]

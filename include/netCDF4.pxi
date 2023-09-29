@@ -384,6 +384,8 @@ cdef extern from "numpy/arrayobject.h":
     void import_array()
 
 
+include "parallel_support_imports.pxi"
+
 # Compatibility shims
 cdef extern from "netcdf-compat.h":
     int nc_rename_grp(int grpid, char *name) nogil
@@ -424,8 +426,6 @@ cdef extern from "netcdf-compat.h":
                          unsigned* addshufflep) nogil
 
     # Parallel shims
-    ctypedef int MPI_Comm
-    ctypedef int MPI_Info
     int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
     int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
     int nc_var_par_access(int ncid, int varid, int par_access) nogil
