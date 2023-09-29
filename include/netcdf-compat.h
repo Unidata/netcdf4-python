@@ -1,3 +1,6 @@
+#ifndef NETCDF_COMPAT_H
+#define NETCDF_COMPAT_H
+
 #include <netcdf.h>
 #include <netcdf_meta.h>
 
@@ -192,3 +195,5 @@ static inline int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigne
 # endif
 #define HAS_BLOSC_SUPPORT 0
 #endif
+
+#endif /* NETCDF_COMPAT_H */
