@@ -96,6 +96,7 @@ static inline int nc_close_memio(int ncid, NC_memio* info) { return NC_EINVAL; }
 #endif
 
 #if defined(NC_HAS_PARALLEL) && NC_HAS_PARALLEL
+#include <netcdf_par.h>
 #define HAS_PARALLEL_SUPPORT 1
 #else
 #define HAS_PARALLEL_SUPPORT 0
