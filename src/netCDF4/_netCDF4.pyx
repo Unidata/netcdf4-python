@@ -2276,10 +2276,39 @@ strings.
         self._inmemory = False
 
         # mode='x' is the same as mode='w' with clobber=False
-        if mode == 'x':
-            mode = 'w'; clobber = False
+        if mode == "x":
+            mode = "w"
+            clobber = False
 
-        if mode == 'w' or (mode in ['a','r+'] and not os.path.exists(filename)):
+        # r+ is synonym for append
+        if "r+" in mode:
+            mode = mode.replace("r+", "a")
+
+        # If appending and the file doesn't exist, we need to create it
+        if mode in ("a", "as") and not os.path.exists(filename):
+            mode = mode.replace("a", "w")
+
+        read_mode = mode in ("r", "rs")
+        write_mode = mode in ("w", "ws")
+        append_mode = mode in ("a", "as")
+
+        if not (read_mode or write_mode or append_mode):
+            raise ValueError(f"mode must be 'w', 'x', 'r', 'a' or 'r+', got '{mode}'")
+
+        # Initial value for cmode
+        if write_mode:
+            cmode = NC_CLOBBER if clobber else NC_NOCLOBBER
+        else:
+            cmode = NC_WRITE if append_mode else NC_NOWRITE
+            if mode.endswith("s") and not parallel:
+                cmode |= NC_SHARE
+
+        if diskless:
+            cmode |= NC_DISKLESS
+            if write_mode and persist:
+                cmode |= NC_WRITE | NC_PERSIST
+
+        if write_mode:
             _set_default_format(format=format)
             if memory is not None:
                 if not __has_nc_create_mem__:
@@ -2293,127 +2322,37 @@ strings.
                 self._inmemory = True # checked in close method
 
             else:
-                cmode = NC_CLOBBER if clobber else NC_NOCLOBBER
-
                 if parallel:
-                    cmode |= parmode
                     with nogil:
-                        ierr = nc_create_par(path, cmode, mpicomm, mpiinfo, &grpid)
+                        ierr = nc_create_par(path, cmode | parmode, mpicomm, mpiinfo, &grpid)
                 else:
-                    if diskless:
-                        cmode |= NC_DISKLESS
-                        if persist:
-                            cmode |= NC_WRITE | NC_PERSIST
-
                     with nogil:
                         ierr = nc_create(path, cmode, &grpid)
 
-            # reset default format to netcdf3 - this is a workaround
-            # for issue 170 (nc_open'ing a DAP dataset after switching
-            # format to NETCDF4). This bug should be fixed in version
-            # 4.3.0 of the netcdf library (add a version check here?).
-            # **this causes parallel mode to fail when both hdf5-parallel and
-            # pnetcdf are enabled - issue #820 **
-            #_set_default_format(format='NETCDF3_64BIT_OFFSET')
-        elif mode in ('r', 'rs'):
-            if memory is not None:
-                if not __has_nc_open_mem__:
-                    raise NetCDF4MissingFeatureException("nc_open_mem", "4.4.1")
+        elif read_mode and memory is not None:
+            if not __has_nc_open_mem__:
+                raise NetCDF4MissingFeatureException("nc_open_mem", "4.4.1")
 
-                # Store reference to memory
-                result = PyObject_GetBuffer(memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS)
-                if result != 0:
-                    raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
+            # Store reference to memory
+            result = PyObject_GetBuffer(
+                memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS
+            )
+            if result != 0:
+                raise ValueError(f"Unable to retrieve Buffer from {memory}")
 
-                with nogil:
-                    ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
+            with nogil:
+                ierr = nc_open_mem(
+                    <char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid
+                )
 
-            elif parallel:
-                cmode = NC_NOWRITE | NC_MPIIO
-                with nogil:
-                    ierr = nc_open_par(path, cmode, mpicomm, mpiinfo, &grpid)
-            elif diskless:
-                cmode = NC_NOWRITE | NC_DISKLESS
-                with nogil:
-                    ierr = nc_open(path, cmode, &grpid)
-            else:
-                if mode == 'rs':
-                    # NC_SHARE is very important for speed reading
-                    # large netcdf3 files with a record dimension
-                    # (pull request #902).
-                    cmode = NC_NOWRITE | NC_SHARE
-                    with nogil:
-                        ierr = nc_open(path, cmode, &grpid)
-                else:
-                    with nogil:
-                        ierr = nc_open(path, NC_NOWRITE, &grpid)
-        elif mode in ['a','r+'] and os.path.exists(filename):
-            if parallel:
-                cmode = NC_WRITE | NC_MPIIO
-                with nogil:
-                    ierr = nc_open_par(path, cmode, mpicomm, mpiinfo, &grpid)
-            elif diskless:
-                cmode = NC_WRITE | NC_DISKLESS
-                with nogil:
-                    ierr = nc_open(path, cmode, &grpid)
-            else:
-                with nogil:
-                    ierr = nc_open(path, NC_WRITE, &grpid)
-        elif mode in ['as','r+s'] and os.path.exists(filename):
-            if parallel:
-                # NC_SHARE ignored
-                cmode =  NC_WRITE | NC_MPIIO
-                with nogil:
-                    ierr = nc_open_par(path, cmode, mpicomm, mpiinfo, &grpid)
-            elif diskless:
-                cmode = NC_SHARE | NC_DISKLESS
-                with nogil:
-                    ierr = nc_open(path, cmode, &grpid)
-            else:
-                with nogil:
-                    ierr = nc_open(path, NC_SHARE, &grpid)
-        elif mode == 'ws' or (mode in ['as','r+s'] and not os.path.exists(filename)):
-            _set_default_format(format=format)
-            if clobber:
-                if parallel:
-                    # NC_SHARE ignored
-                    cmode = NC_CLOBBER | parmode
-                    with nogil:
-                        ierr = nc_create_par(path, NC_CLOBBER | cmode, mpicomm, mpiinfo, &grpid)
-                elif diskless:
-                    if persist:
-                        cmode = NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode, &grpid)
-                    else:
-                        cmode = NC_SHARE | NC_CLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode , &grpid)
-                else:
-                    cmode = NC_SHARE | NC_CLOBBER
-                    with nogil:
-                        ierr = nc_create(path, cmode, &grpid)
-            else:
-                if parallel:
-                    # NC_SHARE ignored
-                    cmode = NC_NOCLOBBER | parmode
-                    with nogil:
-                        ierr = nc_create_par(path, cmode, mpicomm, mpiinfo, &grpid)
-                elif diskless:
-                    if persist:
-                        cmode = NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode , &grpid)
-                    else:
-                        cmode = NC_SHARE | NC_NOCLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode , &grpid)
-                else:
-                    cmode = NC_SHARE | NC_NOCLOBBER
-                    with nogil:
-                        ierr = nc_create(path, cmode, &grpid)
         else:
-            raise ValueError("mode must be 'w', 'x', 'r', 'a' or 'r+', got '%s'" % mode)
+            # Read or append mode, flags already all set in cmode
+            if parallel:
+                with nogil:
+                    ierr = nc_open_par(path, cmode | NC_MPIIO, mpicomm, mpiinfo, &grpid)
+            else:
+                with nogil:
+                    ierr = nc_open(path, cmode, &grpid)
 
         _ensure_nc_success(ierr, err_cls=OSError, filename=path)
 
@@ -2423,10 +2362,6 @@ strings.
         # file_format for backwards compatibility.
         self.file_format = self.data_model
         self.disk_format = _get_full_format(grpid)
-        # diskless read access only works with NETCDF_CLASSIC (for now)
-        #ncopen = mode.startswith('a') or mode.startswith('r')
-        #if diskless and self.data_model != 'NETCDF3_CLASSIC' and ncopen:
-        #    raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
         self._grpid = grpid
         self._isopen = 1
         self.path = '/'
