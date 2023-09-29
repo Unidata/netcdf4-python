@@ -139,9 +139,11 @@ static inline int nc_inq_filter_avail(int ncid, unsigned filterid) { return -136
 #define HAS_SZIP_SUPPORT 1
 #else
 #define HAS_SZIP_SUPPORT 0
+# ifndef NC_HAS_SZIP
 static inline int nc_def_var_szip(int ncid, int varid, int options_mask, int pixels_per_bloc) { return NC_EINVAL; }
+# endif
 # ifndef H5Z_FILTER_SZIP
-# define H5Z_FILTER_SZIP 4
+#  define H5Z_FILTER_SZIP 4
 # endif
 #endif
 
@@ -159,10 +161,10 @@ static inline int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, 
 # endif
 #endif
 
-#if defined(NC_HAS_ZSTANDARD) && NC_HAS_ZSTANDARD
+#if defined(NC_HAS_ZSTD) && NC_HAS_ZSTD
 #define HAS_ZSTANDARD_SUPPORT 1
 #else
-# ifndef NC_HAS_ZSTANDARD
+# ifndef NC_HAS_ZSTD
 static inline int nc_def_var_zstandard(int ncid, int varid, int level) { return NC_EINVAL; }
 static inline int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp) { return NC_EINVAL; }
 # define H5Z_FILTER_ZSTD 32015
@@ -170,10 +172,10 @@ static inline int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int
 #define HAS_ZSTANDARD_SUPPORT 0
 #endif
 
-#if defined(NC_HAS_BZIP2) && NC_HAS_BZIP2
+#if defined(NC_HAS_BZ2) && NC_HAS_BZ2
 #define HAS_BZIP2_SUPPORT 1
 #else
-# ifndef NC_HAS_BZIP2
+# ifndef NC_HAS_BZ2
 static inline int nc_def_var_bzip2(int ncid, int varid, int level) { return NC_EINVAL; }
 static inline int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp) { return NC_EINVAL; }
 # define H5Z_FILTER_BZIP2 307
