@@ -128,8 +128,11 @@ static inline int nc_var_par_access(int ncid, int varid, int par_access) { retur
 #define HAS_PNETCDF_SUPPORT 0
 #endif
 
-#if NC_VERSION_GE(4, 9, 0)
+#if NC_VERSION_GE(4, 7, 0)
 #include <netcdf_filter.h>
+#endif
+
+#if NC_VERSION_GE(4, 9, 0)
 #define HAS_NCFILTER 1
 #else
 #define HAS_NCFILTER 0
