@@ -1,0 +1,164 @@
+name: Wheels
+
+on:
+  pull_request:
+  push:
+    tags:
+      - "v*"
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+
+jobs:
+
+  build_sdist:
+    name: Build source distribution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        name: Install Python
+        with:
+          python-version: 3.x
+
+      - name: Install APT packages
+        if: contains(${{ matrix.os }}, 'ubuntu')
+        run: |
+          sudo apt update
+          sudo apt install libhdf5-dev libnetcdf-dev
+
+      - name: Build sdist
+        run: >
+          pip install build
+          &&  python -m build --sdist . --outdir dist
+
+      - uses: actions/upload-artifact@v3
+        with:
+          path: dist/*.tar.gz
+
+
+  build_bdist:
+    name: "Build ${{ matrix.os }} (${{ matrix.arch }}) wheels"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest", "macos-latest"]
+        arch: ["x86_64", "arm64"]
+        exclude:
+        - os: ubuntu-latest
+          arch: arm64
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
+      uses: pypa/cibuildwheel@v2.15.0
+      env:
+        # Skips pypy and musllinux for now.
+        CIBW_SKIP: "pp* cp36-* cp37-* *-musllinux*"
+        CIBW_ARCHS: ${{ matrix.arch }}
+        CIBW_BUILD_FRONTEND: build
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+        CIBW_BEFORE_BUILD_LINUX: yum install -y hdf5-devel netcdf-devel
+        CIBW_BEFORE_BUILD_MACOS: brew install hdf5 netcdf
+        CIBW_TEST_SKIP: "*_arm64"
+        CIBW_TEST_REQUIRES: pytest cython
+        CIBW_TEST_COMMAND: >
+          python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')" &&
+          cd {project}/test && python run_all.py
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: pypi-artifacts
+        path: ${{ github.workspace }}/wheelhouse/*.whl
+
+
+  build_wheels_windows:
+    name: Build wheels for ${{matrix.arch}} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+        arch: [win_amd64]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        name: Install Python
+        with:
+          python-version: 3.x
+
+      - name: Setup Micromamba Python ${{ matrix.python-version }}
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: build
+          init-shell: bash
+          create-args: >-
+            python=${{ matrix.python-version }} hdf5 libnetcdf --channel conda-forge
+
+      - name: Install cibuildwheel
+        run: |
+          python -m pip install --upgrade cibuildwheel
+
+      - name: Build wheels for Windows (${{ matrix.arch }})
+        run: cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_BUILD: "cp39-${{ matrix.arch }} cp310-${{ matrix.arch }} cp311-${{ matrix.arch }} cp312-${{ matrix.arch }}"
+          CIBW_ENVIRONMENT_WINDOWS: >
+            HDF5_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
+            netCDF4_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
+            PATH="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}"
+          CIBW_BEFORE_BUILD: "python -m pip install delvewheel"
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
+          CIBW_TEST_COMMAND: >
+            python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
+            && xcopy {project}\\test . /E/H
+            && python -m pip install --upgrade numpy cython packaging
+            && python run_all.py
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: pypi-artifacts
+          path: ${{ github.workspace }}/wheelhouse/*.whl
+
+
+  show-artifacts:
+    needs: [build_bdist, build_sdist, build_wheels_windows]
+    name: "Show artifacts"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: pypi-artifacts
+        path: ${{ github.workspace }}/dist
+
+    - shell: bash
+      run: |
+        ls -l ${{ github.workspace }}/dist
+
+
+  publish-artifacts-pypi:
+    needs: [build_bdist, build_sdist, build_wheels_windows]
+    name: "Publish to PyPI"
+    runs-on: ubuntu-latest
+    # upload to PyPI for every tag starting with 'v'
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: pypi-artifacts
+        path: ${{ github.workspace }}/dist
+
+    - uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_PASSWORD }}
+        print_hash: true
