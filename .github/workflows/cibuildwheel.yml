@@ -102,7 +102,7 @@ jobs:
           environment-name: build
           init-shell: bash
           create-args: >-
-            python=${{ matrix.python-version }} hdf5 libnetcdf --channel conda-forge
+            python=${{ matrix.python-version }} libnetcdf=4.9.2 --channel conda-forge
 
       - name: Install cibuildwheel
         run: |
@@ -117,7 +117,9 @@ jobs:
             netCDF4_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
             PATH="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}"
           CIBW_BEFORE_BUILD: "python -m pip install delvewheel"
-          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
+            delvewheel show {wheel}
+            && delvewheel repair -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: >
             python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
             && xcopy {project}\\test . /E/H
