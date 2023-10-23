@@ -70,7 +70,7 @@ jobs:
           && sh .ci/build_deps.sh
         CIBW_BEFORE_BUILD_MACOS: brew install hdf5 netcdf
         CIBW_TEST_SKIP: "*_arm64"
-        CIBW_TEST_REQUIRES: pytest cython
+        CIBW_TEST_REQUIRES: pytest cython packaging
         CIBW_TEST_COMMAND: >
           python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')" &&
           cd {project}/test && python run_all.py
@@ -107,7 +107,7 @@ jobs:
 
       - name: Install cibuildwheel
         run: |
-          python -m pip install --upgrade cibuildwheel
+          python -m pip install --upgrade cibuildwheel delvewheel
 
       - name: Build wheels for Windows (${{ matrix.arch }})
         run: cibuildwheel --output-dir wheelhouse
@@ -117,14 +117,13 @@ jobs:
             HDF5_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
             netCDF4_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
             PATH="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}"
-          CIBW_BEFORE_BUILD: "python -m pip install delvewheel"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
             delvewheel show {wheel}
             && delvewheel repair -w {dest_dir} {wheel}
+          CIBW_TEST_REQUIRES: pytest cython packaging
           CIBW_TEST_COMMAND: >
             python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
             && xcopy {project}\\test . /E/H
-            && python -m pip install --upgrade numpy cython packaging
             && python run_all.py
 
       - uses: actions/upload-artifact@v3
