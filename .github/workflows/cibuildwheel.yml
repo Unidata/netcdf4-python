@@ -55,8 +55,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
     - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
       uses: pypa/cibuildwheel@v2.15.0
@@ -65,8 +63,11 @@ jobs:
         CIBW_SKIP: "pp* cp36-* cp37-* *-musllinux*"
         CIBW_ARCHS: ${{ matrix.arch }}
         CIBW_BUILD_FRONTEND: build
-        CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
-        CIBW_BEFORE_BUILD_LINUX: yum install -y hdf5-devel netcdf-devel
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+        CIBW_BEFORE_BUILD_LINUX: >
+          dnf install -y epel-release
+          && dnf install -y hdf5-devel libcurl-devel
+          && sh .ci/build_deps.sh
         CIBW_BEFORE_BUILD_MACOS: brew install hdf5 netcdf
         CIBW_TEST_SKIP: "*_arm64"
         CIBW_TEST_REQUIRES: pytest cython
