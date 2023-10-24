@@ -144,7 +144,7 @@ jobs:
 
     - shell: bash
       run: |
-        ls -l ${{ github.workspace }}/dist
+        ls -lh ${{ github.workspace }}/dist
 
 
   publish-artifacts-pypi:
