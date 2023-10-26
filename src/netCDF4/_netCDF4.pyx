@@ -1,5 +1,5 @@
 """
-Version 1.6.5
+Version 1.7.0
 -------------
 
 # Introduction
@@ -1227,7 +1227,7 @@ from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
 import sys
 import functools
 
-__version__ = "1.6.5"
+__version__ = "1.7.0"
 
 # Initialize numpy
 import posixpath
