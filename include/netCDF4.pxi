@@ -358,94 +358,17 @@ cdef extern from "netcdf.h":
     int nc_set_chunk_cache(size_t size, size_t nelems, float preemption) nogil
     int nc_set_var_chunk_cache(int ncid, int varid, size_t size, size_t nelems, float preemption) nogil
     int nc_get_var_chunk_cache(int ncid, int varid, size_t *sizep, size_t *nelemsp, float *preemptionp) nogil
-    int nc_rename_grp(int grpid, char *name) nogil
     int nc_def_enum(int ncid, nc_type base_typeid, char *name, nc_type *typeidp) nogil
     int nc_insert_enum(int ncid, nc_type xtype, char *name, void *value) nogil
     int nc_inq_enum(int ncid, nc_type xtype, char *name, nc_type *base_nc_typep,\
 	    size_t *base_sizep, size_t *num_membersp) nogil
     int nc_inq_enum_member(int ncid, nc_type xtype, int idx, char *name, void *value) nogil
-
     int nc_inq_enum_ident(int ncid, nc_type xtype, long long value, char *identifier) nogil
-    int nc_rc_set(char* key, char* value) nogil
 
-IF HAS_QUANTIZATION_SUPPORT:
-    cdef extern from "netcdf.h":
-        cdef enum:
-            NC_NOQUANTIZE
-            NC_QUANTIZE_BITGROOM
-            NC_QUANTIZE_GRANULARBR
-            NC_QUANTIZE_BITROUND
-        int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) nogil
-        int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
 
-IF HAS_NCFILTER:
-    cdef extern from "netcdf_filter.h":
-        int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
+cdef extern from "mpi-compat.h":
+    pass
 
-IF HAS_SZIP_SUPPORT:
-    cdef extern from "netcdf.h":
-        cdef enum:
-            H5Z_FILTER_SZIP
-        int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) nogil
-        int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
-        int nc_def_var_szip(int ncid, int varid, int options_mask, int pixels_per_bloc) nogil
-        int nc_inq_var_szip(int ncid, int varid, int *options_maskp, int *pixels_per_blockp) nogil
-
-IF HAS_ZSTANDARD_SUPPORT:
-    cdef extern from "netcdf_filter.h":
-        cdef enum:
-            H5Z_FILTER_ZSTD
-        int nc_def_var_zstandard(int ncid, int varid, int level) nogil
-        int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp) nogil
-
-IF HAS_BZIP2_SUPPORT:
-    cdef extern from "netcdf_filter.h":
-        cdef enum:
-            H5Z_FILTER_BZIP2
-        int nc_def_var_bzip2(int ncid, int varid, int level) nogil
-        int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp) nogil
-
-IF HAS_BLOSC_SUPPORT:
-    cdef extern from "netcdf_filter.h":
-        cdef enum:
-            H5Z_FILTER_BLOSC
-        int nc_def_var_blosc(int ncid, int varid, unsigned subcompressor, unsigned level, unsigned blocksize, unsigned addshuffle) nogil
-        int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigned* subcompressorp, unsigned* levelp, unsigned* blocksizep, unsigned* addshufflep) nogil
-
-IF HAS_NC_OPEN_MEM:
-    cdef extern from "netcdf_mem.h":
-        int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp) nogil
-
-IF HAS_NC_CREATE_MEM:
-    cdef extern from "netcdf_mem.h":
-        int nc_create_mem(const char *path, int mode, size_t initialize, int *ncidp) nogil
-        ctypedef struct NC_memio:
-            size_t size
-            void* memory
-            int flags
-        int nc_close_memio(int ncid, NC_memio* info) nogil
-
-IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-    cdef extern from "mpi-compat.h": pass
-    cdef extern from "netcdf_par.h":
-        ctypedef int MPI_Comm
-        ctypedef int MPI_Info
-        int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
-        int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
-        int nc_var_par_access(int ncid, int varid, int par_access) nogil
-        cdef enum:
-            NC_COLLECTIVE
-            NC_INDEPENDENT
-    cdef extern from "netcdf.h":
-        cdef enum:
-            NC_MPIIO
-            NC_MPIPOSIX
-            NC_PNETCDF
-
-IF HAS_SET_ALIGNMENT:
-    cdef extern from "netcdf.h":
-        int nc_set_alignment(int threshold, int alignment)
-        int nc_get_alignment(int *threshold, int *alignment)
 
 # taken from numpy.pxi in numpy 1.0rc2.
 cdef extern from "numpy/arrayobject.h":
@@ -459,3 +382,86 @@ cdef extern from "numpy/arrayobject.h":
     char* PyArray_BYTES(ndarray) nogil
     npy_intp* PyArray_STRIDES(ndarray) nogil
     void import_array()
+
+
+include "parallel_support_imports.pxi"
+
+# Compatibility shims
+cdef extern from "netcdf-compat.h":
+    int nc_rename_grp(int grpid, char *name) nogil
+    int nc_set_alignment(int threshold, int alignment)
+    int nc_get_alignment(int *threshold, int *alignment)
+    int nc_rc_set(char* key, char* value) nogil
+
+    int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp) nogil
+    int nc_create_mem(const char *path, int mode, size_t initialize, int *ncidp) nogil
+    ctypedef struct NC_memio:
+        size_t size
+        void* memory
+        int flags
+    int nc_close_memio(int ncid, NC_memio* info) nogil
+
+    # Quantize shims
+    int nc_def_var_quantize(int ncid, int varid, int quantize_mode, int nsd) nogil
+    int nc_inq_var_quantize(int ncid, int varid, int *quantize_modep, int *nsdp) nogil
+
+    # Filter shims
+    int nc_inq_filter_avail(int ncid, unsigned filterid) nogil
+
+    int nc_def_var_szip(int ncid, int varid, int options_mask,
+                        int pixels_per_bloc) nogil
+    int nc_inq_var_szip(int ncid, int varid, int *options_maskp,
+                        int *pixels_per_blockp) nogil
+
+    int nc_def_var_zstandard(int ncid, int varid, int level) nogil
+    int nc_inq_var_zstandard(int ncid, int varid, int* hasfilterp, int *levelp) nogil
+
+    int nc_def_var_bzip2(int ncid, int varid, int level) nogil
+    int nc_inq_var_bzip2(int ncid, int varid, int* hasfilterp, int *levelp) nogil
+
+    int nc_def_var_blosc(int ncid, int varid, unsigned subcompressor, unsigned level,
+                         unsigned blocksize, unsigned addshuffle) nogil
+    int nc_inq_var_blosc(int ncid, int varid, int* hasfilterp, unsigned* subcompressorp,
+                         unsigned* levelp, unsigned* blocksizep,
+                         unsigned* addshufflep) nogil
+
+    # Parallel shims
+    int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
+    int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
+    int nc_var_par_access(int ncid, int varid, int par_access) nogil
+
+    cdef enum:
+        HAS_RENAME_GRP
+        HAS_NC_INQ_PATH
+        HAS_NC_INQ_FORMAT_EXTENDED
+        HAS_NC_OPEN_MEM
+        HAS_NC_CREATE_MEM
+        HAS_CDF5_FORMAT
+        HAS_PARALLEL_SUPPORT
+        HAS_PARALLEL4_SUPPORT
+        HAS_PNETCDF_SUPPORT
+        HAS_SZIP_SUPPORT
+        HAS_QUANTIZATION_SUPPORT
+        HAS_ZSTANDARD_SUPPORT
+        HAS_BZIP2_SUPPORT
+        HAS_BLOSC_SUPPORT
+        HAS_SET_ALIGNMENT
+        HAS_NCFILTER
+        HAS_NCRCSET
+
+        NC_NOQUANTIZE
+        NC_QUANTIZE_BITGROOM
+        NC_QUANTIZE_GRANULARBR
+        NC_QUANTIZE_BITROUND
+
+        H5Z_FILTER_SZIP
+        H5Z_FILTER_ZSTD
+        H5Z_FILTER_BZIP2
+        H5Z_FILTER_BLOSC
+
+        NC_COLLECTIVE
+        NC_INDEPENDENT
+
+        NC_MPIIO
+        NC_MPIPOSIX
+        NC_PNETCDF

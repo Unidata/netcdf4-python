@@ -43,118 +43,24 @@ def check_ifnetcdf4(netcdf4_includedir):
             isnetcdf4 = True
     return isnetcdf4
 
-def check_api(inc_dirs,netcdf_lib_version):
-    has_rename_grp = False
-    has_nc_inq_path = False
-    has_nc_inq_format_extended = False
-    has_cdf5_format = False
-    has_nc_open_mem = False
-    has_nc_create_mem = False
+
+def check_has_parallel_support(inc_dirs: list) -> bool:
     has_parallel_support = False
-    has_parallel4_support = False
-    has_pnetcdf_support = False
-    has_szip_support = False
-    has_quantize = False
-    has_zstandard = False
-    has_bzip2 = False
-    has_blosc = False
-    has_ncfilter = False
-    has_set_alignment = False
-    has_nc_rc_set = False
 
     for d in inc_dirs:
-        try:
-            f = open(os.path.join(d, 'netcdf.h'), **open_kwargs)
-        except OSError:
+        ncmetapath = os.path.join(d,'netcdf_meta.h')
+        if not os.path.exists(ncmetapath):
             continue
 
-        has_nc_open_mem = os.path.exists(os.path.join(d, 'netcdf_mem.h'))
-        has_nc_filter = os.path.exists(os.path.join(d, 'netcdf_filter.h'))
-
-        for line in f:
-            if line.startswith('nc_rename_grp'):
-                has_rename_grp = True
-            if line.startswith('nc_inq_path'):
-                has_nc_inq_path = True
-            if line.startswith('nc_inq_format_extended'):
-                has_nc_inq_format_extended = True
-            if line.startswith('#define NC_FORMAT_64BIT_DATA'):
-                has_cdf5_format = True
-            if line.startswith('nc_def_var_quantize'):
-                has_quantize = True
-            if line.startswith('nc_set_alignment'):
-                has_set_alignment = True
-            if line.startswith('EXTERNL int nc_rc_set'):
-                has_nc_rc_set = True
-
-        if has_nc_open_mem:
-            try:
-                f = open(os.path.join(d, 'netcdf_mem.h'), **open_kwargs)
-            except OSError:
-                continue
+        with open(ncmetapath) as f:
             for line in f:
-                if line.startswith('EXTERNL int nc_create_mem'):
-                    has_nc_create_mem = True
-
-        if has_nc_filter:
-            try:
-                f = open(os.path.join(d, 'netcdf_filter.h'), **open_kwargs)
-            except OSError:
-                continue
-            for line in f:
-                if line.startswith('EXTERNL int nc_def_var_zstandard'):
-                    has_zstandard = True
-                if line.startswith('EXTERNL int nc_def_var_bzip2'):
-                    has_bzip2 = True
-                if line.startswith('EXTERNL int nc_def_var_blosc'):
-                    has_blosc = True
-                if line.startswith('EXTERNL int nc_inq_filter_avail'):
-                    has_ncfilter = True
-
-        ncmetapath = os.path.join(d,'netcdf_meta.h')
-        if os.path.exists(ncmetapath):
-            for line in open(ncmetapath):
-                if line.startswith('#define NC_HAS_CDF5'):
-                    try:
-                        has_cdf5_format = bool(int(line.split()[2]))
-                    except ValueError:
-                        pass  # keep default False if value cannot be parsed
                 if line.startswith('#define NC_HAS_PARALLEL'):
                     try:
                         has_parallel_support = bool(int(line.split()[2]))
                     except ValueError:
                         pass
-                if line.startswith('#define NC_HAS_PARALLEL4'):
-                    try:
-                        has_parallel4_support = bool(int(line.split()[2]))
-                    except ValueError:
-                        pass
-                if line.startswith('#define NC_HAS_PNETCDF'):
-                    try:
-                        has_pnetcdf_support = bool(int(line.split()[2]))
-                    except ValueError:
-                        pass
-                if line.startswith('#define NC_HAS_SZIP_WRITE'):
-                    try:
-                        has_szip_support = bool(int(line.split()[2]))
-                    except ValueError:
-                        pass
 
-        # NC_HAS_PARALLEL4 missing in 4.6.1 (issue #964)
-        if not has_parallel4_support and has_parallel_support and not has_pnetcdf_support:
-            has_parallel4_support = True
-        # for 4.6.1, if NC_HAS_PARALLEL=NC_HAS_PNETCDF=1, guess that
-        # parallel HDF5 is enabled (must guess since there is no
-        # NC_HAS_PARALLEL4)
-        elif netcdf_lib_version == "4.6.1" and not has_parallel4_support and has_parallel_support:
-            has_parallel4_support = True
-        break
-
-    return has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-           has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
-           has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-           has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter, \
-           has_nc_rc_set
+    return has_parallel_support
 
 
 def getnetcdfvers(libdirs):
@@ -564,147 +470,35 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     if len(sys.argv) >= 2:
         if os.path.exists(netcdf4_src_c):
             os.remove(netcdf4_src_c)
-    # this determines whether renameGroup and filepath methods will work.
-    has_rename_grp, has_nc_inq_path, has_nc_inq_format_extended, \
-    has_cdf5_format, has_nc_open_mem, has_nc_create_mem, \
-    has_parallel4_support, has_pnetcdf_support, has_szip_support, has_quantize, \
-    has_zstandard, has_bzip2, has_blosc, has_set_alignment, has_ncfilter, has_nc_rc_set = \
-    check_api(inc_dirs,netcdf_lib_version)
+
     # for netcdf 4.4.x CDF5 format is always enabled.
     if netcdf_lib_version is not None and\
        (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
         has_cdf5_format = True
 
-    # disable parallel support if mpi4py not available.
-    #try:
-    #    import mpi4py
-    #except ImportError:
-    #    f.write('disabling mpi parallel support because mpi4py not found\n')
-    #    has_parallel4_support = False
-    #    has_pnetcdf_support = False
+    has_parallel_support = check_has_parallel_support(inc_dirs)
+    has_has_not = "has" if has_parallel_support else "does not have"
+    sys.stdout.write(f"netcdf lib {has_has_not} parallel functions\n")
 
-    f = open(osp.join('include', 'constants.pyx'), 'w')
-    if has_rename_grp:
-        sys.stdout.write('netcdf lib has group rename capability\n')
-        f.write('DEF HAS_RENAME_GRP = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have group rename capability\n')
-        f.write('DEF HAS_RENAME_GRP = 0\n')
-
-    if has_nc_inq_path:
-        sys.stdout.write('netcdf lib has nc_inq_path function\n')
-        f.write('DEF HAS_NC_INQ_PATH = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have nc_inq_path function\n')
-        f.write('DEF HAS_NC_INQ_PATH = 0\n')
-
-    if has_nc_inq_format_extended:
-        sys.stdout.write('netcdf lib has nc_inq_format_extended function\n')
-        f.write('DEF HAS_NC_INQ_FORMAT_EXTENDED = 1\n')
-    else:
-        sys.stdout.write(
-            'netcdf lib does not have nc_inq_format_extended function\n')
-        f.write('DEF HAS_NC_INQ_FORMAT_EXTENDED = 0\n')
-
-    if has_nc_open_mem:
-        sys.stdout.write('netcdf lib has nc_open_mem function\n')
-        f.write('DEF HAS_NC_OPEN_MEM = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have nc_open_mem function\n')
-        f.write('DEF HAS_NC_OPEN_MEM = 0\n')
-
-    if has_nc_create_mem:
-        sys.stdout.write('netcdf lib has nc_create_mem function\n')
-        f.write('DEF HAS_NC_CREATE_MEM = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have nc_create_mem function\n')
-        f.write('DEF HAS_NC_CREATE_MEM = 0\n')
-
-    if has_cdf5_format:
-        sys.stdout.write('netcdf lib has cdf-5 format capability\n')
-        f.write('DEF HAS_CDF5_FORMAT = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have cdf-5 format capability\n')
-        f.write('DEF HAS_CDF5_FORMAT = 0\n')
-
-    if has_parallel4_support:
-        sys.stdout.write('netcdf lib has netcdf4 parallel functions\n')
-        f.write('DEF HAS_PARALLEL4_SUPPORT = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have netcdf4 parallel functions\n')
-        f.write('DEF HAS_PARALLEL4_SUPPORT = 0\n')
-
-    if has_pnetcdf_support:
-        sys.stdout.write('netcdf lib has pnetcdf parallel functions\n')
-        f.write('DEF HAS_PNETCDF_SUPPORT = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have pnetcdf parallel functions\n')
-        f.write('DEF HAS_PNETCDF_SUPPORT = 0\n')
-
-    if has_quantize:
-        sys.stdout.write('netcdf lib has bit-grooming/quantization functions\n')
-        f.write('DEF HAS_QUANTIZATION_SUPPORT = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have bit-grooming/quantization functions\n')
-        f.write('DEF HAS_QUANTIZATION_SUPPORT = 0\n')
-
-    if has_zstandard:
-        sys.stdout.write('netcdf lib has zstandard compression functions\n')
-        f.write('DEF HAS_ZSTANDARD_SUPPORT = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have zstandard compression functions\n')
-        f.write('DEF HAS_ZSTANDARD_SUPPORT = 0\n')
-
-    if has_bzip2:
-        sys.stdout.write('netcdf lib has bzip2 compression functions\n')
-        f.write('DEF HAS_BZIP2_SUPPORT = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have bzip2 compression functions\n')
-        f.write('DEF HAS_BZIP2_SUPPORT = 0\n')
-
-    if has_blosc:
-        sys.stdout.write('netcdf lib has blosc compression functions\n')
-        f.write('DEF HAS_BLOSC_SUPPORT = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have blosc compression functions\n')
-        f.write('DEF HAS_BLOSC_SUPPORT = 0\n')
-
-    if has_szip_support:
-        sys.stdout.write('netcdf lib has szip compression functions\n')
-        f.write('DEF HAS_SZIP_SUPPORT = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have szip compression functions\n')
-        f.write('DEF HAS_SZIP_SUPPORT = 0\n')
-
-    if has_set_alignment:
-        sys.stdout.write('netcdf lib has nc_set_alignment function\n')
-        f.write('DEF HAS_SET_ALIGNMENT = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have nc_set_alignment function\n')
-        f.write('DEF HAS_SET_ALIGNMENT = 0\n')
-
-    if has_ncfilter:
-        sys.stdout.write('netcdf lib has nc_inq_filter_avail function\n')
-        f.write('DEF HAS_NCFILTER = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have nc_inq_filter_avail function\n')
-        f.write('DEF HAS_NCFILTER = 0\n')
-
-    if has_nc_rc_set:
-        sys.stdout.write('netcdf lib has nc_rc_set function\n')
-        f.write('DEF HAS_NCRCSET = 1\n')
-    else:
-        sys.stdout.write('netcdf lib does not have nc_rc_set function\n')
-        f.write('DEF HAS_NCRCSET = 0\n')
-
-    f.close()
-
-    if has_parallel4_support or has_pnetcdf_support:
+    if has_parallel_support:
         import mpi4py
         inc_dirs.append(mpi4py.get_include())
         # mpi_incdir should not be needed if using nc-config
         # (should be included in nc-config --cflags)
-        if mpi_incdir is not None: inc_dirs.append(mpi_incdir)
+        if mpi_incdir is not None:
+            inc_dirs.append(mpi_incdir)
+
+        # Name of file containing imports required for parallel support
+        parallel_support_imports = "parallel_support_imports.pxi.in"
+    else:
+        parallel_support_imports = "no_parallel_support_imports.pxi.in"
+
+    # Copy the specific version of the file containing parallel
+    # support imports
+    shutil.copyfile(
+        osp.join("include", parallel_support_imports),
+        osp.join("include", "parallel_support_imports.pxi")
+    )
 
     ext_modules = [Extension("netCDF4._netCDF4",
                              [netcdf4_src_pyx],

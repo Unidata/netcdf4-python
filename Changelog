@@ -1,4 +1,9 @@
- version 1.6.5 (not yet released)
+ version 1.7.0 (not yet released)
+===============================
+ * fix for deprecated Cython `DEF` and `IF` statements using compatibility header
+   with shims for unavailable functionality
+
+ version 1.6.5 (tag v1.6.5rel)
 ===============================
  * fix for issue #1271 (mask ignored if bool MA assinged to uint8 var)
  * include information on specific object when reporting errors from netcdf-c
