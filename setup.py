@@ -1,5 +1,6 @@
 import os, sys, subprocess, glob
 import os.path as osp
+import pathlib
 import shutil
 import configparser
 from setuptools import setup, Extension
@@ -411,12 +412,19 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         osp.join("include", "parallel_support_imports.pxi")
     )
 
+    nc_complex_dir = pathlib.Path("./external/nc_complex")
+    source_files = [
+        netcdf4_src_pyx,
+        str(nc_complex_dir / "src/nc_complex.c"),
+    ]
+    include_dirs = inc_dirs + ["include", str(nc_complex_dir / "include")]
+
     ext_modules = [Extension("netCDF4._netCDF4",
-                             [netcdf4_src_pyx],
+                             source_files,
                              define_macros=DEFINE_MACROS,
                              libraries=libs,
                              library_dirs=lib_dirs,
-                             include_dirs=inc_dirs + ['include'],
+                             include_dirs=include_dirs,
                              runtime_library_dirs=runtime_lib_dirs)]
     # set language_level directive to 3
     for e in ext_modules:
