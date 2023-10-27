@@ -154,90 +154,27 @@ if USE_SETUPCFG and os.path.exists(setup_cfg):
     sys.stdout.write('reading from setup.cfg...\n')
     config = configparser.ConfigParser()
     config.read(setup_cfg)
-    try:
-        HDF5_dir = config.get("directories", "HDF5_dir")
-    except:
-        pass
-    try:
-        HDF5_libdir = config.get("directories", "HDF5_libdir")
-    except:
-        pass
-    try:
-        HDF5_incdir = config.get("directories", "HDF5_incdir")
-    except:
-        pass
-    try:
-        netCDF4_dir = config.get("directories", "netCDF4_dir")
-    except:
-        pass
-    try:
-        netCDF4_libdir = config.get("directories", "netCDF4_libdir")
-    except:
-        pass
-    try:
-        netCDF4_incdir = config.get("directories", "netCDF4_incdir")
-    except:
-        pass
-    try:
-        szip_dir = config.get("directories", "szip_dir")
-    except:
-        pass
-    try:
-        szip_libdir = config.get("directories", "szip_libdir")
-    except:
-        pass
-    try:
-        szip_incdir = config.get("directories", "szip_incdir")
-    except:
-        pass
-    try:
-        hdf4_dir = config.get("directories", "hdf4_dir")
-    except:
-        pass
-    try:
-        hdf4_libdir = config.get("directories", "hdf4_libdir")
-    except:
-        pass
-    try:
-        hdf4_incdir = config.get("directories", "hdf4_incdir")
-    except:
-        pass
-    try:
-        jpeg_dir = config.get("directories", "jpeg_dir")
-    except:
-        pass
-    try:
-        jpeg_libdir = config.get("directories", "jpeg_libdir")
-    except:
-        pass
-    try:
-        jpeg_incdir = config.get("directories", "jpeg_incdir")
-    except:
-        pass
-    try:
-        curl_dir = config.get("directories", "curl_dir")
-    except:
-        pass
-    try:
-        curl_libdir = config.get("directories", "curl_libdir")
-    except:
-        pass
-    try:
-        curl_incdir = config.get("directories", "curl_incdir")
-    except:
-        pass
-    try:
-        mpi_incdir = config.get("directories","mpi_incdir")
-    except:
-        pass
-    try:
-        use_ncconfig = config.getboolean("options", "use_ncconfig")
-    except:
-        pass
-    try:
-        ncconfig = config.get("options", "ncconfig")
-    except:
-        pass
+    HDF5_dir = config.get("directories", "HDF5_dir", fallback=HDF5_dir)
+    HDF5_libdir = config.get("directories", "HDF5_libdir", fallback=HDF5_libdir)
+    HDF5_incdir = config.get("directories", "HDF5_incdir", fallback=HDF5_incdir)
+    netCDF4_dir = config.get("directories", "netCDF4_dir", fallback=netCDF4_dir)
+    netCDF4_libdir = config.get("directories", "netCDF4_libdir", fallback=netCDF4_libdir)
+    netCDF4_incdir = config.get("directories", "netCDF4_incdir", fallback=netCDF4_incdir)
+    szip_dir = config.get("directories", "szip_dir", fallback=szip_dir)
+    szip_libdir = config.get("directories", "szip_libdir", fallback=szip_libdir)
+    szip_incdir = config.get("directories", "szip_incdir", fallback=szip_incdir)
+    hdf4_dir = config.get("directories", "hdf4_dir", fallback=hdf4_dir)
+    hdf4_libdir = config.get("directories", "hdf4_libdir", fallback=hdf4_libdir)
+    hdf4_incdir = config.get("directories", "hdf4_incdir", fallback=hdf4_incdir)
+    jpeg_dir = config.get("directories", "jpeg_dir", fallback=jpeg_dir)
+    jpeg_libdir = config.get("directories", "jpeg_libdir", fallback=jpeg_libdir)
+    jpeg_incdir = config.get("directories", "jpeg_incdir", fallback=jpeg_incdir)
+    curl_dir = config.get("directories", "curl_dir", fallback=curl_dir)
+    curl_libdir = config.get("directories", "curl_libdir", fallback=curl_libdir)
+    curl_incdir = config.get("directories", "curl_incdir", fallback=curl_incdir)
+    mpi_incdir = config.get("directories","mpi_incdir", fallback=mpi_incdir)
+    use_ncconfig = config.getboolean("options", "use_ncconfig", fallback=use_ncconfig)
+    ncconfig = config.get("options", "ncconfig", fallback=ncconfig)
 
 try:
     if ncconfig is None:
