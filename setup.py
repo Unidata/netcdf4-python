@@ -476,11 +476,9 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
        (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
         has_cdf5_format = True
 
-    with open(osp.join('include', 'constants.pyx'), 'w') as f:
-        has_parallel_support = check_has_parallel_support(inc_dirs)
-        has_has_not = "has" if has_parallel_support else "does not have"
-        sys.stdout.write(f"netcdf lib {has_has_not} parallel functions\n")
-        f.write(f'DEF HAS_PARALLEL_SUPPORT = {int(has_parallel_support)}\n')
+    has_parallel_support = check_has_parallel_support(inc_dirs)
+    has_has_not = "has" if has_parallel_support else "does not have"
+    sys.stdout.write(f"netcdf lib {has_has_not} parallel functions\n")
 
     if has_parallel_support:
         import mpi4py
