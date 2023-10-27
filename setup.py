@@ -4,6 +4,7 @@ import shutil
 import configparser
 from setuptools import setup, Extension
 from setuptools.dist import Distribution
+from typing import List
 
 open_kwargs = {'encoding': 'utf-8'}
 
@@ -181,8 +182,7 @@ try:
             ncconfig = os.path.join(netCDF4_dir, 'bin/nc-config')
         else:  # otherwise, just hope it's in the users PATH.
             ncconfig = 'nc-config'
-    HAS_NCCONFIG = subprocess.call([ncconfig, '--libs'],
-                                     stdout=subprocess.PIPE) == 0
+    HAS_NCCONFIG = subprocess.call([ncconfig, '--libs']) == 0
 except OSError:
     HAS_NCCONFIG = False
 
@@ -197,10 +197,16 @@ elif USE_NCCONFIG is None:
 #    USE_NCCONFIG = False # don't try to use nc-config if USE_NCCONFIG not set
 
 try:
-    HAS_PKG_CONFIG = subprocess.call(['pkg-config', '--libs', 'hdf5'],
-                                     stdout=subprocess.PIPE) == 0
+    HAS_PKG_CONFIG = subprocess.call(['pkg-config', '--libs', 'hdf5']) == 0
 except OSError:
     HAS_PKG_CONFIG = False
+
+
+def config_flags(command: List[str], flag: str) -> list:
+    """Pull out specific flags from a config command (pkg-config or nc-config)"""
+    flags = subprocess.run(command, capture_output=True, text=True)
+    return [arg[2:] for arg in flags.stdout.split() if arg.startswith(flag)]
+
 
 def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
     global HDF5_incdir, HDF5_dir, HDF5_libdir
@@ -208,20 +214,9 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
     nohdf5dirs = HDF5_incdir is None and HDF5_libdir is None and  HDF5_dir is None
     if HAS_PKG_CONFIG and nohdf5dirs:
         # if HDF5 dirs not specified, and pkg-config available, use it
-        dep = subprocess.Popen(['pkg-config', '--cflags', 'hdf5'],
-                               stdout=subprocess.PIPE).communicate()[0]
-        inc_dirs.extend([str(i[2:].decode()) for i in dep.split() if
-                         i[0:2].decode() == '-I'])
-        dep = subprocess.Popen(['pkg-config', '--libs', 'hdf5'],
-                               stdout=subprocess.PIPE).communicate()[0]
-        libs.extend(
-            [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l'])
-        lib_dirs.extend(
-            [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-L'])
-        dep = subprocess.Popen(['pkg-config', '--cflags', 'hdf5'],
-                               stdout=subprocess.PIPE).communicate()[0]
-        inc_dirs.extend(
-            [str(i[2:].decode()) for i in dep.split() if i[0:2].decode() == '-I'])
+        inc_dirs.extend(config_flags(["pkg-config", "--cflags", "hdf5"], "-I"))
+        libs.extend(config_flags(["pkg-config", "--libs", "hdf5"], "-l"))
+        lib_dirs.extend(config_flags(["pkg-config", "--libs", "hdf5"], "-L"))
     else:
         if HDF5_incdir is None and HDF5_dir is None:
             print("    HDF5_DIR environment variable not set, checking some standard locations ..")
@@ -261,17 +256,11 @@ dirstosearch += [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
                 '/opt/local', '/opt/homebrew', '/usr']
 
 # try nc-config first
-if USE_NCCONFIG and HAS_NCCONFIG:  # Try nc-config.
+if USE_NCCONFIG and HAS_NCCONFIG and ncconfig is not None:
     print(f'using {ncconfig}...')
-    dep = subprocess.Popen([ncconfig, '--libs'],
-                           stdout=subprocess.PIPE).communicate()[0]
-    libs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l']
-    lib_dirs = [str(l[2:].decode()) for l in dep.split() if
-                l[0:2].decode() == '-L']
-    dep = subprocess.Popen([ncconfig, '--cflags'],
-                           stdout=subprocess.PIPE).communicate()[0]
-    inc_dirs = [str(i[2:].decode()) for i in dep.split() if
-                i[0:2].decode() == '-I']
+    libs = config_flags([ncconfig, "--libs"], "-l")
+    lib_dirs = config_flags([ncconfig, "--libs"], "-L")
+    inc_dirs = config_flags([ncconfig, '--cflags'], "-I")
 
     # check to see if hdf5 found in directories returned by nc-config
     hdf5_version = None
