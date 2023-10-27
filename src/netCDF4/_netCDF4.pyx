@@ -1467,6 +1467,17 @@ else:
     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT
     _cmode_dict['NETCDF3_64BIT_OFFSET'] = NC_64BIT_OFFSET
 
+_parallel_formats = []
+if __has_parallel4_support__:
+    _parallel_formats += ['NETCDF4', 'NETCDF4_CLASSIC']
+if __has_pnetcdf_support__:
+    _parallel_formats += [
+        'NETCDF3_CLASSIC',
+        'NETCDF3_64BIT_OFFSET',
+        'NETCDF3_64BIT_DATA',
+        'NETCDF3_64BIT'
+    ]
+
 # default fill_value to numpy datatype mapping.
 default_fillvals = {#'S1':NC_FILL_CHAR,
                      'S1':'\0',
@@ -2244,33 +2255,20 @@ strings.
         bytestr = _strencode(_tostr(filename), encoding=encoding)
         path = bytestr
 
-        if memory is not None and mode not in ['r','w']:
-            msg='if memory kwarg specified, mode must be \'r\' or \'w\''
-            raise ValueError(msg)
+        if memory is not None and mode not in ('r', 'w'):
+            raise ValueError("if memory kwarg specified, mode must be 'r' or 'w'")
 
         if parallel:
             if not __has_parallel_support__:
                 raise ValueError("parallel mode requires MPI enabled netcdf-c")
 
-            parallel_formats = []
-            if __has_parallel4_support__:
-                parallel_formats += ['NETCDF4','NETCDF4_CLASSIC']
-            if __has_pnetcdf_support__:
-                parallel_formats += ['NETCDF3_CLASSIC',
-                                     'NETCDF3_64BIT_OFFSET',
-                                     'NETCDF3_64BIT_DATA',
-                                     'NETCDF3_64BIT']
-            if format not in parallel_formats:
-                msg='parallel mode only works with the following formats: ' + ' '.join(parallel_formats)
-                raise ValueError(msg)
-            if comm is not None:
-                mpicomm = (<Comm?>comm).ob_mpi
-            else:
-                mpicomm = MPI_COMM_WORLD
-            if info is not None:
-                mpiinfo = (<Info?>info).ob_mpi
-            else:
-                mpiinfo = MPI_INFO_NULL
+            if format not in _parallel_formats:
+                raise ValueError(
+                    f"parallel mode only works with the following formats: {' '.join(_parallel_formats)}"
+                )
+
+            mpicomm = (<Comm?>comm).ob_mpi if comm is not None else MPI_COMM_WORLD
+            mpiinfo = (<Info?>info).ob_mpi if info is not None else MPI_INFO_NULL
             parmode = NC_MPIIO | _cmode_dict[format]
 
         self._inmemory = False
