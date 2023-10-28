@@ -32,7 +32,7 @@ types) are not supported.
 
  - Clone the
    [github repository](http://github.com/Unidata/netcdf4-python).
- - Make sure the dependencies are satisfied (Python 3.7 or later,
+ - Make sure the dependencies are satisfied (Python 3.8 or later,
    [numpy](http://numpy.scipy.org),
    [Cython](http://cython.org),
    [cftime](https://github.com/Unidata/cftime),

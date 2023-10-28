@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.1.dev7+g3ecfbcf" />
 <title>netCDF4 API documentation</title>
-<meta name="description" content="Version 1.6.4
+<meta name="description" content="Version 1.7.0
 …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -23,7 +23,7 @@
 <h1 class="title">Package <code>netCDF4</code></h1>
 </header>
 <section id="section-intro">
-<h2 id="version-164">Version 1.6.4</h2>
+<h2 id="version-170">Version 1.7.0</h2>
 <h1 id="introduction">Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.</p>
 <p><a href="http://www.unidata.ucar.edu/software/netcdf/">netCDF</a> version 4 has many features
@@ -51,7 +51,7 @@ types) are not supported.</p>
 <ul>
 <li>Clone the
 <a href="http://github.com/Unidata/netcdf4-python">github repository</a>.</li>
-<li>Make sure the dependencies are satisfied (Python 3.7 or later,
+<li>Make sure the dependencies are satisfied (Python 3.8 or later,
 <a href="http://numpy.scipy.org">numpy</a>,
 <a href="http://cython.org">Cython</a>,
 <a href="https://github.com/Unidata/cftime">cftime</a>,
@@ -1113,7 +1113,7 @@ Unit tests are in the <code>test</code> directory.</p>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="netCDF4.chartostring"><code class="name flex">
-<span>def <span class="ident">chartostring</span></span>(<span>...)</span>
+<span>def <span class="ident">chartostring</span></span>(<span>b, encoding='utf-8')</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>chartostring(b,encoding='utf-8')</code></strong></p>
@@ -1220,13 +1220,18 @@ integer multiple of the units.</p>
 with approximately 1 microsecond accuracy.</p></div>
 </dd>
 <dt id="netCDF4.get_alignment"><code class="name flex">
-<span>def <span class="ident">get_alignment</span></span>(<span>...)</span>
+<span>def <span class="ident">get_alignment</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p><strong><code><a title="netCDF4.get_alignment" href="#netCDF4.get_alignment">get_alignment()</a></code></strong></p>
+<p>return current netCDF alignment within HDF5 files in a tuple
+(threshold,alignment). See netcdf C library documentation for
+<code>nc_get_alignment</code> for details. Values can be reset with
+<code><a title="netCDF4.set_alignment" href="#netCDF4.set_alignment">set_alignment()</a></code>.</p>
+<p>This function was added in netcdf 4.9.0.</p></div>
 </dd>
 <dt id="netCDF4.get_chunk_cache"><code class="name flex">
-<span>def <span class="ident">get_chunk_cache</span></span>(<span>...)</span>
+<span>def <span class="ident">get_chunk_cache</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code><a title="netCDF4.get_chunk_cache" href="#netCDF4.get_chunk_cache">get_chunk_cache()</a></code></strong></p>
@@ -1235,7 +1240,7 @@ See netcdf C library documentation for <code>nc_get_chunk_cache</code> for
 details. Values can be reset with <code><a title="netCDF4.set_chunk_cache" href="#netCDF4.set_chunk_cache">set_chunk_cache()</a></code>.</p></div>
 </dd>
 <dt id="netCDF4.getlibversion"><code class="name flex">
-<span>def <span class="ident">getlibversion</span></span>(<span>...)</span>
+<span>def <span class="ident">getlibversion</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code><a title="netCDF4.getlibversion" href="#netCDF4.getlibversion">getlibversion()</a></code></strong></p>
@@ -1298,13 +1303,17 @@ do not contain a time-zone offset, even if the specified <strong>units</strong>
 contains one.</p></div>
 </dd>
 <dt id="netCDF4.set_alignment"><code class="name flex">
-<span>def <span class="ident">set_alignment</span></span>(<span>...)</span>
+<span>def <span class="ident">set_alignment</span></span>(<span>threshold, alignment)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p><strong><code><a title="netCDF4.set_alignment" href="#netCDF4.set_alignment">set_alignment()</a>(threshold,alignment)</code></strong></p>
+<p>Change the HDF5 file alignment.
+See netcdf C library documentation for <code>nc_set_alignment</code> for
+details.</p>
+<p>This function was added in netcdf 4.9.0.</p></div>
 </dd>
 <dt id="netCDF4.set_chunk_cache"><code class="name flex">
-<span>def <span class="ident">set_chunk_cache</span></span>(<span>...)</span>
+<span>def <span class="ident">set_chunk_cache</span></span>(<span>size=None, nelems=None, preemption=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_chunk_cache(self,size=None,nelems=None,preemption=None)</code></strong></p>
@@ -1313,7 +1322,7 @@ See netcdf C library documentation for <code>nc_set_chunk_cache</code> for
 details.</p></div>
 </dd>
 <dt id="netCDF4.stringtoarr"><code class="name flex">
-<span>def <span class="ident">stringtoarr</span></span>(<span>...)</span>
+<span>def <span class="ident">stringtoarr</span></span>(<span>string, NUMCHARS, dtype='S')</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>stringtoarr(a, NUMCHARS,dtype='S')</code></strong></p>
@@ -1333,7 +1342,7 @@ unicode array (dtype = <code>'U1'</code>) will be returned.</p>
 (default) or <code>'U1'</code> (if dtype=<code>'U'</code>)</p></div>
 </dd>
 <dt id="netCDF4.stringtochar"><code class="name flex">
-<span>def <span class="ident">stringtochar</span></span>(<span>...)</span>
+<span>def <span class="ident">stringtochar</span></span>(<span>a, encoding='utf-8')</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>stringtochar(a,encoding='utf-8')</code></strong></p>
@@ -1553,7 +1562,7 @@ Ignored if <code>parallel=False</code>.</p></div>
 <h3>Static methods</h3>
 <dl>
 <dt id="netCDF4.Dataset.fromcdl"><code class="name flex">
-<span>def <span class="ident">fromcdl</span></span>(<span>...)</span>
+<span>def <span class="ident">fromcdl</span></span>(<span>cdlfilename, ncfilename=None, mode='a', format='NETCDF4')</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>fromcdl(cdlfilename, ncfilename=None, mode='a',format='NETCDF4')</code></strong></p>
@@ -1629,14 +1638,14 @@ Access mode to open Dataset (Default <code>'a'</code>).</p>
 <h3>Methods</h3>
 <dl>
 <dt id="netCDF4.Dataset.close"><code class="name flex">
-<span>def <span class="ident">close</span></span>(<span>...)</span>
+<span>def <span class="ident">close</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>close(self)</code></strong></p>
 <p>Close the Dataset.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.createCompoundType"><code class="name flex">
-<span>def <span class="ident">createCompoundType</span></span>(<span>...)</span>
+<span>def <span class="ident">createCompoundType</span></span>(<span>self, datatype, datatype_name)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>createCompoundType(self, datatype, datatype_name)</code></strong></p>
@@ -1650,7 +1659,7 @@ created first.</p>
 datatype.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.createDimension"><code class="name flex">
-<span>def <span class="ident">createDimension</span></span>(<span>...)</span>
+<span>def <span class="ident">createDimension</span></span>(<span>self, dimname, size=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>createDimension(self, dimname, size=None)</code></strong></p>
@@ -1665,7 +1674,7 @@ instance. To determine if a dimension is 'unlimited', use the
 <code><a title="netCDF4.Dimension.isunlimited" href="#netCDF4.Dimension.isunlimited">Dimension.isunlimited()</a></code> method of the <code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> instance.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.createEnumType"><code class="name flex">
-<span>def <span class="ident">createEnumType</span></span>(<span>...)</span>
+<span>def <span class="ident">createEnumType</span></span>(<span>self, datatype, datatype_name, enum_dict)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>createEnumType(self, datatype, datatype_name, enum_dict)</code></strong></p>
@@ -1676,7 +1685,7 @@ defining the enum fields and values.</p>
 datatype.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.createGroup"><code class="name flex">
-<span>def <span class="ident">createGroup</span></span>(<span>...)</span>
+<span>def <span class="ident">createGroup</span></span>(<span>self, groupname)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>createGroup(self, groupname)</code></strong></p>
@@ -1692,7 +1701,7 @@ raised.</p>
 <p>The return value is a <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> class instance.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.createVLType"><code class="name flex">
-<span>def <span class="ident">createVLType</span></span>(<span>...)</span>
+<span>def <span class="ident">createVLType</span></span>(<span>self, datatype, datatype_name)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>createVLType(self, datatype, datatype_name)</code></strong></p>
@@ -1702,7 +1711,7 @@ dtype object <code>datatype</code>.</p>
 datatype.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.createVariable"><code class="name flex">
-<span>def <span class="ident">createVariable</span></span>(<span>...)</span>
+<span>def <span class="ident">createVariable</span></span>(<span>self, varname, datatype, dimensions=(), compression=None, zlib=False, complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8, blosc_shuffle=1, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, significant_digits=None, quantize_mode='BitGroom', fill_value=None, chunk_cache=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
@@ -1848,7 +1857,7 @@ instance. The <code>ndim</code> attribute
 is the number of variable dimensions.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.delncattr"><code class="name flex">
-<span>def <span class="ident">delncattr</span></span>(<span>...)</span>
+<span>def <span class="ident">delncattr</span></span>(<span>self, name)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>delncattr(self,name,value)</code></strong></p>
@@ -1858,7 +1867,7 @@ netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.filepath"><code class="name flex">
-<span>def <span class="ident">filepath</span></span>(<span>...)</span>
+<span>def <span class="ident">filepath</span></span>(<span>self, encoding=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>filepath(self,encoding=None)</code></strong></p>
@@ -1869,7 +1878,7 @@ is decoded into a string using <code>sys.getfilesystemencoding()</code> by defau
 changed using the <code>encoding</code> kwarg.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.get_variables_by_attributes"><code class="name flex">
-<span>def <span class="ident">get_variables_by_attributes</span></span>(<span>...)</span>
+<span>def <span class="ident">get_variables_by_attributes</span></span>(<span>self, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>get_variables_by_attributes(self, **kwargs)</code></strong></p>
@@ -1896,7 +1905,7 @@ attribute does not exist on the variable. For example,</p>
 </code></pre></div>
 </dd>
 <dt id="netCDF4.Dataset.getncattr"><code class="name flex">
-<span>def <span class="ident">getncattr</span></span>(<span>...)</span>
+<span>def <span class="ident">getncattr</span></span>(<span>self, name, encoding='utf-8')</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>getncattr(self,name)</code></strong></p>
@@ -1907,77 +1916,77 @@ name as one of the reserved python attributes.</p>
 character encoding of a string attribute (default is <code>utf-8</code>).</p></div>
 </dd>
 <dt id="netCDF4.Dataset.has_blosc_filter"><code class="name flex">
-<span>def <span class="ident">has_blosc_filter</span></span>(<span>...)</span>
+<span>def <span class="ident">has_blosc_filter</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>has_blosc_filter(self)</code></strong>
 returns True if blosc compression filter is available</p></div>
 </dd>
 <dt id="netCDF4.Dataset.has_bzip2_filter"><code class="name flex">
-<span>def <span class="ident">has_bzip2_filter</span></span>(<span>...)</span>
+<span>def <span class="ident">has_bzip2_filter</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>has_bzip2_filter(self)</code></strong>
 returns True if bzip2 compression filter is available</p></div>
 </dd>
 <dt id="netCDF4.Dataset.has_szip_filter"><code class="name flex">
-<span>def <span class="ident">has_szip_filter</span></span>(<span>...)</span>
+<span>def <span class="ident">has_szip_filter</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>has_szip_filter(self)</code></strong>
 returns True if szip compression filter is available</p></div>
 </dd>
 <dt id="netCDF4.Dataset.has_zstd_filter"><code class="name flex">
-<span>def <span class="ident">has_zstd_filter</span></span>(<span>...)</span>
+<span>def <span class="ident">has_zstd_filter</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>has_zstd_filter(self)</code></strong>
 returns True if zstd compression filter is available</p></div>
 </dd>
 <dt id="netCDF4.Dataset.isopen"><code class="name flex">
-<span>def <span class="ident">isopen</span></span>(<span>...)</span>
+<span>def <span class="ident">isopen</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>isopen(self)</code></strong></p>
 <p>Is the Dataset open or closed?</p></div>
 </dd>
 <dt id="netCDF4.Dataset.ncattrs"><code class="name flex">
-<span>def <span class="ident">ncattrs</span></span>(<span>...)</span>
+<span>def <span class="ident">ncattrs</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>ncattrs(self)</code></strong></p>
 <p>return netCDF global attribute names for this <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> in a list.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.renameAttribute"><code class="name flex">
-<span>def <span class="ident">renameAttribute</span></span>(<span>...)</span>
+<span>def <span class="ident">renameAttribute</span></span>(<span>self, oldname, newname)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>renameAttribute(self, oldname, newname)</code></strong></p>
 <p>rename a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.renameDimension"><code class="name flex">
-<span>def <span class="ident">renameDimension</span></span>(<span>...)</span>
+<span>def <span class="ident">renameDimension</span></span>(<span>self, oldname, newname)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>renameDimension(self, oldname, newname)</code></strong></p>
 <p>rename a <code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> named <code>oldname</code> to <code>newname</code>.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.renameGroup"><code class="name flex">
-<span>def <span class="ident">renameGroup</span></span>(<span>...)</span>
+<span>def <span class="ident">renameGroup</span></span>(<span>self, oldname, newname)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>renameGroup(self, oldname, newname)</code></strong></p>
 <p>rename a <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> named <code>oldname</code> to <code>newname</code> (requires netcdf &gt;= 4.3.1).</p></div>
 </dd>
 <dt id="netCDF4.Dataset.renameVariable"><code class="name flex">
-<span>def <span class="ident">renameVariable</span></span>(<span>...)</span>
+<span>def <span class="ident">renameVariable</span></span>(<span>self, oldname, newname)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>renameVariable(self, oldname, newname)</code></strong></p>
 <p>rename a <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code> named <code>oldname</code> to <code>newname</code></p></div>
 </dd>
 <dt id="netCDF4.Dataset.set_always_mask"><code class="name flex">
-<span>def <span class="ident">set_always_mask</span></span>(<span>...)</span>
+<span>def <span class="ident">set_always_mask</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_always_mask(self, True_or_False)</code></strong></p>
@@ -1994,7 +2003,7 @@ variables. Variables created after calling this function will follow
 the default behaviour.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.set_auto_chartostring"><code class="name flex">
-<span>def <span class="ident">set_auto_chartostring</span></span>(<span>...)</span>
+<span>def <span class="ident">set_auto_chartostring</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_auto_chartostring(self, True_or_False)</code></strong></p>
@@ -2008,7 +2017,7 @@ character variables (variables of type <code>NC_CHAR</code> or <code>S1</code>) 
 after calling this function will follow the default behaviour.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.set_auto_mask"><code class="name flex">
-<span>def <span class="ident">set_auto_mask</span></span>(<span>...)</span>
+<span>def <span class="ident">set_auto_mask</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_auto_mask(self, True_or_False)</code></strong></p>
@@ -2021,7 +2030,7 @@ shall be applied for all variables.</p>
 after calling this function will follow the default behaviour.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.set_auto_maskandscale"><code class="name flex">
-<span>def <span class="ident">set_auto_maskandscale</span></span>(<span>...)</span>
+<span>def <span class="ident">set_auto_maskandscale</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_auto_maskandscale(self, True_or_False)</code></strong></p>
@@ -2033,7 +2042,7 @@ and variable scaling shall be applied for all variables.</p>
 after calling this function will follow the default behaviour.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.set_auto_scale"><code class="name flex">
-<span>def <span class="ident">set_auto_scale</span></span>(<span>...)</span>
+<span>def <span class="ident">set_auto_scale</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_auto_scale(self, True_or_False)</code></strong></p>
@@ -2045,7 +2054,7 @@ shall be applied for all variables.</p>
 after calling this function will follow the default behaviour.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.set_fill_off"><code class="name flex">
-<span>def <span class="ident">set_fill_off</span></span>(<span>...)</span>
+<span>def <span class="ident">set_fill_off</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_fill_off(self)</code></strong></p>
@@ -2055,7 +2064,7 @@ may result in some performance improvements. However, you must then make
 sure the data is actually written before being read.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.set_fill_on"><code class="name flex">
-<span>def <span class="ident">set_fill_on</span></span>(<span>...)</span>
+<span>def <span class="ident">set_fill_on</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_fill_on(self)</code></strong></p>
@@ -2070,7 +2079,7 @@ Data which are equal to the
 to.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.set_ncstring_attrs"><code class="name flex">
-<span>def <span class="ident">set_ncstring_attrs</span></span>(<span>...)</span>
+<span>def <span class="ident">set_ncstring_attrs</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_ncstring_attrs(self, True_or_False)</code></strong></p>
@@ -2084,7 +2093,7 @@ attributes are stored as NC_CHARs (if False; default)</p>
 of existing (sub-) groups and their variables.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.setncattr"><code class="name flex">
-<span>def <span class="ident">setncattr</span></span>(<span>...)</span>
+<span>def <span class="ident">setncattr</span></span>(<span>self, name, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>setncattr(self,name,value)</code></strong></p>
@@ -2093,7 +2102,7 @@ Use if you need to set a netCDF attribute with the
 with the same name as one of the reserved python attributes.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.setncattr_string"><code class="name flex">
-<span>def <span class="ident">setncattr_string</span></span>(<span>...)</span>
+<span>def <span class="ident">setncattr_string</span></span>(<span>self, name, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>setncattr_string(self,name,value)</code></strong></p>
@@ -2102,7 +2111,7 @@ Use if you need to ensure that a netCDF attribute is created with type
 <code>NC_STRING</code> if the file format is <code>NETCDF4</code>.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.setncatts"><code class="name flex">
-<span>def <span class="ident">setncatts</span></span>(<span>...)</span>
+<span>def <span class="ident">setncatts</span></span>(<span>self, attdict)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>setncatts(self,attdict)</code></strong></p>
@@ -2112,14 +2121,14 @@ formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute</p></div>
 </dd>
 <dt id="netCDF4.Dataset.sync"><code class="name flex">
-<span>def <span class="ident">sync</span></span>(<span>...)</span>
+<span>def <span class="ident">sync</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>sync(self)</code></strong></p>
 <p>Writes all buffered data in the <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> to the disk file.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.tocdl"><code class="name flex">
-<span>def <span class="ident">tocdl</span></span>(<span>...)</span>
+<span>def <span class="ident">tocdl</span></span>(<span>self, coordvars=False, data=False, outfile=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>tocdl(self, coordvars=False, data=False, outfile=None)</code></strong></p>
@@ -2170,14 +2179,14 @@ determine if the dimension is unlimited.</p>
 <h3>Methods</h3>
 <dl>
 <dt id="netCDF4.Dimension.group"><code class="name flex">
-<span>def <span class="ident">group</span></span>(<span>...)</span>
+<span>def <span class="ident">group</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>group(self)</code></strong></p>
 <p>return the group that this <code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> is a member of.</p></div>
 </dd>
 <dt id="netCDF4.Dimension.isunlimited"><code class="name flex">
-<span>def <span class="ident">isunlimited</span></span>(<span>...)</span>
+<span>def <span class="ident">isunlimited</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>isunlimited(self)</code></strong></p>
@@ -2255,7 +2264,7 @@ another <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> in
 <h3>Methods</h3>
 <dl>
 <dt id="netCDF4.Group.close"><code class="name flex">
-<span>def <span class="ident">close</span></span>(<span>...)</span>
+<span>def <span class="ident">close</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>close(self)</code></strong></p>
@@ -2665,7 +2674,7 @@ or enum data types)</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="netCDF4.Variable.assignValue"><code class="name flex">
-<span>def <span class="ident">assignValue</span></span>(<span>...)</span>
+<span>def <span class="ident">assignValue</span></span>(<span>self, val)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>assignValue(self, val)</code></strong></p>
@@ -2674,7 +2683,7 @@ Provided for compatibility with
 Scientific.IO.NetCDF, can also be done by assigning to an Ellipsis slice ([&hellip;]).</p></div>
 </dd>
 <dt id="netCDF4.Variable.chunking"><code class="name flex">
-<span>def <span class="ident">chunking</span></span>(<span>...)</span>
+<span>def <span class="ident">chunking</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>chunking(self)</code></strong></p>
@@ -2686,7 +2695,7 @@ Otherwise, a sequence with the chunksize for
 each dimension is returned.</p></div>
 </dd>
 <dt id="netCDF4.Variable.delncattr"><code class="name flex">
-<span>def <span class="ident">delncattr</span></span>(<span>...)</span>
+<span>def <span class="ident">delncattr</span></span>(<span>self, name)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>delncattr(self,name,value)</code></strong></p>
@@ -2696,21 +2705,21 @@ netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
 </dd>
 <dt id="netCDF4.Variable.endian"><code class="name flex">
-<span>def <span class="ident">endian</span></span>(<span>...)</span>
+<span>def <span class="ident">endian</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>endian(self)</code></strong></p>
 <p>return endian-ness (<code>little,big,native</code>) of variable (as stored in HDF5 file).</p></div>
 </dd>
 <dt id="netCDF4.Variable.filters"><code class="name flex">
-<span>def <span class="ident">filters</span></span>(<span>...)</span>
+<span>def <span class="ident">filters</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>filters(self)</code></strong></p>
 <p>return dictionary containing HDF5 filter parameters.</p></div>
 </dd>
 <dt id="netCDF4.Variable.getValue"><code class="name flex">
-<span>def <span class="ident">getValue</span></span>(<span>...)</span>
+<span>def <span class="ident">getValue</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>getValue(self)</code></strong></p>
@@ -2719,7 +2728,7 @@ Provided for compatibility with
 Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([&hellip;]).</p></div>
 </dd>
 <dt id="netCDF4.Variable.get_dims"><code class="name flex">
-<span>def <span class="ident">get_dims</span></span>(<span>...)</span>
+<span>def <span class="ident">get_dims</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>get_dims(self)</code></strong></p>
@@ -2727,7 +2736,7 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([&hellip;]).
 <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code>.</p></div>
 </dd>
 <dt id="netCDF4.Variable.get_var_chunk_cache"><code class="name flex">
-<span>def <span class="ident">get_var_chunk_cache</span></span>(<span>...)</span>
+<span>def <span class="ident">get_var_chunk_cache</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>get_var_chunk_cache(self)</code></strong></p>
@@ -2736,7 +2745,7 @@ See netcdf C library documentation for <code>nc_get_var_chunk_cache</code> for
 details.</p></div>
 </dd>
 <dt id="netCDF4.Variable.getncattr"><code class="name flex">
-<span>def <span class="ident">getncattr</span></span>(<span>...)</span>
+<span>def <span class="ident">getncattr</span></span>(<span>self, name, encoding='utf-8')</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>getncattr(self,name)</code></strong></p>
@@ -2748,21 +2757,21 @@ attributes.</p>
 character encoding of a string attribute (default is <code>utf-8</code>).</p></div>
 </dd>
 <dt id="netCDF4.Variable.group"><code class="name flex">
-<span>def <span class="ident">group</span></span>(<span>...)</span>
+<span>def <span class="ident">group</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>group(self)</code></strong></p>
 <p>return the group that this <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code> is a member of.</p></div>
 </dd>
 <dt id="netCDF4.Variable.ncattrs"><code class="name flex">
-<span>def <span class="ident">ncattrs</span></span>(<span>...)</span>
+<span>def <span class="ident">ncattrs</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>ncattrs(self)</code></strong></p>
 <p>return netCDF attribute names for this <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code> in a list.</p></div>
 </dd>
 <dt id="netCDF4.Variable.quantization"><code class="name flex">
-<span>def <span class="ident">quantization</span></span>(<span>...)</span>
+<span>def <span class="ident">quantization</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>quantization(self)</code></strong></p>
@@ -2770,14 +2779,14 @@ character encoding of a string attribute (default is <code>utf-8</code>).</p></d
 Returns None if quantization not active.</p></div>
 </dd>
 <dt id="netCDF4.Variable.renameAttribute"><code class="name flex">
-<span>def <span class="ident">renameAttribute</span></span>(<span>...)</span>
+<span>def <span class="ident">renameAttribute</span></span>(<span>self, oldname, newname)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>renameAttribute(self, oldname, newname)</code></strong></p>
 <p>rename a <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code> attribute named <code>oldname</code> to <code>newname</code>.</p></div>
 </dd>
 <dt id="netCDF4.Variable.set_always_mask"><code class="name flex">
-<span>def <span class="ident">set_always_mask</span></span>(<span>...)</span>
+<span>def <span class="ident">set_always_mask</span></span>(<span>self, always_mask)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_always_mask(self,always_mask)</code></strong></p>
@@ -2790,7 +2799,7 @@ in versions prior to 1.4.1 (numpy array returned unless missing values are prese
 otherwise masked array returned).</p></div>
 </dd>
 <dt id="netCDF4.Variable.set_auto_chartostring"><code class="name flex">
-<span>def <span class="ident">set_auto_chartostring</span></span>(<span>...)</span>
+<span>def <span class="ident">set_auto_chartostring</span></span>(<span>self, chartostring)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_auto_chartostring(self,<a title="netCDF4.chartostring" href="#netCDF4.chartostring">chartostring()</a>)</code></strong></p>
@@ -2810,7 +2819,7 @@ rightmost dimension of the variable.</p>
 (automatic conversions are performed).</p></div>
 </dd>
 <dt id="netCDF4.Variable.set_auto_mask"><code class="name flex">
-<span>def <span class="ident">set_auto_mask</span></span>(<span>...)</span>
+<span>def <span class="ident">set_auto_mask</span></span>(<span>self, mask)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_auto_mask(self,mask)</code></strong></p>
@@ -2835,7 +2844,7 @@ is used instead.</p>
 (automatic conversions are performed).</p></div>
 </dd>
 <dt id="netCDF4.Variable.set_auto_maskandscale"><code class="name flex">
-<span>def <span class="ident">set_auto_maskandscale</span></span>(<span>...)</span>
+<span>def <span class="ident">set_auto_maskandscale</span></span>(<span>self, maskandscale)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_auto_maskandscale(self,maskandscale)</code></strong></p>
@@ -2884,7 +2893,7 @@ data model does not have unsigned integer data types).</p>
 (automatic conversions are performed).</p></div>
 </dd>
 <dt id="netCDF4.Variable.set_auto_scale"><code class="name flex">
-<span>def <span class="ident">set_auto_scale</span></span>(<span>...)</span>
+<span>def <span class="ident">set_auto_scale</span></span>(<span>self, scale)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_auto_scale(self,scale)</code></strong></p>
@@ -2918,7 +2927,7 @@ data model does not have unsigned integer data types).</p>
 (automatic conversions are performed).</p></div>
 </dd>
 <dt id="netCDF4.Variable.set_collective"><code class="name flex">
-<span>def <span class="ident">set_collective</span></span>(<span>...)</span>
+<span>def <span class="ident">set_collective</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_collective(self,True_or_False)</code></strong></p>
@@ -2926,7 +2935,7 @@ data model does not have unsigned integer data types).</p>
 open for parallel access.</p></div>
 </dd>
 <dt id="netCDF4.Variable.set_ncstring_attrs"><code class="name flex">
-<span>def <span class="ident">set_ncstring_attrs</span></span>(<span>...)</span>
+<span>def <span class="ident">set_ncstring_attrs</span></span>(<span>self, ncstring_attrs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_always_mask(self,ncstring_attrs)</code></strong></p>
@@ -2937,7 +2946,7 @@ NC_STRINGs.</p>
 NC_CHAR).</p></div>
 </dd>
 <dt id="netCDF4.Variable.set_var_chunk_cache"><code class="name flex">
-<span>def <span class="ident">set_var_chunk_cache</span></span>(<span>...)</span>
+<span>def <span class="ident">set_var_chunk_cache</span></span>(<span>self, size=None, nelems=None, preemption=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>set_var_chunk_cache(self,size=None,nelems=None,preemption=None)</code></strong></p>
@@ -2946,7 +2955,7 @@ See netcdf C library documentation for <code>nc_set_var_chunk_cache</code> for
 details.</p></div>
 </dd>
 <dt id="netCDF4.Variable.setncattr"><code class="name flex">
-<span>def <span class="ident">setncattr</span></span>(<span>...)</span>
+<span>def <span class="ident">setncattr</span></span>(<span>self, name, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>setncattr(self,name,value)</code></strong></p>
@@ -2956,7 +2965,7 @@ netCDF attribute with the same name as one of the reserved python
 attributes.</p></div>
 </dd>
 <dt id="netCDF4.Variable.setncattr_string"><code class="name flex">
-<span>def <span class="ident">setncattr_string</span></span>(<span>...)</span>
+<span>def <span class="ident">setncattr_string</span></span>(<span>self, name, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>setncattr_string(self,name,value)</code></strong></p>
@@ -2966,7 +2975,7 @@ Use if you need to ensure that a netCDF attribute is created with type
 Use if you need to set an attribute to an array of variable-length strings.</p></div>
 </dd>
 <dt id="netCDF4.Variable.setncatts"><code class="name flex">
-<span>def <span class="ident">setncatts</span></span>(<span>...)</span>
+<span>def <span class="ident">setncatts</span></span>(<span>self, attdict)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>setncatts(self,attdict)</code></strong></p>
@@ -2976,7 +2985,7 @@ formatted file, since nc_redef/nc_enddef is not called in between setting
 each attribute</p></div>
 </dd>
 <dt id="netCDF4.Variable.use_nc_get_vars"><code class="name flex">
-<span>def <span class="ident">use_nc_get_vars</span></span>(<span>...)</span>
+<span>def <span class="ident">use_nc_get_vars</span></span>(<span>self, use_nc_get_vars)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>use_nc_get_vars(self,_use_get_vars)</code></strong></p>
@@ -2996,7 +3005,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 <h1>Index</h1>
 <div class="toc">
 <ul>
-<li><a href="#version-164">Version 1.6.4</a></li>
+<li><a href="#version-170">Version 1.7.0</a></li>
 <li><a href="#introduction">Introduction</a><ul>
 <li><a href="#quick-install">Quick Install</a></li>
 <li><a href="#developer-install">Developer Install</a></li>

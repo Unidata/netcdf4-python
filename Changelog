@@ -7,6 +7,7 @@
 ===============================
  * fix for issue #1271 (mask ignored if bool MA assinged to uint8 var)
  * include information on specific object when reporting errors from netcdf-c
+ * python 3.12 wheels added, support for python 3.7 removed.
 
  version 1.6.4 (tag v1.6.4rel)
 ===============================
