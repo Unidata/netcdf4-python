@@ -369,7 +369,6 @@ else:
     netcdf_lib_version = str(netcdf_lib_version)
     print(f'using netcdf library version {netcdf_lib_version}')
 
-cmdclass = {}
 DEFINE_MACROS = [("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]
 netcdf4_src_root = osp.join(osp.join('src','netCDF4'), '_netCDF4')
 netcdf4_src_c = netcdf4_src_root + '.c'
