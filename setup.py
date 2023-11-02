@@ -135,15 +135,9 @@ curl_libdir = os.environ.get('CURL_LIBDIR')
 curl_incdir = os.environ.get('CURL_INCDIR')
 mpi_incdir = os.environ.get('MPI_INCDIR')
 
-USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
-if USE_NCCONFIG is not None:
-    USE_NCCONFIG = bool(int(USE_NCCONFIG))
-USE_SETUPCFG = os.environ.get('USE_SETUPCFG')
+USE_NCCONFIG = bool(int(os.environ.get('USE_NCCONFIG', 0)))
 # override use of setup.cfg with env var.
-if USE_SETUPCFG is not None:
-    USE_SETUPCFG = bool(int(USE_SETUPCFG))
-else:
-    USE_SETUPCFG = True
+USE_SETUPCFG = bool(int(os.environ.get('USE_SETUPCFG', 1)))
 
 setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars, unless
@@ -188,13 +182,11 @@ except OSError:
 
 # make sure USE_NCCONFIG from environment takes
 # precendence over use_ncconfig from setup.cfg (issue #341).
-if USE_NCCONFIG is None and use_ncconfig is not None:
+if use_ncconfig and not USE_NCCONFIG:
     USE_NCCONFIG = use_ncconfig
-elif USE_NCCONFIG is None:
+elif not USE_NCCONFIG:
     # if nc-config exists, and USE_NCCONFIG not set, try to use it.
-    if HAS_NCCONFIG: USE_NCCONFIG=True
-#elif USE_NCCONFIG is None:
-#    USE_NCCONFIG = False # don't try to use nc-config if USE_NCCONFIG not set
+    USE_NCCONFIG = HAS_NCCONFIG
 
 try:
     HAS_PKG_CONFIG = subprocess.call(['pkg-config', '--libs', 'hdf5']) == 0
