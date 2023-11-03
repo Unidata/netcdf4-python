@@ -4,6 +4,7 @@ import shutil
 import configparser
 from setuptools import setup, Extension
 from setuptools.dist import Distribution
+from typing import List
 
 open_kwargs = {'encoding': 'utf-8'}
 
@@ -22,14 +23,13 @@ def check_hdf5version(hdf5_includedir):
 def get_hdf5_version(direc):
     # check to see if hdf5 headers in direc, return version number or None
     hdf5_version = None
-    sys.stdout.write('checking %s ...\n' % direc)
+    print(f"checking {direc}...")
     hdf5_version = check_hdf5version(direc)
     if hdf5_version is None:
-        sys.stdout.write('hdf5 headers not found in %s\n' % direc)
+        print(f'hdf5 headers not found in {direc}')
         return None
     else:
-        sys.stdout.write('%s headers found in %s\n' %
-                        (hdf5_version,direc))
+        print(f'{hdf5_version} headers found in {direc}')
         return hdf5_version
 
 def check_ifnetcdf4(netcdf4_includedir):
@@ -135,15 +135,9 @@ curl_libdir = os.environ.get('CURL_LIBDIR')
 curl_incdir = os.environ.get('CURL_INCDIR')
 mpi_incdir = os.environ.get('MPI_INCDIR')
 
-USE_NCCONFIG = os.environ.get('USE_NCCONFIG')
-if USE_NCCONFIG is not None:
-    USE_NCCONFIG = bool(int(USE_NCCONFIG))
-USE_SETUPCFG = os.environ.get('USE_SETUPCFG')
+USE_NCCONFIG = bool(int(os.environ.get('USE_NCCONFIG', 0)))
 # override use of setup.cfg with env var.
-if USE_SETUPCFG is not None:
-    USE_SETUPCFG = bool(int(USE_SETUPCFG))
-else:
-    USE_SETUPCFG = True
+USE_SETUPCFG = bool(int(os.environ.get('USE_SETUPCFG', 1)))
 
 setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars, unless
@@ -151,93 +145,30 @@ setup_cfg = 'setup.cfg'
 ncconfig = None
 use_ncconfig = None
 if USE_SETUPCFG and os.path.exists(setup_cfg):
-    sys.stdout.write('reading from setup.cfg...\n')
+    print('reading from setup.cfg...')
     config = configparser.ConfigParser()
     config.read(setup_cfg)
-    try:
-        HDF5_dir = config.get("directories", "HDF5_dir")
-    except:
-        pass
-    try:
-        HDF5_libdir = config.get("directories", "HDF5_libdir")
-    except:
-        pass
-    try:
-        HDF5_incdir = config.get("directories", "HDF5_incdir")
-    except:
-        pass
-    try:
-        netCDF4_dir = config.get("directories", "netCDF4_dir")
-    except:
-        pass
-    try:
-        netCDF4_libdir = config.get("directories", "netCDF4_libdir")
-    except:
-        pass
-    try:
-        netCDF4_incdir = config.get("directories", "netCDF4_incdir")
-    except:
-        pass
-    try:
-        szip_dir = config.get("directories", "szip_dir")
-    except:
-        pass
-    try:
-        szip_libdir = config.get("directories", "szip_libdir")
-    except:
-        pass
-    try:
-        szip_incdir = config.get("directories", "szip_incdir")
-    except:
-        pass
-    try:
-        hdf4_dir = config.get("directories", "hdf4_dir")
-    except:
-        pass
-    try:
-        hdf4_libdir = config.get("directories", "hdf4_libdir")
-    except:
-        pass
-    try:
-        hdf4_incdir = config.get("directories", "hdf4_incdir")
-    except:
-        pass
-    try:
-        jpeg_dir = config.get("directories", "jpeg_dir")
-    except:
-        pass
-    try:
-        jpeg_libdir = config.get("directories", "jpeg_libdir")
-    except:
-        pass
-    try:
-        jpeg_incdir = config.get("directories", "jpeg_incdir")
-    except:
-        pass
-    try:
-        curl_dir = config.get("directories", "curl_dir")
-    except:
-        pass
-    try:
-        curl_libdir = config.get("directories", "curl_libdir")
-    except:
-        pass
-    try:
-        curl_incdir = config.get("directories", "curl_incdir")
-    except:
-        pass
-    try:
-        mpi_incdir = config.get("directories","mpi_incdir")
-    except:
-        pass
-    try:
-        use_ncconfig = config.getboolean("options", "use_ncconfig")
-    except:
-        pass
-    try:
-        ncconfig = config.get("options", "ncconfig")
-    except:
-        pass
+    HDF5_dir = config.get("directories", "HDF5_dir", fallback=HDF5_dir)
+    HDF5_libdir = config.get("directories", "HDF5_libdir", fallback=HDF5_libdir)
+    HDF5_incdir = config.get("directories", "HDF5_incdir", fallback=HDF5_incdir)
+    netCDF4_dir = config.get("directories", "netCDF4_dir", fallback=netCDF4_dir)
+    netCDF4_libdir = config.get("directories", "netCDF4_libdir", fallback=netCDF4_libdir)
+    netCDF4_incdir = config.get("directories", "netCDF4_incdir", fallback=netCDF4_incdir)
+    szip_dir = config.get("directories", "szip_dir", fallback=szip_dir)
+    szip_libdir = config.get("directories", "szip_libdir", fallback=szip_libdir)
+    szip_incdir = config.get("directories", "szip_incdir", fallback=szip_incdir)
+    hdf4_dir = config.get("directories", "hdf4_dir", fallback=hdf4_dir)
+    hdf4_libdir = config.get("directories", "hdf4_libdir", fallback=hdf4_libdir)
+    hdf4_incdir = config.get("directories", "hdf4_incdir", fallback=hdf4_incdir)
+    jpeg_dir = config.get("directories", "jpeg_dir", fallback=jpeg_dir)
+    jpeg_libdir = config.get("directories", "jpeg_libdir", fallback=jpeg_libdir)
+    jpeg_incdir = config.get("directories", "jpeg_incdir", fallback=jpeg_incdir)
+    curl_dir = config.get("directories", "curl_dir", fallback=curl_dir)
+    curl_libdir = config.get("directories", "curl_libdir", fallback=curl_libdir)
+    curl_incdir = config.get("directories", "curl_incdir", fallback=curl_incdir)
+    mpi_incdir = config.get("directories","mpi_incdir", fallback=mpi_incdir)
+    use_ncconfig = config.getboolean("options", "use_ncconfig", fallback=use_ncconfig)
+    ncconfig = config.get("options", "ncconfig", fallback=ncconfig)
 
 try:
     if ncconfig is None:
@@ -245,26 +176,29 @@ try:
             ncconfig = os.path.join(netCDF4_dir, 'bin/nc-config')
         else:  # otherwise, just hope it's in the users PATH.
             ncconfig = 'nc-config'
-    HAS_NCCONFIG = subprocess.call([ncconfig, '--libs'],
-                                     stdout=subprocess.PIPE) == 0
+    HAS_NCCONFIG = subprocess.call([ncconfig, '--libs']) == 0
 except OSError:
     HAS_NCCONFIG = False
 
 # make sure USE_NCCONFIG from environment takes
 # precendence over use_ncconfig from setup.cfg (issue #341).
-if USE_NCCONFIG is None and use_ncconfig is not None:
+if use_ncconfig and not USE_NCCONFIG:
     USE_NCCONFIG = use_ncconfig
-elif USE_NCCONFIG is None:
+elif not USE_NCCONFIG:
     # if nc-config exists, and USE_NCCONFIG not set, try to use it.
-    if HAS_NCCONFIG: USE_NCCONFIG=True
-#elif USE_NCCONFIG is None:
-#    USE_NCCONFIG = False # don't try to use nc-config if USE_NCCONFIG not set
+    USE_NCCONFIG = HAS_NCCONFIG
 
 try:
-    HAS_PKG_CONFIG = subprocess.call(['pkg-config', '--libs', 'hdf5'],
-                                     stdout=subprocess.PIPE) == 0
+    HAS_PKG_CONFIG = subprocess.call(['pkg-config', '--libs', 'hdf5']) == 0
 except OSError:
     HAS_PKG_CONFIG = False
+
+
+def config_flags(command: List[str], flag: str) -> list:
+    """Pull out specific flags from a config command (pkg-config or nc-config)"""
+    flags = subprocess.run(command, capture_output=True, text=True)
+    return [arg[2:] for arg in flags.stdout.split() if arg.startswith(flag)]
+
 
 def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
     global HDF5_incdir, HDF5_dir, HDF5_libdir
@@ -272,24 +206,12 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
     nohdf5dirs = HDF5_incdir is None and HDF5_libdir is None and  HDF5_dir is None
     if HAS_PKG_CONFIG and nohdf5dirs:
         # if HDF5 dirs not specified, and pkg-config available, use it
-        dep = subprocess.Popen(['pkg-config', '--cflags', 'hdf5'],
-                               stdout=subprocess.PIPE).communicate()[0]
-        inc_dirs.extend([str(i[2:].decode()) for i in dep.split() if
-                         i[0:2].decode() == '-I'])
-        dep = subprocess.Popen(['pkg-config', '--libs', 'hdf5'],
-                               stdout=subprocess.PIPE).communicate()[0]
-        libs.extend(
-            [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l'])
-        lib_dirs.extend(
-            [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-L'])
-        dep = subprocess.Popen(['pkg-config', '--cflags', 'hdf5'],
-                               stdout=subprocess.PIPE).communicate()[0]
-        inc_dirs.extend(
-            [str(i[2:].decode()) for i in dep.split() if i[0:2].decode() == '-I'])
+        inc_dirs.extend(config_flags(["pkg-config", "--cflags", "hdf5"], "-I"))
+        libs.extend(config_flags(["pkg-config", "--libs", "hdf5"], "-l"))
+        lib_dirs.extend(config_flags(["pkg-config", "--libs", "hdf5"], "-L"))
     else:
         if HDF5_incdir is None and HDF5_dir is None:
-            sys.stdout.write("""
-    HDF5_DIR environment variable not set, checking some standard locations ..\n""")
+            print("    HDF5_DIR environment variable not set, checking some standard locations ..")
             for direc in dirstosearch:
                 hdf5_version = get_hdf5_version(os.path.join(direc, 'include'))
                 if hdf5_version is None:
@@ -297,8 +219,7 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
                 else:
                     HDF5_dir = direc
                     HDF5_incdir = os.path.join(direc, 'include')
-                    sys.stdout.write('%s found in %s\n' %
-                                    (hdf5_version,HDF5_dir))
+                    print(f'{hdf5_version} found in {HDF5_dir}')
                     break
             if HDF5_dir is None:
                 raise ValueError('did not find HDF5 headers')
@@ -307,10 +228,8 @@ def _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs):
                 HDF5_incdir = os.path.join(HDF5_dir, 'include')
             hdf5_version = get_hdf5_version(HDF5_incdir)
             if hdf5_version is None:
-                raise ValueError('did not find HDF5 headers in %s' % HDF5_incdir)
-            else:
-                sys.stdout.write('%s found in %s\n' %
-                                (hdf5_version,HDF5_dir))
+                raise ValueError(f'did not find HDF5 headers in {HDF5_incdir}')
+            print(f'{hdf5_version} found in {HDF5_dir}')
 
         if HDF5_libdir is None and HDF5_dir is not None:
             HDF5_libdir = os.path.join(HDF5_dir, 'lib')
@@ -329,17 +248,11 @@ dirstosearch += [os.path.expanduser('~'), '/usr/local', '/sw', '/opt',
                 '/opt/local', '/opt/homebrew', '/usr']
 
 # try nc-config first
-if USE_NCCONFIG and HAS_NCCONFIG:  # Try nc-config.
-    sys.stdout.write('using %s...\n' % ncconfig)
-    dep = subprocess.Popen([ncconfig, '--libs'],
-                           stdout=subprocess.PIPE).communicate()[0]
-    libs = [str(l[2:].decode()) for l in dep.split() if l[0:2].decode() == '-l']
-    lib_dirs = [str(l[2:].decode()) for l in dep.split() if
-                l[0:2].decode() == '-L']
-    dep = subprocess.Popen([ncconfig, '--cflags'],
-                           stdout=subprocess.PIPE).communicate()[0]
-    inc_dirs = [str(i[2:].decode()) for i in dep.split() if
-                i[0:2].decode() == '-I']
+if USE_NCCONFIG and HAS_NCCONFIG and ncconfig is not None:
+    print(f'using {ncconfig}...')
+    libs = config_flags([ncconfig, "--libs"], "-l")
+    lib_dirs = config_flags([ncconfig, "--libs"], "-L")
+    inc_dirs = config_flags([ncconfig, '--cflags'], "-I")
 
     # check to see if hdf5 found in directories returned by nc-config
     hdf5_version = None
@@ -349,7 +262,7 @@ if USE_NCCONFIG and HAS_NCCONFIG:  # Try nc-config.
             break
     # if hdf5 not found, search other standard locations (including those specified in env vars).
     if hdf5_version is None:
-        sys.stdout.write('nc-config did provide path to HDF5 headers, search standard locations...')
+        print('nc-config did provide path to HDF5 headers, search standard locations...')
         _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 
 # If nc-config doesn't work, fall back on brute force method.
@@ -363,17 +276,16 @@ else:
     _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
 
     if netCDF4_incdir is None and netCDF4_dir is None:
-        sys.stdout.write("""
-NETCDF4_DIR environment variable not set, checking standard locations.. \n""")
+        print("NETCDF4_DIR environment variable not set, checking standard locations..")
         for direc in dirstosearch:
-            sys.stdout.write('checking %s ...\n' % direc)
+            print(f'checking {direc}...')
             isnetcdf4 = check_ifnetcdf4(os.path.join(direc, 'include'))
             if not isnetcdf4:
                 continue
             else:
                 netCDF4_dir = direc
                 netCDF4_incdir = os.path.join(direc, 'include')
-                sys.stdout.write('netCDF4 found in %s\n' % netCDF4_dir)
+                print(f'netCDF4 found in {netCDF4_dir}')
                 break
         if netCDF4_dir is None:
             raise ValueError('did not find netCDF version 4 headers')
@@ -452,18 +364,17 @@ else:
 # get netcdf library version.
 netcdf_lib_version = getnetcdfvers(lib_dirs)
 if netcdf_lib_version is None:
-    sys.stdout.write('unable to detect netcdf library version\n')
+    print('unable to detect netcdf library version')
 else:
     netcdf_lib_version = str(netcdf_lib_version)
-    sys.stdout.write('using netcdf library version %s\n' % netcdf_lib_version)
+    print(f'using netcdf library version {netcdf_lib_version}')
 
-cmdclass = {}
 DEFINE_MACROS = [("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]
 netcdf4_src_root = osp.join(osp.join('src','netCDF4'), '_netCDF4')
 netcdf4_src_c = netcdf4_src_root + '.c'
 netcdf4_src_pyx = netcdf4_src_root + '.pyx'
 if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' not in sys.argv[1:]:
-    sys.stdout.write('using Cython to compile netCDF4.pyx...\n')
+    print('using Cython to compile netCDF4.pyx...')
     # remove _netCDF4.c file if it exists, so cython will recompile _netCDF4.pyx.
     # run for build *and* install (issue #263). Otherwise 'pip install' will
     # not regenerate _netCDF4.c, even if the C lib supports the new features.
@@ -478,7 +389,7 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
 
     has_parallel_support = check_has_parallel_support(inc_dirs)
     has_has_not = "has" if has_parallel_support else "does not have"
-    sys.stdout.write(f"netcdf lib {has_has_not} parallel functions\n")
+    print(f"netcdf lib {has_has_not} parallel functions")
 
     if has_parallel_support:
         import mpi4py
@@ -520,19 +431,19 @@ if os.environ.get("NETCDF_PLUGIN_DIR"):
     plugin_dir = os.environ.get("NETCDF_PLUGIN_DIR")
     plugins = glob.glob(os.path.join(plugin_dir, "lib__nc*"))
     if not plugins:
-        sys.stdout.write('no plugin files in NETCDF_PLUGIN_DIR, not installing..\n')
+        print('no plugin files in NETCDF_PLUGIN_DIR, not installing...')
         data_files = []
     else:
         data_files = plugins
-        sys.stdout.write('installing netcdf compression plugins from %s ...\n' % plugin_dir)
+        print(f'installing netcdf compression plugins from {plugin_dir} ...')
         sofiles = [os.path.basename(sofilepath) for sofilepath in data_files]
-        sys.stdout.write(repr(sofiles)+'\n')
+        print(repr(sofiles))
         if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' not in sys.argv[1:]:
             for f in data_files:
                 shutil.copy(f, osp.join(os.getcwd(),osp.join(osp.join('src','netCDF4'),'plugins')))
             copied_plugins=True
 else:
-    sys.stdout.write('NETCDF_PLUGIN_DIR not set, no netcdf compression plugins installed\n')
+    print('NETCDF_PLUGIN_DIR not set, no netcdf compression plugins installed')
     data_files = []
 
 # See pyproject.toml for project metadata
