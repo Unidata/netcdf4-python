@@ -3,6 +3,8 @@ import netCDF4
 import numpy as np
 from numpy.testing import assert_array_equal
 
+
+@unittest.skipIf(not netCDF4.__has_nc_create_mem__, "missing `nc_create_mem`")
 class TestCreateMem(unittest.TestCase):
     def test_mem_create(self):
         def check_inmemory(format):

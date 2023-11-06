@@ -38,6 +38,8 @@ data:
 }
 """
 
+
+@unittest.skipIf(os.getenv("NO_CDL"), "CDL test disabled")
 class Test_CDL(unittest.TestCase):
     """
     Test import/export of CDL
