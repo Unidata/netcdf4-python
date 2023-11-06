@@ -5,6 +5,7 @@ import unittest
 import os
 import tempfile
 import warnings
+import pathlib
 
 import numpy as np
 from collections import OrderedDict
@@ -219,9 +220,8 @@ class VariablesTestCase(unittest.TestCase):
             assert getattr(v1,'nonexistantatt',None) == None
 
         # issue 915 empty string attribute (ncdump reports 'NIL')
-        f = netCDF4.Dataset('test_gold.nc')
-        assert f['RADIANCE'].VAR_NOTES == ""
-        f.close()
+        with netCDF4.Dataset(pathlib.Path(__file__).parent / "test_gold.nc") as f:
+            assert f['RADIANCE'].VAR_NOTES == ""
 
 if __name__ == '__main__':
     unittest.main()

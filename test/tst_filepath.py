@@ -2,13 +2,17 @@ import os, sys, shutil
 import tempfile
 import unittest
 import netCDF4
+import pathlib
 
 
 @unittest.skipIf(not netCDF4.__has_nc_inq_path__, "missing `nc_inq_path`")
 class test_filepath(unittest.TestCase):
     def setUp(self):
-        self.netcdf_file = os.path.join(os.getcwd(), "netcdf_dummy_file.nc")
+        self.netcdf_file = pathlib.Path(__file__).parent / "netcdf_dummy_file.nc"
         self.nc = netCDF4.Dataset(self.netcdf_file)
+
+    def tearDown(self):
+        self.nc.close()
 
     def test_filepath(self):
         assert self.nc.filepath() == str(self.netcdf_file)
