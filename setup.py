@@ -417,7 +417,12 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         netcdf4_src_pyx,
         str(nc_complex_dir / "src/nc_complex.c"),
     ]
-    include_dirs = inc_dirs + ["include", str(nc_complex_dir / "include")]
+    include_dirs = inc_dirs + [
+        "include",
+        str(nc_complex_dir / "include"),
+        str(nc_complex_dir / "include/generated_fallbacks"),
+    ]
+    DEFINE_MACROS += [("NC_COMPLEX_NO_EXPORT", "1")]
 
     ext_modules = [Extension("netCDF4._netCDF4",
                              source_files,

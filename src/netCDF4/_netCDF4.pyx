@@ -1226,6 +1226,7 @@ from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 import sys
 import functools
+from typing import Union
 
 __version__ = "1.7.0"
 
@@ -1905,15 +1906,17 @@ cdef _get_grps(group):
         free(grpids)
     return groups
 
-cdef _get_vars(group):
+cdef _get_vars(group, bint auto_complex=False):
     # Private function to create `Variable` instances for all the
     # variables in a `Group` or Dataset
     cdef int ierr, numvars, n, nn, numdims, varid, classp, iendian, _grpid
     cdef int *varids
-    cdef int *dimids
     cdef nc_type xtype
     cdef char namstring[NC_MAX_NAME+1]
     cdef char namstring_cmp[NC_MAX_NAME+1]
+    cdef bint is_complex
+    cdef nc_type complex_nc_type
+
     # get number of variables in this Group.
     _grpid = group._grpid
     with nogil:
@@ -1992,42 +1995,46 @@ cdef _get_vars(group):
                         msg="WARNING: variable '%s' has unsupported datatype, skipping .." % name
                         warnings.warn(msg)
                         continue
+
             # get number of dimensions.
-            with nogil:
-                ierr = nc_inq_varndims(_grpid, varid, &numdims)
-            _ensure_nc_success(ierr)
-            dimids = <int *>malloc(sizeof(int) * numdims)
-            # get dimension ids.
-            with nogil:
-                ierr = nc_inq_vardimid(_grpid, varid, dimids)
-            _ensure_nc_success(ierr)
+            dimids = _inq_vardimid(_grpid, varid, auto_complex)
+
             # loop over dimensions, retrieve names.
             # if not found in current group, look in parents.
             # QUESTION:  what if grp1 has a dimension named 'foo'
             # and so does it's parent - can a variable in grp1
             # use the 'foo' dimension from the parent?
             dimensions = []
-            for nn from 0 <= nn < numdims:
+            for dimid in dimids:
                 grp = group
                 found = False
                 while not found:
                     for key, value in grp.dimensions.items():
-                        if value._dimid == dimids[nn]:
+                        if value._dimid == dimid:
                             dimensions.append(key)
                             found = True
                             break
                     grp = grp.parent
-            free(dimids)
+
             # create new variable instance.
-            dimensions = tuple(_find_dim(group,d) for d in dimensions)
+            dimensions = tuple(_find_dim(group, d) for d in dimensions)
+
+            if auto_complex and <bint>pfnc_var_is_complex(_grpid, varid):
+                with nogil:
+                    ierr = pfnc_inq_var_complex_base_type(_grpid, varid, &complex_nc_type)
+                _ensure_nc_success(ierr)
+                # TODO: proper lookup
+                datatype = "c16" if complex_nc_type == NC_DOUBLE else "c8"
+
             if endianness == '>':
-                variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
+                variables[name] = Variable(group, name, datatype, dimensions, id=varid, auto_complex=auto_complex, endian='big')
             elif endianness == '<':
-                variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='little')
+                variables[name] = Variable(group, name, datatype, dimensions, id=varid, auto_complex=auto_complex, endian='little')
             else:
-                variables[name] = Variable(group, name, datatype, dimensions, id=varid)
+                variables[name] = Variable(group, name, datatype, dimensions, id=varid, auto_complex=auto_complex)
         free(varids) # free pointer holding variable ids.
     return variables
+
 
 def _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None, extra_msg=None):
     # print netcdf error message, raise error.
@@ -2046,6 +2053,50 @@ def _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None, extra_msg=None
         err_str = f"{err_str}: {extra_msg}"
     raise err_cls(err_str)
 
+
+def dtype_is_complex(dtype: Union[str, CompoundType, numpy.dtype]) -> bool:
+    # TODO: check numpy.complex128, matching CompoundTypes
+    return dtype in ("c8", "c16")
+
+
+cdef int _inq_varndims(int ncid, int varid, bint auto_complex):
+    """Wrapper around `nc_inq_varndims`/`pfnc_inq_varndims` for complex numbers"""
+
+    cdef int ierr = NC_NOERR
+    cdef int ndims
+
+    if auto_complex:
+        with nogil:
+            ierr = pfnc_inq_varndims(ncid, varid, &ndims)
+    else:
+        with nogil:
+            ierr = nc_inq_varndims(ncid, varid, &ndims)
+
+    _ensure_nc_success(ierr)
+    return ndims
+
+
+cdef _inq_vardimid(int ncid, int varid, bint auto_complex):
+    """Wrapper around `nc_inq_vardimid`/`pfnc_inq_vardimid` for complex numbers"""
+
+    cdef int ierr = NC_NOERR
+    cdef int ndims = _inq_varndims(ncid, varid, auto_complex)
+    cdef int* dimids = <int*> malloc(sizeof(int) * ndims)
+
+    if auto_complex:
+        with nogil:
+            ierr = pfnc_inq_vardimid(ncid, varid, dimids)
+    else:
+        with nogil:
+            ierr = nc_inq_vardimid(ncid, varid, dimids)
+
+    _ensure_nc_success(ierr)
+
+    result = [dimids[n] for n in range(ndims)]
+    free(dimids)
+    return result
+
+
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
 
@@ -2054,7 +2105,9 @@ _private_atts = \
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
  '__orthogoral_indexing__','keepweakref','_has_lsd',
- '_buffer','chartostring','_use_get_vars','_ncstring_attrs__']
+ '_buffer','chartostring','_use_get_vars','_ncstring_attrs__',
+ 'auto_complex'
+]
 
 cdef class Dataset:
     """
@@ -2132,12 +2185,12 @@ strings.
     cdef Py_buffer _buffer
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
-    keepweakref, _ncstring_attrs__
+    keepweakref, _ncstring_attrs__, auto_complex
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                      diskless=False, persist=False, keepweakref=False,
                      memory=None, encoding=None, parallel=False,
-                     comm=None, info=None, **kwargs):
+                     comm=None, info=None, auto_complex=False, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, memory=None, encoding=None,
@@ -2232,6 +2285,8 @@ strings.
 
         **`info`**: MPI_Info object for parallel access. Default `None`, which
         means MPI_INFO_NULL will be used.  Ignored if `parallel=False`.
+
+        **`auto_complex`**: if `True`, then automatically convert complex number types
         """
         cdef int grpid, ierr, numgrps, numdims, numvars,
         cdef size_t initialsize
@@ -2272,6 +2327,7 @@ strings.
             parmode = NC_MPIIO | _cmode_dict[format]
 
         self._inmemory = False
+        self.auto_complex = auto_complex
 
         # mode='x' is the same as mode='w' with clobber=False
         if mode == "x":
@@ -2371,7 +2427,7 @@ strings.
         # get dimensions in the root group.
         self.dimensions = _get_dims(self)
         # get variables in the root Group.
-        self.variables = _get_vars(self)
+        self.variables = _get_vars(self, self.auto_complex)
         # get groups in the root Group.
         if self.data_model == 'NETCDF4':
             self.groups = _get_grps(self)
@@ -3473,6 +3529,8 @@ Additional read-only class variables:
         self.keepweakref = parent.keepweakref
         # propagate _ncstring_attrs__ setting from parent.
         self._ncstring_attrs__ = parent._ncstring_attrs__
+        self.auto_complex = parent.auto_complex
+
         if 'id' in kwargs:
             self._grpid = kwargs['id']
             # get compound, vlen and enum types in this Group.
@@ -3480,7 +3538,7 @@ Additional read-only class variables:
             # get dimensions in this Group.
             self.dimensions = _get_dims(self)
             # get variables in this Group.
-            self.variables = _get_vars(self)
+            self.variables = _get_vars(self, self.auto_complex)
             # get groups in this Group.
             self.groups = _get_grps(self)
         else:
@@ -3739,7 +3797,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, always_mask, chartostring,  _isprimitive, \
     _iscompound, _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
-    __orthogonal_indexing__, _has_lsd, _use_get_vars, _ncstring_attrs__
+    __orthogonal_indexing__, _has_lsd, _use_get_vars, _ncstring_attrs__, auto_complex
 
     def __init__(self, grp, name, datatype, dimensions=(),
             compression=None, zlib=False,
@@ -3747,7 +3805,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             blosc_shuffle=1,
             fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
-            significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
+            significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None,
+            auto_complex=False, **kwargs):
         """
         **`__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
         complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
@@ -3889,6 +3948,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
+        cdef int nc_complex_typeid
 
         # Extra information for more helpful error messages
         error_info = f"(variable '{name}', group '{grp.name}')"
@@ -3944,10 +4004,24 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             self._grp = weakref.proxy(grp)
         else:
             self._grp = grp
-        user_type = isinstance(datatype, CompoundType) or \
-                    isinstance(datatype, VLType) or \
-                    isinstance(datatype, EnumType) or \
-                    datatype == str
+
+        # If datatype is complex, convert to compoundtype
+        self.auto_complex = auto_complex
+        is_complex = dtype_is_complex(datatype)
+        if is_complex:
+            with nogil:
+                ierr = pfnc_get_double_complex_typeid(self._grpid, &nc_complex_typeid)
+            _ensure_nc_success(ierr, extra_msg=error_info)
+
+            original_datatype = numpy.dtype(datatype)
+            datatype = CompoundType(self._grp, "f8, f8", "double_complex", typeid=nc_complex_typeid)
+
+        user_type = (
+            is_complex
+            or isinstance(datatype, (CompoundType, VLType, EnumType))
+            or datatype == str
+        )
+
         # convert to a real numpy datatype object if necessary.
         if not user_type and type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
@@ -4004,7 +4078,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 ierr = nc_inq_type(self._grpid, xtype, namstring, NULL)
             _ensure_nc_success(ierr, extra_msg=error_info)
             # dtype variable attribute is a numpy datatype object.
-            self.dtype = datatype.dtype
+            self.dtype = original_datatype if is_complex else datatype.dtype
         elif datatype.str[1:] in _supportedtypes:
             self._isprimitive = True
             # find netCDF primitive data type corresponding to
@@ -4255,11 +4329,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         self._nunlimdim = 0
         for dim in dimensions:
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
+
         # set ndim attribute (number of dimensions).
-        with nogil:
-            ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
-        _ensure_nc_success(ierr, extra_msg=error_info)
-        self.ndim = numdims
+        self.ndim = _inq_varndims(self._grpid, self._varid, auto_complex)
         self._name = name
         # default for automatically applying scale_factor and
         # add_offset, and converting to/from masked arrays is True.
@@ -4354,27 +4426,20 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
     def _getdims(self):
         # Private method to get variables's dimension names
-        cdef int ierr, numdims, n, nn
+        cdef int ierr, dimid
         cdef char namstring[NC_MAX_NAME+1]
-        cdef int *dimids
-        # get number of dimensions for this variable.
-        with nogil:
-            ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
-        _ensure_nc_success(ierr)
-        dimids = <int *>malloc(sizeof(int) * numdims)
-        # get dimension ids.
-        with nogil:
-            ierr = nc_inq_vardimid(self._grpid, self._varid, dimids)
-        _ensure_nc_success(ierr)
+
+        dimids = _inq_vardimid(self._grpid, self._varid, self.auto_complex)
+
         # loop over dimensions, retrieve names.
         dimensions = ()
-        for nn from 0 <= nn < numdims:
+        for dimid in dimids:
             with nogil:
-                ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
+                ierr = nc_inq_dimname(self._grpid, dimid, namstring)
             _ensure_nc_success(ierr)
             name = namstring.decode('utf-8')
             dimensions = dimensions + (name,)
-        free(dimids)
+
         return dimensions
 
     def _getname(self):
@@ -5778,9 +5843,15 @@ NC_CHAR).
             # if count contains a zero element, no data is being read
             if 0 not in count:
                 if sum(stride) == ndims or ndims == 0:
-                    with nogil:
-                        ierr = nc_get_vara(self._grpid, self._varid,
-                                           startp, countp, PyArray_DATA(data))
+                    if self.auto_complex:
+                        with nogil:
+                            ierr = pfnc_get_vara(self._grpid, self._varid,
+                                               startp, countp, PyArray_DATA(data))
+                    else:
+                        with nogil:
+                            ierr = nc_get_vara(self._grpid, self._varid,
+                                               startp, countp, PyArray_DATA(data))
+
                 else:
                     with nogil:
                         ierr = nc_get_vars(self._grpid, self._varid,

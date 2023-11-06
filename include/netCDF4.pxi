@@ -465,3 +465,21 @@ cdef extern from "netcdf-compat.h":
         NC_MPIIO
         NC_MPIPOSIX
         NC_PNETCDF
+
+
+# Declarations for handling complex numbers
+cdef extern from "nc_complex/nc_complex.h":
+  int pfnc_var_is_complex(int ncid, int varid) nogil
+  int pfnc_var_is_complex_type(int ncid, int varid) nogil
+  int pfnc_has_complex_dimension(int ncid, int varid) nogil
+  int pfnc_get_double_complex_typeid(int ncid, nc_type *nc_typeid) nogil
+  int pfnc_get_float_complex_typeid(int ncid, nc_type *nc_typeid) nogil
+
+  int pfnc_complex_base_type(int ncid, int nc_typeid, int* base_type_id) nogil
+  int pfnc_inq_var_complex_base_type(int ncid, int varid, int* nc_typeid) nogil
+
+  int pfnc_inq_varndims (int ncid, int varid, int *ndimsp) nogil
+  int pfnc_inq_vardimid (int ncid, int varid, int *dimidsp) nogil
+
+  int pfnc_get_vara (int ncid, int varid, size_t *startp,
+                     size_t *countp, void *ip) nogil
