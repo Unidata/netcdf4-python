@@ -4,10 +4,10 @@ from netCDF4 import __hdf5libversion__,__netcdf4libversion__,__version__, Datase
 # python -m unittest discover . 'tst*py'
 
 # Find all test files.
-test_files = glob.glob('tst_*.py')
+test_files = glob.glob('test_*.py')
 # run opendap test first (issue #856).
-test_files.remove('tst_dap.py')
-test_files.insert(0,'tst_dap.py')
+test_files.remove('test_dap.py')
+test_files.insert(0,'test_dap.py')
 
 # Build the test suite from the tests found in the test files.
 testsuite = unittest.TestSuite()
