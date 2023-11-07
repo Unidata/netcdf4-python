@@ -1517,6 +1517,15 @@ _supportedtypes = _nptonctype.keys()
 # make sure NC_CHAR points to S1
 _nctonptype[NC_CHAR]='S1'
 
+# Mapping from numpy dtype endian format to what we expect
+_dtype_endian_lookup = {
+    "=": "native",
+    ">": "big",
+    "<": "little",
+    "|": None,
+    None: None,
+}
+
 # internal C functions.
 
 cdef _get_att_names(int grpid, int varid):
@@ -2026,12 +2035,11 @@ cdef _get_vars(group, bint auto_complex=False):
                 # TODO: proper lookup
                 datatype = "c16" if complex_nc_type == NC_DOUBLE else "c8"
 
-            if endianness == '>':
-                variables[name] = Variable(group, name, datatype, dimensions, id=varid, auto_complex=auto_complex, endian='big')
-            elif endianness == '<':
-                variables[name] = Variable(group, name, datatype, dimensions, id=varid, auto_complex=auto_complex, endian='little')
-            else:
-                variables[name] = Variable(group, name, datatype, dimensions, id=varid, auto_complex=auto_complex)
+            endian = _dtype_endian_lookup[endianness] or "native"
+            variables[name] = Variable(
+                group, name, datatype, dimensions, id=varid, auto_complex=auto_complex, endian=endian
+            )
+
         free(varids) # free pointer holding variable ids.
     return variables
 
@@ -3949,6 +3957,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef size_t *chunksizesp
         cdef float preemptionp
         cdef int nc_complex_typeid
+        cdef int _nc_endian
 
         # Extra information for more helpful error messages
         error_info = f"(variable '{name}', group '{grp.name}')"
@@ -3997,6 +4006,18 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             pass
         else:
             raise ValueError(f"Unsupported value for compression kwarg {error_info}")
+
+        if grp.data_model.startswith("NETCDF3") and endian != 'native':
+            raise RuntimeError(
+                f"only endian='native' allowed for NETCDF3 files, got '{endian}' {error_info}"
+            )
+
+        if endian not in ("little", "big", "native"):
+            raise ValueError(
+                f"'endian' keyword argument must be 'little','big' or 'native', got '{endian}' "
+                f"{error_info}"
+            )
+
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
@@ -4033,20 +4054,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             datatype = str
             user_type = True
         # check if endian keyword consistent with datatype specification.
-        dtype_endian = getattr(datatype,'byteorder',None)
-        if dtype_endian == '=': dtype_endian='native'
-        if dtype_endian == '>': dtype_endian='big'
-        if dtype_endian == '<': dtype_endian='little'
-        if dtype_endian == '|': dtype_endian=None
+        dtype_endian = _dtype_endian_lookup[getattr(datatype, "byteorder", None)]
         if dtype_endian is not None and dtype_endian != endian:
-            if dtype_endian == 'native' and endian == sys.byteorder:
-                pass
-            else:
-                # endian keyword prevails, issue warning
-                msg = 'endian-ness of dtype and endian kwarg do not match, using endian kwarg'
-                #msg = 'endian-ness of dtype and endian kwarg do not match, dtype over-riding endian kwarg'
-                warnings.warn(msg)
-                #endian = dtype_endian # dtype prevails
+            if not (dtype_endian == 'native' and endian == sys.byteorder):
+                warnings.warn('endian-ness of dtype and endian kwarg do not match, using endian kwarg')
+
         # check validity of datatype.
         self._isprimitive = False
         self._iscompound = False
@@ -4248,17 +4260,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         if ierr != NC_NOERR:
                             if grp.data_model != 'NETCDF4': grp._enddef()
                             _ensure_nc_success(ierr, extra_msg=error_info)
+
                 # set endian-ness of variable
-                if endian == 'little':
+                if endian != 'native':
+                    _nc_endian = NC_ENDIAN_LITTLE if endian == "little" else NC_ENDIAN_BIG
                     with nogil:
-                        ierr = nc_def_var_endian(self._grpid, self._varid, NC_ENDIAN_LITTLE)
-                elif endian == 'big':
-                    with nogil:
-                        ierr = nc_def_var_endian(self._grpid, self._varid, NC_ENDIAN_BIG)
-                elif endian == 'native':
-                    pass # this is the default format.
-                else:
-                    raise ValueError("'endian' keyword argument must be 'little','big' or 'native', got '%s'" % endian)
+                        ierr = nc_def_var_endian(self._grpid, self._varid, _nc_endian)
+                    _ensure_nc_success(ierr, extra_msg=error_info)
 
                 # set quantization
                 if significant_digits is not None:
@@ -4288,10 +4296,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 if ierr != NC_NOERR:
                     if grp.data_model != 'NETCDF4': grp._enddef()
                     _ensure_nc_success(ierr, extra_msg=error_info)
-            else:
-                if endian != 'native':
-                    msg=f"only endian='native' allowed for NETCDF3 files {error_info}"
-                    raise RuntimeError(msg)
+
             # set a fill value for this variable if fill_value keyword
             # given.  This avoids the HDF5 overhead of deleting and
             # recreating the dataset if it is set later (after the enddef).
