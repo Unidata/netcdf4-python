@@ -2,6 +2,8 @@ from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest, sys
+from filter_availability import no_plugins, has_blosc_filter
+
 
 ndim = 100000
 iblosc_shuffle=2
@@ -31,8 +33,9 @@ def write_netcdf(filename,dtype='f8',blosc_shuffle=1,complevel=6):
     foo_zstd[:] = datarr
     nc.close()
 
-class CompressionTestCase(unittest.TestCase):
 
+@unittest.skipIf(no_plugins or not has_blosc_filter, "blosc filter not available")
+class CompressionTestCase(unittest.TestCase):
     def setUp(self):
         self.filename = filename
         write_netcdf(self.filename,complevel=iblosc_complevel,blosc_shuffle=iblosc_shuffle)
@@ -73,10 +76,6 @@ class CompressionTestCase(unittest.TestCase):
         assert f.variables['data_zstd'].filters() == dtest
         f.close()
 
+
 if __name__ == '__main__':
-    nc = Dataset(filename,'w')
-    if not nc.has_blosc_filter():
-        sys.stdout.write('blosc filter not available, skipping tests ...\n')
-    else:
-        nc.close()
-        unittest.main()
+    unittest.main()

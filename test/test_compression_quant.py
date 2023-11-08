@@ -1,5 +1,5 @@
 from numpy.random.mtrand import uniform
-from netCDF4 import Dataset
+from netCDF4 import Dataset, __has_quantization_support__
 from numpy.testing import assert_almost_equal
 import numpy as np
 import os, tempfile, unittest
@@ -25,8 +25,9 @@ def write_netcdf(filename,zlib,significant_digits,data,dtype='f8',shuffle=False,
     data = file.variables['data'][:]
     file.close()
 
-class CompressionTestCase(unittest.TestCase):
 
+@unittest.skipIf(not __has_quantization_support__, "missing quantisation support")
+class CompressionTestCase(unittest.TestCase):
     def setUp(self):
         self.files = files
         # no compression

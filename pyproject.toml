@@ -72,3 +72,6 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "netCDF4.plugins" = ["lib__nc*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["test"]

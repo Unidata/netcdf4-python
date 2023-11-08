@@ -8,6 +8,7 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 from numpy.random.mtrand import uniform
 import netCDF4
 from numpy.ma import masked_all
+import pathlib
 
 # test automatic conversion of masked arrays, and
 # packing/unpacking of short ints.
@@ -91,9 +92,8 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         # be cast to the variable type, issue a warning instead
         # of raising an exception when auto-converted slice to a
         # masked array
-        dataset = netCDF4.Dataset('issue1152.nc')
-        data = dataset['v'][:]
-        dataset.close()
+        with netCDF4.Dataset(pathlib.Path(__file__).parent / "issue1152.nc") as dataset:
+            data = dataset['v'][:]
 
         # issue #1271 (mask is ignored when assigning bool array to uint8 var)
         ds = netCDF4.Dataset(self.file3, "w")

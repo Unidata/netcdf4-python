@@ -2,6 +2,7 @@ from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest, sys
+from filter_availability import no_plugins, has_zstd_filter
 
 ndim = 100000
 filename1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -16,8 +17,9 @@ def write_netcdf(filename,dtype='f8',complevel=6):
     foo[:] = array
     nc.close()
 
-class CompressionTestCase(unittest.TestCase):
 
+@unittest.skipIf(no_plugins or not has_zstd_filter, "zstd filter not available")
+class CompressionTestCase(unittest.TestCase):
     def setUp(self):
         self.filename1 = filename1
         self.filename2 = filename2
@@ -49,9 +51,4 @@ class CompressionTestCase(unittest.TestCase):
         f.close()
 
 if __name__ == '__main__':
-    nc = Dataset(filename1,'w')
-    if not nc.has_zstd_filter():
-        sys.stdout.write('zstd filter not available, skipping tests ...\n')
-    else:
-        nc.close()
-        unittest.main()
+    unittest.main()
