@@ -1435,6 +1435,11 @@ _intnptonctype  = {'i1' : NC_BYTE,
                    'i8' : NC_INT64,
                    'u8' : NC_UINT64}
 
+_complex_types = {
+    "c16": PFNC_DOUBLE_COMPLEX,
+    "c8": PFNC_FLOAT_COMPLEX,
+}
+
 # create dictionary mapping string identifiers to netcdf format codes
 _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
                  'NETCDF4_CLASSIC' : NC_FORMAT_NETCDF4_CLASSIC,
@@ -1479,7 +1484,8 @@ if __has_pnetcdf_support__:
         'NETCDF3_64BIT'
     ]
 
-# default fill_value to numpy datatype mapping.
+# Default fill_value to numpy datatype mapping. Last two for complex
+# numbers only applies to complex dimensions
 default_fillvals = {#'S1':NC_FILL_CHAR,
                      'S1':'\0',
                      'i1':NC_FILL_BYTE,
@@ -1491,7 +1497,10 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
                      'i8':NC_FILL_INT64,
                      'u8':NC_FILL_UINT64,
                      'f4':NC_FILL_FLOAT,
-                     'f8':NC_FILL_DOUBLE}
+                     'f8':NC_FILL_DOUBLE,
+                     'c8':NC_FILL_FLOAT,
+                     'c16':NC_FILL_DOUBLE,
+}
 
 # logical for native endian type.
 is_native_little = numpy.dtype('<f4').byteorder == c'='
@@ -2036,9 +2045,7 @@ cdef _get_vars(group, bint auto_complex=False):
                 datatype = "c16" if complex_nc_type == NC_DOUBLE else "c8"
 
             endian = _dtype_endian_lookup[endianness] or "native"
-            variables[name] = Variable(
-                group, name, datatype, dimensions, id=varid, auto_complex=auto_complex, endian=endian
-            )
+            variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian=endian)
 
         free(varids) # free pointer holding variable ids.
     return variables
@@ -3814,7 +3821,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
             significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None,
-            auto_complex=False, **kwargs):
+            **kwargs):
         """
         **`__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
         complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
@@ -3956,7 +3963,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
-        cdef int nc_complex_typeid
+        cdef int nc_complex_typeid, complex_base_type_id, complex_dim_id
         cdef int _nc_endian
 
         # Extra information for more helpful error messages
@@ -4027,21 +4034,17 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             self._grp = grp
 
         # If datatype is complex, convert to compoundtype
-        self.auto_complex = auto_complex
         is_complex = dtype_is_complex(datatype)
-        if is_complex:
-            with nogil:
-                ierr = pfnc_get_double_complex_typeid(self._grpid, &nc_complex_typeid)
-            _ensure_nc_success(ierr, extra_msg=error_info)
+        if is_complex and not self._grp.auto_complex:
+            raise ValueError(
+                f"complex datatypes ({datatype}) are only supported with `auto_complex=True`"
+            )
 
-            original_datatype = numpy.dtype(datatype)
-            datatype = CompoundType(self._grp, "f8, f8", "double_complex", typeid=nc_complex_typeid)
+        self._iscompound = isinstance(datatype, CompoundType)
+        self._isvlen = isinstance(datatype, VLType) or datatype==str
+        self._isenum = isinstance(datatype, EnumType)
 
-        user_type = (
-            is_complex
-            or isinstance(datatype, (CompoundType, VLType, EnumType))
-            or datatype == str
-        )
+        user_type = self._iscompound or self._isvlen or self._isenum
 
         # convert to a real numpy datatype object if necessary.
         if not user_type and type(datatype) != numpy.dtype:
@@ -4053,6 +4056,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
               datatype.kind == 'U')):
             datatype = str
             user_type = True
+            self._isvlen = True
+
         # check if endian keyword consistent with datatype specification.
         dtype_endian = _dtype_endian_lookup[getattr(datatype, "byteorder", None)]
         if dtype_endian is not None and dtype_endian != endian:
@@ -4060,19 +4065,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 warnings.warn('endian-ness of dtype and endian kwarg do not match, using endian kwarg')
 
         # check validity of datatype.
-        self._isprimitive = False
-        self._iscompound = False
-        self._isvlen = False
-        self._isenum = False
+        self._isprimitive = not user_type
         if user_type:
-            if isinstance(datatype, CompoundType):
-                self._iscompound = True
+            if self._iscompound:
                 self._cmptype = datatype
-            if isinstance(datatype, VLType) or datatype==str:
-                self._isvlen = True
+            if self._isvlen:
                 self._vltype = datatype
-            if isinstance(datatype, EnumType):
-                self._isenum = True
+            if self._isenum:
                 self._enumtype = datatype
             if datatype==str:
                 if grp.data_model != 'NETCDF4':
@@ -4090,16 +4089,19 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 ierr = nc_inq_type(self._grpid, xtype, namstring, NULL)
             _ensure_nc_success(ierr, extra_msg=error_info)
             # dtype variable attribute is a numpy datatype object.
-            self.dtype = original_datatype if is_complex else datatype.dtype
+            self.dtype = datatype.dtype
         elif datatype.str[1:] in _supportedtypes:
-            self._isprimitive = True
             # find netCDF primitive data type corresponding to
             # specified numpy data type.
             xtype = _nptonctype[datatype.str[1:]]
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype
+        elif is_complex:
+            xtype = _complex_types[datatype.str[1:]]
+            self.dtype = datatype
         else:
             raise TypeError(f'Illegal primitive data type, must be one of {_supportedtypes}, got {datatype} {error_info}')
+
         if 'id' in kwargs:
             self._varid = kwargs['id']
         else:
@@ -4117,7 +4119,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             if grp.data_model != 'NETCDF4': grp._redef()
             # define variable.
             with nogil:
-                ierr = nc_def_var(self._grpid, varname, xtype, ndims,
+                ierr = pfnc_def_var(self._grpid, varname, xtype, ndims,
                                   dimids, &self._varid)
             if ndims:
                 free(dimids)
@@ -4297,13 +4299,9 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # given.  This avoids the HDF5 overhead of deleting and
             # recreating the dataset if it is set later (after the enddef).
             if fill_value is not None:
-                if not fill_value and isinstance(fill_value,bool):
+                if fill_value is False:
                     # no filling for this variable if fill_value==False.
-                    if not self._isprimitive:
-                        # no fill values for VLEN and compound variables
-                        # anyway.
-                        ierr = 0
-                    else:
+                    if self._isprimitive:
                         with nogil:
                             ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
                     if ierr != NC_NOERR:
@@ -4326,13 +4324,20 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 self.least_significant_digit = least_significant_digit
             # leave define mode if not a NETCDF4 format file.
             if grp.data_model != 'NETCDF4': grp._enddef()
+
+        # If the variable is a complex number, we need to check if
+        # it was created using a compound type or a complex
+        # dimension, and then make the equivalent class in Python
+        if is_complex:
+            self._fix_complex_numbers()
+
         # count how many unlimited dimensions there are.
         self._nunlimdim = 0
         for dim in dimensions:
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
 
         # set ndim attribute (number of dimensions).
-        self.ndim = _inq_varndims(self._grpid, self._varid, auto_complex)
+        self.ndim = _inq_varndims(self._grpid, self._varid, self._grp.auto_complex)
         self._name = name
         # default for automatically applying scale_factor and
         # add_offset, and converting to/from masked arrays is True.
@@ -4357,6 +4362,36 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             self._use_get_vars = True
         else:
             self._use_get_vars = False
+
+    def _fix_complex_numbers(self):
+        cdef char name[NC_MAX_NAME + 1]
+        cdef int complex_typeid, complex_dim_id
+
+        error_info = f"(variable '{name}', group '{self._grp.name}')"
+
+        if <bint>pfnc_var_is_complex_type(self._grpid, self._varid):
+            self._isprimitive = False
+            self._iscompound = True
+            with nogil:
+                ierr = pfnc_inq_var_complex_base_type(self._grpid, self._varid, &complex_typeid)
+            _ensure_nc_success(ierr, extra_msg=error_info)
+
+            np_complex_type = _nctonptype[complex_typeid]
+            compound_complex_type = f"{np_complex_type}, {np_complex_type}"
+
+            self._cmptype = CompoundType(
+                self._grp, compound_complex_type, "complex", typeid=complex_typeid
+            )
+        else:
+            with nogil:
+                ierr = pfnc_get_complex_dim(self._grpid, &complex_dim_id)
+            _ensure_nc_success(ierr, extra_msg=error_info)
+            with nogil:
+                ierr = nc_inq_dimname(self._grpid, complex_dim_id, name)
+            _ensure_nc_success(ierr, extra_msg=error_info)
+            self._grp.dimensions[name.decode("utf-8")] = Dimension(
+                self._grp, name, size=2, id=complex_dim_id
+            )
 
     def __array__(self):
         # numpy special method that returns a numpy array.
@@ -4430,7 +4465,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef int ierr, dimid
         cdef char namstring[NC_MAX_NAME+1]
 
-        dimids = _inq_vardimid(self._grpid, self._varid, self.auto_complex)
+        dimids = _inq_vardimid(self._grpid, self._varid, self._grp.auto_complex)
 
         # loop over dimensions, retrieve names.
         dimensions = ()
@@ -5721,7 +5756,11 @@ NC_CHAR).
             if not data.dtype.isnative:
                 data = data.byteswap()
             # strides all 1 or scalar variable, use put_vara (faster)
-            if sum(stride) == ndims or ndims == 0:
+            if self._grp.auto_complex:
+                with nogil:
+                    ierr = pfnc_put_vars(self._grpid, self._varid,
+                                         startp, countp, stridep, PyArray_DATA(data))
+            elif sum(stride) == ndims or ndims == 0:
                 with nogil:
                     ierr = nc_put_vara(self._grpid, self._varid,
                                        startp, countp, PyArray_DATA(data))
@@ -5843,16 +5882,15 @@ NC_CHAR).
             # strides all 1 or scalar variable, use get_vara (faster)
             # if count contains a zero element, no data is being read
             if 0 not in count:
-                if sum(stride) == ndims or ndims == 0:
-                    if self.auto_complex:
-                        with nogil:
-                            ierr = pfnc_get_vara(self._grpid, self._varid,
-                                               startp, countp, PyArray_DATA(data))
-                    else:
-                        with nogil:
-                            ierr = nc_get_vara(self._grpid, self._varid,
-                                               startp, countp, PyArray_DATA(data))
-
+                if self._grp.auto_complex:
+                    with nogil:
+                        ierr = pfnc_get_vars(self._grpid, self._varid,
+                                             startp, countp, stridep,
+                                             PyArray_DATA(data))
+                elif sum(stride) == ndims or ndims == 0:
+                    with nogil:
+                        ierr = nc_get_vara(self._grpid, self._varid,
+                                           startp, countp, PyArray_DATA(data))
                 else:
                     with nogil:
                         ierr = nc_get_vars(self._grpid, self._varid,

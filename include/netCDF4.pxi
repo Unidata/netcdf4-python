@@ -469,17 +469,28 @@ cdef extern from "netcdf-compat.h":
 
 # Declarations for handling complex numbers
 cdef extern from "nc_complex/nc_complex.h":
-  int pfnc_var_is_complex(int ncid, int varid) nogil
-  int pfnc_var_is_complex_type(int ncid, int varid) nogil
-  int pfnc_has_complex_dimension(int ncid, int varid) nogil
-  int pfnc_get_double_complex_typeid(int ncid, nc_type *nc_typeid) nogil
-  int pfnc_get_float_complex_typeid(int ncid, nc_type *nc_typeid) nogil
+  bint pfnc_var_is_complex(int ncid, int varid) nogil
+  bint pfnc_var_is_complex_type(int ncid, int varid) nogil
 
-  int pfnc_complex_base_type(int ncid, int nc_typeid, int* base_type_id) nogil
+  int pfnc_get_complex_dim(int ncid, int* nc_dim) nogil
   int pfnc_inq_var_complex_base_type(int ncid, int varid, int* nc_typeid) nogil
 
   int pfnc_inq_varndims (int ncid, int varid, int *ndimsp) nogil
   int pfnc_inq_vardimid (int ncid, int varid, int *dimidsp) nogil
 
-  int pfnc_get_vara (int ncid, int varid, size_t *startp,
-                     size_t *countp, void *ip) nogil
+  int pfnc_def_var(int ncid, char *name, nc_type xtype, int ndims,
+                   int *dimidsp, int *varidp) nogil
+
+  int pfnc_get_vars(int ncid, int varid, size_t *startp,
+                    size_t *countp, ptrdiff_t *stridep,
+                    void *ip) nogil
+
+  int pfnc_put_vars(int ncid, int varid, size_t *startp,
+                    size_t *countp, ptrdiff_t *stridep,
+                    void *op) nogil
+
+  cdef enum:
+      PFNC_DOUBLE_COMPLEX
+      PFNC_DOUBLE_COMPLEX_DIM
+      PFNC_FLOAT_COMPLEX
+      PFNC_FLOAT_COMPLEX_DIM
