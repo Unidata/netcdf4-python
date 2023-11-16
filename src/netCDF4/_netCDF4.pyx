@@ -3952,7 +3952,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
-        cdef int *dimids
+        cdef int *dimids = NULL
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
@@ -4116,15 +4116,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # any exceptions are raised.
             if grp.data_model != 'NETCDF4': grp._redef()
             # define variable.
+            with nogil:
+                ierr = nc_def_var(self._grpid, varname, xtype, ndims,
+                                  dimids, &self._varid)
             if ndims:
-                with nogil:
-                    ierr = nc_def_var(self._grpid, varname, xtype, ndims,
-                                      dimids, &self._varid)
                 free(dimids)
-            else: # a scalar variable.
-                with nogil:
-                    ierr = nc_def_var(self._grpid, varname, xtype, ndims,
-                                      NULL, &self._varid)
 
             if ierr != NC_NOERR:
                 if grp.data_model != 'NETCDF4':
