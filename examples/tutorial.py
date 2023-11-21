@@ -355,3 +355,11 @@ nc = Dataset('inmemory.nc')
 print(nc)
 print(nc['v'][:])
 nc.close()
+
+# Write complex numbers to file
+complex_array = np.array([0 + 0j, 1 + 0j, 0 + 1j, 1 + 1j, 0.25 + 0.75j])
+with Dataset("complex.nc", "w", auto_complex=True) as nc:
+    nc.createDimension("x", size=len(complex_array))
+    var = nc.createVariable("data", "c16", ("x",))
+    var[:] = complex_array
+    print(var)

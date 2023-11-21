@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.1.dev7+g3ecfbcf" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>netCDF4 API documentation</title>
 <meta name="description" content="Version 1.7.0
 …" />
@@ -49,8 +49,9 @@ types) are not supported.</p>
 </ul>
 <h2 id="developer-install">Developer Install</h2>
 <ul>
-<li>Clone the
-<a href="http://github.com/Unidata/netcdf4-python">github repository</a>.</li>
+<li>Clone the <a href="http://github.com/Unidata/netcdf4-python">github repository</a>. Make
+sure you either clone recursively, or run <code>git submodule update --init</code> to
+ensure all the submodules are also checked out.</li>
 <li>Make sure the dependencies are satisfied (Python 3.8 or later,
 <a href="http://numpy.scipy.org">numpy</a>,
 <a href="http://cython.org">Cython</a>,
@@ -107,6 +108,9 @@ to have access to the extra compression plugins.</li>
 <li><a href="#dealing-with-strings">Dealing with strings</a></li>
 <li><a href="#in-memory-diskless-datasets">In-memory (diskless) Datasets</a></li>
 </ul>
+<p>All of the code in this tutorial is available in <code>examples/tutorial.py</code>, except
+the parallel IO example, which is in <code>examples/mpi_example.py</code>.
+Unit tests are in the <code>test</code> directory.</p>
 <h2 id="creatingopeningclosing-a-netcdf-file">Creating/Opening/Closing a netCDF file</h2>
 <p>To create a netCDF file from python, you simply call the <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code>
 constructor. This is also the method used to open an existing netCDF
@@ -671,9 +675,9 @@ different parameters from different variables.
 Compound data types
 are created from the corresponding numpy data type using the
 <code><a title="netCDF4.Dataset.createCompoundType" href="#netCDF4.Dataset.createCompoundType">Dataset.createCompoundType()</a></code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance.
-Since there is no native complex data type in netcdf, compound types are handy
-for storing numpy complex arrays.
-Here's an example:</p>
+Since there is no native complex data type in netcdf (but see
+<a href="#support-for-complex-numbers">Support for complex numbers</a>), compound
+types are handy for storing numpy complex arrays. Here's an example:</p>
 <pre><code class="language-python">&gt;&gt;&gt; f = Dataset(&quot;complex.nc&quot;,&quot;w&quot;)
 &gt;&gt;&gt; size = 3 # length of 1-d complex array
 &gt;&gt;&gt; # create sample complex data.
@@ -1096,9 +1100,43 @@ root group (NETCDF4 data model, file format HDF5):
 [0 1 2 3 4]
 &gt;&gt;&gt; nc.close()
 </code></pre>
-<p>All of the code in this tutorial is available in <code>examples/tutorial.py</code>, except
-the parallel IO example, which is in <code>examples/mpi_example.py</code>.
-Unit tests are in the <code>test</code> directory.</p>
+<h2 id="support-for-complex-numbers">Support for complex numbers</h2>
+<p>Although there is no native support for complex numbers in netCDF, there are
+some common conventions for storing them. Two of the most common are to either
+use a compound datatype for the real and imaginary components, or a separate
+dimension. <code><a title="netCDF4" href="#netCDF4">netCDF4</a></code> supports reading several of these conventions, as well as
+writing using one of two conventions (depending on file format). This support
+for complex numbers is enabled by setting <code>auto_complex=True</code> when opening a
+<code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code>:</p>
+<pre><code class="language-python">&gt;&gt;&gt; complex_array = np.array([0 + 0j, 1 + 0j, 0 + 1j, 1 + 1j, 0.25 + 0.75j])
+&gt;&gt;&gt; with netCDF4.Dataset(&quot;complex.nc&quot;, &quot;w&quot;, auto_complex=True) as nc:
+...     nc.createDimension(&quot;x&quot;, size=len(complex_array))
+...     var = nc.createVariable(&quot;data&quot;, &quot;c16&quot;, (&quot;x&quot;,))
+...     var[:] = complex_array
+...     print(var)
+&lt;class 'netCDF4._netCDF4.Variable'&gt;
+compound data(x)
+compound data type: complex128
+unlimited dimensions:
+current shape = (5,)
+</code></pre>
+<p>When reading files using <code>auto_complex=True</code>, <code><a title="netCDF4" href="#netCDF4">netCDF4</a></code> will interpret variables
+stored using the following conventions as complex numbers:</p>
+<ul>
+<li>compound datatypes with two <code>float</code> or <code>double</code> members who names begin with
+<code>r</code> and <code>i</code> (case insensitive)</li>
+<li>a dimension of length 2 named <code>complex</code> or <code>ri</code></li>
+</ul>
+<p>When writing files using <code>auto_complex=True</code>, <code><a title="netCDF4" href="#netCDF4">netCDF4</a></code> will use:</p>
+<ul>
+<li>a compound datatype named <code>_PFNC_DOUBLE_COMPLEX_TYPE</code> (or <code>*FLOAT*</code> as
+appropriate) with members <code>r</code> and <code>i</code> for netCDF4 formats;</li>
+<li>or a dimension of length 2 named <code>_pfnc_complex</code> for netCDF3 or classic
+formats.</li>
+</ul>
+<p>Support for complex numbers is handled via the
+<a href="https://github.com/PlasmaFAIR/nc-complex"><code>nc-complex</code></a> library. See there for
+further details.</p>
 <p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#46;&#115;&#46;&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;&#111;&#97;&#97;&#46;&#103;&#111;&#118;">&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#46;&#115;&#46;&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;&#111;&#97;&#97;&#46;&#103;&#111;&#118;</a></p>
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 <p><strong>license</strong>: Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
@@ -1553,7 +1591,8 @@ means MPI_COMM_WORLD will be used.
 Ignored if <code>parallel=False</code>.</p>
 <p><strong><code>info</code></strong>: MPI_Info object for parallel access. Default <code>None</code>, which
 means MPI_INFO_NULL will be used.
-Ignored if <code>parallel=False</code>.</p></div>
+Ignored if <code>parallel=False</code>.</p>
+<p><strong><code>auto_complex</code></strong>: if <code>True</code>, then automatically convert complex number types</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li>netCDF4._netCDF4.Group</li>
@@ -1582,6 +1621,10 @@ Access mode to open Dataset (Default <code>'a'</code>).</p>
 </dl>
 <h3>Instance variables</h3>
 <dl>
+<dt id="netCDF4.Dataset.auto_complex"><code class="name">var <span class="ident">auto_complex</span></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
 <dt id="netCDF4.Dataset.cmptypes"><code class="name">var <span class="ident">cmptypes</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
@@ -2627,6 +2670,10 @@ change it when Dataset is re-opened.</p>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
+<dt id="netCDF4.Variable.auto_complex"><code class="name">var <span class="ident">auto_complex</span></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
 <dt id="netCDF4.Variable.chartostring"><code class="name">var <span class="ident">chartostring</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
@@ -3027,6 +3074,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 <li><a href="#parallel-io">Parallel IO</a></li>
 <li><a href="#dealing-with-strings">Dealing with strings</a></li>
 <li><a href="#in-memory-diskless-datasets">In-memory (diskless) Datasets</a></li>
+<li><a href="#support-for-complex-numbers">Support for complex numbers</a></li>
 </ul>
 </li>
 </ul>
@@ -3060,6 +3108,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 <li>
 <h4><code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code></h4>
 <ul class="">
+<li><code><a title="netCDF4.Dataset.auto_complex" href="#netCDF4.Dataset.auto_complex">auto_complex</a></code></li>
 <li><code><a title="netCDF4.Dataset.close" href="#netCDF4.Dataset.close">close</a></code></li>
 <li><code><a title="netCDF4.Dataset.cmptypes" href="#netCDF4.Dataset.cmptypes">cmptypes</a></code></li>
 <li><code><a title="netCDF4.Dataset.createCompoundType" href="#netCDF4.Dataset.createCompoundType">createCompoundType</a></code></li>
@@ -3156,6 +3205,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 <ul class="">
 <li><code><a title="netCDF4.Variable.always_mask" href="#netCDF4.Variable.always_mask">always_mask</a></code></li>
 <li><code><a title="netCDF4.Variable.assignValue" href="#netCDF4.Variable.assignValue">assignValue</a></code></li>
+<li><code><a title="netCDF4.Variable.auto_complex" href="#netCDF4.Variable.auto_complex">auto_complex</a></code></li>
 <li><code><a title="netCDF4.Variable.chartostring" href="#netCDF4.Variable.chartostring">chartostring</a></code></li>
 <li><code><a title="netCDF4.Variable.chunking" href="#netCDF4.Variable.chunking">chunking</a></code></li>
 <li><code><a title="netCDF4.Variable.datatype" href="#netCDF4.Variable.datatype">datatype</a></code></li>
@@ -3198,7 +3248,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.1.dev7+g3ecfbcf</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

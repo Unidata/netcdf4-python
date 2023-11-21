@@ -1,5 +1,4 @@
-"""
-Version 1.7.0
+"""Version 1.7.0
 -------------
 
 # Introduction
@@ -30,8 +29,9 @@ types) are not supported.
 
 ## Developer Install
 
- - Clone the
-   [github repository](http://github.com/Unidata/netcdf4-python).
+ - Clone the [github repository](http://github.com/Unidata/netcdf4-python). Make
+   sure you either clone recursively, or run `git submodule update --init` to
+   ensure all the submodules are also checked out.
  - Make sure the dependencies are satisfied (Python 3.8 or later,
    [numpy](http://numpy.scipy.org),
    [Cython](http://cython.org),
@@ -84,6 +84,10 @@ types) are not supported.
 - [Parallel IO](#parallel-io)
 - [Dealing with strings](#dealing-with-strings)
 - [In-memory (diskless) Datasets](#in-memory-diskless-datasets)
+
+All of the code in this tutorial is available in `examples/tutorial.py`, except
+the parallel IO example, which is in `examples/mpi_example.py`.
+Unit tests are in the `test` directory.
 
 ## Creating/Opening/Closing a netCDF file
 
@@ -735,8 +739,9 @@ information for a point by reading one variable, instead of reading
 different parameters from different variables.  Compound data types
 are created from the corresponding numpy data type using the
 `Dataset.createCompoundType` method of a `Dataset` or `Group` instance.
-Since there is no native complex data type in netcdf, compound types are handy
-for storing numpy complex arrays.  Here's an example:
+Since there is no native complex data type in netcdf (but see
+[Support for complex numbers](#support-for-complex-numbers)), compound
+types are handy for storing numpy complex arrays. Here's an example:
 
 ```python
 >>> f = Dataset("complex.nc","w")
@@ -1200,10 +1205,48 @@ root group (NETCDF4 data model, file format HDF5):
 >>> nc.close()
 ```
 
+## Support for complex numbers
 
-All of the code in this tutorial is available in `examples/tutorial.py`, except
-the parallel IO example, which is in `examples/mpi_example.py`.
-Unit tests are in the `test` directory.
+Although there is no native support for complex numbers in netCDF, there are
+some common conventions for storing them. Two of the most common are to either
+use a compound datatype for the real and imaginary components, or a separate
+dimension. `netCDF4` supports reading several of these conventions, as well as
+writing using one of two conventions (depending on file format). This support
+for complex numbers is enabled by setting `auto_complex=True` when opening a
+`Dataset`:
+
+```python
+>>> complex_array = np.array([0 + 0j, 1 + 0j, 0 + 1j, 1 + 1j, 0.25 + 0.75j])
+>>> with netCDF4.Dataset("complex.nc", "w", auto_complex=True) as nc:
+...     nc.createDimension("x", size=len(complex_array))
+...     var = nc.createVariable("data", "c16", ("x",))
+...     var[:] = complex_array
+...     print(var)
+<class 'netCDF4._netCDF4.Variable'>
+compound data(x)
+compound data type: complex128
+unlimited dimensions:
+current shape = (5,)
+```
+
+When reading files using `auto_complex=True`, `netCDF4` will interpret variables
+stored using the following conventions as complex numbers:
+
+- compound datatypes with two `float` or `double` members who names begin with
+  `r` and `i` (case insensitive)
+- a dimension of length 2 named `complex` or `ri`
+
+When writing files using `auto_complex=True`, `netCDF4` will use:
+
+- a compound datatype named `_PFNC_DOUBLE_COMPLEX_TYPE` (or `*FLOAT*` as
+  appropriate) with members `r` and `i` for netCDF4 formats;
+- or a dimension of length 2 named `_pfnc_complex` for netCDF3 or classic
+  formats.
+
+Support for complex numbers is handled via the
+[`nc-complex`](https://github.com/PlasmaFAIR/nc-complex) library. See there for
+further details.
+
 
 **contact**: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
 
@@ -1214,6 +1257,7 @@ Unit tests are in the `test` directory.
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 """
 
 # Make changes to this file, not the c-wrappers that Cython generates.
