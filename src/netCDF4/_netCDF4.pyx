@@ -2113,8 +2113,8 @@ def _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None, extra_msg=None
     raise err_cls(err_str)
 
 
-def dtype_is_complex(dtype: Union[str, CompoundType, numpy.dtype]) -> bool:
-    # TODO: check numpy.complex128, matching CompoundTypes
+def dtype_is_complex(dtype: Union[str, numpy.dtype]) -> bool:
+    """Return True if dtype is a complex number"""
     return dtype in ("c8", "c16")
 
 
@@ -4077,13 +4077,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         else:
             self._grp = grp
 
-        # If datatype is complex, convert to compoundtype
-        is_complex = dtype_is_complex(datatype)
-        if is_complex and not self._grp.auto_complex:
-            raise ValueError(
-                f"complex datatypes ({datatype}) are only supported with `auto_complex=True`"
-            )
-
         self._iscompound = isinstance(datatype, CompoundType)
         self._isvlen = isinstance(datatype, VLType) or datatype==str
         self._isenum = isinstance(datatype, EnumType)
@@ -4101,6 +4094,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             datatype = str
             user_type = True
             self._isvlen = True
+
+        # If datatype is complex, convert to compoundtype
+        is_complex = dtype_is_complex(datatype)
+        if is_complex and not self._grp.auto_complex:
+            raise ValueError(
+                f"complex datatypes ({datatype}) are only supported with `auto_complex=True`"
+            )
 
         # check if endian keyword consistent with datatype specification.
         dtype_endian = _dtype_endian_lookup[getattr(datatype, "byteorder", None)]

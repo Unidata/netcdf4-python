@@ -60,6 +60,17 @@ class ComplexNumbersTestCase(unittest.TestCase):
             assert "complex_data" in f.variables
             assert np.array_equal(f["complex_data"], complex_struct_array)
 
+    def test_write_with_np_complex128(self):
+        filename = self.tmp_path / "test_write_with_np_complex128.nc"
+        with netCDF4.Dataset(filename, "w", auto_complex=True) as f:
+            f.createDimension("x", size=len(complex_array))
+            complex_var = f.createVariable("complex_data", np.complex128, ("x",))
+            complex_var[:] = complex_array
+
+        with netCDF4.Dataset(filename, "r") as f:
+            assert "complex_data" in f.variables
+            assert np.array_equal(f["complex_data"], complex_struct_array)
+
     def test_write_netcdf3(self):
         filename = self.tmp_path / "test_write_netcdf3.nc"
         with netCDF4.Dataset(
