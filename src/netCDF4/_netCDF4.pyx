@@ -2160,13 +2160,13 @@ cdef _inq_vardimid(int ncid, int varid, bint auto_complex):
 # only exist at the python level (not in the netCDF file).
 
 _private_atts = \
-['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
+('_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd',
+ '__orthogoral_indexing__','keepweakref','_has_lsd','always_mask',
  '_buffer','chartostring','_use_get_vars','_ncstring_attrs__',
  'auto_complex'
-]
+)
 
 cdef class Dataset:
     """
@@ -6964,7 +6964,7 @@ Example usage (See `MFDataset.__init__` for more details):
 
         return the netcdf attribute names from the master file.
         """
-        return self._cdf[0].__dict__.keys()
+        return list(self._cdf[0].__dict__)
 
     def close(self):
         """
