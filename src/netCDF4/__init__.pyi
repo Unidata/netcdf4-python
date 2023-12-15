@@ -1,11 +1,11 @@
+
+import os
 from typing import TypeAlias, Literal, Any, NoReturn, Iterable, Mapping, Union, Sequence
 from typing_extensions import Buffer
+
+from cftime import num2date, date2num, date2index
 import numpy as np
 import numpy.typing as npt
-import os
-import datetime
-import cftime
-from cftime import num2date, date2num, date2index
 
 __all__ = [
     'Dataset', 'Variable', 'Dimension', 'Group', 'MFDataset', 'MFTime', 'CompoundType',
@@ -204,13 +204,13 @@ class Dataset:
 
 
 class Group(Dataset):
-    def __init__( self, parent: Group | Dataset, name: str, **kwargs: Any) -> None: ...
+    def __init__(self, parent: Group | Dataset, name: str, **kwargs: Any) -> None: ...
 
     def close(self) -> NoReturn: ...
 
 
 class Dimension:
-    def __init__( self, grp: Group, name: str, size: int | None = None, **kwargs: Any) -> None: ...
+    def __init__(self, grp: Group, name: str, size: int | None = None, **kwargs: Any) -> None: ...
 
     @property
     def name(self) -> str: ...

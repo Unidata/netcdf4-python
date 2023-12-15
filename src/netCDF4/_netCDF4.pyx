@@ -2556,7 +2556,7 @@ strings.
         return self.__str__()
 
     def __str__(self):
-        ncdump = [repr(type(self)).replace("_netCDF4", "")]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         dimnames = tuple(_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys())
         varnames = tuple(\
@@ -4450,7 +4450,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef int ierr, no_fill
         if not dir(self._grp):
             return 'Variable object no longer valid'
-        ncdump = [repr(type(self)).replace("_netCDF4", "")]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         show_more_dtype = True
         if self._iscompound:
             kind = 'compound'
@@ -6984,7 +6984,7 @@ Example usage (See `MFDataset.__init__` for more details):
         return all(map(lambda dset: dset.isopen(), self._cdf))
 
     def __repr__(self):
-        ncdump = [repr(type(self)).replace("_netCDF4", "")]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         dimnames = tuple(str(dimname) for dimname in self.dimensions.keys())
         varnames = tuple(str(varname) for varname in self.variables.keys())
         grpnames = ()
@@ -7048,7 +7048,7 @@ class _Variable:
         except:
             raise AttributeError(name)
     def __repr__(self):
-        ncdump = [repr(type(self)).replace("_netCDF4", "")]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         dimnames = tuple(str(dimname) for dimname in self.dimensions)
         ncdump.append('%s %s%s' % (self.dtype, self._name, dimnames))
         for name in self.ncattrs():
