@@ -75,3 +75,13 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["test"]
+
+[tool.mypy]
+files = ["src/netCDF4"]
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "cftime.*",
+  "cython.*"
+]
