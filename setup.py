@@ -315,7 +315,11 @@ else:
     if szip_incdir is None and szip_dir is not None:
         szip_incdir = os.path.join(szip_dir, 'include')
     if szip_incdir is not None and szip_libdir is not None:
-        libs.append('sz')
+        if sys.platform == 'win32':
+            libs.append('szip')
+        else:
+            libs.append('sz')
+
         lib_dirs.append(szip_libdir)
         inc_dirs.append(szip_incdir)
     # add hdf4 to link if desired.
