@@ -1,9 +1,9 @@
 [build-system]
 requires = [
     "Cython>=0.29",
-	"mpi4py>=3.1",
+    "mpi4py>=3.1",
     "oldest-supported-numpy",
-    "setuptools>=65.5.0",
+    "setuptools>=61",
 ]
 build-backend = "setuptools.build_meta"
 
