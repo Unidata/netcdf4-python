@@ -15,8 +15,14 @@ ranarr2 = 100.*uniform(size=(n1dim,n2dim,n3dim))
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=True).name
 FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
-class DisklessTestCase(unittest.TestCase):
 
+@unittest.skipIf(
+    netCDF4.__netcdf4libversion__ < "4.2.1"
+    or netCDF4.__has_parallel4_support__
+    or netCDF4.__has_pnetcdf_support__,
+    "no diskless support",
+)
+class DisklessTestCase(unittest.TestCase):
     def setUp(self):
         # in memory file, does not exist on disk (closing it
         # makes data disappear from memory)

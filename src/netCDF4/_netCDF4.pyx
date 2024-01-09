@@ -1,5 +1,4 @@
-"""
-Version 1.6.5
+"""Version 1.7.0
 -------------
 
 # Introduction
@@ -30,9 +29,10 @@ types) are not supported.
 
 ## Developer Install
 
- - Clone the
-   [github repository](http://github.com/Unidata/netcdf4-python).
- - Make sure the dependencies are satisfied (Python 3.7 or later,
+ - Clone the [github repository](http://github.com/Unidata/netcdf4-python). Make
+   sure you either clone recursively, or run `git submodule update --init` to
+   ensure all the submodules are also checked out.
+ - Make sure the dependencies are satisfied (Python 3.8 or later,
    [numpy](http://numpy.scipy.org),
    [Cython](http://cython.org),
    [cftime](https://github.com/Unidata/cftime),
@@ -84,6 +84,10 @@ types) are not supported.
 - [Parallel IO](#parallel-io)
 - [Dealing with strings](#dealing-with-strings)
 - [In-memory (diskless) Datasets](#in-memory-diskless-datasets)
+
+All of the code in this tutorial is available in `examples/tutorial.py`, except
+the parallel IO example, which is in `examples/mpi_example.py`.
+Unit tests are in the `test` directory.
 
 ## Creating/Opening/Closing a netCDF file
 
@@ -735,8 +739,9 @@ information for a point by reading one variable, instead of reading
 different parameters from different variables.  Compound data types
 are created from the corresponding numpy data type using the
 `Dataset.createCompoundType` method of a `Dataset` or `Group` instance.
-Since there is no native complex data type in netcdf, compound types are handy
-for storing numpy complex arrays.  Here's an example:
+Since there is no native complex data type in netcdf (but see
+[Support for complex numbers](#support-for-complex-numbers)), compound
+types are handy for storing numpy complex arrays. Here's an example:
 
 ```python
 >>> f = Dataset("complex.nc","w")
@@ -1200,10 +1205,48 @@ root group (NETCDF4 data model, file format HDF5):
 >>> nc.close()
 ```
 
+## Support for complex numbers
 
-All of the code in this tutorial is available in `examples/tutorial.py`, except
-the parallel IO example, which is in `examples/mpi_example.py`.
-Unit tests are in the `test` directory.
+Although there is no native support for complex numbers in netCDF, there are
+some common conventions for storing them. Two of the most common are to either
+use a compound datatype for the real and imaginary components, or a separate
+dimension. `netCDF4` supports reading several of these conventions, as well as
+writing using one of two conventions (depending on file format). This support
+for complex numbers is enabled by setting `auto_complex=True` when opening a
+`Dataset`:
+
+```python
+>>> complex_array = np.array([0 + 0j, 1 + 0j, 0 + 1j, 1 + 1j, 0.25 + 0.75j])
+>>> with netCDF4.Dataset("complex.nc", "w", auto_complex=True) as nc:
+...     nc.createDimension("x", size=len(complex_array))
+...     var = nc.createVariable("data", "c16", ("x",))
+...     var[:] = complex_array
+...     print(var)
+<class 'netCDF4._netCDF4.Variable'>
+compound data(x)
+compound data type: complex128
+unlimited dimensions:
+current shape = (5,)
+```
+
+When reading files using `auto_complex=True`, `netCDF4` will interpret variables
+stored using the following conventions as complex numbers:
+
+- compound datatypes with two `float` or `double` members who names begin with
+  `r` and `i` (case insensitive)
+- a dimension of length 2 named `complex` or `ri`
+
+When writing files using `auto_complex=True`, `netCDF4` will use:
+
+- a compound datatype named `_PFNC_DOUBLE_COMPLEX_TYPE` (or `*FLOAT*` as
+  appropriate) with members `r` and `i` for netCDF4 formats;
+- or a dimension of length 2 named `_pfnc_complex` for netCDF3 or classic
+  formats.
+
+Support for complex numbers is handled via the
+[`nc-complex`](https://github.com/PlasmaFAIR/nc-complex) library. See there for
+further details.
+
 
 **contact**: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
 
@@ -1214,6 +1257,7 @@ Unit tests are in the `test` directory.
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 """
 
 # Make changes to this file, not the c-wrappers that Cython generates.
@@ -1226,8 +1270,9 @@ from .utils import (_StartCountStride, _quantize, _find_dim, _walk_grps,
                     _out_array_shape, _sortbylist, _tostr, _safecast, _is_int)
 import sys
 import functools
+from typing import Union
 
-__version__ = "1.6.5"
+__version__ = "1.7.0"
 
 # Initialize numpy
 import posixpath
@@ -1244,36 +1289,36 @@ from numpy import ma
 from libc.string cimport memcpy, memset
 from libc.stdlib cimport malloc, free
 numpy.import_array()
-include "constants.pyx"
 include "membuf.pyx"
 include "netCDF4.pxi"
-IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-    cimport mpi4py.MPI as MPI
-    from mpi4py.libmpi cimport MPI_Comm, MPI_Info, MPI_Comm_dup, MPI_Info_dup, \
-                               MPI_Comm_free, MPI_Info_free, MPI_INFO_NULL,\
-                               MPI_COMM_WORLD
-    ctypedef MPI.Comm Comm
-    ctypedef MPI.Info Info
-ELSE:
-    ctypedef object Comm
-    ctypedef object Info
+
+__has_rename_grp__ = HAS_RENAME_GRP
+__has_nc_inq_path__ = HAS_NC_INQ_PATH
+__has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
+__has_cdf5_format__ = HAS_CDF5_FORMAT
+__has_nc_open_mem__ = HAS_NC_OPEN_MEM
+__has_nc_create_mem__ = HAS_NC_CREATE_MEM
+__has_parallel4_support__ = HAS_PARALLEL4_SUPPORT
+__has_pnetcdf_support__ = HAS_PNETCDF_SUPPORT
+__has_parallel_support__ = HAS_PARALLEL_SUPPORT
+__has_quantization_support__ = HAS_QUANTIZATION_SUPPORT
+__has_zstandard_support__ = HAS_ZSTANDARD_SUPPORT
+__has_bzip2_support__ = HAS_BZIP2_SUPPORT
+__has_blosc_support__ = HAS_BLOSC_SUPPORT
+__has_szip_support__ = HAS_SZIP_SUPPORT
+__has_set_alignment__ = HAS_SET_ALIGNMENT
+__has_ncfilter__ = HAS_NCFILTER
+
 
 # set path to SSL certificates (issue #1246)
-IF HAS_NCRCSET: # available starting in version 4.9.1
+# available starting in version 4.9.1
+if HAS_NCRCSET:
     import certifi
-    cdef _set_curl_certpath(certpath):
-        cdef char *cert_path
-        cdef char *key
-        cdef int ierr
-        bytestr = _strencode(certpath)
-        cert_path = bytestr
-        ierr = nc_rc_set("HTTP.SSL.CAINFO",cert_path)
-        if ierr != 0:
-            raise RuntimeError('error setting path to SSL certificates')
-    _set_curl_certpath(certifi.where())
+    if nc_rc_set("HTTP.SSL.CAINFO", _strencode(certifi.where())) != 0:
+        raise RuntimeError('error setting path to SSL certificates')
+
 
 # check for required version of netcdf-4 and hdf5.
-
 def _gethdf5libversion():
     cdef unsigned int majorvers, minorvers, releasevers
     cdef herr_t ierr
@@ -1336,10 +1381,9 @@ details."""
         ierr = nc_set_chunk_cache(sizep,nelemsp, preemptionp)
     _ensure_nc_success(ierr)
 
-IF HAS_SET_ALIGNMENT:
-    def get_alignment():
-        """
-    **`get_alignment()`**
+
+def get_alignment():
+    """**`get_alignment()`**
 
     return current netCDF alignment within HDF5 files in a tuple
     (threshold,alignment). See netcdf C library documentation for
@@ -1347,57 +1391,46 @@ IF HAS_SET_ALIGNMENT:
     `set_alignment`.
 
     This function was added in netcdf 4.9.0."""
-        cdef int ierr
-        cdef int thresholdp, alignmentp
-        ierr = nc_get_alignment(&thresholdp, &alignmentp)
-        _ensure_nc_success(ierr)
-        threshold = thresholdp
-        alignment = alignmentp
-        return (threshold,alignment)
 
-    def set_alignment(threshold, alignment):
-        """
-    **`set_alignment(threshold,alignment)`**
+    if not __has_set_alignment__:
+        raise RuntimeError(
+            "This function requires netcdf4 4.9.0+ to be used at compile time"
+        )
+
+    cdef int ierr
+    cdef int thresholdp, alignmentp
+    ierr = nc_get_alignment(&thresholdp, &alignmentp)
+    _ensure_nc_success(ierr)
+    threshold = thresholdp
+    alignment = alignmentp
+    return (threshold, alignment)
+
+
+def set_alignment(threshold, alignment):
+    """**`set_alignment(threshold,alignment)`**
 
     Change the HDF5 file alignment.
     See netcdf C library documentation for `nc_set_alignment` for
     details.
 
     This function was added in netcdf 4.9.0."""
-        cdef int ierr
-        cdef int thresholdp, alignmentp
-        thresholdp = threshold
-        alignmentp = alignment
 
-        ierr = nc_set_alignment(thresholdp, alignmentp)
-        _ensure_nc_success(ierr)
-ELSE:
-    def get_alignment():
+    if not __has_set_alignment__:
         raise RuntimeError(
             "This function requires netcdf4 4.9.0+ to be used at compile time"
         )
 
-    def set_alignment(threshold, alignment):
-        raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
-        )
+    cdef int ierr
+    cdef int thresholdp, alignmentp
+    thresholdp = threshold
+    alignmentp = alignment
+
+    ierr = nc_set_alignment(thresholdp, alignmentp)
+    _ensure_nc_success(ierr)
+
 
 __netcdf4libversion__ = getlibversion().split()[0]
 __hdf5libversion__ = _gethdf5libversion()
-__has_rename_grp__ = HAS_RENAME_GRP
-__has_nc_inq_path__ = HAS_NC_INQ_PATH
-__has_nc_inq_format_extended__ = HAS_NC_INQ_FORMAT_EXTENDED
-__has_cdf5_format__ = HAS_CDF5_FORMAT
-__has_nc_open_mem__ = HAS_NC_OPEN_MEM
-__has_nc_create_mem__ = HAS_NC_CREATE_MEM
-__has_parallel4_support__ = HAS_PARALLEL4_SUPPORT
-__has_pnetcdf_support__ = HAS_PNETCDF_SUPPORT
-__has_quantization_support__ = HAS_QUANTIZATION_SUPPORT
-__has_zstandard_support__ = HAS_ZSTANDARD_SUPPORT
-__has_bzip2_support__ = HAS_BZIP2_SUPPORT
-__has_blosc_support__ = HAS_BLOSC_SUPPORT
-__has_szip_support__ = HAS_SZIP_SUPPORT
-__has_set_alignment__ = HAS_SET_ALIGNMENT
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
@@ -1411,6 +1444,17 @@ and netCDF < 4.4.1. Upgrading to netCDF4 >= 4.4.1 or downgrading to
 to HDF5 version 1.8.x is highly recommended
 (see https://github.com/Unidata/netcdf-c/issues/250)."""
     warnings.warn(msg)
+
+
+class NetCDF4MissingFeatureException(Exception):
+    """Custom exception when trying to use features missing from the linked netCDF library"""
+    def __init__(self, feature: str, version: str):
+        super().__init__(
+            f"{feature} requires netCDF lib >= {version} (using {__netcdf4libversion__}). "
+            f"To enable, rebuild netcdf4-python using netCDF {version} or higher "
+            f"(and possibly enable {feature})"
+        )
+
 
 # numpy data type <--> netCDF 4 data type mapping.
 _nptonctype  = {'S1' : NC_CHAR,
@@ -1435,6 +1479,11 @@ _intnptonctype  = {'i1' : NC_BYTE,
                    'i8' : NC_INT64,
                    'u8' : NC_UINT64}
 
+_complex_types = {
+    "c16": PFNC_DOUBLE_COMPLEX,
+    "c8": PFNC_FLOAT_COMPLEX,
+}
+
 # create dictionary mapping string identifiers to netcdf format codes
 _format_dict  = {'NETCDF3_CLASSIC' : NC_FORMAT_CLASSIC,
                  'NETCDF4_CLASSIC' : NC_FORMAT_NETCDF4_CLASSIC,
@@ -1448,27 +1497,39 @@ _blosc_dict={'blosc_lz':0,'blosc_lz4':1,'blosc_lz4hc':2,'blosc_snappy':3,'blosc_
 _blosc_dict_inv = {v: k for k, v in _blosc_dict.items()}
 _szip_dict = {'ec': 4, 'nn': 32}
 _szip_dict_inv = {v: k for k, v in _szip_dict.items()}
-IF HAS_CDF5_FORMAT:
+if __has_cdf5_format__:
     # NETCDF3_64BIT deprecated, saved for compatibility.
     # use NETCDF3_64BIT_OFFSET instead.
     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT_OFFSET
     _format_dict['NETCDF3_64BIT_DATA'] = NC_FORMAT_64BIT_DATA
     _cmode_dict['NETCDF3_64BIT_OFFSET'] = NC_64BIT_OFFSET
     _cmode_dict['NETCDF3_64BIT_DATA'] = NC_64BIT_DATA
-ELSE:
+else:
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT
     _cmode_dict['NETCDF3_64BIT'] = NC_64BIT_OFFSET
 # invert dictionary mapping
 _reverse_format_dict = dict((v, k) for k, v in _format_dict.iteritems())
 # add duplicate entry (NETCDF3_64BIT == NETCDF3_64BIT_OFFSET)
-IF HAS_CDF5_FORMAT:
+if __has_cdf5_format__:
     _format_dict['NETCDF3_64BIT'] = NC_FORMAT_64BIT_OFFSET
     _cmode_dict['NETCDF3_64BIT'] = NC_64BIT_OFFSET
-ELSE:
+else:
     _format_dict['NETCDF3_64BIT_OFFSET'] = NC_FORMAT_64BIT
     _cmode_dict['NETCDF3_64BIT_OFFSET'] = NC_64BIT_OFFSET
 
-# default fill_value to numpy datatype mapping.
+_parallel_formats = []
+if __has_parallel4_support__:
+    _parallel_formats += ['NETCDF4', 'NETCDF4_CLASSIC']
+if __has_pnetcdf_support__:
+    _parallel_formats += [
+        'NETCDF3_CLASSIC',
+        'NETCDF3_64BIT_OFFSET',
+        'NETCDF3_64BIT_DATA',
+        'NETCDF3_64BIT'
+    ]
+
+# Default fill_value to numpy datatype mapping. Last two for complex
+# numbers only applies to complex dimensions
 default_fillvals = {#'S1':NC_FILL_CHAR,
                      'S1':'\0',
                      'i1':NC_FILL_BYTE,
@@ -1480,7 +1541,10 @@ default_fillvals = {#'S1':NC_FILL_CHAR,
                      'i8':NC_FILL_INT64,
                      'u8':NC_FILL_UINT64,
                      'f4':NC_FILL_FLOAT,
-                     'f8':NC_FILL_DOUBLE}
+                     'f8':NC_FILL_DOUBLE,
+                     'c8':NC_FILL_FLOAT,
+                     'c16':NC_FILL_DOUBLE,
+}
 
 # logical for native endian type.
 is_native_little = numpy.dtype('<f4').byteorder == c'='
@@ -1505,6 +1569,15 @@ for _key,_value in _nptonctype.items():
 _supportedtypes = _nptonctype.keys()
 # make sure NC_CHAR points to S1
 _nctonptype[NC_CHAR]='S1'
+
+# Mapping from numpy dtype endian format to what we expect
+_dtype_endian_lookup = {
+    "=": "native",
+    ">": "big",
+    "<": "little",
+    "|": None,
+    None: None,
+}
 
 # internal C functions.
 
@@ -1629,29 +1702,32 @@ cdef _get_format(int grpid):
         raise ValueError('format not supported by python interface')
     return _reverse_format_dict[formatp]
 
+
 cdef _get_full_format(int grpid):
-    # Private function to get the underlying disk format
+    """Private function to get the underlying disk format"""
+
+    if not __has_nc_inq_format_extended__:
+        return "UNDEFINED"
+
     cdef int ierr, formatp, modep
-    IF HAS_NC_INQ_FORMAT_EXTENDED:
-        with nogil:
-            ierr = nc_inq_format_extended(grpid, &formatp, &modep)
-        _ensure_nc_success(ierr)
-        if formatp == NC_FORMAT_NC3:
-            return 'NETCDF3'
-        elif formatp == NC_FORMAT_NC_HDF5:
-            return 'HDF5'
-        elif formatp == NC_FORMAT_NC_HDF4:
-            return 'HDF4'
-        elif formatp == NC_FORMAT_PNETCDF:
-            return 'PNETCDF'
-        elif formatp == NC_FORMAT_DAP2:
-            return 'DAP2'
-        elif formatp == NC_FORMAT_DAP4:
-            return 'DAP4'
-        elif formatp == NC_FORMAT_UNDEFINED:
-            return 'UNDEFINED'
-    ELSE:
+    with nogil:
+        ierr = nc_inq_format_extended(grpid, &formatp, &modep)
+    _ensure_nc_success(ierr)
+    if formatp == NC_FORMAT_NC3:
+        return 'NETCDF3'
+    if formatp == NC_FORMAT_NC_HDF5:
+        return 'HDF5'
+    if formatp == NC_FORMAT_NC_HDF4:
+        return 'HDF4'
+    if formatp == NC_FORMAT_PNETCDF:
+        return 'PNETCDF'
+    if formatp == NC_FORMAT_DAP2:
+        return 'DAP2'
+    if formatp == NC_FORMAT_DAP4:
+        return 'DAP4'
+    if formatp == NC_FORMAT_UNDEFINED:
         return 'UNDEFINED'
+
 
 cdef issue485_workaround(int grpid, int varid, char* attname):
     # check to see if attribute already exists
@@ -1892,15 +1968,17 @@ cdef _get_grps(group):
         free(grpids)
     return groups
 
-cdef _get_vars(group):
+cdef _get_vars(group, bint auto_complex=False):
     # Private function to create `Variable` instances for all the
     # variables in a `Group` or Dataset
     cdef int ierr, numvars, n, nn, numdims, varid, classp, iendian, _grpid
     cdef int *varids
-    cdef int *dimids
     cdef nc_type xtype
     cdef char namstring[NC_MAX_NAME+1]
     cdef char namstring_cmp[NC_MAX_NAME+1]
+    cdef bint is_complex
+    cdef nc_type complex_nc_type
+
     # get number of variables in this Group.
     _grpid = group._grpid
     with nogil:
@@ -1979,53 +2057,104 @@ cdef _get_vars(group):
                         msg="WARNING: variable '%s' has unsupported datatype, skipping .." % name
                         warnings.warn(msg)
                         continue
+
             # get number of dimensions.
-            with nogil:
-                ierr = nc_inq_varndims(_grpid, varid, &numdims)
-            _ensure_nc_success(ierr)
-            dimids = <int *>malloc(sizeof(int) * numdims)
-            # get dimension ids.
-            with nogil:
-                ierr = nc_inq_vardimid(_grpid, varid, dimids)
-            _ensure_nc_success(ierr)
+            dimids = _inq_vardimid(_grpid, varid, auto_complex)
+
             # loop over dimensions, retrieve names.
             # if not found in current group, look in parents.
             # QUESTION:  what if grp1 has a dimension named 'foo'
             # and so does it's parent - can a variable in grp1
             # use the 'foo' dimension from the parent?
             dimensions = []
-            for nn from 0 <= nn < numdims:
+            for dimid in dimids:
                 grp = group
                 found = False
                 while not found:
                     for key, value in grp.dimensions.items():
-                        if value._dimid == dimids[nn]:
+                        if value._dimid == dimid:
                             dimensions.append(key)
                             found = True
                             break
                     grp = grp.parent
-            free(dimids)
+
             # create new variable instance.
-            dimensions = tuple(_find_dim(group,d) for d in dimensions)
-            if endianness == '>':
-                variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='big')
-            elif endianness == '<':
-                variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian='little')
-            else:
-                variables[name] = Variable(group, name, datatype, dimensions, id=varid)
+            dimensions = tuple(_find_dim(group, d) for d in dimensions)
+
+            if auto_complex and <bint>pfnc_var_is_complex(_grpid, varid):
+                with nogil:
+                    ierr = pfnc_inq_var_complex_base_type(_grpid, varid, &complex_nc_type)
+                _ensure_nc_success(ierr)
+                # TODO: proper lookup
+                datatype = "c16" if complex_nc_type == NC_DOUBLE else "c8"
+
+            endian = _dtype_endian_lookup[endianness] or "native"
+            variables[name] = Variable(group, name, datatype, dimensions, id=varid, endian=endian)
+
         free(varids) # free pointer holding variable ids.
     return variables
 
-cdef _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None):
+
+def _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None, extra_msg=None):
     # print netcdf error message, raise error.
-    if ierr != NC_NOERR:
-        err_str = (<char *>nc_strerror(ierr)).decode('ascii')
-        if issubclass(err_cls, OSError):
-            if isinstance(filename, bytes):
-                filename = filename.decode()
-            raise err_cls(ierr, err_str, filename)
-        else:
-            raise err_cls(err_str)
+    if ierr == NC_NOERR:
+        return
+
+    err_str = (<char *>nc_strerror(ierr)).decode('ascii')
+    if issubclass(err_cls, OSError):
+        if isinstance(filename, bytes):
+            filename = filename.decode()
+        raise err_cls(ierr, err_str, filename)
+
+    if extra_msg:
+        if isinstance(extra_msg, bytes):
+            extra_msg = extra_msg.decode()
+        err_str = f"{err_str}: {extra_msg}"
+    raise err_cls(err_str)
+
+
+def dtype_is_complex(dtype: Union[str, numpy.dtype]) -> bool:
+    """Return True if dtype is a complex number"""
+    return dtype in ("c8", "c16")
+
+
+cdef int _inq_varndims(int ncid, int varid, bint auto_complex):
+    """Wrapper around `nc_inq_varndims`/`pfnc_inq_varndims` for complex numbers"""
+
+    cdef int ierr = NC_NOERR
+    cdef int ndims
+
+    if auto_complex:
+        with nogil:
+            ierr = pfnc_inq_varndims(ncid, varid, &ndims)
+    else:
+        with nogil:
+            ierr = nc_inq_varndims(ncid, varid, &ndims)
+
+    _ensure_nc_success(ierr)
+    return ndims
+
+
+cdef _inq_vardimid(int ncid, int varid, bint auto_complex):
+    """Wrapper around `nc_inq_vardimid`/`pfnc_inq_vardimid` for complex numbers"""
+
+    cdef int ierr = NC_NOERR
+    cdef int ndims = _inq_varndims(ncid, varid, auto_complex)
+    cdef int* dimids = <int*> malloc(sizeof(int) * ndims)
+
+    if auto_complex:
+        with nogil:
+            ierr = pfnc_inq_vardimid(ncid, varid, dimids)
+    else:
+        with nogil:
+            ierr = nc_inq_vardimid(ncid, varid, dimids)
+
+    _ensure_nc_success(ierr)
+
+    result = [dimids[n] for n in range(ndims)]
+    free(dimids)
+    return result
+
 
 # these are class attributes that
 # only exist at the python level (not in the netCDF file).
@@ -2035,7 +2164,9 @@ _private_atts = \
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
  '__orthogoral_indexing__','keepweakref','_has_lsd',
- '_buffer','chartostring','_use_get_vars','_ncstring_attrs__']
+ '_buffer','chartostring','_use_get_vars','_ncstring_attrs__',
+ 'auto_complex'
+]
 
 cdef class Dataset:
     """
@@ -2113,12 +2244,12 @@ strings.
     cdef Py_buffer _buffer
     cdef public groups, dimensions, variables, disk_format, path, parent,\
     file_format, data_model, cmptypes, vltypes, enumtypes,  __orthogonal_indexing__, \
-    keepweakref, _ncstring_attrs__
+    keepweakref, _ncstring_attrs__, auto_complex
 
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                      diskless=False, persist=False, keepweakref=False,
                      memory=None, encoding=None, parallel=False,
-                     Comm comm=None, Info info=None, **kwargs):
+                     comm=None, info=None, auto_complex=False, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, memory=None, encoding=None,
@@ -2213,15 +2344,16 @@ strings.
 
         **`info`**: MPI_Info object for parallel access. Default `None`, which
         means MPI_INFO_NULL will be used.  Ignored if `parallel=False`.
+
+        **`auto_complex`**: if `True`, then automatically convert complex number types
         """
         cdef int grpid, ierr, numgrps, numdims, numvars,
         cdef size_t initialsize
         cdef char *path
         cdef char namstring[NC_MAX_NAME+1]
         cdef int cmode, parmode
-        IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-            cdef MPI_Comm mpicomm
-            cdef MPI_Info mpiinfo
+        cdef MPI_Comm mpicomm
+        cdef MPI_Info mpiinfo
 
         memset(&self._buffer, 0, sizeof(self._buffer))
 
@@ -2237,228 +2369,103 @@ strings.
         bytestr = _strencode(_tostr(filename), encoding=encoding)
         path = bytestr
 
-        if memory is not None and mode not in ['r','w']:
-            msg='if memory kwarg specified, mode must be \'r\' or \'w\''
-            raise ValueError(msg)
+        if memory is not None and mode not in ('r', 'w'):
+            raise ValueError("if memory kwarg specified, mode must be 'r' or 'w'")
 
         if parallel:
-            IF HAS_PARALLEL4_SUPPORT != 1 and HAS_PNETCDF_SUPPORT != 1:
-                msg='parallel mode requires MPI enabled netcdf-c'
-                raise ValueError(msg)
-            ELSE:
-                parallel_formats = []
-                IF HAS_PARALLEL4_SUPPORT:
-                    parallel_formats += ['NETCDF4','NETCDF4_CLASSIC']
-                IF HAS_PNETCDF_SUPPORT:
-                    parallel_formats += ['NETCDF3_CLASSIC',
-                                         'NETCDF3_64BIT_OFFSET',
-                                         'NETCDF3_64BIT_DATA',
-                                         'NETCDF3_64BIT']
-                if format not in parallel_formats:
-                    msg='parallel mode only works with the following formats: ' + ' '.join(parallel_formats)
-                    raise ValueError(msg)
-                if comm is not None:
-                    mpicomm = comm.ob_mpi
-                else:
-                    mpicomm = MPI_COMM_WORLD
-                if info is not None:
-                    mpiinfo = info.ob_mpi
-                else:
-                    mpiinfo = MPI_INFO_NULL
-                parmode = NC_MPIIO | _cmode_dict[format]
+            if not __has_parallel_support__:
+                raise ValueError("parallel mode requires MPI enabled netcdf-c")
+
+            if format not in _parallel_formats:
+                raise ValueError(
+                    f"parallel mode only works with the following formats: {' '.join(_parallel_formats)}"
+                )
+
+            mpicomm = (<Comm?>comm).ob_mpi if comm is not None else MPI_COMM_WORLD
+            mpiinfo = (<Info?>info).ob_mpi if info is not None else MPI_INFO_NULL
+            parmode = NC_MPIIO | _cmode_dict[format]
 
         self._inmemory = False
+        self.auto_complex = auto_complex
 
         # mode='x' is the same as mode='w' with clobber=False
-        if mode == 'x':
-            mode = 'w'; clobber = False
+        if mode == "x":
+            mode = "w"
+            clobber = False
 
-        if mode == 'w' or (mode in ['a','r+'] and not os.path.exists(filename)):
+        # r+ is synonym for append
+        if "r+" in mode:
+            mode = mode.replace("r+", "a")
+
+        # If appending and the file doesn't exist, we need to create it
+        if mode in ("a", "as") and not os.path.exists(filename):
+            mode = mode.replace("a", "w")
+
+        read_mode = mode in ("r", "rs")
+        write_mode = mode in ("w", "ws")
+        append_mode = mode in ("a", "as")
+
+        if not (read_mode or write_mode or append_mode):
+            raise ValueError(f"mode must be 'w', 'x', 'r', 'a' or 'r+', got '{mode}'")
+
+        # Initial value for cmode
+        if write_mode:
+            cmode = NC_CLOBBER if clobber else NC_NOCLOBBER
+        else:
+            cmode = NC_WRITE if append_mode else NC_NOWRITE
+            if mode.endswith("s") and not parallel:
+                cmode |= NC_SHARE
+
+        if diskless:
+            cmode |= NC_DISKLESS
+            if write_mode and persist:
+                cmode |= NC_WRITE | NC_PERSIST
+
+        if write_mode:
             _set_default_format(format=format)
             if memory is not None:
+                if not __has_nc_create_mem__:
+                    raise NetCDF4MissingFeatureException("nc_create_mem", "4.6.2")
+
                 # if memory is not None and mode='w', memory
                 # kwarg is interpreted as advisory size.
-                IF HAS_NC_CREATE_MEM:
-                   initialsize = <size_t>memory
-                   with nogil:
-                       ierr = nc_create_mem(path, 0, initialsize, &grpid)
-                   self._inmemory = True # checked in close method
-                ELSE:
-                    msg = """
-        nc_create_mem functionality not enabled.  To enable, install Cython, make sure you have
-        version 4.6.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
-                    raise ValueError(msg)
-            else:
-                if clobber:
-                    if parallel:
-                        IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-                            cmode = NC_CLOBBER | parmode
-                            with nogil:
-                                ierr = nc_create_par(path, cmode, \
-                                       mpicomm, mpiinfo, &grpid)
-                        ELSE:
-                            pass
-                    elif diskless:
-                        if persist:
-                            cmode = NC_WRITE | NC_CLOBBER | NC_DISKLESS | NC_PERSIST
-                            with nogil:
-                                ierr = nc_create(path, cmode, &grpid)
-                        else:
-                            cmode = NC_CLOBBER | NC_DISKLESS
-                            with nogil:
-                                ierr = nc_create(path, cmode , &grpid)
-                    else:
-                        with nogil:
-                            ierr = nc_create(path, NC_CLOBBER, &grpid)
-                else:
-                    if parallel:
-                        IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-                            cmode = NC_NOCLOBBER | parmode
-                            with nogil:
-                                ierr = nc_create_par(path, cmode, \
-                                       mpicomm, mpiinfo, &grpid)
-                        ELSE:
-                            pass
-                    elif diskless:
-                        if persist:
-                            cmode = NC_WRITE | NC_NOCLOBBER | NC_DISKLESS | NC_PERSIST
-                            with nogil:
-                                ierr = nc_create(path, cmode, &grpid)
-                        else:
-                            cmode = NC_NOCLOBBER | NC_DISKLESS
-                            with nogil:
-                                ierr = nc_create(path, cmode , &grpid)
-                    else:
-                        with nogil:
-                            ierr = nc_create(path, NC_NOCLOBBER, &grpid)
-            # reset default format to netcdf3 - this is a workaround
-            # for issue 170 (nc_open'ing a DAP dataset after switching
-            # format to NETCDF4). This bug should be fixed in version
-            # 4.3.0 of the netcdf library (add a version check here?).
-            # **this causes parallel mode to fail when both hdf5-parallel and
-            # pnetcdf are enabled - issue #820 **
-            #_set_default_format(format='NETCDF3_64BIT_OFFSET')
-        elif mode in ('r', 'rs'):
-            if memory is not None:
-                IF HAS_NC_OPEN_MEM:
-                    # Store reference to memory
-                    result = PyObject_GetBuffer(memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS)
-                    if result != 0:
-                        raise ValueError("Unable to retrieve Buffer from %s" % (memory,))
+                initialsize = <size_t>memory
+                with nogil:
+                    ierr = nc_create_mem(path, 0, initialsize, &grpid)
+                self._inmemory = True # checked in close method
 
-                    with nogil:
-                        ierr = nc_open_mem(<char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid)
-                ELSE:
-                    msg = """
-        nc_open_mem functionality not enabled.  To enable, install Cython, make sure you have
-        version 4.4.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
-                    raise ValueError(msg)
-            elif parallel:
-                IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-                    cmode = NC_NOWRITE | NC_MPIIO
-                    with nogil:
-                        ierr = nc_open_par(path, cmode, \
-                               mpicomm, mpiinfo, &grpid)
-                ELSE:
-                    pass
-            elif diskless:
-                cmode = NC_NOWRITE | NC_DISKLESS
-                with nogil:
-                    ierr = nc_open(path, cmode, &grpid)
-            else:
-                if mode == 'rs':
-                    # NC_SHARE is very important for speed reading
-                    # large netcdf3 files with a record dimension
-                    # (pull request #902).
-                    cmode = NC_NOWRITE | NC_SHARE
-                    with nogil:
-                        ierr = nc_open(path, cmode, &grpid)
-                else:
-                    with nogil:
-                        ierr = nc_open(path, NC_NOWRITE, &grpid)
-        elif mode in ['a','r+'] and os.path.exists(filename):
-            if parallel:
-                IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-                    cmode = NC_WRITE | NC_MPIIO
-                    with nogil:
-                        ierr = nc_open_par(path, cmode, \
-                               mpicomm, mpiinfo, &grpid)
-                ELSE:
-                    pass
-            elif diskless:
-                cmode = NC_WRITE | NC_DISKLESS
-                with nogil:
-                    ierr = nc_open(path, cmode, &grpid)
-            else:
-                with nogil:
-                    ierr = nc_open(path, NC_WRITE, &grpid)
-        elif mode in ['as','r+s'] and os.path.exists(filename):
-            if parallel:
-                # NC_SHARE ignored
-                IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-                    cmode =  NC_WRITE | NC_MPIIO
-                    with nogil:
-                        ierr = nc_open_par(path, cmode, \
-                               mpicomm, mpiinfo, &grpid)
-                ELSE:
-                    pass
-            elif diskless:
-                cmode = NC_SHARE | NC_DISKLESS
-                with nogil:
-                    ierr = nc_open(path, cmode, &grpid)
-            else:
-                with nogil:
-                    ierr = nc_open(path, NC_SHARE, &grpid)
-        elif mode == 'ws' or (mode in ['as','r+s'] and not os.path.exists(filename)):
-            _set_default_format(format=format)
-            if clobber:
-                if parallel:
-                    # NC_SHARE ignored
-                    IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-                        cmode = NC_CLOBBER | parmode
-                        with nogil:
-                            ierr = nc_create_par(path, NC_CLOBBER | cmode, \
-                                   mpicomm, mpiinfo, &grpid)
-                    ELSE:
-                        pass
-                elif diskless:
-                    if persist:
-                        cmode = NC_WRITE | NC_SHARE | NC_CLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode, &grpid)
-                    else:
-                        cmode = NC_SHARE | NC_CLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode , &grpid)
-                else:
-                    cmode = NC_SHARE | NC_CLOBBER
-                    with nogil:
-                        ierr = nc_create(path, cmode, &grpid)
             else:
                 if parallel:
-                    # NC_SHARE ignored
-                    IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-                        cmode = NC_NOCLOBBER | parmode
-                        with nogil:
-                            ierr = nc_create_par(path, cmode, \
-                                   mpicomm, mpiinfo, &grpid)
-                    ELSE:
-                        pass
-                elif diskless:
-                    if persist:
-                        cmode = NC_WRITE | NC_SHARE | NC_NOCLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode , &grpid)
-                    else:
-                        cmode = NC_SHARE | NC_NOCLOBBER | NC_DISKLESS
-                        with nogil:
-                            ierr = nc_create(path, cmode , &grpid)
+                    with nogil:
+                        ierr = nc_create_par(path, cmode | parmode, mpicomm, mpiinfo, &grpid)
                 else:
-                    cmode = NC_SHARE | NC_NOCLOBBER
                     with nogil:
                         ierr = nc_create(path, cmode, &grpid)
+
+        elif read_mode and memory is not None:
+            if not __has_nc_open_mem__:
+                raise NetCDF4MissingFeatureException("nc_open_mem", "4.4.1")
+
+            # Store reference to memory
+            result = PyObject_GetBuffer(
+                memory, &self._buffer, PyBUF_SIMPLE | PyBUF_ANY_CONTIGUOUS
+            )
+            if result != 0:
+                raise ValueError(f"Unable to retrieve Buffer from {memory}")
+
+            with nogil:
+                ierr = nc_open_mem(
+                    <char *>path, 0, self._buffer.len, <void *>self._buffer.buf, &grpid
+                )
+
         else:
-            raise ValueError("mode must be 'w', 'x', 'r', 'a' or 'r+', got '%s'" % mode)
+            # Read or append mode, flags already all set in cmode
+            if parallel:
+                with nogil:
+                    ierr = nc_open_par(path, cmode | NC_MPIIO, mpicomm, mpiinfo, &grpid)
+            else:
+                with nogil:
+                    ierr = nc_open(path, cmode, &grpid)
 
         _ensure_nc_success(ierr, err_cls=OSError, filename=path)
 
@@ -2468,10 +2475,6 @@ strings.
         # file_format for backwards compatibility.
         self.file_format = self.data_model
         self.disk_format = _get_full_format(grpid)
-        # diskless read access only works with NETCDF_CLASSIC (for now)
-        #ncopen = mode.startswith('a') or mode.startswith('r')
-        #if diskless and self.data_model != 'NETCDF3_CLASSIC' and ncopen:
-        #    raise ValueError("diskless access only supported for NETCDF3_CLASSIC format")
         self._grpid = grpid
         self._isopen = 1
         self.path = '/'
@@ -2483,7 +2486,7 @@ strings.
         # get dimensions in the root group.
         self.dimensions = _get_dims(self)
         # get variables in the root Group.
-        self.variables = _get_vars(self)
+        self.variables = _get_vars(self, self.auto_complex)
         # get groups in the root Group.
         if self.data_model == 'NETCDF4':
             self.groups = _get_grps(self)
@@ -2516,40 +2519,38 @@ strings.
             raise IndexError('%s not found in %s' % (lastname,group.path))
 
     def filepath(self,encoding=None):
-        """
-**`filepath(self,encoding=None)`**
+        """**`filepath(self,encoding=None)`**
 
-Get the file system path (or the opendap URL) which was used to
-open/create the Dataset. Requires netcdf >= 4.1.2.  The path
-is decoded into a string using `sys.getfilesystemencoding()` by default, this can be
-changed using the `encoding` kwarg."""
+        Get the file system path (or the opendap URL) which was used to
+        open/create the Dataset. Requires netcdf >= 4.1.2.  The path
+        is decoded into a string using `sys.getfilesystemencoding()` by default, this can be
+        changed using the `encoding` kwarg.
+        """
+        if not __has_nc_inq_path__:
+            raise NetCDF4MissingFeatureException("filepath method", "4.1.2")
+
         cdef int ierr
         cdef size_t pathlen
         cdef char *c_path
         if encoding is None:
             encoding = sys.getfilesystemencoding()
-        IF HAS_NC_INQ_PATH:
+
+        with nogil:
+            ierr = nc_inq_path(self._grpid, &pathlen, NULL)
+        _ensure_nc_success(ierr)
+
+        c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
+        if not c_path:
+            raise MemoryError()
+        try:
             with nogil:
-                ierr = nc_inq_path(self._grpid, &pathlen, NULL)
+                ierr = nc_inq_path(self._grpid, &pathlen, c_path)
             _ensure_nc_success(ierr)
 
-            c_path = <char *>malloc(sizeof(char) * (pathlen + 1))
-            if not c_path:
-                raise MemoryError()
-            try:
-                with nogil:
-                    ierr = nc_inq_path(self._grpid, &pathlen, c_path)
-                _ensure_nc_success(ierr)
-
-                py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
-            finally:
-                free(c_path)
-            return py_path.decode(encoding)
-        ELSE:
-            msg = """
-filepath method not enabled.  To enable, install Cython, make sure you have
-version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
-            raise ValueError(msg)
+            py_path = c_path[:pathlen] # makes a copy of pathlen bytes from c_string
+        finally:
+            free(c_path)
+        return py_path.decode(encoding)
 
     def __repr__(self):
         return self.__str__()
@@ -2590,37 +2591,31 @@ version 4.1.2 or higher of the netcdf C lib, and rebuild netcdf4-python."""
         # view.obj is checked, ref on obj is decremented and obj will be null'd out
         PyBuffer_Release(&self._buffer)
 
-    IF HAS_NC_CREATE_MEM:
-        def _close_mem(self, check_err):
-            cdef int ierr
-            cdef NC_memio memio
-            with nogil:
-                ierr = nc_close_memio(self._grpid, &memio)
+    def _close_mem(self, check_err):
+        cdef int ierr
+        cdef NC_memio memio
+        with nogil:
+            ierr = nc_close_memio(self._grpid, &memio)
 
-            if check_err:
-                _ensure_nc_success(ierr)
+        if check_err:
+            _ensure_nc_success(ierr)
 
-            self._isopen = 0
-            PyBuffer_Release(&self._buffer)
+        self._isopen = 0
+        PyBuffer_Release(&self._buffer)
 
-            # membuf_fromptr from membuf.pyx - creates a python memoryview
-            # from a raw pointer without making a copy.
-            return memview_fromptr(<char *>memio.memory, memio.size)
-
+        # membuf_fromptr from membuf.pyx - creates a python memoryview
+        # from a raw pointer without making a copy.
+        return memview_fromptr(<char *>memio.memory, memio.size)
 
     def close(self):
-        """
-**`close(self)`**
+        """**`close(self)`**
 
-Close the Dataset.
+        Close the Dataset.
         """
-        IF HAS_NC_CREATE_MEM:
-            if self._inmemory:
-                return self._close_mem(True)
-            else:
-                self._close(True)
-        ELSE:
-            self._close(True)
+        if __has_nc_create_mem__ and self._inmemory:
+            return self._close_mem(True)
+
+        self._close(True)
 
     def isopen(self):
         """
@@ -3158,27 +3153,27 @@ rename a `Dataset` or `Group` attribute named `oldname` to `newname`."""
 rename a `Group` named `oldname` to `newname` (requires netcdf >= 4.3.1)."""
         cdef char *newnamec
         cdef int grpid
-        IF HAS_RENAME_GRP:
-            cdef int ierr
-            bytestr = _strencode(newname)
-            newnamec = bytestr
-            try:
-                grp = self.groups[oldname]
-                grpid = grp._grpid
-            except KeyError:
-                raise KeyError('%s not a valid group name' % oldname)
-            with nogil:
-                ierr = nc_rename_grp(grpid, newnamec)
-            _ensure_nc_success(ierr)
-            # remove old key from groups dict.
-            self.groups.pop(oldname)
-            # add new key.
-            self.groups[newname] = grp
-        ELSE:
-            msg = """
-renameGroup method not enabled.  To enable, install Cython, make sure you have
-version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."""
-            raise ValueError(msg)
+        cdef int ierr
+        if not __has_rename_grp__:
+            raise ValueError(
+                "renameGroup method not enabled.  To enable, install Cython, make sure you have"
+                "version 4.3.1 or higher of the netcdf C lib, and rebuild netcdf4-python."
+            )
+
+        bytestr = _strencode(newname)
+        newnamec = bytestr
+        try:
+            grp = self.groups[oldname]
+            grpid = grp._grpid
+        except KeyError:
+            raise KeyError('%s not a valid group name' % oldname)
+        with nogil:
+            ierr = nc_rename_grp(grpid, newnamec)
+        _ensure_nc_success(ierr)
+        # remove old key from groups dict.
+        self.groups.pop(oldname)
+        # add new key.
+        self.groups[newname] = grp
 
     def set_auto_chartostring(self, value):
         """
@@ -3492,68 +3487,61 @@ to be installed and in `$PATH`.
             f = open(outfile,'w')
             f.write(result.stdout)
             f.close()
+
     def has_blosc_filter(self):
+        """**`has_blosc_filter(self)`**
+        returns True if blosc compression filter is available
         """
-**`has_blosc_filter(self)`**
-returns True if blosc compression filter is available"""
-        cdef int ierr
-        IF HAS_BLOSC_SUPPORT:
-            with nogil:
-                ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BLOSC)
-            if ierr:
-                return False
-            else:
-                return True
-        ELSE:
+        if __has_blosc_support__:
             return False
+
+        cdef int ierr
+        with nogil:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BLOSC)
+        return ierr == 0
+
     def has_zstd_filter(self):
+        """**`has_zstd_filter(self)`**
+        returns True if zstd compression filter is available
         """
-**`has_zstd_filter(self)`**
-returns True if zstd compression filter is available"""
-        cdef int ierr
-        IF HAS_ZSTANDARD_SUPPORT:
-            with nogil:
-                ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_ZSTD)
-            if ierr:
-                return False
-            else:
-                return True
-        ELSE:
+
+        if __has_zstandard_support__:
             return False
+
+        cdef int ierr
+        with nogil:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_ZSTD)
+        return ierr == 0
+
     def has_bzip2_filter(self):
+        """**`has_bzip2_filter(self)`**
+        returns True if bzip2 compression filter is available
         """
-**`has_bzip2_filter(self)`**
-returns True if bzip2 compression filter is available"""
-        cdef int ierr
-        IF HAS_BZIP2_SUPPORT:
-            with nogil:
-                ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BZIP2)
-            if ierr:
-                return False
-            else:
-                return True
-        ELSE:
+
+        if __has_bzip2_support__:
             return False
-    def has_szip_filter(self):
-        """
-**`has_szip_filter(self)`**
-returns True if szip compression filter is available"""
+
         cdef int ierr
-        IF HAS_NCFILTER:
-            IF HAS_SZIP_SUPPORT:
-                with nogil:
-                    ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
-                if ierr:
-                    return False
-                else:
-                    return True
-            ELSE:
-                return False
-        ELSE:
-             IF HAS_SZIP_SUPPORT:
-                 return True
-             ELSE:
-                 return False
+        with nogil:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_BZIP2)
+        return ierr == 0
+
+    def has_szip_filter(self):
+        """**`has_szip_filter(self)`**
+        returns True if szip compression filter is available
+        """
+
+        if not __has_ncfilter__:
+            return __has_szip_support__
+
+        if not __has_szip_support__:
+            return False
+
+        cdef int ierr
+        with nogil:
+            ierr = nc_inq_filter_avail(self._grpid, H5Z_FILTER_SZIP)
+        return ierr == 0
+
 
 cdef class Group(Dataset):
     """
@@ -3600,6 +3588,8 @@ Additional read-only class variables:
         self.keepweakref = parent.keepweakref
         # propagate _ncstring_attrs__ setting from parent.
         self._ncstring_attrs__ = parent._ncstring_attrs__
+        self.auto_complex = parent.auto_complex
+
         if 'id' in kwargs:
             self._grpid = kwargs['id']
             # get compound, vlen and enum types in this Group.
@@ -3607,7 +3597,7 @@ Additional read-only class variables:
             # get dimensions in this Group.
             self.dimensions = _get_dims(self)
             # get variables in this Group.
-            self.variables = _get_vars(self)
+            self.variables = _get_vars(self, self.auto_complex)
             # get groups in this Group.
             self.groups = _get_grps(self)
         else:
@@ -3866,7 +3856,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
     cdef public int _varid, _grpid, _nunlimdim
     cdef public _name, ndim, dtype, mask, scale, always_mask, chartostring,  _isprimitive, \
     _iscompound, _isvlen, _isenum, _grp, _cmptype, _vltype, _enumtype,\
-    __orthogonal_indexing__, _has_lsd, _use_get_vars, _ncstring_attrs__
+    __orthogonal_indexing__, _has_lsd, _use_get_vars, _ncstring_attrs__, auto_complex
 
     def __init__(self, grp, name, datatype, dimensions=(),
             compression=None, zlib=False,
@@ -3874,7 +3864,8 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             blosc_shuffle=1,
             fletcher32=False, contiguous=False,
             chunksizes=None, endian='native', least_significant_digit=None,
-            significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None, **kwargs):
+            significant_digits=None,quantize_mode='BitGroom',fill_value=None, chunk_cache=None,
+            **kwargs):
         """
         **`__init__(self, group, name, datatype, dimensions=(), compression=None, zlib=False,
         complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8,
@@ -4012,10 +4003,16 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef char namstring[NC_MAX_NAME+1]
         cdef char *varname
         cdef nc_type xtype
-        cdef int *dimids
+        cdef int *dimids = NULL
         cdef size_t sizep, nelemsp
         cdef size_t *chunksizesp
         cdef float preemptionp
+        cdef int nc_complex_typeid, complex_base_type_id, complex_dim_id
+        cdef int _nc_endian
+
+        # Extra information for more helpful error messages
+        error_info = f"(variable '{name}', group '{grp.name}')"
+
         # flag to indicate that orthogonal indexing is supported
         self.__orthogonal_indexing__ = True
         # For backwards compatibility, deprecated zlib kwarg takes
@@ -4059,7 +4056,19 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             compression = None # if compression evaluates to False, set to None.
             pass
         else:
-            raise ValueError("Unsupported value for compression kwarg")
+            raise ValueError(f"Unsupported value for compression kwarg {error_info}")
+
+        if grp.data_model.startswith("NETCDF3") and endian != 'native':
+            raise RuntimeError(
+                f"only endian='native' allowed for NETCDF3 files, got '{endian}' {error_info}"
+            )
+
+        if endian not in ("little", "big", "native"):
+            raise ValueError(
+                f"'endian' keyword argument must be 'little','big' or 'native', got '{endian}' "
+                f"{error_info}"
+            )
+
         self._grpid = grp._grpid
         # make a weakref to group to avoid circular ref (issue 218)
         # keep strong reference the default behaviour (issue 251)
@@ -4067,10 +4076,13 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             self._grp = weakref.proxy(grp)
         else:
             self._grp = grp
-        user_type = isinstance(datatype, CompoundType) or \
-                    isinstance(datatype, VLType) or \
-                    isinstance(datatype, EnumType) or \
-                    datatype == str
+
+        self._iscompound = isinstance(datatype, CompoundType)
+        self._isvlen = isinstance(datatype, VLType) or datatype==str
+        self._isenum = isinstance(datatype, EnumType)
+
+        user_type = self._iscompound or self._isvlen or self._isenum
+
         # convert to a real numpy datatype object if necessary.
         if not user_type and type(datatype) != numpy.dtype:
             datatype = numpy.dtype(datatype)
@@ -4081,35 +4093,29 @@ behavior is similar to Fortran or Matlab, but different than numpy.
               datatype.kind == 'U')):
             datatype = str
             user_type = True
+            self._isvlen = True
+
+        # If datatype is complex, convert to compoundtype
+        is_complex = dtype_is_complex(datatype)
+        if is_complex and not self._grp.auto_complex:
+            raise ValueError(
+                f"complex datatypes ({datatype}) are only supported with `auto_complex=True`"
+            )
+
         # check if endian keyword consistent with datatype specification.
-        dtype_endian = getattr(datatype,'byteorder',None)
-        if dtype_endian == '=': dtype_endian='native'
-        if dtype_endian == '>': dtype_endian='big'
-        if dtype_endian == '<': dtype_endian='little'
-        if dtype_endian == '|': dtype_endian=None
+        dtype_endian = _dtype_endian_lookup[getattr(datatype, "byteorder", None)]
         if dtype_endian is not None and dtype_endian != endian:
-            if dtype_endian == 'native' and endian == sys.byteorder:
-                pass
-            else:
-                # endian keyword prevails, issue warning
-                msg = 'endian-ness of dtype and endian kwarg do not match, using endian kwarg'
-                #msg = 'endian-ness of dtype and endian kwarg do not match, dtype over-riding endian kwarg'
-                warnings.warn(msg)
-                #endian = dtype_endian # dtype prevails
+            if not (dtype_endian == 'native' and endian == sys.byteorder):
+                warnings.warn('endian-ness of dtype and endian kwarg do not match, using endian kwarg')
+
         # check validity of datatype.
-        self._isprimitive = False
-        self._iscompound = False
-        self._isvlen = False
-        self._isenum = False
+        self._isprimitive = not user_type
         if user_type:
-            if isinstance(datatype, CompoundType):
-                self._iscompound = True
+            if self._iscompound:
                 self._cmptype = datatype
-            if isinstance(datatype, VLType) or datatype==str:
-                self._isvlen = True
+            if self._isvlen:
                 self._vltype = datatype
-            if isinstance(datatype, EnumType):
-                self._isenum = True
+            if self._isenum:
                 self._enumtype = datatype
             if datatype==str:
                 if grp.data_model != 'NETCDF4':
@@ -4117,25 +4123,29 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         'Variable length strings are only supported for the '
                         'NETCDF4 format. For other formats, consider using '
                         'netCDF4.stringtochar to convert string arrays into '
-                        'character arrays with an additional dimension.')
+                        'character arrays with an additional dimension.'
+                        f' {error_info}')
                 datatype = VLType(self._grp, str, None)
                 self._vltype = datatype
             xtype = datatype._nc_type
             # make sure this a valid user defined datatype defined in this Group
             with nogil:
                 ierr = nc_inq_type(self._grpid, xtype, namstring, NULL)
-            _ensure_nc_success(ierr)
+            _ensure_nc_success(ierr, extra_msg=error_info)
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype.dtype
         elif datatype.str[1:] in _supportedtypes:
-            self._isprimitive = True
             # find netCDF primitive data type corresponding to
             # specified numpy data type.
             xtype = _nptonctype[datatype.str[1:]]
             # dtype variable attribute is a numpy datatype object.
             self.dtype = datatype
+        elif is_complex:
+            xtype = _complex_types[datatype.str[1:]]
+            self.dtype = datatype
         else:
-            raise TypeError('illegal primitive data type, must be one of %s, got %s' % (_supportedtypes,datatype))
+            raise TypeError(f'Illegal primitive data type, must be one of {_supportedtypes}, got {datatype} {error_info}')
+
         if 'id' in kwargs:
             self._varid = kwargs['id']
         else:
@@ -4152,15 +4162,17 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # any exceptions are raised.
             if grp.data_model != 'NETCDF4': grp._redef()
             # define variable.
+            with nogil:
+                ierr = pfnc_def_var(self._grpid, varname, xtype, ndims,
+                                  dimids, &self._varid)
             if ndims:
-                with nogil:
-                    ierr = nc_def_var(self._grpid, varname, xtype, ndims,
-                                      dimids, &self._varid)
                 free(dimids)
-            else: # a scalar variable.
-                with nogil:
-                    ierr = nc_def_var(self._grpid, varname, xtype, ndims,
-                                      NULL, &self._varid)
+
+            if ierr != NC_NOERR:
+                if grp.data_model != 'NETCDF4':
+                    grp._enddef()
+                _ensure_nc_success(ierr, extra_msg=error_info)
+
             # set chunk cache size if desired
             # default is 1mb per var, can cause problems when many (1000's)
             # of vars are created.  This change only lasts as long as file is
@@ -4169,16 +4181,14 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 with nogil:
                     ierr = nc_get_var_chunk_cache(self._grpid, self._varid, &sizep,
                            &nelemsp, &preemptionp)
-                _ensure_nc_success(ierr)
+                _ensure_nc_success(ierr, extra_msg=error_info)
                 # reset chunk cache size, leave other parameters unchanged.
                 sizep = chunk_cache
                 with nogil:
                     ierr = nc_set_var_chunk_cache(self._grpid, self._varid, sizep,
                            nelemsp, preemptionp)
-                _ensure_nc_success(ierr)
-            if ierr != NC_NOERR:
-                if grp.data_model != 'NETCDF4': grp._enddef()
-                _ensure_nc_success(ierr)
+                _ensure_nc_success(ierr, extra_msg=error_info)
+
             # set compression, shuffle, chunking, fletcher32 and endian
             # variable settings.
             # don't bother for NETCDF3* formats.
@@ -4198,76 +4208,72 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                                 ierr = nc_def_var_deflate(self._grpid, self._varid, 0, 1, icomplevel)
                         if ierr != NC_NOERR:
                             if grp.data_model != 'NETCDF4': grp._enddef()
-                            _ensure_nc_success(ierr)
+                            _ensure_nc_success(ierr, extra_msg=error_info)
+
                     if szip:
-                        IF HAS_SZIP_SUPPORT:
-                            try:
-                                iszip_coding = _szip_dict[szip_coding]
-                            except KeyError:
-                                msg="unknown szip coding ('ec' or 'nn' supported)"
-                                raise ValueError(msg)
-                            iszip_pixels_per_block = szip_pixels_per_block
-                            with nogil:
-                                ierr = nc_def_var_szip(self._grpid, self._varid, iszip_coding, iszip_pixels_per_block)
-                            if ierr != NC_NOERR:
-                                if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr)
-                        ELSE:
-                            msg = """
-compression='szip' only works if linked version of hdf5 has szip functionality enabled"""
-                            raise ValueError(msg)
+                        if not __has_szip_support__:
+                            raise ValueError("compression='szip' only works if linked version of hdf5 has szip functionality enabled")
+                        try:
+                            iszip_coding = _szip_dict[szip_coding]
+                        except KeyError:
+                            raise ValueError("unknown szip coding ('ec' or 'nn' supported)")
+                        iszip_pixels_per_block = szip_pixels_per_block
+                        with nogil:
+                            ierr = nc_def_var_szip(self._grpid, self._varid, iszip_coding, iszip_pixels_per_block)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4':
+                                grp._enddef()
+                            _ensure_nc_success(ierr, extra_msg=error_info)
+
                     if zstd:
-                        IF HAS_ZSTANDARD_SUPPORT:
-                            icomplevel = complevel
-                            with nogil:
-                                ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
-                            if ierr != NC_NOERR:
-                                if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr)
-                        ELSE:
-                            msg = """
-compression='zstd' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
-version 4.9.0 or higher netcdf-c with zstandard support, and rebuild netcdf4-python."""
-                            raise ValueError(msg)
+                        if not __has_zstandard_support__:
+                            raise NetCDF4MissingFeatureException("compression='zstd'", "4.9.0")
+
+                        icomplevel = complevel
+                        with nogil:
+                            ierr = nc_def_var_zstandard(self._grpid, self._varid, icomplevel)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4':
+                                grp._enddef()
+                            _ensure_nc_success(ierr, extra_msg=error_info)
+
                     if bzip2:
-                        IF HAS_BZIP2_SUPPORT:
-                            icomplevel = complevel
-                            with nogil:
-                                ierr = nc_def_var_bzip2(self._grpid, self._varid, icomplevel)
-                            if ierr != NC_NOERR:
-                                if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr)
-                        ELSE:
-                            msg = """
-compression='bzip2' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
-version 4.9.0 or higher netcdf-c with bzip2 support, and rebuild netcdf4-python."""
-                            raise ValueError(msg)
+                        if not __has_bzip2_support__:
+                            raise NetCDF4MissingFeatureException("compression='bzip2'", "4.9.0")
+
+                        icomplevel = complevel
+                        with nogil:
+                            ierr = nc_def_var_bzip2(self._grpid, self._varid, icomplevel)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4':
+                                grp._enddef()
+                            _ensure_nc_success(ierr, extra_msg=error_info)
+
                     if blosc_zstd or blosc_lz or blosc_lz4 or blosc_lz4hc or blosc_zlib:
-                        IF HAS_BLOSC_SUPPORT:
-                            iblosc_compressor = _blosc_dict[compression]
-                            iblosc_shuffle = blosc_shuffle
-                            iblosc_blocksize = 0 # not currently used by c lib
-                            iblosc_complevel = complevel
-                            with nogil:
-                                ierr = nc_def_var_blosc(self._grpid, self._varid,\
-                                    iblosc_compressor,\
-                                    iblosc_complevel,iblosc_blocksize,\
-                                    iblosc_shuffle)
-                            if ierr != NC_NOERR:
-                                if grp.data_model != 'NETCDF4': grp._enddef()
-                                _ensure_nc_success(ierr)
-                        ELSE:
-                            msg = """
-compression='blosc_*' only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
-version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python."""
-                            raise ValueError(msg)
+                        if not __has_blosc_support__:
+                            raise NetCDF4MissingFeatureException("compression='blosc_*'", "4.9.0")
+
+                        iblosc_compressor = _blosc_dict[compression]
+                        iblosc_shuffle = blosc_shuffle
+                        iblosc_blocksize = 0 # not currently used by c lib
+                        iblosc_complevel = complevel
+                        with nogil:
+                            ierr = nc_def_var_blosc(self._grpid, self._varid,
+                                                    iblosc_compressor,
+                                                    iblosc_complevel,iblosc_blocksize,
+                                                    iblosc_shuffle)
+                        if ierr != NC_NOERR:
+                            if grp.data_model != 'NETCDF4':
+                                grp._enddef()
+                            _ensure_nc_success(ierr, extra_msg=error_info)
+
                 # set checksum.
                 if fletcher32 and ndims: # don't bother for scalar variable
                     with nogil:
                         ierr = nc_def_var_fletcher32(self._grpid, self._varid, 1)
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
-                        _ensure_nc_success(ierr)
+                        _ensure_nc_success(ierr, extra_msg=error_info)
                 # set chunking stuff.
                 if ndims: # don't bother for scalar variable.
                     if contiguous:
@@ -4295,66 +4301,56 @@ version 4.9.0 or higher netcdf-c with blosc support, and rebuild netcdf4-python.
                         free(chunksizesp)
                         if ierr != NC_NOERR:
                             if grp.data_model != 'NETCDF4': grp._enddef()
-                            _ensure_nc_success(ierr)
-                # set endian-ness of variable
-                if endian == 'little':
-                    with nogil:
-                        ierr = nc_def_var_endian(self._grpid, self._varid, NC_ENDIAN_LITTLE)
-                elif endian == 'big':
-                    with nogil:
-                        ierr = nc_def_var_endian(self._grpid, self._varid, NC_ENDIAN_BIG)
-                elif endian == 'native':
-                    pass # this is the default format.
-                else:
-                    raise ValueError("'endian' keyword argument must be 'little','big' or 'native', got '%s'" % endian)
-                # set quantization
-                IF HAS_QUANTIZATION_SUPPORT:
-                    if significant_digits is not None:
-                        nsd = significant_digits
-                        if quantize_mode == 'BitGroom':
-                            with nogil:
-                                ierr = nc_def_var_quantize(self._grpid,
-                                       self._varid, NC_QUANTIZE_BITGROOM, nsd)
-                        elif quantize_mode == 'GranularBitRound':
-                            with nogil:
-                                ierr = nc_def_var_quantize(self._grpid,
-                                       self._varid, NC_QUANTIZE_GRANULARBR, nsd)
-                        elif quantize_mode == 'BitRound':
-                            ierr = nc_def_var_quantize(self._grpid,
-                                       self._varid, NC_QUANTIZE_BITROUND, nsd)
-                        else:
-                            raise ValueError("'quantize_mode' keyword argument must be 'BitGroom','GranularBitRound' or 'BitRound', got '%s'" % quantize_mode)
+                            _ensure_nc_success(ierr, extra_msg=error_info)
 
-                ELSE:
-                    if significant_digits is not None:
-                        msg = """
-significant_digits kwarg only works with netcdf-c >= 4.9.0.  To enable, install Cython, make sure you have
-version 4.9.0 or higher netcdf-c, and rebuild netcdf4-python. Otherwise, use least_significant_digit
-kwarg for quantization."""
-                        raise ValueError(msg)
+                # set endian-ness of variable
+                if endian != 'native':
+                    _nc_endian = NC_ENDIAN_LITTLE if endian == "little" else NC_ENDIAN_BIG
+                    with nogil:
+                        ierr = nc_def_var_endian(self._grpid, self._varid, _nc_endian)
+                    _ensure_nc_success(ierr, extra_msg=error_info)
+
+                # set quantization
+                if significant_digits is not None:
+                    if not __has_quantization_support__:
+                        raise ValueError(
+                            "significant_digits kwarg only works with netcdf-c >= 4.9.0. "
+                            "To enable, install Cython, make sure you have version 4.9.0 "
+                            "or higher netcdf-c, and rebuild netcdf4-python. Otherwise, "
+                            f"use least_significant_digit kwarg for quantization. {error_info}"
+                        )
+
+                    nsd = significant_digits
+                    if quantize_mode == 'BitGroom':
+                        with nogil:
+                            ierr = nc_def_var_quantize(self._grpid,
+                                   self._varid, NC_QUANTIZE_BITGROOM, nsd)
+                    elif quantize_mode == 'GranularBitRound':
+                        with nogil:
+                            ierr = nc_def_var_quantize(self._grpid,
+                                   self._varid, NC_QUANTIZE_GRANULARBR, nsd)
+                    elif quantize_mode == 'BitRound':
+                        ierr = nc_def_var_quantize(self._grpid,
+                                   self._varid, NC_QUANTIZE_BITROUND, nsd)
+                    else:
+                        raise ValueError("'quantize_mode' keyword argument must be 'BitGroom','GranularBitRound' or 'BitRound', got '%s'" % quantize_mode)
+
                 if ierr != NC_NOERR:
                     if grp.data_model != 'NETCDF4': grp._enddef()
-                    _ensure_nc_success(ierr)
-            else:
-                if endian != 'native':
-                    msg="only endian='native' allowed for NETCDF3 files"
-                    raise RuntimeError(msg)
+                    _ensure_nc_success(ierr, extra_msg=error_info)
+
             # set a fill value for this variable if fill_value keyword
             # given.  This avoids the HDF5 overhead of deleting and
             # recreating the dataset if it is set later (after the enddef).
             if fill_value is not None:
-                if not fill_value and isinstance(fill_value,bool):
+                if fill_value is False:
                     # no filling for this variable if fill_value==False.
-                    if not self._isprimitive:
-                        # no fill values for VLEN and compound variables
-                        # anyway.
-                        ierr = 0
-                    else:
+                    if self._isprimitive:
                         with nogil:
                             ierr = nc_def_var_fill(self._grpid, self._varid, 1, NULL)
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
-                        _ensure_nc_success(ierr)
+                        _ensure_nc_success(ierr, extra_msg=error_info)
                 else:
                     if self._isprimitive or self._isenum or \
                        (self._isvlen and self.dtype == str):
@@ -4372,15 +4368,20 @@ kwarg for quantization."""
                 self.least_significant_digit = least_significant_digit
             # leave define mode if not a NETCDF4 format file.
             if grp.data_model != 'NETCDF4': grp._enddef()
+
+        # If the variable is a complex number, we need to check if
+        # it was created using a compound type or a complex
+        # dimension, and then make the equivalent class in Python
+        if is_complex:
+            self._fix_complex_numbers()
+
         # count how many unlimited dimensions there are.
         self._nunlimdim = 0
         for dim in dimensions:
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
+
         # set ndim attribute (number of dimensions).
-        with nogil:
-            ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
-        _ensure_nc_success(ierr)
-        self.ndim = numdims
+        self.ndim = _inq_varndims(self._grpid, self._varid, self._grp.auto_complex)
         self._name = name
         # default for automatically applying scale_factor and
         # add_offset, and converting to/from masked arrays is True.
@@ -4405,6 +4406,36 @@ kwarg for quantization."""
             self._use_get_vars = True
         else:
             self._use_get_vars = False
+
+    def _fix_complex_numbers(self):
+        cdef char name[NC_MAX_NAME + 1]
+        cdef int complex_typeid, complex_dim_id
+
+        error_info = f"(variable '{name}', group '{self._grp.name}')"
+
+        if <bint>pfnc_var_is_complex_type(self._grpid, self._varid):
+            self._isprimitive = False
+            self._iscompound = True
+            with nogil:
+                ierr = pfnc_inq_var_complex_base_type(self._grpid, self._varid, &complex_typeid)
+            _ensure_nc_success(ierr, extra_msg=error_info)
+
+            np_complex_type = _nctonptype[complex_typeid]
+            compound_complex_type = f"{np_complex_type}, {np_complex_type}"
+
+            self._cmptype = CompoundType(
+                self._grp, compound_complex_type, "complex", typeid=complex_typeid
+            )
+        else:
+            with nogil:
+                ierr = pfnc_get_complex_dim(self._grpid, &complex_dim_id)
+            _ensure_nc_success(ierr, extra_msg=error_info)
+            with nogil:
+                ierr = nc_inq_dimname(self._grpid, complex_dim_id, name)
+            _ensure_nc_success(ierr, extra_msg=error_info)
+            self._grp.dimensions[name.decode("utf-8")] = Dimension(
+                self._grp, name, size=2, id=complex_dim_id
+            )
 
     def __array__(self):
         # numpy special method that returns a numpy array.
@@ -4475,27 +4506,20 @@ kwarg for quantization."""
 
     def _getdims(self):
         # Private method to get variables's dimension names
-        cdef int ierr, numdims, n, nn
+        cdef int ierr, dimid
         cdef char namstring[NC_MAX_NAME+1]
-        cdef int *dimids
-        # get number of dimensions for this variable.
-        with nogil:
-            ierr = nc_inq_varndims(self._grpid, self._varid, &numdims)
-        _ensure_nc_success(ierr)
-        dimids = <int *>malloc(sizeof(int) * numdims)
-        # get dimension ids.
-        with nogil:
-            ierr = nc_inq_vardimid(self._grpid, self._varid, dimids)
-        _ensure_nc_success(ierr)
+
+        dimids = _inq_vardimid(self._grpid, self._varid, self._grp.auto_complex)
+
         # loop over dimensions, retrieve names.
         dimensions = ()
-        for nn from 0 <= nn < numdims:
+        for dimid in dimids:
             with nogil:
-                ierr = nc_inq_dimname(self._grpid, dimids[nn], namstring)
+                ierr = nc_inq_dimname(self._grpid, dimid, namstring)
             _ensure_nc_success(ierr)
             name = namstring.decode('utf-8')
             dimensions = dimensions + (name,)
-        free(dimids)
+
         return dimensions
 
     def _getname(self):
@@ -4671,25 +4695,25 @@ return dictionary containing HDF5 filter parameters."""
         with nogil:
             ierr = nc_inq_var_fletcher32(self._grpid, self._varid, &ifletcher32)
         _ensure_nc_success(ierr)
-        IF HAS_ZSTANDARD_SUPPORT:
+        if __has_zstandard_support__:
             with nogil:
                 ierr = nc_inq_var_zstandard(self._grpid, self._varid, &izstd,\
                        &icomplevel_zstd)
             if ierr != 0: izstd=0
             # _ensure_nc_success(ierr)
-        IF HAS_BZIP2_SUPPORT:
+        if __has_bzip2_support__:
             with nogil:
                 ierr = nc_inq_var_bzip2(self._grpid, self._varid, &ibzip2,\
                        &icomplevel_bzip2)
             if ierr != 0: ibzip2=0
             #_ensure_nc_success(ierr)
-        IF HAS_BLOSC_SUPPORT:
+        if __has_blosc_support__:
             with nogil:
                 ierr = nc_inq_var_blosc(self._grpid, self._varid, &iblosc,\
                        &iblosc_compressor,&iblosc_complevel,&iblosc_blocksize,&iblosc_shuffle)
             if ierr != 0: iblosc=0
             #_ensure_nc_success(ierr)
-        IF HAS_SZIP_SUPPORT:
+        if __has_szip_support__:
             with nogil:
                 ierr = nc_inq_var_szip(self._grpid, self._varid, &iszip_coding,\
                        &iszip_pixels_per_block)
@@ -4730,29 +4754,29 @@ return dictionary containing HDF5 filter parameters."""
 return number of significant digits and the algorithm used in quantization.
 Returns None if quantization not active.
 """
-        IF HAS_QUANTIZATION_SUPPORT:
-            cdef int ierr, nsd, quantize_mode
-            if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']:
-                return None
-            else:
-                with nogil:
-                    ierr = nc_inq_var_quantize(self._grpid, self._varid, &quantize_mode, &nsd)
-                _ensure_nc_success(ierr)
-                if quantize_mode == NC_NOQUANTIZE:
-                    return None
-                else:
-                    if quantize_mode == NC_QUANTIZE_GRANULARBR:
-                        sig_digits = nsd
-                        quant_mode = 'GranularBitRound'
-                    elif quantize_mode == NC_QUANTIZE_BITROUND:
-                        sig_digits = nsd # interpreted as bits, not decimal
-                        quant_mode = 'BitRound'
-                    else:
-                        sig_digits = nsd
-                        quant_mode = 'BitGroom'
-                    return sig_digits, quant_mode
-        ELSE:
+        if not __has_quantization_support__:
             return None
+
+        cdef int ierr, nsd, quantize_mode
+        if self._grp.data_model not in ['NETCDF4_CLASSIC','NETCDF4']:
+            return None
+
+        with nogil:
+            ierr = nc_inq_var_quantize(self._grpid, self._varid, &quantize_mode, &nsd)
+        _ensure_nc_success(ierr)
+        if quantize_mode == NC_NOQUANTIZE:
+            return None
+
+        if quantize_mode == NC_QUANTIZE_GRANULARBR:
+            sig_digits = nsd
+            quant_mode = 'GranularBitRound'
+        elif quantize_mode == NC_QUANTIZE_BITROUND:
+            sig_digits = nsd # interpreted as bits, not decimal
+            quant_mode = 'BitRound'
+        else:
+            sig_digits = nsd
+            quant_mode = 'BitGroom'
+        return sig_digits, quant_mode
 
     def endian(self):
         """
@@ -5776,7 +5800,11 @@ NC_CHAR).
             if not data.dtype.isnative:
                 data = data.byteswap()
             # strides all 1 or scalar variable, use put_vara (faster)
-            if sum(stride) == ndims or ndims == 0:
+            if self._grp.auto_complex:
+                with nogil:
+                    ierr = pfnc_put_vars(self._grpid, self._varid,
+                                         startp, countp, stridep, PyArray_DATA(data))
+            elif sum(stride) == ndims or ndims == 0:
                 with nogil:
                     ierr = nc_put_vara(self._grpid, self._varid,
                                        startp, countp, PyArray_DATA(data))
@@ -5898,7 +5926,12 @@ NC_CHAR).
             # strides all 1 or scalar variable, use get_vara (faster)
             # if count contains a zero element, no data is being read
             if 0 not in count:
-                if sum(stride) == ndims or ndims == 0:
+                if self._grp.auto_complex:
+                    with nogil:
+                        ierr = pfnc_get_vars(self._grpid, self._varid,
+                                             startp, countp, stridep,
+                                             PyArray_DATA(data))
+                elif sum(stride) == ndims or ndims == 0:
                     with nogil:
                         ierr = nc_get_vara(self._grpid, self._varid,
                                            startp, countp, PyArray_DATA(data))
@@ -6012,25 +6045,20 @@ NC_CHAR).
             return data
 
     def set_collective(self, value):
-        """
-**`set_collective(self,True_or_False)`**
+        """**`set_collective(self,True_or_False)`**
 
-turn on or off collective parallel IO access. Ignored if file is not
-open for parallel access.
+        turn on or off collective parallel IO access. Ignored if file is not
+        open for parallel access.
         """
-        IF HAS_PARALLEL4_SUPPORT or HAS_PNETCDF_SUPPORT:
-            # set collective MPI IO mode on or off
-            if value:
-                with nogil:
-                    ierr = nc_var_par_access(self._grpid, self._varid,
-                           NC_COLLECTIVE)
-            else:
-                with nogil:
-                    ierr = nc_var_par_access(self._grpid, self._varid,
-                           NC_INDEPENDENT)
-            _ensure_nc_success(ierr)
-        ELSE:
-            pass # does nothing
+        if not __has_parallel_support__:
+            return
+
+        mode = NC_COLLECTIVE if value else NC_INDEPENDENT
+        with nogil:
+            ierr = nc_var_par_access(self._grpid, self._varid,
+                   NC_COLLECTIVE)
+        _ensure_nc_success(ierr)
+
 
     def get_dims(self):
         """

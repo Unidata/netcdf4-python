@@ -1,6 +1,7 @@
-from netCDF4 import Dataset
+from netCDF4 import Dataset, __has_cdf5_format__
 import numpy as np
 import sys, os, unittest, tempfile
+import struct
 from numpy.testing import assert_array_equal
 
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -8,8 +9,9 @@ dimsize = np.iinfo(np.int32).max*2 # only allowed in CDF5
 ndim = 100
 arrdata = np.random.randint(np.iinfo(np.uint8).min,np.iinfo(np.uint8).max,size=ndim)
 
-class test_cdf5(unittest.TestCase):
 
+@unittest.skipIf(not __has_cdf5_format__ or struct.calcsize("P") < 8, "no CDF5 support")
+class test_cdf5(unittest.TestCase):
     def setUp(self):
         self.netcdf_file = FILE_NAME
         nc = Dataset(self.netcdf_file,'w',format='NETCDF3_64BIT_DATA')

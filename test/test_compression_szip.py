@@ -2,6 +2,7 @@ from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest, sys
+from filter_availability import has_szip_filter
 
 ndim = 100000
 filename = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -18,8 +19,9 @@ def write_netcdf(filename,dtype='f8'):
     foo_szip[:] = datarr
     nc.close()
 
-class CompressionTestCase(unittest.TestCase):
 
+@unittest.skipIf(not has_szip_filter, "szip filter not available")
+class CompressionTestCase(unittest.TestCase):
     def setUp(self):
         self.filename = filename
         write_netcdf(self.filename)
@@ -38,10 +40,6 @@ class CompressionTestCase(unittest.TestCase):
         assert f.variables['data_szip'].filters() == dtest
         f.close()
 
+
 if __name__ == '__main__':
-    nc = Dataset(filename,'w')
-    if not nc.has_szip_filter():
-        sys.stdout.write('szip filter not available, skipping tests ...\n')
-    else:
-        nc.close()
-        unittest.main()
+    unittest.main()

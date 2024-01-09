@@ -1,11 +1,12 @@
 import netCDF4, unittest
 import numpy as np
+import pathlib
+
 
 class Issue908TestCase(unittest.TestCase):
 
     def setUp(self):
-        nc = netCDF4.Dataset('CRM032_test1.nc')
-        self.nc = nc
+        self.nc = netCDF4.Dataset(pathlib.Path(__file__).parent / "CRM032_test1.nc")
 
     def tearDown(self):
         self.nc.close()

@@ -4,9 +4,11 @@ import unittest
 
 import netCDF4
 
+
+@unittest.skipUnless(
+    os.getenv("MEMORY_LEAK_TEST"), "computationally intensive test not enabled"
+)
 class MultipleVariablesByAttributesCallsTests(unittest.TestCase):
-
-
     def test_multiple_calls(self):
         netcdf_file = os.path.join(os.path.dirname(__file__), "netcdf_dummy_file.nc")
         tracemalloc.start()

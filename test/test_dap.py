@@ -3,6 +3,7 @@ import netCDF4
 import numpy as np
 from datetime import datetime, timedelta
 from numpy.testing import assert_array_almost_equal
+import os
 
 # test accessing data over http with opendap.
 
@@ -13,8 +14,9 @@ varname = 'hgtsfc'
 data_min = -40; data_max = 5900
 varshape = (181, 360)
 
-class DapTestCase(unittest.TestCase):
 
+@unittest.skipIf(os.getenv("NO_NET"), "network tests disabled")
+class DapTestCase(unittest.TestCase):
     def setUp(self):
         pass
 

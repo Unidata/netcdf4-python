@@ -1,0 +1,3 @@
+[submodule "external/nc_complex"]
+	path = external/nc_complex
+	url = https://github.com/PlasmaFAIR/nc-complex.git

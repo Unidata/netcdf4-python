@@ -1,6 +1,7 @@
 import unittest
 import os
 import tempfile
+import pathlib
 
 import numpy as np
 from numpy import ma
@@ -106,18 +107,17 @@ class SetValidMinMax(unittest.TestCase):
         f.close()
 
         # issue 672
-        f = Dataset('issue672.nc')
-        field = 'azi_angle_trip'
-        v = f.variables[field]
-        data1 = v[:]
-        v.set_auto_scale(False)
-        data2 = v[:]
-        v.set_auto_maskandscale(False)
-        data3 = v[:]
-        assert(data1[(data3 < v.valid_min)].mask.sum() == 12)
-        assert(data2[(data3 < v.valid_min)].mask.sum() ==
-               data1[(data3 < v.valid_min)].mask.sum())
-        f.close()
+        with Dataset(pathlib.Path(__file__).parent / "issue672.nc") as f:
+            field = 'azi_angle_trip'
+            v = f.variables[field]
+            data1 = v[:]
+            v.set_auto_scale(False)
+            data2 = v[:]
+            v.set_auto_maskandscale(False)
+            data3 = v[:]
+            assert(data1[(data3 < v.valid_min)].mask.sum() == 12)
+            assert(data2[(data3 < v.valid_min)].mask.sum() ==
+                   data1[(data3 < v.valid_min)].mask.sum())
 
 
 if __name__ == '__main__':
