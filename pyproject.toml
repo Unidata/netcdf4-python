@@ -1,11 +1,12 @@
 [build-system]
 requires = [
     "Cython>=0.29",
-    "mpi4py>=3.1",
     "oldest-supported-numpy",
     "setuptools>=61",
+    "wheel"
 ]
-build-backend = "setuptools.build_meta"
+build-backend = "backend"
+backend-path = ["_build"]
 
 [project]
 name = "netCDF4"
