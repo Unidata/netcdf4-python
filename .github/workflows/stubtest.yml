@@ -27,6 +27,7 @@ jobs:
         echo "Download and build netCDF github master"
         git clone https://github.com/Unidata/netcdf-c
         pushd netcdf-c
+        git submodule update --init --recursive
         export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
         export LDFLAGS="-L${NETCDF_DIR}/lib"
         export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
