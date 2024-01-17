@@ -3,6 +3,8 @@
  * add support for complex numbers via `auto_complex` keyword to `Dataset` (PR #1295)
  * fix for deprecated Cython `DEF` and `IF` statements using compatibility header
    with shims for unavailable functionality (PR #1277)
+ * use `szip` as the library name on Windows (PR #1304)
+ * add support for MS-MPI `MPI_Message` detection (PR #1305)
  * add static type hints (PR #1302)
 
  version 1.6.5 (tag v1.6.5rel)
