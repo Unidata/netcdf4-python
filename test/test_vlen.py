@@ -69,6 +69,8 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(f.variables['vlen_scalar'][...],np.array([1,2,3],np.int16))
         data2 = v[:]
         data2s = vs[:]
+        # issue #1306
+        assert repr(vs[[0,2,3],0]) == "array(['ab', 'abcdefghijkl', 'abcdefghijklmnopq'], dtype=object)"
         for i in range(nlons):
             for j in range(nlats):
                 assert_array_equal(data2[j,i], data[j,i])
