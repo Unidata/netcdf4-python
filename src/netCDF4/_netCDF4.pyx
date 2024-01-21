@@ -4988,6 +4988,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
                     data[0] = datout
                 else:
                     if self._isvlen and not shape:
+                        # issue #1306 - convert length 1 object array to string
                         data[tuple(i)] = datout.item()
                     else:
                         data[tuple(i)] = datout.reshape(shape)
