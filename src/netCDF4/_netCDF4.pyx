@@ -4987,7 +4987,10 @@ rename a `Variable` attribute named `oldname` to `newname`."""
                     # special case of scalar VLEN
                     data[0] = datout
                 else:
-                    data[tuple(i)] = datout.reshape(shape)
+                    if self._isvlen and not shape:
+                        data[tuple(i)] = datout.item()
+                    else:
+                        data[tuple(i)] = datout.reshape(shape)
 
         # Remove extra singleton dimensions.
         if hasattr(data,'shape'):
