@@ -5,6 +5,9 @@
    with shims for unavailable functionality (PR #1277)
  * use `szip` as the library name on Windows (PR #1304)
  * add support for MS-MPI `MPI_Message` detection (PR #1305)
+ * fix for issue #1306 - surprising result when indexing vlen str with non-contiguous
+   indices.
+
 
 
  version 1.6.5 (tag v1.6.5rel)
