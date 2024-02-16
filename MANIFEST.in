@@ -22,3 +22,4 @@ include *.py
 include *.release
 include *.sh
 include LICENSE
+include _build/*.py
