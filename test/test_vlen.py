@@ -70,7 +70,7 @@ class VariablesTestCase(unittest.TestCase):
         data2 = v[:]
         data2s = vs[:]
         # issue #1306
-        assert repr(vs[[0,2,3],0]) == "array(['ab', 'abcdefghijkl', 'abcdefghijklmnopq'], dtype=object)"
+        assert repr(vs[[0,2,3],0]) == "array(['ab', 'abcdefghijkl', 'abcdefghijklmnopq'], dtype=object)" 
         for i in range(nlons):
             for j in range(nlats):
                 assert_array_equal(data2[j,i], data[j,i])
@@ -219,11 +219,11 @@ class Vlen_ScaledInts(unittest.TestCase):
         data = nc['vl'][-1]
         # check max error of compression
         err = np.abs(data - self.data)
-        assert(err.max() < nc['vl'].scale_factor)
+        assert err.max() < nc['vl'].scale_factor 
         # turn off auto-scaling
         nc.set_auto_maskandscale(False)
         data = nc['vl'][-1]
-        assert(data[-1] == np.around(self.data[-1]/nc['vl'].scale_factor))
+        assert data[-1] == np.around(self.data[-1]/nc['vl'].scale_factor) 
         nc.close()
 
 if __name__ == '__main__':

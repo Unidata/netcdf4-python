@@ -34,9 +34,9 @@ class Groups2TestCase(unittest.TestCase):
         v2 = ((f.groups['grouped']).groups['data']).variables['v']
         g = f['/grouped/data']
         v3 = g['data2/v2']
-        assert(v1 == v2)
-        assert(g == f.groups['grouped'].groups['data'])
-        assert(v3.name == 'v2')
+        assert v1 == v2 
+        assert g == f.groups['grouped'].groups['data'] 
+        assert v3.name == 'v2' 
         f.close()
 
 if __name__ == '__main__':

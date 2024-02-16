@@ -31,7 +31,7 @@ class ShapeTestCase(unittest.TestCase):
         # make sure shape of data array
         # is not changed by assigning it
         # to a netcdf var with one more dimension (issue 90)
-        assert(data.shape == datashape)
+        assert data.shape == datashape 
         f.close()
 
 if __name__ == '__main__':

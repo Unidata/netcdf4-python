@@ -63,10 +63,10 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(vv.units['speed'], windunits['speed'].squeeze())
         assert_array_equal(vv.units['direction'],\
                 windunits['direction'].squeeze())
-        assert(v.units['speed'] == b'm/s')
-        assert(v.units['direction'] == b'degrees')
-        assert(vv.units['speed'] == b'm/s')
-        assert(vv.units['direction'] == b'degrees')
+        assert v.units['speed'] == b'm/s' 
+        assert v.units['direction'] == b'degrees' 
+        assert vv.units['speed'] == b'm/s' 
+        assert vv.units['direction'] == b'degrees' 
         f.close()
 
 if __name__ == '__main__':

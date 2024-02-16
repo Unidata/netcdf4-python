@@ -115,9 +115,9 @@ class SetValidMinMax(unittest.TestCase):
             data2 = v[:]
             v.set_auto_maskandscale(False)
             data3 = v[:]
-            assert(data1[(data3 < v.valid_min)].mask.sum() == 12)
-            assert(data2[(data3 < v.valid_min)].mask.sum() ==
-                   data1[(data3 < v.valid_min)].mask.sum())
+            assert data1[(data3 < v.valid_min)].mask.sum() == 12 
+            assert data2[(data3 < v.valid_min)].mask.sum() ==\
+                   data1[(data3 < v.valid_min)].mask.sum() 
 
 
 if __name__ == '__main__':
