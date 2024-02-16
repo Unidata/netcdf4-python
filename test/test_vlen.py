@@ -70,7 +70,6 @@ class VariablesTestCase(unittest.TestCase):
         data2 = v[:]
         data2s = vs[:]
         # issue #1306
-        print(repr(vs[[0,2,3],0]))
         assert repr(vs[[0,2,3],0]) == "array(['ab', 'abcdefghijkl', 'abcdefghijklmnopq'], dtype=object)" 
         for i in range(nlons):
             for j in range(nlats):
