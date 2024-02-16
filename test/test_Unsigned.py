@@ -34,20 +34,20 @@ class Test_Unsigned(unittest.TestCase):
         # issue 671
         with netCDF4.Dataset(test_dir / "issue671.nc") as f:
             data1 = f['soil_moisture'][:]
-            assert(np.ma.isMA(data1))
+            assert np.ma.isMA(data1) 
             f.set_auto_scale(False)
             data2 = f['soil_moisture'][:]
-            assert(data1.mask.sum() == data2.mask.sum())
+            assert data1.mask.sum() == data2.mask.sum() 
 
         # issue 794
         # test that valid_min/valid_max/_FillValue are
         # treated as unsigned integers.
         with netCDF4.Dataset(test_dir / "20171025_2056.Cloud_Top_Height.nc") as f:
             data = f['HT'][:]
-            assert(data.mask.sum() == 57432)
-            assert(int(data.max()) == 15430)
-            assert(int(data.min()) == 0)
-            assert(data.dtype == np.float32)
+            assert data.mask.sum() == 57432 
+            assert int(data.max()) == 15430 
+            assert int(data.min()) == 0 
+            assert data.dtype == np.float32 
 
 
 if __name__ == '__main__':
