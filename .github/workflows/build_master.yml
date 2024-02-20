@@ -54,6 +54,7 @@ jobs:
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c/plugins/plugindir
         python setup.py install
+
     - name: Test
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
@@ -78,3 +79,7 @@ jobs:
         else
           echo "hdf5 compressed mpi test passed!"
         fi
+
+    - name: Stubtest
+      run: |
+        stubtest netCDF4 --allowlist .github/stubtest-allowlist --mypy-config-file=pyproject.toml
