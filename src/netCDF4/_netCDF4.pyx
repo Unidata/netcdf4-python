@@ -6060,7 +6060,7 @@ NC_CHAR).
         mode = NC_COLLECTIVE if value else NC_INDEPENDENT
         with nogil:
             ierr = nc_var_par_access(self._grpid, self._varid,
-                   NC_COLLECTIVE)
+                   mode)
         _ensure_nc_success(ierr)
 
 
