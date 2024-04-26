@@ -12,13 +12,22 @@ jobs:
     #  NO_NET: 1
     strategy:
       matrix:
-        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
+        python-version: [ "3.9", "3.10", "3.11", "3.12" ]
         os: [windows-latest, ubuntu-latest, macos-latest]
+        experimental: [false]
         platform: [x64, x32]
         exclude:
           - os: macos-latest  
             platform: x32
+        include:
+          - python-version: "3.12"
+            os: "ubuntu-latest"
+            experimental: true
+            platform: x64
       fail-fast: false
+    defaults:
+      run:
+        shell: bash -l {0}
 
     steps:
     - uses: actions/checkout@v4
@@ -35,14 +44,20 @@ jobs:
           numpy cython pip pytest hdf5 libnetcdf cftime zlib certifi
           --channel conda-forge
 
+    - name: Install unstable dependencies
+      if: matrix.experimental == true
+      run: >-
+        micromamba install
+        conda-forge/label/cftime_dev::cftime
+        conda-forge/label/numpy_dev::numpy
+        --channel conda-forge --channel conda-forge
+
     - name: Install netcdf4-python
-      shell: bash -l {0}
       run: |
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
-        python -m pip install -v -e . --no-deps --force-reinstall
+        python -m pip install -v -e . --no-deps --no-build-isolation --force-reinstall
 
     - name: Tests
-      shell: bash -l {0}
       run: |
         cd test && python run_all.py
 
@@ -69,14 +84,12 @@ jobs:
           --channel conda-forge
 
     - name: Install netcdf4-python with mpi
-      shell: bash -l {0}
       run: |
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
         nc-config --all
         python -m pip install -v -e . --no-build-isolation --no-deps --force-reinstall
 
     - name: Tests
-      shell: bash -l {0}
       run: |
         cd test && python run_all.py
         cd ../examples
