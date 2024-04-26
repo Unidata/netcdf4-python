@@ -68,6 +68,9 @@ jobs:
         python-version: [ "3.11" ]
         os: [ubuntu-latest]
         platform: [x64]
+    defaults:
+      run:
+        shell: bash -l {0}
     steps:
     - uses: actions/checkout@v4
       with:
