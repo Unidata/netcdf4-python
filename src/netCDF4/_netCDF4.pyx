@@ -5747,7 +5747,7 @@ NC_CHAR).
     def _put(self,ndarray data,start,count,stride):
         """Private method to put data into a netCDF variable"""
         cdef int ierr, ndims
-        cdef npy_intp totelem
+        cdef npy_intp totelem, dataelem, i
         cdef size_t *startp
         cdef size_t *countp
         cdef ptrdiff_t *stridep
@@ -5834,7 +5834,7 @@ NC_CHAR).
                 # each element in struct.
                 # allocate struct array to hold vlen data.
                 strdata = <char **>malloc(sizeof(char *)*totelem)
-                for i from 0<=i<totelem:
+                for i in range(totelem):
                     strdata[i] = data[i]
                 # strides all 1 or scalar variable, use put_vara (faster)
                 if sum(stride) == ndims or ndims == 0:
@@ -5855,7 +5855,7 @@ NC_CHAR).
                 databuff = PyArray_BYTES(<ndarray>data)
                 # allocate struct array to hold vlen data.
                 vldata = <nc_vlen_t *>malloc(<size_t>totelem*sizeof(nc_vlen_t))
-                for i from 0<=i<totelem:
+                for i in range(totelem):
                     elptr = (<void**>databuff)[0]
                     dataarr = <ndarray>elptr
                     if self.dtype != dataarr.dtype.str[1:]:
@@ -5884,7 +5884,8 @@ NC_CHAR).
 
     def _get(self,start,count,stride):
         """Private method to retrieve data from a netCDF variable"""
-        cdef int ierr, ndims, totelem
+        cdef int ierr, ndims
+        cdef npy_intp totelem, i
         cdef size_t *startp
         cdef size_t *countp
         cdef ptrdiff_t *stridep
@@ -5980,7 +5981,7 @@ NC_CHAR).
                 # use _Encoding attribute to decode string to bytes - if
                 # not given, use 'utf-8'.
                 encoding = getattr(self,'_Encoding','utf-8')
-                for i from 0<=i<totelem:
+                for i in range(totelem):
                     if strdata[i]:
                         data[i] = strdata[i].decode(encoding)
                     else:
@@ -6015,7 +6016,7 @@ NC_CHAR).
                     _ensure_nc_success(ierr)
                 # loop over elements of object array, fill array with
                 # contents of vlarray struct, put array in object array.
-                for i from 0<=i<totelem:
+                for i in range(totelem):
                     arrlen  = vldata[i].len
                     dataarr = numpy.empty(arrlen, self.dtype)
                     #dataarr.data = <char *>vldata[i].p
