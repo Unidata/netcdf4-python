@@ -1593,7 +1593,7 @@ cdef _get_att_names(int grpid, int varid):
             ierr = nc_inq_varnatts(grpid, varid, &numatts)
     _ensure_nc_success(ierr, err_cls=AttributeError)
     attslist = []
-    for n from 0 <= n < numatts:
+    for n in range(numatts):
         with nogil:
             ierr = nc_inq_attname(grpid, varid, n, namstring)
         _ensure_nc_success(ierr, err_cls=AttributeError)
@@ -1868,7 +1868,7 @@ cdef _get_types(group):
     enumtypes = dict()
 
     if ntypes > 0:
-        for n from 0 <= n < ntypes:
+        for n in range(ntypes):
             xtype = typeids[n]
             with nogil:
                 ierr = nc_inq_user_type(_grpid, xtype, namstring,
@@ -1930,9 +1930,9 @@ cdef _get_dims(group):
                 ierr = nc_inq_dimids(_grpid, &numdims, dimids, 0)
             _ensure_nc_success(ierr)
         else:
-            for n from 0 <= n < numdims:
+            for n in range(numdims):
                 dimids[n] = n
-        for n from 0 <= n < numdims:
+        for n in range(numdims):
             with nogil:
                 ierr = nc_inq_dimname(_grpid, dimids[n], namstring)
             _ensure_nc_success(ierr)
@@ -1959,7 +1959,7 @@ cdef _get_grps(group):
         with nogil:
             ierr = nc_inq_grps(_grpid, NULL, grpids)
         _ensure_nc_success(ierr)
-        for n from 0 <= n < numgrps:
+        for n in range(numgrps):
             with nogil:
                 ierr = nc_inq_grpname(grpids[n], namstring)
             _ensure_nc_success(ierr)
@@ -1994,10 +1994,10 @@ cdef _get_vars(group, bint auto_complex=False):
                 ierr = nc_inq_varids(_grpid, &numvars, varids)
             _ensure_nc_success(ierr)
         else:
-            for n from 0 <= n < numvars:
+            for n in range(numvars):
                 varids[n] = n
         # loop over variables.
-        for n from 0 <= n < numvars:
+        for n in range(numvars):
             varid = varids[n]
             # get variable name.
             with nogil:
@@ -3761,7 +3761,7 @@ returns `True` if the `Dimension` instance is unlimited, `False` otherwise."""
                     ierr = nc_inq_unlimdims(self._grpid, &numunlimdims, unlimdimids)
                 _ensure_nc_success(ierr)
                 unlimdim_ids = []
-                for n from 0 <= n < numunlimdims:
+                for n in range(numunlimdims):
                     unlimdim_ids.append(unlimdimids[n])
                 free(unlimdimids)
                 if dimid in unlimdim_ids:
@@ -4155,7 +4155,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
             # find dimension ids.
             if ndims:
                 dimids = <int *>malloc(sizeof(int) * ndims)
-                for n from 0 <= n < ndims:
+                for n in range(ndims):
                     dimids[n] = dimensions[n]._dimid
             # go into define mode if it's a netCDF 3 compatible
             # file format.  Be careful to exit define mode before
@@ -4289,7 +4289,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                             if grp.data_model != 'NETCDF4': grp._enddef()
                             raise ValueError('chunksizes must be a sequence with the same length as dimensions')
                         chunksizesp = <size_t *>malloc(sizeof(size_t) * ndims)
-                        for n from 0 <= n < ndims:
+                        for n in range(ndims):
                             if not dimensions[n].isunlimited() and \
                                chunksizes[n] > dimensions[n].size:
                                 msg = 'chunksize cannot exceed dimension size'
@@ -4813,7 +4813,7 @@ each dimension is returned."""
             ierr = nc_inq_var_chunking(self._grpid, self._varid, &icontiguous, chunksizesp)
         _ensure_nc_success(ierr)
         chunksizes=[]
-        for n from 0 <= n < ndims:
+        for n in range(ndims):
             chunksizes.append(chunksizesp[n])
         free(chunksizesp)
         if icontiguous:
@@ -5343,7 +5343,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
         count = [1]*ndims
         startp = <size_t *>malloc(sizeof(size_t) * ndims)
         countp = <size_t *>malloc(sizeof(size_t) * ndims)
-        for n from 0 <= n < ndims:
+        for n in range(ndims):
             startp[n] = start[n]
             countp[n] = count[n]
         if self.dtype == str: # VLEN string
@@ -5769,7 +5769,7 @@ NC_CHAR).
         startp = <size_t *>malloc(sizeof(size_t) * ndims)
         countp = <size_t *>malloc(sizeof(size_t) * ndims)
         stridep = <ptrdiff_t *>malloc(sizeof(ptrdiff_t) * ndims)
-        for n from 0 <= n < ndims:
+        for n in range(ndims):
             count[n] = abs(count[n]) # make -1 into +1
             countp[n] = count[n]
             # for neg strides, reverse order (then flip that axis after data read in)
@@ -5912,7 +5912,7 @@ NC_CHAR).
         startp = <size_t *>malloc(sizeof(size_t) * ndims)
         countp = <size_t *>malloc(sizeof(size_t) * ndims)
         stridep = <ptrdiff_t *>malloc(sizeof(ptrdiff_t) * ndims)
-        for n from 0 <= n < ndims:
+        for n in range(ndims):
             count[n] = abs(count[n]) # make -1 into +1
             countp[n] = count[n]
             # for neg strides, reverse order (then flip that axis after data read in)
@@ -6254,7 +6254,7 @@ cdef _def_compound(grp, object dt, object dtype_name):
             else: # nested array compound element
                 ndims = len(format.shape)
                 dim_sizes = <int *>malloc(sizeof(int) * ndims)
-                for n from 0 <= n < ndims:
+                for n in range(ndims):
                     dim_sizes[n] = format.shape[n]
                 if format.subdtype[0].kind != 'V': # primitive type.
                     try:
@@ -6332,7 +6332,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
     names = []
     formats = []
     offsets = []
-    for nf from 0 <= nf < nfields:
+    for nf in range(nfields):
         with nogil:
             ierr = nc_inq_compound_field(_grpid,
                                          xtype,
@@ -6360,7 +6360,7 @@ cdef _read_compound(group, nc_type xtype, endian=None):
         # if numdims=0, not an array.
         field_shape = ()
         if numdims != 0:
-            for ndim from 0 <= ndim < numdims:
+            for ndim in range(numdims):
                 field_shape = field_shape + (dim_sizes[ndim],)
         free(dim_sizes)
         # check to see if this field is a nested compound type.
@@ -6614,7 +6614,7 @@ cdef _read_enum(group, nc_type xtype, endian=None):
     # loop over members, build dict.
     enum_dict = {}
     enum_val = numpy.empty(1,dt)
-    for nmem from 0 <= nmem < nmembers:
+    for nmem in range(nmembers):
         with nogil:
             ierr = nc_inq_enum_member(grpid, xtype, nmem, \
                                       enum_namstring,PyArray_DATA(enum_val))
