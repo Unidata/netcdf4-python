@@ -1796,7 +1796,7 @@ be raised in the next release."""
                     string_ptrs[j] = strings[j]
                 issue485_workaround(grpid, varid, attname)
                 with nogil:
-                    ierr = nc_put_att_string(grpid, varid, attname, N, string_ptrs)
+                    ierr = nc_put_att_string(grpid, varid, attname, N, <const char**>string_ptrs)
             finally:
                 PyMem_Free(string_ptrs)
         else:
@@ -1825,7 +1825,7 @@ be raised in the next release."""
                 except UnicodeError:
                     issue485_workaround(grpid, varid, attname)
                     with nogil:
-                        ierr = nc_put_att_string(grpid, varid, attname, 1, &datstring)
+                        ierr = nc_put_att_string(grpid, varid, attname, 1, <const char**>&datstring)
             else:
                 with nogil:
                     ierr = nc_put_att_text(grpid, varid, attname, lenarr, datstring)
