@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/tox-dev/pyproject-fmt
-  rev: 1.8.0
+  rev: 2.0.3
   hooks:
     - id: pyproject-fmt
 
