@@ -140,10 +140,10 @@ complex128 = np.dtype([('real',np.float64),('imag',np.float64)])
 complex128_t = nc.createCompoundType(complex128,'complex128')
 # create a variable with this data type, write some data to it.
 nc.createDimension('x_dim',None)
-v = nc.createVariable('cmplx_var',complex128_t,'x_dim')
+var_complex = nc.createVariable('cmplx_var',complex128_t,'x_dim')
 data = np.empty(size,complex128) # numpy structured array
 data['real'] = datac.real; data['imag'] = datac.imag
-v[:] = data
+var_complex[:] = data
 # close and reopen the file, check the contents.
 nc.close()
 nc = Dataset('complex.nc')
@@ -151,9 +151,9 @@ print(nc)
 print(nc.variables['cmplx_var'])
 print(nc.cmptypes)
 print(nc.cmptypes['complex128'])
-v = nc.variables['cmplx_var']
-print(v.shape)
-datain = v[:] # read in all the data into a numpy structured array
+var_complex = nc.variables['cmplx_var']
+print(var_complex.shape)
+datain = var_complex[:] # read in all the data into a numpy structured array
 # create an empty numpy complex array
 datac2 = np.empty(datain.shape,np.complex128)
 # .. fill it with contents of structured array.
@@ -293,13 +293,13 @@ from netCDF4 import stringtochar
 nc = Dataset('stringtest.nc','w',format='NETCDF4_CLASSIC')
 nc.createDimension('nchars',3)
 nc.createDimension('nstrings',None)
-v = nc.createVariable('strings','S1',('nstrings','nchars'))
+var = nc.createVariable('strings','S1',('nstrings','nchars'))
 datain = np.array(['foo','bar'],dtype='S3')
-v[:] = stringtochar(datain) # manual conversion to char array
-print(v[:]) # data returned as char array
-v._Encoding = 'ascii' # this enables automatic conversion
-v[:] = datain # conversion to char array done internally
-print(v[:]) # data returned in numpy string array
+var[:] = stringtochar(datain) # manual conversion to char array
+print(var[:]) # data returned as char array
+var._Encoding = 'ascii' # this enables automatic conversion
+var[:] = datain # conversion to char array done internally
+print(var[:]) # data returned in numpy string array
 nc.close()
 # strings in compound types
 nc = Dataset('compoundstring_example.nc','w')

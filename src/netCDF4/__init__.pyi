@@ -34,6 +34,9 @@ _DatatypeStrOptions: TypeAlias = Literal[
 ]
 _DatatypeNCOptions: TypeAlias = Union[CompoundType, VLType, EnumType]
 DatatypeOptions: TypeAlias = Union[_DatatypeStrOptions, _DatatypeNCOptions, npt.DTypeLike]
+T_Datatype = TypeVar("T_Datatype", bound=DatatypeOptions)
+T_DatatypeNC = TypeVar("T_DatatypeNC", CompoundType, VLType, EnumType)
+
 DimensionsOptions: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
 CompressionOptions: TypeAlias = Literal[
     'zlib', 'szip', 'zstd', 'blosc_lz','blosc_lz4', 
@@ -48,6 +51,7 @@ FormatOptions: TypeAlias = Literal[
 DiskFormatOptions: TypeAlias = Literal['NETCDF3', 'HDF5', 'HDF4', 'PNETCDF', 'DAP2', 'DAP4', 'UNDEFINED']
 QuantizeOptions: TypeAlias = Literal['BitGroom', 'BitRound', 'GranularBitRound']
 EndianOptions: TypeAlias = Literal['native', 'little', 'big']
+
 
 __version__: str
 __netcdf4libversion__: str
@@ -105,7 +109,7 @@ class Dataset:
     @property
     def dimensions(self) -> dict[str, Dimension]: ...
     @property
-    def variables(self) -> dict[str, Variable]: ...
+    def variables(self) -> dict[str, Variable[Any]]: ...
     @property
     def cmptypes(self) -> dict[str, CompoundType]: ...
     @property
@@ -138,10 +142,11 @@ class Dataset:
 
     def createDimension(self, dimname: str, size: int | None = None) -> Dimension: ...
     def renameDimension( self, oldname: str, newname: str) -> None: ...
-    def createVariable(
+    @overload
+    def createVariable(  # type: ignore
         self,
         varname: str,
-        datatype: DatatypeOptions,
+        datatype: T_DatatypeNC,
         dimensions: DimensionsOptions = (),
         compression: CompressionOptions = None,
         zlib: bool = False,
@@ -159,7 +164,30 @@ class Dataset:
         quantize_mode: QuantizeOptions = 'BitGroom',
         fill_value: npt.ArrayLike | bool | None = None,
         chunk_cache: int | None = None
-    ) -> Variable: ...
+    ) -> Variable[T_DatatypeNC]: ...
+    @overload
+    def createVariable(
+        self,
+        varname: str,
+        datatype: _DatatypeStrOptions | npt.DTypeLike,
+        dimensions: DimensionsOptions = (),
+        compression: CompressionOptions = None,
+        zlib: bool = False,
+        complevel: CompressionLevelOptions = 4,
+        shuffle: bool = True,
+        szip_coding: Literal['nn', 'ec'] = 'nn',
+        szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
+        blosc_shuffle: Literal[0, 1, 2] = 1,
+        fletcher32: bool = False,
+        contiguous: bool = False,
+        chunksizes: int | None = None,
+        endian: EndianOptions = 'native',
+        least_significant_digit: int | None = None,
+        significant_digits: int | None = None,
+        quantize_mode: QuantizeOptions = 'BitGroom',
+        fill_value: npt.ArrayLike | bool | None = None,
+        chunk_cache: int | None = None
+    ) -> Variable[np.dtype]: ...
     def renameVariable(self, oldname: str, newname: str) -> None: ...
     def createGroup(self, groupname: str) -> Group: ...
     def renameGroup(self, oldname: str, newname: str) -> None: ...
@@ -234,9 +262,6 @@ class Dimension:
     def __str__(self) -> str: ...
     def __repr__(self) -> str: ...
 
-
-T_Datatype = TypeVar("T_Datatype", bound=DatatypeOptions)
-T_DatatypeNC = TypeVar("T_DatatypeNC", CompoundType, VLType, EnumType)
 
 class Variable(Generic[T_Datatype]):
 
