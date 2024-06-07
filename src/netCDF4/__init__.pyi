@@ -1,6 +1,19 @@
 
 import os
-from typing import TypeAlias, Literal, Any, NoReturn, Iterable, Mapping, Union, Sequence
+from typing import (
+    TypeAlias,
+    Literal,
+    Any,
+    NoReturn,
+    Iterable,
+    Mapping,
+    Union,
+    Sequence,
+    TypeVar,
+    Generic,
+    overload
+)
+
 from typing_extensions import Buffer
 
 from cftime import num2date, date2num, date2index
@@ -15,15 +28,12 @@ __all__ = [
 ]
 __pdoc__ = {'utils': False}
 
-DatatypeOptions: TypeAlias = Union[
-    Literal[
-        'S1', 'c', 'i1', 'b', 'B', 'u1', 'i2', 'h', 's', 'u2', 'i4',
-        'i', 'l', 'u4', 'i8', 'u8', 'f4', 'f', 'f8', 'd', 'c8', 'c16'
-    ],
-    npt.DTypeLike,
-    CompoundType,
-    VLType
+_DatatypeStrOptions: TypeAlias = Literal[
+    'S1', 'c', 'i1', 'b', 'B', 'u1', 'i2', 'h', 's', 'u2', 'i4',
+    'i', 'l', 'u4', 'i8', 'u8', 'f4', 'f', 'f8', 'd', 'c8', 'c16'
 ]
+_DatatypeNCOptions: TypeAlias = Union[CompoundType, VLType, EnumType]
+DatatypeOptions: TypeAlias = Union[_DatatypeStrOptions, _DatatypeNCOptions, npt.DTypeLike]
 DimensionsOptions: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
 CompressionOptions: TypeAlias = Literal[
     'zlib', 'szip', 'zstd', 'blosc_lz','blosc_lz4', 
@@ -225,12 +235,69 @@ class Dimension:
     def __repr__(self) -> str: ...
 
 
-class Variable:
+T_Datatype = TypeVar("T_Datatype", bound=DatatypeOptions)
+T_DatatypeNC = TypeVar("T_DatatypeNC", CompoundType, VLType, EnumType)
+
+class Variable(Generic[T_Datatype]):
+
+    @overload
+    def __new__(  # type: ignore
+        self,
+        grp: Group,
+        name: str,
+        datatype: T_DatatypeNC,
+        dimensions: DimensionsOptions = (),
+        compression: CompressionOptions = None,
+        zlib: bool = False,
+        complevel: CompressionLevelOptions = 4,
+        shuffle: bool = True,
+        szip_coding: Literal['nn', 'ec'] = 'nn',
+        szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
+        blosc_shuffle: Literal[0, 1, 2] = 1,
+        fletcher32: bool = False,
+        contiguous: bool = False,
+        chunksizes: Sequence[int] | None = None,
+        endian: EndianOptions = 'native',
+        least_significant_digit: int | None = None,
+        significant_digits: int | None = None,
+        quantize_mode: QuantizeOptions = 'BitGroom',
+        fill_value: npt.ArrayLike | bool | None = None,
+        chunk_cache: int | None = None,
+        **kwargs: Any
+    ) -> Variable[T_DatatypeNC]: ...
+
+    @overload
+    def __new__(
+        self,
+        grp: Group,
+        name: str,
+        datatype: _DatatypeStrOptions | npt.DTypeLike,
+        dimensions: DimensionsOptions = (),
+        compression: CompressionOptions = None,
+        zlib: bool = False,
+        complevel: CompressionLevelOptions = 4,
+        shuffle: bool = True,
+        szip_coding: Literal['nn', 'ec'] = 'nn',
+        szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
+        blosc_shuffle: Literal[0, 1, 2] = 1,
+        fletcher32: bool = False,
+        contiguous: bool = False,
+        chunksizes: Sequence[int] | None = None,
+        endian: EndianOptions = 'native',
+        least_significant_digit: int | None = None,
+        significant_digits: int | None = None,
+        quantize_mode: QuantizeOptions = 'BitGroom',
+        fill_value: npt.ArrayLike | bool | None = None,
+        chunk_cache: int | None = None,
+        **kwargs: Any
+    ) -> Variable[np.dtype]: ...
+
+
     def __init__(
         self,
         grp: Group,
         name: str,
-        datatype: DatatypeOptions,
+        datatype: T_Datatype,
         dimensions: DimensionsOptions = (),
         compression: CompressionOptions = None,
         zlib: bool = False,
@@ -256,7 +323,7 @@ class Variable:
     @property
     def dtype(self) -> np.dtype: ...
     @property
-    def datatype(self) -> np.dtype | CompoundType | VLType | EnumType: ...
+    def datatype(self) -> T_Datatype: ...
     @property
     def shape(self) -> tuple[int, ...]: ...
     @property
