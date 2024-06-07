@@ -83,3 +83,4 @@ jobs:
     - name: Stubtest
       run: |
         stubtest netCDF4 --allowlist .github/stubtest-allowlist --mypy-config-file=pyproject.toml
+        mypy test
