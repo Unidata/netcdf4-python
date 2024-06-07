@@ -121,7 +121,7 @@ class Dataset:
 
     def filepath(self, encoding: str | None = None) -> str: ...
     def isopen(self) -> bool: ...
-    def close(self) -> None: ...
+    def close(self) -> memoryview: ...  # only if writing and memory != None, but otherwise people ignore the return None anyway
     def sync(self) -> None: ...
     def set_fill_on(self) -> None: ...
     def set_fill_off(self) -> None: ...
@@ -241,7 +241,7 @@ class Variable:
         blosc_shuffle: Literal[0, 1, 2] = 1,
         fletcher32: bool = False,
         contiguous: bool = False,
-        chunksizes: int | None = None,
+        chunksizes: Sequence[int] | None = None,
         endian: EndianOptions = 'native',
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
@@ -352,7 +352,7 @@ class EnumType:
         dt: npt.DTypeLike,
         dtype_name: str,
         enum_dict: Mapping[str, int],
-        **kwargs
+        **kwargs: Any
     ) -> None: ...
 
     def __str__(self) -> str: ...
