@@ -84,5 +84,7 @@ files = ["src/netCDF4"]
 ignore_missing_imports = true
 module = [
   "cftime.*",
-  "cython.*"
+  "cython.*",
+  "filter_availability",
+  "matplotlib.*"
 ]
