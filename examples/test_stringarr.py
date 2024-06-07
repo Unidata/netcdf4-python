@@ -1,5 +1,6 @@
 from netCDF4 import Dataset, stringtochar, chartostring
 import random, numpy
+from typing import Final
 
 # test utilities for converting arrays of fixed-length strings
 # to arrays of characters (with an extra dimension), and vice-versa.
@@ -16,7 +17,7 @@ import random, numpy
 
 
 FILE_NAME = 'tst_stringarr.nc'
-FILE_FORMAT = 'NETCDF4_CLASSIC'
+FILE_FORMAT: Final = 'NETCDF4_CLASSIC'
 chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 nc = Dataset(FILE_NAME,'w',format=FILE_FORMAT)
@@ -26,7 +27,6 @@ nc.createDimension('n2',n2)
 nc.createDimension('nchar',nchar)
 v = nc.createVariable('strings','S1',('n1','n2','nchar'))
 for nrec in range(nrecs):
-    data = []
     data = numpy.empty((n2,),'S'+repr(nchar))
     # fill data with random nchar character strings
     for n in range(n2):
