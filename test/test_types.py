@@ -81,7 +81,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         v2 = f.variables['issue273']
         assert type(v2._FillValue) == bytes
         assert v2._FillValue == b'\x00'
-        assert(str(issue273_data) == str(v2[:]))
+        assert str(issue273_data) == str(v2[:]) 
         # issue 707 (don't apply missing_value if cast to variable type is
         # unsafe)
         v3 = f.variables['issue707']

@@ -71,8 +71,8 @@ class VariablesTestCase(unittest.TestCase):
         dataoutg = vv[:]
         assert (cmptype4 == dtype4a) # data type should be aligned
         assert (dataout.dtype == dtype4a) # data type should be aligned
-        assert(list(f.cmptypes.keys()) ==\
-               [TYPE_NAME1,TYPE_NAME2,TYPE_NAME3,TYPE_NAME4,TYPE_NAME5])
+        assert list(f.cmptypes.keys()) ==\
+               [TYPE_NAME1,TYPE_NAME2,TYPE_NAME3,TYPE_NAME4,TYPE_NAME5] 
         assert_array_equal(dataout['xxx']['xx']['i'],data['xxx']['xx']['i'])
         assert_array_equal(dataout['xxx']['xx']['j'],data['xxx']['xx']['j'])
         assert_array_almost_equal(dataout['xxx']['yy']['x'],data['xxx']['yy']['x'])
@@ -99,8 +99,8 @@ class VariablesTestCase(unittest.TestCase):
         dataoutg = vv[:]
         # make sure data type is aligned
         assert (f.cmptypes['cmp4'] == dtype4a)
-        assert(list(f.cmptypes.keys()) ==\
-               [TYPE_NAME1,TYPE_NAME2,TYPE_NAME3,TYPE_NAME4,TYPE_NAME5])
+        assert list(f.cmptypes.keys()) ==\
+               [TYPE_NAME1,TYPE_NAME2,TYPE_NAME3,TYPE_NAME4,TYPE_NAME5] 
         assert_array_equal(dataout['xxx']['xx']['i'],data['xxx']['xx']['i'])
         assert_array_equal(dataout['xxx']['xx']['j'],data['xxx']['xx']['j'])
         assert_array_almost_equal(dataout['xxx']['yy']['x'],data['xxx']['yy']['x'])
@@ -122,7 +122,7 @@ class VariablesTestCase(unittest.TestCase):
         station_data_t2 = f.createCompoundType(dtype_nest,'station_data')
         f.createDimension('station',None)
         statdat = f.createVariable('station_obs', station_data_t2, ('station',))
-        assert(statdat.dtype == station_data_t2.dtype)
+        assert statdat.dtype == station_data_t2.dtype 
         datain = np.empty(2,station_data_t2.dtype_view)
         datain['observation'][:] = (123,314)
         datain['station_name'][:] = ('Boulder','New York')
@@ -132,7 +132,7 @@ class VariablesTestCase(unittest.TestCase):
         f.close()
         f = Dataset(self.file)
         dataout = f['station_obs'][:]
-        assert(dataout.dtype == station_data_t2.dtype_view)
+        assert dataout.dtype == station_data_t2.dtype_view 
         assert_array_equal(datain, dataout)
         f.close()
 

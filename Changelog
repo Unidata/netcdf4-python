@@ -8,6 +8,8 @@
  * add static type hints (PR #1302)
  * fix for issue #1306 - surprising result when indexing vlen str with non-contiguous
    indices.
+ * Fix bug in set_collective introduced in PR #1277 (collective mode was
+   always set).
 
  version 1.6.5 (tag v1.6.5rel)
 ===============================

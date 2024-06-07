@@ -131,7 +131,7 @@ class DimensionsTestCase(unittest.TestCase):
         dim_tup1 = (f.dimensions['level'],g.dimensions['lat'],\
                     g.dimensions['lon'],f.dimensions['time'])
         dim_tup2 = vg.get_dims()
-        assert(dim_tup1 == dim_tup2)
+        assert dim_tup1 == dim_tup2 
         # check that isunlimited() method works.
         for name,dim in g.dimensions.items():
             self.assertTrue(dim.isunlimited() == unlimdict[name])

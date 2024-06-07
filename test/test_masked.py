@@ -142,11 +142,11 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         assert_array_almost_equal(datamasked[:].filled(),ranarr)
         assert_array_almost_equal(datamasked2[:].filled(),ranarr2)
         assert_array_almost_equal(datapacked[:],packeddata,decimal=4)
-        assert(datapacked3[:].dtype == np.float64)
+        assert datapacked3[:].dtype == np.float64 
         # added to test fix to issue 46 (result before r865 was 10)
         assert_array_equal(datapacked2[0],11)
         # added test for issue 515
-        assert(file['v'][0] is np.ma.masked)
+        assert file['v'][0] is np.ma.masked 
         file.close()
         # issue 766
         np.seterr(invalid='raise')

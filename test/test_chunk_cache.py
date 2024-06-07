@@ -17,7 +17,7 @@ class RefCountTestCase(unittest.TestCase):
         # this change lasts only as long as file is open.
         v = nc.createVariable('frank','f',('fred',),chunk_cache=15000)
         size, nelems, preempt = v.get_var_chunk_cache()
-        assert(size==15000)
+        assert size==15000 
         self.file=file_name
         nc.close()
 
@@ -31,10 +31,10 @@ class RefCountTestCase(unittest.TestCase):
         netCDF4.set_chunk_cache(cache_size, cache_nelems, cache_preempt)
         nc = netCDF4.Dataset(self.file, mode='r')
         # check to see that chunk cache parameters were changed.
-        assert(netCDF4.get_chunk_cache() == (cache_size, cache_nelems, cache_preempt))
+        assert netCDF4.get_chunk_cache() == (cache_size, cache_nelems, cache_preempt) 
         # change cache parameters for variable, check
         nc['frank'].set_var_chunk_cache(cache_size2, cache_nelems2, cache_preempt2)
-        assert(nc['frank'].get_var_chunk_cache() == (cache_size2, cache_nelems2, cache_preempt2))
+        assert nc['frank'].get_var_chunk_cache() == (cache_size2, cache_nelems2, cache_preempt2) 
         nc.close()
 
 if __name__ == '__main__':

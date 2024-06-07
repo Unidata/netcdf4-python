@@ -30,12 +30,12 @@ class DapTestCase(unittest.TestCase):
         var = ncfile.variables[varname]
         data = var[0,...]
         assert data.shape == varshape
-        assert(np.abs(data.min()-data_min) < 10)
-        assert(np.abs(data.max()-data_max) < 100)
+        assert np.abs(data.min()-data_min) < 10 
+        assert np.abs(data.max()-data_max) < 100 
         ncfile.close()
         # test https support (linked curl lib must built with openssl support)
         ncfile = netCDF4.Dataset(URL_https)
-        assert(ncfile['hs'].long_name=='Significant Wave Height')
+        assert ncfile['hs'].long_name=='Significant Wave Height' 
         ncfile.close()
 
 if __name__ == '__main__':
