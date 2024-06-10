@@ -151,10 +151,11 @@ jobs:
     name: "Show artifacts"
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
-        name: pypi-artifacts
+        pattern: pypi-artifacts*
         path: ${{ github.workspace }}/dist
+        merge-multiple: true
 
     - shell: bash
       run: |
