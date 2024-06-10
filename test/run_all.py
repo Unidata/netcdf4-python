@@ -16,7 +16,7 @@ for f in test_files:
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
 
 # Run the test suite.
-def test(verbosity=1):
+def test(verbosity=2):
     runner = unittest.TextTestRunner(verbosity=verbosity)
     runner.run(testsuite)
 
