@@ -56,8 +56,10 @@ jobs:
           #   arch: aarch64
           - os: macos-14
             arch: arm64
+            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=14.0
           - os: macos-13
             arch: x86_64
+            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=13.0
 
     steps:
     - uses: actions/checkout@v4
@@ -77,6 +79,7 @@ jobs:
           dnf install -y epel-release
           && dnf install -y hdf5-devel libcurl-devel
           && sh .ci/build_deps.sh
+        CIBW_ENVIRONMENT: ${{ matrix.CIBW_ENVIRONMENT }}
         CIBW_BEFORE_BUILD_MACOS: brew install hdf5 netcdf
         CIBW_TEST_REQUIRES: pytest cython packaging
         CIBW_TEST_COMMAND: >
