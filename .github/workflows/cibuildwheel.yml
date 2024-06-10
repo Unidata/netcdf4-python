@@ -38,9 +38,10 @@ jobs:
           pip install build
           &&  python -m build --sdist . --outdir dist
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          path: dist/*.tar.gz
+          name: pypi-artifacts
+          path: ${{ github.workspace }}/dist/*.tar.gz
 
 
   build_bdist:
@@ -86,9 +87,9 @@ jobs:
           python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')" &&
           cd {project}/test && python run_all.py
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
-        name: pypi-artifacts
+        name: pypi-artifacts-${{ matrix.os }}-${{ matrix.arch }}
         path: ${{ github.workspace }}/wheelhouse/*.whl
 
 
@@ -139,9 +140,9 @@ jobs:
             python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
             && pytest -s -rxs -v {project}\\test
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: pypi-artifacts
+          name: pypi-artifacts-${{ matrix.os }}-${{ matrix.arch }}
           path: ${{ github.workspace }}/wheelhouse/*.whl
 
 
