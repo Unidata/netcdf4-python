@@ -16,7 +16,7 @@ jobs:
 
   build_sdist:
     name: Build source distribution
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -47,17 +47,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu-latest", "macos-latest"]
-        arch: ["x86_64", "arm64"]
-        exclude:
-        - os: ubuntu-latest
-          arch: arm64
+        include:
+          - os: ubuntu-22.04
+            arch: x86_64
+          - os: ubuntu-22.04
+            arch: aarch64
+          - os: macos-14
+            arch: arm64
+          - os: macos-13
+            arch: x86_64
 
     steps:
     - uses: actions/checkout@v4
-
+      with:
+        fetch-depth: 0
+        
     - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
-      uses: pypa/cibuildwheel@v2.15.0
+      uses: pypa/cibuildwheel@v2.18.1
       env:
         # Skips pypy and musllinux for now.
         CIBW_SKIP: "pp* cp36-* cp37-* *-musllinux*"
@@ -135,7 +141,7 @@ jobs:
   show-artifacts:
     needs: [build_bdist, build_sdist, build_wheels_windows]
     name: "Show artifacts"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/download-artifact@v3
       with:
@@ -150,7 +156,7 @@ jobs:
   publish-artifacts-pypi:
     needs: [build_bdist, build_sdist, build_wheels_windows]
     name: "Publish to PyPI"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     # upload to PyPI for every tag starting with 'v'
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     steps:
