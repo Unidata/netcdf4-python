@@ -58,9 +58,9 @@ jobs:
           - os: macos-14
             arch: arm64
             CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=14.0
-          - os: macos-13
+          - os: macos-11
             arch: x86_64
-            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=13.0
+            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=11.0
 
     steps:
     - uses: actions/checkout@v4
