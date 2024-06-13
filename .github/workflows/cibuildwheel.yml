@@ -183,7 +183,7 @@ jobs:
     # upload to PyPI for every tag starting with 'v'
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: pypi-artifacts
         path: ${{ github.workspace }}/dist
