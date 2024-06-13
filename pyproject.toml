@@ -47,7 +47,6 @@ tests = [
   "pytest",
 ]
 
-
 [project.readme]
 text = """\
 netCDF version 4 has many features not found in earlier versions of the library,
