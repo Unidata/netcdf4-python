@@ -3,7 +3,7 @@ requires = [
     "Cython>=0.29",
     "oldest-supported-numpy ; python_version < '3.9'",
     "numpy>=2.0.0rc1 ; python_version >= '3.9'",
-    "setuptools>=61",
+    "setuptools>=61", "setuptools_scm[toml]>=3.4"
 ]
 build-backend = "setuptools.build_meta"
 
@@ -75,3 +75,5 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["test"]
+
+[tool.setuptools_scm]
