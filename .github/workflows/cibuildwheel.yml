@@ -47,14 +47,16 @@ jobs:
   build_bdist:
     name: "Build ${{ matrix.os }} (${{ matrix.arch }}) wheels"
     runs-on: ${{ matrix.os }}
+    # Prevent hanging when building from emulation like aarch64.
+    timeout-minutes: 300
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: ubuntu-22.04
             arch: x86_64
-          # - os: ubuntu-22.04
-          #   arch: aarch64
+          - os: ubuntu-22.04
+            arch: aarch64
           - os: macos-14
             arch: arm64
             CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=14.0
@@ -67,7 +69,14 @@ jobs:
       with:
         fetch-depth: 0
         submodules: 'true'
-    
+
+    # For aarch64 support
+    # https://cibuildwheel.pypa.io/en/stable/faq/#emulation
+    - uses: docker/setup-qemu-action@v3
+      with:
+        platforms: all
+      if: runner.os == 'Linux' && matrix.arch == 'aarch64'
+
     - name: Build oldest and newest Python
       shell: bash
       # On PRs we run only oldest and newest Python versions to reduce CI load.
@@ -84,22 +93,23 @@ jobs:
         echo "Setting CIBW_SKIP=$CIBW_SKIP"
 
     - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
-      uses: pypa/cibuildwheel@v2.18.1
+      uses: pypa/cibuildwheel@v2.19.1
       env:
         CIBW_SKIP: ${{ env.CIBW_SKIP }}
         CIBW_ARCHS: ${{ matrix.arch }}
         CIBW_BUILD_FRONTEND: build
-        CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
-        CIBW_BEFORE_BUILD_LINUX: >
-          dnf install -y epel-release
-          && dnf install -y hdf5-devel libcurl-devel
-          && sh .ci/build_deps.sh
+        CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/ocefpaf/manylinux2014_x86_64-netcdf
+        CIBW_MANYLINUX_AARCH64_IMAGE: ghcr.io/ocefpaf/manylinux2014_aarch64-netcdf
+        # Emulation testing is slow, testing only latest Python.
+        CIBW_TEST_SKIP: "cp38-*_aarch64 cp39-*_aarch64 cp310-*_aarch64 cp311-*_aarch64"
         CIBW_ENVIRONMENT: ${{ matrix.CIBW_ENVIRONMENT }}
         CIBW_BEFORE_BUILD_MACOS: brew install hdf5 netcdf
         CIBW_TEST_REQUIRES: pytest cython packaging
         CIBW_TEST_COMMAND: >
           python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
           && pytest -s -rxs -v {project}/test
+          && URL="https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc"
+          && python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 
     - uses: actions/upload-artifact@v4
       with:
