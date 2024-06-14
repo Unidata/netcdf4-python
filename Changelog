@@ -1,3 +1,8 @@
+ version 1.7.1 (tag v1.7.1rel)
+===============================
+ * include nc_complex source code (instead of using submodule).
+ * add aarch64 wheels.
+
  version 1.7.0 (tag v1.7.0rel)
 ===============================
  * add support for complex numbers via `auto_complex` keyword to `Dataset` (PR #1295)
