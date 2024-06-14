@@ -1,6 +1,6 @@
  version 1.7.1 (tag v1.7.1rel)
 ===============================
- * include nc_complex source code (instead of using submodule).
+ * include nc_complex source code from v0.2.0 tag (instead of using submodule).
  * add aarch64 wheels.
 
  version 1.7.0 (tag v1.7.0rel)
