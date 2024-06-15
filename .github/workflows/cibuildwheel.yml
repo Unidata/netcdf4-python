@@ -21,7 +21,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: 'true'
 
       - uses: actions/setup-python@v4
         name: Install Python
@@ -69,7 +68,6 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        submodules: 'true'
 
     # For aarch64 support
     # https://cibuildwheel.pypa.io/en/stable/faq/#emulation
@@ -130,7 +128,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: 'true'
 
       - uses: actions/setup-python@v4
         name: Install Python
