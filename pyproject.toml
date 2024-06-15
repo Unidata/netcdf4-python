@@ -4,8 +4,10 @@ requires = [
     "oldest-supported-numpy ; python_version < '3.9'",
     "numpy>=2.0.0rc1 ; python_version >= '3.9'",
     "setuptools>=61",
+    "wheel"
 ]
-build-backend = "setuptools.build_meta"
+build-backend = "backend"
+backend-path = ["_build"]
 
 [project]
 name = "netCDF4"
