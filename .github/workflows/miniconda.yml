@@ -14,16 +14,10 @@ jobs:
       matrix:
         python-version: [ "3.9", "3.10", "3.11", "3.12" ]
         os: [windows-latest, ubuntu-latest, macos-latest]
-        experimental: [false]
         platform: [x64, x32]
         exclude:
           - os: macos-latest  
             platform: x32
-        include:
-          - python-version: "3.12"
-            os: "ubuntu-latest"
-            experimental: true
-            platform: x64
       fail-fast: false
     defaults:
       run:
@@ -43,14 +37,6 @@ jobs:
           python=${{ matrix.python-version }}
           numpy cython pip pytest hdf5 libnetcdf cftime zlib certifi
           --channel conda-forge
-
-    - name: Install unstable dependencies
-      if: matrix.experimental == true
-      run: >-
-        micromamba install
-        conda-forge/label/cftime_dev::cftime
-        conda-forge/label/numpy_dev::numpy
-        --channel conda-forge --channel conda-forge
 
     - name: Install netcdf4-python
       run: |
