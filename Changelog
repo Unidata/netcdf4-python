@@ -1,3 +1,7 @@
+ version 1.7.2 (tag v1.7.2rel)
+===============================
+ * add static type hints (PR #1302)
+
  version 1.7.1 (tag v1.7.1rel)
 ===============================
  * include nc_complex source code from v0.2.0 tag (instead of using submodule).
@@ -10,7 +14,6 @@
    with shims for unavailable functionality (PR #1277)
  * use `szip` as the library name on Windows (PR #1304)
  * add support for MS-MPI `MPI_Message` detection (PR #1305)
- * add static type hints (PR #1302)
  * fix for issue #1306 - surprising result when indexing vlen str with non-contiguous
    indices.
  * Fix bug in set_collective introduced in PR #1277 (collective mode was
