@@ -1,0 +1,204 @@
+name: Wheels
+
+on:
+  pull_request:
+  push:
+    tags:
+      - "v*"
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+
+jobs:
+
+  build_sdist:
+    name: Build source distribution
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        name: Install Python
+        with:
+          python-version: 3.x
+
+      - name: Install APT packages
+        if: contains(${{ matrix.os }}, 'ubuntu')
+        run: |
+          sudo apt update
+          sudo apt install libhdf5-dev libnetcdf-dev
+
+      - name: Build sdist
+        run: >
+          pip install build
+          &&  python -m build --sdist . --outdir dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pypi-artifacts
+          path: ${{ github.workspace }}/dist/*.tar.gz
+
+
+  build_bdist:
+    name: "Build ${{ matrix.os }} (${{ matrix.arch }}) wheels"
+    runs-on: ${{ matrix.os }}
+    # Prevent hanging when building from emulation like aarch64.
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            arch: x86_64
+          - os: ubuntu-22.04
+            arch: aarch64
+          - os: macos-14
+            arch: arm64
+            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=14.0
+          - os: macos-11
+            arch: x86_64
+            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=11.0
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # For aarch64 support
+    # https://cibuildwheel.pypa.io/en/stable/faq/#emulation
+    - uses: docker/setup-qemu-action@v3
+      with:
+        platforms: all
+      if: runner.os == 'Linux' && matrix.arch == 'aarch64'
+
+    - name: Build oldest and newest Python
+      shell: bash
+      # On PRs we run only oldest and newest Python versions to reduce CI load.
+      # Skips pypy and musllinux everywhere.
+      # We are buiding 38 and 312 for now.
+      # These needs to rotate every new Python release.
+      run: |
+        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+          CIBW_SKIP="pp* cp36-* cp37-* *-musllinux* cp39-* cp310-* cp311-*"
+        else
+          CIBW_SKIP="pp* cp36-* cp37-* *-musllinux*"
+        fi
+        echo "CIBW_SKIP=$CIBW_SKIP" >> $GITHUB_ENV
+        echo "Setting CIBW_SKIP=$CIBW_SKIP"
+
+    - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
+      uses: pypa/cibuildwheel@v2.19.1
+      env:
+        CIBW_SKIP: ${{ env.CIBW_SKIP }}
+        CIBW_ARCHS: ${{ matrix.arch }}
+        CIBW_BUILD_FRONTEND: build
+        CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/ocefpaf/manylinux2014_x86_64-netcdf
+        CIBW_MANYLINUX_AARCH64_IMAGE: ghcr.io/ocefpaf/manylinux2014_aarch64-netcdf
+        # Emulation testing is slow, testing only latest Python.
+        CIBW_TEST_SKIP: "cp38-*_aarch64 cp39-*_aarch64 cp310-*_aarch64 cp311-*_aarch64"
+        CIBW_ENVIRONMENT: ${{ matrix.CIBW_ENVIRONMENT }}
+        CIBW_BEFORE_BUILD_MACOS: brew install hdf5 netcdf
+        CIBW_TEST_REQUIRES: pytest cython packaging
+        CIBW_TEST_COMMAND: >
+          python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
+          && pytest -s -rxs -v {project}/test
+          && URL="https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc"
+          && python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: pypi-artifacts-${{ matrix.os }}-${{ matrix.arch }}
+        path: ${{ github.workspace }}/wheelhouse/*.whl
+
+
+  build_wheels_windows:
+    name: Build wheels for ${{matrix.arch}} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+        arch: [win_amd64]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        name: Install Python
+        with:
+          python-version: 3.x
+
+      - name: Setup Micromamba Python ${{ matrix.python-version }}
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: build
+          init-shell: bash
+          create-args: >-
+            python=${{ matrix.python-version }} libnetcdf=4.9.2 --channel conda-forge
+
+      - name: Install cibuildwheel
+        run: |
+          python -m pip install --upgrade cibuildwheel delvewheel
+
+      - name: Build wheels for Windows (${{ matrix.arch }})
+        run: cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_BUILD: "cp39-${{ matrix.arch }} cp310-${{ matrix.arch }} cp311-${{ matrix.arch }} cp312-${{ matrix.arch }}"
+          CIBW_ENVIRONMENT_WINDOWS: >
+            HDF5_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
+            netCDF4_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
+            PATH="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}"
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
+            delvewheel show {wheel}
+            && delvewheel repair -w {dest_dir} {wheel}
+          CIBW_TEST_REQUIRES: pytest cython packaging
+          CIBW_TEST_COMMAND: >
+            python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
+            && pytest -s -rxs -v {project}\\test
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pypi-artifacts-${{ matrix.os }}-${{ matrix.arch }}
+          path: ${{ github.workspace }}/wheelhouse/*.whl
+
+
+  show-artifacts:
+    needs: [build_bdist, build_sdist, build_wheels_windows]
+    name: "Show artifacts"
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: pypi-artifacts*
+        path: ${{ github.workspace }}/dist
+        merge-multiple: true
+
+    - shell: bash
+      run: |
+        ls -lh ${{ github.workspace }}/dist
+
+
+  publish-artifacts-pypi:
+    needs: [build_bdist, build_sdist, build_wheels_windows]
+    name: "Publish to PyPI"
+    runs-on: ubuntu-22.04
+    # upload to PyPI for every tag starting with 'v'
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: pypi-artifacts*
+        path: ${{ github.workspace }}/dist
+        merge-multiple: true
+
+    - uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_PASSWORD }}
+        print_hash: true

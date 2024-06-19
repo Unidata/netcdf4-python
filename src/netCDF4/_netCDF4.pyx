@@ -1,4 +1,4 @@
-"""Version 1.7.0
+"""Version 1.7.1
 -------------
 
 # Introduction
@@ -1272,7 +1272,7 @@ import sys
 import functools
 from typing import Union
 
-__version__ = "1.7.0"
+__version__ = "1.7.1"
 
 # Initialize numpy
 import posixpath

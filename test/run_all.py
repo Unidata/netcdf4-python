@@ -15,10 +15,6 @@ for f in test_files:
     m = __import__(os.path.splitext(f)[0])
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
 
-# Run the test suite.
-def test(verbosity=1):
-    runner = unittest.TextTestRunner(verbosity=verbosity)
-    runner.run(testsuite)
 
 if __name__ == '__main__':
     import numpy, cython
