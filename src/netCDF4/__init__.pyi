@@ -1,24 +1,12 @@
 
 import os
-from typing import (
-    TypeAlias,
-    Literal,
-    Any,
-    NoReturn,
-    Iterable,
-    Mapping,
-    Union,
-    Sequence,
-    TypeVar,
-    Generic,
-    overload
-)
+from typing import (Any, Generic, Iterable, Literal, Mapping, NoReturn, Self,
+                    Sequence, TypeAlias, TypeVar, Union, overload)
 
-from typing_extensions import Buffer
-
-from cftime import num2date, date2num, date2index
 import numpy as np
 import numpy.typing as npt
+from cftime import date2index, date2num, num2date
+from typing_extensions import Buffer
 
 __all__ = [
     'Dataset', 'Variable', 'Dimension', 'Group', 'MFDataset', 'MFTime', 'CompoundType',
