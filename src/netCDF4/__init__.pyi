@@ -217,12 +217,21 @@ class Dataset:
         mode: AccessModeOptions = 'a',
         format: FormatOptions = 'NETCDF4'
     ) -> Dataset: ...
+    @overload
     def tocdl(
         self,
         coordvars: bool = False,
         data: bool = False,
-        outfile: str | None = None
-    ) -> None | bool: ...
+        outfile: None = None
+    ) -> str: ...
+    @overload
+    def tocdl(
+        self,
+        coordvars: bool = False,
+        data: bool = False,
+        *,
+        outfile: str
+    ) -> None: ...
 
     def has_blosc_filter(self) -> bool: ...
     def has_zstd_filter(self) -> bool: ...
