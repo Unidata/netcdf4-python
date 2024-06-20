@@ -1,7 +1,7 @@
 
 import os
-from typing import (Any, Callable, Generic, Iterable, Literal, Mapping, NoReturn,
-                     Self, Sequence, TypeAlias, TypeVar, Union, overload)
+from typing import (Any, Callable, Final, Generic, Iterable, Literal, Mapping,
+                    NoReturn, Self, Sequence, TypeAlias, TypeVar, Union, overload)
 
 import numpy as np
 import numpy.typing as npt
@@ -65,8 +65,8 @@ __has_set_alignment__: bool
 __has_ncfilter__: bool
 is_native_little: bool
 is_native_big: bool
-default_encoding: str
-unicode_error: str
+default_encoding: Final = 'utf-8'
+unicode_error: Final = 'replace'
 default_fillvals: dict[str, Any]
 
 
@@ -465,9 +465,9 @@ class MFDataset(Dataset):
     @property
     def groups(self) -> dict[str, Group]: ...
     @property
-    def dimensions(self) -> dict[str, Dimension]: ...
+    def dimensions(self) -> dict[str, Dimension]: ...  # this should be: dict[str, Dimension | _Dimension]
     @property
-    def variables(self) -> dict[str, Variable[Any]]: ...
+    def variables(self) -> dict[str, Variable[Any]]: ...  # this should be: dict[str, _Variable[Any] | _Variable]
     @property
     def data_model(self) -> FormatOptions: ...
     @property
@@ -479,11 +479,11 @@ class MFDataset(Dataset):
 
 
 class _Dimension:
-    dimlens: list[str]
+    dimlens: list[int]
     dimtolen: int
 
     def __init__(
-        self, dimname: str, dim: Dimension, dimlens: list[str], dimtotlen: int
+        self, dimname: str, dim: Dimension, dimlens: list[int], dimtotlen: int
     ) -> None: ...
 
     def __len__(self) -> int: ...
@@ -525,9 +525,11 @@ class MFTime(_Variable):
     def __getitem__(self, elem: Any) -> np.ndarray: ...
 
 
-def stringtoarr(string, NUMCHARS: int, dtype: str = 'S') -> np.ndarray: ...
+def stringtoarr(string, NUMCHARS: int, dtype: Literal['S', 'U'] = 'S') -> np.ndarray: ...
 def stringtochar(a, encoding: str | bytes | None = 'utf-8') -> np.ndarray: ...
 def chartostring(b, encoding: str | bytes | None = 'utf-8') -> np.ndarray: ...
+
+def dtype_is_complex(dtype: str) -> bool: ...
 
 def getlibversion() -> str: ...
 

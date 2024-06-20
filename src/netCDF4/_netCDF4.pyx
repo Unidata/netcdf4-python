@@ -2113,7 +2113,7 @@ def _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None, extra_msg=None
     raise err_cls(err_str)
 
 
-def dtype_is_complex(dtype: Union[str, numpy.dtype]) -> bool:
+def dtype_is_complex(dtype):
     """Return True if dtype is a complex number"""
     return dtype in ("c8", "c16")
 
