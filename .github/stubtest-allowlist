@@ -7,6 +7,7 @@ netCDF4.DiskFormatOptions
 netCDF4.EndianOptions
 netCDF4.FormatOptions
 netCDF4.QuantizeOptions
+netCDF4.CalendarOptions
 netCDF4.T_Datatype
 netCDF4.T_DatatypeNC
 netCDF4.Dataset.__dealloc

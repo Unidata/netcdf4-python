@@ -7043,7 +7043,7 @@ class _Variable:
     def typecode(self):
         return self.dtype
     def ncattrs(self):
-        return self._mastervar.__dict__.keys()
+        return list(self._mastervar.__dict__.keys())
     def __getattr__(self,name):
         if name == 'shape': return self._shape()
         if name == 'ndim': return len(self._shape())
