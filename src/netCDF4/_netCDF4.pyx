@@ -95,8 +95,8 @@ To create a netCDF file from python, you simply call the `Dataset`
 constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (`mode='w', 'r+'` or `'a'`), you may
 write any type of data including new dimensions, groups, variables and
-attributes.  netCDF files come in five flavors (`NETCDF3_CLASSIC,
-NETCDF3_64BIT_OFFSET, NETCDF3_64BIT_DATA, NETCDF4_CLASSIC`, and `NETCDF4`).
+attributes.  netCDF files come in five flavors (`NETCDF3_CLASSIC`,
+`NETCDF3_64BIT_OFFSET`, `NETCDF3_64BIT_DATA`, `NETCDF4_CLASSIC`, and `NETCDF4`).
 `NETCDF3_CLASSIC` was the original netcdf binary format, and was limited
 to file sizes less than 2 Gb. `NETCDF3_64BIT_OFFSET` was introduced
 in version 3.6.0 of the library, and extended the original binary format
