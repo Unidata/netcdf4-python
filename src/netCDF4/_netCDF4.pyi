@@ -14,3 +14,6 @@ from . import (
     __has_bzip2_support__, __has_blosc_support__, __has_szip_support__,
     __has_set_alignment__, __has_ncfilter__
 )
+
+
+def dtype_is_complex(dtype: str) -> bool: ...

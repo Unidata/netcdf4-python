@@ -23,5 +23,4 @@ netCDF4._netCDF4.Variable.auto_complex
 netCDF4._netCDF4.__reduce_cython__
 netCDF4._netCDF4.__setstate_cython__
 netCDF4._netCDF4.__test__
-netCDF4._netCDF4.dtype_is_complex
 netCDF4.utils.bytes
