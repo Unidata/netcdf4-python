@@ -10,7 +10,7 @@ from ._netCDF4 import (__version__, __netcdf4libversion__, __hdf5libversion__,
                        __has_parallel4_support__, __has_pnetcdf_support__,
                        __has_quantization_support__, __has_zstandard_support__,
                        __has_bzip2_support__, __has_blosc_support__, __has_szip_support__,
-                       __has_set_alignment__)
+                       __has_set_alignment__, __has_parallel_support__, __has_ncfilter__)
 import os
 __all__ = [
     'Dataset', 'Variable', 'Dimension', 'Group', 'MFDataset', 'MFTime', 'CompoundType',

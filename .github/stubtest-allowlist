@@ -14,8 +14,6 @@ netCDF4.Dataset.__dealloc
 netCDF4.Dimension.__reduce_cython__
 netCDF4.Dimension.__setstate_cython__
 netCDF4.Variable.auto_complex
-netCDF4.__has_ncfilter__
-netCDF4.__has_parallel_support__
 netCDF4._netCDF4.Dataset.__dealloc
 netCDF4._netCDF4.Dimension.__reduce_cython__
 netCDF4._netCDF4.Dimension.__setstate_cython__
