@@ -1272,7 +1272,7 @@ import sys
 import functools
 from typing import Union
 
-__version__ = "1.7.1"
+__version__ = "1.7.1.post1"
 
 # Initialize numpy
 import posixpath
