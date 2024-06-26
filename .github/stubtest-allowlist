@@ -8,6 +8,11 @@ netCDF4.EndianOptions
 netCDF4.FormatOptions
 netCDF4.QuantizeOptions
 netCDF4.CalendarOptions
+netCDF4.ellipsis
+netCDF4.DateTimeArray
+netCDF4.FiltersDict
+netCDF4.SzipInfo
+netCDF4.BloscInfo
 netCDF4.T_Datatype
 netCDF4.T_DatatypeNC
 netCDF4.Dataset.__dealloc

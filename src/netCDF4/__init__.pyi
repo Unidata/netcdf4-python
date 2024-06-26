@@ -1,12 +1,14 @@
 
 import os
+import sys
+import datetime as dt
 from typing import (Any, Callable, Final, Generic, Iterable, Literal, Mapping,
-                    NoReturn, Self, Sequence, TypeAlias, TypeVar, Union, overload)
+                    NoReturn, Self, Sequence, TypeAlias, TypedDict, TypeVar, Union, overload)
+from typing_extensions import Buffer
 
+import cftime
 import numpy as np
 import numpy.typing as npt
-from cftime import date2index, date2num, num2date
-from typing_extensions import Buffer
 
 __all__ = [
     'Dataset', 'Variable', 'Dimension', 'Group', 'MFDataset', 'MFTime', 'CompoundType',
@@ -15,6 +17,15 @@ __all__ = [
     'set_alignment', 'get_alignment'
 ]
 __pdoc__ = {'utils': False}
+
+
+if sys.version_info >= (3, 10):
+    from types import EllipsisType
+
+    ellipsis = EllipsisType
+elif not TYPE_CHECKING:
+    ellipsis = type(Ellipsis)  # keeps ruff happy until ruff uses typeshed
+
 
 _DatatypeStrOptions: TypeAlias = Literal[
     'S1', 'c', 'i1', 'b', 'B', 'u1', 'i2', 'h', 's', 'u2', 'i4',
@@ -28,9 +39,9 @@ T_DatatypeNC = TypeVar("T_DatatypeNC", CompoundType, VLType, EnumType)
 DimensionsOptions: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
 CompressionOptions: TypeAlias = Literal[
     'zlib', 'szip', 'zstd', 'blosc_lz','blosc_lz4', 
-    'blosc_lz4hc', 'blosc_zlib', 'blosc_zstd', None
+    'blosc_lz4hc', 'blosc_zlib', 'blosc_zstd'
 ]
-CompressionLevelOptions: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, None]
+CompressionLevelOptions: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 AccessModeOptions: TypeAlias = Literal['r', 'w', 'r+', 'a', 'x', 'rs', 'ws', 'r+s', 'as']
 FormatOptions: TypeAlias = Literal[
     'NETCDF4', 'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC',
@@ -41,33 +52,85 @@ QuantizeOptions: TypeAlias = Literal['BitGroom', 'BitRound', 'GranularBitRound']
 EndianOptions: TypeAlias = Literal['native', 'little', 'big']
 CalendarOptions: TypeAlias = Literal[
     'standard', 'gregorian', 'proleptic_gregorian' 'noleap',
-    '365_day', '360_day', 'julian', 'all_leap', '366_day', None
+    '365_day', '360_day', 'julian', 'all_leap', '366_day'
 ]
+BoolInt: TypeAlias = Literal[0, 1]
+
+DateTimeArray: TypeAlias = npt.NDArray[np.object_]
+"""numpy array of datetime.datetime or cftime.datetime"""
 
 __version__: str
 __netcdf4libversion__: str
 __hdf5libversion__: str
-__has_rename_grp__: bool
-__has_nc_inq_path__: bool
-__has_nc_inq_format_extended__: bool
-__has_nc_open_mem__: bool
-__has_nc_create_mem__: bool
-__has_cdf5_format__: bool
-__has_parallel4_support__: bool
-__has_pnetcdf_support__: bool
-__has_parallel_support__: bool
-__has_quantization_support__: bool
-__has_zstandard_support__: bool
-__has_bzip2_support__: bool
-__has_blosc_support__: bool
-__has_szip_support__: bool
-__has_set_alignment__: bool
-__has_ncfilter__: bool
+__has_rename_grp__: BoolInt
+__has_nc_inq_path__: BoolInt
+__has_nc_inq_format_extended__: BoolInt
+__has_nc_open_mem__: BoolInt
+__has_nc_create_mem__: BoolInt
+__has_cdf5_format__: BoolInt
+__has_parallel4_support__: BoolInt
+__has_pnetcdf_support__: BoolInt
+__has_parallel_support__: BoolInt
+__has_quantization_support__: BoolInt
+__has_zstandard_support__: BoolInt
+__has_bzip2_support__: BoolInt
+__has_blosc_support__: BoolInt
+__has_szip_support__: BoolInt
+__has_set_alignment__: BoolInt
+__has_ncfilter__: BoolInt
 is_native_little: bool
 is_native_big: bool
 default_encoding: Final = 'utf-8'
 unicode_error: Final = 'replace'
 default_fillvals: dict[str, Any]
+
+
+# date2index, date2num, and num2date are actually provided by cftime and if stubs for
+# cftime are completed these should be removed.
+def date2index(
+    dates: dt.datetime | cftime.datetime | Sequence[dt.datetime | cftime.datetime] | DateTimeArray,
+    nctime: Variable,
+    calendar: CalendarOptions | None = None,
+    select: Literal["exact", "before", "after", "nearest"] = "exact",
+    has_year_zero: bool | None = None,
+) -> int | npt.NDArray[np.int_]: ...
+def date2num(
+    dates: dt.datetime | cftime.datetime | Sequence[dt.datetime | cftime.datetime] | DateTimeArray,
+    units: str,
+    calendar: CalendarOptions | None = None,
+    has_year_zero: bool | None = None,
+    longdouble: bool = False,
+) -> np.number | npt.NDArray[np.number]: ...
+def num2date(
+    times: Sequence[int | float | np.number] | npt.NDArray[np.number],
+    units: str,
+    calendar: CalendarOptions = "standard",
+    only_use_cftime_datetimes: bool = True,
+    only_use_python_datetimes: bool = False,
+    has_year_zero: bool | None = None,
+) -> dt.datetime | DateTimeArray: ...
+
+
+class BloscInfo(TypedDict):
+    compressor: Literal["blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"]
+    shuffle: Literal[0, 1, 2]
+
+
+class SzipInfo(TypedDict):
+    coding: Literal["nn", "ec"]
+    pixels_per_block: Literal[4, 8, 16, 32]
+
+
+class FiltersDict(TypedDict):
+    """Dict returned from netCDF4.Variable.filters()"""
+    zlib: bool
+    szip: Literal[False] | SzipInfo
+    zstd: bool
+    bzip2: bool
+    blosc: Literal[False] | BloscInfo
+    shuffle: bool
+    complevel: int
+    fletcher32: bool
 
 
 class NetCDF4MissingFeatureException(Exception):
@@ -139,9 +202,9 @@ class Dataset:
         varname: str,
         datatype: T_DatatypeNC,
         dimensions: DimensionsOptions = (),
-        compression: CompressionOptions = None,
+        compression: CompressionOptions | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions = 4,
+        complevel: CompressionLevelOptions | None = 4,
         shuffle: bool = True,
         szip_coding: Literal['nn', 'ec'] = 'nn',
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -162,9 +225,9 @@ class Dataset:
         varname: str,
         datatype: _DatatypeStrOptions | npt.DTypeLike,
         dimensions: DimensionsOptions = (),
-        compression: CompressionOptions = None,
+        compression: CompressionOptions | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions = 4,
+        complevel: CompressionLevelOptions | None = 4,
         shuffle: bool = True,
         szip_coding: Literal['nn', 'ec'] = 'nn',
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -180,7 +243,10 @@ class Dataset:
         chunk_cache: int | None = None
     ) -> Variable[np.dtype]: ...
     def renameVariable(self, oldname: str, newname: str) -> None: ...
-    def createGroup(self, groupname: str) -> Group: ...
+    def createGroup(self, groupname: str) -> Group:
+        """Test x-> y"""
+        ...
+
     def renameGroup(self, oldname: str, newname: str) -> None: ...
     def renameAttribute(self, oldname: str, newname: str) -> None: ...
     def createCompoundType( self, datatype: npt.DTypeLike, datatype_name: str) -> CompoundType: ...
@@ -272,9 +338,9 @@ class Variable(Generic[T_Datatype]):
         name: str,
         datatype: T_DatatypeNC,
         dimensions: DimensionsOptions = (),
-        compression: CompressionOptions = None,
+        compression: CompressionOptions | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions = 4,
+        complevel: CompressionLevelOptions | None = 4,
         shuffle: bool = True,
         szip_coding: Literal['nn', 'ec'] = 'nn',
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -298,9 +364,9 @@ class Variable(Generic[T_Datatype]):
         name: str,
         datatype: _DatatypeStrOptions | npt.DTypeLike,
         dimensions: DimensionsOptions = (),
-        compression: CompressionOptions = None,
+        compression: CompressionOptions | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions = 4,
+        complevel: CompressionLevelOptions | None = 4,
         shuffle: bool = True,
         szip_coding: Literal['nn', 'ec'] = 'nn',
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -324,9 +390,9 @@ class Variable(Generic[T_Datatype]):
         name: str,
         datatype: T_Datatype,
         dimensions: DimensionsOptions = (),
-        compression: CompressionOptions = None,
+        compression: CompressionOptions | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions = 4,
+        complevel: CompressionLevelOptions | None = 4,
         shuffle: bool = True,
         szip_coding: Literal['nn', 'ec'] = 'nn',
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -513,14 +579,14 @@ class _Variable:
 
 
 class MFTime(_Variable):
-    calendar: CalendarOptions
+    calendar: CalendarOptions | None
     units: str | None
 
     def __init__(
         self,
         time: Variable,
         units: str | None = None,
-        calendar: CalendarOptions = None
+        calendar: CalendarOptions | None = None
     ): ...
     def __getitem__(self, elem: Any) -> np.ndarray: ...
 
