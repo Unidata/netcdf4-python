@@ -218,7 +218,7 @@ class Dataset:
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeOptions = 'BitGroom',
-        fill_value: npt.ArrayLike | bool | None = None,
+        fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None
     ) -> Variable[T_DatatypeNC]: ...
     @overload
@@ -241,7 +241,7 @@ class Dataset:
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeOptions = 'BitGroom',
-        fill_value: npt.ArrayLike | bool | None = None,
+        fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None
     ) -> Variable[np.dtype]: ...
     def renameVariable(self, oldname: str, newname: str) -> None: ...
@@ -352,7 +352,7 @@ class Variable(Generic[T_Datatype]):
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeOptions = 'BitGroom',
-        fill_value: npt.ArrayLike | bool | None = None,
+        fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any
     ) -> Variable[T_DatatypeNC]: ...
@@ -378,7 +378,7 @@ class Variable(Generic[T_Datatype]):
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeOptions = 'BitGroom',
-        fill_value: npt.ArrayLike | bool | None = None,
+        fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any
     ) -> Variable[np.dtype]: ...
@@ -404,7 +404,7 @@ class Variable(Generic[T_Datatype]):
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeOptions = 'BitGroom',
-        fill_value: npt.ArrayLike | bool | None = None,
+        fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any
     ) -> None: ...
