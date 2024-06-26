@@ -6100,13 +6100,13 @@ the user.
 
         CompoundType constructor.
 
-        **`group`**: `Group` instance to associate with the compound datatype.
+        **`grp`**: `Group` instance to associate with the compound datatype.
 
-        **`datatype`**: A numpy dtype object describing a structured (a.k.a record)
+        **`dt`**: A numpy dtype object describing a structured (a.k.a record)
         array.  Can be composed of homogeneous numeric or character data types, or
         other structured array data types.
 
-        **`datatype_name`**: a Python string containing a description of the
+        **`dtype_name`**: a Python string containing a description of the
         compound data type.
 
         ***Note 1***: When creating nested compound data types,
