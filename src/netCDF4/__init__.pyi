@@ -532,19 +532,9 @@ class MFDataset(Dataset):
     ) -> None: ...
 
     @property
-    def groups(self) -> dict[str, Group]: ...
-    @property
     def dimensions(self) -> dict[str, Dimension]: ...  # this should be: dict[str, Dimension | _Dimension]
     @property
     def variables(self) -> dict[str, Variable[Any]]: ...  # this should be: dict[str, _Variable[Any] | _Variable]
-    @property
-    def data_model(self) -> FormatOptions: ...
-    @property
-    def file_format(self) -> FormatOptions: ...
-    @property
-    def disk_format(self) -> DiskFormatOptions: ...
-    @property
-    def path(self) -> str: ...
 
 
 class _Dimension:
