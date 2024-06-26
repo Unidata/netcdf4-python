@@ -310,20 +310,20 @@ class Dataset:
 
 
 class Group(Dataset):
-    def __init__(self, parent: Group | Dataset, name: str, **kwargs: Any) -> None: ...
+    def __init__(self, parent: Dataset, name: str, **kwargs: Any) -> None: ...
 
     def close(self) -> NoReturn: ...
 
 
 class Dimension:
-    def __init__(self, grp: Group, name: str, size: int | None = None, **kwargs: Any) -> None: ...
+    def __init__(self, grp: Dataset, name: str, size: int | None = None, **kwargs: Any) -> None: ...
 
     @property
     def name(self) -> str: ...
     @property
     def size(self) -> int: ...
 
-    def group(self) -> Group: ...
+    def group(self) -> Dataset: ...
     def isunlimited(self) -> bool: ...
 
     def __len__(self) -> int: ...
@@ -334,7 +334,7 @@ class Variable(Generic[T_Datatype]):
     @overload
     def __new__(  # type: ignore
         self,
-        grp: Group,
+        grp: Dataset,
         name: str,
         datatype: T_DatatypeNC,
         dimensions: DimensionsOptions = (),
@@ -360,7 +360,7 @@ class Variable(Generic[T_Datatype]):
     @overload
     def __new__(
         self,
-        grp: Group,
+        grp: Dataset,
         name: str,
         datatype: _DatatypeStrOptions | npt.DTypeLike,
         dimensions: DimensionsOptions = (),
@@ -386,7 +386,7 @@ class Variable(Generic[T_Datatype]):
 
     def __init__(
         self,
-        grp: Group,
+        grp: Dataset,
         name: str,
         datatype: T_Datatype,
         dimensions: DimensionsOptions = (),
@@ -434,7 +434,7 @@ class Variable(Generic[T_Datatype]):
     @property
     def __orthogonal_indexing__(self) -> bool: ...
 
-    def group(self) -> Group: ...
+    def group(self) -> Dataset: ...
     def ncattrs(self) -> list[str]: ...
     def setncattr(self, name: str, value: Any) -> None: ...
     def setncattr_string(self, name: str, value: Any) -> None: ...
@@ -480,7 +480,7 @@ class CompoundType:
     name: str
 
     def __init__(
-        self, grp: Group, dt: npt.DTypeLike | Sequence[tuple[str, npt.DTypeLike]], dtype_name: str, **kwargs: Any
+        self, grp: Dataset, dt: npt.DTypeLike | Sequence[tuple[str, npt.DTypeLike]], dtype_name: str, **kwargs: Any
     ) -> None: ...
 
     def __reduce__(self) -> NoReturn: ...
@@ -490,7 +490,7 @@ class VLType:
     dtype: np.dtype
     name: str | None
 
-    def __init__(self, grp: Group, dt: npt.DTypeLike, dtype_name: str, **kwargs: Any) -> None: ...
+    def __init__(self, grp: Dataset, dt: npt.DTypeLike, dtype_name: str, **kwargs: Any) -> None: ...
 
     def __reduce__(self) -> NoReturn: ...
 
@@ -502,7 +502,7 @@ class EnumType:
 
     def __init__(
         self,
-        grp: Group,
+        grp: Dataset,
         dt: np.dtype[np.integer] | type[np.integer] | type[int],
         dtype_name: str,
         enum_dict: Mapping[str, int],
