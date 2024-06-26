@@ -505,14 +505,14 @@ class VLType:
 
 
 class EnumType:
-    dtype: np.dtype[np.integer] | type[np.integer] | type[int]
+    dtype: np.dtype[np.integer]
     name: str
     enum_dict: Mapping[str, int]
 
     def __init__(
         self,
         grp: Dataset,
-        dt: np.dtype[np.integer] | type[np.integer] | type[int],
+        dt: np.dtype[np.integer] | type[np.integer] | type[int] | str,
         dtype_name: str,
         enum_dict: Mapping[str, int],
         **kwargs: Any
