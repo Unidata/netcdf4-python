@@ -3718,12 +3718,13 @@ Read-only class variables:
     def __str__(self):
         if not dir(self._grp):
             return 'Dimension object no longer valid'
+        typ = repr(type(self)).replace("._netCDF4", "")
         if self.isunlimited():
             return "%r (unlimited): name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
         else:
             return "%r: name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
 
     def __len__(self):
         # len(`Dimension` instance) returns current size of dimension
@@ -6149,8 +6150,9 @@ the user.
         return self.__str__()
 
     def __str__(self):
-        return "%r: name = '%s', numpy dtype = %s" %\
-            (type(self), self.name, self.dtype)
+        typ = repr(type(self)).replace("._netCDF4", "")
+        return "%s: name = '%s', numpy dtype = %s" %\
+            (typ, self.name, self.dtype)
 
     def __reduce__(self):
         # raise error is user tries to pickle a CompoundType object.
@@ -6437,11 +6439,12 @@ the user.
         return self.__str__()
 
     def __str__(self):
+        typ = repr(type(self)).replace("._netCDF4", "")
         if self.dtype == str:
-            return '%r: string type' % (type(self),)
+            return '%r: string type' % (typ,)
         else:
             return "%r: name = '%s', numpy dtype = %s" %\
-                (type(self), self.name, self.dtype)
+                (typ, self.name, self.dtype)
 
     def __reduce__(self):
         # raise error is user tries to pickle a VLType object.
@@ -6549,8 +6552,9 @@ the user.
         return self.__str__()
 
     def __str__(self):
+        typ = repr(type(self)).replace("._netCDF4", "")
         return "%r: name = '%s', numpy dtype = %s, fields/values =%s" %\
-            (type(self), self.name, self.dtype, self.enum_dict)
+            (typ, self.name, self.dtype, self.enum_dict)
 
     def __reduce__(self):
         # raise error is user tries to pickle a EnumType object.
@@ -7019,12 +7023,13 @@ class _Dimension:
     def isunlimited(self):
         return True
     def __repr__(self):
+        typ = repr(type(self)).replace("._netCDF4", "")
         if self.isunlimited():
             return "%r (unlimited): name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
         else:
             return "%r: name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
 
 class _Variable:
     def __init__(self, dset, varname, var, recdimname):
