@@ -14,6 +14,7 @@ netCDF4.FiltersDict
 netCDF4.SzipInfo
 netCDF4.BloscInfo
 netCDF4.BoolInt
+netCDF4.GetSetItemKey
 netCDF4.T_Datatype
 netCDF4.T_DatatypeNC
 netCDF4.Dataset.__dealloc
