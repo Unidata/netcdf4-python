@@ -1,3 +1,4 @@
+from typing import Literal
 from netCDF4 import Dataset
 
 # code from tutorial.
@@ -68,7 +69,8 @@ longitudes.units = 'degrees east'
 levels.units = 'hPa'
 temp.units = 'K'
 times.units = 'hours since 0001-01-01 00:00:00.0'
-times.calendar = 'gregorian'
+calendar: Literal['gregorian'] = 'gregorian'
+times.calendar = calendar
 
 for name in rootgrp.ncattrs():
     print('Global attr', name, '=', getattr(rootgrp,name))
@@ -111,8 +113,8 @@ from netCDF4 import num2date, date2num, date2index
 dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
 times[:] = date2num(dates,units=times.units,calendar=times.calendar)
 print("time values (in units {}):\n{}".format(times.units, times[:]))
-dates = num2date(times[:],units=times.units,calendar=times.calendar)
-print("dates corresponding to time values:\n{}".format(dates))
+dates_array = num2date(times[:],units=times.units,calendar=times.calendar)
+print("dates corresponding to time values:\n{}".format(dates_array))
 
 rootgrp.close()
 
