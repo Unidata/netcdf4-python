@@ -73,7 +73,19 @@ where = ["src"]
 [tool.setuptools.package-data]
 "netCDF4.plugins" = ["lib__nc*"]
 
+[tool.setuptools_scm]
+
 [tool.pytest.ini_options]
 pythonpath = ["test"]
 
-[tool.setuptools_scm]
+[tool.mypy]
+files = ["src/netCDF4"]
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "cftime.*",
+  "cython.*",
+  "filter_availability",
+  "matplotlib.*"
+]

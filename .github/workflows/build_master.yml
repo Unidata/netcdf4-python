@@ -47,13 +47,14 @@ jobs:
     - name: Install python dependencies via pip
       run: |
         python -m pip install --upgrade pip
-        pip install numpy cython cftime pytest twine wheel check-manifest mpi4py
+        pip install numpy cython cftime pytest twine wheel check-manifest mpi4py mypy types-setuptools
 
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c/plugins/plugindir
         python setup.py install
+
     - name: Test
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
@@ -78,3 +79,9 @@ jobs:
         else
           echo "hdf5 compressed mpi test passed!"
         fi
+
+    - name: Stubtest
+      run: |
+        stubtest netCDF4 --allowlist .github/stubtest-allowlist --mypy-config-file=pyproject.toml
+        mypy test
+        mypy examples

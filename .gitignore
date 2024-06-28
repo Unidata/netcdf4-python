@@ -2,8 +2,11 @@ build/
 *.pyc
 dist/
 *.egg-info/
-netCDF4/_netCDF4.c
-netCDF4/*.so
+__pycache__
+.mypy_cache
+src/netCDF4/*.c
+src/netCDF4/*.so
+src/netCDF4/*.pyd
 include/constants.pyx
 include/parallel_support_imports.pxi
 netcdftime/_netcdftime.c

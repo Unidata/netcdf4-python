@@ -1,3 +1,4 @@
+from typing import Literal
 from netCDF4 import Dataset
 
 # code from tutorial.
@@ -26,21 +27,21 @@ for children in walktree(rootgrp):
         print(child)
 
 # dimensions.
-level = rootgrp.createDimension('level', None)
-time = rootgrp.createDimension('time', None)
-lat = rootgrp.createDimension('lat', 73)
-lon = rootgrp.createDimension('lon', 144)
+level_dim = rootgrp.createDimension('level', None)
+time_dim = rootgrp.createDimension('time', None)
+lat_dim = rootgrp.createDimension('lat', 73)
+lon_dim = rootgrp.createDimension('lon', 144)
 
 print(rootgrp.dimensions)
 
-print(len(lon))
-print(lon.isunlimited())
-print(time.isunlimited())
+print(len(lon_dim))
+print(lon_dim.isunlimited())
+print(time_dim.isunlimited())
 
 for dimobj in rootgrp.dimensions.values():
     print(dimobj)
 
-print(time)
+print(time_dim)
 
 # variables.
 times = rootgrp.createVariable('time','f8',('time',))
@@ -68,7 +69,8 @@ longitudes.units = 'degrees east'
 levels.units = 'hPa'
 temp.units = 'K'
 times.units = 'hours since 0001-01-01 00:00:00.0'
-times.calendar = 'gregorian'
+calendar: Literal['gregorian'] = 'gregorian'
+times.calendar = calendar
 
 for name in rootgrp.ncattrs():
     print('Global attr', name, '=', getattr(rootgrp,name))
@@ -111,49 +113,49 @@ from netCDF4 import num2date, date2num, date2index
 dates = [datetime(2001,3,1)+n*timedelta(hours=12) for n in range(temp.shape[0])]
 times[:] = date2num(dates,units=times.units,calendar=times.calendar)
 print("time values (in units {}):\n{}".format(times.units, times[:]))
-dates = num2date(times[:],units=times.units,calendar=times.calendar)
-print("dates corresponding to time values:\n{}".format(dates))
+dates_array = num2date(times[:],units=times.units,calendar=times.calendar)
+print("dates corresponding to time values:\n{}".format(dates_array))
 
 rootgrp.close()
 
 # create a series of netCDF files with a variable sharing
 # the same unlimited dimension.
 for nfile in range(10):
-    f = Dataset('mftest'+repr(nfile)+'.nc','w',format='NETCDF4_CLASSIC')
-    f.createDimension('x',None)
-    x = f.createVariable('x','i',('x',))
-    x[0:10] = np.arange(nfile*10,10*(nfile+1))
-    f.close()
+    nc = Dataset('mftest'+repr(nfile)+'.nc','w',format='NETCDF4_CLASSIC')
+    nc.createDimension('x',None)
+    x_var = nc.createVariable('x','i',('x',))
+    x_var[0:10] = np.arange(nfile*10,10*(nfile+1))
+    nc.close()
 # now read all those files in at once, in one Dataset.
 from netCDF4 import MFDataset
-f = MFDataset('mftest*nc')
-print(f.variables['x'][:])
+nc = MFDataset('mftest*nc')
+print(nc.variables['x'][:])
 
 # example showing how to save numpy complex arrays using compound types.
-f = Dataset('complex.nc','w')
+nc = Dataset('complex.nc','w')
 size = 3 # length of 1-d complex array
 # create sample complex data.
 datac = np.exp(1j*(1.+np.linspace(0, np.pi, size)))
 print(datac.dtype)
 # create complex128 compound data type.
 complex128 = np.dtype([('real',np.float64),('imag',np.float64)])
-complex128_t = f.createCompoundType(complex128,'complex128')
+complex128_t = nc.createCompoundType(complex128,'complex128')
 # create a variable with this data type, write some data to it.
-f.createDimension('x_dim',None)
-v = f.createVariable('cmplx_var',complex128_t,'x_dim')
+nc.createDimension('x_dim',None)
+var_complex = nc.createVariable('cmplx_var',complex128_t,'x_dim')
 data = np.empty(size,complex128) # numpy structured array
 data['real'] = datac.real; data['imag'] = datac.imag
-v[:] = data
+var_complex[:] = data
 # close and reopen the file, check the contents.
-f.close()
-f = Dataset('complex.nc')
-print(f)
-print(f.variables['cmplx_var'])
-print(f.cmptypes)
-print(f.cmptypes['complex128'])
-v = f.variables['cmplx_var']
-print(v.shape)
-datain = v[:] # read in all the data into a numpy structured array
+nc.close()
+nc = Dataset('complex.nc')
+print(nc)
+print(nc.variables['cmplx_var'])
+print(nc.cmptypes)
+print(nc.cmptypes['complex128'])
+var_complex = nc.variables['cmplx_var']
+print(var_complex.shape)
+datain = var_complex[:] # read in all the data into a numpy structured array
 # create an empty numpy complex array
 datac2 = np.empty(datain.shape,np.complex128)
 # .. fill it with contents of structured array.
@@ -163,9 +165,9 @@ print(datac.dtype,datac)
 print(datac2.dtype,datac2)
 
 # more complex compound type example.
-f = Dataset('compound_example.nc','w') # create a new dataset.
+nc = Dataset('compound_example.nc','w') # create a new dataset.
 # create an unlimited  dimension call 'station'
-f.createDimension('station',None)
+nc.createDimension('station',None)
 # define a compound data type (can contain arrays, or nested compound types).
 winddtype = np.dtype([('speed','f4'),('direction','i4')])
 statdtype = np.dtype([('latitude', 'f4'), ('longitude', 'f4'),
@@ -176,9 +178,9 @@ statdtype = np.dtype([('latitude', 'f4'), ('longitude', 'f4'),
 # called using the createCompoundType Dataset method.
 # create a compound type for vector wind which will be nested inside
 # the station data type. This must be done first!
-wind_data_t = f.createCompoundType(winddtype,'wind_data')
+wind_data_t = nc.createCompoundType(winddtype,'wind_data')
 # now that wind_data_t is defined, create the station data type.
-station_data_t = f.createCompoundType(statdtype,'station_data')
+station_data_t = nc.createCompoundType(statdtype,'station_data')
 # create nested compound data types to hold the units variable attribute.
 winddtype_units = np.dtype([('speed','S12'),('direction','S12')])
 statdtype_units = np.dtype([('latitude', 'S12'), ('longitude', 'S12'),
@@ -188,11 +190,11 @@ statdtype_units = np.dtype([('latitude', 'S12'), ('longitude', 'S12'),
                             ('press_sounding','S12')])
 # create the wind_data_units type first, since it will nested inside
 # the station_data_units data type.
-wind_data_units_t = f.createCompoundType(winddtype_units,'wind_data_units')
+wind_data_units_t = nc.createCompoundType(winddtype_units,'wind_data_units')
 station_data_units_t =\
-f.createCompoundType(statdtype_units,'station_data_units')
+nc.createCompoundType(statdtype_units,'station_data_units')
 # create a variable of of type 'station_data_t'
-statdat = f.createVariable('station_obs', station_data_t, ('station',))
+statdat = nc.createVariable('station_obs', station_data_t, ('station',))
 # create a numpy structured array, assign data to it.
 data = np.empty(1,statdtype)
 data['latitude'] = 40.
@@ -209,7 +211,7 @@ statdat[0] = data
 statdat[1] = np.array((40.78,-73.99,(-12.5,90),
              (290.2,282.5,279.,277.9,276.,266.,264.1,260.,255.5,243.),
              range(900,400,-50),'New York, NY'),data.dtype)
-print(f.cmptypes)
+print(nc.cmptypes)
 windunits = np.empty(1,winddtype_units)
 stationobs_units = np.empty(1,statdtype_units)
 windunits['speed'] = 'm/s'
@@ -223,21 +225,21 @@ stationobs_units['press_sounding'] = 'hPa'
 print(stationobs_units.dtype)
 statdat.units = stationobs_units
 # close and reopen the file.
-f.close()
-f = Dataset('compound_example.nc')
-print(f)
-statdat = f.variables['station_obs']
+nc.close()
+nc = Dataset('compound_example.nc')
+print(nc)
+statdat = nc.variables['station_obs']
 print(statdat)
 # print out data in variable.
 print('data in a variable of compound type:')
 print(statdat[:])
-f.close()
+nc.close()
 
-f = Dataset('tst_vlen.nc','w')
-vlen_t = f.createVLType(np.int32, 'phony_vlen')
-x = f.createDimension('x',3)
-y = f.createDimension('y',4)
-vlvar = f.createVariable('phony_vlen_var', vlen_t, ('y','x'))
+nc = Dataset('tst_vlen.nc','w')
+vlen_t = nc.createVLType(np.int32, 'phony_vlen')
+x = nc.createDimension('x',3)
+y = nc.createDimension('y',4)
+vlvar = nc.createVariable('phony_vlen_var', vlen_t, ('y','x'))
 import random
 data = np.empty(len(y)*len(x),object)
 for n in range(len(y)*len(x)):
@@ -246,11 +248,11 @@ data = np.reshape(data,(len(y),len(x)))
 vlvar[:] = data
 print(vlvar)
 print('vlen variable =\n',vlvar[:])
-print(f)
-print(f.variables['phony_vlen_var'])
-print(f.vltypes['phony_vlen'])
-z = f.createDimension('z', 10)
-strvar = f.createVariable('strvar',str,'z')
+print(nc)
+print(nc.variables['phony_vlen_var'])
+print(nc.vltypes['phony_vlen'])
+z = nc.createDimension('z', 10)
+strvar = nc.createVariable('strvar',str,'z')
 chars = '1234567890aabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 data = np.empty(10,object)
 for n in range(10):
@@ -258,48 +260,48 @@ for n in range(10):
     data[n] = ''.join([random.choice(chars) for i in range(stringlen)])
 strvar[:] = data
 print('variable-length string variable:\n',strvar[:])
-print(f)
-print(f.variables['strvar'])
-f.close()
+print(nc)
+print(nc.variables['strvar'])
+nc.close()
 
 # Enum type example.
-f = Dataset('clouds.nc','w')
+nc = Dataset('clouds.nc','w')
 # python dict describing the allowed values and their names.
 enum_dict = {'Altocumulus': 7, 'Missing': 255, 'Stratus': 2, 'Clear': 0,
 'Nimbostratus': 6, 'Cumulus': 4, 'Altostratus': 5, 'Cumulonimbus': 1,
 'Stratocumulus': 3}
 # create the Enum type called 'cloud_t'.
-cloud_type = f.createEnumType(np.uint8,'cloud_t',enum_dict)
+cloud_type = nc.createEnumType(np.uint8,'cloud_t',enum_dict)
 print(cloud_type)
-time = f.createDimension('time',None)
+time_dim = nc.createDimension('time',None)
 # create a 1d variable of type 'cloud_type' called 'primary_clouds'.
 # The fill_value is set to the 'Missing' named value.
-cloud_var = f.createVariable('primary_cloud',cloud_type,'time',\
+cloud_var = nc.createVariable('primary_cloud',cloud_type,'time',\
 fill_value=enum_dict['Missing'])
 # write some data to the variable.
 cloud_var[:] = [enum_dict['Clear'],enum_dict['Stratus'],enum_dict['Cumulus'],\
                 enum_dict['Missing'],enum_dict['Cumulonimbus']]
 # close file, reopen it.
-f.close()
-f = Dataset('clouds.nc')
-cloud_var = f.variables['primary_cloud']
+nc.close()
+nc = Dataset('clouds.nc')
+cloud_var = nc.variables['primary_cloud']
 print(cloud_var)
 print(cloud_var.datatype.enum_dict)
 print(cloud_var[:])
-f.close()
+nc.close()
 
 # dealing with strings
 from netCDF4 import stringtochar
 nc = Dataset('stringtest.nc','w',format='NETCDF4_CLASSIC')
 nc.createDimension('nchars',3)
 nc.createDimension('nstrings',None)
-v = nc.createVariable('strings','S1',('nstrings','nchars'))
+var = nc.createVariable('strings','S1',('nstrings','nchars'))
 datain = np.array(['foo','bar'],dtype='S3')
-v[:] = stringtochar(datain) # manual conversion to char array
-print(v[:]) # data returned as char array
-v._Encoding = 'ascii' # this enables automatic conversion
-v[:] = datain # conversion to char array done internally
-print(v[:]) # data returned in numpy string array
+var[:] = stringtochar(datain) # manual conversion to char array
+print(var[:]) # data returned as char array
+var._Encoding = 'ascii' # this enables automatic conversion
+var[:] = datain # conversion to char array done internally
+print(var[:]) # data returned in numpy string array
 nc.close()
 # strings in compound types
 nc = Dataset('compoundstring_example.nc','w')
@@ -349,8 +351,8 @@ v[0:5] = np.arange(5)
 nc_buf = nc.close() # close returns memoryview
 print(type(nc_buf))
 # save nc_buf to disk, read it back in and check.
-f = open('inmemory.nc', 'wb')
-f.write(nc_buf); f.close()
+f2 = open('inmemory.nc', 'wb')
+f2.write(nc_buf); f2.close()
 nc = Dataset('inmemory.nc')
 print(nc)
 print(nc['v'][:])

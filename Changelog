@@ -1,3 +1,7 @@
+ version 1.7.2 (tag v1.7.2rel)
+===============================
+ * add static type hints (PR #1302)
+
  version 1.7.1 (tag v1.7.1rel)
 ===============================
  * include nc_complex source code from v0.2.0 tag (instead of using submodule).

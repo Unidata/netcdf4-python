@@ -28,7 +28,7 @@ for i in range(nfiles):
     nc.close()
 
 # Queue them up
-items = queue.Queue()
+items: queue.Queue = queue.Queue()
 for data,fname in zip(datal,fnames):
     items.put(fname)
 
