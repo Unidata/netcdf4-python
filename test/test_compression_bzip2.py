@@ -47,7 +47,7 @@ class CompressionTestCase(unittest.TestCase):
         assert_almost_equal(array,f.variables['data'][:])
         assert f.variables['data'].filters() ==\
         {'zlib':False,'szip':False,'zstd':False,'bzip2':True,'blosc':False,'shuffle':False,'complevel':4,'fletcher32':False}
-        assert(size < 0.96*uncompressed_size)
+        assert size < 0.96*uncompressed_size 
         f.close()
 
 

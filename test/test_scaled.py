@@ -187,7 +187,7 @@ class WriteAutoScaleTest(SetAutoScaleTestBase):
             # error normalized by scale factor
             maxerrnorm = np.max(np.abs((vdata - data) / v.scale_factor))
             # 1e-5 accounts for floating point errors
-            assert(maxerrnorm < 0.5 + 1e-5)
+            assert maxerrnorm < 0.5 + 1e-5 
             f.close()
 
 

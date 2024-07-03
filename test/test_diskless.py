@@ -71,10 +71,10 @@ class DisklessTestCase(unittest.TestCase):
         assert_array_almost_equal(foo[:], ranarr)
         assert_array_almost_equal(bar[:], ranarr2)
         # file does not actually exist on disk
-        assert(os.path.isfile(self.file)==False)
+        assert os.path.isfile(self.file)==False 
         # open persisted file.
         # first, check that file does actually exist on disk
-        assert(os.path.isfile(self.file2)==True)
+        assert os.path.isfile(self.file2)==True 
         f = netCDF4.Dataset(self.file2)
         foo = f.variables['data1']
         # check shape.

@@ -13,7 +13,7 @@ class Issue908TestCase(unittest.TestCase):
 
     def runTest(self):
         data = self.nc['rgrid'][:]
-        assert(data.all() is np.ma.masked)
+        assert data.all() is np.ma.masked 
 
 if __name__ == '__main__':
     unittest.main()

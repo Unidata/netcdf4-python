@@ -82,8 +82,8 @@ class EnumDictTestCase(unittest.TestCase):
         def runTest(self):
             with netCDF4.Dataset(file, 'r') as nc:
                 read_var = nc['evar']
-                assert(read_var[...] == self.STORED_VAL)
-                assert(read_et.enum_dict == self.VAL_MAP)
+                assert read_var[...] == self.STORED_VAL 
+                assert read_et.enum_dict == self.VAL_MAP 
 
 if __name__ == '__main__':
     unittest.main()
