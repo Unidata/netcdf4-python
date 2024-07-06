@@ -392,6 +392,7 @@ cdef extern from "netcdf-compat.h":
     int nc_set_alignment(int threshold, int alignment)
     int nc_get_alignment(int *threshold, int *alignment)
     int nc_rc_set(char* key, char* value) nogil
+    const_char_ptr *nc_rc_get(char* key) 
 
     int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp) nogil
     int nc_create_mem(const char *path, int mode, size_t initialize, int *ncidp) nogil
