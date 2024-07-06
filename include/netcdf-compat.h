@@ -60,7 +60,7 @@ static inline int nc_get_alignment(int* thresholdp, int* alignmentp) {
 #else
 #define HAS_NCRCSET 0
 static inline int nc_rc_set(const char* key, const char* value) { return NC_EINVAL; }
-static inline const char *nc_rc_set(const char* key) { return NC_EINVAL; }
+static inline const char *nc_rc_get(const char* key) { return NC_EINVAL; }
 #endif
 
 #if NC_VERSION_GE(4, 4, 0)
