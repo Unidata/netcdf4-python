@@ -1332,7 +1332,7 @@ Returns the internal netcdf-c rc table value corresponding to key.
         return (<char *>nc_rc_get(keyc)).decode('utf-8')
     else:
         raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
         )
 
 def rc_set(key, value):
@@ -1354,7 +1354,7 @@ Sets the internal netcdf-c rc table value corresponding to key.
         _ensure_nc_success(ierr)
     else:
         raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
         )
 
 
@@ -1435,7 +1435,7 @@ def get_alignment():
 
     if not __has_set_alignment__:
         raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
         )
 
     cdef int ierr
@@ -1458,7 +1458,7 @@ def set_alignment(threshold, alignment):
 
     if not __has_set_alignment__:
         raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
         )
 
     cdef int ierr
