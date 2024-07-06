@@ -1,5 +1,6 @@
 import unittest
 import netCDF4
+from netCDF4 import __has_nc_rc_set__
 
 class NCRCTestCase(unittest.TestCase):
     def setUp(self):
@@ -9,9 +10,10 @@ class NCRCTestCase(unittest.TestCase):
         pass
 
     def runTest(self):
-        """testing access of data over http using opendap"""
-        netCDF4.rc_set('foo','bar')
-        assert netCDF4.rc_get('foo') == 'bar'
+        """test rc_get, rc_set functions"""
+        if __has_nc_rc_set__:
+            netCDF4.rc_set('foo','bar')
+            assert netCDF4.rc_get('foo') == 'bar'
 
 if __name__ == '__main__':
     unittest.main()
