@@ -16,7 +16,7 @@ __all__ = [
     'Dataset', 'Variable', 'Dimension', 'Group', 'MFDataset', 'MFTime', 'CompoundType',
     'VLType', 'date2num', 'num2date', 'date2index', 'stringtochar', 'chartostring',
     'stringtoarr', 'getlibversion', 'EnumType', 'get_chunk_cache', 'set_chunk_cache',
-    'set_alignment', 'get_alignment', 'nc_get', 'nc_set',
+    'set_alignment', 'get_alignment', 'rc_get', 'rc_set',
 ]
 __pdoc__ = {'utils': False}
 # if HDF5_PLUGIN_PATH not set, point to package path if plugins live there
