@@ -95,8 +95,8 @@ To create a netCDF file from python, you simply call the `Dataset`
 constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (`mode='w', 'r+'` or `'a'`), you may
 write any type of data including new dimensions, groups, variables and
-attributes.  netCDF files come in five flavors (`NETCDF3_CLASSIC,
-NETCDF3_64BIT_OFFSET, NETCDF3_64BIT_DATA, NETCDF4_CLASSIC`, and `NETCDF4`).
+attributes.  netCDF files come in five flavors (`NETCDF3_CLASSIC`,
+`NETCDF3_64BIT_OFFSET`, `NETCDF3_64BIT_DATA`, `NETCDF4_CLASSIC`, and `NETCDF4`).
 `NETCDF3_CLASSIC` was the original netcdf binary format, and was limited
 to file sizes less than 2 Gb. `NETCDF3_64BIT_OFFSET` was introduced
 in version 3.6.0 of the library, and extended the original binary format
@@ -2154,7 +2154,7 @@ def _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None, extra_msg=None
     raise err_cls(err_str)
 
 
-def dtype_is_complex(dtype: Union[str, numpy.dtype]) -> bool:
+def dtype_is_complex(dtype):
     """Return True if dtype is a complex number"""
     return dtype in ("c8", "c16")
 
@@ -2201,13 +2201,13 @@ cdef _inq_vardimid(int ncid, int varid, bint auto_complex):
 # only exist at the python level (not in the netCDF file).
 
 _private_atts = \
-['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
+('_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd',
+ '__orthogoral_indexing__','keepweakref','_has_lsd','always_mask',
  '_buffer','chartostring','_use_get_vars','_ncstring_attrs__',
  'auto_complex'
-]
+)
 
 cdef class Dataset:
     """
@@ -2597,7 +2597,7 @@ strings.
         return self.__str__()
 
     def __str__(self):
-        ncdump = [repr(type(self))]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         dimnames = tuple(_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys())
         varnames = tuple(\
@@ -3759,12 +3759,13 @@ Read-only class variables:
     def __str__(self):
         if not dir(self._grp):
             return 'Dimension object no longer valid'
+        typ = repr(type(self)).replace("._netCDF4", "")
         if self.isunlimited():
             return "%r (unlimited): name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
         else:
             return "%r: name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
 
     def __len__(self):
         # len(`Dimension` instance) returns current size of dimension
@@ -4491,7 +4492,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef int ierr, no_fill
         if not dir(self._grp):
             return 'Variable object no longer valid'
-        ncdump = [repr(type(self))]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         show_more_dtype = True
         if self._iscompound:
             kind = 'compound'
@@ -6140,13 +6141,13 @@ the user.
 
         CompoundType constructor.
 
-        **`group`**: `Group` instance to associate with the compound datatype.
+        **`grp`**: `Group` instance to associate with the compound datatype.
 
-        **`datatype`**: A numpy dtype object describing a structured (a.k.a record)
+        **`dt`**: A numpy dtype object describing a structured (a.k.a record)
         array.  Can be composed of homogeneous numeric or character data types, or
         other structured array data types.
 
-        **`datatype_name`**: a Python string containing a description of the
+        **`dtype_name`**: a Python string containing a description of the
         compound data type.
 
         ***Note 1***: When creating nested compound data types,
@@ -6190,8 +6191,9 @@ the user.
         return self.__str__()
 
     def __str__(self):
-        return "%r: name = '%s', numpy dtype = %s" %\
-            (type(self), self.name, self.dtype)
+        typ = repr(type(self)).replace("._netCDF4", "")
+        return "%s: name = '%s', numpy dtype = %s" %\
+            (typ, self.name, self.dtype)
 
     def __reduce__(self):
         # raise error is user tries to pickle a CompoundType object.
@@ -6478,11 +6480,12 @@ the user.
         return self.__str__()
 
     def __str__(self):
+        typ = repr(type(self)).replace("._netCDF4", "")
         if self.dtype == str:
-            return '%r: string type' % (type(self),)
+            return '%r: string type' % (typ,)
         else:
             return "%r: name = '%s', numpy dtype = %s" %\
-                (type(self), self.name, self.dtype)
+                (typ, self.name, self.dtype)
 
     def __reduce__(self):
         # raise error is user tries to pickle a VLType object.
@@ -6590,8 +6593,9 @@ the user.
         return self.__str__()
 
     def __str__(self):
+        typ = repr(type(self)).replace("._netCDF4", "")
         return "%r: name = '%s', numpy dtype = %s, fields/values =%s" %\
-            (type(self), self.name, self.dtype, self.enum_dict)
+            (typ, self.name, self.dtype, self.enum_dict)
 
     def __reduce__(self):
         # raise error is user tries to pickle a EnumType object.
@@ -7010,7 +7014,7 @@ Example usage (See `MFDataset.__init__` for more details):
 
         return the netcdf attribute names from the master file.
         """
-        return self._cdf[0].__dict__.keys()
+        return list(self._cdf[0].__dict__)
 
     def close(self):
         """
@@ -7030,7 +7034,7 @@ Example usage (See `MFDataset.__init__` for more details):
         return all(map(lambda dset: dset.isopen(), self._cdf))
 
     def __repr__(self):
-        ncdump = [repr(type(self))]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         dimnames = tuple(str(dimname) for dimname in self.dimensions.keys())
         varnames = tuple(str(varname) for varname in self.variables.keys())
         grpnames = ()
@@ -7060,12 +7064,13 @@ class _Dimension:
     def isunlimited(self):
         return True
     def __repr__(self):
+        typ = repr(type(self)).replace("._netCDF4", "")
         if self.isunlimited():
             return "%r (unlimited): name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
         else:
             return "%r: name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
 
 class _Variable:
     def __init__(self, dset, varname, var, recdimname):
@@ -7084,7 +7089,7 @@ class _Variable:
     def typecode(self):
         return self.dtype
     def ncattrs(self):
-        return self._mastervar.__dict__.keys()
+        return list(self._mastervar.__dict__.keys())
     def __getattr__(self,name):
         if name == 'shape': return self._shape()
         if name == 'ndim': return len(self._shape())
@@ -7094,7 +7099,7 @@ class _Variable:
         except:
             raise AttributeError(name)
     def __repr__(self):
-        ncdump = [repr(type(self))]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         dimnames = tuple(str(dimname) for dimname in self.dimensions)
         ncdump.append('%s %s%s' % (self.dtype, self._name, dimnames))
         for name in self.ncattrs():
