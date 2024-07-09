@@ -14,6 +14,7 @@ class NCRCTestCase(unittest.TestCase):
         if __has_nc_rc_set__:
             netCDF4.rc_set('foo','bar')
             assert netCDF4.rc_get('foo') == 'bar'
+            assert netCDF4.rc_get('bar') == None
 
 if __name__ == '__main__':
     unittest.main()
