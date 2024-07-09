@@ -1320,7 +1320,7 @@ if __has_nc_rc_set__:
 
 def rc_get(key):
     """
-**`rc_key(key)`**
+**```rc_get(key)```**
 
 Returns the internal netcdf-c rc table value corresponding to key.
     """
@@ -1337,7 +1337,7 @@ Returns the internal netcdf-c rc table value corresponding to key.
 
 def rc_set(key, value):
     """
-**`rc_set(key, value)`**
+**```rc_set(key, value)```**
 
 Sets the internal netcdf-c rc table value corresponding to key.
     """
@@ -1371,7 +1371,7 @@ def _gethdf5libversion():
 
 def getlibversion():
     """
-**`getlibversion()`**
+**```getlibversion()```**
 
 returns a string describing the version of the netcdf library
 used to build the module, and when it was built.
@@ -1380,7 +1380,7 @@ used to build the module, and when it was built.
 
 def get_chunk_cache():
     """
-**`get_chunk_cache()`**
+**```get_chunk_cache()```**
 
 return current netCDF chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for `nc_get_chunk_cache` for
@@ -1396,7 +1396,7 @@ details. Values can be reset with `set_chunk_cache`."""
 
 def set_chunk_cache(size=None,nelems=None,preemption=None):
     """
-**`set_chunk_cache(self,size=None,nelems=None,preemption=None)`**
+**```set_chunk_cache(size=None,nelems=None,preemption=None)```**
 
 change netCDF4 chunk cache settings.
 See netcdf C library documentation for `nc_set_chunk_cache` for
@@ -1424,7 +1424,7 @@ details."""
 
 
 def get_alignment():
-    """**`get_alignment()`**
+    """**```get_alignment()```**
 
     return current netCDF alignment within HDF5 files in a tuple
     (threshold,alignment). See netcdf C library documentation for
@@ -1448,7 +1448,7 @@ def get_alignment():
 
 
 def set_alignment(threshold, alignment):
-    """**`set_alignment(threshold,alignment)`**
+    """**```set_alignment(threshold,alignment)```**
 
     Change the HDF5 file alignment.
     See netcdf C library documentation for `nc_set_alignment` for
