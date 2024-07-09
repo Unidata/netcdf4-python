@@ -1326,10 +1326,15 @@ Returns the internal netcdf-c rc table value corresponding to key.
     """
     cdef int ierr
     cdef char *keyc
+    cdef char *valc
     if __has_nc_rc_set__:
         bytestr = _strencode(_tostr(key))
         keyc = bytestr
-        return (<char *>nc_rc_get(keyc)).decode('utf-8')
+        valc = <char *>nc_rc_get(keyc)
+        if valc is NULL:
+            return None
+        else:
+            return valc.decode('utf-8')
     else:
         raise RuntimeError(
             "This function requires netcdf-c 4.9.0+ to be used at compile time"
