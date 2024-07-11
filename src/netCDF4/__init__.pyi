@@ -329,8 +329,8 @@ class Dimension:
 
 class Variable(Generic[T_Datatype]):
     @overload
-    def __new__(  # type: ignore
-        self,
+    def __new__(
+        cls,
         grp: Dataset,
         name: str,
         datatype: T_DatatypeNC,
@@ -355,7 +355,7 @@ class Variable(Generic[T_Datatype]):
     ) -> Variable[T_DatatypeNC]: ...
     @overload
     def __new__(
-        self,
+        cls,
         grp: Dataset,
         name: str,
         datatype: _DatatypeStrOptions | npt.DTypeLike,
