@@ -162,6 +162,10 @@ class FiltersDict(TypedDict):
 class NetCDF4MissingFeatureException(Exception):
     def __init__(self, feature: str, version: str): ...
 
+
+def dtype_is_complex(dtype: str) -> bool: ...
+
+
 class Dataset:
     def __init__(
         self,

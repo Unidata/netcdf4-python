@@ -35,6 +35,7 @@ from . import (
     date2num,
     default_encoding,
     default_fillvals,
+    dtype_is_complex,
     get_alignment,
     get_chunk_cache,
     getlibversion,
@@ -47,5 +48,3 @@ from . import (
     stringtochar,
     unicode_error,
 )
-
-def dtype_is_complex(dtype: str) -> bool: ...
