@@ -87,6 +87,26 @@ GetSetItemKey: TypeAlias = (
     | tuple[int | slice | ellipsis | Sequence[int | bool] | npt.NDArray[np.integer | np.bool_], ...]
 )
 
+class BloscInfo(TypedDict):
+    compressor: Literal["blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"]
+    shuffle: Literal[0, 1, 2]
+
+class SzipInfo(TypedDict):
+    coding: Literal["nn", "ec"]
+    pixels_per_block: Literal[4, 8, 16, 32]
+
+class FiltersDict(TypedDict):
+    """Dict returned from netCDF4.Variable.filters()"""
+
+    zlib: bool
+    szip: Literal[False] | SzipInfo
+    zstd: bool
+    bzip2: bool
+    blosc: Literal[False] | BloscInfo
+    shuffle: bool
+    complevel: int
+    fletcher32: bool
+
 __version__: str
 __netcdf4libversion__: str
 __hdf5libversion__: str
@@ -136,26 +156,6 @@ def num2date(
     only_use_python_datetimes: bool = False,
     has_year_zero: bool | None = None,
 ) -> dt.datetime | DateTimeArray: ...
-
-class BloscInfo(TypedDict):
-    compressor: Literal["blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"]
-    shuffle: Literal[0, 1, 2]
-
-class SzipInfo(TypedDict):
-    coding: Literal["nn", "ec"]
-    pixels_per_block: Literal[4, 8, 16, 32]
-
-class FiltersDict(TypedDict):
-    """Dict returned from netCDF4.Variable.filters()"""
-
-    zlib: bool
-    szip: Literal[False] | SzipInfo
-    zstd: bool
-    bzip2: bool
-    blosc: Literal[False] | BloscInfo
-    shuffle: bool
-    complevel: int
-    fletcher32: bool
 
 class NetCDF4MissingFeatureException(Exception):
     def __init__(self, feature: str, version: str): ...
