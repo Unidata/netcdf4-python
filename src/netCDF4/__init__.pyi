@@ -73,7 +73,7 @@ DiskFormatOptions: TypeAlias = Literal["NETCDF3", "HDF5", "HDF4", "PNETCDF", "DA
 QuantizeOptions: TypeAlias = Literal["BitGroom", "BitRound", "GranularBitRound"]
 EndianOptions: TypeAlias = Literal["native", "little", "big"]
 CalendarOptions: TypeAlias = Literal[
-    "standard", "gregorian", "proleptic_gregorian" "noleap", "365_day", "360_day", "julian", "all_leap", "366_day"
+    "standard", "gregorian", "proleptic_gregorian", "noleap", "365_day", "360_day", "julian", "all_leap", "366_day"
 ]
 BoolInt: TypeAlias = Literal[0, 1]
 
