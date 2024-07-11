@@ -1,4 +1,4 @@
-# The definitions are intendionally done in the __init__.
+# The definitions are intentionally done in the __init__.
 # This file only exists in case someone imports from netCDF4._netCDF4
 from . import (
     CompoundType,
