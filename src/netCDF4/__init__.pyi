@@ -2,6 +2,7 @@ import datetime as dt
 import os
 import sys
 from typing import (
+    TYPE_CHECKING,
     Any,
     Callable,
     Final,
@@ -10,9 +11,7 @@ from typing import (
     Literal,
     Mapping,
     NoReturn,
-    Self,
     Sequence,
-    TypeAlias,
     TypedDict,
     TypeVar,
     Union,
@@ -22,7 +21,7 @@ from typing import (
 import cftime
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import Buffer
+from typing_extensions import Buffer, Self, TypeAlias
 
 __all__ = [
     "Dataset",
