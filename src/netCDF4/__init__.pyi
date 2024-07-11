@@ -54,25 +54,23 @@ if sys.version_info >= (3, 10):
 elif not TYPE_CHECKING:
     ellipsis = type(Ellipsis)  # keeps ruff happy until ruff uses typeshed
 
-_DatatypeStrOptions: TypeAlias = Literal[
+DatatypeCode: TypeAlias = Literal[
     "S1", "c", "i1", "b", "B", "u1", "i2", "h", "s", "u2", "i4", "i", "l", "u4", "i8", "u8", "f4", "f", "f8", "d", "c8", "c16"
 ]
-_DatatypeNCOptions: TypeAlias = Union[CompoundType, VLType, EnumType]
-DatatypeOptions: TypeAlias = Union[_DatatypeStrOptions, _DatatypeNCOptions, npt.DTypeLike]
-T_Datatype = TypeVar("T_Datatype", bound=DatatypeOptions)
+NCComplexDatatype: TypeAlias = Union[CompoundType, VLType, EnumType]
+Datatype: TypeAlias = Union[DatatypeCode, NCComplexDatatype, npt.DTypeLike]
+T_Datatype = TypeVar("T_Datatype", bound=Datatype)
 T_DatatypeNC = TypeVar("T_DatatypeNC", CompoundType, VLType, EnumType)
 
-DimensionsOptions: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
-CompressionOptions: TypeAlias = Literal[
-    "zlib", "szip", "zstd", "blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"
-]
-CompressionLevelOptions: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-AccessModeOptions: TypeAlias = Literal["r", "w", "r+", "a", "x", "rs", "ws", "r+s", "as"]
-FormatOptions: TypeAlias = Literal["NETCDF4", "NETCDF4_CLASSIC", "NETCDF3_CLASSIC", "NETCDF3_64BIT_OFFSET", "NETCDF3_64BIT_DATA"]
-DiskFormatOptions: TypeAlias = Literal["NETCDF3", "HDF5", "HDF4", "PNETCDF", "DAP2", "DAP4", "UNDEFINED"]
-QuantizeOptions: TypeAlias = Literal["BitGroom", "BitRound", "GranularBitRound"]
-EndianOptions: TypeAlias = Literal["native", "little", "big"]
-CalendarOptions: TypeAlias = Literal[
+DimensionsSpecifier: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
+CompressionType: TypeAlias = Literal["zlib", "szip", "zstd", "blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"]
+CompressionLevel: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+AccessMode: TypeAlias = Literal["r", "w", "r+", "a", "x", "rs", "ws", "r+s", "as"]
+Format: TypeAlias = Literal["NETCDF4", "NETCDF4_CLASSIC", "NETCDF3_CLASSIC", "NETCDF3_64BIT_OFFSET", "NETCDF3_64BIT_DATA"]
+DiskFormat: TypeAlias = Literal["NETCDF3", "HDF5", "HDF4", "PNETCDF", "DAP2", "DAP4", "UNDEFINED"]
+QuantizeMode: TypeAlias = Literal["BitGroom", "BitRound", "GranularBitRound"]
+EndianType: TypeAlias = Literal["native", "little", "big"]
+CalendarType: TypeAlias = Literal[
     "standard", "gregorian", "proleptic_gregorian", "noleap", "365_day", "360_day", "julian", "all_leap", "366_day"
 ]
 BoolInt: TypeAlias = Literal[0, 1]
@@ -119,21 +117,21 @@ default_fillvals: dict[str, int | float | str]
 def date2index(
     dates: dt.datetime | cftime.datetime | Sequence[dt.datetime | cftime.datetime] | DateTimeArray,
     nctime: Variable,
-    calendar: CalendarOptions | None = None,
+    calendar: CalendarType | None = None,
     select: Literal["exact", "before", "after", "nearest"] = "exact",
     has_year_zero: bool | None = None,
 ) -> int | npt.NDArray[np.int_]: ...
 def date2num(
     dates: dt.datetime | cftime.datetime | Sequence[dt.datetime | cftime.datetime] | DateTimeArray,
     units: str,
-    calendar: CalendarOptions | None = None,
+    calendar: CalendarType | None = None,
     has_year_zero: bool | None = None,
     longdouble: bool = False,
 ) -> np.number | npt.NDArray[np.number]: ...
 def num2date(
     times: Sequence[int | float | np.number] | npt.NDArray[np.number],
     units: str,
-    calendar: CalendarOptions = "standard",
+    calendar: CalendarType = "standard",
     only_use_cftime_datetimes: bool = True,
     only_use_python_datetimes: bool = False,
     has_year_zero: bool | None = None,
@@ -168,9 +166,9 @@ class Dataset:
     def __init__(
         self,
         filename: str | os.PathLike,
-        mode: AccessModeOptions = "r",
+        mode: AccessMode = "r",
         clobber: bool = True,
-        format: FormatOptions = "NETCDF4",
+        format: Format = "NETCDF4",
         diskless: bool = False,
         persist: bool = False,
         keepweakref: bool = False,
@@ -197,11 +195,11 @@ class Dataset:
     @property
     def enumtypes(self) -> dict[str, EnumType]: ...
     @property
-    def data_model(self) -> FormatOptions: ...
+    def data_model(self) -> Format: ...
     @property
-    def file_format(self) -> FormatOptions: ...
+    def file_format(self) -> Format: ...
     @property
-    def disk_format(self) -> DiskFormatOptions: ...
+    def disk_format(self) -> DiskFormat: ...
     @property
     def parent(self) -> Dataset | None: ...
     @property
@@ -227,10 +225,10 @@ class Dataset:
         self,
         varname: str,
         datatype: T_DatatypeNC,
-        dimensions: DimensionsOptions = (),
-        compression: CompressionOptions | None = None,
+        dimensions: DimensionsSpecifier = (),
+        compression: CompressionType | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions | None = 4,
+        complevel: CompressionLevel | None = 4,
         shuffle: bool = True,
         szip_coding: Literal["nn", "ec"] = "nn",
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -238,10 +236,10 @@ class Dataset:
         fletcher32: bool = False,
         contiguous: bool = False,
         chunksizes: int | None = None,
-        endian: EndianOptions = "native",
+        endian: EndianType = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
-        quantize_mode: QuantizeOptions = "BitGroom",
+        quantize_mode: QuantizeMode = "BitGroom",
         fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
     ) -> Variable[T_DatatypeNC]: ...
@@ -249,11 +247,11 @@ class Dataset:
     def createVariable(
         self,
         varname: str,
-        datatype: _DatatypeStrOptions | npt.DTypeLike,
-        dimensions: DimensionsOptions = (),
-        compression: CompressionOptions | None = None,
+        datatype: DatatypeCode | npt.DTypeLike,
+        dimensions: DimensionsSpecifier = (),
+        compression: CompressionType | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions | None = 4,
+        complevel: CompressionLevel | None = 4,
         shuffle: bool = True,
         szip_coding: Literal["nn", "ec"] = "nn",
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -261,10 +259,10 @@ class Dataset:
         fletcher32: bool = False,
         contiguous: bool = False,
         chunksizes: int | None = None,
-        endian: EndianOptions = "native",
+        endian: EndianType = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
-        quantize_mode: QuantizeOptions = "BitGroom",
+        quantize_mode: QuantizeMode = "BitGroom",
         fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
     ) -> Variable[np.dtype]: ...
@@ -294,7 +292,7 @@ class Dataset:
     def get_variables_by_attributes(self, **kwargs: Callable[[Any], bool] | Any) -> list[Variable]: ...
     @staticmethod
     def fromcdl(
-        cdlfilename: str, ncfilename: str | None = None, mode: AccessModeOptions = "a", format: FormatOptions = "NETCDF4"
+        cdlfilename: str, ncfilename: str | None = None, mode: AccessMode = "a", format: Format = "NETCDF4"
     ) -> Dataset: ...
     @overload
     def tocdl(self, coordvars: bool = False, data: bool = False, outfile: None = None) -> str: ...
@@ -334,10 +332,10 @@ class Variable(Generic[T_Datatype]):
         grp: Dataset,
         name: str,
         datatype: T_DatatypeNC,
-        dimensions: DimensionsOptions = (),
-        compression: CompressionOptions | None = None,
+        dimensions: DimensionsSpecifier = (),
+        compression: CompressionType | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions | None = 4,
+        complevel: CompressionLevel | None = 4,
         shuffle: bool = True,
         szip_coding: Literal["nn", "ec"] = "nn",
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -345,10 +343,10 @@ class Variable(Generic[T_Datatype]):
         fletcher32: bool = False,
         contiguous: bool = False,
         chunksizes: Sequence[int] | None = None,
-        endian: EndianOptions = "native",
+        endian: EndianType = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
-        quantize_mode: QuantizeOptions = "BitGroom",
+        quantize_mode: QuantizeMode = "BitGroom",
         fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any,
@@ -358,11 +356,11 @@ class Variable(Generic[T_Datatype]):
         cls,
         grp: Dataset,
         name: str,
-        datatype: _DatatypeStrOptions | npt.DTypeLike,
-        dimensions: DimensionsOptions = (),
-        compression: CompressionOptions | None = None,
+        datatype: DatatypeCode | npt.DTypeLike,
+        dimensions: DimensionsSpecifier = (),
+        compression: CompressionType | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions | None = 4,
+        complevel: CompressionLevel | None = 4,
         shuffle: bool = True,
         szip_coding: Literal["nn", "ec"] = "nn",
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -370,10 +368,10 @@ class Variable(Generic[T_Datatype]):
         fletcher32: bool = False,
         contiguous: bool = False,
         chunksizes: Sequence[int] | None = None,
-        endian: EndianOptions = "native",
+        endian: EndianType = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
-        quantize_mode: QuantizeOptions = "BitGroom",
+        quantize_mode: QuantizeMode = "BitGroom",
         fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any,
@@ -383,10 +381,10 @@ class Variable(Generic[T_Datatype]):
         grp: Dataset,
         name: str,
         datatype: T_Datatype,
-        dimensions: DimensionsOptions = (),
-        compression: CompressionOptions | None = None,
+        dimensions: DimensionsSpecifier = (),
+        compression: CompressionType | None = None,
         zlib: bool = False,
-        complevel: CompressionLevelOptions | None = 4,
+        complevel: CompressionLevel | None = 4,
         shuffle: bool = True,
         szip_coding: Literal["nn", "ec"] = "nn",
         szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
@@ -394,10 +392,10 @@ class Variable(Generic[T_Datatype]):
         fletcher32: bool = False,
         contiguous: bool = False,
         chunksizes: Sequence[int] | None = None,
-        endian: EndianOptions = "native",
+        endian: EndianType = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
-        quantize_mode: QuantizeOptions = "BitGroom",
+        quantize_mode: QuantizeMode = "BitGroom",
         fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any,
@@ -434,8 +432,8 @@ class Variable(Generic[T_Datatype]):
     def getncattr(self, name: str, encoding="utf-8"): ...
     def delncattr(self, name: str) -> None: ...
     def filters(self) -> FiltersDict: ...
-    def quantization(self) -> tuple[int, QuantizeOptions] | None: ...
-    def endian(self) -> EndianOptions: ...
+    def quantization(self) -> tuple[int, QuantizeMode] | None: ...
+    def endian(self) -> EndianType: ...
     def chunking(self) -> Literal["contiguous"] | list[int]: ...
     def get_var_chunk_cache(self) -> tuple[int, int, float]: ...
     def set_var_chunk_cache(
@@ -541,10 +539,10 @@ class _Variable:
     def __len__(self) -> int: ...
 
 class MFTime(_Variable):
-    calendar: CalendarOptions | None
+    calendar: CalendarType | None
     units: str | None
 
-    def __init__(self, time: Variable, units: str | None = None, calendar: CalendarOptions | None = None): ...
+    def __init__(self, time: Variable, units: str | None = None, calendar: CalendarType | None = None): ...
     def __getitem__(self, elem: GetSetItemKey) -> np.ndarray: ...
 
 @overload
