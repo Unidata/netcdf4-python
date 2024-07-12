@@ -1,3 +1,31 @@
+"""__init__.pyi - Type stubs for the netCDF4 Python package"""
+# Notes:
+#
+# - The stubs in this file are manually-generated and must be updated if and when the API is changed.
+# - The following **ruff** commands may be used to properly format this file according to
+#   https://typing.readthedocs.io/en/latest/source/stubs.html
+#
+#   ruff format --line-length 130 src/netCDF4/__init__.pyi  # format code
+#   ruff check --line-length 130 --select I --fix src/netCDF4/__init__.pyi  # sort imports
+#
+# - The Variable class is a generic and may thus be statically typed, but this has limited utility for the following reasons:
+#   - The return type of `Variable.__getitem__()` (and `Variable.getValue()`) depends on a number of factors (e.g. variable shape,
+#     key shape, whether masking is enabled) that cannot be easily determined statically.
+#   - Similarly, the types and shapes of data that `Variable.__setitem__()` may accept varies widely depending on many factors and
+#     is intractable to determine statically.
+#   - Automatic typing of a Variable on variable creation is tedious due to the large number of ways to specify a variable's type
+#     (in particular all the type literals).
+#   - It is not possible to statically type a Variable of any user-defined type (CompoundType, EnumType, VLType) as these types
+#     are created dynamically.
+#   It is thus best left to the user to implement TypeGuards and/or perform other mixed static/runtime type-checking to ensure the
+#   type and shape of data retrieved from this library.
+# - `Dataset.__getitem__()` may return either a Variable or a Group, depending on the string passed to it. Rather than return a
+#   Union of Variable and Group, the authors of these stubs have elected to to return Any, leaving it up to users to determine the
+#   type of the returned value.
+# - `MFDataset.dimensions` returns `dict[str, Dimension]` and `MFDataset.variables` returns `dict[str, Variable]` even though the
+#   dict value types may actually be `_Dimension` and `_Variable`, respectively. The original authors of this stubfile have
+#   elected to do this for simplicity's sake, but it may make sense to change this in the future, or just return `dict[str, Any]`.
+
 import datetime as dt
 import os
 import sys
