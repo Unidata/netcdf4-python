@@ -54,13 +54,41 @@ if sys.version_info >= (3, 10):
 elif not TYPE_CHECKING:
     ellipsis = type(Ellipsis)  # keeps ruff happy until ruff uses typeshed
 
-DatatypeCode: TypeAlias = Literal[
-    "S1", "c", "i1", "b", "B", "u1", "i2", "h", "s", "u2", "i4", "i", "l", "u4", "i8", "u8", "f4", "f", "f8", "d", "c8", "c16"
+# string type specifiers
+# fmt: off
+RealTypeLiteral: TypeAlias = Literal[
+    "i1", "b", "B", "int8",        # NC_BYTE
+    "u1", "uint8",                 # NC_UBYTE
+    "i2", "h", "s", "int16",       # NC_SHORT
+    "u2", "uint16",                # NC_USHORT
+    "i4", "i", "l", "int32",       # NC_INT
+    "u4", "uint32",                # NC_UINT
+    "i8", "int64", "int",          # NC_INT64
+    "u8", "uint64",                # NC_UINT64
+    "f4", "f", "float32",          # NC_FLOAT
+    "f8", "d", "float64", "float"  # NC_DOUBLE
 ]
-NCComplexDatatype: TypeAlias = Union[CompoundType, VLType, EnumType]
-Datatype: TypeAlias = Union[DatatypeCode, NCComplexDatatype, npt.DTypeLike]
-T_Datatype = TypeVar("T_Datatype", bound=Datatype)
-T_DatatypeNC = TypeVar("T_DatatypeNC", CompoundType, VLType, EnumType)
+# fmt: on
+ComplexTypeLiteral: TypeAlias = Literal["c8", "c16", "complex64", "complex128"]
+NumericTypeLiteral: TypeAlias = RealTypeLiteral | ComplexTypeLiteral
+CharTypeLiteral: TypeAlias = Literal["S1", "c"]  # NC_CHAR
+TypeLiteral: TypeAlias = NumericTypeLiteral | CharTypeLiteral
+
+# Numpy types
+NumPyRealType: TypeAlias = (
+    np.int8 | np.uint8 | np.int16 | np.uint16 | np.int32 | np.uint32 | np.int64 | np.uint64 | np.float16 | np.float32
+)
+NumPyComplexType: TypeAlias = np.complex64 | np.complex128
+NumPyNumericType: TypeAlias = NumPyRealType | NumPyComplexType
+# Classes that can create instances of NetCDF user-defined types
+NetCDFUDTClass: TypeAlias = CompoundType | VLType | EnumType
+# Possible argument types for the datatype argument used in Variable creation.
+DatatypeSpecifier: TypeAlias = (
+    TypeLiteral | np.dtype[NumPyNumericType | np.str_] | type[int | float | NumPyNumericType | str | np.str_] | NetCDFUDTClass
+)
+
+VarT = TypeVar("VarT")
+NumericVarT = TypeVar("NumericVarT", bound=NumPyNumericType)
 
 DimensionsSpecifier: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
 CompressionType: TypeAlias = Literal["zlib", "szip", "zstd", "blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"]
@@ -221,10 +249,10 @@ class Dataset:
     def createDimension(self, dimname: str, size: int | None = None) -> Dimension: ...
     def renameDimension(self, oldname: str, newname: str) -> None: ...
     @overload
-    def createVariable(  # type: ignore
+    def createVariable(
         self,
         varname: str,
-        datatype: T_DatatypeNC,
+        datatype: np.dtype[NumericVarT] | type[NumericVarT],
         dimensions: DimensionsSpecifier = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
@@ -242,12 +270,12 @@ class Dataset:
         quantize_mode: QuantizeMode = "BitGroom",
         fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
-    ) -> Variable[T_DatatypeNC]: ...
+    ) -> Variable[NumericVarT]: ...
     @overload
     def createVariable(
         self,
         varname: str,
-        datatype: DatatypeCode | npt.DTypeLike,
+        datatype: np.dtype[np.str_] | type[str | np.str_],
         dimensions: DimensionsSpecifier = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
@@ -265,7 +293,30 @@ class Dataset:
         quantize_mode: QuantizeMode = "BitGroom",
         fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
-    ) -> Variable[np.dtype]: ...
+    ) -> Variable[str]: ...
+    @overload
+    def createVariable(
+        self,
+        varname: str,
+        datatype: DatatypeSpecifier,
+        dimensions: DimensionsSpecifier = (),
+        compression: CompressionType | None = None,
+        zlib: bool = False,
+        complevel: CompressionLevel | None = 4,
+        shuffle: bool = True,
+        szip_coding: Literal["nn", "ec"] = "nn",
+        szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
+        blosc_shuffle: Literal[0, 1, 2] = 1,
+        fletcher32: bool = False,
+        contiguous: bool = False,
+        chunksizes: int | None = None,
+        endian: EndianType = "native",
+        least_significant_digit: int | None = None,
+        significant_digits: int | None = None,
+        quantize_mode: QuantizeMode = "BitGroom",
+        fill_value: int | float | str | bytes | Literal[False] | None = None,
+        chunk_cache: int | None = None,
+    ) -> Variable: ...
     def renameVariable(self, oldname: str, newname: str) -> None: ...
     def createGroup(self, groupname: str) -> Group: ...
     def renameGroup(self, oldname: str, newname: str) -> None: ...
@@ -325,13 +376,14 @@ class Dimension:
     def isunlimited(self) -> bool: ...
     def __len__(self) -> int: ...
 
-class Variable(Generic[T_Datatype]):
+class Variable(Generic[VarT]):
+    # Overloads of __new__ are provided for some cases where the Variable's type may be statically inferred from the datatype arg
     @overload
     def __new__(
         cls,
         grp: Dataset,
         name: str,
-        datatype: T_DatatypeNC,
+        datatype: np.dtype[NumericVarT] | type[NumericVarT],
         dimensions: DimensionsSpecifier = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
@@ -350,13 +402,13 @@ class Variable(Generic[T_Datatype]):
         fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any,
-    ) -> Variable[T_DatatypeNC]: ...
+    ) -> Variable[NumericVarT]: ...
     @overload
     def __new__(
         cls,
         grp: Dataset,
         name: str,
-        datatype: DatatypeCode | npt.DTypeLike,
+        datatype: np.dtype[np.str_] | type[str | np.str_],
         dimensions: DimensionsSpecifier = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
@@ -375,12 +427,37 @@ class Variable(Generic[T_Datatype]):
         fill_value: int | float | str | bytes | Literal[False] | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any,
-    ) -> Variable[np.dtype]: ...
+    ) -> Variable[str]: ...
+    @overload
+    def __new__(
+        cls,
+        grp: Dataset,
+        name: str,
+        datatype: DatatypeSpecifier,
+        dimensions: DimensionsSpecifier = (),
+        compression: CompressionType | None = None,
+        zlib: bool = False,
+        complevel: CompressionLevel | None = 4,
+        shuffle: bool = True,
+        szip_coding: Literal["nn", "ec"] = "nn",
+        szip_pixels_per_block: Literal[4, 8, 16, 32] = 8,
+        blosc_shuffle: Literal[0, 1, 2] = 1,
+        fletcher32: bool = False,
+        contiguous: bool = False,
+        chunksizes: Sequence[int] | None = None,
+        endian: EndianType = "native",
+        least_significant_digit: int | None = None,
+        significant_digits: int | None = None,
+        quantize_mode: QuantizeMode = "BitGroom",
+        fill_value: int | float | str | bytes | Literal[False] | None = None,
+        chunk_cache: int | None = None,
+        **kwargs: Any,
+    ) -> Variable: ...
     def __init__(
         self,
         grp: Dataset,
         name: str,
-        datatype: T_Datatype,
+        datatype: DatatypeSpecifier,
         dimensions: DimensionsSpecifier = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
@@ -405,7 +482,7 @@ class Variable(Generic[T_Datatype]):
     @property
     def dtype(self) -> np.dtype | type[str]: ...
     @property
-    def datatype(self) -> T_Datatype: ...
+    def datatype(self) -> np.dtype | NetCDFUDTClass: ...
     @property
     def shape(self) -> tuple[int, ...]: ...
     @property
