@@ -110,9 +110,15 @@ NumPyComplexType: TypeAlias = np.complex64 | np.complex128
 NumPyNumericType: TypeAlias = NumPyRealType | NumPyComplexType
 # Classes that can create instances of NetCDF user-defined types
 NetCDFUDTClass: TypeAlias = CompoundType | VLType | EnumType
-# Possible argument types for the datatype argument used in Variable creation.
+# Possible argument types for the datatype argument used in Variable creation. At this time, it is not possible to allow unknown
+# strings arguments in the datatype field but exclude and string literals that are not one of `TypeLiteral`, so really
+# `TypeLiteral` is made irrelevant, except for anyone who looks at this file.
 DatatypeSpecifier: TypeAlias = (
-    TypeLiteral | np.dtype[NumPyNumericType | np.str_] | type[int | float | NumPyNumericType | str | np.str_] | NetCDFUDTClass
+    TypeLiteral
+    | str
+    | np.dtype[NumPyNumericType | np.str_]
+    | type[int | float | NumPyNumericType | str | np.str_]
+    | NetCDFUDTClass
 )
 
 VarT = TypeVar("VarT")
