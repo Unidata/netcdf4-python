@@ -52,6 +52,7 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(np.arange(0,nx),f.variables['x'][:])
         varin = f.variables['data']
         datin = varin[:]
+        assert isinstance(data, np.ma.masked_array)
         assert_array_equal(datin.mask,data.mask)
         varin.set_auto_maskandscale(False)
         data2 = data.filled()
