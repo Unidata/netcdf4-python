@@ -104,7 +104,7 @@ TypeLiteral: TypeAlias = NumericTypeLiteral | CharTypeLiteral
 
 # Numpy types
 NumPyRealType: TypeAlias = (
-    np.int8 | np.uint8 | np.int16 | np.uint16 | np.int32 | np.uint32 | np.int64 | np.uint64 | np.float16 | np.float32
+    np.int8 | np.uint8 | np.int16 | np.uint16 | np.int32 | np.uint32 | np.int64 | np.uint64 | np.float16 | np.float32 | np.float64
 )
 NumPyComplexType: TypeAlias = np.complex64 | np.complex128
 NumPyNumericType: TypeAlias = NumPyRealType | NumPyComplexType
