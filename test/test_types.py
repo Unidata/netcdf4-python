@@ -52,10 +52,11 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         for typ in datatypes:
             data = f.variables['data_'+typ]
             data.set_auto_maskandscale(False)
-            datarr = data[1:n1dim]
+            datarr: np.ndarray = data[1:n1dim]
             # fill missing data with _FillValue
             # ('S1' array will have some missing values)
             if hasattr(datarr, 'mask'):
+                assert isinstance(datarr, np.ma.masked_array)
                 datarr = datarr.filled()
             datfilled = data[0]
             # check to see that data type is correct
