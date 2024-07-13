@@ -1,9 +1,10 @@
-import sys
-import unittest
 import os
 import tempfile
-from netCDF4 import Dataset
+import unittest
+
+import netCDF4
 import numpy as np
+from netCDF4 import Dataset, EnumType
 from numpy.testing import assert_array_equal
 
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -26,7 +27,7 @@ class EnumTestCase(unittest.TestCase):
         cloud_type = f.createEnumType(ENUM_BASETYPE,ENUM_NAME,ENUM_DICT)
         # make sure KeyError raised if non-integer basetype used.
         try:
-            cloud_typ2 = f.createEnumType(np.float32,ENUM_NAME,ENUM_DICT)
+            cloud_typ2 = f.createEnumType(np.float32,ENUM_NAME,ENUM_DICT)  # type: ignore
         except KeyError:
             pass
         f.createDimension('time',None)
@@ -49,6 +50,7 @@ class EnumTestCase(unittest.TestCase):
         """testing enum data type"""
         f = Dataset(self.file, 'r')
         v = f.variables[VAR_NAME]
+        assert isinstance(v.datatype, EnumType)
         assert v.datatype.enum_dict == ENUM_DICT
         assert list(f.enumtypes.keys()) == [ENUM_NAME]
         assert f.enumtypes[ENUM_NAME].name == ENUM_NAME # issue 775
@@ -69,9 +71,9 @@ class EnumDictTestCase(unittest.TestCase):
         DT = np.int16; BITS = 8
         self.STORED_VAL = DT(2**BITS)
         self.VAL_MAP = {f'bits_{n}': DT(2**n) for n in range(1,BITS+1)}
-        self.VAL_MAP['invalid'] = 0
+        self.VAL_MAP['invalid'] = DT(0)
         self.file = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
-        with netCDF4.Dataset(file, 'w') as nc:
+        with netCDF4.Dataset(self.file, 'w') as nc:
             # The enum is created with dtype=int16, so it will allow BITS values up to 15
             et = nc.createEnumType(DT, 'etype', self.VAL_MAP)
             ev = nc.createVariable('evar', et)
@@ -80,10 +82,11 @@ class EnumDictTestCase(unittest.TestCase):
         def tearDown(self):
             os.remove(self.file)
         def runTest(self):
-            with netCDF4.Dataset(file, 'r') as nc:
+            with netCDF4.Dataset(self.file, 'r') as nc:
                 read_var = nc['evar']
-                assert read_var[...] == self.STORED_VAL 
-                assert read_et.enum_dict == self.VAL_MAP 
+                read_et = nc.enumtypes["etype"]
+                assert read_var[...] == self.STORED_VAL
+                assert read_et.enum_dict == self.VAL_MAP
 
 if __name__ == '__main__':
     unittest.main()
