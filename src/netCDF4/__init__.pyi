@@ -140,13 +140,31 @@ BoolInt: TypeAlias = Literal[0, 1]
 DateTimeArray: TypeAlias = npt.NDArray[np.object_]
 """numpy array of datetime.datetime or cftime.datetime"""
 
+# netCDF accepts floats that can be cooerced to an integer value, and sometimes strings that can be coerced to an integer value.
+# There's currently no way to specify this statically, so we allow all floats and strings.
+# Also, we have to specify all the possible combinations of list[...] because lists are invariant.
 GetSetItemKey: TypeAlias = (
     int
+    | float
+    | np.number
     | slice
     | ellipsis
+    | list[int]
+    | list[float]
+    | list[bool]
+    | list[str]  # strs that can be cooerced to ints
+    | list[int | float]
     | list[int | bool]
-    | npt.NDArray[np.integer | np.bool_]
-    | tuple[int | slice | ellipsis | Sequence[int | bool] | npt.NDArray[np.integer | np.bool_], ...]
+    | list[int | str]
+    | list[float | bool]
+    | list[float | str]
+    | list[bool | str]
+    | list[int | float | bool | str]
+    | npt.NDArray[np.number | np.bool_]
+    | tuple[
+        int | float | str | slice | ellipsis | Sequence[int] | Sequence[bool] | npt.NDArray[np.number | np.bool_],
+        ...,
+    ]
 )
 
 class BloscInfo(TypedDict):
