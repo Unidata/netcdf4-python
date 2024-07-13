@@ -45,7 +45,7 @@ class VectorMissingValues(unittest.TestCase):
         f = Dataset(self.testfile)
         v = f.variables["v"]
         v2 = f.variables["v2"]
-        self.assertTrue(isinstance(v[:], ma.core.MaskedArray))
+        self.assertTrue(isinstance(v[:], ma.masked_array))
         assert_array_equal(v[:], self.v_ma)
         assert_array_equal(v[2],self.v[2]) # issue #624.
         v.set_auto_mask(False)
