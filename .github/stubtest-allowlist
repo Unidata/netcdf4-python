@@ -26,8 +26,11 @@ netCDF4.BoolInt
 netCDF4.GetSetItemKey
 netCDF4.VarT
 netCDF4.NumericVarT
-netCDF4.Dataset
+netCDF4.Dimension.__reduce_cython__
+netCDF4.Dimension.__setstate_cython__
 netCDF4.Variable.auto_complex
+netCDF4._netCDF4.Dimension.__reduce_cython__
+netCDF4._netCDF4.Dimension.__setstate_cython__
 netCDF4._netCDF4.NC_DISKLESS
 netCDF4._netCDF4.NC_PERSIST
 netCDF4._netCDF4.Variable.auto_complex
