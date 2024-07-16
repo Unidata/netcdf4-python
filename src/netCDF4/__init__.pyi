@@ -217,21 +217,21 @@ default_fillvals: dict[str, int | float | str]
 def date2index(
     dates: dt.datetime | cftime.datetime | Sequence[dt.datetime | cftime.datetime] | DateTimeArray,
     nctime: Variable,
-    calendar: CalendarType | None = None,
+    calendar: CalendarType | str | None = None,
     select: Literal["exact", "before", "after", "nearest"] = "exact",
     has_year_zero: bool | None = None,
 ) -> int | npt.NDArray[np.int_]: ...
 def date2num(
     dates: dt.datetime | cftime.datetime | Sequence[dt.datetime | cftime.datetime] | DateTimeArray,
     units: str,
-    calendar: CalendarType | None = None,
+    calendar: CalendarType | str | None = None,
     has_year_zero: bool | None = None,
     longdouble: bool = False,
 ) -> np.number | npt.NDArray[np.number]: ...
 def num2date(
     times: Sequence[int | float | np.number] | npt.NDArray[np.number],
     units: str,
-    calendar: CalendarType = "standard",
+    calendar: CalendarType | str = "standard",
     only_use_cftime_datetimes: bool = True,
     only_use_python_datetimes: bool = False,
     has_year_zero: bool | None = None,
@@ -246,9 +246,9 @@ class Dataset:
     def __init__(
         self,
         filename: str | os.PathLike,
-        mode: AccessMode = "r",
+        mode: AccessMode | str = "r",
         clobber: bool = True,
-        format: Format = "NETCDF4",
+        format: Format | str = "NETCDF4",
         diskless: bool = False,
         persist: bool = False,
         keepweakref: bool = False,
@@ -316,7 +316,7 @@ class Dataset:
         fletcher32: Any = False,
         contiguous: Any = False,
         chunksizes: int | None = None,
-        endian: EndianType = "native",
+        endian: EndianType | str = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode | str = "BitGroom",
@@ -339,7 +339,7 @@ class Dataset:
         fletcher32: Any = False,
         contiguous: Any = False,
         chunksizes: int | None = None,
-        endian: EndianType = "native",
+        endian: EndianType | str = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode | str = "BitGroom",
@@ -362,7 +362,7 @@ class Dataset:
         fletcher32: Any = False,
         contiguous: Any = False,
         chunksizes: int | None = None,
-        endian: EndianType = "native",
+        endian: EndianType | str = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode | str = "BitGroom",
@@ -398,7 +398,7 @@ class Dataset:
     def get_variables_by_attributes(self, **kwargs: Callable[[Any], bool] | Any) -> list[Variable]: ...
     @staticmethod
     def fromcdl(
-        cdlfilename: str, ncfilename: str | None = None, mode: AccessMode = "a", format: Format = "NETCDF4"
+        cdlfilename: str, ncfilename: str | None = None, mode: AccessMode | str = "a", format: Format | str = "NETCDF4"
     ) -> Dataset: ...
     @overload
     def tocdl(self, coordvars: bool = False, data: bool = False, outfile: None = None) -> str: ...
@@ -449,7 +449,7 @@ class Variable(Generic[VarT]):
         fletcher32: Any = False,
         contiguous: Any = False,
         chunksizes: Sequence[int] | None = None,
-        endian: EndianType = "native",
+        endian: EndianType | str = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode | str = "BitGroom",
@@ -474,7 +474,7 @@ class Variable(Generic[VarT]):
         fletcher32: Any = False,
         contiguous: Any = False,
         chunksizes: Sequence[int] | None = None,
-        endian: EndianType = "native",
+        endian: EndianType | str = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode | str = "BitGroom",
@@ -499,7 +499,7 @@ class Variable(Generic[VarT]):
         fletcher32: Any = False,
         contiguous: Any = False,
         chunksizes: Sequence[int] | None = None,
-        endian: EndianType = "native",
+        endian: EndianType | str = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode | str = "BitGroom",
@@ -523,7 +523,7 @@ class Variable(Generic[VarT]):
         fletcher32: Any = False,
         contiguous: Any = False,
         chunksizes: Sequence[int] | None = None,
-        endian: EndianType = "native",
+        endian: EndianType | str = "native",
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode | str = "BitGroom",
@@ -673,7 +673,7 @@ class MFTime(_Variable):
     calendar: CalendarType | None
     units: str | None
 
-    def __init__(self, time: Variable, units: str | None = None, calendar: CalendarType | None = None): ...
+    def __init__(self, time: Variable, units: str | None = None, calendar: CalendarType | str | None = None): ...
     def __getitem__(self, elem: GetSetItemKey) -> np.ndarray: ...
 
 @overload
