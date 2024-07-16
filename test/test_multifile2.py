@@ -107,8 +107,8 @@ class NonuniformTimeTestCase(unittest.TestCase):
         # Get the real dates
         # skip this until cftime pull request #55 is in a released
         # version (1.0.1?). Otherwise, fix for issue #808 breaks this
+        dates = []
         if Version(cftime.__version__) >= Version('1.0.1'):
-            dates = []
             for file in self.files:
                 f = Dataset(file)
                 t = f.variables['time']

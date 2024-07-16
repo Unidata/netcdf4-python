@@ -74,7 +74,7 @@ class VariablesTestCase(unittest.TestCase):
         # testing multi-file get_variables_by_attributes
         f = MFDataset(self.files,check=True)
         assert f.get_variables_by_attributes(axis='T') == []
-        f.get_variables_by_attributes(units='zlotys')[0] == f['x']
+        assert f.get_variables_by_attributes(units='zlotys')[0] == f['x']
         assert f.isopen()
         f.close()
         assert not f.isopen()
