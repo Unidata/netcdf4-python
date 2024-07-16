@@ -122,6 +122,8 @@ DatatypeSpecifier: TypeAlias = (
 )
 
 VarT = TypeVar("VarT")
+RealVarT = TypeVar("RealVarT", bound=NumPyRealType)
+ComplexVarT = TypeVar("ComplexVarT", bound=NumPyComplexType)
 NumericVarT = TypeVar("NumericVarT", bound=NumPyNumericType)
 
 DimensionsSpecifier: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
@@ -430,6 +432,28 @@ class Dimension:
     def isunlimited(self) -> bool: ...
     def __len__(self) -> int: ...
 
+class _VarDatatypeProperty:
+    # A descriptor definition of the property to allow overloads
+    @overload
+    def __get__(self, instance: Variable[RealVarT], owner: Any) -> RealVarT: ...
+    @overload
+    def __get__(self, instance: Variable[ComplexVarT], owner: Any) -> CompoundType: ...
+    @overload
+    def __get__(self, instance: Variable[str], owner: Any) -> VLType: ...
+    @overload
+    def __get__(
+        self, instance: Variable[Any], owner: Any
+    ) -> Any: ...  # actual return type np.dtype | CompoundType | VLType | EnumType
+
+class _VarDtypeProperty:
+    # A descriptor definition of the property to allow overloads
+    @overload
+    def __get__(self, instance: Variable[NumericVarT], owner: Any) -> np.dtype[NumericVarT]: ...
+    @overload
+    def __get__(self, instance: Variable[str], owner: Any) -> type[str]: ...
+    @overload
+    def __get__(self, instance: Variable[Any], owner: Any) -> Any: ...  # actual return type np.dtype | Type[str]
+
 class Variable(Generic[VarT]):
     # Overloads of __new__ are provided for some cases where the Variable's type may be statically inferred from the datatype arg
     @overload
@@ -531,12 +555,10 @@ class Variable(Generic[VarT]):
         chunk_cache: int | None = None,
         **kwargs: Any,
     ) -> None: ...
+    datatype: _VarDatatypeProperty
+    dtype: _VarDtypeProperty
     @property
     def name(self) -> str: ...
-    @property
-    def dtype(self) -> Any: ...  # actually np.dtype | type[str]
-    @property
-    def datatype(self) -> Any: ...  # Actually np.dtype | NetCDFUDTClass
     @property
     def shape(self) -> tuple[int, ...]: ...
     @property

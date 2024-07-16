@@ -25,6 +25,8 @@ netCDF4.BloscInfo
 netCDF4.BoolInt
 netCDF4.GetSetItemKey
 netCDF4.VarT
+netCDF4.RealVarT
+netCDF4.ComplexVarT
 netCDF4.NumericVarT
 netCDF4.Dimension.__reduce_cython__
 netCDF4.Dimension.__setstate_cython__
