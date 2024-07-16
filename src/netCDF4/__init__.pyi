@@ -536,7 +536,7 @@ class Variable(Generic[VarT]):
     @property
     def dtype(self) -> Any: ...  # actually np.dtype | type[str]
     @property
-    def datatype(self) -> np.dtype | NetCDFUDTClass: ...
+    def datatype(self) -> Any: ...  # Actually np.dtype | NetCDFUDTClass
     @property
     def shape(self) -> tuple[int, ...]: ...
     @property
