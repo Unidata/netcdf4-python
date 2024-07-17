@@ -27,7 +27,7 @@ class EnumTestCase(unittest.TestCase):
         cloud_type = f.createEnumType(ENUM_BASETYPE,ENUM_NAME,ENUM_DICT)
         # make sure KeyError raised if non-integer basetype used.
         try:
-            cloud_typ2 = f.createEnumType(np.float32,ENUM_NAME,ENUM_DICT)  # type: ignore
+            cloud_typ2 = f.createEnumType(np.float32,ENUM_NAME,ENUM_DICT)  # type: ignore  # mypy correctly doesn't like float32
         except KeyError:
             pass
         f.createDimension('time',None)
