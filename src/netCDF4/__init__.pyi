@@ -435,7 +435,7 @@ class Dimension:
     def __len__(self) -> int: ...
 
 class _VarDatatypeProperty:
-    # A descriptor definition of the property to allow overloads
+    # A faux descriptor definition of the property to allow overloads
     @overload
     def __get__(self, instance: Variable[RealVarT], owner: Any) -> RealVarT: ...
     @overload
@@ -448,7 +448,7 @@ class _VarDatatypeProperty:
     ) -> Any: ...  # actual return type np.dtype | CompoundType | VLType | EnumType
 
 class _VarDtypeProperty:
-    # A descriptor definition of the property to allow overloads
+    # A faux descriptor definition of the property to allow overloads
     @overload
     def __get__(self, instance: Variable[NumericVarT], owner: Any) -> np.dtype[NumericVarT]: ...
     @overload
