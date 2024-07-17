@@ -149,13 +149,14 @@ DateTimeArray: TypeAlias = npt.NDArray[np.object_]
 GetSetItemKey: TypeAlias = (
     int
     | float
+    | str  # strs that can be cooerced to ints
     | np.number
     | slice
     | ellipsis
     | list[int]
     | list[float]
     | list[bool]
-    | list[str]  # strs that can be cooerced to ints
+    | list[str]
     | list[int | float]
     | list[int | bool]
     | list[int | str]
