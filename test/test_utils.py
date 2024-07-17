@@ -53,7 +53,7 @@ class TestgetStartCountStride(unittest.TestCase):
 
 
         try:
-            elem = ( np.arange(6).reshape((3,2)), slice(None), slice(None) )
+            elem = ( np.arange(6).reshape((3,2)), slice(None), slice(None) )  # type: ignore  # mypy doesn't like redefinition of elem here
             start, count, stride, put_ind = _StartCountStride(elem, (3,4,5))
         except IndexError:
             pass
@@ -90,7 +90,7 @@ class TestgetStartCountStride(unittest.TestCase):
         start, count, stride, put_ind = _StartCountStride(elem, (3,4,5))
         orig = np.arange(60).reshape((3,4,5))
         dest = np.empty(_out_array_shape(count))
-        dest[tuple(put_ind[0,0,0])] = orig[tuple(elem)]
+        dest[tuple(put_ind[0,0,0])] = orig[tuple(elem)]  # type: ignore  # mypy doesn't like indexing of orig, but it's OK
 
     def test_boolean(self):
         elem = (1, slice(None), np.array([True, True, False, False, True]))
@@ -198,14 +198,14 @@ class TestgetStartCountStride(unittest.TestCase):
         assert_equal(put_ind[0,0,0,0,0], (slice(None), slice(None), slice(None), slice(None), slice(None)))
 
         try:
-            elem=(Ellipsis, [15,16,17,18,19], slice(None))
+            elem=(Ellipsis, [15,16,17,18,19], slice(None))  # type: ignore  # mypy doesn't like redefinition of elem here
             start, count, stride, put_ind = _StartCountStride(elem, (2,10,20,10,10))
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:
             assert_equal(str(e), "integer index exceeds dimension size")
 
         try:
-            elem=(Ellipsis, [15,16,17,18,19], Ellipsis)
+            elem=(Ellipsis, [15,16,17,18,19], Ellipsis)  # type: ignore  # mypy doesn't like redefinition of elem here
             start, count, stride, put_ind = _StartCountStride(elem, (2,10, 20,10,10))
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:
@@ -303,7 +303,7 @@ class TestsetStartCountStride(unittest.TestCase):
         assert_equal(take_ind[0,0,0,0,0], (slice(None), slice(None), slice(None), slice(None), slice(None)))
 
         try:
-            elem=(Ellipsis, [15,16,17,18,19], slice(None))
+            elem=(Ellipsis, [15,16,17,18,19], slice(None))  # type: ignore  # mypy doesn't like redefinition of elem here
             start, count, stride, take_ind = _StartCountStride(elem, (2,10,20,10,10),\
                ['time', 'z', 'y', 'x'], grp, (2,10,5,10,10), put=True)
             assert_equal(None, 'Should throw an exception')
@@ -312,7 +312,7 @@ class TestsetStartCountStride(unittest.TestCase):
             assert_equal(str(e), "list index out of range")
 
         try:
-            elem=(Ellipsis, [15,16,17,18,19], Ellipsis)
+            elem=(Ellipsis, [15,16,17,18,19], Ellipsis)  # type: ignore  # mypy doesn't like redefinition of elem here
             start, count, stride, take_ind = _StartCountStride(elem, (2,10, 20,10,10),\
                ['time', 'z', 'y', 'x'], grp, (2,10,5,10,10), put=True)
             assert_equal(None, 'Should throw an exception')
