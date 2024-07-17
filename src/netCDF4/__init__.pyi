@@ -36,6 +36,7 @@ from typing import (
     Final,
     Generic,
     Iterable,
+    Iterator,
     Literal,
     Mapping,
     NoReturn,
@@ -611,6 +612,7 @@ class Variable(Generic[VarT]):
     def __setitem__(self, elem: GetSetItemKey, data: npt.ArrayLike) -> None: ...
     def __array__(self) -> np.ndarray: ...
     def __len__(self) -> int: ...
+    def __iter__(self) -> Iterator[Any]: ...  # faux method so mypy believes Variable is iterable
 
 class CompoundType:
     dtype: np.dtype
