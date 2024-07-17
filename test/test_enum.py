@@ -66,6 +66,7 @@ class EnumTestCase(unittest.TestCase):
         f.close()
 
 class EnumDictTestCase(unittest.TestCase):
+
     # issue 1128
     def setUp(self):
         DT = np.int16; BITS = 8
@@ -79,14 +80,16 @@ class EnumDictTestCase(unittest.TestCase):
             ev = nc.createVariable('evar', et)
             # Succeeds because the created EnumType does keep the correct dict
             ev[...] = self.STORED_VAL
-        def tearDown(self):
-            os.remove(self.file)
-        def runTest(self):
-            with netCDF4.Dataset(self.file, 'r') as nc:
-                read_var = nc['evar']
-                read_et = nc.enumtypes["etype"]
-                assert read_var[...] == self.STORED_VAL
-                assert read_et.enum_dict == self.VAL_MAP
+
+    def tearDown(self):
+        os.remove(self.file)
+
+    def runTest(self):
+        with netCDF4.Dataset(self.file, 'r') as nc:
+            read_var = nc['evar']
+            read_et = nc.enumtypes["etype"]
+            assert read_var[...] == self.STORED_VAL
+            assert read_et.enum_dict == self.VAL_MAP
 
 if __name__ == '__main__':
     unittest.main()
