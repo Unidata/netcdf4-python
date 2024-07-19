@@ -14,7 +14,7 @@ __all__ = [
     'Dataset', 'Variable', 'Dimension', 'Group', 'MFDataset', 'MFTime', 'CompoundType',
     'VLType', 'date2num', 'num2date', 'date2index', 'stringtochar', 'chartostring',
     'stringtoarr', 'getlibversion', 'EnumType', 'get_chunk_cache', 'set_chunk_cache',
-    'set_alignment', 'get_alignment'
+    'set_alignment', 'get_alignment', 'rc_get', 'rc_set',
 ]
 __pdoc__ = {'utils': False}
 
@@ -87,6 +87,7 @@ __has_blosc_support__: BoolInt
 __has_szip_support__: BoolInt
 __has_set_alignment__: BoolInt
 __has_ncfilter__: BoolInt
+__has_nc_rc_set__: BoolInt
 is_native_little: bool
 is_native_big: bool
 default_encoding: Final = 'utf-8'
@@ -624,6 +625,8 @@ def chartostring(
 ) -> npt.NDArray[np.str_] | npt.NDArray[np.bytes_]: ...
 
 def getlibversion() -> str: ...
+def rc_get(key: str) -> str | None: ...
+def rc_set(key: str, value: str)-> None: ...
 
 def set_alignment(threshold: int, alignment: int): ...
 def get_alignment() -> tuple[int, int]: ...
