@@ -41,7 +41,7 @@ class StringArrayTestCase(unittest.TestCase):
         v2[:-1] = data[:-1]
         v2[-1] = data[-1]
         v2[-1,-1] = data[-1,-1] # write single element
-        v2[-1,-1] = data[-1,-1].tostring() # write single python string
+        v2[-1,-1] = data[-1,-1].tobytes() # write single python string
         # _Encoding should be ignored if an array of characters is specified
         v3[:] = stringtochar(data, encoding='ascii')
         nc.close()

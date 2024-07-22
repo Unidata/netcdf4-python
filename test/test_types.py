@@ -68,7 +68,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
                 #assert np.allclose(datarr, ranarr[1:n1dim].astype(data.dtype))
                 assert_array_almost_equal(datarr,ranarr[1:n1dim].astype(data.dtype))
             else:
-                assert datarr.tostring() == ranarr[1:n1dim].astype(data.dtype).tostring()
+                assert datarr.tobytes() == ranarr[1:n1dim].astype(data.dtype).tobytes()
             # check that variable elements not yet written are filled
             # with the specified _FillValue.
             assert_array_equal(datfilled,np.asarray(data._FillValue,datfilled.dtype))
