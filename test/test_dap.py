@@ -7,7 +7,7 @@ import os
 
 # test accessing data over http with opendap.
 
-yesterday = datetime.utcnow() - timedelta(days=1)
+yesterday = datetime.now() - timedelta(days=1)
 URL = f'http://nomads.ncep.noaa.gov/dods/gfs_1p00/gfs{yesterday:%Y%m%d}/gfs_1p00_00z'
 URL_https = 'https://www.neracoos.org/erddap/griddap/WW3_EastCoast_latest'
 varname = 'hgtsfc'
