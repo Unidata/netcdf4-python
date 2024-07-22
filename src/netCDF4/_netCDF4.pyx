@@ -5315,7 +5315,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
             # corresponds to missing values, don't fill masked array -
             # just use underlying data instead
             if hasattr(self, 'missing_value') and \
-               numpy.all(numpy.in1d(data.data[data.mask],self.missing_value)):
+               numpy.all(numpy.isin(data.data[data.mask],self.missing_value)):
                 data = data.data
             else:
                 if hasattr(self, 'missing_value'):
