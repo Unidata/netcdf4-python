@@ -77,6 +77,10 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["test"]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+]
 
 [tool.mypy]
 files = ["src/netCDF4"]
