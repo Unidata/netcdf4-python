@@ -45,7 +45,7 @@ jobs:
 
     - name: Tests
       run: |
-        cd test && python run_all.py
+        pytest -s -rxs -v test
 
   run-mpi:
     runs-on: ${{ matrix.os }}
