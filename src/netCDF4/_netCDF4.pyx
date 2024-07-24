@@ -1,4 +1,4 @@
-"""Version 1.7.1
+"""Version 1.7.2
 -------------
 
 # Introduction
@@ -1272,7 +1272,7 @@ import sys
 import functools
 from typing import Union
 
-__version__ = "1.7.1.post1"
+__version__ = "1.7.2"
 
 # Initialize numpy
 import posixpath
@@ -1308,14 +1308,60 @@ __has_blosc_support__ = HAS_BLOSC_SUPPORT
 __has_szip_support__ = HAS_SZIP_SUPPORT
 __has_set_alignment__ = HAS_SET_ALIGNMENT
 __has_ncfilter__ = HAS_NCFILTER
+__has_nc_rc_set__ = HAS_NCRCSET
 
 
 # set path to SSL certificates (issue #1246)
 # available starting in version 4.9.1
-if HAS_NCRCSET:
+if __has_nc_rc_set__:
     import certifi
     if nc_rc_set("HTTP.SSL.CAINFO", _strencode(certifi.where())) != 0:
         raise RuntimeError('error setting path to SSL certificates')
+
+def rc_get(key):
+    """
+**```rc_get(key)```**
+
+Returns the internal netcdf-c rc table value corresponding to key.
+    """
+    cdef int ierr
+    cdef char *keyc
+    cdef char *valc
+    if __has_nc_rc_set__:
+        bytestr = _strencode(_tostr(key))
+        keyc = bytestr
+        valc = <char *>nc_rc_get(keyc)
+        if valc is NULL:
+            return None
+        else:
+            return valc.decode('utf-8')
+    else:
+        raise RuntimeError(
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
+        )
+
+def rc_set(key, value):
+    """
+**```rc_set(key, value)```**
+
+Sets the internal netcdf-c rc table value corresponding to key.
+    """
+    cdef int ierr
+    cdef char *keyc
+    cdef char *valuec
+    if __has_nc_rc_set__:
+        key_bytestr = _strencode(_tostr(key))
+        keyc = key_bytestr
+        val_bytestr = _strencode(_tostr(value))
+        valuec = val_bytestr
+        with nogil:
+            ierr = nc_rc_set(keyc,valuec)
+        _ensure_nc_success(ierr)
+    else:
+        raise RuntimeError(
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
+        )
+
 
 
 # check for required version of netcdf-4 and hdf5.
@@ -1330,7 +1376,7 @@ def _gethdf5libversion():
 
 def getlibversion():
     """
-**`getlibversion()`**
+**```getlibversion()```**
 
 returns a string describing the version of the netcdf library
 used to build the module, and when it was built.
@@ -1339,7 +1385,7 @@ used to build the module, and when it was built.
 
 def get_chunk_cache():
     """
-**`get_chunk_cache()`**
+**```get_chunk_cache()```**
 
 return current netCDF chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for `nc_get_chunk_cache` for
@@ -1355,7 +1401,7 @@ details. Values can be reset with `set_chunk_cache`."""
 
 def set_chunk_cache(size=None,nelems=None,preemption=None):
     """
-**`set_chunk_cache(self,size=None,nelems=None,preemption=None)`**
+**```set_chunk_cache(size=None,nelems=None,preemption=None)```**
 
 change netCDF4 chunk cache settings.
 See netcdf C library documentation for `nc_set_chunk_cache` for
@@ -1383,7 +1429,7 @@ details."""
 
 
 def get_alignment():
-    """**`get_alignment()`**
+    """**```get_alignment()```**
 
     return current netCDF alignment within HDF5 files in a tuple
     (threshold,alignment). See netcdf C library documentation for
@@ -1394,7 +1440,7 @@ def get_alignment():
 
     if not __has_set_alignment__:
         raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
         )
 
     cdef int ierr
@@ -1407,7 +1453,7 @@ def get_alignment():
 
 
 def set_alignment(threshold, alignment):
-    """**`set_alignment(threshold,alignment)`**
+    """**```set_alignment(threshold,alignment)```**
 
     Change the HDF5 file alignment.
     See netcdf C library documentation for `nc_set_alignment` for
@@ -1417,7 +1463,7 @@ def set_alignment(threshold, alignment):
 
     if not __has_set_alignment__:
         raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
         )
 
     cdef int ierr
@@ -5269,7 +5315,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
             # corresponds to missing values, don't fill masked array -
             # just use underlying data instead
             if hasattr(self, 'missing_value') and \
-               numpy.all(numpy.in1d(data.data[data.mask],self.missing_value)):
+               numpy.all(numpy.isin(data.data[data.mask],self.missing_value)):
                 data = data.data
             else:
                 if hasattr(self, 'missing_value'):

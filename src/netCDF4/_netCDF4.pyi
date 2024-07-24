@@ -18,6 +18,7 @@ from . import (
     __has_nc_inq_format_extended__,
     __has_nc_inq_path__,
     __has_nc_open_mem__,
+    __has_nc_rc_set__,
     __has_ncfilter__,
     __has_parallel4_support__,
     __has_parallel_support__,
