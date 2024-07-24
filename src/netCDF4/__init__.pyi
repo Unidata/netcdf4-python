@@ -63,6 +63,8 @@ __all__ = [
     "VLType",
     "date2num",
     "num2date",
+    "rc_get",
+    "rc_set",
     "date2index",
     "stringtochar",
     "chartostring",

@@ -43,6 +43,8 @@ from . import (
     is_native_big,
     is_native_little,
     num2date,
+    rc_get,
+    rc_set,
     set_alignment,
     set_chunk_cache,
     stringtoarr,
