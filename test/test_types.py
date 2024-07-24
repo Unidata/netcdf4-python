@@ -14,7 +14,7 @@ FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 n1dim = 5
 n2dim = 10
 ranarr = 100.*uniform(size=(n1dim,n2dim))
-zlib=False;complevel=0;shuffle=0;least_significant_digit=None
+zlib=False;complevel=0;shuffle=False;least_significant_digit=None
 datatypes = ['f8','f4','i1','i2','i4','i8','u1','u2','u4','u8','S1']
 FillValue = 1.0
 issue273_data = np.ma.array(['z']*10,dtype='S1',\
@@ -82,7 +82,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         v2 = f.variables['issue273']
         assert type(v2._FillValue) == bytes
         assert v2._FillValue == b'\x00'
-        assert str(issue273_data) == str(v2[:]) 
+        assert str(issue273_data) == str(v2[:])
         # issue 707 (don't apply missing_value if cast to variable type is
         # unsafe)
         v3 = f.variables['issue707']
