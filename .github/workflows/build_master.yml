@@ -83,5 +83,5 @@ jobs:
     - name: Stubtest
       run: |
         stubtest netCDF4 --allowlist .github/stubtest-allowlist --mypy-config-file=pyproject.toml
-        mypy test --check-untyped-defs --allow-redefinition
-        mypy examples --check-untyped-defs --allow-redefinition
+        mypy test
+        mypy examples

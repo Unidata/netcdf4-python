@@ -80,6 +80,8 @@ pythonpath = ["test"]
 
 [tool.mypy]
 files = ["src/netCDF4"]
+check_untyped_defs = true
+allow_redefinition = true
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
