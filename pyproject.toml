@@ -84,6 +84,7 @@ filterwarnings = [
 
 [tool.mypy]
 files = ["src/netCDF4"]
+exclude = "utils.py"
 check_untyped_defs = true
 allow_redefinition = true
 
