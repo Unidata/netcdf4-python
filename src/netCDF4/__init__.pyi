@@ -153,24 +153,33 @@ DateTimeArray: TypeAlias = npt.NDArray[np.object_]
 GetSetItemKey: TypeAlias = (
     int
     | float
-    | str  # strs that can be cooerced to ints
     | np.number
+    | str
     | slice
     | ellipsis
     | list[int]
     | list[float]
-    | list[bool]
+    | list[np.number]
     | list[str]
-    | list[int | float]
-    | list[int | bool]
-    | list[int | str]
-    | list[float | bool]
-    | list[float | str]
-    | list[bool | str]
-    | list[int | float | bool | str]
-    | npt.NDArray[np.number | np.bool_]
+    | list[bool]
+    | list[np.bool_]
+    | npt.NDArray[np.number]
+    | npt.NDArray[np.bool_]
     | tuple[
-        int | float | str | slice | ellipsis | Sequence[int] | Sequence[bool] | npt.NDArray[np.number | np.bool_],
+        int
+        | float
+        | np.number
+        | str
+        | slice
+        | ellipsis
+        | Sequence[int]
+        | Sequence[float]
+        | Sequence[np.number]
+        | Sequence[str]
+        | Sequence[bool]
+        | Sequence[np.bool_]
+        | npt.NDArray[np.number]
+        | npt.NDArray[np.bool_],
         ...,
     ]
 )
