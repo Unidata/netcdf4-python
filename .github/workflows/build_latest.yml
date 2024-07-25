@@ -53,21 +53,21 @@ jobs:
 #     if: ${{ failure() }}
 #     run: |
 #       cd netcdf-c-${NETCDF_VERSION}
-#       cat config.log 
+#       cat config.log
 
     - name: Install python dependencies via pip
       run: |
         python -m pip install --upgrade pip
-        pip install numpy cython cftime pytest twine wheel check-manifest mpi4py
+        pip install numpy cython cftime pytest twine wheel check-manifest mpi4py typing-extensions
 
     - name: Install netcdf4-python
       run: |
-        export PATH=${NETCDF_DIR}/bin:${PATH} 
+        export PATH=${NETCDF_DIR}/bin:${PATH}
         export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c-${NETCDF_VERSION}/plugins/plugindir
         python setup.py install
     - name: Test
       run: |
-        export PATH=${NETCDF_DIR}/bin:${PATH} 
+        export PATH=${NETCDF_DIR}/bin:${PATH}
         python checkversion.py
         # serial
         cd test
@@ -98,9 +98,9 @@ jobs:
 
 #   - name: Tarball
 #     run: |
-#       export PATH=${NETCDF_DIR}/bin:${PATH} 
-#       python setup.py --version  
+#       export PATH=${NETCDF_DIR}/bin:${PATH}
+#       python setup.py --version
 #       check-manifest --version
-#       check-manifest --verbose 
-#       pip wheel . -w dist --no-deps 
-#       twine check dist/* 
+#       check-manifest --verbose
+#       pip wheel . -w dist --no-deps
+#       twine check dist/*
