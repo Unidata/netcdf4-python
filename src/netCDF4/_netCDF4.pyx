@@ -1323,6 +1323,8 @@ def rc_get(key):
 **```rc_get(key)```**
 
 Returns the internal netcdf-c rc table value corresponding to key.
+See <https://docs.unidata.ucar.edu/netcdf-c/current/auth.html>
+for more information on rc files and values.
     """
     cdef int ierr
     cdef char *keyc
@@ -1345,7 +1347,9 @@ def rc_set(key, value):
 **```rc_set(key, value)```**
 
 Sets the internal netcdf-c rc table value corresponding to key.
-    """
+See <https://docs.unidata.ucar.edu/netcdf-c/current/auth.html>
+for more information on rc files and values.
+"""
     cdef int ierr
     cdef char *keyc
     cdef char *valuec
