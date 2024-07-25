@@ -3,6 +3,7 @@ from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest, sys
 from filter_availability import no_plugins, has_bzip2_filter
+from type_guards import valid_complevel
 
 ndim = 100000
 filename1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -10,6 +11,7 @@ filename2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 array = uniform(size=(ndim,))
 
 def write_netcdf(filename,dtype='f8',complevel=6):
+    assert valid_complevel(complevel)
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
     foo = nc.createVariable('data',\

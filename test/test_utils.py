@@ -90,7 +90,7 @@ class TestgetStartCountStride(unittest.TestCase):
         start, count, stride, put_ind = _StartCountStride(elem, (3,4,5))
         orig = np.arange(60).reshape((3,4,5))
         dest = np.empty(_out_array_shape(count))
-        dest[tuple(put_ind[0,0,0])] = orig[tuple(elem)]  # type: ignore  # mypy doesn't like indexing of orig, but it's OK
+        dest[tuple(put_ind[0,0,0])] = orig[tuple(elem)]
 
     def test_boolean(self):
         elem = (1, slice(None), np.array([True, True, False, False, True]))

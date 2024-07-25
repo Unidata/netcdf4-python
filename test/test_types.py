@@ -6,6 +6,7 @@ import numpy as np
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from numpy.random.mtrand import uniform
 import netCDF4
+from type_guards import valid_complevel
 
 # test primitive data types.
 
@@ -28,6 +29,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         f.createDimension('n1', None)
         f.createDimension('n2', n2dim)
         for typ in datatypes:
+            assert valid_complevel(complevel)
             foo = f.createVariable('data_'+typ, typ, ('n1','n2',),zlib=zlib,complevel=complevel,shuffle=shuffle,least_significant_digit=least_significant_digit,fill_value=FillValue)
             #foo._FillValue = FillValue
             # test writing of _FillValue attribute for diff types
