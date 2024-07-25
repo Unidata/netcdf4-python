@@ -1,11 +1,16 @@
 # benchmark reads and writes, with and without compression.
 # tests all four supported file formats.
+from typing import TYPE_CHECKING
 from numpy.random.mtrand import uniform
 from typing_extensions import TypeGuard
 import netCDF4
 import netCDF4.utils
 from timeit import Timer
 import os, sys
+if TYPE_CHECKING:
+    from netCDF4 import CompressionLevel
+else:
+    CompressionLevel = object
 
 # create an n1dim by n2dim by n3dim random array.
 n1dim = 30
@@ -17,7 +22,7 @@ sys.stdout.write('reading and writing a %s by %s by %s by %s random array ..\n'%
 sys.stdout.write('(average of %s trials)\n' % ntrials)
 array = netCDF4.utils._quantize(uniform(size=(n1dim,n2dim,n3dim,n4dim)),4)
 
-def valid_complevel(complevel) -> TypeGuard[netCDF4.CompressionLevel | None]:
+def valid_complevel(complevel) -> TypeGuard[CompressionLevel | None]:
     return complevel is None or isinstance(complevel, int) and 0 <= complevel <= 6
 
 def write_netcdf(filename,zlib=False,shuffle=False,complevel=6):
