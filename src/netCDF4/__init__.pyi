@@ -130,7 +130,9 @@ ComplexVarT = TypeVar("ComplexVarT", bound=NumPyComplexType)
 NumericVarT = TypeVar("NumericVarT", bound=NumPyNumericType)
 
 DimensionsSpecifier: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
-CompressionType: TypeAlias = Literal["zlib", "szip", "zstd", "blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"]
+CompressionType: TypeAlias = Literal[
+    "zlib", "szip", "zstd", "bzip2", "blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"
+]
 CompressionLevel: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 AccessMode: TypeAlias = Literal["r", "w", "r+", "a", "x", "rs", "ws", "r+s", "as"]
 Format: TypeAlias = Literal["NETCDF4", "NETCDF4_CLASSIC", "NETCDF3_CLASSIC", "NETCDF3_64BIT_OFFSET", "NETCDF3_64BIT_DATA"]
