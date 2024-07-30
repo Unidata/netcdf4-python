@@ -17,7 +17,7 @@ def write_netcdf(filename,zlib,significant_digits,data,dtype='f8',shuffle=False,
                  complevel=6,quantize_mode="BitGroom"):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
-    assert valid_complevel(complevel) and valid_quantize_mode(quantize_mode)
+    assert (valid_complevel(complevel) or complevel is None) and valid_quantize_mode(quantize_mode)
     foo = file.createVariable('data',\
             dtype,('n'),zlib=zlib,significant_digits=significant_digits,\
             shuffle=shuffle,complevel=complevel,quantize_mode=quantize_mode)

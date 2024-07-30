@@ -13,7 +13,7 @@ array = uniform(size=(ndim,))
 def write_netcdf(filename,dtype='f8',complevel=6):
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
-    assert valid_complevel(complevel)
+    assert valid_complevel(complevel) or complevel is None
     foo = nc.createVariable('data',\
             dtype,('n'),compression='zstd',complevel=complevel)
     foo[:] = array

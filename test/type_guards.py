@@ -1,5 +1,5 @@
 """_type_guards - Helpers for input type-checking"""
-from typing import Literal, TYPE_CHECKING
+from typing import Literal, TYPE_CHECKING, Union
 from typing_extensions import TypeGuard
 
 if TYPE_CHECKING:
@@ -9,13 +9,13 @@ if TYPE_CHECKING:
 else:
     CompressionLevel = EndianType = CompressionType = NCFormat = QuantizeMode = object
 
-def valid_complevel(complevel) -> TypeGuard[CompressionLevel | None]:
+def valid_complevel(complevel) -> TypeGuard[CompressionLevel]:
     return complevel is None or isinstance(complevel, int) and 0 <= complevel <= 9
 
 def valid_endian(endian) -> TypeGuard[EndianType]:
     return endian in {"native", "big", "little"}
 
-def valid_comptype(comptype) -> TypeGuard[CompressionType | None]:
+def valid_comptype(comptype) -> TypeGuard[CompressionType]:
     return comptype is None or comptype in {
         "zlib",
         "szip",

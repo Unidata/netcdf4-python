@@ -13,7 +13,7 @@ filename = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 datarr = uniform(size=(ndim,))
 
 def write_netcdf(filename,dtype='f8',blosc_shuffle=1,complevel=6):
-    assert valid_complevel(complevel) and valid_bloscshuffle(blosc_shuffle)
+    assert (valid_complevel(complevel) or complevel is None) and valid_bloscshuffle(blosc_shuffle)
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
     foo = nc.createVariable('data',\

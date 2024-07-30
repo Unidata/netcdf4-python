@@ -11,7 +11,7 @@ filename2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 array = uniform(size=(ndim,))
 
 def write_netcdf(filename,dtype='f8',complevel=6):
-    assert valid_complevel(complevel)
+    assert valid_complevel(complevel) or complevel is None
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
     foo = nc.createVariable('data',\
@@ -49,7 +49,7 @@ class CompressionTestCase(unittest.TestCase):
         assert_almost_equal(array,f.variables['data'][:])
         assert f.variables['data'].filters() ==\
         {'zlib':False,'szip':False,'zstd':False,'bzip2':True,'blosc':False,'shuffle':False,'complevel':4,'fletcher32':False}
-        assert size < 0.96*uncompressed_size 
+        assert size < 0.96*uncompressed_size
         f.close()
 
 

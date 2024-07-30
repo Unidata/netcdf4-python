@@ -29,7 +29,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         f.createDimension('n1', None)
         f.createDimension('n2', n2dim)
         for typ in datatypes:
-            assert valid_complevel(complevel)
+            assert valid_complevel(complevel) or complevel is None
             foo = f.createVariable('data_'+typ, typ, ('n1','n2',),zlib=zlib,complevel=complevel,shuffle=shuffle,least_significant_digit=least_significant_digit,fill_value=FillValue)
             #foo._FillValue = FillValue
             # test writing of _FillValue attribute for diff types
