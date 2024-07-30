@@ -1,7 +1,6 @@
 """_type_guards - Helpers for input type-checking"""
-from typing import Literal, TYPE_CHECKING
+from typing import Literal, TYPE_CHECKING, TypeGuard
 
-from typing_extensions import TypeGuard
 if TYPE_CHECKING:
     # in stubs only
     from netCDF4 import CompressionLevel, EndianType, CompressionType
