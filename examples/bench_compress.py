@@ -10,7 +10,7 @@ from typing_extensions import TypeGuard
 if TYPE_CHECKING:
     from netCDF4 import CompressionLevel
 else:
-    CompressionLevel = object
+    CompressionLevel = Any
 
 # create an n1dim by n2dim by n3dim random array.
 n1dim = 30
@@ -23,7 +23,8 @@ sys.stdout.write('(average of %s trials)\n' % ntrials)
 array = netCDF4.utils._quantize(uniform(size=(n1dim,n2dim,n3dim,n4dim)),4)
 
 def valid_complevel(complevel) -> TypeGuard[CompressionLevel]:
-    return complevel is None or isinstance(complevel, int) and 0 <= complevel <= 6
+    """Check for a valid `complevel` argument for creating a Variable"""
+    return isinstance(complevel, int) and 0 <= complevel <= 9
 
 def write_netcdf(filename,zlib=False,shuffle=False,complevel=6):
     file = netCDF4.Dataset(filename,'w',format='NETCDF4')

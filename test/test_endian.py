@@ -2,7 +2,7 @@ import netCDF4
 import numpy as np
 import unittest, os, tempfile
 from numpy.testing import assert_array_equal, assert_array_almost_equal
-from type_guards import valid_endian
+import type_guards as n4t
 
 data = np.arange(12,dtype='f4').reshape(3,4)
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -74,7 +74,7 @@ def issue310(file):
         endian='little'
     else:
         raise ValueError('cannot determine native endianness')
-    assert valid_endian(endian)  # mypy fails to narrow endian on its own
+    assert n4t.valid_endian(endian)  # mypy fails to narrow endian on its own
     var_big_endian = nc.createVariable(\
             'obs_big_endian', '>f8', ('obs', ),\
             endian=endian,fill_value=fval)

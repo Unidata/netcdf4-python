@@ -1,22 +1,60 @@
-"""_type_guards - Helpers for input type-checking"""
-from typing import Literal, TYPE_CHECKING, Union
+"""type_guards.py - Helpers for static and runtime type-checking of initialization arguments
+for Dataset and Variable"""
+
+from typing import TYPE_CHECKING, Any, Literal
+
 from typing_extensions import TypeGuard
 
 if TYPE_CHECKING:
     # in stubs only
-    from netCDF4 import CompressionLevel, EndianType, CompressionType, QuantizeMode
+    from netCDF4 import (
+        AccessMode,
+        CalendarType,
+        CompressionLevel,
+        CompressionType,
+        EndianType,
+        QuantizeMode,
+    )
     from netCDF4 import Format as NCFormat
 else:
-    CompressionLevel = EndianType = CompressionType = NCFormat = QuantizeMode = object
+    AccessMode = Any
+    CalendarType = Any
+    CompressionLevel = Any
+    DiskFormat = Any
+    EndianType = Any
+    CompressionType = Any
+    NCFormat = Any
+    QuantizeMode = Any
+
+
+def valid_access_mode(mode) -> TypeGuard[AccessMode]:
+    """Check for a valid `mode` argument for opening a Dataset"""
+    return mode in {"r", "w", "r+", "a", "x", "rs", "ws", "r+s", "as"}
+
+
+def valid_calendar(calendar) -> TypeGuard[CalendarType]:
+    """Check for a valid `calendar` argument for cftime functions"""
+    return calendar in {
+        "standard",
+        "gregorian",
+        "proleptic_gregorian",
+        "noleap",
+        "365_day",
+        "360_day",
+        "julian",
+        "all_leap",
+        "366_day",
+    }
+
 
 def valid_complevel(complevel) -> TypeGuard[CompressionLevel]:
-    return complevel is None or isinstance(complevel, int) and 0 <= complevel <= 9
+    """Check for a valid `complevel` argument for creating a Variable"""
+    return isinstance(complevel, int) and 0 <= complevel <= 9
 
-def valid_endian(endian) -> TypeGuard[EndianType]:
-    return endian in {"native", "big", "little"}
 
-def valid_comptype(comptype) -> TypeGuard[CompressionType]:
-    return comptype is None or comptype in {
+def valid_compression(compression) -> TypeGuard[CompressionType]:
+    """Check for a valid `compression` argument for creating a Variable"""
+    return compression in {
         "zlib",
         "szip",
         "zstd",
@@ -28,17 +66,40 @@ def valid_comptype(comptype) -> TypeGuard[CompressionType]:
         "blosc_zstd",
     }
 
-def valid_bloscshuffle(bloscshuffle) -> TypeGuard[Literal[0, 1, 2]]:
-    return bloscshuffle in {0, 1, 2}
 
-def valid_ncformat(ncformat) -> TypeGuard[NCFormat]:
-    return ncformat in [
+def valid_ncformat(format) -> TypeGuard[NCFormat]:
+    """Check for a valid `format` argument for opening a Dataset"""
+    return format in {
         "NETCDF4",
         "NETCDF4_CLASSIC",
         "NETCDF3_CLASSIC",
         "NETCDF3_64BIT_OFFSET",
-        "NETCDF3_64BIT_DATA"
-    ]
+        "NETCDF3_64BIT_DATA",
+    }
+
+
+def valid_endian(endian) -> TypeGuard[EndianType]:
+    """Check for a valid `endian` argument for creating a Variable"""
+    return endian in {"native", "big", "little"}
+
+
+def valid_bloscshuffle(blosc_shuffle) -> TypeGuard[Literal[0, 1, 2]]:
+    """Check for a valid `blosc_shuffle` argument for creating a Variable"""
+    return blosc_shuffle in {0, 1, 2}
+
 
 def valid_quantize_mode(quantize_mode) -> TypeGuard[QuantizeMode]:
-    return quantize_mode in ["BitGroom", "BitRound", "GranularBitRound"]
+    """Check for a valid `quantize_mode` argument for creating a Variable"""
+    return quantize_mode in {"BitGroom", "BitRound", "GranularBitRound"}
+
+
+def valid_szip_coding(szip_coding) -> TypeGuard[Literal["nn", "ec"]]:
+    """Check for a valid `szip_coding` argument for creating a Variable"""
+    return szip_coding in {"nn", "ec"}
+
+
+def valid_szip_pixels_per_block(
+    szip_pixels_per_block,
+) -> TypeGuard[Literal[4, 8, 16, 32]]:
+    """Check for a valid `szip_pixels_per_block` argument for creating a Variable"""
+    return szip_pixels_per_block in {4, 8, 16, 32}

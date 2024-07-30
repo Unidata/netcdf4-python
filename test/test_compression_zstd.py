@@ -3,7 +3,7 @@ from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest, sys
 from filter_availability import no_plugins, has_zstd_filter
-from type_guards import valid_complevel
+import type_guards as n4t
 
 ndim = 100000
 filename1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -13,7 +13,7 @@ array = uniform(size=(ndim,))
 def write_netcdf(filename,dtype='f8',complevel=6):
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
-    assert valid_complevel(complevel) or complevel is None
+    assert n4t.valid_complevel(complevel) or complevel is None
     foo = nc.createVariable('data',\
             dtype,('n'),compression='zstd',complevel=complevel)
     foo[:] = array
