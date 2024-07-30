@@ -1,6 +1,5 @@
 name: Build and Test Linux with latest netcdf-c
-# on: [push, pull_request]
-on: []  # disable
+on: [push, pull_request]
 jobs:
   build-linux:
     name: Python (${{ matrix.python-version }})
