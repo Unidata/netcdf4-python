@@ -99,7 +99,7 @@ jobs:
 #   - name: Tarball
 #     run: |
 #       export PATH=${NETCDF_DIR}/bin:${PATH} 
-#       python setup.py --version 
+#       python setup.py --version  
 #       check-manifest --version
 #       check-manifest --verbose 
 #       pip wheel . -w dist --no-deps 
