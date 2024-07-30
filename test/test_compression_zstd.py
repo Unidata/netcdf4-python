@@ -3,6 +3,7 @@ from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest, sys
 from filter_availability import no_plugins, has_zstd_filter
+from type_guards import valid_complevel
 
 ndim = 100000
 filename1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
@@ -12,6 +13,7 @@ array = uniform(size=(ndim,))
 def write_netcdf(filename,dtype='f8',complevel=6):
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
+    assert valid_complevel(complevel)
     foo = nc.createVariable('data',\
             dtype,('n'),compression='zstd',complevel=complevel)
     foo[:] = array
@@ -47,7 +49,7 @@ class CompressionTestCase(unittest.TestCase):
         assert_almost_equal(array,f.variables['data'][:])
         assert f.variables['data'].filters() ==\
         {'zlib':False,'szip':False,'zstd':True,'bzip2':False,'blosc':False,'shuffle':False,'complevel':4,'fletcher32':False}
-        assert size < 0.96*uncompressed_size 
+        assert size < 0.96*uncompressed_size
         f.close()
 
 if __name__ == '__main__':

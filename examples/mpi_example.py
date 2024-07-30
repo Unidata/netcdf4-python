@@ -1,9 +1,10 @@
 # to run: mpirun -np 4 python mpi_example.py
 import sys
-from typing import TYPE_CHECKING, TypeGuard
+from typing import TYPE_CHECKING
 from mpi4py import MPI
 import numpy as np
 from netCDF4 import Dataset
+from typing_extensions import TypeGuard
 if TYPE_CHECKING:
     from netCDF4 import Format as NCFormat
 else:

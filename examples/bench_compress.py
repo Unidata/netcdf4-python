@@ -1,11 +1,12 @@
 # benchmark reads and writes, with and without compression.
 # tests all four supported file formats.
-from typing import TYPE_CHECKING, TypeGuard
+from typing import TYPE_CHECKING
 from numpy.random.mtrand import uniform
 import netCDF4
 import netCDF4.utils
 from timeit import Timer
 import os, sys
+from typing_extensions import TypeGuard
 if TYPE_CHECKING:
     from netCDF4 import CompressionLevel
 else:

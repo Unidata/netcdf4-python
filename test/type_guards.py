@@ -1,12 +1,13 @@
 """_type_guards - Helpers for input type-checking"""
-from typing import Literal, TYPE_CHECKING, TypeGuard
+from typing import Literal, TYPE_CHECKING
+from typing_extensions import TypeGuard
 
 if TYPE_CHECKING:
     # in stubs only
-    from netCDF4 import CompressionLevel, EndianType, CompressionType
+    from netCDF4 import CompressionLevel, EndianType, CompressionType, QuantizeMode
     from netCDF4 import Format as NCFormat
 else:
-    CompressionLevel = EndianType = CompressionType = NCFormat = object
+    CompressionLevel = EndianType = CompressionType = NCFormat = QuantizeMode = object
 
 def valid_complevel(complevel) -> TypeGuard[CompressionLevel | None]:
     return complevel is None or isinstance(complevel, int) and 0 <= complevel <= 9
@@ -38,3 +39,6 @@ def valid_ncformat(ncformat) -> TypeGuard[NCFormat]:
         "NETCDF3_64BIT_OFFSET",
         "NETCDF3_64BIT_DATA"
     ]
+
+def valid_quantize_mode(quantize_mode) -> TypeGuard[QuantizeMode]:
+    return quantize_mode in ["BitGroom", "BitRound", "GranularBitRound"]
