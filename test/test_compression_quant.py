@@ -3,7 +3,7 @@ from netCDF4 import Dataset, __has_quantization_support__
 from numpy.testing import assert_almost_equal
 import numpy as np
 import os, tempfile, unittest
-import type_guards as n4t
+import type_guards
 
 ndim = 100000
 nfiles = 7
@@ -17,7 +17,7 @@ def write_netcdf(filename,zlib,significant_digits,data,dtype='f8',shuffle=False,
                  complevel=6,quantize_mode="BitGroom"):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
-    assert (n4t.valid_complevel(complevel) or complevel is None) and n4t.valid_quantize_mode(quantize_mode)
+    assert (type_guards.valid_complevel(complevel) or complevel is None) and type_guards.valid_quantize_mode(quantize_mode)
     foo = file.createVariable('data',\
             dtype,('n'),zlib=zlib,significant_digits=significant_digits,\
             shuffle=shuffle,complevel=complevel,quantize_mode=quantize_mode)

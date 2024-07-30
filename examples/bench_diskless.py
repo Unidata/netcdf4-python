@@ -4,6 +4,7 @@ from numpy.random.mtrand import uniform
 import netCDF4
 from timeit import Timer
 import os, sys
+import type_guards
 
 # create an n1dim by n2dim by n3dim random array.
 n1dim = 30
@@ -15,6 +16,7 @@ sys.stdout.write('reading and writing a %s by %s by %s by %s random array ..\n'%
 array = uniform(size=(n1dim,n2dim,n3dim,n4dim))
 
 def write_netcdf(filename,zlib=False,least_significant_digit=None,format='NETCDF4',closeit=False):
+    assert type_guards.valid_format(format)
     file = netCDF4.Dataset(filename,'w',format=format,diskless=True,persist=True)
     file.createDimension('n1', n1dim)
     file.createDimension('n2', n2dim)

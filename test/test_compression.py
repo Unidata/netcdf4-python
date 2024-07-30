@@ -3,7 +3,7 @@ from netCDF4 import Dataset
 from netCDF4.utils import _quantize
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest
-import type_guards as n4t
+import type_guards
 
 ndim = 100000
 ndim2 = 100
@@ -16,7 +16,7 @@ lsd = 3
 
 def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,contiguous=False,\
                  chunksizes=None,complevel=6,fletcher32=False):
-    assert n4t.valid_complevel(complevel) or complevel is None
+    assert type_guards.valid_complevel(complevel) or complevel is None
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
     foo = file.createVariable('data',\
@@ -32,7 +32,7 @@ def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=F
         #compression=''
         #compression=0
         #compression='gzip' # should fail
-    assert n4t.valid_compression(compression) or compression is None
+    assert type_guards.valid_compression(compression) or compression is None
     foo2 = file.createVariable('data2',\
             dtype,('n'),compression=compression,least_significant_digit=least_significant_digit,\
             shuffle=shuffle,contiguous=contiguous,complevel=complevel,fletcher32=fletcher32,chunksizes=chunksizes)
@@ -49,7 +49,7 @@ def write_netcdf2(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
     file.createDimension('n2', ndim2)
-    assert n4t.valid_complevel(complevel) or complevel is None
+    assert type_guards.valid_complevel(complevel) or complevel is None
     foo = file.createVariable('data2',\
             dtype,('n','n2'),zlib=zlib,least_significant_digit=least_significant_digit,\
             shuffle=shuffle,contiguous=contiguous,complevel=complevel,fletcher32=fletcher32,chunksizes=chunksizes)
