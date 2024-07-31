@@ -1173,7 +1173,8 @@ returned.</p>
 <span>def <span class="ident">date2index</span></span>(<span>dates, nctime, calendar=None, select='exact', has_year_zero=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return indices of a netCDF time variable corresponding to the given dates.</p>
+<div class="desc"><p>date2index(dates, nctime, calendar=None, select=u'exact', has_year_zero=None)</p>
+<p>Return indices of a netCDF time variable corresponding to the given dates.</p>
 <p><strong>dates</strong>: A datetime object or a sequence of datetime objects.
 The datetime objects should not include a time-zone offset.</p>
 <p><strong>nctime</strong>: A netCDF time variable object. The nctime object must have a
@@ -1212,7 +1213,8 @@ to the given datetime object(s).</p></div>
 <span>def <span class="ident">date2num</span></span>(<span>dates, units, calendar=None, has_year_zero=None, longdouble=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return numeric time values given datetime objects. The units
+<div class="desc"><p>date2num(dates, units, calendar=None, has_year_zero=None, longdouble=False)</p>
+<p>Return numeric time values given datetime objects. The units
 of the numeric time values are described by the <strong>units</strong> argument
 and the <strong>calendar</strong> keyword. The datetime objects must
 be in UTC with no time-zone offset.
@@ -1292,7 +1294,8 @@ used to build the module, and when it was built.</p></div>
 <span>def <span class="ident">num2date</span></span>(<span>times, units, calendar='standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return datetime objects given numeric time values. The units
+<div class="desc"><p>num2date(times, units, calendar=u'standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</p>
+<p>Return datetime objects given numeric time values. The units
 of the numeric time values are described by the <strong>units</strong> argument
 and the <strong>calendar</strong> keyword. The returned datetime objects represent
 UTC with no time-zone offset, even if the specified
@@ -1348,14 +1351,18 @@ contains one.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>rc_get(key)</code></strong></p>
-<p>Returns the internal netcdf-c rc table value corresponding to key.</p></div>
+<p>Returns the internal netcdf-c rc table value corresponding to key.
+See <a href="https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html">https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html</a>
+for more information on rc files and values.</p></div>
 </dd>
 <dt id="netCDF4.rc_set"><code class="name flex">
 <span>def <span class="ident">rc_set</span></span>(<span>key, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>rc_set(key, value)</code></strong></p>
-<p>Sets the internal netcdf-c rc table value corresponding to key.</p></div>
+<p>Sets the internal netcdf-c rc table value corresponding to key.
+See <a href="https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html">https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html</a>
+for more information on rc files and values.</p></div>
 </dd>
 <dt id="netCDF4.set_alignment"><code class="name flex">
 <span>def <span class="ident">set_alignment</span></span>(<span>threshold, alignment)</span>
