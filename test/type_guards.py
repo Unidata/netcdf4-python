@@ -1,9 +1,8 @@
 """type_guards.py - Helpers for static and runtime type-checking of initialization arguments
 for Dataset and Variable"""
 
-from typing import TYPE_CHECKING, Any, Literal, Type, TypeVar, Union, overload
+from typing import TYPE_CHECKING, Any, Literal
 
-import netCDF4
 from typing_extensions import TypeGuard
 
 if TYPE_CHECKING:
@@ -26,19 +25,6 @@ else:
     CompressionType = Any
     NCFormat = Any
     QuantizeMode = Any
-
-
-T = TypeVar("T")
-
-
-def var_isof_type(
-    var: netCDF4.Variable, type_: Type[T]
-) -> TypeGuard[netCDF4.Variable[T]]:
-    """Check that a variable is of some type. This function does not support CompoundType,
-    EnumType, or VLType"""
-    if isinstance(type_, (netCDF4.EnumType, netCDF4.VLType, netCDF4.CompoundType)):
-        raise TypeError("This function is not valid for user-defined types.")
-    return (type_ is str and var.dtype is type_) or var.dtype.type is type_
 
 
 def valid_access_mode(mode) -> TypeGuard[AccessMode]:
