@@ -23,7 +23,7 @@ class VariablesTestCase(unittest.TestCase):
         for nfile,file in enumerate(self.files):
             f = Dataset(file,'w',format='NETCDF4_CLASSIC')
             #f.createDimension('x',None)
-            f.createDimension('x',ninc)
+            f.createDimension('x',int(ninc))
             f.createDimension('y',ydim)
             f.createDimension('z',zdim)
             f.history = 'created today'
