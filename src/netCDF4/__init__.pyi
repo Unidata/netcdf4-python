@@ -147,9 +147,9 @@ BoolInt: TypeAlias = Literal[0, 1]
 DateTimeArray: TypeAlias = npt.NDArray[np.object_]
 """numpy array of datetime.datetime or cftime.datetime"""
 
-# netCDF accepts floats that can be cooerced to an integer value, and sometimes strings that can be coerced to an integer value.
-# There's currently no way to specify this statically, so we allow all floats and strings.
-# Also, we have to specify all the possible combinations of list[...] because lists are invariant.
+# - Allow singular float or str keys, but not lists (or sequences) of them
+# - `list` and `ndarray` are specifically listed for the 1-D case as Sequence is too general -- it includes
+#   tuples which are rather for multi-dimensional indexing.
 GetSetItemKey: TypeAlias = (
     int
     | float
@@ -158,12 +158,8 @@ GetSetItemKey: TypeAlias = (
     | slice
     | ellipsis
     | list[int]
-    | list[float]
-    | list[np.number]
-    | list[str]
     | list[bool]
-    | list[np.bool_]
-    | npt.NDArray[np.number]
+    | npt.NDArray[np.integer]
     | npt.NDArray[np.bool_]
     | tuple[
         int
@@ -173,12 +169,10 @@ GetSetItemKey: TypeAlias = (
         | slice
         | ellipsis
         | Sequence[int]
-        | Sequence[float]
-        | Sequence[np.number]
-        | Sequence[str]
+        | Sequence[np.integer]
         | Sequence[bool]
         | Sequence[np.bool_]
-        | npt.NDArray[np.number]
+        | npt.NDArray[np.integer]
         | npt.NDArray[np.bool_],
         ...,
     ]
