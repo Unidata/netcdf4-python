@@ -2062,10 +2062,11 @@ cdef _get_vars(group, bint auto_complex=False):
             endianness = None
             with nogil:
                 ierr = nc_inq_var_endian(_grpid, varid, &iendian)
-            if ierr == NC_NOERR and iendian == NC_ENDIAN_LITTLE:
-                endianness = '<'
-            elif iendian == NC_ENDIAN_BIG:
-                endianness = '>'
+            if ierr == NC_NOERR:
+                if iendian == NC_ENDIAN_LITTLE:
+                    endianness = '<'
+                elif iendian == NC_ENDIAN_BIG:
+                    endianness = '>'
             # check to see if it is a supported user-defined type.
             try:
                 datatype = _nctonptype[xtype]
