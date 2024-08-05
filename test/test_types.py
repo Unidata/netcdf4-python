@@ -6,6 +6,7 @@ import numpy as np
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from numpy.random.mtrand import uniform
 import netCDF4
+import type_guards
 
 # test primitive data types.
 
@@ -14,7 +15,7 @@ FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 n1dim = 5
 n2dim = 10
 ranarr = 100.*uniform(size=(n1dim,n2dim))
-zlib=False;complevel=0;shuffle=0;least_significant_digit=None
+zlib=False;complevel=0;shuffle=False;least_significant_digit=None
 datatypes = ['f8','f4','i1','i2','i4','i8','u1','u2','u4','u8','S1']
 FillValue = 1.0
 issue273_data = np.ma.array(['z']*10,dtype='S1',\
@@ -28,6 +29,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         f.createDimension('n1', None)
         f.createDimension('n2', n2dim)
         for typ in datatypes:
+            assert type_guards.valid_complevel(complevel) or complevel is None
             foo = f.createVariable('data_'+typ, typ, ('n1','n2',),zlib=zlib,complevel=complevel,shuffle=shuffle,least_significant_digit=least_significant_digit,fill_value=FillValue)
             #foo._FillValue = FillValue
             # test writing of _FillValue attribute for diff types
@@ -52,10 +54,11 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         for typ in datatypes:
             data = f.variables['data_'+typ]
             data.set_auto_maskandscale(False)
-            datarr = data[1:n1dim]
+            datarr: np.ndarray = data[1:n1dim]
             # fill missing data with _FillValue
             # ('S1' array will have some missing values)
             if hasattr(datarr, 'mask'):
+                assert isinstance(datarr, np.ma.masked_array)
                 datarr = datarr.filled()
             datfilled = data[0]
             # check to see that data type is correct
@@ -81,7 +84,7 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         v2 = f.variables['issue273']
         assert type(v2._FillValue) == bytes
         assert v2._FillValue == b'\x00'
-        assert str(issue273_data) == str(v2[:]) 
+        assert str(issue273_data) == str(v2[:])
         # issue 707 (don't apply missing_value if cast to variable type is
         # unsafe)
         v3 = f.variables['issue707']

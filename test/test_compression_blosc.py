@@ -1,8 +1,10 @@
 from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
+import type_guards
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest, sys
 from filter_availability import no_plugins, has_blosc_filter
+import type_guards
 
 
 ndim = 100000
@@ -12,6 +14,7 @@ filename = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 datarr = uniform(size=(ndim,))
 
 def write_netcdf(filename,dtype='f8',blosc_shuffle=1,complevel=6):
+    assert (type_guards.valid_complevel(complevel) or complevel is None) and type_guards.valid_bloscshuffle(blosc_shuffle)
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
     foo = nc.createVariable('data',\
