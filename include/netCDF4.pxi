@@ -55,7 +55,7 @@ cdef extern from "netcdf.h":
         NC_NETCDF4 # Use netCDF-4/HDF5 format 
         NC_CLASSIC_MODEL # Enforce strict netcdf-3 rules. 
         # Use these 'mode' flags for both nc_create and nc_open.
-        NC_SHARE # Share updates, limit cacheing 
+        NC_SHARE # Share updates, limit caching 
         # The following flag currently is ignored, but use in
         # nc_open() or nc_create() may someday support use of advisory
         # locking to prevent multiple writers from clobbering a file 
@@ -111,7 +111,7 @@ cdef extern from "netcdf.h":
         NC_FILL
         NC_NOFILL
         # Starting with version 3.6, there are different format netCDF
-        # files. 4.0 instroduces the third one. These defines are only for
+        # files. 4.0 introduces the third one. These defines are only for
         # the nc_set_default_format function.
         NC_FORMAT_CLASSIC 
         NC_FORMAT_64BIT   

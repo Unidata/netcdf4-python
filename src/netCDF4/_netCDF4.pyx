@@ -285,7 +285,7 @@ and whether it is unlimited.
 ```
 
 `Dimension` names can be changed using the
-`Datatset.renameDimension` method of a `Dataset` or
+`Dataset.renameDimension` method of a `Dataset` or
 `Group` instance.
 
 ## Variables in a netCDF file
@@ -997,7 +997,7 @@ use the `parallel` keyword to enable parallel access.
 
 The optional `comm` keyword may be used to specify a particular
 MPI communicator (`MPI_COMM_WORLD` is used by default).  Each process (or rank)
-can now write to the file indepedently.  In this example the process rank is
+can now write to the file independently.  In this example the process rank is
 written to a different variable index on each task
 
 ```python
@@ -5625,7 +5625,7 @@ of the the rightmost dimension of the variable).  The value of `_Encoding`
 is the unicode encoding that is used to decode the bytes into strings.
 
 When numpy string data is written to a variable it is converted back to
-indiviual bytes, with the number of bytes in each string equalling the
+individual bytes, with the number of bytes in each string equalling the
 rightmost dimension of the variable.
 
 The default value of `chartostring` is `True`
@@ -6751,7 +6751,7 @@ Will be converted to a array of strings, where each string has a fixed
 length of `b.shape[-1]` characters.
 
 optional kwarg `encoding` can be used to specify character encoding (default
-`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` btye array is
+`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` byte array is
 returned.
 
 returns a numpy string array with datatype `'UN'` (or `'SN'`) and shape

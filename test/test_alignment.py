@@ -134,7 +134,7 @@ x                        Dataset {4096/4096}
         for line in h5ls_results.split('\n'):
             if not line.startswith(' '):
                 data_variable = line.split(' ')[0]
-            # only process the data variables we care to inpsect
+            # only process the data variables we care to inspect
             if data_variable not in addresses:
                 continue
             line = line.strip()

@@ -182,7 +182,7 @@ except OSError:
     HAS_NCCONFIG = False
 
 # make sure USE_NCCONFIG from environment takes
-# precendence over use_ncconfig from setup.cfg (issue #341).
+# precedence over use_ncconfig from setup.cfg (issue #341).
 if use_ncconfig and not USE_NCCONFIG:
     USE_NCCONFIG = use_ncconfig
 elif not USE_NCCONFIG:
