@@ -289,7 +289,7 @@ and whether it is unlimited.</p>
 &lt;class 'netCDF4._netCDF4.Dimension'&gt;: name = 'lon', size = 144
 </code></pre>
 <p><code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> names can be changed using the
-<code>Datatset.renameDimension</code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
+<code>Dataset.renameDimension</code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
 <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance.</p>
 <h2 id="variables-in-a-netcdf-file">Variables in a netCDF file</h2>
 <p>netCDF variables behave much like python multidimensional array objects
@@ -901,7 +901,7 @@ use the <code>parallel</code> keyword to enable parallel access.</p>
 <p>The optional <code>comm</code> keyword may be used to specify a particular
 MPI communicator (<code>MPI_COMM_WORLD</code> is used by default).
 Each process (or rank)
-can now write to the file indepedently.
+can now write to the file independently.
 In this example the process rank is
 written to a different variable index on each task</p>
 <pre><code class="language-python">&gt;&gt;&gt; d = nc.createDimension('dim',4)
@@ -1164,7 +1164,7 @@ Input character array (numpy datatype <code>'S1'</code> or <code>'U1'</code>).
 Will be converted to a array of strings, where each string has a fixed
 length of <code>b.shape[-1]</code> characters.</p>
 <p>optional kwarg <code>encoding</code> can be used to specify character encoding (default
-<code>utf-8</code>). If <code>encoding</code> is 'none' or 'bytes', a <code>numpy.string_</code> btye array is
+<code>utf-8</code>). If <code>encoding</code> is 'none' or 'bytes', a <code>numpy.string_</code> byte array is
 returned.</p>
 <p>returns a numpy string array with datatype <code>'UN'</code> (or <code>'SN'</code>) and shape
 <code>b.shape[:-1]</code> where where <code>N=b.shape[-1]</code>.</p></div>
@@ -2884,7 +2884,7 @@ of the the rightmost dimension of the variable).
 The value of <code>_Encoding</code>
 is the unicode encoding that is used to decode the bytes into strings.</p>
 <p>When numpy string data is written to a variable it is converted back to
-indiviual bytes, with the number of bytes in each string equalling the
+individual bytes, with the number of bytes in each string equalling the
 rightmost dimension of the variable.</p>
 <p>The default value of <code><a title="netCDF4.chartostring" href="#netCDF4.chartostring">chartostring()</a></code> is <code>True</code>
 (automatic conversions are performed).</p></div>

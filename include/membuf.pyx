@@ -12,7 +12,7 @@ cdef memview_fromptr(void *memory, size_t size):
     buf.size = size # size of pointer in bytes
     return memoryview(buf)
 
-# private extension type that implements buffer protocal.
+# private extension type that implements buffer protocol.
 cdef class _MemBuf:
     cdef const void *memory
     cdef size_t size
