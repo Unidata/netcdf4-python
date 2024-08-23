@@ -130,7 +130,7 @@ RealVarT = TypeVar("RealVarT", bound=NumPyRealType)
 ComplexVarT = TypeVar("ComplexVarT", bound=NumPyComplexType)
 NumericVarT = TypeVar("NumericVarT", bound=NumPyNumericType)
 
-DimensionsSpecifier: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
+DimensionsType: TypeAlias = Union[str, bytes, Dimension, Iterable[Union[str, bytes, Dimension]]]
 CompressionType: TypeAlias = Literal[
     "zlib", "szip", "zstd", "bzip2", "blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"
 ]
@@ -318,7 +318,7 @@ class Dataset:
         self,
         varname: str,
         datatype: np.dtype[NumericVarT] | type[NumericVarT],
-        dimensions: DimensionsSpecifier = (),
+        dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
         complevel: CompressionLevel | None = 4,
@@ -341,7 +341,7 @@ class Dataset:
         self,
         varname: str,
         datatype: np.dtype[np.str_] | type[str | np.str_],
-        dimensions: DimensionsSpecifier = (),
+        dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
         complevel: CompressionLevel | None = 4,
@@ -364,7 +364,7 @@ class Dataset:
         self,
         varname: str,
         datatype: DatatypeSpecifier,
-        dimensions: DimensionsSpecifier = (),
+        dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
         complevel: CompressionLevel | None = 4,
@@ -473,7 +473,7 @@ class Variable(Generic[VarT]):
         grp: Dataset,
         name: str,
         datatype: np.dtype[NumericVarT] | type[NumericVarT],
-        dimensions: DimensionsSpecifier = (),
+        dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
         complevel: CompressionLevel | None = 4,
@@ -498,7 +498,7 @@ class Variable(Generic[VarT]):
         grp: Dataset,
         name: str,
         datatype: np.dtype[np.str_] | type[str | np.str_],
-        dimensions: DimensionsSpecifier = (),
+        dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
         complevel: CompressionLevel | None = 4,
@@ -523,7 +523,7 @@ class Variable(Generic[VarT]):
         grp: Dataset,
         name: str,
         datatype: DatatypeSpecifier,
-        dimensions: DimensionsSpecifier = (),
+        dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
         complevel: CompressionLevel | None = 4,
@@ -547,7 +547,7 @@ class Variable(Generic[VarT]):
         grp: Dataset,
         name: str,
         datatype: DatatypeSpecifier,
-        dimensions: DimensionsSpecifier = (),
+        dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
         complevel: CompressionLevel | None = 4,
