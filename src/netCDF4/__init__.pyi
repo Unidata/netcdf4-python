@@ -117,7 +117,7 @@ NetCDFUDTClass: TypeAlias = CompoundType | VLType | EnumType
 # Possible argument types for the datatype argument used in Variable creation. At this time, it is not possible to allow unknown
 # strings arguments in the datatype field but exclude and string literals that are not one of `TypeLiteral`, so really
 # `TypeLiteral` is made irrelevant, except for anyone who looks at this file.
-DatatypeSpecifier: TypeAlias = (
+DatatypeType: TypeAlias = (
     TypeLiteral
     | str
     | np.dtype[NumPyNumericType | np.str_]
@@ -363,7 +363,7 @@ class Dataset:
     def createVariable(
         self,
         varname: str,
-        datatype: DatatypeSpecifier,
+        datatype: DatatypeType,
         dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
@@ -522,7 +522,7 @@ class Variable(Generic[VarT]):
         cls,
         grp: Dataset,
         name: str,
-        datatype: DatatypeSpecifier,
+        datatype: DatatypeType,
         dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
@@ -546,7 +546,7 @@ class Variable(Generic[VarT]):
         self,
         grp: Dataset,
         name: str,
-        datatype: DatatypeSpecifier,
+        datatype: DatatypeType,
         dimensions: DimensionsType = (),
         compression: CompressionType | None = None,
         zlib: bool = False,
