@@ -3,7 +3,6 @@ import random, numpy, string
 import unittest
 import os
 from numpy.testing import assert_array_equal, assert_array_almost_equal
-import type_guards
 
 def generateString(length, alphabet=string.ascii_letters + string.digits + string.punctuation):
     return(''.join([random.choice(alphabet) for i in range(length)]))
@@ -25,8 +24,7 @@ class StringArrayTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
-        assert type_guards.valid_format(FILE_FORMAT)
-        nc = Dataset(FILE_NAME,'w',format=FILE_FORMAT)
+        nc = Dataset(FILE_NAME,'w',format=FILE_FORMAT)  # type: ignore #  FILE_FORMAT
         nc.createDimension('n1',None)
         nc.createDimension('n2',n2)
         nc.createDimension('nchar',nchar)

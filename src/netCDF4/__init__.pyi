@@ -453,7 +453,7 @@ class _VarDatatypeProperty:
     def __get__(self, instance: Variable[str], owner: Any) -> VLType: ...
     @overload
     def __get__(
-        self, instance: Variable[Any], owner: Any
+        self, instance: Variable, owner: Any
     ) -> Any: ...  # actual return type np.dtype | CompoundType | VLType | EnumType
 
 class _VarDtypeProperty:
@@ -463,7 +463,7 @@ class _VarDtypeProperty:
     @overload
     def __get__(self, instance: Variable[str], owner: Any) -> type[str]: ...
     @overload
-    def __get__(self, instance: Variable[Any], owner: Any) -> Any: ...  # actual return type np.dtype | Type[str]
+    def __get__(self, instance: Variable, owner: Any) -> Any: ...  # actual return type np.dtype | Type[str]
 
 class Variable(Generic[VarT]):
     # Overloads of __new__ are provided for some cases where the Variable's type may be statically inferred from the datatype arg

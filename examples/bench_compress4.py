@@ -1,10 +1,10 @@
 # benchmark reads and writes, with and without compression.
 # tests all four supported file formats.
+from typing import Literal
 from numpy.random.mtrand import uniform
 import netCDF4
 from timeit import Timer
 import os, sys
-import type_guards
 
 # use real data.
 URL="http://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis/pressure/hgt.1990.nc"
@@ -20,12 +20,15 @@ sys.stdout.write('(average of %s trials)\n\n' % ntrials)
 array = nc.variables['hgt'][0:n1dim,5,:,:]
 
 
-def write_netcdf(filename,nsd,quantize_mode='BitGroom'):
+def write_netcdf(
+        filename,
+        nsd,
+        quantize_mode: Literal["BitGroom", "BitRound", "GranularBitRound"] = "BitGroom"
+    ):
     file = netCDF4.Dataset(filename,'w',format='NETCDF4')
     file.createDimension('n1', None)
     file.createDimension('n3', n3dim)
     file.createDimension('n4', n4dim)
-    assert type_guards.valid_quantize_mode(quantize_mode)
     foo = file.createVariable('data',\
                               'f4',('n1','n3','n4'),\
                               zlib=True,shuffle=True,\
