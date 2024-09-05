@@ -79,13 +79,6 @@ __all__ = [
 ]
 __pdoc__ = {"utils": False}
 
-if sys.version_info >= (3, 10):
-    from types import EllipsisType
-
-    ellipsis = EllipsisType
-elif not TYPE_CHECKING:
-    ellipsis = type(Ellipsis)  # keeps ruff happy until ruff uses typeshed
-
 # string type specifiers
 # fmt: off
 RealTypeLiteral: TypeAlias = Literal[
@@ -147,37 +140,6 @@ BoolInt: TypeAlias = Literal[0, 1]
 
 DateTimeArray: TypeAlias = npt.NDArray[np.object_]
 """numpy array of datetime.datetime or cftime.datetime"""
-
-# - Allow singular float or str keys, but not lists (or sequences) of them
-# - `list` and `ndarray` are specifically listed for the 1-D case as Sequence is too general -- it includes
-#   tuples which are rather for multi-dimensional indexing.
-GetSetItemKey: TypeAlias = (
-    int
-    | float
-    | np.number
-    | str
-    | slice
-    | ellipsis
-    | list[int]
-    | list[bool]
-    | npt.NDArray[np.integer]
-    | npt.NDArray[np.bool_]
-    | tuple[
-        int
-        | float
-        | np.number
-        | str
-        | slice
-        | ellipsis
-        | Sequence[int]
-        | Sequence[np.integer]
-        | Sequence[bool]
-        | Sequence[np.bool_]
-        | npt.NDArray[np.integer]
-        | npt.NDArray[np.bool_],
-        ...,
-    ]
-)
 
 class BloscInfo(TypedDict):
     compressor: Literal["blosc_lz", "blosc_lz4", "blosc_lz4hc", "blosc_zlib", "blosc_zstd"]
@@ -618,8 +580,8 @@ class Variable(Generic[VarT]):
     def __delattr__(self, name: str) -> None: ...
     def __setattr__(self, name: str, value: Any) -> None: ...
     def __getattr__(self, name: str) -> Any: ...
-    def __getitem__(self, elem: GetSetItemKey) -> Any: ...
-    def __setitem__(self, elem: GetSetItemKey, data: npt.ArrayLike) -> None: ...
+    def __getitem__(self, elem: Any) -> Any: ...
+    def __setitem__(self, elem: Any, data: npt.ArrayLike) -> None: ...
     def __array__(self) -> np.ndarray: ...
     def __len__(self) -> int: ...
     def __iter__(self) -> Iterator[Any]: ...  # faux method so mypy believes Variable is iterable
@@ -700,7 +662,7 @@ class _Variable:
     def set_auto_scale(self, val: bool) -> None: ...
     def set_always_mask(self, val: bool) -> None: ...
     def __getattr__(self, name: str) -> Any: ...
-    def __getitem__(self, elem: GetSetItemKey) -> Any: ...
+    def __getitem__(self, elem: Any) -> Any: ...
     def __len__(self) -> int: ...
 
 class MFTime(_Variable):
@@ -708,7 +670,7 @@ class MFTime(_Variable):
     units: str | None
 
     def __init__(self, time: Variable, units: str | None = None, calendar: CalendarType | str | None = None): ...
-    def __getitem__(self, elem: GetSetItemKey) -> np.ndarray: ...
+    def __getitem__(self, elem: Any) -> np.ndarray: ...
 
 @overload
 def stringtoarr(
