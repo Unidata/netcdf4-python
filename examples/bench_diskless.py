@@ -1,9 +1,14 @@
 # benchmark reads and writes, with and without compression.
 # tests all four supported file formats.
+from typing import TYPE_CHECKING, Any, Literal
 from numpy.random.mtrand import uniform
 import netCDF4
 from timeit import Timer
 import os, sys
+if TYPE_CHECKING:
+    from netCDF4 import Format as NCFormat
+else:
+    NCFormat = Any
 
 # create an n1dim by n2dim by n3dim random array.
 n1dim = 30
@@ -14,7 +19,7 @@ ntrials = 10
 sys.stdout.write('reading and writing a %s by %s by %s by %s random array ..\n'%(n1dim,n2dim,n3dim,n4dim))
 array = uniform(size=(n1dim,n2dim,n3dim,n4dim))
 
-def write_netcdf(filename,zlib=False,least_significant_digit=None,format='NETCDF4',closeit=False):
+def write_netcdf(filename, zlib=False, least_significant_digit=None, format: NCFormat='NETCDF4',closeit=False):
     file = netCDF4.Dataset(filename,'w',format=format,diskless=True,persist=True)
     file.createDimension('n1', n1dim)
     file.createDimension('n2', n2dim)
@@ -42,13 +47,13 @@ for format in ['NETCDF4','NETCDF3_CLASSIC','NETCDF3_64BIT']:
     sys.stdout.write('writing took %s seconds\n' %\
             repr(sum(t.repeat(ntrials,1))/ntrials))
     # test reading.
-    ncfile = write_netcdf('test1.nc',format=format)
+    ncfile = write_netcdf('test1.nc',format=format)  # type: ignore
     t = Timer("read_netcdf(ncfile)","from __main__ import read_netcdf,ncfile")
     sys.stdout.write('reading took %s seconds\n' %
             repr(sum(t.repeat(ntrials,1))/ntrials))
 
 # test diskless=True in nc_open
-format='NETCDF3_CLASSIC'
+format: Literal["NETCDF3_CLASSIC"] = 'NETCDF3_CLASSIC'  # mypy should know this but it needs help...
 trials=50
 sys.stdout.write('test caching of file in memory on open for %s\n' % format)
 sys.stdout.write('testing file format %s ...\n' % format)

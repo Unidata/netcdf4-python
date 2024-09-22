@@ -52,6 +52,7 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(np.arange(0,nx),f.variables['x'][:])
         varin = f.variables['data']
         datin = varin[:]
+        assert isinstance(data, np.ma.masked_array)
         assert_array_equal(datin.mask,data.mask)
         varin.set_auto_maskandscale(False)
         data2 = data.filled()
@@ -73,7 +74,7 @@ class VariablesTestCase(unittest.TestCase):
         # testing multi-file get_variables_by_attributes
         f = MFDataset(self.files,check=True)
         assert f.get_variables_by_attributes(axis='T') == []
-        f.get_variables_by_attributes(units='zlotys')[0] == f['x']
+        assert f.get_variables_by_attributes(units='zlotys')[0] == f['x']
         assert f.isopen()
         f.close()
         assert not f.isopen()
@@ -123,13 +124,13 @@ class NonuniformTimeTestCase(unittest.TestCase):
         # Get the real dates
         dates = []
         for file in self.files:
-            f = Dataset(file)
-            t = f.variables['time']
+            ds = Dataset(file)
+            t = ds.variables['time']
             dates.extend(cftime.num2date(t[:], t.units, calendar))
-            f.close()
+            ds.close()
         # Compare with the MF dates
-        f = MFDataset(self.files,check=True)
-        t = f.variables['time']
+        ds = MFDataset(self.files,check=True)
+        t = ds.variables['time']
         T = MFTime(t, calendar=calendar)
         assert_equal(T.calendar, calendar)
         assert_equal(len(T), len(t))
@@ -141,7 +142,7 @@ class NonuniformTimeTestCase(unittest.TestCase):
         if Version(cftime.__version__) >= Version('1.0.1'):
             assert_array_equal(cftime.num2date(T[:], T.units, T.calendar), dates)
         assert_equal(cftime.date2index(datetime.datetime(1980, 1, 2), T), 366)
-        f.close()
+        ds.close()
 
         # Test exception is raised when no calendar attribute is available on the
         # time variable.
@@ -153,8 +154,8 @@ class NonuniformTimeTestCase(unittest.TestCase):
         # variables. First, add calendar attributes to file. Note this will modify
         # the files inplace.
         calendars = ['standard', 'gregorian']
-        for idx, f in enumerate(self.files):
-            with Dataset(f, 'a') as ds:
+        for idx, file in enumerate(self.files):
+            with Dataset(file, 'a') as ds:
                 ds.variables['time'].calendar = calendars[idx]
         with MFDataset(self.files, check=True) as ds:
             with self.assertRaises(ValueError):

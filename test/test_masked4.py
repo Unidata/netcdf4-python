@@ -88,11 +88,11 @@ class SetValidMinMax(unittest.TestCase):
         v3 = f.variables["v3"][:]
         self.assertEqual(v.dtype, "f8")
         self.assertTrue(isinstance(v, np.ndarray))
-        self.assertTrue(isinstance(v, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v, ma.masked_array))
         assert_array_almost_equal(v, self.v_scaled)
         self.assertEqual(v2.dtype, "f8")
         self.assertTrue(isinstance(v2, np.ndarray))
-        self.assertTrue(isinstance(v2, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v2, ma.masked_array))
         assert_array_almost_equal(v2, self.v_scaled)
         self.assertTrue(np.all(self.v_ma.mask == v.mask))
         self.assertTrue(np.all(self.v_ma.mask == v2.mask))

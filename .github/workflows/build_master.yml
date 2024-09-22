@@ -47,7 +47,7 @@ jobs:
     - name: Install python dependencies via pip
       run: |
         python -m pip install --upgrade pip
-        pip install numpy cython cftime pytest twine wheel check-manifest mpi4py mypy types-setuptools
+        pip install numpy cython cftime pytest twine wheel check-manifest mpi4py mypy types-setuptools typing-extensions
 
     - name: Install netcdf4-python
       run: |

@@ -24,7 +24,7 @@ if __name__ == '__main__':
     sys.stdout.write('netcdf lib version:     %s\n' % __netcdf4libversion__)
     sys.stdout.write('numpy version           %s\n' % numpy.__version__)
     sys.stdout.write('cython version          %s\n' % cython.__version__)
-    runner = unittest.TextTestRunner(verbosity=1)
+    runner = unittest.TextTestRunner(verbosity=(2 if "-v" in sys.argv else 1))
     result = runner.run(testsuite)
     if not result.wasSuccessful():
         sys.exit(1)
