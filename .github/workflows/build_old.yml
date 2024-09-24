@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PNETCDF_VERSION: 1.12.1
-      NETCDF_VERSION: 4.8.1
+      NETCDF_VERSION: 4.7.4
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
       CC: mpicc.mpich
@@ -35,10 +35,11 @@ jobs:
         pushd pnetcdf-${PNETCDF_VERSION}
         ./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
         make -j 2
-        make install
+        sudo make install
         popd
         echo "Download and build netCDF version ${NETCDF_VERSION}"
-        wget https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+        #wget https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+        wget https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-c-${NETCDF_VERSION}.tar.gz
         tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
         pushd netcdf-c-${NETCDF_VERSION}
         export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
@@ -46,7 +47,7 @@ jobs:
         export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
         ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
         make -j 2
-        make install
+        sudo make install
         popd
 
 #   - name: The job has failed

@@ -69,7 +69,7 @@ jobs:
         init-shell: bash
         create-args: >-
           python=${{ matrix.python-version }}
-          numpy cython pip pytest mpi4py hdf5=*=mpi* libnetcdf=*=mpi* cftime zlib certifi
+          numpy cython pip pytest openmpi mpi4py hdf5=*=mpi* libnetcdf=*=mpi* cftime zlib certifi
           --channel conda-forge
 
     - name: Install netcdf4-python with mpi
