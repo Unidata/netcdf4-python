@@ -92,7 +92,7 @@ jobs:
         echo "Setting CIBW_SKIP=$CIBW_SKIP"
 
     - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
-      uses: pypa/cibuildwheel@v2.21.1
+      uses: pypa/cibuildwheel@v2.21.2
       env:
         CIBW_SKIP: ${{ env.CIBW_SKIP }}
         CIBW_ARCHS: ${{ matrix.arch }}
