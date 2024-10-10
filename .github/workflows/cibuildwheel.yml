@@ -92,7 +92,7 @@ jobs:
         echo "Setting CIBW_SKIP=$CIBW_SKIP"
 
     - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
-      uses: pypa/cibuildwheel@v2.21.2
+      uses: pypa/cibuildwheel@v2.21.3
       env:
         CIBW_SKIP: ${{ env.CIBW_SKIP }}
         CIBW_ARCHS: ${{ matrix.arch }}
@@ -107,8 +107,6 @@ jobs:
         CIBW_TEST_COMMAND: >
           python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
           && pytest -s -rxs -v {project}/test
-          && URL="https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc"
-          && python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 
     - uses: actions/upload-artifact@v4
       with:
