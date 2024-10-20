@@ -4648,15 +4648,18 @@ pre-filled)."""
         with nogil:
             ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
         _ensure_nc_success(ierr)
-        if no_fill == 1:
+        if no_fill == 1: # no filling for this variable
             return None
         else:
             try:
                 fillval = self._FillValue
             except AttributeError:
+                # _FillValue attribute not set, use default _FillValue
+                # for primite datatypes.
                 if self._isprimitive:
-                    return default_fillvals[self.dtype.str[1:]]
+                    return np.asarray(default_fillvals[self.dtype.str[1:]],self.dtype)
                 else:
+                    # no default filling for non-primitive datatypes.
                     return None
 
     def ncattrs(self):
