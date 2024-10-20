@@ -4660,7 +4660,7 @@ pre-filled)."""
                     return np.array(default_fillvals[self.dtype.str[1:]],self.dtype)
                     #fillval = np.array(default_fillvals[self.dtype.str[1:]],self.dtype)
                     #with nogil:
-                    #    ierr=nc_inq_var_fill(self._grpid,self._varid,&no_fill,fillval)
+                    #    ierr=nc_inq_var_fill(self._grpid,self._varid,&no_fill,PyArray_DATA(fillval))
                     #_ensure_nc_success(ierr)
                     #return fillval
                 else:
