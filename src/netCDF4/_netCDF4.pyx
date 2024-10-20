@@ -4657,7 +4657,7 @@ pre-filled)."""
                 # _FillValue attribute not set, use default _FillValue
                 # for primite datatypes.
                 if self._isprimitive:
-                    return np.asarray(default_fillvals[self.dtype.str[1:]],self.dtype)
+                    return np.array(default_fillvals[self.dtype.str[1:]],self.dtype)
                 else:
                     # no default filling for non-primitive datatypes.
                     return None
