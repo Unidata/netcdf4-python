@@ -4638,6 +4638,27 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 return the group that this `Variable` is a member of."""
         return self._grp
 
+    def get_fill_value(self):
+        """
+**`get_fill_value(self)`**
+
+return the `_FillValue` associated with this `Variable` (None if data is not
+pre-filled)."""
+        cdef int ierr, no_fill
+        with nogil:
+            ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
+        _ensure_nc_success(ierr)
+        if no_fill == 1:
+            return None
+        else:
+            try:
+                fillval = self._FillValue
+            except AttributeError:
+                if self._isprimitive:
+                    return default_fillvals[self.dtype.str[1:]]
+                else:
+                    return None
+
     def ncattrs(self):
         """
 **`ncattrs(self)`**
