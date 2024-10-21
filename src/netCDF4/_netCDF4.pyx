@@ -4039,7 +4039,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         value that the variable gets filled with before any data is written to it)
         is replaced with this value.  If fill_value is set to `False`, then
         the variable is not pre-filled. The default netCDF fill values can be found
-        in the dictionary `netCDF4.default_fillvals`.
+        in the dictionary `netCDF4.default_fillvals`. If not set, the netCDF default
+        `_FillValue` will be used but no `_FillValue` attribute will be created
+        (this is the default behavior of the netcdf-c library). `Variable.get_fill_value`
+        can be used to retrieve the fill value, even if the `_FillValue` attribute is
+        not set.
 
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
         Persists as long as Dataset is open. Use `set_var_chunk_cache` to
@@ -4642,8 +4646,9 @@ return the group that this `Variable` is a member of."""
         """
 **`get_fill_value(self)`**
 
-return the `_FillValue` associated with this `Variable` (None if data is not
-pre-filled)."""
+return the fill value associated with this `Variable` (None if data is not
+pre-filled). Works even if default fill value was used, and `_FillValue` attribute
+does not exist."""
         cdef int ierr, no_fill
         with nogil:
             ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
