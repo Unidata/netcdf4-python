@@ -4035,12 +4035,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         Ignored if `significant_digts` not specified. If 'BitRound' is used, then
         `significant_digits` is interpreted as binary (not decimal) digits.
 
-        **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
+        **`fill_value`**:  If specified, the default netCDF fill value (the
         value that the variable gets filled with before any data is written to it)
-        is replaced with this value.  If fill_value is set to `False`, then
-        the variable is not pre-filled. The default netCDF fill values can be found
-        in the dictionary `netCDF4.default_fillvals`. If not set, the netCDF default
-        `_FillValue` will be used but no `_FillValue` attribute will be created
+        is replaced with this value, and the `_FillValue` attribute is set.
+        If fill_value is set to `False`, then the variable is not pre-filled.
+        The default netCDF fill values can be found in the dictionary `netCDF4.default_fillvals`.
+        If not set, the default fill value will be used but no `_FillValue` attribute will be created
         (this is the default behavior of the netcdf-c library). `Variable.get_fill_value`
         can be used to retrieve the fill value, even if the `_FillValue` attribute is
         not set.
