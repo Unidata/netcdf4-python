@@ -4414,6 +4414,11 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                         if not fillval.dtype.isnative: fillval.byteswap(True)
                         _set_att(self._grp, self._varid, '_FillValue',\
                                  fillval, xtype=xtype)
+                    else:
+                        msg = """
+WARNING: there is no default fill value for this data type, so fill_value='default'
+does not do anything."""
+                        warnings.warn(msg)
                 else:
                     if self._isprimitive or self._isenum or \
                        (self._isvlen and self.dtype == str):
