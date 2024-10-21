@@ -33,6 +33,7 @@ class TestGetFillValue(unittest.TestCase):
         # _FillValue attribute is set.
         v = f['float_var']
         assert_array_equal(fill_val, v.get_fill_value())
+        f.close()
 
 if __name__ == '__main__':
     unittest.main()
