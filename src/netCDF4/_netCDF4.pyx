@@ -4043,7 +4043,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         If not set, the default fill value will be used but no `_FillValue` attribute will be created
         (this is the default behavior of the netcdf-c library). If you want to use the 
         default fill value, but have the `_FillValue` attribute set, use
-        `fill_value='default'` (note - this only works for primitive data types). ``Variable.get_fill_value`
+        `fill_value='default'` (note - this only works for primitive data types). `Variable.get_fill_value`
         can be used to retrieve the fill value, even if the `_FillValue` attribute is not set.
 
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
@@ -4658,7 +4658,7 @@ return the group that this `Variable` is a member of."""
         """
 **`get_fill_value(self)`**
 
-return the fill value associated with this `Variable` (None if data is not
+return the fill value associated with this `Variable` (returns `None` if data is not
 pre-filled). Works even if default fill value was used, and `_FillValue` attribute
 does not exist."""
         cdef int ierr, no_fill
