@@ -4653,6 +4653,7 @@ pre-filled)."""
         else:
             try:
                 fillval = self._FillValue
+                return fillval
             except AttributeError:
                 # _FillValue attribute not set, see if we can retrieve _FillValue.
                 # for primitive data types.
