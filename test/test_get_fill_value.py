@@ -5,6 +5,8 @@ import numpy as np
 
 fill_val = np.array(9.9e31)
 
+# test Variable.get_fill_value
+
 class TestGetFillValue(unittest.TestCase):
     def setUp(self):
         self.testfile = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
