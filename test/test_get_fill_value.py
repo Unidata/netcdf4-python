@@ -16,6 +16,8 @@ class TestGetFillValue(unittest.TestCase):
             if not dt.startswith('c'):
                 v = f.createVariable(dt+'_var',dt,dim)
         v = f.createVariable('float_var',np.float64,dim,fill_value=fill_val)
+        # test fill_value='default' option (issue #1374)
+        v2 = f.createVariable('float_var2',np.float64,dim,fill_value='default')
         f.close()
         
     def tearDown(self):
@@ -33,6 +35,8 @@ class TestGetFillValue(unittest.TestCase):
         # _FillValue attribute is set.
         v = f['float_var']
         assert_array_equal(fill_val, v.get_fill_value())
+        v = f['float_var2']
+        assert_array_equal(np.array(netCDF4.default_fillvals['f8']), v._FillValue)
         f.close()
 
 if __name__ == '__main__':

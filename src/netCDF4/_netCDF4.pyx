@@ -4041,9 +4041,10 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         If fill_value is set to `False`, then the variable is not pre-filled.
         The default netCDF fill values can be found in the dictionary `netCDF4.default_fillvals`.
         If not set, the default fill value will be used but no `_FillValue` attribute will be created
-        (this is the default behavior of the netcdf-c library). `Variable.get_fill_value`
-        can be used to retrieve the fill value, even if the `_FillValue` attribute is
-        not set.
+        (this is the default behavior of the netcdf-c library). If you want to use the 
+        default fill value, but have the `_FillValue` attribute set, use
+        `fill_value='default'` (note - this only works for primitive data types). ``Variable.get_fill_value`
+        can be used to retrieve the fill value, even if the `_FillValue` attribute is not set.
 
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
         Persists as long as Dataset is open. Use `set_var_chunk_cache` to
@@ -4407,6 +4408,12 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
                         _ensure_nc_success(ierr, extra_msg=error_info)
+                elif fill_value == 'default':
+                    if self._isprimitive:
+                        fillval = numpy.array(default_fillvals[self.dtype.str[1:]])
+                        if not fillval.dtype.isnative: fillval.byteswap(True)
+                        _set_att(self._grp, self._varid, '_FillValue',\
+                                 fillval, xtype=xtype)
                 else:
                     if self._isprimitive or self._isenum or \
                        (self._isvlen and self.dtype == str):
