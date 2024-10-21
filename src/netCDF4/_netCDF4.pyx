@@ -4656,13 +4656,12 @@ pre-filled)."""
             except AttributeError:
                 # _FillValue attribute not set, see if we can retrieve _FillValue.
                 # for primitive data types.
-                if self._isprimitive
-                    return np.array(default_fillvals[self.dtype.str[1:]],self.dtype)
-                    #fillval = np.array(default_fillvals[self.dtype.str[1:]],self.dtype)
-                    #with nogil:
-                    #    ierr=nc_inq_var_fill(self._grpid,self._varid,&no_fill,PyArray_DATA(fillval))
-                    #_ensure_nc_success(ierr)
-                    #return fillval
+                if self._isprimitive:
+                    #return numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
+                    fillval = numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
+                    ierr=nc_inq_var_fill(self._grpid,self._varid,&no_fill,PyArray_DATA(fillval))
+                    _ensure_nc_success(ierr)
+                    return fillval
                 else:
                     # no default filling for non-primitive data types.
                     return None
