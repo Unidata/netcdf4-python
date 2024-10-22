@@ -9,6 +9,11 @@
 
 #include "nc_complex_version.h"
 
+// to enable compilation with older versions of netcdf-c
+#ifndef NC_FORMATX_NCZARR
+#define NC_FORMATX_NCZARR    (10)
+#endif
+
 // NOLINTBEGIN(bugprone-assignment-in-if-condition)
 #define CHECK(func)           \
     do {                      \

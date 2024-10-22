@@ -289,7 +289,7 @@ and whether it is unlimited.</p>
 &lt;class 'netCDF4._netCDF4.Dimension'&gt;: name = 'lon', size = 144
 </code></pre>
 <p><code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> names can be changed using the
-<code>Datatset.renameDimension</code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
+<code><a title="netCDF4.Dataset.renameDimension" href="#netCDF4.Dataset.renameDimension">Dataset.renameDimension()</a></code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
 <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance.</p>
 <h2 id="variables-in-a-netcdf-file">Variables in a netCDF file</h2>
 <p>netCDF variables behave much like python multidimensional array objects
@@ -901,7 +901,7 @@ use the <code>parallel</code> keyword to enable parallel access.</p>
 <p>The optional <code>comm</code> keyword may be used to specify a particular
 MPI communicator (<code>MPI_COMM_WORLD</code> is used by default).
 Each process (or rank)
-can now write to the file indepedently.
+can now write to the file independently.
 In this example the process rank is
 written to a different variable index on each task</p>
 <pre><code class="language-python">&gt;&gt;&gt; d = nc.createDimension('dim',4)
@@ -1164,7 +1164,7 @@ Input character array (numpy datatype <code>'S1'</code> or <code>'U1'</code>).
 Will be converted to a array of strings, where each string has a fixed
 length of <code>b.shape[-1]</code> characters.</p>
 <p>optional kwarg <code>encoding</code> can be used to specify character encoding (default
-<code>utf-8</code>). If <code>encoding</code> is 'none' or 'bytes', a <code>numpy.string_</code> btye array is
+<code>utf-8</code>). If <code>encoding</code> is 'none' or 'bytes', a <code>numpy.string_</code> byte array is
 returned.</p>
 <p>returns a numpy string array with datatype <code>'UN'</code> (or <code>'SN'</code>) and shape
 <code>b.shape[:-1]</code> where where <code>N=b.shape[-1]</code>.</p></div>
@@ -1173,7 +1173,8 @@ returned.</p>
 <span>def <span class="ident">date2index</span></span>(<span>dates, nctime, calendar=None, select='exact', has_year_zero=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return indices of a netCDF time variable corresponding to the given dates.</p>
+<div class="desc"><p>date2index(dates, nctime, calendar=None, select=u'exact', has_year_zero=None)</p>
+<p>Return indices of a netCDF time variable corresponding to the given dates.</p>
 <p><strong>dates</strong>: A datetime object or a sequence of datetime objects.
 The datetime objects should not include a time-zone offset.</p>
 <p><strong>nctime</strong>: A netCDF time variable object. The nctime object must have a
@@ -1212,7 +1213,8 @@ to the given datetime object(s).</p></div>
 <span>def <span class="ident">date2num</span></span>(<span>dates, units, calendar=None, has_year_zero=None, longdouble=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return numeric time values given datetime objects. The units
+<div class="desc"><p>date2num(dates, units, calendar=None, has_year_zero=None, longdouble=False)</p>
+<p>Return numeric time values given datetime objects. The units
 of the numeric time values are described by the <strong>units</strong> argument
 and the <strong>calendar</strong> keyword. The datetime objects must
 be in UTC with no time-zone offset.
@@ -1292,7 +1294,8 @@ used to build the module, and when it was built.</p></div>
 <span>def <span class="ident">num2date</span></span>(<span>times, units, calendar='standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return datetime objects given numeric time values. The units
+<div class="desc"><p>num2date(times, units, calendar=u'standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</p>
+<p>Return datetime objects given numeric time values. The units
 of the numeric time values are described by the <strong>units</strong> argument
 and the <strong>calendar</strong> keyword. The returned datetime objects represent
 UTC with no time-zone offset, even if the specified
@@ -1348,14 +1351,18 @@ contains one.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>rc_get(key)</code></strong></p>
-<p>Returns the internal netcdf-c rc table value corresponding to key.</p></div>
+<p>Returns the internal netcdf-c rc table value corresponding to key.
+See <a href="https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html">https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html</a>
+for more information on rc files and values.</p></div>
 </dd>
 <dt id="netCDF4.rc_set"><code class="name flex">
 <span>def <span class="ident">rc_set</span></span>(<span>key, value)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>rc_set(key, value)</code></strong></p>
-<p>Sets the internal netcdf-c rc table value corresponding to key.</p></div>
+<p>Sets the internal netcdf-c rc table value corresponding to key.
+See <a href="https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html">https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html</a>
+for more information on rc files and values.</p></div>
 </dd>
 <dt id="netCDF4.set_alignment"><code class="name flex">
 <span>def <span class="ident">set_alignment</span></span>(<span>threshold, alignment)</span>
@@ -2669,12 +2676,16 @@ algorithm may result in better compression for typical geophysical datasets.
 Ignored if <code>significant_digts</code> not specified. If 'BitRound' is used, then
 <code>significant_digits</code> is interpreted as binary (not decimal) digits.</p>
 <p><strong><code>fill_value</code></strong>:
-If specified, the default netCDF <code>_FillValue</code> (the
+If specified, the default netCDF fill value (the
 value that the variable gets filled with before any data is written to it)
-is replaced with this value.
-If fill_value is set to <code>False</code>, then
-the variable is not pre-filled. The default netCDF fill values can be found
-in the dictionary <code>netCDF4.default_fillvals</code>.</p>
+is replaced with this value, and the <code>_FillValue</code> attribute is set.
+If fill_value is set to <code>False</code>, then the variable is not pre-filled.
+The default netCDF fill values can be found in the dictionary <code>netCDF4.default_fillvals</code>.
+If not set, the default fill value will be used but no <code>_FillValue</code> attribute will be created
+(this is the default behavior of the netcdf-c library). If you want to use the
+default fill value, but have the <code>_FillValue</code> attribute set, use
+<code>fill_value='default'</code> (note - this only works for primitive data types). <code><a title="netCDF4.Variable.get_fill_value" href="#netCDF4.Variable.get_fill_value">Variable.get_fill_value()</a></code>
+can be used to retrieve the fill value, even if the <code>_FillValue</code> attribute is not set.</p>
 <p><strong><code>chunk_cache</code></strong>: If specified, sets the chunk cache size for this variable.
 Persists as long as Dataset is open. Use <code>set_var_chunk_cache</code> to
 change it when Dataset is re-opened.</p>
@@ -2799,6 +2810,15 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([&hellip;]).
 <p>return a tuple of <code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> instances associated with this
 <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code>.</p></div>
 </dd>
+<dt id="netCDF4.Variable.get_fill_value"><code class="name flex">
+<span>def <span class="ident">get_fill_value</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p><strong><code>get_fill_value(self)</code></strong></p>
+<p>return the fill value associated with this <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code> (returns <code>None</code> if data is not
+pre-filled). Works even if default fill value was used, and <code>_FillValue</code> attribute
+does not exist.</p></div>
+</dd>
 <dt id="netCDF4.Variable.get_var_chunk_cache"><code class="name flex">
 <span>def <span class="ident">get_var_chunk_cache</span></span>(<span>self)</span>
 </code></dt>
@@ -2877,7 +2897,7 @@ of the the rightmost dimension of the variable).
 The value of <code>_Encoding</code>
 is the unicode encoding that is used to decode the bytes into strings.</p>
 <p>When numpy string data is written to a variable it is converted back to
-indiviual bytes, with the number of bytes in each string equalling the
+individual bytes, with the number of bytes in each string equalling the
 rightmost dimension of the variable.</p>
 <p>The default value of <code><a title="netCDF4.chartostring" href="#netCDF4.chartostring">chartostring()</a></code> is <code>True</code>
 (automatic conversions are performed).</p></div>
@@ -3234,6 +3254,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 <li><code><a title="netCDF4.Variable.filters" href="#netCDF4.Variable.filters">filters</a></code></li>
 <li><code><a title="netCDF4.Variable.getValue" href="#netCDF4.Variable.getValue">getValue</a></code></li>
 <li><code><a title="netCDF4.Variable.get_dims" href="#netCDF4.Variable.get_dims">get_dims</a></code></li>
+<li><code><a title="netCDF4.Variable.get_fill_value" href="#netCDF4.Variable.get_fill_value">get_fill_value</a></code></li>
 <li><code><a title="netCDF4.Variable.get_var_chunk_cache" href="#netCDF4.Variable.get_var_chunk_cache">get_var_chunk_cache</a></code></li>
 <li><code><a title="netCDF4.Variable.getncattr" href="#netCDF4.Variable.getncattr">getncattr</a></code></li>
 <li><code><a title="netCDF4.Variable.group" href="#netCDF4.Variable.group">group</a></code></li>

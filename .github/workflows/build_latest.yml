@@ -35,7 +35,7 @@ jobs:
         pushd pnetcdf-${PNETCDF_VERSION}
         ./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
         make -j 2
-        make install
+        sudo make install
         popd
         echo "Download and build netCDF version ${NETCDF_VERSION}"
         wget https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
@@ -46,7 +46,7 @@ jobs:
         export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
         ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
         make -j 2
-        make install
+        sudo make install
         popd
 
 #   - name: The job has failed
