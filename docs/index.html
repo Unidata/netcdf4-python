@@ -289,7 +289,7 @@ and whether it is unlimited.</p>
 &lt;class 'netCDF4._netCDF4.Dimension'&gt;: name = 'lon', size = 144
 </code></pre>
 <p><code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> names can be changed using the
-<code>Dataset.renameDimension</code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
+<code><a title="netCDF4.Dataset.renameDimension" href="#netCDF4.Dataset.renameDimension">Dataset.renameDimension()</a></code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
 <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance.</p>
 <h2 id="variables-in-a-netcdf-file">Variables in a netCDF file</h2>
 <p>netCDF variables behave much like python multidimensional array objects
@@ -2676,12 +2676,16 @@ algorithm may result in better compression for typical geophysical datasets.
 Ignored if <code>significant_digts</code> not specified. If 'BitRound' is used, then
 <code>significant_digits</code> is interpreted as binary (not decimal) digits.</p>
 <p><strong><code>fill_value</code></strong>:
-If specified, the default netCDF <code>_FillValue</code> (the
+If specified, the default netCDF fill value (the
 value that the variable gets filled with before any data is written to it)
-is replaced with this value.
-If fill_value is set to <code>False</code>, then
-the variable is not pre-filled. The default netCDF fill values can be found
-in the dictionary <code>netCDF4.default_fillvals</code>.</p>
+is replaced with this value, and the <code>_FillValue</code> attribute is set.
+If fill_value is set to <code>False</code>, then the variable is not pre-filled.
+The default netCDF fill values can be found in the dictionary <code>netCDF4.default_fillvals</code>.
+If not set, the default fill value will be used but no <code>_FillValue</code> attribute will be created
+(this is the default behavior of the netcdf-c library). If you want to use the
+default fill value, but have the <code>_FillValue</code> attribute set, use
+<code>fill_value='default'</code> (note - this only works for primitive data types). <code><a title="netCDF4.Variable.get_fill_value" href="#netCDF4.Variable.get_fill_value">Variable.get_fill_value()</a></code>
+can be used to retrieve the fill value, even if the <code>_FillValue</code> attribute is not set.</p>
 <p><strong><code>chunk_cache</code></strong>: If specified, sets the chunk cache size for this variable.
 Persists as long as Dataset is open. Use <code>set_var_chunk_cache</code> to
 change it when Dataset is re-opened.</p>
@@ -2805,6 +2809,15 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([&hellip;]).
 <div class="desc"><p><strong><code>get_dims(self)</code></strong></p>
 <p>return a tuple of <code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> instances associated with this
 <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code>.</p></div>
+</dd>
+<dt id="netCDF4.Variable.get_fill_value"><code class="name flex">
+<span>def <span class="ident">get_fill_value</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p><strong><code>get_fill_value(self)</code></strong></p>
+<p>return the fill value associated with this <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code> (returns <code>None</code> if data is not
+pre-filled). Works even if default fill value was used, and <code>_FillValue</code> attribute
+does not exist.</p></div>
 </dd>
 <dt id="netCDF4.Variable.get_var_chunk_cache"><code class="name flex">
 <span>def <span class="ident">get_var_chunk_cache</span></span>(<span>self)</span>
@@ -3241,6 +3254,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 <li><code><a title="netCDF4.Variable.filters" href="#netCDF4.Variable.filters">filters</a></code></li>
 <li><code><a title="netCDF4.Variable.getValue" href="#netCDF4.Variable.getValue">getValue</a></code></li>
 <li><code><a title="netCDF4.Variable.get_dims" href="#netCDF4.Variable.get_dims">get_dims</a></code></li>
+<li><code><a title="netCDF4.Variable.get_fill_value" href="#netCDF4.Variable.get_fill_value">get_fill_value</a></code></li>
 <li><code><a title="netCDF4.Variable.get_var_chunk_cache" href="#netCDF4.Variable.get_var_chunk_cache">get_var_chunk_cache</a></code></li>
 <li><code><a title="netCDF4.Variable.getncattr" href="#netCDF4.Variable.getncattr">getncattr</a></code></li>
 <li><code><a title="netCDF4.Variable.group" href="#netCDF4.Variable.group">group</a></code></li>

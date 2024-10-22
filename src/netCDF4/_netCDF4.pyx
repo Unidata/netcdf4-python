@@ -4035,11 +4035,16 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         Ignored if `significant_digts` not specified. If 'BitRound' is used, then
         `significant_digits` is interpreted as binary (not decimal) digits.
 
-        **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
+        **`fill_value`**:  If specified, the default netCDF fill value (the
         value that the variable gets filled with before any data is written to it)
-        is replaced with this value.  If fill_value is set to `False`, then
-        the variable is not pre-filled. The default netCDF fill values can be found
-        in the dictionary `netCDF4.default_fillvals`.
+        is replaced with this value, and the `_FillValue` attribute is set.
+        If fill_value is set to `False`, then the variable is not pre-filled.
+        The default netCDF fill values can be found in the dictionary `netCDF4.default_fillvals`.
+        If not set, the default fill value will be used but no `_FillValue` attribute will be created
+        (this is the default behavior of the netcdf-c library). If you want to use the 
+        default fill value, but have the `_FillValue` attribute set, use
+        `fill_value='default'` (note - this only works for primitive data types). `Variable.get_fill_value`
+        can be used to retrieve the fill value, even if the `_FillValue` attribute is not set.
 
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
         Persists as long as Dataset is open. Use `set_var_chunk_cache` to
@@ -4403,6 +4408,17 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
                         _ensure_nc_success(ierr, extra_msg=error_info)
+                elif fill_value == 'default':
+                    if self._isprimitive:
+                        fillval = numpy.array(default_fillvals[self.dtype.str[1:]])
+                        if not fillval.dtype.isnative: fillval.byteswap(True)
+                        _set_att(self._grp, self._varid, '_FillValue',\
+                                 fillval, xtype=xtype)
+                    else:
+                        msg = """
+WARNING: there is no default fill value for this data type, so fill_value='default'
+does not do anything."""
+                        warnings.warn(msg)
                 else:
                     if self._isprimitive or self._isenum or \
                        (self._isvlen and self.dtype == str):
@@ -4637,6 +4653,36 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
 return the group that this `Variable` is a member of."""
         return self._grp
+
+    def get_fill_value(self):
+        """
+**`get_fill_value(self)`**
+
+return the fill value associated with this `Variable` (returns `None` if data is not
+pre-filled). Works even if default fill value was used, and `_FillValue` attribute
+does not exist."""
+        cdef int ierr, no_fill
+        with nogil:
+            ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
+        _ensure_nc_success(ierr)
+        if no_fill == 1: # no filling for this variable
+            return None
+        else:
+            try:
+                fillval = self._FillValue
+                return fillval
+            except AttributeError:
+                # _FillValue attribute not set, see if we can retrieve _FillValue.
+                # for primitive data types.
+                if self._isprimitive:
+                    #return numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
+                    fillval = numpy.empty((),self.dtype)
+                    ierr=nc_inq_var_fill(self._grpid,self._varid,&no_fill,PyArray_DATA(fillval))
+                    _ensure_nc_success(ierr)
+                    return fillval
+                else:
+                    # no default filling for non-primitive data types.
+                    return None
 
     def ncattrs(self):
         """
