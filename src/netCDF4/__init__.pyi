@@ -295,7 +295,7 @@ class Dataset:
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode = "BitGroom",
-        fill_value: int | float | np.number | str | bytes | Literal[False] | None = None,
+        fill_value: int | float | np.generic | str | bytes | Literal[False] | np.ndarray | None = None,
         chunk_cache: int | None = None,
     ) -> Variable[NumericVarT]: ...
     @overload
@@ -318,7 +318,7 @@ class Dataset:
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode = "BitGroom",
-        fill_value: int | float | np.number | str | bytes | Literal[False] | None = None,
+        fill_value: int | float | np.generic | str | bytes | Literal[False] | np.ndarray | None = None,
         chunk_cache: int | None = None,
     ) -> Variable[str]: ...
     @overload
@@ -341,7 +341,7 @@ class Dataset:
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode = "BitGroom",
-        fill_value: int | float | np.number | str | bytes | Literal[False] | None = None,
+        fill_value: int | float | np.generic | str | bytes | Literal[False] | np.ndarray | None = None,
         chunk_cache: int | None = None,
     ) -> Variable: ...
     def renameVariable(self, oldname: str, newname: str) -> None: ...
@@ -450,7 +450,7 @@ class Variable(Generic[VarT]):
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode = "BitGroom",
-        fill_value: int | float | np.number | str | bytes | Literal[False] | None = None,
+        fill_value: int | float | np.generic | str | bytes | Literal[False] | np.ndarray | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any,
     ) -> Variable[NumericVarT]: ...
@@ -475,7 +475,7 @@ class Variable(Generic[VarT]):
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode = "BitGroom",
-        fill_value: int | float | np.number | str | bytes | Literal[False] | None = None,
+        fill_value: int | float | np.generic | str | bytes | Literal[False] | np.ndarray | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any,
     ) -> Variable[str]: ...
@@ -500,7 +500,7 @@ class Variable(Generic[VarT]):
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode = "BitGroom",
-        fill_value: int | float | np.number | str | bytes | Literal[False] | None = None,
+        fill_value: int | float | np.generic | str | bytes | Literal[False] | np.ndarray | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any,
     ) -> Variable: ...
@@ -524,7 +524,7 @@ class Variable(Generic[VarT]):
         least_significant_digit: int | None = None,
         significant_digits: int | None = None,
         quantize_mode: QuantizeMode = "BitGroom",
-        fill_value: int | float | np.number | str | bytes | Literal[False] | None = None,
+        fill_value: int | float | np.generic | str | bytes | Literal[False] | np.ndarray | None = None,
         chunk_cache: int | None = None,
         **kwargs: Any,
     ) -> None: ...

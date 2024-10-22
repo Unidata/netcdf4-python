@@ -29,12 +29,14 @@ netCDF4.NumericVarT
 netCDF4.Dimension.__reduce_cython__
 netCDF4.Dimension.__setstate_cython__
 netCDF4.Variable.auto_complex
+netCDF4.Variable.get_fill_value
 netCDF4.Variable.__iter__
 netCDF4._netCDF4.Dimension.__reduce_cython__
 netCDF4._netCDF4.Dimension.__setstate_cython__
 netCDF4._netCDF4.NC_DISKLESS
 netCDF4._netCDF4.NC_PERSIST
 netCDF4._netCDF4.Variable.auto_complex
+netCDF4._netCDF4.Variable.get_fill_value
 netCDF4._netCDF4.Variable.__iter__
 netCDF4._netCDF4.__reduce_cython__
 netCDF4._netCDF4.__setstate_cython__
