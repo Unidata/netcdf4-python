@@ -1,8 +1,14 @@
+from typing import TYPE_CHECKING, Any
 from numpy.random.mtrand import uniform
 from netCDF4 import Dataset, __has_quantization_support__
 from numpy.testing import assert_almost_equal
 import numpy as np
 import os, tempfile, unittest
+if TYPE_CHECKING:
+    from netCDF4 import CompressionLevel, QuantizeMode
+else:
+    CompressionLevel = Any
+    QuantizeMode = Any
 
 ndim = 100000
 nfiles = 7
@@ -13,7 +19,7 @@ nsb = 10 # for BitRound, use significant bits (~3.32 sig digits)
 complevel = 6
 
 def write_netcdf(filename,zlib,significant_digits,data,dtype='f8',shuffle=False,\
-                 complevel=6,quantize_mode="BitGroom"):
+                 complevel: CompressionLevel = 6, quantize_mode: QuantizeMode = "BitGroom"):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
     foo = file.createVariable('data',\
@@ -61,7 +67,7 @@ class CompressionTestCase(unittest.TestCase):
         assert_almost_equal(data_array,f.variables['data'][:])
         assert f.variables['data'].filters() ==\
         {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':complevel,'fletcher32':False}
-        assert size < 0.95*uncompressed_size 
+        assert size < 0.95*uncompressed_size
         f.close()
         # check compression with shuffle
         f = Dataset(self.files[2])
@@ -70,43 +76,43 @@ class CompressionTestCase(unittest.TestCase):
         assert_almost_equal(data_array,f.variables['data'][:])
         assert f.variables['data'].filters() ==\
         {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':True,'complevel':complevel,'fletcher32':False}
-        assert size < 0.85*uncompressed_size 
+        assert size < 0.85*uncompressed_size
         f.close()
         # check lossy compression without shuffle
         f = Dataset(self.files[3])
         size = os.stat(self.files[3]).st_size
         errmax = (np.abs(data_array-f.variables['data'][:])).max()
         #print('compressed lossy no shuffle = ',size,' max err = ',errmax)
-        assert f.variables['data'].quantization() == (nsd,'BitGroom') 
-        assert errmax < 1.e-3 
-        assert size < 0.35*uncompressed_size 
+        assert f.variables['data'].quantization() == (nsd,'BitGroom')
+        assert errmax < 1.e-3
+        assert size < 0.35*uncompressed_size
         f.close()
         # check lossy compression with shuffle
         f = Dataset(self.files[4])
         size = os.stat(self.files[4]).st_size
         errmax = (np.abs(data_array-f.variables['data'][:])).max()
         print('compressed lossy with shuffle and standard quantization = ',size,' max err = ',errmax)
-        assert f.variables['data'].quantization() == (nsd,'BitGroom') 
-        assert errmax < 1.e-3 
-        assert size < 0.24*uncompressed_size 
+        assert f.variables['data'].quantization() == (nsd,'BitGroom')
+        assert errmax < 1.e-3
+        assert size < 0.24*uncompressed_size
         f.close()
         # check lossy compression with shuffle and alternate quantization
         f = Dataset(self.files[5])
         size = os.stat(self.files[5]).st_size
         errmax = (np.abs(data_array-f.variables['data'][:])).max()
         print('compressed lossy with shuffle and alternate quantization = ',size,' max err = ',errmax)
-        assert f.variables['data'].quantization() == (nsd,'GranularBitRound') 
-        assert errmax < 1.e-3 
-        assert size < 0.24*uncompressed_size 
+        assert f.variables['data'].quantization() == (nsd,'GranularBitRound')
+        assert errmax < 1.e-3
+        assert size < 0.24*uncompressed_size
         f.close()
         # check lossy compression with shuffle and alternate quantization
         f = Dataset(self.files[6])
         size = os.stat(self.files[6]).st_size
         errmax = (np.abs(data_array-f.variables['data'][:])).max()
         print('compressed lossy with shuffle and alternate quantization = ',size,' max err = ',errmax)
-        assert f.variables['data'].quantization() == (nsb,'BitRound') 
-        assert errmax < 1.e-3 
-        assert size < 0.24*uncompressed_size 
+        assert f.variables['data'].quantization() == (nsb,'BitRound')
+        assert errmax < 1.e-3
+        assert size < 0.24*uncompressed_size
         f.close()
 
 if __name__ == '__main__':

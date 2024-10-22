@@ -84,6 +84,12 @@ filterwarnings = [
 
 [tool.mypy]
 files = ["src/netCDF4"]
+exclude = "utils.py"
+check_untyped_defs = true
+allow_redefinition = true
+# next 2 lines workarounds for mypy dealing with type_guards.py
+mypy_path = "test"
+explicit_package_bases = true
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true

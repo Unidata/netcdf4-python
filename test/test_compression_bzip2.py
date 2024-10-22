@@ -1,15 +1,20 @@
+from typing import TYPE_CHECKING, Any
 from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest, sys
 from filter_availability import no_plugins, has_bzip2_filter
+if TYPE_CHECKING:
+    from netCDF4 import CompressionLevel
+else:
+    CompressionLevel = Any
 
 ndim = 100000
 filename1 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 filename2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 array = uniform(size=(ndim,))
 
-def write_netcdf(filename,dtype='f8',complevel=6):
+def write_netcdf(filename,dtype='f8',complevel: CompressionLevel = 6):
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
     foo = nc.createVariable('data',\
@@ -47,7 +52,7 @@ class CompressionTestCase(unittest.TestCase):
         assert_almost_equal(array,f.variables['data'][:])
         assert f.variables['data'].filters() ==\
         {'zlib':False,'szip':False,'zstd':False,'bzip2':True,'blosc':False,'shuffle':False,'complevel':4,'fletcher32':False}
-        assert size < 0.96*uncompressed_size 
+        assert size < 0.96*uncompressed_size
         f.close()
 
 

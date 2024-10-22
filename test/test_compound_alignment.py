@@ -99,7 +99,7 @@ class CompoundAlignTestCase(unittest.TestCase):
         f = netCDF4.Dataset(self.file, 'r')
         new_cells = f.variables["cells"][:]
         assert new_cells.shape == cells.shape
-        assert sorted(new_cells.dtype.names) == sorted(cells.dtype.names)
+        assert cells.dtype.names and sorted(new_cells.dtype.names) == sorted(cells.dtype.names)
         for name in cells.dtype.names:
             assert cells[name].dtype.name == new_cells[name].dtype.name
             assert cells[name].shape == new_cells[name].shape

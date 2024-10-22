@@ -1,5 +1,6 @@
 # benchmark reads and writes, with and without compression.
 # tests all four supported file formats.
+from typing import Literal
 from numpy.random.mtrand import uniform
 import netCDF4
 from timeit import Timer
@@ -19,7 +20,11 @@ sys.stdout.write('(average of %s trials)\n\n' % ntrials)
 array = nc.variables['hgt'][0:n1dim,5,:,:]
 
 
-def write_netcdf(filename,nsd,quantize_mode='BitGroom'):
+def write_netcdf(
+        filename,
+        nsd,
+        quantize_mode: Literal["BitGroom", "BitRound", "GranularBitRound"] = "BitGroom"
+    ):
     file = netCDF4.Dataset(filename,'w',format='NETCDF4')
     file.createDimension('n1', None)
     file.createDimension('n3', n3dim)

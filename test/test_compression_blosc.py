@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING, Any, Literal
 from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest, sys
 from filter_availability import no_plugins, has_blosc_filter
+if TYPE_CHECKING:
+    from netCDF4 import CompressionLevel
+else:
+    CompressionLevel = Any
 
 
 ndim = 100000
@@ -11,7 +16,7 @@ iblosc_complevel=4
 filename = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 datarr = uniform(size=(ndim,))
 
-def write_netcdf(filename,dtype='f8',blosc_shuffle=1,complevel=6):
+def write_netcdf(filename, dtype='f8', blosc_shuffle: Literal[0, 1, 2] = 1, complevel: CompressionLevel = 6):
     nc = Dataset(filename,'w')
     nc.createDimension('n', ndim)
     foo = nc.createVariable('data',\
@@ -38,7 +43,7 @@ def write_netcdf(filename,dtype='f8',blosc_shuffle=1,complevel=6):
 class CompressionTestCase(unittest.TestCase):
     def setUp(self):
         self.filename = filename
-        write_netcdf(self.filename,complevel=iblosc_complevel,blosc_shuffle=iblosc_shuffle)
+        write_netcdf(self.filename,complevel=iblosc_complevel,blosc_shuffle=iblosc_shuffle)  # type: ignore
 
     def tearDown(self):
         # Remove the temporary files
