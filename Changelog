@@ -3,7 +3,7 @@
  * add static type hints (PRs #1302, #1349)
  * Expose nc_rc_set, nc_rc_get (via rc_set, rc_get module functions). (PR #1348)
  * Add Variable.get_fill_value and allow `fill_value='default'` to 
-   set `_FillValue` using default fill values.  (issue #1374, PR #1375).
+   set `_FillValue` attribute using default fill values.  (issue #1374, PR #1375).
  * Fix NETCDF3 endian error (issue #1373, PR #1355).
 
  version 1.7.1 (tag v1.7.1rel)
