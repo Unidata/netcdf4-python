@@ -147,7 +147,7 @@ jobs:
       - name: Build wheels for Windows (${{ matrix.arch }})
         run: cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_BUILD: "cp39-${{ matrix.arch }} cp310-${{ matrix.arch }} cp311-${{ matrix.arch }} cp312-${{ matrix.arch }}"
+          CIBW_BUILD: "cp39-${{ matrix.arch }} cp310-${{ matrix.arch }} cp311-${{ matrix.arch }} cp312-${{ matrix.arch }} cp313-${{ matrix.arch }}"
           CIBW_ENVIRONMENT_WINDOWS: >
             HDF5_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
             netCDF4_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
