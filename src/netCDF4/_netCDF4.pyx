@@ -1318,6 +1318,14 @@ if __has_nc_rc_set__:
     if nc_rc_set("HTTP.SSL.CAINFO", _strencode(certifi.where())) != 0:
         raise RuntimeError('error setting path to SSL certificates')
 
+# set .netrc if availble in cwd or home (issue #1299)
+if __has_nc_rc_set__:
+    for path in [pathlib.Path(".netrc"), pathlib.Path.home().joinpath(".netrc")]:
+        if path.exists():
+            if nc_rc_set("HTTP.NETRC", _strencode(path)) != 0:
+                raise RuntimeError('error setting path to .netrc file')
+            break
+
 def rc_get(key):
     """
 **```rc_get(key)```**
