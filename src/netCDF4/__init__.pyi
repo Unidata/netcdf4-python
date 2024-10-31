@@ -354,7 +354,7 @@ class Dataset:
     def createVLType(self, datatype: npt.DTypeLike, datatype_name: str) -> VLType: ...
     def createEnumType(
         self,
-        datatype: np.dtype[np.integer] | type[np.integer] | type[int],
+        datatype: np.dtype[np.integer] | type[np.integer] | type[int] | str,
         datatype_name: str,
         enum_dict: Mapping[str, int | np.integer],
     ) -> EnumType: ...
