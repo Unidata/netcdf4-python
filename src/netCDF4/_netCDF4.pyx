@@ -1322,7 +1322,7 @@ if __has_nc_rc_set__:
 if __has_nc_rc_set__:
     for path in [pathlib.Path(".netrc"), pathlib.Path.home().joinpath(".netrc")]:
         if path.exists():
-            if nc_rc_set("HTTP.NETRC", _strencode(path)) != 0:
+            if nc_rc_set("HTTP.NETRC", bytes(path)) != 0:
                 raise RuntimeError('error setting path to .netrc file')
             break
 
