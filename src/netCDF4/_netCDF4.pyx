@@ -2569,6 +2569,15 @@ strings.
         else:
             raise IndexError('%s not found in %s' % (lastname,group.path))
 
+    def __iter__(self):
+        raise TypeError("Dataset is not iterable.")
+
+    def __contains__(self, key):
+        raise TypeError(
+            "Dataset does not support membership operations. Perhaps try 'varname in"
+            " dataset.variables' or 'dimname in dataset.dimensions'."
+        )
+
     def filepath(self,encoding=None):
         """**`filepath(self,encoding=None)`**
 
