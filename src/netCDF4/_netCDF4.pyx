@@ -2570,7 +2570,9 @@ strings.
             raise IndexError('%s not found in %s' % (lastname,group.path))
 
     def __iter__(self):
-        raise TypeError("Dataset is not iterable.")
+        raise TypeError(
+            "Dataset is not iterable. Consider iterating on Dataset.variables."
+        )
 
     def __contains__(self, key):
         raise TypeError(
@@ -4050,7 +4052,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         If fill_value is set to `False`, then the variable is not pre-filled.
         The default netCDF fill values can be found in the dictionary `netCDF4.default_fillvals`.
         If not set, the default fill value will be used but no `_FillValue` attribute will be created
-        (this is the default behavior of the netcdf-c library). If you want to use the 
+        (this is the default behavior of the netcdf-c library). If you want to use the
         default fill value, but have the `_FillValue` attribute set, use
         `fill_value='default'` (note - this only works for primitive data types). `Variable.get_fill_value`
         can be used to retrieve the fill value, even if the `_FillValue` attribute is not set.
