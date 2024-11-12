@@ -2331,8 +2331,8 @@ strings.
         exception will be raised if a file with the same name already exists.
         mode=`x` is identical to mode=`w` with clobber=False.
 
-        **`format`**: underlying file format (one of `'NETCDF4',
-        'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
+        **`format`**: underlying file format (one of `'NETCDF4'`,
+        `'NETCDF4_CLASSIC'`, `'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
         `'NETCDF3_64BIT_DATA'`.
         Only relevant if `mode = 'w'` (if `mode = 'r','a'` or `'r+'` the file format
         is automatically detected). Default `'NETCDF4'`, which means the data is
