@@ -2985,8 +2985,8 @@ Dataset standard attributes: `dimensions, dtype, shape, ndim, name` and
 `least_significant_digit`. Application programs should never modify
 these attributes. The `dimensions` attribute is a tuple containing the
 names of the dimensions associated with this variable. The `dtype`
-attribute is a string describing the variable's data type (`i4, f8,
-S1,` etc). The `shape` attribute is a tuple describing the current
+attribute is a string describing the variable's data type (`i4`, `f8`,
+`S1`, etc). The `shape` attribute is a tuple describing the current
 sizes of all the variable's dimensions. The `name` attribute is a
 string containing the name of the Variable instance.
 The `least_significant_digit`
@@ -3493,8 +3493,8 @@ suffix replaced by `.nc` is used..
 
 **`mode`**:  Access mode to open Dataset (Default `'a'`).
 
-**`format`**: underlying file format to use (one of `'NETCDF4',
-'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
+**`format`**: underlying file format to use (one of `'NETCDF4'`,
+`'NETCDF4_CLASSIC'`, `'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
 `'NETCDF3_64BIT_DATA'`. Default `'NETCDF4'`.
 
 Dataset instance for `ncfilename` is returned.
