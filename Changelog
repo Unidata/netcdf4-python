@@ -1,5 +1,7 @@
  since version 1.7.2 release
  ===========================
+ * raise more informative error when trying to iterate or
+   perform a membership operation on a Dataset (issue #1383)
  * fix type hint for createEnumType (issue #1378)
  * add python 3.13 to windows wheel builds (PR #1377)
 
