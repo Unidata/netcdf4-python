@@ -6833,8 +6833,8 @@ class MFDataset(Dataset):
     """
 Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
-Datasets must be in `NETCDF4_CLASSIC, NETCDF3_CLASSIC, NETCDF3_64BIT_OFFSET
-or NETCDF3_64BIT_DATA` format (`NETCDF4` Datasets won't work).
+Datasets must be in `NETCDF4_CLASSIC`, `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET`
+or `NETCDF3_64BIT_DATA` format (`NETCDF4` Datasets won't work).
 
 Adapted from [pycdf](http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 
