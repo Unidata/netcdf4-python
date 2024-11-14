@@ -68,8 +68,18 @@ class Test_CDL(unittest.TestCase):
                 assert len(f1.dimensions["d"]) == len(f2.dimensions["d"])
                 assert (f1["ub"][:] == f2["ub"][:]).all()
                 assert (f1["sb"][:] == f2["sb"][:]).all()
+            
+            # test if os.PathLike works
+            with netCDF4.Dataset.fromcdl(pathlib.Path("ubyte.cdl"), ncfilename=pathlib.Path("ubyte3.nc")) as f3:
+                assert f1.variables.keys() == f3.variables.keys()
 
+        # check if correct errors are raised
+        self.assertRaises(FileNotFoundError, netCDF4.Dataset.fromcdl, "doesnotexist.cdl")
+        self.assertRaises(FileExistsError, netCDF4.Dataset.fromcdl, "ubyte.cdl", ncfilename="ubyte2.nc")
+
+        # cleanup
         os.remove("ubyte2.nc")
+        os.remove("ubyte3.nc")
 
     def tearDown(self):
         # Remove the temporary files
