@@ -3514,7 +3514,7 @@ Dataset instance for `ncfilename` is returned.
         if format not in formatcodes:
             raise ValueError('illegal format requested')
         ncgenargs="-knc%s" % formatcodes[format]
-        subprocess.run(["ncgen", ncgenargs, "-o", str(ncfilename), str(cdlfilename)], check=True)
+        subprocess.run(["ncgen", ncgenargs, "-o", str(ncfilename), str(filepath)], check=True)
         return Dataset(ncfilename, mode=mode)
 
     def tocdl(self,coordvars=False,data=False,outfile=None):
