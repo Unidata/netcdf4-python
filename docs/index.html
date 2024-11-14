@@ -1552,8 +1552,8 @@ will clobber an existing file with the same name.
 if <code>False</code>, an
 exception will be raised if a file with the same name already exists.
 mode=<code>x</code> is identical to mode=<code>w</code> with clobber=False.</p>
-<p><strong><code>format</code></strong>: underlying file format (one of <code>'NETCDF4',
-'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'&lt;code&gt;, &lt;/code&gt;'NETCDF3_64BIT_OFFSET'</code> or
+<p><strong><code>format</code></strong>: underlying file format (one of <code>'NETCDF4'</code>,
+<code>'NETCDF4_CLASSIC'</code>, <code>'NETCDF3_CLASSIC'</code>, <code>'NETCDF3_64BIT_OFFSET'</code> or
 <code>'NETCDF3_64BIT_DATA'</code>.
 Only relevant if <code>mode = 'w'</code> (if <code>mode = 'r','a'</code> or <code>'r+'</code> the file format
 is automatically detected). Default <code>'NETCDF4'</code>, which means the data is
@@ -1637,8 +1637,8 @@ CDL file.</p>
 suffix replaced by <code>.nc</code> is used..</p>
 <p><strong><code>mode</code></strong>:
 Access mode to open Dataset (Default <code>'a'</code>).</p>
-<p><strong><code>format</code></strong>: underlying file format to use (one of <code>'NETCDF4',
-'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'&lt;code&gt;, &lt;/code&gt;'NETCDF3_64BIT_OFFSET'</code> or
+<p><strong><code>format</code></strong>: underlying file format to use (one of <code>'NETCDF4'</code>,
+<code>'NETCDF4_CLASSIC'</code>, <code>'NETCDF3_CLASSIC'</code>, <code>'NETCDF3_64BIT_OFFSET'</code> or
 <code>'NETCDF3_64BIT_DATA'</code>. Default <code>'NETCDF4'</code>.</p>
 <p>Dataset instance for <code>ncfilename</code> is returned.</p></div>
 </dd>
@@ -1912,8 +1912,8 @@ Dataset standard attributes: <code>dimensions, dtype, shape, ndim, name</code> a
 <code>least_significant_digit</code>. Application programs should never modify
 these attributes. The <code>dimensions</code> attribute is a tuple containing the
 names of the dimensions associated with this variable. The <code>dtype</code>
-attribute is a string describing the variable's data type (<code>i4, f8,
-S1,&lt;code&gt; etc). The &lt;/code&gt;shape</code> attribute is a tuple describing the current
+attribute is a string describing the variable's data type (<code>i4</code>, <code>f8</code>,
+<code>S1</code>, etc). The <code>shape</code> attribute is a tuple describing the current
 sizes of all the variable's dimensions. The <code>name</code> attribute is a
 string containing the name of the Variable instance.
 The <code>least_significant_digit</code>
@@ -2347,8 +2347,8 @@ instances, raises OSError.</p></div>
 <dd>
 <div class="desc"><p>Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
-Datasets must be in <code>NETCDF4_CLASSIC, NETCDF3_CLASSIC, NETCDF3_64BIT_OFFSET
-or NETCDF3_64BIT_DATA&lt;code&gt; format (&lt;/code&gt;NETCDF4</code> Datasets won't work).</p>
+Datasets must be in <code>NETCDF4_CLASSIC</code>, <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code>
+or <code>NETCDF3_64BIT_DATA</code> format (<code>NETCDF4</code> Datasets won't work).</p>
 <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf">pycdf</a> by Andre Gosselin.</p>
 <p>Example usage (See <code><a title="netCDF4.MFDataset" href="#netCDF4.MFDataset">MFDataset</a></code> for more details):</p>
 <pre><code class="language-python">&gt;&gt;&gt; import numpy as np
