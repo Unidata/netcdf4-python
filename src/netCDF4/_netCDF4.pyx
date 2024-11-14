@@ -3505,14 +3505,22 @@ Dataset instance for `ncfilename` is returned.
         filepath = pathlib.Path(cdlfilename)
         if ncfilename is None:
             ncfilename = filepath.with_suffix('.nc')
+        else:
+            ncfilename = pathlib.Path(ncfilename)
         formatcodes = {'NETCDF4': 4,
                        'NETCDF4_CLASSIC': 7,
                        'NETCDF3_CLASSIC': 3,
                        'NETCDF3_64BIT': 6, # legacy
                        'NETCDF3_64BIT_OFFSET': 6,
                        'NETCDF3_64BIT_DATA': 5}
+
         if format not in formatcodes:
             raise ValueError('illegal format requested')
+        if not filepath.exists():
+            raise FileNotFoundError(filepath)
+        if ncfilename.exists():
+            raise FileExistsError(ncfilename)
+
         ncgenargs="-knc%s" % formatcodes[format]
         subprocess.run(["ncgen", ncgenargs, "-o", str(ncfilename), str(filepath)], check=True)
         return Dataset(ncfilename, mode=mode)
