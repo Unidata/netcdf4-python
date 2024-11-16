@@ -3502,19 +3502,27 @@ Dataset instance for `ncfilename` is returned.
 [ncgen]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#ncgen_guide
 [cdl]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide
         """
+        filepath = pathlib.Path(cdlfilename)
         if ncfilename is None:
-            filepath = pathlib.Path(cdlfilename)
             ncfilename = filepath.with_suffix('.nc')
+        else:
+            ncfilename = pathlib.Path(ncfilename)
         formatcodes = {'NETCDF4': 4,
                        'NETCDF4_CLASSIC': 7,
                        'NETCDF3_CLASSIC': 3,
                        'NETCDF3_64BIT': 6, # legacy
                        'NETCDF3_64BIT_OFFSET': 6,
                        'NETCDF3_64BIT_DATA': 5}
+
         if format not in formatcodes:
             raise ValueError('illegal format requested')
+        if not filepath.exists():
+            raise FileNotFoundError(filepath)
+        if ncfilename.exists():
+            raise FileExistsError(ncfilename)
+
         ncgenargs="-knc%s" % formatcodes[format]
-        subprocess.run(["ncgen", ncgenargs, "-o", ncfilename, cdlfilename], check=True)
+        subprocess.run(["ncgen", ncgenargs, "-o", str(ncfilename), str(filepath)], check=True)
         return Dataset(ncfilename, mode=mode)
 
     def tocdl(self,coordvars=False,data=False,outfile=None):

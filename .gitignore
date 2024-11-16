@@ -13,3 +13,4 @@ netcdftime/_netcdftime.c
 venv/
 .eggs/
 .idea/
+.vscode/

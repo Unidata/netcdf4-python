@@ -1,5 +1,7 @@
  since version 1.7.2 release
  ===========================
+ * support os.PathLike arguments for `Dataset.fromcdl` and raise a `FileNotFoundError`
+   if the cdl is missing and a `FileExistsError` if the nc file already exists (PR #1387)
  * raise more informative error when trying to iterate or
    perform a membership operation on a Dataset (issue #1383)
  * fix type hint for createEnumType (issue #1378)
