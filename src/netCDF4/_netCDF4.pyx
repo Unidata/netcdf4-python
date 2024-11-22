@@ -295,7 +295,7 @@ supplied by the [numpy module](http://numpy.scipy.org). However,
 unlike numpy arrays, netCDF4 variables can be appended to along one or
 more 'unlimited' dimensions. To create a netCDF variable, use the
 `Dataset.createVariable` method of a `Dataset` or
-`Group` instance. The `Dataset.createVariable`j method
+`Group` instance. The `Dataset.createVariable` method
 has two mandatory arguments, the variable name (a Python string), and
 the variable datatype. The variable's dimensions are given by a tuple
 containing the dimension names (defined previously with
@@ -303,17 +303,24 @@ containing the dimension names (defined previously with
 variable, simply leave out the dimensions keyword. The variable
 primitive datatypes correspond to the dtype attribute of a numpy array.
 You can specify the datatype as a numpy dtype object, or anything that
-can be converted to a numpy dtype object.  Valid datatype specifiers
-include: `'f4'` (32-bit floating point), `'f8'` (64-bit floating
-point), `'i4'` (32-bit signed integer), `'i2'` (16-bit signed
-integer), `'i8'` (64-bit signed integer), `'i1'` (8-bit signed
-integer), `'u1'` (8-bit unsigned integer), `'u2'` (16-bit unsigned
-integer), `'u4'` (32-bit unsigned integer), `'u8'` (64-bit unsigned
-integer), or `'S1'` (single-character string).  The old Numeric
-single-character typecodes (`'f'`,`'d'`,`'h'`,
-`'s'`,`'b'`,`'B'`,`'c'`,`'i'`,`'l'`), corresponding to
-(`'f4'`,`'f8'`,`'i2'`,`'i2'`,`'i1'`,`'i1'`,`'S1'`,`'i4'`,`'i4'`),
-will also work. The unsigned integer types and the 64-bit integer type
+can be converted to a numpy dtype object. Valid datatype specifiers
+include:
+
+| Specifier | Datatype                | Old typecodes |
+|-----------|-------------------------|---------------|
+| `'f4'`    | 32-bit floating point   | `'f'`         |
+| `'f8'`    | 64-bit floating point   | `'d'`         |
+| `'i4'`    | 32-bit signed integer   | `'i'` `'l'`   |
+| `'i2'`    | 16-bit signed integer   | `'h'` `'s'`   |
+| `'i8'`    | 64-bit signed integer   |               |
+| `'i1'`    | 8-bit signed integer    | `'b'` `'B'`   |
+| `'u1'`    | 8-bit unsigned integer  |               |
+| `'u2'`    | 16-bit unsigned integer |               |
+| `'u4'`    | 32-bit unsigned integer |               |
+| `'u8'`    | 64-bit unsigned integer |               |
+| `'S1'`    | single-character string | `'c'`         |
+
+The unsigned integer types and the 64-bit integer type
 can only be used if the file format is `NETCDF4`.
 
 The dimensions themselves are usually also defined as variables, called
