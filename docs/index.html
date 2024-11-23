@@ -297,7 +297,7 @@ supplied by the <a href="http://numpy.scipy.org">numpy module</a>. However,
 unlike numpy arrays, netCDF4 variables can be appended to along one or
 more 'unlimited' dimensions. To create a netCDF variable, use the
 <code><a title="netCDF4.Dataset.createVariable" href="#netCDF4.Dataset.createVariable">Dataset.createVariable()</a></code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
-<code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance. The <code><a title="netCDF4.Dataset.createVariable" href="#netCDF4.Dataset.createVariable">Dataset.createVariable()</a></code>j method
+<code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance. The <code><a title="netCDF4.Dataset.createVariable" href="#netCDF4.Dataset.createVariable">Dataset.createVariable()</a></code> method
 has two mandatory arguments, the variable name (a Python string), and
 the variable datatype. The variable's dimensions are given by a tuple
 containing the dimension names (defined previously with
@@ -305,19 +305,75 @@ containing the dimension names (defined previously with
 variable, simply leave out the dimensions keyword. The variable
 primitive datatypes correspond to the dtype attribute of a numpy array.
 You can specify the datatype as a numpy dtype object, or anything that
-can be converted to a numpy dtype object.
-Valid datatype specifiers
-include: <code>'f4'</code> (32-bit floating point), <code>'f8'</code> (64-bit floating
-point), <code>'i4'</code> (32-bit signed integer), <code>'i2'</code> (16-bit signed
-integer), <code>'i8'</code> (64-bit signed integer), <code>'i1'</code> (8-bit signed
-integer), <code>'u1'</code> (8-bit unsigned integer), <code>'u2'</code> (16-bit unsigned
-integer), <code>'u4'</code> (32-bit unsigned integer), <code>'u8'</code> (64-bit unsigned
-integer), or <code>'S1'</code> (single-character string).
-The old Numeric
-single-character typecodes (<code>'f'</code>,<code>'d'</code>,<code>'h'</code>,
-<code>'s'</code>,<code>'b'</code>,<code>'B'</code>,<code>'c'</code>,<code>'i'</code>,<code>'l'</code>), corresponding to
-(<code>'f4'</code>,<code>'f8'</code>,<code>'i2'</code>,<code>'i2'</code>,<code>'i1'</code>,<code>'i1'</code>,<code>'S1'</code>,<code>'i4'</code>,<code>'i4'</code>),
-will also work. The unsigned integer types and the 64-bit integer type
+can be converted to a numpy dtype object. Valid datatype specifiers
+include:</p>
+<table>
+<thead>
+<tr>
+<th>Specifier</th>
+<th>Datatype</th>
+<th>Old typecodes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'f4'</code></td>
+<td>32-bit floating point</td>
+<td><code>'f'</code></td>
+</tr>
+<tr>
+<td><code>'f8'</code></td>
+<td>64-bit floating point</td>
+<td><code>'d'</code></td>
+</tr>
+<tr>
+<td><code>'i4'</code></td>
+<td>32-bit signed integer</td>
+<td><code>'i'</code> <code>'l'</code></td>
+</tr>
+<tr>
+<td><code>'i2'</code></td>
+<td>16-bit signed integer</td>
+<td><code>'h'</code> <code>'s'</code></td>
+</tr>
+<tr>
+<td><code>'i8'</code></td>
+<td>64-bit signed integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'i1'</code></td>
+<td>8-bit signed integer</td>
+<td><code>'b'</code> <code>'B'</code></td>
+</tr>
+<tr>
+<td><code>'u1'</code></td>
+<td>8-bit unsigned integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'u2'</code></td>
+<td>16-bit unsigned integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'u4'</code></td>
+<td>32-bit unsigned integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'u8'</code></td>
+<td>64-bit unsigned integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'S1'</code></td>
+<td>single-character string</td>
+<td><code>'c'</code></td>
+</tr>
+</tbody>
+</table>
+<p>The unsigned integer types and the 64-bit integer type
 can only be used if the file format is <code>NETCDF4</code>.</p>
 <p>The dimensions themselves are usually also defined as variables, called
 coordinate variables. The <code><a title="netCDF4.Dataset.createVariable" href="#netCDF4.Dataset.createVariable">Dataset.createVariable()</a></code>
