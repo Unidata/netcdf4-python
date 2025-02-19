@@ -44,7 +44,7 @@ def _find_dim(grp, dimname):
             except:
                 raise ValueError("cannot find dimension %s in this group or parent groups" % dimname)
     if dim is None:
-        raise KeyError("dimension %s not defined in group %s or any group in it's family tree" % (dimname, grp.path))
+        raise KeyError("dimension %s not defined in group %s or any group in its family tree" % (dimname, grp.path))
     else:
         return dim
 
