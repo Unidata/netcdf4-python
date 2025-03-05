@@ -14,7 +14,7 @@ jobs:
       #NO_NET: 1
     strategy:
       matrix:
-        python-version: ["3.12"]
+        python-version: ["3.13"]
     steps:
 
     - uses: actions/checkout@v4
@@ -44,7 +44,8 @@ jobs:
         wget https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-c-${NETCDF_VERSION}.tar.gz
         tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
         pushd netcdf-c-${NETCDF_VERSION}
-        export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
+        #export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
+        export CPPFLAGS="-I/usr/include/hdf5/openmpi -I${NETCDF_DIR}/include"
         export LDFLAGS="-L${NETCDF_DIR}/lib"
         #export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
         export LIBS="-lhdf5_openmpi_hl -lhdf5_openmpi -lm -lz"
