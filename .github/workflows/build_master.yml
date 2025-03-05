@@ -6,11 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NETCDF_DIR: ${{ github.workspace }}/..
-      CC: mpicc.mpich
+      #CC: mpicc.mpich
+      CC: mpicc
       #NO_NET: 1
     strategy:
       matrix:
-        python-version: ["3.12"]
+        python-version: ["3.13"]
     steps:
 
     - uses: actions/checkout@v4
@@ -25,13 +26,16 @@ jobs:
     - name: Install Ubuntu Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
+        #sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
+        sudo apt-get install openmpi-common libopenmpi-dev openmpi-bin libhdf5-openmpi-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
         echo "Download and build netCDF github master"
         git clone https://github.com/Unidata/netcdf-c
         pushd netcdf-c
-        export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
+        #export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
+        export CPPFLAGS="-I/usr/include/hdf5/openmpi -I${NETCDF_DIR}/include"
         export LDFLAGS="-L${NETCDF_DIR}/lib"
-        export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
+        #export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
+        export LIBS="-lhdf5_openmpi_hl -lhdf5_openmpi -lm -lz"
         autoreconf -i
         ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 
         make -j 2
@@ -65,14 +69,16 @@ jobs:
         python run_all.py
         # parallel
         cd ../examples
-        mpirun.mpich -np 4 python mpi_example.py
+        #mpirun.mpich -np 4 python mpi_example.py
+        mpirun -np 4 --oversubscribe python mpi_example.py 
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"
           exit 1
         else
           echo "hdf5 mpi test passed!"
         fi
-        mpirun.mpich -np 4 python mpi_example_compressed.py
+        #mpirun.mpich -np 4 python mpi_example_compressed.py
+        mpirun -np 4 --oversubscribe python mpi_example_compressed.py 
         if [ $? -ne 0 ] ; then
           echo "hdf5 compressed mpi test failed!"
           exit 1
