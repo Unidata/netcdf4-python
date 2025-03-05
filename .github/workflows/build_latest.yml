@@ -31,9 +31,6 @@ jobs:
         sudo apt-get update
         #sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev openmpi-bin openmpi-common libopenmpi-dev libhdf5-openmpi-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
         sudo apt-get install openmpi-common libopenmpi-dev openmpi-bin libhdf5-openmpi-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
-        update-alternatives --get-selections | grep mpi
-        update-alternatives --query mpi
-        update-alternatives --list mpirun
         echo "Download and build PnetCDF version ${PNETCDF_VERSION}"
         wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
         tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
