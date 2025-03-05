@@ -46,7 +46,8 @@ jobs:
         pushd netcdf-c-${NETCDF_VERSION}
         export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
         export LDFLAGS="-L${NETCDF_DIR}/lib"
-        export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
+        #export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
+        export LIBS="-lhdf5_openmpi_hl -lhdf5_openmpi -lm -lz"
         ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
         make -j 2
         sudo make install
