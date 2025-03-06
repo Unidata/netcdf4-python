@@ -71,6 +71,20 @@ static inline const char *nc_rc_get(const char* key) { return NC_EINVAL; }
 static inline int nc_open_mem(const char *path, int mode, size_t size, void* memory, int *ncidp) { return NC_EINVAL; }
 #endif
 
+#if NC_VERSION_GE(4, 9, 3)
+#include <netcdf_filter.h>
+#define HAS_NC_GETSET_PLUGIN_PATH 1
+#else
+#define HAS_NC_GETSET_PLUGIN_PATH 0
+static inline int nc_plugin_path_ndirs(size_t* ndirsp) { return NC_EINVAL; }
+static inline int nc_plugin_path_set(const NCPluginList* dirs) { return NC_EINVAL; }
+static inline int nc_plugin_path_get(NCPluginList* dirs) { return NC_EINVAL; }
+typedef struct NCPluginList {
+  size_t ndirs;
+  char** dirs
+} NCPluginList;
+#endif
+
 #if NC_VERSION_GE(4, 6, 2)
 #define HAS_NC_CREATE_MEM 1
 #else

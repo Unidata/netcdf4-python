@@ -426,6 +426,13 @@ cdef extern from "netcdf-compat.h":
                          unsigned* levelp, unsigned* blocksizep,
                          unsigned* addshufflep) nogil
 
+    ctypedef struct NCPluginList:
+       size_t ndirs # number of directories in the sequence
+       char** dirs  # sequence of directories 
+    int nc_plugin_path_ndirs(size_t* ndirsp) nogil
+    int nc_plugin_path_set(const NCPluginList* dirs) nogil
+    int nc_plugin_path_get(NCPluginList* dirs) nogil
+
     # Parallel shims
     int nc_create_par(char *path, int cmode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
     int nc_open_par(char *path, int mode, MPI_Comm comm, MPI_Info info, int *ncidp) nogil
@@ -446,6 +453,7 @@ cdef extern from "netcdf-compat.h":
         HAS_ZSTANDARD_SUPPORT
         HAS_BZIP2_SUPPORT
         HAS_BLOSC_SUPPORT
+        HAS_GETSET_PLUGIN_PATH
         HAS_SET_ALIGNMENT
         HAS_NCFILTER
         HAS_NCRCSET
