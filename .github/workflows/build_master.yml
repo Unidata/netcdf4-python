@@ -57,7 +57,7 @@ jobs:
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c/plugins/plugindir
-        python setup.py install
+        python -m pip install .
 
     - name: Test
       run: |
