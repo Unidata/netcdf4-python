@@ -63,13 +63,14 @@ jobs:
     - name: Install python dependencies via pip
       run: |
         python -m pip install --upgrade pip
-        pip install numpy cython cftime pytest twine wheel check-manifest mpi4py typing-extensions
+        python -m pip install numpy cython cftime pytest twine wheel check-manifest mpi4py typing-extensions
 
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c-${NETCDF_VERSION}/plugins/plugindir
-        python setup.py install
+        python -m pip install . --no-build-isolation
+
     - name: Test
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
