@@ -7,6 +7,15 @@ from setuptools import setup, Extension
 from setuptools.dist import Distribution
 from typing import List
 
+
+
+has_mpi4py = False
+try:
+    import mpi4py
+    has_mpi4py = True
+except ImportError:
+    print(f"mpi4py is not installed. Parallel support will be off even if netcdf-c supports it.")
+
 open_kwargs = {'encoding': 'utf-8'}
 
 
@@ -47,6 +56,8 @@ def check_ifnetcdf4(netcdf4_includedir):
 
 def check_has_parallel_support(inc_dirs: list) -> bool:
     has_parallel_support = False
+    if not has_mpi4py:
+        return has_parallel_support
 
     for d in inc_dirs:
         ncmetapath = os.path.join(d,'netcdf_meta.h')
@@ -397,7 +408,6 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     print(f"netcdf lib {has_has_not} parallel functions")
 
     if has_parallel_support:
-        import mpi4py
         inc_dirs.append(mpi4py.get_include())
         # mpi_incdir should not be needed if using nc-config
         # (should be included in nc-config --cflags)
