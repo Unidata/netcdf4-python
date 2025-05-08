@@ -397,12 +397,12 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     print(f"netcdf lib {has_has_not} parallel functions")
 
     if has_parallel_support:
-        import mpi4py
-        inc_dirs.append(mpi4py.get_include())
-        # mpi_incdir should not be needed if using nc-config
-        # (should be included in nc-config --cflags)
-        if mpi_incdir is not None:
-            inc_dirs.append(mpi_incdir)
+        #import mpi4py
+        #inc_dirs.append(mpi4py.get_include())
+        ## mpi_incdir should not be needed if using nc-config
+        ## (should be included in nc-config --cflags)
+        #if mpi_incdir is not None:
+        #    inc_dirs.append(mpi_incdir)
 
         # Name of file containing imports required for parallel support
         parallel_support_imports = "parallel_support_imports.pxi.in"
