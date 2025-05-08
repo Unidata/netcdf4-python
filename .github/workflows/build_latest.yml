@@ -69,7 +69,7 @@ jobs:
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c-${NETCDF_VERSION}/plugins/plugindir
-        python -m pip install .
+        python -m pip install .[mpitest]
     - name: Test
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
