@@ -46,9 +46,7 @@ tests = [
   "packaging",
   "pytest",
 ]
-
-[dependency-groups]
-mpitest = ["mpi4py"]
+mpi = ["mpi4py"]
 
 [project.readme]
 text = """\
