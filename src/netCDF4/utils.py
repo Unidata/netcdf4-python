@@ -426,7 +426,7 @@ Boolean array must have the same shape as the data along this dimension."""
 
         #    ITERABLE    #
         elif np.iterable(e) and np.array(e).dtype.kind in 'i':  # Sequence of integers
-            if e:
+            if np.array(e).size:
                 start[...,i] = np.apply_along_axis(lambda x: e*x, i, np.ones(sdim[:-1]))
             else:
                 start[...,i] = e
