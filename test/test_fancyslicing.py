@@ -144,6 +144,7 @@ class VariablesTestCase(unittest.TestCase):
 
         # slicing with all False booleans (PR #1197)
         iby[:] = False
+        print(ibx,iby,ibz)
         data = v[ibx,iby,ibz]
         assert data.size == 0 
 
