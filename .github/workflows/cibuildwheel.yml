@@ -84,9 +84,9 @@ jobs:
       # These needs to rotate every new Python release.
       run: |
         if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-          CIBW_SKIP="pp* cp36-* cp37-* *-musllinux* cp39-* cp310-* cp311-*"
+          CIBW_SKIP="pp* cp36-* cp37-* cp38-* *-musllinux* cp39-* cp310-* cp311-* cp312-*"
         else
-          CIBW_SKIP="pp* cp36-* cp37-* *-musllinux*"
+          CIBW_SKIP="pp* cp36-* cp37-* cp38-* *-musllinux*"
         fi
         echo "CIBW_SKIP=$CIBW_SKIP" >> $GITHUB_ENV
         echo "Setting CIBW_SKIP=$CIBW_SKIP"
@@ -100,7 +100,7 @@ jobs:
         CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/ocefpaf/manylinux2014_x86_64-netcdf
         CIBW_MANYLINUX_AARCH64_IMAGE: ghcr.io/ocefpaf/manylinux2014_aarch64-netcdf
         # Emulation testing is slow, testing only latest Python.
-        CIBW_TEST_SKIP: "cp38-*_aarch64 cp39-*_aarch64 cp310-*_aarch64 cp311-*_aarch64"
+        CIBW_TEST_SKIP: "cp39-*_aarch64 cp310-*_aarch64 cp311-*_aarch64 cp312-*_aarch64"
         CIBW_ENVIRONMENT: ${{ matrix.CIBW_ENVIRONMENT }}
         CIBW_BEFORE_BUILD_MACOS: brew install hdf5 netcdf
         CIBW_TEST_REQUIRES: pytest cython packaging typing-extensions

@@ -7,6 +7,8 @@ from setuptools import setup, Extension
 from setuptools.dist import Distribution
 from typing import List
 
+
+
 open_kwargs = {'encoding': 'utf-8'}
 
 
@@ -397,7 +399,12 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     print(f"netcdf lib {has_has_not} parallel functions")
 
     if has_parallel_support:
-        import mpi4py
+        try:
+            import mpi4py
+        except ImportError:
+            msg = "Parallel support requires mpi4py but it is not installed."
+            raise ImportError(msg)
+
         inc_dirs.append(mpi4py.get_include())
         # mpi_incdir should not be needed if using nc-config
         # (should be included in nc-config --cflags)
