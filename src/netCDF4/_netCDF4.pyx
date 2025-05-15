@@ -1255,7 +1255,7 @@ Support for complex numbers is handled via the
 further details.
 
 
-**contact**: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
+**contact**: Jeffrey Whitaker <whitaker.jeffrey@gmail.com>
 
 **copyright**: 2008 by Jeffrey Whitaker.
 
