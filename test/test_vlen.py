@@ -76,6 +76,12 @@ class VariablesTestCase(unittest.TestCase):
                 assert_array_equal(data2[j,i], data[j,i])
                 assert datas[j,i] == data2s[j,i]
         assert_array_equal(datas, vs_alt[:])
+        # issue #1408
+        data2a = data2[::2,::2]
+        data2b = v[::2,::2]
+        for i in range(nlons//2):
+            for j in range(nlats//2):
+                assert_array_equal(data2a[j,i], data2b[j,i])
         f.close()
 
 

@@ -6,6 +6,7 @@
    perform a membership operation on a Dataset (issue #1383)
  * fix type hint for createEnumType (issue #1378)
  * add python 3.13 to windows wheel builds (PR #1377)
+ * allow slicing of vlen and string variables with non-unitary strides (issue #1408).
 
  version 1.7.2 (tag v1.7.2rel)
  =============================
