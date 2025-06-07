@@ -5966,10 +5966,9 @@ NC_CHAR).
                         ierr = nc_put_vara(self._grpid, self._varid,
                                            startp, countp, strdata)
                 else:
-                    raise IndexError('strides must all be 1 for string variables')
-                    #with nogil:
-                    #    ierr = nc_put_vars(self._grpid, self._varid,
-                    #                       startp, countp, stridep, strdata)
+                    with nogil:
+                        ierr = nc_put_vars(self._grpid, self._varid,
+                                           startp, countp, stridep, strdata)
                 _ensure_nc_success(ierr)
                 free(strdata)
             else:
@@ -5995,10 +5994,9 @@ NC_CHAR).
                         ierr = nc_put_vara(self._grpid, self._varid,
                                            startp, countp, vldata)
                 else:
-                    raise IndexError('strides must all be 1 for vlen variables')
-                    #with nogil:
-                    #    ierr = nc_put_vars(self._grpid, self._varid,
-                    #                       startp, countp, stridep, vldata)
+                    with nogil:
+                        ierr = nc_put_vars(self._grpid, self._varid,
+                                           startp, countp, stridep, vldata)
                 _ensure_nc_success(ierr)
                 # free the pointer array.
                 free(vldata)
@@ -6091,11 +6089,9 @@ NC_CHAR).
                         ierr = nc_get_vara(self._grpid, self._varid,
                                            startp, countp, strdata)
                 else:
-                    # FIXME: is this a bug in netCDF4?
-                    raise IndexError('strides must all be 1 for string variables')
-                    #with nogil:
-                    #    ierr = nc_get_vars(self._grpid, self._varid,
-                    #                       startp, countp, stridep, strdata)
+                    with nogil:
+                        ierr = nc_get_vars(self._grpid, self._varid,
+                                           startp, countp, stridep, strdata)
                 if ierr == NC_EINVALCOORDS:
                     raise IndexError
                 elif ierr != NC_NOERR:
@@ -6130,10 +6126,9 @@ NC_CHAR).
                         ierr = nc_get_vara(self._grpid, self._varid,
                                            startp, countp, vldata)
                 else:
-                    raise IndexError('strides must all be 1 for vlen variables')
-                    #with nogil:
-                    #    ierr = nc_get_vars(self._grpid, self._varid,
-                    #                       startp, countp, stridep, vldata)
+                    with nogil:
+                        ierr = nc_get_vars(self._grpid, self._varid,
+                                           startp, countp, stridep, vldata)
                 if ierr == NC_EINVALCOORDS:
                     raise IndexError
                 elif ierr != NC_NOERR:
