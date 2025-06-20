@@ -55,7 +55,7 @@ class Test_CDL(unittest.TestCase):
 
     def test_tocdl(self):
         # treated as unsigned integers.
-        with netCDF4.Dataset(ubyte_filename) as f:
+        with netCDF4.Dataset(os.path.basename(ubyte_filename)) as f:
             assert f.tocdl() == test_ncdump
             assert f.tocdl(data=True) == test_ncdump2
 
