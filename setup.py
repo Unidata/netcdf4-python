@@ -262,6 +262,8 @@ if USE_NCCONFIG and HAS_NCCONFIG and ncconfig is not None:
     for direc in inc_dirs:
         hdf5_version = get_hdf5_version(direc)
         if hdf5_version is not None:
+            if sys.platform == "cygwin":
+                _populate_hdf5_info(dirstosearch, inc_dirs, libs, lib_dirs)
             break
     # if hdf5 not found, search other standard locations (including those specified in env vars).
     if hdf5_version is None:
@@ -353,7 +355,7 @@ else:
         lib_dirs.append(curl_libdir)
         inc_dirs.append(curl_incdir)
 
-if sys.platform == 'win32':
+if sys.platform == 'win32' or sys.platform == 'cygwin':
     runtime_lib_dirs = []
 else:
     runtime_lib_dirs = lib_dirs
