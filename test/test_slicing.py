@@ -103,7 +103,7 @@ class VariablesTestCase(unittest.TestCase):
         assert_equal(v.shape, v[...].shape)
         # issue #785: always return masked array
         #assert type(v[...]) == np.ndarray 
-        assert type(v[...]) == np.ma.core.MaskedArray 
+        assert type(v[...]) == np.ma.masked_array
         f.set_auto_mask(False)
         assert type(v[...]) == np.ndarray 
         f.close()

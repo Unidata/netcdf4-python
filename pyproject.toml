@@ -14,9 +14,9 @@ backend-path = ["_build"]
 name = "netCDF4"
 description = "Provides an object-oriented python interface to the netCDF version 4 library"
 authors = [
-  {name = "Jeff Whitaker", email = "jeffrey.s.whitaker@noaa.gov"},
+  {name = "Jeff Whitaker", email = "whitaker.jeffrey@gmail.com"},
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 keywords = [
     "numpy", "netcdf", "data", "science", "network", "oceanography",
     "meteorology", "climate",
@@ -25,11 +25,11 @@ license = {text = "MIT"}
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -48,6 +48,9 @@ tests = [
   "Cython",
   "packaging",
   "pytest",
+]
+parallel = [
+  "mpi4py",
 ]
 
 [project.readme]
@@ -76,7 +79,29 @@ where = ["src"]
 [tool.setuptools.package-data]
 "netCDF4.plugins" = ["lib__nc*"]
 
+[tool.setuptools_scm]
+
 [tool.pytest.ini_options]
 pythonpath = ["test"]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+]
 
-[tool.setuptools_scm]
+[tool.mypy]
+files = ["src/netCDF4"]
+exclude = "utils.py"
+check_untyped_defs = true
+allow_redefinition = true
+# next 2 lines workarounds for mypy dealing with type_guards.py
+mypy_path = "test"
+explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "cftime.*",
+  "cython.*",
+  "filter_availability",
+  "matplotlib.*"
+]

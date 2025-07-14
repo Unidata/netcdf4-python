@@ -10,12 +10,14 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+10/22/2024: Version [1.7.2](https://pypi.python.org/pypi/netCDF4/1.7.2) released. Minor updates/bugfixes and python 3.13 wheels, see Changelog for details.
+
 06/17/2024: Version [1.7.1](https://pypi.python.org/pypi/netCDF4/1.7.1) released. Fixes for wheels, no code changes.
 
 06/13/2024: Version [1.7.0](https://pypi.python.org/pypi/netCDF4/1.7.0) released. Add support for complex numbers via `auto_complex` keyword to `Dataset` ([PR #1295](https://github.com/Unidata/netcdf4-python/pull/1295))
 
 10/20/2023: Version [1.6.5](https://pypi.python.org/pypi/netCDF4/1.6.5) released. 
-Fix for issue #1271 (mask ignored if bool MA assinged to uint8 var), 
+Fix for issue #1271 (mask ignored if bool MA assigned to uint8 var), 
 support for python 3.12 (removal of python 3.7 support), more
 informative error messages.
 

@@ -2,19 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
 <title>netCDF4 API documentation</title>
-<meta name="description" content="Version 1.7.0
-…" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Version 1.7.2
+…">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
 </head>
 <body>
 <main>
@@ -23,7 +26,7 @@
 <h1 class="title">Package <code>netCDF4</code></h1>
 </header>
 <section id="section-intro">
-<h2 id="version-170">Version 1.7.0</h2>
+<h2 id="version-172">Version 1.7.2</h2>
 <h1 id="introduction">Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.</p>
 <p><a href="http://www.unidata.ucar.edu/software/netcdf/">netCDF</a> version 4 has many features
@@ -118,8 +121,8 @@ file.
 If the file is open for write access (<code>mode='w', 'r+'</code> or <code>'a'</code>), you may
 write any type of data including new dimensions, groups, variables and
 attributes.
-netCDF files come in five flavors (<code>NETCDF3_CLASSIC,
-NETCDF3_64BIT_OFFSET, NETCDF3_64BIT_DATA, NETCDF4_CLASSIC&lt;code&gt;, and &lt;/code&gt;NETCDF4</code>).
+netCDF files come in five flavors (<code>NETCDF3_CLASSIC</code>,
+<code>NETCDF3_64BIT_OFFSET</code>, <code>NETCDF3_64BIT_DATA</code>, <code>NETCDF4_CLASSIC</code>, and <code>NETCDF4</code>).
 <code>NETCDF3_CLASSIC</code> was the original netcdf binary format, and was limited
 to file sizes less than 2 Gb. <code>NETCDF3_64BIT_OFFSET</code> was introduced
 in version 3.6.0 of the library, and extended the original binary format
@@ -286,7 +289,7 @@ and whether it is unlimited.</p>
 &lt;class 'netCDF4._netCDF4.Dimension'&gt;: name = 'lon', size = 144
 </code></pre>
 <p><code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> names can be changed using the
-<code>Datatset.renameDimension</code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
+<code><a title="netCDF4.Dataset.renameDimension" href="#netCDF4.Dataset.renameDimension">Dataset.renameDimension()</a></code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
 <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance.</p>
 <h2 id="variables-in-a-netcdf-file">Variables in a netCDF file</h2>
 <p>netCDF variables behave much like python multidimensional array objects
@@ -294,7 +297,7 @@ supplied by the <a href="http://numpy.scipy.org">numpy module</a>. However,
 unlike numpy arrays, netCDF4 variables can be appended to along one or
 more 'unlimited' dimensions. To create a netCDF variable, use the
 <code><a title="netCDF4.Dataset.createVariable" href="#netCDF4.Dataset.createVariable">Dataset.createVariable()</a></code> method of a <code><a title="netCDF4.Dataset" href="#netCDF4.Dataset">Dataset</a></code> or
-<code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance. The <code><a title="netCDF4.Dataset.createVariable" href="#netCDF4.Dataset.createVariable">Dataset.createVariable()</a></code>j method
+<code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance. The <code><a title="netCDF4.Dataset.createVariable" href="#netCDF4.Dataset.createVariable">Dataset.createVariable()</a></code> method
 has two mandatory arguments, the variable name (a Python string), and
 the variable datatype. The variable's dimensions are given by a tuple
 containing the dimension names (defined previously with
@@ -302,19 +305,75 @@ containing the dimension names (defined previously with
 variable, simply leave out the dimensions keyword. The variable
 primitive datatypes correspond to the dtype attribute of a numpy array.
 You can specify the datatype as a numpy dtype object, or anything that
-can be converted to a numpy dtype object.
-Valid datatype specifiers
-include: <code>'f4'</code> (32-bit floating point), <code>'f8'</code> (64-bit floating
-point), <code>'i4'</code> (32-bit signed integer), <code>'i2'</code> (16-bit signed
-integer), <code>'i8'</code> (64-bit signed integer), <code>'i1'</code> (8-bit signed
-integer), <code>'u1'</code> (8-bit unsigned integer), <code>'u2'</code> (16-bit unsigned
-integer), <code>'u4'</code> (32-bit unsigned integer), <code>'u8'</code> (64-bit unsigned
-integer), or <code>'S1'</code> (single-character string).
-The old Numeric
-single-character typecodes (<code>'f'</code>,<code>'d'</code>,<code>'h'</code>,
-<code>'s'</code>,<code>'b'</code>,<code>'B'</code>,<code>'c'</code>,<code>'i'</code>,<code>'l'</code>), corresponding to
-(<code>'f4'</code>,<code>'f8'</code>,<code>'i2'</code>,<code>'i2'</code>,<code>'i1'</code>,<code>'i1'</code>,<code>'S1'</code>,<code>'i4'</code>,<code>'i4'</code>),
-will also work. The unsigned integer types and the 64-bit integer type
+can be converted to a numpy dtype object. Valid datatype specifiers
+include:</p>
+<table>
+<thead>
+<tr>
+<th>Specifier</th>
+<th>Datatype</th>
+<th>Old typecodes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>'f4'</code></td>
+<td>32-bit floating point</td>
+<td><code>'f'</code></td>
+</tr>
+<tr>
+<td><code>'f8'</code></td>
+<td>64-bit floating point</td>
+<td><code>'d'</code></td>
+</tr>
+<tr>
+<td><code>'i4'</code></td>
+<td>32-bit signed integer</td>
+<td><code>'i'</code> <code>'l'</code></td>
+</tr>
+<tr>
+<td><code>'i2'</code></td>
+<td>16-bit signed integer</td>
+<td><code>'h'</code> <code>'s'</code></td>
+</tr>
+<tr>
+<td><code>'i8'</code></td>
+<td>64-bit signed integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'i1'</code></td>
+<td>8-bit signed integer</td>
+<td><code>'b'</code> <code>'B'</code></td>
+</tr>
+<tr>
+<td><code>'u1'</code></td>
+<td>8-bit unsigned integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'u2'</code></td>
+<td>16-bit unsigned integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'u4'</code></td>
+<td>32-bit unsigned integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'u8'</code></td>
+<td>64-bit unsigned integer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>'S1'</code></td>
+<td>single-character string</td>
+<td><code>'c'</code></td>
+</tr>
+</tbody>
+</table>
+<p>The unsigned integer types and the 64-bit integer type
 can only be used if the file format is <code>NETCDF4</code>.</p>
 <p>The dimensions themselves are usually also defined as variables, called
 coordinate variables. The <code><a title="netCDF4.Dataset.createVariable" href="#netCDF4.Dataset.createVariable">Dataset.createVariable()</a></code>
@@ -898,7 +957,7 @@ use the <code>parallel</code> keyword to enable parallel access.</p>
 <p>The optional <code>comm</code> keyword may be used to specify a particular
 MPI communicator (<code>MPI_COMM_WORLD</code> is used by default).
 Each process (or rank)
-can now write to the file indepedently.
+can now write to the file independently.
 In this example the process rank is
 written to a different variable index on each task</p>
 <pre><code class="language-python">&gt;&gt;&gt; d = nc.createDimension('dim',4)
@@ -1161,7 +1220,7 @@ Input character array (numpy datatype <code>'S1'</code> or <code>'U1'</code>).
 Will be converted to a array of strings, where each string has a fixed
 length of <code>b.shape[-1]</code> characters.</p>
 <p>optional kwarg <code>encoding</code> can be used to specify character encoding (default
-<code>utf-8</code>). If <code>encoding</code> is 'none' or 'bytes', a <code>numpy.string_</code> btye array is
+<code>utf-8</code>). If <code>encoding</code> is 'none' or 'bytes', a <code>numpy.string_</code> byte array is
 returned.</p>
 <p>returns a numpy string array with datatype <code>'UN'</code> (or <code>'SN'</code>) and shape
 <code>b.shape[:-1]</code> where where <code>N=b.shape[-1]</code>.</p></div>
@@ -1170,7 +1229,8 @@ returned.</p>
 <span>def <span class="ident">date2index</span></span>(<span>dates, nctime, calendar=None, select='exact', has_year_zero=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return indices of a netCDF time variable corresponding to the given dates.</p>
+<div class="desc"><p>date2index(dates, nctime, calendar=None, select=u'exact', has_year_zero=None)</p>
+<p>Return indices of a netCDF time variable corresponding to the given dates.</p>
 <p><strong>dates</strong>: A datetime object or a sequence of datetime objects.
 The datetime objects should not include a time-zone offset.</p>
 <p><strong>nctime</strong>: A netCDF time variable object. The nctime object must have a
@@ -1209,7 +1269,8 @@ to the given datetime object(s).</p></div>
 <span>def <span class="ident">date2num</span></span>(<span>dates, units, calendar=None, has_year_zero=None, longdouble=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return numeric time values given datetime objects. The units
+<div class="desc"><p>date2num(dates, units, calendar=None, has_year_zero=None, longdouble=False)</p>
+<p>Return numeric time values given datetime objects. The units
 of the numeric time values are described by the <strong>units</strong> argument
 and the <strong>calendar</strong> keyword. The datetime objects must
 be in UTC with no time-zone offset.
@@ -1261,7 +1322,7 @@ with approximately 1 microsecond accuracy.</p></div>
 <span>def <span class="ident">get_alignment</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p><strong><code><a title="netCDF4.get_alignment" href="#netCDF4.get_alignment">get_alignment()</a></code></strong></p>
+<div class="desc"><p><strong><code>get_alignment()</code></strong></p>
 <p>return current netCDF alignment within HDF5 files in a tuple
 (threshold,alignment). See netcdf C library documentation for
 <code>nc_get_alignment</code> for details. Values can be reset with
@@ -1272,7 +1333,7 @@ with approximately 1 microsecond accuracy.</p></div>
 <span>def <span class="ident">get_chunk_cache</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p><strong><code><a title="netCDF4.get_chunk_cache" href="#netCDF4.get_chunk_cache">get_chunk_cache()</a></code></strong></p>
+<div class="desc"><p><strong><code>get_chunk_cache()</code></strong></p>
 <p>return current netCDF chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for <code>nc_get_chunk_cache</code> for
 details. Values can be reset with <code><a title="netCDF4.set_chunk_cache" href="#netCDF4.set_chunk_cache">set_chunk_cache()</a></code>.</p></div>
@@ -1281,7 +1342,7 @@ details. Values can be reset with <code><a title="netCDF4.set_chunk_cache" href=
 <span>def <span class="ident">getlibversion</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p><strong><code><a title="netCDF4.getlibversion" href="#netCDF4.getlibversion">getlibversion()</a></code></strong></p>
+<div class="desc"><p><strong><code>getlibversion()</code></strong></p>
 <p>returns a string describing the version of the netcdf library
 used to build the module, and when it was built.</p></div>
 </dd>
@@ -1289,7 +1350,8 @@ used to build the module, and when it was built.</p></div>
 <span>def <span class="ident">num2date</span></span>(<span>times, units, calendar='standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return datetime objects given numeric time values. The units
+<div class="desc"><p>num2date(times, units, calendar=u'standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</p>
+<p>Return datetime objects given numeric time values. The units
 of the numeric time values are described by the <strong>units</strong> argument
 and the <strong>calendar</strong> keyword. The returned datetime objects represent
 UTC with no time-zone offset, even if the specified
@@ -1340,11 +1402,29 @@ datetime objects. The datetime instances
 do not contain a time-zone offset, even if the specified <strong>units</strong>
 contains one.</p></div>
 </dd>
+<dt id="netCDF4.rc_get"><code class="name flex">
+<span>def <span class="ident">rc_get</span></span>(<span>key)</span>
+</code></dt>
+<dd>
+<div class="desc"><p><strong><code>rc_get(key)</code></strong></p>
+<p>Returns the internal netcdf-c rc table value corresponding to key.
+See <a href="https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html">https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html</a>
+for more information on rc files and values.</p></div>
+</dd>
+<dt id="netCDF4.rc_set"><code class="name flex">
+<span>def <span class="ident">rc_set</span></span>(<span>key, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p><strong><code>rc_set(key, value)</code></strong></p>
+<p>Sets the internal netcdf-c rc table value corresponding to key.
+See <a href="https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html">https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html</a>
+for more information on rc files and values.</p></div>
+</dd>
 <dt id="netCDF4.set_alignment"><code class="name flex">
 <span>def <span class="ident">set_alignment</span></span>(<span>threshold, alignment)</span>
 </code></dt>
 <dd>
-<div class="desc"><p><strong><code><a title="netCDF4.set_alignment" href="#netCDF4.set_alignment">set_alignment()</a>(threshold,alignment)</code></strong></p>
+<div class="desc"><p><strong><code>set_alignment(threshold,alignment)</code></strong></p>
 <p>Change the HDF5 file alignment.
 See netcdf C library documentation for <code>nc_set_alignment</code> for
 details.</p>
@@ -1354,7 +1434,7 @@ details.</p>
 <span>def <span class="ident">set_chunk_cache</span></span>(<span>size=None, nelems=None, preemption=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p><strong><code>set_chunk_cache(self,size=None,nelems=None,preemption=None)</code></strong></p>
+<div class="desc"><p><strong><code>set_chunk_cache(size=None,nelems=None,preemption=None)</code></strong></p>
 <p>change netCDF4 chunk cache settings.
 See netcdf C library documentation for <code>nc_set_chunk_cache</code> for
 details.</p></div>
@@ -1415,12 +1495,12 @@ See <code><a title="netCDF4.CompoundType" href="#netCDF4.CompoundType">CompoundT
 the user.</p>
 <p><strong><em><code>__init__(group, datatype, datatype_name)</code></em></strong></p>
 <p>CompoundType constructor.</p>
-<p><strong><code>group</code></strong>: <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance to associate with the compound datatype.</p>
-<p><strong><code>datatype</code></strong>: A numpy dtype object describing a structured (a.k.a record)
+<p><strong><code>grp</code></strong>: <code><a title="netCDF4.Group" href="#netCDF4.Group">Group</a></code> instance to associate with the compound datatype.</p>
+<p><strong><code>dt</code></strong>: A numpy dtype object describing a structured (a.k.a record)
 array.
 Can be composed of homogeneous numeric or character data types, or
 other structured array data types.</p>
-<p><strong><code>datatype_name</code></strong>: a Python string containing a description of the
+<p><strong><code>dtype_name</code></strong>: a Python string containing a description of the
 compound data type.</p>
 <p><strong><em>Note 1</em></strong>: When creating nested compound data types,
 the inner compound data types must already be associated with CompoundType
@@ -1433,15 +1513,15 @@ first).</p>
 <dl>
 <dt id="netCDF4.CompoundType.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.CompoundType.dtype_view"><code class="name">var <span class="ident">dtype_view</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.CompoundType.name"><code class="name">var <span class="ident">name</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -1528,8 +1608,8 @@ will clobber an existing file with the same name.
 if <code>False</code>, an
 exception will be raised if a file with the same name already exists.
 mode=<code>x</code> is identical to mode=<code>w</code> with clobber=False.</p>
-<p><strong><code>format</code></strong>: underlying file format (one of <code>'NETCDF4',
-'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'&lt;code&gt;, &lt;/code&gt;'NETCDF3_64BIT_OFFSET'</code> or
+<p><strong><code>format</code></strong>: underlying file format (one of <code>'NETCDF4'</code>,
+<code>'NETCDF4_CLASSIC'</code>, <code>'NETCDF3_CLASSIC'</code>, <code>'NETCDF3_64BIT_OFFSET'</code> or
 <code>'NETCDF3_64BIT_DATA'</code>.
 Only relevant if <code>mode = 'w'</code> (if <code>mode = 'r','a'</code> or <code>'r+'</code> the file format
 is automatically detected). Default <code>'NETCDF4'</code>, which means the data is
@@ -1613,8 +1693,8 @@ CDL file.</p>
 suffix replaced by <code>.nc</code> is used..</p>
 <p><strong><code>mode</code></strong>:
 Access mode to open Dataset (Default <code>'a'</code>).</p>
-<p><strong><code>format</code></strong>: underlying file format to use (one of <code>'NETCDF4',
-'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'&lt;code&gt;, &lt;/code&gt;'NETCDF3_64BIT_OFFSET'</code> or
+<p><strong><code>format</code></strong>: underlying file format to use (one of <code>'NETCDF4'</code>,
+<code>'NETCDF4_CLASSIC'</code>, <code>'NETCDF3_CLASSIC'</code>, <code>'NETCDF3_64BIT_OFFSET'</code> or
 <code>'NETCDF3_64BIT_DATA'</code>. Default <code>'NETCDF4'</code>.</p>
 <p>Dataset instance for <code>ncfilename</code> is returned.</p></div>
 </dd>
@@ -1623,39 +1703,39 @@ Access mode to open Dataset (Default <code>'a'</code>).</p>
 <dl>
 <dt id="netCDF4.Dataset.auto_complex"><code class="name">var <span class="ident">auto_complex</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.cmptypes"><code class="name">var <span class="ident">cmptypes</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.data_model"><code class="name">var <span class="ident">data_model</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.dimensions"><code class="name">var <span class="ident">dimensions</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.disk_format"><code class="name">var <span class="ident">disk_format</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.enumtypes"><code class="name">var <span class="ident">enumtypes</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.file_format"><code class="name">var <span class="ident">file_format</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.groups"><code class="name">var <span class="ident">groups</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.keepweakref"><code class="name">var <span class="ident">keepweakref</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.name"><code class="name">var <span class="ident">name</span></code></dt>
 <dd>
@@ -1663,19 +1743,19 @@ Access mode to open Dataset (Default <code>'a'</code>).</p>
 </dd>
 <dt id="netCDF4.Dataset.parent"><code class="name">var <span class="ident">parent</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.path"><code class="name">var <span class="ident">path</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.variables"><code class="name">var <span class="ident">variables</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Dataset.vltypes"><code class="name">var <span class="ident">vltypes</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1888,8 +1968,8 @@ Dataset standard attributes: <code>dimensions, dtype, shape, ndim, name</code> a
 <code>least_significant_digit</code>. Application programs should never modify
 these attributes. The <code>dimensions</code> attribute is a tuple containing the
 names of the dimensions associated with this variable. The <code>dtype</code>
-attribute is a string describing the variable's data type (<code>i4, f8,
-S1,&lt;code&gt; etc). The &lt;/code&gt;shape</code> attribute is a tuple describing the current
+attribute is a string describing the variable's data type (<code>i4</code>, <code>f8</code>,
+<code>S1</code>, etc). The <code>shape</code> attribute is a tuple describing the current
 sizes of all the variable's dimensions. The <code>name</code> attribute is a
 string containing the name of the Variable instance.
 The <code>least_significant_digit</code>
@@ -2264,15 +2344,15 @@ pairs.</p>
 <dl>
 <dt id="netCDF4.EnumType.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.EnumType.enum_dict"><code class="name">var <span class="ident">enum_dict</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.EnumType.name"><code class="name">var <span class="ident">name</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -2323,8 +2403,8 @@ instances, raises OSError.</p></div>
 <dd>
 <div class="desc"><p>Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
-Datasets must be in <code>NETCDF4_CLASSIC, NETCDF3_CLASSIC, NETCDF3_64BIT_OFFSET
-or NETCDF3_64BIT_DATA&lt;code&gt; format (&lt;/code&gt;NETCDF4</code> Datasets won't work).</p>
+Datasets must be in <code>NETCDF4_CLASSIC</code>, <code>NETCDF3_CLASSIC</code>, <code>NETCDF3_64BIT_OFFSET</code>
+or <code>NETCDF3_64BIT_DATA</code> format (<code>NETCDF4</code> Datasets won't work).</p>
 <p>Adapted from <a href="http://pysclint.sourceforge.net/pycdf">pycdf</a> by Andre Gosselin.</p>
 <p>Example usage (See <code><a title="netCDF4.MFDataset" href="#netCDF4.MFDataset">MFDataset</a></code> for more details):</p>
 <pre><code class="language-python">&gt;&gt;&gt; import numpy as np
@@ -2476,11 +2556,11 @@ VLEN data type.</p>
 <dl>
 <dt id="netCDF4.VLType.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.VLType.name"><code class="name">var <span class="ident">name</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -2652,12 +2732,16 @@ algorithm may result in better compression for typical geophysical datasets.
 Ignored if <code>significant_digts</code> not specified. If 'BitRound' is used, then
 <code>significant_digits</code> is interpreted as binary (not decimal) digits.</p>
 <p><strong><code>fill_value</code></strong>:
-If specified, the default netCDF <code>_FillValue</code> (the
+If specified, the default netCDF fill value (the
 value that the variable gets filled with before any data is written to it)
-is replaced with this value.
-If fill_value is set to <code>False</code>, then
-the variable is not pre-filled. The default netCDF fill values can be found
-in the dictionary <code>netCDF4.default_fillvals</code>.</p>
+is replaced with this value, and the <code>_FillValue</code> attribute is set.
+If fill_value is set to <code>False</code>, then the variable is not pre-filled.
+The default netCDF fill values can be found in the dictionary <code>netCDF4.default_fillvals</code>.
+If not set, the default fill value will be used but no <code>_FillValue</code> attribute will be created
+(this is the default behavior of the netcdf-c library). If you want to use the
+default fill value, but have the <code>_FillValue</code> attribute set, use
+<code>fill_value='default'</code> (note - this only works for primitive data types). <code><a title="netCDF4.Variable.get_fill_value" href="#netCDF4.Variable.get_fill_value">Variable.get_fill_value()</a></code>
+can be used to retrieve the fill value, even if the <code>_FillValue</code> attribute is not set.</p>
 <p><strong><code>chunk_cache</code></strong>: If specified, sets the chunk cache size for this variable.
 Persists as long as Dataset is open. Use <code>set_var_chunk_cache</code> to
 change it when Dataset is re-opened.</p>
@@ -2668,15 +2752,15 @@ change it when Dataset is re-opened.</p>
 <dl>
 <dt id="netCDF4.Variable.always_mask"><code class="name">var <span class="ident">always_mask</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Variable.auto_complex"><code class="name">var <span class="ident">auto_complex</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Variable.chartostring"><code class="name">var <span class="ident">chartostring</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Variable.datatype"><code class="name">var <span class="ident">datatype</span></code></dt>
 <dd>
@@ -2691,11 +2775,11 @@ or enum data types)</p></div>
 </dd>
 <dt id="netCDF4.Variable.dtype"><code class="name">var <span class="ident">dtype</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Variable.mask"><code class="name">var <span class="ident">mask</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Variable.name"><code class="name">var <span class="ident">name</span></code></dt>
 <dd>
@@ -2703,11 +2787,11 @@ or enum data types)</p></div>
 </dd>
 <dt id="netCDF4.Variable.ndim"><code class="name">var <span class="ident">ndim</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Variable.scale"><code class="name">var <span class="ident">scale</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
 </dd>
 <dt id="netCDF4.Variable.shape"><code class="name">var <span class="ident">shape</span></code></dt>
 <dd>
@@ -2781,6 +2865,15 @@ Scientific.IO.NetCDF, can also be done by slicing with an Ellipsis ([&hellip;]).
 <div class="desc"><p><strong><code>get_dims(self)</code></strong></p>
 <p>return a tuple of <code><a title="netCDF4.Dimension" href="#netCDF4.Dimension">Dimension</a></code> instances associated with this
 <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code>.</p></div>
+</dd>
+<dt id="netCDF4.Variable.get_fill_value"><code class="name flex">
+<span>def <span class="ident">get_fill_value</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p><strong><code>get_fill_value(self)</code></strong></p>
+<p>return the fill value associated with this <code><a title="netCDF4.Variable" href="#netCDF4.Variable">Variable</a></code> (returns <code>None</code> if data is not
+pre-filled). Works even if default fill value was used, and <code>_FillValue</code> attribute
+does not exist.</p></div>
 </dd>
 <dt id="netCDF4.Variable.get_var_chunk_cache"><code class="name flex">
 <span>def <span class="ident">get_var_chunk_cache</span></span>(<span>self)</span>
@@ -2860,7 +2953,7 @@ of the the rightmost dimension of the variable).
 The value of <code>_Encoding</code>
 is the unicode encoding that is used to decode the bytes into strings.</p>
 <p>When numpy string data is written to a variable it is converted back to
-indiviual bytes, with the number of bytes in each string equalling the
+individual bytes, with the number of bytes in each string equalling the
 rightmost dimension of the variable.</p>
 <p>The default value of <code><a title="netCDF4.chartostring" href="#netCDF4.chartostring">chartostring()</a></code> is <code>True</code>
 (automatic conversions are performed).</p></div>
@@ -3049,10 +3142,9 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul>
-<li><a href="#version-170">Version 1.7.0</a></li>
+<li><a href="#version-172">Version 1.7.2</a></li>
 <li><a href="#introduction">Introduction</a><ul>
 <li><a href="#quick-install">Quick Install</a></li>
 <li><a href="#developer-install">Developer Install</a></li>
@@ -3089,6 +3181,8 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 <li><code><a title="netCDF4.get_chunk_cache" href="#netCDF4.get_chunk_cache">get_chunk_cache</a></code></li>
 <li><code><a title="netCDF4.getlibversion" href="#netCDF4.getlibversion">getlibversion</a></code></li>
 <li><code><a title="netCDF4.num2date" href="#netCDF4.num2date">num2date</a></code></li>
+<li><code><a title="netCDF4.rc_get" href="#netCDF4.rc_get">rc_get</a></code></li>
+<li><code><a title="netCDF4.rc_set" href="#netCDF4.rc_set">rc_set</a></code></li>
 <li><code><a title="netCDF4.set_alignment" href="#netCDF4.set_alignment">set_alignment</a></code></li>
 <li><code><a title="netCDF4.set_chunk_cache" href="#netCDF4.set_chunk_cache">set_chunk_cache</a></code></li>
 <li><code><a title="netCDF4.stringtoarr" href="#netCDF4.stringtoarr">stringtoarr</a></code></li>
@@ -3216,6 +3310,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 <li><code><a title="netCDF4.Variable.filters" href="#netCDF4.Variable.filters">filters</a></code></li>
 <li><code><a title="netCDF4.Variable.getValue" href="#netCDF4.Variable.getValue">getValue</a></code></li>
 <li><code><a title="netCDF4.Variable.get_dims" href="#netCDF4.Variable.get_dims">get_dims</a></code></li>
+<li><code><a title="netCDF4.Variable.get_fill_value" href="#netCDF4.Variable.get_fill_value">get_fill_value</a></code></li>
 <li><code><a title="netCDF4.Variable.get_var_chunk_cache" href="#netCDF4.Variable.get_var_chunk_cache">get_var_chunk_cache</a></code></li>
 <li><code><a title="netCDF4.Variable.getncattr" href="#netCDF4.Variable.getncattr">getncattr</a></code></li>
 <li><code><a title="netCDF4.Variable.group" href="#netCDF4.Variable.group">group</a></code></li>
@@ -3248,7 +3343,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
 </footer>
 </body>
 </html>

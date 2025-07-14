@@ -1,4 +1,4 @@
-"""Version 1.7.1
+"""Version 1.7.2
 -------------
 
 # Introduction
@@ -95,8 +95,8 @@ To create a netCDF file from python, you simply call the `Dataset`
 constructor. This is also the method used to open an existing netCDF
 file.  If the file is open for write access (`mode='w', 'r+'` or `'a'`), you may
 write any type of data including new dimensions, groups, variables and
-attributes.  netCDF files come in five flavors (`NETCDF3_CLASSIC,
-NETCDF3_64BIT_OFFSET, NETCDF3_64BIT_DATA, NETCDF4_CLASSIC`, and `NETCDF4`).
+attributes.  netCDF files come in five flavors (`NETCDF3_CLASSIC`,
+`NETCDF3_64BIT_OFFSET`, `NETCDF3_64BIT_DATA`, `NETCDF4_CLASSIC`, and `NETCDF4`).
 `NETCDF3_CLASSIC` was the original netcdf binary format, and was limited
 to file sizes less than 2 Gb. `NETCDF3_64BIT_OFFSET` was introduced
 in version 3.6.0 of the library, and extended the original binary format
@@ -285,7 +285,7 @@ and whether it is unlimited.
 ```
 
 `Dimension` names can be changed using the
-`Datatset.renameDimension` method of a `Dataset` or
+`Dataset.renameDimension` method of a `Dataset` or
 `Group` instance.
 
 ## Variables in a netCDF file
@@ -295,7 +295,7 @@ supplied by the [numpy module](http://numpy.scipy.org). However,
 unlike numpy arrays, netCDF4 variables can be appended to along one or
 more 'unlimited' dimensions. To create a netCDF variable, use the
 `Dataset.createVariable` method of a `Dataset` or
-`Group` instance. The `Dataset.createVariable`j method
+`Group` instance. The `Dataset.createVariable` method
 has two mandatory arguments, the variable name (a Python string), and
 the variable datatype. The variable's dimensions are given by a tuple
 containing the dimension names (defined previously with
@@ -303,17 +303,24 @@ containing the dimension names (defined previously with
 variable, simply leave out the dimensions keyword. The variable
 primitive datatypes correspond to the dtype attribute of a numpy array.
 You can specify the datatype as a numpy dtype object, or anything that
-can be converted to a numpy dtype object.  Valid datatype specifiers
-include: `'f4'` (32-bit floating point), `'f8'` (64-bit floating
-point), `'i4'` (32-bit signed integer), `'i2'` (16-bit signed
-integer), `'i8'` (64-bit signed integer), `'i1'` (8-bit signed
-integer), `'u1'` (8-bit unsigned integer), `'u2'` (16-bit unsigned
-integer), `'u4'` (32-bit unsigned integer), `'u8'` (64-bit unsigned
-integer), or `'S1'` (single-character string).  The old Numeric
-single-character typecodes (`'f'`,`'d'`,`'h'`,
-`'s'`,`'b'`,`'B'`,`'c'`,`'i'`,`'l'`), corresponding to
-(`'f4'`,`'f8'`,`'i2'`,`'i2'`,`'i1'`,`'i1'`,`'S1'`,`'i4'`,`'i4'`),
-will also work. The unsigned integer types and the 64-bit integer type
+can be converted to a numpy dtype object. Valid datatype specifiers
+include:
+
+| Specifier | Datatype                | Old typecodes |
+|-----------|-------------------------|---------------|
+| `'f4'`    | 32-bit floating point   | `'f'`         |
+| `'f8'`    | 64-bit floating point   | `'d'`         |
+| `'i4'`    | 32-bit signed integer   | `'i'` `'l'`   |
+| `'i2'`    | 16-bit signed integer   | `'h'` `'s'`   |
+| `'i8'`    | 64-bit signed integer   |               |
+| `'i1'`    | 8-bit signed integer    | `'b'` `'B'`   |
+| `'u1'`    | 8-bit unsigned integer  |               |
+| `'u2'`    | 16-bit unsigned integer |               |
+| `'u4'`    | 32-bit unsigned integer |               |
+| `'u8'`    | 64-bit unsigned integer |               |
+| `'S1'`    | single-character string | `'c'`         |
+
+The unsigned integer types and the 64-bit integer type
 can only be used if the file format is `NETCDF4`.
 
 The dimensions themselves are usually also defined as variables, called
@@ -997,7 +1004,7 @@ use the `parallel` keyword to enable parallel access.
 
 The optional `comm` keyword may be used to specify a particular
 MPI communicator (`MPI_COMM_WORLD` is used by default).  Each process (or rank)
-can now write to the file indepedently.  In this example the process rank is
+can now write to the file independently.  In this example the process rank is
 written to a different variable index on each task
 
 ```python
@@ -1248,7 +1255,7 @@ Support for complex numbers is handled via the
 further details.
 
 
-**contact**: Jeffrey Whitaker <jeffrey.s.whitaker@noaa.gov>
+**contact**: Jeffrey Whitaker <whitaker.jeffrey@gmail.com>
 
 **copyright**: 2008 by Jeffrey Whitaker.
 
@@ -1272,7 +1279,7 @@ import sys
 import functools
 from typing import Union
 
-__version__ = "1.7.1.post1"
+__version__ = "1.7.2"
 
 # Initialize numpy
 import posixpath
@@ -1308,14 +1315,64 @@ __has_blosc_support__ = HAS_BLOSC_SUPPORT
 __has_szip_support__ = HAS_SZIP_SUPPORT
 __has_set_alignment__ = HAS_SET_ALIGNMENT
 __has_ncfilter__ = HAS_NCFILTER
+__has_nc_rc_set__ = HAS_NCRCSET
 
 
 # set path to SSL certificates (issue #1246)
 # available starting in version 4.9.1
-if HAS_NCRCSET:
+if __has_nc_rc_set__:
     import certifi
     if nc_rc_set("HTTP.SSL.CAINFO", _strencode(certifi.where())) != 0:
         raise RuntimeError('error setting path to SSL certificates')
+
+def rc_get(key):
+    """
+**```rc_get(key)```**
+
+Returns the internal netcdf-c rc table value corresponding to key.
+See <https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html>
+for more information on rc files and values.
+    """
+    cdef int ierr
+    cdef char *keyc
+    cdef char *valc
+    if __has_nc_rc_set__:
+        bytestr = _strencode(_tostr(key))
+        keyc = bytestr
+        valc = <char *>nc_rc_get(keyc)
+        if valc is NULL:
+            return None
+        else:
+            return valc.decode('utf-8')
+    else:
+        raise RuntimeError(
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
+        )
+
+def rc_set(key, value):
+    """
+**```rc_set(key, value)```**
+
+Sets the internal netcdf-c rc table value corresponding to key.
+See <https://docs.unidata.ucar.edu/netcdf-c/current/md_auth.html>
+for more information on rc files and values.
+    """
+    cdef int ierr
+    cdef char *keyc
+    cdef char *valuec
+    if __has_nc_rc_set__:
+        key_bytestr = _strencode(_tostr(key))
+        keyc = key_bytestr
+        val_bytestr = _strencode(_tostr(value))
+        valuec = val_bytestr
+        with nogil:
+            ierr = nc_rc_set(keyc,valuec)
+        _ensure_nc_success(ierr)
+    else:
+        raise RuntimeError(
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
+        )
+
 
 
 # check for required version of netcdf-4 and hdf5.
@@ -1330,7 +1387,7 @@ def _gethdf5libversion():
 
 def getlibversion():
     """
-**`getlibversion()`**
+**```getlibversion()```**
 
 returns a string describing the version of the netcdf library
 used to build the module, and when it was built.
@@ -1339,7 +1396,7 @@ used to build the module, and when it was built.
 
 def get_chunk_cache():
     """
-**`get_chunk_cache()`**
+**```get_chunk_cache()```**
 
 return current netCDF chunk cache information in a tuple (size,nelems,preemption).
 See netcdf C library documentation for `nc_get_chunk_cache` for
@@ -1355,7 +1412,7 @@ details. Values can be reset with `set_chunk_cache`."""
 
 def set_chunk_cache(size=None,nelems=None,preemption=None):
     """
-**`set_chunk_cache(self,size=None,nelems=None,preemption=None)`**
+**```set_chunk_cache(size=None,nelems=None,preemption=None)```**
 
 change netCDF4 chunk cache settings.
 See netcdf C library documentation for `nc_set_chunk_cache` for
@@ -1383,7 +1440,7 @@ details."""
 
 
 def get_alignment():
-    """**`get_alignment()`**
+    """**```get_alignment()```**
 
     return current netCDF alignment within HDF5 files in a tuple
     (threshold,alignment). See netcdf C library documentation for
@@ -1394,7 +1451,7 @@ def get_alignment():
 
     if not __has_set_alignment__:
         raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
         )
 
     cdef int ierr
@@ -1407,7 +1464,7 @@ def get_alignment():
 
 
 def set_alignment(threshold, alignment):
-    """**`set_alignment(threshold,alignment)`**
+    """**```set_alignment(threshold,alignment)```**
 
     Change the HDF5 file alignment.
     See netcdf C library documentation for `nc_set_alignment` for
@@ -1417,7 +1474,7 @@ def set_alignment(threshold, alignment):
 
     if not __has_set_alignment__:
         raise RuntimeError(
-            "This function requires netcdf4 4.9.0+ to be used at compile time"
+            "This function requires netcdf-c 4.9.0+ to be used at compile time"
         )
 
     cdef int ierr
@@ -2012,10 +2069,11 @@ cdef _get_vars(group, bint auto_complex=False):
             endianness = None
             with nogil:
                 ierr = nc_inq_var_endian(_grpid, varid, &iendian)
-            if ierr == NC_NOERR and iendian == NC_ENDIAN_LITTLE:
-                endianness = '<'
-            elif iendian == NC_ENDIAN_BIG:
-                endianness = '>'
+            if ierr == NC_NOERR:
+                if iendian == NC_ENDIAN_LITTLE:
+                    endianness = '<'
+                elif iendian == NC_ENDIAN_BIG:
+                    endianness = '>'
             # check to see if it is a supported user-defined type.
             try:
                 datatype = _nctonptype[xtype]
@@ -2113,7 +2171,7 @@ def _ensure_nc_success(ierr, err_cls=RuntimeError, filename=None, extra_msg=None
     raise err_cls(err_str)
 
 
-def dtype_is_complex(dtype: Union[str, numpy.dtype]) -> bool:
+def dtype_is_complex(dtype):
     """Return True if dtype is a complex number"""
     return dtype in ("c8", "c16")
 
@@ -2160,13 +2218,13 @@ cdef _inq_vardimid(int ncid, int varid, bint auto_complex):
 # only exist at the python level (not in the netCDF file).
 
 _private_atts = \
-['_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
+('_grpid','_grp','_varid','groups','dimensions','variables','dtype','data_model','disk_format',
  '_nunlimdim','path','parent','ndim','mask','scale','cmptypes','vltypes','enumtypes','_isprimitive',
  'file_format','_isvlen','_isenum','_iscompound','_cmptype','_vltype','_enumtype','name',
- '__orthogoral_indexing__','keepweakref','_has_lsd',
+ '__orthogoral_indexing__','keepweakref','_has_lsd','always_mask',
  '_buffer','chartostring','_use_get_vars','_ncstring_attrs__',
  'auto_complex'
-]
+)
 
 cdef class Dataset:
     """
@@ -2280,8 +2338,8 @@ strings.
         exception will be raised if a file with the same name already exists.
         mode=`x` is identical to mode=`w` with clobber=False.
 
-        **`format`**: underlying file format (one of `'NETCDF4',
-        'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
+        **`format`**: underlying file format (one of `'NETCDF4'`,
+        `'NETCDF4_CLASSIC'`, `'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
         `'NETCDF3_64BIT_DATA'`.
         Only relevant if `mode = 'w'` (if `mode = 'r','a'` or `'r+'` the file format
         is automatically detected). Default `'NETCDF4'`, which means the data is
@@ -2518,6 +2576,17 @@ strings.
         else:
             raise IndexError('%s not found in %s' % (lastname,group.path))
 
+    def __iter__(self):
+        raise TypeError(
+            "Dataset is not iterable. Consider iterating on Dataset.variables."
+        )
+
+    def __contains__(self, key):
+        raise TypeError(
+            "Dataset does not support membership operations. Perhaps try 'varname in"
+            " dataset.variables' or 'dimname in dataset.dimensions'."
+        )
+
     def filepath(self,encoding=None):
         """**`filepath(self,encoding=None)`**
 
@@ -2556,7 +2625,7 @@ strings.
         return self.__str__()
 
     def __str__(self):
-        ncdump = [repr(type(self))]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         dimnames = tuple(_tostr(dimname)+'(%s)'%len(self.dimensions[dimname])\
         for dimname in self.dimensions.keys())
         varnames = tuple(\
@@ -2923,8 +2992,8 @@ Dataset standard attributes: `dimensions, dtype, shape, ndim, name` and
 `least_significant_digit`. Application programs should never modify
 these attributes. The `dimensions` attribute is a tuple containing the
 names of the dimensions associated with this variable. The `dtype`
-attribute is a string describing the variable's data type (`i4, f8,
-S1,` etc). The `shape` attribute is a tuple describing the current
+attribute is a string describing the variable's data type (`i4`, `f8`,
+`S1`, etc). The `shape` attribute is a tuple describing the current
 sizes of all the variable's dimensions. The `name` attribute is a
 string containing the name of the Variable instance.
 The `least_significant_digit`
@@ -3431,8 +3500,8 @@ suffix replaced by `.nc` is used..
 
 **`mode`**:  Access mode to open Dataset (Default `'a'`).
 
-**`format`**: underlying file format to use (one of `'NETCDF4',
-'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
+**`format`**: underlying file format to use (one of `'NETCDF4'`,
+`'NETCDF4_CLASSIC'`, `'NETCDF3_CLASSIC'`, `'NETCDF3_64BIT_OFFSET'` or
 `'NETCDF3_64BIT_DATA'`. Default `'NETCDF4'`.
 
 Dataset instance for `ncfilename` is returned.
@@ -3440,19 +3509,27 @@ Dataset instance for `ncfilename` is returned.
 [ncgen]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#ncgen_guide
 [cdl]: https://www.unidata.ucar.edu/software/netcdf/docs/netcdf_utilities_guide.html#cdl_guide
         """
+        filepath = pathlib.Path(cdlfilename)
         if ncfilename is None:
-            filepath = pathlib.Path(cdlfilename)
             ncfilename = filepath.with_suffix('.nc')
+        else:
+            ncfilename = pathlib.Path(ncfilename)
         formatcodes = {'NETCDF4': 4,
                        'NETCDF4_CLASSIC': 7,
                        'NETCDF3_CLASSIC': 3,
                        'NETCDF3_64BIT': 6, # legacy
                        'NETCDF3_64BIT_OFFSET': 6,
                        'NETCDF3_64BIT_DATA': 5}
+
         if format not in formatcodes:
             raise ValueError('illegal format requested')
+        if not filepath.exists():
+            raise FileNotFoundError(filepath)
+        if ncfilename.exists():
+            raise FileExistsError(ncfilename)
+
         ncgenargs="-knc%s" % formatcodes[format]
-        subprocess.run(["ncgen", ncgenargs, "-o", ncfilename, cdlfilename], check=True)
+        subprocess.run(["ncgen", ncgenargs, "-o", str(ncfilename), str(filepath)], check=True)
         return Dataset(ncfilename, mode=mode)
 
     def tocdl(self,coordvars=False,data=False,outfile=None):
@@ -3718,12 +3795,13 @@ Read-only class variables:
     def __str__(self):
         if not dir(self._grp):
             return 'Dimension object no longer valid'
+        typ = repr(type(self)).replace("._netCDF4", "")
         if self.isunlimited():
             return "%r (unlimited): name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
         else:
             return "%r: name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
 
     def __len__(self):
         # len(`Dimension` instance) returns current size of dimension
@@ -3983,11 +4061,16 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         Ignored if `significant_digts` not specified. If 'BitRound' is used, then
         `significant_digits` is interpreted as binary (not decimal) digits.
 
-        **`fill_value`**:  If specified, the default netCDF `_FillValue` (the
+        **`fill_value`**:  If specified, the default netCDF fill value (the
         value that the variable gets filled with before any data is written to it)
-        is replaced with this value.  If fill_value is set to `False`, then
-        the variable is not pre-filled. The default netCDF fill values can be found
-        in the dictionary `netCDF4.default_fillvals`.
+        is replaced with this value, and the `_FillValue` attribute is set.
+        If fill_value is set to `False`, then the variable is not pre-filled.
+        The default netCDF fill values can be found in the dictionary `netCDF4.default_fillvals`.
+        If not set, the default fill value will be used but no `_FillValue` attribute will be created
+        (this is the default behavior of the netcdf-c library). If you want to use the
+        default fill value, but have the `_FillValue` attribute set, use
+        `fill_value='default'` (note - this only works for primitive data types). `Variable.get_fill_value`
+        can be used to retrieve the fill value, even if the `_FillValue` attribute is not set.
 
         **`chunk_cache`**: If specified, sets the chunk cache size for this variable.
         Persists as long as Dataset is open. Use `set_var_chunk_cache` to
@@ -4351,6 +4434,17 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                     if ierr != NC_NOERR:
                         if grp.data_model != 'NETCDF4': grp._enddef()
                         _ensure_nc_success(ierr, extra_msg=error_info)
+                elif fill_value == 'default':
+                    if self._isprimitive:
+                        fillval = numpy.array(default_fillvals[self.dtype.str[1:]])
+                        if not fillval.dtype.isnative: fillval.byteswap(True)
+                        _set_att(self._grp, self._varid, '_FillValue',\
+                                 fillval, xtype=xtype)
+                    else:
+                        msg = """
+WARNING: there is no default fill value for this data type, so fill_value='default'
+does not do anything."""
+                        warnings.warn(msg)
                 else:
                     if self._isprimitive or self._isenum or \
                        (self._isvlen and self.dtype == str):
@@ -4450,7 +4544,7 @@ behavior is similar to Fortran or Matlab, but different than numpy.
         cdef int ierr, no_fill
         if not dir(self._grp):
             return 'Variable object no longer valid'
-        ncdump = [repr(type(self))]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         show_more_dtype = True
         if self._iscompound:
             kind = 'compound'
@@ -4585,6 +4679,36 @@ behavior is similar to Fortran or Matlab, but different than numpy.
 
 return the group that this `Variable` is a member of."""
         return self._grp
+
+    def get_fill_value(self):
+        """
+**`get_fill_value(self)`**
+
+return the fill value associated with this `Variable` (returns `None` if data is not
+pre-filled). Works even if default fill value was used, and `_FillValue` attribute
+does not exist."""
+        cdef int ierr, no_fill
+        with nogil:
+            ierr = nc_inq_var_fill(self._grpid,self._varid,&no_fill,NULL)
+        _ensure_nc_success(ierr)
+        if no_fill == 1: # no filling for this variable
+            return None
+        else:
+            try:
+                fillval = self._FillValue
+                return fillval
+            except AttributeError:
+                # _FillValue attribute not set, see if we can retrieve _FillValue.
+                # for primitive data types.
+                if self._isprimitive:
+                    #return numpy.array(default_fillvals[self.dtype.str[1:]],self.dtype)
+                    fillval = numpy.empty((),self.dtype)
+                    ierr=nc_inq_var_fill(self._grpid,self._varid,&no_fill,PyArray_DATA(fillval))
+                    _ensure_nc_success(ierr)
+                    return fillval
+                else:
+                    # no default filling for non-primitive data types.
+                    return None
 
     def ncattrs(self):
         """
@@ -5268,7 +5392,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
             # corresponds to missing values, don't fill masked array -
             # just use underlying data instead
             if hasattr(self, 'missing_value') and \
-               numpy.all(numpy.in1d(data.data[data.mask],self.missing_value)):
+               numpy.all(numpy.isin(data.data[data.mask],self.missing_value)):
                 data = data.data
             else:
                 if hasattr(self, 'missing_value'):
@@ -5574,7 +5698,7 @@ of the the rightmost dimension of the variable).  The value of `_Encoding`
 is the unicode encoding that is used to decode the bytes into strings.
 
 When numpy string data is written to a variable it is converted back to
-indiviual bytes, with the number of bytes in each string equalling the
+individual bytes, with the number of bytes in each string equalling the
 rightmost dimension of the variable.
 
 The default value of `chartostring` is `True`
@@ -5842,10 +5966,9 @@ NC_CHAR).
                         ierr = nc_put_vara(self._grpid, self._varid,
                                            startp, countp, strdata)
                 else:
-                    raise IndexError('strides must all be 1 for string variables')
-                    #with nogil:
-                    #    ierr = nc_put_vars(self._grpid, self._varid,
-                    #                       startp, countp, stridep, strdata)
+                    with nogil:
+                        ierr = nc_put_vars(self._grpid, self._varid,
+                                           startp, countp, stridep, strdata)
                 _ensure_nc_success(ierr)
                 free(strdata)
             else:
@@ -5871,10 +5994,9 @@ NC_CHAR).
                         ierr = nc_put_vara(self._grpid, self._varid,
                                            startp, countp, vldata)
                 else:
-                    raise IndexError('strides must all be 1 for vlen variables')
-                    #with nogil:
-                    #    ierr = nc_put_vars(self._grpid, self._varid,
-                    #                       startp, countp, stridep, vldata)
+                    with nogil:
+                        ierr = nc_put_vars(self._grpid, self._varid,
+                                           startp, countp, stridep, vldata)
                 _ensure_nc_success(ierr)
                 # free the pointer array.
                 free(vldata)
@@ -5967,11 +6089,9 @@ NC_CHAR).
                         ierr = nc_get_vara(self._grpid, self._varid,
                                            startp, countp, strdata)
                 else:
-                    # FIXME: is this a bug in netCDF4?
-                    raise IndexError('strides must all be 1 for string variables')
-                    #with nogil:
-                    #    ierr = nc_get_vars(self._grpid, self._varid,
-                    #                       startp, countp, stridep, strdata)
+                    with nogil:
+                        ierr = nc_get_vars(self._grpid, self._varid,
+                                           startp, countp, stridep, strdata)
                 if ierr == NC_EINVALCOORDS:
                     raise IndexError
                 elif ierr != NC_NOERR:
@@ -6006,10 +6126,9 @@ NC_CHAR).
                         ierr = nc_get_vara(self._grpid, self._varid,
                                            startp, countp, vldata)
                 else:
-                    raise IndexError('strides must all be 1 for vlen variables')
-                    #with nogil:
-                    #    ierr = nc_get_vars(self._grpid, self._varid,
-                    #                       startp, countp, stridep, vldata)
+                    with nogil:
+                        ierr = nc_get_vars(self._grpid, self._varid,
+                                           startp, countp, stridep, vldata)
                 if ierr == NC_EINVALCOORDS:
                     raise IndexError
                 elif ierr != NC_NOERR:
@@ -6099,13 +6218,13 @@ the user.
 
         CompoundType constructor.
 
-        **`group`**: `Group` instance to associate with the compound datatype.
+        **`grp`**: `Group` instance to associate with the compound datatype.
 
-        **`datatype`**: A numpy dtype object describing a structured (a.k.a record)
+        **`dt`**: A numpy dtype object describing a structured (a.k.a record)
         array.  Can be composed of homogeneous numeric or character data types, or
         other structured array data types.
 
-        **`datatype_name`**: a Python string containing a description of the
+        **`dtype_name`**: a Python string containing a description of the
         compound data type.
 
         ***Note 1***: When creating nested compound data types,
@@ -6149,8 +6268,9 @@ the user.
         return self.__str__()
 
     def __str__(self):
-        return "%r: name = '%s', numpy dtype = %s" %\
-            (type(self), self.name, self.dtype)
+        typ = repr(type(self)).replace("._netCDF4", "")
+        return "%s: name = '%s', numpy dtype = %s" %\
+            (typ, self.name, self.dtype)
 
     def __reduce__(self):
         # raise error is user tries to pickle a CompoundType object.
@@ -6437,11 +6557,12 @@ the user.
         return self.__str__()
 
     def __str__(self):
+        typ = repr(type(self)).replace("._netCDF4", "")
         if self.dtype == str:
-            return '%r: string type' % (type(self),)
+            return '%r: string type' % (typ,)
         else:
             return "%r: name = '%s', numpy dtype = %s" %\
-                (type(self), self.name, self.dtype)
+                (typ, self.name, self.dtype)
 
     def __reduce__(self):
         # raise error is user tries to pickle a VLType object.
@@ -6549,8 +6670,9 @@ the user.
         return self.__str__()
 
     def __str__(self):
+        typ = repr(type(self)).replace("._netCDF4", "")
         return "%r: name = '%s', numpy dtype = %s, fields/values =%s" %\
-            (type(self), self.name, self.dtype, self.enum_dict)
+            (typ, self.name, self.dtype, self.enum_dict)
 
     def __reduce__(self):
         # raise error is user tries to pickle a EnumType object.
@@ -6697,7 +6819,7 @@ Will be converted to a array of strings, where each string has a fixed
 length of `b.shape[-1]` characters.
 
 optional kwarg `encoding` can be used to specify character encoding (default
-`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` btye array is
+`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` byte array is
 returned.
 
 returns a numpy string array with datatype `'UN'` (or `'SN'`) and shape
@@ -6721,8 +6843,8 @@ class MFDataset(Dataset):
     """
 Class for reading multi-file netCDF Datasets, making variables
 spanning multiple files appear as if they were in one file.
-Datasets must be in `NETCDF4_CLASSIC, NETCDF3_CLASSIC, NETCDF3_64BIT_OFFSET
-or NETCDF3_64BIT_DATA` format (`NETCDF4` Datasets won't work).
+Datasets must be in `NETCDF4_CLASSIC`, `NETCDF3_CLASSIC`, `NETCDF3_64BIT_OFFSET`
+or `NETCDF3_64BIT_DATA` format (`NETCDF4` Datasets won't work).
 
 Adapted from [pycdf](http://pysclint.sourceforge.net/pycdf) by Andre Gosselin.
 
@@ -6969,7 +7091,7 @@ Example usage (See `MFDataset.__init__` for more details):
 
         return the netcdf attribute names from the master file.
         """
-        return self._cdf[0].__dict__.keys()
+        return list(self._cdf[0].__dict__)
 
     def close(self):
         """
@@ -6989,7 +7111,7 @@ Example usage (See `MFDataset.__init__` for more details):
         return all(map(lambda dset: dset.isopen(), self._cdf))
 
     def __repr__(self):
-        ncdump = [repr(type(self))]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         dimnames = tuple(str(dimname) for dimname in self.dimensions.keys())
         varnames = tuple(str(varname) for varname in self.variables.keys())
         grpnames = ()
@@ -7019,12 +7141,13 @@ class _Dimension:
     def isunlimited(self):
         return True
     def __repr__(self):
+        typ = repr(type(self)).replace("._netCDF4", "")
         if self.isunlimited():
             return "%r (unlimited): name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
         else:
             return "%r: name = '%s', size = %s" %\
-                (type(self), self._name, len(self))
+                (typ, self._name, len(self))
 
 class _Variable:
     def __init__(self, dset, varname, var, recdimname):
@@ -7043,7 +7166,7 @@ class _Variable:
     def typecode(self):
         return self.dtype
     def ncattrs(self):
-        return self._mastervar.__dict__.keys()
+        return list(self._mastervar.__dict__.keys())
     def __getattr__(self,name):
         if name == 'shape': return self._shape()
         if name == 'ndim': return len(self._shape())
@@ -7053,7 +7176,7 @@ class _Variable:
         except:
             raise AttributeError(name)
     def __repr__(self):
-        ncdump = [repr(type(self))]
+        ncdump = [repr(type(self)).replace("._netCDF4", "")]
         dimnames = tuple(str(dimname) for dimname in self.dimensions)
         ncdump.append('%s %s%s' % (self.dtype, self._name, dimnames))
         for name in self.ncattrs():

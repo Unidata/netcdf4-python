@@ -6,14 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PNETCDF_VERSION: 1.12.1
-      NETCDF_VERSION: 4.8.1
+      NETCDF_VERSION: 4.7.4
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
-      CC: mpicc.mpich
+      #CC: mpicc.mpich
+      CC: mpicc
       #NO_NET: 1
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: ["3.13"]
     steps:
 
     - uses: actions/checkout@v4
@@ -28,25 +29,29 @@ jobs:
     - name: Install Ubuntu Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
+        #sudo apt-get install mpich libmpich-dev libhdf5-mpich-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
+        sudo apt-get install openmpi-common libopenmpi-dev openmpi-bin libhdf5-openmpi-dev libcurl4-openssl-dev bzip2 libsnappy-dev libblosc-dev libzstd-dev
         echo "Download and build PnetCDF version ${PNETCDF_VERSION}"
         wget https://parallel-netcdf.github.io/Release/pnetcdf-${PNETCDF_VERSION}.tar.gz
         tar -xzf pnetcdf-${PNETCDF_VERSION}.tar.gz
         pushd pnetcdf-${PNETCDF_VERSION}
         ./configure --prefix $NETCDF_DIR --enable-shared --disable-fortran --disable-cxx
         make -j 2
-        make install
+        sudo make install
         popd
         echo "Download and build netCDF version ${NETCDF_VERSION}"
-        wget https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+        #wget https://downloads.unidata.ucar.edu/netcdf-c/${NETCDF_VERSION}/netcdf-c-${NETCDF_VERSION}.tar.gz
+        wget https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-c-${NETCDF_VERSION}.tar.gz
         tar -xzf netcdf-c-${NETCDF_VERSION}.tar.gz
         pushd netcdf-c-${NETCDF_VERSION}
-        export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
+        #export CPPFLAGS="-I/usr/include/hdf5/mpich -I${NETCDF_DIR}/include"
+        export CPPFLAGS="-I/usr/include/hdf5/openmpi -I${NETCDF_DIR}/include"
         export LDFLAGS="-L${NETCDF_DIR}/lib"
-        export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
+        #export LIBS="-lhdf5_mpich_hl -lhdf5_mpich -lm -lz"
+        export LIBS="-lhdf5_openmpi_hl -lhdf5_openmpi -lm -lz"
         ./configure --prefix $NETCDF_DIR --enable-netcdf-4 --enable-shared --enable-dap --enable-parallel4 $NETCDF_EXTRA_CONFIG
         make -j 2
-        make install
+        sudo make install
         popd
 
 #   - name: The job has failed
@@ -58,13 +63,14 @@ jobs:
     - name: Install python dependencies via pip
       run: |
         python -m pip install --upgrade pip
-        pip install numpy cython cftime pytest twine wheel check-manifest mpi4py
+        python -m pip install numpy cython cftime pytest twine wheel check-manifest mpi4py typing-extensions
 
     - name: Install netcdf4-python
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         export NETCDF_PLUGIN_DIR=${{ github.workspace }}/netcdf-c-${NETCDF_VERSION}/plugins/plugindir
-        python setup.py install
+        python -m pip install . --no-build-isolation
+
     - name: Test
       run: |
         export PATH=${NETCDF_DIR}/bin:${PATH} 
@@ -74,21 +80,24 @@ jobs:
         python run_all.py
         # parallel (hdf5 for netcdf4, pnetcdf for netcdf3)
         cd ../examples
-        mpirun.mpich -np 4 python mpi_example.py
+        #mpirun.mpich -np 4 python mpi_example.py
+        mpirun -np 4 --oversubscribe python mpi_example.py 
         if [ $? -ne 0 ] ; then
           echo "hdf5 mpi test failed!"
           exit 1
         else
           echo "hdf5 mpi test passed!"
         fi
-        mpirun.mpich -np 4 python mpi_example_compressed.py
+        #mpirun.mpich -np 4 python mpi_example_compressed.py
+        mpirun -np 4 --oversubscribe python mpi_example_compressed.py 
         if [ $? -ne 0 ] ; then
           echo "hdf5 compressed mpi test failed!"
           exit 1
         else
           echo "hdf5 compressed mpi test passed!"
         fi
-        mpirun.mpich -np 4 python mpi_example.py NETCDF3_64BIT_DATA
+        #mpirun.mpich -np 4 python mpi_example.py NETCDF3_64BIT_DATA
+        mpirun -np 4 --oversubscribe python mpi_example.py NETCDF3_64BIT_DATA
         if [ $? -ne 0 ] ; then
           echo "pnetcdf mpi test failed!"
           exit 1

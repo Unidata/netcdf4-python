@@ -53,14 +53,14 @@ class TestgetStartCountStride(unittest.TestCase):
 
 
         try:
-            elem = ( np.arange(6).reshape((3,2)), slice(None), slice(None) )
-            start, count, stride, put_ind = _StartCountStride(elem, (3,4,5))
+            elem2 = ( np.arange(6).reshape((3,2)), slice(None), slice(None) )
+            start, count, stride, put_ind = _StartCountStride(elem2, (3,4,5))
         except IndexError:
             pass
 
         # this one should be converted to a slice
-        elem = [slice(None), [1,3,5], 8]
-        start, count, stride, put_ind = _StartCountStride(elem, (50, 6, 10))
+        elem3 = [slice(None), [1,3,5], 8]
+        start, count, stride, put_ind = _StartCountStride(elem3, (50, 6, 10))
         # pull request #683 now does not convert integer sequences to strided
         # slices. PR #1224 reverts this behavior.
         assert_equal(put_ind[...,1].squeeze(), slice(None,None,None))
@@ -81,8 +81,8 @@ class TestgetStartCountStride(unittest.TestCase):
         assert_equal(count[...,2], 10)
 
         i = [1,3,4]
-        elem = (i, i, i)
-        start, count, stride, put_ind = _StartCountStride(elem, (50, 5, 10))
+        elem2 = (i, i, i)
+        start, count, stride, put_ind = _StartCountStride(elem2, (50, 5, 10))
         assert_equal(_out_array_shape(count), (3,3,3))
 
     def test_put_indices(self):
@@ -198,15 +198,15 @@ class TestgetStartCountStride(unittest.TestCase):
         assert_equal(put_ind[0,0,0,0,0], (slice(None), slice(None), slice(None), slice(None), slice(None)))
 
         try:
-            elem=(Ellipsis, [15,16,17,18,19], slice(None))
-            start, count, stride, put_ind = _StartCountStride(elem, (2,10,20,10,10))
+            elem2=(Ellipsis, [15,16,17,18,19], slice(None))
+            start, count, stride, put_ind = _StartCountStride(elem2, (2,10,20,10,10))
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:
             assert_equal(str(e), "integer index exceeds dimension size")
 
         try:
-            elem=(Ellipsis, [15,16,17,18,19], Ellipsis)
-            start, count, stride, put_ind = _StartCountStride(elem, (2,10, 20,10,10))
+            elem3=(Ellipsis, [15,16,17,18,19], Ellipsis)
+            start, count, stride, put_ind = _StartCountStride(elem3, (2,10, 20,10,10))
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:
             assert_equal(str(e), "At most one ellipsis allowed in a slicing expression")
@@ -303,8 +303,8 @@ class TestsetStartCountStride(unittest.TestCase):
         assert_equal(take_ind[0,0,0,0,0], (slice(None), slice(None), slice(None), slice(None), slice(None)))
 
         try:
-            elem=(Ellipsis, [15,16,17,18,19], slice(None))
-            start, count, stride, take_ind = _StartCountStride(elem, (2,10,20,10,10),\
+            elem2=(Ellipsis, [15,16,17,18,19], slice(None))
+            start, count, stride, take_ind = _StartCountStride(elem2, (2,10,20,10,10),\
                ['time', 'z', 'y', 'x'], grp, (2,10,5,10,10), put=True)
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:
@@ -312,8 +312,8 @@ class TestsetStartCountStride(unittest.TestCase):
             assert_equal(str(e), "list index out of range")
 
         try:
-            elem=(Ellipsis, [15,16,17,18,19], Ellipsis)
-            start, count, stride, take_ind = _StartCountStride(elem, (2,10, 20,10,10),\
+            elem3=(Ellipsis, [15,16,17,18,19], Ellipsis)
+            start, count, stride, take_ind = _StartCountStride(elem3, (2,10, 20,10,10),\
                ['time', 'z', 'y', 'x'], grp, (2,10,5,10,10), put=True)
             assert_equal(None, 'Should throw an exception')
         except IndexError as e:

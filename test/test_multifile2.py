@@ -23,7 +23,7 @@ class VariablesTestCase(unittest.TestCase):
         for nfile,file in enumerate(self.files):
             f = Dataset(file,'w',format='NETCDF4_CLASSIC')
             #f.createDimension('x',None)
-            f.createDimension('x',ninc)
+            f.createDimension('x',int(ninc))
             f.createDimension('y',ydim)
             f.createDimension('z',zdim)
             f.history = 'created today'
@@ -52,6 +52,7 @@ class VariablesTestCase(unittest.TestCase):
         assert_array_equal(np.arange(0,nx),f.variables['x'][:])
         varin = f.variables['data']
         datin = varin[:]
+        assert isinstance(data, np.ma.masked_array)
         assert_array_equal(datin.mask,data.mask)
         varin.set_auto_maskandscale(False)
         data2 = data.filled()
@@ -106,8 +107,8 @@ class NonuniformTimeTestCase(unittest.TestCase):
         # Get the real dates
         # skip this until cftime pull request #55 is in a released
         # version (1.0.1?). Otherwise, fix for issue #808 breaks this
+        dates = []
         if Version(cftime.__version__) >= Version('1.0.1'):
-            dates = []
             for file in self.files:
                 f = Dataset(file)
                 t = f.variables['time']

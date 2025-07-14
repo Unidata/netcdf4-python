@@ -12,11 +12,11 @@ jobs:
     #  NO_NET: 1
     strategy:
       matrix:
-        python-version: [ "3.9", "3.10", "3.11", "3.12" ]
+        python-version: [ "3.9", "3.10", "3.11", "3.12", "3.13" ]
         os: [windows-latest, ubuntu-latest, macos-latest]
         platform: [x64, x32]
         exclude:
-          - os: macos-latest  
+          - os: macos-latest
             platform: x32
       fail-fast: false
     defaults:
@@ -29,13 +29,13 @@ jobs:
         submodules: true
 
     - name: Setup Micromamba
-      uses: mamba-org/setup-micromamba@v1
+      uses: mamba-org/setup-micromamba@v2
       with:
         environment-name: TEST
         init-shell: bash
         create-args: >-
           python=${{ matrix.python-version }}
-          numpy cython pip pytest hdf5 libnetcdf cftime zlib certifi
+          numpy cython pip setuptools pytest hdf5 libnetcdf cftime zlib certifi typing-extensions
           --channel conda-forge
 
     - name: Install netcdf4-python
@@ -45,13 +45,13 @@ jobs:
 
     - name: Tests
       run: |
-        cd test && python run_all.py
+        pytest -s -rxs -v test
 
   run-mpi:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: [ "3.11" ]
+        python-version: [ "3.12" ]
         os: [ubuntu-latest]
         platform: [x64]
     defaults:
@@ -63,13 +63,13 @@ jobs:
         submodules: true
 
     - name: Setup Micromamba
-      uses: mamba-org/setup-micromamba@v1
+      uses: mamba-org/setup-micromamba@v2
       with:
         environment-name: TEST
         init-shell: bash
         create-args: >-
           python=${{ matrix.python-version }}
-          numpy cython pip pytest mpi4py hdf5=*=mpi* libnetcdf=*=mpi* cftime zlib certifi
+          numpy cython pip pytest openmpi mpi4py hdf5=*=mpi* libnetcdf=*=mpi* cftime zlib certifi typing-extensions
           --channel conda-forge
 
     - name: Install netcdf4-python with mpi
@@ -82,7 +82,7 @@ jobs:
       run: |
         cd test && python run_all.py
         cd ../examples
-        export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" 
+        export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH"
         which mpirun
         mpirun --version
         mpirun -np 4 --oversubscribe python mpi_example.py # for openmpi

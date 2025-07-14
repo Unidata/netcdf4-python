@@ -60,9 +60,9 @@ jobs:
           - os: macos-14
             arch: arm64
             CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=14.0
-          - os: macos-11
+          - os: macos-12
             arch: x86_64
-            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=11.0
+            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=12.0
 
     steps:
     - uses: actions/checkout@v4
@@ -84,15 +84,15 @@ jobs:
       # These needs to rotate every new Python release.
       run: |
         if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-          CIBW_SKIP="pp* cp36-* cp37-* *-musllinux* cp39-* cp310-* cp311-*"
+          CIBW_SKIP="pp* cp36-* cp37-* cp38-* *-musllinux* cp39-* cp310-* cp311-* cp312-*"
         else
-          CIBW_SKIP="pp* cp36-* cp37-* *-musllinux*"
+          CIBW_SKIP="pp* cp36-* cp37-* cp38-* *-musllinux*"
         fi
         echo "CIBW_SKIP=$CIBW_SKIP" >> $GITHUB_ENV
         echo "Setting CIBW_SKIP=$CIBW_SKIP"
 
     - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
-      uses: pypa/cibuildwheel@v2.19.1
+      uses: pypa/cibuildwheel@v3.0.0
       env:
         CIBW_SKIP: ${{ env.CIBW_SKIP }}
         CIBW_ARCHS: ${{ matrix.arch }}
@@ -100,15 +100,13 @@ jobs:
         CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/ocefpaf/manylinux2014_x86_64-netcdf
         CIBW_MANYLINUX_AARCH64_IMAGE: ghcr.io/ocefpaf/manylinux2014_aarch64-netcdf
         # Emulation testing is slow, testing only latest Python.
-        CIBW_TEST_SKIP: "cp38-*_aarch64 cp39-*_aarch64 cp310-*_aarch64 cp311-*_aarch64"
+        CIBW_TEST_SKIP: "cp39-*_aarch64 cp310-*_aarch64 cp311-*_aarch64 cp312-*_aarch64"
         CIBW_ENVIRONMENT: ${{ matrix.CIBW_ENVIRONMENT }}
         CIBW_BEFORE_BUILD_MACOS: brew install hdf5 netcdf
-        CIBW_TEST_REQUIRES: pytest cython packaging
+        CIBW_TEST_REQUIRES: pytest cython packaging typing-extensions
         CIBW_TEST_COMMAND: >
           python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
           && pytest -s -rxs -v {project}/test
-          && URL="https://icdc.cen.uni-hamburg.de/thredds/dodsC/ftpthredds/hamtide/m2.hamtide11a.nc"
-          && python -c "from netCDF4 import Dataset; nc=Dataset(\"${URL}\"); print(nc)"
 
     - uses: actions/upload-artifact@v4
       with:
@@ -135,7 +133,7 @@ jobs:
           python-version: 3.x
 
       - name: Setup Micromamba Python ${{ matrix.python-version }}
-        uses: mamba-org/setup-micromamba@v1
+        uses: mamba-org/setup-micromamba@v2
         with:
           environment-name: build
           init-shell: bash
@@ -149,7 +147,7 @@ jobs:
       - name: Build wheels for Windows (${{ matrix.arch }})
         run: cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_BUILD: "cp39-${{ matrix.arch }} cp310-${{ matrix.arch }} cp311-${{ matrix.arch }} cp312-${{ matrix.arch }}"
+          CIBW_BUILD: "cp39-${{ matrix.arch }} cp310-${{ matrix.arch }} cp311-${{ matrix.arch }} cp312-${{ matrix.arch }} cp313-${{ matrix.arch }}"
           CIBW_ENVIRONMENT_WINDOWS: >
             HDF5_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
             netCDF4_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
@@ -157,7 +155,7 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
             delvewheel show {wheel}
             && delvewheel repair -w {dest_dir} {wheel}
-          CIBW_TEST_REQUIRES: pytest cython packaging
+          CIBW_TEST_REQUIRES: pytest cython packaging typing-extensions
           CIBW_TEST_COMMAND: >
             python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
             && pytest -s -rxs -v {project}\\test

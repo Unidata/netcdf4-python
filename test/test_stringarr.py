@@ -24,7 +24,7 @@ class StringArrayTestCase(unittest.TestCase):
 
     def setUp(self):
         self.file = FILE_NAME
-        nc = Dataset(FILE_NAME,'w',format=FILE_FORMAT)
+        nc = Dataset(FILE_NAME,'w',format=FILE_FORMAT)  # type: ignore #  FILE_FORMAT
         nc.createDimension('n1',None)
         nc.createDimension('n2',n2)
         nc.createDimension('nchar',nchar)
@@ -41,7 +41,7 @@ class StringArrayTestCase(unittest.TestCase):
         v2[:-1] = data[:-1]
         v2[-1] = data[-1]
         v2[-1,-1] = data[-1,-1] # write single element
-        v2[-1,-1] = data[-1,-1].tostring() # write single python string
+        v2[-1,-1] = data[-1,-1].tobytes() # write single python string
         # _Encoding should be ignored if an array of characters is specified
         v3[:] = stringtochar(data, encoding='ascii')
         nc.close()
@@ -70,19 +70,19 @@ class StringArrayTestCase(unittest.TestCase):
         assert_array_equal(data3,datau)
         # these slices should return a char array, not a string array
         data4 = v2[:,:,0]
-        assert data4.dtype.itemsize == 1 
+        assert data4.dtype.itemsize == 1
         assert_array_equal(data4, datac[:,:,0])
         data5 = v2[0,0:nchar,0]
-        assert data5.dtype.itemsize == 1 
+        assert data5.dtype.itemsize == 1
         assert_array_equal(data5, datac[0,0:nchar,0])
         # test turning auto-conversion off.
         v2.set_auto_chartostring(False)
         data6 = v2[:]
-        assert data6.dtype.itemsize == 1 
+        assert data6.dtype.itemsize == 1
         assert_array_equal(data6, datac)
         nc.set_auto_chartostring(False)
         data7 = v3[:]
-        assert data7.dtype.itemsize == 1 
+        assert data7.dtype.itemsize == 1
         assert_array_equal(data7, datac)
         nc.close()
 

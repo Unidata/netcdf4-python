@@ -93,7 +93,8 @@ class PrimitiveTypesTestCase(unittest.TestCase):
         # of raising an exception when auto-converted slice to a
         # masked array
         with netCDF4.Dataset(pathlib.Path(__file__).parent / "issue1152.nc") as dataset:
-            data = dataset['v'][:]
+            with self.assertWarns(UserWarning):
+                data = dataset['v'][:]
 
         # issue #1271 (mask is ignored when assigning bool array to uint8 var)
         ds = netCDF4.Dataset(self.file3, "w")

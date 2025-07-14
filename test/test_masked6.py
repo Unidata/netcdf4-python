@@ -47,13 +47,13 @@ class SetAlwaysMaskTrue(SetAlwaysMaskTestBase):
         v = f.variables['v'][:]
 
         self.assertTrue(isinstance(v, np.ndarray))
-        self.assertTrue(isinstance(v, ma.core.MaskedArray))
+        self.assertTrue(isinstance(v, ma.masked_array))
         assert_array_almost_equal(v, self.v)
 
         w = f.variables['w'][:]
 
         self.assertTrue(isinstance(w, np.ndarray))
-        self.assertTrue(isinstance(w, ma.core.MaskedArray))
+        self.assertTrue(isinstance(w, ma.masked_array))
         assert_array_almost_equal(w, self.w)
         
         f.close()
@@ -69,13 +69,13 @@ class SetAlwyasMaskFalse(SetAlwaysMaskTestBase):
         v = f.variables['v'][:]
 
         self.assertTrue(isinstance(v, np.ndarray))
-        self.assertFalse(isinstance(v, ma.core.MaskedArray))
+        self.assertFalse(isinstance(v, ma.masked_array))
         assert_array_almost_equal(v, self.v)
 
         w = f.variables['w'][:]
 
         self.assertTrue(isinstance(w, np.ndarray))
-        self.assertTrue(isinstance(w, ma.core.MaskedArray))
+        self.assertTrue(isinstance(w, ma.masked_array))
         assert_array_almost_equal(w, self.w)
 
         f.close()

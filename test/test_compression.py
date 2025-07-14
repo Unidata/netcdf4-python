@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING, Any
 from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
 from netCDF4.utils import _quantize
 from numpy.testing import assert_almost_equal
 import os, tempfile, unittest
+if TYPE_CHECKING:
+    from netCDF4 import CompressionLevel
+else:
+    CompressionLevel = Any
 
 ndim = 100000
 ndim2 = 100
@@ -14,7 +19,7 @@ array2 = uniform(size=(ndim,ndim2))
 lsd = 3
 
 def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,contiguous=False,\
-                 chunksizes=None,complevel=6,fletcher32=False):
+                 chunksizes=None, complevel: CompressionLevel = 6, fletcher32=False):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
     foo = file.createVariable('data',\
@@ -30,8 +35,8 @@ def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=F
         #compression=''
         #compression=0
         #compression='gzip' # should fail
-    foo2 = file.createVariable('data2',\
-            dtype,('n'),compression=compression,least_significant_digit=least_significant_digit,\
+    foo2 = file.createVariable('data2',
+            dtype,('n'),compression=compression,least_significant_digit=least_significant_digit,  # type: ignore  # mypy doesn't like compression
             shuffle=shuffle,contiguous=contiguous,complevel=complevel,fletcher32=fletcher32,chunksizes=chunksizes)
     foo[:] = data
     foo2[:] = data
@@ -42,7 +47,7 @@ def write_netcdf(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=F
     file.close()
 
 def write_netcdf2(filename,zlib,least_significant_digit,data,dtype='f8',shuffle=False,contiguous=False,\
-                 chunksizes=None,complevel=6,fletcher32=False):
+                 chunksizes=None, complevel: CompressionLevel = 6, fletcher32=False):
     file = Dataset(filename,'w')
     file.createDimension('n', ndim)
     file.createDimension('n2', ndim2)
@@ -103,7 +108,7 @@ class CompressionTestCase(unittest.TestCase):
         {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':6,'fletcher32':False}
         assert f.variables['data2'].filters() ==\
         {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':False,'complevel':6,'fletcher32':False}
-        assert size < 0.95*uncompressed_size 
+        assert size < 0.95*uncompressed_size
         f.close()
         # check compression with shuffle
         f = Dataset(self.files[2])
@@ -114,7 +119,7 @@ class CompressionTestCase(unittest.TestCase):
         {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':True,'complevel':6,'fletcher32':False}
         assert f.variables['data2'].filters() ==\
         {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':True,'complevel':6,'fletcher32':False}
-        assert size < 0.85*uncompressed_size 
+        assert size < 0.85*uncompressed_size
         f.close()
         # check lossy compression without shuffle
         f = Dataset(self.files[3])
@@ -122,14 +127,14 @@ class CompressionTestCase(unittest.TestCase):
         checkarray = _quantize(array,lsd)
         assert_almost_equal(checkarray,f.variables['data'][:])
         assert_almost_equal(checkarray,f.variables['data2'][:])
-        assert size < 0.27*uncompressed_size 
+        assert size < 0.27*uncompressed_size
         f.close()
         # check lossy compression with shuffle
         f = Dataset(self.files[4])
         size = os.stat(self.files[4]).st_size
         assert_almost_equal(checkarray,f.variables['data'][:])
         assert_almost_equal(checkarray,f.variables['data2'][:])
-        assert size < 0.20*uncompressed_size 
+        assert size < 0.20*uncompressed_size
         size_save = size
         f.close()
         # check lossy compression with shuffle and fletcher32 checksum.
@@ -141,9 +146,9 @@ class CompressionTestCase(unittest.TestCase):
         {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':True,'complevel':6,'fletcher32':True}
         assert f.variables['data2'].filters() ==\
         {'zlib':True,'szip':False,'zstd':False,'bzip2':False,'blosc':False,'shuffle':True,'complevel':6,'fletcher32':True}
-        assert size < 0.20*uncompressed_size 
+        assert size < 0.20*uncompressed_size
         # should be slightly larger than without fletcher32
-        assert size > size_save 
+        assert size > size_save
         # check chunksizes
         f.close()
         f = Dataset(self.files[6])

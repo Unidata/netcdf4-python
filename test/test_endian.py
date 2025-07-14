@@ -73,13 +73,13 @@ def issue310(file):
         endian='little'
     else:
         raise ValueError('cannot determine native endianness')
-    var_big_endian = nc.createVariable(\
-            'obs_big_endian', '>f8', ('obs', ),\
-            endian=endian,fill_value=fval)
+    var_big_endian = nc.createVariable(
+        'obs_big_endian', '>f8', ('obs', ), endian=endian, fill_value=fval,  # type: ignore  # mypy is bad at narrowing endian
+    )
     # use default _FillValue
-    var_big_endian2 = nc.createVariable(\
-            'obs_big_endian2', '>f8', ('obs', ),\
-            endian=endian)
+    var_big_endian2 = nc.createVariable(
+        'obs_big_endian2', '>f8', ('obs', ), endian=endian,   # type: ignore  # mypy is bad at narrowing endian
+    )
     # NOTE: missing_value  be written in same byte order
     # as variable, or masked array won't be masked correctly
     # when data is read in.

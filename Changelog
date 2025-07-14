@@ -1,3 +1,21 @@
+ since version 1.7.2 release
+ ===========================
+ * support os.PathLike arguments for `Dataset.fromcdl` and raise a `FileNotFoundError`
+   if the cdl is missing and a `FileExistsError` if the nc file already exists (PR #1387)
+ * raise more informative error when trying to iterate or
+   perform a membership operation on a Dataset (issue #1383)
+ * fix type hint for createEnumType (issue #1378)
+ * add python 3.13 to windows wheel builds (PR #1377)
+ * allow slicing of vlen and string variables with non-unitary strides (issue #1408).
+
+ version 1.7.2 (tag v1.7.2rel)
+ =============================
+ * add static type hints (PRs #1302, #1349)
+ * Expose nc_rc_set, nc_rc_get (via rc_set, rc_get module functions). (PR #1348)
+ * Add Variable.get_fill_value and allow `fill_value='default'` to 
+   set `_FillValue` attribute using default fill values.  (issue #1374, PR #1375).
+ * Fix NETCDF3 endian error (issue #1373, PR #1355).
+
  version 1.7.1 (tag v1.7.1rel)
 ===============================
  * include nc_complex source code from v0.2.0 tag (instead of using submodule).
@@ -17,7 +35,7 @@
 
  version 1.6.5 (tag v1.6.5rel)
 ===============================
- * fix for issue #1271 (mask ignored if bool MA assinged to uint8 var)
+ * fix for issue #1271 (mask ignored if bool MA assigned to uint8 var)
  * include information on specific object when reporting errors from netcdf-c
  * python 3.12 wheels added, support for python 3.7 removed.
 
@@ -336,7 +354,7 @@
  * Fix for auto scaling and masking when _Unsigned attribute set (create
    view as unsigned type after scaling and masking). Issue #671.
  * Always mask values outside valid_min, valid_max (not just when
-   missing_value attribue present).  Issue #672.
+   missing_value attribute present).  Issue #672.
  * Fix setup.py so pip install doesn't fail if cython not installed.
    setuptools >= 18.0 now required for installation (Issue #666).
 
@@ -410,7 +428,7 @@
    reading, a vlen string array attribute is returned as a list of
    strings. To write, use var.setncattr_string("name", ["two", "strings"]).)
  * Fix for issue #596 - julian day calculations wrong for negative years,
-   caused incorrect rountrip num2date(date2num(date)) roundtrip for dates with year
+   caused incorrect roundtrip num2date(date2num(date)) roundtrip for dates with year
    < 0.
  * Make sure negative years work in utime.num2date (issue #596).
  * raise NotImplementedError when trying to pickle Dataset, Variable,
@@ -953,7 +971,7 @@
    lib after the 4.2 release).  Controlled by kwarg 'diskless' to
    netCDF4.Dataset (default False). diskless=True when creating a file
    results in a file that exists only in memory, closing the file
-   makes the data disapper, except if persist=True keyword given in
+   makes the data disappear, except if persist=True keyword given in
    which case it is persisted to a disk file on close.  diskless=True
    when opening a file creates an in-memory copy of the file for faster access.
 
@@ -1191,7 +1209,7 @@ version 0.8.1 (svn revision 744)
 
  * Experimental variable-length (vlen) data type support added.
 
- * changes to accomodate compound types in netcdf-4.1-beta snapshots.
+ * changes to accommodate compound types in netcdf-4.1-beta snapshots.
    Compound types now work correctly for snapshots >= 20090603.
 
  * Added __len__ method and 'size' property to Variable class.
@@ -1202,7 +1220,7 @@ version 0.8.1 (svn revision 744)
 
  * Fixed bug occurring when indexing with a numpy array of length 1.
 
- * Fixed bug that occured when -1 was used as a variable index.
+ * Fixed bug that occurred when -1 was used as a variable index.
 
  * enabled 'shared access' mode for NETCDF3 formatted files (mode='ws',
    'r+s' or 'as'). Writes in shared mode are unbuffered, which can
@@ -1371,7 +1389,7 @@ version 0.7.3 (svn revision 501)
   to work as slice indices.
 
 * (netCDF4_classic only) try to make sure file is not left in 'define mode'
-  when execption is raised.
+  when exception is raised.
 
 * if slicing a variable results in a array with shape (1,), just return
   a scalar (except for compound types).
