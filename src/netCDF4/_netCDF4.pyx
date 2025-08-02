@@ -1492,17 +1492,6 @@ _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
 
-# issue warning for hdf5 1.10 (issue #549)
-if __netcdf4libversion__[0:5] < "4.4.1" and\
-   __hdf5libversion__.startswith("1.10"):
-    msg = """
-WARNING: Backwards incompatible files will be created with HDF5 1.10.x
-and netCDF < 4.4.1. Upgrading to netCDF4 >= 4.4.1 or downgrading to
-to HDF5 version 1.8.x is highly recommended
-(see https://github.com/Unidata/netcdf-c/issues/250)."""
-    warnings.warn(msg)
-
-
 class NetCDF4MissingFeatureException(Exception):
     """Custom exception when trying to use features missing from the linked netCDF library"""
     def __init__(self, feature: str, version: str):
