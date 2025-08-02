@@ -11,7 +11,7 @@ jobs:
       #NO_NET: 1
     strategy:
       matrix:
-        python-version: ["3.13"]
+        python-version: ["3.14-dev"]
     steps:
 
     - uses: actions/checkout@v4
