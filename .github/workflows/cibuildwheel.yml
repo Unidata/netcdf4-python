@@ -18,7 +18,7 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -65,7 +65,7 @@ jobs:
             CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=13.0
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         fetch-depth: 0
 
@@ -123,7 +123,7 @@ jobs:
         arch: [win_amd64]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
