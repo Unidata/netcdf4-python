@@ -59,10 +59,8 @@ jobs:
             arch: aarch64
           - os: macos-14
             arch: arm64
-            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=14.0
           - os: macos-13
             arch: x86_64
-            CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=13.0
 
     steps:
     - uses: actions/checkout@v5
@@ -80,33 +78,20 @@ jobs:
       shell: bash
       # On PRs we run only oldest and newest Python versions to reduce CI load.
       # Skips pypy and musllinux everywhere.
-      # We are buiding 38 and 312 for now.
+      # We are building 39, 311 and 314 for now.
+      # (3.11 is the oldest version for which we support abi3 wheels)
       # These needs to rotate every new Python release.
       run: |
-        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-          CIBW_SKIP="pp* cp36-* cp37-* cp38-* cp314t-* *-musllinux* cp39-* cp310-* cp311-* cp312-* cp313-*"
-        else
-          CIBW_SKIP="pp* cp36-* cp37-* cp38-* cp314t-* *-musllinux*"
-        fi
-        echo "CIBW_SKIP=$CIBW_SKIP" >> $GITHUB_ENV
-        echo "Setting CIBW_SKIP=$CIBW_SKIP"
+        set -x
+        echo "CIBW_BUILD=cp39-* cp311-* cp314-*" >> $GITHUB_ENV
+        set +x
+
+      if: ${{ github.event_name }} == "pull_request"
 
     - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
       uses: pypa/cibuildwheel@v3.1.4
       env:
-        CIBW_SKIP: ${{ env.CIBW_SKIP }}
         CIBW_ARCHS: ${{ matrix.arch }}
-        CIBW_BUILD_FRONTEND: build
-        CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/ocefpaf/manylinux_2_28_x86_64-netcdf
-        CIBW_MANYLINUX_AARCH64_IMAGE: ghcr.io/ocefpaf/manylinux_2_28_aarch64-netcdf
-        # Emulation testing is slow, testing only latest Python.
-        CIBW_TEST_SKIP: "cp39-*_aarch64 cp310-*_aarch64 cp311-*_aarch64 cp312-*_aarch64"
-        CIBW_ENVIRONMENT: ${{ matrix.CIBW_ENVIRONMENT }}
-        CIBW_BEFORE_BUILD_MACOS: brew install hdf5 netcdf
-        CIBW_TEST_REQUIRES: pytest cython packaging typing-extensions
-        CIBW_TEST_COMMAND: >
-          python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
-          && pytest -s -rxs -v {project}/test
 
     - uses: actions/upload-artifact@v4
       with:
@@ -120,7 +105,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest]
-        arch: [win_amd64]
+        arch: [AMD64]
 
     steps:
       - uses: actions/checkout@v5
@@ -140,25 +125,12 @@ jobs:
           create-args: >-
             python=${{ matrix.python-version }} libnetcdf=4.9.2 --channel conda-forge
 
-      - name: Install cibuildwheel
-        run: |
-          python -m pip install --upgrade cibuildwheel delvewheel
-
       - name: Build wheels for Windows (${{ matrix.arch }})
-        run: cibuildwheel --output-dir wheelhouse
+        uses: pypa/cibuildwheel@v3.1.4
         env:
-          CIBW_BUILD: "cp39-${{ matrix.arch }} cp310-${{ matrix.arch }} cp311-${{ matrix.arch }} cp312-${{ matrix.arch }} cp313-${{ matrix.arch }}"
-          CIBW_ENVIRONMENT_WINDOWS: >
-            HDF5_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
-            netCDF4_DIR="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library"
-            PATH="C:\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}"
-          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
-            delvewheel show {wheel}
-            && delvewheel repair -w {dest_dir} {wheel}
-          CIBW_TEST_REQUIRES: pytest cython packaging typing-extensions
-          CIBW_TEST_COMMAND: >
-            python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"
-            && pytest -s -rxs -v {project}\\test
+          CIBW_ARCHS: ${{ matrix.arch }}
+          # cannot build cftime for this target (missing a wheel at the time of writing)
+          CIBW_SKIP: "cp314*"
 
       - uses: actions/upload-artifact@v4
         with:
