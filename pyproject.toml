@@ -45,6 +45,7 @@ tests = [
   "Cython",
   "packaging",
   "pytest",
+  "typing-extensions>=4.15.0",
 ]
 parallel = [
   "mpi4py",

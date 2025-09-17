@@ -34,6 +34,7 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
+    final,
     Final,
     Generic,
     Iterable,
@@ -51,7 +52,7 @@ from typing import (
 import cftime
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import Buffer, Self, TypeAlias
+from typing_extensions import Buffer, Self, TypeAlias, disjoint_base
 
 __all__ = [
     "Dataset",
@@ -217,6 +218,7 @@ class NetCDF4MissingFeatureException(Exception):
 
 def dtype_is_complex(dtype: str) -> bool: ...
 
+@disjoint_base
 class Dataset:
     def __init__(
         self,
@@ -398,6 +400,7 @@ class Group(Dataset):
     def __init__(self, parent: Dataset, name: str, **kwargs: Any) -> None: ...
     def close(self) -> NoReturn: ...
 
+@final
 class Dimension:
     def __init__(self, grp: Dataset, name: str, size: int | None = None, **kwargs: Any) -> None: ...
     @property
@@ -430,6 +433,7 @@ class _VarDtypeProperty:
     @overload
     def __get__(self, instance: Variable, owner: Any) -> Any: ...  # actual return type np.dtype | Type[str]
 
+@final
 class Variable(Generic[VarT]):
     # Overloads of __new__ are provided for some cases where the Variable's type may be statically inferred from the datatype arg
     @overload
@@ -590,6 +594,7 @@ class Variable(Generic[VarT]):
     def __len__(self) -> int: ...
     def __iter__(self) -> Iterator[Any]: ...  # faux method so mypy believes Variable is iterable
 
+@final
 class CompoundType:
     dtype: np.dtype
     dtype_view: np.dtype
@@ -600,6 +605,7 @@ class CompoundType:
     ) -> None: ...
     def __reduce__(self) -> NoReturn: ...
 
+@final
 class VLType:
     dtype: np.dtype
     name: str | None
@@ -607,6 +613,7 @@ class VLType:
     def __init__(self, grp: Dataset, dt: npt.DTypeLike, dtype_name: str, **kwargs: Any) -> None: ...
     def __reduce__(self) -> NoReturn: ...
 
+@final
 class EnumType:
     dtype: np.dtype[np.integer]
     name: str
