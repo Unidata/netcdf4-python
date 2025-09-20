@@ -78,12 +78,12 @@ jobs:
       shell: bash
       # On PRs we run only oldest and newest Python versions to reduce CI load.
       # Skips pypy and musllinux everywhere.
-      # We are building 39, 311 and 314 for now.
+      # We are building 310, 311 and 314 for now.
       # (3.11 is the oldest version for which we support abi3 wheels)
       # These needs to rotate every new Python release.
       run: |
         set -x
-        echo "CIBW_BUILD=cp39-* cp311-* cp314-*" >> $GITHUB_ENV
+        echo "CIBW_BUILD=cp310-* cp311-* cp314-*" >> $GITHUB_ENV
         set +x
 
       if: ${{ github.event_name }} == "pull_request"
