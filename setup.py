@@ -3,11 +3,27 @@ import os.path as osp
 import pathlib
 import shutil
 import configparser
+import sysconfig
 from setuptools import setup, Extension
 from setuptools.dist import Distribution
 from typing import List
 
 
+USE_PY_LIMITED_API = (
+    # require opt-in (builds are specialized by default)
+    os.getenv('NETCDF4_LIMITED_API', '0') == '1'
+    # Cython + numpy + limited API de facto requires Python >=3.11
+    and sys.version_info >= (3, 11)
+    # as of Python 3.14t, free-threaded builds don't support the limited API
+    and not sysconfig.get_config_var("Py_GIL_DISABLED")
+)
+ABI3_TARGET_VERSION = "".join(str(_) for _ in sys.version_info[:2])
+ABI3_TARGET_HEX = hex(sys.hexversion & 0xFFFF00F0)
+
+if USE_PY_LIMITED_API:
+    SETUP_OPTIONS = {"bdist_wheel": {"py_limited_api": f"cp{ABI3_TARGET_VERSION}"}}
+else:
+    SETUP_OPTIONS = {}
 
 open_kwargs = {'encoding': 'utf-8'}
 
@@ -436,6 +452,8 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
         str(nc_complex_dir / "include/generated_fallbacks"),
     ]
     DEFINE_MACROS += [("NC_COMPLEX_NO_EXPORT", "1")]
+    if USE_PY_LIMITED_API:
+        DEFINE_MACROS.append(("Py_LIMITED_API", ABI3_TARGET_HEX))
 
     ext_modules = [Extension("netCDF4._netCDF4",
                              source_files,
@@ -443,7 +461,8 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
                              libraries=libs,
                              library_dirs=lib_dirs,
                              include_dirs=include_dirs,
-                             runtime_library_dirs=runtime_lib_dirs)]
+                             runtime_library_dirs=runtime_lib_dirs,
+                             py_limited_api=USE_PY_LIMITED_API)]
     # set language_level directive to 3
     for e in ext_modules:
         e.cython_directives = {'language_level': "3"} #
@@ -477,6 +496,7 @@ setup(
     name="netCDF4",  # need by GitHub dependency graph
     version=extract_version(netcdf4_src_pyx),
     ext_modules=ext_modules,
+    options=SETUP_OPTIONS,
 )
 
 # remove plugin files copied from outside source tree
