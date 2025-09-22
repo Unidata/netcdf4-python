@@ -12,7 +12,7 @@ description = "Provides an object-oriented python interface to the netCDF versio
 authors = [
   {name = "Jeff Whitaker", email = "whitaker.jeffrey@gmail.com"},
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 keywords = [
     "numpy", "netcdf", "data", "science", "network", "oceanography",
     "meteorology", "climate",
@@ -21,11 +21,11 @@ license = {text = "MIT"}
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -102,3 +102,48 @@ module = [
   "filter_availability",
   "matplotlib.*"
 ]
+
+[tool.cibuildwheel]
+build-verbosity = 1
+build-frontend = "build"
+skip = [
+  "*-musllinux*",
+  "cp314t-*",
+]
+test-extras = "tests"
+test-sources = [
+  "test",
+  "pyproject.toml"
+]
+test-command = [
+    '''python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"''',
+    "pytest -s -rxs -v test",
+]
+manylinux-x86_64-image = "ghcr.io/ocefpaf/manylinux_2_28_x86_64-netcdf"
+manylinux-aarch64-image = "ghcr.io/ocefpaf/manylinux_2_28_aarch64-netcdf"
+environment = {NETCDF4_LIMITED_API="1"}
+
+[tool.cibuildwheel.macos]
+before-build = "brew install hdf5 netcdf"
+
+[[tool.cibuildwheel.overrides]]
+select = "*-macosx_x86_64"
+inherit.environment = "append"
+environment = {MACOSX_DEPLOYMENT_TARGET="13.0"}
+
+[[tool.cibuildwheel.overrides]]
+select = "*-macosx_arm64"
+inherit.environment = "append"
+environment = {MACOSX_DEPLOYMENT_TARGET="14.0"}
+
+[tool.cibuildwheel.windows]
+before-build = "python -m pip install delvewheel"
+repair-wheel-command = [
+  "delvewheel show {wheel}",
+  "delvewheel repair -w {dest_dir} {wheel}",
+]
+
+[[tool.cibuildwheel.overrides]]
+select = "*-win_*"
+inherit.environment = "append"
+environment = {HDF5_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library', netCDF4_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library', PATH='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}' }
