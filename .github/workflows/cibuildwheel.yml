@@ -89,7 +89,7 @@ jobs:
       if: ${{ github.event_name }} == "pull_request"
 
     - name: "Building ${{ matrix.os }} (${{ matrix.arch }}) wheels"
-      uses: pypa/cibuildwheel@v3.1.4
+      uses: pypa/cibuildwheel@v3.2.0
       env:
         CIBW_ARCHS: ${{ matrix.arch }}
 
@@ -126,7 +126,7 @@ jobs:
             python=${{ matrix.python-version }} libnetcdf=4.9.2 --channel conda-forge
 
       - name: Build wheels for Windows (${{ matrix.arch }})
-        uses: pypa/cibuildwheel@v3.1.4
+        uses: pypa/cibuildwheel@v3.2.0
         env:
           CIBW_ARCHS: ${{ matrix.arch }}
           # cannot build cftime for this target (missing a wheel at the time of writing)
