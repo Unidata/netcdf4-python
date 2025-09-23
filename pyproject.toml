@@ -2,7 +2,8 @@
 requires = [
     "Cython>=0.29",
     "numpy>=2.0.0",
-    "setuptools>=61", "setuptools_scm[toml]>=3.4"
+    "setuptools>=77.0.1",
+    "setuptools_scm[toml]>=3.4",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -17,7 +18,8 @@ keywords = [
     "numpy", "netcdf", "data", "science", "network", "oceanography",
     "meteorology", "climate",
 ]
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
@@ -27,7 +29,6 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: System :: Archiving :: Compression",
     "Operating System :: OS Independent",
