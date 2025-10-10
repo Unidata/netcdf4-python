@@ -10,6 +10,8 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+10/13/2025: Version [1.7.3](https://pypi.python.org/pypi/netCDF4/1.7.3) released. Minor updates/bugfixes and python 3.14 wheels, see Changelog for details.
+
 10/22/2024: Version [1.7.2](https://pypi.python.org/pypi/netCDF4/1.7.2) released. Minor updates/bugfixes and python 3.13 wheels, see Changelog for details.
 
 06/17/2024: Version [1.7.1](https://pypi.python.org/pypi/netCDF4/1.7.1) released. Fixes for wheels, no code changes.
