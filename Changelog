@@ -1,5 +1,6 @@
- since version 1.7.2 release
- ===========================
+ version 1.7.3 (tag v1.7.3rel)
+ =============================
+ * Python 3.14 wheels (issue #1432)
  * support os.PathLike arguments for `Dataset.fromcdl` and raise a `FileNotFoundError`
    if the cdl is missing and a `FileExistsError` if the nc file already exists (PR #1387)
  * raise more informative error when trying to iterate or
