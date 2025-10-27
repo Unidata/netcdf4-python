@@ -5525,7 +5525,11 @@ cannot be safely cast to variable data type""" % attname
                 # if data is a string or a bytes object, convert to a numpy string array
                 # whose length is equal to the rightmost dimension of the
                 # variable.
-                if type(data) in [str,bytes]: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+                if type(data) in [str,bytes]:
+                    if encoding == 'ascii':
+                        data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+                    else:
+                        data = numpy.asarray(data,dtype='U'+repr(self.shape[-1]))
                 if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:
                     # if data is a numpy string array, convert it to an array
                     # of characters with one more dimension.
@@ -6816,15 +6820,12 @@ returns a numpy string array with datatype `'UN'` (or `'SN'`) and shape
     dtype = b.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must be string or unicode ('S' or 'U')")
-    if encoding in ['none','None','bytes']:
-        bs = b.tobytes()
-    else:
-        bs = b.tobytes().decode(encoding)
+    bs = b.tobytes()
     slen = int(b.shape[-1])
     if encoding in ['none','None','bytes']:
         a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'S'+repr(slen))
     else:
-        a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
+        a = numpy.array([bs[n1:n1+slen].decode(encoding) for n1 in range(0,len(bs),slen)],'U'+repr(slen))
     a.shape = b.shape[:-1]
     return a
 
