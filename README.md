@@ -1,7 +1,7 @@
 # [netcdf4-python](http://unidata.github.io/netcdf4-python)
 [Python](http://python.org)/[numpy](http://numpy.org) interface to the netCDF [C library](https://github.com/Unidata/netcdf-c).
 
-[![Build status](https://github.com/Unidata/netcdf4-python/workflows/Build%20and%20Test/badge.svg)](https://github.com/Unidata/netcdf4-python/actions)
+[![CodeQL](https://github.com/Unidata/netcdf4-python/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/Unidata/netcdf4-python/actions/workflows/github-code-scanning/codeql)
 [![PyPI package](https://img.shields.io/pypi/v/netCDF4.svg)](http://python.org/pypi/netCDF4)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/netCDF4/badges/version.svg)](https://anaconda.org/conda-forge/netCDF4)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2592291.svg)](https://doi.org/10.5281/zenodo.2592290)
@@ -9,6 +9,8 @@
 
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
+
+10/13/2025: Version [1.7.3](https://pypi.python.org/pypi/netCDF4/1.7.3) released. Minor updates/bugfixes and python 3.14 wheels, see Changelog for details.
 
 10/22/2024: Version [1.7.2](https://pypi.python.org/pypi/netCDF4/1.7.2) released. Minor updates/bugfixes and python 3.13 wheels, see Changelog for details.
 

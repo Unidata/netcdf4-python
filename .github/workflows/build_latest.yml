@@ -5,7 +5,7 @@ jobs:
     name: Python (${{ matrix.python-version }})
     runs-on: ubuntu-latest
     env:
-      PNETCDF_VERSION: 1.14.0
+      PNETCDF_VERSION: 1.14.1
       NETCDF_VERSION: 4.9.3
       NETCDF_DIR: ${{ github.workspace }}/..
       NETCDF_EXTRA_CONFIG: --enable-pnetcdf
@@ -14,15 +14,15 @@ jobs:
       #NO_NET: 1
     strategy:
       matrix:
-        python-version: ["3.13"]
+        python-version: ["3.14"]
     steps:
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         submodules: true
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
 

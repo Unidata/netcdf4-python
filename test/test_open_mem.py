@@ -17,12 +17,6 @@ class TestOpenMem(unittest.TestCase):
                     netCDF4.Dataset('foo_bar', memory=nc_bytes)
                 return
 
-            # Needs: https://github.com/Unidata/netcdf-c/pull/400
-            if netCDF4.__netcdf4libversion__ < '4.4.1.2':
-                with self.assertRaises(OSError):
-                    netCDF4.Dataset('foo_bar', memory=nc_bytes)
-                return
-
             with netCDF4.Dataset('foo_bar', memory=nc_bytes) as nc:
                 assert nc.filepath() == 'foo_bar'
                 assert nc.project_summary == 'Dummy netCDF file'
