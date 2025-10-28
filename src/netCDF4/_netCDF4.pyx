@@ -1066,7 +1066,7 @@ If the `_Encoding` special attribute is set for a character array
 (dtype `S1`) variable, the `chartostring` utility function is used to convert the array of
 characters to an array of strings with one less dimension (the last dimension is
 interpreted as the length of each string) when reading the data. The character
-set (usually ascii) is specified by the `_Encoding` attribute. If `_Encoding`
+set is specified by the `_Encoding` attribute. If `_Encoding`
 is 'none' or 'bytes', then the character array is converted to a numpy
 fixed-width byte string array (dtype `S#`), otherwise a numpy unicode (dtype
 `U#`) array is created.  When writing the data,
