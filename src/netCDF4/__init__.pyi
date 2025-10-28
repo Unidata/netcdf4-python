@@ -699,7 +699,7 @@ def stringtoarr(
 def stringtochar(
     a: npt.NDArray[np.character],
     encoding: Literal["none", "None", "bytes"],
-    n_strlen: int
+    n_strlen: int | None = None,
 ) -> npt.NDArray[np.bytes_]: ...
 @overload
 def stringtochar(
