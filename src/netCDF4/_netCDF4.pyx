@@ -6803,7 +6803,7 @@ and shape `a.shape + (N,)`, where N is the length of each string in a."""
     if encoding in ['none','None','bytes']:
         b = numpy.array(tuple(a.tobytes()),'S1')
     elif encoding == 'ascii':
-        b = numpy.array(tuple(a.tobytes().decode('ascii')))
+        b = numpy.array(tuple(a.tobytes().decode(encoding)),dtype+'1')
         b.shape = a.shape + (n_strlen,)
     else:
         if not a.ndim:
