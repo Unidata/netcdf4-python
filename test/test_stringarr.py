@@ -21,9 +21,9 @@ for nrec in range(nrecs):
 datau = data.astype('U')
 datac = stringtochar(data, encoding='ascii')
 
-nx, n_strlen = 3, 10
-unicode_strings = np.array(['Münster', 'London', 'Amsterdam'],dtype='U'+str(n_strlen))
-unicode_strings2 = np.array(['Münster', 'Liége', 'Amsterdam'],dtype='U'+str(n_strlen))
+nx, n_strlen = 3, 12
+unicode_strings = np.array(['Münster', 'Liége', '東京'],dtype='U'+str(n_strlen))
+unicode_strings2 = np.array(['Münster', 'Москва', '東京'],dtype='U'+str(n_strlen))
 
 class StringArrayTestCase(unittest.TestCase):
 
@@ -55,7 +55,7 @@ class StringArrayTestCase(unittest.TestCase):
         v4 = nc.createVariable("strings4", "S1", dimensions=("x", "nstr",))
         v4._Encoding = "UTF-8"
         v4[:] = unicode_strings
-        v4[1] = "Liége"
+        v4[1] = "Москва"
         nc.close()
 
     def tearDown(self):
@@ -70,6 +70,7 @@ class StringArrayTestCase(unittest.TestCase):
         v2 = nc.variables['strings2']
         v3 = nc.variables['strings3']
         v4 = nc.variables['strings4']
+        print(v4[:])
         assert np.all(v4[:]==unicode_strings2)
         assert v.dtype.str[1:] in ['S1','U1']
         assert v.shape == (nrecs,n2,nchar)
