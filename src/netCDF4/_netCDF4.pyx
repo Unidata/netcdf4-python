@@ -5533,7 +5533,7 @@ cannot be safely cast to variable data type""" % attname
                 if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:
                     # if data is a numpy string array, convert it to an array
                     # of characters with one more dimension.
-                    data = stringtochar(data, encoding=encoding)
+                    data = stringtochar(data, encoding=encoding,n_strlen=self.shape[-1])
 
         # if structured data has strings (and _Encoding att set), create view as char arrays
         # (issue #773)
@@ -6775,9 +6775,9 @@ returns a rank 1 numpy character array of length NUMCHARS with datatype `'S1'`
     arr[0:len(string)] = tuple(string)
     return arr
 
-def stringtochar(a,encoding='utf-8'):
+def stringtochar(a,encoding='utf-8',n_strlen=None):
     """
-**`stringtochar(a,encoding='utf-8')`**
+**`stringtochar(a,encoding='utf-8',n_strlen=None)`**
 
 convert a string array to a character array with one extra dimension
 
@@ -6789,16 +6789,29 @@ optional kwarg `encoding` can be used to specify character encoding (default
 `utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` the input array
 is treated a raw byte strings (`numpy.string_`).
 
+optional kwarg `n_strlen` is the number of characters in each string.  Default
+is None, which means `n_strlen` will be set to a.itemsize (the number of bytes
+used to represent each string in the input array).
+
 returns a numpy character array with datatype `'S1'` or `'U1'`
 and shape `a.shape + (N,)`, where N is the length of each string in a."""
     dtype = a.dtype.kind
+    if n_strlen is None:
+        n_strlen = a.dtype.itemsize
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
     if encoding in ['none','None','bytes']:
         b = numpy.array(tuple(a.tobytes()),'S1')
+    elif encoding == 'ascii':
+        b = numpy.array(tuple(a.tobytes().decode('ascii')))
+        b.shape = a.shape + (n_strlen,)
     else:
-        b = numpy.array(tuple(a.tobytes().decode(encoding)),dtype+'1')
-    b.shape = a.shape + (a.itemsize,)
+        if not a.ndim:
+            a = numpy.array([a])
+        bbytes = [text.encode(encoding) for text in a]
+        pad = b'\0' * n_strlen
+        bbytes = [(x + pad)[:n_strlen] for x in bbytes]
+        b = numpy.array([[bb[i:i+1] for i in range(n_strlen)] for bb in bbytes])
     return b
 
 def chartostring(b,encoding='utf-8'):
