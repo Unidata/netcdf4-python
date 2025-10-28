@@ -140,6 +140,7 @@ environment = {MACOSX_DEPLOYMENT_TARGET="14.0"}
 
 [tool.cibuildwheel.windows]
 before-build = "python -m pip install delvewheel"
+environment = "PATH=$CONDA_PREFIX/bin:$PATH"
 repair-wheel-command = [
   "delvewheel show {wheel}",
   "delvewheel repair -w {dest_dir} {wheel}",
