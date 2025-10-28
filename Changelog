@@ -1,5 +1,8 @@
  version 1.7.4 (not yet released)
  ================================
+ * Make sure automatic conversion of character arrays <--> string arrays works for Unicode strings (issue #1440).
+   (previously only worked correctly for encoding="ascii").
+
  version 1.7.3 (tag v1.7.3rel)
  =============================
  * Python 3.14 wheels (issue #1432)
