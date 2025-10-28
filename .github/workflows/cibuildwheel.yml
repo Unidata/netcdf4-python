@@ -129,6 +129,7 @@ jobs:
         uses: pypa/cibuildwheel@v3.2.1
         env:
           CIBW_ARCHS: ${{ matrix.arch }}
+          CIBW_ENVIRONMENT: > PATH="${CONDA_PREFIX}/bin:$PATH"
 
       - uses: actions/upload-artifact@v5
         with:
