@@ -3560,7 +3560,7 @@ to be installed and in `$PATH`.
         """
         if __has_blosc_support__:
             return True
-        else
+        else:
             return False
 
         cdef int ierr
