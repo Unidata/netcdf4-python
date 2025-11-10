@@ -15,13 +15,6 @@ for f in test_files:
     m = __import__(os.path.splitext(f)[0])
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
 
-# skip compression plugin tests on windows for now
-# (conda package plugins not working?).
-if sys.platform == 'win32':
-    test_files.remove('tst_compression_zstd.py')
-    test_files.remove('tst_compression_blosc.py')
-    test_files.remove('tst_compression_bzip2.py')
-
 if __name__ == '__main__':
     import numpy, cython
     sys.stdout.write('\n')
