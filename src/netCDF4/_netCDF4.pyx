@@ -3559,6 +3559,8 @@ to be installed and in `$PATH`.
         returns True if blosc compression filter is available
         """
         if __has_blosc_support__:
+            return True
+        else
             return False
 
         cdef int ierr
@@ -3572,6 +3574,8 @@ to be installed and in `$PATH`.
         """
 
         if __has_zstandard_support__:
+            return True
+        else:
             return False
 
         cdef int ierr
@@ -3585,6 +3589,8 @@ to be installed and in `$PATH`.
         """
 
         if __has_bzip2_support__:
+            return True
+        else:
             return False
 
         cdef int ierr
