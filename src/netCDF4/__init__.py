@@ -4,7 +4,7 @@ import os
 pluginpath = os.path.join(__path__[0],'plugins')
 if 'HDF5_PLUGIN_PATH' not in os.environ and\
     (os.path.exists(os.path.join(pluginpath,'lib__nczhdf5filters.so')) or\
-     os.path.exists(os.path.join(pluginpath,'lib__nczhdf5filters.dll')) or\
+     os.path.exists(os.path.join(pluginpath,'__nczhdf5filters.dll')) or\
      os.path.exists(os.path.join(pluginpath,'lib__nczhdf5filters.dylib'))):
     os.environ['HDF5_PLUGIN_PATH']=pluginpath
 # Docstring comes from extension module _netCDF4.
