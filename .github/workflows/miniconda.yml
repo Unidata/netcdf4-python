@@ -45,8 +45,8 @@ jobs:
 
     - name: Tests
       run: |
-        #export NO_PLUGINS=YES
-        export HDF5_PLUGIN_PATH="${CONDA_PREFIX}/hdf5/lib/plugin/"
+        export NO_PLUGINS=YES
+        #export HDF5_PLUGIN_PATH="${CONDA_PREFIX}/hdf5/lib/plugin/"
         pytest -s -rxs -v test
 
   run-mpi:
