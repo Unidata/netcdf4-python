@@ -3558,8 +3558,11 @@ to be installed and in `$PATH`.
         """**`has_blosc_filter(self)`**
         returns True if blosc compression filter is available
         """
-        if __has_blosc_support__:
-            return False
+
+        #if __has_blosc_support__:
+        #    return True
+        #else:
+        #    return False
 
         cdef int ierr
         with nogil:
@@ -3571,8 +3574,10 @@ to be installed and in `$PATH`.
         returns True if zstd compression filter is available
         """
 
-        if __has_zstandard_support__:
-            return False
+        #if __has_zstandard_support__:
+        #    return True
+        #else:
+        #    return False
 
         cdef int ierr
         with nogil:
@@ -3584,8 +3589,10 @@ to be installed and in `$PATH`.
         returns True if bzip2 compression filter is available
         """
 
-        if __has_bzip2_support__:
-            return False
+        #if __has_bzip2_support__:
+        #    return True
+        #else:
+        #    return False
 
         cdef int ierr
         with nogil:
@@ -3597,11 +3604,13 @@ to be installed and in `$PATH`.
         returns True if szip compression filter is available
         """
 
-        if not __has_ncfilter__:
-            return __has_szip_support__
+        #if not __has_ncfilter__:
+        #    return __has_szip_support__
 
-        if not __has_szip_support__:
-            return False
+        #if  __has_szip_support__:
+        #    return True
+        #else:
+        #    return False
 
         cdef int ierr
         with nogil:
