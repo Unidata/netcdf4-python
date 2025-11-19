@@ -128,7 +128,7 @@ environment = {NETCDF4_LIMITED_API="1"}
 before-build = "brew install hdf5 netcdf; brew list netcdf"
 
 [[tool.cibuildwheel.overrides]]
-select = "*-linux_*"
+select = "*linux*"
 environment = {NETCDF_PLUGIN_DIR="/usr/local/hdf5/lib/plugin/"}
 
 [[tool.cibuildwheel.overrides]]
