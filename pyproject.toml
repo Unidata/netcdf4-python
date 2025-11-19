@@ -130,12 +130,12 @@ before-build = "brew install hdf5 netcdf"
 [[tool.cibuildwheel.overrides]]
 select = "*-macosx_x86_64"
 inherit.environment = "append"
-environment = {MACOSX_DEPLOYMENT_TARGET="13.0"}
+environment = {MACOSX_DEPLOYMENT_TARGET="13.0", NETCDF_PLUGIN_DIR="/opt/homebrew/hdf5/lib/plugin/"}
 
 [[tool.cibuildwheel.overrides]]
 select = "*-macosx_arm64"
 inherit.environment = "append"
-environment = {MACOSX_DEPLOYMENT_TARGET="14.0"}
+environment = {MACOSX_DEPLOYMENT_TARGET="14.0", NETCDF_PLUGIN_DIR="/opt/homebrew/hdf5/lib/plugin/"}
 
 [tool.cibuildwheel.windows]
 before-build = "python -m pip install delvewheel"
@@ -147,4 +147,4 @@ repair-wheel-command = [
 [[tool.cibuildwheel.overrides]]
 select = "*-win_*"
 inherit.environment = "append"
-environment = {HDF5_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library', netCDF4_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library', PATH='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}' }
+environment = {HDF5_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library', netCDF4_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library', PATH='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}' , NETCDF_PLUGIN_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\hdf5\lib\plugin'}
