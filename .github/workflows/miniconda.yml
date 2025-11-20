@@ -42,8 +42,8 @@ jobs:
       run: |
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
         if [ "$RUNNER_OS" == "Windows" ]; then
-        export HDF5_PLUGIN_PATH="${CONDA_PREFIX}\\hdf5\\lib\\plugin/"
-        export NETCDF_PLUGIN_DIR="${CONDA_PREFIX}\\hdf5\\lib\\plugin/"
+        export HDF5_PLUGIN_PATH="${CONDA_PREFIX}\\hdf5\\lib\\plugin"
+        export NETCDF_PLUGIN_DIR="${CONDA_PREFIX}\\hdf5\\lib\\plugin"
         else
         export HDF5_PLUGIN_PATH="${CONDA_PREFIX}/hdf5/lib/plugin/"
         export NETCDF_PLUGIN_DIR="${CONDA_PREFIX}/hdf5/lib/plugin/"
