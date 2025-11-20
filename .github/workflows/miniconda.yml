@@ -41,9 +41,8 @@ jobs:
     - name: Install netcdf4-python
       run: |
         export PATH="${CONDA_PREFIX}/bin:${CONDA_PREFIX}/Library/bin:$PATH" # so setup.py finds nc-config
-        #export HDF5_PLUGIN_PATH="${CONDA_PREFIX}/hdf5/lib/plugin/"
-        #export NETCDF_PLUGIN_DIR="${CONDA_PREFIX}/hdf5/lib/plugin/"
-        #pushd ${CONDA_PREFIX}; find ./ -name "*lib__*" -print; popd
+        export HDF5_PLUGIN_PATH="${CONDA_PREFIX}/hdf5/lib/plugin/"
+        export NETCDF_PLUGIN_DIR="${CONDA_PREFIX}/hdf5/lib/plugin/"
         python -m pip install -v -e . --no-deps --no-build-isolation --force-reinstall
 
     - name: Tests
