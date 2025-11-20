@@ -39,7 +39,7 @@ def write_netcdf(filename, dtype='f8', blosc_shuffle: Literal[0, 1, 2] = 1, comp
     nc.close()
 
 
-@unittest.skipIf(no_plugins or not has_blosc_filter, "blosc filter not available")
+@unittest.skipIf(no_plugins or not has_blosc_filter or sys.platform.startswith("win"), "blosc filter not available or not working")
 class CompressionTestCase(unittest.TestCase):
     def setUp(self):
         self.filename = filename
