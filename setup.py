@@ -474,7 +474,7 @@ else:
 copied_plugins=False
 if os.environ.get("NETCDF_PLUGIN_DIR"):
     plugin_dir = os.environ.get("NETCDF_PLUGIN_DIR")
-    plugins = glob.glob(os.path.join(plugin_dir, "lib__nc*"))
+    plugins = glob.glob(os.path.join(plugin_dir, "*__nc*"))
     if not plugins:
         print('no plugin files in NETCDF_PLUGIN_DIR, not installing...')
         data_files = []
