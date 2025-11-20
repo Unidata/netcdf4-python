@@ -127,7 +127,7 @@ jobs:
           create-args: >-
             python=${{ matrix.python-version }} libnetcdf=4.9.3 --channel conda-forge
 
-      - name: Build wheels for Windows/Mac (${{ matrix.arch }})
+      - name: Build wheels for Windows/Mac 
         uses: pypa/cibuildwheel@v3.3.0
         env:
           CIBW_ARCHS: ${{ matrix.arch }}
