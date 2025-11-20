@@ -476,7 +476,8 @@ if os.environ.get("NETCDF_PLUGIN_DIR"):
     plugin_dir = os.environ.get("NETCDF_PLUGIN_DIR")
     plugins = glob.glob(os.path.join(plugin_dir, "*__nc*"))
     if not plugins:
-        print('no plugin files in NETCDF_PLUGIN_DIR, not installing...')
+        print('no plugin files in %s, not installing...' % plugin_dir)
+        print(os.listdir(plugin_dir))
         data_files = []
     else:
         data_files = plugins
