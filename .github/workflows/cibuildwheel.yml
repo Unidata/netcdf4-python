@@ -57,10 +57,6 @@ jobs:
             arch: x86_64
           - os: ubuntu-22.04
             arch: aarch64
-          - os: macos-14
-            arch: arm64
-          - os: macos-13
-            arch: x86_64
 
     steps:
     - uses: actions/checkout@v5
@@ -106,6 +102,10 @@ jobs:
       matrix:
         os: [windows-latest]
         arch: [AMD64]
+        os: macos-14
+        arch: arm64
+        os: macos-13
+        arch: x86_64
 
     steps:
       - uses: actions/checkout@v5
@@ -123,9 +123,9 @@ jobs:
           environment-name: build
           init-shell: bash
           create-args: >-
-            python=${{ matrix.python-version }} libnetcdf=4.9.2 --channel conda-forge
+            python=${{ matrix.python-version }} libnetcdf=4.9.3 --channel conda-forge
 
-      - name: Build wheels for Windows (${{ matrix.arch }})
+      - name: Build wheels for Windows/Mac (${{ matrix.arch }})
         uses: pypa/cibuildwheel@v3.3.0
         env:
           CIBW_ARCHS: ${{ matrix.arch }}
