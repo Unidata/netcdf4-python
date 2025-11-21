@@ -135,7 +135,7 @@ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel} \
 before-build = "python -m pip install delvewheel"
 repair-wheel-command = [
   "delvewheel show {wheel}",
-  "delvewheel repair --add-dll C:\\Users\runneradmin\micromamba\envs\build\Library\bin\blosc.dll -w {dest_dir} {wheel}",
+  "delvewheel repair --include blosc.dll -w {dest_dir} {wheel}",
 ]
 
 [[tool.cibuildwheel.overrides]]
