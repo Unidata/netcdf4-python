@@ -2,6 +2,7 @@
  ================================
  * Make sure automatic conversion of character arrays <--> string arrays works for Unicode strings (issue #1440).
    (previously only worked correctly for encoding="ascii").
+ * Add netcdf plugins (blosc, zstd, bzip2) in wheels
 
  version 1.7.3 (tag v1.7.3rel)
  =============================
