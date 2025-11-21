@@ -152,6 +152,9 @@ jobs:
     - shell: bash
       run: |
         ls -lh ${{ github.workspace }}/dist
+        for whlfile in ${{ github.workspace }}/dist/*whl; do
+           unzip -l $whlfile
+        done
 
 
   publish-artifacts-pypi:
