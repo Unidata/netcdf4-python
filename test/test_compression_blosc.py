@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING, Any, Literal
 from numpy.random.mtrand import uniform
 from netCDF4 import Dataset
 from numpy.testing import assert_almost_equal
-import os, tempfile, unittest, sys
+import os, tempfile, unittest, sys, pytest
 from filter_availability import no_plugins, has_blosc_filter
 if TYPE_CHECKING:
     from netCDF4 import CompressionLevel
