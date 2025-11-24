@@ -2,7 +2,8 @@
  ================================
  * Make sure automatic conversion of character arrays <--> string arrays works for Unicode strings (issue #1440).
    (previously only worked correctly for encoding="ascii").
- * Add netcdf plugins (blosc, zstd, bzip2) in wheels
+ * Add netcdf plugins (blosc, zstd, bzip2) in wheels.  Blosc plugin doesn't work in Windows wheels.
+   Macos wheels now use conda provided libs. (PR #1450)
 
  version 1.7.3 (tag v1.7.3rel)
  =============================
