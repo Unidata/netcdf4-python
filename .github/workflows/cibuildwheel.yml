@@ -139,7 +139,7 @@ jobs:
 
 
   show-artifacts:
-    needs: [build_bdist, build_sdist, build_wheels_windows]
+    needs: [build_bdist, build_sdist, build_wheels_winmac]
     name: "Show artifacts"
     runs-on: ubuntu-22.04
     steps:
@@ -155,7 +155,7 @@ jobs:
 
 
   publish-artifacts-pypi:
-    needs: [build_bdist, build_sdist, build_wheels_windows]
+    needs: [build_bdist, build_sdist, build_wheels_winmac]
     name: "Publish to PyPI"
     runs-on: ubuntu-22.04
     # upload to PyPI for every tag starting with 'v'
