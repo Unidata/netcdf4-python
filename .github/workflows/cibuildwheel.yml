@@ -95,7 +95,7 @@ jobs:
         path: ${{ github.workspace }}/wheelhouse/*.whl
 
 
-  build_wheels_windows:
+  build_wheels_winmac:
     name: Build wheels for ${{matrix.arch}} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
