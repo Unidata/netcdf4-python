@@ -45,8 +45,11 @@ jobs:
 
     - name: Tests
       run: |
-        #export NO_PLUGINS=YES
-        export HDF5_PLUGIN_PATH="${CONDA_PREFIX}/hdf5/lib/plugin/"
+        if [ "$RUNNER_OS" == "Windows" ]; then
+           export HDF5_PLUGIN_PATH="${CONDA_PREFIX}\\Library\\hdf5\\lib\\plugin"
+        else
+           export HDF5_PLUGIN_PATH="${CONDA_PREFIX}/hdf5/lib/plugin/"
+        fi
         pytest -s -rxs -v test
 
   run-mpi:

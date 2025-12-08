@@ -57,10 +57,6 @@ jobs:
             arch: x86_64
           - os: ubuntu-22.04
             arch: aarch64
-          - os: macos-14
-            arch: arm64
-          - os: macos-13
-            arch: x86_64
 
     steps:
     - uses: actions/checkout@v6
@@ -99,13 +95,19 @@ jobs:
         path: ${{ github.workspace }}/wheelhouse/*.whl
 
 
-  build_wheels_windows:
+  build_wheels_winmac:
     name: Build wheels for ${{matrix.arch}} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [windows-latest]
-        arch: [AMD64]
+        include:
+          - os: windows-latest
+            arch: AMD64
+          - os: macos-14
+            arch: arm64
+          - os: macos-15-intel
+            arch: x86_64
 
     steps:
       - uses: actions/checkout@v6
@@ -123,9 +125,9 @@ jobs:
           environment-name: build
           init-shell: bash
           create-args: >-
-            python=${{ matrix.python-version }} libnetcdf=4.9.2 --channel conda-forge
+            python=${{ matrix.python-version }} libnetcdf=4.9.3 --channel conda-forge
 
-      - name: Build wheels for Windows (${{ matrix.arch }})
+      - name: Build wheels for Windows/Mac 
         uses: pypa/cibuildwheel@v3.3.0
         env:
           CIBW_ARCHS: ${{ matrix.arch }}
@@ -137,7 +139,7 @@ jobs:
 
 
   show-artifacts:
-    needs: [build_bdist, build_sdist, build_wheels_windows]
+    needs: [build_bdist, build_sdist, build_wheels_winmac]
     name: "Show artifacts"
     runs-on: ubuntu-22.04
     steps:
@@ -153,7 +155,7 @@ jobs:
 
 
   publish-artifacts-pypi:
-    needs: [build_bdist, build_sdist, build_wheels_windows]
+    needs: [build_bdist, build_sdist, build_wheels_winmac]
     name: "Publish to PyPI"
     runs-on: ubuntu-22.04
     # upload to PyPI for every tag starting with 'v'
