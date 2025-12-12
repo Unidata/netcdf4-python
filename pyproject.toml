@@ -156,3 +156,8 @@ environment = {MACOSX_DEPLOYMENT_TARGET="14.0",HDF5_DIR="/Users/runner/micromamb
 select = "*-win_*"
 inherit.environment = "append"
 environment = {HDF5_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library',netCDF4_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library',PATH='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}',NETCDF_PLUGIN_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\hdf5\\lib\\plugin'}
+
+[[tool.cibuildwheel.overrides]]
+select = "*-win_arm64"
+inherit.environment = "append"
+environment = { HDF5_DIR = 'C:\\\\vcpkg\\installed\\arm64-windows', netCDF4_DIR = 'C:\\\\vcpkg\\installed\\arm64-windows', PATH = 'C:\\\\vcpkg\\installed\\arm64-windows\\bin;${PATH}' }
