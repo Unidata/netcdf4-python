@@ -161,4 +161,8 @@ environment = {HDF5_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Libr
 select = "*-win_arm64"
 inherit.environment = "append"
 environment = { HDF5_DIR = 'C:\\\\vcpkg\\\\installed\\\\arm64-windows', netCDF4_DIR = 'C:\\\\vcpkg\\\\installed\\\\arm64-windows', PATH = 'C:\\\\vcpkg\\\\installed\\\\arm64-windows\\\\bin;${PATH}' }
-before-build = "pip install -I numpy>=2.3.0"
+before-build = "pip install -I delvewheel numpy>=2.3.0"
+repair-wheel-command = [
+  "delvewheel show {wheel}",
+  "delvewheel repair -w {dest_dir} {wheel}",
+]
