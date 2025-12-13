@@ -170,7 +170,7 @@ jobs:
         uses: pypa/cibuildwheel@v3.3.0
         env:
           CIBW_ARCHS: ARM64
-          CIBW_SKIP: "cp310-*"
+          CIBW_SKIP: "cp310-* cp314t-*"
 
       - uses: actions/upload-artifact@v5
         with:
