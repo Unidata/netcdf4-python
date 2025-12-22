@@ -172,7 +172,7 @@ jobs:
           CIBW_ARCHS: ARM64
           CIBW_SKIP: "cp310-* cp314t-*"
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: pypi-artifacts-windows-11-arm-ARM64
           path: ${{ github.workspace }}/wheelhouse/*.whl
