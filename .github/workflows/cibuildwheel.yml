@@ -79,7 +79,7 @@ jobs:
       # These needs to rotate every new Python release.
       run: |
         set -x
-        echo "CIBW_BUILD=cp310-* cp311-* cp314-*" >> $GITHUB_ENV
+        echo "CIBW_BUILD=cp310-* cp311-* cp314-* cp314t-*" >> $GITHUB_ENV
         set +x
 
       if: ${{ github.event_name }} == "pull_request"
@@ -170,7 +170,7 @@ jobs:
         uses: pypa/cibuildwheel@v3.3.0
         env:
           CIBW_ARCHS: ARM64
-          CIBW_SKIP: "cp310-* cp314t-*"
+          CIBW_SKIP: "cp310-*
 
       - uses: actions/upload-artifact@v6
         with:
