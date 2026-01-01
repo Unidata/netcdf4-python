@@ -110,7 +110,6 @@ build-verbosity = 1
 build-frontend = "build"
 skip = [
   "*-musllinux*",
-  "cp314t-*",
 ]
 test-extras = "tests"
 test-sources = [
