@@ -117,8 +117,8 @@ test-sources = [
   "pyproject.toml"
 ]
 test-command = [
-    '''python -X gil=0 -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"''',
-    "python -X gil=0 -m pytest -s -rxs -v test",
+    '''python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"''',
+    "pytest -s -rxs -v test",
 ]
 manylinux-x86_64-image = "ghcr.io/ocefpaf/manylinux_2_28_x86_64-netcdf"
 manylinux-aarch64-image = "ghcr.io/ocefpaf/manylinux_2_28_aarch64-netcdf"
