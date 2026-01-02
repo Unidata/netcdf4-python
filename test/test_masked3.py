@@ -19,7 +19,7 @@ class SetAutoMaskTestBase(unittest.TestCase):
 
         self.fillval = default_fillvals["i2"]
         self.v    = np.array([self.fillval, 5, 4, -9999], dtype = "i2")
-        self.v_ma = ma.array([self.fillval, 5, 4, -9999], dtype = "i2", mask = [True, False, False, True])
+        self.v_ma = ma.MaskedArray([self.fillval, 5, 4, -9999], dtype = "i2", mask = [True, False, False, True])
 
         self.scale_factor = 10.
         self.add_offset = 5.

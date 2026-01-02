@@ -22,7 +22,7 @@ class SetAutoScaleTestBase(unittest.TestCase):
         self.missing_value = -9999
 
         self.v    = np.array([0, 5, 4, self.missing_value], dtype = "i2")
-        self.v_ma = ma.array([0, 5, 4, self.missing_value], dtype = "i2",
+        self.v_ma = ma.MaskedArray([0, 5, 4, self.missing_value], dtype = "i2",
                              mask = [True, False, False, True], fill_value = self.fillval)
 
         self.scale_factor = 10.

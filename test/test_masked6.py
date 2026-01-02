@@ -18,7 +18,7 @@ class SetAlwaysMaskTestBase(unittest.TestCase):
         self.testfile = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
         self.v = np.array([4, 3, 2, 1], dtype="i2")
-        self.w = np.ma.array([-1, -2, -3, -4], mask=[False, True, False, False], dtype="i2")
+        self.w = np.ma.MaskedArray([-1, -2, -3, -4], mask=[False, True, False, False], dtype="i2")
                   
         f = Dataset(self.testfile, 'w')
         _ = f.createDimension('x', None)

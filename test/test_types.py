@@ -22,7 +22,7 @@ ranarr = 100.*uniform(size=(n1dim,n2dim))
 zlib=False; complevel=0; shuffle=False; least_significant_digit=None
 datatypes = ['f8','f4','i1','i2','i4','i8','u1','u2','u4','u8','S1']
 FillValue = 1.0
-issue273_data = np.ma.array(['z']*10,dtype='S1',\
+issue273_data = np.ma.MaskedArray(['z']*10,dtype='S1',\
 mask=[False,False,False,False,False,True,False,False,False,False])
 
 class PrimitiveTypesTestCase(unittest.TestCase):
