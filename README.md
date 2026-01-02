@@ -10,7 +10,7 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
-1/5/2026:  Version [1.7.4](https://pypi.python.org/pypi/netCDF4/1.7.4) released.  Compression plugins now included in wheels, windows/arm and
+1/5/2026:  Version [1.7.4](https://pypi.python.org/pypi/netCDF4/1.7.4) released.  Compression plugins now included in wheels, windows/arm64 and
 free-threaded python wheels provided.   Automatic conversion of character arrays <--> string arrays works for Unicode (not just ascii) strings.
 WARNING:  netcdf-c is not thread-safe and netcdf4-python does have internal locking so expect segfaults if you
 use netcdf4-python on multiple threads with free-threaded python.  Users must exercise care to only call netcdf from
