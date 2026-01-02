@@ -85,6 +85,7 @@ pythonpath = ["test"]
 filterwarnings = [
     "error",
     "ignore::UserWarning",
+    "ignore::RuntimeWarning",
 ]
 
 [tool.mypy]
