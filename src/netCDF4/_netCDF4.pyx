@@ -1050,6 +1050,10 @@ are collective.  There are a couple of important limitations of parallel IO:
    to write to it.
  - You cannot use variable-length (VLEN) data types.
 
+***Import warning regarding threads:***  The underlying netcdf-c library is not thread-safe, so netcdf4-python cannot perform parallel
+IO in a multi-threaded environment.  Users should expect segfaults if a netcdf file is opened on multiple threads - care should
+be taken to restrict netcdf4-python usage to a single thread, even when using free-threaded python.
+
 ## Dealing with strings
 
 The most flexible way to store arrays of strings is with the
