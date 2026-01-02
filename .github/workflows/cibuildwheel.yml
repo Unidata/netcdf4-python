@@ -88,6 +88,7 @@ jobs:
       uses: pypa/cibuildwheel@v3.3.0
       env:
         CIBW_ARCHS: ${{ matrix.arch }}
+        PYTHON_GIL: 0
 
     - uses: actions/upload-artifact@v6
       with:
@@ -131,6 +132,7 @@ jobs:
         uses: pypa/cibuildwheel@v3.3.0
         env:
           CIBW_ARCHS: ${{ matrix.arch }}
+          PYTHON_GIL: 0
 
       - uses: actions/upload-artifact@v6
         with:
@@ -171,6 +173,7 @@ jobs:
         env:
           CIBW_ARCHS: ARM64
           CIBW_SKIP: "cp310-*"
+          PYTHON_GIL: 0
 
       - uses: actions/upload-artifact@v6
         with:
