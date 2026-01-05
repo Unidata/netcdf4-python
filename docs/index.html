@@ -1014,7 +1014,7 @@ to a variable in an existing file, you must use <code><a title="netCDF4.Variable
 to write to it.</li>
 <li>You cannot use variable-length (VLEN) data types.</li>
 </ul>
-<p><strong><em>Import warning regarding threads:</em></strong>
+<p><strong><em>Important warning regarding threads:</em></strong>
 The underlying netcdf-c library is not thread-safe, so netcdf4-python cannot perform parallel
 IO in a multi-threaded environment.
 Users should expect segfaults if a netcdf file is opened on multiple threads - care should
