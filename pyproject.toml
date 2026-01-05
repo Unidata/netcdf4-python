@@ -1,110 +1,83 @@
 [build-system]
-requires = [
-    "Cython>=0.29",
-    "numpy>=2.0.0",
-    "setuptools>=77.0.1",
-    "setuptools_scm[toml]>=3.4",
-]
 build-backend = "setuptools.build_meta"
+requires = [
+  "cython>=0.29",
+  "numpy>=2",
+  "setuptools>=77.0.1",
+  "setuptools-scm[toml]>=3.4",
+]
 
 [project]
-name = "netCDF4"
+name = "netcdf4"
 description = "Provides an object-oriented python interface to the netCDF version 4 library"
-authors = [
-  {name = "Jeff Whitaker", email = "whitaker.jeffrey@gmail.com"},
-]
-requires-python = ">=3.10"
-keywords = [
-    "numpy", "netcdf", "data", "science", "network", "oceanography",
-    "meteorology", "climate",
-]
-license = "MIT"
-license-files = ["LICENSE"]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Intended Audience :: Science/Research",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: System :: Archiving :: Compression",
-    "Operating System :: OS Independent",
-]
-dependencies = [
-    "cftime",
-    "certifi",
-    "numpy>=2.3.0; platform_system == 'Windows' and platform_machine == 'ARM64'",
-    "numpy>=1.21.2; platform_system != 'Windows' or platform_machine != 'ARM64'",
-]
-dynamic = ["version"]
-
-[project.optional-dependencies]
-tests = [
-  "Cython",
-  "packaging",
-  "pytest",
-  "typing-extensions>=4.15.0",
-]
-parallel = [
-  "mpi4py",
-]
-
-[project.readme]
-text = """\
+readme.content-type = "text/x-rst"
+readme.text = "\
 netCDF version 4 has many features not found in earlier versions of the library,
 such as hierarchical groups, zlib compression, multiple unlimited dimensions,
 and new data types.  It is implemented on top of HDF5.  This module implements
 most of the new features, and can read and write netCDF files compatible with
 older versions of the library.  The API is modelled after Scientific.IO.NetCDF,
 and should be familiar to users of that module.
-"""
-content-type = "text/x-rst"
+"
+keywords = [
+  "climate",
+  "data",
+  "meteorology",
+  "netcdf",
+  "network",
+  "numpy",
+  "oceanography",
+  "science",
+]
+license = "MIT"
+license-files = [ "LICENSE" ]
+authors = [
+  { name = "Jeff Whitaker", email = "whitaker.jeffrey@gmail.com" },
+]
+requires-python = ">=3.10"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Topic :: System :: Archiving :: Compression",
+]
+dynamic = [ "version" ]
 
-[project.scripts]
-nc3tonc4 = "netCDF4.utils:nc3tonc4"
-nc4tonc3 = "netCDF4.utils:nc4tonc3"
-ncinfo = "netCDF4.utils:ncinfo"
-
-[project.urls]
-Documentation = "https://unidata.github.io/netcdf4-python/"
-Repository = "https://github.com/Unidata/netcdf4-python"
+dependencies = [
+  "certifi",
+  "cftime",
+  "numpy>=1.21.2; platform_system!='Windows' or platform_machine!='ARM64'",
+  "numpy>=2.3; platform_system=='Windows' and platform_machine=='ARM64'",
+]
+optional-dependencies.parallel = [
+  "mpi4py",
+]
+optional-dependencies.tests = [
+  "cython",
+  "packaging",
+  "pytest",
+  "typing-extensions>=4.15",
+]
+urls.Documentation = "https://unidata.github.io/netcdf4-python/"
+urls.Repository = "https://github.com/Unidata/netcdf4-python"
+scripts.nc3tonc4 = "netCDF4.utils:nc3tonc4"
+scripts.nc4tonc3 = "netCDF4.utils:nc4tonc3"
+scripts.ncinfo = "netCDF4.utils:ncinfo"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = [ "src" ]
 
 [tool.setuptools.package-data]
-"netCDF4.plugins" = ["*__nc*"]
+"netCDF4.plugins" = [ "*__nc*" ]
 
 [tool.setuptools_scm]
-
-[tool.pytest.ini_options]
-pythonpath = ["test"]
-filterwarnings = [
-    "error",
-    "ignore::UserWarning",
-    "ignore::RuntimeWarning",
-]
-
-[tool.mypy]
-files = ["src/netCDF4"]
-exclude = "utils.py"
-check_untyped_defs = true
-allow_redefinition = true
-# next 2 lines workarounds for mypy dealing with type_guards.py
-mypy_path = "test"
-explicit_package_bases = true
-
-[[tool.mypy.overrides]]
-ignore_missing_imports = true
-module = [
-  "cftime.*",
-  "cython.*",
-  "filter_availability",
-  "matplotlib.*"
-]
 
 [tool.cibuildwheel]
 build-verbosity = 1
@@ -115,15 +88,15 @@ skip = [
 test-extras = "tests"
 test-sources = [
   "test",
-  "pyproject.toml"
+  "pyproject.toml",
 ]
 test-command = [
-    '''python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"''',
-    "pytest -s -rxs -v test",
+  '''python -c "import netCDF4; print(f'netCDF4 v{netCDF4.__version__}')"''',
+  "pytest -s -rxs -v test",
 ]
 manylinux-x86_64-image = "ghcr.io/ocefpaf/manylinux_2_28_x86_64-netcdf"
 manylinux-aarch64-image = "ghcr.io/ocefpaf/manylinux_2_28_aarch64-netcdf"
-environment = {NETCDF4_LIMITED_API="1"}
+environment = { NETCDF4_LIMITED_API = "1" }
 
 [tool.cibuildwheel.macos]
 # https://cibuildwheel.pypa.io/en/stable/faq/#macos-passing-dyld_library_path-to-delocate
@@ -141,22 +114,22 @@ repair-wheel-command = [
 
 [[tool.cibuildwheel.overrides]]
 select = "*linux*"
-environment = {NETCDF_PLUGIN_DIR="/usr/local/hdf5/lib/plugin/"}
+environment = { NETCDF_PLUGIN_DIR = "/usr/local/hdf5/lib/plugin/" }
 
 [[tool.cibuildwheel.overrides]]
 select = "*-macosx_x86_64"
 inherit.environment = "append"
-environment = {MACOSX_DEPLOYMENT_TARGET="13.0",HDF5_DIR="/Users/runner/micromamba/envs/build",netCDF4_DIR="/Users/runner/micromamba/envs/build",PATH="${PATH}:/Users/runner/micromamba/envs/build/bin",NETCDF_PLUGIN_DIR="/Users/runner/micromamba/envs/build/hdf5/lib/plugin"}
+environment = { MACOSX_DEPLOYMENT_TARGET = "13.0", HDF5_DIR = "/Users/runner/micromamba/envs/build", netCDF4_DIR = "/Users/runner/micromamba/envs/build", PATH = "${PATH}:/Users/runner/micromamba/envs/build/bin", NETCDF_PLUGIN_DIR = "/Users/runner/micromamba/envs/build/hdf5/lib/plugin" }
 
 [[tool.cibuildwheel.overrides]]
 select = "*-macosx_arm64"
 inherit.environment = "append"
-environment = {MACOSX_DEPLOYMENT_TARGET="14.0",HDF5_DIR="/Users/runner/micromambe/envs/build",netCDF4_DIR="/Users/runner/micromambe/envs/build",PATH="${PATH}:/Users/runner/micromamba/envs/build/bin",NETCDF_PLUGIN_DIR="/Users/runner/micromamba/envs/build/hdf5/lib/plugin"}
+environment = { MACOSX_DEPLOYMENT_TARGET = "14.0", HDF5_DIR = "/Users/runner/micromambe/envs/build", netCDF4_DIR = "/Users/runner/micromambe/envs/build", PATH = "${PATH}:/Users/runner/micromamba/envs/build/bin", NETCDF_PLUGIN_DIR = "/Users/runner/micromamba/envs/build/hdf5/lib/plugin" }
 
 [[tool.cibuildwheel.overrides]]
 select = "*-win_*"
 inherit.environment = "append"
-environment = {HDF5_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library',netCDF4_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library',PATH='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}',NETCDF_PLUGIN_DIR='C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\hdf5\\lib\\plugin'}
+environment = { HDF5_DIR = 'C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library', netCDF4_DIR = 'C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library', PATH = 'C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\bin;${PATH}', NETCDF_PLUGIN_DIR = 'C:\\\\Users\\runneradmin\\micromamba\\envs\\build\\Library\\hdf5\\lib\\plugin' }
 
 [[tool.cibuildwheel.overrides]]
 select = "*-win_arm64"
@@ -165,4 +138,30 @@ environment = { HDF5_DIR = 'C:\\\\vcpkg\\\\installed\\\\arm64-windows', netCDF4_
 repair-wheel-command = [
   "delvewheel show {wheel}",
   "delvewheel repair -w {dest_dir} {wheel}",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [ "test" ]
+filterwarnings = [
+  "error",
+  "ignore::UserWarning",
+  "ignore::RuntimeWarning",
+]
+
+[tool.mypy]
+files = [ "src/netCDF4" ]
+exclude = "utils.py"
+check_untyped_defs = true
+allow_redefinition = true
+# next 2 lines workarounds for mypy dealing with type_guards.py
+mypy_path = "test"
+explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "cftime.*",
+  "cython.*",
+  "filter_availability",
+  "matplotlib.*",
 ]
