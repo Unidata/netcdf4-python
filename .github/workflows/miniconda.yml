@@ -12,7 +12,14 @@ jobs:
     #  NO_NET: 1
     strategy:
       matrix:
-        python-version: [ "3.10", "3.11", "3.12", "3.13", "3.14", "3.14t" ]
+        python-version: [
+            ["python", "3.10"],
+            ["python", "3.11"],
+            ["python", "3.12"],
+            ["python", "3.13"],
+            ["python", "3.14"],
+            ["python-freethreading", "3.14" ],
+        ]
         os: [windows-latest, ubuntu-latest, macos-latest]
         platform: [x64, x32]
         exclude:
@@ -34,7 +41,7 @@ jobs:
         environment-name: TEST
         init-shell: bash
         create-args: >-
-          ${{ endsWith(matrix.python-version, 't') && 'python-freethreading' || 'python' }}=${{ matrix.python-version }}
+          ${{ matrix.python-version[0] }}=${{ matrix.python-version[1] }}
           numpy cython pip setuptools pytest hdf5 libnetcdf cftime zlib certifi typing-extensions
           --channel conda-forge
 
