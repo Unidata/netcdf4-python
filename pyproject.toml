@@ -141,6 +141,7 @@ repair-wheel-command = [
 
 [[tool.cibuildwheel.overrides]]
 select = "*linux*"
+inherit.environment = "append"
 environment = {NETCDF_PLUGIN_DIR="/usr/local/hdf5/lib/plugin/"}
 
 [[tool.cibuildwheel.overrides]]
