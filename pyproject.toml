@@ -5,7 +5,8 @@ requires = [
     "setuptools>=77.0.1",
     "setuptools_scm[toml]>=3.4",
 ]
-build-backend = "setuptools.build_meta"
+build-backend = "backend"
+backend-path = ["_build"]
 
 [project]
 name = "netCDF4"
@@ -134,6 +135,7 @@ delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel} \
 
 [tool.cibuildwheel.windows]
 before-build = "python -m pip install delvewheel"
+environment = "PATH=$PATH:$CONDA_PREFIX/bin"
 repair-wheel-command = [
   "delvewheel show --include blosc.dll;zstd.dll;lz4.dll {wheel}",
   "delvewheel repair --include blosc.dll;zstd.dll;lz4.dll -w {dest_dir} {wheel}",
