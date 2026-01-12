@@ -15,7 +15,6 @@ for f in test_files:
     m = __import__(os.path.splitext(f)[0])
     testsuite.addTests(unittest.TestLoader().loadTestsFromModule(m))
 
-
 if __name__ == '__main__':
     import numpy, cython
     sys.stdout.write('\n')

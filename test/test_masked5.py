@@ -17,7 +17,7 @@ class VectorMissingValues(unittest.TestCase):
 
         self.missing_values = [-999,999,0]
         self.v    = np.array([-999,0,1,2,3,999], dtype = "i2")
-        self.v_ma = ma.array([-1,0,1,2,3,4], dtype = "i2", \
+        self.v_ma = ma.MaskedArray([-1,0,1,2,3,4], dtype = "i2", \
                     mask = [True, True, False, False, False, True])
 
         f = Dataset(self.testfile, 'w')

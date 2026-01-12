@@ -3,6 +3,7 @@ import random, numpy, string
 import unittest
 import os
 from numpy.testing import assert_array_equal, assert_array_almost_equal
+import numpy as np
 
 def generateString(length, alphabet=string.ascii_letters + string.digits + string.punctuation):
     return(''.join([random.choice(alphabet) for i in range(length)]))
@@ -20,6 +21,11 @@ for nrec in range(nrecs):
 datau = data.astype('U')
 datac = stringtochar(data, encoding='ascii')
 
+nx, n_strlen = 3, 12
+unicode_strings = np.array(['Münster', 'Liége', '東京'],dtype='U'+str(n_strlen))
+unicode_strings2 = np.array(['Münster', 'Москва', '東京'],dtype='U'+str(n_strlen))
+unicode_strings2_bytes = [b'M', b'\xc3', b'\xbc', b'n', b's', b't', b'e', b'r', b'\xd0', b'\x9c', b'\xd0', b'\xbe', b'\xd1', b'\x81', b'\xd0', b'\xba', b'\xd0', b'\xb2', b'\xd0', b'\xb0', b'\xe6', b'\x9d', b'\xb1', b'\xe4', b'\xba', b'\xac']
+
 class StringArrayTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -28,6 +34,8 @@ class StringArrayTestCase(unittest.TestCase):
         nc.createDimension('n1',None)
         nc.createDimension('n2',n2)
         nc.createDimension('nchar',nchar)
+        nc.createDimension("x", nx)
+        nc.createDimension("nstr", n_strlen)
         v = nc.createVariable('strings','S1',('n1','n2','nchar'))
         v2 = nc.createVariable('strings2','S1',('n1','n2','nchar'))
         # if _Encoding set, string array should automatically be converted
@@ -44,6 +52,11 @@ class StringArrayTestCase(unittest.TestCase):
         v2[-1,-1] = data[-1,-1].tobytes() # write single python string
         # _Encoding should be ignored if an array of characters is specified
         v3[:] = stringtochar(data, encoding='ascii')
+        # test unicode strings (issue #1440)
+        v4 = nc.createVariable("strings4", "S1", dimensions=("x", "nstr",))
+        v4._Encoding = "UTF-8"
+        v4[:] = unicode_strings
+        v4[1] = "Москва"
         nc.close()
 
     def tearDown(self):
@@ -57,6 +70,10 @@ class StringArrayTestCase(unittest.TestCase):
         v = nc.variables['strings']
         v2 = nc.variables['strings2']
         v3 = nc.variables['strings3']
+        v4 = nc.variables['strings4']
+        assert np.all(v4[:]==unicode_strings2)
+        v4.set_auto_chartostring(False)
+        assert (v4[:].compressed().tolist() == unicode_strings2_bytes)
         assert v.dtype.str[1:] in ['S1','U1']
         assert v.shape == (nrecs,n2,nchar)
         for nrec in range(nrecs):

@@ -1,4 +1,4 @@
-"""Version 1.7.2
+"""Version 1.7.4
 -------------
 
 # Introduction
@@ -1050,6 +1050,10 @@ are collective.  There are a couple of important limitations of parallel IO:
    to write to it.
  - You cannot use variable-length (VLEN) data types.
 
+***Important warning regarding threads:***  The underlying netcdf-c library is not thread-safe, so netcdf4-python cannot perform parallel
+IO in a multi-threaded environment.  Users should expect segfaults if a netcdf file is opened on multiple threads - care should
+be taken to restrict netcdf4-python usage to a single thread, even when using free-threaded python.
+
 ## Dealing with strings
 
 The most flexible way to store arrays of strings is with the
@@ -1066,7 +1070,7 @@ If the `_Encoding` special attribute is set for a character array
 (dtype `S1`) variable, the `chartostring` utility function is used to convert the array of
 characters to an array of strings with one less dimension (the last dimension is
 interpreted as the length of each string) when reading the data. The character
-set (usually ascii) is specified by the `_Encoding` attribute. If `_Encoding`
+set is specified by the `_Encoding` attribute. If `_Encoding`
 is 'none' or 'bytes', then the character array is converted to a numpy
 fixed-width byte string array (dtype `S#`), otherwise a numpy unicode (dtype
 `U#`) array is created.  When writing the data,
@@ -1279,7 +1283,7 @@ import sys
 import functools
 from typing import Union
 
-__version__ = "1.7.2"
+__version__ = "1.7.4"
 
 # Initialize numpy
 import posixpath
@@ -1491,17 +1495,6 @@ __hdf5libversion__ = _gethdf5libversion()
 _needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
-
-# issue warning for hdf5 1.10 (issue #549)
-if __netcdf4libversion__[0:5] < "4.4.1" and\
-   __hdf5libversion__.startswith("1.10"):
-    msg = """
-WARNING: Backwards incompatible files will be created with HDF5 1.10.x
-and netCDF < 4.4.1. Upgrading to netCDF4 >= 4.4.1 or downgrading to
-to HDF5 version 1.8.x is highly recommended
-(see https://github.com/Unidata/netcdf-c/issues/250)."""
-    warnings.warn(msg)
-
 
 class NetCDF4MissingFeatureException(Exception):
     """Custom exception when trying to use features missing from the linked netCDF library"""
@@ -3569,8 +3562,11 @@ to be installed and in `$PATH`.
         """**`has_blosc_filter(self)`**
         returns True if blosc compression filter is available
         """
-        if __has_blosc_support__:
-            return False
+
+        #if __has_blosc_support__:
+        #    return True
+        #else:
+        #    return False
 
         cdef int ierr
         with nogil:
@@ -3582,8 +3578,10 @@ to be installed and in `$PATH`.
         returns True if zstd compression filter is available
         """
 
-        if __has_zstandard_support__:
-            return False
+        #if __has_zstandard_support__:
+        #    return True
+        #else:
+        #    return False
 
         cdef int ierr
         with nogil:
@@ -3595,8 +3593,10 @@ to be installed and in `$PATH`.
         returns True if bzip2 compression filter is available
         """
 
-        if __has_bzip2_support__:
-            return False
+        #if __has_bzip2_support__:
+        #    return True
+        #else:
+        #    return False
 
         cdef int ierr
         with nogil:
@@ -3608,11 +3608,13 @@ to be installed and in `$PATH`.
         returns True if szip compression filter is available
         """
 
-        if not __has_ncfilter__:
-            return __has_szip_support__
+        #if not __has_ncfilter__:
+        #    return __has_szip_support__
 
-        if not __has_szip_support__:
-            return False
+        #if  __has_szip_support__:
+        #    return True
+        #else:
+        #    return False
 
         cdef int ierr
         with nogil:
@@ -5536,11 +5538,15 @@ cannot be safely cast to variable data type""" % attname
                 # if data is a string or a bytes object, convert to a numpy string array
                 # whose length is equal to the rightmost dimension of the
                 # variable.
-                if type(data) in [str,bytes]: data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+                if type(data) in [str,bytes]:
+                    if encoding == 'ascii':
+                        data = numpy.asarray(data,dtype='S'+repr(self.shape[-1]))
+                    else:
+                        data = numpy.asarray(data,dtype='U'+repr(self.shape[-1]))
                 if data.dtype.kind in ['S','U'] and data.dtype.itemsize > 1:
                     # if data is a numpy string array, convert it to an array
                     # of characters with one more dimension.
-                    data = stringtochar(data, encoding=encoding)
+                    data = stringtochar(data, encoding=encoding,n_strlen=self.shape[-1])
 
         # if structured data has strings (and _Encoding att set), create view as char arrays
         # (issue #773)
@@ -6782,9 +6788,9 @@ returns a rank 1 numpy character array of length NUMCHARS with datatype `'S1'`
     arr[0:len(string)] = tuple(string)
     return arr
 
-def stringtochar(a,encoding='utf-8'):
+def stringtochar(a,encoding='utf-8',n_strlen=None):
     """
-**`stringtochar(a,encoding='utf-8')`**
+**`stringtochar(a,encoding='utf-8',n_strlen=None)`**
 
 convert a string array to a character array with one extra dimension
 
@@ -6796,16 +6802,29 @@ optional kwarg `encoding` can be used to specify character encoding (default
 `utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` the input array
 is treated a raw byte strings (`numpy.string_`).
 
+optional kwarg `n_strlen` is the number of characters in each string.  Default
+is None, which means `n_strlen` will be set to a.itemsize (the number of bytes
+used to represent each string in the input array).
+
 returns a numpy character array with datatype `'S1'` or `'U1'`
 and shape `a.shape + (N,)`, where N is the length of each string in a."""
     dtype = a.dtype.kind
+    if n_strlen is None:
+        n_strlen = a.dtype.itemsize
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
     if encoding in ['none','None','bytes']:
         b = numpy.array(tuple(a.tobytes()),'S1')
-    else:
+    elif encoding == 'ascii':
         b = numpy.array(tuple(a.tobytes().decode(encoding)),dtype+'1')
-    b.shape = a.shape + (a.itemsize,)
+        b.shape = a.shape + (n_strlen,)
+    else:
+        if not a.ndim:
+            a = numpy.array([a])
+        bbytes = [text.encode(encoding) for text in a]
+        pad = b'\0' * n_strlen
+        bbytes = [(x + pad)[:n_strlen] for x in bbytes]
+        b = numpy.array([[bb[i:i+1] for i in range(n_strlen)] for bb in bbytes])
     return b
 
 def chartostring(b,encoding='utf-8'):
@@ -6827,15 +6846,12 @@ returns a numpy string array with datatype `'UN'` (or `'SN'`) and shape
     dtype = b.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must be string or unicode ('S' or 'U')")
-    if encoding in ['none','None','bytes']:
-        bs = b.tobytes()
-    else:
-        bs = b.tobytes().decode(encoding)
+    bs = b.tobytes()
     slen = int(b.shape[-1])
     if encoding in ['none','None','bytes']:
         a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'S'+repr(slen))
     else:
-        a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'U'+repr(slen))
+        a = numpy.array([bs[n1:n1+slen].decode(encoding) for n1 in range(0,len(bs),slen)],'U'+repr(slen))
     a.shape = b.shape[:-1]
     return a
 

@@ -1,5 +1,17 @@
- since version 1.7.2 release
- ===========================
+ version 1.7.4 (tag v1.7.4rel)
+ ================================
+ * Make sure automatic conversion of character arrays <--> string arrays works for Unicode strings (issue #1440).
+   (previously only worked correctly for encoding="ascii").
+ * Add netcdf plugins (blosc, zstd, bzip2) in wheels.  Blosc plugin doesn't work in Windows wheels.
+   Macos wheels now use conda provided libs. (PR #1450)
+ * Add windows/arm (PR #1453) and free-threaded python wheels (issue #1454). Windows wheels now use netcdf-c 4.9.3.
+   WARNING:  netcdf-c is not thread-safe and netcdf4-python does have internal locking so expect segfaults if you
+   use netcdf4-python on multiple threads with free-threaded python.  Users must exercise care to only call netcdf from
+   a single thread.
+
+ version 1.7.3 (tag v1.7.3rel)
+ =============================
+ * Python 3.14 wheels (issue #1432)
  * support os.PathLike arguments for `Dataset.fromcdl` and raise a `FileNotFoundError`
    if the cdl is missing and a `FileExistsError` if the nc file already exists (PR #1387)
  * raise more informative error when trying to iterate or

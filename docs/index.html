@@ -3,20 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.1">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>netCDF4 API documentation</title>
-<meta name="description" content="Version 1.7.2
+<meta name="description" content="Version 1.7.4
 …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
 })</script>
 </head>
 <body>
@@ -26,7 +37,7 @@ hljs.highlightAll();
 <h1 class="title">Package <code>netCDF4</code></h1>
 </header>
 <section id="section-intro">
-<h2 id="version-172">Version 1.7.2</h2>
+<h2 id="version-174">Version 1.7.4</h2>
 <h1 id="introduction">Introduction</h1>
 <p>netcdf4-python is a Python interface to the netCDF C library.</p>
 <p><a href="http://www.unidata.ucar.edu/software/netcdf/">netCDF</a> version 4 has many features
@@ -1003,6 +1014,11 @@ to a variable in an existing file, you must use <code><a title="netCDF4.Variable
 to write to it.</li>
 <li>You cannot use variable-length (VLEN) data types.</li>
 </ul>
+<p><strong><em>Important warning regarding threads:</em></strong>
+The underlying netcdf-c library is not thread-safe, so netcdf4-python cannot perform parallel
+IO in a multi-threaded environment.
+Users should expect segfaults if a netcdf file is opened on multiple threads - care should
+be taken to restrict netcdf4-python usage to a single thread, even when using free-threaded python.</p>
 <h2 id="dealing-with-strings">Dealing with strings</h2>
 <p>The most flexible way to store arrays of strings is with the
 <a href="#variable-length-vlen-data-type">Variable-length (vlen) string data type</a>. However, this requires
@@ -1018,7 +1034,7 @@ If the <code>_Encoding</code> special attribute is set for a character array
 (dtype <code>S1</code>) variable, the <code><a title="netCDF4.chartostring" href="#netCDF4.chartostring">chartostring()</a></code> utility function is used to convert the array of
 characters to an array of strings with one less dimension (the last dimension is
 interpreted as the length of each string) when reading the data. The character
-set (usually ascii) is specified by the <code>_Encoding</code> attribute. If <code>_Encoding</code>
+set is specified by the <code>_Encoding</code> attribute. If <code>_Encoding</code>
 is 'none' or 'bytes', then the character array is converted to a numpy
 fixed-width byte string array (dtype <code>S#</code>), otherwise a numpy unicode (dtype
 <code>U#</code>) array is created.
@@ -1196,7 +1212,7 @@ formats.</li>
 <p>Support for complex numbers is handled via the
 <a href="https://github.com/PlasmaFAIR/nc-complex"><code>nc-complex</code></a> library. See there for
 further details.</p>
-<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#46;&#115;&#46;&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;&#111;&#97;&#97;&#46;&#103;&#111;&#118;">&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#46;&#115;&#46;&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#64;&#110;&#111;&#97;&#97;&#46;&#103;&#111;&#118;</a></p>
+<p><strong>contact</strong>: Jeffrey Whitaker <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#46;&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#119;&#104;&#105;&#116;&#97;&#107;&#101;&#114;&#46;&#106;&#101;&#102;&#102;&#114;&#101;&#121;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
 <p><strong>copyright</strong>: 2008 by Jeffrey Whitaker.</p>
 <p><strong>license</strong>: Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
@@ -1229,7 +1245,7 @@ returned.</p>
 <span>def <span class="ident">date2index</span></span>(<span>dates, nctime, calendar=None, select='exact', has_year_zero=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>date2index(dates, nctime, calendar=None, select=u'exact', has_year_zero=None)</p>
+<div class="desc"><p>date2index(dates, nctime, calendar=None, select='exact', has_year_zero=None)</p>
 <p>Return indices of a netCDF time variable corresponding to the given dates.</p>
 <p><strong>dates</strong>: A datetime object or a sequence of datetime objects.
 The datetime objects should not include a time-zone offset.</p>
@@ -1347,10 +1363,10 @@ details. Values can be reset with <code><a title="netCDF4.set_chunk_cache" href=
 used to build the module, and when it was built.</p></div>
 </dd>
 <dt id="netCDF4.num2date"><code class="name flex">
-<span>def <span class="ident">num2date</span></span>(<span>times, units, calendar='standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</span>
+<span>def <span class="ident">num2date</span></span>(<span>times,<br>units,<br>calendar='standard',<br>only_use_cftime_datetimes=True,<br>only_use_python_datetimes=False,<br>has_year_zero=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>num2date(times, units, calendar=u'standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</p>
+<div class="desc"><p>num2date(times, units, calendar='standard', only_use_cftime_datetimes=True, only_use_python_datetimes=False, has_year_zero=None)</p>
 <p>Return datetime objects given numeric time values. The units
 of the numeric time values are described by the <strong>units</strong> argument
 and the <strong>calendar</strong> keyword. The returned datetime objects represent
@@ -1460,10 +1476,10 @@ unicode array (dtype = <code>'U1'</code>) will be returned.</p>
 (default) or <code>'U1'</code> (if dtype=<code>'U'</code>)</p></div>
 </dd>
 <dt id="netCDF4.stringtochar"><code class="name flex">
-<span>def <span class="ident">stringtochar</span></span>(<span>a, encoding='utf-8')</span>
+<span>def <span class="ident">stringtochar</span></span>(<span>a, encoding='utf-8', n_strlen=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p><strong><code>stringtochar(a,encoding='utf-8')</code></strong></p>
+<div class="desc"><p><strong><code>stringtochar(a,encoding='utf-8',n_strlen=None)</code></strong></p>
 <p>convert a string array to a character array with one extra dimension</p>
 <p><strong><code>a</code></strong>:
 Input numpy string array with numpy datatype <code>'SN'</code> or <code>'UN'</code>, where N
@@ -1473,6 +1489,10 @@ an array of characters (datatype <code>'S1'</code> or <code>'U1'</code>) of shap
 <p>optional kwarg <code>encoding</code> can be used to specify character encoding (default
 <code>utf-8</code>). If <code>encoding</code> is 'none' or 'bytes', a <code>numpy.string_</code> the input array
 is treated a raw byte strings (<code>numpy.string_</code>).</p>
+<p>optional kwarg <code>n_strlen</code> is the number of characters in each string.
+Default
+is None, which means <code>n_strlen</code> will be set to a.itemsize (the number of bytes
+used to represent each string in the input array).</p>
 <p>returns a numpy character array with datatype <code>'S1'</code> or <code>'U1'</code>
 and shape <code>a.shape + (N,)</code>, where N is the length of each string in a.</p></div>
 </dd>
@@ -1834,7 +1854,7 @@ dtype object <code>datatype</code>.</p>
 datatype.</p></div>
 </dd>
 <dt id="netCDF4.Dataset.createVariable"><code class="name flex">
-<span>def <span class="ident">createVariable</span></span>(<span>self, varname, datatype, dimensions=(), compression=None, zlib=False, complevel=4, shuffle=True, szip_coding='nn', szip_pixels_per_block=8, blosc_shuffle=1, fletcher32=False, contiguous=False, chunksizes=None, endian='native', least_significant_digit=None, significant_digits=None, quantize_mode='BitGroom', fill_value=None, chunk_cache=None)</span>
+<span>def <span class="ident">createVariable</span></span>(<span>self,<br>varname,<br>datatype,<br>dimensions=(),<br>compression=None,<br>zlib=False,<br>complevel=4,<br>shuffle=True,<br>szip_coding='nn',<br>szip_pixels_per_block=8,<br>blosc_shuffle=1,<br>fletcher32=False,<br>contiguous=False,<br>chunksizes=None,<br>endian='native',<br>least_significant_digit=None,<br>significant_digits=None,<br>quantize_mode='BitGroom',<br>fill_value=None,<br>chunk_cache=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>createVariable(self, varname, datatype, dimensions=(), compression=None, zlib=False,
@@ -3144,7 +3164,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 <nav id="sidebar">
 <div class="toc">
 <ul>
-<li><a href="#version-172">Version 1.7.2</a></li>
+<li><a href="#version-174">Version 1.7.4</a></li>
 <li><a href="#introduction">Introduction</a><ul>
 <li><a href="#quick-install">Quick Install</a></li>
 <li><a href="#developer-install">Developer Install</a></li>
@@ -3343,7 +3363,7 @@ slower than multiple calls to the unstrided read routine <code>nc_get_vara</code
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

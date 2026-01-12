@@ -20,7 +20,7 @@ class SetValidMinMax(unittest.TestCase):
         self.valid_max = 32765
         self.valid_range = [self.valid_min,self.valid_max]
         self.v    = np.array([self.valid_min-1, 5, 4, self.valid_max+1], dtype = "i2")
-        self.v_ma = ma.array([self.valid_min-1, 5, 4, self.valid_max+1], dtype = "i2", mask = [True, False, False, True])
+        self.v_ma = ma.MaskedArray([self.valid_min-1, 5, 4, self.valid_max+1], dtype = "i2", mask = [True, False, False, True])
 
         self.scale_factor = 10.
         self.add_offset = 5.
