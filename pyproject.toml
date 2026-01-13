@@ -50,7 +50,7 @@ tests = [
   "typing-extensions>=4.15.0",
 ]
 parallel = [
-  "mpi4py",
+  "mpi4py<4.1",
 ]
 
 [project.readme]
