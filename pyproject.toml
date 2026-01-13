@@ -4,10 +4,9 @@ requires = [
     "numpy>=2.0.0",
     "setuptools>=77.0.1",
     "setuptools_scm[toml]>=3.4",
-    "mpi4py<4.1.0",
 ]
-build-backend = "setuptools.build_meta"
-#backend-path = ["_build"]
+build-backend = "backend"
+backend-path = ["_build"]
 
 [project]
 name = "netCDF4"
