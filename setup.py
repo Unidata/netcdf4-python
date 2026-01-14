@@ -417,17 +417,18 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
     print(f"netcdf lib {has_has_not} parallel functions")
 
     if has_parallel_support:
+        # note(stubbiali): mpi4py is not available when using the in-tree build backend
         try:
             import mpi4py
         except ImportError:
-            msg = "Parallel support requires mpi4py but it is not installed."
-            raise ImportError(msg)
+            mpi4py = None
 
-        inc_dirs.append(mpi4py.get_include())
-        # mpi_incdir should not be needed if using nc-config
-        # (should be included in nc-config --cflags)
-        if mpi_incdir is not None:
-            inc_dirs.append(mpi_incdir)
+        if mpi4py is not None:
+            inc_dirs.append(mpi4py.get_include())
+            # mpi_incdir should not be needed if using nc-config
+            # (should be included in nc-config --cflags)
+            if mpi_incdir is not None:
+                inc_dirs.append(mpi_incdir)
 
         # Name of file containing imports required for parallel support
         parallel_support_imports = "parallel_support_imports.pxi.in"
