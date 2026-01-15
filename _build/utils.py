@@ -68,7 +68,7 @@ def get_netcdf4_include_dir():
     except OSError:
         has_ncconfig = False
 
-    # if nc-config exists, and USE_NCCONFIG not set, try to use it
+    # if nc-config exists, and use_ncconfig not set, try to use it
     if use_ncconfig is None and has_ncconfig:
         use_ncconfig = has_ncconfig
 
