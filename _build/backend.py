@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+In-tree build backend that programmatically adds mpi4py to the list of build dependencies if the
+underlying netCDF-c library has parallel support enabled.
+"""
+
 from setuptools.build_meta import *
 
 import utils
