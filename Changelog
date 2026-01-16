@@ -1,3 +1,8 @@
+ since version 1.7.4 release
+ ===========================
+ * Change default encoding for stringtochar/chartostring functions from 'utf-8' to 'utf-8'/'ascii' for dtype.kind='U'/'S'
+   (issue #1464).
+
  version 1.7.4 (tag v1.7.4rel)
  ================================
  * Make sure automatic conversion of character arrays <--> string arrays works for Unicode strings (issue #1440).
