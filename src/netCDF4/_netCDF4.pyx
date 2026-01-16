@@ -6843,10 +6843,6 @@ Will be converted to a array of strings, where each string has a fixed
 length of `b.shape[-1]` characters.
 
 optional kwarg `encoding` can be used to specify character encoding (default
-`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` byte array is
-returned.
-
-optional kwarg `encoding` can be used to specify character encoding (default
 `utf-8` for dtype=`'UN'` or `ascii` for dtype=`'SN'`). If `encoding` is 'none' or 'bytes', 
 a `numpy.string_` byte array is returned.
 
