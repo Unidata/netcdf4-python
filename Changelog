@@ -1,5 +1,5 @@
- since version 1.7.4 release
- ===========================
+ version 1.7.4.1 (tag v1.7.4.1rel)
+ =================================
  * Change default encoding for stringtochar/chartostring functions from 'utf-8' to 'utf-8'/'ascii' for dtype.kind='U'/'S'
    (issue #1464).
 
