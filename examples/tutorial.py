@@ -163,6 +163,7 @@ datac2.real = datain['real']
 datac2.imag = datain['imag']
 print(datac.dtype,datac)
 print(datac2.dtype,datac2)
+nc.close()
 
 # more complex compound type example.
 nc = Dataset('compound_example.nc','w') # create a new dataset.
