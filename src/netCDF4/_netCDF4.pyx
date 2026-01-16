@@ -1,4 +1,4 @@
-"""Version 1.7.4
+"""Version 1.7.4.1
 -------------
 
 # Introduction
@@ -1283,7 +1283,7 @@ import sys
 import functools
 from typing import Union
 
-__version__ = "1.7.4"
+__version__ = "1.7.4.1"
 
 # Initialize numpy
 import posixpath
@@ -6788,7 +6788,7 @@ returns a rank 1 numpy character array of length NUMCHARS with datatype `'S1'`
     arr[0:len(string)] = tuple(string)
     return arr
 
-def stringtochar(a,encoding='utf-8',n_strlen=None):
+def stringtochar(a,encoding=None,n_strlen=None):
     """
 **`stringtochar(a,encoding='utf-8',n_strlen=None)`**
 
@@ -6799,8 +6799,8 @@ is the number of characters in each string.  Will be converted to
 an array of characters (datatype `'S1'` or `'U1'`) of shape `a.shape + (N,)`.
 
 optional kwarg `encoding` can be used to specify character encoding (default
-`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` the input array
-is treated a raw byte strings (`numpy.string_`).
+`utf-8` for dtype=`'UN'` or `ascii` for dtype=`'SN'`). If `encoding` is 'none' or 'bytes', 
+a `numpy.string_` the input array is treated a raw byte strings (`numpy.string_`).
 
 optional kwarg `n_strlen` is the number of characters in each string.  Default
 is None, which means `n_strlen` will be set to a.itemsize (the number of bytes
@@ -6809,10 +6809,15 @@ used to represent each string in the input array).
 returns a numpy character array with datatype `'S1'` or `'U1'`
 and shape `a.shape + (N,)`, where N is the length of each string in a."""
     dtype = a.dtype.kind
-    if n_strlen is None:
-        n_strlen = a.dtype.itemsize
     if dtype not in ["S","U"]:
         raise ValueError("type must string or unicode ('S' or 'U')")
+    if encoding is None:
+       if dtype == 'S':
+           encoding = 'ascii'
+       else:
+           encoding = 'utf-8'
+    if n_strlen is None:
+        n_strlen = a.dtype.itemsize
     if encoding in ['none','None','bytes']:
         b = numpy.array(tuple(a.tobytes()),'S1')
     elif encoding == 'ascii':
@@ -6827,7 +6832,7 @@ and shape `a.shape + (N,)`, where N is the length of each string in a."""
         b = numpy.array([[bb[i:i+1] for i in range(n_strlen)] for bb in bbytes])
     return b
 
-def chartostring(b,encoding='utf-8'):
+def chartostring(b,encoding=None):
     """
 **`chartostring(b,encoding='utf-8')`**
 
@@ -6838,14 +6843,19 @@ Will be converted to a array of strings, where each string has a fixed
 length of `b.shape[-1]` characters.
 
 optional kwarg `encoding` can be used to specify character encoding (default
-`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` byte array is
-returned.
+`utf-8` for dtype=`'UN'` or `ascii` for dtype=`'SN'`). If `encoding` is 'none' or 'bytes', 
+a `numpy.string_` byte array is returned.
 
 returns a numpy string array with datatype `'UN'` (or `'SN'`) and shape
 `b.shape[:-1]` where where `N=b.shape[-1]`."""
     dtype = b.dtype.kind
     if dtype not in ["S","U"]:
         raise ValueError("type must be string or unicode ('S' or 'U')")
+    if encoding is None:
+       if dtype == 'S':
+           encoding = 'ascii'
+       else:
+           encoding = 'utf-8'
     bs = b.tobytes()
     slen = int(b.shape[-1])
     if encoding in ['none','None','bytes']:

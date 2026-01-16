@@ -704,7 +704,8 @@ def stringtochar(
 @overload
 def stringtochar(
     a: npt.NDArray[np.character],
-    encoding: str = ...,
+    encoding: str | None = None,
+    n_strlen: int | None = None,
 ) -> npt.NDArray[np.str_] | npt.NDArray[np.bytes_]: ...
 @overload
 def chartostring(
@@ -714,7 +715,7 @@ def chartostring(
 @overload
 def chartostring(
     b: npt.NDArray[np.character],
-    encoding: str = ...,
+    encoding: str | None = None,
 ) -> npt.NDArray[np.str_] | npt.NDArray[np.bytes_]: ...
 def getlibversion() -> str: ...
 def rc_get(key: str) -> str | None: ...

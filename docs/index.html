@@ -1226,7 +1226,7 @@ further details.</p>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="netCDF4.chartostring"><code class="name flex">
-<span>def <span class="ident">chartostring</span></span>(<span>b, encoding='utf-8')</span>
+<span>def <span class="ident">chartostring</span></span>(<span>b, encoding=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>chartostring(b,encoding='utf-8')</code></strong></p>
@@ -1236,8 +1236,8 @@ Input character array (numpy datatype <code>'S1'</code> or <code>'U1'</code>).
 Will be converted to a array of strings, where each string has a fixed
 length of <code>b.shape[-1]</code> characters.</p>
 <p>optional kwarg <code>encoding</code> can be used to specify character encoding (default
-<code>utf-8</code>). If <code>encoding</code> is 'none' or 'bytes', a <code>numpy.string_</code> byte array is
-returned.</p>
+<code>utf-8</code> for dtype=<code>'UN'</code> or <code>ascii</code> for dtype=<code>'SN'</code>). If <code>encoding</code> is 'none' or 'bytes',
+a <code>numpy.string_</code> byte array is returned.</p>
 <p>returns a numpy string array with datatype <code>'UN'</code> (or <code>'SN'</code>) and shape
 <code>b.shape[:-1]</code> where where <code>N=b.shape[-1]</code>.</p></div>
 </dd>
@@ -1254,7 +1254,7 @@ The datetime objects should not include a time-zone offset.</p>
 <p><strong>calendar</strong>: describes the calendar to be used in the time calculations.
 All the values currently defined in the
 <code>CF metadata convention &lt;http://cfconventions.org/cf-conventions/cf-conventions#calendar&gt;</code>__ are supported.
-Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
+Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian', 'tai',
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
 Default is <code>None</code> which means the calendar associated with the first
 input datetime instance will be used.</p>
@@ -1305,7 +1305,7 @@ and <strong>common_years since</strong> is allowed <em>only</em> for the <strong
 <p><strong>calendar</strong>: describes the calendar to be used in the time calculations.
 All the values currently defined in the
 <code>CF metadata convention &lt;http://cfconventions.org/cf-conventions/cf-conventions#calendar&gt;</code>__ are supported.
-Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
+Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian', 'tai',
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
 Default is <code>None</code> which means the calendar associated with the first
 input datetime instance will be used.</p>
@@ -1381,7 +1381,7 @@ and <strong>common_years since</strong> is allowed <em>only</em> for the <strong
 <p><strong>calendar</strong>: describes the calendar used in the time calculations.
 All the values currently defined in the
 <code>CF metadata convention &lt;http://cfconventions.org/cf-conventions/cf-conventions#calendar&gt;</code>__ are supported.
-Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian'
+Valid calendars <strong>'standard', 'gregorian', 'proleptic_gregorian', 'tai',
 'noleap', '365_day', '360_day', 'julian', 'all_leap', '366_day'</strong>.
 Default is <strong>'standard'</strong>, which is a mixed Julian/Gregorian calendar.</p>
 <p><strong>only_use_cftime_datetimes</strong>: if False, python datetime.datetime
@@ -1476,7 +1476,7 @@ unicode array (dtype = <code>'U1'</code>) will be returned.</p>
 (default) or <code>'U1'</code> (if dtype=<code>'U'</code>)</p></div>
 </dd>
 <dt id="netCDF4.stringtochar"><code class="name flex">
-<span>def <span class="ident">stringtochar</span></span>(<span>a, encoding='utf-8', n_strlen=None)</span>
+<span>def <span class="ident">stringtochar</span></span>(<span>a, encoding=None, n_strlen=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p><strong><code>stringtochar(a,encoding='utf-8',n_strlen=None)</code></strong></p>
@@ -1487,8 +1487,8 @@ is the number of characters in each string.
 Will be converted to
 an array of characters (datatype <code>'S1'</code> or <code>'U1'</code>) of shape <code>a.shape + (N,)</code>.</p>
 <p>optional kwarg <code>encoding</code> can be used to specify character encoding (default
-<code>utf-8</code>). If <code>encoding</code> is 'none' or 'bytes', a <code>numpy.string_</code> the input array
-is treated a raw byte strings (<code>numpy.string_</code>).</p>
+<code>utf-8</code> for dtype=<code>'UN'</code> or <code>ascii</code> for dtype=<code>'SN'</code>). If <code>encoding</code> is 'none' or 'bytes',
+a <code>numpy.string_</code> the input array is treated a raw byte strings (<code>numpy.string_</code>).</p>
 <p>optional kwarg <code>n_strlen</code> is the number of characters in each string.
 Default
 is None, which means <code>n_strlen</code> will be set to a.itemsize (the number of bytes
