@@ -6799,8 +6799,8 @@ is the number of characters in each string.  Will be converted to
 an array of characters (datatype `'S1'` or `'U1'`) of shape `a.shape + (N,)`.
 
 optional kwarg `encoding` can be used to specify character encoding (default
-`utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` the input array
-is treated a raw byte strings (`numpy.string_`).
+`utf-8` for dtype=`'UN'` or `ascii` for dtype=`'SN'`). If `encoding` is 'none' or 'bytes', 
+a `numpy.string_` the input array is treated a raw byte strings (`numpy.string_`).
 
 optional kwarg `n_strlen` is the number of characters in each string.  Default
 is None, which means `n_strlen` will be set to a.itemsize (the number of bytes
@@ -6845,6 +6845,10 @@ length of `b.shape[-1]` characters.
 optional kwarg `encoding` can be used to specify character encoding (default
 `utf-8`). If `encoding` is 'none' or 'bytes', a `numpy.string_` byte array is
 returned.
+
+optional kwarg `encoding` can be used to specify character encoding (default
+`utf-8` for dtype=`'UN'` or `ascii` for dtype=`'SN'`). If `encoding` is 'none' or 'bytes', 
+a `numpy.string_` byte array is returned.
 
 returns a numpy string array with datatype `'UN'` (or `'SN'`) and shape
 `b.shape[:-1]` where where `N=b.shape[-1]`."""
