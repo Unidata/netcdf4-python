@@ -163,6 +163,7 @@ datac2.real = datain['real']
 datac2.imag = datain['imag']
 print(datac.dtype,datac)
 print(datac2.dtype,datac2)
+nc.close()
 
 # more complex compound type example.
 nc = Dataset('compound_example.nc','w') # create a new dataset.
@@ -297,7 +298,7 @@ nc.createDimension('nchars',3)
 nc.createDimension('nstrings',None)
 var = nc.createVariable('strings','S1',('nstrings','nchars'))
 datain = np.array(['foo','bar'],dtype='S3')
-var[:] = stringtochar(datain) # manual conversion to char array
+var[:] = stringtochar(datain,encoding='ascii') # manual conversion to char array
 print(var[:]) # data returned as char array
 var._Encoding = 'ascii' # this enables automatic conversion
 var[:] = datain # conversion to char array done internally

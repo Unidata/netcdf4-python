@@ -1084,7 +1084,7 @@ characters with one more dimension. For example,
 >>> _ = nc.createDimension('nstrings',None)
 >>> v = nc.createVariable('strings','S1',('nstrings','nchars'))
 >>> datain = np.array(['foo','bar'],dtype='S3')
->>> v[:] = stringtochar(datain) # manual conversion to char array
+>>> v[:] = stringtochar(datain, encoding='ascii') # manual conversion to char array
 >>> print(v[:]) # data returned as char array
 [[b'f' b'o' b'o']
  [b'b' b'a' b'r']]
