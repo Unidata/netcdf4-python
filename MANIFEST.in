@@ -27,3 +27,4 @@ include *.md
 include *.py
 include *.release
 include *.sh
+include _build/*.py
