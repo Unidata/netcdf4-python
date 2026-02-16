@@ -322,7 +322,7 @@ else:
         netCDF4_libdir = os.path.join(netCDF4_dir, 'lib')
 
     if sys.platform == 'win32':
-        libs.extend(['netcdf', 'zlib'])
+        libs.extend(['netcdf'])
     else:
         libs.extend(['netcdf', 'z'])
 
