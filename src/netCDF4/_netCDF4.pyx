@@ -5630,7 +5630,7 @@ cannot be safely cast to variable data type""" % attname
             # create a view so shape in caller is not modified (issue 90)
             try: # if extra singleton dims, just reshape
                 data = data.view()
-                data.shape = tuple(datashape)
+                data = data.reshape(tuple(datashape))
             except ValueError: # otherwise broadcast
                 data = numpy.broadcast_to(data, datashape)
 
@@ -6821,8 +6821,7 @@ and shape `a.shape + (N,)`, where N is the length of each string in a."""
     if encoding in ['none','None','bytes']:
         b = numpy.array(tuple(a.tobytes()),'S1')
     elif encoding == 'ascii':
-        b = numpy.array(tuple(a.tobytes().decode(encoding)),dtype+'1')
-        b.shape = a.shape + (n_strlen,)
+        b = (numpy.array(tuple(a.tobytes().decode(encoding)),dtype+'1')).reshape(a.shape + (n_strlen,))
     else:
         if not a.ndim:
             a = numpy.array([a])
@@ -6862,8 +6861,7 @@ returns a numpy string array with datatype `'UN'` (or `'SN'`) and shape
         a = numpy.array([bs[n1:n1+slen] for n1 in range(0,len(bs),slen)],'S'+repr(slen))
     else:
         a = numpy.array([bs[n1:n1+slen].decode(encoding) for n1 in range(0,len(bs),slen)],'U'+repr(slen))
-    a.shape = b.shape[:-1]
-    return a
+    return a.reshape(b.shape[:-1])
 
 class MFDataset(Dataset):
     """
