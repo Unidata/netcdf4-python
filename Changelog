@@ -3,6 +3,7 @@
  * Change default encoding for stringtochar/chartostring functions from 'utf-8' to 'utf-8'/'ascii' for dtype.kind='U'/'S'
    (issue #1464).
  * Fix DeprecationWarning for assigning to numpy.ndarray.shape for numpy >= 2.5.0 (issue #1468).
+ * Disable parallel support even if libs support it via DISABLE_PARALLEL_SUPPORT env var (issue #1389).
 
  version 1.7.4 (tag v1.7.4rel)
  ================================

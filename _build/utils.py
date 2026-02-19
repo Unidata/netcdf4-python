@@ -113,6 +113,10 @@ def get_netcdf4_include_dir():
 
 
 def netcdf4_has_parallel_support() -> bool:
+    # disable parallel support even if libs support it (issue #1389)
+    DISABLE_PARALLEL_SUPPORT = bool(int(os.environ.get('DISABLE_PARALLEL_SUPPORT', 0)))
+    if DISABLE_PARALLEL_SUPPORT:
+        return False
     netcdf4_incdir = get_netcdf4_include_dir()
     if os.path.exists(ncmetapath := os.path.join(netcdf4_incdir, "netcdf_meta.h")):
         with open(ncmetapath) as f:
