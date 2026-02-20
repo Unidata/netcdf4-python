@@ -375,7 +375,7 @@ cdef extern from "numpy/arrayobject.h":
     ctypedef int npy_intp 
     ctypedef extern class numpy.ndarray [object PyArrayObject, check_size ignore]:
         pass
-	npy_intp PyArray_SIZE(ndarray arr) nogil
+    npy_intp PyArray_SIZE(ndarray arr) nogil
     npy_intp PyArray_ISCONTIGUOUS(ndarray arr) nogil
     npy_intp PyArray_ISALIGNED(ndarray arr) nogil
     void* PyArray_DATA(ndarray) nogil
