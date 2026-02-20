@@ -157,6 +157,8 @@ mpi_incdir = os.environ.get('MPI_INCDIR')
 USE_NCCONFIG = bool(int(os.environ.get('USE_NCCONFIG', 0)))
 # override use of setup.cfg with env var.
 USE_SETUPCFG = bool(int(os.environ.get('USE_SETUPCFG', 1)))
+# disable parallel support even if libs support it (issue #1389)
+DISABLE_PARALLEL_SUPPORT = bool(int(os.environ.get('DISABLE_PARALLEL_SUPPORT', 0)))
 
 setup_cfg = 'setup.cfg'
 # contents of setup.cfg will override env vars, unless
@@ -412,9 +414,13 @@ if 'sdist' not in sys.argv[1:] and 'clean' not in sys.argv[1:] and '--version' n
        (netcdf_lib_version > "4.4" and netcdf_lib_version < "4.5"):
         has_cdf5_format = True
 
-    has_parallel_support = check_has_parallel_support(inc_dirs)
-    has_has_not = "has" if has_parallel_support else "does not have"
-    print(f"netcdf lib {has_has_not} parallel functions")
+    if DISABLE_PARALLEL_SUPPORT:
+        has_parallel_support = False
+        print("parallel support disabled via DISABLE_PARALLEL_SUPPORT env var")
+    else:
+        has_parallel_support = check_has_parallel_support(inc_dirs)
+        has_has_not = "has" if has_parallel_support else "does not have"
+        print(f"netcdf lib {has_has_not} parallel functions")
 
     if has_parallel_support:
         # note(stubbiali): mpi4py is not available when using the in-tree build backend
