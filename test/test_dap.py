@@ -8,9 +8,8 @@ import os
 # test accessing data over http with opendap.
 
 yesterday = datetime.now() - timedelta(days=1)
-URL = f'http://nomads.ncep.noaa.gov/dods/gfs_1p00/gfs{yesterday:%Y%m%d}/gfs_1p00_00z'
-URL_https = 'https://www.neracoos.org/erddap/griddap/WW3_EastCoast_latest'
-varname = 'hgtsfc'
+URL = f'https://tds.scigw.unidata.ucar.edu/thredds/dodsC/grib/NCEP/GFS/Global_onedegree_noaaport/GFS_Global_onedeg_noaaport_{yesterday:%Y%m%d}_1800.grib2'
+varname = 'Geopotential_height_surface'
 data_min = -40; data_max = 5900
 varshape = (181, 360)
 
@@ -24,7 +23,7 @@ class DapTestCase(unittest.TestCase):
         pass
 
     def runTest(self):
-        """testing access of data over http using opendap"""
+        """testing access of data over https using opendap"""
         ncfile = netCDF4.Dataset(URL)
         assert varname in ncfile.variables.keys()
         var = ncfile.variables[varname]
@@ -32,10 +31,6 @@ class DapTestCase(unittest.TestCase):
         assert data.shape == varshape
         assert np.abs(data.min()-data_min) < 10 
         assert np.abs(data.max()-data_max) < 100 
-        ncfile.close()
-        # test https support (linked curl lib must built with openssl support)
-        ncfile = netCDF4.Dataset(URL_https)
-        assert ncfile['hs'].long_name=='Significant Wave Height' 
         ncfile.close()
 
 if __name__ == '__main__':
