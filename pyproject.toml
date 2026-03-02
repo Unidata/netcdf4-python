@@ -37,6 +37,7 @@ classifiers = [
 dependencies = [
     "cftime",
     "certifi",
+    "packaging",
     "numpy>=2.3.0; platform_system == 'Windows' and platform_machine == 'ARM64'",
     "numpy>=1.21.2; platform_system != 'Windows' or platform_machine != 'ARM64'",
 ]
@@ -45,7 +46,6 @@ dynamic = ["version"]
 [project.optional-dependencies]
 tests = [
   "Cython",
-  "packaging",
   "pytest",
   "typing-extensions>=4.15.0",
 ]
