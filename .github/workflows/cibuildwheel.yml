@@ -65,7 +65,7 @@ jobs:
 
     # For aarch64 support
     # https://cibuildwheel.pypa.io/en/stable/faq/#emulation
-    - uses: docker/setup-qemu-action@v3
+    - uses: docker/setup-qemu-action@v4
       with:
         platforms: all
       if: runner.os == 'Linux' && matrix.arch == 'aarch64'
