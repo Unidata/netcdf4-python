@@ -1288,6 +1288,7 @@ __version__ = "1.7.4.1"
 # Initialize numpy
 import posixpath
 from cftime import date2num, num2date, date2index
+from packaging.version import Version
 import numpy
 cimport numpy
 import weakref
@@ -2410,7 +2411,7 @@ strings.
 
         # flag to indicate that Variables in this Dataset support orthogonal indexing.
         self.__orthogonal_indexing__ = True
-        if diskless and __netcdf4libversion__ < '4.2.1':
+        if diskless and Version(__netcdf4libversion__) < Version('4.2.1'):
             #diskless = False # don't raise error, instead silently ignore
             raise ValueError('diskless mode requires netcdf lib >= 4.2.1, you have %s' % __netcdf4libversion__)
         # convert filename into string (from os.path object for example),
