@@ -26,10 +26,6 @@ netCDF4.VarT
 netCDF4.RealVarT
 netCDF4.ComplexVarT
 netCDF4.NumericVarT
-netCDF4.Dimension.__reduce_cython__
-netCDF4.Dimension.__setstate_cython__
-netCDF4.Variable.auto_complex
-netCDF4.Variable.__iter__
 netCDF4._netCDF4.Dimension.__reduce_cython__
 netCDF4._netCDF4.Dimension.__setstate_cython__
 netCDF4._netCDF4.NC_DISKLESS
