@@ -91,3 +91,5 @@ jobs:
         stubtest netCDF4 --allowlist .github/stubtest-allowlist --mypy-config-file=pyproject.toml
         mypy test
         mypy examples
+      env:
+        CI: false
