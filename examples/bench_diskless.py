@@ -53,7 +53,8 @@ for format in ['NETCDF4','NETCDF3_CLASSIC','NETCDF3_64BIT']:
             repr(sum(t.repeat(ntrials,1))/ntrials))
 
 # test diskless=True in nc_open
-format: Literal["NETCDF3_CLASSIC"] = 'NETCDF3_CLASSIC'  # mypy should know this but it needs help...
+#format: Literal["NETCDF3_CLASSIC"] = 'NETCDF3_CLASSIC'  # mypy should know this but it needs help...
+format = 'NETCDF3_CLASSIC'
 trials=50
 sys.stdout.write('test caching of file in memory on open for %s\n' % format)
 sys.stdout.write('testing file format %s ...\n' % format)
