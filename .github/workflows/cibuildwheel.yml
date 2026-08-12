@@ -125,7 +125,7 @@ jobs:
           environment-name: build
           init-shell: bash
           create-args: >-
-            python=${{ matrix.python-version }} libnetcdf=4.9.3 --channel conda-forge
+            python=${{ matrix.python-version }} libnetcdf=4.10.1 --channel conda-forge
 
       - name: Build wheels for Windows/Mac 
         uses: pypa/cibuildwheel@v4.1.0
