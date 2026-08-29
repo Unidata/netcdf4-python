@@ -55,7 +55,7 @@ jobs:
         if [ "$RUNNER_OS" == "Windows" ]; then
            export HDF5_PLUGIN_PATH="${CONDA_PREFIX}\\Library\\hdf5\\lib\\plugin"
         else
-           export HDF5_PLUGIN_PATH="${CONDA_PREFIX}/hdf5/lib/plugin/"
+           export HDF5_PLUGIN_PATH="${CONDA_PREFIX}/lib/hdf5/plugin/"
         fi
         pytest -s -rxs -v test
 
