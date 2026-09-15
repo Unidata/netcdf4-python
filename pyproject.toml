@@ -1,5 +1,6 @@
 [build-system]
 requires = [
+    # keep in sync with [dependency-groups.build]
     "Cython>=0.29",
     "numpy>=2.0.0",
     "setuptools>=77.0.1",
@@ -38,19 +39,37 @@ dependencies = [
     "cftime",
     "certifi",
     "packaging",
-    "numpy>=2.3.0; platform_system == 'Windows' and platform_machine == 'ARM64'",
+    "numpy>=2.3.0; platform_system == 'Windows' and platform_machine == 'ARM64' and python_version >= '3.11'",
     "numpy>=1.21.2; platform_system != 'Windows' or platform_machine != 'ARM64'",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
-tests = [
-  "Cython",
-  "pytest",
-  "typing-extensions>=4.15.0",
-]
 parallel = [
-  "mpi4py",
+    "mpi4py",
+]
+
+[dependency-groups]
+build = [
+    # keep in sync with [build-system.requires]
+    "Cython>=0.29",
+    "numpy>=2.0.0",
+    "setuptools>=77.0.1",
+    "setuptools_scm[toml]>=3.4",
+]
+test = [
+    "pytest",
+]
+typing = [
+    "mypy",
+    "typing-extensions>=4.15.0",
+    "types-setuptools",
+]
+dev = [
+    "mpi4py",
+    {include-group = "build"},
+    {include-group = "test"},
+    {include-group = "typing"},
 ]
 
 [project.readme]
@@ -113,7 +132,7 @@ build-frontend = "build"
 skip = [
   "*-musllinux*",
 ]
-test-extras = "tests"
+test-groups = "test"
 test-sources = [
   "test",
   "pyproject.toml"
