@@ -269,15 +269,16 @@ conda install -c conda-forge netCDF4
 ```
 
 ## Development installation
-* Clone GitHub repository (`git clone https://github.com/Unidata/netcdf4-python.git`)
-
-* Make sure [numpy](http://www.numpy.org/) and [Cython](http://cython.org/) are
-  installed and you have [Python](https://www.python.org) 3.8 or newer.
+* Clone GitHub repository: `git clone https://github.com/Unidata/netcdf4-python.git`
 
 * Make sure [HDF5](http://www.h5py.org/) and netcdf-4 are installed, 
   and the `nc-config` utility is in your Unix PATH.
 
-* Run `python setup.py build`, then `pip install -e .`.
+* Make sure [Python](https://www.python.org) 3.10 or later is installed, with [pip](https://pip.pypa.io/) 25.1 or later.
+
+* Install developemnt dependencies with: `pip install --group dev`
+
+* Install this package as an "editable" build with: `pip install -e . --no-build-isolation`
 
 * To run all the tests, execute `cd test && python run_all.py`.
 
