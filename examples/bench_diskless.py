@@ -53,11 +53,11 @@ for format in ['NETCDF4','NETCDF3_CLASSIC','NETCDF3_64BIT']:
             repr(sum(t.repeat(ntrials,1))/ntrials))
 
 # test diskless=True in nc_open
-format: Literal["NETCDF3_CLASSIC"] = 'NETCDF3_CLASSIC'  # mypy should know this but it needs help...
+fmt: Literal["NETCDF3_CLASSIC"] = 'NETCDF3_CLASSIC'  # mypy should know this but it needs help...
 trials=50
-sys.stdout.write('test caching of file in memory on open for %s\n' % format)
-sys.stdout.write('testing file format %s ...\n' % format)
-write_netcdf('test1.nc',format=format,closeit=True)
+sys.stdout.write('test caching of file in memory on open for %s\n' % fmt)
+sys.stdout.write('testing file format %s ...\n' % fmt)
+write_netcdf('test1.nc',format=fmt,closeit=True)
 ncfile = netCDF4.Dataset('test1.nc',diskless=False)
 t = Timer("read_netcdf(ncfile)","from __main__ import read_netcdf,ncfile")
 sys.stdout.write('reading (from disk) took %s seconds\n' %
