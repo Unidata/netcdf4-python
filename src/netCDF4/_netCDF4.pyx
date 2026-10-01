@@ -1889,6 +1889,9 @@ be raised in the next release."""
             raise TypeError, 'illegal data type for attribute %r, must be one of %s, got %s' % (attname, _supportedtypes, value_arr.dtype.str[1:])
         elif xtype == -99: # if xtype is not passed in as kwarg.
             xtype = _nptonctype[value_arr.dtype.str[1:]]
+        # netcdf-c expects native-endian buffers for primitive numeric types.
+        if value_arr.dtype.kind in 'iuf' and not value_arr.dtype.isnative:
+            value_arr = value_arr.astype(value_arr.dtype.newbyteorder('='))
         lenarr = PyArray_SIZE(value_arr)
         with nogil:
             ierr = nc_put_att(grpid, varid, attname, xtype, lenarr,
@@ -4440,7 +4443,6 @@ behavior is similar to Fortran or Matlab, but different than numpy.
                 elif fill_value == 'default':
                     if self._isprimitive:
                         fillval = numpy.array(default_fillvals[self.dtype.str[1:]])
-                        if not fillval.dtype.isnative: fillval.byteswap(True)
                         _set_att(self._grp, self._varid, '_FillValue',\
                                  fillval, xtype=xtype)
                     else:
@@ -4456,7 +4458,6 @@ does not do anything."""
                                _tostr(fill_value), xtype=xtype, force_ncstring=True)
                         else:
                             fillval = numpy.array(fill_value, self.dtype)
-                            if not fillval.dtype.isnative: fillval.byteswap(True)
                             _set_att(self._grp, self._varid, '_FillValue',\
                                      fillval, xtype=xtype)
                     else:
@@ -5020,13 +5021,10 @@ details."""
                 #    raise AttributeError(msg)
             elif name in ['valid_min','valid_max','valid_range','missing_value'] and self._isprimitive:
                 # make sure these attributes written in same data type as variable.
-                # also make sure it is written in native byte order
-                # (the same as the data)
                 valuea = numpy.array(value, self.dtype)
                 # check to see if array cast is safe
                 if _safecast(numpy.array(value),valuea):
                     value = valuea
-                    if not value.dtype.isnative: value.byteswap(True)
                 else: # otherwise don't do it, but issue a warning
                     msg="WARNING: %s cannot be safely cast to variable dtype" \
                     % name
