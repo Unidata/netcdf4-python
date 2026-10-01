@@ -40,14 +40,14 @@ def write_netcdf(filename, zlib=False, least_significant_digit=None, format: NCF
 def read_netcdf(ncfile):
     data = ncfile.variables['data'][:]
 
-for format in ['NETCDF4','NETCDF3_CLASSIC','NETCDF3_64BIT']:
-    sys.stdout.write('testing file format %s ...\n' % format)
+for file_format in ['NETCDF4','NETCDF3_CLASSIC','NETCDF3_64BIT']:
+    sys.stdout.write('testing file format %s ...\n' % file_format)
     # writing, no compression.
-    t = Timer("write_netcdf('test1.nc',closeit=True,format='%s')" % format,"from __main__ import write_netcdf")
+    t = Timer("write_netcdf('test1.nc',closeit=True,format='%s')" % file_format,"from __main__ import write_netcdf")
     sys.stdout.write('writing took %s seconds\n' %\
             repr(sum(t.repeat(ntrials,1))/ntrials))
     # test reading.
-    ncfile = write_netcdf('test1.nc',format=format)  # type: ignore
+    ncfile = write_netcdf('test1.nc',format=file_format)  # type: ignore
     t = Timer("read_netcdf(ncfile)","from __main__ import read_netcdf,ncfile")
     sys.stdout.write('reading took %s seconds\n' %
             repr(sum(t.repeat(ntrials,1))/ntrials))
