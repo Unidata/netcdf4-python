@@ -40,7 +40,10 @@ dependencies = [
     "certifi",
     "packaging",
     "numpy>=2.3.0; platform_system == 'Windows' and platform_machine == 'ARM64' and python_version >= '3.11'",
-    "numpy>=1.21.2; platform_system != 'Windows' or platform_machine != 'ARM64'",
+    # Windows ARM64 + Python 3.10 has no numpy>=2.3.0 wheel. Keep the older
+    # pin there so lockers (e.g. uv lock --python 3.10) can still resolve
+    # that environment. See issue #1491.
+    "numpy>=1.21.2; platform_system != 'Windows' or platform_machine != 'ARM64' or python_version < '3.11'",
 ]
 dynamic = ["version"]
 
