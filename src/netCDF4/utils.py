@@ -514,14 +514,14 @@ def ncinfo():
 
     try:
         opts, pargs = getopt.getopt(sys.argv[1:],'hv:g:d:',
-                                    ['group=',
+                                    ['help',
+                                     'group=',
                                      'variable=',
                                      'dimension='])
-    except:
-        (type, value, traceback) = sys.exc_info()
-        sys.stdout.write("Error parsing the options. The error was: %s\n" % value)
+    except getopt.GetoptError as error:
+        sys.stdout.write("Error parsing the options. The error was: %s\n" % error)
         sys.stderr.write(usage)
-        sys.exit(0)
+        sys.exit(2)
 
     # Get the options
     group = None; var = None; dim=None
@@ -538,7 +538,7 @@ def ncinfo():
         else:
             sys.stdout.write("%s: Unrecognized option\n" % option[0])
             sys.stderr.write(usage)
-            sys.exit(0)
+            sys.exit(2)
 
     # filename passed as last argument
     try:
@@ -546,7 +546,7 @@ def ncinfo():
     except IndexError:
         sys.stdout.write("You need to pass netcdf filename!\n.")
         sys.stderr.write(usage)
-        sys.exit(0)
+        sys.exit(2)
 
     f = Dataset(filename)
     if group is None:
@@ -565,7 +565,7 @@ def ncinfo():
             if var is not None:
                 print(g.variables[var])
             if dim is not None:
-                print(g.dimensions[var])
+                print(g.dimensions[dim])
     f.close()
 
 def _nc4tonc3(filename4,filename3,clobber=False,nchunk=10,quiet=False,format='NETCDF3_64BIT'):
@@ -653,16 +653,15 @@ def nc4tonc3():
 
     try:
         opts, pargs = getopt.getopt(sys.argv[1:], 'ho',
-                                    ['format=','chunk=','quiet='])
-    except:
-        (type, value, traceback) = sys.exc_info()
-        sys.stdout.write("Error parsing the options. The error was: %s\n" % value)
+                                    ['help','format=','chunk=','quiet='])
+    except getopt.GetoptError as error:
+        sys.stdout.write("Error parsing the options. The error was: %s\n" % error)
         sys.stderr.write(usage)
-        sys.exit(0)
+        sys.exit(2)
 
     # default options
     quiet = 0
-    chunk = 1000
+    chunk = 10
     format = 'NETCDF3_64BIT'
     overwritefile = 0
 
@@ -680,22 +679,22 @@ def nc4tonc3():
         elif option[0] == '--chunk':
             chunk = int(option[1])
         else:
-            sys.stdout.write("%s : Unrecognized option\n" % options[0])
+            sys.stdout.write("%s : Unrecognized option\n" % option[0])
             sys.stderr.write(usage)
-            sys.exit(0)
+            sys.exit(2)
 
     # if we pass a number of files different from 2, abort
     if len(pargs) < 2 or len(pargs) > 2:
         sys.stdout.write("You need to pass both source and destination!\n.")
         sys.stderr.write(usage)
-        sys.exit(0)
+        sys.exit(2)
 
     # Catch the files passed as the last arguments
     filename4 = pargs[0]
     filename3 = pargs[1]
 
     # copy the data from filename4 to filename3.
-    _nc4tonc3(filename4,filename3,clobber=overwritefile,quiet=quiet,format=format)
+    _nc4tonc3(filename4,filename3,clobber=overwritefile,nchunk=chunk,quiet=quiet,format=format)
 
 
 def _nc3tonc4(filename3,filename4,unpackshort=True,
@@ -856,7 +855,8 @@ def nc3tonc4():
 
     try:
         opts, pargs = getopt.getopt(sys.argv[1:], 'ho',
-                                    ['classic=',
+                                    ['help',
+                                     'classic=',
                                      'vars=',
                                      'zlib=',
                                      'quiet=',
@@ -868,11 +868,10 @@ def nc3tonc4():
                                      'chunk=',
                                      'istart=',
                                      'istop='])
-    except:
-        (type, value, traceback) = sys.exc_info()
-        sys.stdout.write("Error parsing the options. The error was: %s\n" % value)
+    except getopt.GetoptError as error:
+        sys.stdout.write("Error parsing the options. The error was: %s\n" % error)
         sys.stderr.write(usage)
-        sys.exit(0)
+        sys.exit(2)
 
     # default options
     overwritefile = 0
@@ -923,13 +922,13 @@ def nc3tonc4():
         else:
             sys.stdout.write("%s: Unrecognized option\n" % option[0])
             sys.stderr.write(usage)
-            sys.exit(0)
+            sys.exit(2)
 
     # if we pass a number of files different from 2, abort
     if len(pargs) < 2 or len(pargs) > 2:
         sys.stdout.write("You need to pass both source and destination!.\n")
         sys.stderr.write(usage)
-        sys.exit(0)
+        sys.exit(2)
 
     # Catch the files passed as the last arguments
     filename3 = pargs[0]
