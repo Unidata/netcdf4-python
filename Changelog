@@ -1,5 +1,8 @@
  version 1.7.4.1 (tag v1.7.4.1rel)
  =================================
+ * Convert non-native-endian numeric attributes to native byte order before writing (issue #1502).
+ * Fix command-line usage error exit codes and --help handling, honour nc4tonc3 --chunk,
+   and fix ncinfo group dimension selection (issue #1500).
  * Change default encoding for stringtochar/chartostring functions from 'utf-8' to 'utf-8'/'ascii' for dtype.kind='U'/'S'
    (issue #1464).
  * Fix DeprecationWarning for assigning to numpy.ndarray.shape for numpy >= 2.5.0 (issue #1468).

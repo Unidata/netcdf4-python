@@ -6,6 +6,8 @@ import os
 import tempfile
 import warnings
 import pathlib
+import struct
+from typing import Literal
 
 import numpy as np
 from collections import OrderedDict
@@ -222,6 +224,123 @@ class VariablesTestCase(unittest.TestCase):
         # issue 915 empty string attribute (ncdump reports 'NIL')
         with netCDF4.Dataset(pathlib.Path(__file__).parent / "test_gold.nc") as f:
             assert f['RADIANCE'].VAR_NOTES == ""
+
+class NumericEndianTestCase(unittest.TestCase):
+
+    formats: 'tuple[netCDF4.Format, ...]' = (
+        'NETCDF4', 'NETCDF4_CLASSIC', 'NETCDF3_CLASSIC', 'NETCDF3_64BIT_OFFSET')
+    if netCDF4.__has_cdf5_format__ and struct.calcsize('P') >= 8:
+        formats += ('NETCDF3_64BIT_DATA',)
+
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.path = os.path.join(directory.name, 'attributes.nc')
+
+    def test_numeric_attribute_byte_order(self):
+        # Issue #1502: nc_put_att expects native-endian numeric buffers.
+        for format in self.formats:
+            extended = format in ('NETCDF4', 'NETCDF3_64BIT_DATA')
+            dtypes = ['i1', 'i2', 'i4', 'i8', 'f4', 'f8']
+            if extended:
+                dtypes += ['u1', 'u2', 'u4', 'u8']
+            expected = {}
+            with netCDF4.Dataset(self.path, 'w', format=format) as f:
+                targets: dict[str, netCDF4.Dataset | netCDF4.Group | netCDF4.Variable] = {
+                    '/': f, '/v': f.createVariable('v', 'f8')}
+                if format == 'NETCDF4':
+                    group = f.createGroup('g')
+                    targets['/g'] = group
+                    targets['/g/v'] = group.createVariable('v', 'f8')
+                for dtype in dtypes:
+                    values = [1, 2, 17] if dtype[0] == 'u' else [1, -2, 17]
+                    if dtype[0] == 'f':
+                        values = [1.25, -2.5, 17.75]
+                    for order in ('=', '<', '>'):
+                        array = np.array(values, dtype=np.dtype(dtype).newbyteorder(order))
+                        readonly = array.copy()
+                        readonly.flags.writeable = False
+                        inputs = (array, np.array(values[0], dtype=array.dtype),
+                                  np.repeat(array, 2)[::2], array[::-1],
+                                  readonly, array[:0])
+                        for layout, value in enumerate(inputs):
+                            original = value.tobytes()
+                            for target_name, target in targets.items():
+                                for setter in ('single', 'bulk', 'syntax'):
+                                    name = '%s_%s_%s_%s' % (dtype, order, layout, setter)
+                                    with self.subTest(format=format, target=target_name,
+                                                      attribute=name):
+                                        if setter == 'single':
+                                            target.setncattr(name, value)
+                                        elif setter == 'bulk':
+                                            target.setncatts({name: value})
+                                        else:
+                                            setattr(target, name, value)
+                                        self.assertEqual(value.tobytes(), original)
+                                        self.assertEqual(value.dtype, array.dtype)
+                                        self.assertEqual(value.flags.writeable,
+                                                         layout != 4)
+                                    stored_dtype = 'i4' if dtype == 'i8' and not extended else dtype
+                                    expected[target_name, name] = value.astype(stored_dtype)
+            with netCDF4.Dataset(self.path) as f:
+                for (target_name, name), value in expected.items():
+                    target = f if target_name == '/' else f[target_name]
+                    with self.subTest(format=format, target=target_name, attribute=name):
+                        actual = np.asarray(target.getncattr(name))
+                        np.testing.assert_array_equal(actual, value)
+                        self.assertEqual(actual.dtype, value.dtype)
+
+    def test_valid_range_byte_order(self):
+        for format in self.formats:
+            with self.subTest(format=format):
+                value = np.array([1., 2.], dtype=np.dtype('f8').newbyteorder('S'))
+                with netCDF4.Dataset(self.path, 'w', format=format) as f:
+                    f.createDimension('x', 4)
+                    v = f.createVariable('v', 'f8', ('x',))
+                    v[:] = [0., 1., 2., 3.]
+                    v.setncattr('valid_range', value)
+                    f.setncattr('levels', value)
+                with netCDF4.Dataset(self.path) as f:
+                    v = f['v']
+                    np.testing.assert_array_equal(f.levels, [1., 2.])
+                    np.testing.assert_array_equal(v.valid_range, [1., 2.])
+                    np.testing.assert_array_equal(np.ma.getmaskarray(v[:]),
+                                                  [True, False, False, True])
+                    np.testing.assert_array_equal(v[:].compressed(), [1., 2.])
+
+    def test_variable_metadata_byte_order(self):
+        # Existing fill-value and special-attribute callers must not swap twice.
+        endians: tuple[Literal['little', 'big'], ...] = ('little', 'big')
+        for endian in endians:
+            with self.subTest(endian=endian):
+                dtype = np.dtype('f8').newbyteorder(endian)
+                with netCDF4.Dataset(self.path, 'w') as f:
+                    f.createDimension('x', 3)
+                    v = f.createVariable('v', dtype, ('x',), endian=endian,
+                                         fill_value=-999.)
+                    v[:2] = [1., 2.]
+                    v.valid_min = np.array(0., dtype=dtype)
+                    v.valid_max = np.array(3., dtype=dtype)
+                    v.valid_range = np.array([0., 3.], dtype=dtype)
+                    v.missing_value = np.array(-999., dtype=dtype)
+                with netCDF4.Dataset(self.path) as f:
+                    v = f['v']
+                    self.assertEqual(v._FillValue, -999.)
+                    self.assertEqual(v.missing_value, -999.)
+                    self.assertEqual(v.valid_min, 0.)
+                    self.assertEqual(v.valid_max, 3.)
+                    np.testing.assert_array_equal(v.valid_range, [0., 3.])
+                    np.testing.assert_array_equal(np.ma.getmaskarray(v[:]),
+                                                  [False, False, True])
+                    np.testing.assert_array_equal(v[:].compressed(), [1., 2.])
+
+    def test_unsupported_numeric_attributes(self):
+        with netCDF4.Dataset(self.path, 'w') as f:
+            for dtype in ('?', '<f2', '>f2', '<c8', '>c8', '<c16', '>c16'):
+                with self.subTest(dtype=dtype):
+                    with self.assertRaises(TypeError):
+                        f.setncattr('unsupported', np.array([1, 0], dtype=dtype))
+
 
 if __name__ == '__main__':
     unittest.main()
