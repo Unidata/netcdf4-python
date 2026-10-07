@@ -1,6 +1,8 @@
  version 1.7.4.1 (tag v1.7.4.1rel)
  =================================
  * Keep a numpy pin for Windows ARM64 on Python 3.10 so lockers can resolve that environment (issue #1491).
+ * Preserve surviving dimensions and decoded types for empty orthogonal selections,
+   including empty integer indices and all-false masks (PR #1499).
  * Convert non-native-endian numeric attributes to native byte order before writing (issue #1502).
  * Fix command-line usage error exit codes and --help handling, honour nc4tonc3 --chunk,
    and fix ncinfo group dimension selection (issue #1500).

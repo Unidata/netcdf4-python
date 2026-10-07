@@ -5103,6 +5103,8 @@ rename a `Variable` attribute named `oldname` to `newname`."""
 
         # Fill output array with data chunks.
         for (a,b,c,i) in zip(start, count, stride, put_ind):
+            if 0 in b:
+                continue # retain the empty shape without issuing native I/O
             datout = self._get(a,b,c)
             if not hasattr(datout,'shape') or data.shape == datout.shape:
                 data = datout
@@ -5185,8 +5187,8 @@ rename a `Variable` attribute named `oldname` to `newname`."""
                 if len(data.shape) > 0 and data.shape[-1] == self.shape[-1]:
                     # also make sure slice is along last dimension
                     matchdim = True
-                    for cnt in count:
-                        if cnt[-1] != self.shape[-1]:
+                    for cnt, ind in zip(count, put_ind):
+                        if cnt[-1] != self.shape[-1] or (0 in cnt and ind[-1] != slice(None)):
                             matchdim = False
                             break
                     if matchdim:
@@ -5625,7 +5627,7 @@ cannot be safely cast to variable data type""" % attname
             data = numpy.tile(data,datashape)
         # reshape data array if needed to conform with start,count,stride.
         if data.ndim != len(datashape) or\
-           (data.shape != datashape and data.ndim > 1): # issue #1083
+           (data.shape != datashape and (data.ndim > 1 or 0 in datashape)): # issue #1083
             # create a view so shape in caller is not modified (issue 90)
             try: # if extra singleton dims, just reshape
                 data = data.view()
@@ -7243,8 +7245,8 @@ class _Variable:
         # is a perfect match for the "start", "count" and "stride"
         # arguments to the nc_get_var() function, and is much more easy
         # to use.
-        start, count, stride, put_ind =\
-        _StartCountStride(elem, self.shape)
+        start, count, stride, put_ind, selection =\
+        _StartCountStride(elem, self.shape, return_selection=True)
         datashape = _out_array_shape(count)
         data = ma.empty(datashape, dtype=self.dtype)
 
@@ -7271,6 +7273,51 @@ class _Variable:
             count = [abs(cnt) for cnt in count]
             if (numpy.array(stride) < 0).any():
                 raise IndexError('negative strides not allowed when slicing MFVariable Variable instance')
+            if 0 in count:
+                # An empty underlying read retains automatic unpacking and
+                # unsigned conversion without reading or concatenating records.
+                empty = (slice(0, 0),) + (slice(None),) * (self.ndim - 1)
+                if self.dtype.kind == 'S' and (count[-1] != self.shape[-1] or ind[-1] != slice(None)):
+                    # A partial, scalar or fancy character selection is not
+                    # eligible for automatic conversion of the full width.
+                    empty = empty[:-1] + (slice(0, 0),)
+                records = selection[0]
+                selected = []
+                offset = 0
+                if isinstance(records, slice):
+                    beg, end, inc = records.indices(self.shape[0])
+                    for n, length in enumerate(self._recLen):
+                        # Intersect an arithmetic progression with each file's
+                        # record interval without materializing all records.
+                        lower = max(beg, offset)
+                        first = beg + ((lower - beg + inc - 1) // inc) * inc
+                        if first < min(end, offset + length):
+                            selected.append(n)
+                        offset += length
+                else:
+                    # Non-slice fancy indexing processes one record chunk at a
+                    # time; preserve the final chunk's dtype, as for nonempty
+                    # reads. Scalars select their own file by the same rule.
+                    record = records[-1] if numpy.iterable(records) else records
+                    if record < 0:
+                        record += self.shape[0]
+                    for n, length in enumerate(self._recLen):
+                        if offset <= record < offset + length:
+                            selected.append(n)
+                            break
+                        offset += length
+                # With no selected records there is no contributing file;
+                # retain the first file's empty-decoding convention.
+                if not selected:
+                    selected = [0]
+                decoded = [Variable.__getitem__(self._recVar[n], empty) for n in selected]
+                if any(part.ndim != decoded[0].ndim for part in decoded):
+                    raise ValueError('all the input arrays must have same number of dimensions')
+                data = data.astype(numpy.result_type(*(part.dtype for part in decoded)))
+                if decoded[0].ndim < self.ndim:
+                    data = data.reshape(datashape[:-1])
+                    squeeze = squeeze[:-1]
+                continue
             # Start, stop and step along 1st dimension, eg the unlimited
             # dimension.
             sta = start[0]

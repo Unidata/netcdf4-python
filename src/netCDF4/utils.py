@@ -79,7 +79,7 @@ least_significant_digit=1, bits will be 4.
         return datout
 
 def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
-        put=False, use_get_vars = True):
+        put=False, use_get_vars = True, return_selection=False):
     """Return start, count, stride and indices needed to store/extract data
     into/from a netCDF variable.
 
@@ -134,6 +134,9 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     datashape : sequence
       The shape of the data that is being stored. Only needed by __setitem__
     put : True|False (default False).  If called from __setitem__, put is True.
+    return_selection : bool (default False)
+      Also return the normalized selectors, for callers that need their exact
+      indices after an empty selection has been represented by compact chunks.
 
     Returns
     -------
@@ -148,6 +151,8 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
     indices : ndarray (..., n)
       An array storing the indices describing the location of the
       data chunk in the target/source array (__getitem__/__setitem__).
+    selection : list, optional
+      Normalized selectors, included only when return_selection is True.
 
     Notes:
 
@@ -322,6 +327,10 @@ Boolean array must have the same shape as the data along this dimension."""
                 newElem.append(e)
         elif np.iterable(e) and len(e) == 1:
             newElem.append(slice(e[0], e[0] + 1, 1))
+        elif np.iterable(e) and len(e) == 0:
+            # Retain counts and scalar squeeze markers for the other axes.
+            # A zero-length chunk axis would discard all of that metadata.
+            newElem.append(slice(0, 0, 1))
         else:
             newElem.append(e)
     elem = newElem
@@ -358,8 +367,23 @@ Boolean array must have the same shape as the data along this dimension."""
 
     # pad datashape with zeros for dimensions not being sliced (issue #906)
     # only used when data covers slice over subset of dimensions
+    padding_dims = sum(1 for e in elem if type(e) == slice)
+    if datashape and len(datashape) != len(elem):
+        for i, e in enumerate(elem):
+            if type(e) != slice:
+                continue
+            length = shape[i]
+            if hasunlim and unlimd[dimensions[i]]:
+                if e.stop is None:
+                    continue # an open-ended write may extend this dimension
+                length = max(length, e.stop)
+            if not range(*e.indices(length)):
+                # Empty writes retain fancy axes too. Keep the historical
+                # padding rules for nonempty writes outside this correction.
+                padding_dims = sum(1 for index in elem if type(index) == slice or np.iterable(index))
+                break
     if datashape and len(datashape) != len(elem) and\
-       len(datashape) == sum(1 for e in elem if type(e) == slice):
+       len(datashape) == padding_dims:
         datashapenew = (); i=0
         for e in elem:
             if type(e) != slice and not np.iterable(e): # scalar integer slice
@@ -369,13 +393,14 @@ Boolean array must have the same shape as the data along this dimension."""
                 i+=1
         datashape = datashapenew
 
-    # Create the start, count, stride and indices arrays.
-
+    # First describe one chunk with the complete selected shape. Only expand
+    # integer index arrays into their Cartesian chunk grid if it is nonempty.
     sdim.append(max(nDims, 1))
-    start = np.empty(sdim, dtype=np.intp)
-    count = np.empty(sdim, dtype=np.intp)
-    stride = np.empty(sdim, dtype=np.intp)
-    indices = np.empty(sdim, dtype=object)
+    compact = [1] * nDims + [nDims]
+    start = np.empty(compact, dtype=np.intp)
+    count = np.empty(compact, dtype=np.intp)
+    stride = np.empty(compact, dtype=np.intp)
+    indices = np.empty(compact, dtype=object)
 
     for i, e in enumerate(elem):
 
@@ -426,11 +451,10 @@ Boolean array must have the same shape as the data along this dimension."""
 
         #    ITERABLE    #
         elif np.iterable(e) and np.array(e).dtype.kind in 'i':  # Sequence of integers
-            if start[...,i].size:
-                start[...,i] = np.apply_along_axis(lambda x: e*x, i, np.ones(sdim[:-1]))
-                indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
-                count[...,i] = 1
-                stride[...,i] = 1
+            start[...,i] = e[0]
+            count[...,i] = len(e)
+            stride[...,i] = 1
+            indices[...,i] = 0 # preserve the distinction from a full slice
 
         #   all that's left is SCALAR INTEGER    #
         else:
@@ -446,6 +470,25 @@ Boolean array must have the same shape as the data along this dimension."""
             indices[...,i] = -1    # Use -1 instead of 0 to indicate that
                                        # this dimension shall be squeezed.
 
+    if 0 in count and not put:
+        # Empty reads bypass native bounds checks, including those for vlens.
+        for i, e in enumerate(elem):
+            if type(e) != slice and not np.iterable(e) and e >= shape[i]:
+                raise IndexError("integer index exceeds dimension size")
+
+    if 0 not in count and sdim != compact:
+        start = np.broadcast_to(start, sdim).copy()
+        count = np.broadcast_to(count, sdim).copy()
+        stride = np.broadcast_to(stride, sdim).copy()
+        indices = np.broadcast_to(indices, sdim).copy()
+        for i, e in enumerate(elem):
+            if np.iterable(e):
+                start[...,i] = np.apply_along_axis(lambda x: e*x, i, np.ones(sdim[:-1]))
+                indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
+                count[...,i] = 1
+
+    if return_selection:
+        return start, count, stride, indices, elem
     return start, count, stride, indices#, out_shape
 
 def _out_array_shape(count):
