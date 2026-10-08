@@ -104,7 +104,7 @@ jobs:
         include:
           - os: windows-latest
             arch: AMD64
-          - os: macos-14
+          - os: macos-15
             arch: arm64
           - os: macos-15-intel
             arch: x86_64
