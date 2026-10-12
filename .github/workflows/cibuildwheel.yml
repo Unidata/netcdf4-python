@@ -198,8 +198,8 @@ jobs:
     needs: [build_bdist, build_sdist, build_wheels_winmac, build_wheels_windows_arm]
     name: "Publish to PyPI"
     runs-on: ubuntu-22.04
-    # upload to PyPI for every tag starting with 'v'
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    # upload to PyPI when github release made.
+    if: github.event_name == 'release' && github.event.action == 'published'
     steps:
     - uses: actions/download-artifact@v8
       with:
