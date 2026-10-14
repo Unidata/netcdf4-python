@@ -266,6 +266,13 @@ Boolean array must have the same shape as the data along this dimension."""
         # integer scalar
         elif ea.dtype.kind == 'i':
             newElem.append(e)
+        # Scalar floats retain compatibility when they represent an exact
+        # integer, but non-integral values are invalid indices.  Letting
+        # int(e) handle both cases silently truncates values such as 0.8.
+        elif ea.dtype.kind == 'f' and not np.iterable(ea):
+            if not np.isfinite(e) or e != np.floor(e):
+                raise IndexError(IndexErrorMsg)
+            newElem.append(int(e))
         # slice or ellipsis object
         elif type(e) == slice or type(e) == type(Ellipsis):
             if not use_get_vars and type(e) == slice and e.step not in [None,-1,1] and\
