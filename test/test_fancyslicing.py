@@ -76,6 +76,26 @@ class VariablesTestCase(unittest.TestCase):
         # Remove the temporary files
         os.remove(self.file)
 
+    def test_float_scalar_get(self):
+        with Dataset(self.file) as f:
+            variable = f.variables['data']
+            for index in (0.8, -0.8, np.float32(0.8), np.float64(-0.8), np.array(0.8)):
+                with self.subTest(index=repr(index)):
+                    with self.assertRaises(IndexError):
+                        variable[index]
+            for index in (1.0, np.float32(1.0), np.float64(1.0), np.array(1.0)):
+                assert_array_equal(variable[index], variable[1])
+
+    def test_float_scalar_set(self):
+        with Dataset(self.file, 'a') as f:
+            variable = f.variables['data']
+            original = variable[:].copy()
+            for index in (0.8, -0.8, np.float32(0.8), np.float64(-0.8), np.array(0.8)):
+                with self.subTest(index=repr(index)):
+                    with self.assertRaises(IndexError):
+                        variable[index] = -999
+                    assert_array_equal(variable[:], original)
+
     def test_get(self):
         """testing 'fancy indexing'"""
         f  = Dataset(self.file, 'r')

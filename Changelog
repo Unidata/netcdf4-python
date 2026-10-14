@@ -1,5 +1,7 @@
+
  version 1.7.5 (tag v1.7.5rel)
  =============================
+ * Reject fractional scalar indices instead of silently truncating reads or writes (issue #1350).
  * Keep a numpy pin for Windows ARM64 on Python 3.10 so lockers can resolve that environment (issue #1491).
  * Preserve surviving dimensions and decoded types for empty orthogonal selections,
    including empty integer indices and all-false masks (PR #1499).
