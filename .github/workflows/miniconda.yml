@@ -13,12 +13,12 @@ jobs:
     strategy:
       matrix:
         python-version: [
-            ["python", "3.10"],
             ["python", "3.11"],
             ["python", "3.12"],
             ["python", "3.13"],
             ["python", "3.14"],
-            ["python-freethreading", "3.14" ],
+            ["python", "3.15"],
+            ["python-freethreading", "3.15" ],
         ]
         os: [windows-latest, ubuntu-latest, macos-latest]
         platform: [x64, x32]
