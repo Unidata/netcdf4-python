@@ -184,6 +184,21 @@ class TestgetStartCountStride(unittest.TestCase):
         assert_equal(count, 0)
         assert_equal(_out_array_shape(count), (0,))
 
+    def test_float_scalar_index(self):
+        # Integral float scalars retain the historical scalar-index behavior.
+        for elem in (1.0, np.float32(1.0), np.float64(1.0)):
+            start, count, stride, put_ind = _StartCountStride(elem, (10,))
+            assert_equal(start, 1)
+            assert_equal(count, 1)
+            assert_equal(stride, 1)
+            assert_equal(put_ind, -1)
+
+        # Fractional float scalars must not be silently truncated to an
+        # integer index.
+        for elem in (0.8, -0.8, np.float32(0.8), np.float64(-0.8)):
+            with self.assertRaises(IndexError):
+                _StartCountStride(elem, (10,))
+
     def test_ellipsis(self):
         elem=(Ellipsis, slice(1, 4))
         start, count, stride, put_ind = _StartCountStride(elem, (22,25,4))
