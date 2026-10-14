@@ -18,7 +18,7 @@ jobs:
             ["python", "3.13"],
             ["python", "3.14"],
             ["python", "3.15"],
-            ["python-freethreading", "3.15" ],
+            ["python-freethreading", "3.14" ],
         ]
         os: [windows-latest, ubuntu-latest, macos-latest]
         platform: [x64, x32]
