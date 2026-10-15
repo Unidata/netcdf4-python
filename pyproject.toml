@@ -15,7 +15,7 @@ description = "Provides an object-oriented python interface to the netCDF versio
 authors = [
   {name = "Jeff Whitaker", email = "whitaker.jeffrey@gmail.com"},
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 keywords = [
     "numpy", "netcdf", "data", "science", "network", "oceanography",
     "meteorology", "climate",
@@ -25,11 +25,11 @@ license-files = ["LICENSE"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Intended Audience :: Science/Research",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: System :: Archiving :: Compression",
@@ -39,11 +39,7 @@ dependencies = [
     "cftime",
     "certifi",
     "packaging",
-    "numpy>=2.3.0; platform_system == 'Windows' and platform_machine == 'ARM64' and python_version >= '3.11'",
-    # Windows ARM64 + Python 3.10 has no numpy>=2.3.0 wheel. Keep the older
-    # pin there so lockers (e.g. uv lock --python 3.10) can still resolve
-    # that environment. See issue #1491.
-    "numpy>=1.21.2; platform_system != 'Windows' or platform_machine != 'ARM64' or python_version < '3.11'",
+    "numpy>=1.23.2",
 ]
 dynamic = ["version"]
 

@@ -74,12 +74,12 @@ jobs:
       shell: bash
       # On PRs we run only oldest and newest Python versions to reduce CI load.
       # Skips pypy and musllinux everywhere.
-      # We are building 310, 311 and 314 for now.
+      # We are building 311 and 315 for now.
       # (3.11 is the oldest version for which we support abi3 wheels)
       # These needs to rotate every new Python release.
       run: |
         set -x
-        echo "CIBW_BUILD=cp310-* cp311-* cp314-* cp314t-*" >> $GITHUB_ENV
+        echo "CIBW_BUILD=cp311-* cp315-* cp315t-*" >> $GITHUB_ENV
         set +x
 
       if: ${{ github.event_name }} == "pull_request"
@@ -198,8 +198,8 @@ jobs:
     needs: [build_bdist, build_sdist, build_wheels_winmac, build_wheels_windows_arm]
     name: "Publish to PyPI"
     runs-on: ubuntu-22.04
-    # upload to PyPI for every tag starting with 'v'
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    # upload to PyPI when github release made.
+    if: github.event_name == 'release' && github.event.action == 'published'
     steps:
     - uses: actions/download-artifact@v8
       with:
