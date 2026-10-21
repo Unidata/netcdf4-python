@@ -78,7 +78,7 @@ jobs:
         python checkversion.py
         # serial
         cd test
-        SKIP_FILTER_TEST=1 python run_all.py
+        python run_all.py
         # parallel (hdf5 for netcdf4, pnetcdf for netcdf3)
         cd ../examples
         #mpirun.mpich -np 4 python mpi_example.py

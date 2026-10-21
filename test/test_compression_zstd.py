@@ -24,7 +24,7 @@ def write_netcdf(filename,dtype='f8',complevel: CompressionLevel = 6):
 
 
 # always run zstd test unless SKIP_FILTER_TEST set, so we know if filters are installed in wheels.
-unittest.skipIf(os.getenv("SKIP_FILTER_TEST"), "skipping zstd filter test")
+@unittest.skipIf(os.getenv("SKIP_FILTER_TEST"), "skipping zstd filter test")
 #@unittest.skipIf(no_plugins or not has_zstd_filter, "zstd filter not available")
 class CompressionTestCase(unittest.TestCase):
     def setUp(self):
