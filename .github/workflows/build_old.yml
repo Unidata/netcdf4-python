@@ -12,6 +12,7 @@ jobs:
       #CC: mpicc.mpich
       CC: mpicc
       #NO_NET: 1
+      SKIP_FILTER_TEST: 1
     strategy:
       matrix:
         python-version: ["3.14"]
@@ -76,7 +77,6 @@ jobs:
         export PATH=${NETCDF_DIR}/bin:${PATH} 
         python checkversion.py
         # serial
-        export SKIP_FILTER_TEST=1
         cd test
         python run_all.py
         # parallel (hdf5 for netcdf4, pnetcdf for netcdf3)
