@@ -2,10 +2,25 @@ import sys
 import unittest
 import os
 import tempfile
-from packaging.version import Version
+import re
+from packaging.version import Version, InvalidVersion
 from netCDF4 import Dataset
 import numpy as np
 from numpy.testing import assert_array_equal
+
+def _parse_clean_version(version_str: str) -> Version:
+    # Normalize "-development" or any variation like "-dev" to ".dev0"
+    cleaned = re.sub(r'[-_.]?development', '.dev0', version_str, flags=re.IGNORECASE)
+    # Catch cases where it's just raw text hyphens (e.g., 1.0.0-dev -> 1.0.0.dev0)
+    cleaned = re.sub(r'-dev(\d*)', r'.dev\1', cleaned, flags=re.IGNORECASE)
+    try:
+        return Version(cleaned)
+    except InvalidVersion:
+        # Fallback regex to pull just the numerical digits if it's still breaking
+        match = re.search(r'(\d+(\.\d+)+)', version_str)
+        if match:
+            return Version(match.group(1))
+        raise
 
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 VL_NAME = 'vlen_type'
@@ -164,7 +179,7 @@ class VlenAppendTestCase(unittest.TestCase):
     def setUp(self):
 
         import netCDF4
-        if Version(netCDF4.__netcdf4libversion__) < Version("4.4.1"):
+        if _parse_clean_version(netCDF4.__netcdf4libversion__) < Version("4.4.1"):
             self.skip = True
             try:
                 self.skipTest("This test requires NetCDF 4.4.1 or later.")
