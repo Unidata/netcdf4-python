@@ -1,6 +1,7 @@
 import unittest
 import os
 import tempfile
+from packaging.version import Version
 
 import numpy as np
 from numpy import ma
@@ -55,7 +56,7 @@ class VectorMissingValues(unittest.TestCase):
         # issue 730
         # this part fails with netcdf 4.1.3
         # a bug in vlen strings?
-        if __netcdf4libversion__ >= '4.4.0':
+        if Version(__netcdf4libversion__) >= Version('4.4.0'):
             assert v2[0] == 'first'
             assert v2[1] == '<missing>'
 

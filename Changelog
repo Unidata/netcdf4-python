@@ -2,6 +2,8 @@
  =================================
  * make sure zstd compression filter test always runs unless specifically disabled, fix cli test so it runs on
  32-bit x86.  New wheels for linux that include plugins (they were left out of the 1.7.5 release).
+ * fix version comparison logic that was broken when using netcdf-c >= 4.10.0 - this was the cause of 
+ issue #1515 (diskless persisted datasets are no longer persisted).
 
  version 1.7.5 (tag v1.7.5rel)
  =============================
