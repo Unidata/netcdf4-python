@@ -75,7 +75,7 @@ class DisklessTestCase(unittest.TestCase):
         assert os.path.isfile(self.file)==False 
         # open persisted file.
         # first, check that file does actually exist on disk
-        assert os.path.isfile(self.file2) and os.path.getsize(self.file2) >> 0
+        assert os.path.isfile(self.file2) and os.path.getsize(self.file2) > 0
         f = netCDF4.Dataset(self.file2)
         foo = f.variables['data1']
         # check shape.
