@@ -1,4 +1,5 @@
 import unittest, os, tempfile
+from packaging.version import Version
 import numpy as np
 from numpy.random.mtrand import uniform
 from numpy.testing import assert_array_equal, assert_array_almost_equal
@@ -17,7 +18,7 @@ FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
 
 @unittest.skipIf(
-    netCDF4.__netcdf4libversion__ < "4.2.1"
+    Version(netCDF4.__netcdf4libversion__) < Version('4.2.1')
     or netCDF4.__has_parallel4_support__
     or netCDF4.__has_pnetcdf_support__,
     "no diskless support",
