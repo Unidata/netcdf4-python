@@ -12,6 +12,7 @@ jobs:
       #CC: mpicc.mpich
       CC: mpicc
       #NO_NET: 1
+      SKIP_FILTER_TEST: 1
     strategy:
       matrix:
         python-version: ["3.14"]

@@ -1,4 +1,4 @@
-"""Version 1.7.5
+"""Version 1.7.5.1
 -------------
 
 # Introduction
@@ -1283,7 +1283,7 @@ import sys
 import functools
 from typing import Union
 
-__version__ = "1.7.5"
+__version__ = "1.7.5.1"
 
 # Initialize numpy
 import posixpath
@@ -1493,7 +1493,9 @@ def set_alignment(threshold, alignment):
 
 __netcdf4libversion__ = getlibversion().split()[0]
 __hdf5libversion__ = _gethdf5libversion()
-_needsworkaround_issue485 = __netcdf4libversion__ < "4.4.0" or \
+# parsed lib version for comparisons (string comparison breaks for 4.10+)
+_nclibversion = Version(__netcdf4libversion__.split('-')[0])
+_needsworkaround_issue485 = _nclibversion < Version("4.4.0") or \
                (__netcdf4libversion__.startswith("4.4.0") and \
                 "-development" in __netcdf4libversion__)
 
@@ -1605,7 +1607,7 @@ is_native_big = numpy.dtype('>f4').byteorder == c'='
 # so it will compile with versions <= 4.2.
 NC_DISKLESS = 0x0008
 # introduced in 4.6.2
-if __netcdf4libversion__[0:5] >= "4.6.2":
+if _nclibversion >= Version("4.6.2"):
     NC_PERSIST = 0x4000
 else:  # prior to 4.6.2 this flag doesn't work, so make the same as NC_DISKLESS
     NC_PERSIST = NC_DISKLESS
@@ -4499,7 +4501,7 @@ does not do anything."""
         # a fix for strided slice access using HDF5 was added
         # in 4.6.2.
         # always use nc_get_vars for strided access with OpenDAP (issue #838).
-        if __netcdf4libversion__ >= "4.6.2" or\
+        if _nclibversion >= Version("4.6.2") or\
            self._grp.filepath().startswith('http'):
             self._use_get_vars = True
         else:
@@ -4574,7 +4576,7 @@ does not do anything."""
         if (self._grp.path != '/'): ncdump.append('path = %s' % self._grp.path)
         ncdump.append('unlimited dimensions: %s' % ', '.join(unlimdims))
         ncdump.append('current shape = %r' % (self.shape,))
-        if __netcdf4libversion__ < '4.5.1' and\
+        if _nclibversion < Version('4.5.1') and\
             self._grp.file_format.startswith('NETCDF3'):
             # issue #908: no_fill not correct for NETCDF3 files before 4.5.1
             # before 4.5.1 there was no way to turn off filling on a
@@ -5267,7 +5269,7 @@ rename a `Variable` attribute named `oldname` to `newname`."""
         # issue 209: don't return masked array if variable filling
         # is disabled.
         else:
-            if __netcdf4libversion__ < '4.5.1' and\
+            if _nclibversion < Version('4.5.1') and\
                 self._grp.file_format.startswith('NETCDF3'):
                 # issue #908: no_fill not correct for NETCDF3 files before 4.5.1
                 # before 4.5.1 there was no way to turn off filling on a

@@ -2,9 +2,11 @@ import sys
 import unittest
 import os
 import tempfile
+from packaging.version import Version
 from netCDF4 import Dataset
 import numpy as np
 from numpy.testing import assert_array_equal
+from parse_clean_version import parse_clean_version
 
 FILE_NAME = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 VL_NAME = 'vlen_type'
@@ -163,7 +165,7 @@ class VlenAppendTestCase(unittest.TestCase):
     def setUp(self):
 
         import netCDF4
-        if netCDF4.__netcdf4libversion__ < "4.4.1":
+        if parse_clean_version(netCDF4.__netcdf4libversion__) < Version("4.4.1"):
             self.skip = True
             try:
                 self.skipTest("This test requires NetCDF 4.4.1 or later.")

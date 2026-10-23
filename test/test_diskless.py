@@ -1,4 +1,6 @@
 import unittest, os, tempfile
+from packaging.version import Version
+from parse_clean_version import parse_clean_version
 import numpy as np
 from numpy.random.mtrand import uniform
 from numpy.testing import assert_array_equal, assert_array_almost_equal
@@ -17,7 +19,7 @@ FILE_NAME2 = tempfile.NamedTemporaryFile(suffix='.nc', delete=False).name
 
 
 @unittest.skipIf(
-    netCDF4.__netcdf4libversion__ < "4.2.1"
+    parse_clean_version(netCDF4.__netcdf4libversion__) < Version('4.2.1')
     or netCDF4.__has_parallel4_support__
     or netCDF4.__has_pnetcdf_support__,
     "no diskless support",
@@ -74,7 +76,7 @@ class DisklessTestCase(unittest.TestCase):
         assert os.path.isfile(self.file)==False 
         # open persisted file.
         # first, check that file does actually exist on disk
-        assert os.path.isfile(self.file2)==True 
+        assert os.path.isfile(self.file2) and os.path.getsize(self.file2) > 0
         f = netCDF4.Dataset(self.file2)
         foo = f.variables['data1']
         # check shape.

@@ -77,5 +77,8 @@ def test_nc4tonc3_chunk(tmp_path, chunk, monkeypatch):
         utils.nc4tonc3()
     assert convert.call_args.kwargs["nchunk"] == (10 if chunk is None else chunk)
     with Dataset(destination) as dataset:
-        assert dataset.file_format == "NETCDF3_64BIT_OFFSET"
+        if sys.maxsize > 2**32:
+           assert dataset.file_format == "NETCDF3_64BIT_OFFSET"
+        else:
+           assert dataset.file_format == "NETCDF3_64BIT"
         np.testing.assert_array_equal(dataset.variables["values"][:], values)
