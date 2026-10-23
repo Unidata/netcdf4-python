@@ -1,4 +1,4 @@
-"""Version 1.7.5.1.post1
+"""Version 1.7.6
 -------------
 
 # Introduction
@@ -1283,7 +1283,7 @@ import sys
 import functools
 from typing import Union
 
-__version__ = "1.7.5.1.post1"
+__version__ = "1.7.6"
 
 # Initialize numpy
 import posixpath
@@ -1611,6 +1611,23 @@ if _nclibversion >= Version("4.6.2"):
     NC_PERSIST = 0x4000
 else:  # prior to 4.6.2 this flag doesn't work, so make the same as NC_DISKLESS
     NC_PERSIST = NC_DISKLESS
+
+# mode flags for the user-defined formats (UDFs) provided by the
+# NetCDF Expansion Pack (NEP), names match those in nep.h.
+# Used with the extra_mode_flag Dataset kwarg (requires netcdf-c >= 4.10.0).
+NEP_UDF_GEOTIFF_BIGTIFF = 0x0040     # NC_UDF0
+NEP_UDF_GEOTIFF_STANDARD = 0x0080    # NC_UDF1
+NEP_UDF_GRIB2 = 0x10000              # NC_UDF2
+NEP_UDF_FITS = 0x80000               # NC_UDF3
+NEP_UDF_CDF = 0x100000               # NC_UDF4
+NEP_UDF_PDS4 = 0x200000              # NC_UDF5
+NEP_UDF_DICOM = 0x400000             # NC_UDF6
+NEP_UDF_PDB = 0x800000               # NC_UDF7
+NEP_UDF_MMCIF = 0x1000000            # NC_UDF8
+NEP_UDF_NEXTCDF4 = 0x2000000         # NC_UDF9
+_nep_udf_flags = (NEP_UDF_GEOTIFF_BIGTIFF, NEP_UDF_GEOTIFF_STANDARD,
+                  NEP_UDF_GRIB2, NEP_UDF_FITS, NEP_UDF_CDF, NEP_UDF_PDS4,
+                  NEP_UDF_DICOM, NEP_UDF_PDB, NEP_UDF_MMCIF, NEP_UDF_NEXTCDF4)
 
 # next two lines do nothing, preserved for backwards compatibility.
 default_encoding = 'utf-8'
@@ -2306,11 +2323,13 @@ strings.
     def __init__(self, filename, mode='r', clobber=True, format='NETCDF4',
                      diskless=False, persist=False, keepweakref=False,
                      memory=None, encoding=None, parallel=False,
-                     comm=None, info=None, auto_complex=False, **kwargs):
+                     comm=None, info=None, auto_complex=False,
+                     extra_mode_flag=None, **kwargs):
         """
         **`__init__(self, filename, mode="r", clobber=True, diskless=False,
         persist=False, keepweakref=False, memory=None, encoding=None,
-        parallel=False, comm=None, info=None, format='NETCDF4')`**
+        parallel=False, comm=None, info=None, format='NETCDF4',
+        auto_complex=False, extra_mode_flag=None)`**
 
         `Dataset` constructor.
 
@@ -2403,6 +2422,15 @@ strings.
         means MPI_INFO_NULL will be used.  Ignored if `parallel=False`.
 
         **`auto_complex`**: if `True`, then automatically convert complex number types
+
+        **`extra_mode_flag`**: integer mode flag selecting a user-defined format
+        (UDF) dispatch layer, such as those provided by the NetCDF Expansion Pack
+        (NEP). Only needed for files that cannot be identified by their magic
+        number. Must be one of the `NEP_UDF_*` module constants (for example
+        `NEP_UDF_MMCIF`), and the UDF must be registered with netcdf-c (for NEP,
+        via the .ncrc file). Only allowed with `mode='r'`, and not with
+        `diskless`, `memory` or `parallel`. Requires netcdf-c >= 4.10.0.
+        Default `None`.
         """
         cdef int grpid, ierr, numgrps, numdims, numvars,
         cdef size_t initialsize
@@ -2478,6 +2506,19 @@ strings.
             if write_mode and persist:
                 cmode |= NC_WRITE | NC_PERSIST
 
+        # extra mode flag for user-defined formats, only used for plain
+        # read-only nc_open (cmode == NC_NOWRITE). Need to check read_mode
+        # too, since NC_CLOBBER (mode='w') is also zero.
+        if extra_mode_flag is not None:
+            if _nclibversion < Version("4.10.0"):
+                raise NetCDF4MissingFeatureException("extra_mode_flag", "4.10.0")
+            if not read_mode or cmode != NC_NOWRITE or memory is not None or parallel:
+                raise ValueError("extra_mode_flag only allowed with mode='r', "
+                                 "and not with diskless, memory or parallel")
+            if extra_mode_flag not in _nep_udf_flags:
+                raise ValueError(f"extra_mode_flag must be one of the NEP_UDF_* "
+                                 f"constants, got {extra_mode_flag!r}")
+
         if write_mode:
             _set_default_format(format=format)
             if memory is not None:
@@ -2521,6 +2562,8 @@ strings.
                 with nogil:
                     ierr = nc_open_par(path, cmode | NC_MPIIO, mpicomm, mpiinfo, &grpid)
             else:
+                if extra_mode_flag is not None:
+                    cmode |= extra_mode_flag
                 with nogil:
                     ierr = nc_open(path, cmode, &grpid)
 

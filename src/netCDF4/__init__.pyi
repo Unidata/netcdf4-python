@@ -187,6 +187,16 @@ is_native_big: bool
 default_encoding: Final = "utf-8"
 unicode_error: Final = "replace"
 default_fillvals: dict[str, int | float | str]
+NEP_UDF_GEOTIFF_BIGTIFF: Final = 0x0040
+NEP_UDF_GEOTIFF_STANDARD: Final = 0x0080
+NEP_UDF_GRIB2: Final = 0x10000
+NEP_UDF_FITS: Final = 0x80000
+NEP_UDF_CDF: Final = 0x100000
+NEP_UDF_PDS4: Final = 0x200000
+NEP_UDF_DICOM: Final = 0x400000
+NEP_UDF_PDB: Final = 0x800000
+NEP_UDF_MMCIF: Final = 0x1000000
+NEP_UDF_NEXTCDF4: Final = 0x2000000
 
 # date2index, date2num, and num2date are actually provided by cftime and if stubs for
 # cftime are completed these should be removed.
@@ -235,6 +245,7 @@ class Dataset:
         comm: Any = None,
         info: Any = None,
         auto_complex: bool = False,
+        extra_mode_flag: int | None = None,
         **kwargs: Any,
     ): ...
     @property
