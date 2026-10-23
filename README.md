@@ -10,6 +10,8 @@
 ## News
 For details on the latest updates, see the [Changelog](https://github.com/Unidata/netcdf4-python/blob/master/Changelog).
 
+10/22/2026:  Version [1.7.5.1](https://pypi.python.org/pypi/netCDF4/1.7.5.1) released.  See Changelog for details.
+
 10/17/2026:  Version [1.7.5](https://pypi.python.org/pypi/netCDF4/1.7.5) released.  See Changelog for details.
 
 1/5/2026:  Version [1.7.4](https://pypi.python.org/pypi/netCDF4/1.7.4) released.  Compression plugins now included in wheels, windows/arm64 and
