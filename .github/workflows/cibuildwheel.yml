@@ -79,7 +79,7 @@ jobs:
       # These needs to rotate every new Python release.
       run: |
         set -x
-        echo "CIBW_BUILD=cp311-* cp315-* cp315t-*" >> $GITHUB_ENV
+        echo "CIBW_BUILD=cp311-* cp315-* cp314t-* cp315t-*" >> $GITHUB_ENV
         set +x
 
       if: ${{ github.event_name }} == "pull_request"
