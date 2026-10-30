@@ -1,3 +1,8 @@
+ version 1.7.6 (not yet released)
+ ================================
+ * Allow mode flag (`extra_mode_flag` Dataset kwarg) to be passed to nc_open() to support 
+ additional dispatch layers available via the NetCDF Expansion Pack (NEP) (issue #1490).
+
  version 1.7.5.1.post1 (tag v1.7.5.1.post1rel)
  =============================================
  * fix installation of plugins into linux wheels.

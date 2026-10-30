@@ -10,6 +10,7 @@ include examples/README.md
 exclude examples/data
 include test/*py
 include test/*nc
+include test/*grb2
 include src/netCDF4/__init__.py
 include src/netCDF4/_netCDF4.pyx
 exclude src/netCDF4/_netCDF4.c
