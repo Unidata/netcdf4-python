@@ -1,3 +1,8 @@
+ version 1.7.6 (not yet released)
+ ================================
+ * Speed up index setup in _StartCountStride (used when indexing variables) by
+   skipping numpy conversion for plain ints and slices and classifying each index once (PR #1524).
+
  version 1.7.5.1.post1 (tag v1.7.5.1.post1rel)
  =============================================
  * fix installation of plugins into linux wheels.
