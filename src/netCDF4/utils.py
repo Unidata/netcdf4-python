@@ -225,10 +225,13 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
                 e = int(e)
             except:
                 raise IndexError(IndexErrorMsg)
-        ea = np.asarray(e)
-        # Raise error if multidimensional indexing is used.
-        if ea.ndim > 1:
-            raise IndexError("Index cannot be multidimensional")
+        # plain integers, slices and ellipsis need no numpy conversion.
+        simple = type(e) is int or type(e) is slice or e is Ellipsis
+        if not simple:
+            ea = np.asarray(e)
+            # Raise error if multidimensional indexing is used.
+            if ea.ndim > 1:
+                raise IndexError("Index cannot be multidimensional")
         # set unlim to True if dimension is unlimited and put==True
         # (called from __setitem__)
         if hasunlim and put and dimensions:
@@ -239,42 +242,11 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
                 unlim = False
         else:
             unlim = False
-        # convert boolean index to integer array.
-        if np.iterable(ea) and ea.dtype.kind =='b':
-            # check that boolean array not too long
-            if not unlim and shape[i] != len(ea):
-                msg="""
-Boolean array must have the same shape as the data along this dimension."""
-                raise IndexError(msg)
-            ea = np.flatnonzero(ea)
-        # an iterable (non-scalar) integer array.
-        if np.iterable(ea) and ea.dtype.kind == 'i':
-            # convert negative indices in 1d array to positive ones.
-            ea = np.where(ea < 0, ea + shape[i], ea)
-            if np.any(ea < 0):
-                raise IndexError("integer index out of range")
-            # if unlim, let integer index be longer than current dimension
-            # length.
-            if ea.shape != (0,):
-                elen = shape[i]
-                if unlim:
-                    elen = max(ea.max()+1,elen)
-                if ea.max()+1 > elen:
-                    msg="integer index exceeds dimension size"
-                    raise IndexError(msg)
-            newElem.append(ea)
         # integer scalar
-        elif ea.dtype.kind == 'i':
+        if type(e) is int:
             newElem.append(e)
-        # Scalar floats retain compatibility when they represent an exact
-        # integer, but non-integral values are invalid indices.  Letting
-        # int(e) handle both cases silently truncates values such as 0.8.
-        elif ea.dtype.kind == 'f' and not np.iterable(ea):
-            if not np.isfinite(e) or e != np.floor(e):
-                raise IndexError(IndexErrorMsg)
-            newElem.append(int(e))
         # slice or ellipsis object
-        elif type(e) == slice or type(e) == type(Ellipsis):
+        elif simple:
             if not use_get_vars and type(e) == slice and e.step not in [None,-1,1] and\
                dimensions is not None and grp is not None:
                 # convert strided slice to integer sequence if possible
@@ -294,12 +266,60 @@ Boolean array must have the same shape as the data along this dimension."""
                 except:
                     pass
             newElem.append(e)
-        else:  # castable to a scalar int, otherwise invalid
-            try:
-                e = int(e)
+        else:
+            # classify the converted index once; ndim is 0 or 1 here.
+            kind = ea.dtype.kind
+            # convert boolean index to integer array.
+            if ea.ndim and kind =='b':
+                # check that boolean array not too long
+                if not unlim and shape[i] != len(ea):
+                    msg="""
+Boolean array must have the same shape as the data along this dimension."""
+                    raise IndexError(msg)
+                # nonzero positions are never negative.
+                ea = np.flatnonzero(ea)
+                kind = None
+            # an iterable (non-scalar) integer array.
+            elif ea.ndim and kind == 'i':
+                if ea.dtype == np.intp and type(shape[i]) is int and \
+                   not (ea < 0).any():
+                    # nothing to wrap; just avoid aliasing the caller's array.
+                    if ea is e:
+                        ea = ea.copy()
+                else:
+                    # convert negative indices in 1d array to positive ones.
+                    ea = np.where(ea < 0, ea + shape[i], ea)
+                    if np.any(ea < 0):
+                        raise IndexError("integer index out of range")
+                kind = None
+            if kind is None:
+                # if unlim, let integer index be longer than current dimension
+                # length.
+                if len(ea):
+                    elen = shape[i]
+                    emax = ea.max()+1
+                    if unlim:
+                        elen = max(emax,elen)
+                    if emax > elen:
+                        msg="integer index exceeds dimension size"
+                        raise IndexError(msg)
+                newElem.append(ea)
+            # integer scalar
+            elif kind == 'i':
                 newElem.append(e)
-            except:
-                raise IndexError(IndexErrorMsg)
+            # Scalar floats retain compatibility when they represent an exact
+            # integer, but non-integral values are invalid indices.  Letting
+            # int(e) handle both cases silently truncates values such as 0.8.
+            elif kind == 'f' and not ea.ndim:
+                if not np.isfinite(e) or e != np.floor(e):
+                    raise IndexError(IndexErrorMsg)
+                newElem.append(int(e))
+            else:  # castable to a scalar int, otherwise invalid
+                try:
+                    e = int(e)
+                    newElem.append(e)
+                except:
+                    raise IndexError(IndexErrorMsg)
         if type(e)==type(Ellipsis):
             i+=1+nDims-len(elem)
         else:
@@ -309,13 +329,16 @@ Boolean array must have the same shape as the data along this dimension."""
     # replace Ellipsis and integer arrays with slice objects, if possible.
     newElem = []
     for e in elem:
-        ea = np.asarray(e)
+        if type(e) is int or type(e) is slice:
+            newElem.append(e)
         # Replace ellipsis with slices.
-        if type(e) == type(Ellipsis):
+        elif type(e) == type(Ellipsis):
             # The ellipsis stands for the missing dimensions.
             newElem.extend((slice(None, None, None),) * (nDims - len(elem) + 1))
+        elif not np.iterable(e):
+            newElem.append(e)
         # Replace sequence of indices with slice object if possible.
-        elif np.iterable(e) and len(e) > 1:
+        elif len(e) > 1:
             start = e[0]
             stop = e[-1]+1
             step = e[1]-e[0]
@@ -332,14 +355,12 @@ Boolean array must have the same shape as the data along this dimension."""
                     newElem.append(slice(start,stop,step))
             else:
                 newElem.append(e)
-        elif np.iterable(e) and len(e) == 1:
+        elif len(e) == 1:
             newElem.append(slice(e[0], e[0] + 1, 1))
-        elif np.iterable(e) and len(e) == 0:
+        else:
             # Retain counts and scalar squeeze markers for the other axes.
             # A zero-length chunk axis would discard all of that metadata.
             newElem.append(slice(0, 0, 1))
-        else:
-            newElem.append(e)
     elem = newElem
 
     # If slice doesn't cover all dims, assume ellipsis for rest of dims.
@@ -354,28 +375,26 @@ Boolean array must have the same shape as the data along this dimension."""
     # Compute the dimensions of the start, count, stride and indices arrays.
     # The number of elements in the first n dimensions corresponds to the
     # number of times the _get method will be called.
-    sdim = []
-    for i, e in enumerate(elem):
-        # at this stage e is a slice, a scalar integer, or a 1d integer array.
-        # integer array:  _get call for each True value
-        if np.iterable(e):
-            sdim.append(len(e))
-        # Scalar int or slice, just a single _get call
-        else:
-            sdim.append(1)
+    # at this stage e is a slice, a scalar integer, or a 1d integer array.
+    iterable = [type(e) is not int and type(e) is not slice and np.iterable(e)
+                for e in elem]
+    # integer array:  _get call for each True value
+    # Scalar int or slice, just a single _get call
+    sdim = [len(e) if it else 1 for e, it in zip(elem, iterable)]
 
     # broadcast data shape when assigned to full variable (issue #919)
-    try:
-        fullslice = elem.count(slice(None,None,None)) == len(elem)
-    except: # fails if elem contains a numpy array.
-        fullslice = False
-    if fullslice and datashape and put and not hasunlim:
-        datashape = broadcasted_shape(shape, datashape)
+    if datashape and put and not hasunlim:
+        try:
+            fullslice = elem.count(slice(None,None,None)) == len(elem)
+        except: # fails if elem contains a numpy array.
+            fullslice = False
+        if fullslice:
+            datashape = broadcasted_shape(shape, datashape)
 
     # pad datashape with zeros for dimensions not being sliced (issue #906)
     # only used when data covers slice over subset of dimensions
-    padding_dims = sum(1 for e in elem if type(e) == slice)
     if datashape and len(datashape) != len(elem):
+        padding_dims = sum(1 for e in elem if type(e) == slice)
         for i, e in enumerate(elem):
             if type(e) != slice:
                 continue
@@ -404,14 +423,12 @@ Boolean array must have the same shape as the data along this dimension."""
     # integer index arrays into their Cartesian chunk grid if it is nonempty.
     sdim.append(max(nDims, 1))
     compact = [1] * nDims + [nDims]
-    start = np.empty(compact, dtype=np.intp)
-    count = np.empty(compact, dtype=np.intp)
-    stride = np.empty(compact, dtype=np.intp)
-    indices = np.empty(compact, dtype=object)
+    start = []
+    count = []
+    stride = []
+    indices = []
 
     for i, e in enumerate(elem):
-
-        ea = np.asarray(e)
 
         # set unlim to True if dimension is unlimited and put==True
         # (called from __setitem__). Note: grp and dimensions must be set.
@@ -451,47 +468,58 @@ Boolean array must have the same shape as the data along this dimension."""
             beg, end, inc = e.indices(length)
             n = len(range(beg,end,inc))
 
-            start[...,i] = beg
-            count[...,i] = n
-            stride[...,i] = inc
-            indices[...,i] = slice(None)
+            start.append(beg)
+            count.append(n)
+            stride.append(inc)
+            indices.append(slice(None))
 
         #    ITERABLE    #
-        elif np.iterable(e) and np.array(e).dtype.kind in 'i':  # Sequence of integers
-            start[...,i] = e[0]
-            count[...,i] = len(e)
-            stride[...,i] = 1
-            indices[...,i] = 0 # preserve the distinction from a full slice
+        elif iterable[i] and np.asarray(e).dtype.kind in 'i':  # Sequence of integers
+            start.append(e[0])
+            count.append(len(e))
+            stride.append(1)
+            indices.append(0) # preserve the distinction from a full slice
 
         #   all that's left is SCALAR INTEGER    #
         else:
             if e >= 0:
-                start[...,i] = e
+                start.append(e)
             elif e < 0 and (-e <= shape[i]) :
-                start[...,i] = e+shape[i]
+                start.append(e+shape[i])
             else:
                 raise IndexError("Index out of range")
 
-            count[...,i] = 1
-            stride[...,i] = 1
-            indices[...,i] = -1    # Use -1 instead of 0 to indicate that
-                                       # this dimension shall be squeezed.
+            count.append(1)
+            stride.append(1)
+            indices.append(-1)    # Use -1 instead of 0 to indicate that
+                                  # this dimension shall be squeezed.
 
-    if 0 in count and not put:
+    # Convert the per-dimension values once, rather than writing each one.
+    empty = 0 in count
+    start, count, stride = np.array((start, count, stride),
+                                    dtype=np.intp).reshape([3] + compact)
+    indices_ = np.empty(nDims, dtype=object)
+    indices_[:] = indices
+    indices = indices_.reshape(compact)
+
+    if empty and not put:
         # Empty reads bypass native bounds checks, including those for vlens.
         for i, e in enumerate(elem):
-            if type(e) != slice and not np.iterable(e) and e >= shape[i]:
+            if type(e) != slice and not iterable[i] and e >= shape[i]:
                 raise IndexError("integer index exceeds dimension size")
 
-    if 0 not in count and sdim != compact:
+    if not empty and sdim != compact:
         start = np.broadcast_to(start, sdim).copy()
         count = np.broadcast_to(count, sdim).copy()
         stride = np.broadcast_to(stride, sdim).copy()
         indices = np.broadcast_to(indices, sdim).copy()
         for i, e in enumerate(elem):
-            if np.iterable(e):
-                start[...,i] = np.apply_along_axis(lambda x: e*x, i, np.ones(sdim[:-1]))
-                indices[...,i] = np.apply_along_axis(lambda x: np.arange(sdim[i])*x, i, np.ones(sdim[:-1], int))
+            if iterable[i]:
+                # broadcast the index values along their own chunk axis.
+                axis = [1] * nDims
+                axis[i] = sdim[i]
+                start[...,i] = np.reshape(e, axis)
+                indices[...,i] = np.arange(sdim[i]).reshape(axis)
                 count[...,i] = 1
 
     if return_selection:
