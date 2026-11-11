@@ -1254,6 +1254,14 @@ When writing files using `auto_complex=True`, `netCDF4` will use:
 - or a dimension of length 2 named `_pfnc_complex` for netCDF3 or classic
   formats.
 
+Variables created with a real or compound datatype retain that datatype and
+all of their dimensions, even when `auto_complex=True`. For example, a real
+variable with dimensions `("x", "complex")` accepts separate real and imaginary
+components along its last axis. Reopening that file with `auto_complex=True`
+interprets the stored convention as a complex variable with dimensions `("x",)`.
+To write complex arrays directly, create the variable with datatype `"c8"` or
+`"c16"` instead.
+
 Support for complex numbers is handled via the
 [`nc-complex`](https://github.com/PlasmaFAIR/nc-complex) library. See there for
 further details.
@@ -4481,7 +4489,10 @@ does not do anything."""
             if dim.isunlimited(): self._nunlimdim = self._nunlimdim + 1
 
         # set ndim attribute (number of dimensions).
-        self.ndim = _inq_varndims(self._grpid, self._varid, self._grp.auto_complex)
+        # A newly created real variable may happen to use a complex-looking
+        # dimension. Only hide its component axis when its Python dtype is
+        # complex; otherwise its shape and I/O buffers must stay real.
+        self.ndim = _inq_varndims(self._grpid, self._varid, is_complex)
         self._name = name
         # default for automatically applying scale_factor and
         # add_offset, and converting to/from masked arrays is True.
@@ -4609,7 +4620,7 @@ does not do anything."""
         cdef int ierr, dimid
         cdef char namstring[NC_MAX_NAME+1]
 
-        dimids = _inq_vardimid(self._grpid, self._varid, self._grp.auto_complex)
+        dimids = _inq_vardimid(self._grpid, self._varid, dtype_is_complex(self.dtype))
 
         # loop over dimensions, retrieve names.
         dimensions = ()
@@ -5937,7 +5948,7 @@ NC_CHAR).
             if not data.dtype.isnative:
                 data = data.byteswap()
             # strides all 1 or scalar variable, use put_vara (faster)
-            if self._grp.auto_complex:
+            if dtype_is_complex(self.dtype):
                 with nogil:
                     ierr = pfnc_put_vars(self._grpid, self._varid,
                                          startp, countp, stridep, PyArray_DATA(data))
@@ -6062,7 +6073,7 @@ NC_CHAR).
             # strides all 1 or scalar variable, use get_vara (faster)
             # if count contains a zero element, no data is being read
             if 0 not in count:
-                if self._grp.auto_complex:
+                if dtype_is_complex(self.dtype):
                     with nogil:
                         ierr = pfnc_get_vars(self._grpid, self._varid,
                                              startp, countp, stridep,
