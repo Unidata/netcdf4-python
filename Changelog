@@ -1,5 +1,7 @@
  version 1.7.6 (not yet released)
  ================================
+ * Preserve explicit real variable dimensions and I/O with auto_complex=True,
+   while retaining complex decoding on reopen (issue #1404, PR #1525).
  * Speed up index setup in _StartCountStride (used when indexing variables) by
    skipping numpy conversion for plain ints and slices and classifying each index once (PR #1524).
 
