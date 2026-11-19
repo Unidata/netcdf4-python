@@ -213,6 +213,7 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
 
     # replace boolean arrays with sequences of integers.
     newElem = []
+    has_explicit_slice = False
     IndexErrorMsg=\
     "only integers, slices (`:`), ellipsis (`...`), and 1-d integer or boolean arrays are valid indices"
     i=0
@@ -226,7 +227,8 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
             except:
                 raise IndexError(IndexErrorMsg)
         # plain integers, slices and ellipsis need no numpy conversion.
-        simple = type(e) is int or type(e) is slice or e is Ellipsis
+        index_type = type(e)
+        simple = index_type is int or index_type is slice or e is Ellipsis
         if not simple:
             ea = np.asarray(e)
             # Raise error if multidimensional indexing is used.
@@ -243,11 +245,13 @@ def _StartCountStride(elem, shape, dimensions=None, grp=None, datashape=None,\
         else:
             unlim = False
         # integer scalar
-        if type(e) is int:
+        if index_type is int:
             newElem.append(e)
         # slice or ellipsis object
         elif simple:
-            if not use_get_vars and type(e) == slice and e.step not in [None,-1,1] and\
+            # Preserve slice intent across both strided and empty-index conversion.
+            has_explicit_slice = has_explicit_slice or index_type is slice
+            if not use_get_vars and index_type is slice and e.step not in [None,-1,1] and\
                dimensions is not None and grp is not None:
                 # convert strided slice to integer sequence if possible
                 # (this will avoid nc_get_vars, which is slow - issue #680).
@@ -501,6 +505,11 @@ Boolean array must have the same shape as the data along this dimension."""
     indices_ = np.empty(nDims, dtype=object)
     indices_[:] = indices
     indices = indices_.reshape(compact)
+
+    if (empty and put and has_explicit_slice and dimensions is not None and len(dimensions) == 1
+            and datashape is not None and len(datashape) == 1 and datashape[0] > 1):
+        # Report the same size mismatch as _put for an oversized slice write.
+        raise IndexError("size of data array does not conform to slice")
 
     if empty and not put:
         # Empty reads bypass native bounds checks, including those for vlens.
