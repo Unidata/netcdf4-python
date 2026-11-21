@@ -2,6 +2,7 @@
 import os
 import tempfile
 import unittest
+from collections import UserList
 from typing import Any
 
 import numpy as np
@@ -261,12 +262,55 @@ class EmptyIndexingTestCase(unittest.TestCase):
             ds.createDimension('x', 3)
             variable = ds.createVariable('data', 'i4', ('x',))
             variable[:] = [10, 20, 30]
-            for empty in (EMPTY, slice(0), np.zeros(3, dtype=bool)):
+            cases = (
+                (EMPTY, ValueError),
+                (slice(0), IndexError),
+                (np.zeros(3, dtype=bool), ValueError),
+            )
+            for empty, error in cases:
                 with self.subTest(empty=repr(empty)):
                     variable[empty] = np.array([123])
                     assert_array_equal(variable[:], [10, 20, 30])
-                    with self.assertRaises((ValueError, IndexError)):
+                    with self.assertRaises(error):
                         variable[empty] = np.array([123, 456])
+
+    def test_oversized_empty_slice_write(self):
+        path = os.path.join(self.directory.name, 'slice-write.nc')
+        cases = (
+            (None, slice(-3, None)),
+            (None, (Ellipsis, slice(-2, -2))),
+            (None, [slice(-3, None)]),
+            (2, slice(1, 1)),
+            (2, UserList([slice(1, 1)])),
+        )
+        for length, key in cases:
+            with self.subTest(length=length, key=key):
+                with Dataset(path, 'w') as ds:
+                    ds.createDimension('time', length)
+                    variable = ds.createVariable('sensor', 'i4', ('time',))
+                    variable[:] = [0, 1]
+                    with self.assertRaisesRegex(IndexError, 'size of data array does not conform to slice'):
+                        variable[key] = [9, 8, 7]
+                    variable[:0] = [9]
+                    self.assertEqual(len(ds.dimensions['time']), 2)
+                    self.assertEqual(variable.shape, (2,))
+                    assert_array_equal(variable[:], [0, 1])
+
+    def test_oversized_empty_strided_slice_write(self):
+        path = os.path.join(self.directory.name, 'strided-write.nc')
+        for use_get_vars in (False, True):
+            with self.subTest(use_get_vars=use_get_vars):
+                with Dataset(path, 'w') as ds:
+                    ds.createDimension('time', 2)
+                    variable = ds.createVariable('sensor', 'i4', ('time',))
+                    variable[:] = [0, 1]
+                    variable.use_nc_get_vars(use_get_vars)
+                    with self.assertRaisesRegex(IndexError, 'size of data array does not conform to slice'):
+                        variable[4:5:2] = [9, 8, 7]
+                    variable[4:5:2] = [9]
+                    self.assertEqual(len(ds.dimensions['time']), 2)
+                    self.assertEqual(variable.shape, (2,))
+                    assert_array_equal(variable[:], [0, 1])
 
     def test_empty_encoded_characters(self):
         raw = np.array(['alpha', 'bravo', 'delta', 'gamma'], dtype='S5').view('S1').reshape(4, 5)
