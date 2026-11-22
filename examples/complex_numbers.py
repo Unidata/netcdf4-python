@@ -30,7 +30,6 @@ filename = "complex_numbers_as_datatype.nc"
 with netCDF4.Dataset(filename, "w") as f:
     f.createDimension("x", size=len(complex_array))
     nc_dt = f.createCompoundType(np_dt, "nc_complex")
-    breakpoint()
 
     c_struct = f.createVariable("data_struct", nc_dt, ("x",))
     c_struct[:] = complex_struct_array
